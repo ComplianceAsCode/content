@@ -1,4 +1,5 @@
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
+set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
 
@@ -258,6 +259,52 @@ macro(ssg_build_xccdf_final PRODUCT)
     #)
 endmacro()
 
+macro(ssg_build_table_refs PRODUCT)
+    # TODO: Figure out how to handle profiles as not all products use the same profiles
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/table-${PRODUCT}-nistrefs.html ${CMAKE_BINARY_DIR}/table-${PRODUCT}-cisrefs.html ${CMAKE_BINARY_DIR}/table-${PRODUCT}-nistrefs-common.html ${CMAKE_BINARY_DIR}/table-${PRODUCT}-nistrefs-ospp.html
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam ref "nist" --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-nistrefs.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam ref "cis" --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-cisrefs.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "common" --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-nistrefs-common.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "ospp-rhel7-server" --ouput ${CMAKE_BINARY_DIR}/table-${PRODUCT}-nistrefs-ospp.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "C2S" --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-cisrefs-c2s.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilecisrefs.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam ref "pcidss" --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-pcidss.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+    )
+endmacro()
+
+macro(ssg_build_table_idents PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/table-${PRODUCT}-cces.html
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-cces.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+        COMMENT "[${PRODUCT}] generating table-${PRODUCT}-cces.html"
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml
+    )
+endmacro()
+
+macro(ssg_build_table_srgmaps PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.xhtml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam flat "y" -stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-empty-groups.xml" --ouput ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        COMMAND ${XMLLINT_EXECUTABLE} --xmlout --html --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.xhtml ${SSG_SHARED_REFS}/table-${PRODUCT}-srgmap-flat.html
+        COMMENT "[${PRODUCT}] generating table-${PRODUCT}-srgmap.html, table-${PRODUCT}-srgmap-flat.html, table-${PRODUCT}-srgmap-flat.xhtml"
+    )
+endmacro()
+
+macro(ssg_build_stig_tables PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/table-${PRODUCT}-stig.html ${CMAKE_BINARY_DIR}/table-stig-${PRODUCT}-testinfo.html ${CMAKE_BINARY_DIR}/unlinked-stig-${PRODUCT}-xccdf.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-stig.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v1r0.2-xccdf-manual.xml
+        #COMMAND ${XSLTPROC_EXECUTABLE} -stringparam notes "${CMAKE_CURRENT_SOURCE_DIR}/input/auxiliary/transition_notes.xml" --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-stig-manual-withnotes.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v1r0.2-xccdf-manual.xml
+        # TODO: Need to handle multiple/different profiles for different products
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "stig-${PRODUCT}-server" -stringparam testinfo "y" --output ${CMAKE_BINARY_DIR}/table-stig-${PRODUCT}-testinfo.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam overlay "${CMAKE_CURRENT_SOURCE_DIR}/input/auxiliary/stig_overlay.xml" --output ${CMAKE_BINARY_DIR}/unlinked-stig-${PRODUCT}-xccdf.xml ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_BINARY_DIR}/table-${PRODUCT}-stig.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt ${CMAKE_CURRENT_SOURCE_DIR}/unlinked-stig-${PRODUCT}-xccdf.xml
+        COMMENT "[${PRODUCT}] generating table-${PRODUCT}-stig.html, table-stig-${PRODUCT}-testinfo.html, unlinked-stig-${PRODUCT}-xccdf.xml"
+    )
+endmacro()
+
 macro(ssg_build_oval_final PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
@@ -308,6 +355,27 @@ macro(ssg_build_sds PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_add_pci_dss_to_sds PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
+        COMMAND ${SSG_SHARED_TRANS}/pcidss/transform_benchmark_to_pcidss.py ${SSG_SHARED_TRANS}/pcidss/PCI_DSS.json ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
+        COMMAND ${OSCAP_EXECUTABLE} ds sds-add ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}] adding ssg-${PRODUCT}-pcidss-xccdf-1.2.xml to ssg-${PRODUCT}-ds.xml"
+    )
+endmacro()
+
+macro(ssg_build_cpe_ocil_sds PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMAND ${SED_EXECUTABLE} -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMAND ${OSCAP_EXECUTABLE} ds sds-add ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMAND ${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMENT "[${PRODUCT}] adding ssg-${PRODUCT}-cpe-dictionary.xml to ssg-${PRODUCT}-ds.xml"
+    )
+endmacro()
+
 macro(ssg_build_html_guides PRODUCT)
     FILE(GLOB SSG_PROD_GUIDES ${CMAKE_BINARY_DIR}/*.html)
 
@@ -334,6 +402,8 @@ macro(ssg_build_product PRODUCT)
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
     ssg_build_sds(${PRODUCT})
+    ssg_build_add_pci_dss_to_sds(${PRODUCT})
+    ssg_build_cpe_ocil_sds(${PRODUCT})
     ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
