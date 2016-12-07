@@ -2,6 +2,7 @@ set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
+set(SSG_VENDOR "ssgproject")
 
 set(OSCAP_OVAL_511_SUPPORT 0)
 
@@ -246,7 +247,7 @@ macro(ssg_build_xccdf_final PRODUCT)
 
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
-        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam reverse_DNS org.ssgproject.content --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam reverse_DNS org.${SSG_VENDOR}.content --output ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml /usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf-1.2.xml"
     )
