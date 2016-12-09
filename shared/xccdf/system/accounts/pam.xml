@@ -251,16 +251,17 @@ password</description>
 <value selector="10">10</value>
 </Value>
 
-<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="number" operator="equals" interactive="0">
+<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="string" operator="equals" interactive="0">
 <title>fail_unlock_time</title>
-<description>Seconds before automatic unlocking after excessive failed logins</description>
-<value selector="">604800</value>
+<description>Seconds before automatic unlocking or permanently locking after excessive failed logins</description>
+<value selector="">never</value>
 <value selector="600">600</value> <!-- 10 minutes -->
 <value selector="900">900</value> <!-- 15 minutes -->
 <value selector="1800">1800</value> <!-- 30 minutes -->
 <value selector="3600">3600</value> <!-- 1 hour -->
 <value selector="86400">86400</value> <!-- 1 day -->
 <value selector="604800">604800</value> <!-- 7 days -->
+<value selector="never">never</value> <!-- Permanently locked -->
 </Value>
 
 <Value id="var_accounts_passwords_pam_faillock_fail_interval" type="number" operator="equals" interactive="0">
@@ -655,11 +656,11 @@ modify the content of both <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/pa
 <ocil clause="unlock_time is less than the expected value">
 To ensure the failed password attempt policy is configured correctly, run the following command:
 <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt>.
+The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt> or <tt>never</tt>.
 </ocil>
 <rationale>
 Locking out user accounts after a number of incorrect attempts
-prevents direct password guessing attacks.  Ensuring that an administrator is
+prevents direct password guessing attacks. Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
