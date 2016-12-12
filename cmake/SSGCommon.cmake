@@ -382,7 +382,7 @@ macro(ssg_build_html_guides PRODUCT)
 
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html ${SSG_PROD_GUIDES}
-        COMMAND ${SSG_SHARED_UTILS}/build-all-guides.py --input ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
+        COMMAND ${SSG_SHARED_UTILS}/build-all-guides.py --input ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml --output ${CMAKE_BINARY_DIR}/ build
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
     )
