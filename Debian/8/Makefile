@@ -82,10 +82,10 @@ content: $(OUT)/xccdf-unlinked-final.xml checks
 
 guide: content
 ifeq ($(OPENSCAP_1_1_OR_LATER), 0)
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-ds.xml --output $(OUT)/ build
 else
 	@echo "Building guides from XCCDF 1.1, use OpenSCAP 1.1.0 or later for guides from datastreams!"
-	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml
+	$(SHARED)/$(UTILS)/build-all-guides.py --input $(OUT)/$(ID)-$(PROD)-xccdf.xml --output $(OUT)/ build
 endif
 
 validate-xml:

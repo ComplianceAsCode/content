@@ -62,11 +62,11 @@ class Builder(object):
                 )
                 self._run_script(script, csv_filepath)
 
-    def input(self):
+    def list_inputs(self):
         for file_ in self.get_input_list():
             print(file_)
 
-    def output(self):
+    def list_outputs(self):
         for file_ in self.get_output_list():
             print(file_)
 
@@ -203,8 +203,10 @@ class Builder(object):
             return self._get_list_from_subprocess(sp)
 
         finally:
-            del os.environ["GENERATE_INPUT_LIST"]
-            del os.environ["GENERATE_OUTPUT_LIST"]
+            if gen_input:
+                del os.environ["GENERATE_INPUT_LIST"]
+            else:
+                del os.environ["GENERATE_OUTPUT_LIST"]
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
@@ -227,23 +229,23 @@ if __name__ == "__main__":
     builder = Builder()
     p = argparse.ArgumentParser()
 
-    sp = p.add_subparsers(dest='cmd', help="actions")
+    sp = p.add_subparsers(help="actions")
 
     make_sp = sp.add_parser('build', help="Build remediations")
     make_sp.set_defaults(cmd="build")
 
-    input_sp = sp.add_parser('input', help="Generate input list")
-    input_sp.set_defaults(cmd="input")
+    input_sp = sp.add_parser('list-inputs', help="Generate input list")
+    input_sp.set_defaults(cmd="list_inputs")
 
-    output_sp = sp.add_parser('output', help="Generate output list")
-    output_sp.set_defaults(cmd="output")
+    output_sp = sp.add_parser('list-outputs', help="Generate output list")
+    output_sp.set_defaults(cmd="list_outputs")
 
     p.add_argument('--language', metavar="LANG", default=None,
                    help="Scripts of which language should we generate? "
                    "Default: all.")
-    p.add_argument('--input', action="store", required=True,
+    p.add_argument("-i", "--input", action="store", required=True,
                    help="input directory")
-    p.add_argument('--output', action="store", required=True,
+    p.add_argument("-o", "--output", action="store", required=True,
                    help="output directory")
     p.add_argument('--oval_version', action="store", default="oval_5.10",
                    help="oval version")
