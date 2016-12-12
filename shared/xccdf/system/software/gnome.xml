@@ -288,7 +288,7 @@ settings, see <b><weblink-macro link="https://access.redhat.com/documentation/en
 The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
 setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
 and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
-<br />
+<br /><br/>
 For example, to configure the system for a 15 minute delay, add the following to
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>:
 <pre>[org/gnome/desktop/session]
@@ -329,7 +329,7 @@ add or set <tt>idle-activation-enabled</tt> to <tt>true</tt> in
 <pre>[org/gnome/desktop/screensaver]
 idle_activation_enabled=true</pre>
 Once the setting has been added, add a lock to
-<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
 <pre>/org/gnome/desktop/screensaver/idle-activation-enabled</pre>
 After the settings have been set, run <tt>dconf update</tt>.
@@ -370,7 +370,7 @@ add or set <tt>lock-enabled</tt> to <tt>true</tt> in
 lock-enabled=true
 </pre>
 Once the settings have been added, add a lock to
-<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
 <pre>/org/gnome/desktop/screensaver/lock-enabled</pre>
 After the settings have been set, run <tt>dconf update</tt>.
@@ -403,7 +403,7 @@ the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 0</tt
 lock-delay=uint32 0
 </pre>
 Once the setting has been added, add a lock to
-<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
 <pre>/org/gnome/desktop/screensaver/lock-delay</pre>
 After the settings have been set, run <tt>dconf update</tt>.
@@ -412,7 +412,7 @@ After the settings have been set, run <tt>dconf update</tt>.
 To check that the screen locks immediately when activated, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
 If properly configured, the output should be <tt>'uint32 0'</tt>.
-<br />
+<br /><br/>
 To ensure that users cannot change how long until the the screensaver locks, run the following:
 <pre>$ grep lock-delay /etc/dconf/db/local.d/locks/*</pre>
 If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
@@ -431,13 +431,13 @@ ossrg="OS-SRG-000029-GPOS-00010" stigid="010074" />
 <title>Implement Blank Screensaver</title>
 <description>
 To set the screensaver mode in the GNOME3 desktop to a blank screen,
-add or set <tt>picture-uri</tt> to <tt>''</tt> in
+add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
 <pre>[org/gnome/desktop/screensaver]
-picture-uri=''
+picture-uri=string ''
 </pre>
 Once the settings have been added, add a lock to
-<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
 <pre>/org/gnome/desktop/screensaver/picture-uri</pre>
 After the settings have been set, run <tt>dconf update</tt>.
@@ -446,6 +446,7 @@ After the settings have been set, run <tt>dconf update</tt>.
 To ensure the screensaver is configured to be blank, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver picture-uri</pre>
 If properly configured, the output should be <tt>''</tt>.
+
 To ensure that users cannot set the screensaver background, run the following:
 <pre>$ grep picture-uri /etc/dconf/db/local.d/locks/*</pre>
 If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/picture-uri</tt>
@@ -471,7 +472,7 @@ who has access to the system. This can be disabled by adding or setting
 show-full-name-in-top-bar=false
 </pre>
 Once the settings have been added, add a lock to
-<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
 <pre>/org/gnome/desktop/screensaver/show-full-name-in-top-bar</pre>
 After the settings have been set, run <tt>dconf update</tt>.
@@ -496,7 +497,7 @@ conceals who has access to the system from passersby.
 <title>Ensure Users Cannot Change GNOME3 Session Settings</title>
 <description>
 If not already configured, ensure that users cannot change GNOME3 session idle and lock settings
-by adding <tt>/org/gnome/desktop/screensaver/lock-delay</tt> and <tt>/org/gnome/desktop/session/idle-delay</tt> to <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+by adding <tt>/org/gnome/desktop/screensaver/lock-delay</tt> and <tt>/org/gnome/desktop/session/idle-delay</tt> to <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
 <pre>/org/gnome/desktop/screensaver/lock-delay
 /org/gnome/desktop/session/idle-delay</pre>
@@ -539,13 +540,13 @@ changes by users from taking place.
 <description>
 By default, <tt>GNOME</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
 key sequence is pressed.
-<br/>
+<br/><br/>
 To configure the system to ignore the <tt>Ctrl-Alt-Del</tt> key sequence from the
 Graphical User Interface (GUI) instead of rebooting the system, add or set 
-<tt>logout</tt> to <tt>''</tt> in
+<tt>logout</tt> to <tt>string ''</tt> in
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
 <pre>[org/gnome/settings-daemon/plugins/media-keys]
-logout=''
+logout=string ''
 </pre>
 Once the settings have been added, add a lock to
 <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
