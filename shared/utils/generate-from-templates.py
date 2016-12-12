@@ -229,7 +229,7 @@ if __name__ == "__main__":
     builder = Builder()
     p = argparse.ArgumentParser()
 
-    sp = p.add_subparsers(dest='cmd', help="actions")
+    sp = p.add_subparsers(help="actions")
 
     make_sp = sp.add_parser('build', help="Build remediations")
     make_sp.set_defaults(cmd="build")
