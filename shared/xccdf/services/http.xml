@@ -724,10 +724,8 @@ to access information about the web server or alter the server's log files.
 
 <Rule id="dir_perms_etc_httpd_conf" prodtype="rhel7">
 <title>Set Permissions on the <tt>/etc/httpd/conf/</tt> Directory</title>
-<description>
-Set permissions on the web server configuration directory to 750:
-<pre>$ sudo chmod 750 /etc/httpd/conf/</pre>
-</description>
+<description><fileperms-desc-macro file="/etc/http/conf" perms="0750"/></description>
+<ocil><fileperms-check-macro file="/etc/http/conf" perms="-rwxr-x---"/></ocil>
 <rationale>
 Access to the web server's configuration files may allow an unauthorized user or attacker
 to access information about the web server or alter the server's configuration files.
@@ -738,10 +736,8 @@ to access information about the web server or alter the server's configuration f
 
 <Rule id="file_permissions_httpd_server_conf_files" prodtype="rhel7">
 <title>Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf/</tt></title>
-<description>
-Set permissions on the web server configuration files to 640:
-<pre>$ sudo chmod 640 /etc/httpd/conf/*</pre>
-</description>
+<description><fileperms-desc-macro file="/etc/http/conf/*" perms="0640"/></description>
+<ocil><fileperms-check-macro file="/etc/http/conf/*" perms="-rw-r-----"/></ocil>
 <rationale>
 Access to the web server's configuration files may allow an unauthorized user or attacker
 to access information about the web server or to alter the server's configuration files.
@@ -749,6 +745,32 @@ to access information about the web server or to alter the server's configuratio
 <oval id="file_permissions_httpd_server_conf_files" />
 <ref prodtype="rhel7" nist="CM-7" />
 <ident prodtype="rhel7" cce="80324-7" />
+</Rule>
+
+<Rule id="file_permissions_httpd_server_conf_d_files" prodtype="rhel7">
+<title>Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf.d/</tt></title>
+<description><fileperms-desc-macro file="/etc/http/conf.d/*" perms="0640"/></description>
+<ocil><fileperms-check-macro file="/etc/http/conf.d/*" perms="-rw-r-----"/></ocil>
+<rationale>
+Access to the web server's configuration files may allow an unauthorized user or attacker
+to access information about the web server or to alter the server's configuration files.
+</rationale>
+<oval id="file_permissions_httpd_server_conf_d_files" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80381-7" />
+</Rule>
+
+<Rule id="file_permissions_httpd_server_modules_files" prodtype="rhel7">
+<title>Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf.modules.d/</tt></title>
+<description><fileperms-desc-macro file="/etc/http/conf.modules.d/*" perms="0640"/></description>
+<ocil><fileperms-check-macro file="/etc/http/conf.modules.d/*" perms="-rw-r-----"/></ocil>
+<rationale>
+Access to the web server's configuration files may allow an unauthorized user or attacker
+to access information about the web server or to alter the server's configuration files.
+</rationale>
+<oval id="file_permissions_httpd_server_modules_files" />
+<ref prodtype="rhel7" nist="CM-7" />
+<ident prodtype="rhel7" cce="80382-5" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->
