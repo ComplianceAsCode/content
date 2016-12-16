@@ -17,7 +17,8 @@
         <criterion comment="audit augenrules insmod" test_ref="test_audit_rule_kernel_module_loading_insmod_augenrules" />
         <criterion comment="audit augenrules rmmod" test_ref="test_audit_rule_kernel_module_loading_rmmod_augenrules" />
         <criterion comment="audit augenrules modprobe" test_ref="test_audit_rule_kernel_module_loading_modprobe_augenrules" />
-        <criterion comment="audit augenrules module syscalls" test_ref="test_audit_rule_kernel_module_loading_syscall_augenrules" />
+        <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
+        <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />
       </criteria>
       <!-- Check the modified configuration: 'auditctl' tool specified in 'ExecStartPost' directive of
            /usr/lib/systemd/system/auditd.service (in other words case when final /etc/audit/audit.rules is
@@ -27,7 +28,8 @@
         <criterion comment="audit auditctl insmod" test_ref="test_audit_rule_kernel_module_loading_insmod_auditctl" />
         <criterion comment="audit auditctl rmmod" test_ref="test_audit_rule_kernel_module_loading_rmmod_auditctl" />
         <criterion comment="audit auditctl modprobe" test_ref="test_audit_rule_kernel_module_loading_modprobe_auditctl" />
-        <criterion comment="audit auditctl module syscalls" test_ref="test_audit_rule_kernel_module_loading_syscall_auditctl" />
+        <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
+        <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />
       </criteria>
     </criteria>
   </definition>
@@ -46,7 +48,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_insmod_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/insmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/insmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit augenrules rmmod" id="test_audit_rule_kernel_module_loading_rmmod_augenrules" version="1">
@@ -54,7 +56,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_rmmod_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/rmmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/rmmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit augenrules modprobe" id="test_audit_rule_kernel_module_loading_modprobe_augenrules" version="1">
@@ -62,15 +64,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_modprobe_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/modprobe[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_test check="all" comment="audit augenrules module syscalls" id="test_audit_rule_kernel_module_loading_syscall_augenrules" version="1">
-    <ind:object object_ref="object_audit_rule_kernel_module_loading_syscall_augenrules" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_syscall_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+init_module\s+\-S\s+delete_module\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/modprobe[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -88,7 +82,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_insmod_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/insmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/insmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit auditctl rmmod" id="test_audit_rule_kernel_module_loading_rmmod_auditctl" version="1">
@@ -96,7 +90,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_rmmod_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/rmmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/rmmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit auditctl modprobe" id="test_audit_rule_kernel_module_loading_modprobe_auditctl" version="1">
@@ -104,16 +98,9 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_modprobe_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/modprobe[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+\-k[\s]+[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/usr/sbin/modprobe[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  <ind:textfilecontent54_test check="all" comment="audit auditctl module syscalls" id="test_audit_rule_kernel_module_loading_syscall_auditctl" version="1">
-    <ind:object object_ref="object_audit_rule_kernel_module_loading_syscall_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_syscall_auditctl" version="1">
-    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-a\s+always,exit\s+(\-F\s+arch=(b64|b32)\s+)?\-S\s+init_module\s+\-S\s+delete_module\s+\-k\s+[-\w]+\s*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+
 
 </def-group>

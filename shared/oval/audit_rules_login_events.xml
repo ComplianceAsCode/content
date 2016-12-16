@@ -45,7 +45,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_tallylog_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -54,7 +54,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_faillock_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -63,7 +63,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_lastlog_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -82,7 +82,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_tallylog_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/tallylog\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -91,7 +91,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_faillock_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/run/faillock/\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -100,7 +100,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arle_lastlog_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+wa\s+\-k\s+[-\w]+\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w\s+/var/log/lastlog\s+\-p\s+wa\s+(-k[\s]+|-F[\s]+key=)[-\w]+\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
