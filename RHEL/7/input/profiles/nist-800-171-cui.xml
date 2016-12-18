@@ -1,35 +1,127 @@
-<Profile id="nist-800-171-cui" extends="ospp-rhel7-server">
+<Profile id="nist-800-171-cui">
 <title>RHEL7 Server Baseline for Controlled Unclassified Information in Nonfederal Information Systems and Organizations (NIST 800-171)</title>
 <description override="true">
-..... tbd ....
+
+From NIST 800-171, Section 2.2:
+Security requirements for protecting the confidentiality of CUI in nonfederal information systems
+and organizations have a well-defined structure that consists of: (i) a basic security requirements section;
+and (ii) a derived security requirements section. The basic security requirements are obtained from FIPS
+Publication 200, which provides the high-level and fundamental security requirements for federal information
+and information systems. The derived security requirements, which supplement the basic security requirements,
+are taken from the security controls in NIST Special Publication 800-53. 
+
+This profile configures Red Hat Enterprise Linux 7 to the NIST Special Publication 800-53 controls identified 
+for securing Controlled Unclassified Information (CUI).
 </description>
 
-<!-- NIST 800-171 can be found her:
+<!-- NIST 800-171 can be found here:
      http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
 -->
 
 <!-- 3.1.1	Limit information system access to authorized users, processes acting on behalf
      		of authorized users, or devices (including other information systems) -->
+<select idref="no_direct_root_logins" selected="true" />
+<select idref="securetty_root_login_console_only" selected="true" />
+<select idref="restrict_serial_port_logins" selected="true" />
+<select idref="accounts_no_uid_except_zero" selected="true" />
+<select idref="no_empty_passwords" selected="true" />
+<select idref="sshd_disable_root_login" selected="true" />
+<select idref="sshd_disable_empty_passwords" selected="true" />
 
-<!-- 3.1.2	Limit information system access ot the types of transactions and functions that
+<!-- 3.1.2	Limit information system access to the types of transactions and functions that
      		authorized users are permitted to execute. -->
+<refine-value idref="var_selinux_state" selector="enforcing"/>
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+
+<select idref="enable_selinux_bootloader" selected="true" />
+<select idref="selinux_state" select="true" />
+<select idref="selinux_policytype" selected="true" />
+<select idref="selinux_confinement_of_daemons" selected="true" />
+<select idref="selinux_all_devicefiles_labeled" selected="true" />
+
+<!-- TO DO: sebooleans? -->
 
 <!-- 3.1.3	Control the flow of CUI in accordance with approved authorizations -->
+<select idref="service_firewalld_enabled" selected="true" />
+<select idref="set_firewalld_default_zone" selected="true" />
 
 <!-- 3.1.4	Separate the duties of individuals to reduce the risk of malevolent activity without
      		collusion. -->
 
+<!-- TO DO: organizational control mappings -->
+
 <!-- 3.1.5	Employ the principal of least privilege, including for specific security functions
      		and privileged accounts. -->
+<!-- Rules enabled elsewhere but mapped to this control:
+     	- selinux_confinement_of_daemons
+	- selinux_all_devicefiles_labeled -->
 
 <!-- 3.1.6	Use non-privileged accounts or roles when accessing nonsecurity functions. -->
 
+<!-- Rules enabled elsewhere but mapped to this control:
+     	- no_direct_root_logins
+	- securetty_root_login_console_only
+	- restrict_serial_port_logins
+	- accounts_no_uid_except_zero
+	- no_empty_passwords
+	- sshd_disable_root_login
+	- sshd_disable_empty_passwords
+-->
+
 <!-- 3.1.7	Prevent non-privileged users from executing privileged functions and audit
      		the execution of such functions. -->
+<select idref="audit_rules_execution_semanage" selected="true" />
+<select idref="audit_rules_execution_setsebool" selected="true" />
+<select idref="audit_rules_execution_chcon" selected="true" />
+<select idref="audit_rules_execution_restorecon" selected="true" />
+<select idref="audit_rules_privileged_commands" selected="true" />
+<select idref="audit_rules_privileged_commands_passwd" selected="true" />
+<select idref="audit_rules_privileged_commands_chkpwd" selected="true" />
+<select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
+<select idref="audit_rules_privileged_commands_sudo" selected="true" />
+<select idref="audit_rules_privileged_commands_chage" selected="true" />
+<select idref="audit_rules_privileged_commands_usrhelpr" selected="true" />
+<select idref="audit_rules_privileged_commands_su" selected="true" />
+<select idref="audit_rules_privileged_commands_sudoedit" selected="true" />
+<select idref="audit_rules_privileged_commands_newgrp" selected="true" />
+<select idref="audit_rules_privileged_commands_chsh" selected="true" />
+<select idref="audit_rules_privileged_commands_umount" selected="true" />
+<select idref="audit_rules_privileged_commands_postdrop" selected="true" />
+<select idref="audit_rules_privileged_commands_postqueue" selected="true" />
+<select idref="audit_rules_privileged_commands_ssh_keysign" selected="true" />
+<select idref="audit_rules_privileged_commands_pt_chown" selected="true" />
+<select idref="audit_rules_privileged_commands_crontab" selected="true" />
+<select idref="audit_rules_privileged_commands_pam_timestamp_check" selected="true" />
+<select idref="audit_rules_media_export" selected="true" />
+<select idref="audit_rules_file_deletion_events" selected="true" />
+<select idref="audit_rules_file_deletion_events_rmdir" selected="true" />
+<select idref="audit_rules_file_deletion_events_unlink" selected="true" />
+<select idref="audit_rules_file_deletion_events_unlinkat" selected="true" />
+<select idref="audit_rules_file_deletion_events_rename" selected="true" />
+<select idref="audit_rules_file_deletion_events_renameat" selected="true" />
+<select idref="audit_rules_sysadmin_actions" selected="true" />
+<select idref="audit_rules_kernel_module_loading" selected="true" />
+<select idref="audit_rules_kernel_module_loading_init" selected="true" />
+<select idref="audit_rules_kernel_module_loading_insmod" selected="true" />
+<select idref="audit_rules_kernel_module_loading_rmmod" selected="true" />
+<select idref="audit_rules_kernel_module_loading_modprobe" selected="true" />
 
 <!-- 3.1.8	Limit unsuccessful logon attempts -->
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="never" />
+<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
+
+<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
+<select idref="accounts_passwords_pam_faillock_interval" selected="true" />
 
 <!-- 3.1.9	Provide privacy and security notices consistent with applicable CUI rules. -->
+<refine-value idref="login_banner_text" selector="usgcb_default" />
+
+<select idref="sshd_enable_warning_banner" selected="true" />
+<select idref="banner_etc_issue" selected="true" />
+<select idref="dconf_gnome_banner_enabled" selected="true" />
+<select idref="dconf_gnome_login_banner_text" selected="true" />
 
 <!-- 3.1.10	Use session lock with pattern-hiding displays to prevent access/viewing of
      		data after period of inactivity -->
@@ -119,4 +211,6 @@
      		associated with changes to the information system -->     	
 
 
+<!-- things that dont' fit cleanly elsewhere -->
+<select idref="audit_rules_immutable" selected="true" />
 </Profile>
