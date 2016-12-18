@@ -27,6 +27,9 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="no_empty_passwords" selected="true" />
 <select idref="sshd_disable_root_login" selected="true" />
 <select idref="sshd_disable_empty_passwords" selected="true" />
+<select idref="require_singleuser_auth" selected="true" />
+<select idref="gnome_gdm_disable_automatic_login" selected="true" />
+<select idref="gnome_gdm_disable_guest_login" selected="true" />
 
 <!-- 3.1.2	Limit information system access to the types of transactions and functions that
      		authorized users are permitted to execute. -->
@@ -38,7 +41,9 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="selinux_policytype" selected="true" />
 <select idref="selinux_confinement_of_daemons" selected="true" />
 <select idref="selinux_all_devicefiles_labeled" selected="true" />
-
+<select idref="disable_interactive_boot" selected="true" />
+<select idref="dconf_gnome_disable_restart_shutdown" selected="true" />
+<select idref="dconf_gnome_disable_ctrlaltdel_reboot" selected="true" />
 <!-- TO DO: sebooleans? -->
 
 <!-- 3.1.3	Control the flow of CUI in accordance with approved authorizations -->
@@ -55,6 +60,8 @@ for securing Controlled Unclassified Information (CUI).
 <!-- Rules enabled elsewhere but mapped to this control:
      	- selinux_confinement_of_daemons
 	- selinux_all_devicefiles_labeled -->
+<select idref="dconf_gnome_disable_user_admin" selected="true" />
+<select idref="sysctl_kernel_dmesg_restrict" selected="true" />
 
 <!-- 3.1.6	Use non-privileged accounts or roles when accessing nonsecurity functions. -->
 
@@ -105,6 +112,11 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="audit_rules_kernel_module_loading_insmod" selected="true" />
 <select idref="audit_rules_kernel_module_loading_rmmod" selected="true" />
 <select idref="audit_rules_kernel_module_loading_modprobe" selected="true" />
+<select idref="dconf_gnome_disable_automount" selected="true" />
+<select idref="sysctl_kernel_exec_shield" selected="true" />
+<select idref="sysctl_kernel_randomize_va_space" selected="true" />
+<select idref="install_PAE_kernel_on_x86" selected="true" />
+<select idref="bios_enable_execution_restrictions" selected="true" />
 
 <!-- 3.1.8	Limit unsuccessful logon attempts -->
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
@@ -114,6 +126,7 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="accounts_passwords_pam_faillock_deny" selected="true" />
 <select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
 <select idref="accounts_passwords_pam_faillock_interval" selected="true" />
+<select idref="dconf_gnome_login_retries" selected="true" />
 
 <!-- 3.1.9	Provide privacy and security notices consistent with applicable CUI rules. -->
 <refine-value idref="login_banner_text" selector="usgcb_default" />
@@ -125,29 +138,104 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.1.10	Use session lock with pattern-hiding displays to prevent access/viewing of
      		data after period of inactivity -->
+<refine-value idref="inactivity_timeout_value" selector="10_minutes" />
+
+<select idref="package_screen_installed" selected="true" />
+<select idref="dconf_gnome_screensaver_idle_delay" selected="true" />
+<select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true" />
+<select idref="dconf_gnome_screensaver_lock_enabled" selected="true" />
+<select idref="dconf_gnome_screensaver_lock_delay" selected="true" />
+<select idref="dconf_gnome_screensaver_mode_blank" selected="true" />
+<select idref="dconf_gnome_screensaver_user_info" selected="true" />
+<select idref="dconf_gnome_session_user_locks" selected="true" />
 
 <!-- 3.1.11	Terminate (automatically) a user session after a defined condition -->
+<refine-value idref="var_accounts_tmout" selector="10_min" />
+<refine-value idref="sshd_idle_timeout_value" selector="10_minutes" />
+
+<select idref="accounts_tmout" selected="true" />
+<select idref="sshd_set_keepalive" selected="true" />
+<select idref="sshd_set_idle_timeout" selected="true" />
 
 <!-- 3.1.12	Monitor and control remote access sessions -->
+<select idref="firewalld_sshd_disabled" selected="true" />
+<select idref="firewalld_sshd_port_enabled" selected="true" />
+<select idref="sshd_limit_user_access" selected="true" />
+<select idref="sshd_disable_gssapi_auth" selected="true" />
+<select idref="sshd_disable_kerb_auth" selected="true" />
+<select idref="sshd_enable_strictmodes" selected="true" />
+<select idref="sshd_use_priv_separation" selected="true" />
+<select idref="sshd_disable_compression" selected="true" />
+<select idref="sshd_disable_rhosts" selected="true" />
+<select idref="sshd_disable_user_known_hosts" selected="true" />
+<select idref="sshd_disable_rhosts_rsa" selected="true" />
+<select idref="disable_host_auth" selected="true" />
+<select idref="sshd_do_not_permit_user_env" selected="true" />
+<select idref="dconf_gnome_remote_access_credential_prompt" selected="true" />
 
 <!-- 3.1.13	Employ cryptographic mechanisms to protect the confidentiality of remote 
      		access sessions -->
+<select idref="service_sshd_enabled" selected="true" />
+<select idref="file_permissions_sshd_pub_key" selected="true" />
+<select idref="file_permissions_sshd_private_key" selected="true" />
+<select idref="sshd_allow_only_protocol2" selected="true" />
+<select idref="enable_x11_forwarding" selected="true" />
+<select idref="sshd_use_approved_ciphers" selected="true" />
+<select idref="sshd_use_approved_macs" selected="true" />
+<select idref="dconf_gnome_remote_access_encryption" selected="true" />
 
 <!-- 3.1.14	Route remote access via managed control points -->
+<!-- Organizational control -->
 
 <!-- 3.1.15	Authorize remote execution of privileged commands and remote access
      		to security-relevant information -->
+<!-- N/A, remote execution same as local from RHEL perspective -->
 
 <!-- 3.1.16	Authorize wireless access prior to allowing such connections -->
+<select idref="dconf_gnome_disable_wifi_create" selected="true" />
+<select idref="dconf_gnome_disable_wifi_notification" selected="true" />
+<select idref="wireless_disable_interfaces" selected="true" />
+<select idref="service_bluetooth_disabled" selected="true" />
+<select idref="kernel_module_bluetooth_disabled" selected="true" />
 
 <!-- 3.1.17	Protect wireless access using authentication and encryption -->
+<!-- TO DO -->
 
 <!-- 3.1.18	Control connection of mobile devices -->
+<!-- TO DO: Not Applicable -->
 
 <!-- 3.1.19	Encrypt CUI on mobile devices -->
+<!-- TO DO: Not Applicable -->
 
 <!-- 3.1.20	Verify and control/limit connections to and use of external
      		information systems -->
+<select idref="sysctl_kernel_ipv6_disable" selected="true" />
+<select idref="network_ipv6_disable_interfaces" selected="true" />
+<select idref="network_ipv6_disable_rpc" selected="true" />
+<select idref="sysctl_net_ipv6_conf_all_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv6_conf_all_accept_ra" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
+<select idref="sysctl_net_ipv6_conf_all_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv6_conf_all_forwarding" selected="true" />
+<select idref="network_ipv6_privacy_extensions" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_ip_forward" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_log_martians" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_secure_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
+<select idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true" />
+<select idref="sysctl_net_ipv4_tcp_syncookies" selected="true" />
+<select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
 
 <!-- 3.1.21	Limit use of organizational portable storage devices on 
      		external information systems -->
@@ -213,4 +301,8 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- things that dont' fit cleanly elsewhere -->
 <select idref="audit_rules_immutable" selected="true" />
+<select idref="enable_dconf_user_profile" selected="true" />
+<select idref="dconf_gnome_disable_user_list" selected="true" />
+<select idref="dconf_gnome_disable_geolocation" selected="true" />
+<select idref="dconf_gnome_disable_thumbnailers" selected="true" />
 </Profile>
