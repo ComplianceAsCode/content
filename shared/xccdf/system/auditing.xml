@@ -730,9 +730,8 @@ are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
 <ident prodtype="rhel7" cce="27219-5" />
 <oval id="audit_rules_time_clock_settime" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" />
-<ref prodtype="rhel7" pcidss="Req-10.4.2.b" />
-<ref prodtype="rhel7" disa="1487,169" />
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" 
+pcidss="Req-10.4.2.b" disa="1487,169" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_time_watch_localtime" prodtype="rhel7">
@@ -764,7 +763,7 @@ to the system time should be audited.</rationale>
 <ident prodtype="rhel7" cce="27310-2" />
 <oval id="audit_rules_time_watch_localtime" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(b),IR-5" cis="5.2.4"
-pcidss="Req-10.4.2.b" disa="1487,169" />
+pcidss="Req-10.4.2.b" disa="1487,169" cui="3.1.7" />
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
 
@@ -805,7 +804,8 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <oval id="audit_rules_usergroup_modification" />
 <ref prodtype="rhel7" nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
 disa="18,172,1403,2130" stigid="030710" pcidss="Req-10.2.5" cis="5.2.5"
-ossrg="SRG–OS–000004–GPOS–00004,SRG–OS–000239–GPOS–00089,SRG–OS–000241–GPOS–00090,SRG–OS–000241–GPOS–00091,SRG–OS–000303–GPOS–00120,SRG–OS–000476–GPOS–00221" />
+ossrg="SRG–OS–000004–GPOS–00004,SRG–OS–000239–GPOS–00089,SRG–OS–000241–GPOS–00090,SRG–OS–000241–GPOS–00091,SRG–OS–000303–GPOS–00120,SRG–OS–000476–GPOS–00221" 
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_networkconfig_modification" prodtype="rhel7">
@@ -842,7 +842,8 @@ than administrator action. Any change to network parameters should be
 audited.</rationale>
 <ident prodtype="rhel7" cce="27076-9" />
 <oval id="audit_rules_networkconfig_modification" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" cis="5.2.6" />
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" 
+cis="5.2.6" cui="3.1.7" />
 </Rule>
 
 <Rule id="file_permissions_var_log_audit" severity="medium" prodtype="rhel7">
@@ -865,7 +866,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
 <ident prodtype="rhel7" cce="27205-4" />
 <oval id="file_permissions_var_log_audit" />
-<ref prodtype="rhel7" nist="AC-6,AU-1(b),AU-9,IR-5" disa="" pcidss="Req-10.5" />
+<ref prodtype="rhel7" nist="AC-6,AU-1(b),AU-9,IR-5" disa="" pcidss="Req-10.5" cui="3.3.1" />
 </Rule>
 
 <Rule id="file_ownership_var_log_audit" severity="medium" prodtype="rhel7">
@@ -880,7 +881,8 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 attackers, thus compromising its confidentiality.</rationale>
 <ident prodtype="rhel7" cce="80125-8" />
 <oval id="file_ownership_var_log_audit" />
-<ref prodtype="rhel7" nist="AC-6,AU-1(b),AU-9,IR-5" disa="163" ossrg="SRG-OS-000058-GPOS-00028" stigid="030120" pcidss="Req-10.5.1" />
+<ref prodtype="rhel7" nist="AC-6,AU-1(b),AU-9,IR-5" disa="163" ossrg="SRG-OS-000058-GPOS-00028" 
+stigid="030120" pcidss="Req-10.5.1" cui="3.3.1" />
 </Rule>
 
 <Rule id="audit_rules_mac_modification" prodtype="rhel7">
@@ -908,7 +910,8 @@ arbitrarily changed by anything other than administrator action. All changes to
 MAC policy should be audited.</rationale>
 <ident prodtype="rhel7" cce="27168-4" />
 <oval id="audit_rules_mac_modification" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" cis="5.2.7" />
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" 
+cis="5.2.7" cui="3.1.8" />
 </Rule>
 
 <Group id="audit_dac_actions">
@@ -966,8 +969,9 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident prodtype="rhel7" cce="27339-1" />
 <oval id="audit_rules_dac_modification_chmod" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
-ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030390"/>
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" 
+pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" 
+stigid="030390" cui="3.1.7"/>
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown" prodtype="rhel7">
@@ -1001,8 +1005,10 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident prodtype="rhel7" cce="27364-9" />
 <oval id="audit_rules_dac_modification_chown" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
-ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" stigid="030380"/>
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" 
+disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" 
+stigid="030380" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod" prodtype="rhel7">
@@ -1036,8 +1042,10 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident prodtype="rhel7" cce="27393-8" />
 <oval id="audit_rules_dac_modification_fchmod" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
-ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030391"/>
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" 
+disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030391"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat" prodtype="rhel7">
@@ -1071,8 +1079,10 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident prodtype="rhel7" cce="27388-8" />
 <oval id="audit_rules_dac_modification_fchmodat" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
-ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030392"/>
+<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" 
+disa="126,172" pcidss="Req-10.5.5" cis="5.2.10"
+ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" stigid="030392"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchown" prodtype="rhel7">
