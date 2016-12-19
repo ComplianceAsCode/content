@@ -477,7 +477,18 @@ for securing Controlled Unclassified Information (CUI).
      		system -->
 
 <!-- 3.13.11	Employ FIPS-validate cryptography when used to protect the confidentiality of CUI -->
+<!-- Rules also related to this, but enabled elsewhere:
+     	- sshd_use_approved_ciphers
+	- sshd_use_approved_macs
+--> 
+<select idref="package_dracut-fips_installed" selected="true" />
+<select idref="disable_prelink" selected="true" />
+<select idref="grub2_enable_fips_mode" selected="true" />
 <select idref="sebool_fips_mode" selected="true" />
+<select idref="aide_use_fips_hashes" selected="true" />
+<select idref="set_password_hashing_algorithm_systemauth" selected="true" />
+<select idref="set_password_hashing_algorithm_logindefs" selected="true" />
+<select idref="set_password_hashing_algorithm_libuserconf" selected="true" />
 
 <!-- 3.13.12	Prohibit remote activation of collaborative computing devices and provide indication of
      		devices in use to users present at the device -->

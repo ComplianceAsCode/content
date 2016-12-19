@@ -26,7 +26,7 @@ operation of certain software and/or modes such as AIDE, FIPS, etc.
 </rationale>
 <ident prodtype="rhel7" cce="27078-5" />
 <oval id="disable_prelink" />
-<ref prodtype="rhel7" nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
+<ref prodtype="rhel7" nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" cui="3.13.11"/>
 </Rule>
 
 <Group id="software-integrity">
@@ -241,8 +241,8 @@ have not been altered. These hashes must be FIPS 140-2 approved cryptographic ha
 </rationale>
 <ident prodtype="rhel7" cce="80377-5" />
 <oval id="aide_use_fips_hashes"/>
-<ref prodtype="rhel7" nist="SI-7.1" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" sitgid="021620" />
+<ref prodtype="rhel7" nist="SI-7.1" disa="366" ossrg="SRG-OS-000480-GPOS-00227" 
+stigid="021620" cui="3.13.11" />
 </Rule>
 
 </Group>
@@ -624,7 +624,8 @@ and validated.
 <ident prodtype="rhel7" cce="80358-5" />
 <oval id="package_dracut-fips_installed" />
 <ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450" stigid="TBD"
-ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
+ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223"
+cui="3.13.11" />
 </Rule>
 
 <Rule id="grub2_enable_fips_mode" severity="medium" prodtype="rhel7">
@@ -668,7 +669,8 @@ vendors.</warning>
 <ident prodtype="rhel7" cce="80359-3" />
 <oval id="grub2_enable_fips_mode" />
 <ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450" stigid="021280"
-ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
+ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223"
+cui="3.13.11" />
 </Rule>
 
 </Group>
