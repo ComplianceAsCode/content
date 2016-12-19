@@ -82,7 +82,7 @@ and gives them an opportunity to notify administrators.
 <ident prodtype="rhel7" cce="27275-7" />
 <oval id="display_login_attempts" />
 <ref prodtype="rhel7" nist="AC-9" disa="366" pcidss="Req-10.2.4" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="040300" />
+stigid="040300" cjis="5.5.2" />
 </Rule>
 
 <Group id="password_quality">
@@ -299,7 +299,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident prodtype="rhel7" cce="27160-1" />
 <oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
-<ref prodtype="rhel7" nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" stigid="010410" />
+<ref prodtype="rhel7" nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" stigid="010410" cjis="5.5.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat" severity="medium" prodtype="rhel7">
@@ -635,7 +635,7 @@ prevents direct password guessing attacks.
 <ident prodtype="rhel7" cce="27350-8" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
 <ref prodtype="rhel7" nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" 
-stigid="010371" pcidss="Req-8.1.6" cis="6.3.3" cui="3.1.8" />
+stigid="010371" pcidss="Req-8.1.6" cis="6.3.3" cjis="5.5.3" cui="3.1.8" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium" prodtype="rhel7">
@@ -668,7 +668,7 @@ situations.
 <ident prodtype="rhel7" cce="26884-7" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
 <ref prodtype="rhel7" nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" 
-stigid="010372" pcidss="Req-8.1.7" cis="6.3.3" cui="3.1.8" />
+stigid="010372" pcidss="Req-8.1.7" cis="6.3.3" cjis="5.5.3" cui="3.1.8" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium" prodtype="rhel7">
@@ -763,7 +763,7 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 <ident prodtype="rhel7" cce="26923-3" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
 <ref prodtype="rhel7" nist="IA-5(f),IA-5(1)(e)" disa="200" ossrg="SRG-OS-000077-GPOS-00045" 
-stigid="010240" pcidss="Req-8.2.5" cis="6.3.4" cui="3.5.8" />
+stigid="010240" pcidss="Req-8.2.5" cis="6.3.4" cjis="5.6.2.1.1" cui="3.5.8" />
 </Rule>
 </Group>
 
@@ -803,7 +803,7 @@ encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> c
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
 <ident prodtype="rhel7" cce="27104-9" />
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010170" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010170" pcidss="Req-8.2.1" cis="6.3.1" cjis="5.6.2.2" />
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
@@ -826,7 +826,7 @@ that are encrypted with a weak algorithm are no more protected than if they are 
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident prodtype="rhel7" cce="27124-7" />
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010180" pcidss="Req-8.2.1" cis="6.3.1" />
+<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010180" pcidss="Req-8.2.1" cis="6.3.1" cjis="5.6.2.2" />
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
 
@@ -854,7 +854,7 @@ encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> c
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
 <ident prodtype="rhel7" cce="27053-8" />
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010190" pcidss="Req-8.2.1" />
+<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" ossrg="SRG-OS-000073-GPOS-00041" stigid="010190" pcidss="Req-8.2.1" cjis="5.6.2.2" />
 <oval id="set_password_hashing_algorithm_libuserconf" />
 </Rule>
 </Group>

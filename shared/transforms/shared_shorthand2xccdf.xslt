@@ -318,6 +318,9 @@
           <xsl:if test="$refsource = 'nist'">
             <xsl:value-of select="$nist800-53uri" />
           </xsl:if>
+          <xsl:if test="$refsource = 'cjis'">
+            <xsl:value-of select="$cjisd-its-uri" />
+          </xsl:if>
           <xsl:if test="$refsource = 'cui'">
             <xsl:value-of select="$nist800-171uri" />
           </xsl:if>
