@@ -112,6 +112,9 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="audit_rules_kernel_module_loading_insmod" selected="true" />
 <select idref="audit_rules_kernel_module_loading_rmmod" selected="true" />
 <select idref="audit_rules_kernel_module_loading_modprobe" selected="true" />
+<select idref="audit_rules_time_adjtimex" selected="true" />
+<select idref="audit_rules_time_settimeofday" selected="true" />
+<select idref="audit_rules_time_stime" selected="true" />
 <select idref="dconf_gnome_disable_automount" selected="true" />
 <select idref="sysctl_kernel_exec_shield" selected="true" />
 <select idref="sysctl_kernel_randomize_va_space" selected="true" />
@@ -259,6 +262,26 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.3.1	Create, protect, and retain information system audit records to the extent
      		needed to enable the monitoring, analysis, investigation, and reporting
 		of unlawful, unauthorized, or inappropraite information system activitiy -->
+<refine-value idref="var_auditd_num_logs" selector="5" />
+var_auditd_max_log_file
+var_auditd_max_log_file_action
+var_auditd_space_left_action
+var_auditd_admin_space_left_action
+var_auditd_action_mail_acct
+var_auditd_flush
+
+<select idref="service_auditd_enabled" selected="true" />
+<select idref="bootloader_audit_argument" selected="true" />
+<select idref="auditd_data_retention_num_logs" selected="true" />
+<select idref="auditd_data_retention_max_log_file" selected="true" />
+<select idref="auditd_data_retention_max_log_file_action" selected="true" />
+<select idref="auditd_data_retention_space_left_action" selected="true" />
+<select idref="auditd_data_retention_admin_space_left_action" selected="true" />
+<select idref="auditd_data_retention_action_mail_acct" selected="true" />
+<select idref="auditd_data_retention_flush" selected="true" />
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
+<select idref="audit_rules_system_shutdown" selected="true" />
+<select idref="audit_rules_immutable" selected="true" />
 
 <!-- 3.3.2	Ensure that the actions of individual information system users can be uniquely
      		traced to those users so they can be held accountable for their actions -->
@@ -523,7 +546,6 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.14.7	Identify unauthorized use of the information system -->
 
 <!-- things that dont' fit cleanly elsewhere -->
-<select idref="audit_rules_immutable" selected="true" />
 <select idref="enable_dconf_user_profile" selected="true" />
 <select idref="dconf_gnome_disable_user_list" selected="true" />
 <select idref="dconf_gnome_disable_geolocation" selected="true" />
