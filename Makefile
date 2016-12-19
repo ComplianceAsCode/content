@@ -36,8 +36,8 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 wrlinux
-dist: chromium-dist firefox-dist fedora-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist wrlinux-dist
+all: validate-buildsystem fedora fuse6 rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 wrlinux
+dist: chromium-dist firefox-dist fedora-dist fuse6-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist wrlinux-dist
 jenkins: all validate dist
 
 fedora:
@@ -45,6 +45,12 @@ fedora:
 
 fedora-dist:
 	cd Fedora/ && $(MAKE) dist
+
+fuse6:
+	cd JBoss/Fuse/6/ && $(MAKE)
+
+fuse6-dist:
+	cd JBoss/Fuse/6/ && $(MAKE) dist
 
 rhel5:
 	cd RHEL/5/ && $(MAKE)
@@ -170,6 +176,9 @@ validate-chromium: chromium
 validate-firefox: firefox
 	cd Firefox/ && $(MAKE) validate
 
+validate-fuse6: fuse6
+	cd JBoss/Fuse/6 && $(MAKE) validate
+
 validate-jre: jre
 	cd JRE/ && $(MAKE) validate
 
@@ -185,7 +194,7 @@ validate-suse12: suse12
 	# Enable below when content validates correctly
 	#cd SUSE/12 && $(MAKE) validate
 
-validate: validate-fedora validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-ubuntu1604 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
+validate: validate-fedora validate-fuse6 validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-ubuntu1604 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
 
 tarball:
 	@# Copy in the source trees for both RHEL
@@ -222,6 +231,7 @@ tarball:
 	(cd tarball/$(PKG)/Chromium/ && $(MAKE) clean)
 	(cd tarball/$(PKG)/JRE/ && $(MAKE) clean)
 	(cd tarball/$(PKG)/Firefox/ && $(MAKE) clean)
+	(cd tarball/$(PKG)/JBoss/Fuse/6/ && $(MAKE) clean)
 	(cd tarball/$(PKG)/Webmin/ && $(MAKE) clean)
 
 	cd tarball && tar -czf $(PKG).tar.gz $(PKG)
@@ -310,6 +320,7 @@ clean:
 	cd OpenStack/RHEL-OSP/7 && $(MAKE) clean
 	cd RHEVM3 && $(MAKE) clean
 	cd Fedora && $(MAKE) clean
+	cd JBoss/Fuse/6 && $(MAKE) clean
 	cd JRE && $(MAKE) clean
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
@@ -339,6 +350,8 @@ install: dist
 	install -m 0644 Chromium/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Firefox/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 Firefox/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 JBoss/Fuse/6/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
+	install -m 0644 JBoss/Fuse/6/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 JRE/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
 	install -m 0644 JRE/dist/guide/* $(PREFIX)/$(DOCDIR)/scap-security-guide/guides
 	install -m 0644 Debian/8/dist/content/* $(PREFIX)/$(DATADIR)/scap/ssg/
@@ -352,5 +365,5 @@ install: dist
 	install -d $(PREFIX)/$(DATADIR)/xml/scap/ssg
 	ln -sf ../../../scap/ssg $(PREFIX)/$(DATADIR)/xml/scap/ssg/content
 
-.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox webmin tarball srpm rpm clean all
+.PHONY: rhel5 rhel6 rhel7 rhel-osp7 debian8 wrlinux jre firefox fuse6 webmin tarball srpm rpm clean all
 	rm -f scap-security-guide.spec
