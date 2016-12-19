@@ -103,7 +103,6 @@
                                 </xsl:for-each>
                         </xsl:if>
 
-
 			<xsl:if test="$ref='cui'">
                                 <xsl:for-each select="//cdf:reference[@href=$nist800-171uri]" >
                                         <xsl:call-template name="rule-output">
