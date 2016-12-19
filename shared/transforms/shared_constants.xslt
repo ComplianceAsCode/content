@@ -9,7 +9,7 @@
 <!-- abbreviated as references in the XCCDF-->
 <xsl:variable name="nist800-53uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf</xsl:variable>
 <xsl:variable name="nist800-171uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf</xsl:variable>
-<xsl:variable name="cjisd-its-uri">https://www.fbi.gov/file-respository/cjis-security-policy-v5_5_20160601-2-1.pdf</xsl:variable>
+<xsl:variable name="cjisd-its-uri">https://www.fbi.gov/file-repository/cjis-security-policy-v5_5_20160601-2-1.pdf</xsl:variable>
 <xsl:variable name="cnss1253uri">http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf</xsl:variable>
 <xsl:variable name="dcid63uri">not_officially_available</xsl:variable>
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/stigs/cci/Pages/index.aspx</xsl:variable>
