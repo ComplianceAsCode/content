@@ -27,7 +27,7 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 </rationale>
 <ident prodtype="rhel7" cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040420" />
+<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040420" cjis="5.10.1.1" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_send_redirects" severity="medium" prodtype="rhel7">
@@ -46,7 +46,7 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 </rationale>
 <ident prodtype="rhel7" cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5(1)" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040421" />
+<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5(1)" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040421" cjis="5.10.1.1" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_ip_forward" severity="medium" prodtype="rhel7">
@@ -243,7 +243,7 @@ This feature of the IPv4 protocol has few legitimate uses. It should be disabled
 absolutely required.</rationale>
 <ident prodtype="rhel7" cce="80158-9" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
-<ref prodtype="rhel7" nist="CM-6(d),CM-7,SC-5" disa="366,1503,1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040410" />
+<ref prodtype="rhel7" nist="CM-6(d),CM-7,SC-5" disa="366,1503,1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040410" cjis="5.10.1.1" />
 </Rule>
 
 
@@ -316,7 +316,7 @@ IPv4 forwarding is enabled and the system is legitimately functioning as
 a router.</rationale>
 <ident prodtype="rhel7" cce="80162-1" />
 <oval id="sysctl_net_ipv4_conf_default_accept_source_route" value="sysctl_net_ipv4_conf_default_accept_source_route_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="366,1551" ossrg="SRG-OS-000480-GPOS-00227" stigid="040351" cis="4.2.1" />
+<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="366,1551" ossrg="SRG-OS-000480-GPOS-00227" stigid="040351" cis="4.2.1" cjis="5.10.1.1" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_accept_redirects" severity="medium" prodtype="rhel7">
@@ -336,7 +336,7 @@ This feature of the IPv4 protocol has few legitimate uses. It should be disabled
 absolutely required.</rationale>
 <ident prodtype="rhel7" cce="80163-9" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" value="sysctl_net_ipv4_conf_default_accept_redirects_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" cjis="5.10.1.1" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_secure_redirects" severity="medium" prodtype="rhel7">
@@ -371,7 +371,7 @@ addresses makes the system slightly more difficult to enumerate on the network.
 </rationale>
 <ident prodtype="rhel7" cce="80165-4" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040380" cis="4.2.5" />
+<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040380" cis="4.2.5" cjis="5.10.1.1" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" prodtype="rhel7">
@@ -406,7 +406,7 @@ enables the system to continue servicing valid connection requests.
 </rationale>
 <ident prodtype="rhel7" cce="27495-1" />
 <oval id="sysctl_net_ipv4_tcp_syncookies" value="sysctl_net_ipv4_tcp_syncookies_value" />
-<ref prodtype="rhel7" nist="AC-4,SC-5(1)(2),SC-5(2),SC-5(3)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040430" cis="4.2.8" />
+<ref prodtype="rhel7" nist="AC-4,SC-5(1)(2),SC-5(2),SC-5(3)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040430" cis="4.2.8" cjis="5.10.1.1" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_rp_filter" severity="medium" prodtype="rhel7">

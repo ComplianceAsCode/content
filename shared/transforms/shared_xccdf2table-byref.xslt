@@ -95,6 +95,15 @@
 				</xsl:for-each>
 			</xsl:if>
 
+                        <xsl:if test="$ref='cjis'">
+                                <xsl:for-each select="//cdf:reference[@href=$cjisd-its-uri]" >
+                                        <xsl:call-template name="rule-output">
+                                                <xsl:with-param name="refinfo" select="." />
+                                        </xsl:call-template>
+                                </xsl:for-each>
+                        </xsl:if>
+
+
 			<xsl:if test="$ref='cui'">
                                 <xsl:for-each select="//cdf:reference[@href=$nist800-171uri]" >
                                         <xsl:call-template name="rule-output">
