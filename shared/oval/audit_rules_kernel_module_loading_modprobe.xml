@@ -13,28 +13,19 @@
            /usr/lib/systemd/system/auditd.service (in other words case when final /etc/audit/audit.rules
            configuration is generated from *.rules files' content present in the /etc/audit/rules.d directory) -->
       <criteria operator="AND">
-        <criterion comment="audit augenrules" test_ref="test_audit_rule_kernel_module_modprobe_augenrules" />
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
         <criterion comment="audit augenrules modprobe" test_ref="test_audit_rule_kernel_module_loading_modprobe_augenrules" />
       </criteria>
       <!-- Check the modified configuration: 'auditctl' tool specified in 'ExecStartPost' directive of
            /usr/lib/systemd/system/auditd.service (in other words case when final /etc/audit/audit.rules is
            just loaded by 'auditctl' tool into memory) -->
       <criteria operator="AND">
-        <criterion comment="audit auditctl" test_ref="test_audit_rule_kernel_module_modprobe_auditctl" />
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
         <criterion comment="audit auditctl modprobe" test_ref="test_audit_rule_kernel_module_loading_modprobe_auditctl" />
       </criteria>
     </criteria>
   </definition>
 
-  <!-- Test the augenrules case -->
-  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_audit_rule_kernel_module_modprobe_augenrules" version="1">
-    <ind:object object_ref="object_audit_rule_kernel_module_modprobe_augenrules" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rule_kernel_module_modprobe_augenrules" version="1">
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit augenrules modprobe" id="test_audit_rule_kernel_module_loading_modprobe_augenrules" version="1">
     <ind:object object_ref="object_audit_rule_kernel_module_loading_modprobe_augenrules" />
   </ind:textfilecontent54_test>
@@ -44,15 +35,6 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- Test the auditctl case -->
-  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_audit_rule_kernel_module_modprobe_auditctl" version="1">
-    <ind:object object_ref="object_audit_rule_kernel_module_modprobe_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rule_kernel_module_modprobe_auditctl" version="1">
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
   <ind:textfilecontent54_test check="all" comment="audit auditctl modprobe" id="test_audit_rule_kernel_module_loading_modprobe_auditctl" version="1">
     <ind:object object_ref="object_audit_rule_kernel_module_loading_modprobe_auditctl" />
   </ind:textfilecontent54_test>

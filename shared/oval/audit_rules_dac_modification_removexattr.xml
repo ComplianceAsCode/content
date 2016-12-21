@@ -13,7 +13,7 @@
 
       <!-- Test the augenrules case -->
       <criteria operator="AND">
-        <criterion comment="audit augenrules" test_ref="test_ardm_removexattr_augenrules" />
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
         <criterion comment="audit augenrules 32-bit removexattr" test_ref="test_32bit_ardm_removexattr_augenrules" />
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of removexattr audit DAC rule -->
@@ -25,7 +25,7 @@
 
       <!-- OR test the auditctl case -->
       <criteria operator="AND">
-        <criterion comment="audit auditctl" test_ref="test_ardm_removexattr_auditctl" />
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
         <criterion comment="audit auditctl 32-bit removexattr" test_ref="test_32bit_ardm_removexattr_auditctl" />
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of 32-bit version of removexattr audit DAC rule -->
@@ -37,16 +37,6 @@
 
     </criteria>
   </definition>
-
-  <!-- Test the augenrules case -->
-  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_ardm_removexattr_augenrules" version="1">
-    <ind:object object_ref="object_ardm_removexattr_augenrules" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_ardm_removexattr_augenrules" version="1">
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit removexattr" id="test_32bit_ardm_removexattr_augenrules" version="1">
     <ind:object object_ref="object_32bit_ardm_removexattr_augenrules" />
@@ -64,16 +54,6 @@
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+removexattr[\s]+|([\s]+|[,])removexattr([\s]+|[,])))(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <!-- Test the auditctl case -->
-  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_ardm_removexattr_auditctl" version="1">
-    <ind:object object_ref="object_ardm_removexattr_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_ardm_removexattr_auditctl" version="1">
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit removexattr" id="test_32bit_ardm_removexattr_auditctl" version="1">
