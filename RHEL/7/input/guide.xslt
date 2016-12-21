@@ -28,7 +28,7 @@
       <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
       <xsl:apply-templates select="document('profiles/cjis-rhel7-server.xml')" />
       <xsl:apply-templates select="document('profiles/docker-host.xml')" />
-      <xsl:apply-templates select="document('profiles/nist-800-171-cui')" />
+      <xsl:apply-templates select="document('profiles/nist-800-171-cui.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
