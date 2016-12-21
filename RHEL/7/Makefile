@@ -16,6 +16,7 @@ checks: standard-oval-build
 table-refs: $(OUT)/xccdf-unlinked-empty-groups.xml
 	xsltproc -stringparam ref "nist" -o $(OUT)/table-$(PROD)-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
 	xsltproc -stringparam ref "cis" -o $(OUT)/table-$(PROD)-cisrefs.html $(TRANS)/xccdf2table-byref.xslt $<
+	xsltproc -stringparam ref "cui" -o $(OUT)/table-$(PROD)-cui-nistrefs.html $(TRANS)/xccdf2table-byref.xslt $<
 	xsltproc -stringparam profile "common" -o $(OUT)/table-$(PROD)-nistrefs-common.html \
 		$(TRANS)/xccdf2table-profilenistrefs.xslt $<
 	xsltproc -stringparam profile "ospp-rhel7-server" -o $(OUT)/table-$(PROD)-nistrefs-ospp.html \
