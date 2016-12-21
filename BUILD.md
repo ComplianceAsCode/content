@@ -63,10 +63,14 @@ Use the [Dockerfile](Dockerfile) present in the top directory and build the imag
 
 `$ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .`
 
-To build all the content, run a container without any flags. The below example will make all RHEL 7 content available in `$(pwd)/output-docker/`.
+To build all the content, run a container without any flags.
 
-`$ docker run --cap-drop=all -v$(pwd)/output-docker/:/home/oscap/scap-security-guide/RHEL/7/output/ oscap:latest`
+`$ docker run --cap-drop=all --name scap-security-guide oscap:latest`
 
-To build content only for a specific distribution, add the relevant name as a flag and modify the volume name:
+To build content only for a specific distribution, add the relevant name as a flag:
 
-`$ docker run --cap-drop=all -v$(pwd)/output-docker/:/home/oscap/scap-security-guide/Firefox/output/ oscap:latest firefox`
+`$ docker run --cap-drop=all --name scap-security-guide oscap:latest firefox`
+
+Using `docker cp` to copy all the generated content to the your host:
+
+`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/ $(pwd)`
