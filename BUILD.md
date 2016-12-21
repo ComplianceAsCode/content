@@ -1,4 +1,6 @@
-# Build from source
+# Building SCAP Security Guide
+
+## From source
 
 1. On Red Hat Enterprise Linux and Fedora make sure the packages `openscap-utils`, `openscap-python`, and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`. 
 
@@ -54,3 +56,21 @@
     * **ssg-rhel6-xccdf.xml**
     * **ssg-rhel6-oval.xml**
     * **ssg-rhel6-ds.xml**
+
+## Using Docker
+
+Use the [Dockerfile](Dockerfile) present in the top directory and build the image.
+
+`$ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .`
+
+To build all the content, run a container without any flags.
+
+`$ docker run --cap-drop=all --name scap-security-guide oscap:latest`
+
+To build content only for a specific distribution, add the relevant name as a flag:
+
+`$ docker run --cap-drop=all --name scap-security-guide oscap:latest firefox`
+
+Using `docker cp` to copy all the generated content to the your host:
+
+`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/ $(pwd)`
