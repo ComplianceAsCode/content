@@ -33,7 +33,6 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
-<ident cce="26860-7" />
 <oval id="file_user_owner_grub2_cfg" />
 <ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.5.1" />
 </Rule>
@@ -50,7 +49,6 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
-<ident cce="26812-8" />
 <oval id="file_group_owner_grub2_cfg" />
 <ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.5.1" />
 </Rule>
@@ -70,7 +68,6 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<ident cce="27054-6" />
 <oval id="file_permissions_grub2_cfg" />
 <ref nist="AC-6(7)" disa="225" cis="1.5.2" />
 </Rule>
@@ -121,9 +118,8 @@ the grub2 superuser account and password, please refer to
 <li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-GRUB_2_Password_Protection.html</li>.
 </ul>
 </rationale>
-<ident cce="27309-4" />
 <oval id="bootloader_password" />
-<ref nist="IA-2(1),IA-5(e),AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048" stigid="010460" cis="1.5.3" />
+<ref nist="IA-2(1),IA-5(e),AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048"  />
 </Rule>
 
 <Rule id="bootloader_uefi_password" severity="medium">
@@ -172,9 +168,8 @@ the grub2 superuser account and password, please refer to
 <li>https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-GRUB_2_Password_Protection.html</li>.
 </ul>
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="bootloader_uefi_password" />
-<ref nist="AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048" stigid="010470" />
+<ref nist="AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048"  />
 </Rule>
 
 </Group>
@@ -201,7 +196,6 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
-<ident cce="27287-2" />
 <oval id="require_singleuser_auth" />
 <ref nist="IA-2(1),AC-3" disa="213" />
 </Rule>
@@ -226,7 +220,6 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine through valid troubleshooting configurations and gaining root
 access when the system is rebooted.
 </rationale>
-<ident cce="80206-6" />
 <oval id="service_debug-shell_disabled" />
 <!--ref nist="IA-2(1),AC-3" disa="213" /-->
 </Rule>
@@ -266,8 +259,7 @@ if running in <tt>graphical.target</tt> mode (e.g. in GNOME, KDE, etc.)! The
 the non-graphical <tt>multi-user.target</tt> mode.
 </warning>
 <oval id="disable_ctrlaltdel_reboot" />
-<ident cce="27511-5" />
-<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020220" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium">
@@ -303,7 +295,6 @@ file. To update the GRUB 2 configuration file manually, use the
 <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
 </ul>
 </warning>
-<ident cce="27335-9" />
 <oval id="disable_interactive_boot" />
 <ref nist="SC-2,AC-3" disa="213"/>
 </Rule>
@@ -348,9 +339,8 @@ session lock.
 <br /><br />
 The <tt>screen</tt> package allows for a session lock to be implemented and configured.
 </rationale>
-<ident cce="27351-6" />
 <oval id="package_screen_installed" />
-<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010072" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010"  />
 </Rule>
 </Group>
 
@@ -393,9 +383,8 @@ smart card (CAC) authentication:
 that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
-<ident cce="80207-4" />
 <oval id="smartcard_auth" />
-<ref nist="IA-2(2)" disa="765,766,767,768,771,772,884" pcidss="Req-8.3" stigid="010500"
+<ref nist="IA-2(2)" disa="765,766,767,768,771,772,884" pcidss="Req-8.3" 
 ossrg="SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000109-GPOS-00056,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058" />
 </Rule>
 

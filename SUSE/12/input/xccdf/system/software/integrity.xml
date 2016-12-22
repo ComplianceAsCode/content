@@ -32,7 +32,6 @@ Next, run the following command to return binaries to a normal, non-prelinked st
 Because the prelinking feature changes binaries, it can interfere with the
 operation of certain software and/or modes such as AIDE, FIPS, etc.
 </rationale>
-<ident cce="27078-5" />
 <oval id="disable_prelink" />
 <ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
 </Rule>
@@ -58,7 +57,6 @@ Install the AIDE package with the command:
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident cce="27096-7" />
 <oval id="package_aide_installed" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="" pcidss="Req-11.5" cis="1.3.1" />
 </Rule>
@@ -84,7 +82,6 @@ To find the location of the AIDE databse file, run the following command:
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident cce="27220-3" />
 <oval id="aide_build_database" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" />
 </Rule>
@@ -104,7 +101,6 @@ To determine that periodic AIDE execution has been scheduled, run the following 
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
-<ident cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
 <ref nist="CM-3(d),CM-3(e),CM-3(5),CM-6(d),CM-6(3),SC-28,SI-7" disa="1744" pcidss="Req-11.5" cis="1.3.1"
 ossrg="SRG-OS-000363-GPOS-00150" sitgid="020150" />
@@ -163,9 +159,8 @@ RPM verify command may continue to fail even after file permissions have been
 correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
 Bugzilla #1275532.
 </warning>
-<ident cce="27209-6" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" stigid="010010" ossrg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" />
+<ref nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3"  />
 </Rule>
 
 <Rule id="rpm_verify_hashes" severity="high">
@@ -205,9 +200,8 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident cce="27157-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),CM-6(3),SI-7(1)" disa="663" pcidss="Req-11.5" cis="1.2.6" stigid="010020" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="CM-6(d),CM-6(3),SI-7(1)" disa="663" pcidss="Req-11.5" cis="1.2.6"  />
 </Rule>
 
 </Group>
@@ -241,7 +235,6 @@ Verify this intrusion detection software is active.
 Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
-<ident cce="26818-5" />
 <ref nist="SC-7" disa="1263" pcidss="Req-11.4" />
 </Rule>
 
@@ -280,7 +273,6 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="install_antivirus" />
-<ident cce="27140-3" />
 <ref nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>
 
@@ -311,7 +303,6 @@ intrusion prevention tool can provide methods to immediately lock out detected
 intrusion attempts.
 </rationale>
 <oval id="install_mcafee_hbss" />
-<ident cce="80126-6" />
 <ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
 ossrg="STG-OS-000480-GPOS-00227" stigig="030790" />
 </Rule>
@@ -334,9 +325,8 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="install_mcafee_antivirus" />
-<ident cce="80127-4" />
 <ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="030810" />
+ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 <Rule id="service_nails_enabled" severity="medium">
@@ -351,9 +341,8 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="service_nails_enabled" />
-<ident cce="80128-2" />
 <ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 <Rule id="mcafee_antivirus_definitions_updated" severity="medium">
@@ -371,9 +360,8 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <!--oval id="mcafee_antivirus_definitions_updated" /-->
-<ident cce="80129-0" />
 <ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="030820" />
+ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 </Group>
@@ -410,9 +398,8 @@ protect data. The operating system must implement cryptographic modules adhering
 standards approved by the federal government since this provides assurance they have been tested
 and validated.
 </rationale>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="package_dracut-fips_installed" />
-<ref nist="AC-17(2)" disa="68,2450" stigid="TBD"
+<ref nist="AC-17(2)" disa="68,2450" 
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
 </Rule>
 
@@ -454,9 +441,8 @@ Therefore, non-certified vendors and/or projects do not meet this requirement ev
 <br /><br />
 See <b>http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm</b> for a list of FIPS certified
 vendors.</warning>
-<ident cce="RHEL7-CCE-TBD" />
 <oval id="grub2_enable_fips_mode" />
-<ref nist="AC-17(2)" disa="68,2450" stigid="021280"
+<ref nist="AC-17(2)" disa="68,2450" 
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
 </Rule>
 
@@ -494,9 +480,8 @@ security patches for the product as well as maintain government certification re
 With an unsupported release, it will not be possible to resolve security issue discovered in
 the system software as well as meet government certifications.
 </rationale>
-<ident cce="80349-4" />
 <oval id="installed_OS_is_certified" />
-<ref nist="SI-2(c)" disa="366" stigid="020240" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="SI-2(c)" disa="366"  />
 </Rule>
 </Group>
 

@@ -60,9 +60,8 @@ Disabling inactive accounts ensures that accounts which may not
 have been responsibly removed are not available to attackers
 who may have compromised their credentials.
 </rationale>
-<ident cce="CCE-27355-7" />
 <oval id="account_disable_post_pw_expiration" value="var_account_disable_post_pw_expiration"/>
-<ref nist="AC-2(2),AC-2(3),IA-4(e)" disa="795" ossrg="SRG-OS-000118-GPOS-00060" stigid="010280" pcidss="Req-8.1.4" />
+<ref nist="AC-2(2),AC-2(3),IA-4(e)" disa="795" ossrg="SRG-OS-000118-GPOS-00060"  />
 </Rule>
 
 <Rule id="account_unique_name">
@@ -78,7 +77,6 @@ If there are no duplicate names, no line will be returned.
 <rationale>
 Unique usernames allow for accountability on the system.
 </rationale>
-<ident cce="80208-2" />
 <oval id="account_unique_name" />
 <ref disa="770,804" pcidss="Req-8.1.1" />
 </Rule>
@@ -110,7 +108,6 @@ To mitigate this risk, automated termination of all temporary accounts
 must be set upon account creation.
 <br/>
 </rationale>
-<ident cce="27498-5" />
 <ref nist="AC-2(2),AC-2(3)" disa="16,1682" ossrg="2" />
 </Rule>
 
