@@ -38,7 +38,7 @@ def output_checkfile(target, path_info):
     else:
         full_path = dir_path + '/' + file_name
 
-    if target == "bash":
+    if target == "bash" and not re.match( r'\^.*\$', file_name, 0):
         file_from_template(
             "./template_BASH_permissions",
             {
@@ -48,7 +48,7 @@ def output_checkfile(target, path_info):
             "./bash/file_permissions{0}.sh", path_id
         )
 
-    elif target == "ansible":
+    elif target == "ansible" and not re.match( r'\^.*\$', file_name, 0):
         file_from_template(
             "./template_ANSIBLE_permissions",
             {
