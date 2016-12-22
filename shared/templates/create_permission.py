@@ -21,6 +21,12 @@ def output_checkfile(target, path_info):
     # path_id maps to FILEID in the template
     if file_name == '[NULL]':
         path_id = re.sub('[-\./]', '_', dir_path)
+    elif re.match( r'\^.*\$', file_name, 0):
+        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\\\./^$*(){}|]',
+                                                                 '_', file_name)
+        # cleaning trailing end multiple underscores
+        path_id = re.sub(r'_+','_', path_id)
+        path_id = re.sub(r'_$','', path_id)
     else:
         path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
                                                                  '_', file_name)
@@ -66,8 +72,12 @@ def output_checkfile(target, path_info):
                 mode_str = "	<unix:" + field + " datatype=\"boolean\">false</unix:" + field + ">\n" + mode_str
             mode_int = mode_int >> 1
 
+        # support pattern matching, requiring that the filename starts with '^'
+        # and fichishes with '$'
         if file_name == '[NULL]':
             unix_filename = "<unix:filename xsi:nil=\"true\" />"
+        elif re.match( r'\^.*\$', file_name, 0):
+            unix_filename = "<unix:filename operation=\"pattern match\">" + file_name + "</unix:filename>"
         else:
             unix_filename = "<unix:filename>" + file_name + "</unix:filename>"
 
