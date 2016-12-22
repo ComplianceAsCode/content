@@ -39,7 +39,6 @@ the software has not been tampered with and that it has been provided
 by a trusted vendor. The Red Hat GPG key is necessary to 
 cryptographically verify packages are from Red Hat.
 </rationale>
-<ident cce="26957-1" />
 <oval id="ensure_redhat_gpgkey_installed" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" cis="1.2.2" />
 </Rule>
@@ -81,9 +80,8 @@ certificates are disallowed by this requirement. Certificates
 used to verify the software must be from an approved Certificate
 Authority (CA).
 </rationale>
-<ident cce="26989-4" />
 <oval id="ensure_gpgcheck_globally_activated" />
-<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" stigid="020150" pcidss="Req-6.2" cis="1.2.3" />
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153"  />
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled" severity="high">
@@ -109,7 +107,6 @@ certificates are disallowed by this requirement. Certificates
 used to verify the software must be from an approved Certificate
 Authority (CA).
 </rationale>
-<ident cce="26876-3" />
 <oval id="ensure_gpgcheck_never_disabled" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" />
 </Rule>
@@ -153,11 +150,10 @@ recent security patches and updates are not installed, unauthorized
 users may take advantage of weaknesses in the unpatched software. The
 lack of prompt attention to patching could result in a system compromise.
 </rationale>
-<ident cce="26895-3" />
 <!-- Particular OVAL check is defined directly via <check> element above -->
 <!-- DO NOT REFERENCE an OVAL id here !!! -->
 <ref nist="SI-2,SI-2(c),MA-1(b)" disa="366" pcidss="Req-6.2" cis="1.7"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="020250" />
+ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 <Rule id="clean_components_post_updating" severity="low">
@@ -179,9 +175,8 @@ The output should return something similar to:
 Previous versions of software components that are not removed from the information
 system after updates have been installed may be exploited by some adversaries.
 </rationale>
-<ident cce="CCE-80346-0" />
 <oval id="clean_components_post_updating" />
-<ref nist="SI-2(6)" disa="2617" ossrg="SRG-OS-000437-GPOS-00194" stigid="020200" />
+<ref nist="SI-2(6)" disa="2617" ossrg="SRG-OS-000437-GPOS-00194"  />
 </Rule>
 
 <Rule id="ensure_gpgcheck_local_packages" severity="high">
@@ -206,9 +201,8 @@ has been provided by a trusted vendor.
 Accordingly, patches, service packs, device drivers, or operating system components must
 be signed with a certificate recognized and approved by the organization.
 </rationale>
-<ident cce="CCE-80347-8" />
 <oval id="ensure_gpgcheck_local_packages" />
-<ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" stigid="020151" />
+<ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153"  />
 </Rule>
 
 <Rule id="ensure_gpgcheck_repo_metadata" severity="high">
@@ -247,9 +241,8 @@ NOTE: For U.S. Military systems, this requirement does not mandate DoD certifica
 this purpose; however, the certificate used to verify the software must be from an 
 approved Certificate Authority.
 </rationale>
-<ident cce="CCE-80348-6" />
 <oval id="ensure_gpgcheck_repo_metadata" />
-<ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" stigid="020152" />
+<ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153"  />
 </Rule>
 
 </Group>

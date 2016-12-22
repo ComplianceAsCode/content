@@ -39,7 +39,6 @@ which is no longer necessary for commonly-used network services. Disabling
 it ensures that these uncommon services are not running, and also prevents
 attacks against xinetd itself.
 </rationale>
-<ident cce="27443-1" />
 <oval id="service_xinetd_disabled" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 </Rule>
@@ -57,7 +56,6 @@ If network services are using the xinetd service, this is not applicable.
 Removing the <tt>xinetd</tt> package decreases the risk of the
 xinetd service's accidental (or intentional) activation.
 </rationale>
-<ident cce="27354-0" />
 <oval id="package_xinetd_removed" />
 <ref nist="AC-17(8),CM-7" disa="305" cis="2.1.11" />
 </Rule>
@@ -77,10 +75,9 @@ Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
 prevents connections from unknown hosts and protocols.
 </rationale>
-<ident cce="27361-5" />
 <oval id="package_tcp_wrappers_installed" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="TBD" />
+ />
 </Rule>
 
 </Group>
@@ -128,7 +125,6 @@ all other information transmitted during the session, can be
 stolen by eavesdroppers on the network. The telnet protocol is also
 subject to man-in-the-middle attacks.
 </rationale>
-<ident cce="27401-9" />
 <oval id="service_telnet_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" />
 </Rule>
@@ -151,9 +147,8 @@ to login using this service, the privileged user password could be compromised.
 Removing the <tt>telnet-server</tt> package decreases the risk of the telnet service's accidental 
 (or intentional) activation.
 </rationale>
-<ident cce="27165-0" />
 <oval id="package_telnet-server_removed" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="021910" cis="2.1.1" />
+<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049"  />
 </Rule>
 
 <Rule id="package_telnet_removed" severity="low">
@@ -166,7 +161,6 @@ of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
 encrypted session and stronger security and is included in Red Hat
 Enterprise Linux.</rationale>
-<ident cce="27305-2" />
 <oval id="package_telnet_removed" />
 <ref cis="2.1.2" />
 </Rule>
@@ -193,9 +187,8 @@ could be compromised. The <tt>rsh-server</tt> package provides several obsolete 
 network services. Removing it decreases the risk of those services' accidental (or intentional)
 activation.
 </rationale>
-<ident cce="27342-5" />
 <oval id="package_rsh-server_removed" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="020000" cis="2.1.3" />
+<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049"  />
 </Rule>
 
 <Rule id="service_rexec_disabled" severity="high">
@@ -213,7 +206,6 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27408-4" />
 <oval id="service_rexec_disabled" />
 <ref nist="AC-17(8),CM-7" disa="68,1436"/>
 </Rule>
@@ -233,7 +225,6 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27337-5" />
 <oval id="service_rsh_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" />
 </Rule>
@@ -250,7 +241,6 @@ inadvertently attempting to use these commands and therefore exposing
 their credentials. Note that removing the <tt>rsh</tt> package removes
 the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
 </rationale>
-<ident cce="27274-0" />
 <oval id="package_rsh_removed" />
 <ref cis="2.1.4" />
 </Rule>
@@ -270,7 +260,6 @@ means that data from the login session, including passwords and
 all other information transmitted during the session, can be
 stolen by eavesdroppers on the network.
 </rationale>
-<ident cce="27336-7" />
 <oval id="service_rlogin_disabled" />
 <ref nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" />
 </Rule>
@@ -293,7 +282,6 @@ of an Rsh trust relationship.
 <rationale>Trust files are convenient, but when
 used in conjunction with the R-services, they can allow
 unauthenticated access to a system.</rationale>
-<ident cce="27406-8" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 <oval id="no_rsh_trust_files" />
 </Rule>
@@ -321,9 +309,8 @@ provide for the confidentiality and integrity of user passwords or the remote se
 Removing the <tt>ypserv</tt> package decreases the risk of the accidental (or intentional) 
 activation of NIS or NIS+ services.
 </rationale>
-<ident cce="27399-5" />
 <oval id="package_ypserv_removed" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" stigid="020010" cis="2.1.6" />
+<ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049"  />
 </Rule>
 
 <Rule id="service_ypbind_disabled" severity="medium">
@@ -337,7 +324,6 @@ a NIS or NIS+ domain, should be disabled.
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
 as a client in a NIS or NIS+ domain.
 </rationale>
-<ident cce="27385-4" />
 <oval id="service_ypbind_disabled" />
 <ref nist="AC-17(8),CM-7" disa="305"/>
 </Rule>
@@ -353,7 +339,6 @@ and receive the distributed configuration files.</description>
 to DOS attacks, buffer overflows and has poor authentication for querying NIS maps.
 NIS generally has been replaced by such protocols as Lightweight Directory Access 
 Protocol (LDAP). It is recommended that the service be removed.</rationale>
-<ident cce="27396-1" />
 <oval id="package_ypbind_removed" />
 <ref cis="2.1.5" />
 </Rule>
@@ -381,7 +366,6 @@ found.</description>
 Disabling the <tt>tftp</tt> service ensures the system is not acting
 as a TFTP server, which does not provide encryption or authentication.
 </rationale>
-<ident cce="80212-4" />
 <oval id="service_tftp_disabled" />
 <ref nist="AC-17(8),CM-7" disa="1436" />
 </Rule>
@@ -402,9 +386,8 @@ If TFTP is required for operational support (such as transmission of router conf
 its use must be documented with the Information Systems Securty Manager (ISSM), restricted to 
 only authorized personnel, and have access control rules established.
 </rationale>
-<ident cce="80213-2" />
 <oval id="package_tftp-server_removed" />
-<ref nist="AC-17(8),CM-6(c),CM-7" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" stigid="040500"  cis="2.1.8" />
+<ref nist="AC-17(8),CM-6(c),CM-7" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 <Rule id="package_tftp_removed" severity="high">
@@ -418,7 +401,6 @@ TFTP does not support authentication and can be easily hacked. The package
 <rationale>It is recommended that TFTP be removed, unless there is a specific need
 for TFTP (such as a boot server). In that case, use extreme caution when configuring
 the services.</rationale>
-<ident cce="" />
 <oval id="package_tftp_removed" />
 <ref cis="2.1.7" />
 </Rule>
@@ -448,9 +430,8 @@ flag, matching the example below:
 <pre>$ grep "server_args" /etc/xinetd.d/tftp
 server_args = -s /var/lib/tftpboot</pre>
 </ocil>
-<ident cce="80214-0" />
 <oval id="tftpd_uses_secure_mode" />
-<ref nist="AC-6,AC-17(8),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040520" />
+<ref nist="AC-6,AC-17(8),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 </Group>
@@ -475,7 +456,6 @@ The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk-server</tt> package decreases the
 risk of the accidental (or intentional) activation of talk services.
 </rationale>
-<ident cce="27210-4" />
 <oval id="package_talk-server_removed" />
 <ref cis="2.1.10" />
 </Rule>
@@ -494,7 +474,6 @@ The talk software presents a security risk as it uses unencrypted protocols
 for communications. Removing the <tt>talk</tt> package decreases the
 risk of the accidental (or intentional) activation of talk client program.
 </rationale>
-<ident cce="27432-4" />
 <oval id="package_talk_removed" />
 <ref cis="2.1.9" />
 </Rule>
