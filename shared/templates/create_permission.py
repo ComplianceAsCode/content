@@ -24,12 +24,14 @@ def output_checkfile(target, path_info):
     elif re.match( r'\^.*\$', file_name, 0):
         path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\\\./^$*(){}|]',
                                                                  '_', file_name)
-        # cleaning trailing end multiple underscores
+        # cleaning trailing end multiple underscores, make sure id is lowercase
         path_id = re.sub(r'_+','_', path_id)
         path_id = re.sub(r'_$','', path_id)
+        path_id = path_id.lower()
     else:
         path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
                                                                  '_', file_name)
+        path_id = path_id.lower()
 
     # build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
