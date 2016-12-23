@@ -203,7 +203,7 @@ by configuring the bootloader password.
 </rationale>
 <ident prodtype="rhel7" cce="27287-2" />
 <oval id="require_singleuser_auth" />
-<ref prodtype="rhel7" nist="IA-2(1),AC-3" disa="213" />
+<ref prodtype="rhel7" nist="IA-2(1),AC-3" disa="213" cui="3.1.1" />
 </Rule>
 
 <Rule id="service_debug-shell_disabled" severity="medium" prodtype="rhel7">
@@ -305,7 +305,7 @@ file. To update the GRUB 2 configuration file manually, use the
 </warning>
 <ident prodtype="rhel7" cce="27335-9" />
 <oval id="disable_interactive_boot" />
-<ref prodtype="rhel7" nist="SC-2,AC-3" disa="213"/>
+<ref prodtype="rhel7" nist="SC-2,AC-3" disa="213" cui="3.1.2" />
 </Rule>
 
 <Group id="screen_locking">
@@ -350,7 +350,8 @@ The <tt>screen</tt> package allows for a session lock to be implemented and conf
 </rationale>
 <ident prodtype="rhel7" cce="27351-6" />
 <oval id="package_screen_installed" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010072" />
+<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010072" 
+cui="3.1.10" />
 </Rule>
 </Group>
 
