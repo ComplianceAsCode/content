@@ -1620,7 +1620,7 @@ these events could serve as evidence of potential system compromise.</rationale>
 <ident prodtype="rhel7" cce="27347-4" />
 <oval id="audit_rules_unsuccessful_file_modification" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884"
-pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cui="3.3.1" cjis="5.4.1.1" />
+pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cjis="5.4.1.1" cui="3.3.7" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification_creat" severity="medium" prodtype="rhel7">
@@ -1916,7 +1916,7 @@ unusual activity.
 <oval id="audit_rules_execution_semanage" />
 <ref prodtype="rhel7" nist="AU-12(c)" disa="172,2884"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209"
-stigid="030441" />
+stigid="030441" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_execution_setsebool" severity="medium" prodtype="rhel7">
@@ -1953,7 +1953,7 @@ unusual activity.
 <oval id="audit_rules_execution_setsebool" />
 <ref prodtype="rhel7" nist="AU-12(c)" disa="172,2884"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209"
-stigid="030442" />
+stigid="030442" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_execution_chcon" severity="medium" prodtype="rhel7">
@@ -1990,7 +1990,7 @@ unusual activity.
 <oval id="audit_rules_execution_chcon" />
 <ref prodtype="rhel7" nist="AU-12(c)" disa="172,2884"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209"
-stigid="030443" />
+stigid="030443" cui="3.1.7"/>
 </Rule>
 
 <Rule id="audit_rules_execution_restorecon" severity="medium" prodtype="rhel7">
@@ -2027,7 +2027,7 @@ unusual activity.
 <oval id="audit_rules_execution_restorecon" />
 <ref prodtype="rhel7" nist="AU-12(c)" disa="172,2884"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209"
-stigid="030444" />
+stigid="030444" cui="3.1.7" />
 </Rule>
 
 </Group>
@@ -2095,7 +2095,7 @@ unusual activity.
 <ident prodtype="rhel7" cce="27437-3" />
 <oval id="audit_rules_privileged_commands" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),AU-6(9),AU-12(a),AU-12(c),IR-5" disa="2234"
-ossrg="SRG-OS-000327-GPOS-00127" stigid="030310" pcidss="Req-10.2.2" cis="5.2.10" cjis="5.4.1.1" />
+ossrg="SRG-OS-000327-GPOS-00127" stigid="030310" pcidss="Req-10.2.2" cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_passwd" severity="medium" prodtype="rhel7">
@@ -2131,7 +2131,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80395-7" />
 <oval id="audit_rules_privileged_commands_passwd" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030510"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_chkpwd" severity="medium" prodtype="rhel7">
@@ -2167,7 +2168,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80396-5" />
 <oval id="audit_rules_privileged_commands_chkpwd" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030511"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_gpasswd" severity="medium" prodtype="rhel7">
@@ -2203,7 +2205,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80397-3" />
 <oval id="audit_rules_privileged_commands_gpasswd" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030512"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_chage" severity="medium" prodtype="rhel7">
@@ -2239,7 +2242,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80398-1" />
 <oval id="audit_rules_privileged_commands_chage" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030513"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" 
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_usrhelpr" severity="medium" prodtype="rhel7">
@@ -2275,7 +2279,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80399-9" />
 <oval id="audit_rules_privileged_commands_usrhelpr" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030514"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_su" severity="medium" prodtype="rhel7">
@@ -2311,7 +2316,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80400-5" />
 <oval id="audit_rules_privileged_commands_su" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030521"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_sudo" severity="medium" prodtype="rhel7">
@@ -2347,7 +2353,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80401-3" />
 <oval id="audit_rules_privileged_commands_sudo" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030522"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" 
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_sudoedit" severity="medium" prodtype="rhel7">
@@ -2383,7 +2390,8 @@ unusual activity.
 <ident prodtype="rhel7" cce="80402-1" />
 <oval id="audit_rules_privileged_commands_sudoedit" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030526"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_newgrp" severity="medium" prodtype="rhel7">
@@ -2416,10 +2424,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80403-9" />
 <oval id="audit_rules_privileged_commands_newgrp" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030524"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_chsh" severity="medium" prodtype="rhel7">
@@ -2452,10 +2461,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80404-7" />
 <oval id="audit_rules_privileged_commands_chsh" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030525"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" 
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_umount" severity="medium" prodtype="rhel7">
@@ -2488,10 +2498,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80405-4" />
 <oval id="audit_rules_privileged_commands_umount" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030531"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_postdrop" severity="medium" prodtype="rhel7">
@@ -2524,10 +2535,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80406-2" />
 <oval id="audit_rules_privileged_commands_postdrop" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030540"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7"  />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_postqueue" severity="medium" prodtype="rhel7">
@@ -2560,10 +2572,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80407-0" />
 <oval id="audit_rules_privileged_commands_postqueue" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030541"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7"  />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_ssh_keysign" severity="medium" prodtype="rhel7">
@@ -2596,10 +2609,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80408-8" />
 <oval id="audit_rules_privileged_commands_ssh_keysign" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030550"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_pt_chown" severity="medium" prodtype="rhel7">
@@ -2632,10 +2646,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80409-6" />
 <oval id="audit_rules_privileged_commands_pt_chown" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030560"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_crontab" severity="medium" prodtype="rhel7">
@@ -2668,10 +2683,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80410-4" />
 <oval id="audit_rules_privileged_commands_crontab" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030561"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_pam_timestamp_check" severity="medium" prodtype="rhel7">
@@ -2704,10 +2720,11 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80411-2" />
 <oval id="audit_rules_privileged_commands_pam_timestamp_check" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030630"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
+cui="3.1.7" />
 </Rule>
 
 </Group>
@@ -2738,7 +2755,8 @@ loss.</rationale>
 <ident prodtype="rhel7" cce="27447-2" />
 <oval id="audit_rules_media_export" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-3(1),AU-12(a),AU-12(c),IR-5" disa="135,2884"
-ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172" stigid="030530" pcidss="Req-10.2.7" cis="5.2.13" cjis="5.4.1.1" />
+ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172" stigid="030530" pcidss="Req-10.2.7" cis="5.2.13" 
+cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
 <Group id="audit_file_deletion_events">
@@ -2785,7 +2803,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
-pcidss="Req-10.2.7" cis="5.2.14" disa="366,172,2884" cjis="5.4.1.1" />
+pcidss="Req-10.2.7" cis="5.2.14" disa="366,172,2884" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_rmdir" severity="medium" prodtype="rhel7">
@@ -2809,10 +2827,11 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80412-0" />
 <oval id="audit_rules_file_deletion_events_rmdir" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884"
-ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" stigid="030752" pcidss="Req-10.2.7" cis="5.2.14" />
+ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" 
+stigid="030752" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_unlink" severity="medium" prodtype="rhel7">
@@ -2839,7 +2858,8 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events_unlink" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884"
-ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" stigid="030753" pcidss="Req-10.2.7" cis="5.2.14" />
+ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" stigid="030753" 
+pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_unlinkat" severity="medium" prodtype="rhel7">
@@ -2866,7 +2886,8 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events_unlinkat" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884"
-ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" stigid="030754" pcidss="Req-10.2.7" cis="5.2.14" />
+ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" 
+stigid="030754" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_rename" severity="medium" prodtype="rhel7">
@@ -2893,7 +2914,8 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events_rename" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884"
-ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" stigid="030750" pcidss="Req-10.2.7" cis="5.2.14" />
+ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" 
+stigid="030750" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_renameat" severity="medium" prodtype="rhel7">
@@ -2917,10 +2939,11 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80413-8" />
 <oval id="audit_rules_file_deletion_events_renameat" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884"
-ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" stigid="030751" pcidss="Req-10.2.7" cis="5.2.14" />
+ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" 
+stigid="030751" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
 </Group>
@@ -2950,7 +2973,8 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <oval id="audit_rules_sysadmin_actions" />
 <ref prodtype="rhel7" nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),iAU-3(1),AU-12(a),AU-12(c),IR-5"
 disa="126,130,135,172,2884" pcidss="Req-10.2.2,Req-10.2.5.b" stigid="030523"
-ossrg="SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215" cjis="5.4.1.1" />
+ossrg="SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215"
+cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
 <Group id="audit_kernel_module_loading">
@@ -3002,7 +3026,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ident prodtype="rhel7" cce="27129-6" />
 <oval id="audit_rules_kernel_module_loading" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
-pcidss="Req-10.2.7" cis="5.2.17" disa="172" cjis="5.4.1.1" />
+pcidss="Req-10.2.7" cis="5.2.17" disa="172" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_init" severity="medium" prodtype="rhel7">
@@ -3024,10 +3048,11 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80414-6" />
 <oval id="audit_rules_kernel_module_loading_init" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
-ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030670" pcidss="Req-10.2.7" cis="5.2.17" />
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030670" pcidss="Req-10.2.7" cis="5.2.17"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_del" severity="medium" prodtype="rhel7">
@@ -3049,10 +3074,11 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80415-3" />
 <oval id="audit_rules_kernel_module_loading_del" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
-ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030671" pcidss="Req-10.2.7" cis="5.2.17" />
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030671" pcidss="Req-10.2.7" cis="5.2.17"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_insmod" severity="medium" prodtype="rhel7">
@@ -3078,7 +3104,8 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ident prodtype="rhel7" cce="" />
 <oval id="audit_rules_kernel_module_loading_insmod" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
-ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030672" pcidss="Req-10.2.7" cis="5.2.17" />
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030672" pcidss="Req-10.2.7" cis="5.2.17" 
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_rmmod" severity="medium" prodtype="rhel7">
@@ -3101,10 +3128,11 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80416-1" />
 <oval id="audit_rules_kernel_module_loading_rmmod" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
-ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030673" pcidss="Req-10.2.7" cis="5.2.17" />
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030673" pcidss="Req-10.2.7" cis="5.2.17"
+cui="3.1.7" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_modprobe" severity="medium" prodtype="rhel7">
@@ -3127,10 +3155,11 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<ident prodtype="rhel7" cce="TBD" />
+<ident prodtype="rhel7" cce="80417-9" />
 <oval id="audit_rules_kernel_module_loading_modprobe" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
-ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030674" pcidss="Req-10.2.7" cis="5.2.17" />
+ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030674" pcidss="Req-10.2.7" cis="5.2.17" 
+cui="3.1.7" />
 </Rule>
 
 </Group>

@@ -52,7 +52,6 @@ to privileged (root) access via su / sudo. This is required for FISMA Low
 and FISMA Moderate systems.
 </rationale>
 <oval id="no_direct_root_logins" />
-<ident cce="27294-8" />
 <ref nist="IA-2(1)" cis="6.4" />
 </Rule>
 
@@ -77,7 +76,6 @@ Preventing direct root login to virtual console devices
 helps ensure accountability for actions taken on the system
 using the root account.
 </rationale>
-<ident cce="27318-5" />
 <oval id="securetty_root_login_console_only" />
 <ref nist="AC-6(2)" disa="770" />
 </Rule>
@@ -101,7 +99,6 @@ Preventing direct root login to serial port interfaces
 helps ensure accountability for actions taken on the systems
 using the root account.
 </rationale>
-<ident cce="27268-2" />
 <oval id="restrict_serial_port_logins" />
 <ref nist="AC-6(2)" disa="770" />
 </Rule>
@@ -122,7 +119,6 @@ If a browser vulnerability is exploited while running with administrative privil
 the entire system could be compromised. Specific exceptions for local service
 administration should be documented in site-defined policy.
 </rationale>
-<ident cce="80209-0" />
 </Rule>
 
 <Rule id="no_shelllogin_for_systemaccounts" severity="medium">
@@ -157,7 +153,6 @@ difficult for attackers to make use of system accounts.
 Do not perform the steps in this section on the root account. Doing so might
 cause the system to become inaccessible.
 </warning>
-<ident cce="26448-1" />
 <oval id="no_shelllogin_for_systemaccounts" />
 <ref nist="AC-2" disa="" />
 </Rule>
@@ -190,9 +185,8 @@ guess a password for a privileged account. Proper configuration of
 sudo is recommended to afford multiple system administrators
 access to root privileges in an accountable manner.
 </rationale>
-<ident cce="27175-9" />
 <oval id="accounts_no_uid_except_zero" />
-<ref nist="AC-6,IA-2(1),IA-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="020310" />
+<ref nist="AC-6,IA-2(1),IA-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227"  />
 </Rule>
 
 <Rule id="root_path_default">
@@ -216,7 +210,6 @@ The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
 <ref nist="SA-8" />
-<ident cce="80210-8" />
 </Rule>
 
 <!--
