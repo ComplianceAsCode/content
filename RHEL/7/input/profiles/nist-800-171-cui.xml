@@ -1,19 +1,16 @@
 <Profile id="nist-800-171-cui">
-<title>RHEL7 Server Baseline for Controlled Unclassified Information in Nonfederal Information Systems and Organizations (NIST 800-171)</title>
-<description override="true">
-
-From NIST 800-171, Section 2.2:
+<title>Unclassified Information in Nonfederal Information Systems and Organizations (NIST 800-171)</title>
+<description>From NIST 800-171, Section 2.2:
 Security requirements for protecting the confidentiality of CUI in nonfederal information systems
 and organizations have a well-defined structure that consists of: (i) a basic security requirements section;
 and (ii) a derived security requirements section. The basic security requirements are obtained from FIPS
 Publication 200, which provides the high-level and fundamental security requirements for federal information
 and information systems. The derived security requirements, which supplement the basic security requirements,
-are taken from the security controls in NIST Special Publication 800-53. 
+are taken from the security controls in NIST Special Publication 800-53.
 
-This profile configures Red Hat Enterprise Linux 7 to the NIST Special Publication 800-53 controls identified 
+This profile configures Red Hat Enterprise Linux 7 to the NIST Special Publication 800-53 controls identified
 for securing Controlled Unclassified Information (CUI).
 </description>
-
 <!-- NIST 800-171 can be found here:
      http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
 -->
@@ -52,8 +49,7 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.1.4	Separate the duties of individuals to reduce the risk of malevolent activity without
      		collusion. -->
-
-<!-- TO DO: organizational control mappings -->
+<!-- mapped to cui_procedural_requirement -->
 
 <!-- 3.1.5	Employ the principal of least privilege, including for specific security functions
      		and privileged accounts. -->
@@ -64,7 +60,6 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="sysctl_kernel_dmesg_restrict" selected="true" />
 
 <!-- 3.1.6	Use non-privileged accounts or roles when accessing nonsecurity functions. -->
-
 <!-- Rules enabled elsewhere but mapped to this control:
      	- no_direct_root_logins
 	- securetty_root_login_console_only
@@ -217,6 +212,12 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="sshd_use_approved_ciphers" selected="true" />
 <select idref="sshd_use_approved_macs" selected="true" />
 <select idref="dconf_gnome_remote_access_encryption" selected="true" />
+<select idref="service_telnet_disabled" selected="true"/>
+<select idref="package_telnet_removed" selected="true" />
+<select idref="service_rexec_disabled" selected="true" />
+<select idref="service_rsh_disabled" selected="true" />
+<select idref="package_rsh_removed" selected="true" />
+<select idref="service_rlogin_disabled" selected="true" />
 
 <!-- 3.1.14	Route remote access via managed control points -->
 <!-- Organizational control -->
@@ -294,12 +295,12 @@ for securing Controlled Unclassified Information (CUI).
      		needed to enable the monitoring, analysis, investigation, and reporting
 		of unlawful, unauthorized, or inappropraite information system activitiy -->
 <refine-value idref="var_auditd_num_logs" selector="5" />
-var_auditd_max_log_file
-var_auditd_max_log_file_action
-var_auditd_space_left_action
-var_auditd_admin_space_left_action
-var_auditd_action_mail_acct
-var_auditd_flush
+<refine-value idref="var_auditd_max_log_file" selector="" />
+<refine-value idref="var_auditd_max_log_file_action" selector="" />
+<refine-value idref="var_auditd_space_left_action" selector="" />
+<refine-value idref="var_auditd_admin_space_left_action" selector="" />
+<refine-value idref="var_auditd_action_mail_acct" selector="" />
+<refine-value idref="var_auditd_flush" selector="" />
 
 <select idref="service_auditd_enabled" selected="true" />
 <select idref="bootloader_audit_argument" selected="true" />
@@ -456,7 +457,7 @@ var_auditd_flush
 <!-- 3.8.9	Protect the confidentiality of backup CUI at storage locations -->
 
 <!-- 3.9 PERSONNEL SECURITY -->
-<!-- 3.9.1	Scren individuals prior to authorizing access to information systems
+<!-- 3.9.1	Screen individuals prior to authorizing access to information systems
      		containing CUI -->
 
 <!-- 3.9.2	Ensure that CUI and information systems containing CUI are protected
