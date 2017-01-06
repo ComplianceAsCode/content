@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_kernel_module_loading_insmod" version="1">
+    <metadata>
+      <title>Audit Kernel Module Loading and Unloading - insmod</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
+    </metadata>
+    <criteria operator="OR">
+      <!-- First check the default configuraton: 'augenrules' tool specified in 'ExecStartPost' directive of
+           /usr/lib/systemd/system/auditd.service (in other words case when final /etc/audit/audit.rules
+           configuration is generated from *.rules files' content present in the /etc/audit/rules.d directory) -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules insmod" test_ref="test_audit_rule_kernel_module_loading_insmod_augenrules" />
+      </criteria>
+      <!-- Check the modified configuration: 'auditctl' tool specified in 'ExecStartPost' directive of
+           /usr/lib/systemd/system/auditd.service (in other words case when final /etc/audit/audit.rules is
+           just loaded by 'auditctl' tool into memory) -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl insmod" test_ref="test_audit_rule_kernel_module_loading_insmod_auditctl" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules insmod" id="test_audit_rule_kernel_module_loading_insmod_augenrules" version="1">
+    <ind:object object_ref="object_audit_rule_kernel_module_loading_insmod_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_insmod_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/insmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl insmod" id="test_audit_rule_kernel_module_loading_insmod_auditctl" version="1">
+    <ind:object object_ref="object_audit_rule_kernel_module_loading_insmod_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_insmod_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/insmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

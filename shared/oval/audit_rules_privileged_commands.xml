@@ -13,14 +13,14 @@
 
       <!-- Test the augenrules case -->
       <criteria operator="AND">
-        <criterion comment="audit augenrules" test_ref="test_arpc_augenrules" />
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
         <criterion comment="audit augenrules suid sgid" test_ref="test_arpc_suid_sgid_augenrules" />
         <criterion comment="audit augenrules binaries count matches rules count" test_ref="test_arpc_bin_count_equals_rules_count_augenrules" />
       </criteria>
 
       <!-- Test the auditctl case -->
       <criteria operator="AND">
-        <criterion comment="audit auditctl" test_ref="test_arpc_auditctl" />
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
         <criterion comment="audit auditctl suid sgid" test_ref="test_arpc_suid_sgid_auditctl" />
         <criterion comment="audit auditctl binaries count matches rules count" test_ref="test_arpc_bin_count_equals_rules_count_auditctl" />
       </criteria>
@@ -73,16 +73,6 @@
     <ind:subexpression operation="pattern match" datatype="string" var_ref="variable_full_form_of_audit_rule" var_check="at least one"/>
   </ind:textfilecontent54_state>
 
-  <!-- Test the augenrules case -->
-  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_arpc_augenrules" version="1">
-    <ind:object object_ref="object_arpc_augenrules" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arpc_augenrules" version="1">
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit augenrules suid sgid" id="test_arpc_suid_sgid_augenrules" version="1">
     <ind:object object_ref="object_arpc_suid_sgid_augenrules" />
     <ind:state state_ref="state_audit_rules_privileged_commands" />
@@ -106,16 +96,6 @@
     <ind:object object_ref="object_count_of_suid_sgid_binaries_on_system" />
     <ind:state state_ref="state_count_of_privileged_commands_having_audit_definition_augenrules" />
   </ind:variable_test>
-
-  <!-- Test the auditctl case -->
-  <ind:textfilecontent54_test check="all" comment="audit auditctl" id="test_arpc_auditctl" version="1">
-    <ind:object object_ref="object_arpc_auditctl" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_arpc_auditctl" version="1">
-    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
-    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/auditctl.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit auditctl suid sgid" id="test_arpc_suid_sgid_auditctl" version="1">
     <ind:object object_ref="object_arpc_suid_sgid_auditctl" />
