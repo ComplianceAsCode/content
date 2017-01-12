@@ -4,11 +4,13 @@ include VERSION
 ROOT_DIR ?= $(CURDIR)
 RPMBUILD ?= $(ROOT_DIR)/rpmbuild
 RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
+DEBBUILD ?= $(ROOT_DIR)/debbuild
+DEB_SPEC := $(ROOT_DIR)/control
 PKGNAME := $(SSG_PROJECT_NAME)
 OS_DIST := $(shell rpm --eval '%{dist}')
 
 ARCH := noarch
-RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)'  --define '_tmppath $(RPMBUILD)'
+RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)' --define '_tmppath $(RPMBUILD)'
 
 DATESTR:=$(shell date -u +'%Y%m%d%H%M')
 RPM_DATESTR := $(shell date -u +'%a %b %d %Y')
@@ -246,6 +248,9 @@ rpmroot:
 	mkdir -p $(RPMBUILD)/ZIPS
 	mkdir -p $(RPMBUILD)/BUILDROOT
 
+debroot:
+	mkdir -p $(DEBBUILD)/$(PKGNAME)-$(SSG_RELEASE_VERSION)/DEBIAN
+
 zipfile: dist
 	@# ZIP only contains source datastreams and kickstarts, people who
 	@# want sources to build from should get the tarball instead.
@@ -276,6 +281,12 @@ version-update:
 		$(RPM_SPEC)
 	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
 		$(RPM_SPEC)
+
+deb: tarball version-update debroot
+	cp $(DEB_SPEC) $(DEBBUILD)/$(PKGNAME)-$(SSG_RELEASE_VERSION)/DEBIAN/
+	cp tarball/$(PKG).tar.gz $(DEBBUILD)
+	cd $(DEBBUILD)
+	tar -xjvf $(PKG).tar.gz -C $(PKGNAME)-$(SSG_RELEASE_VERSION)
 
 srpm: tarball version-update rpmroot
 	cat $(RPM_SPEC) > $(RPMBUILD)/SPECS/$(notdir $(RPM_SPEC))
@@ -309,6 +320,7 @@ git-tag:
 
 clean:
 	rm -rf $(RPMBUILD)
+	rm -rf $(DEBBUILD)
 	rm -rf tarball/
 	rm -rf zipfile/
 	rm -rf shared/output
