@@ -2135,7 +2135,7 @@ ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-0021
 cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_chkpwd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_unix_chkpwd" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - unix_chkpwd</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2166,7 +2166,7 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 <ident prodtype="rhel7" cce="80396-5" />
-<oval id="audit_rules_privileged_commands_chkpwd" />
+<oval id="audit_rules_privileged_commands_unix_chkpwd" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030511"
 ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
 cui="3.1.7" />
@@ -2246,7 +2246,7 @@ ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-0021
 cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_usrhelpr" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_userhelper" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - userhelper</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2277,7 +2277,7 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 <ident prodtype="rhel7" cce="80399-9" />
-<oval id="audit_rules_privileged_commands_usrhelpr" />
+<oval id="audit_rules_privileged_commands_userhelper" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030514"
 ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
 cui="3.1.7" />
@@ -3055,7 +3055,7 @@ ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030670" pcidss
 cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_del" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_delete" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - delete_module</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3075,7 +3075,7 @@ b64 as appropriate for your system:
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
 <ident prodtype="rhel7" cce="80415-3" />
-<oval id="audit_rules_kernel_module_loading_del" />
+<oval id="audit_rules_kernel_module_loading_delete" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
 ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030671" pcidss="Req-10.2.7" cis="5.2.17"
 cui="3.1.7" />
