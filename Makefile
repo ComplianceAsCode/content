@@ -5,7 +5,8 @@ ROOT_DIR ?= $(CURDIR)
 RPMBUILD ?= $(ROOT_DIR)/rpmbuild
 RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
 DEBBUILD ?= $(ROOT_DIR)/debbuild
-DEB_SPEC := $(ROOT_DIR)/control
+DEB_SPEC := $(ROOT_DIR)/deb.control
+DEB_CHANGELOG :=$(ROOT_DIR)/deb.changelog
 DEBPATH ?= $(DEBBUILD)/$(PKGNAME)-$(SSG_VERSION)/
 PKGNAME := $(SSG_PROJECT_NAME)
 OS_DIST := $(shell rpm --eval '%{dist}')
@@ -253,7 +254,6 @@ debroot:
 	mkdir -p $(DEBBUILD)/DEBS
 	mkdir -p $(DEBPATH)/DEBIAN
 	mkdir -p $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap/ssg
-	mkdir -p $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap-security-guide
 	mkdir -p $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap-security-guide/kickstart
 	mkdir -p $(DEBPATH)/$(PREFIX)/$(MANDIR)/en/man8
 	mkdir -p $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/guides
@@ -291,7 +291,7 @@ version-update:
 		$(RPM_SPEC)
 
 	@echo -e "\nUpdating $(DEB_SPEC) version, release, and changelog..."
-	sed -e s/__NAME__/$(PKGNAME)/ \
+	sed -e s/__NAME__/$(PKGNAME)/g \
 		$(DEB_SPEC).in > $(DEB_SPEC)
 	sed -i s/__VERSION__/$(SSG_VERSION)/ \
 		$(DEB_SPEC)
@@ -303,16 +303,32 @@ version-update:
 		$(DEB_SPEC)
 	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
 		$(DEB_SPEC)
+	sed -e s/__NAME__/$(PKGNAME)/g \
+		$(DEB_CHANGELOG).in >> $(DEB_CHANGELOG)
+	sed -i s/__VERSION__/$(SSG_VERSION)/ \
+		$(DEB_CHANGELOG)
+	sed -i s/__RELEASE__/$(SSG_RELEASE_VERSION)/ \
+		$(DEB_CHANGELOG)
+	sed -i 's/__DATE__/$(SSG_RELEASE_DATE)/' \
+		$(DEB_CHANGELOG)
+	sed -i 's/__REL_MANAGER__/$(SSG_REL_MANAGER)/' \
+		$(DEB_CHANGELOG)
+	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
+		$(DEB_CHANGELOG)
 
 deb: debian8 tarball version-update debroot
-	cp $(DEB_SPEC) $(DEBPATH)/DEBIAN/
+	cp $(DEB_SPEC) $(DEBPATH)/DEBIAN/control
 	chmod 0755 $(DEBPATH)/DEBIAN/
-	cp -r $(ROOT_DIR)/Debian/8/dist/content/* $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap/ssg/
-	cp -r $(ROOT_DIR)/Debian/8/dist/guide/* $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/guides
-	cp -r $(ROOT_DIR)/docs/scap-security-guide.8 $(DEBPATH)/$(PREFIX)/$(MANDIR)/en/man8/
-	cp $(ROOT_DIR)/LICENSE $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide
-	cp $(ROOT_DIR)/README.md $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide
+	install -m 0644 $(ROOT_DIR)/Debian/8/dist/content/* $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap/ssg/
+	install -m 0644 $(ROOT_DIR)/Debian/8/dist/guide/* $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 $(ROOT_DIR)/docs/scap-security-guide.8 $(DEBPATH)/$(PREFIX)/$(MANDIR)/en/man8/
+	install -m 0644 $(ROOT_DIR)/LICENSE $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/copyright
+	install -m 0644 $(ROOT_DIR)/README.md $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide
+	install -m 0644 $(DEB_CHANGELOG) $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/changelog
+	gzip -n9 $(DEBPATH)/$(PREFIX)/$(MANDIR)/en/man8/scap-security-guide.8
+	gzip -n9 $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/changelog
 	dpkg-deb --build $(DEBPATH) $(DEBBUILD)/DEBS/$(PKGNAME)-$(SSG_VERSION).deb
+	#lintian --no-tag-display-limit -c $(DEBBUILD)/DEBS/$(PKGNAME)-$(SSG_VERSION).deb
 
 srpm: tarball version-update rpmroot
 	cat $(RPM_SPEC) > $(RPMBUILD)/SPECS/$(notdir $(RPM_SPEC))
@@ -365,6 +381,7 @@ clean:
 	cd Chromium && $(MAKE) clean
 	rm -f $(RPM_SPEC)
 	rm -f $(DEB_SPEC)
+	rm -f $(DEB_CHANGELOG)
 
 install: dist
 	install -d $(PREFIX)/$(DATADIR)/scap/ssg

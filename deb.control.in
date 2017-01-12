@@ -1,0 +1,18 @@
+Package: __NAME__
+Version: __VERSION__
+Section: admin
+Priority: optional
+Architecture: all
+Maintainer: __REL_MANAGER__ <__REL_MANAGER_MAIL__>
+Depends: libopenscap8
+Build-Depends: libopenscap8 build-essential xsltproc libxml2-utils python-lxml expat lintian
+Bugs: https://github.com/OpenSCAP/scap-security-guide/issues
+Description: Security guidance and baselines in SCAP formats
+ The __NAME__ project provides a guide for configuration of the
+ system from the final system's security point of view. The guidance is
+ specified in the Security Content Automation Protocol (SCAP) format and
+ constitutes a catalog of practical hardening advice, linked to government
+ requirements where applicable. The project bridges the gap between generalized
+ policy requirements and specific implementation guidelines. The system
+ administrator can use the oscap command-line tool from the openscap-utils
+ package to verify that the system conforms to provided guidelines.
