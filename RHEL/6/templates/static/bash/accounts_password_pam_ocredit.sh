@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_password_pam_ocredit
 
 if grep -q "ocredit=" /etc/pam.d/system-auth; then   

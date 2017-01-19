@@ -1,7 +1,7 @@
 # platform = Red Hat Enterprise Linux 6
 
 # Include source function library.
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 
 # Perform the remediation
 fix_audit_watch_rule "auditctl" "/etc/group" "wa" "audit_rules_usergroup_modification"

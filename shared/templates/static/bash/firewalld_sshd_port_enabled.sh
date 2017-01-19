@@ -1,7 +1,7 @@
 # platform = Red Hat Enterprise Linux 7, multi_platform_fedora
 #
 # Include source function library.
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate sshd_listening_port
 
 if [ $sshd_listening_port -ne 22] ; then

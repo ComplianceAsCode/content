@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate max_concurrent_login_sessions_value
 
 if [ $(grep -v "#" /etc/security/limits.conf | grep -c "maxlogins") = "0" ]; then

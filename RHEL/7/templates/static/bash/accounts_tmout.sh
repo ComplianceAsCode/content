@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_tmout
 
 if grep --silent ^TMOUT /etc/profile ; then

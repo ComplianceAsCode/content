@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_passwords_pam_faillock_unlock_time
 
 AUTH_FILES[0]="/etc/pam.d/system-auth"

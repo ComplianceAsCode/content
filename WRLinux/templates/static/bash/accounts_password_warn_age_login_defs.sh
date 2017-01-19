@@ -1,5 +1,5 @@
 # platform = multi_platform_wrlinux
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 declare var_accounts_password_warn_age_login_defs
 populate var_accounts_password_warn_age_login_defs
 

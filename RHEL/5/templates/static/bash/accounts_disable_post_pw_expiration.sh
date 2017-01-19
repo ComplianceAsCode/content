@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_account_disable_post_pw_expiration
 
 if [ $(cat /etc/default/useradd | grep -c "^INACTIVE=") != 0 ]; then

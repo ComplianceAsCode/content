@@ -1,5 +1,5 @@
 # platform = multi_platform_fedora
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 declare var_accounts_minimum_age_login_defs
 populate var_accounts_minimum_age_login_defs
 

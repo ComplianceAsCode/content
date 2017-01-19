@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_umask_for_daemons
 
 grep -q ^umask /etc/init.d/functions && \

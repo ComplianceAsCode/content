@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel, multi_platform_fedora
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 declare sshd_idle_timeout_value
 populate sshd_idle_timeout_value
 

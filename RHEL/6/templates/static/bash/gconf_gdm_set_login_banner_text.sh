@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate login_banner_text
 
 # Install GConf2 package if not installed

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate inactivity_timeout_value
 
 # Define constants to be reused below

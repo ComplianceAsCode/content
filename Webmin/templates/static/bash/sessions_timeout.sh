@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_sessions_timeout
 
 if [ "$(grep -c '^logouttime=' /etc/webmin/miniserv.conf)" = "0" ]; then

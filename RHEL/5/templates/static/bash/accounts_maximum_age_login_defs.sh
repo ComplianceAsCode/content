@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_maximum_age_login_defs
 
 grep -q ^PASS_MAX_DAYS /etc/login.defs && \

@@ -1,7 +1,7 @@
 # platform = Red Hat Enterprise Linux 6
 
 # Include source function library.
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 
 # Perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system

@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_module_useradmin_accounts_max
 
 if [ "$(grep -c '^default_max=' /etc/webmin/useradmin/config)" = "0" ]; then

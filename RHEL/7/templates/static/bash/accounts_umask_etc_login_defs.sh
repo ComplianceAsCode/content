@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_user_umask
 
 grep -q UMASK /etc/login.defs && \

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate inactivity_timeout_value
 
 # Install GConf2 package if not installed

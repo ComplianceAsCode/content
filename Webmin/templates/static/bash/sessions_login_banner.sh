@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_sessions_login_banner_text
 
 if [ "$(grep -c '^loginbanner=' /etc/webmin/config)" = "0" ]; then

@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_user_umask
 
 grep -q umask /etc/bashrc && \

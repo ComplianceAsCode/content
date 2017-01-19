@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_module_useradmin_accounts_min_length
 
 if [ "$(grep -c '^passwd_min=' /etc/webmin/useradmin/config)" = "0" ]; then

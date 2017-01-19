@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_sessions_port
 
 if [ "$(grep -c '^port=' /etc/webmin/miniserv.conf)" = "0" ]; then

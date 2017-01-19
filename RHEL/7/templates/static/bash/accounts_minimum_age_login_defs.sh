@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_minimum_age_login_defs
 
 grep -q ^PASS_MIN_DAYS /etc/login.defs && \

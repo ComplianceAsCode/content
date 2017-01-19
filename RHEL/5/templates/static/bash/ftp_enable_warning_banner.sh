@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate ftp_login_banner_text
 
 if [ -e /etc/xinetd.d/gssftp ]; then

@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_auditd_max_log_file_action
 
 AUDITCONFIG=/etc/audit/auditd.conf

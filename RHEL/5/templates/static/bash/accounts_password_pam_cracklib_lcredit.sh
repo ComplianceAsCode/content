@@ -1,4 +1,4 @@
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_password_pam_cracklib_lcredit
 
 if [ $(grep -c "lcredit=" /etc/pam.d/system-auth) != 0 ]; then

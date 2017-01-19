@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. $SHARED_REMEDIATION_FUNCTIONS
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate sshd_idle_timeout_value
 
 grep -q ^ClientAliveInterval /etc/ssh/sshd_config && \
