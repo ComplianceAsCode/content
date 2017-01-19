@@ -8,7 +8,7 @@ PKGNAME := $(SSG_PROJECT_NAME)
 OS_DIST := $(shell rpm --eval '%{dist}')
 
 ARCH := noarch
-RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)'  --define '_tmppath $(RPMBUILD)'
+RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)' --define '_tmppath $(RPMBUILD)' --define '_source_filedigest_algorithm md5' --define '_binary_filedigest_algorithm md5' --define '_source_payload w9.bzdio' --define '_binary_payload w9.bzdio'
 
 DATESTR:=$(shell date -u +'%Y%m%d%H%M')
 RPM_DATESTR := $(shell date -u +'%a %b %d %Y')
