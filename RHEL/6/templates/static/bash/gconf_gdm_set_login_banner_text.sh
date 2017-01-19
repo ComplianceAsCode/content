@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate login_banner_text
 
 # Install GConf2 package if not installed

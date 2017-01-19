@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_user_umask
 
 grep -q UMASK /etc/login.defs && \

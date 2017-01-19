@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_auditd_disk_error_action
 
 if [ -e /etc/audit/auditd.conf ]; then

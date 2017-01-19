@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_password_pam_maxrepeat
 
 if grep -q "maxrepeat=" /etc/pam.d/system-auth; then   

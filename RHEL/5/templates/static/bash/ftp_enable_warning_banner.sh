@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate ftp_login_banner_text
 
 if [ -e /etc/xinetd.d/gssftp ]; then

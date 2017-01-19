@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_password_warn_age_login_defs
 
 grep -q ^PASS_WARN_AGE /etc/login.defs && \

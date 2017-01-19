@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_module_useradmin_accounts_min
 
 if [ "$(grep -c '^default_min=' /etc/webmin/useradmin/config)" = "0" ]; then

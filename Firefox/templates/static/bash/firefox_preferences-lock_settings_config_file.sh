@@ -1,4 +1,4 @@
 # platform = Mozilla Firefox
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 
 firefox_js_setting "stig_settings.js" "general.config.filename" "\"stig.cfg\""

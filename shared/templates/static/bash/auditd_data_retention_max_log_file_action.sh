@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_auditd_max_log_file_action
 
 AUDITCONFIG=/etc/audit/auditd.conf

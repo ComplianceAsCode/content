@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_user_umask
 
 grep -q umask /etc/csh.cshrc && \

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 
 # Install required packages
 package_command install esc

@@ -1,5 +1,5 @@
 # platform = multi_platform_rhel
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_accounts_passwords_pam_faillock_fail_interval
 
 AUTH_FILES[0]="/etc/pam.d/system-auth"

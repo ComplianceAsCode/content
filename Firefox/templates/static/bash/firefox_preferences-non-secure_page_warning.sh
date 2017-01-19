@@ -1,4 +1,4 @@
 # platform = Mozilla Firefox
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 
 firefox_cfg_setting "stig.cfg" "security.warn_leaving_secure" "true"

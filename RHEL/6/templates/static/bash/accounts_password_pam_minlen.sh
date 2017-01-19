@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_password_pam_minlen
 
 if grep -q "minlen=" /etc/pam.d/system-auth

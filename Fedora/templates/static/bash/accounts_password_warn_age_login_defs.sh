@@ -1,5 +1,5 @@
 # platform = multi_platform_fedora
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 declare var_accounts_password_warn_age_login_defs
 populate var_accounts_password_warn_age_login_defs
 

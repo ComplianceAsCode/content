@@ -1,7 +1,7 @@
 # platform = Red Hat Enterprise Linux 7, multi_platform_fedora
 
 # Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 

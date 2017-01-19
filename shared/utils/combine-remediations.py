@@ -220,13 +220,13 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         pattern = r'\(anaconda-populate\s*(\S+)\)'
         parts = re.split(pattern, fix.text)
         fix.text = parts[0]
-        
+
         return
 
     elif remediation_type == "bash":
         # This remediation script doesn't utilize internal remediation functions
         # Skip it without any further processing
-        if 'remediation_functions' not in fix.text:
+        if '$SHARED_REMEDIATION_FUNCTIONS' not in fix.text:
             return
         # This remediation script utilizes some of internal remediation functions
         # Expand shell variables and remediation functions calls with <xccdf:sub>
@@ -242,7 +242,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 # * tail        to hold part of the fix.text after inclusion,
                 #               but before first call of remediation function
                 try:
-                    rfpattern = '(.*remediation_functions)(.*)'
+                    rfpattern = '(.*\\$SHARED_REMEDIATION_FUNCTIONS)(.*)'
                     rfpatcomp = re.compile(rfpattern, re.DOTALL)
                     _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
                 except ValueError:

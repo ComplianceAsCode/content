@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_selinux_policy_name
 
 if [ "`grep -c ^SELINUX= /etc/sysconfig/selinux`" = "0" ]; then

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. /usr/share/scap-security-guide/remediation_functions
+. $SHARED_REMEDIATION_FUNCTIONS
 populate var_auditd_space_left_action
 
 grep -q ^space_left_action /etc/audit/auditd.conf && \
