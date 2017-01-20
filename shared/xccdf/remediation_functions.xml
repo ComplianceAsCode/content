@@ -1165,8 +1165,9 @@ function replace_or_append {
   if `grep -qi $key $config_file` ; then
     $sed_command "s/$key.*/$formatted_output/g" $config_file
   else
-    echo -ne "\n# Per $cce: Set $formatted_output in $config_file" >> $config_file
-    echo -ne "\n$formatted_output" >> $config_file
+    # \n is precaution for case where file ends without trailing newline
+    echo -e "\n# Per $cce: Set $formatted_output in $config_file" >> $config_file
+    echo -e "$formatted_output" >> $config_file
   fi
 
 }
