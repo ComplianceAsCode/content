@@ -38,7 +38,7 @@ are from Red Hat.
 </rationale>
 <ident cce="26506-6" stig="RHEL-06-000008" />
 <oval id="ensure_redhat_gpgkey_installed" />
-<ref nist="SI-7,MA-1(b)" disa="351"/>
+<ref nist="SI-7,MA-1(b)" disa="351" pcidss="Req-6.2" />
 </Rule>
 
 <!-- REMINDER: Before telling people to update their systems
@@ -69,7 +69,7 @@ protects against malicious tampering.
 </rationale>
 <ident cce="26709-6" stig="RHEL-06-000013" />
 <oval id="ensure_gpgcheck_globally_activated" />
-<ref nist="SI-7,MA-1(b)" disa="352,663" />
+<ref nist="SI-7,MA-1(b)" disa="352,663" pcidss="Req-6.2" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled" severity="low">
@@ -93,7 +93,7 @@ protects against malicious tampering.
 </rationale>
 <ident cce="26647-8" stig="RHEL-06-000015" />
 <oval id="ensure_gpgcheck_never_disabled" />
-<ref nist="SI-7,MA-1(b)" disa="352,663"/>
+<ref nist="SI-7,MA-1(b)" disa="352,663" pcidss="Req-6.2" />
 </Rule>
 
 <Rule id="security_patches_up_to_date" severity="medium">
@@ -127,6 +127,6 @@ the exploitation of publicly-known vulnerabilities.
 <ident cce="27635-2" stig="RHEL-06-000011" />
 <!-- Particular OVAL check is defined directly via <check> element above -->
 <!-- DO NOT REFERENCE an OVAL id here !!! -->
-<ref nist="SI-2,MA-1(b)" disa="1227,1233"/>
+<ref nist="SI-2,MA-1(b)" disa="1227,1233" pcidss="Req-6.2" />
 </Rule>
 </Group>
