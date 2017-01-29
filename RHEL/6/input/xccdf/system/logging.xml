@@ -120,7 +120,7 @@ configuration, user authentication, and other such information. Log files should
 protected from unauthorized access.</rationale>
 <ident cce="26812-8" stig="RHEL-06-000133" />
 <oval id="rsyslog_files_ownership" />
-<ref nist="AC-6,SI-11" disa="1314"/>
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
 <Rule id="rsyslog_files_groupownership" severity="medium">
@@ -148,7 +148,7 @@ configuration, user authentication, and other such information. Log files should
 protected from unauthorized access.</rationale>
 <ident cce="26821-9" stig="RHEL-06-000134" />
 <oval id="rsyslog_files_groupownership" />
-<ref nist="AC-6,SI-11" disa="1314"/>
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
 
@@ -182,7 +182,7 @@ users could change the logged data, eliminating their forensic value.
 </rationale>
 <ident cce="27190-8" stig="RHEL-06-000135" />
 <oval id="rsyslog_files_permissions" />
-<ref nist="SI-11" disa="1314"/>
+<ref nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 </Group>
 
@@ -372,7 +372,7 @@ If logrotate is configured properly, output should include references to
 </ocil>
 <ident cce="27014-0" stig="RHEL-06-000138" />
 <oval id="ensure_logrotate_activated" />
-<ref nist="AU-9" disa="366" />
+<ref nist="AU-9" disa="366" pcidss="Req-10.7" />
 </Rule>
 </Group>
 
