@@ -284,12 +284,15 @@ for securing Controlled Unclassified Information (CUI).
 		information systems are made aware of the security risks associated with 
 		their activities and of the applicable policies, standards, and procedures
 		related to the security of organizational information systems -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.2.2	Ensure that organizational personnel are adequately trained to carry out
      		their assigned information security-related duties and responsibilities -->
+<!-- TO DO: Organizational control --> 
 
 <!-- 3.2.3	Provide security awareness training on recognizing and reporting potential
      		indicators of insider threat -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.3.1	Create, protect, and retain information system audit records to the extent
      		needed to enable the monitoring, analysis, investigation, and reporting
@@ -319,31 +322,52 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.3.2	Ensure that the actions of individual information system users can be uniquely
      		traced to those users so they can be held accountable for their actions -->
+<!-- rules that map to this:
+     	service_auditd_enabled
+-->
 
 <!-- 3.3.3	Review and update audited events -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.3.4	Alert in the event of an audit process failure -->
+<!-- NOTE: In chatting with NIST and DoD, they "prefer" the system to be
+           halted. We need further discussion to see if we truly can '-f 1', or
+	   if full halt is required -->
+<select idref="audit_rules_system_shutdown" selected="true" />
 
 <!-- 3.3.5	Correlate audit review, analysis, and reporting processes for investigation
      		and repsonse to indications of inappropraite, suspicious, or unusual activity -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.3.6	Provide audit reduction and report generation to support on-demand analysis
      		and reporting -->
+<!-- rules that map to this:
+     	- service_auditd_enabled
+-->
 
 <!-- 3.3.7	Provide an information system capability that compares and synchronizes internal
      		system clocks with an authoritative source to generate time stamps for audit
 		records -->
+<select idref="service_chronyd_or_ntpd_enabled" selected="true" />
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="true" />
 
 <!-- 3.3.8	Protect audit information and audit tools from unauthorized access, modification,
      		and deletion -->
+<!-- rules that map to this:
+     	- rpm_verify_permissions / rpm_verify_hashes
+	- audit_rules_immutable
+--> 
 
 <!-- 3.3.9	Limit management of audit functionality to a subset of privileged users -->
+<!-- TO DO: config sudo? -->
 
 <!-- 3.4. CONFIGURATION MANAGEMENT -->
 
 <!-- 3.4.1	Establish and maintain baseline configurations and inventories of organizational
      		information systems (including hardware, software, firmware, and documentation)
 		throughout the respective system development life cycles -->
+<select idref="rpm_verify_permissions" selected="true" />
+<select idref="rpm_verify_hashes" selected="true" />
 
 <!-- 3.4.2	Establish and enforce security configuration setting for information technology
      		products employed in organizational information systems -->
