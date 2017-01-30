@@ -1,19 +1,16 @@
 <Profile id="nist-800-171-cui">
-<title>RHEL7 Server Baseline for Controlled Unclassified Information in Nonfederal Information Systems and Organizations (NIST 800-171)</title>
-<description override="true">
-
-From NIST 800-171, Section 2.2:
+<title>Unclassified Information in Non-federal Information Systems and Organizations (NIST 800-171)</title>
+<description>From NIST 800-171, Section 2.2:
 Security requirements for protecting the confidentiality of CUI in nonfederal information systems
 and organizations have a well-defined structure that consists of: (i) a basic security requirements section;
 and (ii) a derived security requirements section. The basic security requirements are obtained from FIPS
 Publication 200, which provides the high-level and fundamental security requirements for federal information
 and information systems. The derived security requirements, which supplement the basic security requirements,
-are taken from the security controls in NIST Special Publication 800-53. 
+are taken from the security controls in NIST Special Publication 800-53.
 
-This profile configures Red Hat Enterprise Linux 7 to the NIST Special Publication 800-53 controls identified 
+This profile configures Red Hat Enterprise Linux 7 to the NIST Special Publication 800-53 controls identified
 for securing Controlled Unclassified Information (CUI).
 </description>
-
 <!-- NIST 800-171 can be found here:
      http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf
 -->
@@ -52,8 +49,7 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.1.4	Separate the duties of individuals to reduce the risk of malevolent activity without
      		collusion. -->
-
-<!-- TO DO: organizational control mappings -->
+<!-- mapped to cui_procedural_requirement -->
 
 <!-- 3.1.5	Employ the principal of least privilege, including for specific security functions
      		and privileged accounts. -->
@@ -64,7 +60,6 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="sysctl_kernel_dmesg_restrict" selected="true" />
 
 <!-- 3.1.6	Use non-privileged accounts or roles when accessing nonsecurity functions. -->
-
 <!-- Rules enabled elsewhere but mapped to this control:
      	- no_direct_root_logins
 	- securetty_root_login_console_only
@@ -112,6 +107,40 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="audit_rules_kernel_module_loading_insmod" selected="true" />
 <select idref="audit_rules_kernel_module_loading_rmmod" selected="true" />
 <select idref="audit_rules_kernel_module_loading_modprobe" selected="true" />
+<select idref="audit_rules_time_adjtimex" selected="true" />
+<select idref="audit_rules_time_settimeofday" selected="true" />
+<select idref="audit_rules_time_stime" selected="true" />
+<select idref="audit_rules_time_clock_settime" selected="true" />
+<select idref="audit_rules_time_watch_localtime" selected="true" />
+<select idref="audit_rules_usergroup_modification" selected="true" />
+<select idref="audit_rules_networkconfig_modification" selected="true" />
+<select idref="audit_rules_mac_modification" selected="true" />
+<select idref="audit_rules_dac_modification_chmod" selected="true" />
+<select idref="audit_rules_dac_modification_chown" selected="true" />
+<select idref="audit_rules_dac_modification_fchmod" selected="true" />
+<select idref="audit_rules_dac_modification_fchmodat" selected="true" />
+<select idref="audit_rules_dac_modification_fchown" selected="true" />
+<select idref="audit_rules_dac_modification_fchownat" selected="true" />
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_lchown" selected="true" />
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_removexattr" selected="true" />
+<select idref="audit_rules_dac_modification_setxattr" selected="true" />
+<select idref="audit_rules_login_events" selected="true" />
+<select idref="audit_rules_login_events_tallylog" selected="true" />
+<select idref="audit_rules_login_events_faillock" selected="true" />
+<select idref="audit_rules_login_events_lastlog" selected="true" />
+<select idref="audit_rules_session_events" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_creat" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_open" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_openat" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_open_by_handle_at" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_truncate" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_ftruncate" selected="true" />
+
 <select idref="dconf_gnome_disable_automount" selected="true" />
 <select idref="sysctl_kernel_exec_shield" selected="true" />
 <select idref="sysctl_kernel_randomize_va_space" selected="true" />
@@ -183,6 +212,12 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="sshd_use_approved_ciphers" selected="true" />
 <select idref="sshd_use_approved_macs" selected="true" />
 <select idref="dconf_gnome_remote_access_encryption" selected="true" />
+<select idref="service_telnet_disabled" selected="true"/>
+<select idref="package_telnet_removed" selected="true" />
+<select idref="service_rexec_disabled" selected="true" />
+<select idref="service_rsh_disabled" selected="true" />
+<select idref="package_rsh_removed" selected="true" />
+<select idref="service_rlogin_disabled" selected="true" />
 
 <!-- 3.1.14	Route remote access via managed control points -->
 <!-- Organizational control -->
@@ -249,44 +284,89 @@ for securing Controlled Unclassified Information (CUI).
 		information systems are made aware of the security risks associated with 
 		their activities and of the applicable policies, standards, and procedures
 		related to the security of organizational information systems -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.2.2	Ensure that organizational personnel are adequately trained to carry out
      		their assigned information security-related duties and responsibilities -->
+<!-- TO DO: Organizational control --> 
 
 <!-- 3.2.3	Provide security awareness training on recognizing and reporting potential
      		indicators of insider threat -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.3.1	Create, protect, and retain information system audit records to the extent
      		needed to enable the monitoring, analysis, investigation, and reporting
 		of unlawful, unauthorized, or inappropraite information system activitiy -->
+<refine-value idref="var_auditd_num_logs" selector="5" />
+<refine-value idref="var_auditd_max_log_file" selector="" />
+<refine-value idref="var_auditd_max_log_file_action" selector="" />
+<refine-value idref="var_auditd_space_left_action" selector="" />
+<refine-value idref="var_auditd_admin_space_left_action" selector="" />
+<refine-value idref="var_auditd_action_mail_acct" selector="" />
+<refine-value idref="var_auditd_flush" selector="" />
+
+<select idref="service_auditd_enabled" selected="true" />
+<select idref="bootloader_audit_argument" selected="true" />
+<select idref="auditd_data_retention_num_logs" selected="true" />
+<select idref="auditd_data_retention_max_log_file" selected="true" />
+<select idref="auditd_data_retention_max_log_file_action" selected="true" />
+<select idref="auditd_data_retention_space_left_action" selected="true" />
+<select idref="auditd_data_retention_admin_space_left_action" selected="true" />
+<select idref="auditd_data_retention_action_mail_acct" selected="true" />
+<select idref="auditd_data_retention_flush" selected="true" />
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
+<select idref="audit_rules_immutable" selected="true" />
+<select idref="file_permissions_var_log_audit" selected="true" />
+<select idref="file_ownership_var_log_audit" selected="true" />
 
 <!-- 3.3.2	Ensure that the actions of individual information system users can be uniquely
      		traced to those users so they can be held accountable for their actions -->
+<!-- rules that map to this:
+     	service_auditd_enabled
+-->
 
 <!-- 3.3.3	Review and update audited events -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.3.4	Alert in the event of an audit process failure -->
+<!-- NOTE: In chatting with NIST and DoD, they "prefer" the system to be
+           halted. We need further discussion to see if we truly can '-f 1', or
+	   if full halt is required -->
+<select idref="audit_rules_system_shutdown" selected="true" />
 
 <!-- 3.3.5	Correlate audit review, analysis, and reporting processes for investigation
      		and repsonse to indications of inappropraite, suspicious, or unusual activity -->
+<!-- TO DO: Organizational control -->
 
 <!-- 3.3.6	Provide audit reduction and report generation to support on-demand analysis
      		and reporting -->
+<!-- rules that map to this:
+     	- service_auditd_enabled
+-->
 
 <!-- 3.3.7	Provide an information system capability that compares and synchronizes internal
      		system clocks with an authoritative source to generate time stamps for audit
 		records -->
+<select idref="service_chronyd_or_ntpd_enabled" selected="true" />
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="true" />
 
 <!-- 3.3.8	Protect audit information and audit tools from unauthorized access, modification,
      		and deletion -->
+<!-- rules that map to this:
+     	- rpm_verify_permissions / rpm_verify_hashes
+	- audit_rules_immutable
+--> 
 
 <!-- 3.3.9	Limit management of audit functionality to a subset of privileged users -->
+<!-- TO DO: config sudo? -->
 
 <!-- 3.4. CONFIGURATION MANAGEMENT -->
 
 <!-- 3.4.1	Establish and maintain baseline configurations and inventories of organizational
      		information systems (including hardware, software, firmware, and documentation)
 		throughout the respective system development life cycles -->
+<select idref="rpm_verify_permissions" selected="true" />
+<select idref="rpm_verify_hashes" selected="true" />
 
 <!-- 3.4.2	Establish and enforce security configuration setting for information technology
      		products employed in organizational information systems -->
@@ -339,8 +419,10 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.5.9	Allow temporary password use for sytem logons with an immediate change to a
      		permanent password -->
+<!-- TO DO: procedural -->
 
 <!-- 3.5.10	Store and transmit only encrypted representation of passwords -->
+<select idref="accounts_password_all_shadowed" selected="true" />
 
 <!-- 3.5.11	Obscure feedback of authentication information -->
 
@@ -398,7 +480,7 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.8.9	Protect the confidentiality of backup CUI at storage locations -->
 
 <!-- 3.9 PERSONNEL SECURITY -->
-<!-- 3.9.1	Scren individuals prior to authorizing access to information systems
+<!-- 3.9.1	Screen individuals prior to authorizing access to information systems
      		containing CUI -->
 
 <!-- 3.9.2	Ensure that CUI and information systems containing CUI are protected
@@ -475,6 +557,18 @@ for securing Controlled Unclassified Information (CUI).
      		system -->
 
 <!-- 3.13.11	Employ FIPS-validate cryptography when used to protect the confidentiality of CUI -->
+<!-- Rules also related to this, but enabled elsewhere:
+     	- sshd_use_approved_ciphers
+	- sshd_use_approved_macs
+--> 
+<select idref="package_dracut-fips_installed" selected="true" />
+<select idref="disable_prelink" selected="true" />
+<select idref="grub2_enable_fips_mode" selected="true" />
+<select idref="sebool_fips_mode" selected="true" />
+<select idref="aide_use_fips_hashes" selected="true" />
+<select idref="set_password_hashing_algorithm_systemauth" selected="true" />
+<select idref="set_password_hashing_algorithm_logindefs" selected="true" />
+<select idref="set_password_hashing_algorithm_libuserconf" selected="true" />
 
 <!-- 3.13.12	Prohibit remote activation of collaborative computing devices and provide indication of
      		devices in use to users present at the device -->
@@ -509,9 +603,9 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.14.7	Identify unauthorized use of the information system -->
 
 <!-- things that dont' fit cleanly elsewhere -->
-<select idref="audit_rules_immutable" selected="true" />
 <select idref="enable_dconf_user_profile" selected="true" />
 <select idref="dconf_gnome_disable_user_list" selected="true" />
 <select idref="dconf_gnome_disable_geolocation" selected="true" />
 <select idref="dconf_gnome_disable_thumbnailers" selected="true" />
+
 </Profile>
