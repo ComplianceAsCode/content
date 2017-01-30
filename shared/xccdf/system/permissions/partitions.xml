@@ -89,7 +89,7 @@ removable media would allow them to introduce their own highly-privileged progra
 <ident prodtype="rhel7" cce="80148-0" />
 <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" />
 <ref prodtype="rhel7" nist="AC-6,AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.13" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="021011" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="021010" />
 </Rule>
 
 <Rule id="mount_option_tmp_nodev" prodtype="rhel7">
@@ -105,7 +105,7 @@ within temporary directories like <tt>/tmp</tt>.
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident prodtype="rhel7" cce="80149-8" />
 <oval id="mount_option_tmp_nodev" />
-<ref prodtype="rhel7" nist="CM-7, MP-2" cis="1.1.2" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.2" />
 </Rule>
 
 <Rule id="mount_option_tmp_noexec" prodtype="rhel7">
@@ -119,7 +119,7 @@ such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
 <ident prodtype="rhel7" cce="80150-6" />
 <oval id="mount_option_tmp_noexec" />
-<ref prodtype="rhel7" nist="CM-7, MP-2" cis="1.1.4" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.4" />
 </Rule>
 
 <Rule id="mount_option_tmp_nosuid" prodtype="rhel7">
@@ -133,7 +133,7 @@ should not be required in these world-writable directories.
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident prodtype="rhel7" cce="80151-4" />
 <oval id="mount_option_tmp_nosuid" />
-<ref prodtype="rhel7" nist="CM-7, MP-2" cis="1.1.3" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.3" />
 </Rule>
 
 <Rule id="mount_option_dev_shm_nodev" prodtype="rhel7">
@@ -148,7 +148,7 @@ within temporary directories like <tt>/dev/shm</tt>.
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <ident prodtype="rhel7" cce="80152-2" />
 <oval id="mount_option_dev_shm_nodev" />
-<ref prodtype="rhel7" nist="CM-7, MP-2" cis="1.1.14" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.14" />
 </Rule>
 
 <Rule id="mount_option_dev_shm_noexec" prodtype="rhel7">
@@ -163,7 +163,7 @@ from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
 such as <tt>/dev/shm</tt> can expose the system to potential compromise.</rationale>
 <ident prodtype="rhel7" cce="80153-0" />
 <oval id="mount_option_dev_shm_noexec" />
-<ref prodtype="rhel7" nist="CM-7, MP-2" cis="1.1.16" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.16" />
 </Rule>
 
 <Rule id="mount_option_dev_shm_nosuid" prodtype="rhel7">
@@ -177,7 +177,7 @@ be required in these world-writable directories.
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <ident prodtype="rhel7" cce="80154-8" />
 <oval id="mount_option_dev_shm_nosuid" />
-<ref prodtype="rhel7" nist="CM-7, MP-2" cis="1.1.14" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.14" />
 </Rule>
 
 <Rule id="mount_option_var_tmp_bind" prodtype="rhel7">
