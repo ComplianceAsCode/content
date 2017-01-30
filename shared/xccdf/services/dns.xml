@@ -9,10 +9,10 @@ on which it is not needed.</description>
 <Group id="disabling_dns_server">
 <title>Disable DNS Server</title>
 <description>
-DNS software should be disabled on any machine which does not
+DNS software should be disabled on any systems which does not
 need to be a nameserver. Note that the BIND DNS server software is
 not installed on Red Hat Enterprise Linux 7 by default. The remainder of this section
-discusses secure configuration of machines which must be
+discusses secure configuration of systems which must be
 nameservers.
 </description>
 
@@ -60,7 +60,7 @@ attacks on nameservers more difficult.</description>
 <title>Run DNS Software on Dedicated Servers</title> <description>Since DNS is
 a high-risk service which must frequently be made available to the entire
 Internet, it is strongly recommended that no other services be offered by
-machines which act as organizational DNS servers.</description>
+systems which act as organizational DNS servers.</description>
 </Group>
 
 <Group id="dns_server_chroot">
@@ -108,7 +108,7 @@ DNS data.</description>
 <Group id="dns_server_separate_internal_external">
 <title>Run Separate DNS Servers for External and Internal Queries</title>
 <description>Is it possible to run external and internal nameservers on
-separate machines? If so, follow the configuration guidance in this section. On
+separate systems? If so, follow the configuration guidance in this section. On
 the external nameserver, edit <tt>/etc/named.conf</tt> to add or correct the
 following directives:
 <pre>options {
@@ -135,24 +135,24 @@ zone "internal.example.com " IN {
 };</pre>
 </description>
 <rationale>Enterprise nameservers generally serve two functions. One is to
-provide public information about the machines in a domain for the benefit of
-outside users who wish to contact those machines, for instance in order to send
+provide public information about the systems in a domain for the benefit of
+outside users who wish to contact those systems, for instance in order to send
 mail to users in the enterprise, or to visit the enterprise's external web
-page. The other is to provide nameservice to client machines within the
-enterprise. Client machines require both private information about enterprise
-machines (which may be different from the public information served to the rest
-of the world) and public information about machines outside the enterprise,
+page. The other is to provide nameservice to client systems within the
+enterprise. Client systems require both private information about enterprise
+systems (which may be different from the public information served to the rest
+of the world) and public information about systems outside the enterprise,
 which is used to send mail or visit websites outside of the organization.
 <br />
 In order to provide the public nameservice function, it is necessary to share
-data with untrusted machines which request it - otherwise, the enterprise
+data with untrusted systems which request it - otherwise, the enterprise
 cannot be conveniently contacted by outside users. However, internal data
 should be protected from disclosure, and serving irrelevant public name queries
 for outside domains leaves the DNS server open to cache poisoning and other
 attacks. Therefore, local network nameservice functions should not be provided
-to untrusted machines.
+to untrusted systems.
 <br />
-Separate machines should be used to fill these two functions whenever possible.
+Separate systems should be used to fill these two functions whenever possible.
 </rationale>
 
 </Group>
@@ -160,7 +160,7 @@ Separate machines should be used to fill these two functions whenever possible.
 <Group id="dns_server_partition_with_views">
 <title>Use Views to Partition External and Internal Information</title>
 <description>If it is not possible to run external and internal nameservers on
-separate physical machines, run BIND9 and simulate this feature using views.
+separate physical systems, run BIND9 and simulate this feature using views.
 Edit <tt>/etc/named.conf</tt>. Add or correct the following directives (where
 SUBNET is the numerical IP representation of your organization in the form
 xxx.xxx.xxx.xxx/xx):
@@ -190,7 +190,7 @@ view "external-view" {
 <rationale>The view feature is provided by BIND9 as a way to allow a single
 nameserver to make different sets of data available to different sets of
 clients. If possible, it is always better to run external and internal
-nameservers on separate machines, so that even complete compromise of the
+nameservers on separate systems, so that even complete compromise of the
 external server cannot be used to obtain internal data or confuse internal DNS
 clients. However, this is not always feasible, and use of a feature like views
 is preferable to leaving internal DNS data entirely unprotected.</rationale>
