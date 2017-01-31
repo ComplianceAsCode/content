@@ -1,7 +1,10 @@
 <def-group>
-  <definition class="miscellaneous" id="installed_env_is_a_container" version="2">
+  <definition class="inventory" id="installed_env_is_a_container" version="2">
     <metadata>
       <title>Check if the scan target is a container</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
       <description>Check if file /.dockerenv exists, if it does then we consider to be a docker filesystem.</description>
       <reference ref_id="cpe:/a:container" source="CPE" />
     </metadata>
