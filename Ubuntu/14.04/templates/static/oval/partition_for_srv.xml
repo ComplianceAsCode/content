@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="partition_for_srv" version="1">
+    <metadata>
+      <title>Ensure /srv Located On Separate Partition</title>
+      <affected family="unix">
+        <platform>Ubuntu 1404</platform>
+      </affected>
+      <description>If a file server (FTP, TFTP...) is hosted locally, create a separate partition
+      for /srv at installation time (or migrate it later using LVM). If
+      /srv will be mounted from another system such as an NFS server, then
+      creating a separate partition is not necessary at installation time, and the
+      mountpoint can instead be configured later.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_srv_partition" comment="/srv on own partition" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist" id="test_srv_partition" version="1" comment="/srv on own partition">
+    <linux:object object_ref="object_mount_srv_own_partition" />
+  </linux:partition_test>
+  <linux:partition_object id="object_mount_srv_own_partition" version="1">
+    <linux:mount_point>/srv</linux:mount_point>
+  </linux:partition_object>
+</def-group>

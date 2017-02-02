@@ -1,0 +1,93 @@
+<def-group>
+  <definition class="compliance" id="rsyslog_files_groupownership" version="1">
+    <metadata>
+      <title>Confirm Existence and Permissions of System Log Files</title>
+      <affected family="unix">
+        <platform>Ubuntu 1404</platform>
+      </affected>
+      <description>All syslog log files should be owned by the appropriate group.</description>
+    </metadata>
+
+    <criteria>
+      <criterion comment="Check if all system log files are owned by root group" test_ref="test_rsyslog_files_groupownership" />
+    </criteria>
+
+  </definition>
+
+  <!-- First obtain rsyslog's $IncludeConfig directive value -->
+  <ind:textfilecontent54_object id="object_rfg_rsyslog_include_config_value" comment="rsyslog's $IncludeConfig directive value" version="1">
+    <ind:filepath>/etc/rsyslog.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\$IncludeConfig[\s]+([^\s;]+)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Turn that glob value into Perl's regex so it can be used as filepath pattern below -->
+  <local_variable id="var_rfg_include_config_regex" datatype="string" version="1" comment="$IncludeConfig value converted to regex">
+    <glob_to_regex>
+      <object_component item_field="subexpression" object_ref="object_rfg_rsyslog_include_config_value" />
+    </glob_to_regex>
+  </local_variable>
+
+  <!-- Concatenate that $IncludeConfig regex value together with '/etc/rsyslog.conf'
+       path literal to obtain final list of all rsyslog's configuration files in form
+       of a string. Use '%' character as delemiter to separate items
+  -->
+  <local_variable id="var_rfg_all_log_files_as_string" datatype="string" version="1" comment="Locations of all rsyslog configuration files concatenated into string">
+    <concat>
+      <variable_component var_ref="var_rfg_include_config_regex" />
+      <literal_component datatype="string">%/etc/rsyslog.conf</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- Split the final string by '%' delimiter to obtain OVAL variable in the
+       form of collection of items
+  -->
+  <local_variable id="var_rfg_all_log_files_as_collection" datatype="string" version="1" comment="Locations of all rsyslog configuration files as collection">
+    <split delimiter='%'>
+      <variable_component var_ref="var_rfg_all_log_files_as_string" />
+    </split>
+  </local_variable>
+
+  <!-- For each item from that collection (particular rsyslog's configuration file path) search
+       that rsyslog's configuration file to select file paths for log files directives
+  -->
+  <ind:textfilecontent54_object id="object_rfg_log_files_paths" comment="All rsyslog configuration files" version="1">
+    <ind:filepath operation="pattern match" var_ref="var_rfg_all_log_files_as_collection" var_check="at least one" />
+    <!-- Chunk of text retrieved from rsyslog's configuration file is considered
+         to constitute a log file path if all of the following conditions are met:
+         * the string represents a regular file on particular file system
+           (verified via corresponding file_state below),
+         * the chunk of text is in the last column in the row,
+           (possibly suffixed by ';' character and rsyslog Template name),
+         * contains at least one slash '/' character, and simultaneously
+           doesn't contain any of ';', ':' and space characters,
+         * the chunk was retrieved from a row not starting with space, '#',
+           or '$' characters
+    -->
+    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Define OVAL variable to hold all the various system log files locations
+       retrieved from the different rsyslog configuration files
+  -->
+  <local_variable id="var_rfg_log_files_paths" datatype="string" version="1" comment="File paths of all rsyslog configuration files">
+    <object_component item_field="subexpression" object_ref="object_rfg_log_files_paths" />
+  </local_variable>
+
+  <!-- Perform the test if all rsyslog system log files are owned by the 'root' group -->
+  <unix:file_test check="all" check_existence="all_exist" id="test_rsyslog_files_groupownership" version="1" comment="System log files are owned by root group">
+    <unix:object object_ref="object_rsyslog_files_groupownership" />
+    <unix:state state_ref="state_rsyslog_files_groupownership" />
+  </unix:file_test>
+
+  <unix:file_object id="object_rsyslog_files_groupownership" comment="Various system log files" version="1">
+    <unix:filepath datatype="string" var_ref="var_rfg_log_files_paths" var_check="at least one" />
+  </unix:file_object>
+
+  <unix:file_state id="state_rsyslog_files_groupownership" version="1">
+    <unix:type operation="equals">regular</unix:type>
+    <unix:group_id datatype="int">4</unix:group_id>
+  </unix:file_state>
+
+</def-group>

@@ -36,7 +36,7 @@ DOCDIR=$(DATADIR)/doc
 
 # Define Makefile targets below
 
-all: validate-buildsystem fedora fuse6 rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 wrlinux
+all: validate-buildsystem fedora fuse6 rhel5 rhel6 rhel7 rhel-osp7 rhevm3 webmin firefox jre chromium debian8 wrlinux ubuntu1404 ubuntu1604
 dist: chromium-dist firefox-dist fedora-dist fuse6-dist jre-dist rhel6-dist rhel7-dist rhel-osp7-dist debian8-dist wrlinux-dist
 jenkins: all validate dist
 
@@ -78,6 +78,12 @@ ubuntu1604:
 
 ubuntu1604-dist:
 	cd Ubuntu/16.04/ && $(MAKE) dist
+
+ubuntu1404:
+	cd Ubuntu/14.04/ && $(MAKE)
+
+ubuntu1404-dist:
+	cd Ubuntu/14.04/ && $(MAKE) dist
 
 wrlinux:
 	cd WRLinux/ && $(MAKE)
@@ -161,7 +167,11 @@ validate-debian8: debian8
 
 validate-ubuntu1604: ubuntu1604
 	# Enable below when content validates correctly
-	#cd Debian/8/ && $(MAKE) validate
+	#cd Ubuntu/16.04/ && $(MAKE) validate
+
+validate-ubuntu1404: ubuntu1404
+	# Enable below when content validates correctly
+	#cd Ubuntu/14.04/ && $(MAKE) validate
 
 validate-rhel-osp7: rhel-osp7
 	cd OpenStack/RHEL-OSP/7/ && $(MAKE) validate
@@ -194,7 +204,7 @@ validate-suse12: suse12
 	# Enable below when content validates correctly
 	#cd SUSE/12 && $(MAKE) validate
 
-validate: validate-fedora validate-fuse6 validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-ubuntu1604 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
+validate: validate-fedora validate-fuse6 validate-rhel5 validate-rhel6 validate-rhel7 validate-debian8 validate-ubuntu1604 validate-ubuntu1404 validate-wrlinux validate-rhel-osp7 validate-rhevm3 validate-chromium validate-firefox validate-jre
 
 tarball:
 	@# Copy in the source trees for both RHEL

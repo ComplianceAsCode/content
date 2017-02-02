@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="partition_for_var_log_audit" version="1">
+    <metadata>
+      <title>Ensure /var/log/audit Located On Separate Partition</title>
+      <affected family="unix">
+        <platform>Ubuntu 1404</platform>
+      </affected>
+      <description>Audit logs are stored in the /var/log/audit directory.
+      Ensure that it has its own partition or logical volume. Make absolutely
+      certain that it is large enough to store all audit logs that will be
+      created by the auditing daemon.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_var_log_audit_partition" comment="/var/log/audit on own partition" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="test_var_log_audit_partition" version="1"
+  comment="check for /var/log/audit partition">
+    <linux:object object_ref="object_mount_var_log_audit_own_partition" />
+  </linux:partition_test>
+  <linux:partition_object id="object_mount_var_log_audit_own_partition"
+  version="1">
+    <linux:mount_point>/var/log/audit</linux:mount_point>
+  </linux:partition_object>
+</def-group>
