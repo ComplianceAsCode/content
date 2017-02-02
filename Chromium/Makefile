@@ -6,10 +6,7 @@ include $(SHARED)/product-make.include
 PROD = chromium
 VENDOR = ssgproject
 
-checks:
-	xmlwf $(IN)/oval/*.xml
-	$(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(IN)/oval > $(OUT)/unlinked-$(PROD)-oval.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
+checks: standard-oval-build
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:

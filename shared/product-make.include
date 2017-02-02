@@ -26,7 +26,13 @@ PRODUCT_BASH_REMEDIATIONS = $(OUT)/bash
 PRODUCT_ANSIBLE_REMEDIATIONS = $(OUT)/ansible
 PRODUCT_ANACONDA_REMEDIATIONS = $(OUT)/anaconda
 PRODUCT_PUPPET_REMEDIATIONS = $(OUT)/puppet
-STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
+
+ifeq ($(DONT_USE_SHARED_OVAL), 0)
+SHARED_OVAL=
+SHARED_OVAL_5_11=
+endif
+
+STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(OUT)/oval $(IN)/oval templates/static/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
 UTILS = utils
@@ -38,7 +44,7 @@ OVAL_VERSION=$(if $(filter $(OVAL_5_11),0),oval_5.11,oval_5.10)
 ID = ssg
 
 # Query environment - ask openscap if it can do OVAL 5.11
-OVAL_5_11 := $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
+OVAL_5_11 ?= $(shell oscap --version | grep -q "OVAL Version: 5.11.*"; echo $$?)
 
 # Query environment - ask openscap if it can generate guide from DataStream
 OPENSCAP_1_1_OR_LATER := $(shell oscap --version | grep -q -E "OpenSCAP command line tool \(oscap\) 1\.[1-9]+[0-9]*\."; echo $$?)
@@ -182,9 +188,10 @@ standard-oval-build:
 ifeq ($(OVAL_5_11), 0)
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval STANDARD_OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11)
+	$(eval STANDARD_OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 templates/static/oval_5.11)
 endif
-	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	find $(STANDARD_OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language oval build
 	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(STANDARD_OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
 

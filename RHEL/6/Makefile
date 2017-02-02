@@ -4,22 +4,9 @@ SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = rhel6
-OVAL_DIRS = $(SHARED_OVAL) $(IN)/oval
 VENDOR = ssgproject
 
-checks:
-	# If openscap on the system supports OVAL-5.11 language version, include also OVAL-5.11 checks
-	# into final list of OVAL checks
-ifeq ($(OVAL_5_11), 0)
-	# RHEL/6/input/oval/oval_5.11 is empty for now!!! Uncomment the next statement once required
-	# find $(IN)/oval/oval_5.11 -maxdepth 1 -type f -name '*.xml' -exec cp {} $(PROD_OVAL) ';'
-	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
-	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval OVAL_DIRS+=$(SHARED_OVAL_5_11))
-endif
-	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
+checks: standard-oval-build
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:

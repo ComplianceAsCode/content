@@ -1,6 +1,7 @@
 all: tables guide content dist
 
 SHARED = ../../shared
+OVAL_5_11:=1 # completely disable oval_5.11 for RHEL5
 include $(SHARED)/product-make.include
 
 PROD = rhel5
@@ -9,10 +10,7 @@ VENDOR = ssgproject
 
 all: tables guide content dist
 
-checks:
-	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
+checks: standard-oval-build
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:
