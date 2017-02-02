@@ -109,6 +109,14 @@
             </xsl:otherwise>
           </xsl:choose>
           <xsl:choose>
+            <xsl:when test="contains(platform/@prodtype, $prod_type) or platform/@prodtype = 'all'">
+              <xsl:apply-templates select="platform"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="platform[not(platform/@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
             <xsl:when test="contains(ident/@prodtype, $prod_type) or ident/@prodtype = 'all'">
               <xsl:apply-templates select="ident"/>
             </xsl:when>
@@ -125,7 +133,7 @@
               <xsl:apply-templates select="oval[not(@prodtype)]"/>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident|self::oval|self::prodtype)]"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform|self::ident|self::oval|self::prodtype)]"/>
         </Rule>
       </xsl:when>
     </xsl:choose>
@@ -147,10 +155,11 @@
       <xsl:apply-templates select="warning"/>
       <xsl:apply-templates select="ref"/>
       <xsl:apply-templates select="rationale"/>
+      <xsl:apply-templates select="platform"/>
       <xsl:apply-templates select="ident"/>
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::ident|self::oval)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform|self::ident|self::oval)]"/>
     </Rule>
   </xsl:template>
 
@@ -192,7 +201,7 @@
               <xsl:apply-templates select="ref[not(@prodtype)]"/>
             </xsl:otherwise>
           </xsl:choose>
-           <xsl:choose>
+          <xsl:choose>
             <xsl:when test="contains(rationale/@prodtype, $prod_type) or rationale/@prodtype = 'all'">
               <xsl:apply-templates select="rationale"/>
             </xsl:when>
@@ -200,7 +209,15 @@
               <xsl:apply-templates select="rationale[not(@prodtype)]"/>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::prodtype)]"/>
+          <xsl:choose>
+            <xsl:when test="contains(platform/@prodtype, $prod_type) or platform/@prodtype = 'all'">
+              <xsl:apply-templates select="platform"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="platform[not(@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform|self::prodtype)]"/>
         </Group>
       </xsl:when>
     </xsl:choose>
@@ -215,7 +232,8 @@
       <xsl:apply-templates select="warning"/>
       <xsl:apply-templates select="ref"/>
       <xsl:apply-templates select="rationale"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale)]"/>
+      <xsl:apply-templates select="platform"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform)]"/>
     </Group>
   </xsl:template>
 
