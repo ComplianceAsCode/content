@@ -243,6 +243,45 @@ def append(element, newchild):
         element.append(newchild)
 
 
+def check_oval_version(oval_version):
+    """Not necessary, but should help with typos"""
+
+    supported_versions = ["oval_5.10", "oval_5.11"]
+    if oval_version not in supported_versions:
+        supported_versions_str = ", ".join(supported_versions)
+        sys.stderr.write(
+            "Suspicious oval version \"%s\", one of {%s} is "
+            "expected.\n" % (oval_version, supported_versions_str))
+        sys.exit(1)
+
+def parse_oval_dir_parameter(version_oval_dir):
+    try:
+        oval_version, filename = version_oval_dir.split(":", 1)
+        check_oval_version(oval_version)
+        return (oval_version, filename)
+
+    except ValueError:
+        sys.stderr.write(
+            "Parameter \"%s\" is not in format <oval_version>:<dir>, "
+            "e.g <oval_5.10:mydirectory>\n" % (version_oval_dir)
+        )
+        sys.exit(1)
+
+def check_is_loaded(loaded_dict, filename, version):
+    if filename in loaded_dict:
+        if loaded_dict[filename] >= version:
+            return True
+
+        # Should rather fail, than override something unwanted
+        sys.stderr.write(
+            "You cannot override generic OVAL file in version '%s' "
+            "by more specific one in older version '%s'" %
+            (oval_version, already_loaded[filename])
+        )
+        sys.exit(1)
+
+    return False
+
 def checks(product, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
@@ -252,24 +291,24 @@ def checks(product, oval_dirs):
     body = ""
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
-    already_loaded = set()
+    already_loaded = dict() # filename -> oval_version
 
-    for oval_dir in reversed_dirs:
+    for version_oval_dir in reversed_dirs:
         try:
+            oval_version, oval_dir = parse_oval_dir_parameter(version_oval_dir)
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
 
-                    # skip file if we already have one with better priority
-                    if filename in already_loaded:
-                        continue
-
                     with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                         xml_content = xml_file.read()
-                        if check_is_applicable_for_product(xml_content, product):
-                            body += xml_content
-                            included_checks_count += 1
-                            already_loaded.add(filename)
+                        if not check_is_applicable_for_product(xml_content, product):
+                            continue
+                        if check_is_loaded(already_loaded, filename, oval_version):
+                            continue
+                        body += xml_content
+                        included_checks_count += 1
+                        already_loaded[filename] = oval_version
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
@@ -284,8 +323,13 @@ def checks(product, oval_dirs):
 
 def main():
     if len(sys.argv) < 4:
-        sys.stderr.write("Provide a directory names, which contains the "
-                         "checks.\n")
+        sys.stderr.write(
+            "Provide a CONFIG directory, PRODUCT and "
+            "oval directories with checks\n"
+        )
+        sys.stderr.write(
+            "Example:\n"
+            "\t./combine-ovals.py ./config rhel7 oval_5.10:ovaldir1 oval_5.11:ovaldir2...\n")
         sys.stderr.write("Later directory has higher priority\n")
         sys.exit(1)
 

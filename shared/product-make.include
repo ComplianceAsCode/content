@@ -32,7 +32,7 @@ SHARED_OVAL=
 SHARED_OVAL_5_11=
 endif
 
-STANDARD_OVAL_DIRS = $(SHARED_OVAL) $(OUT)/oval $(IN)/oval templates/static/oval
+STANDARD_OVAL_DIRS = oval_5.10:$(SHARED_OVAL) oval_5.10:$(OUT)/oval oval_5.10:$(IN)/oval oval_5.10:templates/static/oval
 REFS = $(SHARED)/references
 CONF = $(SHARED)/../config
 UTILS = utils
@@ -188,9 +188,10 @@ standard-oval-build:
 ifeq ($(OVAL_5_11), 0)
 	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
 	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval STANDARD_OVAL_DIRS+=$(SHARED_OVAL_5_11) $(IN)/oval/oval_5.11 templates/static/oval_5.11)
+	$(eval STANDARD_OVAL_DIRS+=oval_5.11:$(SHARED_OVAL_5_11) oval_5.11:$(IN)/oval/oval_5.11 oval_5.11:templates/static/oval_5.11)
 endif
-	find $(STANDARD_OVAL_DIRS) -name "*.xml" | xargs xmlwf
+	$(eval OVAL_DIRS=$(subst oval_5.10:,,$(subst oval_5.11:,,$(STANDARD_OVAL_DIRS))))
+	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
 	$(SHARED)/utils/generate-from-templates.py --oval_version $(OVAL_VERSION) --input ./templates --output $(OUT) --language oval build
 	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(STANDARD_OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
 	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
