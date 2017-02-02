@@ -4,7 +4,6 @@ SHARED = ../../shared
 include $(SHARED)/product-make.include
 
 PROD = ubuntu1604
-OVAL_DIRS = $(SHARED_OVAL) $(OUT)/oval templates/static/oval
 VENDOR = ssgproject
 
 checks: standard-oval-build

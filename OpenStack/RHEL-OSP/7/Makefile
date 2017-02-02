@@ -5,7 +5,6 @@ DONT_USE_SHARED_OVAL=0
 include $(SHARED)/product-make.include
 
 PROD = rhel-osp7
-OVAL_DIRS = $(IN)/oval
 VENDOR = ssgproject
 
 checks: standard-oval-build
