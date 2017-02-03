@@ -18,7 +18,7 @@ system such as RHTSupport.
 </description>
 <ocil><systemd-check-macro enable="false" service="abrtd" /></ocil>
 <rationale> Mishandling crash data could expose sensitive information about
-vulnerabilities in software executing on the local machine, as well as sensitive
+vulnerabilities in software executing on the system, as well as sensitive
 information from within a process's address space or registers.</rationale>
 <ident prodtype="rhel7" cce="26872-2" />
 <oval id="service_abrtd_disabled" />
@@ -117,6 +117,7 @@ multiple processors.
 <ocil><systemd-check-macro enable="false" service="irqbalance" /></ocil>
 <rationale>In an environment with multiple processors (now common), the irqbalance service
 provides potential speedups for handling interrupt requests.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident prodtype="rhel7" cce="80257-9" />
 <oval id="service_irqbalance_enabled" />
 <ref prodtype="rhel7" nist="CM-7" />

@@ -144,7 +144,7 @@ unnecessarily rely on DHCP for this information.
 to request much of the above information from the DHCP server. In particular,
 domain-name, domain-name-servers, and routers are configured via DHCP.  These
 settings are typically necessary for proper network functionality, but are also
-usually static across machines at a given site.</warning>
+usually static across systems at a given site.</warning>
 <!-- <ident prodtype="rhel7" cce="80335-3" /> -->
 <!--<oval id="dhcp_server_minimize_served_info" /> -->
 <ref prodtype="rhel7" nist="CM-7" />
@@ -257,7 +257,7 @@ assigned statically, and only options which must vary on a host-by-host basis
 be assigned via DHCP. This limits the damage which can be done by a rogue DHCP
 server.  If appropriate for your site, it is also possible to supersede the
 host-name directive in <tt>/etc/dhcp/dhclient.conf</tt>, establishing a static
-hostname for the machine. However, dhclient does not use the host name option
+hostname for the system. However, dhclient does not use the host name option
 provided by the DHCP server (instead using the value provided by a reverse DNS
 lookup).</rationale>
 <warning category="general">In this example, the options nis-servers and
