@@ -1,27 +1,13 @@
 all: tables guide content dist
 
 SHARED = ../../../shared
+DONT_USE_SHARED_OVAL=0
 include $(SHARED)/product-make.include
 
 PROD = rhel-osp7
-OVAL_DIRS = $(IN)/oval
 VENDOR = ssgproject
 
-checks:
-	# Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-ifeq ($(OVAL_5_11), 0)
-	# Search $(SHARED_OVAL_5_11) and $(IN)/oval/oval_5.11 directories to find all product specific
-	# OVAL-5.11 checks, which are regular files (not symlinks). Merge the final list into $(PROD_OVAL)
-	# directory
-	# Don't traverse $(SHARED_OVAL_5_11) for the case of RHEL-OSP7 product for now
-	# System supports OVAL-5.11 => propagate 'RUNTIME_OVAL_VERSION' variable into the environment
-	$(eval MOD_ENV := env RUNTIME_OVAL_VERSION='5.11')
-	$(eval OVAL_DIRS+=$(IN)/oval/oval_5.11)
-endif
-
-	find $(OVAL_DIRS) -name "*.xml" | xargs xmlwf
-	$(MOD_ENV) $(SHARED)/$(UTILS)/combine-ovals.py $(CONF) $(PROD) $(OVAL_DIRS) > $(OUT)/unlinked-$(PROD)-oval.xml
-	xmllint --format --output $(OUT)/unlinked-$(PROD)-oval.xml $(OUT)/unlinked-$(PROD)-oval.xml
+checks: standard-oval-build
 
 # example, if needed: for converting XCCDF into shorthand
 #xccdf2shorthand:

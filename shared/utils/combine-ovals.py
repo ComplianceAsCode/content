@@ -276,7 +276,7 @@ def checks(product, oval_dirs):
             else:
                 sys.stderr.write("Not merging OVAL content from the "
                           "'%s' directory as the directory does not "
-                          "exist" % (oval_dir))
+                          "exist\n" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return body
