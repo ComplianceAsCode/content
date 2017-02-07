@@ -4,7 +4,7 @@
 the Unix environment, and is very widely deployed.  This section discusses the
 circumstances under which it is possible to disable NFS and its dependencies,
 and then details steps which should be taken to secure
-NFS's configuration. This section is relevant to machines operating as NFS
+NFS's configuration. This section is relevant to systems operating as NFS
 clients, as well as to those operating as NFS servers.
 </description>
 
@@ -15,9 +15,9 @@ clients, as well as to those operating as NFS servers.
 NFS client or an NFS server, follow all instructions in this section to disable
 subsystems required by NFS.
 </description>
-<warning category="general">The steps in this section will prevent a machine
+<warning category="general">The steps in this section will prevent a system
 from operating as either an NFS client or an NFS server. Only perform these
-steps on machines which do not need NFS at all.</warning>
+steps on systems which do not need NFS at all.</warning>
 
 
 <Group id="disabling_nfs_services">
@@ -32,7 +32,7 @@ security posture.</description>
 <title>Disable Network File System Lock Service (nfslock)</title>
 <description>The Network File System Lock (nfslock) service starts the required
 remote procedure call (RPC) processes which allow clients to lock files on the
-server. If the local machine is not configured to mount NFS filesystems then
+server. If the local system is not configured to mount NFS filesystems then
 this service should be disabled.
 <systemd-service-macro enable="false" service="nfslock" />
 </description>
@@ -88,7 +88,7 @@ this service should be disabled.
 
 <Group id="nfs_configuring_all_machines">
 <title>Configure All Machines which Use NFS</title>
-<description>The steps in this section are appropriate for all machines which
+<description>The steps in this section are appropriate for all systems which
 run NFS, whether they operate as clients or as servers.</description>
 
 <Group id="nfs_client_or_server_not_both">
@@ -96,7 +96,7 @@ run NFS, whether they operate as clients or as servers.</description>
 <description>If NFS must be used, it should be deployed in the simplest
 configuration possible to avoid maintainability problems which may lead to
 unnecessary security exposure. Due to the reliability and security problems
-caused by NFS (specially NFSv3 and NFSv2), it is not a good idea for machines
+caused by NFS (specially NFSv3 and NFSv2), it is not a good idea for systems
 which act as NFS servers to also mount filesystems via NFS. At the least,
 crossed mounts (the situation in which each of two servers mounts a filesystem
 from the other) should never be used.
@@ -192,12 +192,12 @@ to be done more effectively.
 
 <Group id="nfs_configuring_clients">
 <title>Configure NFS Clients</title>
-<description>The steps in this section are appropriate for machines which operate as NFS clients.</description>
+<description>The steps in this section are appropriate for systems which operate as NFS clients.</description>
 <Group id="disabling_nfsd">
 <title>Disable NFS Server Daemons</title>
 <description>
 There is no need to run the NFS server daemons <tt>nfs</tt> and
-<tt>rpcsvcgssd</tt> except on a small number of properly secured machines
+<tt>rpcsvcgssd</tt> except on a small number of properly secured systems
 designated as NFS servers. Ensure that these daemons are turned off on
 clients.</description>
 
@@ -222,7 +222,7 @@ to a local account which has no permissions on the system.</rationale>
 <Rule id="service_nfs_disabled" prodtype="rhel7">
 <title>Disable Network File System (nfs)</title>
 <description>The Network File System (NFS) service allows remote hosts to mount
-and interact with shared filesystems on the local machine. If the local machine
+and interact with shared filesystems on the local system. If the local system
 is not designated as a NFS server then this service should be disabled.
 <systemd-service-macro enable="false" service="nfs" />
 </description>
@@ -330,7 +330,7 @@ systems to more securely authenticate the remote mount request.
 
 <Group id="nfs_configuring_servers">
 <title>Configure NFS Servers</title>
-<description>The steps in this section are appropriate for machines which operate as NFS servers.</description>
+<description>The steps in this section are appropriate for systems which operate as NFS servers.</description>
 
 <Group id="configure_exports_restrictively">
 <title>Configure the Exports File Restrictively</title>
@@ -395,7 +395,7 @@ access could be used to compromise the system.
 <Rule id="restrict_nfs_clients_to_privileged_ports" prodtype="rhel7">
 <title>Restrict NFS Clients to Privileged Ports</title>
 <description>By default, the server NFS implementation requires that all client requests be made
-from ports less than 1024. If your organization has control over machines connected to its
+from ports less than 1024. If your organization has control over systems connected to its
 network, and if NFS requests are prohibited at the border firewall, this offers some protection
 against malicious requests from unprivileged users. Therefore, the default should not be changed.
 <br /><br />
