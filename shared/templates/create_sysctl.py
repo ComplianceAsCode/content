@@ -5,14 +5,36 @@ import re
 
 from template_common import *
 
-# Define input template filename to resulting output filename mapping
-files = { 'template_sysctl_static' : 'sysctl_static_',
-          'template_sysctl_runtime' : 'sysctl_runtime_',
-          'template_sysctl' : 'sysctl_' }
+def is_ipv6_id(var_id):
+    return var_id.find("ipv6") >= 0
 
-files_var = { 'template_sysctl_static_var' : 'sysctl_static_',
-	  'template_sysctl_runtime_var' : 'sysctl_runtime_',
-          'template_sysctl' : 'sysctl_' }
+def get_files_var_for_id(var_id):
+
+    if is_ipv6_id(var_id):
+          template_name = 'template_sysctl_ipv6'
+    else:
+          template_name = 'template_sysctl'
+
+    return {
+        'template_sysctl_static_var' : 'sysctl_static_',
+        'template_sysctl_runtime_var' : 'sysctl_runtime_',
+        template_name : 'sysctl_'
+    }
+
+
+def get_files_for_id(var_id):
+
+    if is_ipv6_id(var_id):
+          template_name = 'template_sysctl_ipv6'
+    else:
+          template_name = 'template_sysctl'
+
+    return {
+          'template_sysctl_static' : 'sysctl_static_',
+          'template_sysctl_runtime' : 'sysctl_runtime_',
+          template_name: 'sysctl_'
+    }
+
 
 def output_checkfile(target, serviceinfo):
     # get the items out of the list
@@ -48,19 +70,19 @@ def output_checkfile(target, serviceinfo):
         if not sysctl_val.strip():
 
             # open the template files and perform the conversions
-            for sysctlfile in files_var.keys():
+            for sysctlfile, prefix in get_files_var_for_id(sysctl_var_id).items():
                 file_from_template(
                     sysctlfile,
                     {
                         "SYSCTLID":  sysctl_var_id,
                         "SYSCTLVAR": sysctl_var,
                     },
-                    "./oval/{0}.xml", files_var[sysctlfile] + sysctl_var_id
+                    "./oval/{0}.xml", prefix + sysctl_var_id
                 )
         else:
 
             # open the template files and perform the conversions
-            for sysctlfile in files.keys():
+            for sysctlfile, prefix in get_files_for_id(sysctl_var_id).items():
                 file_from_template(
                     sysctlfile,
                     {
@@ -68,7 +90,7 @@ def output_checkfile(target, serviceinfo):
                         "SYSCTLVAR": sysctl_var,
                         "SYSCTLVAL": sysctl_val
                     },
-                    "./oval/{0}.xml", files[sysctlfile] + sysctl_var_id
+                    "./oval/{0}.xml", prefix + sysctl_var_id
                 )
     else:
 
