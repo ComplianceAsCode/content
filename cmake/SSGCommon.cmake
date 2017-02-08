@@ -172,7 +172,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval
             # TODO: config
             COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/ --language oval build
-            COMMAND RUNTIME_OVAL_VERSION=5.11 ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${SHARED_OVAL_DEPS_DIR} ${OVAL_DEPS_DIR} ${SHARED_OVAL_511_DEPS_DIR} ${OVAL_511_DEPS_DIR} ${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+            COMMAND RUNTIME_OVAL_VERSION=5.11 ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} oval_5.10:${SHARED_OVAL_DEPS_DIR} oval_5.10:${OVAL_DEPS_DIR} oval_5.11:${SHARED_OVAL_511_DEPS_DIR} oval_5.11:${OVAL_511_DEPS_DIR} oval_5.11:${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${OVAL_511_DEPS}
@@ -187,7 +187,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval
             # TODO: config
             COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/generate-from-templates.py --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${CMAKE_CURRENT_BINARY_DIR}/ --language oval build
-            COMMAND ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} ${OVAL_DEPS_DIR} ${SHARED_OVAL_DEPS_DIR} ${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
+            COMMAND ${SSG_SHARED_UTILS}/combine-ovals.py ${CMAKE_SOURCE_DIR}/config ${PRODUCT} oval_5.10:${OVAL_DEPS_DIR} oval_5.10:${SHARED_OVAL_DEPS_DIR} oval_5.10:${OVAL_BUILD_DIR} > ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             COMMAND ${XMLLINT_EXECUTABLE} --format --output ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml ${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml
             DEPENDS ${OVAL_DEPS}
             DEPENDS ${SHARED_OVAL_DEPS}
