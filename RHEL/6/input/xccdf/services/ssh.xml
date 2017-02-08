@@ -341,7 +341,7 @@ access restriction in some configurations.
 Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
 The following line in <tt>/etc/ssh/sshd_config</tt>
 demonstrates use of FIPS-approved ciphers:
-<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,aes192-cbc,aes256-cbc,3des-cbc,rijndael-cbc@lysator.liu.se</pre>
 The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 </description>
 <ocil clause="that is not the case">
@@ -349,7 +349,10 @@ Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved
 ciphers are in use, run the following command:
 <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
 The output should contain only those ciphers which are FIPS-approved, namely, the 
-AES and 3DES ciphers.
+AES, 3DES, and rinjdael  ciphers. A full list of OpenSSH Server ciphers can be found
+in Section "9.1.2 OpenSSH Configuration" of the Red Hat Enterprise Linux 6
+ OpenSSH Server Cryptographic Module paperwork. A copy can be found at
+<weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2446.pdf"/>.
 </ocil>
 <rationale>
 Approved algorithms should impart some level of confidence in their
@@ -359,7 +362,6 @@ implementation. These are also required for compliance.
 <oval id="sshd_use_approved_ciphers" />
 <ref nist="AC-3,AC-17(2),SI-7,IA-5(1)(c),IA-7" disa="803,1144,1145,1146" />
 </Rule>
-
 
 <Rule id="sshd_use_approved_macs">
 <title>Use Only Approved MACs</title>
@@ -383,7 +385,6 @@ implementation. These are also required for compliance.
 <oval id="sshd_use_approved_macs" />
 <ref nist="AC-17(2),IA-7,SC-13" disa="68,1453,803,2449,2450" />
 </Rule>
-
 
 <Group id="sshd_strengthen_firewall">
 <title>Strengthen Firewall Configuration if Possible</title>
