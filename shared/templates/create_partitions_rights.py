@@ -23,7 +23,17 @@ def output_checkfile(target, path_info):
     point_id = re.sub('[-\./]', '_', mount_point)
     flag_id = re.sub('[-\./]', '_', mount_flag)
 
-    if target == "oval":
+    if target == "ansible":
+        file_from_template(
+            "./template_ANSIBLE_partitions_rights",
+            {
+                "MOUNTPOINT":       mount_point,
+                "MOUNTFLAG":        mount_flag,
+            },
+            "./ansible/partitions_rights{0}.yml", point_id + '_' + flag_id
+        )
+
+    elif target == "oval":
         # we are ready to create the check
         # open the template and perform the conversions
         file_from_template(
@@ -43,8 +53,7 @@ def output_checkfile(target, path_info):
 def help():
     print "Usage:\n\t" + __file__ + " <bash/oval/ansible> <csv file>"
     print("CSV should contains lines of the format: "
-          "directory path,file name,owner uid (numeric),group "
-          "owner gid (numeric),mode")
+          "mount_point,mount_flag")
 
 if __name__ == "__main__":
     main(sys.argv, help, output_checkfile)
