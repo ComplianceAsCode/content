@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 
 #
-# create_partitions_rights.py
+# create_mount_options.py
 #        generate template-based checks for partition mount rights
 
 
@@ -25,26 +25,26 @@ def output_checkfile(target, path_info):
 
     if target == "ansible":
         file_from_template(
-            "./template_ANSIBLE_partitions_rights",
+            "./template_ANSIBLE_mount_options",
             {
                 "MOUNTPOINT":       mount_point,
                 "MOUNTFLAG":        mount_flag,
             },
-            "./ansible/partitions_rights{0}.yml", point_id + '_' + flag_id
+            "./ansible/mount_options{0}.yml", point_id + '_' + flag_id
         )
 
     elif target == "oval":
         # we are ready to create the check
         # open the template and perform the conversions
         file_from_template(
-            "./template_partitions_rights",
+            "./template_mount_options",
             {
                 "MOUNTPOINT":       mount_point,
                 "MOUNTFLAG":        mount_flag,
                 "POINTID":     point_id,
                 "FLAGID":      flag_id,
             },
-            "./oval/partitions_rights{0}.xml", point_id + '_' + flag_id
+            "./oval/mount_options{0}.xml", point_id + '_' + flag_id
         )
     else:
         raise UnknownTargetError(target)
