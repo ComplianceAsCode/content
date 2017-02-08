@@ -35,10 +35,10 @@ def output_checkfile(target, serviceinfo):
             file_from_template(
                 "./template_service_enabled",
                 { "SERVICENAME": servicename },
-                regex_replace = {
-                    "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                    "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
-                },
+                regex_replace = [
+                    ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
+                    ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
+                ],
                 filename_format = "./oval/service_{0}_enabled.xml",
                 filename_value = servicename
             )

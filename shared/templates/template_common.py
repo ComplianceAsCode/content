@@ -48,7 +48,7 @@ def get_template_filename(filename):
     sys.exit(EXIT_NO_TEMPLATE)
 
 
-def load_modified(filename, constants_dict, regex_dict = None):
+def load_modified(filename, constants_dict, regex_replace=[]):
     """
     Load file and replace constants accoring to constants_dict and regex_dict
 
@@ -71,9 +71,8 @@ def load_modified(filename, constants_dict, regex_dict = None):
     for key, value in constants_dict.iteritems():
        filestring = filestring.replace(key, value)
 
-    if regex_dict:
-        for pattern, replacement in regex_dict.iteritems():
-            filestring = re.sub(pattern, replacement, filestring)
+    for pattern, replacement in regex_replace:
+        filestring = re.sub(pattern, replacement, filestring)
 
     return filestring
 
@@ -99,9 +98,10 @@ def save_modified(filename_format, filename_value, string):
         outputfile.write(string)
 
 def file_from_template(template_filename, constants,
-                       filename_format, filename_value, regex_replace = None):
+                       filename_format, filename_value, regex_replace=[]):
     """
     Load template, fill constant and create new file
+    @param regex_replace: array of tuples (pattern, replacement)
     """
 
     filled_template = load_modified(template_filename, constants, regex_replace)
