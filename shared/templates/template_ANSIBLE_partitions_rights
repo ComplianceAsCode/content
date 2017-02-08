@@ -18,8 +18,8 @@
 - name: Ensure permission MOUNTFLAG is set on MOUNTPOINT
   mount:
     path: "MOUNTPOINT"
-    src: "{{device_name}}"
-    opts: "{{device_cur_mountflags}},MOUNTFLAG"
+    src: "{{device_name.stdout}}"
+    opts: "{{device_cur_mountflags.stdout}},MOUNTFLAG"
     state: "mounted"
-    fstype: "{{device_fstype}}"
+    fstype: "{{device_fstype.stdout}}"
 
