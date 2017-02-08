@@ -303,7 +303,7 @@ appropriate system-wide warning banner.
 </ocil>
 <rationale>
 The warning message reinforces policy awareness during the login process and
-facilitates possible legal action against attackers.  Alternatively, systems
+facilitates possible legal action against attackers. Alternatively, systems
 whose ownership should not be obvious should ensure usage of a banner that does
 not provide easy attribution.
 </rationale>
@@ -345,11 +345,11 @@ demonstrates use of FIPS-approved ciphers:
 The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 </description>
 <ocil clause="that is not the case">
-Only FIPS-approved ciphers should be used.  To verify that only FIPS-approved 
+Only FIPS-approved ciphers should be used. To verify that only FIPS-approved 
 ciphers are in use, run the following command:
 <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
 The output should contain only those ciphers which are FIPS-approved, namely, the 
-AES, 3DES, and rinjdael  ciphers. A full list of OpenSSH Server ciphers can be found
+AES, 3DES, and rinjdael ciphers. A full list of OpenSSH Server ciphers can be found
 in Section "9.1.2 OpenSSH Configuration" of the Red Hat Enterprise Linux 6
  OpenSSH Server Cryptographic Module paperwork. A copy can be found at
 <weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2446.pdf"/>.
@@ -372,7 +372,7 @@ demonstrates use of FIPS-approved MACs:
 The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
 </description>
 <ocil clause="that is not the case">
-Only FIPS-approved MACs should be used.  To verify that only FIPS-approved
+Only FIPS-approved MACs should be used. To verify that only FIPS-approved
 MACs are in use, run the following command:
 <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
 The output should contain only those MACs which are FIPS-approved, namely,
