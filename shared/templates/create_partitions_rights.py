@@ -34,7 +34,7 @@ def output_checkfile(target, path_info):
                 "POINTID":     point_id,
                 "FLAGID":      flag_id,
             },
-            "./oval/partitions_rights{0}.xml", point_id + flag_id
+            "./oval/partitions_rights{0}.xml", point_id + '_' + flag_id
         )
 	else:
 		raise UnknownTargetError(target)
