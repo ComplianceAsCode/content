@@ -515,3 +515,18 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
     )
     add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-nistrefs-${PROFILE})
 endmacro()
+
+macro(ssg_build_html_cce_table PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt
+        COMMENT "[${PRODUCT}-tables] generating HTML CCE identifiers table"
+    )
+    add_custom_target(
+        ${PRODUCT}-table-cces
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html
+    )
+    add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-cces)
+endmacro()
