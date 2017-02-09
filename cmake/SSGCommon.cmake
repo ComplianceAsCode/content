@@ -498,3 +498,17 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
     )
     add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-by-ref-${REF})
 endmacro()
+
+macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "${PROFILE}" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMENT "[${PRODUCT}] generating HTML NIST refs table for ${PROFILE} profile"
+    )
+    add_custom_target(
+        ${PRODUCT}-table-nistrefs-${PROFILE}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html
+    )
+    add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-nistrefs-${PROFILE})
+endmacro()
