@@ -393,7 +393,7 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(validate ${PRODUCT}-validate)
 
     add_custom_target(
-        ${PRODUCT}-tables
+        ${PRODUCT}-tables ALL
         COMMENT "[${PRODUCT}-tables] generating HTML tables"
     )
 
