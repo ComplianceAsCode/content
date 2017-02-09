@@ -214,6 +214,12 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml
         COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-cpe-dictionary.xml"
     )
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
+        COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
+        DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
+        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-cpe-oval.xml"
+    )
 endmacro()
 
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
@@ -424,7 +430,7 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml
-        #DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] validating outputs"
     )
