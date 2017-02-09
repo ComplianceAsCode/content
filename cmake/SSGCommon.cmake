@@ -392,6 +392,10 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
+    add_custom_target(
+        ${PRODUCT}-tables
+    )
+
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -479,4 +483,18 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
            TYPE FILE FILES \${GUIDE_FILES}
        )"
     )
+endmacro()
+
+macro(ssg_build_html_table_by_ref PRODUCT REF)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam ref "${REF}" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        COMMENT "[${PRODUCT}] generating HTML table for ${REF} references"
+    )
+    add_custom_target(
+        ${PRODUCT}-table-by-ref-${REF}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html
+    )
+    add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-by-ref-${REF})
 endmacro()
