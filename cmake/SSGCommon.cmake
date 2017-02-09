@@ -490,6 +490,7 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html
         COMMAND ${XSLTPROC_EXECUTABLE} -stringparam ref "${REF}" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt
         COMMENT "[${PRODUCT}] generating HTML table for ${REF} references"
     )
     add_custom_target(
@@ -504,6 +505,7 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html
         COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "${PROFILE}" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt
         COMMENT "[${PRODUCT}] generating HTML NIST refs table for ${PROFILE} profile"
     )
     add_custom_target(
