@@ -10,6 +10,8 @@ ssg_build_html_nistrefs_table("rhel7" "C2S")
 
 ssg_build_html_cce_table("rhel7")
 
+ssg_build_html_srgmap_tables("rhel7")
+
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product("rhel7" "centos" "centos7")
 endif()

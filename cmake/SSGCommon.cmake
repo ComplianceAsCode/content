@@ -530,3 +530,28 @@ macro(ssg_build_html_cce_table PRODUCT)
     )
     add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-cces)
 endmacro()
+
+macro(ssg_build_html_srgmap_tables PRODUCT)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt
+        COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=no)"
+    )
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam flat "y" --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt
+        COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=yes)"
+    )
+    add_custom_target(
+        ${PRODUCT}-table-srg
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html
+    )
+    add_dependencies(${PRODUCT}-tables ${PRODUCT}-table-srg)
+endmacro()
