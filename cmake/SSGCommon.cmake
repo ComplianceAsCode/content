@@ -417,8 +417,8 @@ macro(ssg_build_product PRODUCT)
         #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         #DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
-        DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
+        #DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml
+        #DEPENDS ${CMAKE_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         COMMENT "[${PRODUCT}] validating outputs"
     )
