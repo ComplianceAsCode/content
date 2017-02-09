@@ -213,14 +213,14 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         COMMAND ${OSCAP_EXECUTABLE} cpe validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml
-        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-cpe-dictionary.xml"
+        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-cpe-dictionary.xml"
     )
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
         COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml
-        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-cpe-oval.xml"
+        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-cpe-oval.xml"
     )
 endmacro()
 
@@ -256,7 +256,7 @@ macro(ssg_build_xccdf_final PRODUCT)
         COMMAND ${SSG_SHARED_UTILS}/verify-references.py --rules-with-invalid-checks --ovaldefs-unused ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
-        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-xccdf.xml"
+        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf.xml"
     )
 
     add_custom_command(
@@ -270,7 +270,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     #    COMMAND ${OSCAP_EXECUTABLE} xccdf-1.2 validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
     #    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml
     #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml
-    #    COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-xccdf-1.2.xml"
+    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf-1.2.xml"
     #)
 endmacro()
 
@@ -286,7 +286,7 @@ macro(ssg_build_oval_final PRODUCT)
         COMMAND ${OSCAP_EXECUTABLE} oval validate --schematron ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml
-        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-oval.xml"
+        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-oval.xml"
     )
 endmacro()
 
@@ -302,7 +302,7 @@ macro(ssg_build_ocil_final PRODUCT)
     #    COMMAND ${OSCAP_EXECUTABLE} ocil validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
     #    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml
     #    DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml
-    #    COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-ocil.xml"
+    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-ocil.xml"
     #)
 endmacro()
 
@@ -335,7 +335,7 @@ macro(ssg_build_sds PRODUCT)
         COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml
-        COMMENT "[${PRODUCT}] validating ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-ds.xml"
     )
 endmacro()
 
@@ -388,12 +388,13 @@ macro(ssg_build_product PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml
-        COMMENT "[${PRODUCT}] validating outputs"
+        COMMENT "[${PRODUCT}-validate] validating outputs"
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
     add_custom_target(
         ${PRODUCT}-tables
+        COMMENT "[${PRODUCT}-tables] generating HTML tables"
     )
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
@@ -433,7 +434,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         COMMAND ${OSCAP_EXECUTABLE} xccdf validate ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml
-        COMMENT "[${DERIVATIVE}] validating ssg-${DERIVATIVE}-xccdf.xml"
+        COMMENT "[${DERIVATIVE}-validate] validating ssg-${DERIVATIVE}-xccdf.xml"
     )
 
     add_custom_command(
@@ -448,7 +449,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         COMMAND ${OSCAP_EXECUTABLE} ds sds-validate ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml
-        COMMENT "[${DERIVATIVE}] validating ssg-${DERIVATIVE}-ds.xml"
+        COMMENT "[${DERIVATIVE}-validate] validating ssg-${DERIVATIVE}-ds.xml"
     )
 
     ssg_build_html_guides(${DERIVATIVE})
@@ -465,7 +466,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         ${DERIVATIVE}-validate
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml
-        COMMENT "[${DERIVATIVE}] validating outputs"
+        COMMENT "[${DERIVATIVE}-validate] validating outputs"
     )
     add_dependencies(validate ${DERIVATIVE}-validate)
 
@@ -491,7 +492,7 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
         COMMAND ${XSLTPROC_EXECUTABLE} -stringparam ref "${REF}" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt
-        COMMENT "[${PRODUCT}] generating HTML table for ${REF} references"
+        COMMENT "[${PRODUCT}-tables] generating HTML table for ${REF} references"
     )
     add_custom_target(
         ${PRODUCT}-table-by-ref-${REF}
@@ -506,7 +507,7 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
         COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "${PROFILE}" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         MAIN_DEPENDENCY ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt
-        COMMENT "[${PRODUCT}] generating HTML NIST refs table for ${PROFILE} profile"
+        COMMENT "[${PRODUCT}-tables] generating HTML NIST refs table for ${PROFILE} profile"
     )
     add_custom_target(
         ${PRODUCT}-table-nistrefs-${PROFILE}
