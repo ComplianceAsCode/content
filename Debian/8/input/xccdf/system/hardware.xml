@@ -1,0 +1,18 @@
+<!-- HW install -->
+<Group id="hw-install">
+  <title>Hardening the hardware usage</title>
+  <description>Hardware dependent, but efficient against various risks.</description>
+
+<Rule id="grub2_enable_iommu_force">
+  <title>IOMMU configuration directive</title>
+  <description>
+    On x86 architecture supporting VT-d, the IOMMU manages the access control policy between the hardware devices and some
+    of the system critical units such as the memory.
+  </description>
+  <rationale>On x86 architectures, activating the I/OMMU prevents the system from arbritrary accesses potentially made by
+    hardware devices.</rationale> 
+<oval id="grub2_enable_iommu_force" />
+<ref anssi="NT28(R11)"/>
+</Rule>
+
+</Group>
