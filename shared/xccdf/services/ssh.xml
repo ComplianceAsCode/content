@@ -378,7 +378,7 @@ RSAAuthentication no</pre></description>
 <Rule id="sshd_disable_tunnel" prodtype="rhel7">
 <title>Disable Tunneling</title>
 <description>OpenSSH includes the ability to provide tunneling, which allows
-a user to effectively establish a VPN connection with a firewall/gateway machine and then access resources
+a user to effectively establish a VPN connection with a firewall/gateway system and then access resources
 sitting behind it. This feature is disabled by default. To explicitly
 disable it:
 <pre>PermitTunnel no</pre>
@@ -725,7 +725,7 @@ the local network, then strengthen the default firewall rule for the SSH service
 to only accept connections from the appropriate network segment(s).
 <br /><br />
 Determine an appropriate network block, <tt>netwk</tt>, network mask, <tt>mask</tt>, and
-network protocol, <tt>ip_protocol</tt>, representing the machines on your network which will
+network protocol, <tt>ip_protocol</tt>, representing the systems on your network which will
 be allowed to access this SSH server.
 <br /><br />
 Run the following command:
