@@ -1,26 +1,21 @@
 <def-group>
   <definition class="compliance" id="mount_optionPOINTID_FLAGID" version="1">
     <metadata>
-      <title>Add MOUNTFLAG Option to MOUNTPOINT</title>
+      <title>Add FLAGLIST Option to MOUNTPOINT</title>
       <affected family="unix">
-        <platform>multi_platform_ubuntu</platform>
+        <platform>multi_platform_debian</platform>
       </affected>
-      <description>MOUNTPOINT should be mounted with mount flag MOUNTFLAG.</description>
+      <description>MOUNTPOINT should be mounted with mount flags FLAGLIST.</description>
     </metadata>
     <criteria>
-      <criterion comment="MOUNTFLAG on MOUNTPOINT" test_ref="testPOINTID_FLAGID" />
+      <criterion comment="FLAGLIST on MOUNTPOINT" test_ref="testPOINTID_FLAGID" />
     </criteria>
   </definition>
   <linux:partition_test check="all" check_existence="all_exist"
-  id="testPOINTID_FLAGID" version="1" comment="MOUNTFLAG on MOUNTPOINT">
+  id="testPOINTID_FLAGID" version="1" comment="FLAGLIST on MOUNTPOINT">
     <linux:object object_ref="objectPOINTID_FLAGID_partition" />
-    <linux:state state_ref="statePOINTID_FLAGID" />
-  </linux:partition_test>
+MOUNTSTATES  </linux:partition_test>
   <linux:partition_object id="objectPOINTID_FLAGID_partition" version="1">
     <linux:mount_point>MOUNTPOINT</linux:mount_point>
   </linux:partition_object>
-  <linux:partition_state id="statePOINTID_FLAGID" version="1">
-    <linux:mount_options datatype="string" entity_check="at least one"
-    operation="equals">MOUNTFLAG</linux:mount_options>
-  </linux:partition_state>
-</def-group>
+MOUNTFLAGS</def-group>
