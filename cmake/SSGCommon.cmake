@@ -234,16 +234,37 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
     )
 
-    file(GLOB PUPPET_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/puppet/*")
-    file(GLOB SHARED_PUPPET_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/puppet/*")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-inputs
+        OUTPUT_VARIABLE PUPPET_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" PUPPET_REMEDIATIONS_DEPENDS "${PUPPET_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-outputs
+        OUTPUT_VARIABLE PUPPET_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" PUPPET_REMEDIATIONS_OUTPUTS "${PUPPET_REMEDIATIONS_OUTPUTS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-inputs
+        OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_DEPENDS "${SHARED_PUPPET_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-outputs
+        OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_OUTPUTS "${SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR}")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language puppet build
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language puppet build
+        OUTPUT ${PUPPET_REMEDIATIONS_OUTPUTS}
+        OUTPUT ${SHARED_PUPPET_REMEDIATIONS_OUTPUTS}
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet build
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language puppet build
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} puppet ${BUILD_REMEDIATIONS_DIR}/shared/puppet ${SSG_SHARED}/templates/static/puppet ${BUILD_REMEDIATIONS_DIR}/puppet ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
-        DEPENDS ${PUPPET_REMEDIATION_DEPS} ${SHARED_PUPPET_REMEDIATION_DEPS}
+        DEPENDS ${PUPPET_REMEDIATIONS_DEPENDS}
+        DEPENDS ${SHARED_PUPPET_REMEDIATIONS_DEPENDS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating puppet-remediations.xml"
     )
