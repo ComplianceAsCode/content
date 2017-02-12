@@ -340,7 +340,7 @@ macro(ssg_build_sds PRODUCT)
 endmacro()
 
 macro(ssg_build_html_guides PRODUCT)
-    FILE(GLOB SSG_PROD_GUIDES ${CMAKE_BINARY_DIR}/*.html)
+    FILE(GLOB SSG_PROD_GUIDES ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-*.html)
 
     add_custom_command(
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html ${SSG_PROD_GUIDES}
