@@ -273,16 +273,37 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
     )
 
-    file(GLOB ANACONDA_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/anaconda/*")
-    file(GLOB SHARED_ANACONDA_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/anaconda/*")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-inputs
+        OUTPUT_VARIABLE ANACONDA_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" ANACONDA_REMEDIATIONS_DEPENDS "${ANACONDA_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-outputs
+        OUTPUT_VARIABLE ANACONDA_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" ANACONDA_REMEDIATIONS_OUTPUTS "${ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-inputs
+        OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_DEPENDS "${SHARED_ANACONDA_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-outputs
+        OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_OUTPUTS "${SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language anaconda build
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language anaconda build
+        OUTPUT ${ANACONDA_REMEDIATIONS_OUTPUTS}
+        OUTPUT ${SHARED_ANACONDA_REMEDIATIONS_OUTPUTS}
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda build
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language anaconda build
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} anaconda ${BUILD_REMEDIATIONS_DIR}/shared/anaconda ${SSG_SHARED}/templates/static/anaconda ${BUILD_REMEDIATIONS_DIR}/anaconda ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda ${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml
-        DEPENDS ${ANACONDA_REMEDIATION_DEPS} ${SHARED_ANACONDA_REMEDIATION_DEPS}
+        DEPENDS ${ANACONDA_REMEDIATIONS_DEPENDS}
+        DEPENDS ${SHARED_ANACONDA_REMEDIATIONS_DEPENDS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating anaconda-remediations.xml"
     )
