@@ -167,12 +167,12 @@ macro(ssg_build_remediations PRODUCT)
     )
     string(REPLACE "\n" ";" BASH_REMEDIATIONS_OUTPUTS "${BASH_REMEDIATIONS_OUTPUTS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-inputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language bash list-inputs
         OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_DEPENDS "${SHARED_BASH_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-outputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language bash list-outputs
         OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_OUTPUTS "${SHARED_BASH_REMEDIATIONS_OUTPUTS_STR}")
@@ -206,12 +206,12 @@ macro(ssg_build_remediations PRODUCT)
     )
     string(REPLACE "\n" ";" ANSIBLE_REMEDIATIONS_OUTPUTS "${ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-inputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ansible list-inputs
         OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_DEPENDS "${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-outputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ansible list-outputs
         OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS "${SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
@@ -245,12 +245,12 @@ macro(ssg_build_remediations PRODUCT)
     )
     string(REPLACE "\n" ";" PUPPET_REMEDIATIONS_OUTPUTS "${PUPPET_REMEDIATIONS_OUTPUTS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-inputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language puppet list-inputs
         OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_DEPENDS "${SHARED_PUPPET_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-outputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language puppet list-outputs
         OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_OUTPUTS "${SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR}")
@@ -284,12 +284,12 @@ macro(ssg_build_remediations PRODUCT)
     )
     string(REPLACE "\n" ";" ANACONDA_REMEDIATIONS_OUTPUTS "${ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-inputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language anaconda list-inputs
         OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_DEPENDS "${SHARED_ANACONDA_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-outputs
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language anaconda list-outputs
         OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_OUTPUTS "${SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
