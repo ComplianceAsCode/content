@@ -464,7 +464,7 @@ macro(ssg_build_html_guides PRODUCT)
         OUTPUT ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html ${SSG_PROD_GUIDES}
         COMMAND ${SSG_SHARED_UTILS}/build-all-guides.py --input ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml --output ${CMAKE_BINARY_DIR}/ build
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
-        COMMENT "[${PRODUCT}] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-guides] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-guide-index.html
@@ -497,7 +497,6 @@ macro(ssg_build_product PRODUCT)
         DEPENDS generate-ssg-${PRODUCT}-ocil.xml
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
-        DEPENDS generate-ssg-${PRODUCT}-guide-index.html
     )
     add_custom_target(
         ${PRODUCT}-validate
@@ -511,6 +510,12 @@ macro(ssg_build_product PRODUCT)
         COMMENT "[${PRODUCT}-validate] validating outputs"
     )
     add_dependencies(validate ${PRODUCT}-validate)
+
+    add_custom_target(
+        ${PRODUCT}-guides ALL
+        DEPENDS generate-ssg-${PRODUCT}-guide-index.html
+        COMMENT "[${PRODUCT}-guides] generating HTML guides"
+    )
 
     add_custom_target(
         ${PRODUCT}-tables ALL
