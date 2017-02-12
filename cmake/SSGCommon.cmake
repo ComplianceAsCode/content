@@ -154,17 +154,39 @@ macro(ssg_build_ocil_unlinked PRODUCT)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
-    file(GLOB BASH_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/bash/*")
-    file(GLOB SHARED_BASH_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/bash/*")
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
+
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-inputs
+        OUTPUT_VARIABLE BASH_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" BASH_REMEDIATIONS_DEPENDS "${BASH_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-outputs
+        OUTPUT_VARIABLE BASH_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" BASH_REMEDIATIONS_OUTPUTS "${BASH_REMEDIATIONS_OUTPUTS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-inputs
+        OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_DEPENDS "${SHARED_BASH_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-outputs
+        OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_OUTPUTS "${SHARED_BASH_REMEDIATIONS_OUTPUTS_STR}")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language bash build
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language bash build
+        OUTPUT ${BASH_REMEDIATIONS_OUTPUTS}
+        OUTPUT ${SHARED_BASH_REMEDIATIONS_OUTPUTS}
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash build
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language bash build
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} bash ${BUILD_REMEDIATIONS_DIR}/shared/bash ${SSG_SHARED}/templates/static/bash ${BUILD_REMEDIATIONS_DIR}/bash ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
-        DEPENDS ${BASH_REMEDIATION_DEPS} ${SHARED_BASH_REMEDIATION_DEPS}
+        DEPENDS ${BASH_REMEDIATIONS_DEPENDS}
+        DEPENDS ${SHARED_BASH_REMEDIATIONS_DEPENDS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
