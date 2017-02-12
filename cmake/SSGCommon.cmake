@@ -85,9 +85,7 @@ macro(ssg_build_ocil_unlinked PRODUCT)
         generate-internal-${PRODUCT}-ocil-unlinked.xml
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml
     )
-endmacro()
 
-macro(ssg_build_xccdf_ocilrefs PRODUCT)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml
         COMMAND ${XSLTPROC_EXECUTABLE} --stringparam product ${PRODUCT} --output ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml ${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt ${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml
@@ -479,7 +477,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
-    ssg_build_xccdf_ocilrefs(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
