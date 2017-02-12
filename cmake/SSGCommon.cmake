@@ -540,7 +540,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_ocil_final(${PRODUCT})
     ssg_build_pci_dss_xccdf(${PRODUCT})
     ssg_build_sds(${PRODUCT})
-    ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
         ${PRODUCT} ALL
@@ -563,6 +562,8 @@ macro(ssg_build_product PRODUCT)
         COMMENT "[${PRODUCT}-validate] validating outputs"
     )
     add_dependencies(validate ${PRODUCT}-validate)
+
+    ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
         ${PRODUCT}-guides ALL
