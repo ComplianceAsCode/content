@@ -38,6 +38,8 @@ option(SSG_WEBMIN_CONTENT_ENABLED "If enabled, the Webmin SCAP content will be b
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
 
+option(SSG_COMPATIBILITY_SYMLINK "If enabled a compatibility symlink will be created in the old SCAP Security Guide location - /usr/share/xml/scap/contente (only on a UNIX derived operating system)" FALSE)
+
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
 
@@ -153,7 +155,7 @@ install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
 install(FILES "docs/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
 
-if (UNIX)
+if (UNIX AND SSG_COMPATIBILITY_SYMLINK)
     install(CODE "
         file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/)
     ")
