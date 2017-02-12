@@ -195,16 +195,37 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
     )
 
-    file(GLOB ANSIBLE_REMEDIATION_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/output/ansible/*")
-    file(GLOB SHARED_ANSIBLE_REMEDIATION_DEPS "${SSG_SHARED}/templates/output/ansible/*")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-inputs
+        OUTPUT_VARIABLE ANSIBLE_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" ANSIBLE_REMEDIATIONS_DEPENDS "${ANSIBLE_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-outputs
+        OUTPUT_VARIABLE ANSIBLE_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" ANSIBLE_REMEDIATIONS_OUTPUTS "${ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-inputs
+        OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_DEPENDS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_DEPENDS "${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS_STR}")
+    execute_process(
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-outputs
+        OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR
+    )
+    string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS "${SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${CMAKE_CURRENT_SOURCE_DIR}/templates --output ${BUILD_REMEDIATIONS_DIR} --language ansible build
-        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input ${SSG_SHARED}/templates --output ${BUILD_REMEDIATIONS_DIR}/shared/ --language ansible build
+        OUTPUT ${ANSIBLE_REMEDIATIONS_OUTPUTS}
+        OUTPUT ${SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS}
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible build
+        COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language ansible build
         COMMAND SHARED=${SSG_SHARED} ${SSG_SHARED_UTILS}/combine-remediations.py ${PRODUCT} ansible ${BUILD_REMEDIATIONS_DIR}/shared/ansible ${SSG_SHARED}/templates/static/ansible ${BUILD_REMEDIATIONS_DIR}/ansible ${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
-        DEPENDS ${ANSIBLE_REMEDIATION_DEPS} ${SHARED_ANSIBLE_REMEDIATION_DEPS}
+        DEPENDS ${ANSIBLE_REMEDIATIONS_DEPENDS}
+        DEPENDS ${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS}
         DEPENDS ${SSG_SHARED_UTILS}/combine-remediations.py
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
     )
