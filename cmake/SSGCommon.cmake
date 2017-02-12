@@ -764,3 +764,31 @@ macro(ssg_build_html_srgmap_tables PRODUCT)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
+
+macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v1r0.2-xccdf-manual.xml
+        DEPENDS ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v1r0.2-xccdf-manual.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt
+        COMMENT "[${PRODUCT}-tables] generating HTML STIG table"
+    )
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html
+        COMMAND ${XSLTPROC_EXECUTABLE} -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt
+        COMMENT "[${PRODUCT}-tables] generating HTML STIG test info document"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-table-stig
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html
+    )
+    add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
+
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+endmacro()
