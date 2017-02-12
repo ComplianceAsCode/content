@@ -9,6 +9,7 @@ include(GNUInstallDirs)
 # FIXME: This is different than the old location /usr/share/xml/scap/ssg/content
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap/ssg")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
+set(SSG_TABLE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/tables")
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
