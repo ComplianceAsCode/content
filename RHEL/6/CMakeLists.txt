@@ -1,8 +1,25 @@
-ssg_build_product("rhel6")
+set(PRODUCT "rhel6")
+set(DISA_SRG_VERSION "v1r4")
+set(DISA_STIG_VERSION "v1r12")
+
+ssg_build_product(${PRODUCT})
+
+ssg_build_html_table_by_ref(${PRODUCT} "nist")
+ssg_build_html_table_by_ref(${PRODUCT} "cis")
+ssg_build_html_table_by_ref(${PRODUCT} "pcidss")
+
+ssg_build_html_nistrefs_table(${PRODUCT} "common")
+ssg_build_html_nistrefs_table(${PRODUCT} "C2S")
+
+ssg_build_html_cce_table(${PRODUCT})
+
+ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_VERSION})
+
+ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-server" ${DISA_STIG_VERSION})
 
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
-    ssg_build_derivative_product("rhel6" "centos" "centos6")
+    ssg_build_derivative_product(${PRODUCT} "centos" "centos6")
 endif()
 if (SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED)
-    ssg_build_derivative_product("rhel6" "sl" "sl6")
+    ssg_build_derivative_product(${PRODUCT} "sl" "sl6")
 endif()
