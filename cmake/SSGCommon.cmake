@@ -694,12 +694,11 @@ macro(ssg_build_product PRODUCT)
     add_custom_target(
         ${PRODUCT}-guides ALL
         DEPENDS generate-ssg-${PRODUCT}-guide-index.html
-        COMMENT "[${PRODUCT}-guides] generating HTML guides"
     )
 
     add_custom_target(
         ${PRODUCT}-tables ALL
-        COMMENT "[${PRODUCT}-tables] generating HTML tables"
+        # dependencies are added later using add_dependency
     )
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
