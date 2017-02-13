@@ -64,6 +64,28 @@
     * **ssg-rhel6-oval.xml**
     * **ssg-rhel6-ds.xml**
 
+5. Install
+  * Custom location
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake ../`
+    `$ make -j4`
+    `$ make DESTDIR=/opt/absolute/path/to/ssg/ install`
+
+  * System-wide installation
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake ../`
+    `$ make -j4`
+    `$ make install`
+
+  * System-wide installation using ninja
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake -G Ninja ../`
+    `$ ninja-build`
+    `$ ninja-build install`
+
 ## Using Docker
 
 Use the [Dockerfile](Dockerfile) present in the top directory and build the image.
