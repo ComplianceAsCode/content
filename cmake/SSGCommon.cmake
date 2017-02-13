@@ -868,22 +868,22 @@ macro(ssg_build_html_cce_table PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_srgmap_tables PRODUCT)
+macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html
-        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
-        DEPENDS ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        DEPENDS ${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=no)"
     )
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html
-        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam flat "y" --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --stringparam flat "y" --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt ${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS ${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml
-        DEPENDS ${SSG_SHARED_REFS}/disa-os-srg-v1r4.xml
+        DEPENDS ${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=yes)"
     )
@@ -900,11 +900,11 @@ macro(ssg_build_html_srgmap_tables PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
+macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html
-        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v1r0.2-xccdf-manual.xml
-        DEPENDS ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v1r0.2-xccdf-manual.xml
+        COMMAND ${XSLTPROC_EXECUTABLE} --output ${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml
+        DEPENDS ${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt
         COMMENT "[${PRODUCT}-tables] generating HTML STIG table"
     )
