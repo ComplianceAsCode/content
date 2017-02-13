@@ -328,9 +328,11 @@ macro(ssg_build_remediations PRODUCT)
 endmacro()
 
 macro(ssg_build_xccdf_with_remediations PRODUCT)
+    # we have to encode spaces in paths before passing them as stringparams to xsltproc
+    string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-remediations.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-remediations.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-remediations.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-remediations.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
@@ -876,9 +878,11 @@ macro(ssg_build_html_cce_table PRODUCT)
 endmacro()
 
 macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
+    # we have to encode spaces in paths before passing them as stringparams to xsltproc
+    string(REPLACE " " "%20" CMAKE_BINARY_DIR_NO_SPACES "${CMAKE_BINARY_DIR}")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_BINARY_DIR_NO_SPACES}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
@@ -887,7 +891,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_BINARY_DIR_NO_SPACES}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
