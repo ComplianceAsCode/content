@@ -144,6 +144,7 @@ its activities can be audited. Although <tt>auditd</tt> takes care of enabling
 this for all processes which launch after it does, adding the kernel argument
 ensures it is set for every process during boot.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
 is automatically updated each time a new kernel is installed. Note that any
 changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
@@ -3058,6 +3059,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27129-6" />
 <oval id="audit_rules_kernel_module_loading" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
@@ -3083,6 +3085,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80414-6" />
 <oval id="audit_rules_kernel_module_loading_init" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3109,6 +3112,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80415-3" />
 <oval id="audit_rules_kernel_module_loading_delete" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3136,6 +3140,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="" />
 <oval id="audit_rules_kernel_module_loading_insmod" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3163,6 +3168,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80416-1" />
 <oval id="audit_rules_kernel_module_loading_rmmod" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3190,6 +3196,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80417-9" />
 <oval id="audit_rules_kernel_module_loading_modprobe" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"

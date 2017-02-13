@@ -212,7 +212,7 @@ facility by unauthorized and malicious users.
 <description>
 If system logs are to be useful in detecting malicious
 activities, it is necessary to send logs to a remote server. An
-intruder who has compromised the root account on a machine may
+intruder who has compromised the root account on a system may
 delete the log entries which indicate that the system was attacked
 before they are seen by an administrator.
 <br /><br />
@@ -284,7 +284,7 @@ By default, <tt>rsyslog</tt> does not listen over the network
 for log messages. If needed, modules can be enabled to allow
 the rsyslog daemon to receive messages from other systems and for the system
 thus to act as a log server.
-If the machine is not a log server, then lines concerning these modules
+If the system is not a log server, then lines concerning these modules
 should remain commented out.
 <br /><br />
 </description>
@@ -402,7 +402,7 @@ If logrotate is configured properly, output should include references to
 <Group id="configure_logwatch_on_logserver">
 <title> Configure Logwatch on the Central Log Server</title>
 <description> 
-Is this machine the central log server? If so, edit the file <tt>/etc/logwatch/conf/logwatch.conf</tt> as shown below.
+Is this system the central log server? If so, edit the file <tt>/etc/logwatch/conf/logwatch.conf</tt> as shown below.
 </description>
 
 <Rule id="logwatch_configured_hostlimit" prodtype="rhel7">
@@ -446,7 +446,7 @@ If so:
 <pre> 
 $ sudo rm /etc/cron.daily/0logwatch 
 </pre>
-If no logserver exists, it will be necessary for each machine to run Logwatch individually. Using a central 
+If no logserver exists, it will be necessary for each system to run Logwatch individually. Using a central 
 logserver provides the security and reliability benefits discussed earlier, and also makes monitoring logs easier 
 and less time-intensive for administrators.</description>
 <ident prodtype="rhel7" cce="80198-5" />
