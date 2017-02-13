@@ -156,6 +156,7 @@ endmacro()
 macro(ssg_build_remediations PRODUCT)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
 
+    message(STATUS "Scanning for dependencies of ${PRODUCT} bash remediations...")
     execute_process(
         COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-inputs
         OUTPUT_VARIABLE BASH_REMEDIATIONS_DEPENDS_STR
@@ -195,6 +196,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml
     )
 
+    message(STATUS "Scanning for dependencies of ${PRODUCT} ansible remediations...")
     execute_process(
         COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-inputs
         OUTPUT_VARIABLE ANSIBLE_REMEDIATIONS_DEPENDS_STR
@@ -234,6 +236,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml
     )
 
+    message(STATUS "Scanning for dependencies of ${PRODUCT} puppet remediations...")
     execute_process(
         COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-inputs
         OUTPUT_VARIABLE PUPPET_REMEDIATIONS_DEPENDS_STR
@@ -273,6 +276,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml
     )
 
+    message(STATUS "Scanning for dependencies of ${PRODUCT} anaconda remediations...")
     execute_process(
         COMMAND ${SSG_SHARED_UTILS}/generate-from-templates.py --shared "${SSG_SHARED}" --oval_version ${OSCAP_OVAL_VERSION} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-inputs
         OUTPUT_VARIABLE ANACONDA_REMEDIATIONS_DEPENDS_STR
