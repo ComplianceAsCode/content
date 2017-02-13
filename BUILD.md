@@ -10,7 +10,7 @@
 
  `$ sudo apt -y install git cmake expat libopenscap8 libxml2-utils python-lxml python-openscap xsltproc`
 
-1a. FEDORA ONLY: Install the ShellCheck package.
+ Optional: Install the ShellCheck package.
 
  `# dnf -y install ShellCheck`
 
