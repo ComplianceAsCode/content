@@ -24,7 +24,7 @@
     `$ cd scap-security-guide/`
     `$ cd build/`
     `$ cmake ../`
-    `$ make -j 4`
+    `$ make -j4`
 
   * To build content only for a specific distribution:
 
@@ -39,6 +39,12 @@
     `$ cd build/`
     `$ cmake-gui ../`
     `$ make -j4 rhel6`
+
+  * Using the ninja-build system (requires ninja-build on the system)
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake -G Ninja ../`
+    `$ ninja-build`
 
   When the build has completed, the output will be in the build folder.
   That can be any folder you choose but if you followed the examples above
