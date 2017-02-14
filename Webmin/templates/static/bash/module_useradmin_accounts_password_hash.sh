@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_module_useradmin_accounts_password_hash
 
 if [ "$(grep -c '^md5=' /etc/webmin/useradmin/config)" = "0" ]; then

@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7
-. /usr/share/scap-security-guide/remediation_functions
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_password_pam_unix_remember
 
 if grep -q "remember=" /etc/pam.d/system-auth; then   

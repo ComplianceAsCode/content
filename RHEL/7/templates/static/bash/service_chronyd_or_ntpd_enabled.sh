@@ -1,5 +1,5 @@
 # platform = Red Hat Enterprise Linux 7
-. /usr/share/scap-security-guide/remediation_functions
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 
 if ! `rpm -q --quiet chrony` && ! `rpm -q --quiet ntp-`; then
   package_command install chrony

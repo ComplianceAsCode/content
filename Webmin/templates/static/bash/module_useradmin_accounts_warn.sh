@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_webmin_module_useradmin_accounts_warn
 
 if [ "$(grep -c '^default_warn=' /etc/webmin/useradmin/config)" = "0" ]; then

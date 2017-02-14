@@ -1,4 +1,4 @@
-. /usr/share/scap-security-guide/remediation_functions
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 populate var_password_pam_cracklib_ucredit
 
 if [ $(grep -c "ucredit=" /etc/pam.d/system-auth) != 0 ]; then

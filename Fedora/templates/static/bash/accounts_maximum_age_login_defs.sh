@@ -1,5 +1,5 @@
 # platform = multi_platform_fedora
-. /usr/share/scap-security-guide/remediation_functions
+INCLUDE_SHARED_REMEDIATION_FUNCTIONS
 declare var_accounts_maximum_age_login_defs
 populate var_accounts_maximum_age_login_defs
 
