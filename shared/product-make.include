@@ -62,7 +62,7 @@ ifeq ($(OPENSCAP_SVG), 0)
 	xsltproc -o $(OUT)/guide.xml $(SHARED)/$(TRANS)/includelogo.xslt $(SHARED)/xccdf/shared_guide.xml
 else
 	mkdir -p $(OUT)/
-	cp $(SHARED)/xccdf/shared_guide.xml $(OUT)/
+	cp $(SHARED)/xccdf/shared_guide.xml $(OUT)/guide.xml
 endif
 
 # Common build targets - compose single shorthand XCCDF guide from all the sources
