@@ -1924,17 +1924,17 @@ of the <tt>semanage</tt> command for all users and root. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
 <pre>$ sudo grep "path=/usr/sbin/semanage" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -1961,17 +1961,17 @@ of the <tt>setsebool</tt> command for all users and root. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
 <pre>$ sudo grep "path=/usr/sbin/setsebool" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -1998,17 +1998,17 @@ of the <tt>chcon</tt> command for all users and root. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/chcon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/chcon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
-<pre>$ sudo grep "path=/usr/sbin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+<pre>$ sudo grep "path=/usr/bin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/chcon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -2035,17 +2035,17 @@ of the <tt>restorecon</tt> command for all users and root. If the <tt>auditd</tt
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
 <pre>$ sudo grep "path=/usr/sbin/restorecon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
