@@ -78,11 +78,11 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="audit_rules_execution_restorecon" selected="true" />
 <select idref="audit_rules_privileged_commands" selected="true" />
 <select idref="audit_rules_privileged_commands_passwd" selected="true" />
-<select idref="audit_rules_privileged_commands_chkpwd" selected="true" />
+<select idref="audit_rules_privileged_commands_unix_chkpwd" selected="true" />
 <select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
 <select idref="audit_rules_privileged_commands_sudo" selected="true" />
 <select idref="audit_rules_privileged_commands_chage" selected="true" />
-<select idref="audit_rules_privileged_commands_usrhelpr" selected="true" />
+<select idref="audit_rules_privileged_commands_userhelper" selected="true" />
 <select idref="audit_rules_privileged_commands_su" selected="true" />
 <select idref="audit_rules_privileged_commands_sudoedit" selected="true" />
 <select idref="audit_rules_privileged_commands_newgrp" selected="true" />
@@ -274,9 +274,11 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.1.21	Limit use of organizational portable storage devices on 
      		external information systems -->
+<select idref="kernel_module_usb-storage_disabled" selected="true" />
 
 <!-- 3.1.22	Control information posted or processed on publicly accessible
      		information systems -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.2 AWARENESS TRAINING -->
 
@@ -315,7 +317,6 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="auditd_data_retention_action_mail_acct" selected="true" />
 <select idref="auditd_data_retention_flush" selected="true" />
 <select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
-<select idref="audit_rules_system_shutdown" selected="true" />
 <select idref="audit_rules_immutable" selected="true" />
 <select idref="file_permissions_var_log_audit" selected="true" />
 <select idref="file_ownership_var_log_audit" selected="true" />
@@ -371,25 +372,69 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.4.2	Establish and enforce security configuration setting for information technology
      		products employed in organizational information systems -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.4.3	Track, review, approve/disapprove, and audit changes to information systems -->
+<!-- rules that map to this:
+     	- audit_rules_immutable
+-->
 
 <!-- 3.4.4	Analyze the security impact of changes prior to implementation -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.4.5	Define, document, approve, and enforce physical and logical access restrictions
      		associated with changes to the information system -->     	
+<!-- TO DO: proceedural -->
+<!-- rules that map to this, enabled earlier:
+	- require_singleuser_auth
+	- disable_interactive_boot
+-->
+<select idref="file_user_owner_grub2_cfg" selected="true" />
+<select idref="file_group_owner_grub2_cfg" selected="true" />
+<select idref="file_permissions_grub2_cfg" selected="true" />
+<select idref="bootloader_password" selected="true" />
+<select idref="bootloader_uefi_password" selected="true" />
+<select idref="service_debug-shell_disabled" selected="true" />
+<select idref="disable_ctrlaltdel_reboot" selected="true" />
 
 <!-- 3.4.6	Employ the principle of least functionality by configuring the information system
      		to provide only essential capabilities -->
+<!-- rules enabled elsewhere:
+	- wireless_disable_interfaces
+	- service_bluetooth_disabled
+	- kernel_module_bluetooth_disabled
+-->
+<select idref="service_autofs_disabled" selected="true" />
+<select idref="kernel_module_cramfs_disabled" selected="true" />
+<select idref="kernel_module_freevxfs_disabled" selected="true" />
+<select idref="kernel_module_jffs2_disabled" selected="true" />
+<select idref="kernel_module_hfs_disabled" selected="true" />
+<select idref="kernel_module_hfsplus_disabled" selected="true" />
+<select idref="kernel_module_squashfs_disabled" selected="true" />
+<select idref="kernel_module_dccp_disabled" selected="true" />
+<select idref="kernel_module_sctp_disabled" selected="true" />
 
 <!-- 3.4.7	Restrict, disable, and prevent the use of nonessential functions, ports, protocols,
      		and services -->
+<!-- rules enabled earlier:
+     	- service disabled from shared/xccdf/services/obsolete.xml
+	- service_firewalld_enabled
+	- set_firewalld_default_zone
+-->
+<select idref="service_xinetd_disabled" selected="true" />
+
 
 <!-- 3.4.8	Apply deny-by-exception (blacklist) policy to prevent the use of unauthorized
      		software or deny-all, permit-by-exception (whitelisting) policy to allow
 		the execution of authorized software -->
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_globally_activated" selected="true" />
+<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="clean_components_post_updating" selected="true" />
+<select idref="ensure_gpgcheck_local_packages" selected="true" />
 
 <!-- 3.4.9	Control and monitor user-installed software -->
+<!-- TO DO: proceedural (users are not allowed to install s/w, must be root, which is audited) -->
 
 
 <!-- 3.5 IDENTIFICATION AND AUTHENTICATION -->
