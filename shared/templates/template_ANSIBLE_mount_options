@@ -19,7 +19,7 @@
   mount:
     path: "MOUNTPOINT"
     src: "{{device_name.stdout}}"
-    opts: "{{device_cur_mountflags.stdout}},MOUNTFLAGS"
+    opts: "{{device_cur_mountflags.stdout}},MOUNTFLAG"
     state: "mounted"
     fstype: "{{device_fstype.stdout}}"
 
