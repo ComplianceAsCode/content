@@ -448,20 +448,36 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.5.4	Employ replay-resistant authentication mechanisms for network access to
      		privileged and non-privileged accounts -->
+<!-- rules mapped to this and enabled elsewhere:
+	- service_sshd_enabled
+	- sshd_allow_only_protocol2
+-->
 
 <!-- 3.5.5	Prevent reuse of identifiers for a defined period of time -->
+<!-- TO DO: not possible w/out 3rd party tools -->
 
 <!-- 3.5.6	Disable identifiers after a defined period of inactivity -->
+<refine-value idref="var_account_disable_post_pw_expiration" selector="35" />
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="60" />
+
+<select idref="account_disable_post_pw_expiration" selected="true" />
+<select idref="accounts_maximum_age_login_defs" selected="true" />
 
 <!-- 3.5.7	Enforce a minimum password complexity and change of characters when new passwords
      		are created -->
+<refine-value idref="var_accounts_password_minlen_login_defs" selector="6" />
+
+<select idref="accounts_password_minlen_login_defs" selected="true" />
 
 <!-- 3.5.8	Prohibit password reuse for a specified number of generations -->
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="7" />
 <refine-value idref="var_password_pam_unix_remember" selector="5" />
+<refine-value idref="var_accounts_minimum_age_login_defs" selector="7" />
+<refine-value idref="var_accounts_password_warn_age_login_defs" selector="7" />
 
 <select idref="accounts_minimum_age_login_defs" selected="true" />
 <select idref="accounts_password_pam_unix_remember" selected="true" />
+<select idref="accounts_password_warn_age_login_defs" selected="true" />
 
 <!-- 3.5.9	Allow temporary password use for sytem logons with an immediate change to a
      		permanent password -->
@@ -471,27 +487,40 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="accounts_password_all_shadowed" selected="true" />
 
 <!-- 3.5.11	Obscure feedback of authentication information -->
+<!-- TO DO: default -->
 
 <!-- 3.6 INCIDENT RESPONSE -->
 <!-- 3.6.1	Establish an operational incident-handling capability for organizational information
      		systems that includes adequate preparation, detection, analysis, containment,
 		recovery, and user response activities -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.6.2	Track, document, and report incidents to appropriate organizational officials
      		and/or authorities -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.6.3	Test the organizational incident response capability -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.7 MAINTENANCE -->
 <!-- 3.7.1	Perform maintenance on organizational information systems -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.7.2	Provide effective controks on the tools, techniques, mechanisms, and personnel
      		used to conduct system maintenance -->
+<!-- enabled elsewhere:
+	- selinux checks (enable_selinux_bootloader, selinux_state, selinux_policytype, selinux_confinement_of_daemons
+	- rpm verify 
+-->
+<select idref="sebool_abrt_anon_write" selected="true" />
+
 
 <!-- 3.7.3	Ensure equipment removed for off-site maintenance is sanitized of any CUI -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.7.4	Check media containing diagnostic and test programs for malicious code before
      		the media are used in the information system -->
+<!-- TO DO: proceedural -->
 
 <!-- 3.7.5	Require multifactor authentication to establish nonlocal maintenance sessions via
      		external network connections and terminate such connections when nonlocal
