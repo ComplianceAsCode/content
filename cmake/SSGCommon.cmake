@@ -185,6 +185,8 @@ macro(ssg_build_remediations PRODUCT)
         OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_OUTPUTS "${SHARED_BASH_REMEDIATIONS_OUTPUTS_STR}")
+    file(GLOB EXTRA_BASH_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash/*")
+    file(GLOB EXTRA_SHARED_BASH_DEPENDS "${SSG_SHARED}/templates/static/bash/*")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
@@ -196,6 +198,8 @@ macro(ssg_build_remediations PRODUCT)
         COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} bash "${BUILD_REMEDIATIONS_DIR}/shared/bash" "${SSG_SHARED}/templates/static/bash" "${BUILD_REMEDIATIONS_DIR}/bash" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash" "${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml"
         DEPENDS ${BASH_REMEDIATIONS_DEPENDS}
         DEPENDS ${SHARED_BASH_REMEDIATIONS_DEPENDS}
+        DEPENDS ${EXTRA_BASH_DEPENDS}
+        DEPENDS ${EXTRA_SHARED_BASH_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
@@ -227,6 +231,8 @@ macro(ssg_build_remediations PRODUCT)
         OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS "${SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
+    file(GLOB EXTRA_PUPPET_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible/*")
+    file(GLOB EXTRA_SHARED_PUPPET_DEPENDS "${SSG_SHARED}/templates/static/ansible/*")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
@@ -238,6 +244,8 @@ macro(ssg_build_remediations PRODUCT)
         COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} ansible "${BUILD_REMEDIATIONS_DIR}/shared/ansible" "${SSG_SHARED}/templates/static/ansible" "${BUILD_REMEDIATIONS_DIR}/ansible" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible" "${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml"
         DEPENDS ${ANSIBLE_REMEDIATIONS_DEPENDS}
         DEPENDS ${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS}
+        DEPENDS ${EXTRA_ANSIBLE_DEPENDS}
+        DEPENDS ${EXTRA_SHARED_ANSIBLE_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
     )
@@ -267,6 +275,8 @@ macro(ssg_build_remediations PRODUCT)
         OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_OUTPUTS "${SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR}")
+    file(GLOB EXTRA_PUPPET_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet/*")
+    file(GLOB EXTRA_SHARED_PUPPET_DEPENDS "${SSG_SHARED}/templates/static/puppet/*")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
@@ -278,6 +288,8 @@ macro(ssg_build_remediations PRODUCT)
         COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} puppet "${BUILD_REMEDIATIONS_DIR}/shared/puppet" "${SSG_SHARED}/templates/static/puppet" "${BUILD_REMEDIATIONS_DIR}/puppet" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet" "${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml"
         DEPENDS ${PUPPET_REMEDIATIONS_DEPENDS}
         DEPENDS ${SHARED_PUPPET_REMEDIATIONS_DEPENDS}
+        DEPENDS ${EXTRA_PUPPET_DEPENDS}
+        DEPENDS ${EXTRA_SHARED_PUPPET_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating puppet-remediations.xml"
     )
@@ -307,6 +319,8 @@ macro(ssg_build_remediations PRODUCT)
         OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_OUTPUTS "${SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
+    file(GLOB EXTRA_ANACONDA_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda/*")
+    file(GLOB EXTRA_SHARED_ANACONDA_DEPENDS "${SSG_SHARED}/templates/static/anaconda/*")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
@@ -318,6 +332,8 @@ macro(ssg_build_remediations PRODUCT)
         COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} anaconda "${BUILD_REMEDIATIONS_DIR}/shared/anaconda" "${SSG_SHARED}/templates/static/anaconda" "${BUILD_REMEDIATIONS_DIR}/anaconda" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda" "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml"
         DEPENDS ${ANACONDA_REMEDIATIONS_DEPENDS}
         DEPENDS ${SHARED_ANACONDA_REMEDIATIONS_DEPENDS}
+        DEPENDS ${EXTRA_ANACONDA_DEPENDS}
+        DEPENDS ${EXTRA_SHARED_ANACONDA_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating anaconda-remediations.xml"
     )
