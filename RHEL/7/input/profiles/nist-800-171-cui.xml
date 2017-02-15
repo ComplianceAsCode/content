@@ -78,7 +78,7 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="audit_rules_execution_restorecon" selected="true" />
 <select idref="audit_rules_privileged_commands" selected="true" />
 <select idref="audit_rules_privileged_commands_passwd" selected="true" />
-<select idref="audit_rules_privileged_commands_unix_chkpwd" selected="true" />
+<select idref="audit_rules_privileged_commands_chkpwd" selected="true" />
 <select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
 <select idref="audit_rules_privileged_commands_sudo" selected="true" />
 <select idref="audit_rules_privileged_commands_chage" selected="true" />
@@ -202,7 +202,7 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="sshd_do_not_permit_user_env" selected="true" />
 <select idref="dconf_gnome_remote_access_credential_prompt" selected="true" />
 
-<!-- 3.1.13	Employ cryptographic mechanisms to protect the confidentiality of remote 
+<!-- 3.1.13	Employ cryptographic mechanisms to protect the confidentiality of remote
      		access sessions -->
 <select idref="service_sshd_enabled" selected="true" />
 <select idref="file_permissions_sshd_pub_key" selected="true" />
@@ -272,25 +272,25 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
 <select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
 
-<!-- 3.1.21	Limit use of organizational portable storage devices on 
+<!-- 3.1.21	Limit use of organizational portable storage devices on
      		external information systems -->
 <select idref="kernel_module_usb-storage_disabled" selected="true" />
 
 <!-- 3.1.22	Control information posted or processed on publicly accessible
      		information systems -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.2 AWARENESS TRAINING -->
 
 <!-- 3.2.1	Ensure that managers, systems administrators, and users or organizational
-		information systems are made aware of the security risks associated with 
+		information systems are made aware of the security risks associated with
 		their activities and of the applicable policies, standards, and procedures
 		related to the security of organizational information systems -->
 <!-- TO DO: Organizational control -->
 
 <!-- 3.2.2	Ensure that organizational personnel are adequately trained to carry out
      		their assigned information security-related duties and responsibilities -->
-<!-- TO DO: Organizational control --> 
+<!-- TO DO: Organizational control -->
 
 <!-- 3.2.3	Provide security awareness training on recognizing and reporting potential
      		indicators of insider threat -->
@@ -357,7 +357,7 @@ for securing Controlled Unclassified Information (CUI).
 <!-- rules that map to this:
      	- rpm_verify_permissions / rpm_verify_hashes
 	- audit_rules_immutable
---> 
+-->
 
 <!-- 3.3.9	Limit management of audit functionality to a subset of privileged users -->
 <!-- TO DO: config sudo? -->
@@ -372,7 +372,7 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.4.2	Establish and enforce security configuration setting for information technology
      		products employed in organizational information systems -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.4.3	Track, review, approve/disapprove, and audit changes to information systems -->
 <!-- rules that map to this:
@@ -380,11 +380,11 @@ for securing Controlled Unclassified Information (CUI).
 -->
 
 <!-- 3.4.4	Analyze the security impact of changes prior to implementation -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.4.5	Define, document, approve, and enforce physical and logical access restrictions
-     		associated with changes to the information system -->     	
-<!-- TO DO: proceedural -->
+     		associated with changes to the information system -->
+<!-- TO DO: procedural -->
 <!-- rules that map to this, enabled earlier:
 	- require_singleuser_auth
 	- disable_interactive_boot
@@ -434,13 +434,13 @@ for securing Controlled Unclassified Information (CUI).
 <select idref="ensure_gpgcheck_local_packages" selected="true" />
 
 <!-- 3.4.9	Control and monitor user-installed software -->
-<!-- TO DO: proceedural (users are not allowed to install s/w, must be root, which is audited) -->
+<!-- TO DO: procedural (users are not allowed to install s/w, must be root, which is audited) -->
 
 
 <!-- 3.5 IDENTIFICATION AND AUTHENTICATION -->
 <!-- 3.5.1 Identify information system users, processes acting on behalf of users, or devices -->
 
-<!-- 3.5.2	Authenticate (or verify) the identities of those users, processes, or devices, as a 
+<!-- 3.5.2	Authenticate (or verify) the identities of those users, processes, or devices, as a
      		prerequisite to allow access to organizational information systems -->
 
 <!-- 3.5.3	Use multifactor authentication for local network access to privileged accounts
@@ -472,7 +472,6 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.5.8	Prohibit password reuse for a specified number of generations -->
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="7" />
 <refine-value idref="var_password_pam_unix_remember" selector="5" />
-<refine-value idref="var_accounts_minimum_age_login_defs" selector="7" />
 <refine-value idref="var_accounts_password_warn_age_login_defs" selector="7" />
 
 <select idref="accounts_minimum_age_login_defs" selected="true" />
@@ -493,149 +492,494 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.6.1	Establish an operational incident-handling capability for organizational information
      		systems that includes adequate preparation, detection, analysis, containment,
 		recovery, and user response activities -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.6.2	Track, document, and report incidents to appropriate organizational officials
      		and/or authorities -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.6.3	Test the organizational incident response capability -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.7 MAINTENANCE -->
 <!-- 3.7.1	Perform maintenance on organizational information systems -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.7.2	Provide effective controks on the tools, techniques, mechanisms, and personnel
      		used to conduct system maintenance -->
 <!-- enabled elsewhere:
 	- selinux checks (enable_selinux_bootloader, selinux_state, selinux_policytype, selinux_confinement_of_daemons
-	- rpm verify 
+	- rpm verify
 -->
 <select idref="sebool_abrt_anon_write" selected="true" />
 <select idref="sebool_abrt_handle_event" selected="true" />
+<select idref="sebool_abrt_upload_watch_anon_write" selected="true" />
+<select idref="sebool_antivirus_can_scan_system" selected="true" />
+<select idref="sebool_antivirus_use_jit" selected="true" />
+<select idref="sebool_auditadm_exec_content" selected="true" />
+<select idref="sebool_authlogin_nsswitch_use_ldap" selected="true" />
+<select idref="sebool_authlogin_radius" selected="true" />
+<select idref="sebool_authlogin_yubikey" selected="true" />
+<select idref="sebool_awstats_purge_apache_log_files" selected="true" />
+<select idref="sebool_boinc_execmem" selected="true" />
+<select idref="sebool_cdrecord_read_content" selected="true" />
+<select idref="sebool_cluster_can_network_connect" selected="true" />
+<select idref="sebool_cluster_manage_all_files" selected="true" />
+<select idref="sebool_cluster_use_execmem" selected="true" />
+<select idref="sebool_cobbler_anon_write" selected="true" />
+<select idref="sebool_cobbler_can_network_connect" selected="true" />
+<select idref="sebool_cobbler_use_cifs" selected="true" />
+<select idref="sebool_cobbler_use_nfs" selected="true" />
+<select idref="sebool_collectd_tcp_network_connect" selected="true" />
+<select idref="sebool_condor_tcp_network_connect" selected="true" />
+<select idref="sebool_conman_can_network" selected="true" />
+<select idref="sebool_cron_can_relabel" selected="true" />
+<select idref="sebool_cron_system_cronjob_use_shares" selected="true" />
+<select idref="sebool_cron_userdomain_transition" selected="true" />
+<select idref="sebool_cups_execmem" selected="true" />
+<select idref="sebool_cvs_read_shadow" selected="true" />
+<select idref="sebool_daemons_dump_core" selected="true" />
+<select idref="sebool_daemons_enable_cluster_mode" selected="true" />
+<select idref="sebool_daemons_use_tcp_wrapper" selected="true" />
+<select idref="sebool_daemons_use_tty" selected="true" />
+<select idref="sebool_dbadm_exec_content" selected="true" />
+<select idref="sebool_dbadm_manage_user_files" selected="true" />
+<select idref="sebool_dbadm_read_user_files" selected="true" />
+<select idref="sebool_deny_execmem" selected="true" />
+<select idref="sebool_deny_ptrace" selected="true" />
+<select idref="sebool_dhcpc_exec_iptables" selected="true" />
+<select idref="sebool_dhcpd_use_ldap" selected="true" />
+<select idref="sebool_docker_connect_any" selected="true" />
+<select idref="sebool_docker_transition_unconfined" selected="true" />
+<select idref="sebool_domain_fd_use" selected="true" />
+<select idref="sebool_domain_kernel_load_modules" selected="true" />
+<select idref="sebool_entropyd_use_audio" selected="true" />
+<select idref="sebool_exim_can_connect_db" selected="true" />
+<select idref="sebool_exim_manage_user_files" selected="true" />
+<select idref="sebool_exim_read_user_files" selected="true" />
+<select idref="sebool_fcron_crond" selected="true" />
+<select idref="sebool_fenced_can_network_connect" selected="true" />
+<select idref="sebool_fenced_can_ssh" selected="true" />
+<select idref="sebool_ftpd_anon_write" selected="true" />
+<select idref="sebool_ftpd_connect_all_unreserved" selected="true" />
+<select idref="sebool_ftpd_connect_db" selected="true" />
+<select idref="sebool_ftpd_full_access" selected="true" />
+<select idref="sebool_ftpd_use_cifs" selected="true" />
+<select idref="sebool_ftpd_use_fusefs" selected="true" />
+<select idref="sebool_ftpd_use_nfs" selected="true" />
+<select idref="sebool_ftpd_use_passive_mode" selected="true" />
+<select idref="sebool_ftp_home_dir" selected="true" />
+<select idref="sebool_git_cgi_enable_homedirs" selected="true" />
+<select idref="sebool_git_cgi_use_cifs" selected="true" />
+<select idref="sebool_git_cgi_use_nfs" selected="true" />
+<select idref="sebool_gitosis_can_sendmail" selected="true" />
+<select idref="sebool_git_session_bind_all_unreserved_ports" selected="true" />
+<select idref="sebool_git_session_users" selected="true" />
+<select idref="sebool_git_system_enable_homedirs" selected="true" />
+<select idref="sebool_git_system_use_cifs" selected="true" />
+<select idref="sebool_git_system_use_nfs" selected="true" />
+<select idref="sebool_glance_api_can_network" selected="true" />
+<select idref="sebool_glance_use_execmem" selected="true" />
+<select idref="sebool_glance_use_fusefs" selected="true" />
+<select idref="sebool_global_ssp" selected="true" />
+<select idref="sebool_gluster_anon_write" selected="true" />
+<select idref="sebool_gluster_export_all_ro" selected="true" />
+<select idref="sebool_gluster_export_all_rw" selected="true" />
+<select idref="sebool_gpg_web_anon_write" selected="true" />
+<select idref="sebool_gssd_read_tmp" selected="true" />
+<select idref="sebool_guest_exec_content" selected="true" />
+<select idref="sebool_haproxy_connect_any" selected="true" />
+<select idref="sebool_httpd_anon_write" selected="true" />
+<select idref="sebool_httpd_builtin_scripting" selected="true" />
+<select idref="sebool_httpd_can_check_spam" selected="true" />
+<select idref="sebool_httpd_can_connect_ftp" selected="true" />
+<select idref="sebool_httpd_can_connect_ldap" selected="true" />
+<select idref="sebool_httpd_can_connect_mythtv" selected="true" />
+<select idref="sebool_httpd_can_connect_zabbix" selected="true" />
+<select idref="sebool_httpd_can_network_connect_cobbler" selected="true" />
+<select idref="sebool_httpd_can_network_connect_db" selected="true" />
+<select idref="sebool_httpd_can_network_connect" selected="true" />
+<select idref="sebool_httpd_can_network_memcache" selected="true" />
+<select idref="sebool_httpd_can_network_relay" selected="true" />
+<select idref="sebool_httpd_can_sendmail" selected="true" />
+<select idref="sebool_httpd_dbus_avahi" selected="true" />
+<select idref="sebool_httpd_dbus_sssd" selected="true" />
+<select idref="sebool_httpd_dontaudit_search_dirs" selected="true" />
+<select idref="sebool_httpd_enable_cgi" selected="true" />
+<select idref="sebool_httpd_enable_ftp_server" selected="true" />
+<select idref="sebool_httpd_enable_homedirs" selected="true" />
+<select idref="sebool_httpd_execmem" selected="true" />
+<select idref="sebool_httpd_graceful_shutdown" selected="true" />
+<select idref="sebool_httpd_manage_ipa" selected="true" />
+<select idref="sebool_httpd_mod_auth_ntlm_winbind" selected="true" />
+<select idref="sebool_httpd_mod_auth_pam" selected="true" />
+<select idref="sebool_httpd_read_user_content" selected="true" />
+<select idref="sebool_httpd_run_ipa" selected="true" />
+<select idref="sebool_httpd_run_preupgrade" selected="true" />
+<select idref="sebool_httpd_run_stickshift" selected="true" />
+<select idref="sebool_httpd_serve_cobbler_files" selected="true" />
+<select idref="sebool_httpd_setrlimit" selected="true" />
+<select idref="sebool_httpd_ssi_exec" selected="true" />
+<select idref="sebool_httpd_sys_script_anon_write" selected="true" />
+<select idref="sebool_httpd_tmp_exec" selected="true" />
+<select idref="sebool_httpd_tty_comm" selected="true" />
+<select idref="sebool_httpd_unified" selected="true" />
+<select idref="sebool_httpd_use_cifs" selected="true" />
+<select idref="sebool_httpd_use_fusefs" selected="true" />
+<select idref="sebool_httpd_use_gpg" selected="true" />
+<select idref="sebool_httpd_use_nfs" selected="true" />
+<select idref="sebool_httpd_use_openstack" selected="true" />
+<select idref="sebool_httpd_use_sasl" selected="true" />
+<select idref="sebool_httpd_verify_dns" selected="true" />
+<select idref="sebool_icecast_use_any_tcp_ports" selected="true" />
+<select idref="sebool_irc_use_any_tcp_ports" selected="true" />
+<select idref="sebool_irssi_use_full_network" selected="true" />
+<select idref="sebool_kdumpgui_run_bootloader" selected="true" />
+<select idref="sebool_kerberos_enabled" selected="true" />
+<select idref="sebool_ksmtuned_use_cifs" selected="true" />
+<select idref="sebool_ksmtuned_use_nfs" selected="true" />
+<select idref="sebool_logadm_exec_content" selected="true" />
+<select idref="sebool_logging_syslogd_can_sendmail" selected="true" />
+<select idref="sebool_logging_syslogd_run_nagios_plugins" selected="true" />
+<select idref="sebool_logging_syslogd_use_tty" selected="true" />
+<select idref="sebool_login_console_enabled" selected="true" />
+<select idref="sebool_logrotate_use_nfs" selected="true" />
+<select idref="sebool_logwatch_can_network_connect_mail" selected="true" />
+<select idref="sebool_lsmd_plugin_connect_any" selected="true" />
+<select idref="sebool_mailman_use_fusefs" selected="true" />
+<select idref="sebool_mcelog_client" selected="true" />
+<select idref="sebool_mcelog_exec_scripts" selected="true" />
+<select idref="sebool_mcelog_foreground" selected="true" />
+<select idref="sebool_mcelog_server" selected="true" />
+<select idref="sebool_minidlna_read_generic_user_content" selected="true" />
+<select idref="sebool_mmap_low_allowed" selected="true" />
+<select idref="sebool_mock_enable_homedirs" selected="true" />
+<select idref="sebool_mount_anyfile" selected="true" />
+<select idref="sebool_mozilla_plugin_bind_unreserved_ports" selected="true" />
+<select idref="sebool_mozilla_plugin_can_network_connect" selected="true" />
+<select idref="sebool_mozilla_plugin_use_bluejeans" selected="true" />
+<select idref="sebool_mozilla_plugin_use_gps" selected="true" />
+<select idref="sebool_mozilla_plugin_use_spice" selected="true" />
+<select idref="sebool_mozilla_read_content" selected="true" />
+<select idref="sebool_mpd_enable_homedirs" selected="true" />
+<select idref="sebool_mpd_use_cifs" selected="true" />
+<select idref="sebool_mpd_use_nfs" selected="true" />
+<select idref="sebool_mplayer_execstack" selected="true" />
+<select idref="sebool_mysql_connect_any" selected="true" />
+<select idref="sebool_nagios_run_pnp4nagios" selected="true" />
+<select idref="sebool_nagios_run_sudo" selected="true" />
+<select idref="sebool_named_tcp_bind_http_port" selected="true" />
+<select idref="sebool_named_write_master_zones" selected="true" />
+<select idref="sebool_neutron_can_network" selected="true" />
+<select idref="sebool_nfsd_anon_write" selected="true" />
+<select idref="sebool_nfs_export_all_ro" selected="true" />
+<select idref="sebool_nfs_export_all_rw" selected="true" />
+<select idref="sebool_nis_enabled" selected="true" />
+<select idref="sebool_nscd_use_shm" selected="true" />
+<select idref="sebool_openshift_use_nfs" selected="true" />
+<select idref="sebool_openvpn_can_network_connect" selected="true" />
+<select idref="sebool_openvpn_enable_homedirs" selected="true" />
+<select idref="sebool_openvpn_run_unconfined" selected="true" />
+<select idref="sebool_pcp_bind_all_unreserved_ports" selected="true" />
+<select idref="sebool_pcp_read_generic_logs" selected="true" />
+<select idref="sebool_piranha_lvs_can_network_connect" selected="true" />
+<select idref="sebool_polipo_connect_all_unreserved" selected="true" />
+<select idref="sebool_polipo_session_bind_all_unreserved_ports" selected="true" />
+<select idref="sebool_polipo_session_users" selected="true" />
+<select idref="sebool_polipo_use_cifs" selected="true" />
+<select idref="sebool_polipo_use_nfs" selected="true" />
+<select idref="sebool_polyinstantiation_enabled" selected="true" />
+<select idref="sebool_postfix_local_write_mail_spool" selected="true" />
+<select idref="sebool_postgresql_can_rsync" selected="true" />
+<select idref="sebool_postgresql_selinux_transmit_client_label" selected="true" />
+<select idref="sebool_postgresql_selinux_unconfined_dbadm" selected="true" />
+<select idref="sebool_postgresql_selinux_users_ddl" selected="true" />
+<select idref="sebool_pppd_can_insmod" selected="true" />
+<select idref="sebool_pppd_for_user" selected="true" />
+<select idref="sebool_privoxy_connect_any" selected="true" />
+<select idref="sebool_prosody_bind_http_port" selected="true" />
+<select idref="sebool_puppetagent_manage_all_files" selected="true" />
+<select idref="sebool_puppetmaster_use_db" selected="true" />
+<select idref="sebool_racoon_read_shadow" selected="true" />
+<select idref="sebool_rsync_anon_write" selected="true" />
+<select idref="sebool_rsync_client" selected="true" />
+<select idref="sebool_rsync_export_all_ro" selected="true" />
+<select idref="sebool_rsync_full_access" selected="true" />
+<select idref="sebool_samba_create_home_dirs" selected="true" />
+<select idref="sebool_samba_domain_controller" selected="true" />
+<select idref="sebool_samba_enable_home_dirs" selected="true" />
+<select idref="sebool_samba_export_all_ro" selected="true" />
+<select idref="sebool_samba_export_all_rw" selected="true" />
+<select idref="sebool_samba_load_libgfapi" selected="true" />
+<select idref="sebool_samba_portmapper" selected="true" />
+<select idref="sebool_samba_run_unconfined" selected="true" />
+<select idref="sebool_samba_share_fusefs" selected="true" />
+<select idref="sebool_samba_share_nfs" selected="true" />
+<select idref="sebool_sanlock_use_fusefs" selected="true" />
+<select idref="sebool_sanlock_use_nfs" selected="true" />
+<select idref="sebool_sanlock_use_samba" selected="true" />
+<select idref="sebool_saslauthd_read_shadow" selected="true" />
+<select idref="sebool_secadm_exec_content" selected="true" />
+<select idref="sebool_secure_mode_insmod" selected="true" />
+<select idref="sebool_secure_mode" selected="true" />
+<select idref="sebool_secure_mode_policyload" selected="true" />
+<select idref="sebool_selinuxuser_direct_dri_enabled" selected="true" />
+<select idref="sebool_selinuxuser_execheap" selected="true" />
+<select idref="sebool_selinuxuser_execmod" selected="true" />
+<select idref="sebool_selinuxuser_execstack" selected="true" />
+<select idref="sebool_selinuxuser_mysql_connect_enabled" selected="true" />
+<select idref="sebool_selinuxuser_ping" selected="true" />
+<select idref="sebool_selinuxuser_postgresql_connect_enabled" selected="true" />
+<select idref="sebool_selinuxuser_rw_noexattrfile" selected="true" />
+<select idref="sebool_selinuxuser_share_music" selected="true" />
+<select idref="sebool_selinuxuser_tcp_server" selected="true" />
+<select idref="sebool_selinuxuser_udp_server" selected="true" />
+<select idref="sebool_selinuxuser_use_ssh_chroot" selected="true" />
+<select idref="sebool_sftpd_anon_write" selected="true" />
+<select idref="sebool_sftpd_enable_homedirs" selected="true" />
+<select idref="sebool_sftpd_full_access" selected="true" />
+<select idref="sebool_sftpd_write_ssh_home" selected="true" />
+<select idref="sebool_sge_domain_can_network_connect" selected="true" />
+<select idref="sebool_sge_use_nfs" selected="true" />
+<select idref="sebool_smartmon_3ware" selected="true" />
+<select idref="sebool_smbd_anon_write" selected="true" />
+<select idref="sebool_spamassassin_can_network" selected="true" />
+<select idref="sebool_spamd_enable_home_dirs" selected="true" />
+<select idref="sebool_squid_connect_any" selected="true" />
+<select idref="sebool_squid_use_tproxy" selected="true" />
+<select idref="sebool_ssh_chroot_rw_homedirs" selected="true" />
+<select idref="sebool_ssh_keysign" selected="true" />
+<select idref="sebool_ssh_sysadm_login" selected="true" />
+<select idref="sebool_staff_exec_content" selected="true" />
+<select idref="sebool_staff_use_svirt" selected="true" />
+<select idref="sebool_swift_can_network" selected="true" />
+<select idref="sebool_sysadm_exec_content" selected="true" />
+<select idref="sebool_telepathy_connect_all_ports" selected="true" />
+<select idref="sebool_telepathy_tcp_connect_generic_network_ports" selected="true" />
+<select idref="sebool_tftp_anon_write" selected="true" />
+<select idref="sebool_tftp_home_dir" selected="true" />
+<select idref="sebool_tmpreaper_use_nfs" selected="true" />
+<select idref="sebool_tmpreaper_use_samba" selected="true" />
+<select idref="sebool_tor_bind_all_unreserved_ports" selected="true" />
+<select idref="sebool_tor_can_network_relay" selected="true" />
+<select idref="sebool_unconfined_chrome_sandbox_transition" selected="true" />
+<select idref="sebool_unconfined_login" selected="true" />
+<select idref="sebool_unconfined_mozilla_plugin_transition" selected="true" />
+<select idref="sebool_unprivuser_use_svirt" selected="true" />
+<select idref="sebool_use_ecryptfs_home_dirs" selected="true" />
+<select idref="sebool_use_fusefs_home_dirs" selected="true" />
+<select idref="sebool_use_lpd_server" selected="true" />
+<select idref="sebool_use_nfs_home_dirs" selected="true" />
+<select idref="sebool_user_exec_content" selected="true" />
+<select idref="sebool_use_samba_home_dirs" selected="true" />
+<select idref="sebool_varnishd_connect_any" selected="true" />
+<select idref="sebool_virt_read_qemu_ga_data" selected="true" />
+<select idref="sebool_virt_rw_qemu_ga_data" selected="true" />
+<select idref="sebool_virt_sandbox_use_all_caps" selected="true" />
+<select idref="sebool_virt_sandbox_use_audit" selected="true" />
+<select idref="sebool_virt_sandbox_use_mknod" selected="true" />
+<select idref="sebool_virt_sandbox_use_netlink" selected="true" />
+<select idref="sebool_virt_sandbox_use_nfs" selected="true" />
+<select idref="sebool_virt_sandbox_use_samba" selected="true" />
+<select idref="sebool_virt_sandbox_use_sys_admin" selected="true" />
+<select idref="sebool_virt_transition_userdomain" selected="true" />
+<select idref="sebool_virt_use_comm" selected="true" />
+<select idref="sebool_virt_use_execmem" selected="true" />
+<select idref="sebool_virt_use_fusefs" selected="true" />
+<select idref="sebool_virt_use_nfs" selected="true" />
+<select idref="sebool_virt_use_rawip" selected="true" />
+<select idref="sebool_virt_use_samba" selected="true" />
+<select idref="sebool_virt_use_sanlock" selected="true" />
+<select idref="sebool_virt_use_usb" selected="true" />
+<select idref="sebool_virt_use_xserver" selected="true" />
+<select idref="sebool_webadm_manage_user_files" selected="true" />
+<select idref="sebool_webadm_read_user_files" selected="true" />
+<select idref="sebool_wine_mmap_zero_ignore" selected="true" />
+<select idref="sebool_xdm_bind_vnc_tcp_port" selected="true" />
+<select idref="sebool_xdm_exec_bootloader" selected="true" />
+<select idref="sebool_xdm_sysadm_login" selected="true" />
+<select idref="sebool_xdm_write_home" selected="true" />
+<select idref="sebool_xend_run_blktap" selected="true" />
+<select idref="sebool_xend_run_qemu" selected="true" />
+<select idref="sebool_xen_use_nfs" selected="true" />
+<select idref="sebool_xguest_connect_network" selected="true" />
+<select idref="sebool_xguest_exec_content" selected="true" />
+<select idref="sebool_xguest_mount_media" selected="true" />
+<select idref="sebool_xguest_use_bluetooth" selected="true" />
+<select idref="sebool_xserver_clients_write_xshm" selected="true" />
+<select idref="sebool_xserver_execmem" selected="true" />
+<select idref="sebool_xserver_object_manager" selected="true" />
+<select idref="sebool_zabbix_can_network" selected="true" />
+<select idref="sebool_zarafa_setrlimit" selected="true" />
+<select idref="sebool_zebra_write_config" selected="true" />
+<select idref="sebool_zoneminder_anon_write" selected="true" />
+<select idref="sebool_zoneminder_run_sudo" selected="true" />
 
 <!-- 3.7.3	Ensure equipment removed for off-site maintenance is sanitized of any CUI -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.7.4	Check media containing diagnostic and test programs for malicious code before
      		the media are used in the information system -->
-<!-- TO DO: proceedural -->
+<!-- TO DO: procedural -->
 
 <!-- 3.7.5	Require multifactor authentication to establish nonlocal maintenance sessions via
      		external network connections and terminate such connections when nonlocal
 		maintenance is complete -->
+<!-- TO DO: current checks eval against CAC/PIV cards. Sufficient? -->
 
 <!-- 3.7.6	Supervise the maintenance activities of maintenance personnel without required
      		access authorization -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8 MEDIA PROTECTION -->
 <!-- 3.8.1	Protect (i.e., physically control and securely store) information system media
      		containing CUI, both paper and digital -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8.2	Limit access to CUI on information system media to authorized users -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8.3	Sanitize or destroy information system media containing CUI before disposal
      		or release for reuse -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8.4	Mark media with necessary CUI markings and distribution limitations -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8.5	Control access to media containing CUI and maintain accountability for media
      		during transport outside controlled areas -->
+<!-- TO DO: procedural -->
 
-<!-- 3.8.6	Implement cryptographic mechanisms to protect the confidentiality of 
+<!-- 3.8.6	Implement cryptographic mechanisms to protect the confidentiality of
      		information stored on digital media during transport outside of controlled
 		areas unless otherwise protected by alternative physical safeguards -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8.7	Control the use of removable media on information system components -->
+<!-- TO DO: USB-based devices covered elsewhere. This refers to legacy media, e.g. DVD and CDROM -->
 
-<!-- 3.8.8	Prohibit the use of portable storage devices when such devices have no 
+<!-- 3.8.8	Prohibit the use of portable storage devices when such devices have no
      		identifiable owner -->
+<!-- TO DO: procedural -->
 
 <!-- 3.8.9	Protect the confidentiality of backup CUI at storage locations -->
+<!-- TO DO: procedural -->
 
 <!-- 3.9 PERSONNEL SECURITY -->
 <!-- 3.9.1	Screen individuals prior to authorizing access to information systems
      		containing CUI -->
+<!-- TO DO: procedural -->
 
 <!-- 3.9.2	Ensure that CUI and information systems containing CUI are protected
      		during and after personnel actions such as terminiations and transfers -->
+<!-- TO DO: procedural -->
 
 <!-- 3.10 PHYSICAL SECURITY -->
 <!-- 3.10.1	Limit physical access to organizational information systems, equipment, and the
      		respective operating environments to authorized individuals -->
+<!-- TO DO: procedural -->
 
 <!-- 3.10.2	Protect and monitor the physical facility and support infrastructure for those
      		information systems -->
+<!-- TO DO: procedural -->
 
 <!-- 3.10.3	Escort visitors and monitor visitor activity -->
+<!-- TO DO: procedural -->
 
 <!-- 3.10.4	Maintain audit logs of physical access -->
+<!-- TO DO: procedural -->
 
 <!-- 3.10.5	Control and manage physical access devices -->
 
-<!-- 3.10.6	Enforce safeguarding measures for CUI at alternate work sites 
+<!-- TO DO: procedural -->
+<!-- 3.10.6	Enforce safeguarding measures for CUI at alternate work sites
      		(e.g., telework sites). -->
+<!-- TO DO: procedural -->
 
 <!-- 3.11 RISK ASSESSMENT -->
 <!-- 3.11.1	Periodically assess the risk to organizational operations (including mission,
      		functions, image, or reputation), organizational assets, and individuals, resulting
 		from the operation or organizational information systems and the associated processing,
 		storage, or transmission of CUI -->
+<!-- TO DO: procedural -->
 
 <!-- 3.11.2	Scan for vulnerabilities in the information system and applications periodically and
      		when new vulnerabilities affecting the system are identified -->
+<!-- TO DO: procedural -->
 
 <!-- 3.11.3	Remediate vulnerabilities in accordance with assessments of risk -->
+<!-- TO DO: procedural -->
 
 <!-- 3.12 SECURITY ASSESSMENT -->
 <!-- 3.12.1	Periodically access the security controls in organizational information systems to
      		determine if the controls are effective in their application -->
+<!-- TO DO: procedural -->
 
 <!-- 3.12.2	Develop and implement plans of action designed to correct deficiences and
      		reduce or eliminate vulnerabilities in organizational information systems -->
+<!-- TO DO: procedural -->
 
 <!-- 3.12.3	Monitor information system security controls on an ongoing basis to ensure the
      		continued effectiveness of the controls -->
+<!-- TO DO: procedural -->
 
 <!-- 3.13 SYSTEM AND COMMUNICATIONS PROTECTION -->
 <!-- 3.13.1 	Monitor, control, and protect organizational communications (i.e., information
-     		transmitted or received by organizational information systems) at the external 
+     		transmitted or received by organizational information systems) at the external
 		boundaries and key internal boundaries of the information systems -->
+<!-- TO DO: procedural -->
 
 <!-- 3.13.2	Employ architectural designs, software development techniques, and systems engineering
-     		principles that promote effective information security within organizational 
+     		principles that promote effective information security within organizational
 		information systems -->
+<!-- TO DO: procedural -->
 
 <!-- 3.13.3	Separate user functionality from information system management functionality (e.g.,
      		privileged user functions -->
+<!-- TO DO: procedural -->
 
 <!-- 3.13.4	Prevent unauthorized and unintended information transfer via shared system resources -->
+<!-- TO DO: needs interpretation -->
 
 <!-- 3.13.5	Implement subnetworks for publicly accessible system components that are physically
      		or logically separated from internal networks -->
+<!-- TO DO: procedural -->
 
 <!-- 3.13.6	Deny network communications traffic by default and allow network communications traffic by
      		exception (i.e., deny all, permit by exception) -->
+<!-- enabled in set_firewalld_default_zone -->
 
 <!-- 3.13.7	Prevent remote devices from simultaneously establishing non-remote connections with the
      		information system and communicating via some other connection to resources in external
 		networks -->
+<!-- TO DO: outside scope of O/S -->
 
 <!-- 3.13.8	Implement cryptographic mechanisms to prevent unauthorized disclosure of CUI during
      		transmission unless otherwise protected by alternative physical safeguards -->
+<!-- enabled in earlier rules:
+	- sshd_use_approved_ciphers
+	- sshd_use_approved_macs
+	- service_sshd_enabled
+	- package_dracut-fips_installed
+	- grub2_enable_fips_mode
+-->
 
 <!-- 3.13.9	Terminate network connections associated with communications sessions at the end of the
      		sessions or after a defined period of inactivity -->
+<!-- duplicate of 3.1.11 -->
 
 <!-- 3.13.10	Establish and manage cryptographic keys for cryptography employed in the information
      		system -->
+<!-- Rules related to this, but enabled elsewhere:
+	- file_permissions_sshd_private_key
+	- file_permissions_sshd_pub_key
+-->
 
 <!-- 3.13.11	Employ FIPS-validate cryptography when used to protect the confidentiality of CUI -->
 <!-- Rules also related to this, but enabled elsewhere:
      	- sshd_use_approved_ciphers
 	- sshd_use_approved_macs
---> 
+-->
 <select idref="package_dracut-fips_installed" selected="true" />
 <select idref="disable_prelink" selected="true" />
 <select idref="grub2_enable_fips_mode" selected="true" />
@@ -647,12 +991,16 @@ for securing Controlled Unclassified Information (CUI).
 
 <!-- 3.13.12	Prohibit remote activation of collaborative computing devices and provide indication of
      		devices in use to users present at the device -->
+<!-- TO DO: not applicable -->
 
 <!-- 3.13.13	Control and monitor the use of mobile code -->
+<!-- TO DO: not applicable -->
 
 <!-- 3.13.14	Control and monitor the use of Voice over Internet Protocol (VoIP) technologies -->
+<!-- TO DO: not applicable -->
 
 <!-- 3.13.15	Protect the authenticity of communications sessions -->
+<!-- TO DO: not applicable -->
 
 <!-- 3.13.16	Protect the confidentiality of CUI at rest -->
 <select idref="encrypt_partitions" selected="true" />
@@ -660,6 +1008,7 @@ for securing Controlled Unclassified Information (CUI).
 <!-- 3.14 SYSTEM AND INFORMATION INTEGRITY -->
 <!-- 3.14.1	Identify, report, and correct information and information system flaws in a timely
      		manner -->
+<!-- TO DO: procedural -->
 
 <!-- 3.14.2	Provide protection from malicious code at appropriate locations within organizational
      		information systems -->
