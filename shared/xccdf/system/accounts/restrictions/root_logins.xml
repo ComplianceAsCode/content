@@ -29,10 +29,10 @@ can disable root logins at the console by editing the <tt>/etc/securetty</tt> fi
 This file lists all devices the root user is allowed to login to. If the file does
 not exist at all, the root user can login through any communication device on the
 system, whether via the console or via a raw network interface. This is dangerous
-as user can login to his machine as root via Telnet, which sends the password in
+as user can login to the system as root via Telnet, which sends the password in
 plain text over the network. By default, Red Hat Enteprise Linux's
 <tt>/etc/securetty</tt> file only allows the root user to login at the console
-physically attached to the machine. To prevent root from logging in, remove the
+physically attached to the system. To prevent root from logging in, remove the
 contents of this file. To prevent direct root logins, remove the contents of this
 file by typing the following command:
 <pre>

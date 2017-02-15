@@ -53,7 +53,7 @@ To verify the <tt>INACTIVE</tt> setting, run the following command:
 <pre>$ grep "INACTIVE" /etc/default/useradd</pre>
 The output should indicate the <tt>INACTIVE</tt> configuration option is set
 to an appropriate integer as shown in the example below:
-<pre>$ sudo grep "INACTIVE" /etc/default/useradd
+<pre>$ grep "INACTIVE" /etc/default/useradd
 INACTIVE=<sub idref="var_account_disable_post_pw_expiration"/></pre></ocil>
 <rationale>
 Disabling inactive accounts ensures that accounts which may not

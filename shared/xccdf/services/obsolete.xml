@@ -346,7 +346,7 @@ as a client in a NIS or NIS+ domain.
 <title>Remove NIS Client</title>
 <description>The Network Information Service (NIS), formerly known as Yellow Pages,
 is a client-server directory service protocol used to distribute system configuration
-files. The NIS client (<tt>ypbind</tt>) was used to bind a machine to an NIS server
+files. The NIS client (<tt>ypbind</tt>) was used to bind a system to an NIS server
 and receive the distributed configuration files.</description>
 <ocil><yum-macro install="false" package="ypbind"/></ocil>
 <rationale>The NIS service is inherently an insecure system that has been vulnerable
@@ -410,7 +410,7 @@ only authorized personnel, and have access control rules established.
 <Rule id="package_tftp_removed" severity="high" prodtype="rhel7">
 <title>Remove tftp Daemon</title>
 <description>Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol,
-typically used to automatically transfer configuration or boot files between machines.
+typically used to automatically transfer configuration or boot files between systems.
 TFTP does not support authentication and can be easily hacked. The package
 <tt>tftp</tt> is a client program that allows for connections to a <tt>tftp</tt> server.
 </description>
