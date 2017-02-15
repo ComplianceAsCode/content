@@ -9,7 +9,7 @@ URL:		https://www.open-scap.org/security-policies/scap-security-guide/
 Source0:	https://github.com/OpenSCAP/scap-security-guide/archive/%{name}-%{version}.tar.gz
 BuildArch:	noarch
 
-BuildRequires:	libxslt, expat, python, openscap-utils >= 1.0.3, python-lxml
+BuildRequires:	cmake, make, libxslt, expat, python, openscap-utils >= 1.0.3, python-lxml
 %if 0%{?fedora}
 BuildRequires:	openscap-utils >= 1.2.2
 BuildRequires:	ShellCheck
@@ -44,6 +44,7 @@ present in %{name} package.
 %setup -q -n %{name}-%{version}
 
 %build
+%cmake .
 %make_build
 
 %install
@@ -51,17 +52,16 @@ present in %{name} package.
 
 %files
 %{_datadir}/scap/ssg
-%{_datadir}/%{name}/kickstart
-%lang(en) %{_mandir}/en/man8/scap-security-guide.8.*
+# TODO
+#%{_datadir}/%{name}/kickstart
+%lang(en) %{_mandir}/man8/scap-security-guide.8.*
 %doc %{_docdir}/%{name}/LICENSE
 %doc %{_docdir}/%{name}/README.md
-# compatibility symlink
-%{_datadir}/xml/scap/ssg/content
+%doc %{_docdir}/%{name}/Contributors.md
 
 %files doc
 %doc %{_docdir}/%{name}/guides/*.html
 %doc %{_docdir}/%{name}/tables/*.html
-%doc %{_docdir}/%{name}/tables/*.xhtml
 
 %changelog
 * __DATE__ __REL_MANAGER__ <__REL_MANAGER_MAIL__> __VERSION__-__RELEASE__

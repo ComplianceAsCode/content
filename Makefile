@@ -211,10 +211,12 @@ tarball:
 	@# and JBossEAP5 content
 	mkdir -p tarball/$(PKG)
 	cp Makefile tarball/$(PKG)/
+	cp CMakeLists.txt tarball/$(PKG)/
 	cp BUILD.md Contributors.md LICENSE VERSION README.md tarball/$(PKG)/
 	cp -r config/ tarball/$(PKG)
 	cp -r docs/ tarball/$(PKG)
 	cp -r shared/ tarball/$(PKG)
+	cp -r cmake/ tarball/$(PKG)
 	cp -r --preserve=links --parents Chromium/ tarball/$(PKG)
 	cp -r --preserve=links --parents Debian/ tarball/$(PKG)
 	cp -r --preserve=links --parents Fedora/ tarball/$(PKG)
@@ -227,6 +229,7 @@ tarball:
 	cp -r --preserve=links --parents RHEL/ tarball/$(PKG)
 	cp -r --preserve=links --parents RHEVM3/ tarball/$(PKG)
 	cp -r --preserve=links --parents SUSE/ tarball/$(PKG)
+	cp -r --preserve=links --parents Ubuntu/ tarball/$(PKG)
 	cp -r --preserve=links --parents Webmin/ tarball/$(PKG)
 	cp -r --preserve=links --parents WRLinux/ tarball/$(PKG)
 
