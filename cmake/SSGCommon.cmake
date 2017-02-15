@@ -750,7 +750,6 @@ macro(ssg_build_product PRODUCT)
         DEPENDS validate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS validate-ssg-${PRODUCT}-cpe-oval.xml
         DEPENDS validate-ssg-${PRODUCT}-ds.xml
-        COMMENT "[${PRODUCT}-validate] validating outputs"
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
@@ -855,7 +854,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         ${DERIVATIVE}-validate
         DEPENDS validate-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS validate-ssg-${DERIVATIVE}-ds.xml
-        COMMENT "[${DERIVATIVE}-validate] validating outputs"
     )
     add_dependencies(validate ${DERIVATIVE}-validate)
 
