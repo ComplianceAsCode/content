@@ -1463,33 +1463,6 @@ edits of files involved in storing logon events:
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 
-<Rule id="audit_rules_login_events" severity="medium" prodtype="rhel7">
-<title>Record Attempts to Alter Logon and Logout Events</title>
-<description>The audit system already collects login information for all users
-and root. If the <tt>auditd</tt> daemon is configured to use the
-<tt>augenrules</tt> program to read audit rules during daemon startup (the
-default), add the following lines to a file with suffix <tt>.rules</tt> in the
-directory <tt>/etc/audit/rules.d</tt> in order to watch for attempted manual
-edits of files involved in storing logon events:
-<pre>-w /var/log/tallylog -p wa -k logins
--w /var/run/faillock/ -p wa -k logins
--w /var/log/lastlog -p wa -k logins</pre>
-If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
-utility to read audit rules during daemon startup, add the following lines to
-<tt>/etc/audit/audit.rules</tt> file in order to watch for unattempted manual
-edits of files involved in storing logon events:
-<pre>-w /var/log/tallylog -p wa -k logins
--w /var/run/faillock/ -p wa -k logins
--w /var/log/lastlog -p wa -k logins</pre>
-</description>
-<rationale>Manual editing of these files may indicate nefarious activity, such
-as an attacker attempting to remove evidence of an intrusion.</rationale>
-<ident prodtype="rhel7" cce="27204-7" />
-<oval id="audit_rules_login_events" />
-<ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884"
-pcidss="Req-10.2.3" cis="5.2.8" cjis="5.4.1.1" cui="3.1.7" />
-</Rule>
-
 <Rule id="audit_rules_login_events_tallylog" severity="medium" prodtype="rhel7">
 <title>Record Attempts to Alter Logon and Logout Events - tallylog</title>
 <description>The audit system already collects login information for all users
@@ -1515,7 +1488,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <oval id="audit_rules_login_events_tallylog" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884,126"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
-stigid="030490" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" />
+stigid="030490" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" cjis="5.4.1.1" />
 </Rule>
 
 <Rule id="audit_rules_login_events_faillock" severity="medium" prodtype="rhel7">
@@ -1543,7 +1516,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <oval id="audit_rules_login_events_faillock" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884,126"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
-stigid="030491" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" />
+stigid="030491" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" cjis="5.4.1.1" />
 </Rule>
 
 <Rule id="audit_rules_login_events_lastlog" severity="medium" prodtype="rhel7">
@@ -1571,7 +1544,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <oval id="audit_rules_login_events_lastlog" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884,126"
 ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218"
-stigid="030492" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" />
+stigid="030492" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" cjis="5.4.1.1" />
 </Rule>
 
 </Group>
