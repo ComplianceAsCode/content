@@ -200,6 +200,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${SHARED_BASH_REMEDIATIONS_DEPENDS}
         DEPENDS ${EXTRA_BASH_DEPENDS}
         DEPENDS ${EXTRA_SHARED_BASH_DEPENDS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating bash-remediations.xml"
     )
@@ -246,6 +247,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS}
         DEPENDS ${EXTRA_ANSIBLE_DEPENDS}
         DEPENDS ${EXTRA_SHARED_ANSIBLE_DEPENDS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
     )
@@ -290,6 +292,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${SHARED_PUPPET_REMEDIATIONS_DEPENDS}
         DEPENDS ${EXTRA_PUPPET_DEPENDS}
         DEPENDS ${EXTRA_SHARED_PUPPET_DEPENDS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating puppet-remediations.xml"
     )
@@ -334,6 +337,7 @@ macro(ssg_build_remediations PRODUCT)
         DEPENDS ${SHARED_ANACONDA_REMEDIATIONS_DEPENDS}
         DEPENDS ${EXTRA_ANACONDA_DEPENDS}
         DEPENDS ${EXTRA_SHARED_ANACONDA_DEPENDS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
         COMMENT "[${PRODUCT}] generating anaconda-remediations.xml"
     )
@@ -422,6 +426,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS ${EXTRA_SHARED_OVAL_511_DEPS}
             DEPENDS ${EXTRA_OVAL_510_DEPS}
             DEPENDS ${EXTRA_SHARED_OVAL_510_DEPS}
+            DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
             DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
             VERBATIM
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
@@ -440,6 +445,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
             DEPENDS ${EXTRA_OVAL_510_DEPS}
             DEPENDS ${EXTRA_SHARED_OVAL_510_DEPS}
+            DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
             DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
             VERBATIM
             COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
