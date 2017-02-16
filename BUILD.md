@@ -14,6 +14,10 @@
 
  `# dnf -y install ShellCheck`
 
+ Optional: If you want to use the Ninja build system install the ninja-build package
+
+ `# dnf -y install ninja-build`
+
 2. Download the source code
 
  `$ git clone https://github.com/OpenSCAP/scap-security-guide.git`
