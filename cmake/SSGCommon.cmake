@@ -161,190 +161,62 @@ macro(ssg_build_ocil_unlinked PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_remediations PRODUCT)
+macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
 
-    message(STATUS "Scanning for dependencies of ${PRODUCT} bash remediations...")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} ${LANGUAGE} remediations...")
     execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-inputs
-        OUTPUT_VARIABLE BASH_REMEDIATIONS_DEPENDS_STR
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-inputs
+        OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_DEPENDS_STR
     )
-    string(REPLACE "\n" ";" BASH_REMEDIATIONS_DEPENDS "${BASH_REMEDIATIONS_DEPENDS_STR}")
+    string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_DEPENDS "${LANGUAGE_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash list-outputs
-        OUTPUT_VARIABLE BASH_REMEDIATIONS_OUTPUTS_STR
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-outputs
+        OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_OUTPUTS_STR
     )
-    string(REPLACE "\n" ";" BASH_REMEDIATIONS_OUTPUTS "${BASH_REMEDIATIONS_OUTPUTS_STR}")
+    string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_OUTPUTS "${LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
     execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language bash list-inputs
-        OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_DEPENDS_STR
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} list-inputs
+        OUTPUT_VARIABLE SHARED_LANGUAGE_REMEDIATIONS_DEPENDS_STR
     )
-    string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_DEPENDS "${SHARED_BASH_REMEDIATIONS_DEPENDS_STR}")
+    string(REPLACE "\n" ";" SHARED_LANGUAGE_REMEDIATIONS_DEPENDS "${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language bash list-outputs
-        OUTPUT_VARIABLE SHARED_BASH_REMEDIATIONS_OUTPUTS_STR
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} list-outputs
+        OUTPUT_VARIABLE SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS_STR
     )
-    string(REPLACE "\n" ";" SHARED_BASH_REMEDIATIONS_OUTPUTS "${SHARED_BASH_REMEDIATIONS_OUTPUTS_STR}")
-    file(GLOB EXTRA_BASH_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash/*")
-    file(GLOB EXTRA_SHARED_BASH_DEPENDS "${SSG_SHARED}/templates/static/bash/*")
+    string(REPLACE "\n" ";" SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS "${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
+    file(GLOB EXTRA_LANGUAGE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}/*")
+    file(GLOB EXTRA_SHARED_LANGUAGE_DEPENDS "${SSG_SHARED}/templates/static/${LANGUAGE}/*")
 
     # TODO: The environment variable is not very portable
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml"
-        OUTPUT ${BASH_REMEDIATIONS_OUTPUTS}
-        OUTPUT ${SHARED_BASH_REMEDIATIONS_OUTPUTS}
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language bash build
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language bash build
-        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} bash "${BUILD_REMEDIATIONS_DIR}/shared/bash" "${SSG_SHARED}/templates/static/bash" "${BUILD_REMEDIATIONS_DIR}/bash" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/bash" "${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml"
-        DEPENDS ${BASH_REMEDIATIONS_DEPENDS}
-        DEPENDS ${SHARED_BASH_REMEDIATIONS_DEPENDS}
-        DEPENDS ${EXTRA_BASH_DEPENDS}
-        DEPENDS ${EXTRA_SHARED_BASH_DEPENDS}
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
+        OUTPUT ${LANGUAGE_REMEDIATIONS_OUTPUTS}
+        OUTPUT ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} build
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language ${LANGUAGE} build
+        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} ${LANGUAGE} "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}" "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
+        DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
+        DEPENDS ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS}
+        DEPENDS ${EXTRA_LANGUAGE_DEPENDS}
+        DEPENDS ${EXTRA_SHARED_LANGUAGE_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
-        COMMENT "[${PRODUCT}] generating bash-remediations.xml"
+        COMMENT "[${PRODUCT}] generating ${LANGUAGE}-remediations.xml"
     )
     add_custom_target(
-        generate-internal-${PRODUCT}-bash-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml"
-        DEPENDS ${BASH_REMEDIATIONS_OUTPUTS}
-        DEPENDS ${SHARED_BASH_REMEDIATIONS_OUTPUTS}
+        generate-internal-${PRODUCT}-${LANGUAGE}-remediations.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
+        DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
+        DEPENDS ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
     )
+endmacro()
 
-    message(STATUS "Scanning for dependencies of ${PRODUCT} ansible remediations...")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-inputs
-        OUTPUT_VARIABLE ANSIBLE_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" ANSIBLE_REMEDIATIONS_DEPENDS "${ANSIBLE_REMEDIATIONS_DEPENDS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible list-outputs
-        OUTPUT_VARIABLE ANSIBLE_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" ANSIBLE_REMEDIATIONS_OUTPUTS "${ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ansible list-inputs
-        OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_DEPENDS "${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ansible list-outputs
-        OUTPUT_VARIABLE SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS "${SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS_STR}")
-    file(GLOB EXTRA_PUPPET_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible/*")
-    file(GLOB EXTRA_SHARED_PUPPET_DEPENDS "${SSG_SHARED}/templates/static/ansible/*")
-
-    # TODO: The environment variable is not very portable
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml"
-        OUTPUT ${ANSIBLE_REMEDIATIONS_OUTPUTS}
-        OUTPUT ${SHARED_ANSIBLE_REMEDIATIONS_OUTPUTS}
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ansible build
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language ansible build
-        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} ansible "${BUILD_REMEDIATIONS_DIR}/shared/ansible" "${SSG_SHARED}/templates/static/ansible" "${BUILD_REMEDIATIONS_DIR}/ansible" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/ansible" "${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml"
-        DEPENDS ${ANSIBLE_REMEDIATIONS_DEPENDS}
-        DEPENDS ${SHARED_ANSIBLE_REMEDIATIONS_DEPENDS}
-        DEPENDS ${EXTRA_ANSIBLE_DEPENDS}
-        DEPENDS ${EXTRA_SHARED_ANSIBLE_DEPENDS}
-        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
-        DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
-        COMMENT "[${PRODUCT}] generating ansible-remediations.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-ansible-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml"
-    )
-
-    message(STATUS "Scanning for dependencies of ${PRODUCT} puppet remediations...")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-inputs
-        OUTPUT_VARIABLE PUPPET_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" PUPPET_REMEDIATIONS_DEPENDS "${PUPPET_REMEDIATIONS_DEPENDS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet list-outputs
-        OUTPUT_VARIABLE PUPPET_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" PUPPET_REMEDIATIONS_OUTPUTS "${PUPPET_REMEDIATIONS_OUTPUTS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language puppet list-inputs
-        OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_DEPENDS "${SHARED_PUPPET_REMEDIATIONS_DEPENDS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language puppet list-outputs
-        OUTPUT_VARIABLE SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" SHARED_PUPPET_REMEDIATIONS_OUTPUTS "${SHARED_PUPPET_REMEDIATIONS_OUTPUTS_STR}")
-    file(GLOB EXTRA_PUPPET_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet/*")
-    file(GLOB EXTRA_SHARED_PUPPET_DEPENDS "${SSG_SHARED}/templates/static/puppet/*")
-
-    # TODO: The environment variable is not very portable
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml"
-        OUTPUT ${PUPPET_REMEDIATIONS_OUTPUTS}
-        OUTPUT ${SHARED_PUPPET_REMEDIATIONS_OUTPUTS}
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language puppet build
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language puppet build
-        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} puppet "${BUILD_REMEDIATIONS_DIR}/shared/puppet" "${SSG_SHARED}/templates/static/puppet" "${BUILD_REMEDIATIONS_DIR}/puppet" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/puppet" "${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml"
-        DEPENDS ${PUPPET_REMEDIATIONS_DEPENDS}
-        DEPENDS ${SHARED_PUPPET_REMEDIATIONS_DEPENDS}
-        DEPENDS ${EXTRA_PUPPET_DEPENDS}
-        DEPENDS ${EXTRA_SHARED_PUPPET_DEPENDS}
-        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
-        DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
-        COMMENT "[${PRODUCT}] generating puppet-remediations.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-puppet-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml"
-    )
-
-    message(STATUS "Scanning for dependencies of ${PRODUCT} anaconda remediations...")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-inputs
-        OUTPUT_VARIABLE ANACONDA_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" ANACONDA_REMEDIATIONS_DEPENDS "${ANACONDA_REMEDIATIONS_DEPENDS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda list-outputs
-        OUTPUT_VARIABLE ANACONDA_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" ANACONDA_REMEDIATIONS_OUTPUTS "${ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language anaconda list-inputs
-        OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_DEPENDS "${SHARED_ANACONDA_REMEDIATIONS_DEPENDS_STR}")
-    execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language anaconda list-outputs
-        OUTPUT_VARIABLE SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" SHARED_ANACONDA_REMEDIATIONS_OUTPUTS "${SHARED_ANACONDA_REMEDIATIONS_OUTPUTS_STR}")
-    file(GLOB EXTRA_ANACONDA_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda/*")
-    file(GLOB EXTRA_SHARED_ANACONDA_DEPENDS "${SSG_SHARED}/templates/static/anaconda/*")
-
-    # TODO: The environment variable is not very portable
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml"
-        OUTPUT ${ANACONDA_REMEDIATIONS_OUTPUTS}
-        OUTPUT ${SHARED_ANACONDA_REMEDIATIONS_OUTPUTS}
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language anaconda build
-        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared/" --language anaconda build
-        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} anaconda "${BUILD_REMEDIATIONS_DIR}/shared/anaconda" "${SSG_SHARED}/templates/static/anaconda" "${BUILD_REMEDIATIONS_DIR}/anaconda" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/anaconda" "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml"
-        DEPENDS ${ANACONDA_REMEDIATIONS_DEPENDS}
-        DEPENDS ${SHARED_ANACONDA_REMEDIATIONS_DEPENDS}
-        DEPENDS ${EXTRA_ANACONDA_DEPENDS}
-        DEPENDS ${EXTRA_SHARED_ANACONDA_DEPENDS}
-        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
-        DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
-        COMMENT "[${PRODUCT}] generating anaconda-remediations.xml"
-    )
-    add_custom_target(
-        generate-internal-${PRODUCT}-anaconda-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml"
-    )
+macro(ssg_build_remediations PRODUCT)
+    _ssg_build_remediations_for_language(${PRODUCT} "bash")
+    _ssg_build_remediations_for_language(${PRODUCT} "ansible")
+    _ssg_build_remediations_for_language(${PRODUCT} "puppet")
+    _ssg_build_remediations_for_language(${PRODUCT} "anaconda")
 endmacro()
 
 macro(ssg_build_xccdf_with_remediations PRODUCT)
