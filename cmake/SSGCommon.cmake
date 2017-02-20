@@ -57,9 +57,9 @@ set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
 set(SSG_VENDOR "ssgproject")
 
-set(OSCAP_OVAL_511_SUPPORT 0)
-
-if(OSCAP_OVAL_511_SUPPORT EQUAL 0)
+# OSCAP_OVAL_VERSION is passed into generate-from-templates.py and it specifies
+# the highest OVAL version we can use.
+if(SSG_OVAL_511_ENABLED)
     set(OSCAP_OVAL_VERSION "oval_5.11")
 else()
     set(OSCAP_OVAL_VERSION "oval_5.10")

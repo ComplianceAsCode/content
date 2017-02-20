@@ -16,6 +16,8 @@ set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 31)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
+option(SSG_OVAL_511_ENABLED "If enabled, OVAL 5.11 and OVAL 5.10 checks will be used in the final content. Otherwise only 5.10 checks will be used." TRUE)
+
 option(SSG_CHROMIUM_CONTENT_ENABLED "If enabled, the Chromium SCAP content will be built" TRUE)
 option(SSG_DEBIAN8_CONTENT_ENABLED "If enabled, the Debian/8 SCAP content will be built" TRUE)
 option(SSG_FEDORA_CONTENT_ENABLED "If enabled, the Fedora SCAP content will be built" TRUE)
@@ -54,8 +56,8 @@ execute_process(
     COMMAND ${SSG_SHARED_UTILS}/oscap-svg-support.py
     RESULT_VARIABLE OSCAP_SVG_SUPPORT
 )
-# TODO, 0 means OVAL 5.11 is supported
-set(OSCAP_OVAL_511_SUPPORT 0)
+
+# TODO, set SSG_OVAL_511_ENABLED to false if openscap doesn't support OVAL 5.11
 
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
 if (NOT XSLTPROC_EXECUTABLE)
