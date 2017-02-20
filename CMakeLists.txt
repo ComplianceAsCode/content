@@ -15,6 +15,8 @@ set(SSG_MINOR_VERSION 1)
 set(SSG_PATCH_VERSION 31)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
+set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
+
 option(SSG_OVAL_511_ENABLED "If enabled, OVAL 5.11 and OVAL 5.10 checks will be used in the final content. Otherwise only 5.10 checks will be used." TRUE)
 option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 
@@ -47,7 +49,6 @@ set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
-set(SSG_VENDOR "ssgproject")
 
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
@@ -109,6 +110,7 @@ message("sed: ${SED_EXECUTABLE}")
 message(" ")
 
 message("Build options:")
+message("SSG vendor string: ${SSG_VENDOR}")
 message("OVAL 5.11: ${SSG_OVAL_511_ENABLED}")
 message("SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
 message(" ")
