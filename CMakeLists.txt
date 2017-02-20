@@ -92,6 +92,8 @@ if (NOT SED_EXECUTABLE)
     message(FATAL_ERROR "sed is required!")
 endif()
 
+configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
+
 message(" ")
 message("Tools:")
 message("oscap: ${OSCAP_EXECUTABLE}")

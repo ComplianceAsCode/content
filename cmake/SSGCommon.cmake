@@ -289,8 +289,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}/" --language oval build
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared/" --language oval build
-            # TODO: config
-            COMMAND RUNTIME_OVAL_VERSION=5.11 "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_SOURCE_DIR}/config/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} ${OVAL_511_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            COMMAND RUNTIME_OVAL_VERSION=5.11 "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} ${OVAL_511_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             DEPENDS ${OVAL_CHECKS_DEPENDS}
             DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
@@ -310,8 +309,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}/" --language oval build
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared/" --language oval build
-            # TODO: config
-            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_SOURCE_DIR}/config/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             DEPENDS ${OVAL_CHECKS_DEPENDS}
             DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
