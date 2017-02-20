@@ -527,26 +527,46 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
 endmacro()
 
 macro(ssg_build_sds PRODUCT)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" ds sds-add "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" ds sds-add "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
-    )
+    if("${PRODUCT}" STREQUAL "rhel7")
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+            DEPENDS generate-ssg-${PRODUCT}-oval.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+            DEPENDS generate-ssg-${PRODUCT}-ocil.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+            DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
+            COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+            DEPENDS generate-ssg-${PRODUCT}-oval.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+            DEPENDS generate-ssg-${PRODUCT}-ocil.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+            COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
+        )
+    endif()
     add_custom_target(
         generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -592,7 +612,9 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
-    ssg_build_pci_dss_xccdf(${PRODUCT})
+    if("${PRODUCT}" STREQUAL "rhel7")
+        ssg_build_pci_dss_xccdf(${PRODUCT})
+    endif()
     ssg_build_sds(${PRODUCT})
 
     add_custom_target(
