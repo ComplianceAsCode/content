@@ -30,7 +30,6 @@ from map_product_module import map_product, parse_product_name, multi_product_li
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-conf_file = 'oval.config'
 footer = '</oval_definitions>'
 
 
@@ -334,7 +333,7 @@ def main():
         sys.exit(1)
 
     # Get header with schema version
-    oval_config = os.path.join(sys.argv[1], conf_file)
+    oval_config = sys.argv[1]
     product = sys.argv[2]
     oval_dirs = sys.argv[3:] # later directory has higher priority
 
