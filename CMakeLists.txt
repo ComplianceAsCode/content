@@ -17,6 +17,7 @@ set(SSG_PATCH_VERSION 31)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 option(SSG_OVAL_511_ENABLED "If enabled, OVAL 5.11 and OVAL 5.10 checks will be used in the final content. Otherwise only 5.10 checks will be used." TRUE)
+option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 
 option(SSG_CHROMIUM_CONTENT_ENABLED "If enabled, the Chromium SCAP content will be built" TRUE)
 option(SSG_DEBIAN8_CONTENT_ENABLED "If enabled, the Debian/8 SCAP content will be built" TRUE)
@@ -52,19 +53,23 @@ if (NOT OSCAP_EXECUTABLE)
     message(FATAL_ERROR "The oscap tool is required!")
 endif()
 
-# OSCAP_SVG_SUPPORT == 0 means SVG is supported
-execute_process(
-    COMMAND ${SSG_SHARED_UTILS}/oscap-svg-support.py
-    RESULT_VARIABLE OSCAP_SVG_SUPPORT
-)
-
 execute_process(
     COMMAND "${OSCAP_EXECUTABLE}" --v
     OUTPUT_VARIABLE OSCAP_V_OUTPUT
 )
 if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
-    set(SSG_OVAL_511_ENABLED OFF CACHE BOOL "OVAL 5.11 disabled because OpenSCAP doesn't support it" FORCE)
+    set(SSG_OVAL_511_ENABLED OFF CACHE BOOL "OVAL 5.11 disabled because your version of OpenSCAP doesn't support it" FORCE)
     message("Your version of OpenSCAP does not support OVAL 5.11, disabling OVAL 5.11 for the SSG build.")
+endif()
+
+execute_process(
+    COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py"
+    RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
+)
+# OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
+if (SSG_SVG_IN_XCCDF_ENABLED AND NOT OSCAP_SVG_SUPPORT_RESULT EQUAL 0)
+    set(SSG_SVG_IN_XCCDF_ENABLED OFF CACHE BOOL "SVG in XCCDF disabled because your version OpenSCAP doesn't support it" FORCE)
+    message("Your version of OpenSCAP does not support having the SVG logo in the XCCDF, disabling SVG logo.")
 endif()
 
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
@@ -87,6 +92,7 @@ if (NOT SED_EXECUTABLE)
     message(FATAL_ERROR "sed is required!")
 endif()
 
+message(" ")
 message("Tools:")
 message("oscap: ${OSCAP_EXECUTABLE}")
 message("xsltproc: ${XSLTPROC_EXECUTABLE}")
@@ -97,6 +103,10 @@ message(" ")
 
 message("Build options:")
 message("OVAL 5.11: ${SSG_OVAL_511_ENABLED}")
+message("SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
+message(" ")
+
+message(" ")
 
 add_custom_target(validate)
 

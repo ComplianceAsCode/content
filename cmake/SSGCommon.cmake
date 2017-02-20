@@ -66,7 +66,7 @@ else()
 endif()
 
 macro(ssg_build_guide_xml PRODUCT)
-    if(OSCAP_SVG_SUPPORT EQUAL 0)
+    if(SSG_SVG_IN_XCCDF_ENABLED)
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
             COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/guide.xml" "${SSG_SHARED_TRANSFORMS}/includelogo.xslt" "${SSG_SHARED}/xccdf/shared_guide.xml"
