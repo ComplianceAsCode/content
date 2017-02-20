@@ -43,6 +43,12 @@ option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux de
 
 option(SSG_COMPATIBILITY_SYMLINK "If enabled a compatibility symlink will be created in the old SCAP Security Guide location - /usr/share/xml/scap/contente (only on a UNIX derived operating system)" FALSE)
 
+set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
+set(SSG_SHARED_REFS "${SSG_SHARED}/references")
+set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
+set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
+set(SSG_VENDOR "ssgproject")
+
 message("SCAP Security Guide ${SSG_VERSION}")
 message("")
 

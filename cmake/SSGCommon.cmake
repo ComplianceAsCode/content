@@ -50,13 +50,6 @@
 #
 # Good luck hacking the SCAP Security Guide build system!
 
-
-set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
-set(SSG_SHARED_REFS "${SSG_SHARED}/references")
-set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
-set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
-set(SSG_VENDOR "ssgproject")
-
 # OSCAP_OVAL_VERSION is passed into generate-from-templates.py and it specifies
 # the highest OVAL version we can use.
 if(SSG_OVAL_511_ENABLED)
