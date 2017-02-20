@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 project(scap-security-guide NONE)
 
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
-include(SSGCommon)
 # This is set to silence GNUInstallDirs warning about no language being used with cmake
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
@@ -111,6 +110,8 @@ message(" ")
 message(" ")
 
 add_custom_target(validate)
+
+include(SSGCommon)
 
 if (SSG_CHROMIUM_CONTENT_ENABLED)
     add_subdirectory("Chromium")
