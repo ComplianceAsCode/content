@@ -276,7 +276,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
     # TODO: the input/oval parts will *probably* be removed once OVALs are built the same as remediations
     set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/input/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
 
-    if(OSCAP_OVAL_511_SUPPORT EQUAL 0)
+    if(SSG_OVAL_511_ENABLED)
         file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/oval_5.11/*.xml")
         file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/oval/oval_5.11/*.xml")
 
