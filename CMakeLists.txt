@@ -51,13 +51,21 @@ find_program(OSCAP_EXECUTABLE NAMES oscap)
 if (NOT OSCAP_EXECUTABLE)
     message(FATAL_ERROR "The oscap tool is required!")
 endif()
+
 # OSCAP_SVG_SUPPORT == 0 means SVG is supported
 execute_process(
     COMMAND ${SSG_SHARED_UTILS}/oscap-svg-support.py
     RESULT_VARIABLE OSCAP_SVG_SUPPORT
 )
 
-# TODO, set SSG_OVAL_511_ENABLED to false if openscap doesn't support OVAL 5.11
+execute_process(
+    COMMAND "${OSCAP_EXECUTABLE}" --v
+    OUTPUT_VARIABLE OSCAP_V_OUTPUT
+)
+if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
+    set(SSG_OVAL_511_ENABLED OFF CACHE BOOL "OVAL 5.11 disabled because OpenSCAP doesn't support it" FORCE)
+    message("Your version of OpenSCAP does not support OVAL 5.11, disabling OVAL 5.11 for the SSG build.")
+endif()
 
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
 if (NOT XSLTPROC_EXECUTABLE)
@@ -86,6 +94,9 @@ message("xmllint: ${XMLLINT_EXECUTABLE}")
 message("xmlwf: ${XMLWF_EXECUTABLE}")
 message("sed: ${SED_EXECUTABLE}")
 message(" ")
+
+message("Build options:")
+message("OVAL 5.11: ${SSG_OVAL_511_ENABLED}")
 
 add_custom_target(validate)
 
