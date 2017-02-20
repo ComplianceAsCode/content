@@ -1,0 +1,16 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+
+- name: "Read files with incorrect permissions"
+  shell: "rpm -Va | grep '^.M'"
+  register: files_with_incorrect_permissions
+  failed_when: False
+
+- name: "Correct file permissions with RPM"
+  shell: "rpm --setperms $(rpm -qf {{ item.split(' ')[-1] }} | sort -n | uniq)"
+  with_items: "{{ files_with_incorrect_permissions.stdout_lines }}"
+  when: files_with_incorrect_permissions.stdout_lines | length > 0
+
