@@ -1,4 +1,8 @@
 # platform = multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
 
 # Declare array to hold list of RPM packages we need to correct permissions for
 declare -a SETPERMS_RPM_LIST
