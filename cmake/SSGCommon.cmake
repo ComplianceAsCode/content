@@ -480,9 +480,10 @@ endmacro()
 macro(ssg_build_ocil_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
         DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
+        DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
         COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ocil.xml"
     )
     add_custom_target(
