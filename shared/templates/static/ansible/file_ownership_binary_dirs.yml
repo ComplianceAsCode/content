@@ -1,0 +1,18 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: "Read list of system executables without root ownership"
+  shell: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
+  register: no_root_system_executables
+  changed_when: False
+  failed_when: False
+
+- name: "Set ownership to root of system executables"
+  file:
+    path: "{{item}}"
+    owner: "root"
+  with_items: "{{ no_root_system_executables.stdout_lines }}"
+  when: no_root_system_executables.stdout_lines | length > 0
