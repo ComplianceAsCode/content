@@ -4,14 +4,20 @@ include VERSION
 ROOT_DIR ?= $(CURDIR)
 RPMBUILD ?= $(ROOT_DIR)/rpmbuild
 RPM_SPEC := $(ROOT_DIR)/scap-security-guide.spec
+DEBBUILD ?= $(ROOT_DIR)/debbuild
+DEB_SPEC := $(ROOT_DIR)/deb.control
+DEB_CHANGELOG :=$(ROOT_DIR)/deb.changelog
+DEB_INSTALL :=$(ROOT_DIR)/deb.install.in
+DEBPATH ?= $(DEBBUILD)/$(PKGNAME)/
 PKGNAME := $(SSG_PROJECT_NAME)
 OS_DIST := $(shell rpm --eval '%{dist}')
 
 ARCH := noarch
-RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)'  --define '_tmppath $(RPMBUILD)'
+RPMBUILD_ARGS := --define '_topdir $(RPMBUILD)' --define '_tmppath $(RPMBUILD)'
 
 DATESTR:=$(shell date -u +'%Y%m%d%H%M')
 RPM_DATESTR := $(shell date -u +'%a %b %d %Y')
+DEB_DATESTR := $(shell date -u -R)
 
 ifeq ($(SSG_VERSION_IS_GIT_SNAPSHOT),"yes")
 GIT_VERSION:=$(shell git show --pretty=format:"%h" --stat HEAD 2>/dev/null|head -1)
@@ -256,6 +262,11 @@ rpmroot:
 	mkdir -p $(RPMBUILD)/ZIPS
 	mkdir -p $(RPMBUILD)/BUILDROOT
 
+debroot:
+	mkdir -p $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap/ssg
+	mkdir -p $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	mkdir -p $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/tables
+
 zipfile: dist
 	@# ZIP only contains source datastreams and kickstarts, people who
 	@# want sources to build from should get the tarball instead.
@@ -286,6 +297,53 @@ version-update:
 		$(RPM_SPEC)
 	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
 		$(RPM_SPEC)
+
+	@echo -e "\nUpdating $(DEB_SPEC) version, release, and changelog..."
+	sed -e s/__NAME__/$(PKGNAME)/g \
+		$(DEB_SPEC).in > $(DEB_SPEC)
+	sed -i s/__SOURCEPKG__/$(PKGNAME)/g \
+		$(DEB_SPEC)
+	sed -i s/__VERSION__/$(shell echo $(PKGNAME)-$(SSG_VERSION) | tr '[:upper:]' '[:lower:]')/g \
+		$(DEB_SPEC)
+	sed -i s/__RELEASE__/$(SSG_RELEASE_VERSION)/g \
+		$(DEB_SPEC)
+	sed -i 's/__DATE__/$(SSG_RELEASE_DATE)/g' \
+		$(DEB_SPEC)
+	sed -i 's/__REL_MANAGER__/$(SSG_REL_MANAGER)/g' \
+		$(DEB_SPEC)
+	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/g' \
+		$(DEB_SPEC)
+	sed -e s/__NAME__/$(PKGNAME)/g \
+		$(DEB_CHANGELOG).in >> $(DEB_CHANGELOG)
+	sed -i s/__VERSION__/$(SSG_VERSION)/ \
+		$(DEB_CHANGELOG)
+	sed -i s/__RELEASE__/$(SSG_RELEASE_VERSION)/ \
+		$(DEB_CHANGELOG)
+	sed -i 's/__DATE__/$(DEB_DATESTR)/' \
+		$(DEB_CHANGELOG)
+	sed -i 's/__REL_MANAGER__/$(SSG_REL_MANAGER)/' \
+		$(DEB_CHANGELOG)
+	sed -i 's/__REL_MANAGER_MAIL__/$(SSG_REL_MANAGER_MAIL)/' \
+		$(DEB_CHANGELOG)
+
+deb: debian8 tarball version-update debroot
+	cp $(ROOT_DIR)/tarball/$(PKG).tar.gz $(DEBPATH)/
+	cd $(DEBPATH); \
+	dh_make -c custom --file $(PKG).tar.gz --copyrightfile $(ROOT_DIR)/LICENSE -e $(SSG_REL_MANAGER_MAIL) \
+               -n -p "$(shell echo $(PKGNAME)_$(SSG_VERSION) | tr '[:upper:]' '[:lower:]')" -y -C i
+	cp $(DEB_SPEC) $(DEBPATH)/debian/control
+	cp $(DEB_CHANGELOG) $(DEBPATH)/debian/changelog
+	cp $(DEB_INSTALL) $(DEBPATH)/debian/$(PKGNAME).install
+	install -m 0644 $(ROOT_DIR)/Debian/8/dist/content/* $(DEBPATH)/$(PREFIX)/$(DATADIR)/scap/ssg/
+	install -m 0644 $(ROOT_DIR)/Debian/8/dist/guide/* $(DEBPATH)/$(PREFIX)/$(DOCDIR)/scap-security-guide/guides
+	install -m 0644 $(ROOT_DIR)/docs/scap-security-guide.8 $(DEBPATH)/debian/
+	rm $(DEBPATH)/debian/*.ex
+	rm $(DEBPATH)/debian/*.EX
+	rm $(DEBPATH)/debian/README.*
+	echo "README" > $(DEBPATH)/scap-security-guide-docs.docs
+	cd $(DEBPATH); \
+	dpkg-buildpackage -us -uc
+	lintian --no-tag-display-limit -c $(DEBBUILD)/*.deb
 
 srpm: tarball version-update rpmroot
 	cat $(RPM_SPEC) > $(RPMBUILD)/SPECS/$(notdir $(RPM_SPEC))
@@ -319,6 +377,7 @@ git-tag:
 
 clean:
 	rm -rf $(RPMBUILD)
+	rm -rf $(DEBBUILD)
 	rm -rf tarball/
 	rm -rf zipfile/
 	rm -rf shared/output
@@ -335,7 +394,9 @@ clean:
 	cd Firefox && $(MAKE) clean
 	cd Webmin && $(MAKE) clean
 	cd Chromium && $(MAKE) clean
-	rm -f scap-security-guide.spec
+	rm -f $(RPM_SPEC)
+	rm -f $(DEB_SPEC)
+	rm -f $(DEB_CHANGELOG)
 
 install: dist
 	install -d $(PREFIX)/$(DATADIR)/scap/ssg
