@@ -11,23 +11,15 @@ RPM_GPG_DIR_PERMS=$(stat -c %a "$(dirname "$REDHAT_RELEASE_KEY")")
 if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
-  # (to ensure there won't be e.g. CRC error)
-  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint "${REDHAT_RELEASE_KEY}"))
+  # (to ensure there won't be e.g. CRC error).
+  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint "${REDHAT_RELEASE_KEY}" | grep 'Key fingerprint ='))
   GPG_RESULT=$?
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
-    for ITEM in "${GPG_OUT[@]}"
-    do
-      # Filter just hexadecimal fingerprints from gpg's output from
-      # processing of a key file
-      RESULT=$(echo ${ITEM} | sed -n "s/[[:space:]]*Key fingerprint = \(.*\)/\1/p" | tr -s '[:space:]')
-      # If fingerprint matches Red Hat's release 2 or auxiliary key import the key
-      if [[ ${RESULT} ]] && ([[ ${RESULT} = "${REDHAT_RELEASE_2_FINGERPRINT}" ]] || \
-                             [[ ${RESULT} = "${REDHAT_AUXILIARY_FINGERPRINT}" ]])
-      then
-        rpm --import "${REDHAT_RELEASE_KEY}"
-      fi
-    done
+    tr -s ' ' <<< "${GPG_RESULT}" | grep -vE "${REDHAT_RELEASE_2_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}" || {
+      # If file doesn't contains any keys with unknown fingerprint, import it
+      rpm --import "${REDHAT_RELEASE_KEY}"
+    }
   fi
 fi
