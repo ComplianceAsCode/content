@@ -1,0 +1,18 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: "Read list of world and group writable system executables"
+  shell: "find /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin /usr/libexec -perm /022 -type f"
+  register: world_writable_library_files
+  changed_when: False
+  failed_when: False
+
+- name: "Remove world/group writability of system executables"
+  file:
+    path: "{{item}}"
+    mode: "go-w"
+  with_items: "{{ world_writable_library_files.stdout_lines }}"
+  when: world_writable_library_files.stdout_lines | length > 0
