@@ -66,3 +66,24 @@ is somewhat different.
 
 In addition, the shared directory contains "modules" containing python code,
 and "references" containing references to external identifiers.
+
+### Tools and Utilities
+
+The shared directory also contains tools useful for development and testing.
+
+#### testoval.py
+
+Located in `shared/oval` directory, this script allows easy testing of oval
+definitions. It wraps the definition and makes up an oval file ready for
+scanning, very useful for testing new OVAL content or modifying existing ones.
+Example usage:
+
+    shared/oval/testoval.py install_hid.xml
+
+To facilitate use of this script create an alias to the script,
+
+    alias testoval='/home/user/scap-security-guide/shared/oval/testoval.py'
+
+Or add the directory where `testoval.py` resides to your PATH.
+
+    export PATH=$PATH:/home/user/scap-security-guide/shared/oval/
