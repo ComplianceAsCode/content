@@ -1,0 +1,18 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+
+- name: "Read list of world and group writable files in libraries directories"
+  shell: "find /lib /lib64 /usr/lib /usr/lib64 -perm /022 -type f"
+  register: world_writable_library_files
+  changed_when: False
+  failed_when: False
+
+- name: "Disable world/group writability to library files"
+  file:
+    path: "{{item}}"
+    mode: "go-w"
+  with_items: "{{ world_writable_library_files.stdout_lines }}"
+  when: world_writable_library_files.stdout_lines | length > 0
