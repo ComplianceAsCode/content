@@ -10,6 +10,8 @@ class Builder(object):
     def __init__(self):
         self.input_dir = None
         self.output_dir = None
+        self.ssg_shared = ""
+
         self.script_dict = {
             "sysctl_values.csv":            "create_sysctl.py",
             "services_disabled.csv":        "create_services_disabled.py",
@@ -43,6 +45,9 @@ class Builder(object):
             "oval_5.10": os.path.join(self.input_dir, "csv"),
             "oval_5.11": os.path.join(self.input_dir, "csv", "oval_5.11"),
         }
+
+    def set_ssg_shared(self, shared):
+        self.ssg_shared = shared
 
     def build(self):
         for lang in self.langs:
@@ -165,6 +170,7 @@ class Builder(object):
 
     def _set_environment(func):
         def wrapper(self, *args):
+            os.environ["SHARED"] = self.ssg_shared
             os.environ["TEMPLATE_DIR"] = self._get_template_dir()
             os.environ["BUILD_DIR"] = self.output_dir
 
@@ -174,6 +180,7 @@ class Builder(object):
             finally:
                 os.environ.pop("TEMPLATE_DIR", None)
                 os.environ.pop("BUILD_DIR", None)
+                os.environ.pop("SHARED", None)
 
         return wrapper
 
@@ -245,6 +252,8 @@ if __name__ == "__main__":
                    help="input directory")
     p.add_argument("-o", "--output", action="store", required=True,
                    help="output directory")
+    p.add_argument("-s", "--shared", metavar="PATH", required=True,
+                   help="Full absolute path to SSG shared directory")
     p.add_argument('--oval_version', action="store", default="oval_5.10",
                    help="oval version")
 
@@ -260,6 +269,7 @@ if __name__ == "__main__":
 
     builder.set_input_dir(args.input)
     builder.set_output_dir(args.output)
+    builder.set_ssg_shared(args.shared)
 
     if args.oval_version == "oval_5.10":
         builder.supported_ovals = ["oval_5.10"]

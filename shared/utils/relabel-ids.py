@@ -287,7 +287,6 @@ def main():
     xccdffile = sys.argv[1]
     idname = sys.argv[2]
 
-    os.chdir("./output")
     # Step over xccdf file, and find referenced check files
     xccdftree = parse_xml_file(xccdffile)
 
@@ -366,14 +365,14 @@ def main():
         verify_correct_form_of_referenced_cce_identifiers(xccdftree)
 
         ovaltree = translator.translate(ovaltree, store_defname=True)
-        newovalfile = ovalfile.replace("unlinked", idname)
+        newovalfile = ovalfile.replace("unlinked", "linked")
         ET.ElementTree(ovaltree).write(newovalfile)
 
     # Rename all IDs in the ocil file
     if ocilfile:
         ociltree = parse_xml_file(ocilfile)
         ociltree = translator.translate(ociltree)
-        newocilfile = ocilfile.replace("unlinked", idname)
+        newocilfile = ocilfile.replace("unlinked", "linked")
         ET.ElementTree(ociltree).write(newocilfile)
 
     # Rename all IDs and file refs in the xccdf file
@@ -415,7 +414,7 @@ def main():
                                                        checkexport.get("export-name"))
                 checkexport.set("export-name", newexportname)
 
-    newxccdffile = xccdffile.replace("unlinked", idname)
+    newxccdffile = xccdffile.replace("unlinked", "linked")
     # ET.dump(xccdftree)
     ET.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
