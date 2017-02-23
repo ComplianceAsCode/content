@@ -47,7 +47,8 @@ def get_templates_path(product_path):
 
 	for mask in masks:
 		for path in glob.glob(mask):
-			yield path
+			if ".py" not in path:
+				yield path
 
 def get_lang_of_template(template_path):
 	lang="oval"
