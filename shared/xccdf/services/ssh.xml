@@ -73,7 +73,7 @@ of interception and modification.
 <ident prodtype="rhel7" cce="80216-5" />
 <ref prodtype="rhel7" nist="SC-8" disa="2418,2420,2421,2422"
 ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190"
-stigid="040261" cui="3.1.13" />
+stigid="040261" cui="3.1.13,3.5.4,3.13.8" />
 <oval id="service_sshd_enabled" />
 </Rule>
 
@@ -99,7 +99,7 @@ may be compromised.
 </rationale>
 <ident prodtype="rhel7" cce="27311-0" />
 <ref prodtype="rhel7" nist="AC-6" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="040640" cui="3.1.13" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040640" cui="3.1.13,3.13.10" />
 <oval id="file_permissions_sshd_pub_key" />
 </Rule>
 
@@ -113,7 +113,7 @@ impersonated.
 </rationale>
 <ident prodtype="rhel7" cce="27485-2" />
 <ref prodtype="rhel7" nist="AC-6" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="040650" cui="3.1.13" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040650" cui="3.1.13,3.13.10" />
 <oval id="file_permissions_sshd_private_key" />
 </Rule>
 
@@ -185,7 +185,7 @@ immediate root access to the system.
 <oval id="sshd_allow_only_protocol2" />
 <ref prodtype="rhel7" nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" cis="6.2.1"
 ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" stigid="040590" cjis="5.5.6"
-cui="3.1.13" />
+cui="3.1.13,3.5.4" />
 </Rule>
 
 <Rule id="sshd_limit_user_access" prodtype="rhel7">
@@ -690,7 +690,7 @@ Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
 <oval id="sshd_use_approved_ciphers" />
 <ref prodtype="rhel7" nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" disa="68,366,803"
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173" 
-stigid="040110" cis="6.2.11" cjis="5.5.6" cui="3.1.13,3.13.11" />
+stigid="040110" cis="6.2.11" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8" />
 </Rule>
 
 <Rule id="sshd_use_approved_macs" severity="medium" prodtype="rhel7">
@@ -715,7 +715,7 @@ functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 <ident prodtype="rhel7" cce="27455-5" />
 <oval id="sshd_use_approved_macs" />
 <ref prodtype="rhel7" nist="AC-17(2),IA-7,SC-13" disa="1453"
-ossrg="SRG-OS-000250-GPOS-00093" stigid="040620" cui="3.1.13,3.13.11" />
+ossrg="SRG-OS-000250-GPOS-00093" stigid="040620" cui="3.1.13,3.13.11,3.13.8" />
 </Rule>
 
 <Group id="sshd_strengthen_firewall">

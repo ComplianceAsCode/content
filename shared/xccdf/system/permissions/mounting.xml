@@ -33,7 +33,8 @@ malicious software.</rationale>
 <ident prodtype="rhel7" cce="27277-3" />
 <oval id="kernel_module_usb-storage_disabled" />
 <ref prodtype="rhel7" nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" 
-ossrg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227" stigid="020160" />
+ossrg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227"
+stigid="020160" cui="3.1.21" />
 </Rule>
 
 <Rule id="bootloader_nousb_argument" prodtype="rhel7">
@@ -110,10 +111,11 @@ unknown devices, thereby facilitating malicious activity.
 <ident prodtype="rhel7" cce="27498-5" />
 <oval id="service_autofs_disabled" />
 <ref prodtype="rhel7" nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958"
-ossrg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227" stigid="020161" />
+ossrg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227" stigid="020161"
+cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_cramfs_disabled" prodtype="rhel7">
+<Rule id="kernel_module_cramfs_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>cramfs</tt></title>
 <description>
 <module-disable-macro module="cramfs" />
@@ -124,10 +126,10 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80137-3" />
 <oval id="kernel_module_cramfs_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.18" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.18" cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_freevxfs_disabled" prodtype="rhel7">
+<Rule id="kernel_module_freevxfs_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>freevxfs</tt></title>
 <description>
 <module-disable-macro module="freevxfs" />
@@ -138,10 +140,10 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80138-1" />
 <oval id="kernel_module_freevxfs_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.19" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.19" cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_jffs2_disabled" prodtype="rhel7">
+<Rule id="kernel_module_jffs2_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>jffs2</tt></title>
 <description>
 <module-disable-macro module="jffs2" />
@@ -152,10 +154,10 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80139-9" />
 <oval id="kernel_module_jffs2_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.20" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.20" cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_hfs_disabled" prodtype="rhel7">
+<Rule id="kernel_module_hfs_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>hfs</tt></title>
 <description>
 <module-disable-macro module="hfs" />
@@ -166,10 +168,10 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80140-7" />
 <oval id="kernel_module_hfs_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.21" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.21" cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_hfsplus_disabled" prodtype="rhel7">
+<Rule id="kernel_module_hfsplus_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>hfsplus</tt></title>
 <description>
 <module-disable-macro module="hfsplus" />
@@ -180,10 +182,10 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80141-5" />
 <oval id="kernel_module_hfsplus_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.22" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.22" cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_squashfs_disabled" prodtype="rhel7">
+<Rule id="kernel_module_squashfs_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>squashfs</tt></title>
 <description>
 <module-disable-macro module="squashfs" />
@@ -194,10 +196,10 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80142-3" />
 <oval id="kernel_module_squashfs_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.23" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.23" cui="3.4.6" />
 </Rule>
 
-<Rule id="kernel_module_udf_disabled" prodtype="rhel7">
+<Rule id="kernel_module_udf_disabled" prodtype="rhel7" severity="low">
 <title>Disable Mounting of <tt>udf</tt></title>
 <description>
 <module-disable-macro module="udf" />
@@ -208,7 +210,7 @@ local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80143-1" />
 <oval id="kernel_module_udf_disabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="1.1.24" />
+<ref prodtype="rhel7" nist="CM-7" cis="1.1.24" cui="3.4.6" />
 </Rule>
 
 </Group>

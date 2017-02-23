@@ -24,7 +24,6 @@ appropriate.
 For more information on SELinux, see <b><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide"/></b>
 </description>
 
-
 <Value id="var_selinux_state" type="string" operator="equals" interactive="0">
 <title>SELinux state</title>
 <description>enforcing - SELinux security policy is enforced.
@@ -67,7 +66,7 @@ the chances that it will remain off during system operation.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26961-3" />
 <oval id="enable_selinux_bootloader" />
-<ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="22,32" cis="1.4.1" cui="3.1.2" />
+<ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="22,32" cis="1.4.1" cui="3.1.2,3.7.2" />
 </Rule>
 
 <Rule id="selinux_state" severity="high" prodtype="rhel7">
@@ -90,7 +89,7 @@ privileges.
 <ident prodtype="rhel7" cce="27334-2" />
 <oval id="selinux_state" value="var_selinux_state"/>
 <ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2165,2696" cis="1.4.2"
-ossrg="SRG-OS-000445-GPOS-00199" stigid="020210" cui="3.1.2" />
+ossrg="SRG-OS-000445-GPOS-00199" stigid="020210" cui="3.1.2,3.7.2" />
 </Rule>
 
 <Rule id="selinux_policytype" severity="high" prodtype="rhel7">
@@ -122,7 +121,7 @@ is completed, the system should be reconfigured to
 <ident prodtype="rhel7" cce="27279-9" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
 <ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2696" cis="1.4.3"
-ossrg="SRG-OS-000445-GPOS-00199" stigid="020211" cui="3.1.2" />
+ossrg="SRG-OS-000445-GPOS-00199" stigid="020211" cui="3.1.2,3.7.2" />
 </Rule>
 
 <Rule id="package_setroubleshoot_removed" prodtype="rhel7">
@@ -173,7 +172,7 @@ Daemons which run with the <tt>initrc_t</tt> context may cause AVC denials,
 or allow privileges that the daemon does not require.
 </rationale>
 <oval id="selinux_confinement_of_daemons" />
-<ref prodtype="rhel7" nist="AC-6,AU-9,CM-7" cis="1.4.6" cui="3.1.2, 3.1.5" />
+<ref prodtype="rhel7" nist="AC-6,AU-9,CM-7" cis="1.4.6" cui="3.1.2,3.1.5,3.7.2" />
 <ident prodtype="rhel7" cce="27288-0" />
 </Rule>
 
@@ -199,7 +198,7 @@ cannot properly restrict access to the device file.
 <ident prodtype="rhel7" cce="27326-8" />
 <oval id="selinux_all_devicefiles_labeled" />
 <ref prodtype="rhel7" nist="AC-6,AU-9,CM-3(f),CM-7" disa="22,32,368,318,1812,1813,1814" stigid="020940"
-ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.2, 3.1.5" />
+ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.2, 3.1.5,3.7.2" />
 </Rule>
 
 <Rule id="docker_selinux_enabled" severity="high" prodtype="rhel7">
@@ -242,9 +241,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80419-5" />
 <!--oval id="sebool_abrt_anon_write" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_abrt_handle_event" severity="medium" prodtype="rhel7">
@@ -259,9 +259,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80420-3" />
 <!--oval id="sebool_abrt_handle_event" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_abrt_upload_watch_anon_write" severity="medium" prodtype="rhel7">
@@ -277,9 +278,10 @@ to modify public files used for public file transfer services.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80421-1" />
 <oval id="sebool_abrt_upload_watch_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_antivirus_can_scan_system" severity="medium" prodtype="rhel7">
@@ -295,9 +297,10 @@ files on a system.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80422-9" />
 <oval id="sebool_antivirus_can_scan_system" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_antivirus_use_jit" severity="medium" prodtype="rhel7">
@@ -312,9 +315,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80423-7" />
 <!--oval id="sebool_antivirus_use_jit" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_auditadm_exec_content" severity="medium" prodtype="rhel7">
@@ -329,9 +333,10 @@ If this setting is disabled, it should be enabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80424-5" />
 <oval id="sebool_auditadm_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="80424-5" />
 </Rule>
 
 <Rule id="sebool_authlogin_nsswitch_use_ldap" severity="medium" prodtype="rhel7">
@@ -346,9 +351,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80425-2" />
 <!--oval id="sebool_authlogin_nsswitch_use_ldap" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_authlogin_radius" severity="medium" prodtype="rhel7">
@@ -363,9 +369,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80426-0" />
 <!--oval id="sebool_authlogin_radius" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_authlogin_yubikey" severity="medium" prodtype="rhel7">
@@ -380,9 +387,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80427-8" />
 <!--oval id="sebool_authlogin_yubikey" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_awstats_purge_apache_log_files" severity="medium" prodtype="rhel7">
@@ -397,9 +405,10 @@ If this setting is enabled, it should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80428-6" />
 <!--oval id="sebool_awstats_purge_apache_log_files" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_boinc_execmem" severity="medium" prodtype="rhel7">
@@ -414,9 +423,10 @@ This setting should be disabled.
 </ocil>
 <rationale>
 </rationale>
-<ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
+<ident prodtype="rhel7" cce="80429-4" />
 <!--oval id="sebool_boinc_execmem" /-->
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
+cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_cdrecord_read_content" severity="medium" prodtype="rhel7">

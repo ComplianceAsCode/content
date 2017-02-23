@@ -41,7 +41,7 @@ attacks against xinetd itself.
 </rationale>
 <ident prodtype="rhel7" cce="27443-1" />
 <oval id="service_xinetd_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="305"/>
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="305" cui="3.4.7" />
 </Rule>
 
 <Rule id="package_xinetd_removed" prodtype="rhel7">
@@ -130,7 +130,7 @@ subject to man-in-the-middle attacks.
 </rationale>
 <ident prodtype="rhel7" cce="27401-9" />
 <oval id="service_telnet_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" cui="3.1.13" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="" cui="3.1.13,3.4.7" />
 </Rule>
 
 <Rule id="package_telnet-server_removed" severity="high" prodtype="rhel7">
@@ -215,7 +215,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident prodtype="rhel7" cce="27408-4" />
 <oval id="service_rexec_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="68,1436" cui="3.1.13" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="68,1436" cui="3.1.13,3.4.7" />
 </Rule>
 
 <Rule id="service_rsh_disabled" severity="high" prodtype="rhel7">
@@ -235,7 +235,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident prodtype="rhel7" cce="27337-5" />
 <oval id="service_rsh_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" cui="3.1.13" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="68,1436" cui="3.1.13,3.4.7" />
 </Rule>
 
 <Rule id="package_rsh_removed" prodtype="rhel7">
@@ -272,7 +272,7 @@ stolen by eavesdroppers on the network.
 </rationale>
 <ident prodtype="rhel7" cce="27336-7" />
 <oval id="service_rlogin_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" cui="3.1.13" />
+<ref prodtype="rhel7" nist="AC-17(8),CM-7,IA-5(1)(c)" disa="1436" cui="3.1.13,3.4.7" />
 </Rule>
 
 <Rule id="no_rsh_trust_files" severity="high" prodtype="rhel7">
@@ -335,7 +335,8 @@ a NIS or NIS+ domain, should be disabled.
 <ocil><systemd-check-macro enable="false" service="ypbind" /></ocil>
 <rationale>
 Disabling the <tt>ypbind</tt> service ensures the system is not acting
-as a client in a NIS or NIS+ domain.
+as a client in a NIS or NIS+ domain. This service should be disabled
+unless in use.
 </rationale>
 <ident prodtype="rhel7" cce="27385-4" />
 <oval id="service_ypbind_disabled" />
