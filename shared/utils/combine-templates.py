@@ -84,7 +84,7 @@ def generate_header(product_path, template_file):
 	return header
 
 def add_shared_platform(cnt):
-	cnt = re.sub(">(.*?)(<platform.*)", '>\\1<platform>shared</platform>\n\\1\\2',cnt)
+	cnt = re.sub("<affected family=\"unix\">", r'\0<platform>shared</platform>',cnt)
 	cnt = re.sub(r'\s*#\s*platform\s*=\s*', r'# platform = shared, ',cnt)
 	return cnt
 
