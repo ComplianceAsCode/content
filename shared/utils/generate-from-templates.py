@@ -13,14 +13,14 @@ class Builder(object):
         self.ssg_shared = ""
 
         self.script_dict = {
-            "sysctl_values.csv":            "create_sysctl.py",
-            "services_disabled.csv":        "create_services_disabled.py",
-            "services_enabled.csv":         "create_services_enabled.py",
-            "packages_installed.csv":       "create_package_installed.py",
-            "packages_removed.csv":         "create_package_removed.py",
-            "kernel_modules_disabled.csv":  "create_kernel_modules_disabled.py",
-            "file_dir_permissions.csv":     "create_permission.py",
-            "accounts_password.csv":        "create_accounts_password.py",
+            "sysctl_values.csv":            "sysctl",
+            "services_disabled.csv":        "services_disabled",
+            "services_enabled.csv":         "services_enabled",
+            "packages_installed.csv":       "package_installed",
+            "packages_removed.csv":         "package_removed",
+            "kernel_modules_disabled.csv":  "kernel_modules_disabled",
+            "file_dir_permissions.csv":     "permission",
+            "accounts_password.csv":        "accounts_password",
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
@@ -36,10 +36,6 @@ class Builder(object):
 
     def set_input_dir(self, input_dir):
         self.input_dir = input_dir
-        self.templates_dirs = {
-            "oval_5.10": self.input_dir,
-            "oval_5.11": os.path.join(self.input_dir, "oval_5.11_templates")
-        }
 
         self.csv_dirs = {
             "oval_5.10": os.path.join(self.input_dir, "csv"),
@@ -55,6 +51,8 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
+        # build from older OVAL
+        # then override with newer
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
 
@@ -62,9 +60,6 @@ class Builder(object):
                 script = self._get_script_for_csv(csv_filename)
 
                 csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                sys.stderr.write(
-                    "{0}\t{1}\n".format(os.path.realpath(script), csv_filepath)
-                )
                 self._run_script(script, csv_filepath)
 
     def list_inputs(self):
@@ -154,13 +149,13 @@ class Builder(object):
 
     def _get_script_for_csv(self, csv_filename):
         try:
-            script_name = self.script_dict[csv_filename]
-            full_path = os.path.join(self.shared_templates_dir, script_name)
+            template_dir = self.script_dict[csv_filename]
+            full_path = os.path.join(self.shared_templates_dir, template_dir,"create.python")
             return full_path
 
         except KeyError:
             sys.stderr.write(
-                "Cannot find associated build script for {0}\n"
+                "Cannot find associated template directory for {0}\n"
                 .format(csv_filename)
             )
             sys.exit(1)
@@ -168,24 +163,8 @@ class Builder(object):
     def _output_dir_for_lang(self, lang):
         return os.path.join(self.output_dir, lang)
 
-    def _set_environment(func):
-        def wrapper(self, *args):
-            os.environ["SHARED"] = self.ssg_shared
-            os.environ["TEMPLATE_DIR"] = self._get_template_dir()
-            os.environ["BUILD_DIR"] = self.output_dir
-
-            try:
-                return func(self, *args)
-
-            finally:
-                os.environ.pop("TEMPLATE_DIR", None)
-                os.environ.pop("BUILD_DIR", None)
-                os.environ.pop("SHARED", None)
-
-        return wrapper
-
-    @_set_environment
     def _run_script(self, script, csv_filepath):
+
         for lang in self.langs:
             sp = subprocess.Popen(
                 ["python", script, lang, csv_filepath],
@@ -194,24 +173,13 @@ class Builder(object):
             )
             self._subprocess_check(sp)
 
-    @_set_environment
     def _read_io_files_list(self, script, csv, lang, gen_input):
-        try:
-            if gen_input:
-                os.environ["GENERATE_INPUT_LIST"] = "true"
-            else:
-                os.environ["GENERATE_OUTPUT_LIST"] = "true"
-
-            sp = subprocess.Popen(
+        sp = subprocess.Popen(
                 ["python", script, lang, csv],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
-            )
-            return self._get_list_from_subprocess(sp)
-
-        finally:
-            os.environ.pop("GENERATE_INPUT_LIST", None)
-            os.environ.pop("GENERATE_OUTPUT_LIST", None)
+        )
+        return self._get_list_from_subprocess(sp)
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
