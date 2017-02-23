@@ -77,7 +77,7 @@ and gives them an opportunity to notify administrators.
 </rationale>
 <ident cce="27291-4" stig="RHEL-06-000372" />
 <oval id="display_login_attempts" />
-<ref disa="366" />
+<ref disa="366" pcidss="Req-10.2.4" />
 </Rule>
 
 <Group id="password_quality">
@@ -305,7 +305,7 @@ search space.
 </rationale>
 <ident cce="26374-9" stig="RHEL-06-000056" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
-<ref nist="IA-5(b),IA-5(c)" disa="194"/>
+<ref nist="IA-5(b),IA-5(c)" disa="194" pcidss="Req-8.2.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_minlen">
@@ -327,7 +327,7 @@ required to compromise the password.
 </rationale>
 <ident cce="26615-5" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
-<ref nist="IA-5(1)(a)" disa="205" />
+<ref nist="IA-5(1)(a)" disa="205" pcidss="Req-8.2.3" />
 </Rule>
 
 
@@ -352,7 +352,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26601-5" stig="RHEL-06-000057" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" cui="3.5.7" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" cui="3.5.7" pcidss="Req-8.2.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit">
@@ -400,7 +400,7 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident cce="26631-2" stig="RHEL-06-000059" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" pcidss="Req-8.2.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_difok">
@@ -510,7 +510,7 @@ prevents direct password guessing attacks.
 </rationale>
 <ident cce="26844-1" stig="RHEL-06-000061" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
-<ref nist="AC-7(a)" disa="44" />
+<ref nist="AC-7(a)" disa="44" pcidss="Req-8.1.6" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
@@ -542,7 +542,7 @@ situations.
 </rationale>
 <ident cce="27110-6" stig="RHEL-06-000356" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
-<ref nist="AC-7(b)" disa="47" />
+<ref nist="AC-7(b)" disa="47" cidss="Req-8.1.7" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
@@ -602,7 +602,7 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 </rationale>
 <ident cce="26741-9" stig="RHEL-06-000274" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
-<ref nist="IA-5(f),IA-5(1)(e)" disa="200" />
+<ref nist="IA-5(f),IA-5(1)(e)" disa="200" pcidss="Req-8.2.5" />
 </Rule>
 </Group>
 
@@ -634,7 +634,7 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="26303-8" stig="RHEL-06-000062" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1" />
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
@@ -653,7 +653,7 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="27228-6" stig="RHEL-06-000063" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1" />
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
 
@@ -674,7 +674,7 @@ in the <tt>[default]</tt> section:
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
 <ident cce="27229-4" stig="RHEL-06-000064" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803"/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1" />
 <oval id="set_password_hashing_algorithm_libuserconf" />
 </Rule>
 </Group>

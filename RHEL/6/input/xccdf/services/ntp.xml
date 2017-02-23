@@ -48,7 +48,7 @@ deprecated.  Additional information on this is available at
 <weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate"/></rationale>
 <ident cce="27093-4" stig="RHEL-06-000247" />
 <oval id="service_ntpd_enabled" />
-<ref nist="AU-8(1)" disa="160" />
+<ref nist="AU-8(1)" pcidss="Req-10.4" disa="160" />
 </Rule>
 
 <Rule id="ntpd_specify_remote_server" severity="medium">
@@ -73,7 +73,7 @@ real time events.
 </rationale>
 <ident cce="27098-3" stig="RHEL-06-000248" />
 <oval id="ntpd_specify_remote_server" />
-<ref nist="AU-8(1)" disa="160" />
+<ref nist="AU-8(1)" pcidss="Req-10.4.1,Req-10.4.3" disa="160" />
 </Rule>
 
 <Rule id="ntpd_specify_multiple_servers">
@@ -91,7 +91,7 @@ other systems.
 </rationale>
 <oval id="ntpd_specify_multiple_servers"/>
 <ident cce="26958-9" />
-<ref nist="AU-8(1)" />
+<ref nist="AU-8(1)" pcidss="Req-10.4.3" />
 </Rule>
 
 <!-- future Rules (for later profiles/enhancements):

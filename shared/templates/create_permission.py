@@ -21,9 +21,17 @@ def output_checkfile(target, path_info):
     # path_id maps to FILEID in the template
     if file_name == '[NULL]':
         path_id = re.sub('[-\./]', '_', dir_path)
+    elif re.match( r'\^.*\$', file_name, 0):
+        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\\\./^$*(){}|]',
+                                                                 '_', file_name)
+        # cleaning trailing end multiple underscores, make sure id is lowercase
+        path_id = re.sub(r'_+','_', path_id)
+        path_id = re.sub(r'_$','', path_id)
+        path_id = path_id.lower()
     else:
         path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
                                                                  '_', file_name)
+        path_id = path_id.lower()
 
     # build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
@@ -33,16 +41,28 @@ def output_checkfile(target, path_info):
         full_path = dir_path + '/' + file_name
 
     if target == "bash":
-        file_from_template(
-            "./template_BASH_permissions",
-            {
-                "FILEPATH":      full_path,
-                "FILEMODE":      mode,
-            },
-            "./bash/file_permissions{0}.sh", path_id
-        )
+        if not re.match( r'\^.*\$', file_name, 0):
+            file_from_template(
+                "./template_BASH_permissions",
+                {
+                    "FILEPATH":      full_path,
+                    "FILEMODE":      mode,
+                },
+                "./bash/file_permissions{0}.sh", path_id
+            )
+        else:
+            file_name = re.sub('^\^','', file_name)
+            file_from_template(
+                "./template_BASH_regex_permissions",
+                {
+                    "FILEPATH":      dir_path,
+                    "FILENAME":      file_name,
+                    "FILEMODE":      mode,
+                },
+                "./bash/file_permissions{0}.sh", path_id
+            )
 
-    elif target == "ansible":
+    elif target == "ansible" and not re.match( r'\^.*\$', file_name, 0):
         file_from_template(
             "./template_ANSIBLE_permissions",
             {
@@ -66,8 +86,12 @@ def output_checkfile(target, path_info):
                 mode_str = "	<unix:" + field + " datatype=\"boolean\">false</unix:" + field + ">\n" + mode_str
             mode_int = mode_int >> 1
 
+        # support pattern matching, requiring that the filename starts with '^'
+        # and fichishes with '$'
         if file_name == '[NULL]':
             unix_filename = "<unix:filename xsi:nil=\"true\" />"
+        elif re.match( r'\^.*\$', file_name, 0):
+            unix_filename = "<unix:filename operation=\"pattern match\">" + file_name + "</unix:filename>"
         else:
             unix_filename = "<unix:filename>" + file_name + "</unix:filename>"
 

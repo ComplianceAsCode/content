@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="inventory" id="installed_env_is_a_machine" version="2">
+    <metadata>
+      <title>Check if the scan target is a machine</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if file /.dockerenv exists, if it doesn't then we consider to be host filesystem or virtual machine.</description>
+      <reference ref_id="cpe:/a:machine" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Check if /.dockerenv exists" test_ref="installed_env_is_a_machine" negate="true" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /.dockerenv exists" id="installed_env_is_a_machine" version="1">
+    <unix:object object_ref="installed_env_is_a_machine" />
+  </unix:file_test>
+
+  <unix:file_object comment="Check file /.dockerenv" id="installed_env_is_a_machine" version="1">
+    <unix:filepath datatype="string">/.dockerenv</unix:filepath>
+  </unix:file_object>
+</def-group>

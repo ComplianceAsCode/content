@@ -5,22 +5,10 @@
 *~
 *.pyc
 
-# RPM build files
+# Build files
 rpmbuild
 scap-security-guide.spec
-**/build/*
-
-# Ignore dist directories but remember dist/README files
-**/dist
-!**/dist/README
-
-# Ignore .ini files in the following directories
-#     */input/oval
-#     */transforms
-#     */output
-**/input/oval/*.ini
-**/transforms/*.ini
-**/output/*
+build/
 
 # Ignore docs tmp directories
 docs/Developer_Guide/tmp
@@ -34,14 +22,6 @@ docs/User_Guide/publish
 
 # Ignore docs SCAP_Security_Guide directory
 docs/html/en-US/SCAP_Security_Guide
-
-# Ignore shared directory .ini files
-shared/*.ini
-shared/modules/*.ini
-shared/oval/*.ini
-
-# Ignore intermediary output XML files in the shared directory
-shared/output/*.xml
 
 # Ignore PCI_DSS_v3-1.pdf
 shared/transforms/pcidss/PCI_DSS_v3-1.pdf

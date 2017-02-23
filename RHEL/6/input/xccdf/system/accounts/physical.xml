@@ -35,7 +35,7 @@ Only root should be able to modify important boot parameters.
 </rationale>
 <ident cce="26995-1" stig="RHEL-06-000065" />
 <oval id="file_user_owner_grub_conf" />
-<ref nist="AC-6(7)" disa="225"/>
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
 </Rule>
 
 <Rule id="file_group_owner_grub_conf" severity="medium">
@@ -52,7 +52,7 @@ file should not have any access privileges anyway.
 </rationale>
 <ident cce="27022-3" stig="RHEL-06-000066" />
 <oval id="file_group_owner_grub_conf" />
-<ref nist="AC-6(7)" disa="225"/>
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
 </Rule>
 
 <Rule id="file_permissions_grub_conf" severity="medium">
@@ -291,7 +291,7 @@ that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
 <ident cce="27440-7" stig="RHEL-06-000349" />
-<ref disa="765,766,767,768,771,772,884" />
+<ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
 <oval id="smartcard_auth" />
 </Rule>
 

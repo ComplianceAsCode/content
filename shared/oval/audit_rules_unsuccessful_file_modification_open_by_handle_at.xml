@@ -1,0 +1,121 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_unsuccessful_file_modification_open_by_handle_at" version="1">
+    <metadata>
+      <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful) - open_by_handle_at</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules 32-bit file eaccess" test_ref="test_32bit_arufm_eaccess_open_by_handle_at_augenrules" />
+        <criterion comment="audit augenrules 32-bit file eperm" test_ref="test_32bit_arufm_eperm_open_by_handle_at_augenrules" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCESS / EPERM rules-->
+          <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criteria operator="AND">
+            <criterion comment="audit augenrules 64-bit file eaccess" test_ref="test_64bit_arufm_eaccess_open_by_handle_at_augenrules" />
+            <criterion comment="audit augenrules 64-bit file eperm" test_ref="test_64bit_arufm_eperm_open_by_handle_at_augenrules" />
+          </criteria>
+        </criteria>
+      </criteria>
+
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl 32-bit file eaccess" test_ref="test_32bit_arufm_eaccess_open_by_handle_at_auditctl" />
+        <criterion comment="audit auditctl 32-bit file eperm" test_ref="test_32bit_arufm_eperm_open_by_handle_at_auditctl" />
+        <criteria operator="OR">
+          <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCESS / EPERM rules -->
+          <extend_definition comment="64-bit_system" definition_ref="system_info_architecture_64bit" negate="true" />
+          <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
+          <criteria operator="AND">
+            <criterion comment="audit auditctl 64-bit file eaccess" test_ref="test_64bit_arufm_eaccess_open_by_handle_at_auditctl" />
+            <criterion comment="audit auditctl 64-bit file eperm" test_ref="test_64bit_arufm_eperm_open_by_handle_at_auditctl" />
+          </criteria>
+        </criteria>
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eaccess" id="test_32bit_arufm_eaccess_open_by_handle_at_augenrules" version="1">
+    <ind:object object_ref="object_32bit_arufm_eaccess_open_by_handle_at_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eaccess_open_by_handle_at_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eperm" id="test_32bit_arufm_eperm_open_by_handle_at_augenrules" version="1">
+    <ind:object object_ref="object_32bit_arufm_eperm_open_by_handle_at_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eperm_open_by_handle_at_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit file eaccess" id="test_64bit_arufm_eaccess_open_by_handle_at_augenrules" version="1">
+    <ind:object object_ref="object_64bit_arufm_eaccess_open_by_handle_at_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eaccess_open_by_handle_at_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules 64-bit file eperm" id="test_64bit_arufm_eperm_open_by_handle_at_augenrules" version="1">
+    <ind:object object_ref="object_64bit_arufm_eperm_open_by_handle_at_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eperm_open_by_handle_at_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit file eaccess" id="test_32bit_arufm_eaccess_open_by_handle_at_auditctl" version="1">
+    <ind:object object_ref="object_32bit_arufm_eaccess_open_by_handle_at_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eaccess_open_by_handle_at_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 32-bit file eperm" id="test_32bit_arufm_eperm_open_by_handle_at_auditctl" version="1">
+    <ind:object object_ref="object_32bit_arufm_eperm_open_by_handle_at_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_32bit_arufm_eperm_open_by_handle_at_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit file eaccess" id="test_64bit_arufm_eaccess_open_by_handle_at_auditctl" version="1">
+    <ind:object object_ref="object_64bit_arufm_eaccess_open_by_handle_at_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eaccess_open_by_handle_at_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl 64-bit file eperm" id="test_64bit_arufm_eperm_open_by_handle_at_auditctl" version="1">
+    <ind:object object_ref="object_64bit_arufm_eperm_open_by_handle_at_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_64bit_arufm_eperm_open_by_handle_at_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+open_by_handle_at[\s]+|([\s]+|[,])open_by_handle_at([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,60 @@
+<Profile id="common">
+<title>Common Profile for General-Purpose Ubuntu Systems</title>
+<description>This profile contains items common to general-purpose Ubuntu 1404 installations.</description>
+
+<!-- partitioning -->
+<select idref="partition_for_tmp" selected="true"/>
+<select idref="partition_for_var" selected="true"/>
+<select idref="partition_for_var_log" selected="true"/>
+<select idref="partition_for_var_log_audit" selected="true"/>
+<select idref="partition_for_home" selected="true"/>
+
+<!-- services -->
+<select idref="package_auditd_installed" selected="true"/>
+<select idref="package_cron_installed" selected="true"/>
+<select idref="package_ntp_installed" selected="true"/>
+<select idref="package_rsyslog_installed" selected="true"/>
+
+<select idref="package_telnetd_removed" selected="true"/>
+<select idref="package_inetutils-telnetd_removed" selected="true"/>
+<select idref="package_telnetd-ssl_removed" selected="true"/>
+<select idref="package_nis_removed" selected="true"/>
+<select idref="package_ntpdate_removed" selected="true"/>
+
+<select idref="service_auditd_enabled" selected="true"/>
+<select idref="service_cron_enabled" selected="true"/>
+<select idref="service_ntpd_enabled" selected="true"/>
+<select idref="service_rsyslog_enabled" selected="true"/>
+
+<refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
+
+<!-- SSH SERVER HARDENING (Debian security guide 5.1) -->
+<select idref="sshd_set_idle_timeout" selected="true"/>
+<select idref="sshd_disable_root_login" selected="true" />
+<select idref="sshd_disable_empty_passwords" selected="true" />
+<select idref="sshd_allow_only_protocol2" selected="true" />
+<select idref="sshd_set_keepalive" selected="true" />
+<!-- END OF SSH SERVER HARDENING -->
+
+<!-- System Logging Requirements -->
+<select idref="rsyslog_files_ownership" selected="true" />
+<select idref="rsyslog_files_groupownership" selected="true" />
+<select idref="rsyslog_files_permissions" selected="true" />
+<select idref="rsyslog_remote_loghost" selected="false" />
+<select idref="ensure_logrotate_activated" selected="true" />
+
+<!-- critical files -->
+<select idref="file_permissions_systemmap" selected="true"/>
+
+<select idref="file_permissions_etc_shadow" selected="true"/>
+<select idref="file_permissions_etc_gshadow" selected="true"/>
+<select idref="file_permissions_etc_passwd" selected="true"/>
+<select idref="file_permissions_etc_group" selected="true"/>
+
+<!-- sysctl -->
+<select idref="sysctl_fs_protected_symlinks" selected="true" />
+<select idref="sysctl_fs_protected_hardlinks" selected="true" />
+<select idref="sysctl_fs_suid_dumpable" selected="true" />
+<select idref="sysctl_kernel_randomize_va_space" selected="true" />
+
+</Profile>

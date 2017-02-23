@@ -1,0 +1,95 @@
+<Group id="basics">
+<title>Generic required services</title>
+<description>
+Some services need to be deployed in order to ensure basic verifications and reporting on GNU/Linux operating systems.
+Each of these service take part in the administrability of the system.
+</description>
+
+<Rule id="package_auditd_installed" severity="medium">
+<title>install the auditd service</title>
+<description>
+The auditd service should be installed.
+</description>
+<rationale>
+The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.
+</rationale>
+<ident cce="" />
+<oval id="package_auditd_installed" />
+<ref anssi="NT28(R50)" />
+</Rule>
+
+
+<Rule id="service_auditd_enabled" severity="medium">
+<title>Enable the auditd service</title>
+<description>
+The auditd service should be enabled.
+</description>
+<rationale>
+The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.
+</rationale>
+<ocil>
+  <service-check-macro enable="true" service="auditd" />
+</ocil>
+<ident cce="" />
+<oval id="service_auditd_enabled" />
+<ref anssi="NT28(R50)" nist="AC-17(1),AU-1(b),AU-10,AU-12(a),AU-12(c),IR-5" disa="347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589" pcidss="Req-10" />
+</Rule>
+
+<Rule id="package_cron_installed" severity="medium">
+<title>Install the cron service</title>
+<description>
+The Cron service should be installed.
+</description>
+<rationale>
+The cron service allow periodic job execution, needed for almost all administrative tasks and services (software update, log rotating, etc.). Access to cron service should be restricted to administrative accounts only.
+</rationale>
+<ident cce="" />
+<oval id="package_cron_installed" />
+<ref nist="CM-7" anssi="NT28(R50)" />
+</Rule>
+
+
+<Rule id="service_cron_enabled" severity="medium">
+<title>Enable the cron service</title>
+<description>
+The Cron service should be enabled.
+</description>
+<rationale>
+The cron service allow periodic job execution, needed for almost all administrative tasks and services (software update, log rotating, etc.). Access to cron service should be restricted to administrative accounts only.
+</rationale>
+<ident cce="" />
+<oval id="service_cron_enabled" />
+<ref nist="CM-7" />
+</Rule>
+
+<Rule id="package_ntp_installed" severity="high">
+<title>Install the ntp service</title>
+<description>
+The ntpd service should be installed.
+</description>
+<rationale>
+Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.
+</rationale>
+<ident cce="" />
+<oval id="package_ntp_installed" />
+<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" anssi="NT012(R03)" />
+</Rule>
+
+
+<Rule id="service_ntpd_enabled" severity="high">
+<title>Enable the ntpd service</title>
+<description>
+The ntpd service should be enabled.
+</description>
+<rationale>
+Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.
+</rationale>
+<ocil>
+  <service-check-macro enable="true" service="ntpd" />
+</ocil>
+<ident cce="" />
+<oval id="service_ntpd_enabled" />
+<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" anssi="NT012(R03)" />
+</Rule>
+
+</Group>

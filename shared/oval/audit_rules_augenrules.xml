@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_augenrules" version="1">
+    <metadata>
+      <title>Record Any Attempts to Run semanage</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Test if augenrules is enabled for audit rules.</description>
+    </metadata>
+
+    <criteria>
+      <criterion comment="audit augenrules" test_ref="test_audit_rules_augenrules" />
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_audit_rules_augenrules" version="1">
+    <ind:object object_ref="object_audit_rules_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_augenrules" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

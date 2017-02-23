@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="inventory" id="installed_env_is_a_container" version="2">
+    <metadata>
+      <title>Check if the scan target is a container</title>
+       <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if file /.dockerenv exists, if it does then we consider to be a docker filesystem.</description>
+      <reference ref_id="cpe:/a:container" source="CPE" />
+    </metadata>
+    <criteria>
+      <criterion comment="Check if /.dockerenv exists" test_ref="installed_env_is_a_container" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if /.dockerenv exists" id="installed_env_is_a_container" version="1">
+    <unix:object object_ref="installed_env_is_a_container" />
+  </unix:file_test>
+
+  <unix:file_object comment="Check file /.dockerenv" id="installed_env_is_a_container" version="1">
+    <unix:filepath datatype="string">/.dockerenv</unix:filepath>
+  </unix:file_object>
+</def-group>

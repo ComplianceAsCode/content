@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_system_shutdown" version="1">
+    <metadata>
+      <title>Shutdown System When Auditing Failures Occur</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The system will shutdown when auditing fails.</description>
+    </metadata>
+
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit augenrules configuration shutdown" test_ref="test_ars_shutdown_augenrules" />
+      </criteria>
+
+      <!-- Test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl configuration shutdown" test_ref="test_ars_shutdown_auditctl" />
+      </criteria>
+
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules configuration shutdown" id="test_ars_shutdown_augenrules" version="1">
+    <ind:object object_ref="object_ars_shutdown_augenrules" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ars_shutdown_augenrules" version="1">
+    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-f\s+2\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit auditctl configuration shutdown" id="test_ars_shutdown_auditctl" version="1">
+    <ind:object object_ref="object_ars_shutdown_auditctl" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_ars_shutdown_auditctl" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-f\s+2\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

@@ -1,0 +1,54 @@
+# This file contains variables that are settings for OVAL checks such as 
+# OVAL Schema version, i.e. 5.10, or the operating system version
+# that the OVAL check currently supports, i.e. Red Hat Enterprise Linux 7.
+#
+# As OVAL checks support multiple operating system verions, the use of the
+# multi_platform_ variables allow developers to easily specify the multiple
+# operating system versions supported by a specific OVAL check. For example:
+# 
+#     <platform>Fedora 22</platform>
+#     <platform>Fedora 23</platform>
+#     <platform>Fedora 24</platform>
+# 
+# would be written in the OVAL check as:
+#
+#     <platform>multi_platform_fedora</platform>
+#
+# with the multi_platform_fedora variable set as the following in this file:
+#
+# multi_platform_fedora = 24,23,22
+#
+# Note: this file uses .ini style formatting
+#
+[Platform]
+multi_platform_oval = multi_platform_fedora, multi_platform_rhel, multi_platform_debian, multi_platform_buntu, multi_platform_wrlinux
+multi_platform_fedora = 24,23
+multi_platform_debian = 8
+multi_platform_ubuntu = 1604,1404
+multi_platform_wrlinux = 8
+multi_platform_rhel = 6,7
+multi_platform_openstack = 
+multi_platform_opensuse = 
+multi_platform_rhev = 
+multi_platform_sle = 11,12
+
+#
+# OVAL Schema version
+#
+[Schema Version]
+# The default OVAL content version for RHEL/7, Fedora, Debian/8 and
+# OpenStack/RHEL-OSP/7 products is OVAL-5.10! (To support portion of the
+# benchmark not using OVAL-5.11 language constructs successfully to build also
+# with older oscap versions).
+#
+# But if during building the content we detect underlying oscap version on the
+# system supports OVAL-5.11 language version already, we increase the produced
+# OVAL document version to "5.11". See 'make checks' target in Makefiles for
+# these products for further details.
+rhel7_oval_version = 5.10
+fedora_oval_version = 5.10
+debian8_oval_version = 5.10
+ubuntu1604_oval_version = 5.11
+ubuntu1404_oval_version = 5.10
+wrlinux_oval_version = 5.10
+oval_version = 5.10

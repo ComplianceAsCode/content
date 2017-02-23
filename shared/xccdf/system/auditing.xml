@@ -144,6 +144,7 @@ its activities can be audited. Although <tt>auditd</tt> takes care of enabling
 this for all processes which launch after it does, adding the kernel argument
 ensures it is set for every process during boot.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
 is automatically updated each time a new kernel is installed. Note that any
 changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
@@ -1924,17 +1925,17 @@ of the <tt>semanage</tt> command for all users and root. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
 <pre>$ sudo grep "path=/usr/sbin/semanage" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -1961,17 +1962,17 @@ of the <tt>setsebool</tt> command for all users and root. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
 <pre>$ sudo grep "path=/usr/sbin/setsebool" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -1998,17 +1999,17 @@ of the <tt>chcon</tt> command for all users and root. If the <tt>auditd</tt>
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/chcon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/chcon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
-<pre>$ sudo grep "path=/usr/sbin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+<pre>$ sudo grep "path=/usr/bin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/chcon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -2035,17 +2036,17 @@ of the <tt>restorecon</tt> command for all users and root. If the <tt>auditd</tt
 daemon is configured to use the <tt>augenrules</tt> program to read audit rules
 during daemon startup (the default), add the following lines to a file with suffix
 <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
 utility to read audit rules during daemon startup, add the following lines to
 <tt>/etc/audit/audit.rules</tt> file:
-<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </description>
 <ocil rationale="it does not exist or is not configured correctly">
 To verify that execution of the command is being audited, run the following command:
 <pre>$ sudo grep "path=/usr/sbin/restorecon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
 The output should return something similar to:
-<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F key=privileged-priv_change</pre>
+<pre>-a always,exit -F path=/usr/sbin/restorecon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
 </ocil>
 <rationale>Misuse of privileged functions, either intentionally or unintentionally by
 authorized users, or by unauthorized external entities that have compromised system accounts,
@@ -2170,7 +2171,7 @@ ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-0021
 cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_chkpwd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_unix_chkpwd" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - unix_chkpwd</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2201,7 +2202,7 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 <ident prodtype="rhel7" cce="80396-5" />
-<oval id="audit_rules_privileged_commands_chkpwd" />
+<oval id="audit_rules_privileged_commands_unix_chkpwd" />
 <ref prodtype="rhel7" nist="AU-3(1),AU-12(c)" disa="135,172,2884" stigid="030511"
 ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215"
 cui="3.1.7" />
@@ -3058,6 +3059,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27129-6" />
 <oval id="audit_rules_kernel_module_loading" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
@@ -3083,6 +3085,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80414-6" />
 <oval id="audit_rules_kernel_module_loading_init" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3090,7 +3093,7 @@ ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030670" pcidss
 cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_del" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_delete" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - delete_module</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3109,8 +3112,9 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80415-3" />
-<oval id="audit_rules_kernel_module_loading_del" />
+<oval id="audit_rules_kernel_module_loading_delete" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
 ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" stigid="030671" pcidss="Req-10.2.7" cis="5.2.17"
 cui="3.1.7" />
@@ -3136,6 +3140,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="" />
 <oval id="audit_rules_kernel_module_loading_insmod" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3163,6 +3168,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80416-1" />
 <oval id="audit_rules_kernel_module_loading_rmmod" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
@@ -3190,6 +3196,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80417-9" />
 <oval id="audit_rules_kernel_module_loading_modprobe" />
 <ref prodtype="rhel7" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172"
