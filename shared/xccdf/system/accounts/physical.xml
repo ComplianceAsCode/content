@@ -24,8 +24,8 @@ are set properly.
 
 <Rule id="file_user_owner_grub2_cfg" severity="medium" prodtype="rhel7">
 <title>Verify /boot/grub2/grub.cfg User Ownership</title>
-<description>The file <tt>/boot/grub2/grub.cfg</tt> should 
-be owned by the <tt>root</tt> user to prevent destruction 
+<description>The file <tt>/boot/grub2/grub.cfg</tt> should
+be owned by the <tt>root</tt> user to prevent destruction
 or modification of the file.
 <fileowner-desc-macro file="/boot/grub2/grub.cfg" owner="root"/>
 </description>
@@ -41,8 +41,8 @@ cui="3.4.5" />
 
 <Rule id="file_group_owner_grub2_cfg" severity="medium" prodtype="rhel7">
 <title>Verify /boot/grub2/grub.cfg Group Ownership</title>
-<description>The file <tt>/boot/grub2/grub.cfg</tt> should 
-be group-owned by the <tt>root</tt> group to prevent 
+<description>The file <tt>/boot/grub2/grub.cfg</tt> should
+be group-owned by the <tt>root</tt> group to prevent
 destruction or modification of the file.
 <filegroupowner-desc-macro file="/boot/grub2/grub.cfg" group="root"/>
 </description>
@@ -65,7 +65,7 @@ cui="3.4.5" />
 <ocil clause ="it does not">
 To check the permissions of /boot/grub2/grub.cfg, run the command:
 <pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
-If properly configured, the output should indicate the following 
+If properly configured, the output should indicate the following
 permissions: <tt>-rw-------</tt>
 </ocil>
 <rationale>
@@ -88,21 +88,21 @@ To do so, select a superuser account and password and add them into the
 Since plaintext passwords are a security risk, generate a hash for the pasword
 by running the following command:
 <pre>$ grub2-mkpasswd-pbkdf2</pre>
-When prompted, enter the password that was selected and insert the returned 
+When prompted, enter the password that was selected and insert the returned
 password hash into the <tt>/etc/grub.d/01_users</tt> configuration file
 immediately after the superuser account.
-(Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of 
+(Use the output from <tt>grub2-mkpasswd-pbkdf2</tt> as the value of
 <b>password-hash</b>):
 <pre>password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
 NOTE: It is recommended not to use common administrator account names like root,
-admin, or administrator for the grub2 superuser account. 
+admin, or administrator for the grub2 superuser account.
 <br /><br />
-To meet FISMA Moderate, the bootloader superuser account and password MUST 
+To meet FISMA Moderate, the bootloader superuser account and password MUST
 differ from the root account and password.
-Once the superuser account and password have been added, update the 
+Once the superuser account and password have been added, update the
 <tt>grub.cfg</tt> file by running:
 <pre>grub2-mkconfig -o /boot/grub2/grub.cfg</pre>
-NOTE: Do NOT manually add the superuser account and password to the 
+NOTE: Do NOT manually add the superuser account and password to the
 <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 </description>
 <ocil clause="it does not">
@@ -117,8 +117,8 @@ password_pbkdf2 <b>superusers-account</b> <b>password-hash</b></pre>
 Password protection on the boot loader configuration ensures
 users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
-and whether to enter single-user mode. For more information on how to configure 
-the grub2 superuser account and password, please refer to 
+and whether to enter single-user mode. For more information on how to configure
+the grub2 superuser account and password, please refer to
 <ul>
 <li><weblink-macro link="https://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-GRUB_2_Password_Protection.html"/></li>.
 </ul>
@@ -126,7 +126,7 @@ the grub2 superuser account and password, please refer to
 <ident prodtype="rhel7" cce="27309-4" />
 <oval id="bootloader_password" />
 <ref prodtype="rhel7" nist="IA-2(1),IA-5(e),AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048" 
-stigid="010460" cis="1.5.3" cui="3.4.5" />
+stigid="010480" cis="1.5.3" cui="3.4.5" />
 </Rule>
 
 <Rule id="bootloader_uefi_password" severity="medium" prodtype="rhel7">
@@ -178,7 +178,7 @@ the grub2 superuser account and password, please refer to
 <ident prodtype="rhel7" cce="80354-4" />
 <oval id="bootloader_uefi_password" />
 <ref prodtype="rhel7" nist="AC-3" disa="213" ossrg="SRG-OS-000080-GPOS-00048" 
-stigid="010470" cui="3.4.5" />
+stigid="010490" cui="3.4.5" />
 </Rule>
 
 </Group>
@@ -273,7 +273,7 @@ the non-graphical <tt>multi-user.target</tt> mode.
 <oval id="disable_ctrlaltdel_reboot" />
 <ident prodtype="rhel7" cce="27511-5" />
 <ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" 
-stigid="020220" cui="3.4.5" />
+stigid="020230" cui="3.4.5" />
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium" prodtype="rhel7">
@@ -350,13 +350,13 @@ A session time-out lock is a temporary action taken when a user stops work and m
 physical vicinity of the information system but des not logout because of the temporary nature of the absence.
 Rather than relying on the user to manually lock their operation system session prior to vacating the vicinity,
 operating systems need to be able to identify when a user's session has idled and take action to initiate the
-session lock. 
+session lock.
 <br /><br />
 The <tt>screen</tt> package allows for a session lock to be implemented and configured.
 </rationale>
 <ident prodtype="rhel7" cce="27351-6" />
 <oval id="package_screen_installed" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010072" 
+<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010090"
 cui="3.1.10" />
 </Rule>
 </Group>
@@ -384,7 +384,7 @@ For guidance on enabling SSH to authenticate against a Common Access Card (CAC),
 </description>
 <ocil clause="non-exempt accounts are not using CAC authentication">
 Interview the SA to determine if all accounts not exempted by policy are
-using CAC authentication. 
+using CAC authentication.
 For DoD systems, the following systems and accounts are exempt from using
 smart card (CAC) authentication:
 <ul>
