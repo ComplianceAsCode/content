@@ -1,12 +1,17 @@
 #!/usr/bin/python3
-import glob
-import os
-import re
-
 """
 	One-shot script, should be removed
 	Run it from root repo directory
 """
+
+import glob
+import os
+import re
+import sys
+
+# Put shared python modules in path
+sys.path.append("shared/modules/")
+from map_product_module import map_product, parse_product_name, multi_product_list
 
 # Stop if not in root
 if not os.path.isfile("shared/utils/combine-templates.py"):
@@ -74,10 +79,14 @@ def get_target_for_template(template_path):
 
 def generate_header(product_path, template_file):
 	header  = "#" * 80 + "\n"
-	header += "# product: " + product_path[2:] + "\n"
+#	header += "# product: " + product_path[2:] + "\n"
 	header += "# oval-version: " + oval_version_of_filename(template_file) + "\n"
-	header += "#" * 80 + "\n"
 	return header
+
+def add_shared_platform(cnt):
+	cnt = re.sub(">(.*?)<platform", r'>\1<platform>shared</platform>\n\1<platform',cnt)
+	cnt = re.sub(r'\s*#\s*platform\s*=\s*', r'# platform = shared, ',cnt)
+	return cnt
 
 def move_template(product_path, template_file, target_file):
 
@@ -87,6 +96,8 @@ def move_template(product_path, template_file, target_file):
 	# read old template
 	with open(template_file, 'r') as content_file:
 		previous_content = content_file.read()
+		#if "shared" in product_path:
+		previous_content = add_shared_platform(previous_content)
 
 	# remove old template
 	os.remove(template_file)
@@ -97,9 +108,19 @@ def move_template(product_path, template_file, target_file):
 		f.write(previous_content)
 		f.write("\n\n\n")
 
+def get_product_name_from_path(path):
+	with open(os.path.join(path, "Makefile"),"r") as f:
+		name = re.search(r'PROD\s*=\s*(.*)',f.read()).group(1)
+		name,version=parse_product_name(name)
+		if version is None:
+			return name
+		else:
+			return name + " " + version
+
 
 for product_path in products:
 	for template_path in get_templates_path(product_path):
+		
 		template_target = get_target_for_template(template_path)
 		print(template_path + " => " + template_target)
 		move_template(product_path, template_path, template_target)
