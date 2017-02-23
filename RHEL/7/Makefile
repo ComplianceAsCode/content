@@ -157,5 +157,5 @@ dist: tables guide content
 
 clean:
 	rm -rf $(OUT)/*
-	rm -rf $(DIST)/content $(DIST)/guide
+	rm -rf $(DIST)/content $(DIST)/guide $(DIST)/tables
 	rm -rf $(BUILD)

@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="audit_uses_augen" version="1">
+    <metadata>
+      <title>Audit configured to use augen rulesets</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Evaluate if the audit system is configured to use augen rulesets.</description> 
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Evauate if audit configured to use augen" test_ref="test_audit_uses_augen" />
+    </criteria>
+  </definition>
+
+  <!-- Test the augenrules case -->
+  <ind:textfilecontent54_test check="all" comment="audit augenrules" id="test_audit_uses_augen" version="1">
+    <ind:object object_ref="object_audit_uses_augen" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_uses_augen" version="1">
+    <ind:filepath>/usr/lib/systemd/system/auditd.service</ind:filepath>
+    <ind:pattern operation="pattern match">^ExecStartPost=\-\/sbin\/augenrules.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
