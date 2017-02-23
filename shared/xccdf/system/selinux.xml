@@ -87,6 +87,7 @@ potentially compromised processes to the security policy, which is designed to
 prevent them from causing damage to the system or further elevating their
 privileges.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27334-2" />
 <oval id="selinux_state" value="var_selinux_state"/>
 <ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2165,2696" cis="1.4.2"
@@ -119,6 +120,7 @@ temporary cases, SELinux policies should be developed, and once work
 is completed, the system should be reconfigured to
 <tt><sub idref="var_selinux_policy_name" /></tt>.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27279-9" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
 <ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2696" cis="1.4.3"
@@ -172,6 +174,7 @@ It should produce no output in a well-configured system.
 Daemons which run with the <tt>initrc_t</tt> context may cause AVC denials,
 or allow privileges that the daemon does not require.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <oval id="selinux_confinement_of_daemons" />
 <ref prodtype="rhel7" nist="AC-6,AU-9,CM-7" cis="1.4.6" cui="3.1.2, 3.1.5" />
 <ident prodtype="rhel7" cce="27288-0" />
