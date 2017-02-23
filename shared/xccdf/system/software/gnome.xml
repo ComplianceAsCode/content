@@ -79,7 +79,7 @@ system security.
 </rationale>
 <ident prodtype="rhel7" cce="80104-3" />
 <oval id="gnome_gdm_disable_automatic_login" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010430"
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010440"
 cui="3.1.1" />
 </Rule>
 
@@ -106,7 +106,7 @@ system security.
 </rationale>
 <ident prodtype="rhel7" cce="80105-0" />
 <oval id="gnome_gdm_disable_guest_login" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010431"
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010450"
 cui="3.1.1" />
 </Rule>
 
@@ -296,7 +296,7 @@ and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user mod
 For example, to configure the system for a 15 minute delay, add the following to
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>:
 <pre>[org/gnome/desktop/session]
-idle-delay=900</pre>
+idle-delay='uint32 900'</pre>
 Once the setting has been added, add a lock to
 <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
 For example:
@@ -352,7 +352,7 @@ physical vicinity of the information system but does not logout because of the t
 Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
 GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
 session lock.
-
+<br/><br/>
 Enabling idle activation of the screensaver ensures the screensaver will
 be activated after the idle delay.  Applications requiring continuous,
 real-time screen display (such as network management products) require the
@@ -361,7 +361,7 @@ controlled-access area.
 </rationale>
 <ident prodtype="rhel7" cce="80111-8" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010073" pcidss="Req-8.1.8"
+<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010100" pcidss="Req-8.1.8"
 cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
@@ -430,7 +430,7 @@ of the information system but does not want to logout because of the temporary n
 <ident prodtype="rhel7" cce="80370-0" />
 <oval id="dconf_gnome_screensaver_lock_delay" />
 <ref prodtype="rhel7" nist="AC-11(a)" disa="56" pcidss="Req-8.1.8"
-ossrg="OS-SRG-000029-GPOS-00010" stigid="010074" cui="3.1.10" />
+ossrg="OS-SRG-000029-GPOS-00010" stigid="010110" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_mode_blank" prodtype="rhel7">
@@ -525,7 +525,7 @@ session lock. As such, users should not be allowed to change session settings.
 <ident prodtype="rhel7" cce="80371-8" />
 <oval id="dconf_gnome_session_user_locks" />
 <ref prodtype="rhel7" nist="AC-11(a)" disa="57"
-ossrg="SRG-OS-00029-GPOS-0010" stigid="010071" cui="3.1.10"/>
+ossrg="SRG-OS-00029-GPOS-0010" stigid="010081" cui="3.1.10"/>
 </Rule>
 
 </Group>

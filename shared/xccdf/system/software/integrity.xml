@@ -129,7 +129,7 @@ monitoring system trap when there is an unauthorized modification of a configura
 <ident prodtype="rhel7" cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
 <ref prodtype="rhel7" nist="CM-3(d),CM-3(e),CM-3(5),CM-6(d),CM-6(3),SC-28,SI-7" disa="1744" pcidss="Req-11.5" cis="1.3.1"
-ossrg="SRG-OS-000363-GPOS-00150" stigid="020130" cjis="5.10.1.3" />
+ossrg="SRG-OS-000363-GPOS-00150" stigid="020030" cjis="5.10.1.3" />
 </Rule>
 
 <Rule id="aide_scan_notification" severity="medium" prodtype="rhel7">
@@ -164,7 +164,7 @@ monitoring system trap when there is an unauthorized modification of a configura
 <ident prodtype="rhel7" cce="80374-2" />
 <oval id="aide_scan_notification"/>
 <ref prodtype="rhel7" nist="CM-3(5)" disa="1744"
-ossrg="SRG-OS-000363-GPOS-00150" stigid="020140" />
+ossrg="SRG-OS-000363-GPOS-00150" stigid="020040" />
 </Rule>
 
 <Rule id="aide_verify_acls" severity="medium" prodtype="rhel7">
@@ -480,7 +480,7 @@ SELinux takes precedence over this module.</warning>
 <oval id="install_mcafee_hbss_hips" />
 <ident prodtype="rhel7" cce="80368-4" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-ossrg="STG-OS-000480-GPOS-00227" stigid="TBD"/>
+ossrg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="install_mcafee_hbss_accm" severity="medium" prodtype="rhel7">
@@ -501,7 +501,7 @@ intrusion attempts.
 <oval id="install_mcafee_hbss_accm" />
 <ident prodtype="rhel7" cce="80126-6" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-ossrg="STG-OS-000480-GPOS-00227" stigid="030790" />
+ossrg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="install_mcafee_hbss_pa" severity="medium" prodtype="rhel7">
@@ -522,7 +522,7 @@ intrusion attempts.
 <oval id="install_mcafee_hbss_pa" />
 <ident prodtype="rhel7" cce="80369-2" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-ossrg="STG-OS-000480-GPOS-00227" stigid="TBD" />
+ossrg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -547,7 +547,7 @@ computer viruses, as well as to limit their spread to other systems.
 <oval id="install_mcafee_antivirus" />
 <ident prodtype="rhel7" cce="80127-4" />
 <ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="030810" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="032000" />
 </Rule>
 
 <Rule id="service_nails_enabled" severity="medium" prodtype="rhel7">
@@ -564,7 +564,7 @@ computer viruses, as well as to limit their spread to other systems.
 <oval id="service_nails_enabled" />
 <ident prodtype="rhel7" cce="80128-2" />
 <ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" />
+ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="mcafee_antivirus_definitions_updated" severity="medium" prodtype="rhel7">
@@ -584,7 +584,7 @@ computer viruses, as well as to limit their spread to other systems.
 <!--oval id="mcafee_antivirus_definitions_updated" /-->
 <ident prodtype="rhel7" cce="80129-0" />
 <ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="030820" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="032010" />
 </Rule>
 
 </Group>
@@ -625,7 +625,7 @@ and validated.
 </rationale>
 <ident prodtype="rhel7" cce="80358-5" />
 <oval id="package_dracut-fips_installed" />
-<ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450" stigid="TBD"
+<ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450"
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" cjis="5.10.1.2"
 cui="3.13.11" />
 </Rule>
@@ -671,7 +671,7 @@ See <b><weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1
 vendors.</warning>
 <ident prodtype="rhel7" cce="80359-3" />
 <oval id="grub2_enable_fips_mode" />
-<ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450" stigid="021280"
+<ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450" stigid="021350"
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223"
 cjis="5.10.1.2" cui="3.13.11" />
 </Rule>
@@ -712,7 +712,7 @@ the system software as well as meet government certifications.
 </rationale>
 <ident prodtype="rhel7" cce="80349-4" />
 <oval id="installed_OS_is_certified" />
-<ref prodtype="rhel7" nist="SI-2(c)" disa="366" stigid="020240" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref prodtype="rhel7" nist="SI-2(c)" disa="366" stigid="020250" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 

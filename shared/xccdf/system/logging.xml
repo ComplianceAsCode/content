@@ -202,7 +202,7 @@ facility by unauthorized and malicious users.
 </rationale>
 <ident prodtype="rhel7" cce="80380-9" />
 <oval id="rsyslog_cron_logging" />
-<ref prodtype="rhel7" nist="AU-2(d)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021160" />
+<ref prodtype="rhel7" nist="AU-2(d)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021100" />
 </Rule>
 
 </Group>
@@ -241,8 +241,8 @@ Along with these other directives, the system can be configured
 to forward its logs to a particular log server by
 adding or correcting one of the following lines,
 substituting <tt><i>loghost.example.com</i></tt> appropriately.
-The choice of protocol depends on the environment of the system; 
-although TCP and RELP provide more reliable message delivery, 
+The choice of protocol depends on the environment of the system;
+although TCP and RELP provide more reliable message delivery,
 they may not be supported in all environments.
 <br/>
 To use UDP for log message delivery:
@@ -273,7 +273,7 @@ place to view the status of multiple hosts within the enterprise.
 <ident prodtype="rhel7" cce="27343-3" />
 <oval id="rsyslog_remote_loghost" />
 <ref prodtype="rhel7" nist="AU-3(2),AU-4(1),AU-9" disa="366,1348,136,1851" cis="5.1.5"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="030770" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="031000" />
 </Rule>
 </Group>
 
@@ -310,7 +310,7 @@ rsyslog by configuring it not to listen on the network.
 <ident prodtype="rhel7" cce="80192-8" />
 <oval id="rsyslog_nolisten" />
 <ref prodtype="rhel7" nist="AU-9(2),AC-4,CM-6(c)" disa="318,368,1812,1813,1814"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="030780"/>
+ossrg="SRG-OS-000480-GPOS-00227" stigid="031010"/>
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_tcp" prodtype="rhel7">
