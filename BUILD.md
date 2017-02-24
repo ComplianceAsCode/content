@@ -42,9 +42,9 @@
     `$ cd scap-security-guide/`
     `$ cd build/`
     `$ cmake ../`
-    `$ make -j4 rhel6-content  # SCAP XML files for RHEL6
-    `$ make -j4 rhel6-guides  # HTML guides for RHEL6
-    `$ make -j4 rhel6-tables  # HTML tables for RHEL6
+    `$ make -j4 rhel6-content  # SCAP XML files for RHEL6`
+    `$ make -j4 rhel6-guides  # HTML guides for RHEL6`
+    `$ make -j4 rhel6-tables  # HTML tables for RHEL6`
     `$ make -j4 rhel6  # everything above for RHEL6`
 
   * Configure options before building
