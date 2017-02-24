@@ -630,8 +630,10 @@ macro(ssg_build_product PRODUCT)
     endif()
     ssg_build_sds(${PRODUCT})
 
+    add_custom_target(${PRODUCT} ALL)
+
     add_custom_target(
-        ${PRODUCT} ALL
+        ${PRODUCT}-content
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS generate-ssg-${PRODUCT}-oval.xml
@@ -639,6 +641,8 @@ macro(ssg_build_product PRODUCT)
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
     )
+    add_dependencies(${PRODUCT} ${PRODUCT}-content)
+
     add_custom_target(
         ${PRODUCT}-validate
         DEPENDS validate-ssg-${PRODUCT}-xccdf.xml
