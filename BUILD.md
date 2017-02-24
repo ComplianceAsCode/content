@@ -30,19 +30,29 @@
     `$ cmake ../`
     `$ make -j4`
 
-  * To build content only for a specific distribution:
+  * To build everything only for one specific product:
 
     `$ cd scap-security-guide/`
     `$ cd build/`
     `$ cmake ../`
     `$ make -j4 rhel6`
 
+  * Other targets only for one specific product:
+
+    `$ cd scap-security-guide/`
+    `$ cd build/`
+    `$ cmake ../`
+    `$ make -j4 rhel6-content  # SCAP XML files for RHEL6`
+    `$ make -j4 rhel6-guides  # HTML guides for RHEL6`
+    `$ make -j4 rhel6-tables  # HTML tables for RHEL6`
+    `$ make -j4 rhel6  # everything above for RHEL6`
+
   * Configure options before building
 
     `$ cd scap-security-guide/`
     `$ cd build/`
     `$ cmake-gui ../`
-    `$ make -j4 rhel6`
+    `$ make -j4`
 
   * Using the ninja-build system (requires ninja-build on the system)
     `$ cd scap-security-guide/`

@@ -65,14 +65,14 @@ macro(ssg_build_guide_xml PRODUCT)
             COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/guide.xml" "${SSG_SHARED_TRANSFORMS}/includelogo.xslt" "${SSG_SHARED}/xccdf/shared_guide.xml"
             MAIN_DEPENDENCY "${SSG_SHARED}/xccdf/shared_guide.xml"
             DEPENDS "${SSG_SHARED_TRANSFORMS}/includelogo.xslt"
-            COMMENT "[${PRODUCT}] generating guide.xml (SVG logo enabled)"
+            COMMENT "[${PRODUCT}-content] generating guide.xml (SVG logo enabled)"
         )
     else()
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
             COMMAND "${CMAKE_COMMAND}" -E copy "${SSG_SHARED}/xccdf/shared_guide.xml" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
             MAIN_DEPENDENCY "${SSG_SHARED}/xccdf/shared_guide.xml"
-            COMMENT "[${PRODUCT}] generating guide.xml (SVG logo disabled)"
+            COMMENT "[${PRODUCT}-content] generating guide.xml (SVG logo disabled)"
         )
     endif()
 
@@ -97,7 +97,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS ${AUXILIARY_DEPS}
         DEPENDS ${PROFILE_DEPS}
         DEPENDS ${XCCDF_RULE_DEPS}
-        COMMENT "[${PRODUCT}] generating shorthand.xml"
+        COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-shorthand.xml
@@ -115,7 +115,7 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/constants.xslt"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_constants.xslt"
-        COMMENT "[${PRODUCT}] generating xccdf-unlinked-resolved.xml"
+        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-resolved.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
@@ -131,7 +131,7 @@ macro(ssg_build_ocil_unlinked PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt"
-        COMMENT "[${PRODUCT}] generating ocil-unlinked.xml"
+        COMMENT "[${PRODUCT}-content] generating ocil-unlinked.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-ocil-unlinked.xml
@@ -146,7 +146,7 @@ macro(ssg_build_ocil_unlinked PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-ocil-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-ocilcheck2ref.xslt"
-        COMMENT "[${PRODUCT}] generating xccdf-unlinked-ocilrefs.xml"
+        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked-ocilrefs.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
@@ -195,7 +195,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         DEPENDS ${EXTRA_SHARED_LANGUAGE_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
-        COMMENT "[${PRODUCT}] generating ${LANGUAGE}-remediations.xml"
+        COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-remediations.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-${LANGUAGE}-remediations.xml
@@ -230,7 +230,7 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-anaconda-remediations.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt"
-        COMMENT "[${PRODUCT}] generating xccdf-unlinked.xml"
+        COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-xccdf-unlinked.xml
@@ -293,7 +293,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
             DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
             VERBATIM
-            COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
+            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
         )
     else()
         add_custom_command(
@@ -311,7 +311,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
             DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
             VERBATIM
-            COMMENT "[${PRODUCT}] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
+            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
         )
     endif()
     add_custom_target(
@@ -335,7 +335,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS "${SSG_SHARED_UTILS}/cpe-generate.py"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
+        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
@@ -381,7 +381,7 @@ macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-ocil-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         DEPENDS "${SSG_SHARED_UTILS}/relabel-ids.py"
-        COMMENT "[${PRODUCT}] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
+        COMMENT "[${PRODUCT}-content] linking IDs, generating xccdf-linked.xml, oval-linked.xml, ocil-linked.xml"
     )
     add_custom_target(
         generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
@@ -406,7 +406,7 @@ macro(ssg_build_xccdf_final PRODUCT)
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-removeaux.xslt"
         DEPENDS "${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf.xml"
+        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-xccdf.xml
@@ -433,7 +433,7 @@ macro(ssg_build_xccdf_final PRODUCT)
         COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam reverse_DNS "org.${SSG_VENDOR}.content" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "/usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-xccdf-1.2.xml"
+        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf-1.2.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-xccdf-1.2.xml
@@ -460,7 +460,7 @@ macro(ssg_build_oval_final PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-oval.xml"
+        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-oval.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-oval.xml
@@ -487,7 +487,7 @@ macro(ssg_build_ocil_final PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ocil-linked.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-        COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ocil.xml"
+        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ocil.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-ocil.xml
@@ -513,7 +513,7 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
         COMMAND "${SSG_SHARED_TRANSFORMS}/pcidss/transform_benchmark_to_pcidss.py" "${SSG_SHARED_TRANSFORMS}/pcidss/PCI_DSS.json" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-        COMMENT "[${PRODUCT}] building ssg-${PRODUCT}-pcidss-xccdf-1.2.xml from ssg-${PRODUCT}-xccdf-1.2.xml (PCI-DSS centered benchmark)"
+        COMMENT "[${PRODUCT}-content] building ssg-${PRODUCT}-pcidss-xccdf-1.2.xml from ssg-${PRODUCT}-xccdf-1.2.xml (PCI-DSS centered benchmark)"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
@@ -557,7 +557,7 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
             DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-            COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml"
         )
     else()
         add_custom_command(
@@ -579,7 +579,7 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
             DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-            COMMENT "[${PRODUCT}] generating ssg-${PRODUCT}-ds.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml"
         )
     endif()
     add_custom_target(
@@ -632,8 +632,10 @@ macro(ssg_build_product PRODUCT)
     endif()
     ssg_build_sds(${PRODUCT})
 
+    add_custom_target(${PRODUCT} ALL)
+
     add_custom_target(
-        ${PRODUCT} ALL
+        ${PRODUCT}-content
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS generate-ssg-${PRODUCT}-oval.xml
@@ -641,6 +643,8 @@ macro(ssg_build_product PRODUCT)
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
     )
+    add_dependencies(${PRODUCT} ${PRODUCT}-content)
+
     add_custom_target(
         ${PRODUCT}-validate
         DEPENDS validate-ssg-${PRODUCT}-xccdf.xml
@@ -656,14 +660,16 @@ macro(ssg_build_product PRODUCT)
     ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
-        ${PRODUCT}-guides ALL
+        ${PRODUCT}-guides
         DEPENDS generate-ssg-${PRODUCT}-guide-index.html
     )
+    add_dependencies(${PRODUCT} ${PRODUCT}-guides)
 
     add_custom_target(
-        ${PRODUCT}-tables ALL
+        ${PRODUCT}-tables
         # dependencies are added later using add_dependency
     )
+    add_dependencies(${PRODUCT} ${PRODUCT}-tables)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
@@ -696,7 +702,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS generate-ssg-${ORIGINAL}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml"
         DEPENDS "${SSG_SHARED_UTILS}/enable-derivatives.py"
-        COMMENT "[${DERIVATIVE}] generating ssg-${DERIVATIVE}-xccdf.xml"
+        COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-xccdf.xml"
     )
     add_custom_target(
         generate-ssg-${DERIVATIVE}-xccdf.xml
@@ -721,7 +727,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS generate-ssg-${ORIGINAL}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml"
         DEPENDS "${SSG_SHARED_UTILS}/enable-derivatives.py"
-        COMMENT "[${DERIVATIVE}] generating ssg-${DERIVATIVE}-ds.xml"
+        COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds.xml"
     )
     add_custom_target(
         generate-ssg-${DERIVATIVE}-ds.xml
