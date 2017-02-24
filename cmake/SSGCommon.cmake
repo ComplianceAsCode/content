@@ -654,9 +654,10 @@ macro(ssg_build_product PRODUCT)
     ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
-        ${PRODUCT}-guides ALL
+        ${PRODUCT}-guides
         DEPENDS generate-ssg-${PRODUCT}-guide-index.html
     )
+    add_dependencies(${PRODUCT} ${PRODUCT}-guides)
 
     add_custom_target(
         ${PRODUCT}-tables ALL
