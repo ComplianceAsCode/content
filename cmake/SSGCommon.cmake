@@ -660,9 +660,10 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(${PRODUCT} ${PRODUCT}-guides)
 
     add_custom_target(
-        ${PRODUCT}-tables ALL
+        ${PRODUCT}-tables
         # dependencies are added later using add_dependency
     )
+    add_dependencies(${PRODUCT} ${PRODUCT}-tables)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
