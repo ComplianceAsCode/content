@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="sshd_use_approved_macs" version="1">
+    <metadata>
+      <title>Use Only FIPS MACs</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Limit the Message Authentication Codes (MACs) to those which are FIPS-approved.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is certified" definition_ref="installed_OS_is_certified" />
+      <criteria comment="SSH is not being used or conditions are met"
+      operator="OR">
+        <extend_definition comment="sshd service is disabled"
+        definition_ref="service_sshd_disabled" />
+        <criterion comment="Check MACs in /etc/ssh/sshd_config"
+        test_ref="test_sshd_use_approved_macs" />
+      </criteria>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of MACs setting in the /etc/ssh/sshd_config file"
+  id="test_sshd_use_approved_macs" version="1">
+    <ind:object object_ref="obj_sshd_use_approved_macs" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_sshd_use_approved_macs" version="1">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
