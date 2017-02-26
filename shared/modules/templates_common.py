@@ -7,8 +7,8 @@ import sys
 import os
 import re
 
-EXIT_NO_TEMPLATE    = 2
-EXIT_UNKNOWN_TARGET = 3
+EXIT_NO_TEMPLATE    = 130+2
+EXIT_UNKNOWN_TARGET = 130+3
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
@@ -241,6 +241,8 @@ class FilesGenerator(object):
         self.__generate_for_csv(csv_filename, language)
 
         if self._target_type!= TargetType.BUILD:
+            self.register_file(os.path.abspath(__file__))
+            self.register_file(os.path.abspath(self._current_script))
             for file in set(self._result_list):
                 print(file)
         sys.exit(0)

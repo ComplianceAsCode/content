@@ -138,6 +138,9 @@ class Builder(object):
             if not file_.endswith(".csv"):
                 continue
 
+            if not "packages_removed" in file_:# todo remove
+                continue
+
             # skip empty files
             filepath = os.path.join(dir_, file_)
             if os.stat(filepath).st_size == 0:
@@ -150,8 +153,8 @@ class Builder(object):
     def _get_script_for_csv(self, csv_filename):
         try:
             template_dir = self.script_dict[csv_filename]
-            full_path = os.path.join(self.shared_templates_dir, template_dir,"create.python")
-            return full_path
+            full_path = os.path.join(self.shared_templates_dir, template_dir,"generate.py")
+            return os.path.abspath(full_path)
 
         except KeyError:
             sys.stderr.write(
@@ -166,28 +169,31 @@ class Builder(object):
     def _run_script(self, script, csv_filepath):
 
         for lang in self.langs:
-            sp = subprocess.Popen(
-                ["python", script, lang, csv_filepath],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
+            sp = self._create_subprocess(["python", script, lang, csv_filepath])
             self._subprocess_check(sp)
 
     def _read_io_files_list(self, script, csv, lang, gen_input):
-        sp = subprocess.Popen(
-                ["python", script, lang, csv],
+        sp = self._create_subprocess(["python", script, lang, csv])
+        return self._get_list_from_subprocess(sp)
+
+    def _create_subprocess(self, args):
+        sys.stderr.write(" ".join(args)+"\n")
+        return subprocess.Popen(
+                args,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE
         )
-        return self._get_list_from_subprocess(sp)
-
     def _subprocess_check(self, subprocess):
         subprocess.wait()
-        if subprocess.returncode in [0, 2, 3]:
+        if subprocess.returncode in [0, 130+2, 130+3]:
             pass
         else:
+            comm = subprocess.communicate()
             raise RuntimeError("Process returned: %s"
-                               % (subprocess.communicate()[1].decode("utf-8")))
+                               % (
+                                   comm[0].decode("utf-8") +
+                                   comm[1].decode("utf-8")
+                                  ))
 
     def _get_list_from_subprocess(self, subprocess):
         self._subprocess_check(subprocess)

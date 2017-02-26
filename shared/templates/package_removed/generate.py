@@ -7,8 +7,7 @@
 import sys
 import os
 
-#modules_path = os.path.join(os.path.dirname(__file__),"..","..","modules")
-modules_path = os.path.join(os.path.dirname(__file__),"..","modules")
+modules_path = os.path.join(os.path.dirname(__file__),"..","..","modules")
 sys.path.append(modules_path)
 from templates_common import FilesGenerator, UnknownTargetError
 
