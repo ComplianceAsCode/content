@@ -4,6 +4,7 @@ import sys
 import re
 
 from template_common import *
+from load import *
 
 def is_ipv6_id(var_id):
     return var_id.find("ipv6") >= 0
