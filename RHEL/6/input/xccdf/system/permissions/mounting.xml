@@ -29,6 +29,7 @@ module, but will not prevent an administrator (or another program) from using th
 </ocil>
 <rationale>USB storage devices such as thumb drives can be used to introduce
 malicious software.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27016-5" stig="RHEL-06-000503" />
 <oval id="kernel_module_usb-storage_disabled" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
@@ -48,6 +49,7 @@ infeasible for systems which require USB devices, which is common.</i></descript
 protect against potentially malicious USB devices, although it is only practical
 in specialized systems.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27011-6" />
 <oval id="bootloader_nousb_argument" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
@@ -61,6 +63,7 @@ systems) to disallow booting from USB drives.
 <rationale>Booting a system from a USB device would allow an attacker to
 circumvent any security measures provided by the operating system. Attackers
 could mount partitions and modify the configuration of the OS.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
 <ident cce="26923-3" />
 </Rule>
@@ -78,6 +81,7 @@ a data center or Sensitive Compartmented Information Facility (SCIF), this risk 
 against the risk of administrative personnel being unable to conduct recovery operations in
 a timely fashion.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27131-2" />
 </Rule>
 
@@ -112,6 +116,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26340-0" />
 <oval id="kernel_module_cramfs_disabled" />
 <ref nist="CM-7" />
@@ -125,6 +130,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26544-7" />
 <oval id="kernel_module_freevxfs_disabled" />
 <ref nist="CM-7" />
@@ -138,6 +144,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26670-0" />
 <oval id="kernel_module_jffs2_disabled" />
 <ref nist="CM-7" />
@@ -151,6 +158,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26800-3" />
 <oval id="kernel_module_hfs_disabled" />
 <ref nist="CM-7" />
@@ -164,6 +172,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26361-6" />
 <oval id="kernel_module_hfsplus_disabled" />
 <ref nist="CM-7" />
@@ -177,6 +186,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26404-4" />
 <oval id="kernel_module_squashfs_disabled" />
 <ref nist="CM-7" />
@@ -190,6 +200,7 @@ This effectively prevents usage of this uncommon filesystem.
 </description>
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26677-5" />
 <oval id="kernel_module_udf_disabled" />
 <ref nist="CM-7" />
