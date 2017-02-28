@@ -15,11 +15,11 @@
   shell: mount |grep ' MOUNTPOINT ' | cut -d ' ' -f 5
   register: device_fstype
 
-- name: Ensure permission MOUNTFLAGS are set on MOUNTPOINT
+- name: Ensure permission MOUNTOPTIONS are set on MOUNTPOINT
   mount:
     path: "MOUNTPOINT"
     src: "{{device_name.stdout}}"
-    opts: "{{device_cur_mountflags.stdout}},MOUNTFLAG"
+    opts: "{{device_cur_mountflags.stdout}},MOUNTOPTION"
     state: "mounted"
     fstype: "{{device_fstype.stdout}}"
 

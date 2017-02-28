@@ -13,8 +13,8 @@ from template_common import *
 
 def output_checkfile(target, path_info):
     # the csv file contains lines that match the following layout:
-    #    mount_point,flag,[flag]+
-    # first col is the mount point, others are flags, at least one
+    #    mount_point,option,[option]+
+    # first col is the mount point, others are options, at least one
     mount_infos = list()
     mount_infos = path_info
     mount_point = mount_infos[0]
@@ -22,41 +22,41 @@ def output_checkfile(target, path_info):
     # build a string out of the path that is suitable for use in id tags
     # example:	/var/log --> _var_log
     point_id = re.sub('[-\./]', '_', mount_point)
-    for flag in mount_infos[1:]:
-        flag_id = re.sub('[-\./ ]', '_', flag)
+    for option in mount_infos[1:]:
+        option_id = re.sub('[-\./ ]', '_', option)
 
         if target == "ansible":
             file_from_template(
                 "./template_ANSIBLE_mount_options",
                 {
                     "MOUNTPOINT":       mount_point,
-                    "MOUNTFLAG":       re.sub(' ', ',', flag),
+                    "MOUNTOPTION":       re.sub(' ', ',', option),
                 },
-                "./ansible/mount_options{0}.yml", point_id + '_' + flag_id
+                "./ansible/mount_options{0}.yml", point_id + '_' + option_id
             )
 
         elif target == "oval":
             # we are ready to create the check
             # open the template and perform the conversions
-            flag_str = ""
+            option_str = ""
             state_str = ""
-            #for flag in mount_flags.split():
-            state_str = "    <linux:state state_ref=\"object" + point_id + "_" +  flag_id + "\" />\n"
-            flag_str = "  <linux:partition_state id=\"object" + point_id + "_" + flag_id + "\" version=\"1\">\n\
-    <linux:mount_options datatype=\"string\" entity_check=\"at least one\" operation=\"equals\">" + flag + "</linux:mount_options>\n\
+            #for option in mount_options.split():
+            state_str = "    <linux:state state_ref=\"object" + point_id + "_" +  option_id + "\" />\n"
+            option_str = "  <linux:partition_state id=\"object" + point_id + "_" + option_id + "\" version=\"1\">\n\
+    <linux:mount_options datatype=\"string\" entity_check=\"at least one\" operation=\"equals\">" + option + "</linux:mount_options>\n\
   </linux:partition_state>\n"
 
             file_from_template(
                 "./template_mount_options",
                 {
                     "MOUNTPOINT":       mount_point,
-                    "MOUNTFLAGS":        flag_str,
-                    "FLAGLIST":       flag,
+                    "MOUNTOPTIONS":        option_str,
+                    "OPTIONLIST":       option,
                     "MOUNTSTATES":	state_str,
                     "POINTID":     point_id,
-                    "FLAGID":      flag_id,
+                    "OPTIONID":      option_id,
                 },
-                "./oval/mount_options{0}.xml", point_id + "_" + flag_id
+                "./oval/mount_options{0}.xml", point_id + "_" + option_id
             )
         else:
             raise UnknownTargetError(target)
@@ -65,7 +65,7 @@ def output_checkfile(target, path_info):
 def help():
     print "Usage:\n\t" + __file__ + " <bash/oval/ansible> <csv file>"
     print("CSV should contains lines of the format: "
-          "mount_point,mount_flag,[mount_flag]+")
+          "mount_point,mount_option,[mount_option]+")
 
 if __name__ == "__main__":
     main(sys.argv, help, output_checkfile)
