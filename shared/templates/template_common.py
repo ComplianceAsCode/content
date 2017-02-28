@@ -7,8 +7,11 @@ import sys
 import os
 import re
 
-EXIT_NO_TEMPLATE    = 2
-EXIT_UNKNOWN_TARGET = 3
+class ExitCodes:
+    OK = 0
+    ERROR = 1
+    NO_TEMPLATE = 128 + 1
+    UNKNOWN_TARGET = 128 + 2
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
@@ -45,7 +48,7 @@ def get_template_filename(filename):
     sys.stderr.write(
         "No specialized or shared template found for {0}\n".format(filename)
     )
-    sys.exit(EXIT_NO_TEMPLATE)
+    sys.exit(ExitCodes.NO_TEMPLATE)
 
 
 def load_modified(filename, constants_dict, regex_replace=[]):
@@ -163,7 +166,7 @@ def csv_map(filename, method, skip_comments = True, target = None):
             map(method, csv_lines_content)
         except UnknownTargetError as e:
             sys.stderr.write(str(e) + "\n")
-            sys.exit(EXIT_UNKNOWN_TARGET)
+            sys.exit(ExitCodes.UNKNOWN_TARGET)
 
 def main(argv, help_callback, process_line_callback):
 
@@ -171,7 +174,7 @@ def main(argv, help_callback, process_line_callback):
 
     if argv_len < 3:
         help_callback()
-        sys.exit(1)
+        sys.exit(ExitCodes.ERROR)
 
     target = sys.argv[1]
     filename = sys.argv[2]
@@ -181,4 +184,4 @@ def main(argv, help_callback, process_line_callback):
         process_line_callback(target, *args)
 
     csv_map(filename, process_line, target=target)
-    sys.exit(0)
+    sys.exit(ExitCodes.OK)
