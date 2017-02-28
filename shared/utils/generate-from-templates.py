@@ -5,6 +5,9 @@ import os
 import sys
 import argparse
 
+templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
+sys.path.append(templates_dir)
+from template_common import ExitCodes
 
 class Builder(object):
     def __init__(self):
@@ -216,7 +219,10 @@ class Builder(object):
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
-        if subprocess.returncode in [0, 2, 3]:
+        no_error_codes = [
+            ExitCodes.OK, ExitCodes.NO_TEMPLATE, ExitCodes.UNKNOWN_TARGET
+        ]
+        if subprocess.returncode in no_error_codes:
             pass
         else:
             raise RuntimeError("Process returned: %s"
