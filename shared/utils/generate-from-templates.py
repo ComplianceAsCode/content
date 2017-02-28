@@ -225,8 +225,12 @@ class Builder(object):
         if subprocess.returncode in no_error_codes:
             pass
         else:
+            comm = subprocess.communicate()
             raise RuntimeError("Process returned: %s"
-                               % (subprocess.communicate()[1].decode("utf-8")))
+                               % (
+                                   comm[0].decode("utf-8") +
+                                   comm[1].decode("utf-8")
+                                  ))
 
     def _get_list_from_subprocess(self, subprocess):
         self._subprocess_check(subprocess)
