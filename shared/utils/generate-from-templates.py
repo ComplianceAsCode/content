@@ -59,6 +59,10 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
+        # Build scripts for multiple OVAL versions.
+        # At first for the oldest OVAL, then newer and newer
+        # this will allow to override older implementation
+        # with a never one.
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
 
