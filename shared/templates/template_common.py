@@ -25,7 +25,7 @@ action = None
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
-        ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
+        ValueError.__init__(self, "Unknown target language: \"{0}\"".format(msg))
 
 def get_template_filename(filename):
 
@@ -48,7 +48,7 @@ def get_template_filename(filename):
 
 def load_modified(filename, constants_dict, regex_replace=[]):
     """
-    Load file and replace constants accoring to constants_dict and regex_dict
+    Load file and replace constants according to constants_dict and regex_replace
 
     constants_dict: dict of constants - replace ( key -> value)
     regex_dict: dict of regex substitutions - sub ( key -> value)
@@ -67,7 +67,7 @@ def load_modified(filename, constants_dict, regex_replace=[]):
         filestring = template_file.read()
 
     for key, value in constants_dict.iteritems():
-       filestring = filestring.replace(key, value)
+        filestring = filestring.replace(key, value)
 
     for pattern, replacement in regex_replace:
         filestring = re.sub(pattern, replacement, filestring)
@@ -117,7 +117,7 @@ def process_line(line, target):
 
         if match:
             # if line contains restriction to target, check it
-            supported_targets = [ x.strip() for x in match.group(1).split(",") ]
+            supported_targets = [x.strip() for x in match.group(1).split(",")]
             if target not in supported_targets:
                 return None
 
@@ -125,13 +125,13 @@ def process_line(line, target):
     return (line.split("#")[0]).strip()
 
 
-def filter_out_csv_lines(csv_file, target):
+def filter_out_csv_lines(csv_file, language):
     """
     Filter out not applicable lines
     """
 
     for line in csv_file:
-        processed_line = process_line(line, target)
+        processed_line = process_line(line, language)
 
         if not processed_line:
              continue
