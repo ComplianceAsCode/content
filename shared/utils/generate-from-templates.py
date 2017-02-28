@@ -70,9 +70,6 @@ class Builder(object):
                 script = self._get_script_for_csv(csv_filename)
 
                 csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                sys.stderr.write(
-                    "{0}\t{1}\n".format(os.path.realpath(script), csv_filepath)
-                )
                 self._run_script(script, csv_filepath)
 
     def list_inputs(self):
@@ -99,7 +96,7 @@ class Builder(object):
 
                 for lang in self.langs:
                     files_list = self._read_io_files_list(
-                        script_filepath, csv_filepath, lang, True
+                        script_filepath, csv_filepath, lang, "list-inputs"
                     )
                     list_.extend(files_list)
 
@@ -118,7 +115,7 @@ class Builder(object):
 
                 for lang in self.langs:
                     files_list = self._read_io_files_list(
-                        script_filepath, csv_filepath, lang, False
+                        script_filepath, csv_filepath, lang, "list-outputs"
                     )
                     list_.extend(files_list)
 
@@ -176,50 +173,33 @@ class Builder(object):
     def _output_dir_for_lang(self, lang):
         return os.path.join(self.output_dir, lang)
 
-    def _set_environment(func):
-        def wrapper(self, *args):
-            os.environ["SHARED"] = self.ssg_shared
-            os.environ["TEMPLATE_DIR"] = self._get_template_dir()
-            os.environ["BUILD_DIR"] = self.output_dir
-
-            try:
-                return func(self, *args)
-
-            finally:
-                os.environ.pop("TEMPLATE_DIR", None)
-                os.environ.pop("BUILD_DIR", None)
-                os.environ.pop("SHARED", None)
-
-        return wrapper
-
-    @_set_environment
     def _run_script(self, script, csv_filepath):
         for lang in self.langs:
-            sp = subprocess.Popen(
-                ["python", script, lang, csv_filepath],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
+            sp = self._create_subprocess(
+                script=script, csv=csv_filepath, lang=lang, action="build"
             )
             self._subprocess_check(sp)
 
-    @_set_environment
-    def _read_io_files_list(self, script, csv, lang, gen_input):
-        try:
-            if gen_input:
-                os.environ["GENERATE_INPUT_LIST"] = "true"
-            else:
-                os.environ["GENERATE_OUTPUT_LIST"] = "true"
+    def _read_io_files_list(self, script, csv, lang, action):
+        sp = self._create_subprocess(script, csv, lang, action)
+        return self._get_list_from_subprocess(sp)
 
-            sp = subprocess.Popen(
-                ["python", script, lang, csv],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            return self._get_list_from_subprocess(sp)
-
-        finally:
-            os.environ.pop("GENERATE_INPUT_LIST", None)
-            os.environ.pop("GENERATE_OUTPUT_LIST", None)
+    def _create_subprocess(self, script, csv, lang, action):
+        args= [
+            "python", script,
+            "--csv", csv,
+            "--lang", lang,
+            "--input", self._get_template_dir(),
+            "--shared", self.ssg_shared,
+            "--output", self.output_dir,
+            action
+        ]
+        sys.stderr.write(" ".join(args) + "\n")
+        return subprocess.Popen(
+                args,
+                stdout = subprocess.PIPE,
+                stderr = subprocess.PIPE
+        )
 
     def _subprocess_check(self, subprocess):
         subprocess.wait()
