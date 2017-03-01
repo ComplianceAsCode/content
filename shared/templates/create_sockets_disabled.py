@@ -42,10 +42,10 @@ def output_checkfile(socketinfo):
             {
                 "SOCKETNAME":  socketname,
             },
-            regex_dict = {
-                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
-            }
+            regex_replace = [
+                ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
+                ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
+            ],
             filename_format = "./oval/socket_{0}_disabled.xml",
             filename_value = socketname
         )
