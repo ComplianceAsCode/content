@@ -7,9 +7,9 @@
   shell: mount |grep ' MOUNTPOINT ' |cut -d ' ' -f 1
   register: device_name
 
-- name: get back device previous mount flags
+- name: get back device previous mount option
   shell: mount |grep ' MOUNTPOINT ' | sed -re 's:.*\((.*)\):\1:'
-  register: device_cur_mountflags
+  register: device_cur_mountoption
 
 - name: get back device fstype
   shell: mount |grep ' MOUNTPOINT ' | cut -d ' ' -f 5
@@ -19,7 +19,7 @@
   mount:
     path: "MOUNTPOINT"
     src: "{{device_name.stdout}}"
-    opts: "{{device_cur_mountflags.stdout}},MOUNTOPTION"
+    opts: "{{device_cur_mountoption.stdout}},MOUNTOPTION"
     state: "mounted"
     fstype: "{{device_fstype.stdout}}"
 
