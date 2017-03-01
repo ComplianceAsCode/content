@@ -176,7 +176,8 @@ class Builder(object):
     def _run_script(self, script, csv_filepath):
         for lang in self.langs:
             sp = self._create_subprocess(
-                script=script, csv=csv_filepath, lang=lang, action="build"
+                script=script, csv=csv_filepath, lang=lang, action="build",
+                print_args=True
             )
             self._subprocess_check(sp)
 
@@ -184,7 +185,7 @@ class Builder(object):
         sp = self._create_subprocess(script, csv, lang, action)
         return self._get_list_from_subprocess(sp)
 
-    def _create_subprocess(self, script, csv, lang, action):
+    def _create_subprocess(self, script, csv, lang, action, print_args=False):
         args= [
             "python", script,
             "--csv", csv,
@@ -194,7 +195,8 @@ class Builder(object):
             "--output", self.output_dir,
             action
         ]
-        sys.stderr.write(" ".join(args) + "\n")
+        if print_args:
+            sys.stderr.write(" ".join(args) + "\n")
         return subprocess.Popen(
                 args,
                 stdout = subprocess.PIPE,
