@@ -21,6 +21,7 @@ class Builder(object):
             "kernel_modules_disabled.csv":  "create_kernel_modules_disabled.py",
             "file_dir_permissions.csv":     "create_permission.py",
             "accounts_password.csv":        "create_accounts_password.py",
+            "mount_options.csv":            "create_mount_options.py",
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]

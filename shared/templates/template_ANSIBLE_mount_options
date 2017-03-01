@@ -1,0 +1,25 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = high
+- name: get back device associated to mountpoint
+  shell: mount |grep ' MOUNTPOINT ' |cut -d ' ' -f 1
+  register: device_name
+
+- name: get back device previous mount option
+  shell: mount |grep ' MOUNTPOINT ' | sed -re 's:.*\((.*)\):\1:'
+  register: device_cur_mountoption
+
+- name: get back device fstype
+  shell: mount |grep ' MOUNTPOINT ' | cut -d ' ' -f 5
+  register: device_fstype
+
+- name: Ensure permission MOUNTOPTIONS are set on MOUNTPOINT
+  mount:
+    path: "MOUNTPOINT"
+    src: "{{device_name.stdout}}"
+    opts: "{{device_cur_mountoption.stdout}},MOUNTOPTION"
+    state: "mounted"
+    fstype: "{{device_fstype.stdout}}"
+
