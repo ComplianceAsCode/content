@@ -161,7 +161,7 @@ def csv_map(filename, method, language):
             sys.stderr.write(str(e) + "\n")
             sys.exit(ExitCodes.UNKNOWN_TARGET)
 
-def parse_args():
+def parse_args(csv_format):
     p = argparse.ArgumentParser()
 
     sp = p.add_subparsers(help="actions")
@@ -179,7 +179,7 @@ def parse_args():
     p.add_argument('--language', action="store", default=None, required=True,
                    help="Scripts of which language should we generate?")
     p.add_argument('-c',"--csv", action="store", required=True,
-                   help="csv filename.\n")
+                   help="csv filename.\n" + csv_format)
     p.add_argument('-o','--output_dir', action="store", required=True,
                    help="output dir")
     p.add_argument('-i','--input_dir', action="store", required=True,
@@ -191,9 +191,9 @@ def parse_args():
 
 
 
-def main(argv, help_callback, process_line_callback):
+def main(argv, csv_format, process_line_callback):
 
-    parsed, unknown = parse_args()
+    parsed, unknown = parse_args(csv_format)
 
     if unknown:
         sys.stderr.write(
