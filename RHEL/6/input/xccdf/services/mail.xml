@@ -4,7 +4,7 @@
 Mail servers are used to send and receive email over the network.
 Mail is a very common service, and Mail Transfer Agents (MTAs) are obvious
 targets of network attack.
-Ensure that machines are not running MTAs unnecessarily,
+Ensure that systems are not running MTAs unnecessarily,
 and configure needed MTAs as defensively as possible.
 <br /><br />
 Very few systems at any site should be configured to directly receive email over the
@@ -203,8 +203,8 @@ for lines with the daemon name postfix/anvil.
 <description>Postfix's mail relay controls are implemented with the help of the
 smtpd recipient restrictions option, which controls the restrictions placed on
 the SMTP dialogue once the sender and recipient envelope addresses are known.
-The guidance in the following sections should be applied to all machines. If
-there are machines which must be allowed to relay mail, but which cannot be
+The guidance in the following sections should be applied to all systems. If
+there are systems which must be allowed to relay mail, but which cannot be
 trusted to relay unconditionally, configure SMTP AUTH with SSL support.
 </description>
 
@@ -213,7 +213,7 @@ trusted to relay unconditionally, configure SMTP AUTH with SSL support.
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of
 the <tt>mynetworks</tt> variable in one of the following ways:
 <ul>
-<li>If any machine in the subnet containing the MTA may be trusted to relay
+<li>If any system in the subnet containing the MTA may be trusted to relay
 messages, add or correct the following line:
 <pre>mynetworks_style = subnet</pre>
 This is also the default setting, and is in effect if all
@@ -221,18 +221,18 @@ This is also the default setting, and is in effect if all
 <li>If only the MTA host itself is trusted to relay messages, add or correct
 the following line:
 <pre>mynetworks_style = host</pre></li>
-<li>If the set of machines which can relay is more complicated, manually
+<li>If the set of systems which can relay is more complicated, manually
 specify an entry for each netblock or IP address which is trusted to relay by
 setting the <tt>mynetworks</tt> variable directly:
 <pre>mynetworks = 10.0.0.0/16, 192.168.1.0/24, 127.0.0.1</pre></li>
 </ul>
 </description>
 <rationale>The <tt>mynetworks</tt> variable must contain only the set of
-machines for which this MTA should unconditionally relay mail. This is a trust
-relationship - if spammers gain access to these machines, your site will
-effectively become an open relay. It is recommended that only machines which
+systems for which this MTA should unconditionally relay mail. This is a trust
+relationship - if spammers gain access to these systems, your site will
+effectively become an open relay. It is recommended that only systems which
 are managed by you or by another trusted organization be placed in mynetworks,
-and users of all other machines be required to use SMTP AUTH to send mail.
+and users of all other systems be required to use SMTP AUTH to send mail.
 </rationale>
 </Group>
 
@@ -246,9 +246,9 @@ will send mail, see:
 The full contents of <tt>smtpd_recipient_restrictions</tt> will
 vary by site, since this is a common place to put spam restrictions and other
 site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to
-be relayed from the machines in <tt>mynetworks</tt>. Then, the
+be relayed from the systems in <tt>mynetworks</tt>. Then, the
 <tt>reject_unauth_destination</tt> option denies all mail whose destination
-address is not local, preventing any other machines from relaying. These two
+address is not local, preventing any other systems from relaying. These two
 options should always appear in this order, and should usually follow one
 another immediately unless SMTP AUTH is used.
 </description>
@@ -264,9 +264,9 @@ will send mail, see:
 The full contents of <tt>smtpd_recipient_restrictions</tt> will
 vary by site, since this is a common place to put spam restrictions and other
 site-specific options. The <tt>permit_mynetworks</tt> option allows all mail to
-be relayed from the machines in <tt>mynetworks</tt>. Then, the
+be relayed from the systems in <tt>mynetworks</tt>. Then, the
 <tt>reject_unauth_destination</tt> option denies all mail whose destination
-address is not local, preventing any other machines from relaying. These two
+address is not local, preventing any other systems from relaying. These two
 options should always appear in this order, and should usually follow one
 another immediately unless SMTP AUTH is used.
 </description>

@@ -45,6 +45,7 @@ lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
 Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27153-6" stig="RHEL-06-000098" />
 <oval id="kernel_module_ipv6_option_disabled" />
 <ref nist="CM-7" disa="1551"/>
@@ -186,6 +187,7 @@ the system is functioning as a router.
 
 Accepting source-routed packets in the IPv6 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="RHEL6-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_all_accept_source_route" value="sysctl_net_ipv6_conf_all_accept_source_route_value" />
 <ref nist="AC-4" disa="366" />
@@ -202,6 +204,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="RHEL6-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_all_accept_ra" value="sysctl_net_ipv6_conf_all_accept_ra_value" />
 <ref nist="CM-7" cis="4.4.1.1" />
@@ -218,6 +221,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27164-3" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
 <ref nist="CM-7" cis="4.4.1.1" />
@@ -234,6 +238,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="RHEL6-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
 <ref nist="CM-7" disa="1551" cis="4.4.1.2" />
@@ -250,6 +255,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 <rationale>
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27166-8" stig="RHEL-06-000099" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
 <ref nist="CM-7" disa="1551" cis="4.4.1.2" />
@@ -271,6 +277,7 @@ the system is functioning as a router.
 
 Accepting source-routed packets in the IPv6 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="RHEL6-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_default_accept_source_route" value="sysctl_net_ipv6_conf_default_accept_source_route_value" />
 <ref nist="AC-4" disa="366" />
@@ -288,6 +295,7 @@ The ability to forward packets is only appropriate for routers.
 <rationale>IP forwarding permits the kernel to forward packets from one network
 interface to another. The ability to forward packets between two networks is
 only appropriate for systems acting as routers.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="RHEL6-CCE-TBD" />
 <oval id="sysctl_net_ipv6_conf_all_forwarding" value="sysctl_net_ipv6_conf_all_forwarding_value" />
 <ref nist="CM-7,SC-5" disa="366" cis="4.1.1" />

@@ -204,7 +204,7 @@ preferable to deny the ICMPv6 packets you know you don't need (e.g. ping
 requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else
 through:
 <pre>-A INPUT -p icmpv6 --icmpv6-type echo-request -j DROP</pre>
-If you are going to statically configure the machine's address, it should
+If you are going to statically configure the system's address, it should
 ignore Router Advertisements which could add another IPv6 address to the
 interface or alter important network settings:
 <pre>-A INPUT -p icmpv6 --icmpv6-type router-advertisement -j DROP</pre>

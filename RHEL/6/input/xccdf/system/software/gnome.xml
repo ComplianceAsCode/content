@@ -45,6 +45,7 @@ AutomaticLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <oval id="gnome_gdm_disable_automatic_login" />
 <ref nist="CM-6(b)" disa="366" stig="TBD"/>
@@ -71,6 +72,7 @@ TimedLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <oval id="gnome_gdm_disable_guest_login" />
 <ref nist="CM-6(b)" disa="366" stig="TBD"/>
@@ -96,6 +98,7 @@ The output should be <tt>true</tt>.
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
+<platform idref="cpe:/a:machine"/>
 <oval id="gconf_gdm_disable_user_list" />
 <ident cce="27230-2" />
 <ref nist="AC-23" />
@@ -122,6 +125,7 @@ A user who is at the console can reboot the system at the login screen. If resta
 are pressed at the login screen, this can create the risk of short-term loss of availability of systems
 due to reboot.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <oval id="gconf_gnome_disable_restart_shutdown" />
 <ref nist="AC-6" disa="366" stig="TBD" />
@@ -190,6 +194,7 @@ Setting the idle delay controls when the
 screensaver will start, and can be combined with
 screen locking to prevent access from passersby.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26828-4" stig="RHEL-06-000257" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
@@ -216,6 +221,7 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26600-7" stig="RHEL-06-000258" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
 <ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
@@ -241,6 +247,7 @@ Enabling the activation of the screen lock after an idle period
 ensures password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26235-2" stig="RHEL-06-000259" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
 <ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
@@ -265,6 +272,7 @@ If properly configured, the output should be <tt>blank-only</tt>
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26638-7" stig="RHEL-06-000260" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
 <ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
@@ -291,6 +299,7 @@ Terminating an idle session within a short time period reduces the window of
 opportunity for unauthorized personnel to take control of a management session
 and will also free up resources utilized by an idle session.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="26828-4" stig="RHEL-06-000257" /-->
 <oval id="gconf_gnome_screensaver_max_idle_time" value="inactivity_timeout_value" />
 <!--ref nist="AC-11(a)" disa="57"/-->
@@ -316,6 +325,7 @@ Terminating an idle session within a short time period reduces the window of
 opportunity for unauthorized personnel to take control of a management session
 and will also free up resources utilized by an idle session.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="26828-4" stig="RHEL-06-000257" /-->
 <oval id="gconf_gnome_screensaver_max_idle_action" value="inactivity_timeout_value" />
 <!--ref nist="AC-11(a)" disa="57"/-->
@@ -359,6 +369,7 @@ can reboot the system. If accidentally pressed, as could happen in
 the case of mixed OS environment, this can create the risk of short-term
 loss of availability of systems due to unintentional reboot.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <oval id="gconf_gnome_disable_ctrlaltdel_reboot" />
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <ref nist="AC-6" disa="366" stig="TBD" />
@@ -384,6 +395,7 @@ Disabling the temperature feature in the GNOME clock prevents the
 system from connecting to the internet and diclosing the system
 location when set by a user.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="26235-2" stig="RHEL-06-000259" /-->
 <oval id="gconf_gnome_disable_clock_temperature" />
 <!--ref nist="AC-11(a)" disa="57" /-->
@@ -409,6 +421,7 @@ Disabling the weather feature in the GNOME clock prevents the
 system from connecting to the internet and diclosing the system
 location when set by a user.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <!--ident cce="26235-2" stig="RHEL-06-000259" /-->
 <oval id="gconf_gnome_disable_clock_weather" />
 <!--ref nist="AC-11(a)" disa="57" /-->
@@ -443,6 +456,7 @@ The output should return <tt>true</tt>.
 Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <oval id="gconf_gnome_disable_wifi_create" />
 <!--ident cce="RHEL6-CCE-TBD" /-->
 </Rule>
@@ -469,6 +483,7 @@ The output should return <tt>true</tt>.
 Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <oval id="gconf_gnome_disable_wifi_disconnect" />
 <!--ident cce="RHEL6-CCE-TBD" /-->
 </Rule>
@@ -495,6 +510,7 @@ The output should return <tt>true</tt>.
 Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <oval id="gconf_gnome_disable_wifi_notification" />
 <!--ident cce="RHEL6-CCE-TBD" /-->
 </Rule>
@@ -542,6 +558,7 @@ the introduction of malware via removable media.
 It will, however, also prevent desktop users from legitimate use
 of removable media.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27035-5" />
 <oval id="gconf_gnome_disable_automount" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" />
@@ -570,6 +587,7 @@ file to exploit this flaw. Assuming the attacker could place the malicious file 
 (via a web upload for example) and assuming a user browses the same location using Nautilus, the
 malicious file would exploit the thumbnailer with the potential for malicious code execution. It
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27224-5" />
 <oval id="gconf_gnome_disable_thumbnailers" />
 <ref nist="CM-7" />

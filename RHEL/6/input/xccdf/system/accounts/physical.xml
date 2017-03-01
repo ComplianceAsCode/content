@@ -33,6 +33,7 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26995-1" stig="RHEL-06-000065" />
 <oval id="file_user_owner_grub_conf" />
 <ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
@@ -50,6 +51,7 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27022-3" stig="RHEL-06-000066" />
 <oval id="file_group_owner_grub_conf" />
 <ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
@@ -71,6 +73,7 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26949-8" stig="RHEL-06-000067" />
 <oval id="file_permissions_grub_conf" />
 <ref nist="AC-6(7)" disa="225"/>
@@ -100,6 +103,7 @@ users with physical access cannot trivially alter
 important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26911-8" stig="RHEL-06-000068" />
 <oval id="bootloader_password" />
 <ref nist="IA-2(1),IA-5(e) AC-3" disa="213" />
@@ -130,6 +134,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27040-5" stig="RHEL-06-000069" />
 <oval id="require_singleuser_auth" />
 <ref nist="IA-2(1),AC-3" disa="213" />
@@ -166,6 +171,7 @@ Linux 6 system, custom changes to <tt>/etc/init/control-alt-delete.conf</tt>
 may be overwritten. Refer to <b><weblink-macro link="https://access.redhat.com/site/solutions/70464"/></b>
 for additional information.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <warning category="general">Disabling the <tt>Ctrl-Alt-Del</tt> key sequence
 in <tt>/etc/init/control-alt-delete.conf</tt> DOES NOT disable the <tt>Ctrl-Alt-Del</tt>
 key sequence if running in <tt>runlevel 6</tt> (e.g. in GNOME, KDE, etc.)! The
@@ -206,6 +212,7 @@ there should be no output.</li>
 Using interactive boot, the console user could disable auditing, firewalls, or
 other services, weakening system security.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="27043-9" stig="RHEL-06-000070" />
 <oval id="disable_interactive_boot" />
 <ref nist="SC-2,AC-3" disa="213"/>
@@ -246,6 +253,7 @@ The console can now be locked with the following key combination:
 Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
+<platform idref="cpe:/a:machine"/>
 <ident cce="26940-7" stig="RHEL-06-000071" />
 <ref disa="58" />
 <oval id="package_screen_installed" />

@@ -1,12 +1,12 @@
 <Group id="smb">
 <title>Samba(SMB) Microsoft Windows File Sharing Server</title>
 <description>When properly configured, the Samba service allows
-Linux machines to provide file and print sharing to Microsoft
-Windows machines. There are two software packages that provide
+Linux systems to provide file and print sharing to Microsoft
+Windows systems. There are two software packages that provide
 Samba support. The first, <tt>samba-client</tt>, provides a series of
-command line tools that enable a client machine to access Samba
+command line tools that enable a client system to access Samba
 shares. The second, simply labeled <tt>samba</tt>, provides the Samba
-service. It is this second package that allows a Linux machine to
+service. It is this second package that allows a Linux system to
 act as an Active Directory server, a domain controller, or as a
 domain member. Only the <tt>samba-client</tt> package is installed by
 default.</description>
@@ -62,7 +62,7 @@ the potential attack surface.
 <tt>[global]</tt> configuration section and a series of user
 created share definition sections meant to describe file or print
 shares on the system. By default, Samba will operate in user mode
-and allow client machines to access local home directories and
+and allow client systems to access local home directories and
 printers. It is recommended that these settings be changed or that
 additional limitations be set in place.</description>
 
@@ -115,11 +115,11 @@ Samba file and printer shares. Disable the root user and the wheel
 administrator group:
 <pre>[<i>share</i>]
   invalid users = root @wheel</pre>
-If administrator accounts cannot be disabled, ensure that local machine
+If administrator accounts cannot be disabled, ensure that local system
 passwords and Samba service passwords do not match.</description>
 <rationale>
 Typically, administrator access is required when Samba must create user and
-machine accounts and shares. Domain member servers and standalone servers may
+system accounts and shares. Domain member servers and standalone servers may
 not need administrator access at all. If that is the case, add the invalid
 users parameter to <tt>[global]</tt> instead.
 </rationale>
@@ -181,7 +181,7 @@ attacks which modify SMB packets in transit.
 <title>Restrict Printer Sharing</title>
 <description>By default, Samba utilizes the CUPS printing service to enable
 printer sharing with Microsoft Windows workstations. If there are no printers
-on the local machine, or if printer sharing with Microsoft Windows is not
+on the local system, or if printer sharing with Microsoft Windows is not
 required, disable the printer sharing capability by commenting out the
 following lines, found in <tt>/etc/samba/smb.conf</tt>:
 <pre>[global]
@@ -207,7 +207,7 @@ a space. For example, under the <tt>[printers]</tt> share:
 </description>
 <rationale>The Samba service is only required for sharing files and printers
 with Microsoft Windows workstations, and even then, other options may exist. Do
-not use the Samba service to share files between Unix or Linux machines.
+not use the Samba service to share files between Unix or Linux systems.
 </rationale>
 </Group>
 
