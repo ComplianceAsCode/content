@@ -1,0 +1,30 @@
+# platform=multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: "Read permission of GPG key directory"
+  stat:
+    path: /etc/pki/rpm-gpg/
+  register: gpg_key_directory_permission
+
+  # It should fail, if it doesn't find any fingerprints in file - maybe file was not parsed well.
+- name: "Read signatures in GPG key"
+  shell: "gpg --with-fingerprint '/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release' | grep 'Key fingerprint =' | tr -s ' ' | sed 's;.*= ;;g'"
+  changed_when: False
+  register: gpg_fingerprints
+
+- name: "Set Fact: Valid fingerprints"
+  set_fact:
+     gpg_valid_fingerprints: ("567E 347A D004 4ADE 55BA 8A5F 199E 2F91 FD43 1D51" "43A6 E49C 4A38 F4BE 9ABF 2A53 4568 9C88 2FA6 58E0")
+  
+- name: "Import RedHat GPG key"
+  rpm_key:
+    state: present
+    key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+  when:
+    (gpg_key_directory_permission.stat.mode <= '0755')
+    and ({{ gpg_fingerprints.stdout_lines | difference(gpg_valid_fingerprints) }} | length == 0)
+    and (gpg_fingerprints.stdout_lines | length > 0)
+    and (ansible_distribution == "RedHat")
