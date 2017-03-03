@@ -3,8 +3,8 @@
 
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
+<xsl:param name="profile" select="''"/>
 <xsl:param name="testinfo" select="''" />
-<xsl:param name="format" select="''"/>
 
 	<xsl:template match="/">
 		<html>
@@ -18,7 +18,7 @@
 			<div style="text-align: center; font-size: normal "><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:description" /></div>
 			<br/>
 			<br/>
-			<xsl:apply-templates select="cdf:Benchmark"/>
+			<xsl:apply-templates select="/cdf:Benchmark"/>
 		</body>
 		</html>
 	</xsl:template>
