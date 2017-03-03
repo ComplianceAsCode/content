@@ -7,6 +7,9 @@
 <xsl:param name="testinfo" select="''" />
 
 	<xsl:template match="/">
+		<xsl:if test="not(/cdf:Benchmark/cdf:Profile[@id=$profile])">
+			<xsl:message terminate="yes">Profile '<xsl:value-of select="$profile"/>' not found.</xsl:message>
+		</xsl:if>
 		<html>
 		<head>
 			<title><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></title>
