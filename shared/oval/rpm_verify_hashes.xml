@@ -5,7 +5,6 @@
       <affected family="unix">
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_rhel</platform>
-:w
       </affected>
       <description>Verify the RPM digests of system binaries using the RPM database.</description>
     </metadata>
@@ -13,10 +12,9 @@
       <criterion test_ref="test_files_fail_md5_hash" comment="verify file md5 hashes" />
     </criteria>
   </definition>
-  <!-- NOTE: If you examine the regex below you notice that I am only interested in files containing -->
-  <!-- "bin/" in the path. This essentially narrows our focus down to system executables in directories -->
-  <!-- such as /sbin, /usr/bin, and such. After testing I decided that doing it this way was most -->
-  <!-- effective at reducing the false positives. If you look at the state below you will notice that I -->
+  <!-- NOTE: If you examine the regex below you notice that we are interested in /bin, /sbin, /lib, /lib64 -->
+  <!-- and /usr directories. This narrows the search down to executables, libraries and supporting content. -->
+  <!-- If you look at the state below you will notice that I -->
   <!-- commented out several attributes. The current rpmverify object has methods to distinguish between -->
   <!-- configuration files, documentation files, etc. Using these discriminators in the state reduced -->
   <!-- the number of false positives, but it did not eliminate them. I left them commented out to serve -->
@@ -31,7 +29,7 @@
     <linux:version operation="pattern match">.*</linux:version>
     <linux:release operation="pattern match">.*</linux:release>
     <linux:arch operation="pattern match">.*</linux:arch>
-    <linux:filepath operation="pattern match">^.*bin/.*$</linux:filepath>
+    <linux:filepath operation="pattern match">^/(bin|sbin|lib|lib64|usr)/.+$</linux:filepath>
     <filter action="include">state_files_fail_md5_hash</filter>
   </linux:rpmverifyfile_object>
   <linux:rpmverifyfile_state id="state_files_fail_md5_hash" version="1" operator="AND">
