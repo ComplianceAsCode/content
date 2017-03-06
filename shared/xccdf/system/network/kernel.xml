@@ -106,8 +106,8 @@ operator="equals" interactive="0">
 <title>net.ipv4.conf.all.secure_redirects</title>
 <description>Enable to prevent hijacking of routing path by only
 allowing redirects from gateways known in routing
-table.</description>
-<value selector="">1</value>
+table. Disable to refuse acceptance of secure ICMP redirected packets on all interfaces.</description>
+<value selector="">0</value>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
@@ -153,9 +153,10 @@ operator="equals" interactive="0">
 <Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="number"
 operator="equals" interactive="0">
 <title>net.ipv4.conf.default.secure_redirects</title>
-<description>Log packets with impossible addresses to kernel
-log?</description>
-<value selector="">1</value>
+<description>Enable to prevent hijacking of routing path by only
+allowing redirects from gateways known in routing
+table. Disable to refuse acceptance of secure ICMP redirected packages by default.</description>
+<value selector="">0</value>
 <value selector="enabled">1</value>
 <value selector="disabled">0</value>
 </Value>
