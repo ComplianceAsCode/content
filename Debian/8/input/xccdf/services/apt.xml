@@ -1,0 +1,31 @@
+<Group id="apt">
+  <title>APT service configuration</title>
+  <description>The apt service manage the package management and update of the whole system. Its configuration need to be properly defined to ensure efficient security updates, packages and repository authentication and proper lifecycle management.
+  </description>
+
+<Rule id="apt_conf_disallow_unauthenticated">
+  <title>Disable unauthenticated repositories in APT configuration</title>
+  <description>Unauthenticated repositories should not be used for updates.</description>
+  <rationale>
+    Repositories hosts all packages that will be intsalled on the system during update.
+    If a repository is not authenticated, the associated packages can't be trusted,
+    and then should not be installed localy.
+  </rationale>
+  <oval id="apt_conf_disallow_unauthenticated" />
+  <ref anssi="NT28(R15)" />
+</Rule>
+
+<Rule id="apt_sources_list_official">
+  <title>Ensure that official distribution repositories are used</title>
+  <description>Check that official Debian repositories, including security repository, are configured in apt.</description>
+  <rationale>
+    The Debian distribution deliver DSA (Debian Security Announce), through the official
+    Debian security repository, to correct various vulnerabilities impacting the Debian
+    packages. Using the official repositories is the best way to ensure that the Debian
+    updates are integrated soon enough.
+  </rationale>
+  <oval id="apt_sources_list_official" />
+  <ref anssi="NT28(R15)" />
+</Rule>
+
+</Group>
