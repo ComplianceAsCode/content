@@ -534,7 +534,7 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
 endmacro()
 
 macro(ssg_build_sds PRODUCT)
-    if("${PRODUCT}" STREQUAL "rhel7")
+    if("${PRODUCT}" MATCHES "rhel(6|7)")
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
@@ -627,7 +627,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
     ssg_build_ocil_final(${PRODUCT})
-    if("${PRODUCT}" STREQUAL "rhel7")
+    if("${PRODUCT}" MATCHES "rhel(6|7)")
         ssg_build_pci_dss_xccdf(${PRODUCT})
     endif()
     ssg_build_sds(${PRODUCT})
