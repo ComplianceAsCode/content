@@ -15,70 +15,72 @@
 import sys
 import re
 
-from template_common import *
+from template_common import FilesGenerator, UnknownTargetError
 
-def output_checkfile(target, serviceinfo):
-    # get the items out of the list
-    servicename, packagename = serviceinfo
+class ServiceEnabledGenerator(FilesGenerator):
 
-    if target == "oval":
-        if packagename:
-            file_from_template(
-                "./template_service_enabled",
-                {
-                    "SERVICENAME": servicename,
-                    "PACKAGENAME": packagename
-                },
-                "./oval/service_{0}_enabled.xml", servicename
-            )
-        else:
-            file_from_template(
-                "./template_service_enabled",
+    def generate(self, target, serviceinfo):
+        # get the items out of the list
+        servicename, packagename = serviceinfo
+
+        if target == "oval":
+            if packagename:
+                self.file_from_template(
+                    "./template_service_enabled",
+                    {
+                        "SERVICENAME": servicename,
+                        "PACKAGENAME": packagename
+                    },
+                    "./oval/service_{0}_enabled.xml", servicename
+                )
+            else:
+                self.file_from_template(
+                    "./template_service_enabled",
+                    { "SERVICENAME": servicename },
+                    regex_replace = [
+                        ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
+                        ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
+                    ],
+                    filename_format = "./oval/service_{0}_enabled.xml",
+                    filename_value = servicename
+                )
+
+        elif target == "bash":
+
+            self.file_from_template(
+                "./template_BASH_service_enabled",
                 { "SERVICENAME": servicename },
-                regex_replace = [
-                    ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
-                    ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
-                ],
-                filename_format = "./oval/service_{0}_enabled.xml",
-                filename_value = servicename
+                "./bash/service_{0}_enabled.sh", servicename
             )
 
-    elif target == "bash":
+        elif target == "ansible":
 
-        file_from_template(
-            "./template_BASH_service_enabled",
-            { "SERVICENAME": servicename },
-            "./bash/service_{0}_enabled.sh", servicename
-        )
+            self.file_from_template(
+                "./template_ANSIBLE_service_enabled",
+                {
+                    "SERVICENAME": servicename
+                },
+                "./ansible/service_{0}_enabled.yml", servicename
+            )
 
-    elif target == "ansible":
+        elif target == "puppet":
 
-        file_from_template(
-            "./template_ANSIBLE_service_enabled",
-            {
-                "SERVICENAME": servicename
-            },
-            "./ansible/service_{0}_enabled.yml", servicename
-        )
+            self.file_from_template(
+                "./template_PUPPET_service_enabled",
+                {
+                    "SERVICENAME": servicename
+                },
+                "./puppet/service_{0}_enabled.yml", servicename
+            )
 
-    elif target == "puppet":
+        else:
 
-        file_from_template(
-            "./template_PUPPET_service_enabled",
-            {
-                "SERVICENAME": servicename
-            },
-            "./puppet/service_{0}_enabled.yml", servicename
-        )
-
-    else:
-
-        raise UnknownTargetError(target)
+            raise UnknownTargetError(target)
 
 
-def csv_format():
-    return("CSV should contains lines of the format: " +
-               "servicename,packagename")
+    def csv_format(self):
+        return("CSV should contains lines of the format: " +
+                   "servicename,packagename")
 
 if __name__ == "__main__":
-    main(sys.argv, csv_format(), output_checkfile)
+    ServiceEnabledGenerator().main()

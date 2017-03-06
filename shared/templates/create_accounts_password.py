@@ -7,28 +7,29 @@
 import sys
 import re
 
-from template_common import *
+from template_common import FilesGenerator, UnknownTargetError
 
-def output_checkfile(target, pam_info):
-    VARIABLE, = pam_info
+class AccountsPasswordGenerator(FilesGenerator):
 
-    if target == "bash":
+    def generate(self, target, pam_info):
+        VARIABLE, = pam_info
 
-        file_from_template(
-            "./template_BASH_accounts_password",
-            {
-                "VARIABLE":   VARIABLE
-            },
-            "./bash/accounts_password_pam_{0}.sh", VARIABLE
-        )
+        if target == "bash":
 
-    else:
-        raise UnknownTargetError(target)
+            self.file_from_template(
+                "./template_BASH_accounts_password",
+                {
+                    "VARIABLE":   VARIABLE
+                },
+                "./bash/accounts_password_pam_{0}.sh", VARIABLE
+            )
 
+        else:
+            raise UnknownTargetError(target)
 
-def csv_format():
-    return("CSV should contains lines of the format: " +
-               "VARIABLE")
+    def csv_format(self):
+        return("CSV should contains lines of the format: " +
+                   "VARIABLE")
 
 if __name__ == "__main__":
-    main(sys.argv, csv_format(), output_checkfile)
+    AccountsPasswordGenerator().main()
