@@ -22,6 +22,7 @@ class ActionType:
 product_input_dir = None
 output_dir = None
 action = None
+shared_dir = None
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
@@ -34,9 +35,7 @@ def get_template_filename(filename):
     if os.path.isfile(template_filename):
         return template_filename
 
-    shared_dir = os.path.dirname(os.path.realpath(__file__))
-
-    shared_template = os.path.join(shared_dir, filename)
+    shared_template = os.path.join(shared_dir, "templates", filename)
     if os.path.isfile(shared_template):
         return shared_template
 
@@ -204,10 +203,12 @@ def main(argv, csv_format, process_line_callback):
     global output_dir
     global action
     global product_input_dir
+    global shared_dir
 
     output_dir = parsed.output_dir
     action = parsed.action
     product_input_dir = parsed.input_dir
+    shared_dir = parsed.shared_dir
 
     csv_map(parsed.csv, process_line_callback, language=parsed.language)
     sys.exit(ExitCodes.OK)
