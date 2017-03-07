@@ -6,51 +6,48 @@ import csv
 import sys
 import os
 import re
+import argparse
 
-EXIT_NO_TEMPLATE    = 2
-EXIT_UNKNOWN_TARGET = 3
+class ExitCodes:
+    OK = 0
+    ERROR = 1
+    NO_TEMPLATE = 128 + 1
+    UNKNOWN_TARGET = 128 + 2
+
+class ActionType:
+    INPUT = 1
+    OUTPUT = 2
+    BUILD = 3
+
+product_input_dir = None
+output_dir = None
+action = None
+shared_dir = None
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
-        ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
-
-
-class TemplateDirMissingError(ValueError):
-    def __init__(self):
-        ValueError.__init__(self,
-                            "TEMPLATE_DIR environment variable is missing.")
-
-
-class BuildDirMissingError(ValueError):
-    def __init__(self):
-        ValueError.__init__(self, "BUILD_DIR environment variable is missing.")
-
+        ValueError.__init__(self, "Unknown target language: \"{0}\"".format(msg))
 
 def get_template_filename(filename):
-    dir_ = os.environ.get('TEMPLATE_DIR')
-    if dir_ is None:
-        raise TemplateDirMissingError()
 
-    template_filename = os.path.join(dir_, filename)
+    template_filename = os.path.join(product_input_dir, filename)
 
     if os.path.isfile(template_filename):
         return template_filename
 
-    shared_dir = os.path.dirname(os.path.realpath(__file__))
-
-    shared_template = os.path.join(shared_dir, filename)
+    shared_template = os.path.join(shared_dir, "templates", filename)
     if os.path.isfile(shared_template):
         return shared_template
 
     sys.stderr.write(
         "No specialized or shared template found for {0}\n".format(filename)
     )
-    sys.exit(EXIT_NO_TEMPLATE)
+    sys.exit(ExitCodes.NO_TEMPLATE)
 
 
 def load_modified(filename, constants_dict, regex_replace=[]):
     """
-    Load file and replace constants accoring to constants_dict and regex_dict
+    Load file and replace constants according to constants_dict and regex_replace
 
     constants_dict: dict of constants - replace ( key -> value)
     regex_dict: dict of regex substitutions - sub ( key -> value)
@@ -58,10 +55,10 @@ def load_modified(filename, constants_dict, regex_replace=[]):
 
     template_filename = get_template_filename(filename)
 
-    if os.environ.get('GENERATE_OUTPUT_LIST', '') == "true":
+    if action == ActionType.OUTPUT:
         return ""
 
-    if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
+    if action == ActionType.INPUT:
         print(template_filename)
         return ""
 
@@ -69,7 +66,7 @@ def load_modified(filename, constants_dict, regex_replace=[]):
         filestring = template_file.read()
 
     for key, value in constants_dict.iteritems():
-       filestring = filestring.replace(key, value)
+        filestring = filestring.replace(key, value)
 
     for pattern, replacement in regex_replace:
         filestring = re.sub(pattern, replacement, filestring)
@@ -81,16 +78,13 @@ def save_modified(filename_format, filename_value, string):
     Save string to file
     """
     filename = filename_format.format(filename_value)
-    dir_ = os.environ.get('BUILD_DIR')
-    if dir_ is None:
-        raise BuildDirMissingError()
 
-    filename = os.path.join(dir_, filename)
+    filename = os.path.join(output_dir, filename)
 
-    if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
+    if action == ActionType.INPUT:
         return
 
-    if os.environ.get('GENERATE_OUTPUT_LIST', '') == "true":
+    if action == ActionType.OUTPUT:
         print(filename)
         return
 
@@ -122,7 +116,7 @@ def process_line(line, target):
 
         if match:
             # if line contains restriction to target, check it
-            supported_targets = [ x.strip() for x in match.group(1).split(",") ]
+            supported_targets = [x.strip() for x in match.group(1).split(",")]
             if target not in supported_targets:
                 return None
 
@@ -130,13 +124,13 @@ def process_line(line, target):
     return (line.split("#")[0]).strip()
 
 
-def filter_out_csv_lines(csv_file, target):
+def filter_out_csv_lines(csv_file, language):
     """
     Filter out not applicable lines
     """
 
     for line in csv_file:
-        processed_line = process_line(line, target)
+        processed_line = process_line(line, language)
 
         if not processed_line:
              continue
@@ -144,7 +138,7 @@ def filter_out_csv_lines(csv_file, target):
         yield processed_line
 
 
-def csv_map(filename, method, skip_comments = True, target = None):
+def csv_map(filename, method, language):
     """
     Call specified function on every line of file
     CSV lines can look like:
@@ -155,30 +149,66 @@ def csv_map(filename, method, skip_comments = True, target = None):
     """
 
     with open(filename, 'r') as csv_file:
-        filtered_file = filter_out_csv_lines(csv_file, target)
+        filtered_file = filter_out_csv_lines(csv_file, language)
 
         csv_lines_content = csv.reader(filtered_file)
 
         try:
-            map(method, csv_lines_content)
+            for csv_line in csv_lines_content:
+                method(language, csv_line)
         except UnknownTargetError as e:
             sys.stderr.write(str(e) + "\n")
-            sys.exit(EXIT_UNKNOWN_TARGET)
+            sys.exit(ExitCodes.UNKNOWN_TARGET)
 
-def main(argv, help_callback, process_line_callback):
+def parse_args(csv_format):
+    p = argparse.ArgumentParser()
 
-    argv_len = len(argv)
+    sp = p.add_subparsers(help="actions")
 
-    if argv_len < 3:
-        help_callback()
-        sys.exit(1)
+    make_sp = sp.add_parser('build', help="Build scripts")
+    make_sp.set_defaults(action=ActionType.BUILD)
 
-    target = sys.argv[1]
-    filename = sys.argv[2]
+    input_sp = sp.add_parser('list-inputs', help="Generate input list")
+    input_sp.set_defaults(action=ActionType.INPUT)
 
-    def process_line(*args):
-        # todo: pass target only to csv_map()
-        process_line_callback(target, *args)
+    output_sp = sp.add_parser('list-outputs', help="Generate output list")
+    output_sp.set_defaults(action=ActionType.OUTPUT)
 
-    csv_map(filename, process_line, target=target)
-    sys.exit(0)
+    p.add_argument('-s','--shared_dir', action="store", help="Shared directory")
+    p.add_argument('--language', action="store", default=None, required=True,
+                   help="Scripts of which language should we generate?")
+    p.add_argument('-c',"--csv", action="store", required=True,
+                   help="csv filename.\n" + csv_format)
+    p.add_argument('-o','--output_dir', action="store", required=True,
+                   help="output dir")
+    p.add_argument('-i','--input_dir', action="store", required=True,
+                   help="templates dir")
+
+    args, unknown = p.parse_known_args()
+
+    return (args,unknown)
+
+
+
+def main(argv, csv_format, process_line_callback):
+
+    parsed, unknown = parse_args(csv_format)
+
+    if unknown:
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
+        sys.exit(ExitCodes.ERROR)
+
+    global output_dir
+    global action
+    global product_input_dir
+    global shared_dir
+
+    output_dir = parsed.output_dir
+    action = parsed.action
+    product_input_dir = parsed.input_dir
+    shared_dir = parsed.shared_dir
+
+    csv_map(parsed.csv, process_line_callback, language=parsed.language)
+    sys.exit(ExitCodes.OK)

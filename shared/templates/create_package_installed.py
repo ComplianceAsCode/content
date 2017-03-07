@@ -59,10 +59,9 @@ def output_checkfile(target, package_info):
     else:
         print "ERROR: input violation: the package name must be defined"
 
-def help():
-    print("Usage:\n\t" + __file__ + " <bash/oval/ansible/anaconda/puppet> <csv file>")
-    print("CSV should contains lines of the format: " +
+def csv_format():
+    return("CSV should contains lines of the format: " +
                "PACKAGE_NAME")
 
 if __name__ == "__main__":
-    main(sys.argv, help, output_checkfile)
+    main(sys.argv, csv_format(), output_checkfile)

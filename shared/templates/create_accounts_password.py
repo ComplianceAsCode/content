@@ -26,10 +26,9 @@ def output_checkfile(target, pam_info):
         raise UnknownTargetError(target)
 
 
-def help():
-    print("Usage:\n\t" + __file__ + " <bash> <csv file>")
-    print("CSV should contains lines of the format: " +
+def csv_format():
+    return("CSV should contains lines of the format: " +
                "VARIABLE")
 
 if __name__ == "__main__":
-    main(sys.argv, help, output_checkfile)
+    main(sys.argv, csv_format(), output_checkfile)

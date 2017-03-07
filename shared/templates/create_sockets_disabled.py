@@ -42,25 +42,17 @@ def output_checkfile(socketinfo):
             {
                 "SOCKETNAME":  socketname,
             },
-            regex_dict = {
-                "\n\s*<criteria.*>\n\s*<extend_definition.*/>": "",
-                "\s*</criteria>\n\s*</criteria>": "\n    </criteria>"
-            }
+            regex_replace = [
+                ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
+                ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
+            ],
             filename_format = "./oval/socket_{0}_disabled.xml",
             filename_value = socketname
         )
 
-def main():
-    if len(sys.argv) < 2:
-        print ("Provide a CSV file containing lines of the format: " +
+def csv_format():
+    return ("Provide a CSV file containing lines of the format: " +
                "socketname,packagename")
-        sys.exit(1)
-
-    filename = sys.argv[1]
-    csv_map(filename, output_checkfile, skip_comments = True)
-
-    sys.exit(0)
-
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv, csv_format(), output_checkfile)

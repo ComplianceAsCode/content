@@ -43,11 +43,10 @@ def output_checkfile(target, kerninfo):
         raise UnknownTargetError(target)
 
 
-def help():
-    print("Usage:\n\t" + __file__ + " <bash/ansible/oval> <csv file>")
-    print (
+def csv_format():
+    return (
         "CSV file should contains lines of the format: kernmod"
     )
 
 if __name__ == "__main__":
-    main(sys.argv, help, output_checkfile)
+    main(sys.argv, csv_format(), output_checkfile)
