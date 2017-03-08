@@ -5,8 +5,7 @@ set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 # This is set to silence GNUInstallDirs warning about no language being used with cmake
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
-# FIXME: This is different than the old location /usr/share/xml/scap/ssg/content
-set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap/ssg")
+set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
 set(SSG_TABLE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/tables")
 
@@ -42,8 +41,6 @@ option(SSG_PRODUCT_WEBMIN "If enabled, the Webmin SCAP content will be built" TR
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
-
-option(SSG_COMPATIBILITY_SYMLINK "If enabled a compatibility symlink will be created in the old SCAP Security Guide location - /usr/share/xml/scap/contente (only on a UNIX derived operating system)" FALSE)
 
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
@@ -209,15 +206,6 @@ install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
 
 install(FILES "docs/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
-
-if (UNIX AND SSG_COMPATIBILITY_SYMLINK)
-    install(CODE "
-        file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/)
-    ")
-    install(CODE "
-        execute_process(COMMAND ln -sf ../../../scap/ssg ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content)
-    ")
-endif()
 
 # only CPack should follow
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
