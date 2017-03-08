@@ -6,179 +6,207 @@ import csv
 import sys
 import os
 import re
+import argparse
+from abc import abstractmethod
 
-EXIT_NO_TEMPLATE    = 2
-EXIT_UNKNOWN_TARGET = 3
+class ExitCodes:
+    OK = 0
+    ERROR = 1
+    NO_TEMPLATE = 128 + 1
+    UNKNOWN_TARGET = 128 + 2
+
+class ActionType:
+    INPUT = 1
+    OUTPUT = 2
+    BUILD = 3
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
-        ValueError.__init__(self, "Unknown target: \"{0}\"".format(msg))
+        ValueError.__init__(self, "Unknown target language: \"{0}\"".format(msg))
+
+class FilesGenerator(object):
+
+    def get_template_filename(self, filename):
+
+        template_filename = os.path.join(self.product_input_dir, filename)
+
+        if os.path.isfile(template_filename):
+            return template_filename
+
+        shared_template = os.path.join(self.shared_dir, "templates", filename)
+        if os.path.isfile(shared_template):
+            return shared_template
+
+        sys.stderr.write(
+            "No specialized or shared template found for {0}\n".format(filename)
+        )
+        sys.exit(ExitCodes.NO_TEMPLATE)
 
 
-class TemplateDirMissingError(ValueError):
-    def __init__(self):
-        ValueError.__init__(self,
-                            "TEMPLATE_DIR environment variable is missing.")
+    def load_modified(self, filename, constants_dict, regex_replace=[]):
+        """
+        Load file and replace constants according to constants_dict and regex_replace
+
+        constants_dict: dict of constants - replace ( key -> value)
+        regex_dict: dict of regex substitutions - sub ( key -> value)
+        """
+
+        template_filename = self.get_template_filename(filename)
+
+        if self.action == ActionType.OUTPUT:
+            return ""
+
+        if self.action == ActionType.INPUT:
+            print(template_filename)
+            return ""
+
+        with open(template_filename, "r") as template_file:
+            filestring = template_file.read()
+
+        for key, value in constants_dict.iteritems():
+            filestring = filestring.replace(key, value)
+
+        for pattern, replacement in regex_replace:
+            filestring = re.sub(pattern, replacement, filestring)
+
+        return filestring
+
+    def save_modified(self, filename_format, filename_value, string):
+        """
+        Save string to file
+        """
+        filename = filename_format.format(filename_value)
+
+        filename = os.path.join(self.output_dir, filename)
+
+        if self.action == ActionType.INPUT:
+            return
+
+        if self.action == ActionType.OUTPUT:
+            print(filename)
+            return
+
+        with open(filename, 'w+') as outputfile:
+            outputfile.write(string)
+
+    def file_from_template(self, template_filename, constants,
+                           filename_format, filename_value, regex_replace=[]):
+        """
+        Load template, fill constant and create new file
+        @param regex_replace: array of tuples (pattern, replacement)
+        """
+
+        filled_template = self.load_modified(template_filename, constants, regex_replace)
+
+        self.save_modified(filename_format, filename_value, filled_template)
 
 
-class BuildDirMissingError(ValueError):
-    def __init__(self):
-        ValueError.__init__(self, "BUILD_DIR environment variable is missing.")
+    def process_line(self, line, target):
+        """
+        Remove comments
+        Remove line if target is unsupported
+        """
+
+        if target is not None:
+            regex = re.compile(r"#\s*only-for:([\s\w,]*)")
+
+            match = regex.search(line)
+
+            if match:
+                # if line contains restriction to target, check it
+                supported_targets = [x.strip() for x in match.group(1).split(",")]
+                if target not in supported_targets:
+                    return None
+
+        # get part before comment
+        return (line.split("#")[0]).strip()
 
 
-def get_template_filename(filename):
-    dir_ = os.environ.get('TEMPLATE_DIR')
-    if dir_ is None:
-        raise TemplateDirMissingError()
+    def filter_out_csv_lines(self, csv_file, language):
+        """
+        Filter out not applicable lines
+        """
 
-    template_filename = os.path.join(dir_, filename)
+        for line in csv_file:
+            
+            processed_line = self.process_line(line, language)
 
-    if os.path.isfile(template_filename):
-        return template_filename
+            if not processed_line:
+                 continue
 
-    shared_dir = os.path.dirname(os.path.realpath(__file__))
-
-    shared_template = os.path.join(shared_dir, filename)
-    if os.path.isfile(shared_template):
-        return shared_template
-
-    sys.stderr.write(
-        "No specialized or shared template found for {0}\n".format(filename)
-    )
-    sys.exit(EXIT_NO_TEMPLATE)
+            yield processed_line
 
 
-def load_modified(filename, constants_dict, regex_replace=[]):
-    """
-    Load file and replace constants accoring to constants_dict and regex_dict
+    def csv_map(self, filename, language):
+        """
+        Call specified function on every line of file
+        CSV lines can look like:
+            col1, col2 # comment
+            col3, col4 # only-for: bash, oval
+        """
 
-    constants_dict: dict of constants - replace ( key -> value)
-    regex_dict: dict of regex substitutions - sub ( key -> value)
-    """
+        with open(filename, 'r') as csv_file:
+            filtered_file = self.filter_out_csv_lines(csv_file, language)
 
-    template_filename = get_template_filename(filename)
+            csv_lines_content = csv.reader(filtered_file)
 
-    if os.environ.get('GENERATE_OUTPUT_LIST', '') == "true":
-        return ""
+            try:
+                for csv_line in csv_lines_content:
+                    self.generate(language, csv_line)
+            except UnknownTargetError as e:
+                sys.stderr.write(str(e) + "\n")
+                sys.exit(ExitCodes.UNKNOWN_TARGET)
 
-    if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
-        print(template_filename)
-        return ""
+    def parse_args(self):
+        p = argparse.ArgumentParser()
 
-    with open(template_filename, "r") as template_file:
-        filestring = template_file.read()
+        sp = p.add_subparsers(help="actions")
 
-    for key, value in constants_dict.iteritems():
-       filestring = filestring.replace(key, value)
+        make_sp = sp.add_parser('build', help="Build scripts")
+        make_sp.set_defaults(action=ActionType.BUILD)
 
-    for pattern, replacement in regex_replace:
-        filestring = re.sub(pattern, replacement, filestring)
+        input_sp = sp.add_parser('list-inputs', help="Generate input list")
+        input_sp.set_defaults(action=ActionType.INPUT)
 
-    return filestring
+        output_sp = sp.add_parser('list-outputs', help="Generate output list")
+        output_sp.set_defaults(action=ActionType.OUTPUT)
 
-def save_modified(filename_format, filename_value, string):
-    """
-    Save string to file
-    """
-    filename = filename_format.format(filename_value)
-    dir_ = os.environ.get('BUILD_DIR')
-    if dir_ is None:
-        raise BuildDirMissingError()
+        p.add_argument('-s','--shared_dir', action="store", help="Shared directory")
+        p.add_argument('--language', action="store", default=None, required=True,
+                       help="Scripts of which language should we generate?")
+        p.add_argument('-c',"--csv", action="store", required=True,
+                       help="csv filename.\n" + self.csv_format())
+        p.add_argument('-o','--output_dir', action="store", required=True,
+                       help="output dir")
+        p.add_argument('-i','--input_dir', action="store", required=True,
+                       help="templates dir")
 
-    filename = os.path.join(dir_, filename)
+        args, unknown = p.parse_known_args()
 
-    if os.environ.get('GENERATE_INPUT_LIST', '') == "true":
-        return
+        return (args,unknown)
 
-    if os.environ.get('GENERATE_OUTPUT_LIST', '') == "true":
-        print(filename)
-        return
+    @abstractmethod
+    def csv_format(self):
+        raise NotImplementedError("Please Implement this method")
 
-    with open(filename, 'w+') as outputfile:
-        outputfile.write(string)
+    @abstractmethod
+    def generate_from_line(self, target, line):
+        raise NotImplementedError("Please Implement this method")
 
-def file_from_template(template_filename, constants,
-                       filename_format, filename_value, regex_replace=[]):
-    """
-    Load template, fill constant and create new file
-    @param regex_replace: array of tuples (pattern, replacement)
-    """
+    def main(self):
 
-    filled_template = load_modified(template_filename, constants, regex_replace)
+        parsed, unknown = self.parse_args()
 
-    save_modified(filename_format, filename_value, filled_template)
+        if unknown:
+            sys.stderr.write(
+                "Unknown positional arguments " + ",".join(unknown) + ".\n"
+            )
+            sys.exit(ExitCodes.ERROR)
 
+        self.output_dir = parsed.output_dir
+        self.action = parsed.action
+        self.product_input_dir = parsed.input_dir
+        self.shared_dir = parsed.shared_dir
 
-def process_line(line, target):
-    """
-    Remove comments
-    Remove line if target is unsupported
-    """
-
-    if target is not None:
-        regex = re.compile(r"#\s*only-for:([\s\w,]*)")
-
-        match = regex.search(line)
-
-        if match:
-            # if line contains restriction to target, check it
-            supported_targets = [ x.strip() for x in match.group(1).split(",") ]
-            if target not in supported_targets:
-                return None
-
-    # get part before comment
-    return (line.split("#")[0]).strip()
-
-
-def filter_out_csv_lines(csv_file, target):
-    """
-    Filter out not applicable lines
-    """
-
-    for line in csv_file:
-        processed_line = process_line(line, target)
-
-        if not processed_line:
-             continue
-
-        yield processed_line
-
-
-def csv_map(filename, method, skip_comments = True, target = None):
-    """
-    Call specified function on every line of file
-    CSV lines can look like:
-        col1, col2 # comment
-        col3, col4 # only-for: bash, oval
-
-    todo: remove skip_comments parameter - should be always True
-    """
-
-    with open(filename, 'r') as csv_file:
-        filtered_file = filter_out_csv_lines(csv_file, target)
-
-        csv_lines_content = csv.reader(filtered_file)
-
-        try:
-            map(method, csv_lines_content)
-        except UnknownTargetError as e:
-            sys.stderr.write(str(e) + "\n")
-            sys.exit(EXIT_UNKNOWN_TARGET)
-
-def main(argv, help_callback, process_line_callback):
-
-    argv_len = len(argv)
-
-    if argv_len < 3:
-        help_callback()
-        sys.exit(1)
-
-    target = sys.argv[1]
-    filename = sys.argv[2]
-
-    def process_line(*args):
-        # todo: pass target only to csv_map()
-        process_line_callback(target, *args)
-
-    csv_map(filename, process_line, target=target)
-    sys.exit(0)
+        self.csv_map(parsed.csv, language=parsed.language)
+        sys.exit(ExitCodes.OK)

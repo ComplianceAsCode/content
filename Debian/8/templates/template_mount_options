@@ -1,0 +1,21 @@
+<def-group>
+  <definition class="compliance" id="mount_optionPOINTID_OPTIONID" version="1">
+    <metadata>
+      <title>Add OPTIONLIST Option to MOUNTPOINT</title>
+      <affected family="unix">
+        <platform>multi_platform_debian</platform>
+      </affected>
+      <description>MOUNTPOINT should be mounted with mount option OPTIONLIST.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="OPTIONLIST on MOUNTPOINT" test_ref="testPOINTID_OPTIONID" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="testPOINTID_OPTIONID" version="1" comment="OPTIONLIST on MOUNTPOINT">
+    <linux:object object_ref="objectPOINTID_OPTIONID_partition" />
+MOUNTSTATES  </linux:partition_test>
+  <linux:partition_object id="objectPOINTID_OPTIONID_partition" version="1">
+    <linux:mount_point>MOUNTPOINT</linux:mount_point>
+  </linux:partition_object>
+MOUNTOPTIONS</def-group>

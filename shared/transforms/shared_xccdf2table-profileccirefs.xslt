@@ -3,10 +3,13 @@
 
 <!-- this style sheet expects parameter $profile, which is the id of the Profile to be shown -->
 
+<xsl:param name="profile" select="''"/>
 <xsl:param name="testinfo" select="''" />
-<xsl:param name="format" select="''"/>
 
 	<xsl:template match="/">
+		<xsl:if test="not(/cdf:Benchmark/cdf:Profile[@id=$profile])">
+			<xsl:message terminate="yes">Profile '<xsl:value-of select="$profile"/>' not found.</xsl:message>
+		</xsl:if>
 		<html>
 		<head>
 			<title><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:title" /></title>
@@ -18,7 +21,7 @@
 			<div style="text-align: center; font-size: normal "><xsl:value-of select="/cdf:Benchmark/cdf:Profile[@id=$profile]/cdf:description" /></div>
 			<br/>
 			<br/>
-			<xsl:apply-templates select="cdf:Benchmark"/>
+			<xsl:apply-templates select="/cdf:Benchmark"/>
 		</body>
 		</html>
 	</xsl:template>

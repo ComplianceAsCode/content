@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="apt_sources_list_official" version="1">
+    <metadata>
+      <title>Only official, up-to-date distribution repositories should be used</title>
+      <affected family="unix">
+        <platform>multi_platform_debian</platform>
+      </affected>
+      <description>Official distribution repositories contain up-to-date distribution security and functional patches.</description>
+    </metadata>
+    <criteria comment="Match sources.list distribution repositories usage" operator="AND">      
+      <criterion comment="Check /etc/apt/sources(.d/.+).list file for base" test_ref="test_apt_sources_list_base_official" />
+      <criterion comment="Check /etc/apt/sources(.d/.+).list file for security" test_ref="test_apt_sources_list_security_official" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Checks usage of official distribution base repositories"
+  id="test_apt_sources_list_base_official" version="1">
+    <ind:object object_ref="obj_apt_sources_list_base_official" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_apt_sources_list_base_official" version="1">
+    <ind:filepath operation="pattern match">/etc/apt/sources(.d\/[a-zA-Z0-9]+){0,1}.list</ind:filepath>
+    <ind:pattern operation="pattern match">^deb[\s]+http://[a-z\.]+\.debian\.org/debian[\s]+[a-z]+[\s]+main</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Checks usage of official distribution security repositories"
+  id="test_apt_sources_list_security_official" version="1">
+    <ind:object object_ref="obj_apt_sources_list_security_official" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_apt_sources_list_security_official" version="1">
+    <ind:filepath operation="pattern match">/etc/apt/sources(.d\/[a-zA-Z0-9]+){0,1}.list</ind:filepath>
+    <ind:pattern operation="pattern match">^deb[\s]+http://security\.debian\.org[\s]+[a-z]+/updates[\s]+main</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

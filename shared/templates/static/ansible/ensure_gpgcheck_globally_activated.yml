@@ -1,0 +1,32 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: "Check existence of yum on Fedora"
+  stat:
+    path: /etc/yum.conf
+  register: yum_config_file
+  when: ansible_distribution == "Fedora"
+
+# We can have yum also in Fedora, but probably not forever
+- name: Ensure GPG check is globally activated (yum)
+  ini_file:
+    dest: "{{item}}"
+    section: main
+    option: gpgcheck
+    value: 1
+    create: False
+  with_items: "/etc/yum.conf"
+  when: ansible_distribution == "RedHat" or yum_config_file.stat.exists
+
+- name: Ensure GPG check is globally activated (dnf)
+  ini_file:
+    dest: "{{item}}"
+    section: main
+    option: gpgcheck
+    value: 1
+    create: False
+  with_items: "/etc/dnf/dnf.conf"
+  when: ansible_distribution == "Fedora"

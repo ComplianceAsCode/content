@@ -25,8 +25,8 @@ homepage and more detailed documentation are available at <weblink-macro link="h
 <Group id="configure_printing">
 <title>Configure the CUPS Service if Necessary</title>
 <description>CUPS provides the ability to easily share local printers with
-other machines over the network. It does this by allowing machines to share
-lists of available printers. Additionally, each machine that runs the CUPS
+other systems over the network. It does this by allowing systems to share
+lists of available printers. Additionally, each system that runs the CUPS
 service can potentially act as a print server. Whenever possible, the printer
 sharing and print server capabilities of CUPS should be limited or disabled.
 The following recommendations should demonstrate how to do just that.
@@ -41,10 +41,10 @@ file, located at <tt>/etc/cups/cupsd.conf</tt>, to include the following:
 <pre>Browsing Off</pre>
 </description>
 <rationale>The CUPS print service can be configured to broadcast a list of
-available printers to the network. Other machines on the network, also running
+available printers to the network. Other systems on the network, also running
 the CUPS print service, can be configured to listen to these broadcasts and add
 and configure these printers for immediate use. By disabling this browsing
-capability, the machine will no longer generate or receive such broadcasts.
+capability, the system will no longer generate or receive such broadcasts.
 </rationale>
 <ident cce="27108-0" />
 <oval id="cups_disable_browsing" />
@@ -61,7 +61,7 @@ removing the more generic port directive from /etc/cups/cupsd.conf:
 and replacing it with the <tt>Listen</tt> directive:
 <pre>Listen localhost:631</pre>
 This will prevent remote users from printing to locally configured printers
-while still allowing local users on the machine to print normally.
+while still allowing local users on the system to print normally.
 </description>
 <rationale>By default, locally configured printers will not be shared over the
 network, but if this functionality has somehow been enabled, these

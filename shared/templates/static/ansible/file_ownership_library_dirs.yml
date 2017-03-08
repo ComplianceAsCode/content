@@ -1,0 +1,18 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: "Read list libraries without root ownership"
+  shell: "find -L /usr/lib /usr/lib64 /lib /lib64 \\! -user root"
+  register: libraries_not_owned_by_root
+  changed_when: False
+  failed_when: False
+
+- name: "Set ownership of system libraries to root"
+  file:
+    path: "{{item}}"
+    owner: "root"
+  with_items: "{{ libraries_not_owned_by_root.stdout_lines }}"
+  when: libraries_not_owned_by_root | length > 0

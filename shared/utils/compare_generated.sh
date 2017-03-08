@@ -68,7 +68,7 @@ function compareFile() {
 #compareFile ./original/Fedora/output/ssg-fedora-ds.xml
 #exit
 
-find "$originalRepo" -name "*-ds.xml" | grep output | while read originalFile;
+find "$originalRepo/cmake" -name "*-ds.xml" | while read originalFile;
 do
 	compareFile "$originalFile"
 done

@@ -1,0 +1,25 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = medium
+
+- name: "Fail if user is not root"
+  fail:
+    msg: 'Root account required to read root $PATH'
+  when: ansible_user != "root"
+  
+- name: "Get root paths which are not symbolic links"
+  shell: 'tr ":" "\n" <<< "$PATH" | xargs -I% find % -maxdepth 0 -type d'
+  changed_when: False
+  failed_when: False
+  register: root_paths
+  when: ansible_user == "root"
+    
+- name: "Disable writability to root directories"
+  file:
+    path: "{{item}}"
+    mode: "g-w,o-w"
+  with_items: "{{ root_paths.stdout_lines }}"
+  when: root_paths.stdout_lines is defined
+

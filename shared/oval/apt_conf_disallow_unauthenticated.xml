@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="apt_conf_disallow_unauthenticated" version="1">
+    <metadata>
+      <title>Check that no unauthenticated repository is authorized by configuration</title>
+      <affected family="unix">
+        <platform>multi_platform_debian</platform>
+        <platform>multi_platform_ubuntu</platform>
+      </affected>
+      <description>Accessing a repository should be
+      allowed only when the repository is authenticated.</description>
+    </metadata>
+    <criteria comment="Detect any usage of allow-ynauthenticated option"
+      operator="OR">      
+      <criterion comment="Check /etc/apt/apt.conf file"
+      test_ref="test_unauthenticated_apt_conf" />
+    <criterion comment="Check /etc/apt/apt.conf.d/* file"
+      test_ref="test_unauthenticated_apt_conf_d" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="Checks usage of unauthenticated in apt.conf"
+  id="test_unauthenticated_apt_conf" version="1">
+    <ind:object object_ref="obj_unauthenticated_apt_conf" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_unauthenticated_apt_conf"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/apt/apt/apt.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*APT::Get::AllowUnauthenticated(=|[\s]+)(yes|true|True);.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+    comment="Checks usage of unauthenticated in apt.conf.d/*"
+  id="test_unauthenticated_apt_conf_d" version="1">
+    <ind:object object_ref="obj_unauthenticated_apt_conf_d" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_unauthenticated_apt_conf_d"
+  version="1">
+    <ind:filepath operation="pattern match">/etc/apt/apt.conf.d/\*</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*APT::Get::AllowUnauthenticated(=|[\s]+)(yes|true|True);.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
