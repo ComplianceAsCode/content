@@ -896,7 +896,7 @@ cui="3.3.1" />
 
 <Rule id="file_ownership_var_log_audit" severity="medium" prodtype="rhel7">
 <title>System Audit Logs Must Be Owned By Root</title>
-<description>
+<description>Checks that all /var/log/audit files and directories are owned by the root user and group.
 <fileowner-desc-macro file="/var/log" owner="root"/>
 </description>
 <ocil>
