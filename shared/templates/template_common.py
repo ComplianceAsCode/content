@@ -143,8 +143,6 @@ class FilesGenerator(object):
         CSV lines can look like:
             col1, col2 # comment
             col3, col4 # only-for: bash, oval
-
-        todo: remove skip_comments parameter - should be always True
         """
 
         with open(filename, 'r') as csv_file:
