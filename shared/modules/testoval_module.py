@@ -13,7 +13,7 @@ SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/oval/'
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 
-conf_file = re.sub('shared.*', '', __file__) + '/config/oval.config'
+conf_file = re.sub('shared.*', '', __file__) + '/build/oval.config'
 footer = '</oval_definitions>'
 ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
 
