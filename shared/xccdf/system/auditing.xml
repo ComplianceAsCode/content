@@ -896,11 +896,13 @@ cui="3.3.1" />
 
 <Rule id="file_ownership_var_log_audit" severity="medium" prodtype="rhel7">
 <title>System Audit Logs Must Be Owned By Root</title>
-<description>
-<fileowner-desc-macro file="/var/log" owner="root"/>
+<description>All audit logs must be owned by root user and group. By default, the path for audit log is <pre>/var/log/audit/</pre>.
+<fileowner-desc-macro file="/var/log/audit" owner="root"/>
+<fileowner-desc-macro file="/var/log/audit/*" owner="root"/>
 </description>
 <ocil>
-<fileowner-check-macro file="/var/log" owner="root"/>
+<fileowner-desc-macro file="/var/log/audit" owner="root"/>
+<fileowner-desc-macro file="/var/log/audit/*" owner="root"/>
 </ocil>
 <rationale>Unauthorized disclosure of audit records can reveal system and configuration data to
 attackers, thus compromising its confidentiality.</rationale>
