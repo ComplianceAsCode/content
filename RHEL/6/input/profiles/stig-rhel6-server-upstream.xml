@@ -35,6 +35,7 @@ upstream project homepage is https://www.open-scap.org/security-policies/scap-se
 <select idref="package_sendmail_removed" selected="true"/>
 
 <select idref="service_netconsole_disabled" selected="true"/>
+<select idref="service_atd_disabled" selected="true"/>
 
 <select idref="xwindows_runlevel_setting" selected="true"/>
 <select idref="package_xorg-x11-server-common_removed" selected="true"/>
@@ -111,8 +112,6 @@ upstream project homepage is https://www.open-scap.org/security-policies/scap-se
 <refine-value idref="var_accounts_minimum_age_login_defs" selector="1"/>
 <!-- from inherited Rule, deny_password_attempts -->
 <refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3"/>
-
-<select idref="service_atd_disabled" selected="false" />
 
 <refine-value idref="var_password_pam_ucredit" selector="1" />
 <refine-value idref="var_password_pam_ocredit" selector="1"/>
