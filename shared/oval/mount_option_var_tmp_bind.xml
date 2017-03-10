@@ -13,8 +13,12 @@
     <criteria operator="AND">
       <criterion comment="Ensure /var/tmp is mounted"
       test_ref="test_mount_option_var_tmp" />
-      <criterion comment="Ensure /tmp is bind mounted"
-      test_ref="test_mount_option_var_tmp_bind" />
+      <criteria operator="OR">
+        <criterion comment="Ensure /tmp is bind mounted"
+        test_ref="test_mount_option_var_tmp_bind" />
+        <criterion comment="Ensure /var/tmp and /tmp have the same source device"
+        test_ref="test_mount_option_var_tmp_bind_compare_source" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -39,7 +43,30 @@
   id="object_mount_option_var_tmp_bind" version="1">
     <ind:filepath>/etc/mtab</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*/tmp[\s]+/var/tmp[\s]+.*bind.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">
-    1</ind:instance>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <!-- On newer system /etc/mtab has changed behavior and there is no info
+       about binded mounts anymore. An alternative is to check if
+       /tmp and /var/tmp have the same source device -->
+
+  <linux:partition_test id="test_mount_option_var_tmp_bind_compare_source" version="1"
+  comment="Ensure /var/tmp and /tmp have the same source device" check="all">
+    <linux:object object_ref="object_mount_option_var_tmp_bind_compare_source" />
+    <linux:state state_ref="state_mount_option_var_tmp_bind_compare_source" />
+  </linux:partition_test>
+  <linux:partition_object id="object_mount_option_var_tmp_bind_compare_source" version="1">
+    <linux:mount_point operation="pattern match">/tmp</linux:mount_point>
+  </linux:partition_object>
+  <linux:partition_state id="state_mount_option_var_tmp_bind_compare_source" version="1">
+    <linux:device datatype="string" entity_check="at least one"
+    operation="equals" var_ref="var_mount_option_var_tmp_bind_var_tmp_source_device"/>
+  </linux:partition_state>
+
+  <local_variable comment="Source device of /var/tmp" datatype="string"
+  id="var_mount_option_var_tmp_bind_var_tmp_source_device" version="1">
+    <object_component item_field="device"
+    object_ref="object_mount_option_var_tmp" />
+  </local_variable>
+
 </def-group>
