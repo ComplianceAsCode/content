@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="service_sshd_enabled" version="1">
+    <metadata>
+      <title>Service sshd Enabled</title>
+      <affected family="unix">
+        <platform>SUSE Linux Enterprise 12</platform>
+      </affected>
+      <description>The sshd service should be enabled if possible.</description>
+    </metadata>
+    <criteria comment="package openssh-server installed and service sshd is configured to start" operator="AND">
+    <extend_definition comment="openssh-server installed" definition_ref="package_openssh-server_installed" />
+    <criteria operator="OR" comment="service sshd is configured to start">
+      <criterion comment="multi-user.target wants sshd" test_ref="test_multi_user_wants_sshd" />
+    </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_sshd" version="1">
+    <linux:object object_ref="object_multi_user_target_for_sshd" />
+    <linux:state state_ref="state_systemd_sshd_on"/>
+  </linux:systemdunitdependency_test>
+
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_sshd" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+
+  <linux:systemdunitdependency_state id="state_systemd_sshd_on" comment="sshd listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">sshd.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+</def-group>

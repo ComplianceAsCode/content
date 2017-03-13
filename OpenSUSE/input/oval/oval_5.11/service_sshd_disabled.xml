@@ -1,0 +1,17 @@
+<def-group>
+
+  <definition class="compliance" id="service_sshd_disabled" version="2">
+    <metadata>
+      <title>Service sshd Disabled</title>
+      <affected family="unix">
+        <platform>OpenSUSE</platform>
+      </affected>
+      <description>The sshd service should be disabled if possible.</description>
+    </metadata>
+    <criteria>
+      <extend_definition definition_ref="service_sshd_enabled" negate="true"
+      comment="Package openssh-server removed or service sshd not configured to start" />
+    </criteria>
+  </definition>
+
+</def-group>
