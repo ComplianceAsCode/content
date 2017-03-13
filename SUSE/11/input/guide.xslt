@@ -16,7 +16,7 @@
       <xsl:copy-of select="@*|node()" />
 
        <!-- Adding profiles here -->
-       <xsl:apply-templates select="document('profiles/standard.xml')" />
+       <!--xsl:apply-templates select="document('profiles/standard.xml')" /-->
        <xsl:apply-templates select="document('profiles/common.xml')" />
        <!-- <xsl:apply-templates select="document('profiles/desktop.xml')" /> -->
        <xsl:apply-templates select="document('profiles/server.xml')" />
