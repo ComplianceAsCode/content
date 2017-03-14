@@ -5,6 +5,15 @@ populate var_accounts_passwords_pam_faillock_deny
 AUTH_FILES[0]="/etc/pam.d/system-auth"
 AUTH_FILES[1]="/etc/pam.d/password-auth"
 
+# This script fixes absence of pam_faillock.so in PAM stack or the
+# absense of deny=[0-9]+ in pam_faillock.so arguments
+# When inserting auth pam_faillock.so entries,
+# the entry with preauth argument will be added before pam_unix.so module
+# and entry with authfail argument will be added before pam_deny.so module.
+
+# The placement of pam_faillock.so entries will not be changed
+# if they are already present
+
 for pamFile in "${AUTH_FILES[@]}"
 do
 	
