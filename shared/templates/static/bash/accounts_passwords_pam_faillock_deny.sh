@@ -29,9 +29,10 @@ do
 	# pam_faillock.so not present yet
 	else
 
-		# insert pam_faillock.so preauth & authfail rows with proper value of the 'deny' option
+		# insert pam_faillock.so preauth row with proper value of the 'deny' option before pam_unix.so
 		sed -i --follow-symlinks "/^auth.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
-		sed -i --follow-symlinks "/^auth.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
+		# insert pam_faillock.so authfail row with proper value of the 'deny' option before pam_deny.so, after all modules which determine authentication outcome.
+		sed -i --follow-symlinks "/^auth.*pam_deny.so.*/i auth        [default=die] pam_faillock.so authfail deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
 	fi
 
 	# add pam_faillock.so into account phase
