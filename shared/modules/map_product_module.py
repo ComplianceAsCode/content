@@ -16,7 +16,7 @@ OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 
-multi_product_list = ['rhel', 'fedora', 'rhel-osp', 'debian', 'ubuntu', 'wrlinux', 'sle']
+multi_product_list = ['rhel', 'fedora', 'rhel-osp', 'debian', 'ubuntu', 'wrlinux', 'opensuse', 'sle']
 
 
 def parse_product_name(product):

@@ -16,7 +16,7 @@
       <xsl:copy-of select="@*|node()" />
 
       <!-- Adding profiles here -->
-      <xsl:apply-templates select="document('profiles/standard.xml')" />
+      <!--xsl:apply-templates select="document('profiles/standard.xml')" /-->
       <xsl:apply-templates select="document('profiles/common.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
@@ -33,26 +33,29 @@
       </xsl:if>
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
-      <xsl:apply-templates select="document('xccdf/system/system.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/services.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/system.xml'))" />
+      <!--<xsl:apply-templates select="document('xccdf/services/services.xml')" />-->
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='system']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/permissions.xml')" />
+      <!--<xsl:apply-templates select="document('xccdf/system/entropy.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />-->
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
+      <!--<xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/accounts.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />-->
     </xsl:copy>
   </xsl:template>
 
   <xsl:template match="Group[@id='software']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="document('xccdf/system/software/disk_partitioning.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/updating.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/integrity.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/gnome.xml')" />
@@ -63,9 +66,9 @@
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/restrictions.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/session.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/restrictions.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/accounts/pam.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/accounts/session.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/physical.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/banners.xml')" />
     </xsl:copy>
@@ -85,10 +88,10 @@
   <xsl:template match="Group[@id='permissions']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/partitions.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/mounting.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/files.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/execution.xml')" />
+      <!--<xsl:apply-templates select="document('xccdf/system/permissions/partitions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/permissions/mounting.xml')" />-->
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/files.xml'))" />
+      <!--<xsl:apply-templates select="document('xccdf/system/permissions/execution.xml')" />-->
     </xsl:copy>
   </xsl:template>
 
@@ -98,7 +101,7 @@
       <xsl:apply-templates select="document('xccdf/system/network/kernel.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/wireless.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/ipv6.xml')" />
-      <!-- iptables have been replaced in OpenSUSE in favour of firewalld. Uncomment the following
+      <!-- iptables have been replaced in Fedora in favour of firewalld. Uncomment the following
            line in the moment you would truly want to add iptables rules back -->
       <!-- <xsl:apply-templates select="document('xccdf/system/network/iptables.xml')" /> -->
       <xsl:apply-templates select="document('xccdf/system/network/firewalld.xml')" />
