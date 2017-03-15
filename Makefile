@@ -39,10 +39,11 @@ tarball:
 	cp Makefile tarball/$(PKG)/
 	cp CMakeLists.txt tarball/$(PKG)/
 	cp BUILD.md Contributors.md LICENSE VERSION README.md tarball/$(PKG)/
-	cp -r config/ tarball/$(PKG)
+#	cp -r config/ tarball/$(PKG)
 	cp -r docs/ tarball/$(PKG)
 	cp -r shared/ tarball/$(PKG)
 	cp -r cmake/ tarball/$(PKG)
+	cp oval.config.in tarball/$(PKG)
 	cp -r --preserve=links --parents Chromium/ tarball/$(PKG)
 	cp -r --preserve=links --parents Debian/ tarball/$(PKG)
 	cp -r --preserve=links --parents Fedora/ tarball/$(PKG)
