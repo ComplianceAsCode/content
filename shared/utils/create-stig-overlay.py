@@ -14,6 +14,18 @@ dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
 
 
+def yes_no_prompt():
+    prompt = "Would you like to proceed? (Y/N): "
+
+    while True:
+        data = str(raw_input(prompt)).lower()
+
+        if data in ("yes", "y"):
+            return True
+        elif data in ("n", "no"):
+            return False
+
+
 def element_value(element, element_obj):
     for elem in element_obj.findall("./{%s}%s" % (xccdf_ns, element)):
         elem = elem.text
@@ -42,7 +54,10 @@ def getkey(elem):
 
 
 def new_stig_overlay(xccdftree, ssgtree, outfile):
-    ssg_mapping = ssg_xccdf_stigid_mapping(ssgtree)
+    if not ssgtree:
+        ssg_mapping = False
+    else:
+        ssg_mapping = ssg_xccdf_stigid_mapping(ssgtree)
 
     new_stig_overlay = ET.Element("overlays", xmlns=xccdf_ns)
     for group in xccdftree.findall("./{%s}Group" % xccdf_ns):
@@ -58,10 +73,13 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
             rule_title = element_value("title", rule)
             ident = element_value("ident", rule).strip("CCI-").lstrip("0")
 
-        try:
-            mapped_id = ssg_mapping[version]
-        except KeyError as e:
+        if not ssgtree:
             mapped_id = "XXXX"
+        else:
+            try:
+                mapped_id = ssg_mapping[version]
+            except KeyError as e:
+                mapped_id = "XXXX"
 
         overlay = ET.SubElement(new_stig_overlay, "overlay", owner=owner,
                                 ruleid=mapped_id, ownerid=version, disa=ident,
@@ -78,6 +96,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
     new_stig_overlay[:] = sorted(lines, key=getkey)
     tree = ET.ElementTree(new_stig_overlay)
     tree.write(outfile, pretty_print=True, encoding='UTF-8', xml_declaration=True)
+    print("\nGenerated the new STIG overlay file: %s" % outfile)
 
 
 def parse_options():
@@ -98,7 +117,7 @@ def parse_options():
                            [default: %default]")
     (options, args) = parser.parse_args()
 
-    if not options.disa_xccdf_filename and not options.ssg_xccdf_filename:
+    if not options.disa_xccdf_filename:
         parser.print_help()
         sys.exit(1)
 
@@ -109,15 +128,23 @@ def main():
     (options, args) = parse_options()
 
     disa_xccdftree = ET.parse(options.disa_xccdf_filename)
-    ssg_xccdftree = ET.parse(options.ssg_xccdf_filename)
 
-    disa = disa_xccdftree.find(".//{%s}publisher" % dc_ns).text
-    if disa != "DISA":
+    if not options.ssg_xccdf_filename:
+        print("WARNING: You are generating a STIG overlay XML file without mapping it "
+              "to existing SSG content.")
+        prompt = yes_no_prompt()
+        if not prompt:
+            sys.exit(0)
+        ssg_xccdftree = False
+    else:
+        ssg_xccdftree = ET.parse(options.ssg_xccdf_filename)
+        ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
+        if ssg != "SCAP Security Guide Project":
+            sys.exit("%s is not a valid SSG generated XCCDF file." % os.path.basename(ssg_xccdf_filename))
+
+    disa = disa_xccdftree.find(".//{%s}source" % dc_ns).text
+    if disa != "STIG.DOD.MIL":
         sys.exit("%s is not a valid DISA generated manual XCCDF file." % os.path.basename(disa_xccdf_filename))
-
-    ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
-    if ssg != "SCAP Security Guide Project":
-        sys.exit("%s is not a valid SSG generated XCCDF file." % os.path.basename(ssg_xccdf_filename))
 
     new_stig_overlay(disa_xccdftree, ssg_xccdftree, outfile)
 
