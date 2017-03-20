@@ -1,6 +1,6 @@
 set(PRODUCT "rhel7")
 set(DISA_SRG_VERSION "v1r4")
-set(DISA_STIG_VERSION "v1r0.2")
+set(DISA_STIG_VERSION "v1r1")
 
 ssg_build_product(${PRODUCT})
 
