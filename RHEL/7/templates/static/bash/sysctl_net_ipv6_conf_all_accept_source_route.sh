@@ -4,13 +4,11 @@
 #
 /sbin/sysctl -q -n -w net.ipv6.conf.all.accept_source_route=0
 
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
+
 #
 # If SYSCTLVAR present in /etc/sysctl.conf, change value to "SYSCTLVAL"
 #	else, add "SYSCTLVAR = SYSCTLVAL" to /etc/sysctl.conf
 #
-if grep --silent ^net.ipv6.conf.all.accept_source_route /etc/sysctl.conf ; then
-	sed -i 's/^net.ipv6.conf.all.accept_source_route.*/net.ipv6.conf.all.accept_source_route = 0/g' /etc/sysctl.conf
-else
-	echo -e "\n# Set net.ipv6.conf.all.accept_source_route to 0 per security requirements" >> /etc/sysctl.conf
-	echo "net.ipv6.conf.all.accept_source_route = 0" >> /etc/sysctl.conf
-fi
+replace_or_append '/etc/sysctl.conf' '^net.ipv6.conf.all.accept_source_route' '0' '$CCENUM'
