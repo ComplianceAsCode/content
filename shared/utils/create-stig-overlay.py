@@ -45,6 +45,12 @@ def ssg_xccdf_stigid_mapping(ssgtree):
             if ident_stig_id is not None:
                 stigid = ident_stig_id.text
                 xccdftostig_idmapping[stigid.strip("DISA FSO ")] = xccdfid
+            else:
+                ref_stig_id = rule.find("./{%s}reference[@href='%s']" % (xccdf_ns, stig_ns))
+                if ref_stig_id is not None:
+                    stigid = ref_stig_id.text
+                    xccdftostig_idmapping[stigid] = xccdfid
+
 
     return xccdftostig_idmapping
 
@@ -95,7 +101,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
     tree = ET.ElementTree(new_stig_overlay)
-    tree.write(outfile, pretty_print=True, encoding='UTF-8', xml_declaration=True)
+    tree.write(outfile, pretty_print=True, encoding="UTF-8", xml_declaration=True)
     print("\nGenerated the new STIG overlay file: %s" % outfile)
 
 
@@ -112,7 +118,7 @@ def parse_options():
                       help="A DISA generated XCCDF Manual checks file. \
                             For example: disa-stig-rhel6-v1r12-xccdf-manual.xml")
     parser.add_option("-o", "--output", default=outfile,
-                      action="store", dest="outfile",
+                      action="store", dest="output_file",
                       help="STIG overlay XML content file \
                            [default: %default]")
     (options, args) = parser.parse_args()
@@ -146,7 +152,7 @@ def main():
     if disa != "STIG.DOD.MIL":
         sys.exit("%s is not a valid DISA generated manual XCCDF file." % os.path.basename(disa_xccdf_filename))
 
-    new_stig_overlay(disa_xccdftree, ssg_xccdftree, outfile)
+    new_stig_overlay(disa_xccdftree, ssg_xccdftree, options.output_file)
 
 
 if __name__ == "__main__":
