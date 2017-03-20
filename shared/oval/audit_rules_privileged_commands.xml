@@ -47,12 +47,8 @@
     <unix:filepath operation="pattern match">^\/(dev|proc|sys)\/.*$</unix:filepath>
   </unix:file_state>
 
-  <local_variable id="variable_full_form_of_audit_rule" comment="full form of audit rules for privileged commands" datatype="string" version="1">
-    <concat>
-      <literal_component>-a always,exit -F path=</literal_component>
-      <object_component object_ref="object_system_privileged_commands" item_field="filepath" />
-      <literal_component> -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged</literal_component>
-    </concat>
+  <local_variable id="variable_all_privileged_commands" comment="All privileged commands" datatype="string" version="1">
+    <object_component object_ref="object_system_privileged_commands" item_field="filepath" />
   </local_variable>
 
   <local_variable id="variable_count_of_suid_sgid_binaries_on_system" comment="count of suid / sgid binaries actually present on the system" datatype="int" version="1">
@@ -66,11 +62,11 @@
   </ind:variable_object>
 
   <ind:textfilecontent54_state id="state_proper_audit_rule_but_for_unprivileged_command" version="1">
-    <ind:subexpression operation="not equal" datatype="string" var_ref="variable_full_form_of_audit_rule" var_check="all" />
+    <ind:subexpression operation="not equal" datatype="string" var_ref="variable_all_privileged_commands" var_check="all" />
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_state id="state_audit_rules_privileged_commands" version="1">
-    <ind:subexpression operation="pattern match" datatype="string" var_ref="variable_full_form_of_audit_rule" var_check="at least one"/>
+    <ind:subexpression operation="pattern match" datatype="string" var_ref="variable_all_privileged_commands" var_check="at least one"/>
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit augenrules suid sgid" id="test_arpc_suid_sgid_augenrules" version="1">
@@ -79,7 +75,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arpc_suid_sgid_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(-a always,exit -F path=[^\n]+ -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a always,exit (?:-F path=([\S]+) )+-F perm=[r|w]?x -F auid>=1000 -F auid!=4294967295 -k privileged[\s]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_proper_audit_rule_but_for_unprivileged_command</filter>
   </ind:textfilecontent54_object>
@@ -103,7 +99,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arpc_suid_sgid_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(-a always,exit -F path=[^\n]+ -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a always,exit (?:-F path=([\S]+) )+-F perm=[r|w]?x -F auid>=1000 -F auid!=4294967295 -k privileged[\s]*$</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
     <filter action="exclude">state_proper_audit_rule_but_for_unprivileged_command</filter>
   </ind:textfilecontent54_object>
