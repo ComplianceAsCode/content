@@ -874,11 +874,11 @@ endmacro()
 
 macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-manual.html"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
         DEPENDS "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
-        COMMENT "[${PRODUCT}-tables] generating HTML STIG table"
+        COMMENT "[${PRODUCT}-tables] generating HTML MANUAL STIG table"
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
@@ -888,9 +888,25 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML STIG test info document"
     )
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_CURRENT_SOURCE_DIR}/input/auxiliary/stig_overlay.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
+        COMMENT "[${PRODUCT}-tables] generating unlinked STIG XCCDF XML file"
+    )
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
+        COMMENT "[${PRODUCT}-tables] generating HTML STIG table"
+    )
     add_custom_target(
         generate-${PRODUCT}-table-stig
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-manual.html"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
