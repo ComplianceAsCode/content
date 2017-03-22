@@ -15,9 +15,4 @@ populate sysctl_SYSCTLID_value
 # If SYSCTLVAR present in /etc/sysctl.conf, change value to appropriate value
 #	else, add "SYSCTLVAR = value" to /etc/sysctl.conf
 #
-if grep --silent ^SYSCTLVAR /etc/sysctl.conf ; then
-	sed -i "s/^SYSCTLVAR.*/SYSCTLVAR = $sysctl_SYSCTLID_value/g" /etc/sysctl.conf
-else
-	echo -e "\n# Set SYSCTLVAR to $sysctl_SYSCTLID_value per security requirements" >> /etc/sysctl.conf
-	echo "SYSCTLVAR = $sysctl_SYSCTLID_value" >> /etc/sysctl.conf
-fi
+replace_or_append '/etc/systcl.conf' ^SYSCTLVAR $sysctl_SYSCTLID_value '$CCENUM'

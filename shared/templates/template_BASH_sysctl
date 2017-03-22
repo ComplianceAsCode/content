@@ -3,6 +3,8 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
+. /usr/share/scap-security-guide/remediation_functions
+
 #
 # Set runtime for SYSCTLVAR
 #
@@ -12,9 +14,4 @@
 # If SYSCTLVAR present in /etc/sysctl.conf, change value to "SYSCTLVAL"
 #	else, add "SYSCTLVAR = SYSCTLVAL" to /etc/sysctl.conf
 #
-if grep --silent ^SYSCTLVAR /etc/sysctl.conf ; then
-	sed -i 's/^SYSCTLVAR.*/SYSCTLVAR = SYSCTLVAL/g' /etc/sysctl.conf
-else
-	echo -e "\n# Set SYSCTLVAR to SYSCTLVAL per security requirements" >> /etc/sysctl.conf
-	echo "SYSCTLVAR = SYSCTLVAL" >> /etc/sysctl.conf
-fi
+replace_or_append '/etc/sysctl.conf' '^SYSCTLVAR' 'SYSCTLVAL' '$CCENUM'
