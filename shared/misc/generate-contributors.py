@@ -33,6 +33,7 @@ email_mappings = {
     "rprice@redhat.com": "robin@redhat.com",
     # Zbynek Moravec
     "ybznek@users.noreply.github.com": "zmoravec@redhat.com",
+    "moraveczbynek@gmail.com": "zmoravec@redhat.com",
     # Jeff Blank
     "jeff@t440.local": "blank@eclipse.ncsc.mil",
     # Shawn Wells
