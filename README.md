@@ -28,6 +28,8 @@ version that is packaged is too old, you need to build the content yourself
 and install it via `make install`. Please see the [BUILD.md](BUILD.md)
 document for more info.
 
+Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
+
 ## Usage
 We assume you have installed SCAP Security Guide system-wide into a
 standard location as instructed in the previous section.
