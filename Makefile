@@ -71,6 +71,23 @@ rpmroot:
 	mkdir -p $(RPMBUILD)/ZIPS
 	mkdir -p $(RPMBUILD)/BUILDROOT
 
+zipfile:
+	@# ZIP only contains source datastreams and kickstarts, people who
+	@# want sources to build from should get the tarball instead.
+	rm -rf zipfile/$(PKG)
+	mkdir -p zipfile/$(PKG)
+	cp README.md zipfile/$(PKG)/
+	cp Contributors.md zipfile/$(PKG)/
+	cp LICENSE zipfile/$(PKG)/
+	rm -rf zipfile/build
+	mkdir -p zipfile/build
+	(cd zipfile/build && cmake ../../ && make -j 4)
+	cp zipfile/build/*-ds.xml zipfile/$(PKG)/
+	mkdir zipfile/$(PKG)/kickstart
+	cp RHEL/{6,7}/kickstart/*-ks.cfg zipfile/$(PKG)/kickstart/
+	(cd zipfile && zip -r $(PKG).zip $(PKG)/)
+	@echo "ZIP file is ready at zipfile/$(PKG).zip"
+
 version-update:
 	@echo -e "\nUpdating $(RPM_SPEC) version, release, and changelog..."
 	sed -e s/__NAME__/$(PKGNAME)/ \
@@ -96,5 +113,5 @@ rpm: srpm
 	@echo -e "\nBuilding $(PKGNAME) RPM..."
 	cd $(RPMBUILD)/SRPMS && rpmbuild --rebuild --target=$(ARCH) $(RPMBUILD_ARGS) --buildroot $(RPMBUILD)/BUILDROOT -bb $(PKG)-$(SSG_RELEASE_VERSION)$(OS_DIST).src.rpm
 
-.PHONY: tarball srpm rpm
+.PHONY: tarball srpm rpm zipfile
 	rm -f scap-security-guide.spec
