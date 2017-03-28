@@ -268,7 +268,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     # TODO: the input/oval parts will *probably* be removed once OVALs are built the same as remediations
 
-    if("${PRODUCT}" MATCHES "(rhel|centos|sl)-osp7")
+    if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
         set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/input/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     else()
@@ -281,7 +281,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
         # TODO: the input/oval parts will *probably* be removed once OVALs are built the same as remediations
 
-        if("${PRODUCT}" MATCHES "(rhel|centos|sl)-osp7")
+        if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
             set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/input/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
         else()
