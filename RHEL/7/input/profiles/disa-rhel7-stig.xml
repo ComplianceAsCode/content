@@ -1,20 +1,6 @@
-<Profile id="stig-rhel7-server-upstream" extends="ospp-rhel7-server">
-<title override="true">STIG for Red Hat Enterprise Linux 7 Server</title>
-<description override="true">This is a *draft* profile for STIG. This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.<br /><br />
-
-<p>
-    <strong>Where is the RHEL7 STIG?</strong>
-    <ul>
-        <li>Question: May I deploy a product if no STIG exists?<br />
-            Answer: Yes, based on mission need and with DAA approval.
-        </li>
-        <li>Question: What do I use if there is no STIG?<br />
-            Answer: DISA FSO developed Security Requirement Guides (SRGs) to address technology areas. In the absence of a STIG, an SRG can be used to determine compliance with DoD policies. If there is no applicable SRG or STIG, industry or vendor recommended practices may be used. Examples include Center for Internet Security Benchmarks, Payment Card Industry requirements or the vendor's own security documentation.
-        </li>
-    </ul>
-    <small>Source: http://iase.disa.mil/stigs/Pages/faqs.aspx#STIG</small>
-</p>
-</description>
+<Profile id="disa-rhel7-stig" extends="ospp-rhel7-server">
+<title override="true">DISA STIG for Red Hat Enterprise Linux 7</title>
+<description override="true">This is a *draft* profile for STIG. This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.</description>
 
 <!-- DISA FSO REFINEMENT VALUES
      The following refine-values tailor the NIAP OSPP profile
@@ -30,7 +16,7 @@
 <refine-value idref="var_account_disable_post_pw_expiration" selector="0" />
 <refine-value idref="var_accounts_fail_delay" selector="4" />
 <refine-value idref="sshd_listening_port" selector="default" />
-<refine-value idref="var_accounts_user_umask" selector="077"/>
+<refine-value idref="var_accounts_user_umask" selector="077" />
 <!-- END DISA FSO REFINEMENT VALUES -->
 
 <!-- NIAP/OSPP EXCLUDED RULES
@@ -108,7 +94,7 @@
 <select idref="account_disable_post_pw_expiration" selected="true" />
 
 <!-- Account Management Requirements -->
-<select idref="account_temp_expire_date" selected="true" />
+<select idref="account_temp_expire_date" selected="false" />
 <select idref="accounts_logon_fail_delay" selected="true" />
 <select idref="sudo_remove_no_authenticate" selected="true" />
 <select idref="sudo_remove_nopasswd" selected="true" />
@@ -117,22 +103,18 @@
 <select idref="smartcard_auth" selected="true" />
 <select idref="banner_etc_issue" selected="true" />
 <select idref="sshd_enable_warning_banner" selected="true" />
-<select idref="ftp_present_banner" selected="true" />
 <select idref="accounts_umask_etc_login_defs" selected="true" />
 
 <!-- Software/Patch Requirements -->
-<select idref="ensure_redhat_gpgkey_installed" selected="true" />
-<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="ensure_redhat_gpgkey_installed" selected="false" />
+<select idref="ensure_gpgcheck_never_disabled" selected="false" />
 <select idref="security_patches_up_to_date" selected="true" />
 <select idref="clean_components_post_updating" selected="true" />
 
-<!-- System Audit Requirements -->
-
 <!-- Kernel/Network Settings -->
-<select idref="network_disable_ddns_interfaces" selected="true" />
 <select idref="libreswan_approved_tunnels" selected="true" />
-<select idref="package_libreswan_installed" selected="true" />
-<select idref="package_dracut-fips_installed" selected="true" />
+<select idref="package_libreswan_installed" selected="false" />
+<select idref="package_dracut-fips_installed" selected="false" />
 <select idref="grub2_enable_fips_mode" selected="true" />
 
 <!-- System Logging Requirements -->
@@ -142,48 +124,39 @@
 
 <!-- Remote Access Requirements -->
 <select idref="package_openssh-server_installed" selected="true" />
-<select idref="firewalld_sshd_port_enabled" selected="true" />
+<select idref="firewalld_sshd_port_enabled" selected="false" />
 <select idref="service_sshd_enabled" selected="true" />
 <select idref="sshd_disable_compression" selected="true" />
 <select idref="sshd_disable_gssapi_auth" selected="true" />
 <select idref="sshd_disable_kerb_auth" selected="true" />
 <select idref="sshd_enable_strictmodes" selected="true" />
 <select idref="sshd_use_priv_separation" selected="true" />
-<select idref="sshd_limit_user_access" selected="true" />
 <select idref="sshd_print_last_log" selected="true" />
 <select idref="sshd_disable_user_known_hosts" selected="true" />
 <select idref="sshd_disable_rhosts_rsa" selected="true" />
-<select idref="sssd_memcache_timeout" selected="true" />
-<select idref="sssd_offline_cred_expiration" selected="true" />
-<select idref="sssd_ssh_known_hosts_timeout" selected="true" />
 
 <!-- System Integrity -->
-<select idref="install_mcafee_hbss_accm" selected="true" />
-<select idref="install_mcafee_hbss_pa" selected="true" />
 <select idref="install_mcafee_antivirus" selected="true" />
-<select idref="service_nails_enabled" selected="true" />
+<select idref="service_nails_enabled" selected="false" />
 <select idref="mcafee_antivirus_definitions_updated" selected="true" />
-<select idref="install_antivirus" selected="false"/>
 <select idref="aide_scan_notification" selected="true" />
 <select idref="aide_verify_acls" selected="true" />
 <select idref="aide_verify_ext_attributes" selected="true" />
 <select idref="aide_use_fips_hashes" selected="true" />
 
 <!-- X Window System Settings -->
-<select idref="xwindows_runlevel_setting" selected="true" />
 <select idref="package_xorg-x11-server-common_removed" selected="true" />
 <select idref="enable_x11_forwarding" selected="true" />
 
 <!-- File Server/Client Settings -->
 <select idref="mount_option_krb_sec_remote_filesystems" selected="true" />
-<select idref="use_kerberos_security_all_exports" selected="true" />
+<select idref="use_kerberos_security_all_exports" selected="false" />
 
 <!-- Obsolete Services -->
 <select idref="package_tftp-server_removed" selected="true" />
 <select idref="tftpd_uses_secure_mode" selected="true" />
 
 <!-- Miscellaneous Services -->
-<select idref="service_zebra_disabled" selected="true" />
 <select idref="snmpd_not_default_password" selected="true" />
 <select idref="service_kdump_disabled" selected="true" />
 <select idref="package_vsftpd_removed" selected="true" />
@@ -195,5 +168,70 @@
 <select idref="dir_perms_world_writable_system_owned" selected="true" />
 <select idref="file_owner_cron_allow" selected="true" />
 <select idref="file_groupowner_cron_allow" selected="true" />
+
+<!-- Disabled OSPP rules -->
+<select idref="install_antivirus" selected="false" />
+<select idref="file_permissions_var_log_audit" selected="false" />
+<select idref="accounts_password_all_shadowed" selected="false" />
+<select idref="require_singleuser_auth" selected="false" />
+<select idref="disable_interactive_boot" selected="false" />
+<select idref="service_debug-shell_disabled" selected="false" />
+<select idref="no_direct_root_logins" selected="false" />
+<select idref="securetty_root_login_console_only" selected="false" />
+<select idref="restrict_serial_port_logins" selected="false" />
+<select idref="bios_assign_password" selected="false" />
+<select idref="set_firewalld_default_zone" selected="false" />
+<select idref="sysctl_net_ipv4_tcp_syncookies" selected="false" />
+<select idref="auditd_audispd_syslog_plugin_activated" selected="false" />
+<select idref="auditd_data_retention_num_logs" selected="false" />
+<select idref="auditd_data_retention_max_log_file" selected="false" />
+<select idref="auditd_data_retention_max_log_file_action" selected="false" />
+<select idref="auditd_data_retention_admin_space_left_action" selected="false" />
+<select idref="bootloader_audit_argument" selected="false" />
+<select idref="auditd_data_retention_flush" selected="false" />
+<select idref="audit_rules_time_adjtimex" selected="false" />
+<select idref="audit_rules_time_settimeofday" selected="false" />
+<select idref="audit_rules_time_stime" selected="false" />
+<select idref="audit_rules_time_clock_settime" selected="false" />
+<select idref="audit_rules_time_watch_localtime" selected="false" />
+<select idref="audit_rules_networkconfig_modification" selected="false" />
+<select idref="audit_rules_mac_modification" selected="false" />
+<select idref="audit_rules_session_events" selected="false" />
+<select idref="audit_rules_immutable" selected="false" />
+<select idref="service_chronyd_or_ntpd_enabled" selected="false" />
+<select idref="chronyd_or_ntpd_specify_remote_server" selected="false" />
+<select idref="chronyd_or_ntpd_specify_multiple_servers" selected="false" />
+<select idref="wireless_disable_in_bios" selected="false" />
+<select idref="kernel_module_bluetooth_disabled" selected="false" />
+<select idref="service_bluetooth_disabled" selected="false" />
+<select idref="bootloader_nousb_argument" selected="false" />
+<select idref="bios_disable_usb_boot" selected="false" />
+<select idref="service_xinetd_disabled" selected="false" />
+<select idref="package_xinetd_removed" selected="false" />
+<select idref="service_telnet_disabled" selected="false" />
+<select idref="package_telnet_removed" selected="false" />
+<select idref="service_rexec_disabled" selected="false" />
+<select idref="service_rsh_disabled" selected="false" />
+<select idref="package_rsh_removed" selected="false" />
+<select idref="service_rlogin_disabled" selected="false" />
+<select idref="no_rsh_trust_files" selected="false" />
+<select idref="service_ypbind_disabled" selected="false" />
+<select idref="package_ypbind_removed" selected="false" />
+<select idref="package_talk-server_removed" selected="false" />
+<select idref="package_talk_removed" selected="false" />
+<select idref="service_crond_enabled" selected="false" />
+<select idref="enable_selinux_bootloader" selected="false" />
+<select idref="selinux_confinement_of_daemons" selected="false" />
+<select idref="package_aide_installed" selected="false" />
+<select idref="disable_prelink" selected="false" />
+<select idref="aide_build_database" selected="false" />
+<select idref="install_hids" selected="false" />
+<select idref="sysctl_fs_suid_dumpable" selected="false" />
+<select idref="sysctl_kernel_exec_shield" selected="false" />
+<select idref="sysctl_kernel_randomize_va_space" selected="false" />
+<select idref="install_PAE_kernel_on_x86-32" selected="false" />
+<select idref="bios_enable_execution_restrictions" selected="false" />
+<select idref="sysctl_kernel_dmesg_restrict" selected="false" />
+<select idref="encrypt_partitions" selected="false" />
 
 </Profile>
