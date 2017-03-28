@@ -36,10 +36,11 @@ tarball:
 	@# Copy in the source trees for both RHEL
 	@# and JBossEAP5 content
 	mkdir -p tarball/$(PKG)
+	mkdir tarball/$(PKG)/build
 	cp Makefile tarball/$(PKG)/
 	cp CMakeLists.txt tarball/$(PKG)/
+	cp oval.config.in scap-security-guide.spec.in tarball/$(PKG)/
 	cp BUILD.md Contributors.md LICENSE VERSION README.md tarball/$(PKG)/
-	cp -r config/ tarball/$(PKG)
 	cp -r docs/ tarball/$(PKG)
 	cp -r shared/ tarball/$(PKG)
 	cp -r cmake/ tarball/$(PKG)
