@@ -1,0 +1,199 @@
+<Profile id="shb-rhel7-server-upstream" extends="ospp-rhel7-server">
+<title override="true">Secure Host Baseline for Red Hat Enterprise Linux 7 Server</title>
+<description override="true">This is a *draft* profile for SHB. This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.<br /><br />
+
+<p>
+    <strong>Where is the RHEL7 STIG?</strong>
+    <ul>
+        <li>Question: May I deploy a product if no STIG exists?<br />
+            Answer: Yes, based on mission need and with DAA approval.
+        </li>
+        <li>Question: What do I use if there is no STIG?<br />
+            Answer: DISA FSO developed Security Requirement Guides (SRGs) to address technology areas. In the absence of a STIG, an SRG can be used to determine compliance with DoD policies. If there is no applicable SRG or STIG, industry or vendor recommended practices may be used. Examples include Center for Internet Security Benchmarks, Payment Card Industry requirements or the vendor's own security documentation.
+        </li>
+    </ul>
+    <small>Source: http://iase.disa.mil/stigs/Pages/faqs.aspx#STIG</small>
+</p>
+</description>
+
+<!-- DISA FSO REFINEMENT VALUES
+     The following refine-values tailor the NIAP OSPP profile
+     to DoD-specific settings, as deemed approriate by DISA FSO (RE71) -->
+<refine-value idref="sshd_idle_timeout_value" selector="10_minutes" />
+<refine-value idref="var_password_pam_unix_remember" selector="5" />
+<refine-value idref="var_password_pam_difok" selector="8" />
+<refine-value idref="login_banner_text" selector="dod_default" />
+<refine-value idref="var_password_pam_minclass" selector="4" />
+<refine-value idref="var_password_pam_maxrepeat" selector="2" />
+<refine-value idref="var_password_pam_maxclassrepeat" selector="4" />
+<refine-value idref="inactivity_timeout_value" selector="15_minutes" />
+<refine-value idref="var_account_disable_post_pw_expiration" selector="0" />
+<refine-value idref="var_accounts_fail_delay" selector="4" />
+<refine-value idref="sshd_listening_port" selector="default" />
+<refine-value idref="var_accounts_user_umask" selector="077"/>
+<!-- END DISA FSO REFINEMENT VALUES -->
+
+<!-- NIAP/OSPP EXCLUDED RULES
+     The following rules are established within the NIAP Operating System Protection Profile,
+     however specifically excluded by DISA FSO (RE71) for use U.S. Department of Defense baselines -->
+
+<!-- END NIAP/OSPP EXCLUDED RULES -->
+
+<!-- DISA FSO (RE71) RULE ADDITIONS -->
+<!-- The following rules reflect DISA FSO (RE71) extensions to the NIAP Operating System
+     Protection Profile (NIAP OSPP). -->
+
+<!-- Disk/Partition Requirements -->
+<select idref="partition_for_tmp" selected="true" />
+<select idref="partition_for_var_log_audit" selected="true" />
+<select idref="partition_for_var" selected="true" />
+<select idref="partition_for_home" selected="true" />
+<select idref="mount_option_nosuid_remote_filesystems" selected="true" />
+<select idref="mount_option_nodev_remote_filesystems" selected="true" />
+<select idref="mount_option_nosuid_removable_partitions" selected="true" />
+<select idref="mount_option_nodev_removable_partitions" selected="true" />
+<select idref="mount_option_noexec_removable_partitions" selected="true" />
+
+<!-- Auditing Requirements -->
+<select idref="audit_rules_system_shutdown" selected="true" />
+<select idref="audit_rules_login_events_tallylog" selected="true" />
+<select idref="audit_rules_login_events_faillock" selected="true" />
+<select idref="audit_rules_login_events_lastlog" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_creat" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_open" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_openat" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_open_by_handle_at" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_truncate" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_ftruncate" selected="true" />
+<select idref="audit_rules_execution_semanage" selected="true" />
+<select idref="audit_rules_execution_setsebool" selected="true" />
+<select idref="audit_rules_execution_chcon" selected="true" />
+<select idref="audit_rules_execution_restorecon" selected="true" />
+<select idref="audit_rules_privileged_commands_passwd" selected="true" />
+<select idref="audit_rules_privileged_commands_unix_chkpwd" selected="true" />
+<select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
+<select idref="audit_rules_privileged_commands_chage" selected="true" />
+<select idref="audit_rules_privileged_commands_userhelper" selected="true" />
+<select idref="audit_rules_privileged_commands_su" selected="true" />
+<select idref="audit_rules_privileged_commands_sudo" selected="true" />
+<select idref="audit_rules_privileged_commands_sudoedit" selected="true" />
+<select idref="audit_rules_privileged_commands_newgrp" selected="true" />
+<select idref="audit_rules_privileged_commands_chsh" selected="true" />
+<select idref="audit_rules_privileged_commands_umount" selected="true" />
+<select idref="audit_rules_privileged_commands_postdrop" selected="true" />
+<select idref="audit_rules_privileged_commands_postqueue" selected="true" />
+<select idref="audit_rules_privileged_commands_ssh_keysign" selected="true" />
+<select idref="audit_rules_privileged_commands_pt_chown" selected="true" />
+<select idref="audit_rules_privileged_commands_crontab" selected="true" />
+<select idref="audit_rules_privileged_commands_pam_timestamp_check" selected="true" />
+<select idref="audit_rules_file_deletion_events_rmdir" selected="true" />
+<select idref="audit_rules_file_deletion_events_unlink" selected="true" />
+<select idref="audit_rules_file_deletion_events_unlinkat" selected="true" />
+<select idref="audit_rules_file_deletion_events_rename" selected="true" />
+<select idref="audit_rules_file_deletion_events_renameat" selected="true" />
+<select idref="audit_rules_kernel_module_loading" selected="true" />
+<select idref="audit_rules_kernel_module_loading_init" selected="true" />
+<select idref="audit_rules_kernel_module_loading_delete" selected="true" />
+<select idref="audit_rules_kernel_module_loading_insmod" selected="true" />
+<select idref="audit_rules_kernel_module_loading_rmmod" selected="true" />
+<select idref="audit_rules_kernel_module_loading_modprobe" selected="true" />
+
+<!-- Password Requirements -->
+<select idref="accounts_password_pam_minclass" selected="true" />
+<select idref="accounts_password_pam_unix_remember" selected="true" />
+<select idref="accounts_password_pam_difok" selected="true" />
+<select idref="accounts_password_pam_maxrepeat" selected="true" />
+<select idref="accounts_password_pam_maxclassrepeat" selected="true" />
+<select idref="account_disable_post_pw_expiration" selected="true" />
+
+<!-- Account Management Requirements -->
+<select idref="account_temp_expire_date" selected="true" />
+<select idref="accounts_logon_fail_delay" selected="true" />
+<select idref="sudo_remove_no_authenticate" selected="true" />
+<select idref="sudo_remove_nopasswd" selected="true" />
+
+<!-- User Management -->
+<select idref="smartcard_auth" selected="true" />
+<select idref="banner_etc_issue" selected="true" />
+<select idref="sshd_enable_warning_banner" selected="true" />
+<select idref="ftp_present_banner" selected="true" />
+<select idref="accounts_umask_etc_login_defs" selected="true" />
+
+<!-- Software/Patch Requirements -->
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="security_patches_up_to_date" selected="true" />
+<select idref="clean_components_post_updating" selected="true" />
+
+<!-- System Audit Requirements -->
+
+<!-- Kernel/Network Settings -->
+<select idref="network_disable_ddns_interfaces" selected="true" />
+<select idref="libreswan_approved_tunnels" selected="true" />
+<select idref="package_libreswan_installed" selected="true" />
+<select idref="package_dracut-fips_installed" selected="true" />
+<select idref="grub2_enable_fips_mode" selected="true" />
+
+<!-- System Logging Requirements -->
+<select idref="rsyslog_remote_loghost" selected="true" />
+<select idref="rsyslog_nolisten" selected="true" />
+<select idref="rsyslog_cron_logging" selected="true" />
+
+<!-- Remote Access Requirements -->
+<select idref="package_openssh-server_installed" selected="true" />
+<select idref="firewalld_sshd_port_enabled" selected="true" />
+<select idref="service_sshd_enabled" selected="true" />
+<select idref="sshd_disable_compression" selected="true" />
+<select idref="sshd_disable_gssapi_auth" selected="true" />
+<select idref="sshd_disable_kerb_auth" selected="true" />
+<select idref="sshd_enable_strictmodes" selected="true" />
+<select idref="sshd_use_priv_separation" selected="true" />
+<select idref="sshd_limit_user_access" selected="true" />
+<select idref="sshd_print_last_log" selected="true" />
+<select idref="sshd_disable_user_known_hosts" selected="true" />
+<select idref="sshd_disable_rhosts_rsa" selected="true" />
+<select idref="sssd_memcache_timeout" selected="true" />
+<select idref="sssd_offline_cred_expiration" selected="true" />
+<select idref="sssd_ssh_known_hosts_timeout" selected="true" />
+
+<!-- System Integrity -->
+<select idref="install_mcafee_hbss_accm" selected="true" />
+<select idref="install_mcafee_hbss_pa" selected="true" />
+<select idref="install_mcafee_antivirus" selected="true" />
+<select idref="service_nails_enabled" selected="true" />
+<select idref="mcafee_antivirus_definitions_updated" selected="true" />
+<select idref="install_antivirus" selected="false"/>
+<select idref="aide_scan_notification" selected="true" />
+<select idref="aide_verify_acls" selected="true" />
+<select idref="aide_verify_ext_attributes" selected="true" />
+<select idref="aide_use_fips_hashes" selected="true" />
+
+<!-- X Window System Settings -->
+<select idref="xwindows_runlevel_setting" selected="true" />
+<select idref="package_xorg-x11-server-common_removed" selected="true" />
+<select idref="enable_x11_forwarding" selected="true" />
+
+<!-- File Server/Client Settings -->
+<select idref="mount_option_krb_sec_remote_filesystems" selected="true" />
+<select idref="use_kerberos_security_all_exports" selected="true" />
+
+<!-- Obsolete Services -->
+<select idref="package_tftp-server_removed" selected="true" />
+<select idref="tftpd_uses_secure_mode" selected="true" />
+
+<!-- Miscellaneous Services -->
+<select idref="service_zebra_disabled" selected="true" />
+<select idref="snmpd_not_default_password" selected="true" />
+<select idref="service_kdump_disabled" selected="true" />
+<select idref="package_vsftpd_removed" selected="true" />
+
+<!-- LDAP -->
+
+<!-- Currently uncategorized -->
+<select idref="disable_ctrlaltdel_reboot" selected="true" />
+<select idref="dir_perms_world_writable_system_owned" selected="true" />
+<select idref="file_owner_cron_allow" selected="true" />
+<select idref="file_groupowner_cron_allow" selected="true" />
+
+</Profile>
