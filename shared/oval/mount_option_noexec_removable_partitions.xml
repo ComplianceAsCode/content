@@ -22,10 +22,16 @@
       <criteria operator="AND">
         <extend_definition comment="Check if removable partition value represents CD/DVD drive"
         definition_ref="var_removable_partition_is_cd_dvd_drive" />
-        <criterion test_ref="test_noexec_etc_fstab_cd_dvd_drive"
-        comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in /etc/fstab" />
-        <criterion test_ref="test_noexec_runtime_cd_dvd_drive"
-        comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in runtime configuration" />
+        <criteria operator="OR">
+          <criteria operator="AND">
+            <criterion test_ref="test_noexec_etc_fstab_cd_dvd_drive"
+            comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in /etc/fstab" />
+            <criterion test_ref="test_noexec_runtime_cd_dvd_drive"
+            comment="Check if at least one from CD/DVD drive alternative names is using 'noexec' mount option in runtime configuration" />
+          </criteria>
+          <extend_definition definition_ref="no_cd_dvd_drive_in_etc_fstab"
+          comment="Check if CD/DVD drive is not configured to automount in /etc/fstab" />
+        </criteria>
       </criteria>
       <!-- Removable device exists & isn't CD/DVD drive. Check the particular devices is configured with 'noexec' mount option in both
            /etc/fstab & runtime configuration -->
@@ -60,7 +66,7 @@
 
   <!-- If specified removable partition represents CD / DVD drive, use all alternative
        names to check /etc/fstab & runtime settings -->
-  <ind:textfilecontent54_test id="test_noexec_etc_fstab_cd_dvd_drive" check="all" comment="'noexec' mount option used for at least one CD / DVD drive alternative names in /etc/fstab" version="1">
+  <ind:textfilecontent54_test id="test_noexec_etc_fstab_cd_dvd_drive" check_existence="any_exist" check="all" comment="'noexec' mount option used for at least one CD / DVD drive alternative names in /etc/fstab" version="1">
     <ind:object object_ref="object_noexec_etc_fstab_cd_dvd_drive" />
     <ind:state state_ref="state_noexec_etc_fstab_cd_dvd_drive" />
   </ind:textfilecontent54_test>

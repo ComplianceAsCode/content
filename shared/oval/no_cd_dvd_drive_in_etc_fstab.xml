@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="no_cd_dvd_drive_in_etc_fstab" version="1">
+    <metadata>
+      <title>No CD/DVD drive is configured to automount in /etc/fstab</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Check the /etc/fstab and check if a CD/DVD drive
+      is not configured for automount.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_no_cd_dvd_drive_in_etc_fstab"
+      comment="Check if CD/DVD drive is not configured to automout in /etc/fstab" />
+    </criteria>
+  </definition>
+
+  <!-- If specified removable partition represents CD / DVD drive, create a variable
+       holding also alternative names for CD / DVD block special device as used by udev -->
+  <constant_variable id="variable_cd_dvd_drive_alternative_names" datatype="string" comment="CD/DVD drive alternative names whitelist" version="1">
+    <value>/dev/cdrom</value>
+    <value>/dev/dvd</value>
+    <value>/dev/scd0</value>
+    <value>/dev/sr0</value>
+  </constant_variable>
+
+  <ind:textfilecontent54_test id="test_no_cd_dvd_drive_in_etc_fstab" check_existence="none_exist" check="all" comment="'CD/DVD drive is not listed in /etc/fstab" version="1">
+    <ind:object object_ref="object_no_cd_dvd_drive_in_etc_fstab" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_no_cd_dvd_drive_in_etc_fstab" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match" datatype="string" var_ref="variable_cd_dvd_drive_alternative_names" var_check="at least one" />
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
