@@ -114,7 +114,7 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
     for prepare_script_path in $(find $rule_dir -name "*.prepare.sh" | sort -u);do
         prepare_script_id=${prepare_script_path#*/}
         prepare_script_id=${prepare_script_id%%.prepare.sh}
-        echo "##### Performing ${prepare_script_id} prepare script" &>> $debug_log
+        echo "# Performing ${prepare_script_id} prepare script" &>> $debug_log
         prepare_script="${remote_dir}/$(basename $prepare_script_path)"
         ssh ${MACHINE} chmod +x $prepare_script &>> $debug_log
         ssh ${MACHINE} $prepare_script &>> $debug_log
@@ -128,7 +128,7 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
     for break_script_path in $(find $rule_dir -name "*.break.sh" | sort -u);do
         break_script_id=${break_script_path#*/}
         break_script_id=${break_script_id%%.break.sh}
-        echo "##### Performing ${break_script_id}" | tee -a $debug_log
+        echo "# Performing ${break_script_id}" | tee -a $debug_log
         break_script="${remote_dir}/$(basename $break_script_path)"
         output_file="output"
         report_file="${break_script_id//\//\_}".html
@@ -137,20 +137,41 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
         ssh ${MACHINE} chmod +x $break_script
         ssh ${MACHINE} $break_script &>> $debug_log
 
+        # after break script, result should contain fail
+        ssh ${MACHINE} oscap xccdf eval --tailoring-file $remote_tailoring_file --profile ${profile_supplanted} --remediate --progress --report $report_file $remote_tested_ds &> ${output_file}
+        if ! grep -q ':fail$' ${output_file}; then
+            cat ${output_file} &>> $debug_log
+            echo "ERROR: Break script ${break_script_id} failed to break the machine, no point in going further"
+            virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
+            virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+            continue
+        fi
+        if grep ':error$' ${output_file}; then
+            cat ${output_file} &>> $debug_log
+            echo "FAIL: There is a rule which errored, no point in going further "
+            virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
+            virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+            continue
+        fi
+
         ssh ${MACHINE} oscap xccdf eval --tailoring-file $remote_tailoring_file --profile ${profile_supplanted} --remediate --progress --report $report_file $remote_tested_ds &> ${output_file}
         if grep -q ':error$' ${output_file};then
-            echo "BOLLOCKS! remediation for $break_script_id has failed!"
+            echo "FAIL: Remediation for $break_script_id is faulty!"
             scp ${MACHINE}:./$report_file $result_dir &>> $debug_log
+            cat ${output_file} &>> $debug_log
+            virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
+            virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+            continue
         fi
         cat ${output_file} &>> $debug_log
         ssh ${MACHINE} oscap xccdf eval --tailoring-file $remote_tailoring_file --profile ${profile_supplanted} --progress  $remote_tested_ds &> ${output_file}
-        grep -q ':fail$' ${output_file} && echo "BOLLOCKS! $break_script_id is failing!"
+        grep -q ':fail$' ${output_file} && echo "FAIL: Remediation for $break_script_id is probably missing!"
         cat ${output_file} &>> $debug_log
-        rm ${output_file}
         
         virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
         virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
     done
+    rm ${output_file}
     echo "#################" >> $debug_log
 
     virsh snapshot-revert --snapshotname "rule_dir" $DOMAIN &>> $debug_log
