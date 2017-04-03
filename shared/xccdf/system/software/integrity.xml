@@ -476,7 +476,9 @@ intrusion prevention tool can provide methods to immediately lock out detected
 intrusion attempts.
 </rationale>
 <warning category="general">Installing and enabling this module conflicts with SELinux.
-SELinux takes precedence over this module.</warning>
+Per DoD/DISA guidance, SELinux takes precedence over this module.</warning>
+<warning category="general">Due to McAfee HIPS being 3rd party software, automated
+remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_hbss_hips" />
 <ident prodtype="rhel7" cce="80368-4" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
@@ -498,6 +500,8 @@ when an intruder gains access to a system or network. Additionally, a host-based
 intrusion prevention tool can provide methods to immediately lock out detected
 intrusion attempts.
 </rationale>
+<warning category="general">Due to HBSS ACCM being 3rd party software, automated
+remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_hbss_accm" />
 <ident prodtype="rhel7" cce="80126-6" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
@@ -520,6 +524,8 @@ intrusion prevention tool can provide methods to immediately lock out detected
 intrusion attempts.
 </rationale>
 <oval id="install_mcafee_hbss_pa" />
+<warning category="general">Due to McAfee being 3rd party software, automated
+remediation is not available for this configuration check.</warning>
 <ident prodtype="rhel7" cce="80369-2" />
 <ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
 ossrg="STG-OS-000480-GPOS-00227" />
@@ -544,6 +550,8 @@ and running, run the following command(s):
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
+<warning category="general">Due to McAfee HIPS being 3rd party software, automated
+remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_antivirus" />
 <ident prodtype="rhel7" cce="80127-4" />
 <ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
