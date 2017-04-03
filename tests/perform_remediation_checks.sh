@@ -8,18 +8,16 @@
 #    Marek Haicman <mhaicman@redhat.com>
 #
 
-#DOMAINS="REM_RHEL6 REM_RHEL7 REM_FEDORA"
-DOMAINS="TEST rhel6.8 rhel rhel6.8_x86"
-DOMAIN="TEST"
+DOMAIN=${DOMAIN:-"REM_RHEL7"}
+
 DIR_BASE="/tmp/ssg_testsuite/"
 TESTED_DATASTREAM="/usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml"
 
-CHOICE=$1
+SNAP_FIRST="ssg_test_suite_origin"
+SNAP_SECOND="ssg_test_suite_rule_dir"
+SNAP_THIRD="ssg_test_suite_break_script"
 
-if [ `whoami` != "root" ] ; then
-	echo "This script must be run as a root"
-	exit 1
-fi
+CHOICE=$1
 
 
 date=$(date +%Y_%m_%d_%H_%M)
@@ -65,7 +63,7 @@ function test_single_domain {
 
 
 # first snapshot, to revert to at the end of whole run
-virsh snapshot-create-as --name "origin" $DOMAIN &>> $debug_log
+virsh snapshot-create-as --name ${SNAP_FIRST} $DOMAIN &>> $debug_log
 if virsh list --inactive | grep -q " $DOMAIN "; then
     echo "Domain \"$DOMAIN\" is inactive, starting"
     virsh start "$DOMAIN" &>> $debug_log
@@ -75,7 +73,9 @@ fi
 IP=$(determine_IP)
 if [ -z "$IP" ]; then
     echo "IP cannot be determined"
-    return 1
+    virsh snapshot-revert --snapshotname ${SNAP_FIRST} $DOMAIN &>> $debug_log
+    virsh snapshot-delete --snapshotname ${SNAP_FIRST} $DOMAIN &>> $debug_log
+    exit 1
 fi
 
 MACHINE="root@${IP}"
@@ -121,7 +121,7 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
     done
     echo "#################" >> $debug_log
 
-    virsh snapshot-create-as --name "rule_dir" $DOMAIN &>> $debug_log
+    virsh snapshot-create-as --name ${SNAP_SECOND} $DOMAIN &>> $debug_log
 
     # now perform breakage with every break script and remediation based on
     # accompanied tailoring, on clean snapshot every time
@@ -132,7 +132,7 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
         break_script="${remote_dir}/$(basename $break_script_path)"
         output_file="output"
         report_file="${break_script_id//\//\_}".html
-        virsh snapshot-create-as --name "single_break" $DOMAIN &>> $debug_log
+        virsh snapshot-create-as --name ${SNAP_THIRD} $DOMAIN &>> $debug_log
 
         ssh ${MACHINE} chmod +x $break_script
         ssh ${MACHINE} $break_script &>> $debug_log
@@ -142,15 +142,15 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
         if ! grep -q ':fail$' ${output_file}; then
             cat ${output_file} &>> $debug_log
             echo "ERROR: Break script ${break_script_id} failed to break the machine, no point in going further"
-            virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
-            virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+            virsh snapshot-revert --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
+            virsh snapshot-delete --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             continue
         fi
         if grep ':error$' ${output_file}; then
             cat ${output_file} &>> $debug_log
             echo "FAIL: There is a rule which errored, no point in going further "
-            virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
-            virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+            virsh snapshot-revert --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
+            virsh snapshot-delete --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             continue
         fi
 
@@ -159,8 +159,8 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
             echo "FAIL: Remediation for $break_script_id is faulty!"
             scp ${MACHINE}:./$report_file $result_dir &>> $debug_log
             cat ${output_file} &>> $debug_log
-            virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
-            virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+            virsh snapshot-revert --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
+            virsh snapshot-delete --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             continue
         fi
         cat ${output_file} &>> $debug_log
@@ -168,16 +168,16 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
         grep -q ':fail$' ${output_file} && echo "FAIL: Remediation for $break_script_id is probably missing!"
         cat ${output_file} &>> $debug_log
         
-        virsh snapshot-revert --snapshotname "single_break" $DOMAIN &>> $debug_log
-        virsh snapshot-delete --snapshotname "single_break" $DOMAIN &>> $debug_log
+        virsh snapshot-revert --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
+        virsh snapshot-delete --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
     done
     rm ${output_file}
     echo "#################" >> $debug_log
 
-    virsh snapshot-revert --snapshotname "rule_dir" $DOMAIN &>> $debug_log
-    virsh snapshot-delete --snapshotname "rule_dir" $DOMAIN &>> $debug_log
+    virsh snapshot-revert --snapshotname ${SNAP_SECOND} $DOMAIN &>> $debug_log
+    virsh snapshot-delete --snapshotname ${SNAP_SECOND} $DOMAIN &>> $debug_log
 
 done
 
-virsh snapshot-revert --snapshotname "origin" $DOMAIN &>> $debug_log
-virsh snapshot-delete --snapshotname "origin" $DOMAIN &>> $debug_log
+virsh snapshot-revert --snapshotname ${SNAP_FIRST} $DOMAIN &>> $debug_log
+virsh snapshot-delete --snapshotname ${SNAP_FIRST} $DOMAIN &>> $debug_log
