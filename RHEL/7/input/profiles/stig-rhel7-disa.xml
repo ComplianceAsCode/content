@@ -17,6 +17,9 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <refine-value idref="var_password_pam_ocredit" selector="1" />
 <refine-value idref="var_password_pam_lcredit" selector="1" />
 <refine-value idref="var_password_pam_ucredit" selector="1" />
+<refine-value idref="var_accounts_passwords_pam_faillock_unlock_time" selector="never" />
+<refine-value idref="var_accounts_passwords_pam_faillock_fail_interval" selector="900" />
+<refine-value idref="var_accounts_passwords_pam_faillock_deny" selector="3" />
 <refine-value idref="var_password_pam_unix_remember" selector="5" />
 <refine-value idref="var_password_pam_maxclassrepeat" selector="4" />
 <refine-value idref="var_password_pam_difok" selector="8" />
@@ -136,10 +139,15 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <select idref="account_disable_post_pw_expiration" selected="true" />
 
 <!-- SRG-OS-000329-GPOS-00128, SV-86567r2_rule, RHEL-07-010320 -->
-<!-- TO DO: why multuple rules mapped?
-	- shared/xccdf/system/accounts/pam.xml:638:stigid="010320" pcidss="Req-8.1.6" cis="6.3.3" cjis="5.5.3" cui="3.1.8" />
-	- shared/xccdf/system/accounts/pam.xml:671:stigid="010320" pcidss="Req-8.1.7" cis="6.3.3" cjis="5.5.3" cui="3.1.8" />
-	- shared/xccdf/system/accounts/pam.xml:734:<ref prodtype="rhel7" nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010320" /> -->
+<select idref="accounts_passwords_pam_faillock_unlock_time" selected="true" />
+
+<!-- placeholder until DISA fixes their content:
+     https://github.com/OpenSCAP/scap-security-guide/issues/1896 -->
+<select idref="accounts_passwords_pam_faillock_interval" selected="true" />
+
+<!-- placeholder until DISA fixes their content:
+     https://github.com/OpenSCAP/scap-security-guide/issues/1895 -->
+<select idref="accounts_passwords_pam_faillock_deny" selected="true" />
 
 <!-- SRG-OS-000329-GPOS-00128, SV-86569r1_rule, RHEL-07-010330 -->
 <select idref="accounts_passwords_pam_faillock_deny_root" selected="true" />
