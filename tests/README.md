@@ -12,7 +12,7 @@ For the Test Suite to work, you need to have libvirt domains prepared for testin
 
 ### Domain preparation
 1. Install domain, preferably in user space
-1. Use ```virsh0``` as a bridge for domain network
+1. Use ```virbr0``` as a bridge for domain network
 1. Import ssh key to the machine
 1. Setup repo, so machine can install and uninstall packages
 1. Install ```openscap-scanner``` package
