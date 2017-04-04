@@ -706,6 +706,11 @@ macro(ssg_build_product PRODUCT)
            TYPE FILE FILES \${GUIDE_FILES}
        )"
     )
+
+    # grab all the kickstarts (if any) and install them
+    file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")
+    install(FILES ${KICKSTART_FILES}
+        DESTINATION "${SSG_KICKSTART_INSTALL_DIR}")
 endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
