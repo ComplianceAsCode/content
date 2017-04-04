@@ -220,4 +220,29 @@ set(CPACK_SOURCE_IGNORE_FILES
 
 "\\\\CMakeLists.txt.user"
 )
+# Common definitions for RPM and DEB packages
+set(CPACK_PACKAGE_FILENAME "%{name}-%{version}")
+set(CPACK_PACKAGE_VERSION ${SSG_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Security guidance and baselines in SCAP formats")
+set(CPACK_PACKAGE_VENDOR "scap-security-guide")
+# The package contact is needed to build the deb package
+set(CPACK_PACKAGE_CONTACT "open-scap-list@redhat.com")
+set(CPACK_PACKAGE_RELOCATABLE FALSE)
+set(CPACK_RPM_PACKAGE_GROUP "Applications/System")
+set(CPACK_RPM_PACKAGE_LICENSE "Public Domain")
+set(CPACK_RPM_PACKAGE_URL "https://www.open-scap.org/security-policies/scap-security-guide/")
+set(CPACK_RPM_PACKAGE_ARCHITECTURE "noarch")
+set(CPACK_RPM_PACKAGE_REQUIRES "xml-common, openscap-utils >= 1.0.8")
+set(CPACK_RPM_PACKAGE_PROVIDES "openscap-content")
+set(CPACK_RPM_PACKAGE_DESCRIPTION "The %{name} project provides a guide for configuration of the
+system from the final system's security point of view. The guidance is
+specified in the Security Content Automation Protocol (SCAP) format and
+constitutes a catalog of practical hardening advice, linked to government
+requirements where applicable. The project bridges the gap between generalized
+policy requirements and specific implementation guidelines. The system
+administrator can use the oscap command-line tool from the openscap-utils
+package to verify that the system conforms to provided guidelines.
+")
+
+set(CPACK_GENERATOR "RPM;DEB")
 include(CPack)
