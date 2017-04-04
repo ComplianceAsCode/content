@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(scap-security-guide NONE)
 
+set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME "content")
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 # This is set to silence GNUInstallDirs warning about no language being used with cmake
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
@@ -228,6 +229,8 @@ set(CPACK_PACKAGE_VENDOR "scap-security-guide")
 # The package contact is needed to build the deb package
 set(CPACK_PACKAGE_CONTACT "open-scap-list@redhat.com")
 set(CPACK_PACKAGE_RELOCATABLE FALSE)
+
+set(CPACK_RPM_COMPONENT_INSTALL TRUE)
 set(CPACK_RPM_PACKAGE_GROUP "Applications/System")
 set(CPACK_RPM_PACKAGE_LICENSE "Public Domain")
 set(CPACK_RPM_PACKAGE_URL "https://www.open-scap.org/security-policies/scap-security-guide/")
@@ -243,6 +246,14 @@ policy requirements and specific implementation guidelines. The system
 administrator can use the oscap command-line tool from the openscap-utils
 package to verify that the system conforms to provided guidelines.
 ")
+
+set(CPACK_RPM_DOC_PACKAGE_SUMMARY "HTML formatted documents containing security guides generated from XCCDF benchmarks.
+")
+set(CPACK_RPM_DOC_PACKAGE_DESCRIPTION "The %{name} package contains HTML formatted documents containing
+hardening guidances that have been generated from XCCDF benchmarks
+present in %{name} package.
+")
+
 
 set(CPACK_GENERATOR "RPM;DEB")
 include(CPack)

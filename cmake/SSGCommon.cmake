@@ -815,7 +815,8 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-by-ref-${REF})
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
@@ -834,7 +835,8 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-nistrefs-${PROFILE})
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_cce_table PRODUCT)
@@ -853,7 +855,8 @@ macro(ssg_build_html_cce_table PRODUCT)
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-cces)
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
@@ -887,9 +890,11 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-srg)
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
@@ -932,7 +937,9 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
-        DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+        DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
 endmacro()
