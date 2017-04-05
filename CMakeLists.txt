@@ -258,11 +258,14 @@ set(CPACK_RPM_CONTENT_PACKAGE_NAME "scap-security-guide")
 # This puts the component name right after package name
 # and also adds the dist after the version
 set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
+
+set(CPACK_RPM_DOC_PACKAGE_GROUP "System Environment/Base")
+set(CPACK_RPM_DOC_PACKAGE_REQUIRES "scap-security-guide = ${SSG_VERSION}")
 set(CPACK_RPM_DOC_PACKAGE_SUMMARY "HTML formatted documents containing security guides generated from XCCDF benchmarks.
 ")
 set(CPACK_RPM_DOC_PACKAGE_DESCRIPTION "The %{name} package contains HTML formatted documents containing
 hardening guidances that have been generated from XCCDF benchmarks
-present in %{name} package.
+present in scap-security-guide package.
 ")
 
 
