@@ -250,6 +250,10 @@ administrator can use the oscap command-line tool from the openscap-utils
 package to verify that the system conforms to provided guidelines.
 ")
 
+# Set the name of content component to be only scap-security-guide in the generated spec file
+# In other words, remove the "content" name added by CPack to default component
+set(CPACK_RPM_CONTENT_PACKAGE_NAME "scap-security-guide")
+
 # Change the default file name of the RPMs
 # This puts the component name right after package name
 # and also adds the dist after the version
