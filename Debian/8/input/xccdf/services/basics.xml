@@ -76,7 +76,7 @@ Time synchronization (using NTP) is required by almost all network and administr
 </Rule>
 
 
-<Rule id="service_ntpd_enabled" severity="high">
+<Rule id="service_ntp_enabled" severity="high">
 <title>Enable the ntpd service</title>
 <description>
 The ntpd service should be enabled.
@@ -85,10 +85,10 @@ The ntpd service should be enabled.
 Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.
 </rationale>
 <ocil>
-  <service-check-macro enable="true" service="ntpd" />
+  <service-check-macro enable="true" service="ntp" />
 </ocil>
 <ident cce="" />
-<oval id="service_ntpd_enabled" />
+<oval id="service_ntp_enabled" />
 <ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" anssi="NT012(R03)" />
 </Rule>
 
