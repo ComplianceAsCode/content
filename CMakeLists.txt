@@ -222,7 +222,6 @@ set(CPACK_SOURCE_IGNORE_FILES
 "\\\\CMakeLists.txt.user"
 )
 # Common definitions for RPM and DEB packages
-set(CPACK_PACKAGE_FILENAME "%{name}-%{version}")
 set(CPACK_PACKAGE_VERSION ${SSG_VERSION})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Security guidance and baselines in SCAP formats")
 set(CPACK_PACKAGE_VENDOR "scap-security-guide")
@@ -248,6 +247,10 @@ administrator can use the oscap command-line tool from the openscap-utils
 package to verify that the system conforms to provided guidelines.
 ")
 
+# Change the default file name of the RPMs
+# This puts the component name right after package name
+# and also adds the dist after the version
+set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
 set(CPACK_RPM_DOC_PACKAGE_SUMMARY "HTML formatted documents containing security guides generated from XCCDF benchmarks.
 ")
 set(CPACK_RPM_DOC_PACKAGE_DESCRIPTION "The %{name} package contains HTML formatted documents containing
