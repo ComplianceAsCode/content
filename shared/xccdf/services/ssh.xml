@@ -30,6 +30,14 @@ operator="equals" interactive="0">
 <value selector="default">22</value>
 </Value>
 
+<Value id="sshd_approved_macs" type="string"
+operator="equals" interactive="0">
+<title>SSH Approved MACs by FIPS</title>
+<description>Specify the FIPS approved MACs (message authentication code) algorithms
+	that are used for data integrity protection by the SSH server.</description>
+<value selector="default">hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com</value>
+</Value>
+
 <Rule id="package_openssh-server_installed" severity="medium" prodtype="rhel7">
 <title>Install the OpenSSH Server Package</title>
 <description>
@@ -713,7 +721,7 @@ DoD Information Systems are required to use FIPS-approved cryptographic hash
 functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 </rationale>
 <ident prodtype="rhel7" cce="27455-5" />
-<oval id="sshd_use_approved_macs" />
+<oval id="sshd_use_approved_macs" value="sshd_approved_macs" />
 <ref prodtype="rhel7" nist="AC-17(2),IA-7,SC-13" disa="1453"
 ossrg="SRG-OS-000250-GPOS-00093" stigid="040400" cui="3.1.13,3.13.11,3.13.8" />
 </Rule>
