@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(scap-security-guide NONE)
 
+set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME "content")
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 # This is set to silence GNUInstallDirs warning about no language being used with cmake
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
@@ -220,4 +221,53 @@ set(CPACK_SOURCE_IGNORE_FILES
 
 "\\\\CMakeLists.txt.user"
 )
+# Common definitions for RPM and DEB packages
+set(CPACK_PACKAGE_VERSION ${SSG_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Security guidance and baselines in SCAP formats")
+set(CPACK_PACKAGE_VENDOR "scap-security-guide")
+# The package contact is needed to build the deb package
+set(CPACK_PACKAGE_CONTACT "open-scap-list@redhat.com")
+set(CPACK_PACKAGE_RELOCATABLE FALSE)
+
+set(CPACK_RPM_COMPONENT_INSTALL TRUE)
+
+# This adds "${?dist} to Release field in spec file
+set(CPACK_RPM_PACKAGE_RELEASE_DIST TRUE)
+set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/share/xml;/usr/share/man;/usr/share/man/man8")
+set(CPACK_RPM_PACKAGE_GROUP "Applications/System")
+set(CPACK_RPM_PACKAGE_LICENSE "Public Domain")
+set(CPACK_RPM_PACKAGE_URL "https://www.open-scap.org/security-policies/scap-security-guide/")
+set(CPACK_RPM_PACKAGE_ARCHITECTURE "noarch")
+set(CPACK_RPM_PACKAGE_REQUIRES "xml-common, openscap-utils >= 1.0.8")
+set(CPACK_RPM_PACKAGE_PROVIDES "openscap-content")
+set(CPACK_RPM_PACKAGE_DESCRIPTION "The %{name} project provides a guide for configuration of the
+system from the final system's security point of view. The guidance is
+specified in the Security Content Automation Protocol (SCAP) format and
+constitutes a catalog of practical hardening advice, linked to government
+requirements where applicable. The project bridges the gap between generalized
+policy requirements and specific implementation guidelines. The system
+administrator can use the oscap command-line tool from the openscap-utils
+package to verify that the system conforms to provided guidelines.
+")
+
+# Set the name of content component to be only scap-security-guide in the generated spec file
+# In other words, remove the "content" name added by CPack to default component
+set(CPACK_RPM_CONTENT_PACKAGE_NAME "scap-security-guide")
+
+# Change the default file name of the RPMs
+# This puts the component name right after package name
+# and also adds the dist after the version
+set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
+
+set(CPACK_RPM_DOC_PACKAGE_GROUP "System Environment/Base")
+set(CPACK_RPM_DOC_PACKAGE_REQUIRES "scap-security-guide = ${SSG_VERSION}")
+set(CPACK_RPM_DOC_PACKAGE_SUMMARY "HTML formatted documents containing security guides generated from XCCDF benchmarks.
+")
+set(CPACK_RPM_DOC_PACKAGE_DESCRIPTION "The %{name} package contains HTML formatted documents containing
+hardening guidances that have been generated from XCCDF benchmarks
+present in scap-security-guide package.
+")
+
+
+set(CPACK_GENERATOR "RPM;DEB")
 include(CPack)
