@@ -943,3 +943,23 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
+
+macro(ssg_build_zipfile ZIPNAME)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "zipfile/"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/README.md" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/Contributors.md" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/RHEL/{6,7}/kickstart/*-ks.cfg" "zipfile/${ZIPNAME}/kickstart"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" # A change in any data stream will cause the zipfile to be rebuilt
+        COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
+        )
+    add_custom_target(
+        zipfile
+        DEPENDS "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
+    )
+endmacro()

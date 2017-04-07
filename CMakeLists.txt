@@ -209,6 +209,12 @@ install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
 install(FILES "docs/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
 
+if(SSG_OVAL_511_ENABLED)
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+else()
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
+endif()
+
 # only CPack should follow
 set(CPACK_CMAKE_GENERATOR "Unix Makefiles")
 set(CPACK_SOURCE_GENERATOR "TBZ2")
