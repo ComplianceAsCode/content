@@ -171,6 +171,28 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
                          % xccdfid)
         rule.remove(check)
 
+def drop_oval_checks_extending_non_existing_checks(ovaltree):
+    # Incomplete OVAL checks are as useful as non existing checks
+    # Here we check if all extend_definition refs from a definition exists in local OVAL file
+    #
+    # TODO: handle multiple levels of referrals.
+    # OVAL checks that go beyond one level of extend_definition won't be completely removed
+    definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
+    for definition in definitions:
+        for extdefinition in definition.iterfind(".//{%s}extend_definition" % oval_ns):
+            # Verify each extend_definition in the definition
+            extdefinitionref = extdefinition.get("definition_ref")
+
+            # Search the OVAL tree for a definition with the referred ID
+            referreddefinition = ovaltree.find(".//{%s}definition[@id=\"%s\"]" % (oval_ns, extdefinitionref))
+            if referreddefinition is None:
+                # There is no oval satisfying the extend_definition referal
+
+                sys.stderr.write("WARNING: OVAL check '%s' extends non-existing '%s' "
+                                 "OVAL definition, removing check from OVAL definitions.\n"
+                                 % (definition.get("id"), extdefinitionref))
+                definitions.remove(definition)
+
 
 def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
         # Verify if <xccdf:Value> 'type' to corresponding OVAL variable 'datatype' export matching constraint:
@@ -338,6 +360,8 @@ def main():
     # Rename all IDs in the oval file
     if ovalfile:
         ovaltree = parse_xml_file(ovalfile)
+
+        drop_oval_checks_extending_non_existing_checks(ovaltree)
 
         # Add new <reference source="CCE" ref_id="CCE-ID" /> element to those OVAL
         # checks having CCE ID already assigned in XCCDF for particular rule.
