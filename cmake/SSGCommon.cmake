@@ -670,6 +670,8 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
+    add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
+
     ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
@@ -955,7 +957,6 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/RHEL/{6,7}/kickstart/*-ks.cfg" "zipfile/${ZIPNAME}/kickstart"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" "zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" # A change in any data stream will cause the zipfile to be rebuilt
         COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
         )
     add_custom_target(
