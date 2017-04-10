@@ -1,10 +1,10 @@
 # platform = Red Hat Enterprise Linux 7
 
 if grep --silent ^PRELINKING /etc/sysconfig/prelink ; then
-        sed -i "s/^PRELINKING.*/PRELINKING=yes/g" /etc/sysconfig/prelink
+        sed -i "s/^PRELINKING.*/PRELINKING=no/g" /etc/sysconfig/prelink
 else
-        echo -e "\n# Set PRELINKING to 'yes' per security requirements" >> /etc/sysconfig/prelink
-        echo "PRELINKING=yes" >> /etc/sysconfig/prelink
+        echo -e "\n# Set PRELINKING to 'no' per security requirements" >> /etc/sysconfig/prelink
+        echo "PRELINKING=no" >> /etc/sysconfig/prelink
 fi
 
 prelink -u -a
