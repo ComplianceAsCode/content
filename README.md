@@ -26,6 +26,12 @@ The preferred method of installation is via the package manager of your
 distribution. On RHEL and Fedora you can use:
 `yum install scap-security-guide`.
 
+On Debian (sid), you can use:
+`apt install ssg-debian` for Debian guides.
+`apt install ssg-debderived` for Debian-based distributions (e.g. Ubuntu) guides.
+`apt install ssg-nondebian` for other distributions guides (RHEL, Fedora, etc.).
+`apt install ssg-applications` for application-oriented guides (Firefox,JBoss, etc.).
+
 If SCAP Security Guide is not packaged in your distribution or if the
 version that is packaged is too old, you need to build the content yourself
 and install it via `make install`. Please see the [BUILD.md](BUILD.md)
