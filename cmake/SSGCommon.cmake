@@ -670,6 +670,8 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
+    add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
+
     ssg_build_html_guides(${PRODUCT})
 
     add_custom_target(
@@ -942,4 +944,23 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
+endmacro()
+
+macro(ssg_build_zipfile ZIPNAME)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "zipfile/"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/README.md" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/Contributors.md" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/RHEL/{6,7}/kickstart/*-ks.cfg" "zipfile/${ZIPNAME}/kickstart"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
+        COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
+        )
+    add_custom_target(
+        zipfile
+        DEPENDS "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
+    )
 endmacro()
