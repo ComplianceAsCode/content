@@ -48,7 +48,7 @@ not arrive.</description>
 <value selector="15_min">900</value>
 </Value>
 
-<Rule id="accounts_have_homedir_login_defs" severity="medium">
+<Rule id="accounts_have_homedir_login_defs" severity="medium" prodtype="rhel7">
 <title>Ensure Home Directories are Created for New Users</title>
 <description>
 All local interactiv user accounts, upon creation, should be assigned a home directory.
@@ -70,7 +70,7 @@ Check if the system is configured to create home directories for local interacti
 </ocil>
 <ident prodtype="rhel7" cce="80434-4" />
 <oval id="accounts_have_homedir_login_defs" />
-<ref ossrg="SRG-OS-000480-GPOS-00227" stigid="020610" />
+<ref prodtype="rhel7" ossrg="SRG-OS-000480-GPOS-00227" stigid="020610" />
 </Rule>
 
 <Rule id="accounts_tmout" severity="medium" prodtype="rhel7">
