@@ -136,9 +136,20 @@ message("Webmin: ${SSG_PRODUCT_WEBMIN}")
 
 message(" ")
 
+include(SSGCommon)
+
+# Targets 'validate' and 'zipfile' need to be added before any product because
+# they will receive dependencies from products added
+
 add_custom_target(validate)
 
-include(SSGCommon)
+# ZIP only contains source datastreams and kickstarts, people who
+# want sources to build from should get the tarball instead.
+if(SSG_OVAL_511_ENABLED)
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+else()
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
+endif()
 
 if (SSG_PRODUCT_CHROMIUM)
     add_subdirectory("Chromium")
@@ -208,14 +219,6 @@ install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
 
 install(FILES "docs/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
-
-# ZIP only contains source datastreams and kickstarts, people who
-# want sources to build from should get the tarball instead.
-if(SSG_OVAL_511_ENABLED)
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
-endif()
 
 # We use CPack to generate the tarball with all sources and
 # packages for testing
