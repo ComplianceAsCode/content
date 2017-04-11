@@ -803,8 +803,9 @@ endmacro()
 
 macro(ssg_build_html_table_by_ref PRODUCT REF)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam ref "${REF}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam ref "${REF}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-byref.xslt"
@@ -812,19 +813,20 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
     )
     add_custom_target(
         generate-${PRODUCT}-table-by-ref-${REF}
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-by-ref-${REF})
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-${REF}refs.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${PROFILE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${PROFILE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profilenistrefs.xslt"
@@ -832,19 +834,20 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
     )
     add_custom_target(
         generate-${PRODUCT}-table-nistrefs-${PROFILE}
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-nistrefs-${PROFILE})
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-nistrefs-${PROFILE}.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_cce_table PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-cce.xslt"
@@ -852,11 +855,11 @@ macro(ssg_build_html_cce_table PRODUCT)
     )
     add_custom_target(
         generate-${PRODUCT}-table-cces
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-cces)
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-cces.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
@@ -865,9 +868,10 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
     # we have to encode spaces in paths before passing them as stringparams to xsltproc
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         # We need to use xccdf-linked.xml because ssg-${PRODUCT}-xccdf.xml has the srg_support Group removed
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
@@ -875,9 +879,10 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=no)"
     )
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         # We need to use xccdf-linked.xml because ssg-${PRODUCT}-xccdf.xml has the srg_support Group removed
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${SSG_SHARED_REFS}/disa-os-srg-${DISA_SRG_VERSION}.xml"
@@ -886,30 +891,32 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_VERSION)
     )
     add_custom_target(
         generate-${PRODUCT}-table-srg
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-srg)
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-srgmap-flat.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
 
 macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-manual.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
         DEPENDS "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML MANUAL STIG table"
     )
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${STIG_PROFILE}" -stringparam testinfo "y" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileccirefs.xslt"
@@ -924,24 +931,25 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         COMMENT "[${PRODUCT}-tables] generating unlinked STIG XCCDF XML file"
     )
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML STIG table"
     )
     add_custom_target(
         generate-${PRODUCT}-table-stig
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-manual.html"
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
 
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/table-${PRODUCT}-stig-testinfo.html"
+    install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
