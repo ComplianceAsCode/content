@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="mount_option_noexec_remote_filesystems" version="1">
+    <metadata>
+      <title>Mount Remote Filesystems with noexec</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The noexec option should be enabled for all NFS mounts in /etc/fstab.</description>
+    </metadata>
+    <criteria operator="XOR">
+      <!-- these tests are designed to be mutually exclusive; either no nfs mounts exist in /etc/fstab -->
+      <!-- or all of the nfs mounts defined in /etc/fstab have the noexec mount option specified -->
+      <criterion comment="remote nfs filesystems" test_ref="test_no_nfs_defined_etc_fstab_noexec" />
+      <criterion comment="remote nfs filesystems" test_ref="test_nfs_noexec_etc_fstab" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="all nfs has noexec" id="test_nfs_noexec_etc_fstab" version="1">
+    <ind:object object_ref="object_nfs_noexec_etc_fstab" />
+    <ind:state state_ref="state_remote_filesystem_noexec" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nfs_noexec_etc_fstab" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*\[?[\.\w-:]+\]?:[/\w-]+\s+[/\w-]+\s+nfs[4]?\s+(.*)$</ind:pattern>
+    <!-- the "not equal" operation essentially means all instances of the regexp -->
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_remote_filesystem_noexec" version="1">
+    <ind:subexpression operation="pattern match">^.*noexec.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="no nfs" id="test_no_nfs_defined_etc_fstab_noexec" version="1">
+    <!-- this test returns 'true' if /etc/fstab does not contain nfs/nfs4 mounts -->
+    <ind:object object_ref="object_no_nfs_defined_etc_fstab_noexec" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_no_nfs_defined_etc_fstab_noexec" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*\[?[\.\w-:]+\]?:[/\w-]+\s+[/\w-]+\s+nfs[4]?\s+.*$</ind:pattern>
+    <!-- the "not equal" operation below essentially means all instances of the regexp -->
+    <ind:instance datatype="int" operation="not equal">0</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

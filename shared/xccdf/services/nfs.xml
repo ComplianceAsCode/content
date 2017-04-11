@@ -303,6 +303,26 @@ should be installed to their default location on the local filesystem.</rational
 <ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021020" />
 </Rule>
 
+<Rule id="mount_option_noexec_remote_filesystems" severity="medium" prodtype="rhel7">
+<title>Mount Remote Filesystems with noexec</title>
+<description>
+<mount-desc-macro option="noexec" part="any NFS mounts" />
+</description>
+<ocil clause="the setting does not show">
+To verify the <tt>noexec</tt> option is configured for all NFS mounts, run the following command:
+<pre>$ mount | grep nfs</pre>
+All NFS mounts should show the <tt>noexec</tt> setting in parentheses.  This is not applicable if NFS is
+not implemented.
+</ocil>
+<rationale>The noexec mount option causes the system not to execute binary files. This option must be used
+for mounting any file system not containing approved binary files as they may be incompatible. Executing
+files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized
+administrative access.</rationale>
+<ident prodtype="rhel7" cce="80436-9" />
+<oval id="mount_option_noexec_remote_filesystems" />
+<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021021" />
+</Rule>
+
 <Rule id="mount_option_krb_sec_remote_filesystems" severity="medium" prodtype="rhel7">
 <title>Mount Remote Filesystems with Kerberos Security</title>
 <description>
