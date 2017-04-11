@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from subprocess import Popen, PIPE
+import subprocess
 import tempfile
 import sys
 
@@ -38,16 +38,9 @@ def main():
     xccdf.flush()
 
     # Call oscap process to generate guide
-    command = "oscap xccdf generate guide %s" % (xccdf.name)
-    child = Popen(command.split(), stdout=PIPE, stderr=PIPE)
-    out, err = child.communicate()
-    out = out.decode("utf-8")
-    print(out)
-
-    # Child run sanity check
-    if child.returncode != 0:
-        # Set exit value to failure
-        EXIT_CODE = 1
+    out = subprocess.check_output(
+        ["oscap", "xccdf", "generate", "guide", xccdf.name]
+    ).decode("utf-8")
 
     # Check if generated guide contains desired SVG element
     if "circle" in out:
