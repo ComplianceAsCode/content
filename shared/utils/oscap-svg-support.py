@@ -38,7 +38,7 @@ xccdf.write(svg_benchmark)
 xccdf.close()
 
 # Call oscap process to generate guide
-command = "oscap xccdf generate guide --profile allrules %s" % filename
+command = "oscap xccdf generate guide %s" % filename
 child = Popen(command.split(), stdout=PIPE, stderr=PIPE)
 out, err = child.communicate()
 out = out.decode("utf-8")
