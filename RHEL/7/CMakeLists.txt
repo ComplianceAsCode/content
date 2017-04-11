@@ -20,6 +20,11 @@ ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_VERSION})
 
 ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-disa" ${DISA_STIG_VERSION})
 
+ssg_build_remediation_role(${PRODUCT} "ansible" "pci-dss")
+ssg_build_remediation_role(${PRODUCT} "bash" "pci-dss")
+ssg_build_remediation_role(${PRODUCT} "ansible" "ospp-rhel7-server")
+ssg_build_remediation_role(${PRODUCT} "bash" "ospp-rhel7-server")
+
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "centos7")
 endif()
