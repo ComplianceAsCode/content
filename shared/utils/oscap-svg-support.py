@@ -30,12 +30,14 @@ svg_benchmark = """<?xml version="1.0"?>
 
 
 def main():
+    oscap_executable = sys.argv[1]
+
     xccdf = tempfile.NamedTemporaryFile()
     xccdf.write(svg_benchmark.encode("utf-8"))
     xccdf.flush()
 
     out = subprocess.check_output(
-        ["oscap", "xccdf", "generate", "guide", xccdf.name]
+        [oscap_executable, "xccdf", "generate", "guide", xccdf.name]
     ).decode("utf-8")
 
     # check whether oscap threw away the SVG elements
