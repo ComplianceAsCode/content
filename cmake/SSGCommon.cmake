@@ -615,15 +615,16 @@ endmacro()
 
 macro(ssg_build_html_guides PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html"
-        COMMAND "${SSG_SHARED_UTILS}/build-all-guides.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/" build
+        OUTPUT "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/guides"
+        COMMAND "${SSG_SHARED_UTILS}/build-all-guides.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/guides" build
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-guides] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-guide-index.html
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-index.html"
+        DEPENDS "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
     )
 endmacro()
 
@@ -703,7 +704,7 @@ macro(ssg_build_product PRODUCT)
     # and not configure time.
     install(
        CODE "
-           file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-guide-*.html\") \n
+           file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-*.html\") \n
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
            TYPE FILE FILES \${GUIDE_FILES}
        )"
