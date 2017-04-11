@@ -30,9 +30,6 @@ svg_benchmark = """<?xml version="1.0"?>
 
 
 def main():
-    # Default exit with failure
-    EXIT_CODE = 1
-
     xccdf = tempfile.NamedTemporaryFile()
     xccdf.write(svg_benchmark.encode("utf-8"))
     xccdf.flush()
@@ -42,16 +39,8 @@ def main():
         ["oscap", "xccdf", "generate", "guide", xccdf.name]
     ).decode("utf-8")
 
-    # Check if generated guide contains desired SVG element
-    if "circle" in out:
-        # If so, set exit value to success
-        EXIT_CODE = 0
-    else:
-        # Otherwise to failure
-        EXIT_CODE = 1
+    sys.exit(0 if "circle" in out else 1)
 
-    # Call exit with appropriate value
-    sys.exit(EXIT_CODE)
 
 if __name__ == "__main__":
     main()
