@@ -710,6 +710,12 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-tables)
 
+    add_custom_target(
+        ${PRODUCT}-roles
+        # dependencies are added later using add_dependency
+    )
+    add_dependencies(${PRODUCT} ${PRODUCT}-roles)
+
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -975,6 +981,34 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         COMPONENT doc)
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
+        COMPONENT doc)
+endmacro()
+
+macro(ssg_build_remediation_role PRODUCT LANGUAGE PROFILE)
+    if("${LANGUAGE}" STREQUAL "ansible")
+        set(SUFFIX ".yml")
+        set(TEMPLATE "urn:xccdf:fix:script:ansible")
+    elseif("${LANGUAGE}" STREQUAL "bash")
+        set(SUFFIX ".sh")
+        set(TEMPLATE "urn:xccdf:fix:script:sh")
+    endif()
+
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}"
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/roles"
+        COMMAND "${OSCAP_EXECUTABLE}" xccdf generate fix --template "${TEMPLATE}" --profile "${PROFILE}" --output "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMENT "[${PRODUCT}-roles] generating ${LANGUAGE} role for profile ${PROFILE}"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-${LANGUAGE}-${PROFILE}-role
+        DEPENDS "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}"
+    )
+    add_dependencies(${PRODUCT}-roles generate-${PRODUCT}-${LANGUAGE}-${PROFILE}-role)
+
+    install(FILES "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}"
+        DESTINATION "${SSG_ROLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
 
