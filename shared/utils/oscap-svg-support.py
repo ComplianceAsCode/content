@@ -34,11 +34,11 @@ def main():
     xccdf.write(svg_benchmark.encode("utf-8"))
     xccdf.flush()
 
-    # Call oscap process to generate guide
     out = subprocess.check_output(
         ["oscap", "xccdf", "generate", "guide", xccdf.name]
     ).decode("utf-8")
 
+    # check whether oscap threw away the SVG elements
     sys.exit(0 if "circle" in out else 1)
 
 
