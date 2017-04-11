@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
 from subprocess import Popen, PIPE
-from tempfile import mkstemp
-import os
+import tempfile
 import sys
 
 
@@ -34,30 +33,21 @@ def main():
     # Default exit with failure
     EXIT_CODE = 1
 
-    # Create temporary file with the content of svg_benchmark variable above
-    fd, filename = mkstemp(prefix='svg_', suffix='.xml')
-    xccdf = os.fdopen(fd, 'wt')
-    xccdf.write(svg_benchmark)
-    xccdf.close()
+    xccdf = tempfile.NamedTemporaryFile()
+    xccdf.write(svg_benchmark.encode("utf-8"))
+    xccdf.flush()
 
     # Call oscap process to generate guide
-    command = "oscap xccdf generate guide %s" % filename
+    command = "oscap xccdf generate guide %s" % (xccdf.name)
     child = Popen(command.split(), stdout=PIPE, stderr=PIPE)
     out, err = child.communicate()
     out = out.decode("utf-8")
+    print(out)
 
     # Child run sanity check
     if child.returncode != 0:
         # Set exit value to failure
         EXIT_CODE = 1
-
-    # Delete the temporary file
-    try:
-        os.remove(filename)
-    except OSError as e:
-        sys.stderr.write(
-            "Error removing file: %s - %s\n" % (e.filename, e.strerror)
-        )
 
     # Check if generated guide contains desired SVG element
     if "circle" in out:
