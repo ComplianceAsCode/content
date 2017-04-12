@@ -209,6 +209,13 @@ sending of messages to the central server. For all of these reasons, it is
 better to store log messages both centrally and on each host, so
 that they can be correlated if necessary.</description>
 
+<Value id="rsyslog_remote_loghost_address" type="string"
+operator="equals" interactive="0">
+<title>Remote Log Server</title>
+<description>Specify an URI or IP address of a remote host where the log messages will be sent and stored.</description>
+<value selector="default">NULL</value>
+</Value>
+
 <Rule id="rsyslog_remote_loghost">
 <title>Ensure Logs Sent To Remote Host</title>
 <description>
@@ -250,7 +257,7 @@ to a remote loghost also provides system administrators with a centralized
 place to view the status of multiple hosts within the enterprise.
 </rationale>
 <ident cce="26801-1" stig="RHEL-06-000136" />
-<oval id="rsyslog_remote_loghost" />
+<oval id="rsyslog_remote_loghost" value="rsyslog_remote_loghost_address" />
 <ref nist="AU-3(2),AU-9" disa="1348, 136" />
 </Rule>
 </Group>
