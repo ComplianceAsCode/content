@@ -91,8 +91,12 @@ def main():
     # extract inventory definitions
     # making (dubious) assumption that all inventory defs are CPE
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
-    inventory_defs = defs.findall(".//{%s}definition[@class='inventory']"
-                                  % oval_ns)
+    inventory_defs = []
+    for el in defs.findall(".//{%s}definition"):
+        if el.get("class") != "inventory":
+            continue
+        inventory_defs.append(el)
+
     # Keep the list of 'id' attributes from untranslated inventory def elements
     inventory_defs_id_attrs = []
 
