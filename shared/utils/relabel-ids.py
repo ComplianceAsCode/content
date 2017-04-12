@@ -3,7 +3,11 @@
 import re
 import sys
 import os
-import lxml.etree as ET
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 try:
     from configparser import SafeConfigParser
@@ -35,7 +39,7 @@ cce_uri = "http://cce.mitre.org"
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
-        tree = ET.fromstring(filestring)
+        tree = ElementTree.fromstring(filestring)
         # print filestring
     return tree
 
@@ -109,7 +113,8 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
             if re.search(r'CCE-\d{4,5}-\d', xccdfcceid) is not None:
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
-                ccerefelem = ET.Element('reference', ref_id="%s" % xccdfcceid, source="CCE")
+                ccerefelem = ElementTree.Element(
+                    'reference', ref_id="%s" % xccdfcceid, source="CCE")
                 ovaldesc.addnext(ccerefelem)
                 # Sanity check if appending succeeded
                 if ccerefelem.getprevious() is not ovaldesc:
@@ -390,14 +395,14 @@ def main():
 
         ovaltree = translator.translate(ovaltree, store_defname=True)
         newovalfile = ovalfile.replace("unlinked", "linked")
-        ET.ElementTree(ovaltree).write(newovalfile)
+        ElementTree.ElementTree(ovaltree).write(newovalfile)
 
     # Rename all IDs in the ocil file
     if ocilfile:
         ociltree = parse_xml_file(ocilfile)
         ociltree = translator.translate(ociltree)
         newocilfile = ocilfile.replace("unlinked", "linked")
-        ET.ElementTree(ociltree).write(newocilfile)
+        ElementTree.ElementTree(ociltree).write(newocilfile)
 
     # Rename all IDs and file refs in the xccdf file
     for check in checks:
@@ -439,8 +444,7 @@ def main():
                 checkexport.set("export-name", newexportname)
 
     newxccdffile = xccdffile.replace("unlinked", "linked")
-    # ET.dump(xccdftree)
-    ET.ElementTree(xccdftree).write(newxccdffile)
+    ElementTree.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
 
 if __name__ == "__main__":
