@@ -202,7 +202,7 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree):
     # OVAL checks that go beyond one level of extend_definition won't be completely removed
     definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
     for definition in definitions:
-        for extdefinition in definition.iterfind(".//{%s}extend_definition" % oval_ns):
+        for extdefinition in definition.findall(".//{%s}extend_definition" % oval_ns):
             # Verify each extend_definition in the definition
             extdefinitionref = extdefinition.get("definition_ref")
 

@@ -92,7 +92,7 @@ def main():
     # making (dubious) assumption that all inventory defs are CPE
     defs = ovaltree.find("./{%s}definitions" % oval_ns)
     inventory_defs = []
-    for el in defs.findall(".//{%s}definition"):
+    for el in defs.findall(".//{%s}definition" % oval_ns):
         if el.get("class") != "inventory":
             continue
         inventory_defs.append(el)
