@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import datetime
-import lxml.etree as ET
 import os
 import os.path
 import errno
@@ -9,6 +8,12 @@ import platform
 import re
 import sys
 from copy import deepcopy
+
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 try:
     set
@@ -128,12 +133,13 @@ def add_platforms(xml_tree, multi_platform):
                 if plat_elem.text == 'multi_platform_oval':
                     for platforms in multi_platform[plat_elem.text]:
                         for plat in multi_platform[platforms]:
-                            platform = ET.Element('platform')
+                            platform = ElementTree.Element(
+                                "{%s}platform" % oval_ns)
                             platform.text = map_product(platforms) + ' ' + plat
                             affected.insert(1, platform)
                 else:
                     for platforms in multi_platform[plat_elem.text]:
-                        platform = ET.Element('platform')
+                        platform = ElementTree.Element("{%s}platform" % oval_ns)
                         platform.text = map_product(plat_elem.text) + ' ' + platforms
                         affected.insert(0, platform)
             except KeyError:
@@ -234,8 +240,8 @@ def append(element, newchild):
                 sys.stderr.write("ERROR: it's not possible to use the " +
                                  "same ID: %s " % newid + "for two " +
                                  "semantically different OVAL entities:\n")
-                sys.stderr.write("First entity  %s\n" % ET.tostring(existing))
-                sys.stderr.write("Second entity %s\n" % ET.tostring(newchild))
+                sys.stderr.write("First entity  %s\n" % ElementTree.tostring(existing))
+                sys.stderr.write("Second entity %s\n" % ElementTree.tostring(newchild))
                 sys.stderr.write("Use different ID for the second entity!!!\n")
                 sys.exit(1)
     else:
@@ -357,16 +363,16 @@ def main():
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ET.fromstring((header + body + footer).encode("utf-8"))
+    corrected_tree = ElementTree.fromstring((header + body + footer).encode("utf-8"))
     tree = add_platforms(corrected_tree, multi_platform)
-    definitions = ET.Element("definitions")
-    tests = ET.Element("tests")
-    objects = ET.Element("objects")
-    states = ET.Element("states")
-    variables = ET.Element("variables")
+    definitions = ElementTree.Element("{%s}definitions" % oval_ns)
+    tests = ElementTree.Element("{%s}tests" % oval_ns)
+    objects = ElementTree.Element("{%s}objects" % oval_ns)
+    states = ElementTree.Element("{%s}states" % oval_ns)
+    variables = ElementTree.Element("{%s}variables" % oval_ns)
 
     for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
-        if childnode.tag is ET.Comment:
+        if childnode.tag is ElementTree.Comment:
             continue
         if childnode.tag.endswith("definition"):
             append(definitions, childnode)
@@ -379,7 +385,7 @@ def main():
         if childnode.tag.endswith("_variable"):
             append(variables, childnode)
 
-    tree = ET.fromstring((header + footer).encode("utf-8"))
+    tree = ElementTree.fromstring((header + footer).encode("utf-8"))
     tree.append(definitions)
     tree.append(tests)
     tree.append(objects)
@@ -387,7 +393,7 @@ def main():
     if list(variables):
         tree.append(variables)
 
-    ET.dump(tree)
+    ElementTree.dump(tree)
     sys.exit(0)
 
 if __name__ == "__main__":

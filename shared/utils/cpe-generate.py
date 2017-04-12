@@ -3,7 +3,11 @@
 import fnmatch
 import sys
 import os
-import lxml.etree as ET
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
@@ -24,7 +28,7 @@ cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
-        tree = ET.fromstring(filestring)
+        tree = ElementTree.fromstring(filestring)
     return tree
 
 
@@ -140,7 +144,7 @@ def main():
 
     newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
-    ET.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
+    ElementTree.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
     cpedicttree = parse_xml_file(cpedictfile)
@@ -207,7 +211,7 @@ def main():
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
-    ET.ElementTree(cpedicttree).write(cpeoutdir + '/' + newcpedictfile)
+    ElementTree.ElementTree(cpedicttree).write(cpeoutdir + '/' + newcpedictfile)
 
     sys.exit(0)
 
