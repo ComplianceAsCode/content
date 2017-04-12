@@ -203,6 +203,26 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
         DEPENDS ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
     )
+
+    if (SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
+            # format gcc so that people using IDEs can click on errors to get to the problematic lines
+            # SC1071: ShellCheck only supports sh/bash/ksh scripts
+            # SC1091: Not following: /usr/share/scap-security-guide/remediation_functions
+            # TODO: Stop ignoring the exit code as we fix the bash issues
+            COMMAND "${SHELLCHECK_EXECUTABLE}" --format gcc --shell bash --exclude SC1071,SC1091 ${LANGUAGE_REMEDIATIONS_DEPENDS} ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS} ${EXTRA_LANGUAGE_DEPENDS} ${EXTRA_SHARED_LANGUAGE_DEPENDS} || "true"
+            COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
+            VERBATIM
+            COMMENT "[${PRODUCT}-validate] validating inputs for bash remediations"
+        )
+        add_custom_target(
+            validate-ssg-${PRODUCT}-bash-remediation-inputs
+            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
+        )
+        add_dependencies(${PRODUCT}-validate validate-ssg-${PRODUCT}-bash-remediation-inputs)
+    endif()
+
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
@@ -629,6 +649,9 @@ macro(ssg_build_html_guides PRODUCT)
 endmacro()
 
 macro(ssg_build_product PRODUCT)
+    add_custom_target(${PRODUCT}-content)
+    add_custom_target(${PRODUCT}-validate)
+
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
@@ -647,27 +670,27 @@ macro(ssg_build_product PRODUCT)
     ssg_build_sds(${PRODUCT})
 
     add_custom_target(${PRODUCT} ALL)
-
-    add_custom_target(
-        ${PRODUCT}-content
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml
-        DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS generate-ssg-${PRODUCT}-ds.xml
-    )
     add_dependencies(${PRODUCT} ${PRODUCT}-content)
 
-    add_custom_target(
+    add_dependencies(
+        ${PRODUCT}-content
+        generate-ssg-${PRODUCT}-xccdf.xml
+        generate-ssg-${PRODUCT}-xccdf-1.2.xml
+        generate-ssg-${PRODUCT}-oval.xml
+        generate-ssg-${PRODUCT}-ocil.xml
+        generate-ssg-${PRODUCT}-cpe-dictionary.xml
+        generate-ssg-${PRODUCT}-ds.xml
+    )
+
+    add_dependencies(
         ${PRODUCT}-validate
-        DEPENDS validate-ssg-${PRODUCT}-xccdf.xml
-        #DEPENDS validate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS validate-ssg-${PRODUCT}-oval.xml
-        #DEPENDS validate-ssg-${PRODUCT}-ocil.xml
-        DEPENDS validate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS validate-ssg-${PRODUCT}-cpe-oval.xml
-        DEPENDS validate-ssg-${PRODUCT}-ds.xml
+        validate-ssg-${PRODUCT}-xccdf.xml
+        #validate-ssg-${PRODUCT}-xccdf-1.2.xml
+        validate-ssg-${PRODUCT}-oval.xml
+        #validate-ssg-${PRODUCT}-ocil.xml
+        validate-ssg-${PRODUCT}-cpe-dictionary.xml
+        validate-ssg-${PRODUCT}-cpe-oval.xml
+        validate-ssg-${PRODUCT}-ds.xml
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
