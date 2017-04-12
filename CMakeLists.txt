@@ -68,7 +68,7 @@ if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11
 endif()
 
 execute_process(
-    COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py"
+    COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OSCAP_EXECUTABLE}"
     RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
 )
 # OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
