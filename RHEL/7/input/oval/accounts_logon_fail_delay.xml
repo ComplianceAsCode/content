@@ -17,13 +17,16 @@
     <ind:object object_ref="object_accounts_logon_fail_delay" />
     <ind:state state_ref="state_accounts_logon_fail_delay" />
   </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_accounts_logon_fail_delay" comment="FAIL_DELAY value from /etc/login.defs" version="1">
     <ind:filepath>/etc/login.defs</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)FAIL_DELAY(?-i)[\s]+([^#\s]*)</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <!--<ind:instance datatype="int" operation="greater than or equal">1</ind:instance>-->
+    <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
   <ind:textfilecontent54_state id="state_accounts_logon_fail_delay" version="1">
-    <ind:subexpression operation="greater than or equal" var_ref="var_accounts_fail_delay" datatype="int" />
+    <ind:subexpression operation="greater than or equal" var_ref="var_accounts_fail_delay" datatype="int" var_check="all" />
   </ind:textfilecontent54_state>
 
   <external_variable id="var_accounts_fail_delay" datatype="int" version="1" comment="Expected fail_delay" />

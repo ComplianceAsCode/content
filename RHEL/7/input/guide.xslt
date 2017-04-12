@@ -22,6 +22,7 @@
       <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
       <xsl:apply-templates select="document('profiles/common.xml')" />
       <xsl:apply-templates select="document('profiles/stig-rhel7-server-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-rhel7-disa.xml')" />
       <xsl:apply-templates select="document('profiles/stig-rhvh-upstream.xml')" />
       <xsl:apply-templates select="document('profiles/ospp-rhel7-server.xml')" />
       <xsl:apply-templates select="document('profiles/nist-CL-IL-AL.xml')" />
