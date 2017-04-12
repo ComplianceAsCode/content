@@ -5,7 +5,11 @@ import os
 import os.path
 import re
 import errno
-import lxml.etree as etree
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
@@ -84,24 +88,23 @@ def get_available_remediation_functions():
 
 
 def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
-
     if remediation_type == 'anaconda':
-        return etree.SubElement(fixcontent, "fix-group", id="anaconda",
+        return ElementTree.SubElement(fixcontent, "fix-group", id="anaconda",
                                 system="urn:redhat:anaconda:pre",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     if remediation_type == 'ansible':
-        return etree.SubElement(fixcontent, "fix-group", id="ansible",
+        return ElementTree.SubElement(fixcontent, "fix-group", id="ansible",
                                 system="urn:xccdf:fix:script:ansible",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     if remediation_type == 'bash':
-        return etree.SubElement(fixcontent, "fix-group", id="bash",
+        return ElementTree.SubElement(fixcontent, "fix-group", id="bash",
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     if remediation_type == 'puppet':
-        return etree.SubElement(fixcontent, "fix-group", id="puppet",
+        return ElementTree.SubElement(fixcontent, "fix-group", id="puppet",
                                 system="urn:xccdf:fix:script:puppet",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
@@ -193,7 +196,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
             # we cannot combine elements and text easily
             # so text is in ".tail" of element
-            xccdfvarsub = etree.SubElement(fix, "sub", idref=varname)
+            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
             xccdfvarsub.tail = text_between_vars
         return
 
@@ -212,7 +215,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
             # we cannot combine elements and text easily
             # so text is in ".tail" of element
-            xccdfvarsub = etree.SubElement(fix, "sub", idref=varname)
+            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
             xccdfvarsub.tail = text_between_vars
         return
 
@@ -220,7 +223,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         pattern = r'\(anaconda-populate\s*(\S+)\)'
         parts = re.split(pattern, fix.text)
         fix.text = parts[0]
-        
+
         return
 
     elif remediation_type == "bash":
@@ -282,7 +285,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                             # Append the contribution
                             fix.text += fixtextcontribution
                             # Define new XCCDF <sub> element for the variable
-                            xccdfvarsub = etree.SubElement(fix, "sub",
+                            xccdfvarsub = ElementTree.SubElement(fix, "sub",
                                                            idref=varname)
                             # If second pair element is not empty, append it as
                             # tail for the subelement (prefixed with closing '"')
@@ -300,7 +303,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                                                  fixparts[idx],
                                                  re.DOTALL).group(1)
                             # Define new XCCDF <sub> element for the function
-                            xccdffuncsub = etree.SubElement(fix, "sub",
+                            xccdffuncsub = ElementTree.SubElement(fix, "sub",
                                                             idref='function_%s' % \
                                                             funcname)
                             # Append original function call into tail of the
@@ -318,7 +321,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                             # being added as child of <fix> and fix.text doesn't
                             # end up with newline character, append the newline
                             # to the fix.text
-                            if fix.index(xccdffuncsub) == 0:
+                            if list(fix).index(xccdffuncsub) == 0:
                                 if re.search('.*\n$', fix.text) is None:
                                     fix.text += '\n'
                             # If xccdffuncsub isn't the first child (first
@@ -326,7 +329,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                             # child doesn't end up with newline, append the newline
                             # to the tail of previous child
                             else:
-                                previouselem = xccdffuncsub.getprevious()
+                                previouselem = fix[list(fix).index(xccdffuncsub) - 1]
                                 if re.search('.*\n$', previouselem.tail) is None:
                                     previouselem.tail += '\n'
 
@@ -365,7 +368,7 @@ def main():
     output = sys.argv[-1]
     remediation_type = sys.argv[2]
 
-    fixcontent = etree.Element("fix-content", system="urn:xccdf:fix:script:sh",
+    fixcontent = ElementTree.Element("fix-content", system="urn:xccdf:fix:script:sh",
                                xmlns="http://checklists.nist.gov/xccdf/1.1")
     fixgroup = get_fixgroup_for_remediation_type(fixcontent, remediation_type)
     fixes = dict()
@@ -428,7 +431,7 @@ def main():
                                 for child in list(fix):
                                     fix.remove(child)
                             else:
-                                fix = etree.SubElement(fixgroup, "fix")
+                                fix = ElementTree.SubElement(fixgroup, "fix")
                                 fix.set("rule", fixname)
                                 if complexity is not None:
                                     fix.set("complexity", complexity)
@@ -460,8 +463,8 @@ def main():
 
     sys.stderr.write("Merged %d remediation scripts.\n"
                      % (included_fixes_count))
-    tree = etree.ElementTree(fixcontent)
-    tree.write(output, pretty_print=True)
+    tree = ElementTree.ElementTree(fixcontent)
+    tree.write(output)
 
     sys.exit(0)
 
