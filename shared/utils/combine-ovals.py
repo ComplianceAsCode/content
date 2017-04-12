@@ -127,7 +127,10 @@ def check_is_applicable_for_product(oval_check_def, product):
 
 
 def add_platforms(xml_tree, multi_platform):
-    for affected in xml_tree.findall('.//*[@family="unix"]'):
+    for affected in xml_tree.findall(".//affected"):
+        if affected.get("family") != "unix":
+            continue
+
         for plat_elem in affected:
             try:
                 if plat_elem.text == 'multi_platform_oval':
@@ -199,7 +202,14 @@ def append(element, newchild):
     """Append new child ONLY if it's not a duplicate"""
 
     newid = newchild.get("id")
-    existing = element.find(".//*[@id='" + newid + "']")
+    existing = None
+    for child in element.findall(".//*"):
+        if child.get("id") != newid:
+            continue
+
+        existing = child
+        break
+
     if existing is not None:
         # ID is identical and OVAL entities are identical
         if oval_entities_are_identical(existing, newchild):
