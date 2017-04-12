@@ -629,6 +629,9 @@ macro(ssg_build_html_guides PRODUCT)
 endmacro()
 
 macro(ssg_build_product PRODUCT)
+    add_custom_target(${PRODUCT}-content)
+    add_custom_target(${PRODUCT}-validate)
+
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
@@ -647,27 +650,27 @@ macro(ssg_build_product PRODUCT)
     ssg_build_sds(${PRODUCT})
 
     add_custom_target(${PRODUCT} ALL)
-
-    add_custom_target(
-        ${PRODUCT}-content
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml
-        DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS generate-ssg-${PRODUCT}-ds.xml
-    )
     add_dependencies(${PRODUCT} ${PRODUCT}-content)
 
-    add_custom_target(
+    add_dependencies(
+        ${PRODUCT}-content
+        generate-ssg-${PRODUCT}-xccdf.xml
+        generate-ssg-${PRODUCT}-xccdf-1.2.xml
+        generate-ssg-${PRODUCT}-oval.xml
+        generate-ssg-${PRODUCT}-ocil.xml
+        generate-ssg-${PRODUCT}-cpe-dictionary.xml
+        generate-ssg-${PRODUCT}-ds.xml
+    )
+
+    add_dependencies(
         ${PRODUCT}-validate
-        DEPENDS validate-ssg-${PRODUCT}-xccdf.xml
-        #DEPENDS validate-ssg-${PRODUCT}-xccdf-1.2.xml
-        DEPENDS validate-ssg-${PRODUCT}-oval.xml
-        #DEPENDS validate-ssg-${PRODUCT}-ocil.xml
-        DEPENDS validate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS validate-ssg-${PRODUCT}-cpe-oval.xml
-        DEPENDS validate-ssg-${PRODUCT}-ds.xml
+        validate-ssg-${PRODUCT}-xccdf.xml
+        #validate-ssg-${PRODUCT}-xccdf-1.2.xml
+        validate-ssg-${PRODUCT}-oval.xml
+        #validate-ssg-${PRODUCT}-ocil.xml
+        validate-ssg-${PRODUCT}-cpe-dictionary.xml
+        validate-ssg-${PRODUCT}-cpe-oval.xml
+        validate-ssg-${PRODUCT}-ds.xml
     )
     add_dependencies(validate ${PRODUCT}-validate)
 
