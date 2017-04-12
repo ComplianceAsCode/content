@@ -116,8 +116,13 @@ def get_profileruleids(xccdftree, profile_name):
     ruleids = []
 
     while profile_name:
-        profile = xccdftree.find(".//{%s}Profile[@id='%s']"
-                                 % (xccdf_ns, profile_name))
+        profile = None
+        for el in xccdftree.findall(".//{%s}Profile" % xccdf_ns):
+            if el.get("id") != profile_name:
+                continue
+            profile = el
+            break
+
         if profile is None:
             sys.exit("Specified XCCDF Profile %s was not found.")
         for select in profile.findall(".//{%s}select" % xccdf_ns):
@@ -159,8 +164,13 @@ def main():
     ovaltree = ElementTree.parse(ovalfile)
     # collect all compliance checks (not inventory checks, which are
     # needed by CPE)
-    ovaldefs = ovaltree.findall(".//{%s}definition[@class='compliance']"
-                                % oval_ns)
+    ovaldefs = []
+    for el in ovaltree.findall(".//{%s}definition" % oval_ns):
+        if el.get("class") != "compliance":
+            continue
+
+        ovaldefs.append(el)
+
     ovaldef_ids = [ovaldef.get("id") for ovaldef in ovaldefs]
 
     oval_extenddefs = ovaltree.findall(".//{%s}extend_definition" % oval_ns)
