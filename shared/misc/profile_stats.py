@@ -1,9 +1,13 @@
 #!/usr/bin/python
 
 import json
-import lxml.etree as ET
 import optparse
 import sys
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 script_usage = """
 %prog -b XCCDF_file [-p XCCDF_profile] [--implemented] [--missing] [--all]
@@ -63,7 +67,7 @@ class XCCDFBenchmark(object):
         try:
             with open(filepath, 'r') as xccdf_file:
                 file_string = xccdf_file.read()
-                tree = ET.fromstring(file_string)
+                tree = ElementTree.fromstring(file_string)
                 self.tree = tree
         except IOError as ioerr:
             print("%s" % ioerr)
