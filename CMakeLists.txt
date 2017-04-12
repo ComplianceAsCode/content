@@ -97,6 +97,8 @@ if (NOT SED_EXECUTABLE)
     message(FATAL_ERROR "sed is required!")
 endif()
 
+find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
+
 configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
 
 message("Tools:")
@@ -105,6 +107,7 @@ message("xsltproc: ${XSLTPROC_EXECUTABLE}")
 message("xmllint: ${XMLLINT_EXECUTABLE}")
 message("xmlwf: ${XMLWF_EXECUTABLE}")
 message("sed: ${SED_EXECUTABLE}")
+message("shellcheck (optional): ${SHELLCHECK_EXECUTABLE}")
 message(" ")
 
 message("Build options:")
