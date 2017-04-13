@@ -14,7 +14,7 @@
       test_ref="test_userowner_cron_allow_file" />
     </criteria>
   </definition>
-  <unix:file_test check="all" check_existence="all_exist"
+  <unix:file_test check="all" check_existence="any_exist"
   comment="Testing user ownership of /etc/cron.allow"
   id="test_userowner_cron_allow_file" version="1">
     <unix:object object_ref="object_file_etc_cron_allow" />

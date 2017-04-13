@@ -12,7 +12,7 @@
       <criterion test_ref="test_groupowner_etc_cron_allow" />
     </criteria>
   </definition>
-  <unix:file_test check="all" check_existence="all_exist"
+  <unix:file_test check="all" check_existence="any_exist"
   comment="Testing group ownership /etc/cron.allow" id="test_groupowner_etc_cron_allow"
   version="1">
     <unix:object object_ref="object_groupowner_cron_allow_file" />
