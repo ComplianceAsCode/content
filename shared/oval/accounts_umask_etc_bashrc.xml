@@ -65,12 +65,6 @@
     </arithmetic>
   </local_variable>
 
-  <!-- The 'var_accounts_user_umask_umask_as_number' variable is created by evaluation of
-       the referenced 'var_accounts_user_umask_as_number' OVAL definition -->
-  <external_variable id="var_accounts_user_umask_umask_as_number"
-  comment="Required umask converted from string to octal number"
-  datatype="int" version="1"/>
-
   <ind:variable_test id="tst_accounts_umask_etc_bashrc" version="1" check="all"
   comment="Test the retrieved /etc/bashrc umask value(s) match the var_accounts_user_umask requirement">
     <ind:object object_ref="obj_accounts_umask_etc_bashrc" />
@@ -81,6 +75,8 @@
     <ind:var_ref>var_etc_bashrc_umask_as_number</ind:var_ref>
   </ind:variable_object>
 
+  <!-- The 'var_accounts_user_umask_umask_as_number' variable is created by evaluation of
+       the referenced 'var_accounts_user_umask_as_number' OVAL definition -->
   <ind:variable_state id="ste_accounts_umask_etc_bashrc" version="1">
     <ind:value datatype="int" operation="bitwise and" var_ref="var_accounts_user_umask_umask_as_number" />
   </ind:variable_state>
