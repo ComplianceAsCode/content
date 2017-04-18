@@ -12,6 +12,7 @@ ssg_build_html_table_by_ref(${PRODUCT} "pcidss")
 ssg_build_html_nistrefs_table(${PRODUCT} "common")
 ssg_build_html_nistrefs_table(${PRODUCT} "ospp-${PRODUCT}-server")
 ssg_build_html_nistrefs_table(${PRODUCT} "C2S")
+ssg_build_html_nistrefs_table(${PRODUCT} "stig-${PRODUCT}-disa")
 
 ssg_build_html_cce_table(${PRODUCT})
 
