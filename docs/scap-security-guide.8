@@ -195,6 +195,7 @@ For additional information relating to USGCB, please refer to the NIST
 webpage at http://usgcb.nist.gov/usgcb_content.html.
 .RE
 
+
 .SH Red Hat Enterprise Linux 7 PROFILES
 The Red Hat Enterprise Linux 7 SSG content is broken into 'profiles,' groupings of security settings that correlate to a known policy. Available profiles are:
 
@@ -231,14 +232,6 @@ This discussion is currently being held on open-scap-list@redhat.com and
 scap-security-guide@lists.fedorahosted.org.
 .RE
 
-.I nist-cl-il-al
-.RS
-The CNSSI 1253 Low/Low/Low Control Baseline for Red Hat Enterprise Linux 7 Profile
-follows the Committee on National Security Systems Instruction (CNSSI) No. 1253,
-"Security Categorization and Control Selection for National Security Systems"
-on security controls to meet low confidentiality, low integrity, and low assurance."
-.RE
-
 .I ospp-rhel7-server
 .RS
 This is a *draft* profile for NIAP OSPP v4.0. This profile is being developed
@@ -266,9 +259,9 @@ The Standard System Security Profile contains rules to ensure standard security 
 Regardless of your system's workload all of these checks should pass.
 .RE
 
-.I stig-rhel7-server-gui-upstream
+.I stig-rhel7-disa
 .RS
-The STIG for Red Hat Enterprise Linux 7 Server Running GUIs is a *draft* profile for STIG.
+The DISA STIG for Red Hat Enterprise Linux 7 Server V1R1.
 
 The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
 configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
@@ -289,60 +282,24 @@ endorsement for suitability or production readiness. Support for this profile
 is provided by the upstream SCAP Security Guide community on a best-effort
 basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
 
-This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
+This profile is developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
 .RE
 
-.I stig-rhel7-server-upstream
+.I nist-800-171-cui
 .RS
-The STIG for Red Hat Enterprise Linux 7 Server is a *draft* profile for STIG.
+Unclassified Information in Non-federal Information Systems and Organizations (NIST 800-171)
 
-The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
-configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
-DISA Field Security Operations (FSO) has played a critical role enhancing the
-security posture of DoD's security systems by providing the Security Technical
-Implementation Guides (STIGs). This profile was created as a collaboration
-effort between the National Security Agency, DISA FSO, and Red Hat.
+From NIST 800-171, Section 2.2:
+Security requirements for protecting the confidentiality of CUI in nonfederal information systems
+and organizations have a well-defined structure that consists of: (i) a basic security requirements section;
+and (ii) a derived security requirements section. The basic security requirements are obtained from FIPS
+Publication 200, which provides the high-level and fundamental security requirements for federal information
+and information systems. The derived security requirements, which supplement the basic security requirements,
+are taken from the security controls in NIST Special Publication 800-53.
 
-As a result of the upstream/downstream relationship between the SCAP Security
-Guide project and the official DISA FSO STIG baseline, users should expect
-variance between SSG and DISA FSO content. For additional information relating
-to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
+This profile configures Red Hat Enterprise Linux 7 to the NIST Special Publication 800-53 controls identified
+for securing Controlled Unclassified Information (CUI).
 
-While this profile is packaged by Red Hat as part of the SCAP Security Guide
-package, please note that commercial support of this SCAP content is NOT
-available. This profile is provided as example SCAP content with no
-endorsement for suitability or production readiness. Support for this profile
-is provided by the upstream SCAP Security Guide community on a best-effort
-basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
-
-This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
-.RE
-
-.I stig-rhel7-workstation-upstream
-.RS
-The STIG for Red Hat Enterprise Linux 7 Workstation is a *draft* profile for STIG.
-
-The Security Technical Implementation Guides (STIGs) and the NSA Guides are the
-configuration standards for DOD IA and IA-enabled devices/systems. Since 1998,
-DISA Field Security Operations (FSO) has played a critical role enhancing the
-security posture of DoD's security systems by providing the Security Technical
-Implementation Guides (STIGs). This profile was created as a collaboration
-effort between the National Security Agency, DISA FSO, and Red Hat.
-
-As a result of the upstream/downstream relationship between the SCAP Security
-Guide project and the official DISA FSO STIG baseline, users should expect
-variance between SSG and DISA FSO content. For additional information relating
-to STIGs, please refer to the DISA FSO webpage at http://iase.disa.mil/stigs/
-
-While this profile is packaged by Red Hat as part of the SCAP Security Guide
-package, please note that commercial support of this SCAP content is NOT
-available. This profile is provided as example SCAP content with no
-endorsement for suitability or production readiness. Support for this profile
-is provided by the upstream SCAP Security Guide community on a best-effort
-basis. The upstream project homepage is https://www.open-scap.org/security-policies/scap-security-guide.
-
-This profile is being developed under the DoD consensus model to become a STIG in coordination with DISA FSO.
-.RE
 
 .SH Fedora PROFILES
 The Fedora SSG content is broken into 'profiles,' groupings of security settings that
@@ -360,6 +317,7 @@ The Standard System Security Profile contains rules to ensure standard security
 baseline of a Fedora system.
 Regardless of your system's workload all of these checks should pass.
 .RE
+
 
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the
@@ -398,6 +356,7 @@ ssg-{profile}-xccdf.xml
 HTML versions of SSG profiles.
 .RE
 
+
 .SH STATEMENT OF SUPPORT
 The SCAP Security Guide, an open source project jointly maintained by Red Hat
 and the NSA, provides XCCDF and OVAL content for Red Hat technologies. As an open
@@ -419,12 +378,14 @@ Homepage: https://www.open-scap.org/security-policies/scap-security-guide
 .PP
 Mailing List: https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide
 
+
 .SH DEPLOYMENT TO U.S. CIVILIAN GOVERNMENT SYSTEMS
 SCAP Security Guide content is considered vendor (Red Hat) provided content.
 Per guidance from the U.S. National Institute of Standards and Technology (NIST),
 U.S. Government programs are allowed to use Vendor produced SCAP content in absence
 of "Governmental Authority" checklists. The specific NIST verbage:
 http://web.nvd.nist.gov/view/ncp/repository/glossary?cid=1#Authority
+
 
 .SH DEPLOYMENT TO U.S. MILITARY SYSTEMS
 DoD Directive (DoDD) 8500.1 requires that "all IA and IA-enabled IT products
@@ -438,7 +399,7 @@ of the NIST Security Content Automation Protocol (SCAP) in order to "automate"
 compliance reporting of the STIGs.
 
 Through a common, shared vision, the SCAP Security Guide community enjoys
-close collaboration directly with NSA and DISA FSO. As stated in Section 1.1 of
+close collaboration directly with NSA, NIST, and DISA FSO. As stated in Section 1.1 of
 the Red Hat Enterprise Linux 6 STIG Overview, Version 1, Release 2, issued on 03-JUNE-2013:
 
 "The consensus content was developed using an open-source project called SCAP
@@ -452,12 +413,13 @@ The DoD STIG for Red Hat Enterprise Linux 6 was released June 2013. Currently, t
 DoD Red Hat Enterprise Linux 6 STIG contains only XCCDF content and is available online:
 http://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx
 
-Content published against the iase.disa.mil website  is authoritative
+Content published against the iase.disa.mil website is authoritative
 STIG content. The SCAP Security Guide project, as noted in the STIG overview,
 is considered upstream content. Unlike DISA FSO, the SCAP Security Guide project
 does publish OVAL automation content. Individual programs and C&A evaluators
 make program-level determinations on the direct usage of the SCAP Security Guide.
 Currently there is no blanket approval.
+
 
 .SH SEE ALSO
 .B oscap(8)
