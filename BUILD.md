@@ -100,6 +100,28 @@
     `$ ninja-build`
     `$ ninja-build install`
 
+### Building tarball, package and archive zipfile
+
+1. To build a tarball with all the source code.
+
+  `make package_source`
+
+2. To build a package with testing purposes.
+
+  * Disable any product you would not like to bundle in the package. For example:
+
+    `cmake -DSSG_PRODUCT_JBOSS_EAP5:BOOL=OFF../`
+
+  * Build the package.
+
+    `make package`
+
+  Currently, RPM and DEB packages are built.
+
+3. To build a zip file with all generated source data streams and kickstarts.
+
+  `make zipfile`
+
 ## Using Docker
 
 Use the [Dockerfile](Dockerfile) present in the top directory and build the image.
