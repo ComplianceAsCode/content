@@ -36,6 +36,7 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <refine-value idref="var_password_pam_retry" selector="3" />
 <refine-value idref="var_accounts_max_concurrent_login_sessions" selector="10" />
 <refine-value idref="var_accounts_tmout" selector="10_min" />
+<refine-value idref="var_ntp_set_maxpoll" selector="disa" />
 <refine-value idref="sysctl_net_ipv4_conf_all_accept_source_route_value" selector="disabled" />
 <refine-value idref="sysctl_net_ipv4_conf_default_accept_source_route_value" selector="disabled" />
 <refine-value idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" selector="enabled" />
@@ -635,7 +636,7 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <select idref="sshd_disable_compression" selected="true" />
 
 <!-- SRG-OS-000355-GPOS-00143, SV-86893r2_rule, RHEL-07-040500 -->
-<!-- TO DO -->
+<select idref="ntp_set_maxpoll" selected="true" />
 
 <!-- SRG-OS-000420-GPOS-00186, SV-86895r1_rule, RHEL-07-040510 -->
 <!-- TO DO -->
@@ -653,7 +654,7 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <!-- TO DO -->
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86905r1_rule, RHEL-07-040600 -->
-<!-- TO DO -->
+<select idref="network_configure_name_resolution" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86907r1_rule, RHEL-07-040610 -->
 <select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
@@ -716,7 +717,7 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <!-- TO DO -->
 
 <!-- SRG-OS-000375-GPOS-00160, SV-87051r2_rule, RHEL-07-041002 -->
-<!-- TO DO -->
+<select idref="sssd_enable_pam_services" selected="true" />
 
 <!-- SRG-OS-000375-GPOS-00160, SV-87057r2_rule, RHEL-07-041003 -->
 <!-- TO DO -->

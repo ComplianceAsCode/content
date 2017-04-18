@@ -91,7 +91,7 @@ offline_credentials_expiration = 1
 </description>
 <ocil clause="it does not exist or is not configured properly" prodtype="rhel6,rhel7">
 To verify that SSSD expires offline credentials, run the following command:
-<pre>$ sudo grep offline_credentials_expiration</pre>
+<pre>$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf</pre>
 If configured properly, output should be
 <pre>offline_credentials_expiration = 1</pre>
 </ocil>
@@ -119,7 +119,7 @@ ssh_known_hosts_timeout = 86400
 </description>
 <ocil clause="it does not exist or is not configured properly" prodtype="rhel6,rhel7">
 To verify that SSSD expires known SSH host keys, run the following command:
-<pre>$ sudo grep ssh_known_hosts_timeout</pre>
+<pre>$ sudo grep ssh_known_hosts_timeout /etc/sssd/sssd.conf</pre>
 If configured properly, output should be
 <pre>ssh_known_hosts_timeout = 86400</pre>
 </ocil>
@@ -132,6 +132,36 @@ authentication information may be questionable.
 <oval prodtype="rhel6,rhel7" id="sssd_ssh_known_hosts_timeout" />
 <ref prodtype="rhel7" nist="IA-5(13)" disa="2007" ossrg="SRG-OS-000383-GPOS-00166" />
 <ref prodtype="rhel7" nist="IA-5(13)" disa="2007" />
+</Rule>
+
+<Rule id="sssd_enable_pam_services" severity="medium" prodtype="rhel7">
+<title>Configure PAM in SSSD Services</title>
+<description>
+SSSD should be configured to run SSSD <tt>pam</tt> services.
+To configure SSSD to known SSH hosts, add <tt>pam</tt>
+to <tt>services</tt> under the <tt>[sssd]</tt> section in
+<tt>/etc/sssd/sssd.conf</tt>. For example:
+<pre>[sssd]
+services = sudo, autofs, pam
+</pre>
+</description>
+<ocil clause="it does not exist or 'pam' is not added to the 'services' option under the 'sssd' section">
+To verify that SSSD is configured for PAM services, run the following command:
+<pre>$ sudo grep services /etc/sssd/sssd.conf</pre>
+If configured properly, output should be similar to
+<pre>services = pam</pre>
+</ocil>
+<rationale>
+Using an authentication device, such as a CAC or token that is separate from
+the information system, ensures that even if the information system is
+compromised, that compromise will not affect credentials stored on the
+authentication device.
+</rationale>
+<ident prodtype="rhel7" cce="80437-7" />
+<oval id="sssd_enable_pam_services" />
+<ref prodtype="rhel7" nist="IA-2(11)" disa="1948,1953,1954"
+ossrg="SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000375-GPOS-00162"
+stigid="041002" />
 </Rule>
 
 </Group>

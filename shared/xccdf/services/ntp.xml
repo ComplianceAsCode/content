@@ -61,6 +61,13 @@ information on the capabilities and configuration of each of the NTP daemons.
 <value selector="fedora">0.fedora.pool.ntp.org,1.fedora.pool.ntp.org,2.fedora.pool.ntp.org,3.fedora.pool.ntp.org</value>
 </Value>
 
+<Value id="var_ntp_set_maxpoll" type="number" >
+<title>Maximum NTP Poll</title>
+<description>The maximum NTP poll interval number in seconds.</description>
+<value selector="">17</value>
+<value selector="system_default">10</value>
+<value selector="disa">17</value>
+</Value>
 
 <Rule id="service_chronyd_or_ntpd_enabled" severity="medium" prodtype="rhel7">
 <title>Enable the NTP Daemon</title>
@@ -170,6 +177,33 @@ other systems.
 <oval id="chronyd_or_ntpd_specify_multiple_servers"/>
 <ref prodtype="rhel7" nist="AU-8(1)" pcidss="Req-10.4.3" />
 </Rule>
+
+<Rule id="ntp_set_maxpoll" prodtype="rhel7">
+<title>Configure NTP Maxpoll Interval</title>
+<description>The <tt>maxpoll</tt> should be configured to
+<sub idref="var_ntp_set_maxpoll" /> in <tt>/etc/ntp.conf</tt> to continuously
+poll NTP servers. To configure <tt>maxpoll</tt> in <tt>/etc/ntp.conf</tt>
+add the following:
+<pre>maxpoll <sub idref="var_ntp_set_maxpoll" /></pre>
+</description>
+<ocil clause="it does not exist or maxpoll has not been set to the expected value">
+To verify that <tt>maxpoll</tt> has been set properly, perform the following:
+<pre>$ sudo grep maxpoll /etc/ntp.conf</pre>
+The output should return
+<pre>maxpoll <sub idref="var_ntp_set_maxpoll" /></pre>.
+</ocil>
+<rationale>Inaccurate time stamps make it more difficult to correlate
+events and can lead to an inaccurate analysis. Determining the correct
+time a particular event occurred on a system is critical when conducting
+forensic analysis and investigating system events. Sources outside the
+configured acceptable allowance (drift) may be inaccurate.
+</rationale>
+<ident prodtype="rhel7" cce="80439-3" />
+<oval id="ntp_set_maxpoll" value="var_ntp_set_maxpoll" />
+<ref prodtype="rhel7" nist="AU-8(1)(a)" disa="1891,2046"
+ossrg="SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144" stigid="040500" />
+</Rule>
+
 
 <!-- future Rules (for later profiles/enhancements):
 ensuring use of the restrict keyword
