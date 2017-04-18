@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="network_configure_name_resolution" version="1">
+    <metadata>
+      <title>Configure Multiple DNS Servers in /etc/resolv.conf</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Multiple Domain Name System (DNS) Servers should be configured
+      in /etc/resolv.conf.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check if more than one nameserver in /etc/resolv.conf"
+      test_ref="test_network_configure_name_resolution" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="check if more than one nameserver in /etc/resolv.conf"
+  id="test_network_configure_name_resolution" version="1">
+    <ind:object object_ref="obj_network_configure_name_resolution" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_network_configure_name_resolution" version="1">
+    <ind:filepath>/etc/resolv.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*nameserver[\s]+([0-9\.]+)$</ind:pattern>
+    <!-- Make sure we have greater than 1 nameserver in resolv.conf -->
+    <ind:instance datatype="int" operation="greater than">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
