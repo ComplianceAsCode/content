@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-- name: Allow Only SSH Protocol 2
+- name: "$CCENUM: Allow Only SSH Protocol 2"
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "^Protocol [0-9]"

@@ -3,10 +3,10 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "$CCENUM: Do not permit user environment"
+- name: "$CCENUM: Disable POST password expiration"
   lineinfile:
     create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^PermitUserEnvironment"
-    line="PermitUserEnvironment no"
+    dest="/etc/default/useradd"
+    regexp="^INACTIVE"
+    line="INACTIVE=-1"
 
