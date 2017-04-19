@@ -138,7 +138,7 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
         ssh ${MACHINE} $break_script &>> $debug_log
 
         # after break script, result should contain fail
-        ssh ${MACHINE} oscap xccdf eval --tailoring-file $remote_tailoring_file --profile ${profile_supplanted} --remediate --progress --report $report_file $remote_tested_ds &> ${output_file}
+        ssh ${MACHINE} oscap xccdf eval --tailoring-file $remote_tailoring_file --profile ${profile_supplanted} --progress --report $report_file $remote_tested_ds &> ${output_file}
         if ! grep -q ':fail$' ${output_file}; then
             cat ${output_file} &>> $debug_log
             echo "ERROR: Break script ${break_script_id} failed to break the machine, no point in going further"
