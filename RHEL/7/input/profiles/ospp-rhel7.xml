@@ -1,13 +1,41 @@
 <Profile id="ospp-rhel7">
-<title>United States Government Configuration Baseline (USGCB / STIG)</title>
-<description override="true">This is a *draft* profile for NIAP OSPP v4.0. This profile is being developed under the National Information Assurance Partnership. The scope of this profile is to configure Red Hat Enteprise Linux 7 against the NIAP Protection Profile for General Purpose Operating Systems v4.0. The NIAP OSPP profile also serves as a working draft for USGCB submission against RHEL7 Server.</description>
+<title>United States Government Configuration Baseline (USGCB / STIG) - DRAFT</title>
+<description override="true">This profile is developed in partnership with the 
+U.S. National Institute of Science and Technology (NIST), U.S. Department of 
+Defense, the National Security Agency, and Red Hat. The USGCB is intended
+to be the core set of security related configuration settings by which all
+federal agencies should comply.
+
+This baseline is a superset of U.S. Government controls, and has been developed
+against the following:
+
+- Committee on National Securiy Systems Instruction No. 1253 (CNSSI 1253)
+- National Policy for the Security of National Security Telecommunications and Information Systems No. 11 (NSTISSP #11)
+- NIST Controlled Unclassified Information (NIST 800-171)
+- NIST 800-53 control selections for MODERATE impact systems (NIST 800-53)
+- U.S. Government Configuration Baseline (USGCB)
+- NIAP Protection Profile for General Purpose Operating Systems v4.0 (OSPP v4.0)
+- DISA Operating System Security Requirements Guide (OS SRG)
+
+In the case of overlapping security controls, e.g. password lengths, the stricter
+security setting was chosen. Security Requirement Traceability Guides (RTMs) and
+sample System Security Configuration Guides can be installed via the 
+scap-security-guide-docs package.
+
+This profile reflects US Government consensus content and is developed through
+the OpenSCAP/SCAP Security Guide initiative, championed by the National
+Security Agency. Except for differences in formatting to accommodate
+publishing processes, this profile mirrors OpenSCAP/SCAP Security Guide
+content as minor divergences, such as bugfixes, work through
+the consensus process.
+</description>
 
 <select idref="installed_OS_is_certified" selected="true" />
 
 <!-- OSPP v4.0 is available here:
      https://www.niap-ccevs.org/pp/PP_OS_v4.0/ 
 
-     The following rules are derived from 5.1.3 Security Management,
+     The following rules are grouped from 5.1.3 Security Management,
      FMT_MOF_EXT.1 Management of security functions behavior -->
 
 <refine-value idref="login_banner_text" selector="usgcb_default" />
