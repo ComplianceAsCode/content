@@ -10,7 +10,7 @@
 
   <xsl:template match="xccdf:Benchmark">
     <xsl:copy>
-    <title>Pre-release Final STIG for <xsl:value-of select="$product_long_name" /></title>
+    <title>DISA STIG for <xsl:value-of select="$product_long_name" /></title>
 
   	<xsl:variable name="rules" select="//xccdf:Rule"/>
 

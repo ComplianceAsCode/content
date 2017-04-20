@@ -12,12 +12,13 @@ ssg_build_html_table_by_ref(${PRODUCT} "pcidss")
 ssg_build_html_nistrefs_table(${PRODUCT} "common")
 ssg_build_html_nistrefs_table(${PRODUCT} "ospp-${PRODUCT}-server")
 ssg_build_html_nistrefs_table(${PRODUCT} "C2S")
+ssg_build_html_nistrefs_table(${PRODUCT} "stig-${PRODUCT}-disa")
 
 ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_VERSION})
 
-ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-server-upstream" ${DISA_STIG_VERSION})
+ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-disa" ${DISA_STIG_VERSION})
 
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "centos7")

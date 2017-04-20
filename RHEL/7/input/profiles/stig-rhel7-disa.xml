@@ -1,7 +1,13 @@
 <Profile id="stig-rhel7-disa">
-<title>STIG for Red Hat Enterprise Linux 7</title>
+<title>DISA STIG for Red Hat Enterprise Linux 7</title>
 <description>
-This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
+This profile contains configuration checks that align to the 
+DISA STIG for Red Hat Enterprise Linux V1R1.
+
+This profile is applicable to the operating system tier of
+Red Hat technologies that are based off RHEL7, such as RHEL
+Server,  RHV-H, RHEL for HPC, RHEL Workstation, and Red Hat 
+Storage deployments.
 </description>
 
 <!-- DISA FSO REFINEMENT VALUES
@@ -693,7 +699,7 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <select idref="tftpd_uses_secure_mode" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86931r2_rule, RHEL-07-040730 -->
-<!-- TO DO: investigate multiple mappings -->
+<select idref="package_xorg-x11-server-common_removed" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86933r1_rule, RHEL-07-040740 -->
 <select idref="sysctl_net_ipv4_ip_forward" selected="true" />
@@ -705,7 +711,7 @@ This profile aligns with the DISA STIG for Red Hat Enterprise Linux V1R1.
 <select idref="snmpd_not_default_password" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86939r1_rule, RHEL-07-040810 -->
-<!-- TO DO -->
+<select idref="set_firewalld_default_zone" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86941r1_rule, RHEL-07-040820 -->
 <select idref="libreswan_approved_tunnels" selected="true" />
