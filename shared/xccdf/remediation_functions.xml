@@ -1156,7 +1156,7 @@ function replace_or_append {
 
   # If there is no print format specified in the last arg, use the default format.
   if ! [ "x$format" = x ] ; then
-    printf -v formatted_output "$format" $stripped_key $value
+    printf -v formatted_output "$format" "$stripped_key" "$value"
   else
     formatted_output="$stripped_key = $value"
   fi
