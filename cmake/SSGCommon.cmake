@@ -766,6 +766,9 @@ macro(ssg_build_product PRODUCT)
 endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
+    add_custom_target(${DERIVATIVE}-content)
+    add_custom_target(${DERIVATIVE}-validate)
+
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         COMMAND "${SSG_SHARED_UTILS}/enable-derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
@@ -816,22 +819,31 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
     )
 
+    add_custom_target(${DERIVATIVE} ALL)
+    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-content)
+
+    add_dependencies(
+        ${DERIVATIVE}-content
+        generate-ssg-${DERIVATIVE}-xccdf.xml
+        generate-ssg-${DERIVATIVE}-ds.xml
+    )
+
+    add_dependencies(
+        ${DERIVATIVE}-validate
+        validate-ssg-${DERIVATIVE}-xccdf.xml
+        validate-ssg-${DERIVATIVE}-ds.xml
+    )
+    add_dependencies(validate ${DERIVATIVE}-validate)
+
+    add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
+
     ssg_build_html_guides(${DERIVATIVE})
 
     add_custom_target(
-        ${DERIVATIVE} ALL
-        DEPENDS generate-ssg-${DERIVATIVE}-xccdf.xml
-        # We use the original product's OVAL
-        #DEPENDS generate-ssg-${DERIVATIVE}-oval.xml
-        DEPENDS generate-ssg-${DERIVATIVE}-ds.xml
+        ${DERIVATIVE}-guides
         DEPENDS generate-ssg-${DERIVATIVE}-guide-index.html
     )
-    add_custom_target(
-        ${DERIVATIVE}-validate
-        DEPENDS validate-ssg-${DERIVATIVE}-xccdf.xml
-        DEPENDS validate-ssg-${DERIVATIVE}-ds.xml
-    )
-    add_dependencies(validate ${DERIVATIVE}-validate)
+    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-guides)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
