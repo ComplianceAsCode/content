@@ -838,12 +838,21 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
 
     ssg_build_html_guides(${DERIVATIVE})
+    ssg_build_remediation_roles(${DERIVATIVE} "urn:xccdf:fix:script:ansible" "yml")
+    ssg_build_remediation_roles(${DERIVATIVE} "urn:xccdf:fix:script:sh" "sh")
 
     add_custom_target(
         ${DERIVATIVE}-guides
         DEPENDS generate-ssg-${DERIVATIVE}-guide-index.html
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-guides)
+
+    add_custom_target(
+        ${DERIVATIVE}-roles
+        DEPENDS generate-ssg-${DERIVATIVE}-role.yml
+        DEPENDS generate-ssg-${DERIVATIVE}-role.sh
+    )
+    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-roles)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
