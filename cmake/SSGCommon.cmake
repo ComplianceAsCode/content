@@ -648,6 +648,22 @@ macro(ssg_build_html_guides PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/roles"
+        COMMAND "${SSG_SHARED_UTILS}/build-all-remediation-roles.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/roles" --template "${TEMPLATE}" --extension "${EXTENSION}" build
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-guides] generating ${TEMPLATE} remediation roles for all profiles in ssg-${PRODUCT}-ds.xml"
+    )
+    add_custom_target(
+        generate-ssg-${PRODUCT}-role.${EXTENSION}
+        DEPENDS "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
     add_custom_target(${PRODUCT}-validate)
@@ -697,6 +713,8 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
     ssg_build_html_guides(${PRODUCT})
+    ssg_build_remediation_roles(${PRODUCT} "urn:xccdf:fix:script:ansible" "yml")
+    ssg_build_remediation_roles(${PRODUCT} "urn:xccdf:fix:script:sh" "sh")
 
     add_custom_target(
         ${PRODUCT}-guides
@@ -712,7 +730,8 @@ macro(ssg_build_product PRODUCT)
 
     add_custom_target(
         ${PRODUCT}-roles
-        # dependencies are added later using add_dependency
+        DEPENDS generate-ssg-${PRODUCT}-role.yml
+        DEPENDS generate-ssg-${PRODUCT}-role.sh
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-roles)
 
@@ -981,34 +1000,6 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         COMPONENT doc)
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}"
-        COMPONENT doc)
-endmacro()
-
-macro(ssg_build_remediation_role PRODUCT LANGUAGE PROFILE)
-    if("${LANGUAGE}" STREQUAL "ansible")
-        set(SUFFIX ".yml")
-        set(TEMPLATE "urn:xccdf:fix:script:ansible")
-    elseif("${LANGUAGE}" STREQUAL "bash")
-        set(SUFFIX ".sh")
-        set(TEMPLATE "urn:xccdf:fix:script:sh")
-    endif()
-
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}"
-        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/roles"
-        COMMAND "${OSCAP_EXECUTABLE}" xccdf generate fix --template "${TEMPLATE}" --profile "${PROFILE}" --output "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMENT "[${PRODUCT}-roles] generating ${LANGUAGE} role for profile ${PROFILE}"
-    )
-    add_custom_target(
-        generate-${PRODUCT}-${LANGUAGE}-${PROFILE}-role
-        DEPENDS "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}"
-    )
-    add_dependencies(${PRODUCT}-roles generate-${PRODUCT}-${LANGUAGE}-${PROFILE}-role)
-
-    install(FILES "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-${LANGUAGE}-${PROFILE}-role${SUFFIX}"
-        DESTINATION "${SSG_ROLE_INSTALL_DIR}"
         COMPONENT doc)
 endmacro()
 
