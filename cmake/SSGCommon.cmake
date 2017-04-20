@@ -863,7 +863,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     # and not configure time.
     install(
        CODE "
-       file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-guide-*.html\") \n
+       file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${DERIVATIVE}-guide-*.html\") \n
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
            TYPE FILE FILES \${GUIDE_FILES}
        )"
