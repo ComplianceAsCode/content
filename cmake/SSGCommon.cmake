@@ -758,6 +758,22 @@ macro(ssg_build_product PRODUCT)
        )"
        COMPONENT doc
     )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.yml\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
+       COMPONENT doc
+    )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.sh\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
+       COMPONENT doc
+    )
 
     # grab all the kickstarts (if any) and install them
     file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")
@@ -866,6 +882,22 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${DERIVATIVE}-guide-*.html\") \n
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
            TYPE FILE FILES \${GUIDE_FILES}
+       )"
+       COMPONENT doc
+    )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.yml\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
+       COMPONENT doc
+    )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.sh\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
        )"
        COMPONENT doc
     )
