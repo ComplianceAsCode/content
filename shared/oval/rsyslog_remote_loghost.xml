@@ -15,6 +15,18 @@
     </criteria>
   </definition>
 
+  <!-- NIST scapval validation tool complains that a variable passed to
+  rsyslog_remote_loghost OVAL check from the XCCDF Rule doesn't have
+  the correct type according to the SCAP specifications.
+
+  This happens because we don't use the received variable in the check,
+  thus its type is not defined anywhere in the check, we only use it when
+  remediating the rule.
+
+  To work around this we define an external variable just to set
+  the type of the variable to be as SCAP specification defines.  -->
+  <external_variable comment="used for remediation only" datatype="string" id="rsyslog_remote_loghost_address" version="1"/>
+
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Ensures system configured to export logs to remote host"
   id="test_remote_rsyslog_conf" version="1">
@@ -26,7 +38,7 @@
   id="test_remote_rsyslog_d" version="1">
     <ind:object object_ref="object_remote_loghost_rsyslog_d" />
   </ind:textfilecontent54_test>
-  
+
   <ind:textfilecontent54_object id="object_remote_loghost_rsyslog_conf" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
     <ind:pattern operation="pattern match">^\*\.\*[\s]+(?:@|\:omrelp\:)</ind:pattern>
