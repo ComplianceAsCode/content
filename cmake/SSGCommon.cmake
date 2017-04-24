@@ -656,7 +656,7 @@ macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMENT "[${PRODUCT}-guides] generating ${TEMPLATE} remediation roles for all profiles in ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-roles] generating ${TEMPLATE} remediation roles for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
         generate-ssg-${PRODUCT}-role.${EXTENSION}
