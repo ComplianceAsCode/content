@@ -135,7 +135,7 @@ unauthorized intrusions, and other potential errors.
 </description>
 <rationale>The SETroubleshoot service is an unnecessary daemon to
 have running on a server</rationale>
-<ident prodtype="rhel7" cce="" />
+<ident prodtype="rhel7" cce="80444-3" />
 <oval id="package_setroubleshoot_removed" />
 <ref prodtype="rhel7" cis="1.4.4" />
 </Rule>
@@ -153,7 +153,7 @@ amount of potentially vulnerable code running on the system.
 NOTE: This rule was added in support of the CIS RHEL6 v1.2.0 benchmark. Please
 note that Red Hat does not feel this rule is security relevant.
 </rationale>
-<ident prodtype="rhel7" cce="" />
+<ident prodtype="rhel7" cce="80445-0" />
 <oval id="package_mcstrans_removed" />
 </Rule>
 
@@ -222,6 +222,7 @@ an attacker or rogue container from attacking other container processes
 and content as well as prevents taking over the host operating system.
 </rationale>
 <platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="80442-7" />
 <oval id="docker_selinux_enabled" />
 </Rule>
 
