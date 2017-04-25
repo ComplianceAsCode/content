@@ -764,7 +764,6 @@ macro(ssg_build_product PRODUCT)
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
                TYPE FILE FILES \${ROLE_FILES}
        )"
-       COMPONENT doc
     )
     install(
        CODE "
@@ -772,7 +771,6 @@ macro(ssg_build_product PRODUCT)
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
                TYPE FILE FILES \${ROLE_FILES}
        )"
-       COMPONENT doc
     )
 
     # grab all the kickstarts (if any) and install them
