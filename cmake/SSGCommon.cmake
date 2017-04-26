@@ -889,7 +889,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
                TYPE FILE FILES \${ROLE_FILES}
        )"
-       COMPONENT doc
     )
     install(
        CODE "
@@ -897,7 +896,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
                TYPE FILE FILES \${ROLE_FILES}
        )"
-       COMPONENT doc
     )
 endmacro()
 
