@@ -2,8 +2,7 @@
 
 """
 Takes given XCCDF or DataStream and for every profile in it it generates one
-OpenSCAP HTML guide. Also generates an index file that lists all the profiles
-and allows the user to navigate between them.
+ansible and bash remediation roles.
 
 Author: Martin Preisler <mpreisle@redhat.com>
 """
@@ -22,12 +21,12 @@ import Queue
 import sys
 import multiprocessing
 
+
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 import xccdf_utils
-
 
 OSCAP_PATH = "oscap"
 
@@ -58,17 +57,19 @@ if hasattr(subprocess, "check_output"):
     subprocess_check_output = subprocess.check_output
 
 
-def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
-    """Returns HTML guide for given input_content and profile_id
+def generate_role_for_input_content(input_content, benchmark_id, profile_id, template):
+    """Returns remediation role for given input_content and profile_id
     combination. This function assumes only one Benchmark exists
     in given input_content!
     """
 
-    args = [OSCAP_PATH, "xccdf", "generate", "guide"]
+    args = [OSCAP_PATH, "xccdf", "generate", "fix"]
     if benchmark_id != "":
         args.extend(["--benchmark-id", benchmark_id])
     if profile_id != "":
         args.extend(["--profile", profile_id])
+
+    args.extend(["--template", template])
     args.append(input_content)
 
     ret = subprocess_check_output(args).decode("utf-8")
@@ -90,7 +91,7 @@ def main():
 
     sp = p.add_subparsers(help="actions")
 
-    make_sp = sp.add_parser("build", help="Build all the HTML guides")
+    make_sp = sp.add_parser("build", help="Build all the remediation roles")
     make_sp.set_defaults(cmd="build")
 
     input_sp = sp.add_parser("list-inputs", help="Generate input list")
@@ -103,6 +104,10 @@ def main():
                    default=get_cpu_count(),
                    help="how many jobs should be processed in parallel")
 
+    p.add_argument("-t", "--template", action="store", required=True,
+                   help="the remediation template")
+    p.add_argument("-e", "--extension", action="store", required=True,
+                   help="the extension of the roles")
     p.add_argument("-i", "--input", action="store", required=True,
                    help="input file, can be XCCDF or Source DataStream")
     p.add_argument("-o", "--output", action="store", required=True,
@@ -137,7 +142,10 @@ def main():
         )
 
     benchmark_profile_pairs = []
-    for benchmark_id in benchmarks.keys():
+    # TODO: [:1] is here because oscap generate fix can't handle multiple
+    # benchmarks. This needs to be removed once
+    # https://github.com/OpenSCAP/openscap/issues/722 is fixed
+    for benchmark_id in benchmarks.keys()[:1]:
         profiles = xccdf_utils.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
@@ -154,12 +162,6 @@ def main():
             benchmark_profile_pairs.append(
                 (benchmark_id, profile_id, profiles[profile_id])
             )
-
-    # TODO: Make the index file nicer
-
-    index_links = []
-    index_options = []
-    index_initial_src = None
 
     def benchmark_profile_pair_sort_key(
         benchmark_id, profile_id, profile_title
@@ -178,11 +180,7 @@ def main():
 
     queue = Queue.Queue()
 
-    for benchmark_id, profile_id, profile_title in \
-            sorted(benchmark_profile_pairs,
-                   key=lambda x: benchmark_profile_pair_sort_key(
-                       x[0], x[1], x[2]
-                   )):
+    for benchmark_id, profile_id, profile_title in benchmark_profile_pairs:
         skip = False
         for blacklisted_id in xccdf_utils.PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
@@ -206,36 +204,25 @@ def main():
                 len(benchmark_id_for_path) == len("RHEL-X"):
             # treat the base RHEL benchmark as a special case to preserve
             # old guide paths and old URLs that people may be relying on
-            guide_filename = \
-                "%s-guide-%s.html" % \
+            role_filename = \
+                "%s-role-%s.%s" % \
                 (path_base,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path))
+                 xccdf_utils.get_profile_short_id(profile_id_for_path),
+                 args.extension)
         else:
-            guide_filename = \
-                "%s-%s-guide-%s.html" % \
+            role_filename = \
+                "%s-%s-role-%s.%s" % \
                 (path_base, benchmark_id_for_path,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path))
-        guide_path = os.path.join(output_dir, guide_filename)
+                 xccdf_utils.get_profile_short_id(profile_id_for_path),
+                 args.extension)
+        role_path = os.path.join(output_dir, role_filename)
 
         if args.cmd == "list_inputs":
             pass  # noop
         elif args.cmd == "list_outputs":
-            print(guide_path)
+            print(role_path)
         elif args.cmd == "build":
-            index_links.append(
-                "<a target=\"guide\" href=\"%s\">%s</a>" %
-                (guide_filename, "%s in %s" % (profile_title, benchmark_id))
-            )
-            index_options.append(
-                "<option value=\"%s\" data-benchmark-id=\"%s\" data-profile-id=\"%s\">%s</option>" %
-                (guide_filename,
-                 "" if len(benchmarks) == 1 else benchmark_id, profile_id,
-                 "%s in %s" % (profile_title, benchmark_id))
-            )
-            if index_initial_src is None:
-                index_initial_src = guide_filename
-
-            queue.put((benchmark_id, profile_id, profile_title, guide_path))
+            queue.put((benchmark_id, profile_id, profile_title, role_path))
 
     def builder():
         while True:
@@ -243,17 +230,17 @@ def main():
                 benchmark_id, profile_id, profile_title, guide_path = \
                     queue.get(False)
 
-                guide_html = generate_guide_for_input_content(
-                    input_path, benchmark_id, profile_id
+                role_src = generate_role_for_input_content(
+                    input_path, benchmark_id, profile_id, args.template
                 )
-                with open(guide_path, "w") as f:
-                    f.write(guide_html.encode("utf-8"))
+                with open(role_path, "w") as f:
+                    f.write(role_src.encode("utf-8"))
 
                 queue.task_done()
 
                 print(
-                    "Generated '%s' for profile ID '%s' in benchmark '%s'." %
-                    (guide_path, profile_id, benchmark_id)
+                    "Generated '%s' for profile ID '%s' in benchmark '%s', template=%s." %
+                    (guide_path, profile_id, benchmark_id, args.template)
                 )
 
             except Queue.Empty:
@@ -261,8 +248,8 @@ def main():
 
             except Exception as e:
                 sys.stderr.write(
-                    "Fatal error encountered when generating guide '%s'. "
-                    "Error details:\n%s\n\n" % (guide_path, e)
+                    "Fatal error encountered when generating role '%s'. "
+                    "Error details:\n%s\n\n" % (role_path, e)
                 )
                 queue.task_done()
 
@@ -270,7 +257,7 @@ def main():
         workers = []
         for worker_id in range(args.jobs):
             worker = threading.Thread(
-                name="Guide generate worker #%i" % (worker_id),
+                name="Role generate worker #%i" % (worker_id),
                 target=builder
             )
             workers.append(worker)
@@ -279,75 +266,6 @@ def main():
 
         queue.join()
 
-        index_source = "<!DOCTYPE html>\n"
-        index_source += "<html lang=\"en\">\n"
-        index_source += "\t<head>\n"
-        index_source += "\t\t<meta charset=\"utf-8\">\n"
-        index_source += "\t\t<title>%s</title>\n" % \
-                        (benchmarks.itervalues().next())
-        index_source += "\t\t<script>\n"
-        index_source += "\t\t\tfunction change_profile(option_element)\n"
-        index_source += "\t\t\t{\n"
-        index_source += "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n"
-        index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
-        index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
-        index_source += "\t\t\t\tvar input_path='/usr/share/xml/scap/ssg/content/%s';\n" % (input_basename)
-        index_source += "\t\t\t\tif (profile_id == '')\n"
-        index_source += "\t\t\t\t{\n"
-        index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
-        index_source += "\t\t\t\t\telse\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' ' + input_path;\n"
-        index_source += "\t\t\t\t}\n"
-        index_source += "\t\t\t\telse\n"
-        index_source += "\t\t\t\t{\n"
-        index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
-        index_source += "\t\t\t\t\telse\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' --profile ' + profile_id + ' ' + input_path;\n"
-        index_source += "\t\t\t\t}\n"
-        index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
-        index_source += "\t\t\t}\n"
-        index_source += "\t\t</script>\n"
-        index_source += "\t\t<style>\n"
-        index_source += "\t\t\thtml, body { margin: 0; height: 100% }\n"
-        index_source += "\t\t\t#js_switcher { position: fixed; right: 30px; top: 10px; padding: 2px; background: #ddd; border: 1px solid #999 }\n"
-        index_source += "\t\t\t#guide_div { margin: auto; width: 99%; height: 99% }\n"
-        index_source += "\t\t</style>\n"
-        index_source += "\t</head>\n"
-        index_source += "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n"
-        index_source += "\t\t<noscript>\n"
-        index_source += "Profiles: "
-        index_source += ", ".join(index_links) + "\n"
-        index_source += "\t\t</noscript>\n"
-        index_source += "\t\t<div id=\"js_switcher\" style=\"display: none\">\n"
-        index_source += "\t\t\tProfile: \n"
-        index_source += "\t\t\t<select style=\"margin-bottom: 5px\" "
-        index_source += "onchange=\"change_profile(this.options[this.selectedIndex]);\""
-        index_source += ">\n"
-        index_source += "\n".join(index_options) + "\n"
-        index_source += "\t\t\t</select>\n"
-        index_source += "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
-        index_source += "select a profile to display its guide and a command line snippet needed to use it"
-        index_source += "</div>\n"
-        index_source += "\t\t</div>\n"
-        index_source += "\t\t<div id=\"guide_div\">\n"
-        index_source += \
-            "\t\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
-        index_source += "width=\"100%\" height=\"100%\">\n"
-        index_source += "\t\t\t</iframe>\n"
-        index_source += "\t\t</div>\n"
-        index_source += "\t</body>\n"
-        index_source += "</html>\n"
-
-    index_path = os.path.join(output_dir, "%s-guide-index.html" % (path_base))
-    if args.cmd == "list_inputs":
-        pass  # noop
-    elif args.cmd == "list_outputs":
-        print(index_path)
-    elif args.cmd == "build":
-        with open(index_path, "w") as f:
-            f.write(index_source.encode("utf-8"))
 
 if __name__ == "__main__":
     main()

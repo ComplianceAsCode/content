@@ -648,6 +648,22 @@ macro(ssg_build_html_guides PRODUCT)
     )
 endmacro()
 
+macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/roles"
+        COMMAND "${SSG_SHARED_UTILS}/build-all-remediation-roles.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/roles" --template "${TEMPLATE}" --extension "${EXTENSION}" build
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        DEPENDS generate-ssg-${PRODUCT}-ds.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMENT "[${PRODUCT}-roles] generating ${TEMPLATE} remediation roles for all profiles in ssg-${PRODUCT}-ds.xml"
+    )
+    add_custom_target(
+        generate-ssg-${PRODUCT}-role.${EXTENSION}
+        DEPENDS "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
     add_custom_target(${PRODUCT}-validate)
@@ -697,6 +713,8 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
     ssg_build_html_guides(${PRODUCT})
+    ssg_build_remediation_roles(${PRODUCT} "urn:xccdf:fix:script:ansible" "yml")
+    ssg_build_remediation_roles(${PRODUCT} "urn:xccdf:fix:script:sh" "sh")
 
     add_custom_target(
         ${PRODUCT}-guides
@@ -709,6 +727,13 @@ macro(ssg_build_product PRODUCT)
         # dependencies are added later using add_dependency
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-tables)
+
+    add_custom_target(
+        ${PRODUCT}-roles
+        DEPENDS generate-ssg-${PRODUCT}-role.yml
+        DEPENDS generate-ssg-${PRODUCT}-role.sh
+    )
+    add_dependencies(${PRODUCT} ${PRODUCT}-roles)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
@@ -733,6 +758,20 @@ macro(ssg_build_product PRODUCT)
        )"
        COMPONENT doc
     )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.yml\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
+    )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.sh\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
+    )
 
     # grab all the kickstarts (if any) and install them
     file(GLOB KICKSTART_FILES "${CMAKE_CURRENT_SOURCE_DIR}/kickstart/ssg-${PRODUCT}-*-ks.cfg")
@@ -741,6 +780,9 @@ macro(ssg_build_product PRODUCT)
 endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
+    add_custom_target(${DERIVATIVE}-content)
+    add_custom_target(${DERIVATIVE}-validate)
+
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         COMMAND "${SSG_SHARED_UTILS}/enable-derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
@@ -791,22 +833,40 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
     )
 
-    ssg_build_html_guides(${DERIVATIVE})
+    add_custom_target(${DERIVATIVE} ALL)
+    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-content)
 
-    add_custom_target(
-        ${DERIVATIVE} ALL
-        DEPENDS generate-ssg-${DERIVATIVE}-xccdf.xml
-        # We use the original product's OVAL
-        #DEPENDS generate-ssg-${DERIVATIVE}-oval.xml
-        DEPENDS generate-ssg-${DERIVATIVE}-ds.xml
-        DEPENDS generate-ssg-${DERIVATIVE}-guide-index.html
+    add_dependencies(
+        ${DERIVATIVE}-content
+        generate-ssg-${DERIVATIVE}-xccdf.xml
+        generate-ssg-${DERIVATIVE}-ds.xml
     )
-    add_custom_target(
+
+    add_dependencies(
         ${DERIVATIVE}-validate
-        DEPENDS validate-ssg-${DERIVATIVE}-xccdf.xml
-        DEPENDS validate-ssg-${DERIVATIVE}-ds.xml
+        validate-ssg-${DERIVATIVE}-xccdf.xml
+        validate-ssg-${DERIVATIVE}-ds.xml
     )
     add_dependencies(validate ${DERIVATIVE}-validate)
+
+    add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
+
+    ssg_build_html_guides(${DERIVATIVE})
+    ssg_build_remediation_roles(${DERIVATIVE} "urn:xccdf:fix:script:ansible" "yml")
+    ssg_build_remediation_roles(${DERIVATIVE} "urn:xccdf:fix:script:sh" "sh")
+
+    add_custom_target(
+        ${DERIVATIVE}-guides
+        DEPENDS generate-ssg-${DERIVATIVE}-guide-index.html
+    )
+    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-guides)
+
+    add_custom_target(
+        ${DERIVATIVE}-roles
+        DEPENDS generate-ssg-${DERIVATIVE}-role.yml
+        DEPENDS generate-ssg-${DERIVATIVE}-role.sh
+    )
+    add_dependencies(${DERIVATIVE} ${DERIVATIVE}-roles)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
@@ -817,11 +877,25 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     # and not configure time.
     install(
        CODE "
-       file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-guide-*.html\") \n
+       file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${DERIVATIVE}-guide-*.html\") \n
            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
            TYPE FILE FILES \${GUIDE_FILES}
        )"
        COMPONENT doc
+    )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.yml\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
+    )
+    install(
+       CODE "
+       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.sh\") \n
+           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+               TYPE FILE FILES \${ROLE_FILES}
+       )"
     )
 endmacro()
 
