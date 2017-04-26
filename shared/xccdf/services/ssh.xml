@@ -22,6 +22,16 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
+<Value id="sshd_max_auth_tries_value" type="number"
+operator="equals" interactive="0">
+<title>SSH Max authentication attempts</title>
+<description>Specify the maximum number of authentication attempts per connection.</description>
+<value selector="">4</value>
+<value selector="3">3</value>
+<value selector="5">5</value>
+<value selector="10">10</value>
+</Value>
+
 <Value id="sshd_listening_port" type="number"
 operator="equals" interactive="0">
 <title>SSH Server Listening Port</title>
@@ -360,6 +370,31 @@ recognition and reporting of unauthorized account use.
 <ref prodtype="rhel7" nist="AC-9" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040360"/>
 </Rule>
 
+<Rule id="sshd_set_loglevel_info" severity="low" prodtype="debian8">
+<title>Set LogLevel to INFO</title>
+<description>The INFO parameter specifices that record login and logout activity will be logged.
+To specify the log level in
+SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+<pre>LogLevel INFO</pre>
+</description>
+<ocil clause="it is commented out or is not enabled">
+To check if PrintLastLog is enabled or set correctly, run the
+following command:
+<pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
+If configured properly, output should be <pre>LogLevel INFO</pre>
+</ocil>
+<rationale>
+SSH provides several logging levels with varying amounts of verbosity. <tt>DEBUG</tt> is specifically
+not recommended other than strictly for debugging SSH communications since it provides
+so much data that it is difficult to identify important security information. <tt>INFO</tt> level is the
+basic level that only records login activity of SSH users. In many situations, such as Incident
+Response, it is important to determine when a particular user was active on a system. The
+logout record can eliminate those users who disconnected, which helps narrow the field.
+</rationale>
+<oval id="sshd_set_loglevel_info" />
+<ref prodtype="debian8" cis="9.3.2"/>
+</Rule>
+
 <!-- FIXME: figure out whether/how to say something discrete here -->
 <!--
 <Group id="sshd_disable_extraneous_authentication">
@@ -455,7 +490,28 @@ ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" stigid="040340"
 cis="6.2.12" cjis="5.5.6" cui="3.1.11" />
 </Rule>
 
-<Rule id="sshd_disable_rhosts" severity="medium" prodtype="rhel7">
+<Rule id="sshd_set_max_auth_tries" severity="medium" prodtype="rhel7,debian8">
+<title>Set SSH authentication attempt limit</title>
+<description>The <tt>MaxAuthTries</tt> parameter specifies the maximum number of authentication attempts
+permitted per connection. Once the number of failures reaches half this value, additional failures are logged.
+to set MaxAUthTries edit <tt>/etc/ssh/sshd_config</tt> as follows:
+<pre>MaxAuthTries <b>tries</b></pre>
+</description>
+<ocil clause="it is commented out or not configured properly">
+To ensure the <tt>MaxAuthTries</tt> parameter is set, run the following command:
+<pre>$ sudo grep MaxAuthTries /etc/ssh/sshd_config</pre>
+If properly configured, output should be:
+<pre>MaxAuthTries <b>tries</b></pre>
+</ocil>
+<rationale>
+Setting the MaxAuthTries parameter to a low number will minimize the risk of successful
+brute force attacks to the SSH server.
+</rationale>
+<oval id="sshd_set_max_auth_tries" value="sshd_max_auth_tries_value"/>
+<ref prodtype="debian8" cis="9.3.5" />
+</Rule>
+
+<Rule id="sshd_disable_rhosts" severity="medium" prodtype="rhel7,debian8">
 <title>Disable SSH Support for .rhosts Files</title>
 <description>SSH can emulate the behavior of the obsolete rsh
 command in allowing users to enable insecure access to their
@@ -549,7 +605,7 @@ can allow an attacker to move trivially to other hosts.
 stigid="010470" cis="6.2.7" cjis="5.5.6" cui="3.1.12" />
 </Rule>
 
-<Rule id="enable_x11_forwarding" severity="high" prodtype="rhel7">
+<Rule id="sshd_enable_x11_forwarding" severity="high" prodtype="rhel7">
 <title>Enable Encrypted X11 Fordwarding</title>
 <description>By default, remote X11 connections are not encrypted when initiated
 by users. SSH has the capability to encrypt remote X11 connections when SSH's
@@ -567,7 +623,7 @@ Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
 <ident prodtype="rhel7" cce="80226-4" />
-<oval id="enable_x11_forwarding" />
+<oval id="sshd_enable_x11_forwarding" />
 <ref prodtype="rhel7" nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="040710" cui="3.1.13" />
 </Rule>
@@ -724,6 +780,61 @@ functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 <oval id="sshd_use_approved_macs" value="sshd_approved_macs" />
 <ref prodtype="rhel7" nist="AC-17(2),IA-7,SC-13" disa="1453"
 ossrg="SRG-OS-000250-GPOS-00093" stigid="040400" cui="3.1.13,3.13.11,3.13.8" />
+</Rule>
+
+<!-- similar to sshd_use_approved_ciphers, but without FIPS certification -->
+<Rule id="sshd_use_strong_ciphers" severity="medium" prodtype="rhel7,debian8">
+<title>Use Only Strong Ciphers</title>
+<description>Limit the ciphers to strong algorithms.
+Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+The following line in <tt>/etc/ssh/sshd_config</tt>
+demonstrates use of those ciphers:
+<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+<pre>chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr</pre>
+The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+</description>
+<ocil clause="ciphers are not configured or not using strong ciphers">
+Only approved ciphers should be used.  To verify that only approved
+ciphers are in use, run the following command:
+<pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
+The output should contain only those ciphers which are considered strong, namely,
+chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr
+</ocil>
+<rationale>
+Based on research conducted at various institutions, it was determined that the symmetric
+portion of the SSH Transport Protocol (as described in RFC 4253) has security weaknesses
+that allowed recovery of up to 32 bits of plaintext from a block of ciphertext that was
+encrypted with the Cipher Block Chaining (CBD) method. From that research, new Counter
+mode algorithms (as described in RFC4344) were designed that are not vulnerable to these
+types of attacks and these algorithms are now recommended for standard use.
+</rationale>
+<oval id="sshd_use_strong_ciphers" />
+<ref prodtype="debian" cis="9.3.11" />
+</Rule>
+
+<!-- similar to sshd_use_approved_macs, but without FIPS certification -->
+<Rule id="sshd_use_strong_macs" severity="medium" prodtype="rhel7,debian8">
+<title>Use Only Strong MACs</title>
+<description>Limit the MACs to strong hash algorithms.
+The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use
+of those MACs:
+<pre>MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160</pre>
+</description>
+<ocil clause="MACs option is commented out or not using strong hash algorithms">
+Only approved MACs should be used.  To verify that only approved
+MACs are in use, run the following command:
+<pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
+The output should contain only those MACs which are approved, namely,
+hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160 hash functions.
+</ocil>
+<rationale>
+MD5 and 96-bit MAC algorithms are considered weak and have been shown to increase
+exploitability in SSH downgrade attacks. Weak algorithms continue to have a great deal of
+attention as a weak spot that can be exploited with expanded computing power. An
+attacker that breaks the algorithm could take advantage of a MiTM position to decrypt the
+SSH tunnel and capture credentials and information
+</rationale>
+<oval id="sshd_use_strong_macs" />
 </Rule>
 
 <Group id="sshd_strengthen_firewall">

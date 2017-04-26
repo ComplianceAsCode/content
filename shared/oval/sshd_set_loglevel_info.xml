@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="sshd_set_loglevel_info" version="1">
+    <metadata>
+      <title>Set OpenSSH LogLevel to INFO</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The SSH LogLevel should be set to INFO.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met"
+    operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <criterion comment="Check LogLevel in /etc/ssh/sshd_config"
+      test_ref="test_sshd_set_loglevel_info" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="loglevel is set" id="test_sshd_set_loglevel_info" version="1">
+    <ind:object object_ref="obj_sshd_set_loglevel_info" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_sshd_set_loglevel_info"
+  version="2">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)LogLevel(?-i)[\s]+INFO[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
