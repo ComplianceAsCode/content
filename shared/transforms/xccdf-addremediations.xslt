@@ -54,11 +54,11 @@
 <xsl:template match="text()" mode="fix_contents">
   <xsl:param name="rule"/>
   <xsl:choose>
-    <xsl:when test="contains(., '$CCENUM')">
+    <xsl:when test="contains(., '@CCENUM@')">
       <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
       <xsl:call-template name="find-and-replace">
         <xsl:with-param name="text" select="."/>
-        <xsl:with-param name="replace" select="'$CCENUM'"/>
+        <xsl:with-param name="replace" select="'@CCENUM@'"/>
         <xsl:with-param name="with" select="$ident_cce"/>
       </xsl:call-template>
     </xsl:when>

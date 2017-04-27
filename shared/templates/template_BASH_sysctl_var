@@ -15,4 +15,4 @@ populate sysctl_SYSCTLID_value
 # If SYSCTLVAR present in /etc/sysctl.conf, change value to appropriate value
 #	else, add "SYSCTLVAR = value" to /etc/sysctl.conf
 #
-replace_or_append '/etc/sysctl.conf' '^SYSCTLVAR' "$sysctl_SYSCTLID_value" '$CCENUM'
+replace_or_append '/etc/sysctl.conf' '^SYSCTLVAR' "$sysctl_SYSCTLID_value" '@CCENUM@'
