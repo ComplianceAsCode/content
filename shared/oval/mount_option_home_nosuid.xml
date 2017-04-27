@@ -3,7 +3,8 @@
     <metadata>
       <title>Add nosuid Option to /home</title>
       <affected family="unix">
-	<platform>multi_platform_all</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>The nosuid mount option should be set for user home directory
       partitions such as /home. The suid/sgid permissions should not be required
