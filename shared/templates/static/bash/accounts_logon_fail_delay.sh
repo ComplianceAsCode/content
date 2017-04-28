@@ -6,4 +6,4 @@
 # Set variables
 populate var_accounts_fail_delay
 
-replace_or_append '/etc/login.defs' '^FAIL_DELAY' "$var_accounts_fail_delay" '$CCENUM' '%s %s'
+replace_or_append '/etc/login.defs' '^FAIL_DELAY' "$var_accounts_fail_delay" '@CCENUM@' '%s %s'
