@@ -442,7 +442,7 @@ can allow an attacker to move trivially to other hosts.
 <ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229"  />
 </Rule>
 
-<Rule id="enable_x11_forwarding" severity="high">
+<Rule id="sshd_enable_x11_forwarding" severity="high">
 <title>Enable Encrypted X11 Fordwarding</title>
 <description>By default, remote X11 connections are not encrypted when initiated
 by users. SSH has the capability to encrypt remote X11 connections when SSH's
@@ -459,7 +459,7 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
-<oval id="enable_x11_forwarding" />
+<oval id="sshd_enable_x11_forwarding" />
 <ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
  />
 </Rule>

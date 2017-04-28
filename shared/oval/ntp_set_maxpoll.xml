@@ -17,12 +17,17 @@
   comment="check if maxpoll is set in /etc/ntp.conf"
   id="test_ntp_set_maxpoll" version="1">
     <ind:object object_ref="obj_ntp_set_maxpoll" />
+    <ind:state state_ref="state_ntp_set_maxpoll" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ntp_set_maxpoll" version="1">
     <ind:filepath>/etc/ntp.conf</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*maxpoll[\s]+(\d+)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_ntp_set_maxpoll" version="1">
+    <ind:subexpression operation="less than or equal" var_ref="var_ntp_set_maxpoll" datatype="int" />
+  </ind:textfilecontent54_state>
 
   <external_variable comment="maxpoll value" datatype="int"
   id="var_ntp_set_maxpoll" version="1" />
