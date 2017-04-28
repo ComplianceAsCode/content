@@ -3,13 +3,11 @@
     <metadata>
       <title>Use Only Strong Ciphers</title>
       <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_debian</platform>
+        <platform>multi_platform_all</platform>
       </affected>
       <description>Only use strong ciphers.</description>
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met"
-      operator="OR">
+    <criteria comment="SSH is not being used or conditions are met" operator="OR">
       <extend_definition comment="sshd service is disabled" definition_ref="service_sshd_disabled" />
       <criterion comment="Check the Ciphers list in /etc/ssh/sshd_config" test_ref="test_sshd_use_strong_ciphers" />
     </criteria>
