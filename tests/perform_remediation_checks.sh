@@ -36,7 +36,7 @@ function determine_IP {
         [ -z "$MAC" ] && continue
         IP=$(arp | grep "$MAC" | awk '{ print $1 }')
         ((count--))
-        if [ "$count" -eq "0" ]; then
+        if [ "$count" -eq "0" ] && [ -z $IP ]; then
             break
         fi
     done
@@ -139,16 +139,16 @@ for rule_dir in `find data/ -name "tailoring.xml" | xargs dirname | sort -u`; do
 
         # after break script, result should contain fail
         ssh ${MACHINE} oscap xccdf eval --tailoring-file $remote_tailoring_file --profile ${profile_supplanted} --progress --report $report_file $remote_tested_ds &> ${output_file}
-        if ! grep -q ':fail$' ${output_file}; then
+        if grep ':error$' ${output_file}; then
             cat ${output_file} &>> $debug_log
-            echo "ERROR: Break script ${break_script_id} failed to break the machine, no point in going further"
+            echo "FAIL: There is a rule which errored, no point in going further "
             virsh snapshot-revert --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             virsh snapshot-delete --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             continue
         fi
-        if grep ':error$' ${output_file}; then
+        if ! grep -q ':fail$' ${output_file}; then
             cat ${output_file} &>> $debug_log
-            echo "FAIL: There is a rule which errored, no point in going further "
+            echo "ERROR: Break script ${break_script_id} failed to break the machine, no point in going further"
             virsh snapshot-revert --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             virsh snapshot-delete --snapshotname ${SNAP_THIRD} $DOMAIN &>> $debug_log
             continue
