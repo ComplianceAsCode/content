@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="sshd_set_max_auth_tries" version="1">
+    <metadata>
+      <title>Set OpenSSH authentication attempt limit (MaxAuthTries)</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The SSH MaxAuthTries should be set to an
+      appropriate value.</description>
+    </metadata>
+    <criteria comment="SSH is not being used or conditions are met" operator="OR">
+      <extend_definition comment="sshd service is disabled"
+      definition_ref="service_sshd_disabled" />
+      <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config"
+      test_ref="test_sshd_max_auth_tries" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="maxauthtries is configured" id="test_sshd_max_auth_tries" version="1">
+    <ind:object object_ref="object_sshd_max_auth_tries" />
+    <ind:state state_ref="state_maxauthtries_value_upper_bound" />
+    <ind:state state_ref="state_maxauthtries_value_lower_bound" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_sshd_max_auth_tries" version="2">
+    <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MaxAuthTries[\s]+(\d+)[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state comment="upper bound of MaxAuthTries"
+  id="state_maxauthtries_value_upper_bound" version="1">
+    <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
+    var_ref="sshd_max_auth_tries_value" />
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state comment="lower bound of MaxAuthTries"
+  id="state_maxauthtries_value_lower_bound" version="1">
+    <ind:subexpression datatype="int" operation="greater than">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="maxauthtries value" datatype="int"
+  id="sshd_max_auth_tries_value" version="1" />
+
+</def-group>
