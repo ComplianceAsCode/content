@@ -143,6 +143,21 @@ should not be able to execute SUID or SGID binaries from temporary storage parti
 <ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.3" />
 </Rule>
 
+<Rule id="mount_option_home_nosuid" prodtype="rhel7">
+<title>Add nosuid Option to /home</title>
+<description>The <tt>nosuid</tt> mount option can be used to prevent
+execution of setuid programs in <tt>/home</tt>. The SUID and SGID permissions
+should not be required in these user data directories.
+<mount-desc-macro option="nosuid" part="/tmp" />
+</description>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Users
+should not be able to execute SUID or SGID binaries from user home directory partitions.</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="81153-9" />
+<oval id="mount_option_home_nosuid" />
+<ref prodtype="rhel7" nist="CM-7,MP-2" cis="1.1.3" stigid="021000" />
+</Rule>
+
 <Rule id="mount_option_dev_shm_nodev" prodtype="rhel7">
 <title>Add nodev Option to /dev/shm</title>
 <description>The <tt>nodev</tt> mount option can be used to prevent creation
