@@ -730,17 +730,27 @@ cis="6.2.10" cjis="5.5.6" cui="3.1.12" />
 <description>Limit the ciphers to those algorithms which are FIPS-approved.
 Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
 The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of 
-FIPS-approved ciphers:
+FIPS 140-2 validated ciphers:
 <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
-The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+<br /><br />
+The following ciphers are FIPS 140-2 certified on RHEL 7:
+<br />- aes128-ctr
+<br />- aes192-ctr
+<br />- aes256-ctr
+<br />- aes128-cbc
+<br />- aes192-cbc
+<br />- aes256-cbc
+<br />- 3des-cbc
+<br />- rijndael-cbc@lysator.liu.se
+<br /><br />
+Any combination of the above ciphers will pass this check. Official FIPS 140-2 paperwork for 
+RHEL7 can be found at http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf.
 </description>
 <ocil clause="FIPS ciphers are not configured or the enabled ciphers are not FIPS-approved">
 Only FIPS ciphers should be used. To verify that only FIPS-approved
 ciphers are in use, run the following command:
 <pre>$ sudo grep Ciphers /etc/ssh/sshd_config</pre>
-The output should contain only those ciphers which are FIPS-approved, namely,
-aes128-ctr,aes192-ctr,aes256-ctr
-</ocil>
+The output should contain only those ciphers which are FIPS-approved.</ocil>
 <rationale>
 Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore
 cannot be relied upon to provide confidentiality or integrity, and system data may be compromised.
@@ -764,14 +774,27 @@ stigid="040110" cis="6.2.11" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8" />
 <description>Limit the MACs to those hash algorithms which are FIPS-approved.
 The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use 
 of FIPS-approved MACs:
+<br /><br/>
 <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
+<br /><br />
+Only the following message authentication codes are FIPS 140-2 certified on RHEL 7:
+<br />- hmac-sha1
+<br />- hmac-sha2-256
+<br />- hmac-sha2-512
+<br />- hmac-sha1-etm@openssh.com
+<br />- hmac-sha2-256-etm@openssh.com
+<br />- hmac-sha2-512-etm@openssh.com
+<br /><br />
+Any combination of the above MACs will pass this check. Official FIPS 140-2 paperwork for
+RHEL7 can be found at http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf.
 </description>
 <ocil clause="MACs option is commented out or not using FIPS-approved hash algorithms">
 Only FIPS-approved MACs should be used. To verify that only FIPS-approved
 MACs are in use, run the following command:
 <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
-The output should contain only those MACs which are FIPS-approved, namely,
-hmac-sha2-512 and hmac-sha2-256 hash functions.
+The output should contain only those MACs which are FIPS-approved. Any use of other
+ciphers or algorithms will result in the module entering the non-FIPS mode of
+operation.
 <!-- encrypt-then-mac hash functions likely to be added to this list in the future -->
 </ocil>
 <rationale>
