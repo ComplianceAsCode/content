@@ -1,6 +1,6 @@
 <!---
 This file is generated using the generate-contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2017-03-27 11:42
+Last Modified: 2017-04-28 13:25
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -29,6 +29,7 @@ The following people have contributed to the SCAP Security Guide project
 * Steve Grubb <sgrubb@redhat.com>
 * Marek Haicman <mhaicman@redhat.com>
 * Trey Henefield <thenefield@gmail.com>
+* hex2a <hex2a@users.noreply.github.com>
 * Robin Price II <robin@redhat.com>
 * Jeremiah Jahn <jeremiah@goodinassociates.com>
 * Stephan Joerrens <Stephan.Joerrens@fiduciagad.de>
