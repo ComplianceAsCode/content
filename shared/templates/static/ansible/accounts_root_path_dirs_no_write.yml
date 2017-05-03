@@ -4,19 +4,19 @@
 # complexity = low
 # disruption = medium
 
-- name: "$CCENUM: Fail if user is not root"
+- name: "Fail if user is not root"
   fail:
     msg: 'Root account required to read root $PATH'
   when: ansible_user != "root"
   
-- name: "$CCENUM: Get root paths which are not symbolic links"
+- name: "Get root paths which are not symbolic links"
   shell: 'tr ":" "\n" <<< "$PATH" | xargs -I% find % -maxdepth 0 -type d'
   changed_when: False
   failed_when: False
   register: root_paths
   when: ansible_user == "root"
     
-- name: "$CCENUM: Disable writability to root directories"
+- name: "Disable writability to root directories"
   file:
     path: "{{item}}"
     mode: "g-w,o-w"

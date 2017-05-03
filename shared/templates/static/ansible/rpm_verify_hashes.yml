@@ -4,23 +4,23 @@
 # complexity = high
 # disruption = medium
 
-- name: "$CCENUM: Set fact: Package manager reinstall command (dnf)"
+- name: "Set fact: Package manager reinstall command (dnf)"
   set_fact:
     package_manager_reinstall_cmd: dnf reinstall -y
   when: ansible_distribution == "Fedora"
 
-- name: "$CCENUM: Set fact: Package manager reinstall command (yum)"
+- name: "Set fact: Package manager reinstall command (yum)"
   set_fact:
     package_manager_reinstall_cmd: yum reinstall -y
   when: ansible_distribution == "RedHat"
 
-- name: "$CCENUM: Read files with incorrect hash"
+- name: "Read files with incorrect hash"
   shell: "rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | sed -r 's;^.*\\s+(.+);\\1;g'"
   register: files_with_incorrect_hash
   changed_when: False
   when: package_manager_reinstall_cmd is defined
 
-- name: "$CCENUM: Reinstall packages of files with incorrect hash"
+- name: "Reinstall packages of files with incorrect hash"
   shell: "{{package_manager_reinstall_cmd}} $(rpm -qf '{{item}}')"
   with_items: "{{ files_with_incorrect_hash.stdout_lines }}"
   when: package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0)
