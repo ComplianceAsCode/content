@@ -41,7 +41,7 @@ restrictive mount options, which can help protect programs which use it.
 <ident prodtype="rhel7" cce="27173-4" />
 <oval id="partition_for_tmp" />
 <ref prodtype="rhel7" nist="SC-32(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-cis="1.1.1" stigid="021340" />
+cis="1.1.2" stigid="021340" />
 </Rule>
 
 <Rule id="partition_for_var" severity="low" prodtype="rhel7">
@@ -61,7 +61,7 @@ world-writable directories installed by other software packages.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26404-4" />
 <oval id="partition_for_var" />
-<ref prodtype="rhel7" nist="SC-32(1)" cis="1.1.5" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
+<ref prodtype="rhel7" nist="SC-32(1)" cis="1.1.6" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
 stigid="021320" />
 </Rule>
 
@@ -81,7 +81,7 @@ and other files in <tt>/var/</tt>.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26967-0" />
 <oval id="partition_for_var_log" />
-<ref prodtype="rhel7" nist="AU-9,SC-32" disa="" cis="1.1.7" />
+<ref prodtype="rhel7" nist="AU-9,SC-32" disa="" cis="1.1.11" />
 </Rule>
 
 <Rule id="partition_for_var_log_audit" severity="low" prodtype="rhel7">
@@ -103,7 +103,7 @@ of space.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
-<ref prodtype="rhel7" nist="AU-4,AU-9,SC-32(1)" disa="366" cis="1.1.8"
+<ref prodtype="rhel7" nist="AU-4,AU-9,SC-32(1)" disa="366" cis="1.1.12"
 ossrg="SRG-OS-000480-GPOS-00227" stigid="021330" />
 </Rule>
 
@@ -125,7 +125,7 @@ users cannot trivially fill partitions used for log or audit data storage.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80144-9" />
 <oval id="partition_for_home" />
-<ref prodtype="rhel7" nist="SC-32(1)" disa="366,1208" cis="1.1.9"
+<ref prodtype="rhel7" nist="SC-32(1)" disa="366,1208" cis="1.1.13"
 ossrg="SRG-OS-000480-GPOS-00227" stigid="021310" />
 </Rule>
 
