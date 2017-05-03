@@ -202,9 +202,9 @@ immediate root access to the system.
 </rationale>
 <ident prodtype="rhel7" cce="27320-1" />
 <oval id="sshd_allow_only_protocol2" />
-<ref prodtype="rhel7" nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" cis="6.2.1"
-ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" stigid="040390" cjis="5.5.6"
-cui="3.1.13,3.5.4" />
+<ref prodtype="rhel7" nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" 
+cis="5.2.2" ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" 
+stigid="040390" cjis="5.5.6" cui="3.1.13,3.5.4" />
 </Rule>
 
 <Rule id="sshd_limit_user_access">
@@ -393,7 +393,7 @@ Response, it is important to determine when a particular user was active on a sy
 logout record can eliminate those users who disconnected, which helps narrow the field.
 </rationale>
 <oval id="sshd_set_loglevel_info" />
-<ref prodtype="rhel7" cis="5.2.9"/>
+<ref prodtype="rhel7" cis="5.2.3"/>
 <ref prodtype="debian8" cis="9.3.2"/>
 </Rule>
 
@@ -604,7 +604,7 @@ can allow an attacker to move trivially to other hosts.
 <ident prodtype="rhel7" cce="27413-4" />
 <oval id="disable_host_auth" />
 <ref prodtype="rhel7" nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" 
-stigid="010470" cis="6.2.7" cjis="5.5.6" cui="3.1.12" />
+stigid="010470" cis="5.2.7" cjis="5.5.6" cui="3.1.12" />
 </Rule>
 
 <Rule id="sshd_enable_x11_forwarding" severity="high">
@@ -651,7 +651,8 @@ direct attack attempts on root's password.
 <ident prodtype="rhel7" cce="27445-6" />
 <oval id="sshd_disable_root_login" />
 <ref prodtype="rhel7" nist="AC-3,AC-6(2),IA-2(1),IA-2(5)" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="040370" cis="6.2.8" cjis="5.5.6" cui="3.1.1, 3.1.5" />
+ossrg="SRG-OS-000480-GPOS-00227" stigid="040370" cis="5.2.8" cjis="5.5.6" 
+cui="3.1.1,3.1.5" />
 </Rule>
 
 <Rule id="sshd_disable_empty_passwords" severity="high">
@@ -674,7 +675,9 @@ misconfiguration elsewhere.
 </rationale>
 <ident prodtype="rhel7" cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
-<ref prodtype="rhel7" nist="AC-3,AC-6,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010300" cjis="5.5.6" cui="3.1.1, 3.1.5" />
+<ref prodtype="rhel7" nist="AC-3,AC-6,CM-6(b)" disa="366" 
+ossrg="SRG-OS-000480-GPOS-00229" stigid="010300"  cjis="5.5.6" 
+cui="3.1.1,3.1.5" cis="5.2.9" />
 </Rule>
 
 <Rule id="sshd_enable_warning_banner" severity="medium">
@@ -697,9 +700,10 @@ not provide easy attribution.
 </rationale>
 <ident prodtype="rhel7" cce="27314-4" />
 <oval id="sshd_enable_warning_banner" />
-<ref prodtype="rhel7" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48,50,1384,1385,1386,1387,1388"
+<ref prodtype="rhel7" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" 
+disa="48,50,1384,1385,1386,1387,1388"
 ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088"
-cis="6.2.14" stigid="040170" cjis="5.5.6" cui="3.1.9" />
+cis="5.2.16" stigid="040170" cjis="5.5.6" cui="3.1.9" />
 </Rule>
 
 <Rule id="sshd_do_not_permit_user_env" severity="medium">
@@ -721,8 +725,9 @@ access restriction in some configurations.
 </rationale>
 <ident prodtype="rhel7" cce="27363-1" />
 <oval id="sshd_do_not_permit_user_env" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010460" 
-cis="6.2.10" cjis="5.5.6" cui="3.1.12" />
+<ref prodtype="rhel7" nist="CM-6(b)" disa="366" 
+ossrg="SRG-OS-000480-GPOS-00229" stigid="010460" cis="5.2.10" cjis="5.5.6" 
+cui="3.1.12" />
 </Rule>
 
 <Rule id="sshd_use_approved_ciphers" severity="medium">
@@ -766,7 +771,7 @@ Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
 <oval id="sshd_use_approved_ciphers" />
 <ref prodtype="rhel7" nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" disa="68,366,803"
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173" 
-stigid="040110" cis="6.2.11" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8" />
+stigid="040110" cis="5.2.10" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8" />
 </Rule>
 
 <Rule id="sshd_use_approved_macs" severity="medium">

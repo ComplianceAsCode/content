@@ -178,8 +178,15 @@ baseline.
 <!-- TO DO : MAYBE -->
 
 <!--	1.7.1.2	Ensure local login warning banner is configured properly (Not Scored) -->
+<select idref="banner_etc_issue" selected="true" />
+<refine-value idref="login_banner_text" selector="usgcb_default" />
+
 <!--	1.7.1.3	Ensure remote login warning banner is configured properly (Not Scored) -->
+<!-- TO DO : MAYBE -->
+
 <!--	1.7.1.4	Ensure permissions on /etc/motd are configured (Not Scored) -->
+<!-- TO DO : MAYBE -->
+
 <!--	1.7.1.5	Ensure permissions on /etc/issue are configured (Scored) -->
 <!--	1.7.1.6	Ensure permissions on /etc/issue.net are configured (Not Scored) -->
 <!--	1.7.2	Ensure GDM login banner is configured (Scored) -->
@@ -246,9 +253,14 @@ baseline.
 <!-- 3.4.3 Ensure /etc/hosts.deny is configured (Scored) -->
 <!-- 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored) -->
 <!-- 3.4.5 Ensure permissions on /etc/hosts.deny are 644 (Scored) -->
+
 <!-- 3.5 Uncommon Network Protocols -->
 <!-- 3.5.1 Ensure DCCP is disabled (Not Scored) -->
+<select idref="kernel_module_dccp_disabled" selected="true" />
+
 <!-- 3.5.2 Ensure SCTP is disabled (Not Scored) -->
+<select idref="kernel_module_sctp_disabled" selected="true" />
+
 <!-- 3.5.3 Ensure RDS is disabled (Not Scored) -->
 <!-- 3.5.4 Ensure TIPC is disabled (Not Scored) -->
 <!-- 3.6 Firewall Configuration -->
@@ -258,13 +270,19 @@ baseline.
 <!-- 3.6.4 Ensure outbound and established connections are configured (Not Scored) -->
 <!-- 3.6.5 Ensure firewall rules exist for all open ports (Scored) -->
 <!-- 3.7 Ensure wireless interfaces are disabled (Not Scored) -->
+
 <!-- 4 Logging and Auditing -->
 <!-- 4.1 Configure System Accounting (auditd) -->
 <!-- 4.1.1.1 Ensure audit log storage size is configured (Not Scored) -->
 <!-- 4.1.1.2 Ensure system is disabled when audit logs are full (Scored) -->
 <!-- 4.1.1.3 Ensure audit logs are not automatically deleted (Scored) -->
+
 <!-- 4.1.2 Ensure auditd service is enabled (Scored) -->
+<select idref="service_auditd_enabled" selected="true" />
+
 <!-- 4.1.3 Ensure auditing for processes that start prior to auditd is enabled (Scored) -->
+<select idref="bootloader_audit_argument" selected="true" />
+
 <!-- 4.1.4 Ensure events that modify date and time information are collected (Scored) -->
 <!-- 4.1.5 Ensure events that modify user/group information are collected (Scored) -->
 <!-- 4.1.6 Ensure events that modify the system's network environment are 
@@ -282,62 +300,112 @@ baseline.
 <!-- 4.1.15 Ensure changes to system administration scope (sudoers) is collected (Scored) -->
 <!-- 4.1.16 Ensure system administrator actions (sudolog) are collected (Scored) -->
 <!-- 4.1.17 Ensure kernel module loading and unloading is collected (Scored) -->
+
 <!-- 4.1.18 Ensure the audit configuration is immutable (Scored) -->
+<select idref="audit_rules_immutable" selected="true" />
+
 <!-- 4.2 Configure Logging -->
 <!-- 4.2.1.1 Ensure rsyslog Service is enabled (Scored) -->
+<select idref="service_rsyslog_enabled" selected="true" />
+
 <!-- 4.2.1.2 Ensure logging is configured (Not Scored) -->
+
 <!-- 4.2.1.3 Ensure rsyslog default file permissions configured (Scored) -->
+<select idref="rsyslog_files_permissions" selected="true" />
+
 <!-- 4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host (Scored) -->
+<select idref="rsyslog_remote_loghost" selected="true" />
+
 <!-- 4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored) -->
+<select idref="rsyslog_accept_remote_messages_tcp" selected="true" />
+<select idref="rsyslog_accept_remote_messages_udp" selected="true" />
+
 <!-- 4.2.2.1 Ensure syslog-ng service is enabled (Scored) -->
 <!-- 4.2.2.2 Ensure logging is configured (Not Scored) -->
 <!-- 4.2.2.3 Ensure syslog-ng default file permissions configured (Scored) -->
 <!-- 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host (Not Scored) -->
 <!-- 4.2.2.5 Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored) -->
+
 <!-- 4.2.3 Ensure rsyslog or syslog-ng is installed (Scored) -->
+<select idref="package_rsyslog_installed" selected="true" />
+
 <!-- 4.2.4 Ensure permissions on all logfiles are configured (Scored) -->
 <!-- 4.3 Ensure logrotate is configured (Not Scored) -->
 <!-- 5 Access, Authentication and Authorization -->
+
 <!-- 5.1 Configure cron -->
 <!-- 5.1.1 Ensure cron daemon is enabled (Scored) -->
+<select idref="service_crond_enabled" selected="true" />
+
 <!-- 5.1.2 Ensure permissions on /etc/crontab are configured (Scored) -->
 <!-- 5.1.3 Ensure permissions on /etc/cron.hourly are configured (Scored) -->
 <!-- 5.1.4 Ensure permissions on /etc/cron.daily are configured (Scored) -->
 <!-- 5.1.5 Ensure permissions on /etc/cron.weekly are configured (Scored) -->
 <!-- 5.1.6 Ensure permissions on /etc/cron.monthly are configured (Scored) -->
 <!-- 5.1.7 Ensure permissions on /etc/cron.d are configured (Scored) -->
+
 <!-- 5.1.8 Ensure at/cron is restricted to authorized users (Scored) -->
+
 <!-- 5.2 SSH Server Configuration -->
 <!-- 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured (Scored) -->
+
 <!-- 5.2.2 Ensure SSH Protocol is set to 2 (Scored) -->
+<select idref="sshd_allow_only_protocol2" selected="true" />
+
 <!-- 5.2.3 Ensure SSH LogLevel is set to INFO (Scored) -->
+<select idref="sshd_set_loglevel_info" selected="true" />
+
 <!-- 5.2.4 Ensure SSH X11 forwarding is disabled (Scored) -->
 <!-- 5.2.5 Ensure SSH MaxAuthTries is set to 4 or less (Scored) -->
 <!-- 5.2.6 Ensure SSH IgnoreRhosts is enabled (Scored) -->
+
 <!-- 5.2.7 Ensure SSH HostbasedAuthentication is disabled (Scored) -->
+<select idref="disable_host_auth" selected="true" />
+
 <!-- 5.2.8 Ensure SSH root login is disabled (Scored) -->
+<select idref="sshd_disable_root_login" selected="true" />
+
 <!-- 5.2.9 Ensure SSH PermitEmptyPasswords is disabled (Scored) -->
+<select idref="sshd_disable_empty_passwords" selected="true" />
+
 <!-- 5.2.10 Ensure SSH PermitUserEnvironment is disabled (Scored) -->
+<select idref="sshd_do_not_permit_user_env" selected="true" />
+
 <!-- 5.2.11 Ensure only approved ciphers are used (Scored) -->
+<select idref="sshd_use_approved_ciphers" selected="true" />
+
 <!-- 5.2.12 Ensure only approved MAC algorithms are used (Scored) -->
 <!-- 5.2.13 Ensure SSH Idle Timeout Interval is configured (Scored) -->
 <!-- 5.2.14 Ensure SSH LoginGraceTime is set to one minute or less (Scored) -->
 <!-- 5.2.15 Ensure SSH access is limited (Scored) -->
+
 <!-- 5.2.16 Ensure SSH warning banner is configured (Scored) -->
+<select idref="sshd_enable_warning_banner" selected="true" />
+
 <!-- 5.3 Configure PAM -->
 <!-- 5.3.1 Ensure password creation requirements are configured (Scored) -->
 <!-- 5.3.2 Ensure lockout for failed password attempts is configured (Scored) -->
+
 <!-- 5.3.3 Ensure password reuse is limited (Scored) -->
+<refine-value idref="var_password_pam_unix_remember" selector="5" />
+<select idref="accounts_password_pam_unix_remember" selected="true" />
+
 <!-- 5.3.4 Ensure password hashing algorithm is SHA-512 (Scored) -->
 <!-- 5.4 User Accounts and Environment -->
 <!-- 5.4.1.1 Ensure password expiration is 90 days or less (Scored) -->
+<refine-value idref="var_accounts_maximum_age_login_defs" selector="90" />
+<select idref="accounts_maximum_age_login_defs" selected="true" />
+
 <!-- 5.4.1.2 Ensure minimum days between password changes is 7 or more (Scored) -->
 <!-- 5.4.1.3 Ensure password expiration warning days is 7 or more (Scored) -->
 <!-- 5.4.1.4 Ensure inactive password lock is 30 days or less (Scored) -->
 <!-- 5.4.2 Ensure system accounts are non-login (Scored) -->
 <!-- 5.4.3 Ensure default group for the root account is GID 0 (Scored) -->
 <!-- 5.4.4 Ensure default user umask is 027 or more restrictive (Scored) -->
+
 <!-- 5.5 Ensure root login is restricted to system console (Not Scored) -->
+<select idref="no_direct_root_logins" selected="true" />
+
 <!-- 5.6 Ensure access to the su command is restricted (Scored) -->
 <!-- 6 System Maintenance -->
 <!-- 6.1 System File Permissions -->
