@@ -3,7 +3,7 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-- name: "$CCENUM: Disable service SERVICENAME"
+- name: "Disable service SERVICENAME"
   service:
     name="{{item}}"
     enabled="no"
