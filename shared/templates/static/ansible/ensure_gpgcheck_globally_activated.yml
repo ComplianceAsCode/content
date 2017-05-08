@@ -7,6 +7,7 @@
   stat:
     path: /etc/yum.conf
   register: yum_config_file
+  check_mode: no
   when: ansible_distribution == "Fedora"
 
 # Old versions of Fedora use yum

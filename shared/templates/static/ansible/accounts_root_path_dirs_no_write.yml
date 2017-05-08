@@ -16,6 +16,7 @@
   failed_when: False
   register: root_paths
   when: ansible_user == "root"
+  check_mode: no
   tags:
     @ANSIBLE_TAGS@
 

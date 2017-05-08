@@ -22,6 +22,7 @@
   register: files_with_incorrect_hash
   changed_when: False
   when: package_manager_reinstall_cmd is defined
+  check_mode: no
   tags:
     @ANSIBLE_TAGS@
 

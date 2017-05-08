@@ -7,6 +7,7 @@
   stat:
     path: /etc/pki/rpm-gpg/
   register: gpg_key_directory_permission
+  check_mode: no
   tags:
     @ANSIBLE_TAGS@
 
@@ -16,6 +17,7 @@
   shell: "gpg --with-fingerprint '/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release' | grep 'Key fingerprint =' | tr -s ' ' | sed 's;.*= ;;g'"
   changed_when: False
   register: gpg_fingerprints
+  check_mode: no
   tags:
     @ANSIBLE_TAGS@
 
