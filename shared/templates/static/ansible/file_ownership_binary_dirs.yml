@@ -3,12 +3,13 @@
 # strategy = restrict
 # complexity = medium
 # disruption = medium
-
 - name: "Read list of system executables without root ownership"
   shell: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
   register: no_root_system_executables
   changed_when: False
   failed_when: False
+  tags:
+    @ANSIBLE_TAGS@
 
 - name: "Set ownership to root of system executables"
   file:
@@ -16,3 +17,6 @@
     owner: "root"
   with_items: "{{ no_root_system_executables.stdout_lines }}"
   when: no_root_system_executables.stdout_lines | length > 0
+  tags:
+    @ANSIBLE_TAGS@
+
