@@ -54,7 +54,10 @@
 <xsl:template match="text()" mode="fix_contents">
   <xsl:param name="rule"/>
   <xsl:variable name="rep0" select="."/>
+
   <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
+  <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
+    - <xsl:value-of select="$rule/@severity"/></xsl:variable>
 
   <xsl:variable name="rep1">
     <xsl:call-template name="find-and-replace">
@@ -64,7 +67,15 @@
     </xsl:call-template>
   </xsl:variable>
 
-  <xsl:value-of select="$rep1"/>
+  <xsl:variable name="rep2">
+    <xsl:call-template name="find-and-replace">
+      <xsl:with-param name="text" select="$rep1"/>
+      <xsl:with-param name="replace" select="'@ANSIBLE_TAGS@'"/>
+      <xsl:with-param name="with" select="$ansible_tags"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:value-of select="$rep2"/>
 </xsl:template>
 
 <xsl:template match="@* | node()" mode="fix_contents">
