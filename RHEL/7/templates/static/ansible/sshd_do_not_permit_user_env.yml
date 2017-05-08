@@ -1,7 +1,0 @@
-# platform = Red Hat Enterprise Linux 7
-- name: "SSHD: Do not permit user environment"
-  lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^PermitUserEnvironment"
-    line="PermitUserEnvironment no"
