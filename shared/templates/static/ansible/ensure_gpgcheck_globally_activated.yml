@@ -31,7 +31,7 @@
     value: 1
     create: False
   with_items: "/etc/dnf/dnf.conf"
-  when: ansible_distribution == "Fedora" and not yum_config_file.stat.exists
+  when: ansible_distribution == "Fedora"
   tags:
     @ANSIBLE_TAGS@
 
