@@ -10,13 +10,6 @@ import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
-PENDING = '>SEBOOL_BOOL</linux:pending_status'
-CURRENT = '>SEBOOL_BOOL</linux:current_status'
-EXTERN_VAR = '''</linux:selinuxboolean_state>
-
-  <external_variable comment="external variable for %s"
-  datatype="boolean" id="var_%s" version="1" />
-'''
 
 class SEBoolGenerator(FilesGenerator):
 
@@ -39,12 +32,9 @@ class SEBoolGenerator(FilesGenerator):
                         "./oval/sebool_{0}.xml", sebool_id)
                 else:
                     self.file_from_template(
-                        "./template_OVAL_sebool",
+                        "./template_OVAL_sebool_var",
                         {
-                            "SEBOOLID" : sebool_id,
-                            CURRENT: ' var_ref="var_%s" /' % sebool_id,
-                            PENDING: ' var_ref="var_%s" /' % sebool_id,
-                            "</linux:selinuxboolean_state>": EXTERN_VAR % (sebool_id, sebool_id),
+                            "SEBOOLID" : sebool_id
                         },
                         "./oval/sebool_{0}.xml", sebool_id
                     )
