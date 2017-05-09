@@ -53,19 +53,30 @@
 
 <xsl:template match="text()" mode="fix_contents">
   <xsl:param name="rule"/>
-  <xsl:choose>
-    <xsl:when test="contains(., '@CCENUM@')">
-      <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
-      <xsl:call-template name="find-and-replace">
-        <xsl:with-param name="text" select="."/>
-        <xsl:with-param name="replace" select="'@CCENUM@'"/>
-        <xsl:with-param name="with" select="$ident_cce"/>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="."/>
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:variable name="rep0" select="."/>
+
+  <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
+  <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
+    - <xsl:value-of select="$rule/@severity"/><xsl:if test="$ident_cce">
+    - <xsl:value-of select="$ident_cce"/></xsl:if></xsl:variable>
+
+  <xsl:variable name="rep1">
+    <xsl:call-template name="find-and-replace">
+      <xsl:with-param name="text" select="$rep0"/>
+      <xsl:with-param name="replace" select="'@CCENUM@'"/>
+      <xsl:with-param name="with" select="$ident_cce"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:variable name="rep2">
+    <xsl:call-template name="find-and-replace">
+      <xsl:with-param name="text" select="$rep1"/>
+      <xsl:with-param name="replace" select="'@ANSIBLE_TAGS@'"/>
+      <xsl:with-param name="with" select="$ansible_tags"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:value-of select="$rep2"/>
 </xsl:template>
 
 <xsl:template match="@* | node()" mode="fix_contents">
