@@ -4,8 +4,9 @@
 # create_umask_checks.py
 #       generate template-based checks for umask
 #
-# NOTE: The file 'template_umask' should be located in the same working
-# directory as this script.
+# NOTE: The file 'template_OVAL_umask' and
+# 'template_OVAL_var_accounts_user_umask_as_number' should both be located in
+# the same working directory as this script.
 # The template contains tags that *must* be replaced successfully in order
 # for the checks to work.
 #
@@ -56,7 +57,7 @@ def output_check(path_info):
 
     # We are ready to create the check
     # Open the main template and perform the conversions
-    with open(script_directory + '/template_umask', 'r') as templatefile:
+    with open(script_directory + '/template_OVAL_umask', 'r') as templatefile:
         # Replace the placeholders within the template with the actual values
         filestring = templatefile.read()
         filestring = filestring.replace("OVALCHECKID", oval_check_id)
@@ -73,7 +74,7 @@ def output_check(path_info):
 
     # We need to create the extended definition yet
     # Open the child template and perform the conversions
-    with open(script_directory + '/template_var_accounts_user_umask_as_number', 'r') \
+    with open(script_directory + '/template_OVAL_var_accounts_user_umask_as_number', 'r') \
     as templatefile:
         # Replace the placeholders within the template with the actual values
         filestring = templatefile.read()
