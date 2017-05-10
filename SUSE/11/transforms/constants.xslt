@@ -7,7 +7,7 @@
 <xsl:variable name="product_stig_id_name">SUSE_11_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">SUSE-11</xsl:variable>
 <xsl:variable name="platform_cpes">cpe:/o:suse:linux_enterprise_server:11</xsl:variable>
-<xsl:variable name="prod_type">suse11</xsl:variable>
+<xsl:variable name="prod_type">sle11</xsl:variable>
 
 <!-- Define URI of official CIS SUSE Linux Enterprise 11 Benchmark -->
 <xsl:variable name="cisuri"></xsl:variable>
