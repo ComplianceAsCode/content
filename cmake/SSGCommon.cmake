@@ -763,11 +763,11 @@ macro(ssg_build_product PRODUCT)
     install(
         CODE "
         file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.yml\") \n
-        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+        if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         else()
-            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         endif()
         "
@@ -775,11 +775,11 @@ macro(ssg_build_product PRODUCT)
     install(
         CODE "
         file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.sh\") \n
-        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+        if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         else()
-            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         endif()
         "
@@ -903,11 +903,11 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     install(
         CODE "
         file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.yml\") \n
-        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+        if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         else()
-            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         endif()
         "
@@ -915,11 +915,11 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     install(
         CODE "
         file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.sh\") \n
-        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
-            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+        if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         else()
-            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+            file(INSTALL DESTINATION \"${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
         endif()
         "
