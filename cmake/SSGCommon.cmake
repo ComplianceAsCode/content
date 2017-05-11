@@ -751,26 +751,41 @@ macro(ssg_build_product PRODUCT)
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
     install(
-       CODE "
-           file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-*.html\") \n
-           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
-           TYPE FILE FILES \${GUIDE_FILES}
-       )"
-       COMPONENT doc
+        CODE "
+        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-*.html\") \n
+        if(NOT IS_ABSOLUTE ${SSG_GUIDE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
+                TYPE FILE FILES \${GUIDE_FILES})
+        else()
+            file(INSTALL DESTINATION \"${SSG_GUIDE_INSTALL_DIR}\"
+                TYPE FILE FILES \${GUIDE_FILES})
+        endif()
+        "
+        COMPONENT doc
     )
     install(
-       CODE "
-       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.yml\") \n
-           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
-               TYPE FILE FILES \${ROLE_FILES}
-       )"
+        CODE "
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.yml\") \n
+        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        else()
+            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        endif()
+        "
     )
     install(
-       CODE "
-       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.sh\") \n
-           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
-               TYPE FILE FILES \${ROLE_FILES}
-       )"
+        CODE "
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role-*.sh\") \n
+        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        else()
+            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        endif()
+        "
     )
 
     # grab all the kickstarts (if any) and install them
@@ -876,26 +891,41 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
     install(
-       CODE "
-       file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${DERIVATIVE}-guide-*.html\") \n
-           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
-           TYPE FILE FILES \${GUIDE_FILES}
-       )"
-       COMPONENT doc
+        CODE "
+        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${DERIVATIVE}-guide-*.html\") \n
+        if(NOT IS_ABSOLUTE ${SSG_GUIDE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
+                TYPE FILE FILES \${GUIDE_FILES})
+        else()
+            file(INSTALL DESTINATION \"${SSG_GUIDE_INSTALL_DIR}\"
+                TYPE FILE FILES \${GUIDE_FILES})
+        endif()
+        "
+        COMPONENT doc
     )
     install(
-       CODE "
-       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.yml\") \n
-           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
-               TYPE FILE FILES \${ROLE_FILES}
-       )"
+        CODE "
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.yml\") \n
+        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        else()
+            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        endif()
+        "
     )
     install(
-       CODE "
-       file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.sh\") \n
-           file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
-               TYPE FILE FILES \${ROLE_FILES}
-       )"
+        CODE "
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/roles/ssg-${DERIVATIVE}-role-*.sh\") \n
+        if(NOT IS_ABSOLUTE ${SSG_ROLE_INSTALL_DIR})
+            file(INSTALL DESTINATION \"${CMAKE_INSTALL_PREFIX}/${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        else()
+            file(INSTALL DESTINATION \"${SSG_ROLE_INSTALL_DIR}\"
+                TYPE FILE FILES \${ROLE_FILES})
+        endif()
+        "
     )
 endmacro()
 
