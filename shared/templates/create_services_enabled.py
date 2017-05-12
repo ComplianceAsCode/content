@@ -4,7 +4,7 @@
 # create_services_enabled.py
 #   automatically generate checks for enabled services
 #
-# NOTE: The file 'template_service_enabled' should be located in the same
+# NOTE: The file 'template_OVAL_service_enabled' should be located in the same
 # working directory as this script. The template contains the following tags
 # that *must* be replaced successfully in order for the checks to work.
 #
@@ -16,15 +16,15 @@ import sys
 
 from template_common import FilesGenerator, UnknownTargetError
 
-class ServiceEnabledGenerator(FilesGenerator):
 
+class ServiceEnabledGenerator(FilesGenerator):
     def generate(self, target, serviceinfo):
         try:
             # get the items out of the list
             servicename, packagename, daemonname = serviceinfo
         except ValueError as e:
             print("\tEntry: %s\n" % serviceinfo)
-            print("\tError unpacking servicename, packagename, and daemonname: ", str(e))
+            print("\tError unpacking servicename, packagename, and daemonname: " + str(e))
             sys.exit(1)
 
         if not daemonname:
@@ -33,7 +33,7 @@ class ServiceEnabledGenerator(FilesGenerator):
         if target == "oval":
             if packagename:
                 self.file_from_template(
-                    "./template_service_enabled",
+                    "./template_OVAL_service_enabled",
                     {
                         "SERVICENAME": servicename,
                         "PACKAGENAME": packagename,
@@ -43,7 +43,7 @@ class ServiceEnabledGenerator(FilesGenerator):
                 )
             else:
                 self.file_from_template(
-                    "./template_service_enabled",
+                    "./template_OVAL_service_enabled",
                     {
                         "SERVICENAME": servicename,
                         "DAEMONNAME": daemonname
@@ -93,10 +93,10 @@ class ServiceEnabledGenerator(FilesGenerator):
 
             raise UnknownTargetError(target)
 
-
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "servicename,packagename")
+
 
 if __name__ == "__main__":
     ServiceEnabledGenerator().main()
