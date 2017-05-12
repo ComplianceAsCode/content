@@ -122,7 +122,7 @@ is critical for system security.</rationale>
 <ref prodtype="rhel7" nist="AC-6" disa=""/>
 </Rule>
 
-<Rule id="file_owner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle12">
+<Rule id="file_owner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
 <title>Verify User Who Owns <tt>passwd</tt> File</title>
 <description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
@@ -133,7 +133,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_groupowner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle12">
+<Rule id="file_groupowner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
 <title>Verify Group Who Owns <tt>passwd</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
@@ -144,7 +144,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ref prodtype="rhel7" nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_permissions_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle12">
+<Rule id="file_permissions_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
 <title>Verify Permissions on <tt>passwd</tt> File</title>
 <description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
 <ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
