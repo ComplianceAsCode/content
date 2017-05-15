@@ -227,7 +227,7 @@ def main():
     def builder():
         while True:
             try:
-                benchmark_id, profile_id, profile_title, guide_path = \
+                benchmark_id, profile_id, profile_title, role_path = \
                     queue.get(False)
 
                 role_src = generate_role_for_input_content(
@@ -240,7 +240,7 @@ def main():
 
                 print(
                     "Generated '%s' for profile ID '%s' in benchmark '%s', template=%s." %
-                    (guide_path, profile_id, benchmark_id, args.template)
+                    (role_path, profile_id, benchmark_id, args.template)
                 )
 
             except Queue.Empty:
