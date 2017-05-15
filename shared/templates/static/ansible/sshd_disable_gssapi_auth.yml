@@ -7,7 +7,7 @@
   lineinfile:
     create=yes
     dest="/etc/ssh/sshd_config"
-    regexp="^GSAAPIAuthentication"
-    line="GSAAPIAuthentication no"
+    regexp="^GSSAPIAuthentication"
+    line="GSSAPIAuthentication no"
   tags:
     @ANSIBLE_TAGS@
