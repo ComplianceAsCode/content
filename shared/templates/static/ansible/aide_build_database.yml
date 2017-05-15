@@ -9,3 +9,10 @@
     executable: /bin/bash
   tags:
     @ANSIBLE_TAGS@
+
+- name: Stage AIDE Database"
+  shell: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+  args:
+    executable: /bin/bash
+  tags:
+    @ANSIBLE_TAGS@
