@@ -36,7 +36,7 @@ of attack, and should be disabled if not needed.
 </rationale>
 <ident prodtype="rhel7" cce="80300-7" />
 <oval id="service_httpd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="package_httpd_removed" prodtype="rhel7">
@@ -53,7 +53,7 @@ removing it provides a safeguard against its activation.
 </rationale>
 <ident prodtype="rhel7" cce="80301-5" />
 <oval id="package_httpd_removed" />
-<ref prodtype="rhel7" nist="CM-7" cis="3.11" />
+<ref nist="CM-7" cis="3.11" />
 </Rule>
 
 </Group> <!--<Group id="disabling_httpd"> -->
@@ -116,7 +116,7 @@ Add or correct the following directive in <tt>/etc/httpd/conf/httpd.conf</tt>:
 Information disclosed to clients about the configuration of the web server and system could be used
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80302-3" />
 </Rule>
 
@@ -134,7 +134,7 @@ Information disclosed to clients about the configuration of the web server and s
 to plan an attack on the given system. This information disclosure should be restricted to a minimum.
 </rationale>
 <ident prodtype="rhel7" cce="80303-1" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="httpd_restrict_info_leakage"> -->
@@ -719,7 +719,7 @@ to access information about the web server or alter the server's log files.
 </rationale>
 <ident prodtype="rhel7" cce="80322-1" />
 <oval id="dir_perms_var_log_httpd" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="dir_perms_etc_httpd_conf" prodtype="rhel7">
@@ -743,7 +743,7 @@ Access to the web server's configuration files may allow an unauthorized user or
 to access information about the web server or to alter the server's configuration files.
 </rationale>
 <oval id="file_permissions_httpd_server_conf_files" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80324-7" />
 </Rule>
 
@@ -756,7 +756,7 @@ Access to the web server's configuration files may allow an unauthorized user or
 to access information about the web server or to alter the server's configuration files.
 </rationale>
 <oval id="file_permissions_httpd_server_conf_d_files" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80381-7" />
 </Rule>
 
@@ -769,7 +769,7 @@ Access to the web server's configuration files may allow an unauthorized user or
 to access information about the web server or to alter the server's configuration files.
 </rationale>
 <oval id="file_permissions_httpd_server_modules_files" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80382-5" />
 </Rule>
 

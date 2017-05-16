@@ -55,7 +55,7 @@ its design prevents it from being effectively contained by SELinux.  Postfix
 should be used instead.  
 </rationale>
 <ident prodtype="rhel7" cce="80288-4" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <oval id="package_sendmail_removed" />
 </Rule>
 
@@ -83,7 +83,7 @@ and not from the network, which protects it from network attack.
 </rationale>
 <ident prodtype="rhel7" cce="80289-2" />
 <oval id="postfix_network_listening_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="382" cis="3.16" />
+<ref nist="CM-7" disa="382" cis="3.16" />
 </Rule>
 
 </Group>
@@ -157,7 +157,7 @@ be useful) and the word ESMTP, to indicate that the modern SMTP protocol
 variant is supported.
 </rationale>
 <oval id="postfix_server_banner" />
-<ref prodtype="rhel7" nist="AC-22, AU-13" />
+<ref nist="AC-22, AU-13" />
 <ident prodtype="rhel7" cce="80290-0" />
 </Rule>
 
