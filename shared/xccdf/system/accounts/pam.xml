@@ -299,7 +299,9 @@ is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
 <ident prodtype="rhel7" cce="27160-1" />
 <oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
-<ref prodtype="rhel7" nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" stigid="010119" cjis="5.5.3" />
+<ref prodtype="rhel7" stigid="010119" />
+<ref prodtype="centos7" stigid="010119" />
+<ref nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" cjis="5.5.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat" severity="medium" prodtype="rhel7">
@@ -329,7 +331,9 @@ Passwords with excessive repeating characters may be more vulnerable to password
 </rationale>
 <ident prodtype="rhel7" cce="27333-4" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
-<ref prodtype="rhel7" nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010180" />
+<ref prodtype="rhel7" stigid="010180" />
+<ref prodtype="centos7" stigid="010180" />
+<ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
 <Rule id="accounts_password_pam_maxclassrepeat" severity="medium" prodtype="rhel7">
@@ -356,7 +360,9 @@ password is compromised.
 </rationale>
 <ident prodtype="rhel7" cce="27512-3" />
 <oval id="accounts_password_pam_maxclassrepeat" value="var_password_pam_maxclassrepeat" />
-<ref prodtype="rhel7" nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010190" />
+<ref prodtype="rhel7" stigid="010190" />
+<ref prodtype="centos7" stigid="010190" />
+<ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
 <Rule id="accounts_password_pam_dcredit" severity="medium" prodtype="rhel7">
@@ -387,7 +393,9 @@ search space.
 </rationale>
 <ident prodtype="rhel7" cce="27214-6" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
-<ref prodtype="rhel7" nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-00039" pcidss="Req-8.2.3" cis="6.3.2" stigid="010140" />
+<ref prodtype="rhel7" stigid="010140" />
+<ref prodtype="centos7" stigid="010140" />
+<ref nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-00039" pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
 <Rule id="accounts_password_pam_minlen" severity="medium" prodtype="rhel7">
@@ -414,7 +422,9 @@ compromose the password.
 </rationale>
 <ident prodtype="rhel7" cce="27293-0" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
-<ref prodtype="rhel7" nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046" pcidss="Req-8.2.3" cis="6.3.2" stigid="010280" />
+<ref prodtype="rhel7" stigid="010280" />
+<ref prodtype="centos7" stigid="010280" />
+<ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046" pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
 <Rule id="accounts_password_pam_ucredit" severity="medium" prodtype="rhel7">
@@ -443,7 +453,9 @@ the password is compromised.
 </rationale>
 <ident prodtype="rhel7" cce="27200-5" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" ossrg="SRG-OS-000069-GPOS-00037" stigid="010120" pcidss="Req-8.2.3" cis="6.3.2" />
+<ref prodtype="rhel7" stigid="010120" />
+<ref prodtype="centos7" stigid="010120" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" ossrg="SRG-OS-000069-GPOS-00037" pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit" severity="medium" prodtype="rhel7">
@@ -475,7 +487,9 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident prodtype="rhel7" cce="27360-7" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" stigid="010150" />
+<ref prodtype="rhel7" stigid="010150" />
+<ref prodtype="centos7" stigid="010150" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" />
 </Rule>
 
 <Rule id="accounts_password_pam_lcredit" severity="medium" prodtype="rhel7">
@@ -506,7 +520,9 @@ more difficult by ensuring a larger search space.
 </rationale>
 <ident prodtype="rhel7" cce="27345-8" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-00038" pcidss="Req-8.2.3" stigid="010130" />
+<ref prodtype="rhel7" stigid="010130" />
+<ref prodtype="centos7" stigid="010130" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-00038" pcidss="Req-8.2.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_difok" severity="medium" prodtype="rhel7">
@@ -540,7 +556,9 @@ Note that passwords which are changed on compromised systems will still be compr
 </rationale>
 <ident prodtype="rhel7" cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
-<ref prodtype="rhel7" nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040" stigid="010160" />
+<ref prodtype="rhel7" stigid="010160" />
+<ref prodtype="centos7" stigid="010160" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
 <Rule id="accounts_password_pam_minclass" severity="medium" prodtype="rhel7">
@@ -583,7 +601,9 @@ by ensuring a larger search space.
 </rationale>
 <ident prodtype="rhel7" cce="CCE-27115-5" />
 <oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
-<ref prodtype="rhel7" nist="IA-5" disa="195" ossrg="SRG-OS-000072-GPOS-00040" stigid="010170" />
+<ref prodtype="rhel7" stigid="010170" />
+<ref prodtype="centos7" stigid="010170" />
+<ref nist="IA-5" disa="195" ossrg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 </Group>
 </Group>
@@ -697,7 +717,9 @@ guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by lo
 </rationale>
 <ident prodtype="rhel7" cce="80353-6" />
 <oval id="accounts_passwords_pam_faillock_deny_root" />
-<ref prodtype="rhel7" nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010330" />
+<ref prodtype="rhel7" stigid="010330" />
+<ref prodtype="centos7" stigid="010330" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium" prodtype="rhel7">
@@ -731,7 +753,9 @@ Limits are imposed by locking the account.
 </rationale>
 <ident prodtype="rhel7" cce="27297-1" />
 <oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref prodtype="rhel7" nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" stigid="010320" />
+<ref prodtype="rhel7" stigid="010320" />
+<ref prodtype="centos7" stigid="010320" />
+<ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium" prodtype="rhel7">

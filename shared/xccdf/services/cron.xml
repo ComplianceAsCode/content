@@ -100,7 +100,9 @@ If <tt>/etc/cron.allow</tt> exists, it must be owned by <tt>root</tt>.
 unauthorized user to view or edit sensitive information.</rationale>
 <ident prodtype="rhel7" cce="80378-3" />
 <oval id="file_owner_cron_allow" />
-<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021110" />
+<ref prodtype="rhel7" stigid="021110" />
+<ref prodtype="centos7" stigid="021110" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="file_groupowner_cron_allow" severity="medium" prodtype="rhel7">
@@ -116,7 +118,9 @@ If <tt>/etc/cron.allow</tt> exists, it must be group-owned by <tt>root</tt>.
 unauthorized user to view or edit sensitive information.</rationale>
 <ident prodtype="rhel7" cce="80379-1" />
 <oval id="file_groupowner_cron_allow" />
-<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021120" />
+<ref prodtype="rhel7" stigid="021120" />
+<ref prodtype="centos7" stigid="021120" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 

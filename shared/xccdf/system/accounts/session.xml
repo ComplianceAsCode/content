@@ -70,7 +70,9 @@ Check if the system is configured to create home directories for local interacti
 </ocil>
 <ident prodtype="rhel7" cce="80434-4" />
 <oval id="accounts_have_homedir_login_defs" />
-<ref prodtype="rhel7" ossrg="SRG-OS-000480-GPOS-00227" stigid="020610" />
+<ref prodtype="rhel7" stigid="020610" />
+<ref prodtype="centos7" stigid="020610" />
+<ref ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="accounts_tmout" severity="medium" prodtype="rhel7">
@@ -122,7 +124,9 @@ You should receive output similar to the following:
 </ocil>
 <ident prodtype="rhel7" cce="27081-9" />
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
-<ref prodtype="rhel7" nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" stigid="040000" />
+<ref prodtype="rhel7" stigid="040000" />
+<ref prodtype="centos7" stigid="040000" />
+<ref nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" />
 </Rule>
 
 <Rule id="accounts_logon_fail_delay" prodtype="rhel7">
@@ -146,7 +150,9 @@ enter credentials helps to slow a single-threaded brute force attack.
 </rationale>
 <ident prodtype="rhel7" cce="80352-8" />
 <oval id="accounts_logon_fail_delay" value="var_accounts_fail_delay" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" stigid="010430" />
+<ref prodtype="rhel7" stigid="010430" />
+<ref prodtype="centos7" stigid="010430" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" />
 </Rule>
 
 <Group id="root_paths">
@@ -396,7 +402,9 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident prodtype="rhel7" cce="80205-8" />
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
-<ref prodtype="rhel7" nist="CM-6(b),SA-8" disa="366" ossrg="SRG-OS-000480-GPOS-00228" stigid="020240" />
+<ref prodtype="rhel7" stigid="020240" />
+<ref prodtype="centos7" stigid="020240" />
+<ref nist="CM-6(b),SA-8" disa="366" ossrg="SRG-OS-000480-GPOS-00228" />
 </Rule>
 
 </Group>
