@@ -66,7 +66,7 @@ the chances that it will remain off during system operation.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26961-3" />
 <oval id="enable_selinux_bootloader" />
-<ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="22,32" cis="1.4.1" cui="3.1.2,3.7.2" />
+<ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="22,32" cis="1.4.1" cui="3.1.2,3.7.2" />
 </Rule>
 
 <Rule id="selinux_state" severity="high" prodtype="rhel7">
@@ -89,8 +89,8 @@ privileges.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27334-2" />
 <oval id="selinux_state" value="var_selinux_state"/>
-<ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2165,2696" cis="1.4.2"
-ossrg="SRG-OS-000445-GPOS-00199" stigid="020210" cui="3.1.2,3.7.2" />
+<ref prodtype="rhel7" stigid="020210" />
+<ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2165,2696" cis="1.4.2" ossrg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2" />
 </Rule>
 
 <Rule id="selinux_policytype" severity="high" prodtype="rhel7">
@@ -122,8 +122,8 @@ is completed, the system should be reconfigured to
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27279-9" />
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
-<ref prodtype="rhel7" nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2696" cis="1.4.3"
-ossrg="SRG-OS-000445-GPOS-00199" stigid="020220" cui="3.1.2,3.7.2" />
+<ref prodtype="rhel7" stigid="020220" />
+<ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2696" cis="1.4.3" ossrg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2" />
 </Rule>
 
 <Rule id="package_setroubleshoot_removed" prodtype="rhel7">
@@ -137,7 +137,7 @@ unauthorized intrusions, and other potential errors.
 have running on a server</rationale>
 <ident prodtype="rhel7" cce="80444-3" />
 <oval id="package_setroubleshoot_removed" />
-<ref prodtype="rhel7" cis="1.4.4" />
+<ref cis="1.4.4" />
 </Rule>
 
 <Rule id="package_mcstrans_removed" prodtype="rhel7">
@@ -175,7 +175,7 @@ or allow privileges that the daemon does not require.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <oval id="selinux_confinement_of_daemons" />
-<ref prodtype="rhel7" nist="AC-6,AU-9,CM-7" cis="1.4.6" cui="3.1.2,3.1.5,3.7.2" />
+<ref nist="AC-6,AU-9,CM-7" cis="1.4.6" cui="3.1.2,3.1.5,3.7.2" />
 <ident prodtype="rhel7" cce="27288-0" />
 </Rule>
 
@@ -200,8 +200,8 @@ cannot properly restrict access to the device file.
 </rationale>
 <ident prodtype="rhel7" cce="27326-8" />
 <oval id="selinux_all_devicefiles_labeled" />
-<ref prodtype="rhel7" nist="AC-6,AU-9,CM-3(f),CM-7" disa="22,32,368,318,1812,1813,1814" stigid="020900"
-ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.2, 3.1.5,3.7.2" />
+<ref prodtype="rhel7" stigid="020900" />
+<ref nist="AC-6,AU-9,CM-3(f),CM-7" disa="22,32,368,318,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.2, 3.1.5,3.7.2" />
 </Rule>
 
 <Rule id="docker_selinux_enabled" severity="high" prodtype="rhel7">
@@ -3591,8 +3591,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80419-5" />
 <oval id="sebool_abrt_anon_write" value="var_abrt_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_abrt_handle_event" severity="medium" prodtype="rhel7">
@@ -3609,8 +3609,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80420-3" />
 <oval id="sebool_abrt_handle_event" value="var_abrt_handle_event" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_abrt_upload_watch_anon_write" severity="medium" prodtype="rhel7">
@@ -3628,8 +3628,8 @@ to modify public files used for public file transfer services.
 </rationale>
 <ident prodtype="rhel7" cce="80421-1" />
 <oval id="sebool_abrt_upload_watch_anon_write" value="var_abrt_upload_watch_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_antivirus_can_scan_system" severity="medium" prodtype="rhel7">
@@ -3647,8 +3647,8 @@ files on a system.
 </rationale>
 <ident prodtype="rhel7" cce="80422-9" />
 <oval id="sebool_antivirus_can_scan_system" value="var_antivirus_can_scan_system" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_antivirus_use_jit" severity="medium" prodtype="rhel7">
@@ -3665,8 +3665,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80423-7" />
 <oval id="sebool_antivirus_use_jit" value="var_antivirus_use_jit" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_auditadm_exec_content" severity="medium" prodtype="rhel7">
@@ -3683,8 +3683,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="80424-5" />
 <oval id="sebool_auditadm_exec_content" value="var_auditadm_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="80424-5" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="80424-5" />
 </Rule>
 
 <Rule id="sebool_authlogin_nsswitch_use_ldap" severity="medium" prodtype="rhel7">
@@ -3701,8 +3701,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80425-2" />
 <oval id="sebool_authlogin_nsswitch_use_ldap" value="var_authlogin_nsswitch_use_ldap" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_authlogin_radius" severity="medium" prodtype="rhel7">
@@ -3719,8 +3719,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80426-0" />
 <oval id="sebool_authlogin_radius" value="var_authlogin_radius" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_authlogin_yubikey" severity="medium" prodtype="rhel7">
@@ -3737,8 +3737,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80427-8" />
 <oval id="sebool_authlogin_yubikey" value="var_authlogin_yubikey" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_awstats_purge_apache_log_files" severity="medium" prodtype="rhel7">
@@ -3755,8 +3755,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80428-6" />
 <oval id="sebool_awstats_purge_apache_log_files" value="var_awstats_purge_apache_log_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_boinc_execmem" severity="medium" prodtype="rhel7">
@@ -3773,8 +3773,8 @@ This setting should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="80429-4" />
 <oval id="sebool_boinc_execmem" value="var_boinc_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD"
-cui="3.7.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" cui="3.7.2" />
 </Rule>
 
 <Rule id="sebool_cdrecord_read_content" severity="medium" prodtype="rhel7">
@@ -3791,7 +3791,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cdrecord_read_content" value="var_cdrecord_read_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cluster_can_network_connect" severity="medium" prodtype="rhel7">
@@ -3808,7 +3809,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cluster_can_network_connect" value="var_cluster_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cluster_manage_all_files" severity="medium" prodtype="rhel7">
@@ -3825,7 +3827,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cluster_manage_all_files" value="var_cluster_manage_all_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cluster_use_execmem" severity="medium" prodtype="rhel7">
@@ -3842,7 +3845,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cluster_use_execmem" value="var_cluster_use_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cobbler_anon_write" severity="medium" prodtype="rhel7">
@@ -3859,7 +3863,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cobbler_anon_write" value="var_cobbler_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cobbler_can_network_connect" severity="medium" prodtype="rhel7">
@@ -3876,7 +3881,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cobbler_can_network_connect" value="var_cobbler_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cobbler_use_cifs" severity="medium" prodtype="rhel7">
@@ -3893,7 +3899,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cobbler_use_cifs" value="var_cobbler_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cobbler_use_nfs" severity="medium" prodtype="rhel7">
@@ -3910,7 +3917,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cobbler_use_nfs" value="var_cobbler_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_collectd_tcp_network_connect" severity="medium" prodtype="rhel7">
@@ -3927,7 +3935,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_collectd_tcp_network_connect" value="var_collectd_tcp_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_condor_tcp_network_connect" severity="medium" prodtype="rhel7">
@@ -3944,7 +3953,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_condor_tcp_network_connect" value="var_condor_tcp_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_conman_can_network" severity="medium" prodtype="rhel7">
@@ -3961,7 +3971,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_conman_can_network" value="var_conman_can_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cron_can_relabel" severity="medium" prodtype="rhel7">
@@ -3978,7 +3989,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cron_can_relabel" value="var_cron_can_relabel" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cron_system_cronjob_use_shares" severity="medium" prodtype="rhel7">
@@ -3995,7 +4007,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cron_system_cronjob_use_shares" value="var_cron_system_cronjob_use_shares" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cron_userdomain_transition" severity="medium" prodtype="rhel7">
@@ -4013,7 +4026,8 @@ associated user domain(s) instead of the general cronjob domain.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cron_userdomain_transition" value="var_cron_userdomain_transition" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cups_execmem" severity="medium" prodtype="rhel7">
@@ -4030,7 +4044,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cups_execmem" value="var_cups_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_cvs_read_shadow" severity="medium" prodtype="rhel7">
@@ -4047,7 +4062,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_cvs_read_shadow" value="var_cvs_read_shadow" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_daemons_dump_core" severity="medium" prodtype="rhel7">
@@ -4064,7 +4080,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_daemons_dump_core" value="var_daemons_dump_core" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_daemons_enable_cluster_mode" severity="medium" prodtype="rhel7">
@@ -4081,7 +4098,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_daemons_enable_cluster_mode" value="var_daemons_enable_cluster_mode" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_daemons_use_tcp_wrapper" severity="medium" prodtype="rhel7">
@@ -4098,7 +4116,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_daemons_use_tcp_wrapper" value="var_daemons_use_tcp_wrapper" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_daemons_use_tty" severity="medium" prodtype="rhel7">
@@ -4115,7 +4134,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_daemons_use_tty" value="var_daemons_use_tty" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_dbadm_exec_content" severity="medium" prodtype="rhel7">
@@ -4132,7 +4152,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_dbadm_exec_content" value="var_dbadm_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_dbadm_manage_user_files" severity="medium" prodtype="rhel7">
@@ -4149,7 +4170,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_dbadm_manage_user_files" value="var_dbadm_manage_user_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_dbadm_read_user_files" severity="medium" prodtype="rhel7">
@@ -4166,7 +4188,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_dbadm_read_user_files" value="var_dbadm_read_user_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_deny_execmem" severity="medium" prodtype="rhel7">
@@ -4183,7 +4206,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_deny_execmem" value="var_deny_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_deny_ptrace" severity="medium" prodtype="rhel7">
@@ -4200,7 +4224,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_deny_ptrace" value="var_deny_ptrace" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_dhcpc_exec_iptables" severity="medium" prodtype="rhel7">
@@ -4217,7 +4242,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_dhcpc_exec_iptables" value="var_dhcpc_exec_iptables" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_dhcpd_use_ldap" severity="medium" prodtype="rhel7">
@@ -4234,7 +4260,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_dhcpd_use_ldap" value="var_dhcpd_use_ldap" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_docker_connect_any" severity="medium" prodtype="rhel7">
@@ -4251,7 +4278,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_docker_connect_any" value="var_docker_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_docker_transition_unconfined" severity="medium" prodtype="rhel7">
@@ -4268,7 +4296,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_docker_transition_unconfined" value="var_docker_transition_unconfined" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_domain_fd_use" severity="medium" prodtype="rhel7">
@@ -4285,7 +4314,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_domain_fd_use" value="var_domain_fd_use" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_domain_kernel_load_modules" severity="medium" prodtype="rhel7">
@@ -4302,7 +4332,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_domain_kernel_load_modules" value="var_domain_kernel_load_modules" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_entropyd_use_audio" severity="medium" prodtype="rhel7">
@@ -4319,7 +4350,8 @@ This setting should be disabled as it uses audit input to generate entropy.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_entropyd_use_audio" value="var_entropyd_use_audio" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_exim_can_connect_db" severity="medium" prodtype="rhel7">
@@ -4336,7 +4368,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_exim_can_connect_db" value="var_exim_can_connect_db" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_exim_manage_user_files" severity="medium" prodtype="rhel7">
@@ -4353,7 +4386,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_exim_manage_user_files" value="var_exim_manage_user_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_exim_read_user_files" severity="medium" prodtype="rhel7">
@@ -4370,7 +4404,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_exim_read_user_files" value="var_exim_read_user_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_fcron_crond" severity="medium" prodtype="rhel7">
@@ -4387,7 +4422,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_fcron_crond" value="var_fcron_crond" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_fenced_can_network_connect" severity="medium" prodtype="rhel7">
@@ -4404,7 +4440,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_fenced_can_network_connect" value="var_fenced_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_fenced_can_ssh" severity="medium" prodtype="rhel7">
@@ -4421,7 +4458,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_fenced_can_ssh" value="var_fenced_can_ssh" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_fips_mode" severity="medium" prodtype="rhel7">
@@ -4439,7 +4477,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="80418-7" />
 <oval id="sebool_fips_mode" value="var_fips_mode" />
-<ref prodtype="rhel7" nist="SC-13" disa="TBD" ossrg="TBD" stigid="TBD" cui="3.13.11" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="SC-13" disa="TBD" ossrg="TBD" cui="3.13.11" />
 </Rule>
 
 <Rule id="sebool_ftpd_anon_write" severity="medium" prodtype="rhel7">
@@ -4456,7 +4495,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_anon_write" value="var_ftpd_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_connect_all_unreserved" severity="medium" prodtype="rhel7">
@@ -4473,7 +4513,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_connect_all_unreserved" value="var_ftpd_connect_all_unreserved" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_connect_db" severity="medium" prodtype="rhel7">
@@ -4490,7 +4531,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_connect_db" value="var_ftpd_connect_db" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_full_access" severity="medium" prodtype="rhel7">
@@ -4507,7 +4549,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_full_access" value="var_ftpd_full_access" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_use_cifs" severity="medium" prodtype="rhel7">
@@ -4524,7 +4567,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_use_cifs" value="var_ftpd_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_use_fusefs" severity="medium" prodtype="rhel7">
@@ -4541,7 +4585,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_use_fusefs" value="var_ftpd_use_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_use_nfs" severity="medium" prodtype="rhel7">
@@ -4558,7 +4603,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_use_nfs" value="var_ftpd_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftpd_use_passive_mode" severity="medium" prodtype="rhel7">
@@ -4575,7 +4621,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftpd_use_passive_mode" value="var_ftpd_use_passive_mode" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ftp_home_dir" severity="medium" prodtype="rhel7">
@@ -4592,7 +4639,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ftp_home_dir" value="var_ftp_home_dir" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_cgi_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -4609,7 +4657,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_cgi_enable_homedirs" value="var_git_cgi_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_cgi_use_cifs" severity="medium" prodtype="rhel7">
@@ -4626,7 +4675,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_cgi_use_cifs" value="var_git_cgi_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_cgi_use_nfs" severity="medium" prodtype="rhel7">
@@ -4643,7 +4693,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_cgi_use_nfs" value="var_git_cgi_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_gitosis_can_sendmail" severity="medium" prodtype="rhel7">
@@ -4660,7 +4711,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_gitosis_can_sendmail" value="var_gitosis_can_sendmail" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_session_bind_all_unreserved_ports" severity="medium" prodtype="rhel7">
@@ -4677,7 +4729,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_session_bind_all_unreserved_ports" value="var_git_session_bind_all_unreserved_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_session_users" severity="medium" prodtype="rhel7">
@@ -4694,7 +4747,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_session_users" value="var_git_session_users" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_system_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -4711,7 +4765,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_system_enable_homedirs" value="var_git_system_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_system_use_cifs" severity="medium" prodtype="rhel7">
@@ -4728,7 +4783,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_system_use_cifs" value="var_git_system_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_git_system_use_nfs" severity="medium" prodtype="rhel7">
@@ -4745,7 +4801,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_git_system_use_nfs" value="var_git_system_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_glance_api_can_network" severity="medium" prodtype="rhel7">
@@ -4762,7 +4819,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_glance_api_can_network" value="var_glance_api_can_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_glance_use_execmem" severity="medium" prodtype="rhel7">
@@ -4779,7 +4837,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_glance_use_execmem" value="var_glance_use_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_glance_use_fusefs" severity="medium" prodtype="rhel7">
@@ -4796,7 +4855,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_glance_use_fusefs" value="var_glance_use_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_global_ssp" severity="medium" prodtype="rhel7">
@@ -4813,7 +4873,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_global_ssp" value="var_global_ssp" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_gluster_anon_write" severity="medium" prodtype="rhel7">
@@ -4830,7 +4891,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_gluster_anon_write" value="var_gluster_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_gluster_export_all_ro" severity="medium" prodtype="rhel7">
@@ -4847,7 +4909,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_gluster_export_all_ro" value="var_gluster_export_all_ro" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_gluster_export_all_rw" severity="medium" prodtype="rhel7">
@@ -4865,7 +4928,8 @@ disable it.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_gluster_export_all_rw" value="var_gluster_export_all_rw" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_gpg_web_anon_write" severity="medium" prodtype="rhel7">
@@ -4882,7 +4946,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_gpg_web_anon_write" value="var_gpg_web_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_gssd_read_tmp" severity="medium" prodtype="rhel7">
@@ -4901,7 +4966,8 @@ be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_gssd_read_tmp" value="var_gssd_read_tmp" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_guest_exec_content" severity="medium" prodtype="rhel7">
@@ -4918,7 +4984,8 @@ This setting should be disabled as no guest accounts should be used.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_guest_exec_content" value="var_guest_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_haproxy_connect_any" severity="medium" prodtype="rhel7">
@@ -4935,7 +5002,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_haproxy_connect_any" value="var_haproxy_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_anon_write" severity="medium" prodtype="rhel7">
@@ -4952,7 +5020,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_anon_write" value="var_httpd_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_builtin_scripting" severity="medium" prodtype="rhel7">
@@ -4970,7 +5039,8 @@ or some similary scripting language.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_builtin_scripting" value="var_httpd_builtin_scripting" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_check_spam" severity="medium" prodtype="rhel7">
@@ -4987,7 +5057,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_check_spam" value="var_httpd_can_check_spam" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_connect_ftp" severity="medium" prodtype="rhel7">
@@ -5004,7 +5075,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_connect_ftp" value="var_httpd_can_connect_ftp" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_connect_ldap" severity="medium" prodtype="rhel7">
@@ -5021,7 +5093,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_connect_ldap" value="var_httpd_can_connect_ldap" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_connect_mythtv" severity="medium" prodtype="rhel7">
@@ -5038,7 +5111,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_connect_mythtv" value="var_httpd_can_connect_mythtv" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_connect_zabbix" severity="medium" prodtype="rhel7">
@@ -5055,7 +5129,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_connect_zabbix" value="var_httpd_can_connect_zabbix" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_network_connect_cobbler" severity="medium" prodtype="rhel7">
@@ -5072,7 +5147,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_network_connect_cobbler" value="var_httpd_can_network_connect_cobbler" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_network_connect_db" severity="medium" prodtype="rhel7">
@@ -5089,7 +5165,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_network_connect_db" value="var_httpd_can_network_connect_db" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_network_connect" severity="medium" prodtype="rhel7">
@@ -5106,7 +5183,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_network_connect" value="var_httpd_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_network_memcache" severity="medium" prodtype="rhel7">
@@ -5123,7 +5201,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_network_memcache" value="var_httpd_can_network_memcache" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_network_relay" severity="medium" prodtype="rhel7">
@@ -5140,7 +5219,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_network_relay" value="var_httpd_can_network_relay" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_can_sendmail" severity="medium" prodtype="rhel7">
@@ -5157,7 +5237,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_can_sendmail" value="var_httpd_can_sendmail" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_dbus_avahi" severity="medium" prodtype="rhel7">
@@ -5174,7 +5255,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_dbus_avahi" value="var_httpd_dbus_avahi" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_dbus_sssd" severity="medium" prodtype="rhel7">
@@ -5191,7 +5273,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_dbus_sssd" value="var_httpd_dbus_sssd" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_dontaudit_search_dirs" severity="medium" prodtype="rhel7">
@@ -5208,7 +5291,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_dontaudit_search_dirs" value="var_httpd_dontaudit_search_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_enable_cgi" severity="medium" prodtype="rhel7">
@@ -5226,7 +5310,8 @@ scripting.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_enable_cgi" value="var_httpd_enable_cgi" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_enable_ftp_server" severity="medium" prodtype="rhel7">
@@ -5243,7 +5328,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_enable_ftp_server" value="var_httpd_enable_ftp_server" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -5260,7 +5346,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_enable_homedirs" value="var_httpd_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_execmem" severity="medium" prodtype="rhel7">
@@ -5277,7 +5364,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_execmem" value="var_httpd_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_graceful_shutdown" severity="medium" prodtype="rhel7">
@@ -5294,7 +5382,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_graceful_shutdown" value="var_httpd_graceful_shutdown" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_manage_ipa" severity="medium" prodtype="rhel7">
@@ -5311,7 +5400,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_manage_ipa" value="var_httpd_manage_ipa" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_mod_auth_ntlm_winbind" severity="medium" prodtype="rhel7">
@@ -5328,7 +5418,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_mod_auth_ntlm_winbind" value="var_httpd_mod_auth_ntlm_winbind" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_mod_auth_pam" severity="medium" prodtype="rhel7">
@@ -5345,7 +5436,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_mod_auth_pam" value="var_httpd_mod_auth_pam" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_read_user_content" severity="medium" prodtype="rhel7">
@@ -5362,7 +5454,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_read_user_content" value="var_httpd_read_user_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_run_ipa" severity="medium" prodtype="rhel7">
@@ -5379,7 +5472,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_run_ipa" value="var_httpd_run_ipa" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_run_preupgrade" severity="medium" prodtype="rhel7">
@@ -5396,7 +5490,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_run_preupgrade" value="var_httpd_run_preupgrade" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_run_stickshift" severity="medium" prodtype="rhel7">
@@ -5413,7 +5508,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_run_stickshift" value="var_httpd_run_stickshift" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_serve_cobbler_files" severity="medium" prodtype="rhel7">
@@ -5430,7 +5526,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_serve_cobbler_files" value="var_httpd_serve_cobbler_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_setrlimit" severity="medium" prodtype="rhel7">
@@ -5447,7 +5544,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_setrlimit" value="var_httpd_setrlimit" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_ssi_exec" severity="medium" prodtype="rhel7">
@@ -5464,7 +5562,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_ssi_exec" value="var_httpd_ssi_exec" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_sys_script_anon_write" severity="medium" prodtype="rhel7">
@@ -5481,7 +5580,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_sys_script_anon_write" value="var_httpd_sys_script_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_tmp_exec" severity="medium" prodtype="rhel7">
@@ -5498,7 +5598,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_tmp_exec" value="var_httpd_tmp_exec" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_tty_comm" severity="medium" prodtype="rhel7">
@@ -5515,7 +5616,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_tty_comm" value="var_httpd_tty_comm" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_unified" severity="medium" prodtype="rhel7">
@@ -5532,7 +5634,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_unified" value="var_httpd_unified" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_use_cifs" severity="medium" prodtype="rhel7">
@@ -5549,7 +5652,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_use_cifs" value="var_httpd_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_use_fusefs" severity="medium" prodtype="rhel7">
@@ -5566,7 +5670,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_use_fusefs" value="var_httpd_use_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_use_gpg" severity="medium" prodtype="rhel7">
@@ -5583,7 +5688,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_use_gpg" value="var_httpd_use_gpg" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_use_nfs" severity="medium" prodtype="rhel7">
@@ -5600,7 +5706,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_use_nfs" value="var_httpd_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_use_openstack" severity="medium" prodtype="rhel7">
@@ -5617,7 +5724,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_use_openstack" value="var_httpd_use_openstack" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_use_sasl" severity="medium" prodtype="rhel7">
@@ -5634,7 +5742,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_use_sasl" value="var_httpd_use_sasl" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_httpd_verify_dns" severity="medium" prodtype="rhel7">
@@ -5651,7 +5760,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_httpd_verify_dns" value="var_httpd_verify_dns" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_icecast_use_any_tcp_ports" severity="medium" prodtype="rhel7">
@@ -5668,7 +5778,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_icecast_use_any_tcp_ports" value="var_icecast_use_any_tcp_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_irc_use_any_tcp_ports" severity="medium" prodtype="rhel7">
@@ -5685,7 +5796,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_irc_use_any_tcp_ports" value="var_irc_use_any_tcp_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_irssi_use_full_network" severity="medium" prodtype="rhel7">
@@ -5702,7 +5814,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_irssi_use_full_network" value="var_irssi_use_full_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_kdumpgui_run_bootloader" severity="medium" prodtype="rhel7">
@@ -5719,7 +5832,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_kdumpgui_run_bootloader" value="var_kdumpgui_run_bootloader" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_kerberos_enabled" severity="medium" prodtype="rhel7">
@@ -5737,7 +5851,8 @@ applications to run with Kerberos.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_kerberos_enabled" value="var_kerberos_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ksmtuned_use_cifs" severity="medium" prodtype="rhel7">
@@ -5754,7 +5869,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ksmtuned_use_cifs" value="var_ksmtuned_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ksmtuned_use_nfs" severity="medium" prodtype="rhel7">
@@ -5771,7 +5887,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ksmtuned_use_nfs" value="var_ksmtuned_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_logadm_exec_content" severity="medium" prodtype="rhel7">
@@ -5788,7 +5905,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_logadm_exec_content" value="var_logadm_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_logging_syslogd_can_sendmail" severity="medium" prodtype="rhel7">
@@ -5805,7 +5923,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_logging_syslogd_can_sendmail" value="var_logging_syslogd_can_sendmail" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_logging_syslogd_run_nagios_plugins" severity="medium" prodtype="rhel7">
@@ -5822,7 +5941,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_logging_syslogd_run_nagios_plugins" value="var_logging_syslogd_run_nagios_plugins" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_logging_syslogd_use_tty" severity="medium" prodtype="rhel7">
@@ -5840,7 +5960,8 @@ the ability to read/write to terminal.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_logging_syslogd_use_tty" value="var_logging_syslogd_use_tty" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_login_console_enabled" severity="medium" prodtype="rhel7">
@@ -5858,7 +5979,8 @@ If this setting is disabled, it should be enabled as it allows login from
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_login_console_enabled" value="var_login_console_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_logrotate_use_nfs" severity="medium" prodtype="rhel7">
@@ -5875,7 +5997,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_logrotate_use_nfs" value="var_logrotate_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_logwatch_can_network_connect_mail" severity="medium" prodtype="rhel7">
@@ -5892,7 +6015,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_logwatch_can_network_connect_mail" value="var_logwatch_can_network_connect_mail" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_lsmd_plugin_connect_any" severity="medium" prodtype="rhel7">
@@ -5909,7 +6033,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_lsmd_plugin_connect_any" value="var_lsmd_plugin_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mailman_use_fusefs" severity="medium" prodtype="rhel7">
@@ -5926,7 +6051,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mailman_use_fusefs" value="var_mailman_use_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mcelog_client" severity="medium" prodtype="rhel7">
@@ -5943,7 +6069,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mcelog_client" value="var_mcelog_client" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mcelog_exec_scripts" severity="medium" prodtype="rhel7">
@@ -5960,7 +6087,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mcelog_exec_scripts" value="var_mcelog_exec_scripts" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mcelog_foreground" severity="medium" prodtype="rhel7">
@@ -5977,7 +6105,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mcelog_foreground" value="var_mcelog_foreground" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mcelog_server" severity="medium" prodtype="rhel7">
@@ -5994,7 +6123,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mcelog_server" value="var_mcelog_server" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_minidlna_read_generic_user_content" severity="medium" prodtype="rhel7">
@@ -6011,7 +6141,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_minidlna_read_generic_user_content" value="var_minidlna_read_generic_user_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mmap_low_allowed" severity="medium" prodtype="rhel7">
@@ -6028,7 +6159,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mmap_low_allowed" value="var_mmap_low_allowed" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mock_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -6045,7 +6177,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mock_enable_homedirs" value="var_mock_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mount_anyfile" severity="medium" prodtype="rhel7">
@@ -6063,7 +6196,8 @@ or directory to be mounted.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mount_anyfile" value="var_mount_anyfile" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mozilla_plugin_bind_unreserved_ports" severity="medium" prodtype="rhel7">
@@ -6080,7 +6214,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mozilla_plugin_bind_unreserved_ports" value="var_mozilla_plugin_bind_unreserved_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mozilla_plugin_can_network_connect" severity="medium" prodtype="rhel7">
@@ -6097,7 +6232,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mozilla_plugin_can_network_connect" value="var_mozilla_plugin_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mozilla_plugin_use_bluejeans" severity="medium" prodtype="rhel7">
@@ -6114,7 +6250,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mozilla_plugin_use_bluejeans" value="var_mozilla_plugin_use_bluejeans" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mozilla_plugin_use_gps" severity="medium" prodtype="rhel7">
@@ -6131,7 +6268,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mozilla_plugin_use_gps" value="var_mozilla_plugin_use_gps" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mozilla_plugin_use_spice" severity="medium" prodtype="rhel7">
@@ -6148,7 +6286,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mozilla_plugin_use_spice" value="var_mozilla_plugin_use_spice" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mozilla_read_content" severity="medium" prodtype="rhel7">
@@ -6165,7 +6304,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mozilla_read_content" value="var_mozilla_read_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mpd_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -6182,7 +6322,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mpd_enable_homedirs" value="var_mpd_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mpd_use_cifs" severity="medium" prodtype="rhel7">
@@ -6199,7 +6340,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mpd_use_cifs" value="var_mpd_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mpd_use_nfs" severity="medium" prodtype="rhel7">
@@ -6216,7 +6358,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mpd_use_nfs" value="var_mpd_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mplayer_execstack" severity="medium" prodtype="rhel7">
@@ -6233,7 +6376,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mplayer_execstack" value="var_mplayer_execstack" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_mysql_connect_any" severity="medium" prodtype="rhel7">
@@ -6250,7 +6394,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_mysql_connect_any" value="var_mysql_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nagios_run_pnp4nagios" severity="medium" prodtype="rhel7">
@@ -6267,7 +6412,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nagios_run_pnp4nagios" value="var_nagios_run_pnp4nagios" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nagios_run_sudo" severity="medium" prodtype="rhel7">
@@ -6284,7 +6430,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nagios_run_sudo" value="var_nagios_run_sudo" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_named_tcp_bind_http_port" severity="medium" prodtype="rhel7">
@@ -6301,7 +6448,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_named_tcp_bind_http_port" value="var_named_tcp_bind_http_port" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_named_write_master_zones" severity="medium" prodtype="rhel7">
@@ -6318,7 +6466,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_named_write_master_zones" value="var_named_write_master_zones" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_neutron_can_network" severity="medium" prodtype="rhel7">
@@ -6335,7 +6484,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_neutron_can_network" value="var_neutron_can_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nfsd_anon_write" severity="medium" prodtype="rhel7">
@@ -6352,7 +6502,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nfsd_anon_write" value="var_nfsd_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nfs_export_all_ro" severity="medium" prodtype="rhel7">
@@ -6370,7 +6521,8 @@ export read-only mounts.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nfs_export_all_ro" value="var_nfs_export_all_ro" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nfs_export_all_rw" severity="medium" prodtype="rhel7">
@@ -6388,7 +6540,8 @@ export read/write mounts.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nfs_export_all_rw" value="var_nfs_export_all_rw" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nis_enabled" severity="medium" prodtype="rhel7">
@@ -6405,7 +6558,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nis_enabled" value="var_nis_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_nscd_use_shm" severity="medium" prodtype="rhel7">
@@ -6423,7 +6577,8 @@ to use shared memory.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_nscd_use_shm" value="var_nscd_use_shm" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_openshift_use_nfs" severity="medium" prodtype="rhel7">
@@ -6440,7 +6595,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_openshift_use_nfs" value="var_openshift_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_openvpn_can_network_connect" severity="medium" prodtype="rhel7">
@@ -6457,7 +6613,8 @@ This setting should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_openvpn_can_network_connect" value="var_openvpn_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_openvpn_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -6474,7 +6631,8 @@ This setting should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_openvpn_enable_homedirs" value="var_openvpn_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_openvpn_run_unconfined" severity="medium" prodtype="rhel7">
@@ -6491,7 +6649,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_openvpn_run_unconfined" value="var_openvpn_run_unconfined" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_pcp_bind_all_unreserved_ports" severity="medium" prodtype="rhel7">
@@ -6508,7 +6667,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_pcp_bind_all_unreserved_ports" value="var_pcp_bind_all_unreserved_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_pcp_read_generic_logs" severity="medium" prodtype="rhel7">
@@ -6525,7 +6685,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_pcp_read_generic_logs" value="var_pcp_read_generic_logs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_piranha_lvs_can_network_connect" severity="medium" prodtype="rhel7">
@@ -6542,7 +6703,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_piranha_lvs_can_network_connect" value="var_piranha_lvs_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_polipo_connect_all_unreserved" severity="medium" prodtype="rhel7">
@@ -6559,7 +6721,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_polipo_connect_all_unreserved" value="var_polipo_connect_all_unreserved" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_polipo_session_bind_all_unreserved_ports" severity="medium" prodtype="rhel7">
@@ -6576,7 +6739,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_polipo_session_bind_all_unreserved_ports" value="var_polipo_session_bind_all_unreserved_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_polipo_session_users" severity="medium" prodtype="rhel7">
@@ -6593,7 +6757,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_polipo_session_users" value="var_polipo_session_users" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_polipo_use_cifs" severity="medium" prodtype="rhel7">
@@ -6610,7 +6775,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_polipo_use_cifs" value="var_polipo_use_cifs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_polipo_use_nfs" severity="medium" prodtype="rhel7">
@@ -6627,7 +6793,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_polipo_use_nfs" value="var_polipo_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_polyinstantiation_enabled" severity="medium" prodtype="rhel7">
@@ -6644,7 +6811,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_polyinstantiation_enabled" value="var_polyinstantiation_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_postfix_local_write_mail_spool" severity="medium" prodtype="rhel7">
@@ -6662,7 +6830,8 @@ to the mail spool directories.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_postfix_local_write_mail_spool" value="var_postfix_local_write_mail_spool" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_postgresql_can_rsync" severity="medium" prodtype="rhel7">
@@ -6679,7 +6848,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_postgresql_can_rsync" value="var_postgresql_can_rsync" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_postgresql_selinux_transmit_client_label" severity="medium" prodtype="rhel7">
@@ -6696,7 +6866,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_postgresql_selinux_transmit_client_label" value="var_postgresql_selinux_transmit_client_label" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_postgresql_selinux_unconfined_dbadm" severity="medium" prodtype="rhel7">
@@ -6714,7 +6885,8 @@ execute Data Manipulation Language (DML) statements.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_postgresql_selinux_unconfined_dbadm" value="var_postgresql_selinux_unconfined_dbadm" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_postgresql_selinux_users_ddl" severity="medium" prodtype="rhel7">
@@ -6732,7 +6904,8 @@ execute Data Definition Language (DDL) statements.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_postgresql_selinux_users_ddl" value="var_postgresql_selinux_users_ddl" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_pppd_can_insmod" severity="medium" prodtype="rhel7">
@@ -6749,7 +6922,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_pppd_can_insmod" value="var_pppd_can_insmod" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_pppd_for_user" severity="medium" prodtype="rhel7">
@@ -6766,7 +6940,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_pppd_for_user" value="var_pppd_for_user" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_privoxy_connect_any" severity="medium" prodtype="rhel7">
@@ -6783,7 +6958,8 @@ This setting should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_privoxy_connect_any" value="var_privoxy_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_prosody_bind_http_port" severity="medium" prodtype="rhel7">
@@ -6800,7 +6976,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_prosody_bind_http_port" value="var_prosody_bind_http_port" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_puppetagent_manage_all_files" severity="medium" prodtype="rhel7">
@@ -6817,7 +6994,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_puppetagent_manage_all_files" value="var_puppetagent_manage_all_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_puppetmaster_use_db" severity="medium" prodtype="rhel7">
@@ -6834,7 +7012,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_puppetmaster_use_db" value="var_puppetmaster_use_db" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_racoon_read_shadow" severity="medium" prodtype="rhel7">
@@ -6851,7 +7030,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_racoon_read_shadow" value="var_racoon_read_shadow" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_rsync_anon_write" severity="medium" prodtype="rhel7">
@@ -6868,7 +7048,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_rsync_anon_write" value="var_rsync_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_rsync_client" severity="medium" prodtype="rhel7">
@@ -6885,7 +7066,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_rsync_client" value="var_rsync_client" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_rsync_export_all_ro" severity="medium" prodtype="rhel7">
@@ -6902,7 +7084,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_rsync_export_all_ro" value="var_rsync_export_all_ro" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_rsync_full_access" severity="medium" prodtype="rhel7">
@@ -6919,7 +7102,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_rsync_full_access" value="var_rsync_full_access" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_create_home_dirs" severity="medium" prodtype="rhel7">
@@ -6936,7 +7120,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_create_home_dirs" value="var_samba_create_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_domain_controller" severity="medium" prodtype="rhel7">
@@ -6953,7 +7138,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_domain_controller" value="var_samba_domain_controller" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_enable_home_dirs" severity="medium" prodtype="rhel7">
@@ -6970,7 +7156,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_enable_home_dirs" value="var_samba_enable_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_export_all_ro" severity="medium" prodtype="rhel7">
@@ -6987,7 +7174,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_export_all_ro" value="var_samba_export_all_ro" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_export_all_rw" severity="medium" prodtype="rhel7">
@@ -7004,7 +7192,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_export_all_rw" value="var_samba_export_all_rw" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_load_libgfapi" severity="medium" prodtype="rhel7">
@@ -7021,7 +7210,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_load_libgfapi" value="var_samba_load_libgfapi" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_portmapper" severity="medium" prodtype="rhel7">
@@ -7038,7 +7228,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_portmapper" value="var_samba_portmapper" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_run_unconfined" severity="medium" prodtype="rhel7">
@@ -7055,7 +7246,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_run_unconfined" value="var_samba_run_unconfined" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_share_fusefs" severity="medium" prodtype="rhel7">
@@ -7072,7 +7264,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_share_fusefs" value="var_samba_share_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_samba_share_nfs" severity="medium" prodtype="rhel7">
@@ -7089,7 +7282,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_samba_share_nfs" value="var_samba_share_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sanlock_use_fusefs" severity="medium" prodtype="rhel7">
@@ -7106,7 +7300,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sanlock_use_fusefs" value="var_sanlock_use_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sanlock_use_nfs" severity="medium" prodtype="rhel7">
@@ -7123,7 +7318,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sanlock_use_nfs" value="var_sanlock_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sanlock_use_samba" severity="medium" prodtype="rhel7">
@@ -7140,7 +7336,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sanlock_use_samba" value="var_sanlock_use_samba" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_saslauthd_read_shadow" severity="medium" prodtype="rhel7">
@@ -7157,7 +7354,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_saslauthd_read_shadow" value="var_saslauthd_read_shadow" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_secadm_exec_content" severity="medium" prodtype="rhel7">
@@ -7174,7 +7372,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_secadm_exec_content" value="var_secadm_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_secure_mode_insmod" severity="medium" prodtype="rhel7">
@@ -7191,7 +7390,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_secure_mode_insmod" value="var_secure_mode_insmod" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_secure_mode" severity="medium" prodtype="rhel7">
@@ -7208,7 +7408,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_secure_mode" value="var_secure_mode" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_secure_mode_policyload" severity="medium" prodtype="rhel7">
@@ -7225,7 +7426,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_secure_mode_policyload" value="var_secure_mode_policyload" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_direct_dri_enabled" severity="medium" prodtype="rhel7">
@@ -7243,7 +7445,8 @@ Otherwise, enable it.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_direct_dri_enabled" value="var_selinuxuser_direct_dri_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_execheap" severity="medium" prodtype="rhel7">
@@ -7260,7 +7463,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_execheap" value="var_selinuxuser_execheap" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_execmod" severity="medium" prodtype="rhel7">
@@ -7277,7 +7481,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_execmod" value="var_selinuxuser_execmod" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_execstack" severity="medium" prodtype="rhel7">
@@ -7295,7 +7500,8 @@ to make their stack executable.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_execstack" value="var_selinuxuser_execstack" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_mysql_connect_enabled" severity="medium" prodtype="rhel7">
@@ -7312,7 +7518,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_mysql_connect_enabled" value="var_selinuxuser_mysql_connect_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_ping" severity="medium" prodtype="rhel7">
@@ -7330,7 +7537,8 @@ to use ping and traceroute which is helpful for network troubleshooting.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_ping" value="var_selinuxuser_ping" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_postgresql_connect_enabled" severity="medium" prodtype="rhel7">
@@ -7347,7 +7555,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_postgresql_connect_enabled" value="var_selinuxuser_postgresql_connect_enabled" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_rw_noexattrfile" severity="medium" prodtype="rhel7">
@@ -7365,7 +7574,8 @@ on filesystems that do not have extended attributes e.g. FAT, CDROM, FLOPPY, etc
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_rw_noexattrfile" value="var_selinuxuser_rw_noexattrfile" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_share_music" severity="medium" prodtype="rhel7">
@@ -7382,7 +7592,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_share_music" value="var_selinuxuser_share_music" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_tcp_server" severity="medium" prodtype="rhel7">
@@ -7399,7 +7610,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_tcp_server" value="var_selinuxuser_tcp_server" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_udp_server" severity="medium" prodtype="rhel7">
@@ -7416,7 +7628,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_udp_server" value="var_selinuxuser_udp_server" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_use_ssh_chroot" severity="medium" prodtype="rhel7">
@@ -7433,7 +7646,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_use_ssh_chroot" value="var_selinuxuser_use_ssh_chroot" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sftpd_anon_write" severity="medium" prodtype="rhel7">
@@ -7450,7 +7664,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sftpd_anon_write" value="var_sftpd_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sftpd_enable_homedirs" severity="medium" prodtype="rhel7">
@@ -7467,7 +7682,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sftpd_enable_homedirs" value="var_sftpd_enable_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sftpd_full_access" severity="medium" prodtype="rhel7">
@@ -7484,7 +7700,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sftpd_full_access" value="var_sftpd_full_access" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sftpd_write_ssh_home" severity="medium" prodtype="rhel7">
@@ -7501,7 +7718,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sftpd_write_ssh_home" value="var_sftpd_write_ssh_home" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sge_domain_can_network_connect" severity="medium" prodtype="rhel7">
@@ -7518,7 +7736,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sge_domain_can_network_connect" value="var_sge_domain_can_network_connect" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sge_use_nfs" severity="medium" prodtype="rhel7">
@@ -7535,7 +7754,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sge_use_nfs" value="var_sge_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_smartmon_3ware" severity="medium" prodtype="rhel7">
@@ -7552,7 +7772,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_smartmon_3ware" value="var_smartmon_3ware" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_smbd_anon_write" severity="medium" prodtype="rhel7">
@@ -7569,7 +7790,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_smbd_anon_write" value="var_smbd_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_spamassassin_can_network" severity="medium" prodtype="rhel7">
@@ -7586,7 +7808,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_spamassassin_can_network" value="var_spamassassin_can_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_spamd_enable_home_dirs" severity="medium" prodtype="rhel7">
@@ -7603,7 +7826,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_spamd_enable_home_dirs" value="var_spamd_enable_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_squid_connect_any" severity="medium" prodtype="rhel7">
@@ -7621,7 +7845,8 @@ ports.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_squid_connect_any" value="var_squid_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_squid_use_tproxy" severity="medium" prodtype="rhel7">
@@ -7638,7 +7863,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_squid_use_tproxy" value="var_squid_use_tproxy" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ssh_chroot_rw_homedirs" severity="medium" prodtype="rhel7">
@@ -7655,7 +7881,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ssh_chroot_rw_homedirs" value="var_ssh_chroot_rw_homedirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ssh_keysign" severity="medium" prodtype="rhel7">
@@ -7672,7 +7899,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ssh_keysign" value="var_ssh_keysign" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_ssh_sysadm_login" severity="medium" prodtype="rhel7">
@@ -7689,7 +7917,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_ssh_sysadm_login" value="var_ssh_sysadm_login" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_staff_exec_content" severity="medium" prodtype="rhel7">
@@ -7706,7 +7935,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_staff_exec_content" value="var_staff_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_staff_use_svirt" severity="medium" prodtype="rhel7">
@@ -7723,7 +7953,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_staff_use_svirt" value="var_staff_use_svirt" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_swift_can_network" severity="medium" prodtype="rhel7">
@@ -7740,7 +7971,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_swift_can_network" value="var_swift_can_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_sysadm_exec_content" severity="medium" prodtype="rhel7">
@@ -7757,7 +7989,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_sysadm_exec_content" value="var_sysadm_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_telepathy_connect_all_ports" severity="medium" prodtype="rhel7">
@@ -7774,7 +8007,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_telepathy_connect_all_ports" value="var_telepathy_connect_all_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_telepathy_tcp_connect_generic_network_ports" severity="medium" prodtype="rhel7">
@@ -7792,7 +8026,8 @@ ports.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_telepathy_tcp_connect_generic_network_ports" value="var_telepathy_tcp_connect_generic_network_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_tftp_anon_write" severity="medium" prodtype="rhel7">
@@ -7809,7 +8044,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_tftp_anon_write" value="var_tftp_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_tftp_home_dir" severity="medium" prodtype="rhel7">
@@ -7826,7 +8062,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_tftp_home_dir" value="var_tftp_home_dir" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_tmpreaper_use_nfs" severity="medium" prodtype="rhel7">
@@ -7843,7 +8080,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_tmpreaper_use_nfs" value="var_tmpreaper_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_tmpreaper_use_samba" severity="medium" prodtype="rhel7">
@@ -7860,7 +8098,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_tmpreaper_use_samba" value="var_tmpreaper_use_samba" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_tor_bind_all_unreserved_ports" severity="medium" prodtype="rhel7">
@@ -7877,7 +8116,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_tor_bind_all_unreserved_ports" value="var_tor_bind_all_unreserved_ports" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_tor_can_network_relay" severity="medium" prodtype="rhel7">
@@ -7894,7 +8134,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_tor_can_network_relay" value="var_tor_can_network_relay" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_unconfined_chrome_sandbox_transition" severity="medium" prodtype="rhel7">
@@ -7911,7 +8152,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_unconfined_chrome_sandbox_transition" value="var_unconfined_chrome_sandbox_transition" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_unconfined_login" severity="medium" prodtype="rhel7">
@@ -7928,7 +8170,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_unconfined_login" value="var_unconfined_login" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_unconfined_mozilla_plugin_transition" severity="medium" prodtype="rhel7">
@@ -7945,7 +8188,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_unconfined_mozilla_plugin_transition" value="var_unconfined_mozilla_plugin_transition" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_unprivuser_use_svirt" severity="medium" prodtype="rhel7">
@@ -7962,7 +8206,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_unprivuser_use_svirt" value="var_unprivuser_use_svirt" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_use_ecryptfs_home_dirs" severity="medium" prodtype="rhel7">
@@ -7979,7 +8224,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_use_ecryptfs_home_dirs" value="var_use_ecryptfs_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_use_fusefs_home_dirs" severity="medium" prodtype="rhel7">
@@ -7996,7 +8242,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_use_fusefs_home_dirs" value="var_use_fusefs_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_use_lpd_server" severity="medium" prodtype="rhel7">
@@ -8013,7 +8260,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_use_lpd_server" value="var_use_lpd_server" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_use_nfs_home_dirs" severity="medium" prodtype="rhel7">
@@ -8030,7 +8278,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_use_nfs_home_dirs" value="var_use_nfs_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_user_exec_content" severity="medium" prodtype="rhel7">
@@ -8047,7 +8296,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_user_exec_content" value="var_user_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_use_samba_home_dirs" severity="medium" prodtype="rhel7">
@@ -8064,7 +8314,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_use_samba_home_dirs" value="var_use_samba_home_dirs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_varnishd_connect_any" severity="medium" prodtype="rhel7">
@@ -8081,7 +8332,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_varnishd_connect_any" value="var_varnishd_connect_any" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_read_qemu_ga_data" severity="medium" prodtype="rhel7">
@@ -8098,7 +8350,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_read_qemu_ga_data" value="var_virt_read_qemu_ga_data" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_rw_qemu_ga_data" severity="medium" prodtype="rhel7">
@@ -8115,7 +8368,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_rw_qemu_ga_data" value="var_virt_rw_qemu_ga_data" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_all_caps" severity="medium" prodtype="rhel7">
@@ -8132,7 +8386,8 @@ This setting is disabled as containers should not run with privileges.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_all_caps" value="var_virt_sandbox_use_all_caps" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_audit" severity="medium" prodtype="rhel7">
@@ -8150,7 +8405,8 @@ to send audit messages.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_audit" value="var_virt_sandbox_use_audit" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_mknod" severity="medium" prodtype="rhel7">
@@ -8167,7 +8423,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_mknod" value="var_virt_sandbox_use_mknod" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_netlink" severity="medium" prodtype="rhel7">
@@ -8184,7 +8441,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_netlink" value="var_virt_sandbox_use_netlink" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_nfs" severity="medium" prodtype="rhel7">
@@ -8201,7 +8459,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_nfs" value="var_virt_sandbox_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_samba" severity="medium" prodtype="rhel7">
@@ -8218,7 +8477,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_samba" value="var_virt_sandbox_use_samba" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_sandbox_use_sys_admin" severity="medium" prodtype="rhel7">
@@ -8235,7 +8495,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_sandbox_use_sys_admin" value="var_virt_sandbox_use_sys_admin" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_transition_userdomain" severity="medium" prodtype="rhel7">
@@ -8252,7 +8513,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_transition_userdomain" value="var_virt_transition_userdomain" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_comm" severity="medium" prodtype="rhel7">
@@ -8269,7 +8531,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_comm" value="var_virt_use_comm" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_execmem" severity="medium" prodtype="rhel7">
@@ -8286,7 +8549,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_execmem" value="var_virt_use_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_fusefs" severity="medium" prodtype="rhel7">
@@ -8303,7 +8567,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_fusefs" value="var_virt_use_fusefs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_nfs" severity="medium" prodtype="rhel7">
@@ -8320,7 +8585,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_nfs" value="var_virt_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_rawip" severity="medium" prodtype="rhel7">
@@ -8337,7 +8603,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_rawip" value="var_virt_use_rawip" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_samba" severity="medium" prodtype="rhel7">
@@ -8354,7 +8621,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_samba" value="var_virt_use_samba" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_sanlock" severity="medium" prodtype="rhel7">
@@ -8371,7 +8639,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_sanlock" value="var_virt_use_sanlock" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_usb" severity="medium" prodtype="rhel7">
@@ -8388,7 +8657,8 @@ This setting should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_usb" value="var_virt_use_usb" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_virt_use_xserver" severity="medium" prodtype="rhel7">
@@ -8405,7 +8675,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_virt_use_xserver" value="var_virt_use_xserver" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_webadm_manage_user_files" severity="medium" prodtype="rhel7">
@@ -8422,7 +8693,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_webadm_manage_user_files" value="var_webadm_manage_user_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_webadm_read_user_files" severity="medium" prodtype="rhel7">
@@ -8439,7 +8711,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_webadm_read_user_files" value="var_webadm_read_user_files" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_wine_mmap_zero_ignore" severity="medium" prodtype="rhel7">
@@ -8456,7 +8729,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_wine_mmap_zero_ignore" value="var_wine_mmap_zero_ignore" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xdm_bind_vnc_tcp_port" severity="medium" prodtype="rhel7">
@@ -8473,7 +8747,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xdm_bind_vnc_tcp_port" value="var_xdm_bind_vnc_tcp_port" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xdm_exec_bootloader" severity="medium" prodtype="rhel7">
@@ -8490,7 +8765,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xdm_exec_bootloader" value="var_xdm_exec_bootloader" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xdm_sysadm_login" severity="medium" prodtype="rhel7">
@@ -8507,7 +8783,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xdm_sysadm_login" value="var_xdm_sysadm_login" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xdm_write_home" severity="medium" prodtype="rhel7">
@@ -8524,7 +8801,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xdm_write_home" value="var_xdm_write_home" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xend_run_blktap" severity="medium" prodtype="rhel7">
@@ -8541,7 +8819,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xend_run_blktap" value="var_xend_run_blktap" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xend_run_qemu" severity="medium" prodtype="rhel7">
@@ -8558,7 +8837,8 @@ If this setting is disabled, it should be enabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xend_run_qemu" value="var_xend_run_qemu" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xen_use_nfs" severity="medium" prodtype="rhel7">
@@ -8575,7 +8855,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xen_use_nfs" value="var_xen_use_nfs" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xguest_connect_network" severity="medium" prodtype="rhel7">
@@ -8593,7 +8874,8 @@ This setting should be disabled as guest users should not be able to configure
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xguest_connect_network" value="var_xguest_connect_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xguest_exec_content" severity="medium" prodtype="rhel7">
@@ -8611,7 +8893,8 @@ executables.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xguest_exec_content" value="var_xguest_exec_content" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xguest_mount_media" severity="medium" prodtype="rhel7">
@@ -8629,7 +8912,8 @@ any media.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xguest_mount_media" value="var_xguest_mount_media" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xguest_use_bluetooth" severity="medium" prodtype="rhel7">
@@ -8647,7 +8931,8 @@ or use bluetooth.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xguest_use_bluetooth" value="var_xguest_use_bluetooth" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xserver_clients_write_xshm" severity="medium" prodtype="rhel7">
@@ -8664,7 +8949,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xserver_clients_write_xshm" value="var_xserver_clients_write_xshm" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xserver_execmem" severity="medium" prodtype="rhel7">
@@ -8681,7 +8967,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xserver_execmem" value="var_xserver_execmem" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_xserver_object_manager" severity="medium" prodtype="rhel7">
@@ -8698,7 +8985,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_xserver_object_manager" value="var_xserver_object_manager" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_zabbix_can_network" severity="medium" prodtype="rhel7">
@@ -8715,7 +9003,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_zabbix_can_network" value="var_zabbix_can_network" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_zarafa_setrlimit" severity="medium" prodtype="rhel7">
@@ -8732,7 +9021,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_zarafa_setrlimit" value="var_zarafa_setrlimit" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_zebra_write_config" severity="medium" prodtype="rhel7">
@@ -8749,7 +9039,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_zebra_write_config" value="var_zebra_write_config" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_zoneminder_anon_write" severity="medium" prodtype="rhel7">
@@ -8766,7 +9057,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_zoneminder_anon_write" value="var_zoneminder_anon_write" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 <Rule id="sebool_zoneminder_run_sudo" severity="medium" prodtype="rhel7">
@@ -8783,7 +9075,8 @@ If this setting is enabled, it should be disabled.
 </rationale>
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_zoneminder_run_sudo" value="var_zoneminder_run_sudo" />
-<ref prodtype="rhel7" nist="TBD" disa="TBD" ossrg="TBD" stigid="TBD" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="TBD" disa="TBD" ossrg="TBD" />
 </Rule>
 
 </Group>

@@ -100,7 +100,7 @@ information on this is available at
 <weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate"/></rationale>
 <ident prodtype="rhel7" cce="27444-9" />
 <oval id="service_chronyd_or_ntpd_enabled" />
-<ref prodtype="rhel7" nist="AU-8(1)" disa="160" pcidss="Req-10.4" cis="3.6" cui="3.3.7" />
+<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" cis="3.6" cui="3.3.7" />
 </Rule>
 
 <Rule id="chronyd_or_ntpd_specify_remote_server" severity="medium" prodtype="rhel7">
@@ -143,7 +143,7 @@ logs from multiple sources or correlate computer events with real time events.
 </rationale>
 <ident prodtype="rhel7" cce="27278-1" />
 <oval id="chronyd_or_ntpd_specify_remote_server" />
-<ref prodtype="rhel7" nist="AU-8(1)" disa="160" pcidss="Req-10.4.1,Req-10.4.3" cis="3.6" cui="3.3.7" />
+<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4.1,Req-10.4.3" cis="3.6" cui="3.3.7" />
 </Rule>
 
 <Rule id="chronyd_or_ntpd_specify_multiple_servers" prodtype="rhel7">
@@ -175,7 +175,7 @@ other systems.
 </rationale>
 <ident prodtype="rhel7" cce="27012-4" />
 <oval id="chronyd_or_ntpd_specify_multiple_servers"/>
-<ref prodtype="rhel7" nist="AU-8(1)" pcidss="Req-10.4.3" />
+<ref nist="AU-8(1)" pcidss="Req-10.4.3" />
 </Rule>
 
 <Rule id="ntp_set_maxpoll" prodtype="rhel7">
@@ -200,8 +200,8 @@ configured acceptable allowance (drift) may be inaccurate.
 </rationale>
 <ident prodtype="rhel7" cce="80439-3" />
 <oval id="ntp_set_maxpoll" value="var_ntp_set_maxpoll" />
-<ref prodtype="rhel7" nist="AU-8(1)(a)" disa="1891,2046"
-ossrg="SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144" stigid="040500" />
+<ref prodtype="rhel7" stigid="040500" />
+<ref nist="AU-8(1)(a)" disa="1891,2046" ossrg="SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144" />
 </Rule>
 
 

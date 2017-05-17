@@ -45,7 +45,7 @@ process at run time.  An unnecessarily permissive umask could result in files
 being created with insecure permissions.</rationale>
 <ident prodtype="rhel7" cce="27068-6" />
 <oval id="umask_for_daemons" value="var_umask_for_daemons"/>
-<ref prodtype="rhel7" nist="AC-6" cis="3.1" />
+<ref nist="AC-6" cis="3.1" />
 </Rule>
 
 </Group>
@@ -87,7 +87,7 @@ terminates an application. The memory image could contain sensitive data and is 
 only for developers trying to debug problems.</rationale>
 <ident prodtype="rhel7" cce="80169-6" />
 <oval id="disable_users_coredumps" />
-<ref prodtype="rhel7" nist="SC-5" cis="1.6.1" />
+<ref nist="SC-5" cis="1.6.1" />
 </Rule>
 
 <Rule id="sysctl_fs_suid_dumpable" prodtype="rhel7">
@@ -102,7 +102,7 @@ of such data.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26900-1" />
 <oval id="sysctl_fs_suid_dumpable" />
-<ref prodtype="rhel7" nist="SI-11" cis="1.6.1" />
+<ref nist="SI-11" cis="1.6.1" />
 </Rule>
 </Group>
 
@@ -151,7 +151,7 @@ systems if supported by the hardware.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27211-2" />
 <oval id="sysctl_kernel_exec_shield" />
-<ref prodtype="rhel7" nist="SC-39" disa="2530" cui="3.1.7" />
+<ref nist="SC-39" disa="2530" cui="3.1.7" />
 </Rule>
 
 <Rule id="sysctl_kernel_randomize_va_space" severity="medium" prodtype="rhel7">
@@ -167,7 +167,7 @@ in order to re-purpose it using return oriented programming (ROP) techniques.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27127-0" />
 <oval id="sysctl_kernel_randomize_va_space" />
-<ref prodtype="rhel7" nist="SC-30(2)" cis="1.6.1" cui="3.1.7" />
+<ref nist="SC-30(2)" cis="1.6.1" cui="3.1.7" />
 </Rule>
 </Group>
 
@@ -206,7 +206,7 @@ this may prevent them from booting.</warning>
 PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) support.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27116-3" />
-<ref prodtype="rhel7" nist="CM-6(b)" cui="3.1.7" />
+<ref nist="CM-6(b)" cui="3.1.7" />
 <oval id="install_PAE_kernel_on_x86-32" />
 </Rule>
 
@@ -219,7 +219,7 @@ on AMD-based systems.</description>
 <rationale>Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
 allow users to turn the feature on or off at will.</rationale>
 <platform idref="cpe:/a:machine" />
-<ref prodtype="rhel7" nist="CM-6(b)" cui="3.1.7" />
+<ref nist="CM-6(b)" cui="3.1.7" />
 <ident prodtype="rhel7" cce="27099-1" />
 </Rule>
 
@@ -233,7 +233,7 @@ allow users to turn the feature on or off at will.</rationale>
 address information.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27050-4" />
-<ref prodtype="rhel7" nist="SI-11" disa="1314" cui="3.1.5" />
+<ref nist="SI-11" disa="1314" cui="3.1.5" />
 <oval id="sysctl_kernel_dmesg_restrict" />
 </Rule> 
 

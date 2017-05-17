@@ -32,7 +32,7 @@ system logging services.
 </rationale>
 <ident prodtype="rhel7" cce="80187-8" />
 <oval id="package_rsyslog_installed" />
-<ref prodtype="rhel7" nist="AU-9(2)" disa="1311,1312" cis="5.1.1" />
+<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" />
 </Rule>
 
 <Rule id="service_rsyslog_enabled" severity="medium" prodtype="rhel7">
@@ -48,7 +48,7 @@ logging services, which are essential to system administration.
 </rationale>
 <ident prodtype="rhel7" cce="80188-6" />
 <oval id="service_rsyslog_enabled" />
-<ref prodtype="rhel7" nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" />
+<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" />
 </Rule>
 
 <Group id="ensure_rsyslog_log_file_configuration">
@@ -118,7 +118,7 @@ configuration, user authentication, and other such information. Log files should
 protected from unauthorized access.</rationale>
 <ident prodtype="rhel7" cce="80189-4" />
 <oval id="rsyslog_files_ownership" />
-<ref prodtype="rhel7" nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
 <Rule id="rsyslog_files_groupownership" severity="medium" prodtype="rhel7">
@@ -146,7 +146,7 @@ configuration, user authentication, and other such information. Log files should
 protected from unauthorized access.</rationale>
 <ident prodtype="rhel7" cce="80190-2" />
 <oval id="rsyslog_files_groupownership" />
-<ref prodtype="rhel7" nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
 <Rule id="rsyslog_files_permissions" severity="medium" prodtype="rhel7">
@@ -177,7 +177,7 @@ users could change the logged data, eliminating their forensic value.
 </rationale>
 <ident prodtype="rhel7" cce="80191-0" />
 <oval id="rsyslog_files_permissions" />
-<ref prodtype="rhel7" nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="5.1.4" />
+<ref nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="5.1.4" />
 </Rule>
 
 <Rule id="rsyslog_cron_logging" severity="medium" prodtype="rhel7">
@@ -202,7 +202,8 @@ facility by unauthorized and malicious users.
 </rationale>
 <ident prodtype="rhel7" cce="80380-9" />
 <oval id="rsyslog_cron_logging" />
-<ref prodtype="rhel7" nist="AU-2(d)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021100" />
+<ref prodtype="rhel7" stigid="021100" />
+<ref nist="AU-2(d)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -279,8 +280,8 @@ place to view the status of multiple hosts within the enterprise.
 </rationale>
 <ident prodtype="rhel7" cce="27343-3" />
 <oval id="rsyslog_remote_loghost" value="rsyslog_remote_loghost_address" />
-<ref prodtype="rhel7" nist="AU-3(2),AU-4(1),AU-9" disa="366,1348,136,1851" cis="5.1.5"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="031000" />
+<ref prodtype="rhel7" stigid="031000" />
+<ref nist="AU-3(2),AU-4(1),AU-9" disa="366,1348,136,1851" cis="5.1.5" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 
@@ -316,8 +317,8 @@ rsyslog by configuring it not to listen on the network.
 </rationale>
 <ident prodtype="rhel7" cce="80192-8" />
 <oval id="rsyslog_nolisten" />
-<ref prodtype="rhel7" nist="AU-9(2),AC-4,CM-6(c)" disa="318,368,1812,1813,1814"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="031010"/>
+<ref prodtype="rhel7" stigid="031010" />
+<ref nist="AU-9(2),AC-4,CM-6(c)" disa="318,368,1812,1813,1814" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_tcp" prodtype="rhel7">
@@ -335,7 +336,7 @@ messages over a reliable TCP connection.
 </rationale>
 <ident prodtype="rhel7" cce="80193-6" />
 <!--<oval id="rsyslog_listen_tcp" />-->
-<ref prodtype="rhel7" nist="AU-9" cis="5.1.6" />
+<ref nist="AU-9" cis="5.1.6" />
 </Rule>
 
 <Rule id="rsyslog_accept_remote_messages_udp" prodtype="rhel7">
@@ -353,7 +354,7 @@ the traditional syslog transmission over UDP. If the system must act as a log se
 this enables it to receive their messages as well.
 </rationale>
 <ident prodtype="rhel7" cce="80194-4" />
-<ref prodtype="rhel7" nist="AU-9" cis="5.1.6" />
+<ref nist="AU-9" cis="5.1.6" />
 </Rule>
 
 </Group>
@@ -402,7 +403,7 @@ If logrotate is configured properly, output should include references to
 </ocil>
 <ident prodtype="rhel7" cce="80195-1" />
 <oval id="ensure_logrotate_activated" />
-<ref prodtype="rhel7" nist="AU-9" disa="366" pcidss="Req-10.7" />
+<ref nist="AU-9" disa="366" pcidss="Req-10.7" />
 </Rule>
 </Group>
 

@@ -81,8 +81,8 @@ system security.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80104-3" />
 <oval id="gnome_gdm_disable_automatic_login" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010440"
-cui="3.1.1" />
+<ref prodtype="rhel7" stigid="010440" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" cui="3.1.1" />
 </Rule>
 
 <Rule id="gnome_gdm_disable_guest_login" severity="high" prodtype="rhel7">
@@ -109,8 +109,8 @@ system security.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80105-0" />
 <oval id="gnome_gdm_disable_guest_login" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" stigid="010450"
-cui="3.1.1" />
+<ref prodtype="rhel7" stigid="010450" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" cui="3.1.1" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_user_list" severity="medium" prodtype="rhel7">
@@ -144,7 +144,7 @@ without logging in.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80106-8" />
 <oval id="dconf_gnome_disable_user_list" />
-<ref prodtype="rhel7" nist="AC-23" />
+<ref nist="AC-23" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_restart_shutdown" severity="high" prodtype="rhel7">
@@ -181,8 +181,8 @@ due to reboot.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80107-6" />
 <oval id="dconf_gnome_disable_restart_shutdown" />
-<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD" 
-cui="3.1.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.2" />
 </Rule>
 
 <Rule id="dconf_gnome_enable_smartcard_auth" severity="medium" prodtype="rhel7">
@@ -217,7 +217,7 @@ that provided by a username and password combination. Smart cards leverage PKI
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80108-4" />
 <oval id="dconf_gnome_enable_smartcard_auth" />
-<ref prodtype="rhel7" disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
+<ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
 </Rule>
 
 <Rule id="dconf_gnome_login_retries" severity="medium" prodtype="rhel7">
@@ -254,7 +254,7 @@ draw additional attention to some types of password-guessing attacks.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80109-2" />
-<ref prodtype="rhel7" cui="3.1.8" />
+<ref cui="3.1.8" />
 <oval id="dconf_gnome_login_retries" />
 </Rule>
 
@@ -328,8 +328,8 @@ a user's session has idled and take action to initiate a session lock.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80110-0" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="57" pcidss="Req-8.1.8"
-ossrg="SRG-OS-000029-GPOS-00010" stigid="010070" cjis="5.5.5" cui="3.1.10" />
+<ref prodtype="rhel7" stigid="010070" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" ossrg="SRG-OS-000029-GPOS-00010" cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_idle_activation_enabled" severity="medium" prodtype="rhel7">
@@ -370,7 +370,8 @@ controlled-access area.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80111-8" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" stigid="010100" pcidss="Req-8.1.8"
+<ref prodtype="rhel7" stigid="010100" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-000029-GPOS-00010" pcidss="Req-8.1.8"
 cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
@@ -404,9 +405,8 @@ of the information system but does not want to logout because of the temporary n
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80112-6" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
-<ref prodtype="rhel7" nist="AC-11(b)" disa="56" pcidss="Req-8.1.8"
-ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" stigid="010060"
-cjis="5.5.5" cui="3.1.10" />
+<ref prodtype="rhel7" stigid="010060" />
+<ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8" ossrg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_lock_delay" severity="medium" prodtype="rhel7">
@@ -440,8 +440,8 @@ of the information system but does not want to logout because of the temporary n
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80370-0" />
 <oval id="dconf_gnome_screensaver_lock_delay" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="56" pcidss="Req-8.1.8"
-ossrg="OS-SRG-000029-GPOS-00010" stigid="010110" cui="3.1.10" />
+<ref prodtype="rhel7" stigid="010110" />
+<ref nist="AC-11(a)" disa="56" pcidss="Req-8.1.8" ossrg="OS-SRG-000029-GPOS-00010" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_mode_blank" prodtype="rhel7">
@@ -475,7 +475,7 @@ contents of the display from passersby.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80113-4" />
 <oval id="dconf_gnome_screensaver_mode_blank" />
-<ref prodtype="rhel7" nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" cjis="5.5.5" cui="3.1.10" />
+<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_user_info" prodtype="rhel7">
@@ -538,8 +538,8 @@ session lock. As such, users should not be allowed to change session settings.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80371-8" />
 <oval id="dconf_gnome_session_user_locks" />
-<ref prodtype="rhel7" nist="AC-11(a)" disa="57"
-ossrg="SRG-OS-00029-GPOS-0010" stigid="010081" cui="3.1.10"/>
+<ref prodtype="rhel7" stigid="010081" />
+<ref nist="AC-11(a)" disa="57" ossrg="SRG-OS-00029-GPOS-0010" cui="3.1.10"/>
 </Rule>
 
 </Group>
@@ -593,8 +593,8 @@ loss of availability of systems due to unintentional reboot.
 <platform idref="cpe:/a:machine" />
 <oval id="dconf_gnome_disable_ctrlaltdel_reboot" />
 <ident prodtype="rhel7" cce="80124-1" />
-<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="TBD"
-cui="3.1.2" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.2" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_user_admin" severity="high" prodtype="rhel7">
@@ -634,7 +634,7 @@ changes such as adding new accounts, etc.
 <platform idref="cpe:/a:machine" />
 <oval id="dconf_gnome_disable_user_admin" />
 <ident prodtype="rhel7" cce="80115-9" />
-<ref prodtype="rhel7" cui="3.1.5" />
+<ref cui="3.1.5" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_power_settings" severity="medium" prodtype="rhel7">
@@ -757,7 +757,7 @@ users on a given system as it could open the system to backdoor attacks.
 <platform idref="cpe:/a:machine" />
 <oval id="dconf_gnome_disable_wifi_create" />
 <ident prodtype="rhel7" cce="80118-3" />
-<ref prodtype="rhel7" cui="3.1.16" />
+<ref cui="3.1.16" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_wifi_notification" severity="medium" prodtype="rhel7">
@@ -794,7 +794,7 @@ users on a given system as it could open the system to backdoor attacks.
 <platform idref="cpe:/a:machine" />
 <oval id="dconf_gnome_disable_wifi_notification" />
 <ident prodtype="rhel7" cce="80119-1" />
-<ref prodtype="rhel7" cui="3.1.16" />
+<ref cui="3.1.16" />
 </Rule>
 
 </Group>
@@ -837,7 +837,7 @@ and nefarious users can access the system freely.
 <platform idref="cpe:/a:machine" />
 <oval id="dconf_gnome_remote_access_credential_prompt" />
 <ident prodtype="rhel7" cce="80120-9" />
-<ref prodtype="rhel7" cui="3.1.12" />
+<ref cui="3.1.12" />
 </Rule>
 
 <Rule id="dconf_gnome_remote_access_encryption" severity="medium" prodtype="rhel7">
@@ -872,8 +872,8 @@ remotely.
 <platform idref="cpe:/a:machine" />
 <oval id="dconf_gnome_remote_access_encryption" />
 <ident prodtype="rhel7" cce="80121-7" />
-<ref prodtype="rhel7" nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="TBD" cui="3.1.13" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.13" />
 </Rule>
 
 </Group>
@@ -926,7 +926,7 @@ of removable media.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80122-5" />
 <oval id="dconf_gnome_disable_automount" />
-<ref prodtype="rhel7" nist="AC-19(a),AC-19(d),AC-19(e)" cui="3.1.7" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" cui="3.1.7" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_thumbnailers" prodtype="rhel7">
@@ -963,7 +963,7 @@ is best to disable these thumbnailer applications unless they are explicitly req
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80123-3" />
 <oval id="dconf_gnome_disable_thumbnailers" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group>

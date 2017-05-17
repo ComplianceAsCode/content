@@ -35,7 +35,7 @@ DHCP server if there is one.
 </rationale>
 <ident prodtype="rhel7" cce="80330-4" />
 <oval id="service_dhcpd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="366"/>
+<ref nist="CM-7" disa="366"/>
 </Rule>
 
 <Rule id="package_dhcp_removed" severity="medium" prodtype="rhel7">
@@ -51,7 +51,7 @@ accidentally reactivated and disrupt network operation.
 </rationale>
 <ident prodtype="rhel7" cce="80331-2" />
 <oval id="package_dhcp_removed" />
-<ref prodtype="rhel7" nist="CM-7" disa="366" cis="3.5" />
+<ref nist="CM-7" disa="366" cis="3.5" />
 </Rule>
 
 </Group> <!-- <Group id="disabling_dhcp_server"> -->
@@ -88,7 +88,7 @@ ddns-update-style setting on the client is harmless (but should be fixed as a
 best practice).</warning>
 <ident prodtype="rhel7" cce="80332-0" />
 <!--<oval id="dhcp_server_disable_ddns" /> -->
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="dhcp_server_deny_decline" prodtype="rhel7">
@@ -103,7 +103,7 @@ server's pool of IP addresses, causing the DHCP server to forget old address
 allocations.</rationale>
 <ident prodtype="rhel7" cce="80333-8" />
 <!--<oval id="dhcp_server_deny_decline" /> -->
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="dhcp_server_deny_bootp" prodtype="rhel7">
@@ -118,7 +118,7 @@ vectors against the DHCP server.
 </rationale>
 <ident prodtype="rhel7" cce="80334-6" />
 <!--<oval id="dhcp_server_deny_bootp" /> -->
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Group id="dhcp_server_minimize_served_info">
@@ -147,7 +147,7 @@ settings are typically necessary for proper network functionality, but are also
 usually static across systems at a given site.</warning>
 <!-- <ident prodtype="rhel7" cce="80335-3" /> -->
 <!--<oval id="dhcp_server_minimize_served_info" /> -->
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Group>
 
 <Rule id="dhcp_server_configure_logging" prodtype="rhel7">
@@ -162,7 +162,7 @@ daemon messages to a dedicated log file is part of the syslog configuration
 outlined in the Logging and Auditing section</rationale>
 <ident prodtype="rhel7" cce="80336-1" />
 <!--<oval id="dhcp_server_configure_logging" /> -->
-<ref prodtype="rhel7" nist="AU-12" />
+<ref nist="AU-12" />
 </Rule>
 
 </Group> <!-- <Group id="dhcp_server_configuration"> -->
@@ -211,7 +211,7 @@ DHCP is commonly used and the alternative, manual configuration, presents an
 unacceptable burden in many circumstances.</rationale>
 <ident prodtype="rhel7" cce="80337-9" />
 <oval id="sysconfig_networking_bootproto_ifcfg" />
-<ref prodtype="rhel7" nist="CM-7" disa="366"/>
+<ref nist="CM-7" disa="366"/>
 </Rule>
 </Group> <!-- <Group id="disabling_dhcp_client"> -->
 
@@ -267,7 +267,7 @@ services so that they cannot be set by a hostile DHCP server. If an option is
 set to an empty string, dhclient will typically not attempt to configure the
 service.</warning>
 <!--<oval id="dhcp_client_restrict_options" /> -->
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Group>
 
 </Group> <!-- <Group id="dhcp_client_configuration"> -->

@@ -40,8 +40,8 @@ restrictive mount options, which can help protect programs which use it.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27173-4" />
 <oval id="partition_for_tmp" />
-<ref prodtype="rhel7" nist="SC-32(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-cis="1.1.1" stigid="021340" />
+<ref prodtype="rhel7" stigid="021340" />
+<ref nist="SC-32(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="1.1.1" />
 </Rule>
 
 <Rule id="partition_for_var" severity="low" prodtype="rhel7">
@@ -61,8 +61,8 @@ world-writable directories installed by other software packages.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26404-4" />
 <oval id="partition_for_var" />
-<ref prodtype="rhel7" nist="SC-32(1)" cis="1.1.5" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="021320" />
+<ref prodtype="rhel7" stigid="021320" />
+<ref nist="SC-32(1)" cis="1.1.5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="partition_for_var_log" prodtype="rhel7">
@@ -81,7 +81,7 @@ and other files in <tt>/var/</tt>.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26967-0" />
 <oval id="partition_for_var_log" />
-<ref prodtype="rhel7" nist="AU-9,SC-32" disa="" cis="1.1.7" />
+<ref nist="AU-9,SC-32" disa="" cis="1.1.7" />
 </Rule>
 
 <Rule id="partition_for_var_log_audit" severity="low" prodtype="rhel7">
@@ -103,8 +103,8 @@ of space.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
-<ref prodtype="rhel7" nist="AU-4,AU-9,SC-32(1)" disa="366" cis="1.1.8"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="021330" />
+<ref prodtype="rhel7" stigid="021330" />
+<ref nist="AU-4,AU-9,SC-32(1)" disa="366" cis="1.1.8" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="partition_for_home" severity="low" prodtype="rhel7">
@@ -125,8 +125,8 @@ users cannot trivially fill partitions used for log or audit data storage.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80144-9" />
 <oval id="partition_for_home" />
-<ref prodtype="rhel7" nist="SC-32(1)" disa="366,1208" cis="1.1.9"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="021310" />
+<ref prodtype="rhel7" stigid="021310" />
+<ref nist="SC-32(1)" disa="366,1208" cis="1.1.9" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="encrypt_partitions" severity="high" prodtype="rhel7">
@@ -173,7 +173,7 @@ the risk of its loss if the system is lost.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27128-8" />
-<ref prodtype="rhel7" nist="SC-13,SC-28(1)" disa="1199,2476" ossrg="SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079"
+<ref nist="SC-13,SC-28(1)" disa="1199,2476" ossrg="SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079"
 cui="3.13.16" />
 </Rule>
 

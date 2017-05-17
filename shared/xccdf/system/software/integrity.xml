@@ -26,7 +26,7 @@ operation of certain software and/or modes such as AIDE, FIPS, etc.
 </rationale>
 <ident prodtype="rhel7" cce="27078-5" />
 <oval id="disable_prelink" />
-<ref prodtype="rhel7" nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" cjis="5.10.1.3" cui="3.13.11"/>
+<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" cjis="5.10.1.3" cui="3.13.11"/>
 </Rule>
 
 <Group id="software-integrity">
@@ -66,7 +66,7 @@ The AIDE package must be installed if it is to be available for integrity checki
 </rationale>
 <ident prodtype="rhel7" cce="27096-7" />
 <oval id="package_aide_installed" />
-<ref prodtype="rhel7" nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="" pcidss="Req-11.5" cis="1.3.1" cjis="5.10.1.3" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28, SI-7" disa="" pcidss="Req-11.5" cis="1.3.1" cjis="5.10.1.3" />
 </Rule>
 
 <Rule id="aide_build_database" severity="medium" prodtype="rhel7">
@@ -92,7 +92,7 @@ must be captured and it should be able to be verified against the installed file
 </rationale>
 <ident prodtype="rhel7" cce="27220-3" />
 <oval id="aide_build_database" />
-<ref prodtype="rhel7" nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" cjis="5.10.1.3" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" cjis="5.10.1.3" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium" prodtype="rhel7">
@@ -128,8 +128,8 @@ monitoring system trap when there is an unauthorized modification of a configura
 </rationale>
 <ident prodtype="rhel7" cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
-<ref prodtype="rhel7" nist="CM-3(d),CM-3(e),CM-3(5),CM-6(d),CM-6(3),SC-28,SI-7" disa="1744" pcidss="Req-11.5" cis="1.3.1"
-ossrg="SRG-OS-000363-GPOS-00150" stigid="020030" cjis="5.10.1.3" />
+<ref prodtype="rhel7" stigid="020030" />
+<ref nist="CM-3(d),CM-3(e),CM-3(5),CM-6(d),CM-6(3),SC-28,SI-7" disa="1744" pcidss="Req-11.5" cis="1.3.1" ossrg="SRG-OS-000363-GPOS-00150" cjis="5.10.1.3" />
 </Rule>
 
 <Rule id="aide_scan_notification" severity="medium" prodtype="rhel7">
@@ -163,8 +163,8 @@ monitoring system trap when there is an unauthorized modification of a configura
 </rationale>
 <ident prodtype="rhel7" cce="80374-2" />
 <oval id="aide_scan_notification"/>
-<ref prodtype="rhel7" nist="CM-3(5)" disa="1744"
-ossrg="SRG-OS-000363-GPOS-00150" stigid="020040" />
+<ref prodtype="rhel7" stigid="020040" />
+<ref nist="CM-3(5)" disa="1744" ossrg="SRG-OS-000363-GPOS-00150" />
 </Rule>
 
 <Rule id="aide_verify_acls" severity="medium" prodtype="rhel7">
@@ -189,8 +189,8 @@ verified by the file integrity tools.
 </rationale>
 <ident prodtype="rhel7" cce="80375-9" />
 <oval id="aide_verify_acls"/>
-<ref prodtype="rhel7" nist="SI-7.1" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="021600" />
+<ref prodtype="rhel7" stigid="021600" />
+<ref nist="SI-7.1" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="aide_verify_ext_attributes" severity="medium" prodtype="rhel7">
@@ -215,8 +215,8 @@ with security implications.
 </rationale>
 <ident prodtype="rhel7" cce="80376-7" />
 <oval id="aide_verify_ext_attributes"/>
-<ref prodtype="rhel7" nist="SI-7.1" disa="366"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="021610" />
+<ref prodtype="rhel7" stigid="021610" />
+<ref nist="SI-7.1" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="aide_use_fips_hashes" severity="medium" prodtype="rhel7">
@@ -241,8 +241,8 @@ have not been altered. These hashes must be FIPS 140-2 approved cryptographic ha
 </rationale>
 <ident prodtype="rhel7" cce="80377-5" />
 <oval id="aide_use_fips_hashes"/>
-<ref prodtype="rhel7" nist="SI-7(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="021620" cui="3.13.11" />
+<ref prodtype="rhel7" stigid="021620" />
+<ref nist="SI-7(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.13.11" />
 </Rule>
 
 </Group>
@@ -301,7 +301,8 @@ Bugzilla #1275532.
 </warning>
 <ident prodtype="rhel7" cce="27209-6" />
 <oval id="rpm_verify_permissions" />
-<ref prodtype="rhel7" nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" stigid="010010" ossrg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" cjis="5.10.4.1" cui="3.3.8,3.4.1" />
+<ref prodtype="rhel7" stigid="010010" />
+<ref nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" ossrg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" cjis="5.10.4.1" cui="3.3.8,3.4.1" />
 </Rule>
 
 <Rule id="rpm_verify_hashes" severity="high" prodtype="rhel7">
@@ -343,9 +344,8 @@ information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
 <ident prodtype="rhel7" cce="27157-7" />
 <oval id="rpm_verify_hashes" />
-<ref prodtype="rhel7" nist="CM-6(d),CM-6(3),SI-7(1)" disa="663" pcidss="Req-11.5" 
-cis="1.2.6" stigid="010020" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.4.1" 
-cui="3.3.8,3.4.1" />
+<ref prodtype="rhel7" stigid="010020" />
+<ref nist="CM-6(d),CM-6(3),SI-7(1)" disa="663" pcidss="Req-11.5" cis="1.2.6" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.4.1" cui="3.3.8,3.4.1" />
 </Rule>
 
 </Group>
@@ -383,7 +383,7 @@ intruder gains access to a system or network.
 </rationale>
 <ident prodtype="rhel7" cce="26818-5" />
 <oval id="install_hids" />
-<ref prodtype="rhel7" nist="SC-7" disa="1263" pcidss="Req-11.4" />
+<ref nist="SC-7" disa="1263" pcidss="Req-11.4" />
 </Rule>
 
 <Rule id="install_antivirus" severity="high" prodtype="rhel7">
@@ -422,7 +422,7 @@ computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="install_antivirus" />
 <ident prodtype="rhel7" cce="27140-3" />
-<ref prodtype="rhel7" nist="SC-28, SI-3" disa="1239,1668"/>
+<ref nist="SC-28, SI-3" disa="1239,1668"/>
 </Rule>
 
 <Group id="mcafee_security_software">
@@ -481,7 +481,7 @@ Per DoD/DISA guidance, SELinux takes precedence over this module.</warning>
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_hbss_hips" />
 <ident prodtype="rhel7" cce="80368-4" />
-<ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
+<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
 ossrg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
@@ -504,7 +504,7 @@ intrusion attempts.
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_hbss_accm" />
 <ident prodtype="rhel7" cce="80126-6" />
-<ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
+<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
 ossrg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
@@ -527,7 +527,7 @@ intrusion attempts.
 <warning category="general">Due to McAfee being 3rd party software, automated
 remediation is not available for this configuration check.</warning>
 <ident prodtype="rhel7" cce="80369-2" />
-<ref prodtype="rhel7" nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
+<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
 ossrg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
@@ -554,8 +554,8 @@ computer viruses, as well as to limit their spread to other systems.
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_antivirus" />
 <ident prodtype="rhel7" cce="80127-4" />
-<ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="032000" />
+<ref prodtype="rhel7" stigid="032000" />
+<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="service_nails_enabled" severity="medium" prodtype="rhel7">
@@ -571,7 +571,7 @@ computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <oval id="service_nails_enabled" />
 <ident prodtype="rhel7" cce="80128-2" />
-<ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
+<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
 ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
@@ -591,8 +591,8 @@ computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <!--oval id="mcafee_antivirus_definitions_updated" /-->
 <ident prodtype="rhel7" cce="80129-0" />
-<ref prodtype="rhel7" nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="032010" />
+<ref prodtype="rhel7" stigid="032010" />
+<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -633,7 +633,7 @@ and validated.
 </rationale>
 <ident prodtype="rhel7" cce="80358-5" />
 <oval id="package_dracut-fips_installed" />
-<ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450"
+<ref nist="AC-17(2)" disa="68,2450"
 ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" cjis="5.10.1.2"
 cui="3.13.11,3.13.8" />
 </Rule>
@@ -679,9 +679,8 @@ See <b><weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1
 vendors.</warning>
 <ident prodtype="rhel7" cce="80359-3" />
 <oval id="grub2_enable_fips_mode" />
-<ref prodtype="rhel7" nist="AC-17(2)" disa="68,2450" stigid="021350"
-ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223"
-cjis="5.10.1.2" cui="3.13.8,3.13.11" />
+<ref prodtype="rhel7" stigid="021350" />
+<ref nist="AC-17(2)" disa="68,2450" ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" cjis="5.10.1.2" cui="3.13.8,3.13.11" />
 </Rule>
 
 </Group>
@@ -720,7 +719,8 @@ the system software as well as meet government certifications.
 </rationale>
 <ident prodtype="rhel7" cce="80349-4" />
 <oval id="installed_OS_is_certified" />
-<ref prodtype="rhel7" nist="SI-2(c)" disa="366" stigid="020250" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref prodtype="rhel7" stigid="020250" />
+<ref nist="SI-2(c)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 

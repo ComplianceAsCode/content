@@ -19,7 +19,7 @@ enabling the cron daemon is essential.
 </rationale>
 <ident prodtype="rhel7" cce="27323-5" />
 <oval id="service_crond_enabled" />
-<ref prodtype="rhel7" nist="CM-7" cis="6.1.2" />
+<ref nist="CM-7" cis="6.1.2" />
 </Rule>
 
 <Rule id="disable_anacron" prodtype="rhel7">
@@ -36,7 +36,7 @@ that <tt>cron</tt> jobs are scheduled to run. On systems which do not require th
 additional functionality, <tt>anacron</tt> could needlessly increase the possible
 attack surface for an intruder.
 </rationale>
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80344-5" />
 </Rule>
 
@@ -58,7 +58,7 @@ accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
 </rationale>
 <ident prodtype="rhel7" cce="80345-2" />
 <oval id="service_atd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="381" />
+<ref nist="CM-7" disa="381" />
 </Rule>
 
 <Group id="restrict_at_cron_users">
@@ -100,7 +100,8 @@ If <tt>/etc/cron.allow</tt> exists, it must be owned by <tt>root</tt>.
 unauthorized user to view or edit sensitive information.</rationale>
 <ident prodtype="rhel7" cce="80378-3" />
 <oval id="file_owner_cron_allow" />
-<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021110" />
+<ref prodtype="rhel7" stigid="021110" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="file_groupowner_cron_allow" severity="medium" prodtype="rhel7">
@@ -116,7 +117,8 @@ If <tt>/etc/cron.allow</tt> exists, it must be group-owned by <tt>root</tt>.
 unauthorized user to view or edit sensitive information.</rationale>
 <ident prodtype="rhel7" cce="80379-1" />
 <oval id="file_groupowner_cron_allow" />
-<ref prodtype="rhel7" nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021120" />
+<ref prodtype="rhel7" stigid="021120" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 
