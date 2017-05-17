@@ -66,7 +66,6 @@ intercepted and either read or altered.
 <ident prodtype="rhel7" cce="80215-7" />
 <oval id="package_openssh-server_installed" />
 <ref prodtype="rhel7" stigid="040300" />
-<ref prodtype="centos7" stigid="040300" />
 <ref nist="SC-8" disa="2418,2420,2421,2422" ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190" />
 </Rule>
 
@@ -91,7 +90,6 @@ of interception and modification.
 </rationale>
 <ident prodtype="rhel7" cce="80216-5" />
 <ref prodtype="rhel7" stigid="040310" />
-<ref prodtype="centos7" stigid="040310" />
 <ref nist="SC-8" disa="2418,2420,2421,2422" ossrg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190" cui="3.1.13,3.5.4,3.13.8" />
 <oval id="service_sshd_enabled" />
 </Rule>
@@ -118,7 +116,6 @@ may be compromised.
 </rationale>
 <ident prodtype="rhel7" cce="27311-0" />
 <ref prodtype="rhel7" stigid="040410" />
-<ref prodtype="centos7" stigid="040410" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.13,3.13.10" />
 <oval id="file_permissions_sshd_pub_key" />
 </Rule>
@@ -133,7 +130,6 @@ impersonated.
 </rationale>
 <ident prodtype="rhel7" cce="27485-2" />
 <ref prodtype="rhel7" stigid="040420" />
-<ref prodtype="centos7" stigid="040420" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.13,3.13.10" />
 <oval id="file_permissions_sshd_private_key" />
 </Rule>
@@ -205,7 +201,6 @@ immediate root access to the system.
 <ident prodtype="rhel7" cce="27320-1" />
 <oval id="sshd_allow_only_protocol2" />
 <ref prodtype="rhel7" stigid="040390" />
-<ref prodtype="centos7" stigid="040390" />
 <ref nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" cis="6.2.1" ossrg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" cjis="5.5.6" cui="3.1.13,3.5.4" />
 </Rule>
 
@@ -248,7 +243,6 @@ GSSAPI to remote hosts, increasing the attack surface of the system.
 <ident prodtype="rhel7" cce="80220-7" />
 <oval id="sshd_disable_gssapi_auth" />
 <ref prodtype="rhel7" stigid="040430" />
-<ref prodtype="centos7" stigid="040430" />
 <ref nist="CM-6(c)" disa="368,318,1812,1813,1814" ossrg="SRG-OS-000364-GPOS-00151" cui="3.1.12" />
 </Rule>
 
@@ -274,7 +268,6 @@ implementations may be subject to exploitation.
 <ident prodtype="rhel7" cce="80221-5" />
 <oval id="sshd_disable_kerb_auth" />
 <ref prodtype="rhel7" stigid="040440" />
-<ref prodtype="centos7" stigid="040440" />
 <ref nist="CM-6(c)" disa="368,318,1812,1813,1814" ossrg="SRG-OS-000364-GPOS-00151" cui="3.1.12" />
 </Rule>
 
@@ -299,7 +292,6 @@ may be able to log into the system as another user.
 <ident prodtype="rhel7" cce="80222-3" />
 <oval id="sshd_enable_strictmodes" />
 <ref prodtype="rhel7" stigid="040450" />
-<ref prodtype="centos7" stigid="040440" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.12" />
 </Rule>
 
@@ -324,7 +316,6 @@ the unprivileged section.
 <ident prodtype="rhel7" cce="80223-1" />
 <oval id="sshd_use_priv_separation" />
 <ref prodtype="rhel7" stigid="040460" />
-<ref prodtype="centos7" stigid="040460" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.12" />
 </Rule>
 
@@ -352,7 +343,6 @@ system from an unauthenticated connection, potentially wih root privileges.
 <ident prodtype="rhel7" cce="80224-9" />
 <oval id="sshd_disable_compression" />
 <ref prodtype="rhel7" stigid="040470" />
-<ref prodtype="centos7" stigid="040470" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.12" />
 </Rule>
 
@@ -376,7 +366,6 @@ recognition and reporting of unauthorized account use.
 <ident prodtype="rhel7" cce="80225-6" />
 <oval id="sshd_print_last_log" />
 <ref prodtype="rhel7" stigid="040360" />
-<ref prodtype="centos7" stigid="040360" />
 <ref nist="AC-9" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
@@ -474,7 +463,6 @@ enabled on the console or console port that has been let unattended.
 <ident prodtype="rhel7" cce="27433-2" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
 <ref prodtype="rhel7" stigid="040320" />
-<ref prodtype="centos7" stigid="040320" />
 <ref nist="AC-2(5),SA-8(i),AC-12" disa="1133,2361" ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" pcidss="Req-8.1.8" cis="6.2.12" cjis="5.5.6" cui="3.1.11" />
 </Rule>
 
@@ -497,7 +485,6 @@ is reached.
 <ident prodtype="rhel7" cce="27082-7" />
 <oval id="sshd_set_keepalive" />
 <ref prodtype="rhel7" stigid="040340" />
-<ref prodtype="centos7" stigid="040340" />
 <ref nist="AC-2(5),SA-8,AC-12" disa="1133,2361" ossrg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" cis="6.2.12" cjis="5.5.6" cui="3.1.11" />
 </Rule>
 
@@ -542,7 +529,6 @@ can allow an attacker to move trivially to other hosts.
 <ident prodtype="rhel7" cce="27377-1" />
 <oval id="sshd_disable_rhosts" />
 <ref prodtype="rhel7" stigid="040350" />
-<ref prodtype="centos7" stigid="040350" />
 <ref nist="AC-3,CM-6(a)" disa="366" cis="6.2.6" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.5.6" cui="3.1.12" />
 </Rule>
 
@@ -567,7 +553,6 @@ in the event of misconfiguration elsewhere.
 <ident prodtype="rhel7" cce="80372-6" />
 <oval id="sshd_disable_user_known_hosts" />
 <ref prodtype="rhel7" stigid="040380" />
-<ref prodtype="centos7" stigid="040380" />
 <ref nist="CM-6(a)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.12" />
 </Rule>
 
@@ -591,7 +576,6 @@ in the event of misconfiguration elsewhere.
 <ident prodtype="rhel7" cce="80373-4" />
 <oval id="sshd_disable_rhosts_rsa" />
 <ref prodtype="rhel7" stigid="040330" />
-<ref prodtype="centos7" stigid="040330" />
 <ref nist="CM-6(a)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.12" />
 </Rule>
 
@@ -616,7 +600,6 @@ can allow an attacker to move trivially to other hosts.
 <ident prodtype="rhel7" cce="27413-4" />
 <oval id="disable_host_auth" />
 <ref prodtype="rhel7" stigid="010470" />
-<ref prodtype="centos7" stigid="010470" />
 <ref nist="AC-3,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" cis="6.2.7" cjis="5.5.6" cui="3.1.12" />
 </Rule>
 
@@ -640,7 +623,6 @@ remotely.
 <ident prodtype="rhel7" cce="80226-4" />
 <oval id="sshd_enable_x11_forwarding" />
 <ref prodtype="rhel7" stigid="040710" />
-<ref prodtype="centos7" stigid="040710" />
 <ref nist="CM-2(1)(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.13" />
 </Rule>
 
@@ -665,7 +647,6 @@ direct attack attempts on root's password.
 <ident prodtype="rhel7" cce="27445-6" />
 <oval id="sshd_disable_root_login" />
 <ref prodtype="rhel7" stigid="040370" />
-<ref prodtype="centos7" stigid="040710" />
 <ref nist="AC-3,AC-6(2),IA-2(1),IA-2(5)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="6.2.8" cjis="5.5.6" cui="3.1.1, 3.1.5" />
 </Rule>
 
@@ -690,7 +671,6 @@ misconfiguration elsewhere.
 <ident prodtype="rhel7" cce="27471-2" />
 <oval id="sshd_disable_empty_passwords" />
 <ref prodtype="rhel7" stigid="010300" />
-<ref prodtype="centos7" stigid="010300" />
 <ref nist="AC-3,AC-6,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" cjis="5.5.6" cui="3.1.1, 3.1.5" />
 </Rule>
 
@@ -715,7 +695,6 @@ not provide easy attribution.
 <ident prodtype="rhel7" cce="27314-4" />
 <oval id="sshd_enable_warning_banner" />
 <ref prodtype="rhel7" stigid="040170" />
-<ref prodtype="centos7" stigid="040170" />
 <ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48,50,1384,1385,1386,1387,1388" ossrg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" cis="6.2.14" cjis="5.5.6" cui="3.1.9" />
 </Rule>
 
@@ -739,7 +718,6 @@ access restriction in some configurations.
 <ident prodtype="rhel7" cce="27363-1" />
 <oval id="sshd_do_not_permit_user_env" />
 <ref prodtype="rhel7" stigid="010460" />
-<ref prodtype="centos7" stigid="010460" />
 <ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00229" 
 cis="6.2.10" cjis="5.5.6" cui="3.1.12" />
 </Rule>
@@ -784,7 +762,6 @@ Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
 <ident prodtype="rhel7" cce="27295-5" />
 <oval id="sshd_use_approved_ciphers" />
 <ref prodtype="rhel7" stigid="040110" />
-<ref prodtype="centos7" stigid="040110" />
 <ref nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" disa="68,366,803" ossrg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173" cis="6.2.11" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8" />
 </Rule>
 
@@ -823,7 +800,6 @@ functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 <ident prodtype="rhel7" cce="27455-5" />
 <oval id="sshd_use_approved_macs" value="sshd_approved_macs" />
 <ref prodtype="rhel7" stigid="040400" />
-<ref prodtype="centos7" stigid="040400" />
 <ref nist="AC-17(2),IA-7,SC-13" disa="1453" ossrg="SRG-OS-000250-GPOS-00093" cui="3.1.13,3.13.11,3.13.8" />
 </Rule>
 
