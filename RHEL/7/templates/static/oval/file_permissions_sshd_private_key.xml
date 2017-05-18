@@ -1,4 +1,6 @@
 <def-group>
+    <!-- This needs to be static because the template would check for the exact
+         bits, while in this check we need to check for 0640 or stronger  -->
   <definition class="compliance" id="file_permissions_sshd_private_key" version="1">
     <metadata>
       <title>SSH Server Private Key Permissions</title>
