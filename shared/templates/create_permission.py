@@ -99,7 +99,7 @@ class PermissionGenerator(FilesGenerator):
             # we are ready to create the check
             # open the template and perform the conversions
             self.file_from_template(
-                "./template_permissions",
+                "./template_OVAL_permissions",
                 {
                     "FILEID":        path_id,
                     "FILEPATH":      full_path,
