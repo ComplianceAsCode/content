@@ -4,8 +4,9 @@
 This profile contains configuration checks that align to the 
 DISA STIG for Red Hat Enterprise Linux V1R1.
 
-This profile is applicable to the operating system tier of
-Red Hat technologies that are based off RHEL7, such as RHEL
+In addition to being applicable to RHEL7, DISA recognizes this 
+configuration baseline as applicable to the operating system
+tier of Red Hat technologies that are based off RHEL7, such as RHEL
 Server,  RHV-H, RHEL for HPC, RHEL Workstation, and Red Hat 
 Storage deployments.
 </description>
@@ -300,7 +301,7 @@ Storage deployments.
 <select idref="selinux_all_devicefiles_labeled" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86665r2_rule, RHEL-07-021000 -->
-<!-- TO DO --> 
+<select idref="mount_option_home_nosuid" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86667r1_rule, RHEL-07-021010 -->
 <select idref="mount_option_nosuid_removable_partitions" selected="true" />
@@ -693,7 +694,7 @@ Storage deployments.
 <select idref="package_tftp-server_removed" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86927r2_rule, RHEL-07-040710 -->
-<select idref="enable_x11_forwarding" selected="true" />
+<select idref="sshd_enable_x11_forwarding" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86929r1_rule, RHEL-07-040720 -->
 <select idref="tftpd_uses_secure_mode" selected="true" />

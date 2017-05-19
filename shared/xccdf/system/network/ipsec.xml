@@ -19,7 +19,7 @@ transmitted over a wide area network.
 </rationale>
 <ident prodtype="rhel7" cce="80170-4" />
 <oval id="package_libreswan_installed" />
-<ref prodtype="rhel7" nist="AC-17, MA-4, SC-9" disa="1130,1131" pcidss="Req-4.1" />
+<ref nist="AC-17, MA-4, SC-9" disa="1130,1131" pcidss="Req-4.1" />
 </Rule>
 
 <Rule id="libreswan_approved_tunnels" severity="medium" prodtype="rhel7">
@@ -41,7 +41,8 @@ IP tunneling mechanisms can be used to bypass network filtering.
 </rationale>
 <ident prodtype="rhel7" cce="80171-2" />
 <!--oval id="libreswan_approved_tunnels" /-->
-<ref prodtype="rhel7" nist="AC-4" disa="336" ossrg="SRG-OS-000480-GPOS-00227" stigid="040820" />
+<ref prodtype="rhel7" stigid="040820" />
+<ref nist="AC-4" disa="336" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>

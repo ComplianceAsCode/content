@@ -41,7 +41,7 @@ cryptographically verify packages are from Red Hat.
 </rationale>
 <ident prodtype="rhel7" cce="26957-1" />
 <oval id="ensure_redhat_gpgkey_installed" />
-<ref prodtype="rhel7" nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" 
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" 
 pcidss="Req-6.2" cis="1.2.2" cjis="5.10.4.1" cui="3.4.8" />
 </Rule>
 
@@ -84,8 +84,8 @@ Authority (CA).
 </rationale>
 <ident prodtype="rhel7" cce="26989-4" />
 <oval id="ensure_gpgcheck_globally_activated" />
-<ref prodtype="rhel7" nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" 
-stigid="020050" pcidss="Req-6.2" cis="1.2.3" cjis="5.10.4.1" cui="3.4.8" />
+<ref prodtype="rhel7" stigid="020050" />
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" pcidss="Req-6.2" cis="1.2.3" cjis="5.10.4.1" cui="3.4.8" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled" severity="high" prodtype="rhel7">
@@ -113,7 +113,7 @@ Authority (CA).
 </rationale>
 <ident prodtype="rhel7" cce="26876-3" />
 <oval id="ensure_gpgcheck_never_disabled" />
-<ref prodtype="rhel7" nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" 
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" 
 cjis="5.10.4.1" cui="3.4.8" />
 </Rule>
 
@@ -156,8 +156,8 @@ lack of prompt attention to patching could result in a system compromise.
 <ident prodtype="rhel7" cce="26895-3" />
 <!-- Particular OVAL check is defined directly via <check> element above -->
 <!-- DO NOT REFERENCE an OVAL id here !!! -->
-<ref prodtype="rhel7" nist="SI-2,SI-2(c),MA-1(b)" disa="366" pcidss="Req-6.2" cis="1.7"
-ossrg="SRG-OS-000480-GPOS-00227" stigid="020260" cjis="5.10.4.1" />
+<ref prodtype="rhel7" stigid="020260" />
+<ref nist="SI-2,SI-2(c),MA-1(b)" disa="366" pcidss="Req-6.2" cis="1.7" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.4.1" />
 </Rule>
 
 <Rule id="clean_components_post_updating" severity="low" prodtype="rhel7">
@@ -181,8 +181,8 @@ system after updates have been installed may be exploited by some adversaries.
 </rationale>
 <ident prodtype="rhel7" cce="CCE-80346-0" />
 <oval id="clean_components_post_updating" />
-<ref prodtype="rhel7" nist="SI-2(6)" disa="2617" ossrg="SRG-OS-000437-GPOS-00194" 
-stigid="020200" cui="3.4.8" />
+<ref prodtype="rhel7" stigid="020200" />
+<ref nist="SI-2(6)" disa="2617" ossrg="SRG-OS-000437-GPOS-00194" cui="3.4.8" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_local_packages" severity="high" prodtype="rhel7">
@@ -209,8 +209,8 @@ be signed with a certificate recognized and approved by the organization.
 </rationale>
 <ident prodtype="rhel7" cce="CCE-80347-8" />
 <oval id="ensure_gpgcheck_local_packages" />
-<ref prodtype="rhel7" nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" 
-stigid="020060" cui="3.4.8" />
+<ref prodtype="rhel7" stigid="020060" />
+<ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" cui="3.4.8" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_repo_metadata" severity="high" prodtype="rhel7">
@@ -251,7 +251,8 @@ approved Certificate Authority.
 </rationale>
 <ident prodtype="rhel7" cce="CCE-80348-6" />
 <oval id="ensure_gpgcheck_repo_metadata" />
-<ref prodtype="rhel7" nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" stigid="020070" />
+<ref prodtype="rhel7" stigid="020070" />
+<ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" />
 </Rule>
 
 </Group>

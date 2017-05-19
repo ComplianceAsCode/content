@@ -22,7 +22,7 @@ vulnerabilities in software executing on the system, as well as sensitive
 information from within a process's address space or registers.</rationale>
 <ident prodtype="rhel7" cce="26872-2" />
 <oval id="service_abrtd_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="" />
+<ref nist="AC-17(8),CM-7" disa="" />
 </Rule>
 
 <Rule id="service_acpid_disabled" prodtype="rhel7">
@@ -39,7 +39,7 @@ accidental or trivially achievable denial of service situations and disabling
 it is appropriate.</rationale>
 <ident prodtype="rhel7" cce="80252-0" />
 <oval id="service_acpid_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_certmonger_disabled" prodtype="rhel7">
@@ -56,7 +56,7 @@ fulfilling some roles a PKI infrastructure, but its functionality is not necessa
 for many other use cases.</rationale>
 <ident prodtype="rhel7" cce="80253-8" />
 <oval id="service_certmonger_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_cgconfig_disabled" prodtype="rhel7">
@@ -72,7 +72,7 @@ service is not necessary.
 </rationale>
 <ident prodtype="rhel7" cce="80254-6" />
 <oval id="service_cgconfig_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_cgred_disabled" prodtype="rhel7">
@@ -87,7 +87,7 @@ service is not necessary.
 </rationale>
 <ident prodtype="rhel7" cce="80255-3" />
 <oval id="service_cgred_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_cpupower_disabled" prodtype="rhel7">
@@ -104,7 +104,7 @@ highly desirable or necessary.
 </rationale>
 <ident prodtype="rhel7" cce="80256-1" />
 <oval id="service_cpupower_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_irqbalance_enabled" prodtype="rhel7">
@@ -120,7 +120,7 @@ provides potential speedups for handling interrupt requests.</rationale>
 <platform idref="cpe:/a:machine"/>
 <ident prodtype="rhel7" cce="80257-9" />
 <oval id="service_irqbalance_enabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_kdump_disabled" severity="medium" prodtype="rhel7">
@@ -139,7 +139,8 @@ Unless the system is used for kernel development or testing, there
 is little need to run the kdump service.</rationale>
 <ident prodtype="rhel7" cce="80258-7" />
 <oval id="service_kdump_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="021300" />
+<ref prodtype="rhel7" stigid="021300" />
+<ref nist="AC-17(8),CM-7,CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="service_mdmonitor_disabled" prodtype="rhel7">
@@ -153,7 +154,7 @@ RAID setups do not use this service.
 there is no need to run this service.</rationale>
 <ident prodtype="rhel7" cce="80259-5" />
 <oval id="service_mdmonitor_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_messagebus_disabled" prodtype="rhel7">
@@ -173,7 +174,7 @@ a graphical login session.
 </rationale>
 <ident prodtype="rhel7" cce="80260-3" />
 <oval id="service_messagebus_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_netconsole_disabled" prodtype="rhel7">
@@ -190,7 +191,7 @@ kernel panics, which is not common.
 </rationale>
 <ident prodtype="rhel7" cce="80261-1" />
 <oval id="service_netconsole_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="381" />
+<ref nist="AC-17(8),CM-7" disa="381" />
 </Rule>
 
 <Rule id="service_ntpdate_disabled" prodtype="rhel7">
@@ -209,7 +210,7 @@ reboots. In any event, the functionality of the ntpdate service is now
 available in the ntpd program and should be considered deprecated.</rationale>
 <ident prodtype="rhel7" cce="80262-9" />
 <oval id="service_ntpdate_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="382" />
+<ref nist="AC-17(8),CM-7" disa="382" />
 </Rule>
 
 <Rule id="service_oddjobd_disabled" prodtype="rhel7">
@@ -227,7 +228,7 @@ tasks by privileged programs, on behalf of unprivileged ones, has traditionally
 been a source of privilege escalation security issues.</rationale>
 <ident prodtype="rhel7" cce="80263-7" />
 <oval id="service_oddjobd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="381" />
+<ref nist="CM-7" disa="381" />
 </Rule>
 
 <Rule id="service_portreserve_disabled" prodtype="rhel7">
@@ -243,7 +244,7 @@ preventing conflicting usage of ports in the reserved port range, but it can be
 disabled if not needed.</rationale>
 <ident prodtype="rhel7" cce="80264-5" />
 <oval id="service_portreserve_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" />
+<ref nist="AC-17(8),CM-7" />
 </Rule>
 
 <Rule id="service_psacct_enabled" prodtype="rhel7">
@@ -260,7 +261,7 @@ system and its audit records provide more authoritative and comprehensive
 records.</rationale>
 <ident prodtype="rhel7" cce="80265-2" />
 <oval id="service_psacct_enabled" />
-<ref prodtype="rhel7" nist="AU-12,CM-7" />
+<ref nist="AU-12,CM-7" />
 </Rule>
 
 <Rule id="service_qpidd_disabled" prodtype="rhel7">
@@ -279,7 +280,7 @@ the system is not intended to receive AMQP traffic, then the <tt>qpidd</tt>
 service is not needed and should be disabled or removed.</rationale>
 <ident prodtype="rhel7" cce="80266-0" />
 <oval id="service_qpidd_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="382" />
+<ref nist="AC-17(8),CM-7" disa="382" />
 </Rule>
 
 <Rule id="service_quota_nld_disabled" prodtype="rhel7">
@@ -299,7 +300,7 @@ disk quota violation is not desired then there is no need to run this
 service.</rationale>
 <ident prodtype="rhel7" cce="80267-8" />
 <oval id="service_quota_nld_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_rdisc_disabled" prodtype="rhel7">
@@ -317,7 +318,7 @@ some special-purpose systems often use DHCP (instead of IRDP) to retrieve
 dynamic network configuration information.</rationale>
 <ident prodtype="rhel7" cce="80268-6" />
 <oval id="service_rdisc_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),AC-4,CM-7" disa="382" />
+<ref nist="AC-17(8),AC-4,CM-7" disa="382" />
 </Rule>
 
 <Rule id="service_rhnsd_disabled" prodtype="rhel7">
@@ -335,7 +336,7 @@ desirable for some environments.  However, if the system is being managed by RHN
  RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on. </rationale>
 <ident prodtype="rhel7" cce="80269-4" />
 <oval id="service_rhnsd_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" disa="382" cis="1.2.4" />
+<ref nist="AC-17(8),CM-7" disa="382" cis="1.2.4" />
 </Rule>
 
 <Rule id="service_rhsmcertd_disabled" prodtype="rhel7">
@@ -353,7 +354,7 @@ expected to require remote changes to their subscription status, it is
 unnecessary and can be disabled.</rationale>
 <ident prodtype="rhel7" cce="80270-2" />
 <oval id="service_rhsmcertd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="service_saslauthd_disabled" prodtype="rhel7">
@@ -372,7 +373,7 @@ use Kerberos and LDAP. For others, however, in which only local files may be
 consulted, it is not necessary and should be disabled.</rationale>
 <ident prodtype="rhel7" cce="80271-0" />
 <oval id="service_saslauthd_disabled" />
-<ref prodtype="rhel7" nist="AC-17(8),CM-7" />
+<ref nist="AC-17(8),CM-7" />
 </Rule>
 
 <Rule id="service_smartd_disabled" prodtype="rhel7">
@@ -389,7 +390,7 @@ system's drives are not SMART-capable (such as solid state drives), it can be
 disabled.</rationale>
 <ident prodtype="rhel7" cce="80272-8" />
 <oval id="service_smartd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 
@@ -407,7 +408,7 @@ boot to reset the statistics, which can be retrieved using programs such as
 operation, but unless used this service can be disabled.</rationale>
 <ident prodtype="rhel7" cce="80273-6" />
 <oval id="service_sysstat_disabled" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group>

@@ -27,12 +27,12 @@ PAM_ENV_SO="auth.*required.*pam_env.so"
 
 # Define 'pam_succeed_if.so' row to be appended past $PAM_ENV_SO row into $SYSTEM_AUTH_CONF
 SYSTEM_AUTH_PAM_SUCCEED="\
-auth        \[success=1 default=ignore\] pam_succeed_if.so service notin \
+auth        [success=1 default=ignore] pam_succeed_if.so service notin \
 login:gdm:xdm:kdm:xscreensaver:gnome-screensaver:kscreensaver quiet use_uid"
 # Define 'pam_pkcs11.so' row to be appended past $SYSTEM_AUTH_PAM_SUCCEED
 # row into SYSTEM_AUTH_CONF file
 SYSTEM_AUTH_PAM_PKCS11="\
-auth        \[success=done authinfo_unavail=ignore ignore=ignore default=die\] \
+auth        [success=done authinfo_unavail=ignore ignore=ignore default=die] \
 pam_pkcs11.so nodebug"
 
 # Define smartcard-auth config location
@@ -50,9 +50,10 @@ password    required      pam_pkcs11.so"
 if ! grep -q 'pam_pkcs11.so' "$SYSTEM_AUTH_CONF"
 then
 	# Append (expected) pam_succeed_if.so row past the pam_env.so into SYSTEM_AUTH_CONF file
-	sed -i --follow-symlinks -e '/^'"$PAM_ENV_SO"'/a '"$SYSTEM_AUTH_PAM_SUCCEED" "$SYSTEM_AUTH_CONF"
-	# Append (expected) pam_pkcs11.so row past the pam_succeed_if.so into SYSTEM_AUTH_CONF file
-	sed -i --follow-symlinks -e '/^'"$SYSTEM_AUTH_PAM_SUCCEED"'/a '"$SYSTEM_AUTH_PAM_PKCS11" "$SYSTEM_AUTH_CONF"
+	# and append (expected) pam_pkcs11.so row right after the pam_succeed_if.so we just added
+	# in SYSTEM_AUTH_CONF file
+	# This will preserve any other already existing row equal to "$SYSTEM_AUTH_PAM_SUCCEED"
+	echo "$(awk '/^'"$PAM_ENV_SO"'/{print $0 RS "'"$SYSTEM_AUTH_PAM_SUCCEED"'" RS "'"$SYSTEM_AUTH_PAM_PKCS11"'";next}1' "$SYSTEM_AUTH_CONF")" > "$SYSTEM_AUTH_CONF"
 fi
 
 # Then also correct the SMARTCARD_AUTH_CONF

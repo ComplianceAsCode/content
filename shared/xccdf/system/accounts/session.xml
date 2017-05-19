@@ -70,7 +70,8 @@ Check if the system is configured to create home directories for local interacti
 </ocil>
 <ident prodtype="rhel7" cce="80434-4" />
 <oval id="accounts_have_homedir_login_defs" />
-<ref prodtype="rhel7" ossrg="SRG-OS-000480-GPOS-00227" stigid="020610" />
+<ref prodtype="rhel7" stigid="020610" />
+<ref ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="accounts_tmout" severity="medium" prodtype="rhel7">
@@ -95,8 +96,8 @@ The output should return the following:
 <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
 </ocil>
 <ident prodtype="rhel7" cce="27557-8" />
-<ref prodtype="rhel7" nist="AC-12,SC-10" disa="1133,0361" srg="SRG-OS-000163-GPOS-00072" stigid="040160"
-cui="3.1.11" />
+<ref prodtype="rhel7" stigid="040160" />
+<ref nist="AC-12,SC-10" disa="1133,0361" srg="SRG-OS-000163-GPOS-00072" cui="3.1.11" />
 <oval id="accounts_tmout" value="var_accounts_tmout" />
 </Rule>
 
@@ -122,7 +123,8 @@ You should receive output similar to the following:
 </ocil>
 <ident prodtype="rhel7" cce="27081-9" />
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
-<ref prodtype="rhel7" nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" stigid="040000" />
+<ref prodtype="rhel7" stigid="040000" />
+<ref nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" />
 </Rule>
 
 <Rule id="accounts_logon_fail_delay" prodtype="rhel7">
@@ -146,7 +148,8 @@ enter credentials helps to slow a single-threaded brute force attack.
 </rationale>
 <ident prodtype="rhel7" cce="80352-8" />
 <oval id="accounts_logon_fail_delay" value="var_accounts_fail_delay" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" stigid="010430" />
+<ref prodtype="rhel7" stigid="010430" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" />
 </Rule>
 
 <Group id="root_paths">
@@ -190,7 +193,7 @@ execute code from an untrusted location.
 </rationale>
 <ident prodtype="rhel7" cce="80199-3" />
 <oval id="root_path_no_dot" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366"/>
+<ref nist="CM-6(b)" disa="366"/>
 </Rule>
 
 <Rule id="accounts_root_path_dirs_no_write" prodtype="rhel7">
@@ -213,7 +216,7 @@ and potentially malicious code.
 </rationale>
 <ident prodtype="rhel7" cce="80200-9" />
 <oval id="accounts_root_path_dirs_no_write" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366"/>
+<ref nist="CM-6(b)" disa="366"/>
 </Rule>
 </Group>
 
@@ -248,7 +251,7 @@ groups or ACLs.
 </rationale>
 <ident prodtype="rhel7" cce="80201-7" />
 <oval id="file_permissions_home_dirs" />
-<ref prodtype="rhel7" nist="AC-6(7)" disa="225"/>
+<ref nist="AC-6(7)" disa="225"/>
 </Rule>
 
 <Group id="user_umask">
@@ -327,7 +330,7 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident prodtype="rhel7" cce="80202-5" />
 <oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
-<ref prodtype="rhel7" nist="SA-8" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_etc_csh_cshrc" prodtype="rhel7">
@@ -350,7 +353,7 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident prodtype="rhel7" cce="80203-3" />
 <oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/>
-<ref prodtype="rhel7" nist="SA-8" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_etc_profile" prodtype="rhel7">
@@ -373,7 +376,7 @@ All output must show the value of <tt>umask</tt> set as shown in the below:
 umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
-<ref prodtype="rhel7" nist="SA-8" disa="366"/>
+<ref nist="SA-8" disa="366"/>
 </Rule>
 
 <Rule id="accounts_umask_etc_login_defs" prodtype="rhel7">
@@ -396,7 +399,8 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident prodtype="rhel7" cce="80205-8" />
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
-<ref prodtype="rhel7" nist="CM-6(b),SA-8" disa="366" ossrg="SRG-OS-000480-GPOS-00228" stigid="020240" />
+<ref prodtype="rhel7" stigid="020240" />
+<ref nist="CM-6(b),SA-8" disa="366" ossrg="SRG-OS-000480-GPOS-00228" />
 </Rule>
 
 </Group>

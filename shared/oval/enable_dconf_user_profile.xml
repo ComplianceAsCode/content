@@ -8,11 +8,11 @@
       </affected>
       <description>The DConf User profile should have the local DB configured.</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criterion comment="dconf user profile exists" test_ref="test_dconf_user_profile" />
     </criteria>
   </definition>
-
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="dconf user profile exists"
   id="test_dconf_user_profile" version="1">

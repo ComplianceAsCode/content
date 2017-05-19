@@ -108,8 +108,8 @@ prevents connections from unknown hosts and protocols.
 </rationale>
 <ident prodtype="rhel7" cce="27361-5" />
 <oval id="service_firewalld_enabled" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" cis="4.7" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="040520" cui="3.1.3,3.4.7" />
+<ref prodtype="rhel7" stigid="040520" />
+<ref nist="CM-6(b)" disa="366" cis="4.7" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.3,3.4.7" />
 </Rule>
 
 </Group><!--<Group id="firewalld_activation">-->
@@ -154,8 +154,8 @@ any packets which are not explicitly permitted should not be
 accepted.</rationale>
 <ident prodtype="rhel7" cce="27349-0" />
 <oval id="set_firewalld_default_zone" />
-<ref prodtype="rhel7" nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" 
-stigid="040810" cjis="5.10.1" cui="3.1.3,3.4.7,3.13.6" />
+<ref prodtype="rhel7" stigid="040810" />
+<ref nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.1" cui="3.1.3,3.4.7,3.13.6" />
 </Rule>
 
 <!--
@@ -180,7 +180,7 @@ The output should be similar to the following:
 <pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
 :FORWARD DROP [0:0</pre></ocil>
 <ident prodtype="rhel7" cce="80172-0" />
-<ref prodtype="rhel7" nist="CM-7" disa="1109" />
+<ref nist="CM-7" disa="1109" />
 </Rule>
 
 <Group id="firewalld_icmp_disabled">

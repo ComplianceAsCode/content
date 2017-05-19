@@ -47,7 +47,7 @@ the vulnerability to exploitation.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80175-3" />
 <oval id="sysctl_kernel_ipv6_disable" />
-<ref prodtype="rhel7" nist="CM-7" disa="1551" cis="4.4.2" cui="3.1.20" />
+<ref nist="CM-7" disa="1551" cis="4.4.2" cui="3.1.20" />
 </Rule>
 
 <Rule id="network_ipv6_disable_interfaces" prodtype="rhel7">
@@ -71,7 +71,7 @@ tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 </description>
 <ident prodtype="rhel7" cce="80177-9" />
 <oval id="network_ipv6_disable_rpc" />
-<ref prodtype="rhel7" nist="CM-7" cui="3.1.20" />
+<ref nist="CM-7" cui="3.1.20" />
 </Rule>
 </Group><!--<Group id="disabling_ipv6">-->
 
@@ -189,8 +189,8 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80179-5" />
 <oval id="sysctl_net_ipv6_conf_all_accept_source_route" value="sysctl_net_ipv6_conf_all_accept_source_route_value" />
-<ref prodtype="rhel7" nist="AC-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040830"
-cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040830" />
+<ref nist="AC-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_ra" prodtype="rhel7">
@@ -207,7 +207,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80180-3" />
 <oval id="sysctl_net_ipv6_conf_all_accept_ra" value="sysctl_net_ipv6_conf_all_accept_ra_value" />
-<ref prodtype="rhel7" nist="CM-7" cis="4.4.1.1" cui="3.1.20" />
+<ref nist="CM-7" cis="4.4.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_ra" prodtype="rhel7">
@@ -224,7 +224,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80181-1" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
-<ref prodtype="rhel7" nist="CM-7" cis="4.4.1.1" cui="3.1.20" />
+<ref nist="CM-7" cis="4.4.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_redirects" severity="medium" prodtype="rhel7">
@@ -241,7 +241,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80182-9" />
 <oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
-<ref prodtype="rhel7" nist="CM-7" disa="1551" cis="4.4.1.2" cui="3.1.20" />
+<ref nist="CM-7" disa="1551" cis="4.4.1.2" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium" prodtype="rhel7">
@@ -258,7 +258,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80183-7" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref prodtype="rhel7" nist="CM-7" disa="1551" cis="4.4.1.2" cui="3.1.20" />
+<ref nist="CM-7" disa="1551" cis="4.4.1.2" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_source_route" severity="medium" prodtype="rhel7">
@@ -280,7 +280,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80335-1" />
 <oval id="sysctl_net_ipv6_conf_default_accept_source_route" value="sysctl_net_ipv6_conf_default_accept_source_route_value" />
-<ref prodtype="rhel7" nist="AC-4" disa="366" cui="3.1.20" />
+<ref nist="AC-4" disa="366" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_forwarding" severity="medium" prodtype="rhel7">
@@ -298,7 +298,7 @@ only appropriate for systems acting as routers.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80356-9" />
 <oval id="sysctl_net_ipv6_conf_all_forwarding" value="sysctl_net_ipv6_conf_all_forwarding_value" />
-<ref prodtype="rhel7" nist="CM-7,SC-5" disa="366" cis="4.1.1" />
+<ref nist="CM-7,SC-5" disa="366" cis="4.1.1" />
 </Rule>
 
 </Group><!--<Group id="disabling_ipv6_autoconfig">-->
@@ -315,7 +315,7 @@ reserved for documentation purposes, as defined by RFC3849.
 </description>
 <ident prodtype="rhel7" cce="80184-5" />
 <oval id="network_ipv6_static_address" />
-<ref prodtype="rhel7" disa="366" />
+<ref disa="366" />
 </Rule>
 
 <Rule id="network_ipv6_privacy_extensions" prodtype="rhel7">
@@ -332,7 +332,7 @@ applied.
 </description>
 <ident prodtype="rhel7" cce="80185-2" />
 <oval id="network_ipv6_privacy_extensions" />
-<ref prodtype="rhel7" disa="366" cui="3.1.20" />
+<ref disa="366" cui="3.1.20" />
 </Rule>
 
 <Rule id="network_ipv6_default_gateway" prodtype="rhel7">
@@ -346,7 +346,7 @@ auto-configuration or router advertisement.
 </description>
 <ident prodtype="rhel7" cce="80186-0" />
 <oval id="network_ipv6_default_gateway" />
-<ref prodtype="rhel7" disa="366" />
+<ref disa="366" />
 </Rule>
 
 <Group id="network_ipv6_limit_requests">

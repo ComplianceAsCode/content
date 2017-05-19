@@ -25,7 +25,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_use_approved_macs" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+hmac-sha2-512,hmac-sha2-256,hmac-sha1[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)MACs(?-i)[\s]+((hmac-sha1|hmac-sha2-256|hmac-sha2-512|hmac-sha1-etm@openssh\.com|hmac-sha2-256-etm@openssh\.com|hmac-sha2-512-etm@openssh\.com),?)+[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

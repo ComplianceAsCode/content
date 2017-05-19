@@ -1097,7 +1097,7 @@ Expects four arguments:
   config_file:		Configuration file that will be modified
   key:			Configuration option to change
   value:		Value of the configuration option to change
-  cce:			The CCE identifier or '$CCENUM' if no CCE identifier exists
+  cce:			The CCE identifier or '@CCENUM@' if no CCE identifier exists
 
 Optional arguments:
 
@@ -1107,13 +1107,13 @@ Optional arguments:
 Example Call(s):
 
   With default format of 'key = value':
-  replace_or_append '/etc/sysctl.conf' '^kernel.randomize_va_space' '2' '$CCENUM'
+  replace_or_append '/etc/sysctl.conf' '^kernel.randomize_va_space' '2' '@CCENUM@'
 
   With custom key/value format:
-  replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' 'disabled' '$CCENUM' '%s=%s'
+  replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' 'disabled' '@CCENUM@' '%s=%s'
 
   With a variable:
-  replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' $var_selinux_state '$CCENUM' '%s=%s'
+  replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' $var_selinux_state '@CCENUM@' '%s=%s'
 </description>
 <value selector="">
 function replace_or_append {
@@ -1142,9 +1142,9 @@ function replace_or_append {
     sed_command="sed -i"
   fi
 
-  # Test that the cce arg is not empty or does not equal $CCENUM.
-  # If $CCENUM exists, it means that there is no CCE assigned.
-  if ! [ "x$cce" = x ] &amp;&amp; [ "$cce" != '$CCENUM' ]; then
+  # Test that the cce arg is not empty or does not equal @CCENUM@.
+  # If @CCENUM@ exists, it means that there is no CCE assigned.
+  if ! [ "x$cce" = x ] &amp;&amp; [ "$cce" != '@CCENUM@' ]; then
     cce="CCE-${cce}"
   else
     cce="CCE"

@@ -28,8 +28,8 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" 
-stigid="040650" cjis="5.10.1.1" cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040650" />
+<ref nist="AC-4,CM-7,SC-5,SC-7" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_send_redirects" severity="medium" prodtype="rhel7">
@@ -49,8 +49,8 @@ The ability to send ICMP redirects is only appropriate for systems acting as rou
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80156-3" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5(1)" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" 
-stigid="040660" cjis="5.10.1.1" cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040660" />
+<ref nist="AC-4,CM-7,SC-5(1)" disa="366" cis="4.1.2" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_ip_forward" severity="medium" prodtype="rhel7">
@@ -70,8 +70,8 @@ the network.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80157-1" />
 <oval id="sysctl_net_ipv4_ip_forward" />
-<ref prodtype="rhel7" nist="CM-7,SC-5,SC-32" disa="366" cis="4.1.1" ossrg="SRG-OS-000480-GPOS-00227" stigid="040740"
-cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040740" />
+<ref nist="CM-7,SC-5,SC-32" disa="366" cis="4.1.1" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.20" />
 </Rule>
 </Group>
 
@@ -231,7 +231,8 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27434-0" />
 <oval id="sysctl_net_ipv4_conf_all_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040610" cis="4.2.1" cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040610" />
+<ref nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="4.2.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_accept_redirects" severity="medium" prodtype="rhel7">
@@ -252,8 +253,8 @@ absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80158-9" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
-<ref prodtype="rhel7" nist="CM-6(d),CM-7,SC-5" disa="366,1503,1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040641"
-cjis="5.10.1.1" cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040641" />
+<ref nist="CM-6(d),CM-7,SC-5" disa="366,1503,1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_secure_redirects" severity="medium" prodtype="rhel7">
@@ -270,7 +271,7 @@ absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80159-7" />
 <oval id="sysctl_net_ipv4_conf_all_secure_redirects" value="sysctl_net_ipv4_conf_all_secure_redirects_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5" disa="1503,1551" cis="4.2.3" cui="3.1.20" />
+<ref nist="AC-4,CM-7,SC-5" disa="1503,1551" cis="4.2.3" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_all_log_martians" prodtype="rhel7">
@@ -288,7 +289,7 @@ to be detected.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80160-5" />
 <oval id="sysctl_net_ipv4_conf_all_log_martians" value="sysctl_net_ipv4_conf_all_log_martians_value" />
-<ref prodtype="rhel7" nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="4.2.4" cui="3.1.20" />
+<ref nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="4.2.4" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_log_martians" prodtype="rhel7">
@@ -306,7 +307,7 @@ to be detected.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80161-3" />
 <oval id="sysctl_net_ipv4_conf_default_log_martians" value="sysctl_net_ipv4_conf_default_log_martians_value" />
-<ref prodtype="rhel7" nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="4.2.4" cui="3.1.20" />
+<ref nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="4.2.4" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_accept_source_route" severity="medium" prodtype="rhel7">
@@ -328,8 +329,8 @@ a router.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80162-1" />
 <oval id="sysctl_net_ipv4_conf_default_accept_source_route" value="sysctl_net_ipv4_conf_default_accept_source_route_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="366,1551" ossrg="SRG-OS-000480-GPOS-00227" 
-stigid="040620" cis="4.2.1" cjis="5.10.1.1" cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040620" />
+<ref nist="AC-4,CM-7,SC-5,SC-7" disa="366,1551" ossrg="SRG-OS-000480-GPOS-00227" cis="4.2.1" cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_accept_redirects" severity="medium" prodtype="rhel7">
@@ -350,8 +351,8 @@ absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80163-9" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" value="sysctl_net_ipv4_conf_default_accept_redirects_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" 
-stigid="040640" cjis="5.10.1.1" cui="3.1.20" />
+<ref prodtype="rhel7" stigid="040640" />
+<ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.2" ossrg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_secure_redirects" severity="medium" prodtype="rhel7">
@@ -368,7 +369,7 @@ absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80164-7" />
 <oval id="sysctl_net_ipv4_conf_default_secure_redirects" value="sysctl_net_ipv4_conf_default_secure_redirects_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.3" cui="3.1.20" />
+<ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="4.2.3" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" severity="medium" prodtype="rhel7">
@@ -388,7 +389,8 @@ addresses makes the system slightly more difficult to enumerate on the network.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80165-4" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
-<ref prodtype="rhel7" nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040630" cis="4.2.5"
+<ref prodtype="rhel7" stigid="040630" />
+<ref nist="AC-4,CM-7,SC-5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="4.2.5"
 cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
@@ -405,7 +407,7 @@ log size, although some activity would not be logged.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80166-2" />
 <oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" value="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" />
-<ref prodtype="rhel7" nist="CM-7,SC-5" cis="4.2.6" cui="3.1.20" />
+<ref nist="CM-7,SC-5" cis="4.2.6" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_tcp_syncookies" severity="medium" prodtype="rhel7">
@@ -426,7 +428,7 @@ enables the system to continue servicing valid connection requests.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27495-1" />
 <oval id="sysctl_net_ipv4_tcp_syncookies" value="sysctl_net_ipv4_tcp_syncookies_value" />
-<ref prodtype="rhel7" nist="AC-4,SC-5(1)(2),SC-5(2),SC-5(3)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" 
+<ref nist="AC-4,SC-5(1)(2),SC-5(2),SC-5(3)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" 
 cis="4.2.8" cjis="5.10.1.1" cui="3.1.20" />
 </Rule>
 
@@ -446,7 +448,7 @@ networks.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80167-0" />
 <oval id="sysctl_net_ipv4_conf_all_rp_filter" value="sysctl_net_ipv4_conf_all_rp_filter_value" />
-<ref prodtype="rhel7" nist="AC-4,SC-5,SC-7" disa="1551" cis="4.2.7" cui="3.1.20" />
+<ref nist="AC-4,SC-5,SC-7" disa="1551" cis="4.2.7" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv4_conf_default_rp_filter" severity="medium" prodtype="rhel7">
@@ -465,7 +467,7 @@ networks.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80168-8" />
 <oval id="sysctl_net_ipv4_conf_default_rp_filter" value="sysctl_net_ipv4_conf_default_rp_filter_value" />
-<ref prodtype="rhel7" nist="AC-4,SC-5,SC-7" cis="4.2.7" cui="3.1.20" />
+<ref nist="AC-4,SC-5,SC-7" cis="4.2.7" cui="3.1.20" />
 </Rule>
 
 </Group>

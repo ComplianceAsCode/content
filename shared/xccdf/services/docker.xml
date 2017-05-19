@@ -21,10 +21,8 @@ the docker daemon and running containers, the docker service
 has to be enabled.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident prodtype="rhel7" cce="" />
-<ref prodtype="rhel7" nist="" disa=""
-ossrg=""
-stigid="" />
+<ident prodtype="rhel7" cce="80440-1" />
+<ref nist="" disa="" ossrg="" />
 <oval id="service_docker_enabled" />
 </Rule>
 
@@ -44,6 +42,7 @@ driver is direct-lvm. Choosing the right storage driver and backing filesystem
 is crucial to stability and performance.
 </rationale>
 <platform idref="cpe:/a:machine"/>
+<ident prodtype="rhel7" cce="80441-9" />
 <oval id="docker_storage_configured" />
 </Rule>
 

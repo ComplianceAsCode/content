@@ -56,7 +56,7 @@ including its name and address and should not be used unless needed.
 </rationale>
 <ident prodtype="rhel7" cce="80357-7" />
 <oval id="network_disable_ddns_interfaces" />
-<ref prodtype="rhel7" nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="network_disable_zeroconf" prodtype="rhel7">
@@ -75,7 +75,7 @@ but fails to receive an address assignment from the DHCP server.
 </rationale>
 <ident prodtype="rhel7" cce="80173-8" />
 <oval id="network_disable_zeroconf" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="network_configure_name_resolution" prodtype="rhel7">
@@ -104,8 +104,8 @@ time synchronization, centralized authentication, and remote system logging.
 </rationale>
 <ident prodtype="rhel7" cce="80438-5" />
 <oval id="network_configure_name_resolution" />
-<ref prodtype="rhel7" nist="SC-22" disa="366" ossrg="SRG-OS-000480-GPOS-00227"
-stigid="040600" />
+<ref prodtype="rhel7" stigid="040600" />
+<ref nist="SC-22" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="network_sniffer_disabled" severity="medium" prodtype="rhel7">
@@ -131,7 +131,8 @@ to only authorized personnel.
 </rationale>
 <ident prodtype="rhel7" cce="80174-6" />
 <oval id="network_sniffer_disabled" />
-<ref prodtype="rhel7" nist="CM-7,CM-7(2).1(i),,MA-3" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040670" />
+<ref prodtype="rhel7" stigid="040670" />
+<ref nist="CM-7,CM-7(2).1(i),,MA-3" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
