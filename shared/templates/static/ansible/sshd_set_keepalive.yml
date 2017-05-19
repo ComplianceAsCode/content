@@ -8,7 +8,7 @@
     create=yes
     dest="/etc/ssh/sshd_config"
     regexp="^ClientAliveIntervalMax\s"
-    line="ClientAliveInterval (ansible-populate sshd_set_keepalive)"
+    line="ClientAliveIntervalMax (ansible-populate sshd_set_keepalive)"
   tags:
     @ANSIBLE_TAGS@
 
