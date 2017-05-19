@@ -20,8 +20,16 @@ from template_common import FilesGenerator, UnknownTargetError
 class ServiceEnabledGenerator(FilesGenerator):
 
     def generate(self, target, serviceinfo):
-        # get the items out of the list
-        servicename, packagename = serviceinfo
+        try:
+            # get the items out of the list
+            servicename, packagename, daemonname = serviceinfo
+        except ValueError as e:
+            print "\tEntry: %s\n" % serviceinfo
+            print "\tError unpacking servicename, packagename, and daemonname: ", str(e)
+            sys.exit(1)
+
+        if not daemonname:
+            daemonname = servicename
 
         if target == "oval":
             if packagename:
@@ -29,14 +37,18 @@ class ServiceEnabledGenerator(FilesGenerator):
                     "./template_service_enabled",
                     {
                         "SERVICENAME": servicename,
-                        "PACKAGENAME": packagename
+                        "PACKAGENAME": packagename,
+                        "DAEMONNAME": daemonname
                     },
                     "./oval/service_{0}_enabled.xml", servicename
                 )
             else:
                 self.file_from_template(
                     "./template_service_enabled",
-                    { "SERVICENAME": servicename },
+                    {
+                        "SERVICENAME": servicename,
+                        "DAEMONNAME": daemonname
+                    },
                     regex_replace = [
                         ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
                         ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
@@ -49,7 +61,10 @@ class ServiceEnabledGenerator(FilesGenerator):
 
             self.file_from_template(
                 "./template_BASH_service_enabled",
-                { "SERVICENAME": servicename },
+                {
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
+                },
                 "./bash/service_{0}_enabled.sh", servicename
             )
 
@@ -58,7 +73,8 @@ class ServiceEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_service_enabled",
                 {
-                    "SERVICENAME": servicename
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./ansible/service_{0}_enabled.yml", servicename
             )
@@ -68,7 +84,8 @@ class ServiceEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_PUPPET_service_enabled",
                 {
-                    "SERVICENAME": servicename
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./puppet/service_{0}_enabled.yml", servicename
             )
