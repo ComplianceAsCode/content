@@ -3,11 +3,11 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Enable SSH Warning Banner"
+- name: "Use Only Approved MACs"
   lineinfile:
     create=yes
     dest="/etc/ssh/sshd_config"
-    regexp="^Banner"
-    line="Banner /etc/issue"
+    regexp="^MACs"
+    line="MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1
   tags:
     @ANSIBLE_TAGS@

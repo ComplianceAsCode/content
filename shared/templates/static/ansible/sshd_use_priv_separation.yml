@@ -3,11 +3,11 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Enable SSH Warning Banner"
+- name: "Enable use of Privilege Separation"
   lineinfile:
     create=yes
     dest="/etc/ssh/sshd_config"
-    regexp="^Banner"
-    line="Banner /etc/issue"
+    regexp="^UsePrivilegeSeparation"
+    line="UsePrivilegeSeparation yes"
   tags:
     @ANSIBLE_TAGS@

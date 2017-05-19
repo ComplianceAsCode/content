@@ -3,11 +3,11 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Enable SSH Warning Banner"
+- name: "Disable SSH Support for .rhosts Files"
   lineinfile:
     create=yes
     dest="/etc/ssh/sshd_config"
-    regexp="^Banner"
-    line="Banner /etc/issue"
+    regexp="^IgnoreRhosts"
+    line="IgnoreRhosts yes"
   tags:
     @ANSIBLE_TAGS@

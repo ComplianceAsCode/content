@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Do not permit user environment"
+- name: "Do Not Allow SSH Environment Options"
   lineinfile:
     create=yes
     dest="/etc/ssh/sshd_config"
@@ -11,4 +11,3 @@
     line="PermitUserEnvironment no"
   tags:
     @ANSIBLE_TAGS@
-
