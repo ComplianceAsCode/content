@@ -13,7 +13,6 @@
 #
 
 import sys
-import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
@@ -24,8 +23,8 @@ class ServiceEnabledGenerator(FilesGenerator):
             # get the items out of the list
             servicename, packagename, daemonname = serviceinfo
         except ValueError as e:
-            print "\tEntry: %s\n" % serviceinfo
-            print "\tError unpacking servicename, packagename, and daemonname: ", str(e)
+            print("\tEntry: %s\n" % serviceinfo)
+            print("\tError unpacking servicename, packagename, and daemonname: ", str(e))
             sys.exit(1)
 
         if not daemonname:
@@ -49,12 +48,12 @@ class ServiceEnabledGenerator(FilesGenerator):
                         "SERVICENAME": servicename,
                         "DAEMONNAME": daemonname
                     },
-                    regex_replace = [
+                    regex_replace=[
                         ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
                         ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
                     ],
-                    filename_format = "./oval/service_{0}_enabled.xml",
-                    filename_value = servicename
+                    filename_format="./oval/service_{0}_enabled.xml",
+                    filename_value=servicename
                 )
 
         elif target == "bash":
@@ -97,7 +96,7 @@ class ServiceEnabledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-                   "servicename,packagename")
+               "servicename,packagename")
 
 if __name__ == "__main__":
     ServiceEnabledGenerator().main()
