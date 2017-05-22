@@ -3,7 +3,12 @@ names to IDs in the formats required by the SCAP checking systems, such as
 OVAL and OCIL."""
 
 import sys
-import lxml.etree as ET
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
+
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 oval_cs = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -98,8 +103,8 @@ class idtranslator(object):
                 if store_defname and element.tag == "{" + oval_ns + "}definition":
                     metadata = element.find("{" + oval_ns + "}metadata")
                     if metadata is None:
-                        metadata = ET.SubElement(element, "metadata")
-                    defnam = ET.SubElement(metadata, "reference",
+                        metadata = ElementTree.SubElement(element, "metadata")
+                    defnam = ElementTree.SubElement(metadata, "reference",
                                            ref_id=idname, source=self.content_id)
                 # set the element to the new identifier
                 element.set("id", self.generate_id(element.tag, idname))

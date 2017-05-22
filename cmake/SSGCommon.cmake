@@ -454,6 +454,7 @@ macro(ssg_build_xccdf_final PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-oval.xml  # because of verify-references
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        DEPENDS "${SSG_SHARED_UTILS}/verify-references.py"
         COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_target(

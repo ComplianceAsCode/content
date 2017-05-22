@@ -2,8 +2,12 @@
 
 import sys
 import optparse
-import lxml.etree as ET
 import os.path
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 """
 This script can verify consistency of references (linkage) between XCCDF and
@@ -112,8 +116,13 @@ def get_profileruleids(xccdftree, profile_name):
     ruleids = []
 
     while profile_name:
-        profile = xccdftree.find(".//{%s}Profile[@id='%s']"
-                                 % (xccdf_ns, profile_name))
+        profile = None
+        for el in xccdftree.findall(".//{%s}Profile" % xccdf_ns):
+            if el.get("id") != profile_name:
+                continue
+            profile = el
+            break
+
         if profile is None:
             sys.exit("Specified XCCDF Profile %s was not found.")
         for select in profile.findall(".//{%s}select" % xccdf_ns):
@@ -129,7 +138,7 @@ def main():
     xccdffilename = args[0]
 
     # extract all of the rules within the xccdf
-    xccdftree = ET.parse(xccdffilename)
+    xccdftree = ElementTree.parse(xccdffilename)
     rules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
 
     # if a profile was specified, get rid of any Rules that aren't in it
@@ -152,11 +161,16 @@ def main():
 
     # find important elements within the XCCDF and the OVAL
     ovalfile = os.path.join(os.path.dirname(xccdffilename), ovalfiles.pop())
-    ovaltree = ET.parse(ovalfile)
+    ovaltree = ElementTree.parse(ovalfile)
     # collect all compliance checks (not inventory checks, which are
     # needed by CPE)
-    ovaldefs = ovaltree.findall(".//{%s}definition[@class='compliance']"
-                                % oval_ns)
+    ovaldefs = []
+    for el in ovaltree.findall(".//{%s}definition" % oval_ns):
+        if el.get("class") != "compliance":
+            continue
+
+        ovaldefs.append(el)
+
     ovaldef_ids = [ovaldef.get("id") for ovaldef in ovaldefs]
 
     oval_extenddefs = ovaltree.findall(".//{%s}extend_definition" % oval_ns)
@@ -166,13 +180,14 @@ def main():
     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
                                            % xccdf_ns)
 
+    xccdf_parent_map = dict((c, p) for p in xccdftree.getiterator() for c in p)
     # now we can actually do the verification work here
     if options.rules_with_invalid_checks or options.all_checks:
         for check_content_ref in check_content_refs:
 
             # Skip those <check-content-ref> elements using OCIL as the checksystem
             # (since we are checking just referenced OVAL definitions)
-            if check_content_ref.getparent().get("system") == ocil_cs:
+            if xccdf_parent_map[check_content_ref].get("system") == ocil_cs:
                 continue
 
             # Obtain the value of the 'href' attribute of particular
@@ -189,7 +204,9 @@ def main():
 
             refname = check_content_ref.get("name")
             if refname not in ovaldef_ids:
-                rule = check_content_ref.getparent().getparent()
+                rule = xccdf_parent_map[
+                    xccdf_parent_map[check_content_ref]
+                ]
                 print("ERROR: Invalid OVAL definition referenced by XCCDF Rule: %s"
                       % (rule.get("id")))
                 exit_value = 1

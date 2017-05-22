@@ -3,7 +3,11 @@
 import re
 import sys
 import os
-import lxml.etree as ET
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 try:
     from configparser import SafeConfigParser
@@ -35,7 +39,7 @@ cce_uri = "http://cce.mitre.org"
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
-        tree = ET.fromstring(filestring)
+        tree = ElementTree.fromstring(filestring)
         # print filestring
     return tree
 
@@ -70,7 +74,13 @@ def create_xccdf_id_to_cce_id_mapping(xccdftree):
     for rule in xccdfrules:
         xccdfid = rule.get("id")
         if xccdfid is not None:
-            identcce = rule.find("./{%s}ident[@system='http://cce.mitre.org']" % xccdf_ns)
+            identcce = None
+            for ident in rule.findall("./{%s}ident" % xccdf_ns):
+                if ident.get("system") != cce_uri:
+                    continue
+                identcce = ident
+                break
+
             if identcce is not None:
                 cceid = identcce.text
                 xccdftocce_idmapping[xccdfid] = cceid
@@ -109,7 +119,8 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
             if re.search(r'CCE-\d{4,5}-\d', xccdfcceid) is not None:
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
-                ccerefelem = ET.Element('reference', ref_id="%s" % xccdfcceid, source="CCE")
+                ccerefelem = ElementTree.Element(
+                    'reference', ref_id="%s" % xccdfcceid, source="CCE")
                 ovaldesc.addnext(ccerefelem)
                 # Sanity check if appending succeeded
                 if ccerefelem.getprevious() is not ovaldesc:
@@ -135,13 +146,25 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
             continue
 
         # Search OVAL ID in OVAL document
-        ovalid = ovaltree.find(".//{%s}definition[@id=\"%s\"]" % (oval_ns, xccdfid))
+        ovalid = None
+        for el in ovaltree.findall(".//{%s}definition" % oval_ns):
+            if el.get("id") != xccdfid:
+                continue
+            ovalid = el
+            break
+
         if ovalid is not None:
             # The OVAL check was found, we can continue
             continue
 
         # Search same ID in XCCDF document
-        check = rule.find(".//{%s}check[@system=\"%s\"]" % (xccdf_ns, oval_ns))
+        check = None
+        for el in rule.findall(".//{%s}check" % (xccdf_ns)):
+            if el.get("system") != oval_ns:
+                continue
+            check = el
+            break
+
         if check is None:
             # Skip XCCDF rules not referencing OVAL checks
             continue
@@ -179,12 +202,18 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree):
     # OVAL checks that go beyond one level of extend_definition won't be completely removed
     definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
     for definition in definitions:
-        for extdefinition in definition.iterfind(".//{%s}extend_definition" % oval_ns):
+        for extdefinition in definition.findall(".//{%s}extend_definition" % oval_ns):
             # Verify each extend_definition in the definition
             extdefinitionref = extdefinition.get("definition_ref")
 
             # Search the OVAL tree for a definition with the referred ID
-            referreddefinition = ovaltree.find(".//{%s}definition[@id=\"%s\"]" % (oval_ns, extdefinitionref))
+            referreddefinition = None
+            for el in ovaltree.findall(".//{%s}definition" % (oval_ns)):
+                if el.get("id") != extdefinitionref:
+                    continue
+                referreddefinition = el
+                break
+
             if referreddefinition is None:
                 # There is no oval satisfying the extend_definition referal
 
@@ -240,7 +269,13 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
                     ovalvartype = ovalextvar.get('datatype')
 
                 # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
-                xccdfvar = xccdftree.find(".//{%s}Value[@id=\"%s\"]" % (xccdf_ns, ovalvarid))
+                xccdfvar = None
+                for el in xccdftree.findall(".//{%s}Value" % (xccdf_ns)):
+                    if el.get("id") != ovalvarid:
+                        continue
+                    xccdfvar = el
+                    break
+
                 if xccdfvar is not None:
                     # Verify the found value has 'type' attribute set
                     if 'type' not in xccdfvar.attrib:
@@ -289,7 +324,13 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
 
     xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
     for rule in xccdfrules:
-        identcce = rule.find(".//{%s}ident[@system=\"%s\"]" % (xccdf_ns, cce_uri))
+        identcce = None
+        for ident in rule.findall("./{%s}ident" % xccdf_ns):
+            if ident.get("system") != cce_uri:
+                continue
+            identcce = ident
+            break
+
         if identcce is not None:
             cceid = identcce.text
             # Found CCE identifier doesn't have one of the allowed forms listed above
@@ -390,14 +431,14 @@ def main():
 
         ovaltree = translator.translate(ovaltree, store_defname=True)
         newovalfile = ovalfile.replace("unlinked", "linked")
-        ET.ElementTree(ovaltree).write(newovalfile)
+        ElementTree.ElementTree(ovaltree).write(newovalfile)
 
     # Rename all IDs in the ocil file
     if ocilfile:
         ociltree = parse_xml_file(ocilfile)
         ociltree = translator.translate(ociltree)
         newocilfile = ocilfile.replace("unlinked", "linked")
-        ET.ElementTree(ociltree).write(newocilfile)
+        ElementTree.ElementTree(ociltree).write(newocilfile)
 
     # Rename all IDs and file refs in the xccdf file
     for check in checks:
@@ -439,8 +480,7 @@ def main():
                 checkexport.set("export-name", newexportname)
 
     newxccdffile = xccdffile.replace("unlinked", "linked")
-    # ET.dump(xccdftree)
-    ET.ElementTree(xccdftree).write(newxccdffile)
+    ElementTree.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
 
 if __name__ == "__main__":
