@@ -291,7 +291,7 @@ def check_is_loaded(loaded_dict, filename, version):
         sys.stderr.write(
             "You cannot override generic OVAL file in version '%s' "
             "by more specific one in older version '%s'" %
-            (oval_version, already_loaded[filename])
+            (version, loaded_dict[filename])
         )
         sys.exit(1)
 
