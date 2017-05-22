@@ -13,7 +13,6 @@
 #
 
 import sys
-import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
@@ -24,8 +23,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             # get the items out of the list
             servicename, packagename, daemonname = serviceinfo
         except ValueError as e:
-            print "\tEntry: %s\n" % serviceinfo
-            print "\tError unpacking servicename, packagename, and daemonname: ", str(e)
+            print("\tEntry: %s\n" % serviceinfo)
+            print("\tError unpacking servicename, packagename, and daemonname: ", str(e))
             sys.exit(1)
 
         if not daemonname:
@@ -35,7 +34,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_service_disabled",
                 {
-                    "SERVICENAME": servicename
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": servicename
                 },
                 "./bash/service_{0}_disabled.sh", servicename
             )
@@ -44,7 +44,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_service_disabled",
                 {
-                    "SERVICENAME": servicename
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./ansible/service_{0}_disabled.yml", servicename
             )
@@ -53,7 +54,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_PUPPET_service_disabled",
                 {
-                    "SERVICENAME": servicename
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./puppet/service_{0}_disabled.yml", servicename
             )
@@ -76,12 +78,12 @@ class ServiceDisabledGenerator(FilesGenerator):
                         "SERVICENAME": servicename,
                         "DAEMONNAME":  daemonname
                     },
-                    regex_replace = [
+                    regex_replace=[
                         ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
                         ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
                     ],
-                    filename_format = "./oval/service_{0}_disabled.xml",
-                    filename_value = servicename
+                    filename_format="./oval/service_{0}_disabled.xml",
+                    filename_value=servicename
                 )
 
         else:
@@ -89,7 +91,7 @@ class ServiceDisabledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-                   "servicename,packagename")
+               "servicename,packagename")
 
 if __name__ == "__main__":
     ServiceDisabledGenerator().main()

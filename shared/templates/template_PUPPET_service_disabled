@@ -6,7 +6,7 @@
 include disable_SERVICENAME
 
 class disable_SERVICENAME {
-  service {'SERVICENAME':
+  service {'DAEMONNAME':
     enable => false,
     ensure => 'stopped',
   }
