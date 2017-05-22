@@ -208,18 +208,43 @@ immediate root access to the system.
 <title>Limit Users' SSH Access</title>
 <description>By default, the SSH configuration allows any user with an account
 to access the system. In order to specify the users that are allowed to login
-via SSH and deny all other users, add or correct the following line in the
-<tt>/etc/ssh/sshd_config</tt> file:
+via SSH specify at least one of the following options in the <tt>/etc/ssh/sshd_config</tt> file:
+
+<pre>AllowUsers USER1 USER2</pre>
+The <tt>AllowUsers</tt> variable gives the system administrator the option of allowing specific
+users to ssh into the system. The list consists of space separated user names. Numeric
+userIDs are not recognized with this variable. If a system administrator wants to restrict
+user access further by only allowing the allowed users to log in from a particular host, the
+entry can be specified in the form of user@host.
+
+<pre>AllowGroups GROUP1 GROUP2</pre>
+The <tt>AllowGroups</tt> variable gives the system administrator the option of allowing specific
+groups of users to ssh into the system. The list consists of space separated user names.
+Numeric groupIDs are not recognized with this option.
+
 <pre>DenyUsers USER1 USER2</pre>
-Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
+The <tt>DenyUsers</tt> variable gives the system administrator the option of denying specific
+users to ssh into the system. The list consists of space separated user names. Numeric
+userIDs are not recognized with this variable. If a system administrator wants to restrict
+user access further by specifically denying a user's access from a particular host, the entry
+can be specified in the form of user@host.
+
+<pre>DenyGroups GROUP1 GROUP2</pre>
+The <tt>DenyGroups</tt> variable gives the system administrator the option of denying specific
+groups of users to ssh into the system. The list consists of space separated group names.
+Numeric groupIDs are not recognized with this variable.
+
+Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names and <tt>GROUP1</tt> and <tt>GROUP2</tt> are valid group names.
+
+The allow/deny directives are processed in the following order: <tt>DenyUsers</tt>, <tt>AllowUsers</tt>, <tt>DenyGroups</tt>, and finally <tt>AllowGroups</tt>.
 </description>
 <rationale>
 Specifying which accounts are allowed SSH access into the system reduces the
 possibility of unauthorized access to the system.
 </rationale>
 <ident prodtype="rhel7" cce="80219-9" />
-<!-- <oval id="sshd_limit_user_access" /> -->
-<ref nist="AC-3" cui="3.1.12" />
+<oval id="sshd_limit_user_access" />
+<ref prodtype="rhel7" nist="AC-3" cui="3.1.12" />
 </Rule>
 
 <Rule id="sshd_disable_gssapi_auth" severity="medium">
