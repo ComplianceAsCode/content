@@ -269,6 +269,7 @@ def check_oval_version(oval_version):
             "expected.\n" % (oval_version, supported_versions_str))
         sys.exit(1)
 
+
 def parse_oval_dir_parameter(version_oval_dir):
     try:
         oval_version, filename = version_oval_dir.split(":", 1)
@@ -281,6 +282,7 @@ def parse_oval_dir_parameter(version_oval_dir):
             "e.g <oval_5.10:mydirectory>\n" % (version_oval_dir)
         )
         sys.exit(1)
+
 
 def check_is_loaded(loaded_dict, filename, version):
     if filename in loaded_dict:
@@ -297,6 +299,7 @@ def check_is_loaded(loaded_dict, filename, version):
 
     return False
 
+
 def checks(product, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
@@ -305,8 +308,8 @@ def checks(product, oval_dirs):
 
     body = ""
     included_checks_count = 0
-    reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
-    already_loaded = dict() # filename -> oval_version
+    reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
+    already_loaded = dict()  # filename -> oval_version
 
     for version_oval_dir in reversed_dirs:
         try:
@@ -314,7 +317,6 @@ def checks(product, oval_dirs):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
-
                     with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                         xml_content = xml_file.read()
                         if not check_is_applicable_for_product(xml_content, product):
@@ -329,8 +331,8 @@ def checks(product, oval_dirs):
                 raise
             else:
                 sys.stderr.write("Not merging OVAL content from the "
-                          "'%s' directory as the directory does not "
-                          "exist\n" % (oval_dir))
+                                 "'%s' directory as the directory does not "
+                                 "exist\n" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return body
