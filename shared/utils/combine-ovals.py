@@ -366,7 +366,7 @@ def main():
         header = _header(oval_schema_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
-                         "file!\n" % (conf_file))
+                         "file!\n" % (oval_config))
         sys.exit(1)
 
     body = checks(product, oval_dirs)
