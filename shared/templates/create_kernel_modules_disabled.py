@@ -4,11 +4,10 @@
 # create_kernel_modules_disabled.py
 #   automatically generate checks for disabled kernel modules
 
-import sys
 from template_common import FilesGenerator, UnknownTargetError
 
-class KernelModulesDisabledGenerator(FilesGenerator):
 
+class KernelModulesDisabledGenerator(FilesGenerator):
     def generate(self, target, kerninfo):
         # get the items out of the list
         kernmod = kerninfo[0]
@@ -24,7 +23,7 @@ class KernelModulesDisabledGenerator(FilesGenerator):
 
         elif target == "oval":
             self.file_from_template(
-                "./template_kernel_module_disabled",
+                "./template_OVAL_kernel_module_disabled",
                 {
                     "KERNMODULE": kernmod
                 },
@@ -42,7 +41,6 @@ class KernelModulesDisabledGenerator(FilesGenerator):
 
         else:
             raise UnknownTargetError(target)
-
 
     def csv_format(self):
         return (

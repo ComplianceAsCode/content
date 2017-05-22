@@ -16,7 +16,7 @@ class PackageRemovedGenerator(FilesGenerator):
             if target == "oval":
 
                 self.file_from_template(
-                    "./template_package_removed",
+                    "./template_OVAL_package_removed",
                     { "PKGNAME" : pkgname},
                     "./oval/package_{0}_removed.xml", pkgname
                 )

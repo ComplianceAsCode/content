@@ -5,7 +5,6 @@
 #        generate template-based checks for partition mount rights
 
 
-import sys
 import re
 
 from template_common import FilesGenerator, UnknownTargetError
@@ -48,7 +47,7 @@ class MountOptionsGenerator(FilesGenerator):
       </linux:partition_state>\n"
 
                 self.file_from_template(
-                    "./template_mount_options",
+                    "./template_OVAL_mount_options",
                     {
                         "MOUNTPOINT":       mount_point,
                         "MOUNTOPTIONS":        option_str,
