@@ -457,9 +457,9 @@ def main():
             if e.errno != errno.ENOENT:
                 raise
             else:
-                print("Not merging remediation scripts from the "
-                      "'%s' directory as the directory does not "
-                      "exist" % (fixdir))
+                sys.stderr.write("Not merging remediation scripts from the "
+                                 "'%s' directory as the directory does not "
+                                 "exist.\n" % (fixdir))
 
     sys.stderr.write("Merged %d %s remediations.\n"
                      % (included_fixes_count, remediation_type))
