@@ -461,8 +461,8 @@ def main():
                       "'%s' directory as the directory does not "
                       "exist" % (fixdir))
 
-    sys.stderr.write("Merged %d remediation scripts.\n"
-                     % (included_fixes_count))
+    sys.stderr.write("Merged %d %s remediations.\n"
+                     % (included_fixes_count, remediation_type))
     tree = ElementTree.ElementTree(fixcontent)
     tree.write(output)
 
