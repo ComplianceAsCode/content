@@ -386,16 +386,19 @@ def main():
     for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
         if childnode.tag is ElementTree.Comment:
             continue
-        if childnode.tag.endswith("definition"):
+        elif childnode.tag.endswith("definition"):
             append(definitions, childnode)
-        if childnode.tag.endswith("_test"):
+        elif childnode.tag.endswith("_test"):
             append(tests, childnode)
-        if childnode.tag.endswith("_object"):
+        elif childnode.tag.endswith("_object"):
             append(objects, childnode)
-        if childnode.tag.endswith("_state"):
+        elif childnode.tag.endswith("_state"):
             append(states, childnode)
-        if childnode.tag.endswith("_variable"):
+        elif childnode.tag.endswith("_variable"):
             append(variables, childnode)
+        else:
+            sys.stderr.write("Warning: Unknown element '%s'\n"
+                             % (childnode.tag))
 
     tree = ElementTree.fromstring((header + footer).encode("utf-8"))
     tree.append(definitions)
