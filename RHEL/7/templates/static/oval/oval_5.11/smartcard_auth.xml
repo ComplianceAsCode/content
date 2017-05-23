@@ -9,7 +9,7 @@
     </metadata>
     <criteria comment="smart card authentication is configured" operator="AND">
       <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
-      <extend_definition comment="pcscd service is enabled" definition_ref="pcscd_activation_socket_enabled" />
+      <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd.socket_enabled" />
       <criteria operator="OR">
         <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
         <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
