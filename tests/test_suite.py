@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
-
 from __future__ import print_function
+
+import argparse
 import libvirt
 import shlex
 import string
@@ -72,28 +73,71 @@ def snapshotRevert(domain, snapshot):
     domain.revertToSnapshot(snapshot)
     snapshot.delete()
 
-def runOSCAP(domain_ip, profile, stage, datastream):
-    command = shlex.split('oscap-ssh root@{0} 22 xccdf eval --profile {1} --progress --oval-results --report {1}_{2}.html {3}'.format(domain_ip, profile, stage, datastream))
+def runOSCAP(domain_ip, profile, stage, datastream, remediation=False):
+    if remediation:
+        rem = "--remediate"
+    else:
+        rem = ""
+    command = shlex.split('oscap-ssh root@{0} 22 xccdf eval --profile {1} --progress --oval-results --report {1}_{2}.html {3} {4}'.format(domain_ip, profile, stage, rem, datastream))
     subprocess.call(command)
 
 
+########## argument parsing
+parser = argparse.ArgumentParser()
 
+common_parser = argparse.ArgumentParser(add_help=False)
+common_parser.add_argument("--hypervisor", dest = "hypervisor",
+    metavar = "qemu:///HYPERVISOR",
+    default = "qemu:///session",
+    help = "libvirt hypervisor",
+)
+common_parser.add_argument("--domain", dest = "domain",
+    metavar = "DOMAIN",
+    default = None,
+    help = "libvirt domain used as test bed",
+)
+common_parser.add_argument("--datastream", dest = "datastream",
+    metavar = "DATASTREAM",
+    default = "/usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml",
+    help = "Source DataStream to be tested"
+)
+subparsers = parser.add_subparsers(help='Subcommands: profile, rule')
 
-conn = libvirt.open('qemu:///session')
+parser_profile = subparsers.add_parser('profile', help='Testing profile-based remediation applied on already installed machine', parents=[common_parser])
+parser_rule = subparsers.add_parser('rule', help='Testing remediations of particular rule for various situations - currently not supported by openscap!', parents=[common_parser])
+
+parser_profile.add_argument("--profile", dest = "profile",
+    metavar = "DSPROFILE",
+    default = "xccdf_org.ssgproject.content_profile_common",
+    help = "Profile to be tested"
+)
+
+parser_rule.add_argument("--rule", dest = "rule",
+    metavar = "RULE",
+    default = None,
+    help = "Rule to be tested"
+)
+
+options = parser.parse_args()
+############## / argument parsing
+
+conn = libvirt.open(options.hypervisor)
 if conn == None:
     print('Failed to open connection to the hypervisor')
     sys.exit(1)
 
 try:
-    dom0 = conn.lookupByName("REM_RHEL7")
+    dom = conn.lookupByName(options.domain)
 except:
     print('Failed to find the main domain')
     sys.exit(1)
 
-dom0_ip = determineIP(dom0)
-profile = 'xccdf_org.ssgproject.content_profile_common'
-datastream = '/usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml'
-#snap = snapshotCreate(dom0, 'origin')
-runOSCAP(dom0_ip, profile, 'initial', datastream)
 
-#snapshotRevert(dom0, snap)
+domain_ip = determineIP(dom)
+
+snap = snapshotCreate(dom, 'origin')
+runOSCAP(domain_ip, options.profile, 'initial', options.datastream)
+runOSCAP(domain_ip, options.profile, 'remediation', options.datastream, remediation=True)
+runOSCAP(domain_ip, options.profile, 'final', options.datastream)
+
+snapshotRevert(dom, snap)
