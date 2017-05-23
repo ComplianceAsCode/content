@@ -8,6 +8,7 @@
 #    Marek Haicman <mhaicman@redhat.com>
 #
 
+set -x
 
 DOMAIN=${DOMAIN:-"REM_RHEL7"}
 TESTED_DATASTREAM="/usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml"
@@ -32,7 +33,7 @@ else
 fi
 
 date=$(date +%Y_%m_%d_%H_%M)
-result_dir="results_$date"
+result_dir="results_$1_$date"
 debug_log="$result_dir/run.debug.log"
 
 mkdir $result_dir
