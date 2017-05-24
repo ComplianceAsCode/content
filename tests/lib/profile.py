@@ -1,22 +1,36 @@
 #!/usr/bin/env python2
 from __future__ import print_function
 
+import atexit
 import sys
 
 import lib.oscap
 import lib.virt
 
 
-def performProfileCheck(options):
-    dom = lib.virt.connectDomain(options.hypervisor, options.domain_name)
+def perform_profile_check(options):
+    dom = lib.virt.connect_domain(options.hypervisor, options.domain_name)
     if dom is None:
         sys.exit(1)
+    atexit.register(lib.virt.snapshots.clear)
 
-    domain_ip = lib.virt.determineIP(dom)
+    lib.virt.snapshots.create('origin')
+    lib.virt.start_domain(dom)
 
-    snap = lib.virt.snapshotCreate(dom, 'origin')
-    lib.oscap.runProfile(domain_ip, options.profile, 'initial', options.datastream)
-    lib.oscap.runProfile(domain_ip, options.profile, 'remediation', options.datastream, remediation=True)
-    lib.oscap.runProfile(domain_ip, options.profile, 'final', options.datastream)
+    domain_ip = lib.virt.determine_ip(dom)
 
-    lib.virt.snapshotRevert(dom, snap)
+
+    lib.oscap.run_profile(domain_ip,
+                         options.profile,
+                         'initial',
+                         options.datastream)
+    lib.oscap.run_profile(domain_ip,
+                         options.profile,
+                         'remediation',
+                         options.datastream,
+                         remediation=True)
+    lib.oscap.run_profile(domain_ip,
+                         options.profile,
+                         'final',
+                         options.datastream)
+
