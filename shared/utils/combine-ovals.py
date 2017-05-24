@@ -269,6 +269,7 @@ def check_oval_version(oval_version):
             "expected.\n" % (oval_version, supported_versions_str))
         sys.exit(1)
 
+
 def parse_oval_dir_parameter(version_oval_dir):
     try:
         oval_version, filename = version_oval_dir.split(":", 1)
@@ -282,6 +283,7 @@ def parse_oval_dir_parameter(version_oval_dir):
         )
         sys.exit(1)
 
+
 def check_is_loaded(loaded_dict, filename, version):
     if filename in loaded_dict:
         if loaded_dict[filename] >= version:
@@ -291,11 +293,12 @@ def check_is_loaded(loaded_dict, filename, version):
         sys.stderr.write(
             "You cannot override generic OVAL file in version '%s' "
             "by more specific one in older version '%s'" %
-            (oval_version, already_loaded[filename])
+            (version, loaded_dict[filename])
         )
         sys.exit(1)
 
     return False
+
 
 def checks(product, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
@@ -305,8 +308,8 @@ def checks(product, oval_dirs):
 
     body = ""
     included_checks_count = 0
-    reversed_dirs = oval_dirs[::-1] # earlier directory has higher priority
-    already_loaded = dict() # filename -> oval_version
+    reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
+    already_loaded = dict()  # filename -> oval_version
 
     for version_oval_dir in reversed_dirs:
         try:
@@ -314,7 +317,6 @@ def checks(product, oval_dirs):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
-
                     with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                         xml_content = xml_file.read()
                         if not check_is_applicable_for_product(xml_content, product):
@@ -329,8 +331,8 @@ def checks(product, oval_dirs):
                 raise
             else:
                 sys.stderr.write("Not merging OVAL content from the "
-                          "'%s' directory as the directory does not "
-                          "exist\n" % (oval_dir))
+                                 "'%s' directory as the directory does not "
+                                 "exist\n" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return body
@@ -366,7 +368,7 @@ def main():
         header = _header(oval_schema_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
-                         "file!\n" % (conf_file))
+                         "file!\n" % (oval_config))
         sys.exit(1)
 
     body = checks(product, oval_dirs)
@@ -384,16 +386,19 @@ def main():
     for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
         if childnode.tag is ElementTree.Comment:
             continue
-        if childnode.tag.endswith("definition"):
+        elif childnode.tag.endswith("definition"):
             append(definitions, childnode)
-        if childnode.tag.endswith("_test"):
+        elif childnode.tag.endswith("_test"):
             append(tests, childnode)
-        if childnode.tag.endswith("_object"):
+        elif childnode.tag.endswith("_object"):
             append(objects, childnode)
-        if childnode.tag.endswith("_state"):
+        elif childnode.tag.endswith("_state"):
             append(states, childnode)
-        if childnode.tag.endswith("_variable"):
+        elif childnode.tag.endswith("_variable"):
             append(variables, childnode)
+        else:
+            sys.stderr.write("Warning: Unknown element '%s'\n"
+                             % (childnode.tag))
 
     tree = ElementTree.fromstring((header + footer).encode("utf-8"))
     tree.append(definitions)

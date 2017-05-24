@@ -20,10 +20,12 @@ from map_product_module import map_product, parse_product_name, multi_product_li
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
 
+
 def fix_is_applicable_for_product(platform, product):
-    """Based on the platform dict specifier of the remediation script to determine if this
-    remediation script is applicable for this product. Return 'True' if so, 'False'
-    otherwise"""
+    """Based on the platform dict specifier of the remediation script to
+    determine if this remediation script is applicable for this product.
+    Return 'True' if so, 'False' otherwise"""
+
     product, product_version = parse_product_name(product)
 
     # Define general platforms
@@ -49,8 +51,8 @@ def fix_is_applicable_for_product(platform, product):
         if product_name == pf.strip():
             result = True
 
-    # Remediation script isn't neither a multi platform one, nor isn't applicable
-    # for this product => return False to indicate that
+    # Remediation script isn't neither a multi platform one, nor isn't
+    # applicable for this product => return False to indicate that
     return product_name, result
 
 
@@ -98,12 +100,12 @@ def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
                                 system="urn:xccdf:fix:script:ansible",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    if remediation_type == 'bash':
+    elif remediation_type == 'bash':
         return ElementTree.SubElement(fixcontent, "fix-group", id="bash",
                                 system="urn:xccdf:fix:script:sh",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    if remediation_type == 'puppet':
+    elif remediation_type == 'puppet':
         return ElementTree.SubElement(fixcontent, "fix-group", id="puppet",
                                 system="urn:xccdf:fix:script:puppet",
                                 xmlns="http://checklists.nist.gov/xccdf/1.1")
@@ -114,17 +116,16 @@ def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
 
 
 def is_supported_filename(remediation_type, filename):
-
     if remediation_type == 'anaconda':
         return filename.endswith('.anaconda')
 
-    if remediation_type == 'ansible':
+    elif remediation_type == 'ansible':
         return filename.endswith('.yml')
 
-    if remediation_type == 'bash':
+    elif remediation_type == 'bash':
         return filename.endswith('.sh')
 
-    if remediation_type == 'puppet':
+    elif remediation_type == 'puppet':
         return filename.endswith('.pp')
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
@@ -148,6 +149,7 @@ def get_populate_replacement(remediation_type, text):
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
     sys.exit(1)
+
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """For those remediation scripts utilizing some of the internal SCAP
@@ -182,14 +184,13 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """
 
     if remediation_type == "ansible":
-
         pattern = r'\(ansible-populate\s*(\S+)\)'
 
         # we will get list what looks like
         # [text, varname, text, varname, ..., text]
         parts = re.split(pattern, fix.text)
 
-        fix.text = parts[0] # add first "text"
+        fix.text = parts[0]  # add first "text"
         for index in range(1, len(parts), 2):
             varname = parts[index]
             text_between_vars = parts[index + 1]
@@ -200,15 +201,14 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             xccdfvarsub.tail = text_between_vars
         return
 
-    if remediation_type == "puppet":
-
+    elif remediation_type == "puppet":
         pattern = r'\(puppet-populate\s*(\S+)\)'
 
         # we will get list what looks like
         # [text, varname, text, varname, ..., text]
         parts = re.split(pattern, fix.text)
 
-        fix.text = parts[0] # add first "text"
+        fix.text = parts[0]  # add first "text"
         for index in range(1, len(parts), 2):
             varname = parts[index]
             text_between_vars = parts[index + 1]
@@ -375,7 +375,6 @@ def main():
 
     remediation_functions = get_available_remediation_functions()
 
-    platform = {}
     config = {}
     included_fixes_count = 0
     for fixdir in sys.argv[3:-1]:
@@ -394,8 +393,9 @@ def main():
                         if line.startswith('#'):
                             try:
                                 (key, value) = line.strip('#').split('=')
-                                if key.strip() in ['complexity', 'disruption', \
-                                                 'platform', 'reboot', 'strategy']:
+                                if key.strip() in ['complexity', 'disruption',
+                                                   'platform', 'reboot',
+                                                   'strategy']:
                                     config[key.strip()] = value.strip()
                                 else:
                                     if not line.startswith(FILE_GENERATED):
@@ -424,7 +424,8 @@ def main():
                         strategy = config['strategy']
 
                     if script_platform:
-                        product_name, result = fix_is_applicable_for_product(script_platform, product)
+                        product_name, result = fix_is_applicable_for_product(
+                            script_platform, product)
                         if result:
                             if fixname in fixes:
                                 fix = fixes[fixname]
@@ -446,23 +447,23 @@ def main():
 
                             fix.text = mod_file
 
-                            # Expand shell variables and remediation functions into
-                            # corresponding XCCDF <sub> elements
+                            # Expand shell variables and remediation functions
+                            # into corresponding XCCDF <sub> elements
                             expand_xccdf_subs(fix, remediation_type, remediation_functions)
                     else:
                         sys.stderr.write("Skipping '%s' remediation script. "
-                                         "The platform identifier in the script is "
-                                         "missing!\n" % (filename))
+                                         "The platform identifier in the "
+                                         "script is missing!\n" % (filename))
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
             else:
-                print("Not merging remediation scripts from the "
-                      "'%s' directory as the directory does not "
-                      "exist" % (fixdir))
+                sys.stderr.write("Not merging remediation scripts from the "
+                                 "'%s' directory as the directory does not "
+                                 "exist.\n" % (fixdir))
 
-    sys.stderr.write("Merged %d remediation scripts.\n"
-                     % (included_fixes_count))
+    sys.stderr.write("Merged %d %s remediations.\n"
+                     % (included_fixes_count, remediation_type))
     tree = ElementTree.ElementTree(fixcontent)
     tree.write(output)
 
