@@ -259,8 +259,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
-    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/*.xml")
-    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/oval/*.xml")
+    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/*.xml")
+    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/templates/static/oval/*.xml")
 
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
 
@@ -286,26 +286,22 @@ macro(ssg_build_oval_unlinked PRODUCT)
     )
     string(REPLACE "\n" ";" SHARED_OVAL_CHECKS_OUTPUTS "${SHARED_OVAL_CHECKS_OUTPUTS_STR}")
 
-    # TODO: the input/oval parts will *probably* be removed once OVALs are built the same as remediations
-
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/input/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     else()
-        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/input/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     endif()
 
     if(SSG_OVAL_511_ENABLED)
-        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/oval_5.11/*.xml")
-        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/oval/oval_5.11/*.xml")
-
-        # TODO: the input/oval parts will *probably* be removed once OVALs are built the same as remediations
+        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11/*.xml")
+        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/templates/static/oval/oval_5.11/*.xml")
 
         if("${PRODUCT}" MATCHES "rhel-osp7")
-        # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/input/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+            # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
+            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
         else()
-            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${SSG_SHARED}/oval/oval_5.11" "oval_5.11:${SSG_SHARED}/templates/static/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/input/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${SSG_SHARED}/templates/static/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
         endif()
 
         add_custom_command(
