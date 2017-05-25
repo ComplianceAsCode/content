@@ -11,14 +11,14 @@ from lib.log import log
 # filled in by connectDomain function
 snapshots = None
 
-class SnapshotStack(object):
-    SNAPSHOT_BASE=("<domainsnapshot>"
-                   "  <name>{name}</name>"
-                   "  <description>"
-                   "     Full snapshot by SSG Test Suite"
-                   "  </description>"
-                   "</domainsnapshot>")
 
+class SnapshotStack(object):
+    SNAPSHOT_BASE = ("<domainsnapshot>"
+                     "  <name>{name}</name>"
+                     "  <description>"
+                     "     Full snapshot by SSG Test Suite"
+                     "  </description>"
+                     "</domainsnapshot>")
 
     def __init__(self, domain):
         self.stack = []
@@ -63,12 +63,12 @@ class SnapshotStack(object):
 
 
 def determine_ip(domain):
-    GUEST_AGENT_XML=("<channel type='unix'>"
-                     "  <source mode='bind'/>"
-                     "  <target type='virtio'"
-                               "name='org.qemu.guest_agent.0'"
-                               "state='connected'/>"
-                     "</channel>")
+    GUEST_AGENT_XML = ("<channel type='unix'>"
+                       "  <source mode='bind'/>"
+                       "  <target type='virtio'"
+                                 "name='org.qemu.guest_agent.0'"
+                                 "state='connected'/>"
+                       "</channel>")
 
     domain_xml = ET.fromstring(domain.XMLDesc())
     for mac_node in domain_xml.iter('mac'):
@@ -111,7 +111,7 @@ def connect_domain(hypervisor, domain_name):
     global snapshots
 
     conn = libvirt.open(hypervisor)
-    if conn == None:
+    if conn is None:
         log.error('Failed to open connection to the hypervisor')
         return None
 
@@ -122,6 +122,7 @@ def connect_domain(hypervisor, domain_name):
         return None
     snapshots = SnapshotStack(dom)
     return dom
+
 
 def start_domain(domain):
     if not domain.isActive():

@@ -12,9 +12,9 @@ from lib.log import log
 
 
 def run_profile(domain_ip, profile, stage, datastream, remediation=False):
-    formatting = {'domain_ip':domain_ip,
-                  'profile':profile,
-                  'datastream':datastream
+    formatting = {'domain_ip': domain_ip,
+                  'profile': profile,
+                  'datastream': datastream
                   }
 
     formatting['rem'] = "--remediate" if remediation else ""

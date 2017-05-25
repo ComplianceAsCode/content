@@ -1,11 +1,13 @@
 import logging
-import os, os.path
+import os
+import os.path
 
 log = logging.getLogger('SSGTestSuite')
 __formatter = logging.Formatter('%(levelname)s - %(message)s')
 __console_handler = logging.StreamHandler()
 __console_handler.setFormatter(__formatter)
 log.addHandler(__console_handler)
+
 
 def add_logging_dir(_dirname):
     global log

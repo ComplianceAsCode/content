@@ -15,6 +15,6 @@ def perform_rule_check(options):
     domain_ip = lib.virt.determine_ip(dom)
 
     snap = lib.virt.snapshot_create(dom, 'origin')
-    ## please update :(
+    # please update :(
 
     lib.virt.snapshot_revert(dom, snap)
