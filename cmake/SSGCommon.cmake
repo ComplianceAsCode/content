@@ -384,50 +384,48 @@ macro(ssg_build_oval_unlinked PRODUCT)
     )
 endmacro()
 
-macro(ssg_build_cpe_dictionary PRODUCT)
-    set(SSG_CPE_DICTIONARY "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/platform/${PRODUCT}-cpe-dictionary.xml")
-
+macro(ssg_build_cpe_dictionary)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${SSG_SHARED_UTILS}/cpe-generate.py" ${PRODUCT} ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${SSG_CPE_DICTIONARY}"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        DEPENDS generate-internal-${PRODUCT}-oval-unlinked.xml
+        OUTPUT "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
+        COMMAND "${SSG_SHARED_UTILS}/cpe-generate.py" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${SSG_SHARED}/cpe/cpe-dictionary.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
+        DEPENDS generate-internal-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-        DEPENDS "${SSG_CPE_DICTIONARY}"
+        DEPENDS "${SSG_SHARED}/cpe/cpe-dictionary.xml"
         DEPENDS "${SSG_SHARED_UTILS}/cpe-generate.py"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
-        COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-cpe-dictionary.xml, ssg-${PRODUCT}-cpe-oval.xml"
+        COMMENT "[cpe-dictionary] generating ssg-cpe-dictionary.xml, ssg-cpe-oval.xml"
     )
     add_custom_target(
-        generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        generate-ssg-cpe-dictionary.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
     )
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-cpe-dictionary.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-dictionary.xml"
+        COMMAND "${OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
+        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-dictionary.xml"
+        DEPENDS generate-ssg-cpe-dictionary.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
+        COMMENT "[cpe-dictionary-validate] validating ssg-cpe-dictionary.xml"
     )
     add_custom_target(
-        validate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
+        validate-ssg-cpe-dictionary.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-dictionary.xml"
     )
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate --schematron "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-cpe-oval.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-oval.xml"
+        COMMAND "${OSCAP_EXECUTABLE}" oval validate --schematron "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
+        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-oval.xml"
+        DEPENDS generate-ssg-cpe-dictionary.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
+        COMMENT "[cpe-dictionary-validate] validating ssg-cpe-oval.xml"
     )
     add_custom_target(
-        validate-ssg-${PRODUCT}-cpe-oval.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
+        validate-ssg-cpe-oval.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-oval.xml"
     )
 endmacro()
 
@@ -605,7 +603,7 @@ macro(ssg_build_sds PRODUCT)
             # use --skip-valid here to avoid repeatedly validating everything
             COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -616,8 +614,8 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
             DEPENDS generate-ssg-${PRODUCT}-ocil.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+            DEPENDS generate-ssg-cpe-dictionary.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
             DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
@@ -631,7 +629,7 @@ macro(ssg_build_sds PRODUCT)
             # use --skip-valid here to avoid repeatedly validating everything
             COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -641,8 +639,8 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
             DEPENDS generate-ssg-${PRODUCT}-ocil.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-            DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+            DEPENDS generate-ssg-cpe-dictionary.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
             DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml"
@@ -708,7 +706,6 @@ macro(ssg_build_product PRODUCT)
     ssg_build_remediations(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
-    ssg_build_cpe_dictionary(${PRODUCT})
     ssg_build_link_xccdf_oval_ocil(${PRODUCT})
     ssg_build_xccdf_final(${PRODUCT})
     ssg_build_oval_final(${PRODUCT})
@@ -727,7 +724,7 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-xccdf-1.2.xml
         generate-ssg-${PRODUCT}-oval.xml
         generate-ssg-${PRODUCT}-ocil.xml
-        generate-ssg-${PRODUCT}-cpe-dictionary.xml
+        generate-ssg-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
     )
 
@@ -737,8 +734,6 @@ macro(ssg_build_product PRODUCT)
         #validate-ssg-${PRODUCT}-xccdf-1.2.xml
         validate-ssg-${PRODUCT}-oval.xml
         #validate-ssg-${PRODUCT}-ocil.xml
-        validate-ssg-${PRODUCT}-cpe-dictionary.xml
-        validate-ssg-${PRODUCT}-cpe-oval.xml
         validate-ssg-${PRODUCT}-ds.xml
     )
     add_dependencies(validate ${PRODUCT}-validate)
@@ -775,8 +770,6 @@ macro(ssg_build_product PRODUCT)
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")

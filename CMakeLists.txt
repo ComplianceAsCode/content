@@ -144,6 +144,10 @@ message(" ")
 
 include(SSGCommon)
 
+# Build shared CPE first
+message(STATUS "Building CPE Dictionary...")
+ssg_build_cpe_dictionary()
+
 # Targets 'validate' and 'zipfile' need to be added before any product because
 # they will receive dependencies from products added
 
