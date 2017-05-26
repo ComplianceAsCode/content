@@ -1,3 +1,5 @@
+# Add <sysctl_parameter_name, desired_value> to generate hard-coded OVAL and remediation content.
+# Add <sysctl_parameter_name,> to generate OVAL and remediation content that use the XCCDF value.
 fs.suid_dumpable,0
 kernel.dmesg_restrict,1#only-for:bash,ansible
 #kernel.exec-shield,1
@@ -23,6 +25,6 @@ net.ipv6.conf.default.accept_redirects,
 net.ipv6.conf.all.accept_ra,
 net.ipv6.conf.all.accept_redirects,
 #net.ipv6.conf.all.disable_ipv6,1
-net.ipv6.conf.default.accept_source_route,#only-for:oval
+net.ipv6.conf.default.accept_source_route,
 net.ipv6.conf.all.accept_source_route,
-net.ipv6.conf.all.forwarding,#only-for:oval
+net.ipv6.conf.all.forwarding,
