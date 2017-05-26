@@ -247,7 +247,6 @@ set(CPACK_PACKAGE_CONTACT "open-scap-list@redhat.com")
 set(CPACK_PACKAGE_RELOCATABLE FALSE)
 
 # This adds "${?dist} to Release field in spec file
-set(CPACK_RPM_PACKAGE_RELEASE_DIST TRUE)
 set(CPACK_RPM_PACKAGE_RELEASE "1%{?dist}")
 set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/share/xml;/usr/share/man;/usr/share/man/man8")
 set(CPACK_RPM_PACKAGE_GROUP "Applications/System")
