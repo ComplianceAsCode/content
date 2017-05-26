@@ -248,6 +248,7 @@ set(CPACK_PACKAGE_RELOCATABLE FALSE)
 
 # This adds "${?dist} to Release field in spec file
 set(CPACK_RPM_PACKAGE_RELEASE_DIST TRUE)
+set(CPACK_RPM_PACKAGE_RELEASE "1%{?dist}")
 set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION "/usr/share/xml;/usr/share/man;/usr/share/man/man8")
 set(CPACK_RPM_PACKAGE_GROUP "Applications/System")
 set(CPACK_RPM_PACKAGE_LICENSE "Public Domain")
@@ -271,6 +272,8 @@ hardening guidances that have been generated from XCCDF benchmarks.
 # This puts the component name right after package name
 # and also adds the dist after the version
 set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
+# For older versions of cmake (e.g. v2.8) file name is defined like below
+set(CPACK_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}")
 
 set(CPACK_GENERATOR "RPM;DEB")
 include(CPack)
