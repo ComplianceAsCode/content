@@ -268,8 +268,8 @@ hardening guidances that have been generated from XCCDF benchmarks.
 ")
 
 # Change the default file name of the RPMs
-# This puts the component name right after package name
-# and also adds the dist after the version
+# %{release} includes release number and dist type
+# This only has effect with cmake v3.6 or higher
 set(CPACK_RPM_FILE_NAME "%{name}-%{version}-%{release}.rpm")
 # For older versions of cmake (e.g. v2.8) file name is defined like below
 set(CPACK_PACKAGE_FILE_NAME "scap-security-guide-${SSG_VERSION}")
