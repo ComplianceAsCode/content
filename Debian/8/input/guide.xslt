@@ -38,7 +38,6 @@
       
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/system.xml'))" />
-      
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/services.xml'))" />
     </xsl:copy>
   </xsl:template>
@@ -50,11 +49,12 @@
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/software.xml'))" /> 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/partitions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/access.xml')" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/accounts.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
     </xsl:copy>
   </xsl:template>
-  
+
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />

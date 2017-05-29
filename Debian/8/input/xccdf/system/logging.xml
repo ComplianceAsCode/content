@@ -14,7 +14,9 @@ connection-oriented (i.e. TCP) transmission of logs, the option to log to
 database formats, and the encryption of log data en route to
 a central logging server. This section discusses how to configure rsyslog for
 best effect, and how to use tools provided with the system to maintain and
-monitor logs.</description>
+monitor logs. Yet, it is also possible to install syslog-ng to manage local and
+server-side logging services. Both are tested here, to let the administrator
+choose.</description>
 
 <Rule id="package_rsyslog_installed" severity="medium">
 <title>Ensure rsyslog is Installed</title>
@@ -30,7 +32,7 @@ The rsyslog package provides the rsyslog daemon, which provides
 system logging services.
 </rationale>
 <oval id="package_rsyslog_installed" />
-<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" anssi="NT28(R46)" />
+<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" anssi="NT28(R46),NT28(R5)" />
 </Rule>
 
 
@@ -46,7 +48,7 @@ system logging services.
 logging services, which are essential to system administration.
 </rationale>
 <oval id="service_rsyslog_enabled" />
-<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" anssi="NT28(R46)" />
+<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" anssi="NT28(R46),NT28(R5)" />
 </Rule>
 
 
@@ -123,7 +125,7 @@ To see the owner of a given log file, run the following command:
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
 <oval id="rsyslog_files_ownership" />
-<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2"  anssi="NT28(R46)"/>
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2"  anssi="NT28(R46),NT28(R5)"/>
 </Rule>
 
 <Rule id="rsyslog_files_groupownership" severity="medium">
@@ -150,7 +152,7 @@ To see the group-owner of a given log file, run the following command:
 configuration, user authentication, and other such information. Log files should be
 protected from unauthorized access.</rationale>
 <oval id="rsyslog_files_groupownership" />
-<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" anssi="NT28(R46)" />
+<ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" anssi="NT28(R46),NT28(R5)" />
 </Rule>
 
 
@@ -249,7 +251,7 @@ to a remote loghost also provides system administrators with a centralized
 place to view the status of multiple hosts within the enterprise.
 </rationale>
 <oval id="rsyslog_remote_loghost" />
-<ref nist="AU-3(2),AU-4(1),AU-9" disa="1348,136,1851" cis="5.1.5" />
+<ref nist="AU-3(2),AU-4(1),AU-9" disa="1348,136,1851" cis="5.1.5" anssi="NT28(R5)" />
 </Rule>
 </Group>
 
@@ -297,6 +299,41 @@ the traditional syslog transmission over UDP. If the system must act as a log se
 this enables it to receive their messages as well.
 </rationale>
 <ref nist="AU-9" cis="5.1.6" />
+</Rule>
+
+<!-- case of using syslog-ng -->
+
+<Rule id="package_syslogng_installed" severity="medium">
+<title>Ensure syslog-ng is Installed</title>
+<description>
+syslog-ng can be installed in replacement of rsyslog. 
+<apt-get-macro install="true" package="syslog-ng-core" />
+</description>
+<ocil clause="the package is not installed">
+<package-check-macro package="syslog-ng-core" />
+</ocil>
+<rationale>
+The syslog-ng-core package provides the syslog-ng daemon, which provides
+system logging services.
+</rationale>
+<oval id="package_syslogng_installed" />
+<ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" anssi="NT28(R46),NT28(R5)" />
+</Rule>
+
+
+<Rule id="service_syslogng_enabled" severity="medium">
+<title>Enable syslog-ng Service</title>
+<description>The <tt>syslog-ng</tt> service (in replacement of rsyslog) provides syslog-style logging by default on Debian 8.
+<chkconfig-service-macro enable="true" service="syslog-ng" />
+</description>
+<ocil>
+<service-check-macro enable="true" service="syslog-ng" />
+</ocil>
+<rationale>The <tt>syslog-ng</tt> service must be running in order to provide
+logging services, which are essential to system administration.
+</rationale>
+<oval id="service_syslogng_enabled" />
+<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="5.1.2" anssi="NT28(R46),NT28(R5)" />
 </Rule>
 
 </Group>

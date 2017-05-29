@@ -8,7 +8,8 @@
       <description>All syslog log files should be owned by the appropriate group.</description>
     </metadata>
 
-    <criteria>
+    <criteria operator="AND">
+      <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
       <criterion comment="Check if all system log files are owned by root group" test_ref="test_rsyslog_files_groupownership" />
     </criteria>
 

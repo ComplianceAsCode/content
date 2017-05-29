@@ -50,6 +50,7 @@
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/software.xml'))" /> 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/partitions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/access.xml')" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/accounts.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
     </xsl:copy>

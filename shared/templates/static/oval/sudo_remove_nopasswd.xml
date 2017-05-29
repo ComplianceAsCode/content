@@ -4,8 +4,10 @@
       <title>Ensure NOPASSWD Is Not Used in Sudo</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_debian</platform>
+        <platform>multi_platform_ubuntu</platform>
       </affected>
-      <description>Checks interactive shell timeout</description>
+      <description>Checks sudo usage without password</description>
     </metadata>
     <criteria operator="AND">
       <criterion comment="NOPASSWD is not configured in /etc/sudoers" test_ref="test_nopasswd_etc_sudoers" />
