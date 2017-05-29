@@ -16,19 +16,18 @@ def perform_profile_check(options):
 
     lib.virt.snapshots.create('origin')
     lib.virt.start_domain(dom)
-
     domain_ip = lib.virt.determine_ip(dom)
 
     lib.oscap.run_profile(domain_ip,
-                          options.profile,
+                          options.target,
                           'initial',
                           options.datastream)
     lib.oscap.run_profile(domain_ip,
-                          options.profile,
+                          options.target,
                           'remediation',
                           options.datastream,
                           remediation=True)
     lib.oscap.run_profile(domain_ip,
-                          options.profile,
+                          options.target,
                           'final',
                           options.datastream)

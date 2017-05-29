@@ -20,3 +20,4 @@ def add_logging_dir(_dirname):
     log.info('Logging into {0}'.format(logfile))
     log.addHandler(file_handler)
     log.log_dir = _dirname
+    log.logfile = logfile

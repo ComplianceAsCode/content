@@ -48,6 +48,7 @@ class SnapshotStack(object):
         except IndexError:
             log.error("No snapshot in stack anymore")
         else:
+            log.debug("Reverting snapshot {0}".format(snapshot.getName()))
             self.domain.revertToSnapshot(snapshot)
             snapshot.delete()
 

@@ -60,15 +60,15 @@ parser_rule = subparsers.add_parser('rule',
 parser_rule.set_defaults(func=lib.rule.perform_rule_check)
 
 parser_profile.add_argument("--profile",
-                            dest="profile",
+                            dest="target",
                             metavar="DSPROFILE",
                             default="xccdf_org.ssgproject.content_profile_common",
                             help="Profile to be tested")
 
 parser_rule.add_argument("--rule",
-                         dest="rule",
+                         dest="target",
                          metavar="RULE",
-                         default=None,
+                         default="ALL",
                          help="Rule to be tested")
 
 options = parser.parse_args()
@@ -79,8 +79,9 @@ if options.logdir is None:
     # default!
     date_string = time.strftime('%Y-%m-%d-%H:%M', time.localtime())
     logging_dir = os.path.join(os.getcwd(),
-                               'logdir-{0}-{1}'.format(options.profile,
-                                                       date_string))
+                               'logs',
+                               '{0}-{1}'.format(options.target,
+                                                date_string))
     if os.path.exists(logging_dir):
         log.error("Logging directory already exists, exiting...")
         sys.exit(1)
