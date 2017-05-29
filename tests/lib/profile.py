@@ -21,13 +21,16 @@ def perform_profile_check(options):
     lib.oscap.run_profile(domain_ip,
                           options.target,
                           'initial',
-                          options.datastream)
+                          options.datastream,
+                          options.benchmark_id)
     lib.oscap.run_profile(domain_ip,
                           options.target,
                           'remediation',
                           options.datastream,
+                          options.benchmark_id,
                           remediation=True)
     lib.oscap.run_profile(domain_ip,
                           options.target,
                           'final',
-                          options.datastream)
+                          options.datastream,
+                          options.benchmark_id)

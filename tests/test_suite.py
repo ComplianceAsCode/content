@@ -33,6 +33,11 @@ common_parser.add_argument("--datastream",
                            default=("/usr/share/xml/scap/ssg/content/"
                                     "ssg-rhel7-ds.xml"),
                            help="Source DataStream to be tested")
+common_parser.add_argument("--benchmark-id",
+                           dest="benchmark_id",
+                           metavar="BENCHMARK",
+                           default="xccdf_org.ssgproject.content_benchmark_RHEL-7",
+                           help="Benchmark to be used")
 common_parser.add_argument("--loglevel",
                            dest="loglevel",
                            metavar="LOGLEVEL",

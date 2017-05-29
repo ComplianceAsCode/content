@@ -81,8 +81,12 @@ def perform_rule_check(options):
     lib.virt.snapshots.create('origin')
     lib.virt.start_domain(dom)
     domain_ip = lib.virt.determine_ip(dom)
-
+    scanned_something = False
     for rule_dir, scripts in iterate_over_rules():
+        rule = os.path.basename(rule_dir)
+        if options.target not in [rule, 'ALL']:
+            continue
+        scanned_something = True
         log.debug("Testing rule directory {0}".format(rule_dir))
         for script in scripts:
             if is_library(script):
@@ -96,3 +100,5 @@ def perform_rule_check(options):
             # oscap-ssh command with rule specified to be added
             ###
             lib.virt.snapshots.revert()
+    if not scanned_something:
+        log.warning("Rule {0} was not found".format(options.target))

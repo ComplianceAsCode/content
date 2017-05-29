@@ -11,10 +11,17 @@ import lib.virt
 from lib.log import log
 
 
-def run_profile(domain_ip, profile, stage, datastream, remediation=False):
+def run_profile(domain_ip,
+                profile,
+                stage,
+                datastream,
+                benchmark_id,
+                remediation=False):
+
     formatting = {'domain_ip': domain_ip,
                   'profile': profile,
-                  'datastream': datastream
+                  'datastream': datastream,
+                  'benchmark_id': benchmark_id
                   }
 
     formatting['rem'] = "--remediate" if remediation else ""
@@ -23,6 +30,7 @@ def run_profile(domain_ip, profile, stage, datastream, remediation=False):
     formatting['report'] = report_path
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
+                           '--benchmark-id {benchmark_id} '
                            '--profile {profile} '
                            '--progress --oval-results '
                            '--report {report} '
