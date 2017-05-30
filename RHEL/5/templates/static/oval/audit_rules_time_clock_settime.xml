@@ -81,7 +81,7 @@
     <!-- The version of audit package on RHEL-5 already supports '-F a0=' argument. Therefore
          use more advanced 'clock_settime' audit rule version -->
     <ind:pattern 
-    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+clock_settime[\s]+-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
+    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+-S[\s]+clock_settime[\s]+-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -94,7 +94,7 @@
     <!-- The version of audit package on RHEL-5 already supports '-F a0=' argument. Therefore
          use more advanced 'clock_settime' audit rule version -->
     <ind:pattern 
-    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+clock_settime[\s]+-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
+    operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+-S[\s]+clock_settime[\s]+-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
