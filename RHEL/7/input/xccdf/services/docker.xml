@@ -1,0 +1,21 @@
+<Group id="docker">
+<title>Docker Daemons</title>
+<description>
+  The docker daemon creates containers from container images.
+</description>
+
+<Rule id="service_docker_enabled" severity="medium">
+<title>Enable docker Service</title>
+<description>The <tt>docker</tt> service is used to create docker containers
+  Lorem Ipsum
+<systemd-service-macro enable="true" service="docker" />
+</description>
+<ocil><systemd-check-macro enable="true" service="docker" /></ocil>
+<rationale>Since the daemon is necessary to create containers,
+enabling the docker daemon is essential.
+</rationale>
+<ident cce="00000" />
+<oval id="service_docker_enabled" />
+<ref nist="CM-0" cis="0.0.0" />
+<tested by="" on=""/>
+</Rule>
