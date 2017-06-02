@@ -3,11 +3,21 @@
 <description>This profile contains items to be applied systematically.</description>
 
 <!-- partitioning -->
+<!-- system -->
+<select idref="sudo_remove_nopasswd" selected="true"/>
+<select idref="sudo_remove_no_authenticate" selected="true"/>
+
+
 <!-- services -->
 <select idref="package_telnetd_removed" selected="true"/>
 <select idref="package_inetutils-telnetd_removed" selected="true"/>
 <select idref="package_telnetd-ssl_removed" selected="true"/>
 <select idref="package_nis_removed" selected="true"/>
+
+<select idref="package_rsyslog_installed" selected="true"/>
+<select idref="service_rsyslog_enabled" selected="true"/>
+<select idref="package_syslogng_installed" selected="true"/>
+<select idref="service_syslogng_enabled" selected="true"/>
 <!-- service apt -->
 <select idref="apt_conf_disallow_unauthenticated" selected="true"/>
 <select idref="apt_sources_list_official" selected="true"/>
