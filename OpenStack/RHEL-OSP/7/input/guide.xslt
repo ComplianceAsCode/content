@@ -110,11 +110,11 @@
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/services/horizon.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/cinder.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/keystone.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/neutron.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/nova.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/horizon.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/cinder.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/keystone.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/neutron.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/nova.xml'))" />
     </xsl:copy>
   </xsl:template>
 
