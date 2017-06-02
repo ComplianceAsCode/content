@@ -9,29 +9,39 @@ import re
 import argparse
 from abc import abstractmethod
 
+
 class ExitCodes:
     OK = 0
     ERROR = 1
     NO_TEMPLATE = 128 + 1
     UNKNOWN_TARGET = 128 + 2
 
+
 class ActionType:
     INPUT = 1
     OUTPUT = 2
     BUILD = 3
 
+
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
-        ValueError.__init__(self, "Unknown target language: \"{0}\"".format(msg))
+        ValueError.__init__(self,
+                            "Unknown target language: \"{0}\"".format(msg))
+
 
 class FilesGenerator(object):
-
     def get_template_filename(self, filename):
-
         template_filename = os.path.join(self.product_input_dir, filename)
 
         if os.path.isfile(template_filename):
             return template_filename
+
+        if self.product_input_dir.endswith("oval_5.11_templates"):
+            template_filename = os.path.join(
+                os.path.dirname(self.product_input_dir), filename
+            )
+            if os.path.isfile(template_filename):
+                return template_filename
 
         shared_template = os.path.join(self.shared_dir, "templates", filename)
         if os.path.isfile(shared_template):
@@ -128,7 +138,7 @@ class FilesGenerator(object):
         """
 
         for line in csv_file:
-            
+
             processed_line = self.process_line(line, language)
 
             if not processed_line:
