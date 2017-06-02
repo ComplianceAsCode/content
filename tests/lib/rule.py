@@ -4,6 +4,7 @@ from __future__ import print_function
 import atexit
 import os
 import os.path
+import re
 import shlex
 import subprocess
 import sys
@@ -60,16 +61,11 @@ def apply_script(rule_dir, script, domain_ip):
     return True
 
 
-def is_breaking(script):
-    return '.break.' in script
-
-
-def is_fixing(script):
-    return '.fix.' in script
-
-
-def is_library(script):
-    return not (is_breaking(script) or is_fixing(script))
+def get_script_context(script):
+    result = re.search('.*\.([^.]*)\.[^.]*$', script)
+    if result is None:
+        return None
+    return result.group(1)
 
 
 def perform_rule_check(options):
@@ -84,21 +80,32 @@ def perform_rule_check(options):
     scanned_something = False
     for rule_dir, scripts in iterate_over_rules():
         rule = os.path.basename(rule_dir)
-        if options.target not in [rule, 'ALL']:
+        print(options.target, rule)
+        if options.target == 'ALL':
+            # we want to have them all
+            pass
+        elif options.target not in rule:
+            # we are not ALL, and not passing this criterion ... skipping
             continue
         scanned_something = True
         log.debug("Testing rule directory {0}".format(rule_dir))
         for script in scripts:
-            if is_library(script):
-                log.debug("Skipping library script {0}".format(script))
-                continue
-            log.debug("Using test script {0}".format(script))
+            script_context = get_script_context(script)
+            if script_context is None:
+                log.error("Script {0} has bad format name, skipping test")
+            log.debug(('Using test script {0} '
+                       'with context {1}').format(script, script_context))
+
             lib.virt.snapshots.create('script')
             if not apply_script(rule_dir, script, domain_ip):
                 log.error("Environment failed to prepare, skipping test")
-            ###
-            # oscap-ssh command with rule specified to be added
-            ###
+            lib.oscap.run_rule(domain_ip,
+                               options.profile,
+                               "initial",
+                               options.datastream,
+                               options.benchmark_id,
+                               rule,
+                               script_context)
             lib.virt.snapshots.revert()
     if not scanned_something:
         log.warning("Rule {0} was not found".format(options.target))

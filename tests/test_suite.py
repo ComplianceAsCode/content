@@ -64,16 +64,19 @@ parser_rule = subparsers.add_parser('rule',
                                     parents=[common_parser])
 parser_rule.set_defaults(func=lib.rule.perform_rule_check)
 
-parser_profile.add_argument("--profile",
-                            dest="target",
+parser_profile.add_argument("target",
                             metavar="DSPROFILE",
                             default="xccdf_org.ssgproject.content_profile_common",
                             help="Profile to be tested")
 
-parser_rule.add_argument("--rule",
-                         dest="target",
+parser_rule.add_argument("target",
                          metavar="RULE",
                          default="ALL",
+                         help="Rule to be tested")
+parser_rule.add_argument("--profile",
+                         dest="profile",
+                         metavar="RULE",
+                         default="xccdf_org.ssgproject.content_profile_common",
                          help="Rule to be tested")
 
 options = parser.parse_args()
