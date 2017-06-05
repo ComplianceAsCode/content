@@ -16,7 +16,7 @@ class AccountsPasswordGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_accounts_password",
                 {
-                    "VARIABLE":   VARIABLE
+                    "%VARIABLE%": VARIABLE
                 },
                 "./bash/accounts_password_pam_{0}.sh", VARIABLE
             )
@@ -25,7 +25,7 @@ class AccountsPasswordGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_accounts_password",
                 {
-                    "VARIABLE":   VARIABLE
+                    "%VARIABLE%": VARIABLE
                 },
                 "./ansible/accounts_password_pam_{0}.yml", VARIABLE
             )
