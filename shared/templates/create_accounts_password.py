@@ -4,13 +4,11 @@
 # create_accounts_password.py
 #        generate template-based remediation for account passwords
 
-import sys
-import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
-class AccountsPasswordGenerator(FilesGenerator):
 
+class AccountsPasswordGenerator(FilesGenerator):
     def generate(self, target, pam_info):
         VARIABLE, = pam_info
 
@@ -37,7 +35,7 @@ class AccountsPasswordGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-                   "VARIABLE")
+               "VARIABLE")
 
 if __name__ == "__main__":
     AccountsPasswordGenerator().main()
