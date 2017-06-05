@@ -186,7 +186,11 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
         OUTPUT ${LANGUAGE_REMEDIATIONS_OUTPUTS}
         OUTPUT ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
+        # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
+        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}"
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} build
+        # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
+        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}"
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
         COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} ${LANGUAGE} "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}" "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
         DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
@@ -308,7 +312,11 @@ macro(ssg_build_oval_unlinked PRODUCT)
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             OUTPUT ${OVAL_CHECKS_OUTPUTS}
             OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
+            # We have to remove all old checks in case the user removed something from the CSV files
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
+            # We have to remove all old shared checks in case the user removed something from the CSV files
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
             COMMAND RUNTIME_OVAL_VERSION=5.11 "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} ${OVAL_511_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
@@ -328,7 +336,11 @@ macro(ssg_build_oval_unlinked PRODUCT)
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             OUTPUT ${OVAL_CHECKS_OUTPUTS}
             OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
+            # We have to remove all old checks in case the user removed something from the CSV files
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
+            # We have to remove all old shared checks in case the user removed something from the CSV files
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
             COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
