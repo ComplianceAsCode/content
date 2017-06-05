@@ -319,7 +319,7 @@ def checks(product, oval_dirs):
                 if filename.endswith(".xml"):
                     with open(os.path.join(oval_dir, filename), 'r') as xml_file:
                         xml_content = xml_file.read()
-                        if not check_is_applicable_for_product(xml_content, product):
+                        if product != 'all' and not check_is_applicable_for_product(xml_content, product):
                             continue
                         if check_is_loaded(already_loaded, filename, oval_version):
                             continue
