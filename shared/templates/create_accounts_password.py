@@ -15,13 +15,21 @@ class AccountsPasswordGenerator(FilesGenerator):
         VARIABLE, = pam_info
 
         if target == "bash":
-
             self.file_from_template(
                 "./template_BASH_accounts_password",
                 {
                     "VARIABLE":   VARIABLE
                 },
                 "./bash/accounts_password_pam_{0}.sh", VARIABLE
+            )
+
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_accounts_password",
+                {
+                    "VARIABLE":   VARIABLE
+                },
+                "./ansible/accounts_password_pam_{0}.yml", VARIABLE
             )
 
         else:
