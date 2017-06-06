@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+- name: Ensure sysctl SYSCTLVAR is set
+  sysctl:
+    name: SYSCTLVAR
+    value: (ansible-populate sysctl_SYSCTLID_value)
+    state: present
+    reload: yes
+  tags:
+    @ANSIBLE_TAGS@
+
