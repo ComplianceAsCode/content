@@ -285,7 +285,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                             # Append the contribution
                             fix.text += fixtextcontribution
                             # Define new XCCDF <sub> element for the variable
-                            xccdfvarsub = ElementTree.SubElement(fix, "sub",
+                            xccdfvarsub = ElementTree.Element("sub",
                                                            idref=varname)
                             # If second pair element is not empty, append it as
                             # tail for the subelement (prefixed with closing '"')
@@ -303,7 +303,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                                                  fixparts[idx],
                                                  re.DOTALL).group(1)
                             # Define new XCCDF <sub> element for the function
-                            xccdffuncsub = ElementTree.SubElement(fix, "sub",
+                            xccdffuncsub = ElementTree.Element("sub",
                                                             idref='function_%s' % \
                                                             funcname)
                             # Append original function call into tail of the
