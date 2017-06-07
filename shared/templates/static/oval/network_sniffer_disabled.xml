@@ -12,7 +12,7 @@
     </criteria>
   </definition>
 
-  <unix:interface_test check="all" check_existence="at_least_one_exists" id="test_promisc_interfaces" version="1" comment="random">
+  <unix:interface_test check="all" check_existence="at_least_one_exists" id="test_promisc_interfaces" version="1" comment="check all network interfaces for PROMISC flag">
     <unix:object object_ref="object_promisc_interfaces" />
     <unix:state state_ref="state_promisc" />
   </unix:interface_test>
