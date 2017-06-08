@@ -40,7 +40,7 @@
   <xsl:template match="Group[@id='auditing']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/application/auditing.xml')" />
+<!--      <xsl:apply-templates select="document('xccdf/application/auditing.xml')" /> -->
     </xsl:copy>
   </xsl:template>
 
