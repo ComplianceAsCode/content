@@ -4,6 +4,6 @@
 
 <xsl:include href="constants.xslt"/>
 <xsl:param name="ssg_version">unknown</xsl:param>
-<xsl:variable name="ovalfile">unlinked-eap5-oval.xml</xsl:variable>
+<xsl:variable name="ovalfile">unlinked-eap6-oval.xml</xsl:variable>
 
 </xsl:stylesheet>
