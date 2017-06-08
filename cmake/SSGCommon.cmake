@@ -314,9 +314,9 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval" "oval_5.10:${SSG_SHARED}/oval/inventory")
     else()
-        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval" "oval_5.10:${SSG_SHARED}/oval/inventory")
     endif()
 
     if(SSG_OVAL_511_ENABLED)
@@ -388,11 +388,10 @@ macro(ssg_build_cpe_dictionary)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
-        COMMAND "${SSG_SHARED_UTILS}/cpe-generate.py" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${SSG_SHARED}/cpe/cpe-dictionary.xml"
+        COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "all" "oval_5.10:${SSG_SHARED}/oval/inventory" > "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml"
+        COMMAND "${SSG_SHARED_UTILS}/cpe-generate.py" ssg "${CMAKE_BINARY_DIR}" "${CMAKE_CURRENT_BINARY_DIR}/cpe-oval-unlinked.xml" "${SSG_SHARED}/cpe/cpe-dictionary.xml"
         COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
         COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
-        DEPENDS generate-internal-oval-unlinked.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS "${SSG_SHARED}/cpe/cpe-dictionary.xml"
         DEPENDS "${SSG_SHARED_UTILS}/cpe-generate.py"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
@@ -427,6 +426,9 @@ macro(ssg_build_cpe_dictionary)
         validate-ssg-cpe-oval.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-cpe-oval.xml"
     )
+
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml" DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml" DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 endmacro()
 
 macro(ssg_build_link_xccdf_oval_ocil PRODUCT)
@@ -616,7 +618,7 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
             DEPENDS generate-ssg-cpe-dictionary.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
             DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
             DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
@@ -641,7 +643,7 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
             DEPENDS generate-ssg-cpe-dictionary.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-dictionary.xml"
-            DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+            DEPENDS "${CMAKE_BINARY_DIR}/ssg-cpe-oval.xml"
             DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
             COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml"
         )
@@ -724,7 +726,6 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-xccdf-1.2.xml
         generate-ssg-${PRODUCT}-oval.xml
         generate-ssg-${PRODUCT}-ocil.xml
-        generate-ssg-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
     )
 
@@ -770,8 +771,6 @@ macro(ssg_build_product PRODUCT)
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time

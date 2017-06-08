@@ -79,11 +79,10 @@ def main():
                " to STDOUT.")
         sys.exit(1)
 
-    product = sys.argv[1]
-    idname = sys.argv[2]
-    cpeoutdir = sys.argv[3]
-    ovalfile = sys.argv[4]
-    cpedictfile = sys.argv[5]
+    idname = sys.argv[1]
+    cpeoutdir = sys.argv[2]
+    ovalfile = sys.argv[3]
+    cpedictfile = sys.argv[4]
 
     # parse oval file
     ovaltree = parse_xml_file(ovalfile)
@@ -146,8 +145,7 @@ def main():
     translator = idtranslate.idtranslator(idname)
     ovaltree = translator.translate(ovaltree)
 
-    newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)
-    newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
+    newovalfile = idname + "-cpe-oval.xml"
     ElementTree.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
@@ -194,7 +192,7 @@ def main():
             # Therefore display an error and exit with failure in such cases
             if not refovalfilefound:
                 error_msg = "\n\tError: Can't locate \"%s\" OVAL file in the \
-                \n\tlist of OVAL checks for this product! Exiting..\n" % refovalfilename
+                \n\tlist of OVAL checks! Exiting..\n" % refovalfilename
                 sys.stderr.write(error_msg)
                 # sys.exit(1)
         check.set("href", os.path.basename(newovalfile))
