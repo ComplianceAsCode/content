@@ -1,0 +1,20 @@
+<Group id="auditing">
+	<title>Auditing</title>
+	<description>Auditing rules</description>
+
+
+	<Rule id="jboss_roll_over_transfer_logs" severity="medium">
+		<title>JBoss servers must be configured to roll over and transfer logs on a minimum weekly basis.</title>
+		<description>Information stored in one location is vulnerable to accidental or incidental deletion or
+			alteration. Protecting log data is important during a forensic investigation to ensure 
+			investigators can track and understand what may have occurred. Off-loading should be set up 
+			as a scheduled task but can be configured to be run manually, if other processes during 
+			the off-loading are manual. Off-loading is a common process in information systems with 
+			limited log storage capacity.</description>
+		<ocil clause="logs do not roll periodically">test</ocil>
+		<rationale>Logs preservation and size limits can be implicitly incurred via periodic log rolling</rationale>
+		<ident cce=""/>
+		<oval id="jboss_roll_over_transfer_logs" />
+	</Rule>
+</Group>
+
