@@ -52,6 +52,12 @@ def main():
         "used by remediation scripts from the SCAP Security Guide Project."
 
     for file_ in os.listdir(args.input_dir):
+        if not file_.endswith(".sh"):
+            sys.stderr.write(
+                "File '%s' does not appear to be a bash script. Skipping!"
+                % (file_)
+            )
+
         filename, ext = os.path.splitext(file_)
 
         source = preprocess_source(os.path.join(args.input_dir, file_))
