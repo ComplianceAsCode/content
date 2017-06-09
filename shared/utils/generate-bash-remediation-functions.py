@@ -11,6 +11,26 @@ except ImportError:
     import cElementTree as ElementTree
 
 
+def preprocess_source(filepath):
+    raw = ""
+    with open(filepath, "r") as f:
+        raw = f.read()
+
+    source = ""
+    for line in raw.splitlines(True):
+        if line.startswith("source ") and line.endswith(".sh\n"):
+            included_file = line.strip()[7:]  # skip "source "
+            with open(os.path.join(
+                os.path.dirname(filepath), included_file), "r"
+            ) as f:
+                source += f.read()
+                source += "\n"
+        else:
+            source += line
+
+    return source
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--input_dir", required=True)
@@ -34,9 +54,7 @@ def main():
     for file_ in os.listdir(args.input_dir):
         filename, ext = os.path.splitext(file_)
 
-        source = ""
-        with open(os.path.join(args.input_dir, file_), "r") as f:
-            source = f.read()
+        source = preprocess_source(os.path.join(args.input_dir, file_))
 
         value_element = ElementTree.SubElement(root, "Value")
         value_element.set("id", "function_%s" % (filename))
@@ -57,7 +75,8 @@ def main():
         inner_value.set("selector", "")
         inner_value.text = source
 
-    args.output.write(ElementTree.tostring(root))
+    tree = ElementTree.ElementTree(root)
+    tree.write(args.output)
 
 
 if __name__ == "__main__":
