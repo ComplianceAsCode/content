@@ -149,6 +149,8 @@ include(SSGCommon)
 
 add_custom_target(validate)
 
+ssg_build_bash_remediation_functions()
+
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
 if(SSG_OVAL_511_ENABLED)

@@ -58,6 +58,22 @@ else()
     set(OSCAP_OVAL_VERSION "oval_5.10")
 endif()
 
+macro(ssg_build_bash_remediation_functions)
+    file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
+
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        COMMAND "${SSG_SHARED_UTILS}/generate-bash-remediation-functions.py" --input "${SSG_SHARED}/bash_remediation_functions" --output "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        DEPENDS ${BASH_REMEDIATION_FUNCTIONS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-bash-remediation-functions.py"
+        COMMENT "[bash-remediation-functions] generating bash-remediation-functions.xml"
+    )
+    add_custom_target(
+        generate-internal-bash-remediation-functions.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+    )
+endmacro()
+
 macro(ssg_build_guide_xml PRODUCT)
     if(SSG_SVG_IN_XCCDF_ENABLED)
         add_custom_command(
