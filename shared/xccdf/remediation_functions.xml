@@ -143,7 +143,7 @@ do
                                 # Rule is covered (i.e. the list of -S syscalls for this rule is
                                 # subset of -S syscalls of $full_rule => existing rule can be deleted
                                 # Thus delete the rule from audit.rules &amp; our array
-                                sed -i -e "/$rule/d" "$audit_file"
+                                sed -i -e "/${rule}/d" "$audit_file"
                                 existing_rules=("${existing_rules[@]//$rule/}")
                         else
                                 # Rule isn't covered by $full_rule - it besides -S syscall arguments
@@ -160,7 +160,7 @@ do
                                 # if the same rule not already present
                                 #
                                 # 1) Delete the original rule
-                                sed -i -e "/$rule/d" "$audit_file"
+                                sed -i -e "/${rule}/d" "$audit_file"
                                 # 2) Delete syscalls for this group, but keep those from other groups
                                 # Convert current rule syscall's string into array splitting by '-S' delimiter
                                 IFS=$'-S' read -a rule_syscalls_as_array &lt;&lt;&lt; "$rule_syscalls"
