@@ -4,18 +4,20 @@
 <!-- This transform assembles all fragments into one "shorthand" XCCDF document
      Accepts the following parameters:
 
-     * SHARED_RP	(required)	Holds the resolved ABSOLUTE path
-					to the SSG's "shared/" directory.
+     * SHARED_RP    (required)  Holds the resolved ABSOLUTE path
+                    to the SSG's "shared/" directory.
+     * BUILD_RP	    (required)  Holds the resolved ABSOLUTE path
+                    to the SSG's build directory - $CMAKE_BINARY_PATH
 -->
 
-<!-- Define the default value of the required "SHARED_RP" parameter -->
 <xsl:param name="SHARED_RP" select='undef' />
+<xsl:param name="BUILD_RP" select='undef' />
 
   <xsl:template match="Benchmark">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
 
-      <!-- Adding profiles here --> 
+      <!-- Adding profiles here -->
       <xsl:apply-templates select="document('profiles/stig-rhevm3.xml')" />
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
@@ -25,11 +27,7 @@
         <value>This is a placeholder.</value>
       </Value>
 
-      <!-- Adding remediation functions from concat($SHARED_RP, '/xccdf/remediation_functions.xml')
-           location here -->
-      <xsl:if test=" string($SHARED_RP) != 'undef' ">
-        <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
-      </xsl:if>
+      <xsl:apply-templates select="document(concat($BUILD_RP, '/bash-remediation-functions.xml'))" />
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_app.xml'))" />
       <xsl:apply-templates select="document('xccdf/services/sample.xml')" />

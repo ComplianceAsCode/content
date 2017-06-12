@@ -57,23 +57,20 @@ def fix_is_applicable_for_product(platform, product):
     return product_name, result
 
 
-def get_available_remediation_functions():
-    """Parse the content of "$(SHARED)/xccdf/remediation_functions.xml" XML
-    file to obtain the list of currently known SCAP Security Guide internal
+def get_available_remediation_functions(build_dir):
+    """Parse the content of "$CMAKE_BINARY_DIR/bash-remediation-functions.xml"
+    XML file to obtain the list of currently known SCAP Security Guide internal
     remediation functions"""
 
-    # Determine the relative path to the "/shared" directory
-    shared_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
     # If location of /shared directory is known
-    if shared_dir is None or not os.path.isdir(shared_dir):
-        sys.stderr.write("Error determinining SSG shared directory location. "
-                         "Tried '%s'.\n" % (shared_dir))
+    if build_dir is None or not os.path.isdir(build_dir):
+        sys.stderr.write("Expected '%s' to be the build directory. It doesn't "
+                         "exist or is not a directory." % (build_dir))
         sys.exit(1)
 
     # Construct the final path of XML file with remediation functions
     xmlfilepath = \
-        os.path.join(shared_dir, "xccdf", "remediation_functions.xml")
+        os.path.join(build_dir, "bash-remediation-functions.xml")
 
     if not os.path.isfile(xmlfilepath):
         sys.stderr.write("Expected '%s' to contain the remediation functions. "
@@ -81,10 +78,11 @@ def get_available_remediation_functions():
         sys.exit(1)
 
     remediation_functions = []
-    with open(xmlfilepath) as xmlfile:
+    with open(xmlfilepath, "r") as xmlfile:
         filestring = xmlfile.read()
         remediation_functions = re.findall(
-            '(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL
+            '<Value hidden=\"true\" id=\"function_(\S+)\"',
+            filestring, re.DOTALL
         )
 
     return remediation_functions
@@ -367,6 +365,9 @@ def main():
     p.add_argument("--remediation_type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
+    p.add_argument("--build_dir", required=True,
+                   help="where is the cmake build directory. pass value of "
+                   "$CMAKE_BINARY_DIR.")
     p.add_argument("--output", type=argparse.FileType('w'), required=True)
     p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
                    help="directory(ies) from which we will collect "
@@ -386,7 +387,7 @@ def main():
                                                  args.remediation_type)
     fixes = dict()
 
-    remediation_functions = get_available_remediation_functions()
+    remediation_functions = get_available_remediation_functions(args.build_dir)
 
     config = {}
     included_fixes_count = 0
