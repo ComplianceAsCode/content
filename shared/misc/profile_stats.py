@@ -9,40 +9,10 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-script_usage = """
-profile_stats.py -b XCCDF_file [-p XCCDF_profile] [--implemented] [--missing] [--all]
-                    [--implemented-ovals] [--implemented-fixes] [--assigned-cces]
-                    [--missing-ovals] [--missing-fixes] [--missing-cces] [--json]
-
-Obtains and displays XCCDF profile statistics like:
-* Count of rules present in the <xccdf:Profile>
-* Count of rules having OVAL implemented [%% of completion]
-* Count of rules having remediation implemented [%% of completion]
-
-for the XCCDF benchmark provided as -b or --benchmark argument.
-
-Unless -p or --profile option was provided, it will display statistics
-for all profiles found in the benchmark. Use -p or --profile XCCDF_profile
-to obtain statistics solely for particular profile.
-
-If --implemented option was provided it will also display the IDs
-of implemented OVAL checks, remediation scripts, and IDs of rules
-having CCE identifier already assigned. It is a shortcut for combination
-of --implemented-ovals, --implemented-fixes, and --assigned-cces options.
-
-If --missing option was provided it will also display the IDs of
-not implemented OVAL checks, remediation scripts, and IDs of rules
-not having CCE identifier assigned yet. It is a shortcut for combination
-of --missing-ovals, --missing-fixes, and --missing-cces options.
-
-If --all option was provided, it will display all available information.
-It is a shortcut for combination of --implemented and --missing options.
-
-If --json option is provided, it will display the statistics in the form
-of json format file (rather than default text form)
-
-NOTE: Does NOT work on DataStream benchmark format (yet)!
-"""
+script_desc = \
+    "Obtains and displays XCCDF profile statistics. Namely number " + \
+    "of rules in the profile, how many of these rules have their OVAL " + \
+    "check implemented, how many have a remediation available, ..."
 
 
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
@@ -262,25 +232,28 @@ class XCCDFBenchmark(object):
 
 
 def main():
-    parser = argparse.ArgumentParser(usage=script_usage, version="%prog 1.0")
+    parser = argparse.ArgumentParser(description=script_desc, version="%prog 1.0")
     parser.add_argument("--profile", "-p",
                         action="store",
-                        help="Show statistics for this XCCDF Profile only.")
+                        help="Show statistics for this XCCDF Profile only. If "
+                        "not provided the script will show stats for all "
+                        "available profiles.")
     parser.add_argument("--benchmark", "-b", required=True,
                         action="store",
-                        help="Specify XCCDF benchmark to act on.")
+                        help="Specify XCCDF file to act on. Must be a plain "
+                        "XCCDF file, doesn't work on source datastreams yet!")
     parser.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
-                        help="Show also IDs of implemented OVAL checks.")
+                        help="Show IDs of implemented OVAL checks.")
     parser.add_argument("--missing-ovals", default=False,
                         action="store_true", dest="missing_ovals",
-                        help="Show also IDs of unimplemented OVAL checks.")
+                        help="Show IDs of unimplemented OVAL checks.")
     parser.add_argument("--implemented-fixes", default=False,
                         action="store_true", dest="implemented_fixes",
-                        help="Show also IDs of implemented remediations.")
+                        help="Show IDs of implemented remediations.")
     parser.add_argument("--missing-fixes", default=False,
                         action="store_true", dest="missing_fixes",
-                        help="Show also IDs of unimplemented remediations.")
+                        help="Show IDs of unimplemented remediations.")
     parser.add_argument("--assigned-cces", default=False,
                         action="store_true", dest="assigned_cces",
                         help="Show IDs of rules having CCE assigned.")
@@ -289,19 +262,19 @@ def main():
                         help="Show IDs of rules missing CCE element.")
     parser.add_argument("--implemented", default=False,
                         action="store_true",
-                        help="Equivalent like --implemented-ovals, "
-                        "--implemented_fixes, and --assigned-cves "
-                        "would be set.")
+                        help="Equivalent of --implemented-ovals, "
+                        "--implemented_fixes and --assigned-cves "
+                        "all being set.")
     parser.add_argument("--missing", default=False,
                         action="store_true",
-                        help="Equivalent to --missing-ovals, --missing-fixes,"
+                        help="Equivalent of --missing-ovals, --missing-fixes"
                         " and --missing-cces all being set.")
     parser.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
     parser.add_argument("--json", default=False,
                         action="store_true", dest="json",
-                        help="Show the statistics in json file format.")
+                        help="Show statistics in json file format.")
 
     args, unknown = parser.parse_known_args()
     if unknown:
