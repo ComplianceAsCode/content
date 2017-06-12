@@ -217,14 +217,41 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['implemented_ovals'],
                                    console_width)
 
-            if options.implemented_fixes and \
-               profile_stats['implemented_bash_fixes']:
-                print("*** Rules of '%s' " % profile + "profile having " +
-                      "a bash remediation script: %d of %d [%d%% complete]" %
-                      (impl_bash_fixes_count, rules_count,
-                       profile_stats['implemented_bash_fixes_pct']))
-                self.console_print(profile_stats['implemented_bash_fixes'],
-                                   console_width)
+            if options.implemented_fixes:
+                if profile_stats['implemented_bash_fixes']:
+                    print("*** Rules of '%s' profile having "
+                          "a bash fix script: %d of %d [%d%% complete]"
+                          % (profile, impl_bash_fixes_count, rules_count,
+                             profile_stats['implemented_bash_fixes_pct']))
+                    self.console_print(profile_stats['implemented_bash_fixes'],
+                                       console_width)
+
+                if profile_stats['implemented_ansible_fixes']:
+                    print("*** Rules of '%s' profile having "
+                          "a ansible fix script: %d of %d [%d%% complete]"
+                          % (profile, impl_ansible_fixes_count, rules_count,
+                             profile_stats['implemented_ansible_fixes_pct']))
+                    self.console_print(
+                        profile_stats['implemented_ansible_fixes'],
+                        console_width)
+
+                if profile_stats['implemented_puppet_fixes']:
+                    print("*** Rules of '%s' profile having "
+                          "a puppet fix script: %d of %d [%d%% complete]"
+                          % (profile, impl_puppet_fixes_count, rules_count,
+                             profile_stats['implemented_puppet_fixes_pct']))
+                    self.console_print(
+                        profile_stats['implemented_puppet_fixes'],
+                        console_width)
+
+                if profile_stats['implemented_anaconda_fixes']:
+                    print("*** Rules of '%s' profile having "
+                          "a anaconda fix script: %d of %d [%d%% complete]"
+                          % (profile, impl_anaconda_fixes_count, rules_count,
+                             profile_stats['implemented_anaconda_fixes_pct']))
+                    self.console_print(
+                        profile_stats['implemented_anaconda_fixes'],
+                        console_width)
 
             if options.assigned_cces and \
                profile_stats['assigned_cces']:
@@ -243,13 +270,42 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['missing_ovals'],
                                    console_width)
 
-            if options.missing_fixes and profile_stats['missing_bash_fixes']:
-                print("*** Rules of '%s' " % profile + "profile missing " +
-                      "a bash remediation script: %d of %d [%d%% complete]" %
-                      (rules_count - impl_bash_fixes_count, rules_count,
-                       profile_stats['implemented_bash_fixes_pct']))
-                self.console_print(profile_stats['missing_bash_fixes'],
-                                   console_width)
+            if options.missing_fixes:
+                if profile_stats['missing_bash_fixes']:
+                    print("*** rules of '%s' profile missing "
+                          "a bash fix script: %d of %d [%d%% complete]"
+                          % (profile, rules_count - impl_bash_fixes_count,
+                             rules_count,
+                             profile_stats['implemented_bash_fixes_pct']))
+                    self.console_print(profile_stats['missing_bash_fixes'],
+                                       console_width)
+
+                if profile_stats['missing_ansible_fixes']:
+                    print("*** rules of '%s' profile missing "
+                          "a ansible fix script: %d of %d [%d%% complete]"
+                          % (profile, rules_count - impl_ansible_fixes_count,
+                             rules_count,
+                             profile_stats['implemented_ansible_fixes_pct']))
+                    self.console_print(profile_stats['missing_ansible_fixes'],
+                                       console_width)
+
+                if profile_stats['missing_puppet_fixes']:
+                    print("*** rules of '%s' profile missing "
+                          "a puppet fix script: %d of %d [%d%% complete]"
+                          % (profile, rules_count - impl_puppet_fixes_count,
+                             rules_count,
+                             profile_stats['implemented_puppet_fixes_pct']))
+                    self.console_print(profile_stats['missing_puppet_fixes'],
+                                       console_width)
+
+                if profile_stats['missing_anaconda_fixes']:
+                    print("*** rules of '%s' profile missing "
+                          "a anaconda fix script: %d of %d [%d%% complete]"
+                          % (profile, rules_count - impl_anaconda_fixes_count,
+                             rules_count,
+                             profile_stats['implemented_anaconda_fixes_pct']))
+                    self.console_print(profile_stats['missing_anaconda_fixes'],
+                                       console_width)
 
             if options.missing_cces and profile_stats['missing_cces']:
                 print("***Rules of '%s' " % profile + "profile missing " +
