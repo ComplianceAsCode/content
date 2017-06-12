@@ -80,6 +80,9 @@ def get_available_remediation_functions(build_dir):
     remediation_functions = []
     with open(xmlfilepath, "r") as xmlfile:
         filestring = xmlfile.read()
+        # This regex looks implementation dependent but we can rely on
+        # ElementTree sorting XML attrs alphabetically. Hidden is guaranteed
+        # to be the first attr and ID is guaranteed to be second.
         remediation_functions = re.findall(
             '<Value hidden=\"true\" id=\"function_(\S+)\"',
             filestring, re.DOTALL
