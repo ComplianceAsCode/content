@@ -266,7 +266,7 @@ def main():
     parser.add_argument("-p", "--profile", default=False,
                         action="store", dest="profile",
                         help="Show statistics for this XCCDF Profile only.")
-    parser.add_argument("-b", "--benchmark", default=False,
+    parser.add_argument("-b", "--benchmark", required=True,
                         action="store", dest="benchmark_file",
                         help="Specify XCCDF benchmark to act on.")
     parser.add_argument("--implemented-ovals", default=False,
@@ -308,11 +308,6 @@ def main():
         sys.stderr.write(
             "Unknown positional arguments " + ",".join(unknown) + ".\n"
         )
-        sys.exit(1)
-
-    if not args.benchmark_file:
-        print("Missing XCCDF location via -b or --benchmark arguments!\n")
-        parser.print_help()
         sys.exit(1)
 
     if args.all:
