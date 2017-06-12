@@ -263,11 +263,11 @@ class XCCDFBenchmark(object):
 
 def main():
     parser = argparse.ArgumentParser(usage=script_usage, version="%prog 1.0")
-    parser.add_argument("-p", "--profile", default=False,
-                        action="store", dest="profile",
+    parser.add_argument("--profile", "-p",
+                        action="store",
                         help="Show statistics for this XCCDF Profile only.")
-    parser.add_argument("-b", "--benchmark", required=True,
-                        action="store", dest="benchmark_file",
+    parser.add_argument("--benchmark", "-b", required=True,
+                        action="store",
                         help="Specify XCCDF benchmark to act on.")
     parser.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
@@ -288,14 +288,14 @@ def main():
                         action="store_true", dest="missing_cces",
                         help="Show IDs of rules missing CCE element.")
     parser.add_argument("--implemented", default=False,
-                        action="store_true", dest="implemented",
+                        action="store_true",
                         help="Equivalent like --implemented-ovals, "
                         "--implemented_fixes, and --assigned-cves "
                         "would be set.")
     parser.add_argument("--missing", default=False,
-                        action="store_true", dest="missing",
-                        help="Equivalent like --missing-ovals, --missing-fixes,"
-                        " and --missing-cces would be set.")
+                        action="store_true",
+                        help="Equivalent to --missing-ovals, --missing-fixes,"
+                        " and --missing-cces all being set.")
     parser.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
@@ -324,14 +324,13 @@ def main():
         args.missing_fixes = True
         args.missing_cces = True
 
-    benchmark = XCCDFBenchmark(args.benchmark_file)
+    benchmark = XCCDFBenchmark(args.benchmark)
     if args.profile:
         ret = benchmark.show_profile_stats(args.profile, args)
         if args.json:
             print(json.dumps(ret, indent=4))
     else:
-        all_profile_elems = benchmark.tree.findall("./{%s}Profile" %
-                                                   (xccdf_ns))
+        all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (xccdf_ns))
         ret = []
         for elem in all_profile_elems:
             profile = elem.get('id')
