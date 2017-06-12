@@ -62,9 +62,6 @@
 		<xsl:param name="idreference" />
 		<xsl:param name="enabletest" />
 		<xsl:if test="@id=$idreference and $enabletest='true'">
-			<!-- get related OVAL check info -->
-			<xsl:variable name="ovalcheckid" select="cdf:check[@system=$ovaluri]/cdf:check-content-ref/@name" />
-			<xsl:variable name="ovalcheck" select="$ovaldefs/ovalns:definitions/ovalns:definition[@id=$ovalcheckid]" />
 
 		<tr>
 			<td> <xsl:value-of select="@id" /></td>
