@@ -66,9 +66,18 @@ class XCCDFBenchmark(object):
             'implemented_ovals': [],
             'implemented_ovals_pct': 0,
             'missing_ovals': [],
-            'implemented_fixes': [],
-            'implemented_fixes_pct': 0,
-            'missing_fixes': [],
+            'implemented_bash_fixes': [],
+            'implemented_bash_fixes_pct': 0,
+            'implemented_ansible_fixes': [],
+            'implemented_ansible_fixes_pct': 0,
+            'implemented_puppet_fixes': [],
+            'implemented_puppet_fixes_pct': 0,
+            'implemented_anaconda_fixes': [],
+            'implemented_anaconda_fixes_pct': 0,
+            'missing_bash_fixes': [],
+            'missing_ansible_fixes': [],
+            'missing_puppet_fixes': [],
+            'missing_anaconda_fixes': [],
             'assigned_cces': [],
             'assigned_cces_pct': 0,
             'missing_cces': []
@@ -319,15 +328,24 @@ class XCCDFBenchmark(object):
             if not options.missing_ovals:
                 del profile_stats['missing_ovals']
             if not options.missing_fixes:
-                del profile_stats['missing_fixes']
+                del profile_stats['missing_bash_fixes']
+                del profile_stats['missing_ansible_fixes']
+                del profile_stats['missing_puppet_fixes']
+                del profile_stats['missing_anaconda_fixes']
             if not options.missing_cces:
                 del profile_stats['missing_cces']
             if not options.implemented_ovals:
                 del profile_stats['implemented_ovals']
                 del profile_stats['implemented_ovals_pct']
             if not options.implemented_fixes:
-                del profile_stats['implemented_fixes']
-                del profile_stats['implemented_fixes_pct']
+                del profile_stats['implemented_bash_fixes']
+                del profile_stats['implemented_bash_fixes_pct']
+                del profile_stats['implemented_ansible_fixes']
+                del profile_stats['implemented_ansible_fixes_pct']
+                del profile_stats['implemented_puppet_fixes']
+                del profile_stats['implemented_puppet_fixes_pct']
+                del profile_stats['implemented_anaconda_fixes']
+                del profile_stats['implemented_anaconda_fixes_pct']
             if not options.assigned_cces:
                 del profile_stats['assigned_cces']
                 del profile_stats['assigned_cces_pct']
