@@ -5,6 +5,7 @@ import os
 import os.path
 import re
 import errno
+import argparse
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -360,27 +361,39 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
 
 def main():
-    if len(sys.argv) < 2:
-        sys.stderr.write("Provide a directory name which contains the fixes.\n")
+    p = argparse.ArgumentParser()
+    p.add_argument("--product", required=True,
+                   help="which product are we building for? example: rhel7")
+    p.add_argument("--remediation_type", required=True,
+                   help="language or type of the remediations we are combining."
+                   "example: ansible")
+    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
+                   help="directory(ies) from which we will collect "
+                   "remediations to combine.")
+
+    args, unknown = p.parse_known_args()
+    if unknown:
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
         sys.exit(1)
 
-    product = sys.argv[1]
-    output = sys.argv[-1]
-    remediation_type = sys.argv[2]
-
-    fixcontent = ElementTree.Element("fix-content", system="urn:xccdf:fix:script:sh",
-                               xmlns="http://checklists.nist.gov/xccdf/1.1")
-    fixgroup = get_fixgroup_for_remediation_type(fixcontent, remediation_type)
+    fixcontent = ElementTree.Element(
+        "fix-content", system="urn:xccdf:fix:script:sh",
+        xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixgroup = get_fixgroup_for_remediation_type(fixcontent,
+                                                 args.remediation_type)
     fixes = dict()
 
     remediation_functions = get_available_remediation_functions()
 
     config = {}
     included_fixes_count = 0
-    for fixdir in sys.argv[3:-1]:
+    for fixdir in args.fixdirs:
         try:
             for filename in os.listdir(fixdir):
-                if not is_supported_filename(remediation_type, filename):
+                if not is_supported_filename(args.remediation_type, filename):
                     continue
 
                 # Create and populate new fix element based on shell file
@@ -425,7 +438,7 @@ def main():
 
                     if script_platform:
                         product_name, result = fix_is_applicable_for_product(
-                            script_platform, product)
+                            script_platform, args.product)
                         if result:
                             if fixname in fixes:
                                 fix = fixes[fixname]
@@ -449,7 +462,10 @@ def main():
 
                             # Expand shell variables and remediation functions
                             # into corresponding XCCDF <sub> elements
-                            expand_xccdf_subs(fix, remediation_type, remediation_functions)
+                            expand_xccdf_subs(
+                                fix, args.remediation_type,
+                                remediation_functions
+                            )
                     else:
                         sys.stderr.write("Skipping '%s' remediation script. "
                                          "The platform identifier in the "
@@ -463,9 +479,9 @@ def main():
                                  "exist.\n" % (fixdir))
 
     sys.stderr.write("Merged %d %s remediations.\n"
-                     % (included_fixes_count, remediation_type))
+                     % (included_fixes_count, args.remediation_type))
     tree = ElementTree.ElementTree(fixcontent)
-    tree.write(output)
+    tree.write(args.output)
 
     sys.exit(0)
 
