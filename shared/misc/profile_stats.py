@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import json
-import optparse
+import argparse
 import sys
 
 try:
@@ -10,14 +10,14 @@ except ImportError:
     import cElementTree as ElementTree
 
 script_usage = """
-%prog -b XCCDF_file [-p XCCDF_profile] [--implemented] [--missing] [--all]
+profile_stats.py -b XCCDF_file [-p XCCDF_profile] [--implemented] [--missing] [--all]
                     [--implemented-ovals] [--implemented-fixes] [--assigned-cces]
                     [--missing-ovals] [--missing-fixes] [--missing-cces] [--json]
 
 Obtains and displays XCCDF profile statistics like:
 * Count of rules present in the <xccdf:Profile>
-* Count of rules having OVAL implemented [% of completion]
-* Count of rules having remediation implemented [% of completion]
+* Count of rules having OVAL implemented [%% of completion]
+* Count of rules having remediation implemented [%% of completion]
 
 for the XCCDF benchmark provided as -b or --benchmark argument.
 
@@ -261,87 +261,78 @@ class XCCDFBenchmark(object):
             print("%s" % msg)
 
 
-def parse_options():
-    parser = optparse.OptionParser(usage=script_usage, version="%prog 1.0")
-    parser.add_option("-p", "--profile", default=False,
-                      action="store", dest="profile",
-                      help="Show statistics for this XCCDF Profile only.")
-    parser.add_option("-b", "--benchmark", default=False,
-                      action="store", dest="benchmark_file",
-                      help="Specify XCCDF benchmark to act on.")
-    parser.add_option("--implemented-ovals", default=False,
-                      action="store_true", dest="implemented_ovals",
-                      help="Show also IDs of implemented OVAL checks.")
-    parser.add_option("--missing-ovals", default=False,
-                      action="store_true", dest="missing_ovals",
-                      help="Show also IDs of unimplemented OVAL checks.")
-    parser.add_option("--implemented-fixes", default=False,
-                      action="store_true", dest="implemented_fixes",
-                      help="Show also IDs of implemented remediations.")
-    parser.add_option("--missing-fixes", default=False,
-                      action="store_true", dest="missing_fixes",
-                      help="Show also IDs of unimplemented remediations.")
-    parser.add_option("--assigned-cces", default=False,
-                      action="store_true", dest="assigned_cces",
-                      help="Show IDs of rules having CCE assigned.")
-    parser.add_option("--missing-cces", default=False,
-                      action="store_true", dest="missing_cces",
-                      help="Show IDs of rules missing CCE element.")
-    parser.add_option("--implemented", default=False,
-                      action="store_true", dest="implemented",
-                      help="Equivalent like --implemented-ovals, \
-                      --implemented_fixes, and --assigned-cves \
-                      would be set.")
-    parser.add_option("--missing", default=False,
-                      action="store_true", dest="missing",
-                      help="Equivalent like --missing-ovals, --missing-fixes, \
-                      and --missing-cces would be set.")
-    parser.add_option("--all", default=False,
-                      action="store_true", dest="all",
-                      help="Show all available statistics.")
-    parser.add_option("--json", default=False,
-                      action="store_true", dest="json",
-                      help="Show the statistics in json file format.")
+def main():
+    parser = argparse.ArgumentParser(usage=script_usage, version="%prog 1.0")
+    parser.add_argument("-p", "--profile", default=False,
+                        action="store", dest="profile",
+                        help="Show statistics for this XCCDF Profile only.")
+    parser.add_argument("-b", "--benchmark", default=False,
+                        action="store", dest="benchmark_file",
+                        help="Specify XCCDF benchmark to act on.")
+    parser.add_argument("--implemented-ovals", default=False,
+                        action="store_true", dest="implemented_ovals",
+                        help="Show also IDs of implemented OVAL checks.")
+    parser.add_argument("--missing-ovals", default=False,
+                        action="store_true", dest="missing_ovals",
+                        help="Show also IDs of unimplemented OVAL checks.")
+    parser.add_argument("--implemented-fixes", default=False,
+                        action="store_true", dest="implemented_fixes",
+                        help="Show also IDs of implemented remediations.")
+    parser.add_argument("--missing-fixes", default=False,
+                        action="store_true", dest="missing_fixes",
+                        help="Show also IDs of unimplemented remediations.")
+    parser.add_argument("--assigned-cces", default=False,
+                        action="store_true", dest="assigned_cces",
+                        help="Show IDs of rules having CCE assigned.")
+    parser.add_argument("--missing-cces", default=False,
+                        action="store_true", dest="missing_cces",
+                        help="Show IDs of rules missing CCE element.")
+    parser.add_argument("--implemented", default=False,
+                        action="store_true", dest="implemented",
+                        help="Equivalent like --implemented-ovals, "
+                        "--implemented_fixes, and --assigned-cves "
+                        "would be set.")
+    parser.add_argument("--missing", default=False,
+                        action="store_true", dest="missing",
+                        help="Equivalent like --missing-ovals, --missing-fixes,"
+                        " and --missing-cces would be set.")
+    parser.add_argument("--all", default=False,
+                        action="store_true", dest="all",
+                        help="Show all available statistics.")
+    parser.add_argument("--json", default=False,
+                        action="store_true", dest="json",
+                        help="Show the statistics in json file format.")
 
-    (options, args) = parser.parse_args()
-    if not options.benchmark_file:
+    args, unknown = parser.parse_known_args()
+    if unknown:
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
+        sys.exit(1)
+
+    if not args.benchmark_file:
         print("Missing XCCDF location via -b or --benchmark arguments!\n")
         parser.print_help()
         sys.exit(1)
 
-    return (options, args)
+    if args.all:
+        args.implemented = True
+        args.missing = True
 
+    if args.implemented:
+        args.implemented_ovals = True
+        args.implemented_fixes = True
+        args.assigned_cces = True
 
-def propagate_options(options):
-    """Propagate child option values depending on selected parent options
-       being specified"""
+    if args.missing:
+        args.missing_ovals = True
+        args.missing_fixes = True
+        args.missing_cces = True
 
-    if options.all:
-        options.implemented = True
-        options.missing = True
-
-    if options.implemented:
-        options.implemented_ovals = True
-        options.implemented_fixes = True
-        options.assigned_cces = True
-
-    if options.missing:
-        options.missing_ovals = True
-        options.missing_fixes = True
-        options.missing_cces = True
-
-    return options
-
-
-def main():
-    (options, args) = parse_options()
-
-    options = propagate_options(options)
-    benchmark = XCCDFBenchmark(options.benchmark_file)
-    if options.profile:
-        profile = options.profile
-        ret = benchmark.show_profile_stats(profile, options)
-        if options.json:
+    benchmark = XCCDFBenchmark(args.benchmark_file)
+    if args.profile:
+        ret = benchmark.show_profile_stats(args.profile, args)
+        if args.json:
             print(json.dumps(ret, indent=4))
     else:
         all_profile_elems = benchmark.tree.findall("./{%s}Profile" %
@@ -350,9 +341,9 @@ def main():
         for elem in all_profile_elems:
             profile = elem.get('id')
             if profile is not None:
-                ret.append(benchmark.show_profile_stats(profile, options))
+                ret.append(benchmark.show_profile_stats(profile, args))
 
-        if options.json:
+        if args.json:
             print(json.dumps(ret, indent=4))
 
 if __name__ == '__main__':
