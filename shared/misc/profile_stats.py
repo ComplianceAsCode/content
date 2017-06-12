@@ -336,19 +336,13 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_cces']
             if not options.implemented_ovals:
                 del profile_stats['implemented_ovals']
-                del profile_stats['implemented_ovals_pct']
             if not options.implemented_fixes:
                 del profile_stats['implemented_bash_fixes']
-                del profile_stats['implemented_bash_fixes_pct']
                 del profile_stats['implemented_ansible_fixes']
-                del profile_stats['implemented_ansible_fixes_pct']
                 del profile_stats['implemented_puppet_fixes']
-                del profile_stats['implemented_puppet_fixes_pct']
                 del profile_stats['implemented_anaconda_fixes']
-                del profile_stats['implemented_anaconda_fixes_pct']
             if not options.assigned_cces:
                 del profile_stats['assigned_cces']
-                del profile_stats['assigned_cces_pct']
 
             return profile_stats
 
