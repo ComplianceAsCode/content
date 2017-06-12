@@ -184,33 +184,32 @@ class XCCDFBenchmark(object):
         impl_cces_count = len(profile_stats['assigned_cces'])
 
         if not options.json:
-            print("\n* %s statistics of '%s' profile:" %
-                  (profile_stats['ssg_version'], profile))
-            print("** Count of rules: %d" % rules_count)
-            print("** Count of ovals: %d [%d%% complete]" %
+            print("\nProfile %s:" % profile)
+            print("* rules:            %d" % rules_count)
+            print("* checks (OVAL):    %d\t[%d%% complete]" %
                   (impl_ovals_count,
                    profile_stats['implemented_ovals_pct']))
 
-            print("** Count of fixes (bash): %d [%d%% complete]" %
+            print("* fixes (bash):     %d\t[%d%% complete]" %
                   (impl_bash_fixes_count,
                    profile_stats['implemented_bash_fixes_pct']))
-            print("** Count of fixes (ansible): %d [%d%% complete]" %
+            print("* fixes (ansible):  %d\t[%d%% complete]" %
                   (impl_ansible_fixes_count,
                    profile_stats['implemented_ansible_fixes_pct']))
-            print("** Count of fixes (puppet): %d [%d%% complete]" %
+            print("* fixes (puppet):   %d\t[%d%% complete]" %
                   (impl_puppet_fixes_count,
                    profile_stats['implemented_puppet_fixes_pct']))
-            print("** Count of fixes (anaconda): %d [%d%% complete]" %
+            print("* fixes (anaconda): %d\t[%d%% complete]" %
                   (impl_anaconda_fixes_count,
                    profile_stats['implemented_anaconda_fixes_pct']))
 
-            print("** Count of CCEs: %d [%d%% complete]" %
+            print("* CCEs:             %d\t[%d%% complete]" %
                   (impl_cces_count,
                    profile_stats['assigned_cces_pct']))
 
             if options.implemented_ovals and \
                profile_stats['implemented_ovals']:
-                print("*** Rules of '%s' " % profile +
+                print("** Rules of '%s' " % profile +
                       "profile having OVAL check: %d of %d [%d%% complete]" %
                       (impl_ovals_count, rules_count,
                        profile_stats['implemented_ovals_pct']))
