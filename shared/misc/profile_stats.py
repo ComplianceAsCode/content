@@ -19,7 +19,8 @@ xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 rem_system = "urn:xccdf:fix:script:sh"
 cce_system = "https://nvd.nist.gov/cce/index.cfm"
-ssg_version_uri = "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
+ssg_version_uri = \
+    "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
 console_width = 80
 
 
@@ -43,23 +44,24 @@ class XCCDFBenchmark(object):
             print("%s" % ioerr)
             sys.exit(1)
 
-    def get_profile_stats(self, profile = None):
+    def get_profile_stats(self, profile=None):
         """Obtain statistics for the profile"""
 
         # Holds the intermediary statistics for profile
-        profile_stats = { 'profile_id' : None,
-                          'ssg_version' : 0,
-                          'rules_count' : 0,
-                          'implemented_ovals' : [],
-                          'implemented_ovals_pct' : 0,
-                          'missing_ovals' : [],
-                          'implemented_fixes' : [],
-                          'implemented_fixes_pct' : 0,
-                          'missing_fixes' : [],
-                          'assigned_cces' : [],
-                          'assigned_cces_pct' : 0,
-                          'missing_cces' : []
-                         }
+        profile_stats = {
+            'profile_id': None,
+            'ssg_version': 0,
+            'rules_count': 0,
+            'implemented_ovals': [],
+            'implemented_ovals_pct': 0,
+            'missing_ovals': [],
+            'implemented_fixes': [],
+            'implemented_fixes_pct': 0,
+            'missing_fixes': [],
+            'assigned_cces': [],
+            'assigned_cces_pct': 0,
+            'missing_cces': []
+        }
 
         rule_stats = []
         ssg_version_elem = self.tree.find("./{%s}version[@update=\"%s\"]" %
@@ -136,21 +138,21 @@ class XCCDFBenchmark(object):
                   (profile_stats['ssg_version'], profile))
             print("** Count of rules: %d" % rules_count)
             print("** Count of ovals: %d [%d%% complete]" %
-                  (impl_ovals_count, \
-                  profile_stats['implemented_ovals_pct']))
+                  (impl_ovals_count,
+                   profile_stats['implemented_ovals_pct']))
             print("** Count of fixes: %d [%d%% complete]" %
-                  (impl_fixes_count, \
-                  profile_stats['implemented_fixes_pct']))
+                  (impl_fixes_count,
+                   profile_stats['implemented_fixes_pct']))
             print("** Count of CCEs: %d [%d%% complete]" %
-                  (impl_cces_count, \
-                  profile_stats['assigned_cces_pct']))
+                  (impl_cces_count,
+                   profile_stats['assigned_cces_pct']))
 
             if options.implemented_ovals and \
                profile_stats['implemented_ovals']:
                 print("*** Rules of '%s' " % profile +
                       "profile having OVAL check: %d of %d [%d%% complete]" %
                       (impl_ovals_count, rules_count,
-                      profile_stats['implemented_ovals_pct']))
+                       profile_stats['implemented_ovals_pct']))
                 self.console_print(profile_stats['implemented_ovals'],
                                    console_width)
 
@@ -159,7 +161,7 @@ class XCCDFBenchmark(object):
                 print("*** Rules of '%s' " % profile + "profile having " +
                       "remediation script: %d of %d [%d%% complete]" %
                       (impl_fixes_count, rules_count,
-                      profile_stats['implemented_fixes_pct']))
+                       profile_stats['implemented_fixes_pct']))
                 self.console_print(profile_stats['implemented_fixes'],
                                    console_width)
 
@@ -168,7 +170,7 @@ class XCCDFBenchmark(object):
                 print("*** Rules of '%s' " % profile +
                       "profile having CCE assigned: %d of %d [%d%% complete]" %
                       (impl_cces_count, rules_count,
-                      profile_stats['assigned_cces_pct']))
+                       profile_stats['assigned_cces_pct']))
                 self.console_print(profile_stats['assigned_cces'],
                                    console_width)
 
@@ -176,7 +178,7 @@ class XCCDFBenchmark(object):
                 print("*** Rules of '%s' " % profile + "profile missing " +
                       "OVAL: %d of %d [%d%% complete]" %
                       (rules_count - impl_ovals_count, rules_count,
-                      profile_stats['implemented_ovals_pct']))
+                       profile_stats['implemented_ovals_pct']))
                 self.console_print(profile_stats['missing_ovals'],
                                    console_width)
 
@@ -184,7 +186,7 @@ class XCCDFBenchmark(object):
                 print("*** Rules of '%s' " % profile + "profile missing " +
                       "remediation: %d of %d [%d%% complete]" %
                       (rules_count - impl_fixes_count, rules_count,
-                      profile_stats['implemented_fixes_pct']))
+                       profile_stats['implemented_fixes_pct']))
                 self.console_print(profile_stats['missing_fixes'],
                                    console_width)
 
@@ -192,7 +194,7 @@ class XCCDFBenchmark(object):
                 print("***Rules of '%s' " % profile + "profile missing " +
                       "CCE identifier: %d of %d [%d%% complete]" %
                       (rules_count - impl_cces_count, rules_count,
-                      profile_stats['assigned_cces_pct']))
+                       profile_stats['assigned_cces_pct']))
                 self.console_print(profile_stats['missing_cces'],
                                    console_width)
 
@@ -232,7 +234,7 @@ class XCCDFBenchmark(object):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=script_desc, version="%prog 1.0")
+    parser = argparse.ArgumentParser(description=script_desc)
     parser.add_argument("--profile", "-p",
                         action="store",
                         help="Show statistics for this XCCDF Profile only. If "
