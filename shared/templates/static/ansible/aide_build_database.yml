@@ -9,6 +9,9 @@
     @ANSIBLE_TAGS@
 
 - name: Stage AIDE Database"
-  shell: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+  copy:
+    src: /var/lib/aide/aide.db.new.gz
+    dest: /var/lib/aide/aide.db.gz
+    backup: yes
   tags:
     @ANSIBLE_TAGS@
