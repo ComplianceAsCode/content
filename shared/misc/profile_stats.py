@@ -96,6 +96,9 @@ class XCCDFBenchmark(object):
                 print("** %s" % profile.get('id'))
             sys.exit(1)
 
+        # This will only work with SSG where the (default) profile has zero
+        # selected rule. If you want to reuse this for custom content, you need
+        # to change this to look into Rule/@selected
         rules = xccdf_profile.findall("./{%s}select[@selected=\"true\"]" %
                                       xccdf_ns)
         for rule in rules:
