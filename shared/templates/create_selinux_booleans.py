@@ -39,6 +39,42 @@ class SEBoolGenerator(FilesGenerator):
                         "./oval/sebool_{0}.xml", sebool_id
                     )
 
+            elif target == "bash":
+                if sebool_state != "use_var":
+                    self.file_from_template(
+                        "./template_BASH_sebool",
+                        {
+                            "SEBOOLID": sebool_id,
+                            "SEBOOL_BOOL": sebool_bool
+                        },
+                        "./bash/sebool_{0}.sh", sebool_id)
+                else:
+                    self.file_from_template(
+                        "./template_BASH_sebool_var",
+                        {
+                            "SEBOOLID": sebool_id
+                        },
+                        "./bash/sebool_{0}.sh", sebool_id
+                    )
+
+            elif target == "ansible":
+                if sebool_state != "use_var":
+                    self.file_from_template(
+                        "./template_ANSIBLE_sebool",
+                        {
+                            "SEBOOLID": sebool_id,
+                            "SEBOOL_BOOL": sebool_bool
+                        },
+                        "./ansible/sebool_{0}.yml", sebool_id)
+                else:
+                    self.file_from_template(
+                        "./template_ANSIBLE_sebool_var",
+                        {
+                            "SEBOOLID": sebool_id
+                        },
+                        "./ansible/sebool_{0}.yml", sebool_id
+                    )
+
             else:
                 raise UnknownTargetError(target)
 
