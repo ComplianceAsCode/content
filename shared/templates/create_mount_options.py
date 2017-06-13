@@ -41,8 +41,8 @@ class MountOptionsGenerator(FilesGenerator):
                 option_str = ""
                 state_str = ""
                 #for option in mount_options.split():
-                state_str = "    <linux:state state_ref=\"object" + point_id + "_" +  option_id + "\" />\n"
-                option_str = "  <linux:partition_state id=\"object" + point_id + "_" + option_id + "\" version=\"1\">\n\
+                state_str = "    <linux:state state_ref=\"state" + point_id + "_" +  option_id + "\" />\n"
+                option_str = "  <linux:partition_state id=\"state" + point_id + "_" + option_id + "\" version=\"1\">\n\
         <linux:mount_options datatype=\"string\" entity_check=\"at least one\" operation=\"equals\">" + option + "</linux:mount_options>\n\
       </linux:partition_state>\n"
 
