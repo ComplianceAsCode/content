@@ -418,7 +418,7 @@ def main():
                         action="store_true", dest="all",
                         help="Show all available statistics.")
     parser.add_argument("--format", default="plain",
-                        choices=["plain", "json"],
+                        choices=["plain", "json", "csv"],
                         help="Which format to use for output.")
 
     args, unknown = parser.parse_known_args()
@@ -456,6 +456,13 @@ def main():
 
     if args.format == "json":
         print(json.dumps(ret, indent=4))
+    elif args.format == "csv":
+        # we can assume ret has at least one element
+        # CSV header
+        print(",".join(ret[0].keys()))
+        for line in ret:
+            print(",".join([str(value) for value in line.values()]))
+
 
 if __name__ == '__main__':
     main()
