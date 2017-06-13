@@ -443,10 +443,9 @@ def main():
         args.missing_cces = True
 
     benchmark = XCCDFBenchmark(args.benchmark)
+    ret = []
     if args.profile:
-        ret = benchmark.show_profile_stats(args.profile, args)
-        if args.format == "json":
-            print(json.dumps(ret, indent=4))
+        ret.append(benchmark.show_profile_stats(args.profile, args))
     else:
         all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (xccdf_ns))
         ret = []
@@ -455,8 +454,8 @@ def main():
             if profile is not None:
                 ret.append(benchmark.show_profile_stats(profile, args))
 
-        if args.format == "json":
-            print(json.dumps(ret, indent=4))
+    if args.format == "json":
+        print(json.dumps(ret, indent=4))
 
 if __name__ == '__main__':
     main()
