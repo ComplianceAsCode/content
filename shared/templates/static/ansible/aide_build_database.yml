@@ -5,14 +5,10 @@
 # disruption = low
 - name: "Build and Test AIDE Database"
   shell: /usr/sbin/aide --init
-  args:
-    executable: /bin/bash
   tags:
     @ANSIBLE_TAGS@
 
 - name: Stage AIDE Database"
   shell: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
-  args:
-    executable: /bin/bash
   tags:
     @ANSIBLE_TAGS@
