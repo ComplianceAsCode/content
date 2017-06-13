@@ -5,6 +5,7 @@ import os
 import os.path
 import re
 import errno
+import argparse
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -56,23 +57,20 @@ def fix_is_applicable_for_product(platform, product):
     return product_name, result
 
 
-def get_available_remediation_functions():
-    """Parse the content of "$(SHARED)/xccdf/remediation_functions.xml" XML
-    file to obtain the list of currently known SCAP Security Guide internal
+def get_available_remediation_functions(build_dir):
+    """Parse the content of "$CMAKE_BINARY_DIR/bash-remediation-functions.xml"
+    XML file to obtain the list of currently known SCAP Security Guide internal
     remediation functions"""
 
-    # Determine the relative path to the "/shared" directory
-    shared_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
     # If location of /shared directory is known
-    if shared_dir is None or not os.path.isdir(shared_dir):
-        sys.stderr.write("Error determinining SSG shared directory location. "
-                         "Tried '%s'.\n" % (shared_dir))
+    if build_dir is None or not os.path.isdir(build_dir):
+        sys.stderr.write("Expected '%s' to be the build directory. It doesn't "
+                         "exist or is not a directory." % (build_dir))
         sys.exit(1)
 
     # Construct the final path of XML file with remediation functions
     xmlfilepath = \
-        os.path.join(shared_dir, "xccdf", "remediation_functions.xml")
+        os.path.join(build_dir, "bash-remediation-functions.xml")
 
     if not os.path.isfile(xmlfilepath):
         sys.stderr.write("Expected '%s' to contain the remediation functions. "
@@ -80,10 +78,14 @@ def get_available_remediation_functions():
         sys.exit(1)
 
     remediation_functions = []
-    with open(xmlfilepath) as xmlfile:
+    with open(xmlfilepath, "r") as xmlfile:
         filestring = xmlfile.read()
+        # This regex looks implementation dependent but we can rely on
+        # ElementTree sorting XML attrs alphabetically. Hidden is guaranteed
+        # to be the first attr and ID is guaranteed to be second.
         remediation_functions = re.findall(
-            '(?:^|\n)<Value id=\"function_(\S+)\"', filestring, re.DOTALL
+            '<Value hidden=\"true\" id=\"function_(\S+)\"',
+            filestring, re.DOTALL
         )
 
     return remediation_functions
@@ -360,27 +362,42 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
 
 def main():
-    if len(sys.argv) < 2:
-        sys.stderr.write("Provide a directory name which contains the fixes.\n")
+    p = argparse.ArgumentParser()
+    p.add_argument("--product", required=True,
+                   help="which product are we building for? example: rhel7")
+    p.add_argument("--remediation_type", required=True,
+                   help="language or type of the remediations we are combining."
+                   "example: ansible")
+    p.add_argument("--build_dir", required=True,
+                   help="where is the cmake build directory. pass value of "
+                   "$CMAKE_BINARY_DIR.")
+    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
+                   help="directory(ies) from which we will collect "
+                   "remediations to combine.")
+
+    args, unknown = p.parse_known_args()
+    if unknown:
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
         sys.exit(1)
 
-    product = sys.argv[1]
-    output = sys.argv[-1]
-    remediation_type = sys.argv[2]
-
-    fixcontent = ElementTree.Element("fix-content", system="urn:xccdf:fix:script:sh",
-                               xmlns="http://checklists.nist.gov/xccdf/1.1")
-    fixgroup = get_fixgroup_for_remediation_type(fixcontent, remediation_type)
+    fixcontent = ElementTree.Element(
+        "fix-content", system="urn:xccdf:fix:script:sh",
+        xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixgroup = get_fixgroup_for_remediation_type(fixcontent,
+                                                 args.remediation_type)
     fixes = dict()
 
-    remediation_functions = get_available_remediation_functions()
+    remediation_functions = get_available_remediation_functions(args.build_dir)
 
     config = {}
     included_fixes_count = 0
-    for fixdir in sys.argv[3:-1]:
+    for fixdir in args.fixdirs:
         try:
             for filename in os.listdir(fixdir):
-                if not is_supported_filename(remediation_type, filename):
+                if not is_supported_filename(args.remediation_type, filename):
                     continue
 
                 # Create and populate new fix element based on shell file
@@ -425,7 +442,7 @@ def main():
 
                     if script_platform:
                         product_name, result = fix_is_applicable_for_product(
-                            script_platform, product)
+                            script_platform, args.product)
                         if result:
                             if fixname in fixes:
                                 fix = fixes[fixname]
@@ -449,7 +466,10 @@ def main():
 
                             # Expand shell variables and remediation functions
                             # into corresponding XCCDF <sub> elements
-                            expand_xccdf_subs(fix, remediation_type, remediation_functions)
+                            expand_xccdf_subs(
+                                fix, args.remediation_type,
+                                remediation_functions
+                            )
                     else:
                         sys.stderr.write("Skipping '%s' remediation script. "
                                          "The platform identifier in the "
@@ -463,9 +483,9 @@ def main():
                                  "exist.\n" % (fixdir))
 
     sys.stderr.write("Merged %d %s remediations.\n"
-                     % (included_fixes_count, remediation_type))
+                     % (included_fixes_count, args.remediation_type))
     tree = ElementTree.ElementTree(fixcontent)
-    tree.write(output)
+    tree.write(args.output)
 
     sys.exit(0)
 

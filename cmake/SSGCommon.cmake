@@ -58,6 +58,22 @@ else()
     set(OSCAP_OVAL_VERSION "oval_5.10")
 endif()
 
+macro(ssg_build_bash_remediation_functions)
+    file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
+
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        COMMAND "${SSG_SHARED_UTILS}/generate-bash-remediation-functions.py" --input "${SSG_SHARED}/bash_remediation_functions" --output "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        DEPENDS ${BASH_REMEDIATION_FUNCTIONS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-bash-remediation-functions.py"
+        COMMENT "[bash-remediation-functions] generating bash-remediation-functions.xml"
+    )
+    add_custom_target(
+        generate-internal-bash-remediation-functions.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+    )
+endmacro()
+
 macro(ssg_build_guide_xml PRODUCT)
     if(SSG_SVG_IN_XCCDF_ENABLED)
         add_custom_command(
@@ -89,8 +105,10 @@ macro(ssg_build_shorthand_xml PRODUCT)
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam SHARED_RP "${SSG_SHARED}" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam SHARED_RP "${SSG_SHARED}" --stringparam BUILD_RP "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        DEPENDS generate-internal-bash-remediation-functions.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS generate-internal-${PRODUCT}-guide.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt"
@@ -192,7 +210,9 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}"
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
-        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" ${PRODUCT} ${LANGUAGE} "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}" "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
+        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}"
+        DEPENDS generate-internal-bash-remediation-functions.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
         DEPENDS ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS}
         DEPENDS ${EXTRA_LANGUAGE_DEPENDS}
@@ -209,13 +229,15 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     )
 
     if (SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
+        file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
+
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
             # format gcc so that people using IDEs can click on errors to get to the problematic lines
             # SC1071: ShellCheck only supports sh/bash/ksh scripts
             # SC1091: Not following: /usr/share/scap-security-guide/remediation_functions
             # TODO: Stop ignoring the exit code as we fix the bash issues
-            COMMAND "${SHELLCHECK_EXECUTABLE}" --format gcc --shell bash --exclude SC1071,SC1091 ${LANGUAGE_REMEDIATIONS_DEPENDS} ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS} ${EXTRA_LANGUAGE_DEPENDS} ${EXTRA_SHARED_LANGUAGE_DEPENDS} || "true"
+            COMMAND "${SHELLCHECK_EXECUTABLE}" --format gcc --shell bash --exclude SC1071,SC1091 ${BASH_REMEDIATION_FUNCTIONS} ${LANGUAGE_REMEDIATIONS_DEPENDS} ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS} ${EXTRA_LANGUAGE_DEPENDS} ${EXTRA_SHARED_LANGUAGE_DEPENDS} || "true"
             COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
             VERBATIM
             COMMENT "[${PRODUCT}-validate] validating inputs for bash remediations"
