@@ -33,7 +33,7 @@
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
   when:
     (gpg_key_directory_permission.stat.mode <= '0755')
-    and ({{ gpg_fingerprints.stdout_lines | difference(gpg_valid_fingerprints) }} | length == 0)
+    and (( gpg_fingerprints.stdout_lines | difference(gpg_valid_fingerprints)) | length == 0)
     and (gpg_fingerprints.stdout_lines | length > 0)
     and (ansible_distribution == "RedHat")
   tags:
