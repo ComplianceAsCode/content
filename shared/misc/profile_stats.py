@@ -207,7 +207,7 @@ class XCCDFBenchmark(object):
         impl_anaconda_fixes_count = len(profile_stats['implemented_anaconda_fixes'])
         impl_cces_count = len(profile_stats['assigned_cces'])
 
-        if not options.json:
+        if options.format == "plain":
             print("\nProfile %s:" % profile)
             print("* rules:            %d" % rules_count)
             print("* checks (OVAL):    %d\t[%d%% complete]" %
@@ -417,9 +417,9 @@ def main():
     parser.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
-    parser.add_argument("--json", default=False,
-                        action="store_true", dest="json",
-                        help="Show statistics in json file format.")
+    parser.add_argument("--format", default="plain",
+                        choices=["plain", "json"],
+                        help="Which format to use for output.")
 
     args, unknown = parser.parse_known_args()
     if unknown:
@@ -445,7 +445,7 @@ def main():
     benchmark = XCCDFBenchmark(args.benchmark)
     if args.profile:
         ret = benchmark.show_profile_stats(args.profile, args)
-        if args.json:
+        if args.format == "json":
             print(json.dumps(ret, indent=4))
     else:
         all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (xccdf_ns))
@@ -455,7 +455,7 @@ def main():
             if profile is not None:
                 ret.append(benchmark.show_profile_stats(profile, args))
 
-        if args.json:
+        if args.format == "json":
             print(json.dumps(ret, indent=4))
 
 if __name__ == '__main__':
