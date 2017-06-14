@@ -55,7 +55,7 @@ class XCCDFBenchmark(object):
             print("%s" % ioerr)
             sys.exit(1)
 
-    def get_profile_stats(self, profile=None):
+    def get_profile_stats(self, profile):
         """Obtain statistics for the profile"""
 
         # Holds the intermediary statistics for profile
@@ -86,37 +86,52 @@ class XCCDFBenchmark(object):
         rule_stats = []
         ssg_version_elem = self.tree.find("./{%s}version[@update=\"%s\"]" %
                                           (xccdf_ns, ssg_version_uri))
-        xccdf_profile = self.tree.find("./{%s}Profile[@id=\"%s\"]" %
-                                       (xccdf_ns, profile))
-        if xccdf_profile is None:
-            print("No such profile \"%s\" found in the benchmark!" % profile)
-            print("* Available profiles:")
-            profiles_avail = self.tree.findall("./{%s}Profile" % (xccdf_ns))
-            for profile in profiles_avail:
-                print("** %s" % profile.get('id'))
-            sys.exit(1)
 
-        rules = xccdf_profile.findall("./{%s}select[@selected=\"true\"]" %
-                                      xccdf_ns)
+        rules = []
+
+        if profile == "all":
+            # "all" is a virtual profile that selects all rules
+            rules = self.tree.findall(".//{%s}Rule" % (xccdf_ns))
+        else:
+            xccdf_profile = self.tree.find("./{%s}Profile[@id=\"%s\"]" %
+                                           (xccdf_ns, profile))
+            if xccdf_profile is None:
+                print("No such profile \"%s\" found in the benchmark!"
+                      % profile)
+                print("* Available profiles:")
+                profiles_avail = self.tree.findall("./{%s}Profile" % (xccdf_ns))
+                for profile in profiles_avail:
+                    print("** %s" % profile.get('id'))
+                sys.exit(1)
+
+            # This will only work with SSG where the (default) profile has zero
+            # selected rule. If you want to reuse this for custom content, you
+            # need to change this to look into Rule/@selected
+            selects = xccdf_profile.findall("./{%s}select[@selected=\"true\"]" %
+                                            xccdf_ns)
+
+            for select in selects:
+                rule_id = select.get('idref')
+                xccdf_rule = self.tree.find(".//{%s}Rule[@id=\"%s\"]" %
+                                            (xccdf_ns, rule_id))
+                rules.append(xccdf_rule)
+
         for rule in rules:
-            rule_id = rule.get('idref')
-            xccdf_rule = self.tree.find(".//{%s}Rule[@id=\"%s\"]" %
-                                        (xccdf_ns, rule_id))
-            if xccdf_rule is not None:
-                oval = xccdf_rule.find("./{%s}check[@system=\"%s\"]" %
-                                       (xccdf_ns, oval_ns))
-                bash_fix = xccdf_rule.find("./{%s}fix[@system=\"%s\"]" %
-                                           (xccdf_ns, bash_rem_system))
-                ansible_fix = xccdf_rule.find("./{%s}fix[@system=\"%s\"]" %
-                                              (xccdf_ns, ansible_rem_system))
-                puppet_fix = xccdf_rule.find("./{%s}fix[@system=\"%s\"]" %
-                                             (xccdf_ns, puppet_rem_system))
-                anaconda_fix = xccdf_rule.find("./{%s}fix[@system=\"%s\"]" %
-                                               (xccdf_ns, anaconda_rem_system))
-                cce = xccdf_rule.find("./{%s}ident[@system=\"%s\"]" %
-                                      (xccdf_ns, cce_system))
+            if rule is not None:
+                oval = rule.find("./{%s}check[@system=\"%s\"]" %
+                                 (xccdf_ns, oval_ns))
+                bash_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
+                                     (xccdf_ns, bash_rem_system))
+                ansible_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
+                                        (xccdf_ns, ansible_rem_system))
+                puppet_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
+                                       (xccdf_ns, puppet_rem_system))
+                anaconda_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
+                                         (xccdf_ns, anaconda_rem_system))
+                cce = rule.find("./{%s}ident[@system=\"%s\"]" %
+                                (xccdf_ns, cce_system))
                 rule_stats.append(
-                    RuleStats(rule_id, oval,
+                    RuleStats(rule.get("id"), oval,
                               bash_fix, ansible_fix, puppet_fix, anaconda_fix,
                               cce)
                 )
@@ -192,7 +207,7 @@ class XCCDFBenchmark(object):
         impl_anaconda_fixes_count = len(profile_stats['implemented_anaconda_fixes'])
         impl_cces_count = len(profile_stats['assigned_cces'])
 
-        if not options.json:
+        if options.format == "plain":
             print("\nProfile %s:" % profile)
             print("* rules:            %d" % rules_count)
             print("* checks (OVAL):    %d\t[%d%% complete]" %
@@ -402,9 +417,9 @@ def main():
     parser.add_argument("--all", default=False,
                         action="store_true", dest="all",
                         help="Show all available statistics.")
-    parser.add_argument("--json", default=False,
-                        action="store_true", dest="json",
-                        help="Show statistics in json file format.")
+    parser.add_argument("--format", default="plain",
+                        choices=["plain", "json", "csv"],
+                        help="Which format to use for output.")
 
     args, unknown = parser.parse_known_args()
     if unknown:
@@ -428,10 +443,9 @@ def main():
         args.missing_cces = True
 
     benchmark = XCCDFBenchmark(args.benchmark)
+    ret = []
     if args.profile:
-        ret = benchmark.show_profile_stats(args.profile, args)
-        if args.json:
-            print(json.dumps(ret, indent=4))
+        ret.append(benchmark.show_profile_stats(args.profile, args))
     else:
         all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (xccdf_ns))
         ret = []
@@ -440,8 +454,15 @@ def main():
             if profile is not None:
                 ret.append(benchmark.show_profile_stats(profile, args))
 
-        if args.json:
-            print(json.dumps(ret, indent=4))
+    if args.format == "json":
+        print(json.dumps(ret, indent=4))
+    elif args.format == "csv":
+        # we can assume ret has at least one element
+        # CSV header
+        print(",".join(ret[0].keys()))
+        for line in ret:
+            print(",".join([str(value) for value in line.values()]))
+
 
 if __name__ == '__main__':
     main()
