@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ ! -e [/etc/at.allow ]; then
 	> /etc/at.allow
 	chown root:root /etc/at.allow

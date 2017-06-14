@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ $(grep "password.*pam_unix.so" /etc/pam.d/system-auth | egrep -c '(descrypt|bigcrypt|md5|sha256)') != 0 ]; then
 	sed -i '/password.*pam_unix.so/s/\(descrypt\|bigcrypt\|md5\|sha256\)/sha512/' /etc/pam.d/system-auth
 else

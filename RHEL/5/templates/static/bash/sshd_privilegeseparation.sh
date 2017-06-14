@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ $(cat /etc/ssh/sshd_config | grep -ic "^UsePrivilegeSeparation") = "0" ]; then
 	echo "UsePrivilegeSeparation yes" | tee -a /etc/ssh/sshd_config &>/dev/null
 else

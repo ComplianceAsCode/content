@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ ! -e /etc/hosts.allow ]; then
 	>/etc/hosts.allow
 	chmod 644 /etc/hosts.allow

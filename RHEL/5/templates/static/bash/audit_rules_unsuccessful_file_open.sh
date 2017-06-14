@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ -e /etc/audit/audit.rules ]; then
 	if [ "`grep " -S open " /etc/audit/audit.rules | grep -v '#' | grep -c '\-F exit=-EACCES'`" = "0" ]; then
 		if [ "`uname -p`" != "x86_64" ]; then

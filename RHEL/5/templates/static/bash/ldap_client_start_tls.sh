@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ "$(cat /etc/ldap.conf | grep -c '^ssl ')" = "0" ]; then
 	echo "ssl start_tls" | tee -a /etc/ldap.conf &>/dev/null
 else

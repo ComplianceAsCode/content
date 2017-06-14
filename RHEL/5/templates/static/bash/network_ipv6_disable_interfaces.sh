@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ $(grep -c "^NETWORKING_IPV6" /etc/sysconfig/network) = 0 ]; then
 	echo "NETWORKING_IPV6=no" | tee -a /etc/sysconfig/network &>/dev/null
 else

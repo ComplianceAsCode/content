@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ "$(grep -c '^session.*required.*pam_lastlog.so$' /etc/pam.d/sshd)" = "0" ]; then
 	echo -e "session    required\tpam_lastlog.so" | tee -a /etc/pam.d/sshd &>/dev/null
 elif [ "$(grep pam_lastlog /etc/pam.d/sshd | grep -c silent)" != "0" ]; then

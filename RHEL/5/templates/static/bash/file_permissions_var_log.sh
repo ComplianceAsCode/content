@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 find /var/log -follow -type f ! -name wtmp 2>/dev/null | xargs chmod o-rwx,g-wx,u-x
 
 # The following corrects the permission mask set for /var/log/rpmpkgs.

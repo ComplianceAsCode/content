@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 chown :root /dev/audio* /dev/snd/*
 if [[ "`uname -r`" = "2.6.9"* ]]; then
 	sed -i 's/\(^audio\*:[a-z]*:\)[a-z]*:/\1sys:/' /etc/udev/permissions.d/50-udev.permissions

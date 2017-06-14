@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ $(cat /etc/ssh/sshd_config | grep -c "^GSSAPIAuthentication") = "0" ]; then
 	echo "GSSAPIAuthentication no" | tee -a /etc/ssh/sshd_config &>/dev/null
 else

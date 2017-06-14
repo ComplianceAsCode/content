@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ ! -e [/etc/cron.allow ]; then
 	> /etc/cron.allow
 	chown root:root /etc/cron.allow
