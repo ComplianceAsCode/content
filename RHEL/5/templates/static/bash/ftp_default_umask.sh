@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ "$(rpm -q krb5-workstation &>/dev/null; echo $?)" = "0" ]; then
 	if [ "$(grep server_args /etc/xinetd.d/gssftp | grep -v "#" | grep -c "\-u 077")" = "0" ]; then
 		sed -i '/server_args/s/$/ -u 077/' /etc/xinetd.d/gssftp

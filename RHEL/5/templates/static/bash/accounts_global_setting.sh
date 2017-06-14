@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 cat > /etc/pam.d/system-auth-local <<'STOP_HERE'
 auth        include      system-auth-ac
 account     include      system-auth-ac

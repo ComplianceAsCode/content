@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ $(cat /etc/ldap.conf | grep -c "^tls_crlcheck") = "0" ]; then
 	echo "tls_crlcheck all" | tee -a /etc/ldap.conf &>/dev/null
 else

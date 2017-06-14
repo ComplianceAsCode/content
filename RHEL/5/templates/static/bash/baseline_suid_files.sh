@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 # Generate a suid file baseline
 find / -perm -4000 -type f 2>/dev/null | sort > /var/log/suid-file-list
 chmod 640 /var/log/suid-file-list

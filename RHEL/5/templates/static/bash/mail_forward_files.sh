@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 SENDMAIL_CONFIG=$(rpm -ql sendmail | grep sendmail.cf)
 SENDMAIL_MAINCONF=$(rpm -ql sendmail | grep sendmail.mc)
 if [ "$(rpm -q sendmail-cf &>/dev/null; echo $?)" = "0" ]; then

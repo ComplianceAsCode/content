@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ -e /tmp/GRUB.TMP ]; then
 	/sbin/grub-md5-crypt < /tmp/GRUB.TMP &> /tmp/GRUB.TMP.out
 	md5crypt=`tail -n1 /tmp/GRUB.TMP.out`

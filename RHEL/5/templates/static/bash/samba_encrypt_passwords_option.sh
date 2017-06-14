@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ "$(grep -c '^[ |\t]*encrypt passwords' /etc/samba/smb.conf)" = "0" ]; then
 	sed -i 's/\(^\[global\]$\)/\1\n\n\tencrypt passwords = yes/' /etc/samba/smb.conf
 else

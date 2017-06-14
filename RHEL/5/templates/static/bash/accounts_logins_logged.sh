@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ ! -e /var/log/btmp ]; then
 	>/var/log/btmp
 	chmod 600 /var/log/btmp

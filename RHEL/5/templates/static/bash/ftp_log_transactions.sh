@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ -e /etc/xinetd.d/gssftp ]; then
 	if [ "$(grep server_args /etc/xinetd.d/gssftp | grep -c " -l")" = "0" ]; then
 		sed -i "/server_args/s/$/ -l/" /etc/xinetd.d/gssftp

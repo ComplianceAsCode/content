@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 # Generate a device file baseline
 find / -type b -o -type c 2>/dev/null | sort  > /var/log/device-file-list
 chmod 640 /var/log/device-file-list

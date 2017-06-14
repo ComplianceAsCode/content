@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 SYS_USER=$(cat /etc/passwd | while read entry; do if [ "$(echo ${entry} | cut -d: -f3)" -lt "500" ]; then echo ${entry} | cut -d: -f1 ; fi; done)
 if [ "$(rpm -q krb5-workstation &>/dev/null; echo $?)" = "0" ]; then
 	if [ ! -e /etc/ftpusers ]; then

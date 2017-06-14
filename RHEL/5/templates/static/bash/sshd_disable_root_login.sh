@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 grep -q ^PermitRootLogin /etc/ssh/sshd_config && \
   sed -i "s/PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
 if ! [ $? -eq 0 ]; then

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 #
 # Set runtime for net.ipv6.conf.all.accept_redirects
 #

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ -e /etc/audit/auditd.conf ]; then
 	AUDITD_CONF_FILE="/etc/audit/auditd.conf"
 elif [ -e /etc/auditd.conf ]; then

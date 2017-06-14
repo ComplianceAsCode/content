@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 # Generate a sgid file baseline
 find / -perm -2000 -type f  2>/dev/null | sort > /var/log/sgid-file-list
 chmod 640 /var/log/sgid-file-list

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ -e /etc/audit/audit.rules ]; then
 	AUDIT_RULES_FILE="/etc/audit/audit.rules"
 elif [ -e /etc/audit.rules ]; then

@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 /sbin/sysctl -q -n -w kernel.exec-shield=1
 if grep --silent ^kernel.exec-shield /etc/sysctl.conf ; then
 	sed -i 's/^kernel.exec-shield.*/kernel.exec-shield = 1/g' /etc/sysctl.conf

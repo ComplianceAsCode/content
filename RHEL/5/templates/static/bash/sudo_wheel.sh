@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ "$(grep -c '#.*auth.*required.*pam_wheel.so' /etc/pam.d/su)" != "0" ]; then
 	sed -i '/auth.*required.*pam_wheel.so/s/#//g' /etc/pam.d/su
 else

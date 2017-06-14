@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 . /usr/share/scap-security-guide/remediation_functions
 populate gui_login_banner_text
 

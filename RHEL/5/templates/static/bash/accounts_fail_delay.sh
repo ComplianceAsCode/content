@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ $(grep -c ^FAIL_DELAY /etc/login.defs) != 0 ]; then
 	sed -i 's/^FAIL_DELAY.*[0-9]*/FAIL_DELAY 4/' /etc/login.defs
 else

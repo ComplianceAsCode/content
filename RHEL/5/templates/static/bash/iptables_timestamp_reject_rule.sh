@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [ "$(egrep -c '(--icmp-type 14|timestamp-reply) -j DROP')" = "0" ]; then
 	/sbin/iptables -I INPUT -p ICMP --icmp-type timestamp-reply -j DROP
 fi

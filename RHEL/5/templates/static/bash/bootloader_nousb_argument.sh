@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 USB_KEYBOARD=$(grep 'Product=' /proc/bus/usb/devices 2>/dev/null| egrep -ic '(ps2 to usb adapter|keyboard|kvm|sc reader)')
 if [ "${USB_KEYBOARD}" = "0" ]; then
 	sed -i '/^[ |\t]*kernel/s/$/ nousb/' /boot/grub/grub.conf

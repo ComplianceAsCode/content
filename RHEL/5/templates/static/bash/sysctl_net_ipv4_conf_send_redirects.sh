@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 /sbin/sysctl -q -n -w net.ipv4.conf.all.send_redirects=0
 /sbin/sysctl -q -n -w net.ipv4.conf.default.send_redirects=0
 

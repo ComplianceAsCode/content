@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 if [[ "`uname -r`" != "2.6.9"* ]]; then
 	/sbin/sysctl -q -n -w kernel.randomize_va_space=1
 	if grep --silent ^kernel.randomize_va_space /etc/sysctl.conf ; then

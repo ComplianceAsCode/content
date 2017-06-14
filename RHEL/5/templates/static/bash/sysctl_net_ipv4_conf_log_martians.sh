@@ -1,3 +1,4 @@
+# platform = Red Hat Enterprise Linux 5
 /sbin/sysctl -q -n -w net.ipv4.conf.all.log_martians=1
 /sbin/sysctl -q -n -w net.ipv4.conf.default.log_martians=1
 
