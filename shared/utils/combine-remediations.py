@@ -392,7 +392,6 @@ def main():
 
     remediation_functions = get_available_remediation_functions(args.build_dir)
 
-    config = {}
     included_fixes_count = 0
     for fixdir in args.fixdirs:
         try:
@@ -404,6 +403,7 @@ def main():
                 fixname = os.path.splitext(filename)[0]
 
                 mod_file = ""
+                config = {}
                 with open(os.path.join(fixdir, filename), 'r') as fix_file:
                     # Assignment automatically escapes shell characters for XML
                     for line in fix_file.readlines():
