@@ -1,3 +1,4 @@
+# platform = Webmin
 . /usr/share/scap-security-guide/remediation_functions
 populate var_webmin_module_useradmin_accounts_min
 

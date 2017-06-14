@@ -1,3 +1,4 @@
+# platform = Webmin
 if [ "$(grep -c '^ssl=' /etc/webmin/miniserv.conf)" = "0" ]; then
 	echo "ssl=1" >> /etc/webmin/miniserv.conf
 else

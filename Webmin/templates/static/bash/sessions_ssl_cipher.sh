@@ -1,3 +1,4 @@
+# platform = Webmin
 if [ "$(grep -c no_ssl3 /usr/libexec/webmin/miniserv.pl)" = "0" ]; then
 	if [ "$(grep -c '^ssl_cipher_list=' /etc/webmin/miniserv.conf)" = "0" ]; then
 		echo 'ssl_cipher_list=ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:+TLSv1.2:+TLSv1:!MD5:!SSLv2:!SSLv3:!ADH:!aNULL:!eNULL:!NULL:!DH:!EDH:!AESGCM' >> /etc/webmin/miniserv.conf
