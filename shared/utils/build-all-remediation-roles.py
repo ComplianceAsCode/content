@@ -64,6 +64,8 @@ def generate_role_for_input_content(input_content, benchmark_id, profile_id, tem
     """
 
     args = [OSCAP_PATH, "xccdf", "generate", "fix"]
+    # avoid validating the input over and over again for every profile
+    args.append("--skip-valid")
     if benchmark_id != "":
         args.extend(["--benchmark-id", benchmark_id])
     if profile_id != "":
