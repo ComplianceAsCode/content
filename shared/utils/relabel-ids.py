@@ -129,7 +129,7 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
                     sys.exit(1)
 
 
-def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree):
+def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree, indexed_oval_defs):
     # Ensure all OVAL checks referenced by XCCDF are implemented in OVAL file
     # Drop the reference from XCCDF to OVAL definition if:
     # * Particular OVAL definition isn't present in OVAL file,
@@ -146,13 +146,7 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
             continue
 
         # Search OVAL ID in OVAL document
-        ovalid = None
-        for el in ovaltree.findall(".//{%s}definition" % oval_ns):
-            if el.get("id") != xccdfid:
-                continue
-            ovalid = el
-            break
-
+        ovalid = indexed_oval_defs.get(xccdfid)
         if ovalid is not None:
             # The OVAL check was found, we can continue
             continue
@@ -194,7 +188,7 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
                          % xccdfid)
         rule.remove(check)
 
-def drop_oval_checks_extending_non_existing_checks(ovaltree):
+def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
     # Incomplete OVAL checks are as useful as non existing checks
     # Here we check if all extend_definition refs from a definition exists in local OVAL file
     #
@@ -208,12 +202,7 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree):
             extdefinitionref = extdefinition.get("definition_ref")
 
             # Search the OVAL tree for a definition with the referred ID
-            referreddefinition = None
-            for el in ovaltree.findall(".//{%s}definition" % (oval_ns)):
-                if el.get("id") != extdefinitionref:
-                    continue
-                referreddefinition = el
-                break
+            referreddefinition = indexed_oval_defs.get(extdefinitionref)
 
             if referreddefinition is None:
                 # There is no oval satisfying the extend_definition referal
@@ -257,6 +246,12 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
             'binary' :  'string'
         }
 
+        indexed_xccdf_values = {}
+        for xccdf_value in xccdftree.findall(".//{%s}Value" % (xccdf_ns)):
+            xccdf_id = xccdf_value.get("id")
+            assert(xccdf_id is not None)
+            indexed_xccdf_values[xccdf_id] = xccdf_value
+
         # Loop through all <external_variables> in the OVAL document
         ovalextvars = ovaltree.findall(".//{%s}external_variable" % oval_ns)
         if ovalextvars is not None:
@@ -272,12 +267,7 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
                     ovalvartype = ovalextvar.get('datatype')
 
                 # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
-                xccdfvar = None
-                for el in xccdftree.findall(".//{%s}Value" % (xccdf_ns)):
-                    if el.get("id") != ovalvarid:
-                        continue
-                    xccdfvar = el
-                    break
+                xccdfvar = indexed_xccdf_values.get(ovalvarid)
 
                 if xccdfvar is not None:
                     # Verify the found value has 'type' attribute set
@@ -405,7 +395,14 @@ def main():
     if ovalfile:
         ovaltree = parse_xml_file(ovalfile)
 
-        drop_oval_checks_extending_non_existing_checks(ovaltree)
+        indexed_oval_defs = {}
+        for oval_def in ovaltree.findall(".//{%s}definition" % oval_ns):
+            oval_id = oval_def.get("id")
+            assert(oval_id is not None)
+            indexed_oval_defs[oval_id] = oval_def
+
+        drop_oval_checks_extending_non_existing_checks(ovaltree,
+                                                       indexed_oval_defs)
 
         # Add new <reference source="CCE" ref_id="CCE-ID" /> element to those OVAL
         # checks having CCE ID already assigned in XCCDF for particular rule.
@@ -422,7 +419,8 @@ def main():
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
-        ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree)
+        ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
+            xccdftree, ovaltree, indexed_oval_defs)
 
         # Verify the XCCDF to OVAL datatype export matching constraints
         # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1089
