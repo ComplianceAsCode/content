@@ -13,27 +13,8 @@
       </description>
     </metadata>
     <criteria operator="OR" comment="Conditions for prelinking disabled are satisfied">
-
-      <!-- Part for testing RHEL-6 system -->
-      <!-- On RHEL6 system the prelink RPM package is installed by default -->
-      <criteria operator="AND" comment="System is RHEL6 with prelinking disabled">
-        <extend_definition comment="Installed OS is RHEL6" definition_ref="installed_OS_is_rhel6" />
-        <criterion comment="Prelinking is disabled" test_ref="test_prelinking_disabled" />
-      </criteria>
-
-      <!-- Part for testing RHEL-7 or Fedora system -->
-      <!-- On RHEL7 and Fedora systems the prelink RPM package is *not* installed by default -->
-      <criteria operator="AND" comment="System is RHEL7 or Fedora and prelink RPM is not installed or prelinking is disabled">
-        <criteria operator="OR" comment="System is RHEL7 or Fedora">
-          <extend_definition comment="Installed OS is RHEL7" definition_ref="installed_OS_is_rhel7" />
-          <extend_definition comment="Installed OS is Fedora" definition_ref="installed_OS_is_fedora" />
-        </criteria>
-        <criteria operator="OR" comment="prelink RPM package not installed or prelinking disabled">
-          <extend_definition comment="prelink RPM package not installed" definition_ref="package_prelink_removed" />
-          <criterion comment="Prelinking is disabled" test_ref="test_prelinking_disabled" />
-        </criteria>
-      </criteria>
-
+      <extend_definition comment="prelink RPM package not installed" definition_ref="package_prelink_removed" />
+      <criterion comment="Prelinking is disabled" test_ref="test_prelinking_disabled" />
     </criteria>
   </definition>
 
