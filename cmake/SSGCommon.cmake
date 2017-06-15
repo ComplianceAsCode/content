@@ -681,17 +681,17 @@ endmacro()
 
 macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        OUTPUT "${CMAKE_BINARY_DIR}/roles/all-roles-${PRODUCT}-${EXTENSION}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/roles"
         COMMAND "${SSG_SHARED_UTILS}/build-all-remediation-roles.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/roles" --template "${TEMPLATE}" --extension "${EXTENSION}" build
-        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/roles/all-roles-${PRODUCT}-${EXTENSION}"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMENT "[${PRODUCT}-roles] generating ${TEMPLATE} remediation roles for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
-        generate-ssg-${PRODUCT}-role.${EXTENSION}
-        DEPENDS "${CMAKE_BINARY_DIR}/roles/ssg-${PRODUCT}-role.${EXTENSION}"
+        generate-all-roles-${PRODUCT}-${EXTENSION}
+        DEPENDS "${CMAKE_BINARY_DIR}/roles/all-roles-${PRODUCT}-${EXTENSION}"
     )
 endmacro()
 
@@ -761,8 +761,8 @@ macro(ssg_build_product PRODUCT)
 
     add_custom_target(
         ${PRODUCT}-roles
-        DEPENDS generate-ssg-${PRODUCT}-role.yml
-        DEPENDS generate-ssg-${PRODUCT}-role.sh
+        DEPENDS generate-all-roles-${PRODUCT}-yml
+        DEPENDS generate-all-roles-${PRODUCT}-sh
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-roles)
 
@@ -908,8 +908,8 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     add_custom_target(
         ${DERIVATIVE}-roles
-        DEPENDS generate-ssg-${DERIVATIVE}-role.yml
-        DEPENDS generate-ssg-${DERIVATIVE}-role.sh
+        DEPENDS generate-all-roles-${DERIVATIVE}-yml
+        DEPENDS generate-all-roles-${DERIVATIVE}-sh
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-roles)
 
