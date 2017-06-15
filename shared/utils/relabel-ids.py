@@ -139,6 +139,12 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
     # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
     # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
 
+    indexed_oval_defs = {}
+    for oval_def in ovaltree.findall(".//{%s}definition" % oval_ns):
+        oval_id = oval_def.get("id")
+        assert(oval_id is not None)
+        indexed_oval_defs[oval_id] = oval_def
+
     for rule in xccdftree.findall(".//{%s}Rule" % xccdf_ns):
         xccdfid = rule.get("id")
         if xccdfid is None:
@@ -146,13 +152,7 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
             continue
 
         # Search OVAL ID in OVAL document
-        ovalid = None
-        for el in ovaltree.findall(".//{%s}definition" % oval_ns):
-            if el.get("id") != xccdfid:
-                continue
-            ovalid = el
-            break
-
+        ovalid = indexed_oval_defs.get(xccdfid)
         if ovalid is not None:
             # The OVAL check was found, we can continue
             continue
