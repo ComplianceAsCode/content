@@ -22,7 +22,7 @@
     <linux:object object_ref="obj_oracle_java" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="obj_oracle_java" version="1">
-    <linux:name>jre</linux:name>
+    <linux:name datatype="string" operation="pattern match">^jre.*$</linux:name>
   </linux:rpminfo_object>
 
   <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Oracle JRE from Red Hat is installed" id="test_oracle_java_rhel" version="1">
