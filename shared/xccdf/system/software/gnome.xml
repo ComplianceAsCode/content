@@ -413,10 +413,10 @@ of the information system but does not want to logout because of the temporary n
 <title>Set GNOME3 Screensaver Lock Delay After Activation Period</title>
 <description>
 To activate the locking delay of the screensaver in the GNOME3 desktop when 
-the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 0</tt> in
+the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 5</tt> in
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
 <pre>[org/gnome/desktop/screensaver]
-lock-delay=uint32 0
+lock-delay=uint32 5
 </pre>
 Once the setting has been added, add a lock to
 <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
@@ -424,10 +424,10 @@ For example:
 <pre>/org/gnome/desktop/screensaver/lock-delay</pre>
 After the settings have been set, run <tt>dconf update</tt>.
 </description>
-<ocil clause="the screensaver lock delay has not been set or configured correctly">
+<ocil clause="the screensaver lock delay is missing, or is set to a value greater than 5">
 To check that the screen locks immediately when activated, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
-If properly configured, the output should be <tt>'uint32 0'</tt>.
+If properly configured, the output should be <tt>'uint32 5'</tt>.
 <br /><br/>
 To ensure that users cannot change how long until the the screensaver locks, run the following:
 <pre>$ grep lock-delay /etc/dconf/db/local.d/locks/*</pre>
