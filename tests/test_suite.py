@@ -19,25 +19,31 @@ parser = argparse.ArgumentParser()
 common_parser = argparse.ArgumentParser(add_help=False)
 common_parser.add_argument("--hypervisor",
                            dest="hypervisor",
-                           metavar="qemu:///HYPERVISOR",
+                           metavar="HYPERVISOR",
                            default="qemu:///session",
                            help="libvirt hypervisor")
 common_parser.add_argument("--domain",
                            dest="domain_name",
                            metavar="DOMAIN",
-                           default=None,
-                           help="libvirt domain used as test bed")
+                           required=True,
+                           help=("Specify libvirt domain to be used as a test "
+                                 "bed. This domain will get remediations "
+                                 "applied in it, possibly making system unusable "
+                                 "for a moment. Snapshot will be reverted "
+                                 "immediately afterwards. "
+                                 "Domain will be returned without changes"))
 common_parser.add_argument("--datastream",
                            dest="datastream",
                            metavar="DATASTREAM",
                            default=("/usr/share/xml/scap/ssg/content/"
                                     "ssg-rhel7-ds.xml"),
-                           help="Source DataStream to be tested")
+                           help=("Path to the Source DataStream on this machine"
+                                 " which is going to be tested"))
 common_parser.add_argument("--benchmark-id",
                            dest="benchmark_id",
                            metavar="BENCHMARK",
                            default="xccdf_org.ssgproject.content_benchmark_RHEL-7",
-                           help="Benchmark to be used")
+                           help="Benchmark in the Source DataStream to be used")
 common_parser.add_argument("--loglevel",
                            dest="loglevel",
                            metavar="LOGLEVEL",
@@ -65,11 +71,13 @@ parser_rule = subparsers.add_parser('rule',
 parser_rule.set_defaults(func=lib.rule.perform_rule_check)
 
 parser_profile.add_argument("target",
+                            nargs="?",
                             metavar="DSPROFILE",
                             default="xccdf_org.ssgproject.content_profile_common",
                             help="Profile to be tested")
 
 parser_rule.add_argument("target",
+                         nargs="?",
                          metavar="RULE",
                          default="ALL",
                          help="Rule to be tested")
