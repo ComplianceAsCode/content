@@ -87,60 +87,6 @@ def main():
     # parse oval file
     ovaltree = parse_xml_file(ovalfile)
 
-    # extract inventory definitions
-    # making (dubious) assumption that all inventory defs are CPE
-    defs = ovaltree.find("./{%s}definitions" % oval_ns)
-    inventory_defs = []
-    for el in defs.findall(".//{%s}definition" % oval_ns):
-        if el.get("class") != "inventory":
-            continue
-        inventory_defs.append(el)
-
-    # Keep the list of 'id' attributes from untranslated inventory def elements
-    inventory_defs_id_attrs = []
-
-    defs.clear()
-    [defs.append(inventory_def) for inventory_def in inventory_defs]
-    # Fill in that list
-    inventory_defs_id_attrs = \
-        [inventory_def.get("id") for inventory_def in inventory_defs]
-
-    tests = ovaltree.find("./{%s}tests" % oval_ns)
-    cpe_tests = extract_referred_nodes(defs, tests, "test_ref")
-    tests.clear()
-    [tests.append(cpe_test) for cpe_test in cpe_tests]
-
-    states = ovaltree.find("./{%s}states" % oval_ns)
-    cpe_states = extract_referred_nodes(tests, states, "state_ref")
-    states.clear()
-    [states.append(cpe_state) for cpe_state in cpe_states]
-
-    objects = ovaltree.find("./{%s}objects" % oval_ns)
-    cpe_objects = extract_referred_nodes(tests, objects, "object_ref")
-    env_objects = extract_referred_nodes(objects, objects, "id")
-    objects.clear()
-    [objects.append(cpe_object) for cpe_object in cpe_objects]
-
-    # if any subelements in an object contain var_ref, return it here
-    local_var_ref = extract_subelement(objects, 'var_ref')
-
-    variables = ovaltree.find("./{%s}variables" % oval_ns)
-    if variables is not None:
-        cpe_variables = extract_referred_nodes(tests, variables, "var_ref")
-        local_variables = extract_referred_nodes(variables, variables, "id")
-        if cpe_variables:
-            variables.clear()
-            [variables.append(cpe_variable) for cpe_variable in cpe_variables]
-        elif local_var_ref:
-            for local_var in local_variables:
-                if local_var.get('id') == local_var_ref:
-                    variables.clear()
-                    variables.append(local_var)
-                    env_obj = extract_env_obj(env_objects, local_var)
-                    objects.append(env_obj)
-        else:
-            ovaltree.remove(variables)
-
     # turn IDs into meaningless numbers
     translator = idtranslate.idtranslator(idname)
     ovaltree = translator.translate(ovaltree)
@@ -196,19 +142,6 @@ def main():
                 sys.stderr.write(error_msg)
                 # sys.exit(1)
         check.set("href", os.path.basename(newovalfile))
-
-        # Sanity check to verify if inventory check OVAL id is present in the
-        # list of known "id" attributes of inventory definitions. If not it
-        # means provided ovalfile (sys.argv[1]) doesn't contain this OVAL
-        # definition (it wasn't included due to <platform> tag restrictions)
-        # Therefore display an error and exit with failure, since otherwise
-        # we might end up creating invalid $(ID)-$(PROD)-cpe-oval.xml file
-        if check.text not in inventory_defs_id_attrs:
-            error_msg = "\n\tError: Can't locate \"%s\" definition in \"%s\". \
-            \n\tEnsure <platform> element is configured properly for \"%s\".  \
-            \n\tExiting..\n" % (check.text, ovalfile, check.text)
-            sys.stderr.write(error_msg)
-            # sys.exit(1)
 
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
