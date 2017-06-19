@@ -32,7 +32,17 @@ class MountOptionsGenerator(FilesGenerator):
                         "MOUNTPOINT":       mount_point,
                         "MOUNTOPTION":       re.sub(' ', ',', option),
                     },
-                    "./ansible/mount_options{0}.yml", point_id + '_' + option_id
+                    "./ansible/mount_option{0}.yml", point_id + '_' + option_id
+                )
+
+            elif target == "anaconda":
+                self.file_from_template(
+                    "./template_ANACONDA_mount_options",
+                    {
+                        "MOUNTPOINT":       mount_point,
+                        "MOUNTOPTION":       re.sub(' ', ',', option),
+                    },
+                    "./anaconda/mount_option{0}.anaconda", point_id + '_' + option_id
                 )
 
             elif target == "oval":
@@ -56,7 +66,7 @@ class MountOptionsGenerator(FilesGenerator):
                         "POINTID":     point_id,
                         "OPTIONID":      option_id,
                     },
-                    "./oval/mount_options{0}.xml", point_id + "_" + option_id
+                    "./oval/mount_option{0}.xml", point_id + "_" + option_id
                 )
             else:
                 raise UnknownTargetError(target)
