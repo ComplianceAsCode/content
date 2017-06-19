@@ -4,9 +4,13 @@ import os.path
 
 log = logging.getLogger('SSGTestSuite')
 __formatter = logging.Formatter('%(levelname)s - %(message)s')
-__console_handler = logging.StreamHandler()
-__console_handler.setFormatter(__formatter)
-log.addHandler(__console_handler)
+log.setLevel(logging.DEBUG)
+
+def add_console_logger(level):
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(__formatter)
+    console_handler.setLevel(level)
+    log.addHandler(console_handler)
 
 
 def add_logging_dir(_dirname):

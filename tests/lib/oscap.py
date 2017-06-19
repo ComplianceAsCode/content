@@ -10,7 +10,7 @@ import sys
 import lib.virt
 from lib.log import log
 
-CONTEXT_RETURN_CODES = {'pass': 0,
+_CONTEXT_RETURN_CODES = {'pass': 0,
                         'fail': 2,
                         'error': 1,
                         'notapplicable': 0,
@@ -86,22 +86,28 @@ def run_rule(domain_ip,
                            '{datastream}').format(**formatting))
     log.debug('Running ' + ' '.join(command))
 
+    success = True
     # check expected return code
-    expected_return_code = CONTEXT_RETURN_CODES[context]
+    expected_return_code = _CONTEXT_RETURN_CODES[context]
     try:
         output = subprocess.check_output(command, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError, e:
         if e.returncode != expected_return_code:
             log.error(('Command exited with return code {0}, '
-                       'instead of expected {1}').format(e.returncode,
-                                                         expected_return_code))
+                       'instead of expected {1} '
+                       'during stage {2}').format(e.returncode,
+                                                  expected_return_code,
+                                                  stage))
+            success = False
         output = e.output
     else:
         # success branch - command exited with return code 0
         if expected_return_code != 0:
             log.error(('Command exited with return code 0, '
-                       'instead of expected {0}').format(expected_return_code))
-    log.debug('Output:\n{0}'.format(output))
+                       'instead of expected {0} '
+                       'during stage {1}').format(expected_return_code,
+                                                  stage))
+            success = False
 
     # check expected result
     if (rule_id + ':' + context) in output:
@@ -109,5 +115,11 @@ def run_rule(domain_ip,
     elif (rule_id + ':') not in output:
         log.error(('Rule {0} has not been '
                    'evaluated! Wrong profile selected?').format(rule_id))
+        success = False
     else:
         log.error('Rule result should be {0}!'.format(expected_return_code))
+        success = False
+    if not success:
+        log.debug('Output:\n{0}'.format(output))
+
+    return success

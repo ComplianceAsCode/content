@@ -6,13 +6,44 @@ import os
 import os.path
 import re
 import shlex
+import string
 import subprocess
 import sys
+import xml.etree.cElementTree as ET
 
 import lib.oscap
 import lib.virt
 from lib.log import log
 from data import iterate_over_rules
+
+NS= {'xccdf':"http://checklists.nist.gov/xccdf/1.2"}
+
+def parse_parameters(script):
+    params = {}
+    with open(script, 'r') as script_file:
+        for parameter in ['profiles', 'templates']:
+            found = re.search('^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
+                              script_file.read(),
+                              re.MULTILINE)
+            if found is None:
+                continue
+            params[parameter] = string.split(found.group(1), ', ')
+    return params
+
+
+def get_viable_profiles(scenarios_profiles, datastream, benchmark):
+    valid_profiles = []
+    root = ET.parse(datastream).getroot()
+    benchmark_node = root.find("*//xccdf:Benchmark[@id='{0}']".format(benchmark), NS)
+    if benchmark_node is None:
+        log.error('Benchmark not found within DataStream')
+        return []
+    for ds_profile_element in benchmark_node.findall('xccdf:Profile', NS):
+        ds_profile = ds_profile_element.attrib['id']
+        for scen_profile in scenarios_profiles:
+            if scen_profile in ds_profile:
+                valid_profiles += [ds_profile]
+    return valid_profiles
 
 
 def send_scripts(rule_dir, domain_ip, *scripts_list):
@@ -99,6 +130,7 @@ def perform_rule_check(options):
                 scenarios += [script]
 
         for script in scenarios:
+            script_context = get_script_context(script)
             log.debug(('Using test script {0} '
                        'with context {1}').format(script, script_context))
             lib.virt.snapshots.create('script')
@@ -109,31 +141,39 @@ def perform_rule_check(options):
 
             if not apply_script(rule_dir, domain_ip, script):
                 log.error("Environment failed to prepare, skipping test")
-            lib.oscap.run_rule(domain_ip=domain_ip,
-                               profile=options.profile,
-                               stage="initial",
-                               datastream=options.datastream,
-                               benchmark_id=options.benchmark_id,
-                               rule_id=rule,
-                               context=script_context,
-                               remediation=False)
-            if script_context in ['fail', 'error']:
-                lib.oscap.run_rule(domain_ip=domain_ip,
-                                   profile=options.profile,
-                                   stage="remediation",
-                                   datastream=options.datastream,
-                                   benchmark_id=options.benchmark_id,
-                                   rule_id=rule,
-                                   context='fixed',
-                                   remediation=True)
-                lib.oscap.run_rule(domain_ip=domain_ip,
-                                   profile=options.profile,
-                                   stage="final",
-                                   datastream=options.datastream,
-                                   benchmark_id=options.benchmark_id,
-                                   rule_id=rule,
-                                   context='pass',
-                                   remediation=False)
+            script_params = parse_parameters(script_path)
+            for profile in get_viable_profiles(script_params['profiles'],
+                                               options.datastream,
+                                               options.benchmark_id):
+                log.info("Script {0} using profile {1}".format(script,
+                                                               profile))
+                if not lib.oscap.run_rule(domain_ip=domain_ip,
+                                          profile=profile,
+                                          stage="initial",
+                                          datastream=options.datastream,
+                                          benchmark_id=options.benchmark_id,
+                                          rule_id=rule,
+                                          context=script_context,
+                                          remediation=False):
+                    log.warning("Skipping to the next scenario")
+                    break
+                if script_context in ['fail', 'error']:
+                    lib.oscap.run_rule(domain_ip=domain_ip,
+                                       profile=profile,
+                                       stage="remediation",
+                                       datastream=options.datastream,
+                                       benchmark_id=options.benchmark_id,
+                                       rule_id=rule,
+                                       context='fixed',
+                                       remediation=True)
+                    lib.oscap.run_rule(domain_ip=domain_ip,
+                                       profile=profile,
+                                       stage="final",
+                                       datastream=options.datastream,
+                                       benchmark_id=options.benchmark_id,
+                                       rule_id=rule,
+                                       context='pass',
+                                       remediation=False)
             lib.virt.snapshots.revert()
     if not scanned_something:
         log.error("Rule {0} was not found".format(options.target))

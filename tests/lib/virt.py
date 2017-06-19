@@ -61,6 +61,7 @@ class SnapshotStack(object):
             self.domain.revertToSnapshot(snapshot)
             snapshot.delete()
             log.debug('Revert successful')
+        log.info('All snapshots reverted successfully')
 
 
 def determine_ip(domain):

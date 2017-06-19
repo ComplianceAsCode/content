@@ -47,7 +47,7 @@ common_parser.add_argument("--benchmark-id",
 common_parser.add_argument("--loglevel",
                            dest="loglevel",
                            metavar="LOGLEVEL",
-                           default="WARNING",
+                           default="INFO",
                            help="Default level of console output")
 common_parser.add_argument("--logdir",
                            dest="logdir",
@@ -81,14 +81,9 @@ parser_rule.add_argument("target",
                          metavar="RULE",
                          default="ALL",
                          help="Rule to be tested")
-parser_rule.add_argument("--profile",
-                         dest="profile",
-                         metavar="RULE",
-                         default="xccdf_org.ssgproject.content_profile_common",
-                         help="Rule to be tested")
 
 options = parser.parse_args()
-log.setLevel(options.loglevel)
+lib.log.add_console_logger(options.loglevel)
 # logging dir needs to be created based on other options
 # thus we have to postprocess it
 if options.logdir is None:
