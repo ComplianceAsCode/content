@@ -39,6 +39,9 @@ document for more info.
 
 Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
 
+## Build from the source
+Please see the [BUILD.md](BUILD.md) document for build instructions.
+
 ## Usage
 We assume you have installed SCAP Security Guide system-wide into a
 standard location as instructed in the previous section.
