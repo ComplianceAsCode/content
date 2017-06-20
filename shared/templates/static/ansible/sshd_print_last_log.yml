@@ -1,0 +1,9 @@
+# platform = multi_platform_rhel
+- name: "Print last log"
+  lineinfile:
+    create=yes
+    dest="/etc/ssh/sshd_config"
+    regexp="^PrintLastLog"
+    line="PrintLastLog yes"
+  tags:
+    @ANSIBLE_TAGS@
