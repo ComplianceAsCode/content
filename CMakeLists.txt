@@ -52,6 +52,7 @@ set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
 
 message("SCAP Security Guide ${SSG_VERSION}")
+message("(see ${CMAKE_SOURCE_DIR}/BUILD.md for build instructions)")
 message("")
 
 # TODO: refactor oscap detection into a find module
