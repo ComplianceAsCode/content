@@ -62,6 +62,7 @@ def run_rule(domain_ip,
              benchmark_id,
              rule_id,
              context,
+             script_name,
              remediation=False):
 
     formatting = {'domain_ip': domain_ip,
@@ -73,7 +74,8 @@ def run_rule(domain_ip,
 
     formatting['rem'] = "--remediate" if remediation else ""
 
-    report_path = os.path.join(log.log_dir, '{0}.html'.format(stage))
+    report_path = os.path.join(log.log_dir, '{0}-{1}.html'.format(script_name,
+                                                                  stage))
     formatting['report'] = report_path
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
@@ -117,9 +119,15 @@ def run_rule(domain_ip,
                    'evaluated! Wrong profile selected?').format(rule_id))
         success = False
     else:
-        log.error('Rule result should be {0}!'.format(expected_return_code))
+        log.error('Rule result should be {0}!'.format(context))
         success = False
+
     if not success:
         log.debug('Output:\n{0}'.format(output))
+
+    if success:
+        # to save space, we are going to remove the report, as we
+        # have not encountered any anomalies
+        os.remove(report_path)
 
     return success

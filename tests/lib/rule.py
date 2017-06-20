@@ -154,6 +154,7 @@ def perform_rule_check(options):
                                           benchmark_id=options.benchmark_id,
                                           rule_id=rule,
                                           context=script_context,
+                                          script_name=script,
                                           remediation=False):
                     log.warning("Skipping to the next scenario")
                     break
@@ -165,15 +166,8 @@ def perform_rule_check(options):
                                        benchmark_id=options.benchmark_id,
                                        rule_id=rule,
                                        context='fixed',
+                                       script_name=script,
                                        remediation=True)
-                    lib.oscap.run_rule(domain_ip=domain_ip,
-                                       profile=profile,
-                                       stage="final",
-                                       datastream=options.datastream,
-                                       benchmark_id=options.benchmark_id,
-                                       rule_id=rule,
-                                       context='pass',
-                                       remediation=False)
             lib.virt.snapshots.revert()
     if not scanned_something:
         log.error("Rule {0} was not found".format(options.target))
