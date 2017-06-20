@@ -60,6 +60,7 @@ message("")
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
        "$ cd scap-security-guide\n"
+       "$ rm CMakeCache.txt\n"
        "$ cd build\n"
        "$ cmake ../\n"
        "$ make -j4"
