@@ -115,20 +115,22 @@ def run_rule(domain_ip,
 
     # check expected result
     try:
-        actual_result = re.search('{0}:(.*)$'.format(rule_id),
-                                  output,
-                                  re.MULTILINE).group(1)
+        actual_results = re.findall('{0}:(.*)$'.format(rule_id),
+                                    output,
+                                    re.MULTILINE)
     except IndexError:
         log.error(('Rule {0} has not been '
                    'evaluated! Wrong profile selected?').format(rule_id))
         success = False
     else:
-        if actual_result == context:
-            log.debug('Rule {0} behaves in expected way!'.format(rule_id))
+        if context in actual_results:
+            # this is because of remediation runs, which reports two
+            # results - error/fail or error/fixed - usually
+            log.debug('Rule {0} results in expected way!'.format(rule_id))
         else:
             log.error(('Rule result should have been '
                        '"{0}", but is "{1}"!').format(context,
-                                                      actual_result))
+                                                      ', '.join(actual_results)))
             success = False
 
     if not success:
