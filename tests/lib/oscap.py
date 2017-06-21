@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import argparse
 import os.path
+import re
 import shlex
 import subprocess
 import sys
@@ -74,8 +75,9 @@ def run_rule(domain_ip,
 
     formatting['rem'] = "--remediate" if remediation else ""
 
-    report_path = os.path.join(log.log_dir, '{0}-{1}.html'.format(script_name,
-                                                                  stage))
+    report_path = os.path.join(log.log_dir, '{0}-{1}-{2}.html'.format(rule_id,
+                                                                      script_name,
+                                                                      stage))
     formatting['report'] = report_path
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
@@ -95,7 +97,7 @@ def run_rule(domain_ip,
         output = subprocess.check_output(command, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError, e:
         if e.returncode != expected_return_code:
-            log.error(('Command exited with return code {0}, '
+            log.error(('Scan has exited with return code {0}, '
                        'instead of expected {1} '
                        'during stage {2}').format(e.returncode,
                                                   expected_return_code,
@@ -105,22 +107,29 @@ def run_rule(domain_ip,
     else:
         # success branch - command exited with return code 0
         if expected_return_code != 0:
-            log.error(('Command exited with return code 0, '
+            log.error(('Scan has exited with return code 0, '
                        'instead of expected {0} '
                        'during stage {1}').format(expected_return_code,
                                                   stage))
             success = False
 
     # check expected result
-    if (rule_id + ':' + context) in output:
-        log.debug('Rule {0} behaves in expected way!'.format(rule_id))
-    elif (rule_id + ':') not in output:
+    try:
+        actual_result = re.search('{0}:(.*)$'.format(rule_id),
+                                  output,
+                                  re.MULTILINE).group(1)
+    except IndexError:
         log.error(('Rule {0} has not been '
                    'evaluated! Wrong profile selected?').format(rule_id))
         success = False
     else:
-        log.error('Rule result should be {0}!'.format(context))
-        success = False
+        if actual_result == context:
+            log.debug('Rule {0} behaves in expected way!'.format(rule_id))
+        else:
+            log.error(('Rule result should have been '
+                       '"{0}", but is "{1}"!').format(context,
+                                                      actual_result))
+            success = False
 
     if not success:
         log.debug('Output:\n{0}'.format(output))

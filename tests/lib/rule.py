@@ -70,13 +70,7 @@ def apply_script(rule_dir, domain_ip, script):
     rule_name = os.path.basename(rule_dir)
     log_file_name = os.path.join(log.log_dir, rule_name + ".prescripts.log")
 
-    command = "ssh {0} chmod +x {1}".format(machine, script_remote_path)
-    with open(log_file_name, 'a') as log_file:
-        subprocess.check_call(shlex.split(command),
-                              stdout=log_file,
-                              stderr=subprocess.STDOUT)
-
-    command = "ssh {0} {1}".format(machine, script_remote_path)
+    command = "ssh {0} bash -x {1}".format(machine, script_remote_path)
     with open(log_file_name, 'a') as log_file:
         try:
             subprocess.check_call(shlex.split(command),
@@ -111,7 +105,7 @@ def perform_rule_check(options):
         if options.target == 'ALL':
             # we want to have them all
             pass
-        elif options.target not in rule:
+        elif options.target not in rule_dir:
             # we are not ALL, and not passing this criterion ... skipping
             continue
         log.info(rule)
@@ -170,4 +164,4 @@ def perform_rule_check(options):
                                        remediation=True)
             lib.virt.snapshots.revert()
     if not scanned_something:
-        log.error("Rule {0} was not found".format(options.target))
+        log.error("Rule {0} has not been found".format(options.target))
