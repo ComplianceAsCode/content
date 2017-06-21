@@ -148,7 +148,7 @@ should not be able to execute SUID or SGID binaries from temporary storage parti
 <description>The <tt>nosuid</tt> mount option can be used to prevent
 execution of setuid programs in <tt>/home</tt>. The SUID and SGID permissions
 should not be required in these user data directories.
-<mount-desc-macro option="nosuid" part="/tmp" />
+<mount-desc-macro option="nosuid" part="/home" />
 </description>
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from user home directory partitions.</rationale>
