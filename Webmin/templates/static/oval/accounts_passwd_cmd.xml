@@ -11,8 +11,6 @@
     </metadata>
     <!-- passwd_cmd=/usr/bin/passwd is configured in /etc/webmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="passwd is configured for changing passwords."
 	  test_ref="test_webmin_accounts_passwd_cmd" />
    </criteria>

@@ -10,8 +10,6 @@
     </metadata>
     <!-- homedir_perms is configured in /etc/webmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Set default permissions for new user home directories."
 	  test_ref="test_webmin_module_useradmin_accounts_home_perms" />
    </criteria>

@@ -10,8 +10,6 @@
     </metadata>
     <!-- default_min is configured in /etc/webmin/useradmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Configure new accounts to prevent changing the password more than once per number of days."
 	  test_ref="test_webmin_module_useradmin_accounts_min" />
    </criteria>

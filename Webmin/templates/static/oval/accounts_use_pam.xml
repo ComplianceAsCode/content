@@ -10,8 +10,6 @@
     </metadata>
     <!-- no_pam=0 is configured in /etc/webmin/miniserv.conf ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="perl-Authen-PAM is installed."
 	  test_ref="test_webmin_perl_pam" />
 	  <criterion comment="Require PAM to be used."

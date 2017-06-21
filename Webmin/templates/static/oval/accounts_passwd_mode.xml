@@ -10,8 +10,6 @@
     </metadata>
     <!-- passwd_mode=2 is configured in /etc/webmin/miniserv.conf ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Changing expired passwords is enabled."
 	  test_ref="test_webmin_accounts_passwd_mode" />
    </criteria>

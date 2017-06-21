@@ -8,8 +8,6 @@
       <description>Configure approved webmin port.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <!-- port is configured in /etc/webmin/miniserv.conf ... -->
 	  <criterion comment="Required port is configured for use."
 	  test_ref="test_webmin_sessions_port" />
