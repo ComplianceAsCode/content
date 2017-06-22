@@ -10,7 +10,8 @@ import re
 from template_common import FilesGenerator, UnknownTargetError
 
 class AuditRulesDacModificationGenerator(FilesGenerator):
-    FilesGenerator.delimiter = '&'
+    def __init__(self):
+        self.delimiter = '&'
 
     def generate(self, target, audit_info):
         # the csv file contains lines that match the following layout:
