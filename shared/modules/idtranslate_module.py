@@ -78,7 +78,7 @@ def tagname_to_abbrev(tag):
     sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
 
 
-class idtranslator(object):
+class IDTranslator(object):
     """This class is designed to handle the mapping of meaningful, human-readable
     names to IDs in the formats required by the SCAP checking systems, such as
     OVAL and OCIL."""
