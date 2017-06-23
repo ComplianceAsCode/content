@@ -7,7 +7,19 @@ import argparse
 
 templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 sys.path.append(templates_dir)
-from template_common import ExitCodes
+from template_common import ExitCodes, ActionType
+
+from create_accounts_password import AccountsPasswordGenerator
+from create_kernel_modules_disabled import KernelModulesDisabledGenerator
+from create_mount_options import MountOptionsGenerator
+from create_package_installed import PackageInstalledGenerator
+from create_package_removed import PackageRemovedGenerator
+from create_permission import PermissionGenerator
+from create_selinux_booleans import SEBoolGenerator
+from create_services_disabled import ServiceDisabledGenerator
+from create_services_enabled import ServiceEnabledGenerator
+from create_sysctl import SysctlGenerator
+from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
 
 class Builder(object):
     def __init__(self):
@@ -16,17 +28,17 @@ class Builder(object):
         self.ssg_shared = ""
 
         self.script_dict = {
-            "sysctl_values.csv":            "create_sysctl.py",
-            "services_disabled.csv":        "create_services_disabled.py",
-            "services_enabled.csv":         "create_services_enabled.py",
-            "packages_installed.csv":       "create_package_installed.py",
-            "packages_removed.csv":         "create_package_removed.py",
-            "kernel_modules_disabled.csv":  "create_kernel_modules_disabled.py",
-            "file_dir_permissions.csv":     "create_permission.py",
-            "accounts_password.csv":        "create_accounts_password.py",
-            "mount_options.csv":            "create_mount_options.py",
-            "selinux_booleans.csv":         "create_selinux_booleans.py",
-            "audit_rules_dac_modification.csv":         "create_audit_rules_dac_modification.py",
+            "sysctl_values.csv":                SysctlGenerator(),
+            "services_disabled.csv":            ServiceDisabledGenerator(),
+            "services_enabled.csv":             ServiceEnabledGenerator(),
+            "packages_installed.csv":           PackageInstalledGenerator(),
+            "packages_removed.csv":             PackageRemovedGenerator(),
+            "kernel_modules_disabled.csv":      KernelModulesDisabledGenerator(),
+            "file_dir_permissions.csv":         PermissionGenerator(),
+            "accounts_password.csv":            AccountsPasswordGenerator(),
+            "mount_options.csv":                MountOptionsGenerator(),
+            "selinux_booleans.csv":             SEBoolGenerator(),
+            "audit_rules_dac_modification.csv": AuditRulesDacModificationGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
@@ -69,10 +81,9 @@ class Builder(object):
             self._set_current_oval(oval)
 
             for csv_filename in self._get_csv_list():
-                script = self._get_script_for_csv(csv_filename)
-
+                generator = self._get_generator_for_csv(csv_filename)
                 csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                self._run_script(script, csv_filepath)
+                self._generator_build(generator, csv_filepath)
 
     def list_inputs(self):
         for file_ in self.get_input_list():
@@ -91,16 +102,13 @@ class Builder(object):
             csv_dir = self._get_csv_dir()
             for csv in self._get_csv_list():
                 csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath = self._get_script_for_csv(csv)
+                generator = self._get_generator_for_csv(csv)
 
                 list_.append(csv_filepath)
-                list_.append(script_filepath)
 
-                for lang in self.langs:
-                    files_list = self._read_io_files_list(
-                        script_filepath, csv_filepath, lang, "list-inputs"
-                    )
-                    list_.extend(files_list)
+                list_.extend(self._generator_list_inputs(
+                    generator, csv_filepath)
+                )
 
         return self._deduplicate(list_)
 
@@ -113,13 +121,11 @@ class Builder(object):
             csv_dir = self._get_csv_dir()
             for csv in self._get_csv_list():
                 csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath = self._get_script_for_csv(csv)
+                generator = self._get_generator_for_csv(csv)
 
-                for lang in self.langs:
-                    files_list = self._read_io_files_list(
-                        script_filepath, csv_filepath, lang, "list-outputs"
-                    )
-                    list_.extend(files_list)
+                list_.extend(self._generator_list_outputs(
+                    generator, csv_filepath)
+                )
 
         return self._deduplicate(list_)
 
@@ -159,71 +165,53 @@ class Builder(object):
 
         return csvs
 
-    def _get_script_for_csv(self, csv_filename):
+    def _get_generator_for_csv(self, csv_filename):
         try:
-            script_name = self.script_dict[csv_filename]
-            full_path = os.path.join(self.shared_templates_dir, script_name)
-            return full_path
+            return self.script_dict[csv_filename]
 
         except KeyError:
             sys.stderr.write(
-                "Cannot find associated build script for {0}\n"
+                "Cannot find the associated generator class for {0}\n"
                 .format(csv_filename)
             )
-            sys.exit(1)
+            #sys.exit(1)
 
     def _output_dir_for_lang(self, lang):
         return os.path.join(self.output_dir, lang)
 
-    def _run_script(self, script, csv_filepath):
+    def _generator_build(self, generator, csv_filepath):
+        generator.reset()
+        generator.output_dir = self.output_dir
+        generator.action = ActionType.BUILD
+        generator.product_input_dir = self._get_template_dir()
+        generator.shared_dir = self.ssg_shared
+
         for lang in self.langs:
-            sp = self._create_subprocess(
-                script=script, csv=csv_filepath, lang=lang, action="build",
-                print_args=True
-            )
-            self._subprocess_check(sp)
+            generator.csv_map(csv_filepath, language=lang)
 
-    def _read_io_files_list(self, script, csv, lang, action):
-        sp = self._create_subprocess(script, csv, lang, action)
-        return self._get_list_from_subprocess(sp)
+    def _generator_list_inputs(self, generator, csv_filepath):
+        generator.reset()
+        generator.output_dir = self.output_dir
+        generator.action = ActionType.INPUT
+        generator.product_input_dir = self._get_template_dir()
+        generator.shared_dir = self.ssg_shared
 
-    def _create_subprocess(self, script, csv, lang, action, print_args=False):
-        args= [
-            "python", script,
-            "--csv", csv,
-            "--lang", lang,
-            "--input", self._get_template_dir(),
-            "--shared", self.ssg_shared,
-            "--output", self.output_dir,
-            action
-        ]
-        if print_args:
-            sys.stderr.write(" ".join(args) + "\n")
-        return subprocess.Popen(
-                args,
-                stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE
-        )
+        for lang in self.langs:
+            generator.csv_map(csv_filepath, language=lang)
 
-    def _subprocess_check(self, subprocess):
-        subprocess.wait()
-        no_error_codes = [
-            ExitCodes.OK, ExitCodes.NO_TEMPLATE, ExitCodes.UNKNOWN_TARGET
-        ]
-        if subprocess.returncode in no_error_codes:
-            pass
-        else:
-            comm = subprocess.communicate()
-            raise RuntimeError("Process returned: %s"
-                               % (
-                                   comm[0].decode("utf-8") +
-                                   comm[1].decode("utf-8")
-                                  ))
+        return generator.files
 
-    def _get_list_from_subprocess(self, subprocess):
-        self._subprocess_check(subprocess)
-        text = subprocess.communicate()[0].decode("utf-8")
-        return [os.path.abspath(line) for line in text.split("\n") if line]
+    def _generator_list_outputs(self, generator, csv_filepath):
+        generator.reset()
+        generator.output_dir = self.output_dir
+        generator.action = ActionType.OUTPUT
+        generator.product_input_dir = self._get_template_dir()
+        generator.shared_dir = self.ssg_shared
+
+        for lang in self.langs:
+            generator.csv_map(csv_filepath, language=lang)
+
+        return generator.files
 
     def _deduplicate(self, files):
         return set(os.path.realpath(file_) for file_ in files)

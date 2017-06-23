@@ -29,9 +29,19 @@ class UnknownTargetError(ValueError):
                             "Unknown target language: \"{0}\"".format(msg))
 
 
+class TemplateNotFoundError(RuntimeError):
+    def __init__(self, msg):
+        RuntimeError.__init__(self,
+                              "Template not found: \"{0}\"".format(msg))
+
+
 class FilesGenerator(object):
     def __init__(self):
         self.delimiter = ','
+        self.reset()
+
+    def reset(self):
+        self.files = []
 
     def get_template_filename(self, filename):
         template_filename = os.path.join(self.product_input_dir, filename)
@@ -50,10 +60,9 @@ class FilesGenerator(object):
         if os.path.isfile(shared_template):
             return shared_template
 
-        sys.stderr.write(
-            "No specialized or shared template found for {0}\n".format(filename)
+        raise TemplateNotFoundError(
+            "No specialized or shared template found for {0}".format(filename)
         )
-        sys.exit(ExitCodes.NO_TEMPLATE)
 
     def load_modified(self, filename, constants_dict, regex_replace=[]):
         """
@@ -70,7 +79,7 @@ class FilesGenerator(object):
             return ""
 
         if self.action == ActionType.INPUT:
-            print(template_filename)
+            self.files.append(template_filename)
             return ""
 
         with open(template_filename, "r") as template_file:
@@ -96,7 +105,7 @@ class FilesGenerator(object):
             return
 
         if self.action == ActionType.OUTPUT:
-            print(filename)
+            self.files.append(filename)
             return
 
         with open(filename, 'w+') as outputfile:
@@ -109,10 +118,14 @@ class FilesGenerator(object):
         @param regex_replace: array of tuples (pattern, replacement)
         """
 
-        filled_template = \
-            self.load_modified(template_filename, constants, regex_replace)
+        try:
+            filled_template = \
+                self.load_modified(template_filename, constants, regex_replace)
 
-        self.save_modified(filename_format, filename_value, filled_template)
+            self.save_modified(filename_format, filename_value, filled_template)
+
+        except TemplateNotFoundError as e:
+            sys.stderr.write(str(e) + "\n")
 
     def process_csv_line(self, line, target):
         """
@@ -167,7 +180,7 @@ class FilesGenerator(object):
 
             except UnknownTargetError as e:
                 sys.stderr.write(str(e) + "\n")
-                sys.exit(ExitCodes.UNKNOWN_TARGET)
+                #sys.exit(ExitCodes.UNKNOWN_TARGET)
 
     def parse_args(self):
         p = argparse.ArgumentParser()
