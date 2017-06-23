@@ -25,14 +25,17 @@ class ActionType:
 
 class UnknownTargetError(ValueError):
     def __init__(self, msg):
-        ValueError.__init__(self,
-                            "Unknown target language: \"{0}\"".format(msg))
+        super(UnknownTargetError, self).__init__(
+            "Unknown target language: \"{0}\"".format(msg)
+        )
 
 
 class TemplateNotFoundError(RuntimeError):
-    def __init__(self, msg):
-        RuntimeError.__init__(self,
-                              "Template not found: \"{0}\"".format(msg))
+    def __init__(self, template, paths):
+        super(TemplateNotFoundError, self).__init__(
+            "Template not found: '%s'. Looked in %s."
+            % (template, ", ".join(paths))
+        )
 
 
 class FilesGenerator(object):
@@ -49,20 +52,22 @@ class FilesGenerator(object):
         if os.path.isfile(template_filename):
             return template_filename
 
+        paths = [self.product_input_dir]
+
         if self.product_input_dir.endswith("oval_5.11_templates"):
             template_filename = os.path.join(
                 os.path.dirname(self.product_input_dir), filename
             )
             if os.path.isfile(template_filename):
                 return template_filename
+            paths.append(os.path.dirname(template_filename))
 
         shared_template = os.path.join(self.shared_dir, "templates", filename)
         if os.path.isfile(shared_template):
             return shared_template
+        paths.append(os.path.dirname(shared_template))
 
-        raise TemplateNotFoundError(
-            "No specialized or shared template found for {0}".format(filename)
-        )
+        raise TemplateNotFoundError(filename, paths)
 
     def load_modified(self, filename, constants_dict, regex_replace=[]):
         """
@@ -182,52 +187,6 @@ class FilesGenerator(object):
                 sys.stderr.write(str(e) + "\n")
                 #sys.exit(ExitCodes.UNKNOWN_TARGET)
 
-    def parse_args(self):
-        p = argparse.ArgumentParser()
-
-        sp = p.add_subparsers(help="actions")
-
-        make_sp = sp.add_parser('build', help="Build scripts")
-        make_sp.set_defaults(action=ActionType.BUILD)
-
-        input_sp = sp.add_parser('list-inputs', help="Generate input list")
-        input_sp.set_defaults(action=ActionType.INPUT)
-
-        output_sp = sp.add_parser('list-outputs', help="Generate output list")
-        output_sp.set_defaults(action=ActionType.OUTPUT)
-
-        p.add_argument("-s", "--shared_dir", action="store",
-                       help="Shared directory")
-        p.add_argument("--language", action="store", default=None, required=True,
-                       help="Scripts of which language should we generate?")
-        p.add_argument("-c", "--csv", action="store", required=True,
-                       help="csv filename.\n" + self.csv_format())
-        p.add_argument("-o", "--output_dir", action="store", required=True,
-                       help="output dir")
-        p.add_argument("-i", "--input_dir", action="store", required=True,
-                       help="templates dir")
-
-        args, unknown = p.parse_known_args()
-
-        return (args, unknown)
-
     @abstractmethod
     def csv_format(self):
         raise NotImplementedError("Please Implement this method")
-
-    def main(self):
-        parsed, unknown = self.parse_args()
-
-        if unknown:
-            sys.stderr.write(
-                "Unknown positional arguments " + ",".join(unknown) + ".\n"
-            )
-            sys.exit(ExitCodes.ERROR)
-
-        self.output_dir = parsed.output_dir
-        self.action = parsed.action
-        self.product_input_dir = parsed.input_dir
-        self.shared_dir = parsed.shared_dir
-
-        self.csv_map(parsed.csv, language=parsed.language)
-        sys.exit(ExitCodes.OK)
