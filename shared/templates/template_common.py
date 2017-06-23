@@ -114,7 +114,7 @@ class FilesGenerator(object):
 
         self.save_modified(filename_format, filename_value, filled_template)
 
-    def process_line(self, line, target):
+    def process_csv_line(self, line, target):
         """
         Remove comments
         Remove line if target is unsupported
@@ -140,7 +140,7 @@ class FilesGenerator(object):
         """
 
         for line in csv_file:
-            processed_line = self.process_line(line, language)
+            processed_line = self.process_csv_line(line, language)
 
             if not processed_line:
                 continue
