@@ -164,6 +164,7 @@ class FilesGenerator(object):
             try:
                 for csv_line in csv_lines_content:
                     self.generate(language, csv_line)
+
             except UnknownTargetError as e:
                 sys.stderr.write(str(e) + "\n")
                 sys.exit(ExitCodes.UNKNOWN_TARGET)
@@ -199,10 +200,6 @@ class FilesGenerator(object):
 
     @abstractmethod
     def csv_format(self):
-        raise NotImplementedError("Please Implement this method")
-
-    @abstractmethod
-    def generate_from_line(self, target, line):
         raise NotImplementedError("Please Implement this method")
 
     def main(self):
