@@ -12,7 +12,7 @@ from template_common import FilesGenerator, UnknownTargetError
 
 class AuditRulesDacModificationGenerator(FilesGenerator):
     def __init__(self):
-        FilesGenerator.__init__(self)
+        super(AuditRulesDacModificationGenerator, self).__init__()
         self.delimiter = '&'
 
     def generate(self, target, audit_info):
