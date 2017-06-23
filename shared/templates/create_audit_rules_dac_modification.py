@@ -9,6 +9,7 @@ import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
+
 class AuditRulesDacModificationGenerator(FilesGenerator):
     def __init__(self):
         self.delimiter = '&'
@@ -36,10 +37,9 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
         else:
             raise UnknownTargetError(target)
 
-
     def csv_format(self):
         return("CSV should contains lines of the format: "
-              "attr,pattern_32,pattern_64")
+               "attr,pattern_32,pattern_64")
 
 if __name__ == "__main__":
     AuditRulesDacModificationGenerator().main()
