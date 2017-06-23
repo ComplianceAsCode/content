@@ -11,8 +11,6 @@
     </metadata>
     <!-- default_max is configured in /etc/webmin/useradmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Configure new accounts to expire their password after a maximum number days."
 	  test_ref="test_webmin_module_useradmin_accounts_max" />
    </criteria>

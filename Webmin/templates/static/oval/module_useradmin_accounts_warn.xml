@@ -10,8 +10,6 @@
     </metadata>
     <!-- default_warn is configured in /etc/webmin/useradmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Configure new accounts to warn the user about their password expiring."
 	  test_ref="test_webmin_module_useradmin_accounts_warn" />
    </criteria>

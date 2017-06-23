@@ -10,8 +10,6 @@
     </metadata>
     <!-- passwd_re is configured in /etc/webmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Require passwords to include at least 1 upper-case character, 1 lower-case character, 1 numeric character, and 1 special character."
 	  test_ref="test_webmin_module_useradmin_accounts_char_types" />
    </criteria>

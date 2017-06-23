@@ -8,8 +8,6 @@
       <description>Sessions are closed after idling a specified number of minutes.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <!-- logouttime is configured in /etc/webmin/miniserv.conf ... -->
 	  <criterion comment="Sessions are closed after idling a specified number of minutes."
 	  test_ref="test_webmin_sessions_timeout" />

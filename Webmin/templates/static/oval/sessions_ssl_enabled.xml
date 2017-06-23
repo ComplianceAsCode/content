@@ -8,8 +8,6 @@
       <description>Encryption is enabled and enforced.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <!-- ssl is configured in /etc/webmin/miniserv.conf ... -->
 	  <criterion comment="Encryption is enabled."
 	  test_ref="test_webmin_sessions_ssl_enabled" />

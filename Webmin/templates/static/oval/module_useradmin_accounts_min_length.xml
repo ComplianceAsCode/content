@@ -10,8 +10,6 @@
     </metadata>
     <!-- passwd_min is configured in /etc/webmin/useradmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Passwords include the required minimum character length."
 	  test_ref="test_webmin_module_useradmin_accounts_min_length" />
    </criteria>

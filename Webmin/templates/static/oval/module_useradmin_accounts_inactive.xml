@@ -11,8 +11,6 @@
     </metadata>
     <!-- default_inactive is configured in /etc/webmin/useradmin/config ... -->
     <criteria operator="AND">
-      <criterion comment="Installed operating system is part of the unix family"
-      test_ref="test_unix_family" />
 	  <criterion comment="Changing expired passwords is enabled."
 	  test_ref="test_webmin_module_useradmin_accounts_inactive" />
    </criteria>
