@@ -1,3 +1,8 @@
+# Sometimes our users will try to do: "cd RHEL/6; cmake ." That needs to error in a nice way.
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
+    message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see BUILD.md for more details!")
+endif()
+
 set(PRODUCT "rhel6")
 set(DISA_SRG_VERSION "v1r4")
 set(DISA_STIG_VERSION "v1r12")

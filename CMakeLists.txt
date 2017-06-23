@@ -52,7 +52,20 @@ set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
 
 message("SCAP Security Guide ${SSG_VERSION}")
+message("(see ${CMAKE_SOURCE_DIR}/BUILD.md for build instructions)")
 message("")
+
+# Strictly speaking in-source will work but will be very messy, let's
+# discourage our users from using them
+if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+    message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
+       "$ cd scap-security-guide\n"
+       "$ rm CMakeCache.txt\n"
+       "$ cd build\n"
+       "$ cmake ../\n"
+       "$ make -j4"
+    )
+endif()
 
 # TODO: refactor oscap detection into a find module
 find_program(OSCAP_EXECUTABLE NAMES oscap)

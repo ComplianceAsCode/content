@@ -39,6 +39,9 @@ document for more info.
 
 Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
 
+## Build from the source
+Please see the [BUILD.md](BUILD.md) document for build instructions.
+
 ## Usage
 We assume you have installed SCAP Security Guide system-wide into a
 standard location as instructed in the previous section.
@@ -62,7 +65,7 @@ all possible choices using:
 # oscap info /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
-Please see the [User Manual](http://static.open-scap.org/openscap-1.0/oscap_user_manual.html)
+Please see the [User Manual](https://static.open-scap.org/openscap-1.2/oscap_user_manual.html)
 for more info.
 
 ### SCAP Workbench
@@ -71,7 +74,7 @@ customization. It is suitable for scanning a single machine, either local
 or remote (via SSH). New versions of SCAP Workbench have SSG integration
 and will automatically offer it when the application is started.
 
-Please see the [User Manual](http://static.open-scap.org/scap-workbench-1.1/)
+Please see the [User Manual](https://static.open-scap.org/scap-workbench-1.1/)
 for more info.
 
 ### `oscap-ssh` tool
