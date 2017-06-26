@@ -88,30 +88,14 @@ lib.log.add_console_logger(options.loglevel)
 # thus we have to postprocess it
 if options.logdir is None:
     # default!
-    date_string = time.strftime('%Y-%m-%d-%H:%M', time.localtime())
-    log_number = 0
-    # search for valid log directory, as we can run more than one
-    # run per minute, first has only timestamp, rest has numbered suffix
-    while True:
-        if not log_number:
-            log_number_suffix = ""
-        else:
-            log_number_suffix = "-{0}".format(log_number)
-
-        logging_dir = os.path.join(os.getcwd(),
-                                   'logs',
-                                   '{0}-{1}{2}'.format(options.target,
-                                                       date_string,
-                                                       log_number_suffix))
-        if os.path.exists(logging_dir):
-            log.debug(("Logging directory number {0} "
-                       "already exists, trying again...").format(log_number))
-            log_number += 1
-        else:
-            log.debug("Found logging directory {0}".format(logging_dir))
-            break
-    lib.log.add_logging_dir(logging_dir)
+    date_string = time.strftime('%Y-%m-%d-%H%M', time.localtime())
+    logging_dir = os.path.join(os.getcwd(),
+                               'logs',
+                               '{0}-{1}'.format(options.target,
+                                                   date_string))
+    logging_dir = lib.log.find_name(logging_dir)
 else:
-    lib.log.add_logging_dir(options.logdir)
+    logging_dir = lib.log.find_name(options.logdir)
+lib.log.add_logging_dir(logging_dir)
 
 options.func(options)

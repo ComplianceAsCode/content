@@ -33,27 +33,33 @@ def run_profile(domain_ip,
 
     formatting['rem'] = "--remediate" if remediation else ""
 
-    report_path = os.path.join(log.log_dir, '{0}.html'.format(stage))
-    formatting['report'] = report_path
+    report_path = os.path.join(log.log_dir, '{0}-{1}'.format(profile,
+                                                             stage))
+    verbose_path = os.path.join(log.log_dir, '{0}-{1}'.format(profile,
+                                                             stage))
+    formatting['report'] = lib.log.find_name(report_path, '.html')
+    verbose_path = lib.log.find_name(verbose_path, '.verbose.log')
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
                            '--benchmark-id {benchmark_id} '
                            '--profile {profile} '
                            '--progress --oval-results '
                            '--report {report} '
+                           '--verbose DEVEL '
                            '{rem} '
                            '{datastream}').format(**formatting))
     log.debug('Running ' + ' '.join(command))
-    subprocess.call(command, stderr=subprocess.STDOUT)
+    success = True
     try:
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT)
+        with open(verbose_path, 'w') as verbose_file:
+            output = subprocess.check_output(command, stderr=verbose_file)
     except subprocess.CalledProcessError, e:
         # non-zero exit code
         if e.returncode != 2:
+            success = False
             log.error(('Profile run should end with return code 0 or 2 '
                        'not "{0}" as it did!').format(e.returncode))
-
-    log.debug('Output:\n{0}'.format(output))
+    return success
 
 
 def run_rule(domain_ip,
@@ -75,10 +81,14 @@ def run_rule(domain_ip,
 
     formatting['rem'] = "--remediate" if remediation else ""
 
-    report_path = os.path.join(log.log_dir, '{0}-{1}-{2}.html'.format(rule_id,
+    report_path = os.path.join(log.log_dir, '{0}-{1}-{2}'.format(rule_id,
                                                                       script_name,
                                                                       stage))
-    formatting['report'] = report_path
+    verbose_path = os.path.join(log.log_dir, '{0}-{1}-{2}'.format(rule_id,
+                                                              script_name,
+                                                              stage))
+    formatting['report'] = lib.log.find_name(report_path, '.html')
+    verbose_path = lib.log.find_name(verbose_path, '.verbose.log')
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
                            '--benchmark-id {benchmark_id} '
@@ -86,6 +96,7 @@ def run_rule(domain_ip,
                            '--progress --oval-results '
                            '--rule {rule_id} '
                            '--report {report} '
+                           '--verbose DEVEL '
                            '{rem} '
                            '{datastream}').format(**formatting))
     log.debug('Running ' + ' '.join(command))
@@ -94,7 +105,9 @@ def run_rule(domain_ip,
     # check expected return code
     expected_return_code = _CONTEXT_RETURN_CODES[context]
     try:
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT)
+        with open(verbose_path, 'w') as verbose_file:
+            output = subprocess.check_output(command, stderr=verbose_file)
+
     except subprocess.CalledProcessError, e:
         if e.returncode != expected_return_code:
             log.error(('Scan has exited with return code {0}, '
@@ -133,12 +146,9 @@ def run_rule(domain_ip,
                                                       ', '.join(actual_results)))
             success = False
 
-    if not success:
-        log.debug('Output:\n{0}'.format(output))
-
     if success:
-        # to save space, we are going to remove the report, as we
-        # have not encountered any anomalies
-        os.remove(report_path)
+        # to save space, we are going to remove the report
+        # as we have not encountered any anomalies
+        os.remove(formatting['report'])
 
     return success

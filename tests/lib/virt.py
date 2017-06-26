@@ -26,7 +26,7 @@ class SnapshotStack(object):
         super(SnapshotStack, self).__init__()
 
     def create(self, snapshot_name):
-        log.debug('Creating snapshot {0}'.format(snapshot_name))
+        log.debug("Creating snapshot '{0}'".format(snapshot_name))
         snapshot_xml = self.SNAPSHOT_BASE.format(name=snapshot_name)
         snapshot = self.domain.snapshotCreateXML(snapshot_xml,
                                     libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC)
@@ -36,28 +36,48 @@ class SnapshotStack(object):
 
     def revert_forced(self, snapshot):
         snapshot_name = snapshot.getName()
-        log.debug('Forced reverting of snapshot {0}'.format(snapshot_name))
+        log.debug("Forced reverting of snapshot '{0}'".format(snapshot_name))
         self.domain.revertToSnapshot(snapshot)
         snapshot.delete()
         self.stack.remove(snapshot)
         log.debug('Revert successful')
 
-    def revert(self):
+    def revert(self, delete=True):
         try:
             snapshot = self.stack.pop()
         except IndexError:
             log.error("No snapshot in stack anymore")
         else:
-            log.debug("Reverting snapshot {0}".format(snapshot.getName()))
             self.domain.revertToSnapshot(snapshot)
-            snapshot.delete()
+            if delete:
+                log.debug(("Hard revert of snapshot "
+                           "'{0}' successful").format(snapshot.getName()))
+                snapshot.delete()
+            else:
+                # this is soft revert - we are keeping the snapshot for
+                # another use
+                log.debug(("Soft revert of snapshot "
+                           "'{0}' successful").format(snapshot.getName()))
+                self.stack.append(snapshot)
+
+    def delete(self, snapshot=None):
+        # removing snapshot from the stack without doing a revert - use
+        # coupled with revert without delete
+        if snapshot:
+            self.stack.remove(snapshot)
+        else:
+            snapshot = self.stack.pop()
+        snapshot.delete()
+        log.debug(("Snapshot '{0}' deleted "
+                   "successfully").format(snapshot.getName()))
+
 
     def clear(self):
         log.debug('Reverting all created snapshots in reverse order')
         while self.stack:
             snapshot = self.stack.pop()
             snapshot_name = snapshot.getName()
-            log.debug('Reverting of snapshot {0}'.format(snapshot_name))
+            log.debug("Reverting of snapshot '{0}'".format(snapshot_name))
             self.domain.revertToSnapshot(snapshot)
             snapshot.delete()
             log.debug('Revert successful')
@@ -120,7 +140,7 @@ def connect_domain(hypervisor, domain_name):
     try:
         dom = conn.lookupByName(domain_name)
     except:
-        log.error('Failed to find domain "{0}"'.format(domain_name))
+        log.error("Failed to find domain '{0}'".format(domain_name))
         return None
     snapshots = SnapshotStack(dom)
     return dom
@@ -128,7 +148,7 @@ def connect_domain(hypervisor, domain_name):
 
 def start_domain(domain):
     if not domain.isActive():
-        log.debug('Starting domain {0}'.format(domain.name()))
+        log.debug("Starting domain '{0}'".format(domain.name()))
         domain.create()
         log.debug('Waiting 30s for domain to start')
         time.sleep(30)

@@ -43,6 +43,8 @@ def get_viable_profiles(scenarios_profiles, datastream, benchmark):
         for scen_profile in scenarios_profiles:
             if scen_profile in ds_profile:
                 valid_profiles += [ds_profile]
+    if not valid_profiles:
+        log.error('No profile matched with "{0}"'.format(", ".join(scenarios_profiles)))
     return valid_profiles
 
 
@@ -69,6 +71,9 @@ def apply_script(rule_dir, domain_ip, script):
     log.debug("Applying script {0}".format(script))
     rule_name = os.path.basename(rule_dir)
     log_file_name = os.path.join(log.log_dir, rule_name + ".prescripts.log")
+
+    with open(log_file_name, 'a') as log_file:
+        log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
     command = "ssh {0} bash -x {1}".format(machine, script_remote_path)
     with open(log_file_name, 'a') as log_file:
@@ -136,32 +141,40 @@ def perform_rule_check(options):
             if not apply_script(rule_dir, domain_ip, script):
                 log.error("Environment failed to prepare, skipping test")
             script_params = parse_parameters(script_path)
-            for profile in get_viable_profiles(script_params['profiles'],
+            has_worked = False
+            profiles = get_viable_profiles(script_params['profiles'],
                                                options.datastream,
-                                               options.benchmark_id):
+                                               options.benchmark_id)
+            if len(profiles) > 1:
+                lib.virt.snapshots.create('profile')
+            for profile in profiles:
                 log.info("Script {0} using profile {1}".format(script,
                                                                profile))
-                if not lib.oscap.run_rule(domain_ip=domain_ip,
-                                          profile=profile,
-                                          stage="initial",
-                                          datastream=options.datastream,
-                                          benchmark_id=options.benchmark_id,
-                                          rule_id=rule,
-                                          context=script_context,
-                                          script_name=script,
-                                          remediation=False):
-                    log.warning("Skipping to the next scenario")
-                    break
-                if script_context in ['fail', 'error']:
-                    lib.oscap.run_rule(domain_ip=domain_ip,
-                                       profile=profile,
-                                       stage="remediation",
-                                       datastream=options.datastream,
-                                       benchmark_id=options.benchmark_id,
-                                       rule_id=rule,
-                                       context='fixed',
-                                       script_name=script,
-                                       remediation=True)
-            lib.virt.snapshots.revert()
+                has_worked = True
+                if lib.oscap.run_rule(domain_ip=domain_ip,
+                                      profile=profile,
+                                      stage="initial",
+                                      datastream=options.datastream,
+                                      benchmark_id=options.benchmark_id,
+                                      rule_id=rule,
+                                      context=script_context,
+                                      script_name=script,
+                                      remediation=False):
+                    if script_context in ['fail', 'error']:
+                        lib.oscap.run_rule(domain_ip=domain_ip,
+                                           profile=profile,
+                                           stage="remediation",
+                                           datastream=options.datastream,
+                                           benchmark_id=options.benchmark_id,
+                                           rule_id=rule,
+                                           context='fixed',
+                                           script_name=script,
+                                           remediation=True)
+                lib.virt.snapshots.revert(delete=False)
+            if not has_worked:
+                log.error("Nothing has been tested!")
+            lib.virt.snapshots.delete()
+            if len(profiles) > 1:
+                lib.virt.snapshots.revert()
     if not scanned_something:
         log.error("Rule {0} has not been found".format(options.target))
