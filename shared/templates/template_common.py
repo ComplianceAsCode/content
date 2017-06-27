@@ -166,7 +166,8 @@ class FilesGenerator(object):
         """
 
         with open(filename, "r") as csv_file:
-            filtered_file = self.filter_out_csv_lines(csv_file, language)
+            filtered_file = self.filter_out_csv_lines(
+                csv_file.readlines(), language)
             csv_lines_content = csv.reader(filtered_file,
                                            delimiter=self.delimiter)
 
