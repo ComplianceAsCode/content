@@ -146,7 +146,9 @@ class Builder(object):
                 for lang in self.langs:
                     generator.csv_map(csv_filepath, language=lang)
 
-    def get_input_list(self):
+    def get_file_list(self, action):
+        assert(action in [ActionType.INPUT, ActionType.OUTPUT])
+
         list_ = []
 
         for oval in self.supported_ovals:
@@ -157,11 +159,12 @@ class Builder(object):
                 csv_filepath = os.path.join(csv_dir, csv)
                 generator = self._get_generator_for_csv(csv)
 
-                list_.append(csv_filepath)
+                if action == ActionType.INPUT:
+                    list_.append(csv_filepath)
 
                 generator.reset()
                 generator.output_dir = self.output_dir
-                generator.action = ActionType.INPUT
+                generator.action = action
                 generator.product_input_dir = self._get_template_dir()
                 generator.shared_dir = self.ssg_shared
 
@@ -173,35 +176,11 @@ class Builder(object):
         return self._deduplicate(list_)
 
     def list_inputs(self):
-        for file_ in self.get_input_list():
+        for file_ in self.get_file_list(ActionType.INPUT):
             print(file_)
 
-    def get_output_list(self):
-        list_ = []
-
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            csv_dir = self._get_csv_dir()
-            for csv in self._get_csv_list():
-                csv_filepath = os.path.join(csv_dir, csv)
-                generator = self._get_generator_for_csv(csv)
-
-                generator.reset()
-                generator.output_dir = self.output_dir
-                generator.action = ActionType.OUTPUT
-                generator.product_input_dir = self._get_template_dir()
-                generator.shared_dir = self.ssg_shared
-
-                for lang in self.langs:
-                    generator.csv_map(csv_filepath, language=lang)
-
-                list_.extend(generator.files)
-
-        return self._deduplicate(list_)
-
     def list_outputs(self):
-        for file_ in self.get_output_list():
+        for file_ in self.get_file_list(ActionType.OUTPUT):
             print(file_)
 
 
