@@ -67,90 +67,6 @@ class Builder(object):
     def set_ssg_shared(self, shared):
         self.ssg_shared = shared
 
-    def build(self):
-        for lang in self.langs:
-            dir_ = self._output_dir_for_lang(lang)
-            if not os.path.exists(dir_):
-                os.makedirs(dir_)
-
-        # Build scripts for multiple OVAL versions.
-        # At first for the oldest OVAL, then newer and newer
-        # this will allow to override older implementation
-        # with a never one.
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            for csv_filename in self._get_csv_list():
-                generator = self._get_generator_for_csv(csv_filename)
-                csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-
-                generator.reset()
-                generator.output_dir = self.output_dir
-                generator.action = ActionType.BUILD
-                generator.product_input_dir = self._get_template_dir()
-                generator.shared_dir = self.ssg_shared
-
-                for lang in self.langs:
-                    generator.csv_map(csv_filepath, language=lang)
-
-    def list_inputs(self):
-        for file_ in self.get_input_list():
-            print(file_)
-
-    def list_outputs(self):
-        for file_ in self.get_output_list():
-            print(file_)
-
-    def get_input_list(self):
-        list_ = []
-
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            csv_dir = self._get_csv_dir()
-            for csv in self._get_csv_list():
-                csv_filepath = os.path.join(csv_dir, csv)
-                generator = self._get_generator_for_csv(csv)
-
-                list_.append(csv_filepath)
-
-                generator.reset()
-                generator.output_dir = self.output_dir
-                generator.action = ActionType.INPUT
-                generator.product_input_dir = self._get_template_dir()
-                generator.shared_dir = self.ssg_shared
-
-                for lang in self.langs:
-                    generator.csv_map(csv_filepath, language=lang)
-
-                list_.extend(generator.files)
-
-        return self._deduplicate(list_)
-
-    def get_output_list(self):
-        list_ = []
-
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            csv_dir = self._get_csv_dir()
-            for csv in self._get_csv_list():
-                csv_filepath = os.path.join(csv_dir, csv)
-                generator = self._get_generator_for_csv(csv)
-
-                generator.reset()
-                generator.output_dir = self.output_dir
-                generator.action = ActionType.OUTPUT
-                generator.product_input_dir = self._get_template_dir()
-                generator.shared_dir = self.ssg_shared
-
-                for lang in self.langs:
-                    generator.csv_map(csv_filepath, language=lang)
-
-                list_.extend(generator.files)
-
-        return self._deduplicate(list_)
-
     def set_output_dir(self, output_dir):
         self.output_dir = output_dir
 
@@ -203,6 +119,90 @@ class Builder(object):
 
     def _deduplicate(self, files):
         return set(os.path.realpath(file_) for file_ in files)
+
+    def build(self):
+        for lang in self.langs:
+            dir_ = self._output_dir_for_lang(lang)
+            if not os.path.exists(dir_):
+                os.makedirs(dir_)
+
+        # Build scripts for multiple OVAL versions.
+        # At first for the oldest OVAL, then newer and newer
+        # this will allow to override older implementation
+        # with a never one.
+        for oval in self.supported_ovals:
+            self._set_current_oval(oval)
+
+            for csv_filename in self._get_csv_list():
+                generator = self._get_generator_for_csv(csv_filename)
+                csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
+
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.BUILD
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+    def get_input_list(self):
+        list_ = []
+
+        for oval in self.supported_ovals:
+            self._set_current_oval(oval)
+
+            csv_dir = self._get_csv_dir()
+            for csv in self._get_csv_list():
+                csv_filepath = os.path.join(csv_dir, csv)
+                generator = self._get_generator_for_csv(csv)
+
+                list_.append(csv_filepath)
+
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.INPUT
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+                list_.extend(generator.files)
+
+        return self._deduplicate(list_)
+
+    def list_inputs(self):
+        for file_ in self.get_input_list():
+            print(file_)
+
+    def get_output_list(self):
+        list_ = []
+
+        for oval in self.supported_ovals:
+            self._set_current_oval(oval)
+
+            csv_dir = self._get_csv_dir()
+            for csv in self._get_csv_list():
+                csv_filepath = os.path.join(csv_dir, csv)
+                generator = self._get_generator_for_csv(csv)
+
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.OUTPUT
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+                list_.extend(generator.files)
+
+        return self._deduplicate(list_)
+
+    def list_outputs(self):
+        for file_ in self.get_output_list():
+            print(file_)
 
 
 if __name__ == "__main__":
