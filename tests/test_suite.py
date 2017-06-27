@@ -73,8 +73,10 @@ parser_rule.set_defaults(func=lib.rule.perform_rule_check)
 parser_profile.add_argument("target",
                             nargs="?",
                             metavar="DSPROFILE",
-                            default="xccdf_org.ssgproject.content_profile_common",
-                            help="Profile to be tested")
+                            default='xccdf_org.ssgproject.content_profile_common',
+                            help=("Profiles to be tested, ALL means every "
+                                  "profile of particular benchmark will be "
+                                  "evaluated"))
 
 parser_rule.add_argument("target",
                          nargs="?",
