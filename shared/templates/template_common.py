@@ -7,6 +7,7 @@ import sys
 import os
 import re
 from abc import abstractmethod
+import inspect
 
 
 class ActionType:
@@ -76,6 +77,8 @@ class FilesGenerator(object):
         template_filename = self.get_template_filename(filename)
 
         if self.action == ActionType.INPUT:
+            self.files.append(
+                os.path.abspath(inspect.getsourcefile(self.__class__)))
             self.files.append(template_filename)
             return ""
 
