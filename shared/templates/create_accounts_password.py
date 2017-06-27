@@ -36,6 +36,3 @@ class AccountsPasswordGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "VARIABLE")
-
-if __name__ == "__main__":
-    AccountsPasswordGenerator().main()

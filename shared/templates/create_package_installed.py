@@ -11,12 +11,10 @@
 # PKGNAME - the name of the package that should be installed
 #
 
-import sys
-
 from template_common import FilesGenerator, UnknownTargetError
 
-class PackageInstalledGenerator(FilesGenerator):
 
+class PackageInstalledGenerator(FilesGenerator):
     def generate(self, target, package_info):
         pkgname = package_info[0]
         if pkgname:
@@ -63,7 +61,4 @@ class PackageInstalledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-                   "PACKAGE_NAME")
-
-if __name__ == "__main__":
-    PackageInstalledGenerator().main()
+               "PACKAGE_NAME")

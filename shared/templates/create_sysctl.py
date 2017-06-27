@@ -120,6 +120,3 @@ class SysctlGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "sysctlvariable,sysctlvalue")
-
-if __name__ == "__main__":
-    SysctlGenerator().main()

@@ -93,7 +93,3 @@ class ServiceDisabledGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "servicename,packagename")
-
-
-if __name__ == "__main__":
-    ServiceDisabledGenerator().main()

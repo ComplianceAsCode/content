@@ -46,6 +46,3 @@ class KernelModulesDisabledGenerator(FilesGenerator):
         return (
             "CSV file should contains lines of the format: kernmod"
         )
-
-if __name__ == "__main__":
-    KernelModulesDisabledGenerator().main()
