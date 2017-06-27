@@ -1,7 +1,3 @@
-"""This class is designed to handle the mapping of meaningful, human-readable
-names to IDs in the formats required by the SCAP checking systems, such as
-OVAL and OCIL."""
-
 import sys
 
 try:
@@ -82,7 +78,11 @@ def tagname_to_abbrev(tag):
     sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
 
 
-class idtranslator(object):
+class IDTranslator(object):
+    """This class is designed to handle the mapping of meaningful, human-readable
+    names to IDs in the formats required by the SCAP checking systems, such as
+    OVAL and OCIL."""
+
     def __init__(self, content_id):
         self.content_id = content_id
 
@@ -100,12 +100,15 @@ class idtranslator(object):
             idname = element.get("id")
             if idname:
                 # store the old name if requested (for OVAL definitions)
-                if store_defname and element.tag == "{" + oval_ns + "}definition":
+                if store_defname and \
+                        element.tag == "{" + oval_ns + "}definition":
                     metadata = element.find("{" + oval_ns + "}metadata")
                     if metadata is None:
                         metadata = ElementTree.SubElement(element, "metadata")
-                    defnam = ElementTree.SubElement(metadata, "reference",
-                                           ref_id=idname, source=self.content_id)
+                    defnam = ElementTree.Element(
+                        "reference", ref_id=idname, source=self.content_id)
+                    metadata.append(defnam)
+
                 # set the element to the new identifier
                 element.set("id", self.generate_id(element.tag, idname))
                 # continue
@@ -126,6 +129,6 @@ class idtranslator(object):
                                 ocilrefattr_to_tag[attr], element.get(attr)))
             if element.tag == "{" + ocil_ns + "}test_action_ref":
                 element.text = self.generate_id("{" + ocil_ns + "}action",
-                                              element.text)
+                                                element.text)
 
         return tree

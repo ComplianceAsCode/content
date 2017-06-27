@@ -143,7 +143,7 @@ def main():
             ovaltree.remove(variables)
 
     # turn IDs into meaningless numbers
-    translator = idtranslate.idtranslator(idname)
+    translator = idtranslate.IDTranslator(idname)
     ovaltree = translator.translate(ovaltree)
 
     newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)

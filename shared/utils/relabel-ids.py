@@ -389,7 +389,7 @@ def main():
     ovalfile = ovalfiles.pop() if ovalfiles else None
     ocilfile = ocilfiles.pop() if ocilfiles else None
 
-    translator = idtranslate.idtranslator(idname)
+    translator = idtranslate.IDTranslator(idname)
 
     # Rename all IDs in the oval file
     if ovalfile:
