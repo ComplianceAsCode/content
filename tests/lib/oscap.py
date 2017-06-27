@@ -70,7 +70,8 @@ def run_rule(domain_ip,
              rule_id,
              context,
              script_name,
-             remediation=False):
+             remediation=False,
+             dont_clean=False):
 
     formatting = {'domain_ip': domain_ip,
                   'profile': profile,
@@ -146,7 +147,7 @@ def run_rule(domain_ip,
                                                       ', '.join(actual_results)))
             success = False
 
-    if success:
+    if success and not dont_clean:
         # to save space, we are going to remove the report
         # as we have not encountered any anomalies
         os.remove(formatting['report'])

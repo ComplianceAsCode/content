@@ -159,7 +159,8 @@ def perform_rule_check(options):
                                       rule_id=rule,
                                       context=script_context,
                                       script_name=script,
-                                      remediation=False):
+                                      remediation=False,
+                                      dont_clean=options.dont_clean):
                     if script_context in ['fail', 'error']:
                         lib.oscap.run_rule(domain_ip=domain_ip,
                                            profile=profile,
@@ -169,7 +170,8 @@ def perform_rule_check(options):
                                            rule_id=rule,
                                            context='fixed',
                                            script_name=script,
-                                           remediation=True)
+                                           remediation=True,
+                                           dont_clean=options.dont_clean)
                 lib.virt.snapshots.revert(delete=False)
             if not has_worked:
                 log.error("Nothing has been tested!")

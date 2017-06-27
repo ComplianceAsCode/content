@@ -81,6 +81,10 @@ parser_rule.add_argument("target",
                          metavar="RULE",
                          default="ALL",
                          help="Rule to be tested")
+parser_rule.add_argument("--dontclean",
+                         dest="dont_clean",
+                         action="store_true",
+                         help="Do not remove html reports of successful runs")
 
 options = parser.parse_args()
 lib.log.add_console_logger(options.loglevel)
