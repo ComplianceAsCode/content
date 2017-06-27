@@ -6,15 +6,7 @@ import csv
 import sys
 import os
 import re
-import argparse
 from abc import abstractmethod
-
-
-class ExitCodes:
-    OK = 0
-    ERROR = 1
-    NO_TEMPLATE = 128 + 1
-    UNKNOWN_TARGET = 128 + 2
 
 
 class ActionType:
@@ -185,7 +177,6 @@ class FilesGenerator(object):
 
             except UnknownTargetError as e:
                 sys.stderr.write(str(e) + "\n")
-                #sys.exit(ExitCodes.UNKNOWN_TARGET)
 
     @abstractmethod
     def csv_format(self):

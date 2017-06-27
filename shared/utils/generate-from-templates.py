@@ -7,7 +7,7 @@ import argparse
 
 templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 sys.path.append(templates_dir)
-from template_common import ExitCodes, ActionType
+from template_common import ActionType
 
 from create_accounts_password import AccountsPasswordGenerator
 from create_kernel_modules_disabled import KernelModulesDisabledGenerator
