@@ -124,9 +124,10 @@ class Builder(object):
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
 
+            csv_dir = self._get_csv_dir()
             for csv_filename in self._get_csv_list():
                 generator = self._get_generator_for_csv(csv_filename)
-                csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
+                csv_filepath = os.path.join(csv_dir, csv_filename)
 
                 generator.reset()
                 generator.output_dir = self.output_dir
