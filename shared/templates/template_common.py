@@ -70,10 +70,10 @@ class FilesGenerator(object):
         regex_dict: dict of regex substitutions - sub ( key -> value)
         """
 
-        template_filename = self.get_template_filename(filename)
-
         if self.action == ActionType.OUTPUT:
             return ""
+
+        template_filename = self.get_template_filename(filename)
 
         if self.action == ActionType.INPUT:
             self.files.append(template_filename)
@@ -94,19 +94,20 @@ class FilesGenerator(object):
         """
         Save string to file
         """
-        filename = filename_format.format(filename_value)
-
-        filename = os.path.join(self.output_dir, filename)
 
         if self.action == ActionType.INPUT:
             return
+
+        filename = os.path.join(
+            self.output_dir, filename_format.format(filename_value)
+        )
 
         if self.action == ActionType.OUTPUT:
             self.files.append(filename)
             return
 
-        with open(filename, 'w+') as outputfile:
-            outputfile.write(string)
+        with open(filename, "w") as f:
+            f.write(string)
 
     def file_from_template(self, template_filename, constants,
                            filename_format, filename_value, regex_replace=[]):
@@ -132,7 +133,6 @@ class FilesGenerator(object):
 
         if target is not None:
             regex = re.compile(r"#\s*only-for:([\s\w,]*)")
-
             match = regex.search(line)
 
             if match:
@@ -165,9 +165,8 @@ class FilesGenerator(object):
             col3, col4 # only-for: bash, oval
         """
 
-        with open(filename, 'r') as csv_file:
+        with open(filename, "r") as csv_file:
             filtered_file = self.filter_out_csv_lines(csv_file, language)
-
             csv_lines_content = csv.reader(filtered_file,
                                            delimiter=self.delimiter)
 
