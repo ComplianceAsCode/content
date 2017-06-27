@@ -126,7 +126,8 @@ class FilesGenerator(object):
             self.save_modified(filename_format, filename_value, filled_template)
 
         except TemplateNotFoundError as e:
-            sys.stderr.write(str(e) + "\n")
+            if self.action == ActionType.BUILD:
+                sys.stderr.write(str(e) + "\n")
 
     def process_csv_line(self, line, target):
         """
@@ -179,7 +180,8 @@ class FilesGenerator(object):
                     self.generate(language, csv_line)
 
             except UnknownTargetError as e:
-                sys.stderr.write(str(e) + "\n")
+                if self.action == ActionType.BUILD:
+                    sys.stderr.write(str(e) + "\n")
 
     @abstractmethod
     def csv_format(self):
