@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-import subprocess
 import os
 import sys
 import argparse
@@ -20,6 +19,7 @@ from create_services_disabled import ServiceDisabledGenerator
 from create_services_enabled import ServiceEnabledGenerator
 from create_sysctl import SysctlGenerator
 from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
+
 
 class Builder(object):
     def __init__(self):
@@ -83,7 +83,15 @@ class Builder(object):
             for csv_filename in self._get_csv_list():
                 generator = self._get_generator_for_csv(csv_filename)
                 csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                self._generator_build(generator, csv_filepath)
+
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.BUILD
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
 
     def list_inputs(self):
         for file_ in self.get_input_list():
@@ -106,9 +114,16 @@ class Builder(object):
 
                 list_.append(csv_filepath)
 
-                list_.extend(self._generator_list_inputs(
-                    generator, csv_filepath)
-                )
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.INPUT
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+                list_.extend(generator.files)
 
         return self._deduplicate(list_)
 
@@ -123,9 +138,16 @@ class Builder(object):
                 csv_filepath = os.path.join(csv_dir, csv)
                 generator = self._get_generator_for_csv(csv)
 
-                list_.extend(self._generator_list_outputs(
-                    generator, csv_filepath)
-                )
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.OUTPUT
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+                list_.extend(generator.files)
 
         return self._deduplicate(list_)
 
@@ -178,40 +200,6 @@ class Builder(object):
 
     def _output_dir_for_lang(self, lang):
         return os.path.join(self.output_dir, lang)
-
-    def _generator_build(self, generator, csv_filepath):
-        generator.reset()
-        generator.output_dir = self.output_dir
-        generator.action = ActionType.BUILD
-        generator.product_input_dir = self._get_template_dir()
-        generator.shared_dir = self.ssg_shared
-
-        for lang in self.langs:
-            generator.csv_map(csv_filepath, language=lang)
-
-    def _generator_list_inputs(self, generator, csv_filepath):
-        generator.reset()
-        generator.output_dir = self.output_dir
-        generator.action = ActionType.INPUT
-        generator.product_input_dir = self._get_template_dir()
-        generator.shared_dir = self.ssg_shared
-
-        for lang in self.langs:
-            generator.csv_map(csv_filepath, language=lang)
-
-        return generator.files
-
-    def _generator_list_outputs(self, generator, csv_filepath):
-        generator.reset()
-        generator.output_dir = self.output_dir
-        generator.action = ActionType.OUTPUT
-        generator.product_input_dir = self._get_template_dir()
-        generator.shared_dir = self.ssg_shared
-
-        for lang in self.langs:
-            generator.csv_map(csv_filepath, language=lang)
-
-        return generator.files
 
     def _deduplicate(self, files):
         return set(os.path.realpath(file_) for file_ in files)
