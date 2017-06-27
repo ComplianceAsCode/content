@@ -64,12 +64,6 @@ class Builder(object):
             "oval_5.11": os.path.join(self.input_dir, "csv", "oval_5.11"),
         }
 
-    def set_ssg_shared(self, shared):
-        self.ssg_shared = shared
-
-    def set_output_dir(self, output_dir):
-        self.output_dir = output_dir
-
     def _set_current_oval(self, oval):
         self.current_oval = oval
 
@@ -114,15 +108,12 @@ class Builder(object):
             )
             #sys.exit(1)
 
-    def _output_dir_for_lang(self, lang):
-        return os.path.join(self.output_dir, lang)
-
     def _deduplicate(self, files):
         return set(os.path.realpath(file_) for file_ in files)
 
     def build(self):
         for lang in self.langs:
-            dir_ = self._output_dir_for_lang(lang)
+            dir_ = os.path.join(self.output_dir, lang)
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
@@ -185,7 +176,6 @@ class Builder(object):
 
 
 if __name__ == "__main__":
-    builder = Builder()
     p = argparse.ArgumentParser()
 
     sp = p.add_subparsers(help="actions")
@@ -218,12 +208,13 @@ if __name__ == "__main__":
         )
         sys.exit(1)
 
+    builder = Builder()
     if args.language is not None:
         builder.set_langs([args.language])
 
     builder.set_input_dir(args.input)
-    builder.set_output_dir(args.output)
-    builder.set_ssg_shared(args.shared)
+    builder.output_dir = args.output
+    builder.ssg_shared = args.shared
 
     if args.oval_version == "oval_5.10":
         builder.supported_ovals = ["oval_5.10"]
