@@ -71,10 +71,10 @@ class FilesGenerator(object):
         regex_dict: dict of regex substitutions - sub ( key -> value)
         """
 
+        template_filename = self.get_template_filename(filename)
+
         if self.action == ActionType.OUTPUT:
             return ""
-
-        template_filename = self.get_template_filename(filename)
 
         if self.action == ActionType.INPUT:
             self.files.append(
