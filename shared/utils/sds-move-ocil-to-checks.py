@@ -168,7 +168,7 @@ def main():
     datastreamtree = ElementTree.parse(indatastreamfile)
 
     # Locate <ds:extended-components> element in datastream
-    extendedcomps = datastreamtree.find(".//{%s}extended-components" % datastream_ns)
+    extendedcomps = datastreamtree.getroot().find("./{%s}extended-components" % datastream_ns)
     if extendedcomps is not None:
         # Locate OCIL components within <ds:extended-components>
         ocilcomps = extendedcomps.xpath(".//ds:component-ref[contains(@id,'-ocil')]",
