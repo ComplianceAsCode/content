@@ -48,13 +48,6 @@ datastream_ns = "http://scap.nist.gov/schema/scap/source/1.2"
 ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
 
 
-def parse_xml_file(xmlfile):
-    with open(xmlfile, 'r') as xml_file:
-        filestring = xml_file.read()
-        tree = ElementTree.fromstring(filestring)
-    return tree
-
-
 def move_ocil_ref_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp):
     # This routine moves reference to present OCIL component from <ds:extended-components>
     # datastream element to <ds:checks> element (as required by SCAP v1.2 standard)
@@ -172,7 +165,7 @@ def main():
     # Output datastream file
     outdatastreamfile = sys.argv[2]
     # Datastream element tree
-    datastreamtree = parse_xml_file(indatastreamfile)
+    datastreamtree = ElementTree.parse(indatastreamfile)
 
     # Locate <ds:extended-components> element in datastream
     extendedcomps = datastreamtree.find(".//{%s}extended-components" % datastream_ns)
