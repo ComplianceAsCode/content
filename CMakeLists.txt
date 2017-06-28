@@ -234,6 +234,10 @@ if (SSG_PRODUCT_WEBMIN)
     add_subdirectory("Webmin")
 endif()
 
+# Configure shared CPE
+message(STATUS "Configuring CPE Dictionary...")
+ssg_build_cpe_dictionary()
+
 install(FILES "${CMAKE_SOURCE_DIR}/LICENSE"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES "${CMAKE_SOURCE_DIR}/README.md"
