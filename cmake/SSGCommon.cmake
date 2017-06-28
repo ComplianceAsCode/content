@@ -518,10 +518,9 @@ endmacro()
 macro(ssg_build_oval_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt" "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
+        COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
         DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-linked.xml"
-        DEPENDS "${SSG_SHARED_TRANSFORMS}/shared_xml-remove-unneeded-xmlns.xslt"
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-oval.xml"
     )
     add_custom_target(
