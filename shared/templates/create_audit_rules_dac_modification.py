@@ -11,10 +11,6 @@ from template_common import FilesGenerator, UnknownTargetError
 
 
 class AuditRulesDacModificationGenerator(FilesGenerator):
-    def __init__(self):
-        super(AuditRulesDacModificationGenerator, self).__init__()
-        self.delimiter = '&'
-
     def generate(self, target, audit_info):
         # the csv file contains lines that match the following layout:
         #    attr

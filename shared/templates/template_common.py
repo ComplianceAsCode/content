@@ -28,6 +28,7 @@ class UnknownTargetError(ValueError):
         ValueError.__init__(self,
                             "Unknown target language: \"{0}\"".format(msg))
 
+
 class FilesGenerator(object):
     def __init__(self):
         self.delimiter = ','
@@ -157,7 +158,8 @@ class FilesGenerator(object):
         with open(filename, 'r') as csv_file:
             filtered_file = self.filter_out_csv_lines(csv_file, language)
 
-            csv_lines_content = csv.reader(filtered_file, delimiter = self.delimiter)
+            csv_lines_content = csv.reader(filtered_file,
+                                           delimiter=self.delimiter)
 
             try:
                 for csv_line in csv_lines_content:
