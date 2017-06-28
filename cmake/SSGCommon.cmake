@@ -58,6 +58,12 @@ else()
     set(OSCAP_OVAL_VERSION "oval_5.10")
 endif()
 
+if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
+    set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
+else()
+    set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+endif()
+
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
 
@@ -419,7 +425,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate --schematron "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        COMMAND "${OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
@@ -532,7 +538,7 @@ macro(ssg_build_oval_final PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate --schematron "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        COMMAND "${OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
         DEPENDS generate-ssg-${PRODUCT}-oval.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
