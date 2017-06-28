@@ -193,8 +193,11 @@ def main():
     else:
         print("No extended-components, nothing to do...")
 
-    # Write the updated benchmark into output datastream file
-    ElementTree.ElementTree(datastreamtree).write(outdatastreamfile)
+    # if the in and out files are the same and we didn't do any changes we can
+    # skip the serialization
+    if extendedcomps is not None or outdatastreamfile != indatastreamfile:
+        # Write the updated benchmark into output datastream file
+        ElementTree.ElementTree(datastreamtree).write(outdatastreamfile)
     sys.exit(0)
 
 
