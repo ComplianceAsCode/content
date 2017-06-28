@@ -90,6 +90,7 @@ To find the location of the AIDE databse file, run the following command:
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
+<requires id="package_aide_installed" />
 <ident prodtype="rhel7" cce="27220-3" />
 <oval id="aide_build_database" />
 <ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" cjis="5.10.1.3" />
@@ -126,6 +127,7 @@ system. The operating system's Information Management Officer (IMO)/Information 
 Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
 monitoring system trap when there is an unauthorized modification of a configuration item.
 </rationale>
+<requires id="package_aide_installed" />
 <ident prodtype="rhel7" cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
 <ref prodtype="rhel7" stigid="020030" />
@@ -161,6 +163,7 @@ system. The operating system's Information Management Officer (IMO)/Information 
 Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
 monitoring system trap when there is an unauthorized modification of a configuration item.
 </rationale>
+<requires id="package_aide_installed" />
 <ident prodtype="rhel7" cce="80374-2" />
 <oval id="aide_scan_notification"/>
 <ref prodtype="rhel7" stigid="020040" />
@@ -187,6 +190,7 @@ Verify that the <tt>acl</tt> option is added to the correct ruleset.
 ACLs can provide permissions beyond those permitted through the file mode and must be
 verified by the file integrity tools.
 </rationale>
+<requires id="package_aide_installed" />
 <ident prodtype="rhel7" cce="80375-9" />
 <oval id="aide_verify_acls"/>
 <ref prodtype="rhel7" stigid="021600" />
@@ -213,6 +217,7 @@ Verify that the <tt>xattrs</tt> option is added to the correct ruleset.
 Extended attributes in file systems are used to contain arbitrary data and file metadata
 with security implications.
 </rationale>
+<requires id="package_aide_installed" />
 <ident prodtype="rhel7" cce="80376-7" />
 <oval id="aide_verify_ext_attributes"/>
 <ref prodtype="rhel7" stigid="021610" />
@@ -239,6 +244,7 @@ Verify that the <tt>sha512</tt> option is added to the correct ruleset.
 File integrity tools use cryptographic hashes for verifying file contents and directories
 have not been altered. These hashes must be FIPS 140-2 approved cryptographic hashes.
 </rationale>
+<requires id="package_aide_installed" />
 <ident prodtype="rhel7" cce="80377-5" />
 <oval id="aide_use_fips_hashes"/>
 <ref prodtype="rhel7" stigid="021620" />
