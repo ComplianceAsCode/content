@@ -30,6 +30,9 @@ class UnknownTargetError(ValueError):
 
 
 class FilesGenerator(object):
+    def __init__(self):
+        self.delimiter = ','
+
     def get_template_filename(self, filename):
         template_filename = os.path.join(self.product_input_dir, filename)
 
@@ -155,7 +158,8 @@ class FilesGenerator(object):
         with open(filename, 'r') as csv_file:
             filtered_file = self.filter_out_csv_lines(csv_file, language)
 
-            csv_lines_content = csv.reader(filtered_file)
+            csv_lines_content = csv.reader(filtered_file,
+                                           delimiter=self.delimiter)
 
             try:
                 for csv_line in csv_lines_content:

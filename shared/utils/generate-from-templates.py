@@ -26,6 +26,7 @@ class Builder(object):
             "accounts_password.csv":        "create_accounts_password.py",
             "mount_options.csv":            "create_mount_options.py",
             "selinux_booleans.csv":         "create_selinux_booleans.py",
+            "audit_rules_dac_modification.csv":         "create_audit_rules_dac_modification.py",
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
