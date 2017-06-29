@@ -198,17 +198,18 @@ def oval_entity_is_extvar(elem):
     return elem.tag == '{%s}external_variable' % oval_ns
 
 
+element_child_cache = {}
+
+
 def append(element, newchild):
     """Append new child ONLY if it's not a duplicate"""
 
-    newid = newchild.get("id")
-    existing = None
-    for child in element.findall(".//*"):
-        if child.get("id") != newid:
-            continue
+    if element not in element_child_cache:
+        element_child_cache[element] = dict()
 
-        existing = child
-        break
+    newid = newchild.get("id")
+
+    existing = element_child_cache[element].get(newid, None)
 
     if existing is not None:
         # ID is identical and OVAL entities are identical
@@ -256,6 +257,7 @@ def append(element, newchild):
                 sys.exit(1)
     else:
         element.append(newchild)
+        element_child_cache[element][newid] = newchild
 
 
 def check_oval_version(oval_version):
