@@ -5,8 +5,6 @@
 #        generate template-based checks for audit rules dac modifications
 
 
-import re
-
 from template_common import FilesGenerator, UnknownTargetError
 
 
@@ -33,6 +31,3 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: "
                "attr")
-
-if __name__ == "__main__":
-    AuditRulesDacModificationGenerator().main()

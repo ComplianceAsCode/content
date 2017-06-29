@@ -12,7 +12,6 @@ from template_common import FilesGenerator, UnknownTargetError
 
 
 class SEBoolGenerator(FilesGenerator):
-
     def generate(self, target, sebool_info):
         sebool_name, sebool_state = sebool_info
         # convert variable name to a format suitable for 'id' tags
@@ -26,15 +25,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_OVAL_sebool",
                         {
-                            "SEBOOLID" : sebool_id,
-                            "SEBOOL_BOOL" : sebool_bool
+                            "SEBOOLID": sebool_id,
+                            "SEBOOL_BOOL": sebool_bool
                         },
                         "./oval/sebool_{0}.xml", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_OVAL_sebool_var",
                         {
-                            "SEBOOLID" : sebool_id
+                            "SEBOOLID": sebool_id
                         },
                         "./oval/sebool_{0}.xml", sebool_id
                     )
@@ -102,6 +101,3 @@ class SEBoolGenerator(FilesGenerator):
             sebool = "false"
 
         return sebool_state, sebool
-
-if __name__ == "__main__":
-    SEBoolGenerator().main()

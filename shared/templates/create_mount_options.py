@@ -9,8 +9,8 @@ import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
-class MountOptionsGenerator(FilesGenerator):
 
+class MountOptionsGenerator(FilesGenerator):
     def generate(self, target, path_info):
         mount_point, mount_option = path_info
         point_id = re.sub('[-\./]', '_', mount_point)
@@ -48,10 +48,6 @@ class MountOptionsGenerator(FilesGenerator):
             else:
                 raise UnknownTargetError(target)
 
-
     def csv_format(self):
         return("CSV should contains lines of the format: "
-              "mount_point,mount_option,[mount_option]+")
-
-if __name__ == "__main__":
-    MountOptionsGenerator().main()
+               "mount_point,mount_option,[mount_option]+")

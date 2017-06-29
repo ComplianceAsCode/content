@@ -4,12 +4,10 @@
 # create_package_removed.py
 #   automatically generate checks for removed packages
 
-import sys
-
 from template_common import FilesGenerator, UnknownTargetError
 
-class PackageRemovedGenerator(FilesGenerator):
 
+class PackageRemovedGenerator(FilesGenerator):
     def generate(self, target, package_info):
         pkgname = package_info[0]
         if pkgname:
@@ -56,7 +54,4 @@ class PackageRemovedGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-                   "PACKAGE_NAME")
-
-if __name__ == "__main__":
-    PackageRemovedGenerator().main()
+               "PACKAGE_NAME")
