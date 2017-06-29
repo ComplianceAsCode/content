@@ -6,6 +6,8 @@ log = logging.getLogger('SSGTestSuite')
 __formatter = logging.Formatter('%(levelname)s - %(message)s')
 log.setLevel(logging.DEBUG)
 
+__intermediate_logs = {'pass':[], 'fail':[]}
+
 def find_name(original_path, suffix=""):
     log_number = 0
     # search for valid log directory, as we can run more than one
@@ -44,3 +46,18 @@ def add_logging_dir(_dirname):
     log.addHandler(file_handler)
     log.log_dir = _dirname
     log.logfile = logfile
+
+def preload_log(log_level, log_line, log_target=None):
+    if log_target is None:
+        # None means "All"
+        for target in __intermediate_logs:
+            __intermediate_logs[target] += [(log_level, log_line)]
+    else:
+        __intermediate_logs[log_target] += [(log_level, log_line)]
+
+def log_preloaded(log_target):
+    for log_level, log_line in __intermediate_logs[log_target]:
+        log.log(log_level, log_line)
+    # cleanup
+    for target in __intermediate_logs:
+        __intermediate_logs[target] = []

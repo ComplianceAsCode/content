@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import argparse
+import logging
 import os.path
 import re
 import shlex
@@ -111,20 +112,24 @@ def run_rule(domain_ip,
 
     except subprocess.CalledProcessError, e:
         if e.returncode != expected_return_code:
-            log.error(('Scan has exited with return code {0}, '
-                       'instead of expected {1} '
-                       'during stage {2}').format(e.returncode,
-                                                  expected_return_code,
-                                                  stage))
+            lib.log.preload_log(logging.ERROR,
+                            ('Scan has exited with return code {0}, '
+                             'instead of expected {1} '
+                             'during stage {2}').format(e.returncode,
+                                                        expected_return_code,
+                                                        stage),
+                            'fail')
             success = False
         output = e.output
     else:
         # success branch - command exited with return code 0
         if expected_return_code != 0:
-            log.error(('Scan has exited with return code 0, '
-                       'instead of expected {0} '
-                       'during stage {1}').format(expected_return_code,
-                                                  stage))
+            lib.log.preload_log(logging.ERROR,
+                                ('Scan has exited with return code 0, '
+                                 'instead of expected {0} '
+                                 'during stage {1}').format(expected_return_code,
+                                                            stage),
+                                'fail')
             success = False
 
     # check expected result
@@ -133,23 +138,29 @@ def run_rule(domain_ip,
                                     output,
                                     re.MULTILINE)
     except IndexError:
-        log.error(('Rule {0} has not been '
-                   'evaluated! Wrong profile selected?').format(rule_id))
+        lib.log.preload_log(logging.ERROR,
+                            ('Rule {0} has not been '
+                             'evaluated! Wrong profile '
+                             'selected?').format(rule_id),
+                            'fail')
         success = False
     else:
-        if context in actual_results:
-            # this is because of remediation runs, which reports two
-            # results - error/fail or error/fixed - usually
-            log.debug('Rule {0} results in expected way!'.format(rule_id))
-        else:
-            log.error(('Rule result should have been '
-                       '"{0}", but is "{1}"!').format(context,
-                                                      ', '.join(actual_results)))
+        if context not in actual_results:
+            lib.log.preload_log(logging.ERROR,
+                                ('Rule result should have been '
+                                 '"{0}", but is "{1}"!'
+                                 ).format(context,
+                                          ', '.join(actual_results)),
+                                'fail')
             success = False
 
     if success and not dont_clean:
         # to save space, we are going to remove the report
         # as we have not encountered any anomalies
         os.remove(formatting['report'])
+    if success:
+        lib.log.log_preloaded('pass')
+    else:
+        lib.log.log_preloaded('fail')
 
     return success

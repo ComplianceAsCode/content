@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import atexit
+import logging
 import os
 import os.path
 import re
@@ -148,8 +149,17 @@ def perform_rule_check(options):
             if len(profiles) > 1:
                 lib.virt.snapshots.create('profile')
             for profile in profiles:
-                log.info("Script {0} using profile {1}".format(script,
-                                                               profile))
+                lib.log.preload_log(logging.INFO,
+                                    ("Script {0} "
+                                     "using profile {1} OK").format(script,
+                                                                    profile),
+                                    log_target='pass')
+                lib.log.preload_log(logging.ERROR,
+                                    ("Script {0} "
+                                     "using profile {1} "
+                                     "found issue:").format(script,
+                                                            profile),
+                                    log_target='fail')
                 has_worked = True
                 if lib.oscap.run_rule(domain_ip=domain_ip,
                                       profile=profile,
