@@ -62,9 +62,12 @@ def get_profile_choices_for_input(input_tree, benchmark_id, tailoring_tree):
     ret = {}
 
     def scrape_profiles(root_element, namespace, dest):
-        for benchmark in root_element.findall(
-            ".//{%s}Benchmark" % (namespace)
-        ):
+        candidates = \
+            list(root_element.findall(".//{%s}Benchmark" % (namespace)))
+        if root_element.tag == "{%s}Benchmark" % (namespace):
+            candidates.append(root_element)
+
+        for benchmark in candidates:
             if benchmark.get("id") != benchmark_id:
                 continue
 
