@@ -224,8 +224,6 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     add_custom_target(
         generate-internal-${PRODUCT}-${LANGUAGE}-remediations.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
-        DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
-        DEPENDS ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
     )
 
     if (SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
@@ -379,8 +377,6 @@ macro(ssg_build_oval_unlinked PRODUCT)
     add_custom_target(
         generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-        DEPENDS ${OVAL_CHECKS_OUTPUTS}
-        DEPENDS ${SHARED_OVAL_CHECKS_OUTPUTS}
     )
 endmacro()
 
