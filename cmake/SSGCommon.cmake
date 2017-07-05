@@ -691,6 +691,11 @@ macro(ssg_make_stats_for_product PRODUCT)
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    add_custom_target(${PRODUCT}-profile-stats
+        COMMAND "${CMAKE_SOURCE_DIR}/shared/misc/profile_stats.py" --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+    )
 endmacro()
 
 macro(ssg_build_product PRODUCT)
