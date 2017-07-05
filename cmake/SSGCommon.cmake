@@ -685,6 +685,14 @@ macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
     )
 endmacro()
 
+macro(ssg_make_stats_for_product PRODUCT)
+    add_custom_target(${PRODUCT}-stats
+        COMMAND "${CMAKE_SOURCE_DIR}/shared/misc/profile_stats.py" --benchmark "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --profile all
+        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+    )
+endmacro()
+
 macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
     add_custom_target(${PRODUCT}-validate)
@@ -755,6 +763,8 @@ macro(ssg_build_product PRODUCT)
         DEPENDS generate-all-roles-${PRODUCT}-sh
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-roles)
+
+    ssg_make_stats_for_product(${PRODUCT})
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
