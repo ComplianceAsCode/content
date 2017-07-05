@@ -774,6 +774,8 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(${PRODUCT} ${PRODUCT}-roles)
 
     ssg_make_stats_for_product(${PRODUCT})
+    add_dependencies(stats ${PRODUCT}-stats)
+    add_dependencies(profile-stats ${PRODUCT}-profile-stats)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")

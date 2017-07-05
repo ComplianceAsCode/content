@@ -157,10 +157,12 @@ message(" ")
 
 include(SSGCommon)
 
-# Targets 'validate' and 'zipfile' need to be added before any product because
-# they will receive dependencies from products added
+# Targets 'validate', 'stats', 'profile-stats' and 'zipfile' need to be added
+# before any product because they will receive dependencies from products added
 
 add_custom_target(validate)
+add_custom_target(stats)
+add_custom_target(profile-stats)
 
 ssg_build_bash_remediation_functions()
 
