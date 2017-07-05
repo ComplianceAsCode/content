@@ -59,7 +59,7 @@ class XCCDFBenchmark(object):
         for rule in self.tree.findall(".//{%s}Rule" % (xccdf_ns)):
             rule_id = rule.get("id")
             if rule_id is None:
-                continue
+                raise RuntimeError("Can't index a rule with no id attribute!")
 
             assert(rule_id not in self.indexed_rules)
             self.indexed_rules[rule_id] = rule
@@ -122,8 +122,9 @@ class XCCDFBenchmark(object):
             for select in selects:
                 rule_id = select.get('idref')
                 xccdf_rule = self.indexed_rules.get(rule_id)
-                assert(xccdf_rule is not None)
-                rules.append(xccdf_rule)
+                if xccdf_rule is not None:
+                    # it could also be a Group
+                    rules.append(xccdf_rule)
 
         for rule in rules:
             if rule is not None:
