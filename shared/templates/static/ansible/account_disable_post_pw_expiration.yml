@@ -3,12 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Disable POST password expiration"
+- name: "Set Account Expiration Following Inactivity"
   lineinfile:
     create=yes
     dest="/etc/default/useradd"
     regexp="^INACTIVE"
-    line="INACTIVE=-1"
+    line="INACTIVE=(ansible-populate var_account_disable_post_pw_expiration)"
   tags:
     @ANSIBLE_TAGS@
 
