@@ -6,7 +6,7 @@
 - name: "Set Password Maximum Age"
   lineinfile:
     dest: /etc/login.defs
-    regexp: "PASS_MAX_DAYS *[0-9]*"
+    regexp: "^PASS_MAX_DAYS *[0-9]*"
     state: present
     line: "PASS_MAX_DAYS     (ansible-populate var_accounts_maximum_age_login_defs)"
   tags:
