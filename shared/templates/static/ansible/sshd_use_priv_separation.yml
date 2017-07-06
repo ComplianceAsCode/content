@@ -5,10 +5,10 @@
 # disruption = low
 - name: "Enable use of Privilege Separation"
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^UsePrivilegeSeparation"
-    line="UsePrivilegeSeparation yes"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: (?i)^#?useprivilegeseparation
+    line: UsePrivilegeSeparation yes
     validate: sshd -t -f %s
   notify: restart sshd
   tags:
