@@ -55,6 +55,15 @@ class XCCDFBenchmark(object):
             print("%s" % ioerr)
             sys.exit(1)
 
+        self.indexed_rules = {}
+        for rule in self.tree.findall(".//{%s}Rule" % (xccdf_ns)):
+            rule_id = rule.get("id")
+            if rule_id is None:
+                raise RuntimeError("Can't index a rule with no id attribute!")
+
+            assert(rule_id not in self.indexed_rules)
+            self.indexed_rules[rule_id] = rule
+
     def get_profile_stats(self, profile):
         """Obtain statistics for the profile"""
 
@@ -91,7 +100,7 @@ class XCCDFBenchmark(object):
 
         if profile == "all":
             # "all" is a virtual profile that selects all rules
-            rules = self.tree.findall(".//{%s}Rule" % (xccdf_ns))
+            rules = self.indexed_rules.values()
         else:
             xccdf_profile = self.tree.find("./{%s}Profile[@id=\"%s\"]" %
                                            (xccdf_ns, profile))
@@ -112,9 +121,10 @@ class XCCDFBenchmark(object):
 
             for select in selects:
                 rule_id = select.get('idref')
-                xccdf_rule = self.tree.find(".//{%s}Rule[@id=\"%s\"]" %
-                                            (xccdf_ns, rule_id))
-                rules.append(xccdf_rule)
+                xccdf_rule = self.indexed_rules.get(rule_id)
+                if xccdf_rule is not None:
+                    # it could also be a Group
+                    rules.append(xccdf_rule)
 
         for rule in rules:
             if rule is not None:
