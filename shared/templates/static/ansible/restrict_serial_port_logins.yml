@@ -3,9 +3,10 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Direct root Logins Not Allowed"
-  shell: echo > /etc/securetty
-  args:
-    executable: /bin/bash
+- name: "Restrict Serial Port Root Logins"
+  lineinfile:
+    dest: /etc/securetty
+    regexp: 'ttyS[0-9]'
+    state: absent
   tags:
     @ANSIBLE_TAGS@

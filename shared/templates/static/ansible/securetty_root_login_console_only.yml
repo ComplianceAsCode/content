@@ -3,9 +3,10 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Direct root Logins Not Allowed"
-  shell: echo > /etc/securetty
-  args:
-    executable: /bin/bash
+- name: "Restrict Virtual Console Root Logins"
+  lineinfile:
+    dest: /etc/securetty
+    regexp: '^vc'
+    state: absent
   tags:
     @ANSIBLE_TAGS@
