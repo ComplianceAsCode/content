@@ -1,4 +1,8 @@
 # platform = Red Hat Enterprise Linux 7
+. /usr/share/scap-security-guide/remediation_functions
+
+package_command install aide
+
 CRONTAB=/etc/crontab
 CRONDIRS='/etc/cron.d /etc/cron.daily /etc/cron.weekly /etc/cron.monthly'
 

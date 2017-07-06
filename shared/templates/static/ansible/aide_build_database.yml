@@ -3,6 +3,15 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- name: "Ensure AIDE is installed"
+  package:
+    name="{{item}}"
+    state=present
+  with_items:
+    - aide
+  tags:
+    @ANSIBLE_TAGS@
+
 - name: "Build and Test AIDE Database"
   shell: /usr/sbin/aide --init
   tags:
