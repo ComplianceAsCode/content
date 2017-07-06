@@ -7,6 +7,8 @@
   stat:
     path: /etc/samba/smb.conf
   register: st_smb
+  tags:
+    @ANSIBLE_TAGS@
 
 - name: Require Client SMB Packet Signing, if using smbclient
   lineinfile:
