@@ -9,6 +9,6 @@
     dest="/etc/ssh/sshd_config"
     regexp="^Banner"
     line="Banner /etc/issue"
-    validate: sshd -tf %s
+    validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@

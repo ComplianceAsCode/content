@@ -9,5 +9,6 @@
     dest="/etc/ssh/sshd_config"
     regexp="^PermitRootLogin"
     line="PermitRootLogin no"
+    validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@

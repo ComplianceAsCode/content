@@ -9,5 +9,6 @@
     dest="/etc/ssh/sshd_config"
     regexp="^PermitUserEnvironment"
     line="PermitUserEnvironment no"
+    validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@
