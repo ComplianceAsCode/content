@@ -8,6 +8,7 @@ import platform
 import re
 import sys
 from copy import deepcopy
+import argparse
 
 
 try:
@@ -341,27 +342,34 @@ def checks(product, oval_dirs):
 
 
 def main():
-    if len(sys.argv) < 4:
+    p = argparse.ArgumentParser()
+    p.add_argument("--product", required=True,
+                   help="which product are we building for? example: rhel7")
+    p.add_argument("--oval_config", required=True,
+                   help="Location of the oval.config file.")
+    p.add_argument("--oval_version",
+                   help="OVAL version to use. Example: 5.11, 5.10, ...")
+    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
+                   help="Prefixed directory(ies) from which we will collect "
+                   "OVAL definitions to combine. Prefix OVAL 5.10 dirs with "
+                   "oval_5.10 - example: oval_5.10:absolute/path/to/dir. Prefix"
+                   "OVAL 5.11 dirs with oval_5.11. Order matters, latter "
+                   "directories override former.")
+
+    args, unknown = p.parse_known_args()
+    if unknown:
         sys.stderr.write(
-            "Provide a CONFIG directory, PRODUCT and "
-            "oval directories with checks\n"
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
         )
-        sys.stderr.write(
-            "Example:\n"
-            "\t./combine-ovals.py ./config rhel7 oval_5.10:ovaldir1 oval_5.11:ovaldir2...\n")
-        sys.stderr.write("Later directory has higher priority\n")
         sys.exit(1)
 
-    # Get header with schema version
-    oval_config = sys.argv[1]
-    product = sys.argv[2]
-    oval_dirs = sys.argv[3:] # later directory has higher priority
-
     oval_schema_version = None
-    runtime_oval_schema_version = os.getenv('RUNTIME_OVAL_VERSION', None)
+    runtime_oval_schema_version = args.oval_version
 
-    if os.path.isfile(oval_config):
-        (config_oval_schema_version, multi_platform) = parse_conf_file(oval_config, product)
+    if os.path.isfile(args.oval_config):
+        config_oval_schema_version, multi_platform = \
+            parse_conf_file(args.oval_config, args.product)
         if runtime_oval_schema_version is not None and \
            runtime_oval_schema_version != config_oval_schema_version:
             oval_schema_version = runtime_oval_schema_version
@@ -370,10 +378,10 @@ def main():
         header = _header(oval_schema_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
-                         "file!\n" % (oval_config))
+                         "file!\n" % (args.oval_config))
         sys.exit(1)
 
-    body = checks(product, oval_dirs)
+    body = checks(args.product, args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
@@ -402,15 +410,16 @@ def main():
             sys.stderr.write("Warning: Unknown element '%s'\n"
                              % (childnode.tag))
 
-    tree = ElementTree.fromstring((header + footer).encode("utf-8"))
-    tree.append(definitions)
-    tree.append(tests)
-    tree.append(objects)
-    tree.append(states)
+    root = ElementTree.fromstring((header + footer).encode("utf-8"))
+    root.append(definitions)
+    root.append(tests)
+    root.append(objects)
+    root.append(states)
     if list(variables):
-        tree.append(variables)
+        root.append(variables)
 
-    ElementTree.dump(tree)
+    ElementTree.ElementTree(root).write(args.output)
+
     sys.exit(0)
 
 if __name__ == "__main__":
