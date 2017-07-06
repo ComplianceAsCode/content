@@ -136,6 +136,12 @@ GRUB 2 command line for the Linux operating system in
 Inspect the form of default GRUB 2 command line for the Linux operating system
 in <tt>/etc/default/grub</tt>. If they include <tt>audit=1</tt>, then auditing
 is enabled at boot time.
+<br /><br />
+To ensure <tt>audit=1</tt> is configured on all installed kernels, the
+following command may be used:
+<br />
+<pre>$ sudo /sbin/grubby --update-kernel=ALL --args="audit=1"</pre>
+<br />
 </ocil>
 <rationale>
 Each process on the system carries an "auditable" flag which indicates whether
