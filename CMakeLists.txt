@@ -83,6 +83,12 @@ if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11
     message("Your version of OpenSCAP does not support OVAL 5.11, disabling OVAL 5.11 for the SSG build.")
 endif()
 
+if("${OSCAP_V_OUTPUT}" MATCHES "^OpenSCAP command line tool \\(oscap\\) ([0-9\\.]+)")
+    set(OSCAP_VERSION "${CMAKE_MATCH_1}")
+else()
+    set(OSCAP_VERSION "unknown")
+endif()
+
 execute_process(
     COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OSCAP_EXECUTABLE}"
     RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
@@ -118,7 +124,7 @@ find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
 configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
 
 message("Tools:")
-message("oscap: ${OSCAP_EXECUTABLE}")
+message("oscap: ${OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message("xsltproc: ${XSLTPROC_EXECUTABLE}")
 message("xmllint: ${XMLLINT_EXECUTABLE}")
 message("xmlwf: ${XMLWF_EXECUTABLE}")
