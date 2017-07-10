@@ -29,11 +29,11 @@ sys.path.insert(0, os.path.join(
 from map_product_module import map_product, parse_product_name, multi_product_list
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 footer = '</oval_definitions>'
 
 
 def _header(schema_version, ssg_version):
+    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
     header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
