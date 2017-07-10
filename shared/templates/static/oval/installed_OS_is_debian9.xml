@@ -4,7 +4,7 @@
     <metadata>
       <title>Debian 9</title>
       <affected family="unix">
-        <platform>Debian9</platform>
+        <platform>Debian 9</platform>
       </affected>
       <reference ref_id="cpe:/o:debian:debian:9"
       source="CPE" />
@@ -14,6 +14,8 @@
     <criteria operator="AND">
       <extend_definition comment="Installed OS is part of the Unix family"
       definition_ref="installed_OS_is_part_of_Unix_family" />
+      <extend_definition comment="Installed OS is Debian"
+      definition_ref="installed_OS_is_debian" />
       <criterion comment="Debian9 is installed"
       test_ref="test_debian9" />
     </criteria>
