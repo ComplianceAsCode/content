@@ -3,7 +3,9 @@
     <metadata>
       <title>Ensure /tmp Located On Separate Partition</title>
       <affected family="unix">
-        <platform>multi_platform_all</platform>
+        <platform>multi_platform_debian</platform>
+        <platform>multi_platform_ubuntu</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>The /tmp directory is a world-writable directory used for
       temporary file storage. Verify that it has its own partition or logical
