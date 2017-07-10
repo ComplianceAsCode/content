@@ -128,7 +128,7 @@ def check_is_applicable_for_product(oval_check_def, product):
 
 
 def add_platforms(xml_tree, multi_platform):
-    for affected in xml_tree.findall(".//affected"):
+    for affected in xml_tree.findall(".//{%s}affected" % oval_ns):
         if affected.get("family") != "unix":
             continue
 
