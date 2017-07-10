@@ -123,6 +123,12 @@ find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
 
 configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
 
+message(STATUS "CMake:")
+message(STATUS "generator: ${CMAKE_GENERATOR}")
+message(STATUS "source directory: ${CMAKE_SOURCE_DIR}")
+message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
+message(STATUS " ")
+
 message(STATUS "Tools:")
 message(STATUS "oscap: ${OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message(STATUS "xsltproc: ${XSLTPROC_EXECUTABLE}")
