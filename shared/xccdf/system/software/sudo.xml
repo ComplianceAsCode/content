@@ -10,7 +10,7 @@ For more information on <tt>Sudo</tt> and addition <tt>Sudo</tt> configuration o
 <b><weblink-macro link="https://www.sudo.ws"/></b>
 </description>
 
-<Rule id="sudo_remove_nopasswd" severity="medium" prodtype="rhel7">
+<Rule id="sudo_remove_nopasswd" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD</title>
 <description>
 The sudo <tt>NOPASSWD</tt> tag, when specified, allows a user to execute commands using
@@ -33,10 +33,10 @@ is critical that the user re-authenticate.
 <ident prodtype="rhel7" cce="80351-0" />
 <oval id="sudo_remove_nopasswd" />
 <ref prodtype="rhel7" stigid="010340" />
-<ref nist="IA-11" disa="2038" ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
+<ref anssi="NT28(R5)" nist="IA-11" disa="2038" ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
 </Rule>
 
-<Rule id="sudo_remove_no_authenticate" severity="medium" prodtype="rhel7">
+<Rule id="sudo_remove_no_authenticate" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate</title>
 <description>
 The sudo <tt>!authenticate</tt> option, when specified, allows a user to execute commands using
@@ -59,7 +59,7 @@ is critical that the user re-authenticate.
 <ident prodtype="rhel7" cce="80350-2" />
 <oval id="sudo_remove_no_authenticate" />
 <ref prodtype="rhel7" stigid="010350" />
-<ref nist="IA-11" disa="2038" ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
+<ref anssi="NT28(R5)" nist="IA-11" disa="2038" ossrg="SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158"/>
 </Rule>
 
 </Group>

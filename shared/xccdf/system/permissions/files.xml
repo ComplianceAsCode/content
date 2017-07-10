@@ -17,7 +17,7 @@ need read access to the <tt>passwd</tt> file in order to function properly, but
 read access to the <tt>shadow</tt> file allows malicious attacks against system
 passwords, and should never be enabled.</description>
 
-<Rule id="userowner_shadow_file" severity="medium" prodtype="rhel7">
+<Rule id="userowner_shadow_file" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
@@ -42,6 +42,17 @@ critical for system security.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
+<Rule id="groupowner_shadow_file" severity="medium" prodtype="debian8,ubuntu1404">
+<title>Verify Group Who Owns <tt>shadow</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/shadow" group="shadow"/></description>
+<ocil><filegroupowner-check-macro file="/etc/shadow" group="shadow"/></ocil>
+<rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
+critical for system security.</rationale>
+<ident prodtype="rhel7" cce="27125-4" />
+<oval id="groupowner_shadow_file" />
+<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
+</Rule>
+
 <Rule id="file_permissions_etc_shadow" severity="medium" prodtype="rhel7">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
@@ -56,7 +67,7 @@ which could weaken the system security posture.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_owner_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_owner_etc_group" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Verify User Who Owns <tt>group</tt> File</title>
 <description><fileowner-desc-macro file="/etc/group" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
@@ -67,7 +78,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-6" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_groupowner_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_groupowner_etc_group" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Verify Group Who Owns <tt>group</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/group" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
@@ -78,7 +89,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_permissions_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_etc_group" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Verify Permissions on <tt>group</tt> File</title>
 <description><fileperms-desc-macro file="/etc/group" perms="644"/></description>
 <ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
@@ -89,7 +100,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_owner_etc_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="file_owner_etc_gshadow" severity="medium" prodtype="rhel7,debian8,ubuntu1404">
 <title>Verify User Who Owns <tt>gshadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/gshadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
@@ -110,6 +121,18 @@ is critical for system security.</rationale>
 <oval id="file_groupowner_etc_gshadow" />
 <ref nist="AC-6" disa=""/>
 </Rule>
+
+<Rule id="file_groupowner_etc_gshadow" severity="medium" prodtype="debian8,ubuntu1404">
+<title>Verify Group Who Owns <tt>gshadow</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/gshadow" group="shadow"/></description>
+<ocil><filegroupowner-check-macro file="/etc/gshadow" group="shadow"/></ocil>
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<ident prodtype="rhel7" cce="26840-9" />
+<oval id="file_groupowner_etc_gshadow" />
+<ref nist="AC-6" disa=""/>
+</Rule>
+
 
 <Rule id="file_permissions_etc_gshadow" severity="medium" prodtype="rhel7">
 <title>Verify Permissions on <tt>gshadow</tt> File</title>
@@ -513,4 +536,27 @@ users.
 <ref prodtype="rhel7" stigid="021030" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
+
+<Rule id="sysctl_fs_protected_symlinks" prodtype="debian8">
+<title>Disallow creating symlinks to a file you not own</title>
+<description><sysctl-desc-macro sysctl="fs.protected_symlinks" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="fs.protected_symlinks" value="1" /></ocil>
+<rationale>Disallowing such symlink mitigate vulnerabilities based on insecure file system
+accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+<tt>open()</tt> or <tt>creat()</tt>.</rationale>
+<oval id="sysctl_fs_protected_symlinks" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
+<Rule id="sysctl_fs_protected_hardlinks" prodtype="debian8">
+<title>Disallow creating symlinks to a file you not own</title>
+<description><sysctl-desc-macro sysctl="fs.protected_hardlinks" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="fs.protected_hardlinks" value="1" /></ocil>
+<rationale>Disallowing such hardlink mitigate vulnerabilities based on insecure file system
+accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+<tt>open()</tt> or <tt>creat()</tt>.</rationale>
+<oval id="sysctl_fs_protected_hardlinks" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
 </Group>
