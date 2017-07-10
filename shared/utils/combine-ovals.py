@@ -393,7 +393,7 @@ def main():
     states = ElementTree.Element("{%s}states" % oval_ns)
     variables = ElementTree.Element("{%s}variables" % oval_ns)
 
-    for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
+    for childnode in tree.findall("./{%s}def-group/*" % oval_ns):
         if childnode.tag is ElementTree.Comment:
             continue
         elif childnode.tag.endswith("definition"):
