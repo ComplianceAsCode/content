@@ -147,7 +147,7 @@ can be held accountable for their actions.
 <ref anssi="NT28(R50)" nist="AU-3,AC-17(1),AU-1(b),AU-10,AU-12(a),AU-12(c),AU-14(1),IR-5" disa="126,131" ossrg="SRG-OS-000038-GPOS-00016,SRG-OS-000039-GPOS-00017,SRG-OS-000042-GPOS-00021,SRG-OS-000254-GPOS-00095,SRG-OS-000255-GPOS-00096" pcidss="Req-10" cis="5.2.2" cjis="5.4.1.1" cui="3.3.1,3.3.2,3.3.6" />
 </Rule>
 
-<Rule id="bootloader_audit_argument" severity="medium" prodtype="rhel7">
+<Rule id="bootloader_audit_argument" severity="medium" prodtype="rhel7,debian9">
 <title>Enable Auditing for Processes Which Start Prior to the Audit Daemon</title>
 <description>To ensure all processes can be audited, even those which start
 prior to the audit daemon, add the argument <tt>audit=1</tt> to the default
@@ -300,7 +300,7 @@ normally.</i>
 <value selector="sync">sync</value>
 </Value>
 
-<Rule id="auditd_data_retention_num_logs" severity="medium" prodtype="rhel7">
+<Rule id="auditd_data_retention_num_logs" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd Number of Logs Retained</title>
 <description>Determine how many log files
 <tt>auditd</tt> should retain when it rotates logs.
@@ -324,7 +324,7 @@ file size and the number of logs retained.</rationale>
 <ref nist="AU-1(b),AU-11,IR-5" pcidss="Req-10.7" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
-<Rule id="auditd_data_retention_max_log_file" severity="medium" prodtype="rhel7">
+<Rule id="auditd_data_retention_max_log_file" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd Max Log File Size</title>
 <description>Determine the amount of audit data (in megabytes)
 which should be retained in each log file. Edit the file
@@ -349,7 +349,7 @@ log file size and the number of logs retained.</rationale>
 <ref nist="AU-1(b),AU-11,IR-5" pcidss="Req-10.7" cis="5.2.1.1" cjis="5.4.1.1" />
 </Rule>
 
-<Rule id="auditd_data_retention_max_log_file_action" severity="medium" prodtype="rhel7">
+<Rule id="auditd_data_retention_max_log_file_action" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd max_log_file_action Upon Reaching Maximum Log Size</title>
 <description> The default action to take when the logs reach their maximum size
 is to rotate the log files, discarding the oldest one. To configure the action taken
@@ -399,7 +399,7 @@ installation time. The partition should be larger than the maximum space which
 </Group>
 -->
 
-<Rule id="auditd_data_retention_space_left_action" severity="medium" prodtype="rhel7">
+<Rule id="auditd_data_retention_space_left_action" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
 when disk space <i>starts</i> to run low.
@@ -438,7 +438,7 @@ allow them to take corrective action prior to any disruption.</rationale>
 <ref nist="AU-1(b),AU-4,AU-5(1),AU-5(b),IR-5" disa="1855" pcidss="Req-10.7" cis="5.2.1.2" ossrg="SRG-OS-000343-GPOS-00134" tigid="030340" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
-<Rule id="auditd_data_retention_admin_space_left_action" severity="medium" prodtype="rhel7">
+<Rule id="auditd_data_retention_admin_space_left_action" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd admin_space_left Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to take an action
 when disk space is running low but prior to running out of space completely.
@@ -469,7 +469,7 @@ is used, running low on space for audit records should never occur.
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" pcidss="Req-10.7" cis="5.2.1.2" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
-<Rule id="auditd_data_retention_action_mail_acct" severity="medium" prodtype="rhel7">
+<Rule id="auditd_data_retention_action_mail_acct" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd mail_acct Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to send email to
 a designated account in certain situations. Add or correct the following line
@@ -492,7 +492,7 @@ administrators of the system, who can take appropriate action.</rationale>
 <ref nist="AU-1(b),AU-4,AU-5(1),AU-5(a),IR-5" disa="1855" pcidss="Req-10.7.a" cis="5.2.1.2" ossrg="SRG-OS-000343-GPOS-00134" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
-<Rule id="auditd_data_retention_flush" prodtype="rhel7">
+<Rule id="auditd_data_retention_flush" prodtype="rhel7,debian9">
 <title>Configure auditd flush priority</title>
 <description>The <tt>auditd</tt> service can be configured to
 synchronously write audit event data to disk. Add or correct the following
@@ -519,7 +519,7 @@ synchronized with the log files on the disk.</rationale>
 <ref nist="AU-9,AU-12(1)" disa="1576" cui="3.3.1" />
 </Rule>
 
-<Rule id="auditd_audispd_syslog_plugin_activated" severity="medium" prodtype="rhel7">
+<Rule id="auditd_audispd_syslog_plugin_activated" severity="medium" prodtype="rhel7,debian9">
 <title>Configure auditd to use audispd's syslog plugin</title>
 <description>To configure the <tt>auditd</tt> service to use the
 <tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
@@ -583,7 +583,7 @@ editing as needed, the new rules can be activated as follows:
 <pre>$ sudo service auditd restart</pre>
 </description>
 
-<Rule id="audit_rules_system_shutdown" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_system_shutdown" severity="medium" prodtype="rhel7,debian9">
 <title>Shutdown System When Auditing Failures Occur</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -658,7 +658,7 @@ to the system time should be audited.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_time_settimeofday" prodtype="rhel7">
+<Rule id="audit_rules_time_settimeofday" prodtype="rhel7,debian9">
 <title>Record attempts to alter time through settimeofday</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -692,7 +692,7 @@ to the system time should be audited.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_time_stime" prodtype="rhel7">
+<Rule id="audit_rules_time_stime" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Time Through stime</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -732,7 +732,7 @@ to the system time should be audited.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_time_clock_settime" prodtype="rhel7">
+<Rule id="audit_rules_time_clock_settime" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Time Through clock_settime</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -766,7 +766,7 @@ to the system time should be audited.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_time_watch_localtime" prodtype="rhel7">
+<Rule id="audit_rules_time_watch_localtime" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter the localtime File</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the default),
@@ -799,7 +799,7 @@ to the system time should be audited.</rationale>
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
 
-<Rule id="audit_rules_usergroup_modification" prodtype="rhel7">
+<Rule id="audit_rules_usergroup_modification" prodtype="rhel7,debian9">
 <title>Record Events that Modify User/Group Information</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -839,7 +839,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,172,1403,2130" pcidss="Req-10.2.5" cis="5.2.5" ossrg="SRG-OS-000004-GPOS-00004,SRG-OS-000239-GPOS-00089,SRG-OS-000241-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000476-GPOS-00221" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_usergroup_modification_group" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_usergroup_modification_group" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify User/Group Information - /etc/group</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -875,7 +875,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,172,1403,2130" pcidss="Req-10.2.5" cis="5.2.5" ossrg="SRG-OS-000004-GPOS-00004"  cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_usergroup_modification_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_usergroup_modification_gshadow" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify User/Group Information - /etc/gshadow</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -911,7 +911,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,172,1403,2130" pcidss="Req-10.2.5" cis="5.2.5" ossrg="SRG-OS-000004-GPOS-00004"  cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_usergroup_modification_shadow" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_usergroup_modification_shadow" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify User/Group Information - /etc/shadow</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -947,7 +947,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,172,1403,2130" pcidss="Req-10.2.5" cis="5.2.5" ossrg="SRG-OS-000004-GPOS-00004"  cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_usergroup_modification_passwd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_usergroup_modification_passwd" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify User/Group Information - passwd</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -984,7 +984,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 </Rule>
 
 
-<Rule id="audit_rules_usergroup_modification_opasswd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_usergroup_modification_opasswd" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify User/Group Information - opasswd</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -1020,7 +1020,7 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <ref nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="18,172,1403,2130" pcidss="Req-10.2.5" cis="5.2.5" ossrg="SRG-OS-000004-GPOS-00004"  cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_networkconfig_modification" prodtype="rhel7">
+<Rule id="audit_rules_networkconfig_modification" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Network Environment</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -1058,7 +1058,7 @@ audited.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" cjis="5.4.1.1" cis="5.2.6" cui="3.1.7" />
 </Rule>
 
-<Rule id="file_permissions_var_log_audit" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_var_log_audit" severity="medium" prodtype="rhel7,debian9">
 <title>System Audit Logs Must Have Mode 0640 or Less Permissive</title>
 <description>
 If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
@@ -1082,7 +1082,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="" pcidss="Req-10.5" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
-<Rule id="file_ownership_var_log_audit" severity="medium" prodtype="rhel7">
+<Rule id="file_ownership_var_log_audit" severity="medium" prodtype="rhel7,debian9">
 <title>System Audit Logs Must Be Owned By Root</title>
 <description>All audit logs must be owned by root user and group. By default, the path for audit log is <pre>/var/log/audit/</pre>.
 <fileowner-desc-macro file="/var/log/audit" owner="root"/>
@@ -1100,7 +1100,7 @@ attackers, thus compromising its confidentiality.</rationale>
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="163" ossrg="SRG-OS-000058-GPOS-00028" pcidss="Req-10.5.1" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
-<Rule id="audit_rules_mac_modification" prodtype="rhel7">
+<Rule id="audit_rules_mac_modification" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Mandatory Access Controls</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -1154,7 +1154,7 @@ Auditing DAC modifications can facilitate the identification of patterns of
 abuse among both authorized and unauthorized users.</rationale>
 <platform idref="cpe:/a:machine" />
 
-<Rule id="audit_rules_dac_modification_chmod" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_chmod" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - chmod</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured to
@@ -1190,7 +1190,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7"/>
 </Rule>
 
-<Rule id="audit_rules_dac_modification_chown" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_chown" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - chown</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured to
@@ -1226,7 +1226,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fchmod" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_fchmod" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - fchmod</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured to
@@ -1262,7 +1262,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fchmodat" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_fchmodat" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - fchmodat</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured to
@@ -1298,7 +1298,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fchown" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_fchown" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - fchown</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1334,7 +1334,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fchownat" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_fchownat" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - fchownat</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1370,7 +1370,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fremovexattr" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_fremovexattr" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - fremovexattr</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root.
@@ -1411,7 +1411,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_fsetxattr" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_fsetxattr" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - fsetxattr</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1447,7 +1447,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_lchown" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_lchown" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - lchown</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1483,7 +1483,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_lremovexattr" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_lremovexattr" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - lremovexattr</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root.
@@ -1524,7 +1524,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_lsetxattr" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_lsetxattr" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - lsetxattr</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1560,7 +1560,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="126,172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_removexattr" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_removexattr" severity="medium" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - removexattr</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root.
@@ -1600,7 +1600,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" pcidss="Req-10.5.5" cis="5.2.10" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_dac_modification_setxattr" prodtype="rhel7">
+<Rule id="audit_rules_dac_modification_setxattr" prodtype="rhel7,debian9">
 <title>Record Events that Modify the System's Discretionary Access Controls - setxattr</title>
 <description>At a minimum, the audit system should collect file permission
 changes for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1660,7 +1660,7 @@ edits of files involved in storing logon events:
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 
-<Rule id="audit_rules_login_events" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_login_events" severity="medium" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Logon and Logout Events</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1687,7 +1687,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884" pcidss="Req-10.2.3" cis="5.2.8" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_login_events_tallylog" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_login_events_tallylog" severity="medium" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Logon and Logout Events - tallylog</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1715,7 +1715,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884,126" ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_login_events_faillock" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_login_events_faillock" severity="medium" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Logon and Logout Events - faillock</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1743,7 +1743,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884,126" ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" pcidss="Req-10.2.3" cis="5.2.8" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_login_events_lastlog" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_login_events_lastlog" severity="medium" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Logon and Logout Events - lastlog</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1773,7 +1773,7 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 
 </Group>
 
-<Rule id="audit_rules_session_events" prodtype="rhel7">
+<Rule id="audit_rules_session_events" prodtype="rhel7,debian9">
 <title>Record Attempts to Alter Process and Session Initiation Information</title>
 <description>The audit system already collects process information for all
 users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1820,7 +1820,7 @@ arch=b32 replaced with arch=b64 as follows:
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
 
-<Rule id="audit_rules_unsuccessful_file_modification" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)</title>
 <description>At a minimum the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1856,7 +1856,7 @@ these events could serve as evidence of potential system compromise.</rationale>
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification_creat" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification_creat" severity="medium" prodtype="rhel7,debian9">
 <title>Record Unauthorized Access Attempts to Files (unsuccessful) - creat</title>
 <description>At a minimum, the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1896,7 +1896,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification_open" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification_open" severity="medium" prodtype="rhel7,debian9">
 <title>Record Unauthorized Access Attempts to Files (unsuccessful) - open</title>
 <description>At a minimum, the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1936,7 +1936,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification_openat" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification_openat" severity="medium" prodtype="rhel7,debian9">
 <title>Record Unauthorized Access Attempts to Files (unsuccessful) - openat</title>
 <description>At a minimum, the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -1976,7 +1976,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification_open_by_handle_at" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification_open_by_handle_at" severity="medium" prodtype="rhel7,debian9">
 <title>Record Unauthorized Access Attempts to Files (unsuccessful) - open_by_handle_at</title>
 <description>At a minimum, the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -2016,7 +2016,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification_truncate" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification_truncate" severity="medium" prodtype="rhel7,debian9">
 <title>Record Unauthorized Access Attempts to Files (unsuccessful) - truncate</title>
 <description>At a minimum, the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -2056,7 +2056,7 @@ calls with others as identifying earlier in this guide is more efficient.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" ossrg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_unsuccessful_file_modification_ftruncate" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_unsuccessful_file_modification_ftruncate" severity="medium" prodtype="rhel7,debian9">
 <title>Record Unauthorized Access Attempts to Files (unsuccessful) - ftruncate</title>
 <description>At a minimum, the audit system should collect unauthorized file
 accesses for all users and root. If the <tt>auditd</tt> daemon is configured
@@ -2115,7 +2115,7 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 
-<Rule id="audit_rules_execution_semanage" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_execution_semanage" severity="medium" prodtype="rhel7,debian9">
 <title>Record Any Attempts to Run <tt>semanage</tt></title>
 <description>At a minimum, the audit system should collect any execution attempt
 of the <tt>semanage</tt> command for all users and root. If the <tt>auditd</tt>
@@ -2152,7 +2152,7 @@ unusual activity.
 <ref nist="AU-12(c)" disa="172,2884" ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_execution_setsebool" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_execution_setsebool" severity="medium" prodtype="rhel7,debian9">
 <title>Record Any Attempts to Run <tt>setsebool</tt></title>
 <description>At a minimum, the audit system should collect any execution attempt
 of the <tt>setsebool</tt> command for all users and root. If the <tt>auditd</tt>
@@ -2189,7 +2189,7 @@ unusual activity.
 <ref nist="AU-12(c)" disa="172,2884" ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_execution_chcon" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_execution_chcon" severity="medium" prodtype="rhel7,debian9">
 <title>Record Any Attempts to Run <tt>chcon</tt></title>
 <description>At a minimum, the audit system should collect any execution attempt
 of the <tt>chcon</tt> command for all users and root. If the <tt>auditd</tt>
@@ -2226,7 +2226,7 @@ unusual activity.
 <ref nist="AU-12(c)" disa="172,2884" ossrg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" cui="3.1.7"/>
 </Rule>
 
-<Rule id="audit_rules_execution_restorecon" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_execution_restorecon" severity="medium" prodtype="rhel7,debian9">
 <title>Record Any Attempts to Run <tt>restorecon</tt></title>
 <description>At a minimum, the audit system should collect any execution attempt
 of the <tt>restorecon</tt> command for all users and root. If the <tt>auditd</tt>
@@ -2282,7 +2282,7 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 
-<Rule id="audit_rules_privileged_commands" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. To find the relevant setuid /
@@ -2332,7 +2332,7 @@ unusual activity.
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-2(4),AU-6(9),AU-12(a),AU-12(c),IR-5" disa="2234" ossrg="SRG-OS-000327-GPOS-00127" pcidss="Req-10.2.2" cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_passwd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_passwd" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - passwd</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2369,7 +2369,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_unix_chkpwd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_unix_chkpwd" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - unix_chkpwd</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2406,7 +2406,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_gpasswd" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_gpasswd" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - gpasswd</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2443,7 +2443,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_chage" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_chage" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - chage</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2480,7 +2480,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_userhelper" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_userhelper" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - userhelper</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2517,7 +2517,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_su" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_su" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - su</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2554,7 +2554,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_sudo" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_sudo" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - sudo</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2591,7 +2591,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_sudoedit" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_sudoedit" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - sudoedit</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2628,7 +2628,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_newgrp" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_newgrp" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - newgrp</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2665,7 +2665,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_chsh" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_chsh" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - chsh</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2702,7 +2702,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_umount" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_umount" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - umount</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2739,7 +2739,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_postdrop" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_postdrop" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - postdrop</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2776,7 +2776,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7"  />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_postqueue" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_postqueue" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - postqueue</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2813,7 +2813,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7"  />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_ssh_keysign" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_ssh_keysign" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - ssh-keysign</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2850,7 +2850,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_pt_chown" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_pt_chown" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - pt_chown</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2887,7 +2887,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_crontab" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_crontab" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - crontab</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2924,7 +2924,7 @@ unusual activity.
 <ref nist="AU-3(1),AU-12(c)" disa="135,172,2884" ossrg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_privileged_commands_pam_timestamp_check" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_privileged_commands_pam_timestamp_check" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - pam_timestamp_check</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. If the <tt>auditd</tt> daemon is
@@ -2963,7 +2963,7 @@ unusual activity.
 
 </Group>
 
-<Rule id="audit_rules_media_export" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_media_export" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)</title>
 <description>At a minimum, the audit system should collect media exportation
 events for all users and root. If the <tt>auditd</tt> daemon is configured to
@@ -3009,7 +3009,7 @@ appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
 </description>
 
-<Rule id="audit_rules_file_deletion_events" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_file_deletion_events" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
 <description>At a minimum the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3040,7 +3040,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" cis="5.2.14" disa="366,172,2884" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_file_deletion_events_rmdir" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_file_deletion_events_rmdir" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - rmdir</title>
 <description>At a minimum, the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3068,7 +3068,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884" ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_file_deletion_events_unlink" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_file_deletion_events_unlink" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - unlink</title>
 <description>At a minimum, the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3096,7 +3096,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884" ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_file_deletion_events_unlinkat" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_file_deletion_events_unlinkat" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - unlinkat</title>
 <description>At a minimum, the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3124,7 +3124,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884" ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_file_deletion_events_rename" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_file_deletion_events_rename" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - rename</title>
 <description>At a minimum, the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3152,7 +3152,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" disa="366,172,2884" ossrg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" pcidss="Req-10.2.7" cis="5.2.14" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_file_deletion_events_renameat" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_file_deletion_events_renameat" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User - renameat</title>
 <description>At a minimum, the audit system should collect file deletion events
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3182,7 +3182,7 @@ malicious processes that attempt to delete log files to conceal their presence.<
 
 </Group>
 
-<Rule id="audit_rules_sysadmin_actions" prodtype="rhel7">
+<Rule id="audit_rules_sysadmin_actions" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects System Administrator Actions</title>
 <description>At a minimum, the audit system should collect administrator actions
 for all users and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -3230,7 +3230,7 @@ b64 as appropriate for your system:
 -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules</pre>
 </description>
 
-<Rule id="audit_rules_kernel_module_loading" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3262,7 +3262,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" cis="5.2.17" disa="172" cjis="5.4.1.1" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_init" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_init" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - init_module</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3288,7 +3288,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_delete" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_delete" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - delete_module</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3314,7 +3314,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_insmod" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_insmod" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - insmod</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3341,7 +3341,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_rmmod" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_rmmod" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - rmmod</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3368,7 +3368,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172" ossrg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
 </Rule>
 
-<Rule id="audit_rules_kernel_module_loading_modprobe" severity="medium" prodtype="rhel7">
+<Rule id="audit_rules_kernel_module_loading_modprobe" severity="medium" prodtype="rhel7,debian9">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - modprobe</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
 to read audit rules during daemon startup (the default), add the following lines to a file
@@ -3397,7 +3397,7 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 
 </Group>
 
-<Rule id="audit_rules_immutable" prodtype="rhel7" severity="medium">
+<Rule id="audit_rules_immutable" prodtype="rhel7,debian9" severity="medium">
 <title>Make the <tt>auditd</tt> Configuration Immutable</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the

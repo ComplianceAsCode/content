@@ -57,7 +57,7 @@ frequently.</description>
 <value selector="24">24</value>
 </Value>
 
-<Rule id="display_login_attempts" severity="low" prodtype="rhel7">
+<Rule id="display_login_attempts" severity="low" prodtype="rhel7,debian9">
 <title>Set Last Logon/Access Notification</title>
 <description>To configure the system to notify users of last logon/access
 using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt> settings in
@@ -275,7 +275,7 @@ password</description>
 <value selector="100000000">100000000</value> <!-- 3.16 years -->
 </Value>
 
-<Rule id="accounts_password_pam_retry" prodtype="rhel7">
+<Rule id="accounts_password_pam_retry" prodtype="rhel7,debian9">
 <title>Set Password Retry Prompts Permitted Per-Session</title>
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
@@ -303,7 +303,7 @@ is different from account lockout, which is provided by the pam_faillock module.
 <ref nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" ossrg="SRG-OS-000480-GPOS-00225" cjis="5.5.3" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxrepeat" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_maxrepeat" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Maximum Consecutive Repeating Characters</title>
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
@@ -334,7 +334,7 @@ Passwords with excessive repeating characters may be more vulnerable to password
 <ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxclassrepeat" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_maxclassrepeat" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
 <description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
 consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
@@ -362,7 +362,7 @@ password is compromised.
 <ref nist="IA-5,IA-5(c)" disa="195" ossrg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
-<Rule id="accounts_password_pam_dcredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_dcredit" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
@@ -394,7 +394,7 @@ search space.
 <ref nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-00039" pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
-<Rule id="accounts_password_pam_minlen" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_minlen" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Minimum Length</title>
 <description>The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
 minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
@@ -422,7 +422,7 @@ compromose the password.
 <ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046" pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
-<Rule id="accounts_password_pam_ucredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_ucredit" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
@@ -452,7 +452,7 @@ the password is compromised.
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" ossrg="SRG-OS-000069-GPOS-00037" pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
-<Rule id="accounts_password_pam_ocredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_ocredit" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
 usage of special (or "other") characters in a password. When set to a negative number, any password will be
@@ -485,7 +485,7 @@ more difficult by ensuring a larger search space.
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" />
 </Rule>
 
-<Rule id="accounts_password_pam_lcredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_lcredit" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The pam_pwquality module's <tt>lcredit</tt> parameter controls requirements for
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
@@ -517,7 +517,7 @@ more difficult by ensuring a larger search space.
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-00038" pcidss="Req-8.2.3" />
 </Rule>
 
-<Rule id="accounts_password_pam_difok" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_difok" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Strength Minimum Different Characters</title>
 <description>The pam_pwquality module's <tt>difok</tt> parameter sets the number of characters
 in a password that must not be present in and old password during a password change. 
@@ -552,7 +552,7 @@ Note that passwords which are changed on compromised systems will still be compr
 <ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
-<Rule id="accounts_password_pam_minclass" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_minclass" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Strength Minimum Different Categories</title>
 <description>The pam_pwquality module's <tt>minclass</tt> parameter controls
 requirements for usage of different character classes, or types, of character
@@ -617,7 +617,7 @@ one to use pam_faillock,
 and a second to use unlock_time and set it to a Value
 -->
 
-<Rule id="accounts_passwords_pam_faillock_deny" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_deny" severity="medium" prodtype="rhel7,debian9">
 <title>Set Deny For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
@@ -648,7 +648,7 @@ prevents direct password guessing attacks.
 <ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" pcidss="Req-8.1.6" cis="6.3.3" cjis="5.5.3" cui="3.1.8" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium" prodtype="rhel7,debian9">
 <title>Set Lockout Time For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
@@ -681,7 +681,7 @@ situations.
 <ref nist="AC-7(b)" disa="002238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" pcidss="Req-8.1.7" cis="6.3.3" cjis="5.5.3" cui="3.1.8" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium" prodtype="rhel7,debian9">
 <title>Configure the <tt>root</tt> Account for Failed Password Attempts</title>
 <description>
 To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
@@ -711,7 +711,7 @@ guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by lo
 <ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_faillock_interval" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_interval" severity="medium" prodtype="rhel7,debian9">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
 Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive 
@@ -746,7 +746,7 @@ Limits are imposed by locking the account.
 <ref nist="AC-7(b)" disa="2238" ossrg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
-<Rule id="accounts_password_pam_unix_remember" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_unix_remember" severity="medium" prodtype="rhel7,debian9">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can be
 accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
@@ -785,7 +785,7 @@ Preventing re-use of previous passwords helps ensure that a compromised password
 <tt>/etc/shadow</tt> is SHA-512. This can be configured in several
 locations.</description>
 
-<Rule id="set_password_hashing_algorithm_systemauth" severity="medium" prodtype="rhel7">
+<Rule id="set_password_hashing_algorithm_systemauth" severity="medium" prodtype="rhel7,debian9">
 <title>Set PAM's Password Hashing Algorithm</title>
 <description>
 The PAM system service can be configured to only store encrypted representations of passwords.
@@ -820,7 +820,7 @@ ensures the use of a strong hashing algorithm that makes password cracking attac
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
-<Rule id="set_password_hashing_algorithm_logindefs" severity="medium" prodtype="rhel7">
+<Rule id="set_password_hashing_algorithm_logindefs" severity="medium" prodtype="rhel7,debian9">
 <title>Set Password Hashing Algorithm in /etc/login.defs</title>
 <description>
 In <tt>/etc/login.defs</tt>, add or correct the following line to ensure
