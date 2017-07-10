@@ -17,12 +17,6 @@ except ImportError:
     import cElementTree as ElementTree
 
 try:
-    set
-except NameError:
-    # for python2
-    from sets import Set as set
-
-try:
     from configparser import SafeConfigParser
 except ImportError:
     # for python2
