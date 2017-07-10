@@ -5,6 +5,8 @@ xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" exclude-result-prefixes="cdf"
 xmlns:xhtml="http://www.w3.org/1999/xhtml"
 xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" >
 
+<xsl:param name="ssg_version" select="'unknown'"/>
+
 <!-- This transform expects checks with system "ocil-transitional" and that these contain check-content
      that can transformed into OCIL questionnaires.
      -->
@@ -12,8 +14,10 @@ xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date" 
   <xsl:template match="/">
   <ocil xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://scap.nist.gov/schema/ocil/2.0" >
    <generator>
-   <schema_version>2.0</schema_version>
-   <timestamp><xsl:value-of as="xs:dateTime" select="date:date-time()"/></timestamp>
+     <product_name>xccdf-create-ocil.xslt from SCAP Security Guide</product_name>
+     <product_version>ssg: <xsl:value-of select="$ssg_version"/></product_version>
+     <schema_version>2.0</schema_version>
+     <timestamp><xsl:value-of as="xs:dateTime" select="date:date-time()"/></timestamp>
    </generator>
 
 	<questionnaires>

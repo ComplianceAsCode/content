@@ -17,12 +17,6 @@ except ImportError:
     import cElementTree as ElementTree
 
 try:
-    set
-except NameError:
-    # for python2
-    from sets import Set as set
-
-try:
     from configparser import SafeConfigParser
 except ImportError:
     # for python2
@@ -35,11 +29,11 @@ sys.path.insert(0, os.path.join(
 from map_product_module import map_product, parse_product_name, multi_product_list
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 footer = '</oval_definitions>'
 
 
-def _header(schema_version):
+def _header(schema_version, ssg_version):
+    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
     header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -54,11 +48,12 @@ def _header(schema_version):
         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
     <generator>
-        <oval:product_name>python</oval:product_name>
-        <oval:product_version>%s</oval:product_version>
+        <oval:product_name>combine-ovals.py from SCAP Security Guide</oval:product_name>
+        <oval:product_version>ssg: %s, python: %s</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
         <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (platform.python_version(), schema_version, timestamp)
+    </generator>''' % (ssg_version, platform.python_version(),
+                       schema_version, timestamp)
 
     return header
 
@@ -343,6 +338,8 @@ def checks(product, oval_dirs):
 
 def main():
     p = argparse.ArgumentParser()
+    p.add_argument("--ssg_version", default="unknown",
+                   help="SSG version for reporting purposes. example: 0.1.34")
     p.add_argument("--product", required=True,
                    help="which product are we building for? example: rhel7")
     p.add_argument("--oval_config", required=True,
@@ -375,7 +372,7 @@ def main():
             oval_schema_version = runtime_oval_schema_version
         else:
             oval_schema_version = config_oval_schema_version
-        header = _header(oval_schema_version)
+        header = _header(oval_schema_version, args.ssg_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))
