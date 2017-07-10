@@ -181,7 +181,6 @@ endmacro()
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
 
-    message(STATUS "Scanning for dependencies of ${PRODUCT} ${LANGUAGE} remediations...")
     execute_process(
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-inputs
         OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_DEPENDS_STR
@@ -255,6 +254,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
+    message(STATUS "Scanning for dependencies of ${PRODUCT} remediations (bash, ansible, puppet and anaconda)...")
     _ssg_build_remediations_for_language(${PRODUCT} "bash")
     _ssg_build_remediations_for_language(${PRODUCT} "ansible")
     _ssg_build_remediations_for_language(${PRODUCT} "puppet")
@@ -293,7 +293,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
 
-    message(STATUS "Scanning for dependencies of ${PRODUCT} OVAL checks...")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} checks (OVAL)...")
     execute_process(
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval list-inputs
         OUTPUT_VARIABLE OVAL_CHECKS_DEPENDS_STR
