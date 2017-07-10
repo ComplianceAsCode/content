@@ -59,7 +59,7 @@ message(STATUS "")
 # Strictly speaking in-source will work but will be very messy, let's
 # discourage our users from using them
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-    message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
+    message(SEND_ERROR "In-source builds are not supported! Please use out of source builds:\n"
        "$ cd scap-security-guide\n"
        "$ rm CMakeCache.txt\n"
        "$ cd build\n"
@@ -71,7 +71,7 @@ endif()
 # TODO: refactor oscap detection into a find module
 find_program(OSCAP_EXECUTABLE NAMES oscap)
 if (NOT OSCAP_EXECUTABLE)
-    message(FATAL_ERROR "The oscap tool is required!")
+    message(SEND_ERROR "The oscap tool is required!")
 endif()
 
 execute_process(
@@ -101,22 +101,22 @@ endif()
 
 find_program(XSLTPROC_EXECUTABLE NAMES xsltproc)
 if (NOT XSLTPROC_EXECUTABLE)
-    message(FATAL_ERROR "xsltproc is required!")
+    message(SEND_ERROR "xsltproc is required!")
 endif()
 
 find_program(XMLLINT_EXECUTABLE NAMES xmllint)
 if (NOT XMLLINT_EXECUTABLE)
-    message(FATAL_ERROR "xmllint is required!")
+    message(SEND_ERROR "xmllint is required!")
 endif()
 
 find_program(XMLWF_EXECUTABLE NAMES xmlwf)
 if (NOT XMLWF_EXECUTABLE)
-    message(FATAL_ERROR "xmlwf is required!")
+    message(SEND_ERROR "xmlwf is required!")
 endif()
 
 find_program(SED_EXECUTABLE NAMES sed)
 if (NOT SED_EXECUTABLE)
-    message(FATAL_ERROR "sed is required!")
+    message(SEND_ERROR "sed is required!")
 endif()
 
 find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
