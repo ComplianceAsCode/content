@@ -1,0 +1,49 @@
+<Profile id="stig-openstack">
+<title>RHEL OSP STIG</title>
+<description override="true">Sample profile description.</description>
+
+<!-- Horizon Specific Rules -->
+<select idref="horizon_file_ownership" selected="true" />
+<select idref="horizon_file_perms" selected="true" />
+<select idref="horizon_use_ssl" selected="true" />
+<select idref="horizon_csrf_cookie_secure" selected="true" />
+<select idref="horizon_session_cookie_secure" selected="true" />
+<select idref="horizon_session_cookie_httponly" selected="true" />
+<select idref="horizon_password_autocomplete" selected="true" />
+<select idref="horizon_disable_password_reveal" selected="true" />
+
+<!-- Cinder Specific Rules -->
+<select idref="cinder_file_ownership" selected="true" />
+<select idref="cinder_file_perms" selected="true" />
+<select idref="cinder_using_keystone" selected="true" />
+<select idref="cinder_tls_enabled" selected="true" />
+<select idref="cinder_nova_tls" selected="true" />
+<select idref="cinder_glance_tls" selected="true" />
+<select idref="cinder_nas_secure_file_permissions" selected="true" />
+<select idref="cinder_osapi_max_request_body" selected="true" />
+
+<!-- Keystone Specific Rules -->
+<select idref="keystone_file_ownership" selected="true" />
+<select idref="keystone_file_perms" selected="true" />
+<select idref="keystone_use_ssl" selected="true" />
+<select idref="keystone_algorithm_hashing" selected="true" />
+<select idref="keystone_max_request_body_size" selected="true" />
+<select idref="keystone_disable_admin_token" selected="true" />
+
+<!-- Neutron Specific Rules -->
+<select idref="neutron_file_ownership" selected="true" />
+<select idref="neutron_file_perms" selected="true" />
+<select idref="neutron_use_keystone" selected="true" />
+<select idref="neutron_use_https" selected="true" />
+<select idref="neutron_api_use_ssl" selected="true" />
+
+<!-- Nova Specific Rules -->
+<select idref="nova_file_ownership" selected="true" />
+<select idref="nova_file_perms" selected="true" />
+<select idref="nova_use_keystone" selected="true" />
+<select idref="nova_secure_authentication" selected="true" />
+<select idref="nova_secure_glance" selected="true" />
+
+
+
+</Profile>

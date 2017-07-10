@@ -318,6 +318,15 @@ macro(ssg_build_oval_unlinked PRODUCT)
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
         set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+    elseif("${PRODUCT}" MATCHES "rhel-osp8")
+        # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP8 product for now
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+    elseif("${PRODUCT}" MATCHES "rhel-osp9")
+        # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP9 product for now
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+    elseif("${PRODUCT}" MATCHES "rhel-osp10")
+        # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP10 product for now
+        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     else()
         set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     endif()
@@ -328,6 +337,15 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
         if("${PRODUCT}" MATCHES "rhel-osp7")
             # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
+            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+        elseif("${PRODUCT}" MATCHES "rhel-osp8")
+            # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP8 product for now
+            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+        elseif("${PRODUCT}" MATCHES "rhel-osp9")
+            # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP9 product for now
+            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+        elseif("${PRODUCT}" MATCHES "rhel-osp10")
+            # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP10 product for now
             set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
         else()
             set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${SSG_SHARED}/templates/static/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
