@@ -11,19 +11,23 @@
 
 <!-- services -->
 <select idref="package_auditd_installed" selected="true"/>
+<!-- XXX: Shared XCCDF
 <select idref="package_cron_installed" selected="true"/>
 <select idref="package_ntp_installed" selected="true"/>
+-->
 <select idref="package_rsyslog_installed" selected="true"/>
 
 <select idref="package_telnetd_removed" selected="true"/>
-<select idref="package_inetutils-telnetd_removed" selected="true"/>
-<select idref="package_telnetd-ssl_removed" selected="true"/>
 <select idref="package_nis_removed" selected="true"/>
+<!-- XXX: Shared XCCDF
 <select idref="package_ntpdate_removed" selected="true"/>
+-->
 
 <select idref="service_auditd_enabled" selected="true"/>
+<!-- XXX: Shared XCCDF
 <select idref="service_cron_enabled" selected="true"/>
 <select idref="service_ntp_enabled" selected="true"/>
+-->
 <select idref="service_rsyslog_enabled" selected="true"/>
 
 <refine-value idref="sshd_idle_timeout_value" selector="5_minutes" />
@@ -41,7 +45,9 @@
 <select idref="rsyslog_files_groupownership" selected="true" />
 <select idref="rsyslog_files_permissions" selected="true" />
 <select idref="rsyslog_remote_loghost" selected="false" />
+<!-- XXX: Shared XCCDF
 <select idref="ensure_logrotate_activated" selected="true" />
+-->
 
 <!-- critical files -->
 <select idref="file_permissions_systemmap" selected="true"/>
