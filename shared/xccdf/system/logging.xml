@@ -19,7 +19,7 @@ This section discusses how to configure rsyslog for
 best effect, and how to use tools provided with the system to maintain and
 monitor logs.</description>
 
-<Rule id="package_rsyslog_installed" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="package_rsyslog_installed" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure rsyslog is Installed</title>
 <description>
 Rsyslog is installed by default. 
@@ -37,7 +37,7 @@ system logging services.
 <ref nist="AU-9(2)" disa="1311,1312" cis="5.1.1" />
 </Rule>
 
-<Rule id="service_rsyslog_enabled" severity="medium" prodtype="rhel7,debian8,debian9,ubtuntu1404">
+<Rule id="service_rsyslog_enabled" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604,ubtuntu1404">
 <title>Enable rsyslog Service</title>
 <description>The <tt>rsyslog</tt> service provides syslog-style logging by default on Red Hat Enterprise Linux 7.
 <systemd-service-macro enable="true" service="rsyslog" />
@@ -95,7 +95,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Rule id="rsyslog_files_ownership" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="rsyslog_files_ownership" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure Log Files Are Owned By Appropriate User</title>
 <description>The owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -123,7 +123,7 @@ protected from unauthorized access.</rationale>
 <ref anssi="NT28(R5),NT28(R46)" nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
-<Rule id="rsyslog_files_groupownership" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="rsyslog_files_groupownership" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure Log Files Are Owned By Appropriate Group</title>
 <description>The group-owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -151,7 +151,7 @@ protected from unauthorized access.</rationale>
 <ref anssi="NT28(R5),NT28(R46)" nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
-<Rule id="rsyslog_files_permissions" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="rsyslog_files_permissions" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure System Log Files Have Correct Permissions</title>
 <description>The file permissions for all log files written by
 <tt>rsyslog</tt> should be set to 600, or more restrictive.
@@ -240,7 +240,7 @@ operator="equals" interactive="0">
 <value selector="default">NULL</value>
 </Value>
 
-<Rule id="rsyslog_remote_loghost" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="rsyslog_remote_loghost" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure Logs Sent To Remote Host</title>
 <description>
 To configure rsyslog to send logs to a remote log server,

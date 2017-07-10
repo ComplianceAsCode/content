@@ -69,7 +69,7 @@ information on the capabilities and configuration of each of the NTP daemons.
 <value selector="disa">17</value>
 </Value>
 
-<Rule id="service_chrony_or_ntp_enabled" severity="medium" prodtype="debian8,debian9">
+<Rule id="service_chrony_or_ntp_enabled" severity="medium" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Enable the NTP Daemon</title>
 <description>
 <systemd-service-macro enable="true" service="chrony" />

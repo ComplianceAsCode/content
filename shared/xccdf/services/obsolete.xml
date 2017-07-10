@@ -157,7 +157,7 @@ Removing the <tt>telnet-server</tt> package decreases the risk of the telnet ser
 <ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" cis="2.1.1" />
 </Rule>
 
-<Rule id="package_telnetd_removed" severity="high" prodtype="debian8,debian9,ubuntu1404">
+<Rule id="package_telnetd_removed" severity="high" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Uninstall telnet-server Package</title>
 <description>The <tt>telnetd</tt> package can be uninstalled with
 the following command:
@@ -197,7 +197,7 @@ Enterprise Linux.</rationale>
 </Rule>
 
 <!-- not using yum macro but apt. shared oval file should be overloaded by local debian/ubuntu csv -->
-<Rule id="package_telnet_removed" severity="low" prodtype="debian8,debian9,ubuntu1404">
+<Rule id="package_telnet_removed" severity="low" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Remove telnet Clients</title>
 <description>The telnet client allows users to start connections to other 
 systems via the telnet protocol.</description>
@@ -218,7 +218,7 @@ encrypted session and stronger security and is included in Debian and Ubuntu.</r
 allow cleartext remote access and have an insecure trust
 model.</description>
 
-<Rule id="package_rsh-server_removed" severity="high" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="package_rsh-server_removed" severity="high" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Uninstall rsh-server Package</title>
 <description>The <tt>rsh-server</tt> package can be uninstalled with
 the following command on Red-Hat:
@@ -240,7 +240,7 @@ activation.
 <ref anssi="NT007(R05)" nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" cis="2.1.3" />
 </Rule>
 
-<Rule id="service_rexec_disabled" severity="high" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="service_rexec_disabled" severity="high" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Disable rexec Service</title>
 <description>The <tt>rexec</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
@@ -260,7 +260,7 @@ stolen by eavesdroppers on the network.
 <ref anssi="NT007(R05)" nist="AC-17(8),CM-7" disa="68,1436" cui="3.1.13,3.4.7" />
 </Rule>
 
-<Rule id="service_rsh_disabled" severity="high" prodtype="rhel7,debian8,debian9,ubuntu1404">
+<Rule id="service_rsh_disabled" severity="high" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Disable rsh Service</title>
 <description>The <tt>rsh</tt> service, which is available with
 the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
@@ -369,7 +369,7 @@ activation of NIS or NIS+ services.
 <ref nist="AC-17(8),CM-7(a)" disa="381" ossrg="SRG-OS-000095-GPOS-00049" cis="2.1.6" />
 </Rule>
 
-<Rule id="package_nis_removed" severity="high" prodtype="debian8,debian9,ubuntu1404">
+<Rule id="package_nis_removed" severity="high" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Uninstall nis Package</title>
 <description>The <tt>nis</tt> package can be uninstalled with
 the following command:

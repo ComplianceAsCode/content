@@ -255,7 +255,7 @@ approved Certificate Authority.
 <ref nist="CM-5(3)" disa="1749" ossrg="SRG-OS-000366-GPOS-00153" />
 </Rule>
 
-<Rule id="apt_conf_disallow_unauthenticated" prodtype="debian8,debian9,ubuntu1404">
+<Rule id="apt_conf_disallow_unauthenticated" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Disable unauthenticated repositories in APT configuration</title>
 <description>Unauthenticated repositories should not be used for updates.</description>
 <rationale>
@@ -267,7 +267,7 @@ and then should not be installed localy.
 <ref anssi="NT28(R15)" />
 </Rule>
 
-<Rule id="apt_sources_list_official" prodtype="debian8,debian9,ubuntu1404">
+<Rule id="apt_sources_list_official" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure that official distribution repositories are used</title>
 <description>Check that official Debian repositories, including security repository, are configured in apt.</description>
 <rationale>
