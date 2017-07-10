@@ -24,7 +24,7 @@ listed above. The Logical Volume Manager (LVM) makes this possible.
 See the LVM HOWTO at <weblink-macro link="http://tldp.org/HOWTO/LVM-HOWTO/"/>
 for more detailed information on LVM.</description>
 
-<Rule id="partition_for_tmp" severity="low" prodtype="rhel7,debian8,ubuntu1404">
+<Rule id="partition_for_tmp" severity="low" prodtype="rhel7,debian8,debian9,ubuntu1404">
 <title>Ensure /tmp Located On Separate Partition</title>
 <description>
 The <tt>/tmp</tt> directory is a world-writable directory used
@@ -44,7 +44,7 @@ restrictive mount options, which can help protect programs which use it.
 <ref anssi="NT28(R12)" nist="SC-32(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="1.1.1" />
 </Rule>
 
-<Rule id="partition_for_var" severity="low" prodtype="rhel7,debian8,ubuntu1404">
+<Rule id="partition_for_var" severity="low" prodtype="rhel7,debian8,debian9,ubuntu1404">
 <title>Ensure /var Located On Separate Partition</title>
 <description>The <tt>/var</tt> directory is used by daemons and other system
 services to store frequently-changing data. Ensure that <tt>/var</tt> has its own partition
@@ -65,7 +65,7 @@ world-writable directories installed by other software packages.
 <ref anssi="NT28(R12)" nist="SC-32(1)" cis="1.1.5" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="partition_for_var_log" prodtype="rhel7,debian8,ubuntu1404">
+<Rule id="partition_for_var_log" prodtype="rhel7,debian8,debian9,ubuntu1404">
 <title>Ensure /var/log Located On Separate Partition</title>
 <description>
 System logs are stored in the <tt>/var/log</tt> directory.
@@ -84,7 +84,7 @@ and other files in <tt>/var/</tt>.
 <ref anssi="NT28(R12)" nist="AU-9,SC-32" disa="" cis="1.1.7" />
 </Rule>
 
-<Rule id="partition_for_var_log_audit" severity="low" prodtype="rhel7,debian8,ubuntu1404">
+<Rule id="partition_for_var_log_audit" severity="low" prodtype="rhel7,debian8,debian9,ubuntu1404">
 <title>Ensure /var/log/audit Located On Separate Partition</title>
 <description>
 Audit logs are stored in the <tt>/var/log/audit</tt> directory.  Ensure that it
@@ -107,7 +107,7 @@ of space.
 <ref anssi="NT28(R12)" nist="AU-4,AU-9,SC-32(1)" disa="366" cis="1.1.8" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="partition_for_home" severity="low" prodtype="rhel7,debian8,ubuntu1404">
+<Rule id="partition_for_home" severity="low" prodtype="rhel7,debian8,debian9,ubuntu1404">
 <title>Ensure /home Located On Separate Partition</title>
 <description>
 If user home directories will be stored locally, create a separate partition
