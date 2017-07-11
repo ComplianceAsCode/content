@@ -423,11 +423,11 @@ def main():
                         else:
                             mod_file += line
 
-                complexity = None
-                disruption = None
-                reboot = None
+                complexity = "unknown"
+                disruption = "unknown"
+                reboot = "false"
                 script_platform = None
-                strategy = None
+                strategy = "unknown"
 
                 if 'complexity' in config:
                     complexity = config['complexity']
@@ -435,9 +435,9 @@ def main():
                     disruption = config['disruption']
                 if 'platform' in config:
                     script_platform = config['platform']
-                if 'complexity' in config:
+                if 'reboot' in config:
                     reboot = config['reboot']
-                if 'complexity' in config:
+                if 'strategy' in config:
                     strategy = config['strategy']
 
                 if script_platform:
@@ -451,14 +451,10 @@ def main():
                         else:
                             fix = ElementTree.SubElement(fixgroup, "fix")
                             fix.set("rule", fixname)
-                            if complexity is not None:
-                                fix.set("complexity", complexity)
-                            if disruption is not None:
-                                fix.set("disruption", disruption)
-                            if reboot is not None:
-                                fix.set("reboot", reboot)
-                            if strategy is not None:
-                                fix.set("strategy", strategy)
+                            fix.set("complexity", complexity)
+                            fix.set("disruption", disruption)
+                            fix.set("reboot", reboot)
+                            fix.set("strategy", strategy)
                             fixes[fixname] = fix
                             included_fixes_count += 1
 
