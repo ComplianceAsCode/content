@@ -54,12 +54,13 @@ information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
 
 <Rule id="package_aide_installed" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Install AIDE</title>
-<description>
+<description prodtype="rhel7">
 Install the AIDE package. It can be done using with the command:
 <pre>$ sudo yum install aide</pre>
-on Red-Hat or the command:
+</description>
+<description prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+Install the AIDE package. It can be done using with the command:
 <pre>$ sudo apt install aide</pre>
-on Debian.
 </description>
 <ocil clause="the package is not installed">
 <package-check-macro package="aide"/>

@@ -78,9 +78,7 @@ Note: The <tt>chrony</tt> daemon is enabled by default.
 <systemd-service-macro enable="true" service="ntp" />
 Note: The <tt>ntp</tt> daemon is not enabled by default. Though as mentioned
 in the previous sections in certain environments the <tt>ntp</tt> daemon might
-be preferred to be used rather than the <tt>chrony</tt> one. Refer to:
-<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html"/>
-for guidance which NTP daemon to choose depending on the environment used.
+be preferred to be used rather than the <tt>chrony</tt> one.
 </description>
 <ocil>
   <systemd-check-macro enable="true" service="chrony" />
@@ -98,7 +96,6 @@ The <tt>chrony</tt> and <tt>ntp</tt> NTP daemons offer all of the
 functionality of <tt>ntpdate</tt>, which is now deprecated. Additional
 information on this is available at
 <weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate"/></rationale>
-<ident prodtype="rhel7" cce="27444-9" />
 <oval id="service_chrony_or_ntp_enabled" />
 <ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" cis="3.6" cui="3.3.7" />
 </Rule>

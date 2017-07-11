@@ -8,16 +8,21 @@ due to its long history, syslog is a de facto standard which is supported by
 almost all Unix applications.
 <br/>
 <br/>
+</description>
+<description prodtype="rhel7">
 In Red Hat Enterprise Linux 7, rsyslog has replaced ksyslogd as the
 syslog daemon of choice, and it includes some additional security features
 such as reliable, connection-oriented (i.e. TCP) transmission of logs, the
 option to log to database formats, and the encryption of log data en route to
-a central logging server.<br />
+a central logging server.
+</description>
+<description prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
 In Debian and Ubuntu, rsyslog is on of the two main logservers, with syslog-ng,
 that can be use for reliable, connection-oriented transmission of logs.<br />
 This section discusses how to configure rsyslog for
 best effect, and how to use tools provided with the system to maintain and
-monitor logs.</description>
+monitor logs.
+</description>
 
 <Rule id="package_rsyslog_installed" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Ensure rsyslog is Installed</title>
