@@ -29,12 +29,12 @@ sys.path.insert(0, os.path.join(
 from map_product_module import map_product, parse_product_name, multi_product_list
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-footer = '</oval_definitions>'
+footer = "</oval_definitions>"
 
 
 def _header(schema_version, ssg_version):
     timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-    header = '''<?xml version="1.0" encoding="UTF-8"?>
+    return """<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
     xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
@@ -52,10 +52,8 @@ def _header(schema_version, ssg_version):
         <oval:product_version>ssg: %s, python: %s</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
         <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (ssg_version, platform.python_version(),
+    </generator>""" % (ssg_version, platform.python_version(),
                        schema_version, timestamp)
-
-    return header
 
 
 def parse_conf_file(conf_file, product):
@@ -304,7 +302,7 @@ def checks(product, oval_dirs):
        oval_dirs: list of directory with oval files (later has higher priority)
        Return: The document body"""
 
-    body = ""
+    body = []
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
     already_loaded = dict()  # filename -> oval_version
@@ -321,7 +319,7 @@ def checks(product, oval_dirs):
                             continue
                         if check_is_loaded(already_loaded, filename, oval_version):
                             continue
-                        body += xml_content
+                        body.append(xml_content)
                         included_checks_count += 1
                         already_loaded[filename] = oval_version
         except OSError as e:
@@ -333,7 +331,7 @@ def checks(product, oval_dirs):
                                  "exist\n" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
-    return body
+    return "".join(body)
 
 
 def main():
@@ -382,7 +380,8 @@ def main():
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ElementTree.fromstring((header + body + footer).encode("utf-8"))
+    corrected_tree = ElementTree.fromstring(
+        ("%s%s%s" % (header, body, footer)).encode("utf-8"))
     tree = add_platforms(corrected_tree, multi_platform)
     definitions = ElementTree.Element("{%s}definitions" % oval_ns)
     tests = ElementTree.Element("{%s}tests" % oval_ns)
@@ -407,7 +406,7 @@ def main():
             sys.stderr.write("Warning: Unknown element '%s'\n"
                              % (childnode.tag))
 
-    root = ElementTree.fromstring((header + footer).encode("utf-8"))
+    root = ElementTree.fromstring(("%s%s" % (header, footer)).encode("utf-8"))
     root.append(definitions)
     root.append(tests)
     root.append(objects)
