@@ -144,12 +144,6 @@ def main():
         # add the default profile
         profiles[""] = "(default)"
 
-        if not profiles:
-            raise RuntimeError(
-                "No profiles were found in '%s' in xccdf:Benchmark of id='%s'."
-                % (input_path, benchmark_id)
-            )
-
         for profile_id in profiles.keys():
             benchmark_profile_pairs.append(
                 (benchmark_id, profile_id, profiles[profile_id])
@@ -279,66 +273,66 @@ def main():
 
         queue.join()
 
-        index_source = "<!DOCTYPE html>\n"
-        index_source += "<html lang=\"en\">\n"
-        index_source += "\t<head>\n"
-        index_source += "\t\t<meta charset=\"utf-8\">\n"
-        index_source += "\t\t<title>%s</title>\n" % \
-                        (benchmarks.itervalues().next())
-        index_source += "\t\t<script>\n"
-        index_source += "\t\t\tfunction change_profile(option_element)\n"
-        index_source += "\t\t\t{\n"
-        index_source += "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n"
-        index_source += "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n"
-        index_source += "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n"
-        index_source += "\t\t\t\tvar input_path='/usr/share/xml/scap/ssg/content/%s';\n" % (input_basename)
-        index_source += "\t\t\t\tif (profile_id == '')\n"
-        index_source += "\t\t\t\t{\n"
-        index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n"
-        index_source += "\t\t\t\t\telse\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' ' + input_path;\n"
-        index_source += "\t\t\t\t}\n"
-        index_source += "\t\t\t\telse\n"
-        index_source += "\t\t\t\t{\n"
-        index_source += "\t\t\t\t\tif (benchmark_id == '')\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n"
-        index_source += "\t\t\t\t\telse\n"
-        index_source += "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' --profile ' + profile_id + ' ' + input_path;\n"
-        index_source += "\t\t\t\t}\n"
-        index_source += "\t\t\t\twindow.open(option_element.value, 'guide');\n"
-        index_source += "\t\t\t}\n"
-        index_source += "\t\t</script>\n"
-        index_source += "\t\t<style>\n"
-        index_source += "\t\t\thtml, body { margin: 0; height: 100% }\n"
-        index_source += "\t\t\t#js_switcher { position: fixed; right: 30px; top: 10px; padding: 2px; background: #ddd; border: 1px solid #999 }\n"
-        index_source += "\t\t\t#guide_div { margin: auto; width: 99%; height: 99% }\n"
-        index_source += "\t\t</style>\n"
-        index_source += "\t</head>\n"
-        index_source += "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n"
-        index_source += "\t\t<noscript>\n"
-        index_source += "Profiles: "
-        index_source += ", ".join(index_links) + "\n"
-        index_source += "\t\t</noscript>\n"
-        index_source += "\t\t<div id=\"js_switcher\" style=\"display: none\">\n"
-        index_source += "\t\t\tProfile: \n"
-        index_source += "\t\t\t<select style=\"margin-bottom: 5px\" "
-        index_source += "onchange=\"change_profile(this.options[this.selectedIndex]);\""
-        index_source += ">\n"
-        index_source += "\n".join(index_options) + "\n"
-        index_source += "\t\t\t</select>\n"
-        index_source += "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>"
-        index_source += "select a profile to display its guide and a command line snippet needed to use it"
-        index_source += "</div>\n"
-        index_source += "\t\t</div>\n"
-        index_source += "\t\t<div id=\"guide_div\">\n"
-        index_source += \
-            "\t\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src)
-        index_source += "width=\"100%\" height=\"100%\">\n"
-        index_source += "\t\t\t</iframe>\n"
-        index_source += "\t\t</div>\n"
-        index_source += "\t</body>\n"
-        index_source += "</html>\n"
+        index_source = "".join([
+            "<!DOCTYPE html>\n",
+            "<html lang=\"en\">\n",
+            "\t<head>\n",
+            "\t\t<meta charset=\"utf-8\">\n",
+            "\t\t<title>%s</title>\n" % (benchmarks.itervalues().next()),
+            "\t\t<script>\n",
+            "\t\t\tfunction change_profile(option_element)\n",
+            "\t\t\t{\n",
+            "\t\t\t\tvar benchmark_id=option_element.getAttribute('data-benchmark-id');\n",
+            "\t\t\t\tvar profile_id=option_element.getAttribute('data-profile-id');\n",
+            "\t\t\t\tvar eval_snippet=document.getElementById('eval_snippet');\n",
+            "\t\t\t\tvar input_path='/usr/share/xml/scap/ssg/content/%s';\n" % (input_basename),
+            "\t\t\t\tif (profile_id == '')\n",
+            "\t\t\t\t{\n",
+            "\t\t\t\t\tif (benchmark_id == '')\n",
+            "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval ' + input_path;\n",
+            "\t\t\t\t\telse\n",
+            "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' ' + input_path;\n",
+            "\t\t\t\t}\n",
+            "\t\t\t\telse\n",
+            "\t\t\t\t{\n",
+            "\t\t\t\t\tif (benchmark_id == '')\n",
+            "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --profile ' + profile_id + ' ' + input_path;\n",
+            "\t\t\t\t\telse\n",
+            "\t\t\t\t\t\teval_snippet.innerHTML='# oscap xccdf eval --benchmark-id ' + benchmark_id + ' --profile ' + profile_id + ' ' + input_path;\n",
+            "\t\t\t\t}\n",
+            "\t\t\t\twindow.open(option_element.value, 'guide');\n",
+            "\t\t\t}\n",
+            "\t\t</script>\n",
+            "\t\t<style>\n",
+            "\t\t\thtml, body { margin: 0; height: 100% }\n",
+            "\t\t\t#js_switcher { position: fixed; right: 30px; top: 10px; padding: 2px; background: #ddd; border: 1px solid #999 }\n",
+            "\t\t\t#guide_div { margin: auto; width: 99%; height: 99% }\n",
+            "\t\t</style>\n",
+            "\t</head>\n",
+            "\t<body onload=\"document.getElementById('js_switcher').style.display = 'block'\">\n",
+            "\t\t<noscript>\n",
+            "Profiles: ",
+            ", ".join(index_links) + "\n",
+            "\t\t</noscript>\n",
+            "\t\t<div id=\"js_switcher\" style=\"display: none\">\n",
+            "\t\t\tProfile: \n",
+            "\t\t\t<select style=\"margin-bottom: 5px\" ",
+            "onchange=\"change_profile(this.options[this.selectedIndex]);\"",
+            ">\n",
+            "\n".join(index_options) + "\n",
+            "\t\t\t</select>\n",
+            "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>",
+            "select a profile to display its guide and a command line snippet needed to use it",
+            "</div>\n",
+            "\t\t</div>\n",
+            "\t\t<div id=\"guide_div\">\n",
+            "\t\t\t<iframe src=\"%s\" name=\"guide\" " % (index_initial_src),
+            "width=\"100%\" height=\"100%\">\n",
+            "\t\t\t</iframe>\n",
+            "\t\t</div>\n",
+            "\t</body>\n",
+            "</html>\n"
+        ])
 
     index_path = os.path.join(output_dir, "%s-guide-index.html" % (path_base))
     if args.cmd == "list_inputs":
