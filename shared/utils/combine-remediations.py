@@ -340,10 +340,11 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
         # First concat output form of modified fix text (including text appended
         # to all children of the fix)
-        modfixtext = fix.text
+        modfix = [fix.text]
         for child in fix.getchildren():
             if child is not None and child.text is not None:
-                modfixtext += child.text
+                modfix.append(child.text)
+        modfixtext = "".join(modfix)
         for f in remediation_functions:
             # Then efine expected XCCDF sub element form for this function
             funcxccdfsub = "<sub idref=\"function_%s\"" % f
