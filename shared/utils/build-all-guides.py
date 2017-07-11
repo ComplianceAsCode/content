@@ -144,12 +144,6 @@ def main():
         # add the default profile
         profiles[""] = "(default)"
 
-        if not profiles:
-            raise RuntimeError(
-                "No profiles were found in '%s' in xccdf:Benchmark of id='%s'."
-                % (input_path, benchmark_id)
-            )
-
         for profile_id in profiles.keys():
             benchmark_profile_pairs.append(
                 (benchmark_id, profile_id, profiles[profile_id])
