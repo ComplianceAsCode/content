@@ -31,21 +31,12 @@ which could weaken the system security posture.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="groupowner_shadow_file" severity="medium" prodtype="rhel7">
+<Rule id="groupowner_shadow_file" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Group Who Owns <tt>shadow</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
-<ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
-<rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
-critical for system security.</rationale>
-<ident prodtype="rhel7" cce="27125-4" />
-<oval id="groupowner_shadow_file" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
-</Rule>
-
-<Rule id="groupowner_shadow_file" severity="medium" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
-<title>Verify Group Who Owns <tt>shadow</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/shadow" group="shadow"/></description>
-<ocil><filegroupowner-check-macro file="/etc/shadow" group="shadow"/></ocil>
+<description prodtype="rhel7"><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
+<description prodtype="debian8,debian9,ubuntu1404,ubuntu1604"><filegroupowner-desc-macro file="/etc/shadow" group="shadow"/></description>
+<ocil prodtype="rel7"><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
+<ocil prodtype="debian8,debian9,ubuntu1404,ubuntu1604"><filegroupowner-check-macro file="/etc/shadow" group="shadow"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
 <ident prodtype="rhel7" cce="27125-4" />

@@ -185,30 +185,21 @@ Removing the <tt>telnet-server</tt> package decreases the risk of the telnet ser
 <title>Remove telnet Clients</title>
 <description>The telnet client allows users to start connections to other 
 systems via the telnet protocol.</description>
-<ocil><yum-macro install="false" package="telnet" /></ocil>
-<rationale>The <tt>telnet</tt> protocol is insecure and unencrypted. The use
+<ocil prodtype="rhel7"><yum-macro install="false" package="telnet" /></ocil>
+<rationale prodtype="rhel7">The <tt>telnet</tt> protocol is insecure and unencrypted. The use
 of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
 encrypted session and stronger security and is included in Red Hat
 Enterprise Linux.</rationale>
-<ident prodtype="rhel7" cce="27305-2" />
-<oval id="package_telnet_removed" />
-<ref cis="2.1.2" cui="3.1.13" />
-</Rule>
-
-<!-- not using yum macro but apt. shared oval file should be overloaded by local debian/ubuntu csv -->
-<Rule id="package_telnet_removed" severity="low" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
-<title>Remove telnet Clients</title>
-<description>The telnet client allows users to start connections to other 
-systems via the telnet protocol.</description>
-<rationale>The <tt>telnet</tt> protocol is insecure and unencrypted. The use
+<rationale prodtype="debian8,debian9,ubuntu1404,ubuntu1604">The <tt>telnet</tt> protocol is insecure and unencrypted. The use
 of an unencrypted transmission medium could allow an unauthorized user
 to steal credentials. The <tt>ssh</tt> package provides an
-encrypted session and stronger security and is included in Debian and Ubuntu.</rationale>
+encrypted session and stronger security and is included in all Debian
+and Debian-derivated OSes.</rationale>
+<ident prodtype="rhel7" cce="27305-2" />
 <oval id="package_telnet_removed" />
 <ref anssi="NT007(R05)" cis="2.1.2" cui="3.1.13" />
 </Rule>
-
 
 </Group>
 
