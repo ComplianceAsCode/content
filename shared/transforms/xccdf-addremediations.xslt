@@ -57,7 +57,7 @@
 
   <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
   <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
-    - <xsl:value-of select="$rule/@severity"/><xsl:if test="$ident_cce">
+    - <xsl:value-of select="$rule/@severity"/>_severity<xsl:if test="$ident_cce">
     - <xsl:value-of select="$ident_cce"/></xsl:if></xsl:variable>
 
   <xsl:variable name="rep1">
