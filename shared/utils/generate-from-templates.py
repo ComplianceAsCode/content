@@ -3,7 +3,6 @@
 import os
 import sys
 import argparse
-import inspect
 
 templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 sys.path.append(templates_dir)
@@ -144,8 +143,7 @@ class Builder(object):
 
         list_ = []
         if action == ActionType.INPUT:
-            # add template_common source file
-            list_.append(os.path.abspath(inspect.getsourcefile(ActionType)))
+            pass
 
         for oval in self.supported_ovals:
             self._set_current_oval(oval)
