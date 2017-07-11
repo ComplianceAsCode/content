@@ -402,7 +402,7 @@ def main():
                 # Create and populate new fix element based on shell file
                 fixname = os.path.splitext(filename)[0]
 
-                mod_file = ""
+                mod_file = []
                 config = {}
                 with open(os.path.join(fixdir, filename), 'r') as fix_file:
                     # Assignment automatically escapes shell characters for XML
@@ -416,12 +416,12 @@ def main():
                                     config[key.strip()] = value.strip()
                                 else:
                                     if not line.startswith(FILE_GENERATED):
-                                        mod_file += line
+                                        mod_file.append(line)
                             except ValueError:
                                 if not line.startswith(FILE_GENERATED):
-                                    mod_file += line
+                                    mod_file.append(line)
                         else:
-                            mod_file += line
+                            mod_file.append(line)
 
                 complexity = None
                 disruption = None
@@ -462,7 +462,7 @@ def main():
                             fixes[fixname] = fix
                             included_fixes_count += 1
 
-                        fix.text = mod_file
+                        fix.text = "".join(mod_file)
 
                         # Expand shell variables and remediation functions
                         # into corresponding XCCDF <sub> elements
