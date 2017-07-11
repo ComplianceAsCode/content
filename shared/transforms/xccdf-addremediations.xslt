@@ -56,13 +56,15 @@
   <xsl:param name="fix"/>
   <xsl:variable name="rep0" select="."/>
 
+  <xsl:variable name="ref_nist800_53" select="$rule/xccdf:reference[@href='http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf']/text()"/>
   <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
   <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
     - <xsl:value-of select="$rule/@severity"/>_severity<xsl:if test="$fix/@strategy">
     - <xsl:value-of select="$fix/@strategy"/>_strategy</xsl:if><xsl:if test="$fix/@complexity">
     - <xsl:value-of select="$fix/@complexity"/>_complexity</xsl:if><xsl:if test="$fix/@disruption">
     - <xsl:value-of select="$fix/@disruption"/>_disruption</xsl:if><xsl:if test="$ident_cce">
-    - <xsl:value-of select="$ident_cce"/></xsl:if></xsl:variable>
+    - <xsl:value-of select="$ident_cce"/></xsl:if><xsl:for-each select="$ref_nist800_53">
+    - NIST-800-53-<xsl:value-of select="."/></xsl:for-each></xsl:variable>
 
   <xsl:variable name="rep1">
     <xsl:call-template name="find-and-replace">
