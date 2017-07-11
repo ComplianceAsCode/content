@@ -1,6 +1,6 @@
 # platform = Red Hat Enterprise Linux 7, multi_platform_fedora
-#
-# Include source function library.
+# reboot = false
+
 . /usr/share/scap-security-guide/remediation_functions
 populate sshd_listening_port
 
