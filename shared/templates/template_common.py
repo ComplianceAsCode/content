@@ -30,6 +30,8 @@ class TemplateNotFoundError(RuntimeError):
             % (template, ", ".join(paths))
         )
 
+TARGET_REGEX = re.compile(r"#\s*only-for:([\s\w,]*)")
+
 
 class FilesGenerator(object):
     def __init__(self):
@@ -136,8 +138,7 @@ class FilesGenerator(object):
         """
 
         if target is not None:
-            regex = re.compile(r"#\s*only-for:([\s\w,]*)")
-            match = regex.search(line)
+            match = TARGET_REGEX.search(line)
 
             if match:
                 # if line contains restriction to target, check it
