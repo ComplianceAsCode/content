@@ -3,4 +3,4 @@
 # strategy = patch
 # complexity = low
 # disruption = high
-yum -y update
+yum -y update --security
