@@ -138,4 +138,4 @@ To build content only for a specific distribution, add the relevant name as a fl
 
 Using `docker cp` to copy all the generated content to the your host:
 
-`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)`
+`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build`
