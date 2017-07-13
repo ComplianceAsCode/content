@@ -58,6 +58,7 @@
 
   <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
   <xsl:variable name="ref_nist800_53" select="$rule/xccdf:reference[starts-with(@href, 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53')]/text()"/>
+  <xsl:variable name="ref_nist800_171" select="$rule/xccdf:reference[starts-with(@href, 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171')]/text()"/>
   <xsl:variable name="ref_pci_dss" select="$rule/xccdf:reference[starts-with(@href, 'https://www.pcisecuritystandards.org/')]/text()"/>
   <xsl:variable name="ref_cjis" select="$rule/xccdf:reference[starts-with(@href, 'https://www.fbi.gov/file-repository/cjis-security-policy')]/text()"/>
 
@@ -67,7 +68,8 @@
     - <xsl:value-of select="$fix/@complexity"/>_complexity</xsl:if><xsl:if test="$fix/@disruption">
     - <xsl:value-of select="$fix/@disruption"/>_disruption</xsl:if><xsl:for-each select="$ident_cce">
     - <xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_53">
-    - NIST-800-53-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_pci_dss">
+    - NIST-800-53-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_171">
+    - NIST-800-171-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_pci_dss">
     - PCI-DSS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_cjis">
     - CJIS-<xsl:value-of select="."/></xsl:for-each></xsl:variable>
 
