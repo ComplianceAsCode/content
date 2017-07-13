@@ -10,6 +10,6 @@
     regexp: (?i)^#?compression 
     line: Compression delayed
     validate: sshd -t -f %s
-  notify: restart sshd
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

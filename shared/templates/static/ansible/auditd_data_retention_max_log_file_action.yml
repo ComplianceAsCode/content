@@ -8,6 +8,6 @@
     dest: /etc/audit/auditd.conf
     line: "max_log_file_action (ansible-populate var_auditd_max_log_file_action)"
     state: present
-  notify: reload auditd
+  #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@

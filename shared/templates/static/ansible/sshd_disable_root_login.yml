@@ -11,6 +11,6 @@
     line: "PermitRootLogin no"
     insertafter: '(?i)^#?authentication'
     validate: sshd -t -f %s
-  notify: restart sshd
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

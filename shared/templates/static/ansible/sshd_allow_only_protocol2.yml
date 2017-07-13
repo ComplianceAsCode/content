@@ -10,7 +10,7 @@
     regexp: "^Protocol [0-9]"
     line: "Protocol 2"
     validate: sshd -t -f %s
-  notify:
+  #notify:
     - reload ssh
   tags:
     @ANSIBLE_TAGS@

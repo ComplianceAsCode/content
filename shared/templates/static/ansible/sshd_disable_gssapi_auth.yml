@@ -10,6 +10,6 @@
     regexp: (?i)^#?gssapiauthentication
     line: GSSAPIAuthentication no
     validate: sshd -t -f %s
-  notify: sshd -t -f %s
+  #notify: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@

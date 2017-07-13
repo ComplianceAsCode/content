@@ -8,6 +8,6 @@
     dest: /etc/audit/auditd.conf
     line: "space_left_action = (ansible-populate var_auditd_space_left_action)"
     regexp: "^space_left_action*"
-  notify: reload auditd
+  #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@

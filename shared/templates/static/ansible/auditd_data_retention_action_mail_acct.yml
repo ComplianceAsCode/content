@@ -8,6 +8,6 @@
     dest: /etc/audit/auditd.conf
     line: "action_mail_acct = (ansible-populate var_auditd_action_mail_acct)"
     state: present
-  notify: reload auditd
+  #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@

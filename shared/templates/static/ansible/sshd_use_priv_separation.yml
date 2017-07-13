@@ -10,6 +10,6 @@
     regexp: (?i)^#?useprivilegeseparation
     line: UsePrivilegeSeparation yes
     validate: sshd -t -f %s
-  notify: restart sshd
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

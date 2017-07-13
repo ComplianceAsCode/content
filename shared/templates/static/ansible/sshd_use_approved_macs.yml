@@ -10,7 +10,7 @@
     regexp: ^MACs
     line: MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1
     validate: sshd -t -f %s
-  notify: restart sshd
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@
 

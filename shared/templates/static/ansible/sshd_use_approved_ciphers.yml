@@ -10,6 +10,6 @@
     regexp="^Ciphers"
     line="Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc"
     validate: sshd -t -f %s
-  notify: restart sshd
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@
