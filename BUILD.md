@@ -2,13 +2,13 @@
 
 ## From source
 
-1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils`, and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
+1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils` and and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
 
- `# yum -y install cmake openscap-utils python-lxml git`
+ `# yum -y install cmake openscap-utils git`
 
- On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `python-lxml`, and `xsltproc` and their dependencies are installed as well as `git`.
+ On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `xsltproc` and their dependencies are installed as well as `git`.
 
- `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils python-lxml xsltproc git`
+ `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils xsltproc git`
 
  Optional: Install the ShellCheck package.
 
