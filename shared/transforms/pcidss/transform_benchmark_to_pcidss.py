@@ -93,6 +93,14 @@ def main():
         rules.append(rule)
     rule_usage_map = {}
 
+    # only PCI-DSS related rules in that list, to speed-up processing
+    filtered_rules = []
+    for rule in rules:
+        for ref in rule.findall("./{%s}reference" % (XCCDF_NAMESPACE)):
+            if ref.get("href") == REMOTE_URL:
+                filtered_rules.append(rule)
+                break
+
     values = []
     for value in \
             benchmark.findall(".//{%s}Value" % (XCCDF_NAMESPACE)):
@@ -112,7 +120,8 @@ def main():
     root_element = benchmark.getroot()
     for id_, desc, children in id_tree:
         element = \
-            construct_xccdf_group(id_, desc, children, rules, rule_usage_map)
+            construct_xccdf_group(id_, desc, children,
+                                  filtered_rules, rule_usage_map)
         root_element.append(element)
 
     if len(values) > 0:
