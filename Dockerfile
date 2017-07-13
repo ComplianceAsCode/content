@@ -14,6 +14,9 @@ WORKDIR /home/$OSCAP_USERNAME
 
 COPY . $OSCAP_DIR/
 
+# clean the build dir in case the user is also building SSG locally
+RUN rm -rf $OSCAP_DIR/build/*
+
 WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
 
 RUN cmake ..
