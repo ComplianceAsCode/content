@@ -2,6 +2,7 @@ FROM centos:7
 
 ENV OSCAP_USERNAME oscap
 ENV OSCAP_DIR scap-security-guide
+ENV BUILD_JOBS 4
 
 RUN yum -y upgrade && \
     yum -y install make cmake openscap-utils && \
@@ -21,5 +22,4 @@ WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
 
 RUN cmake ..
 
-ENTRYPOINT ["/usr/bin/make"]
-CMD ["all"]
+CMD /usr/bin/make -j $BUILD_JOBS
