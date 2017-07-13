@@ -4,7 +4,7 @@ ENV OSCAP_USERNAME oscap
 ENV OSCAP_DIR scap-security-guide
 
 RUN yum -y upgrade && \
-    yum -y install make cmake openscap-utils openscap-python python-lxml rpmlib && \
+    yum -y install make cmake openscap-utils python-lxml rpmlib && \
     mkdir -p /home/$OSCAP_USERNAME && \
     yum clean all && \
     rm -rf /usr/share/doc /usr/share/doc-base \
