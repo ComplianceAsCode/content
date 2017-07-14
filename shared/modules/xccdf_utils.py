@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
 
 """
 A couple generic XCCDF utilities used by build-all-guides.py and

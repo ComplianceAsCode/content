@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
 
 #
 # create_services_disabled.py
@@ -36,7 +36,7 @@ class ServiceDisabledGenerator(FilesGenerator):
                 "./template_BASH_service_disabled",
                 {
                     "SERVICENAME": servicename,
-                    "DAEMONNAME": servicename
+                    "DAEMONNAME": daemonname
                 },
                 "./bash/service_{0}_disabled.sh", servicename
             )

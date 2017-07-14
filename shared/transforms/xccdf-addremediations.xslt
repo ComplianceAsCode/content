@@ -53,12 +53,25 @@
 
 <xsl:template match="text()" mode="fix_contents">
   <xsl:param name="rule"/>
+  <xsl:param name="fix"/>
   <xsl:variable name="rep0" select="."/>
 
   <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
+  <xsl:variable name="ref_nist800_53" select="$rule/xccdf:reference[starts-with(@href, 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53')]/text()"/>
+  <xsl:variable name="ref_nist800_171" select="$rule/xccdf:reference[starts-with(@href, 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171')]/text()"/>
+  <xsl:variable name="ref_pci_dss" select="$rule/xccdf:reference[starts-with(@href, 'https://www.pcisecuritystandards.org/')]/text()"/>
+  <xsl:variable name="ref_cjis" select="$rule/xccdf:reference[starts-with(@href, 'https://www.fbi.gov/file-repository/cjis-security-policy')]/text()"/>
+
   <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
-    - <xsl:value-of select="$rule/@severity"/><xsl:if test="$ident_cce">
-    - <xsl:value-of select="$ident_cce"/></xsl:if></xsl:variable>
+    - <xsl:value-of select="$rule/@severity"/>_severity<xsl:if test="$fix/@strategy">
+    - <xsl:value-of select="$fix/@strategy"/>_strategy</xsl:if><xsl:if test="$fix/@complexity">
+    - <xsl:value-of select="$fix/@complexity"/>_complexity</xsl:if><xsl:if test="$fix/@disruption">
+    - <xsl:value-of select="$fix/@disruption"/>_disruption</xsl:if><xsl:for-each select="$ident_cce">
+    - <xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_53">
+    - NIST-800-53-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_171">
+    - NIST-800-171-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_pci_dss">
+    - PCI-DSS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_cjis">
+    - CJIS-<xsl:value-of select="."/></xsl:for-each></xsl:variable>
 
   <xsl:variable name="rep1">
     <xsl:call-template name="find-and-replace">
@@ -81,9 +94,11 @@
 
 <xsl:template match="@* | node()" mode="fix_contents">
   <xsl:param name="rule"/>
+  <xsl:param name="fix"/>
   <xsl:copy>
     <xsl:apply-templates select="@* | node()" mode="fix_contents">
       <xsl:with-param name="rule" select="$rule"/>
+      <xsl:with-param name="fix" select="$fix"/>
     </xsl:apply-templates>
   </xsl:copy>
 </xsl:template>
@@ -97,6 +112,7 @@
     <xsl:variable name="rule_id" select="$rule/@id"/>
 
     <xsl:for-each select="$fixgroups/xccdf:fix[@rule=$rule_id]">
+      <xsl:variable name="fix" select="."/>
       <xsl:element name="fix" namespace="http://checklists.nist.gov/xccdf/1.1">
         <xsl:attribute name="system"><xsl:value-of select="../@system"/></xsl:attribute>
         <xsl:attribute name="id"><xsl:value-of select="$rule_id"/></xsl:attribute>
@@ -117,6 +133,7 @@
         </xsl:if>
         <xsl:apply-templates select="node()" mode="fix_contents">
           <xsl:with-param name="rule" select="$rule"/>
+          <xsl:with-param name="fix" select="$fix"/>
         </xsl:apply-templates>
       </xsl:element>
     </xsl:for-each>
