@@ -3,12 +3,12 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-- name: "Ensure PKGNAME is installed"
+- name: "Ensure %PKGNAME% is installed"
   package:
     name="{{item}}"
     state=present
   with_items:
-    - PKGNAME
+    - %PKGNAME%
   tags:
     @ANSIBLE_TAGS@
 
