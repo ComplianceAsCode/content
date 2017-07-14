@@ -300,13 +300,13 @@ may be able to log into the system as another user.
 <description>When enabled, SSH will create an unprivileged child process that
 has the privilege of the authenticated user. To enable privilege separation in
 SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
-<pre>UsePrivilegeSeparation yes</pre>
+<pre>UsePrivilegeSeparation sandbox</pre>
 </description>
 <ocil clause="it is commented out or is not enabled">
 To check if UsePrivilegeSeparation is enabled or set correctly, run the
 following command:
 <pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
-If configured properly, output should be <pre>yes</pre>
+If configured properly, output should be <pre>sandbox</pre>
 </ocil>
 <rationale>
 SSH daemon privilege separation causes the SSH process to drop root privileges

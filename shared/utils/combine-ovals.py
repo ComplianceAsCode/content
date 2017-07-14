@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 import datetime
 import os
@@ -8,18 +8,13 @@ import platform
 import re
 import sys
 from copy import deepcopy
+import argparse
 
 
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
     import cElementTree as ElementTree
-
-try:
-    set
-except NameError:
-    # for python2
-    from sets import Set as set
 
 try:
     from configparser import SafeConfigParser
@@ -34,12 +29,12 @@ sys.path.insert(0, os.path.join(
 from map_product_module import map_product, parse_product_name, multi_product_list
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-footer = '</oval_definitions>'
+footer = "</oval_definitions>"
 
 
-def _header(schema_version):
-    header = '''<?xml version="1.0" encoding="UTF-8"?>
+def _header(schema_version, ssg_version):
+    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+    return """<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
     xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
@@ -53,13 +48,12 @@ def _header(schema_version):
         http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
         http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
     <generator>
-        <oval:product_name>python</oval:product_name>
-        <oval:product_version>%s</oval:product_version>
+        <oval:product_name>combine-ovals.py from SCAP Security Guide</oval:product_name>
+        <oval:product_version>ssg: %s, python: %s</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
         <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (platform.python_version(), schema_version, timestamp)
-
-    return header
+    </generator>""" % (ssg_version, platform.python_version(),
+                       schema_version, timestamp)
 
 
 def parse_conf_file(conf_file, product):
@@ -127,7 +121,7 @@ def check_is_applicable_for_product(oval_check_def, product):
 
 
 def add_platforms(xml_tree, multi_platform):
-    for affected in xml_tree.findall(".//affected"):
+    for affected in xml_tree.findall(".//{%s}affected" % oval_ns):
         if affected.get("family") != "unix":
             continue
 
@@ -308,7 +302,7 @@ def checks(product, oval_dirs):
        oval_dirs: list of directory with oval files (later has higher priority)
        Return: The document body"""
 
-    body = ""
+    body = []
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
     already_loaded = dict()  # filename -> oval_version
@@ -325,7 +319,7 @@ def checks(product, oval_dirs):
                             continue
                         if check_is_loaded(already_loaded, filename, oval_version):
                             continue
-                        body += xml_content
+                        body.append(xml_content)
                         included_checks_count += 1
                         already_loaded[filename] = oval_version
         except OSError as e:
@@ -337,47 +331,57 @@ def checks(product, oval_dirs):
                                  "exist\n" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
-    return body
+    return "".join(body)
 
 
 def main():
-    if len(sys.argv) < 4:
+    p = argparse.ArgumentParser()
+    p.add_argument("--ssg_version", default="unknown",
+                   help="SSG version for reporting purposes. example: 0.1.34")
+    p.add_argument("--product", required=True,
+                   help="which product are we building for? example: rhel7")
+    p.add_argument("--oval_config", required=True,
+                   help="Location of the oval.config file.")
+    p.add_argument("--oval_version",
+                   help="OVAL version to use. Example: 5.11, 5.10, ...")
+    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
+                   help="Prefixed directory(ies) from which we will collect "
+                   "OVAL definitions to combine. Prefix OVAL 5.10 dirs with "
+                   "oval_5.10 - example: oval_5.10:absolute/path/to/dir. Prefix"
+                   "OVAL 5.11 dirs with oval_5.11. Order matters, latter "
+                   "directories override former.")
+
+    args, unknown = p.parse_known_args()
+    if unknown:
         sys.stderr.write(
-            "Provide a CONFIG directory, PRODUCT and "
-            "oval directories with checks\n"
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
         )
-        sys.stderr.write(
-            "Example:\n"
-            "\t./combine-ovals.py ./config rhel7 oval_5.10:ovaldir1 oval_5.11:ovaldir2...\n")
-        sys.stderr.write("Later directory has higher priority\n")
         sys.exit(1)
 
-    # Get header with schema version
-    oval_config = sys.argv[1]
-    product = sys.argv[2]
-    oval_dirs = sys.argv[3:] # later directory has higher priority
-
     oval_schema_version = None
-    runtime_oval_schema_version = os.getenv('RUNTIME_OVAL_VERSION', None)
+    runtime_oval_schema_version = args.oval_version
 
-    if os.path.isfile(oval_config):
-        (config_oval_schema_version, multi_platform) = parse_conf_file(oval_config, product)
+    if os.path.isfile(args.oval_config):
+        config_oval_schema_version, multi_platform = \
+            parse_conf_file(args.oval_config, args.product)
         if runtime_oval_schema_version is not None and \
            runtime_oval_schema_version != config_oval_schema_version:
             oval_schema_version = runtime_oval_schema_version
         else:
             oval_schema_version = config_oval_schema_version
-        header = _header(oval_schema_version)
+        header = _header(oval_schema_version, args.ssg_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
-                         "file!\n" % (oval_config))
+                         "file!\n" % (args.oval_config))
         sys.exit(1)
 
-    body = checks(product, oval_dirs)
+    body = checks(args.product, args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ElementTree.fromstring((header + body + footer).encode("utf-8"))
+    corrected_tree = ElementTree.fromstring(
+        ("%s%s%s" % (header, body, footer)).encode("utf-8"))
     tree = add_platforms(corrected_tree, multi_platform)
     definitions = ElementTree.Element("{%s}definitions" % oval_ns)
     tests = ElementTree.Element("{%s}tests" % oval_ns)
@@ -385,7 +389,7 @@ def main():
     states = ElementTree.Element("{%s}states" % oval_ns)
     variables = ElementTree.Element("{%s}variables" % oval_ns)
 
-    for childnode in tree.findall("./{http://oval.mitre.org/XMLSchema/oval-definitions-5}def-group/*"):
+    for childnode in tree.findall("./{%s}def-group/*" % oval_ns):
         if childnode.tag is ElementTree.Comment:
             continue
         elif childnode.tag.endswith("definition"):
@@ -402,15 +406,16 @@ def main():
             sys.stderr.write("Warning: Unknown element '%s'\n"
                              % (childnode.tag))
 
-    tree = ElementTree.fromstring((header + footer).encode("utf-8"))
-    tree.append(definitions)
-    tree.append(tests)
-    tree.append(objects)
-    tree.append(states)
+    root = ElementTree.fromstring(("%s%s" % (header, footer)).encode("utf-8"))
+    root.append(definitions)
+    root.append(tests)
+    root.append(objects)
+    root.append(states)
     if list(variables):
-        tree.append(variables)
+        root.append(variables)
 
-    ElementTree.dump(tree)
+    ElementTree.ElementTree(root).write(args.output)
+
     sys.exit(0)
 
 if __name__ == "__main__":

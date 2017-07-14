@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
 
 """
 Takes given *resolved* XCCDF, goes through every profile. For every profile,
