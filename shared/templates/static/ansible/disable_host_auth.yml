@@ -3,11 +3,11 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Disable Host-Based Authentication"
+- name: Disable Host-Based Authentication
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^HostbasedAuthentication"
-    line="HostbasedAuthentication no"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^HostbasedAuthentication
+    line: HostbasedAuthentication no
   tags:
     @ANSIBLE_TAGS@

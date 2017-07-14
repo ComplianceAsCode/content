@@ -3,12 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Enable Encrypted X11 Forwarding"
+- name: Enable Encrypted X11 Forwarding
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^X11Forwarding"
-    line="X11Forwarding yes"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^X11Forwarding
+    line: X11Forwarding yes
     validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@
