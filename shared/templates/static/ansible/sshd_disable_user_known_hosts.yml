@@ -9,7 +9,7 @@
     dest: /etc/ssh/sshd_config
     regexp: ^IgnoreUserKnownHosts
     line: IgnoreUserKnownHosts yes
-    #validate: sshd -t -f %s
+    validate: sshd -t -f %s
   #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

@@ -6,10 +6,10 @@
 - name: "Use Only Approved MACs"
   lineinfile:
     create: yes
-    dest:"/etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config
     regexp: ^MACs
     line: MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1
-    #validate: sshd -t -f %s
+    validate: sshd -t -f %s
   #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

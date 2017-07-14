@@ -9,6 +9,6 @@
     dest="/etc/ssh/sshd_config"
     regexp="^IgnoreRhosts"
     line="IgnoreRhosts yes"
-    #validate: sshd -t -f %s
+    validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@
