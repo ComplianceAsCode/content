@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
 
 """
 Takes given XCCDF or DataStream and for every profile in it it generates one

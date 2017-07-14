@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """
     This script should find duplicates e.g. specific template is same as shared one
 """
