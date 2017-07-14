@@ -3,4 +3,4 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-find FILEPATH -regex '^FILEPATH/FILENAME' -exec chmod FILEMODE {} \;
+find %FILEPATH% -regex '^%FILEPATH%/%FILENAME%' -exec chmod %FILEMODE% {} \;
