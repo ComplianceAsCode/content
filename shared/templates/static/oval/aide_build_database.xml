@@ -13,6 +13,7 @@
       <description>The aide database must be initialized.</description>
     </metadata>
     <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <!-- Only the configuration when location of the Aide database file is specified in the
            form of absolute path is checked. To check any possible relative path configuration
            that might happen would require to browse whole file system (resources expensive operation).

@@ -7,7 +7,6 @@ import sys
 import os
 import re
 from abc import abstractmethod
-import inspect
 
 
 class ActionType:
@@ -29,6 +28,8 @@ class TemplateNotFoundError(RuntimeError):
             "Template not found: '%s'. Looked in %s."
             % (template, ", ".join(paths))
         )
+
+TARGET_REGEX = re.compile(r"#\s*only-for:([\s\w,]*)")
 
 
 class FilesGenerator(object):
@@ -77,8 +78,6 @@ class FilesGenerator(object):
             return ""
 
         if self.action == ActionType.INPUT:
-            self.files.append(
-                os.path.abspath(inspect.getsourcefile(self.__class__)))
             self.files.append(template_filename)
             return ""
 
@@ -136,8 +135,7 @@ class FilesGenerator(object):
         """
 
         if target is not None:
-            regex = re.compile(r"#\s*only-for:([\s\w,]*)")
-            match = regex.search(line)
+            match = TARGET_REGEX.search(line)
 
             if match:
                 # if line contains restriction to target, check it

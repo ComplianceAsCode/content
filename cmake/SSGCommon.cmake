@@ -58,6 +58,12 @@ else()
     set(OSCAP_OVAL_VERSION "oval_5.10")
 endif()
 
+if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
+    set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
+else()
+    set(OSCAP_OVAL_SCHEMATRON_OPTION "")
+endif()
+
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
 
@@ -144,7 +150,7 @@ endmacro()
 macro(ssg_build_ocil_unlinked PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam ssg_version "${SSG_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-create-ocil.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/ocil-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-resolved.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
@@ -175,7 +181,6 @@ endmacro()
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
 
-    message(STATUS "Scanning for dependencies of ${PRODUCT} ${LANGUAGE} remediations...")
     execute_process(
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-inputs
         OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_DEPENDS_STR
@@ -199,7 +204,6 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     file(GLOB EXTRA_LANGUAGE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}/*")
     file(GLOB EXTRA_SHARED_LANGUAGE_DEPENDS "${SSG_SHARED}/templates/static/${LANGUAGE}/*")
 
-    # TODO: The environment variable is not very portable
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
         OUTPUT ${LANGUAGE_REMEDIATIONS_OUTPUTS}
@@ -210,7 +214,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}"
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
-        COMMAND SHARED=${SSG_SHARED} "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}"
+        COMMAND "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
@@ -250,6 +254,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
+    message(STATUS "Scanning for dependencies of ${PRODUCT} remediations (bash, ansible, puppet and anaconda)...")
     _ssg_build_remediations_for_language(${PRODUCT} "bash")
     _ssg_build_remediations_for_language(${PRODUCT} "ansible")
     _ssg_build_remediations_for_language(${PRODUCT} "puppet")
@@ -288,7 +293,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
 
-    message(STATUS "Scanning for dependencies of ${PRODUCT} OVAL checks...")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} checks (OVAL)...")
     execute_process(
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval list-inputs
         OUTPUT_VARIABLE OVAL_CHECKS_DEPENDS_STR
@@ -338,7 +343,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             # We have to remove all old shared checks in case the user removed something from the CSV files
             COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-            COMMAND RUNTIME_OVAL_VERSION=5.11 "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} ${OVAL_511_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "5.11" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_510_COMBINE_PATHS} ${OVAL_511_COMBINE_PATHS}
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             DEPENDS ${OVAL_CHECKS_DEPENDS}
             DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
@@ -348,7 +353,6 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS ${EXTRA_SHARED_OVAL_510_DEPS}
             DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
             DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
-            VERBATIM
             COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
         )
     else()
@@ -362,7 +366,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             # We have to remove all old shared checks in case the user removed something from the CSV files
             COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" "${CMAKE_BINARY_DIR}/oval.config" "${PRODUCT}" ${OVAL_510_COMBINE_PATHS} > "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_510_COMBINE_PATHS}
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             DEPENDS ${OVAL_CHECKS_DEPENDS}
             DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
@@ -370,7 +374,6 @@ macro(ssg_build_oval_unlinked PRODUCT)
             DEPENDS ${EXTRA_SHARED_OVAL_510_DEPS}
             DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
             DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
-            VERBATIM
             COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
         )
     endif()
@@ -414,7 +417,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate --schematron "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        COMMAND "${OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
@@ -525,7 +528,7 @@ macro(ssg_build_oval_final PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate --schematron "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        COMMAND "${OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
         DEPENDS generate-ssg-${PRODUCT}-oval.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
