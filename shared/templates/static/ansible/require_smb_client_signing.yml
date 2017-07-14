@@ -13,9 +13,9 @@
 - name: Require Client SMB Packet Signing, if using smbclient
   lineinfile:
     dest: /etc/samba/smb.conf
-    line: "client signing = mandatory"
+    line: client signing = mandatory
     state: present
-    insertafter: "[global]"
+    insertafter: [global]
   when: st_smb.stat.exists
   tags:
     @ANSIBLE_TAGS@

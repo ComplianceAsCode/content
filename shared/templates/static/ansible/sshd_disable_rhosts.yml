@@ -5,7 +5,7 @@
 # disruption = low
 - name: Disable SSH Support for .rhosts Files
   lineinfile:
-    create=yes
+    create: yes
     dest: /etc/ssh/sshd_config
     regexp: ^IgnoreRhosts
     line: IgnoreRhosts yes

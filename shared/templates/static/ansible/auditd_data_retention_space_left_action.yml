@@ -6,8 +6,8 @@
 - name: Configure auditd space_left Action on Low Disk Space
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: "space_left_action = (ansible-populate var_auditd_space_left_action)"
-    regexp: "^space_left_action*"
+    line: space_left_action = (ansible-populate var_auditd_space_left_action)
+    regexp: ^space_left_action*
   #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@

@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = medium
 # disruption = medium
-- name: Read permission of GPG key directory
+- name: "Read permission of GPG key directory"
   stat:
     path: /etc/pki/rpm-gpg/
   register: gpg_key_directory_permission
