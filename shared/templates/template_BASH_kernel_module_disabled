@@ -3,9 +3,9 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-if grep --silent "^install KERNMODULE" /etc/modprobe.d/KERNMODULE.conf ; then
-        sed -i 's/^install KERNMODULE.*/install KERNMODULE /bin/true/g' /etc/modprobe.d/KERNMODULE.conf
+if grep --silent "^install %KERNMODULE%" /etc/modprobe.d/%KERNMODULE%.conf ; then
+	sed -i 's/^install %KERNMODULE%.*/install %KERNMODULE% /bin/true/g' /etc/modprobe.d/%KERNMODULE%.conf
 else
-        echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/KERNMODULE.conf
-        echo "install KERNMODULE /bin/true" >> /etc/modprobe.d/KERNMODULE.conf
+	echo -e "\n# Disable per security requirements" >> /etc/modprobe.d/%KERNMODULE%.conf
+	echo "install %KERNMODULE% /bin/true" >> /etc/modprobe.d/%KERNMODULE%.conf
 fi

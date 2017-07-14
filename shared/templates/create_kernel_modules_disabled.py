@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 #
 # create_kernel_modules_disabled.py
 #   automatically generate checks for disabled kernel modules
@@ -16,7 +14,7 @@ class KernelModulesDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_kernel_module_disabled",
                 {
-                   "KERNMODULE": kernmod
+                   "%KERNMODULE%": kernmod
                 },
                 "./bash/kernel_module_{0}_disabled.sh", kernmod
             )
@@ -25,7 +23,7 @@ class KernelModulesDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_kernel_module_disabled",
                 {
-                    "KERNMODULE": kernmod
+                    "%KERNMODULE%": kernmod
                 },
                 "./oval/kernel_module_{0}_disabled.xml", kernmod
             )
@@ -34,7 +32,7 @@ class KernelModulesDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_kernel_module_disabled",
                 {
-                   "KERNMODULE": kernmod
+                   "%KERNMODULE%": kernmod
                 },
                 "./ansible/kernel_module_{0}_disabled.yml", kernmod
             )
