@@ -3,12 +3,12 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-- name: "Ensure PKGNAME is removed"
+- name: "Ensure %PKGNAME% is removed"
   package:
     name="{{item}}"
     state=absent
   with_items:
-    - PKGNAME
+    - %PKGNAME%
   tags:
     @ANSIBLE_TAGS@
 
