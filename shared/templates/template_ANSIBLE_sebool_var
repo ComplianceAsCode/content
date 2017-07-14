@@ -3,10 +3,10 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-- name: Set SELinux boolean SEBOOLID accordingly
+- name: Set SELinux boolean %SEBOOLID% accordingly
   seboolean:
-    name: SEBOOLID
-    state: (ansible-populate var_SEBOOLID)
+    name: %SEBOOLID%
+    state: (ansible-populate var_%SEBOOLID%)
     persistent: yes
   tags:
     @ANSIBLE_TAGS@

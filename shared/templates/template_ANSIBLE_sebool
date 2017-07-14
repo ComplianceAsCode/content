@@ -3,10 +3,10 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-- name: Set SELinux boolean SEBOOLID to SEBOOL_BOOL
+- name: Set SELinux boolean %SEBOOLID% to %SEBOOL_BOOL%
   seboolean:
-    name: SEBOOLID
-    state: SEBOOL_BOOL
+    name: %SEBOOLID%
+    state: %SEBOOL_BOOL%
     persistent: yes
   tags:
     @ANSIBLE_TAGS@
