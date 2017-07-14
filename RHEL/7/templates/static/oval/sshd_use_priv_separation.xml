@@ -23,7 +23,7 @@ root privileges when not needed.</description>
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_use_priv_separation" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)UsePrivilegeSeparation(?-i)[\s]+yes[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)UsePrivilegeSeparation(?-i)[\s]+sandbox[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
