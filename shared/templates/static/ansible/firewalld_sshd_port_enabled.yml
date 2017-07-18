@@ -4,6 +4,15 @@
 # strategy = configure
 # disruption = low
 
+- name: Ensure firewalld is installed
+  package:
+    name="{{item}}"
+    state=present
+  with_items:
+    - firewalld
+  tags:
+    @ANSIBLE_TAGS@
+
 - name: Enable SSHD in firewalld (custom port)
   firewalld:
     port: (ansible-populate sshd_listening_port)/tcp
