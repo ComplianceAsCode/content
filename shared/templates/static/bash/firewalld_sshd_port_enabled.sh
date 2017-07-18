@@ -5,6 +5,8 @@
 # disruption = low
 
 . /usr/share/scap-security-guide/remediation_functions
+
+package_command install firewalld
 populate sshd_listening_port
 
 if [ $sshd_listening_port -ne 22 ] ; then
