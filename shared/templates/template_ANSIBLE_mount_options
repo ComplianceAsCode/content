@@ -24,7 +24,7 @@
   tags:
     @ANSIBLE_TAGS@
 
-- name: "Ensure permission %MOUNTOPTIONS% are set on %MOUNTPOINT%"
+- name: "Ensure permission %MOUNTOPTION% are set on %MOUNTPOINT%"
   mount:
     path: "%MOUNTPOINT%"
     src: "{{device_name.stdout}}"
