@@ -1,0 +1,13 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+
+- name: Set /etc/cron.allow user ownership to root
+  file:
+    path: /etc/cron.allow
+    owner: root
+  tags:
+    @ANSIBLE_TAGS@
+
