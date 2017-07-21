@@ -33,6 +33,16 @@ class AuditRulesPrivilegedCommandsGenerator(FilesGenerator):
                 "./bash/audit_rules_privileged_commands_{0}.sh", name
             )
 
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_privileged_commands",
+                {
+                    "%NAME%":	name,
+                    "%PATH%":	path
+                },
+                "./ansible/audit_rules_privileged_commands_{0}.yml", name
+            )
+
         else:
             raise UnknownTargetError(target)
 
