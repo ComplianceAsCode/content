@@ -1,0 +1,21 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = high
+# disruption = medium
+
+- name: "Find files in /etc/httpd/conf/ directory"
+  find:
+    paths: "/etc/httpd/conf/"
+  register: all_files
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Set permissions to files in /etc/httpd/conf/ directory"
+  file:
+    path: "{{item}}"
+    mode: 0640
+  with_items: "{{ all_files.files }}"
+  tags:
+    @ANSIBLE_TAGS@
+
