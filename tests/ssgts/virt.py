@@ -6,7 +6,7 @@ import time
 
 import xml.etree.ElementTree as ET
 
-from lib.log import log
+from ssgts.log import log
 
 # filled in by connectDomain function
 snapshots = None

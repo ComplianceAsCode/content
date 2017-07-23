@@ -9,8 +9,8 @@ import shlex
 import subprocess
 import sys
 
-import lib.virt
-from lib.log import log
+import ssgts.virt
+from ssgts.log import log
 
 _CONTEXT_RETURN_CODES = {'pass': 0,
                         'fail': 2,
@@ -38,8 +38,8 @@ def run_profile(domain_ip,
                                                              stage))
     verbose_path = os.path.join(log.log_dir, '{0}-{1}'.format(profile,
                                                              stage))
-    formatting['report'] = lib.log.find_name(report_path, '.html')
-    verbose_path = lib.log.find_name(verbose_path, '.verbose.log')
+    formatting['report'] = ssgts.log.find_name(report_path, '.html')
+    verbose_path = ssgts.log.find_name(verbose_path, '.verbose.log')
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
                            '--benchmark-id {benchmark_id} '
@@ -89,8 +89,8 @@ def run_rule(domain_ip,
     verbose_path = os.path.join(log.log_dir, '{0}-{1}-{2}'.format(rule_id,
                                                               script_name,
                                                               stage))
-    formatting['report'] = lib.log.find_name(report_path, '.html')
-    verbose_path = lib.log.find_name(verbose_path, '.verbose.log')
+    formatting['report'] = ssgts.log.find_name(report_path, '.html')
+    verbose_path = ssgts.log.find_name(verbose_path, '.verbose.log')
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
                            '--benchmark-id {benchmark_id} '
@@ -112,7 +112,7 @@ def run_rule(domain_ip,
 
     except subprocess.CalledProcessError, e:
         if e.returncode != expected_return_code:
-            lib.log.preload_log(logging.ERROR,
+            ssgts.log.preload_log(logging.ERROR,
                             ('Scan has exited with return code {0}, '
                              'instead of expected {1} '
                              'during stage {2}').format(e.returncode,
@@ -124,7 +124,7 @@ def run_rule(domain_ip,
     else:
         # success branch - command exited with return code 0
         if expected_return_code != 0:
-            lib.log.preload_log(logging.ERROR,
+            ssgts.log.preload_log(logging.ERROR,
                                 ('Scan has exited with return code 0, '
                                  'instead of expected {0} '
                                  'during stage {1}').format(expected_return_code,
@@ -138,7 +138,7 @@ def run_rule(domain_ip,
                                     output,
                                     re.MULTILINE)
     except IndexError:
-        lib.log.preload_log(logging.ERROR,
+        ssgts.log.preload_log(logging.ERROR,
                             ('Rule {0} has not been '
                              'evaluated! Wrong profile '
                              'selected?').format(rule_id),
@@ -146,7 +146,7 @@ def run_rule(domain_ip,
         success = False
     else:
         if context not in actual_results:
-            lib.log.preload_log(logging.ERROR,
+            ssgts.log.preload_log(logging.ERROR,
                                 ('Rule result should have been '
                                  '"{0}", but is "{1}"!'
                                  ).format(context,
@@ -159,8 +159,8 @@ def run_rule(domain_ip,
         # as we have not encountered any anomalies
         os.remove(formatting['report'])
     if success:
-        lib.log.log_preloaded('pass')
+        ssgts.log.log_preloaded('pass')
     else:
-        lib.log.log_preloaded('fail')
+        ssgts.log.log_preloaded('fail')
 
     return success

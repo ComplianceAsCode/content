@@ -12,9 +12,9 @@ import subprocess
 import sys
 import xml.etree.cElementTree as ET
 
-import lib.oscap
-import lib.virt
-from lib.log import log
+import ssgts.oscap
+import ssgts.virt
+from ssgts.log import log
 from data import iterate_over_rules
 
 NS= {'xccdf':"http://checklists.nist.gov/xccdf/1.2"}
@@ -98,14 +98,14 @@ def get_script_context(script):
 
 
 def perform_rule_check(options):
-    dom = lib.virt.connect_domain(options.hypervisor, options.domain_name)
+    dom = ssgts.virt.connect_domain(options.hypervisor, options.domain_name)
     if dom is None:
         sys.exit(1)
-    atexit.register(lib.virt.snapshots.clear)
+    atexit.register(ssgts.virt.snapshots.clear)
 
-    lib.virt.snapshots.create('origin')
-    lib.virt.start_domain(dom)
-    domain_ip = lib.virt.determine_ip(dom)
+    ssgts.virt.snapshots.create('origin')
+    ssgts.virt.start_domain(dom)
+    domain_ip = ssgts.virt.determine_ip(dom)
     scanned_something = False
     for rule_dir, rule, scripts in iterate_over_rules():
         if options.target == 'ALL':
@@ -133,7 +133,7 @@ def perform_rule_check(options):
             script_context = get_script_context(script)
             log.debug(('Using test script {0} '
                        'with context {1}').format(script, script_context))
-            lib.virt.snapshots.create('script')
+            ssgts.virt.snapshots.create('script')
             # copy all helper scripts, so scenario script can use them
             script_path = os.path.join(rule_dir, script)
             helper_paths = map(lambda x: os.path.join(rule_dir, x), helpers)
@@ -147,21 +147,21 @@ def perform_rule_check(options):
                                                options.datastream,
                                                options.benchmark_id)
             if len(profiles) > 1:
-                lib.virt.snapshots.create('profile')
+                ssgts.virt.snapshots.create('profile')
             for profile in profiles:
-                lib.log.preload_log(logging.INFO,
+                ssgts.log.preload_log(logging.INFO,
                                     ("Script {0} "
                                      "using profile {1} OK").format(script,
                                                                     profile),
                                     log_target='pass')
-                lib.log.preload_log(logging.ERROR,
+                ssgts.log.preload_log(logging.ERROR,
                                     ("Script {0} "
                                      "using profile {1} "
                                      "found issue:").format(script,
                                                             profile),
                                     log_target='fail')
                 has_worked = True
-                if lib.oscap.run_rule(domain_ip=domain_ip,
+                if ssgts.oscap.run_rule(domain_ip=domain_ip,
                                       profile=profile,
                                       stage="initial",
                                       datastream=options.datastream,
@@ -172,7 +172,7 @@ def perform_rule_check(options):
                                       remediation=False,
                                       dont_clean=options.dont_clean):
                     if script_context in ['fail', 'error']:
-                        lib.oscap.run_rule(domain_ip=domain_ip,
+                        ssgts.oscap.run_rule(domain_ip=domain_ip,
                                            profile=profile,
                                            stage="remediation",
                                            datastream=options.datastream,
@@ -182,11 +182,11 @@ def perform_rule_check(options):
                                            script_name=script,
                                            remediation=True,
                                            dont_clean=options.dont_clean)
-                lib.virt.snapshots.revert(delete=False)
+                ssgts.virt.snapshots.revert(delete=False)
             if not has_worked:
                 log.error("Nothing has been tested!")
-            lib.virt.snapshots.delete()
+            ssgts.virt.snapshots.delete()
             if len(profiles) > 1:
-                lib.virt.snapshots.revert()
+                ssgts.virt.snapshots.revert()
     if not scanned_something:
         log.error("Rule {0} has not been found".format(options.target))
