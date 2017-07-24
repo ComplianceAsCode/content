@@ -8,11 +8,11 @@ import sys
 import time
 
 from lib.log import log
-import ssgts.log
-import ssgts.oscap
-import ssgts.virt
-import ssgts.profile
-import ssgts.rule
+import ssg_test_suite.log
+import ssg_test_suite.oscap
+import ssg_test_suite.virt
+import ssg_test_suite.profile
+import ssg_test_suite.rule
 
 parser = argparse.ArgumentParser()
 
@@ -61,14 +61,14 @@ parser_profile = subparsers.add_parser('profile',
                                              'remediation applied on already '
                                              'installed machine'),
                                        parents=[common_parser])
-parser_profile.set_defaults(func=ssgts.profile.perform_profile_check)
+parser_profile.set_defaults(func=ssg_test_suite.profile.perform_profile_check)
 parser_rule = subparsers.add_parser('rule',
                                     help=('Testing remediations of particular '
                                           'rule for various situations - '
                                           'currently not supported '
                                           'by openscap!'),
                                     parents=[common_parser])
-parser_rule.set_defaults(func=ssgts.rule.perform_rule_check)
+parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
 
 parser_profile.add_argument("target",
                             nargs="?",
@@ -89,7 +89,7 @@ parser_rule.add_argument("--dontclean",
                          help="Do not remove html reports of successful runs")
 
 options = parser.parse_args()
-ssgts.log.add_console_logger(options.loglevel)
+ssg_test_suite.log.add_console_logger(options.loglevel)
 # logging dir needs to be created based on other options
 # thus we have to postprocess it
 if options.logdir is None:
@@ -98,10 +98,10 @@ if options.logdir is None:
     logging_dir = os.path.join(os.getcwd(),
                                'logs',
                                '{0}-{1}'.format(options.target,
-                                                   date_string))
-    logging_dir = ssgts.log.find_name(logging_dir)
+                                                date_string))
+    logging_dir = ssg_test_suite.log.find_name(logging_dir)
 else:
-    logging_dir = ssgts.log.find_name(options.logdir)
-ssgts.log.add_logging_dir(logging_dir)
+    logging_dir = ssg_test_suite.log.find_name(options.logdir)
+ssg_test_suite.log.add_logging_dir(logging_dir)
 
 options.func(options)

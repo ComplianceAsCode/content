@@ -12,12 +12,13 @@ import subprocess
 import sys
 import xml.etree.cElementTree as ET
 
-import ssgts.oscap
-import ssgts.virt
-from ssgts.log import log
+import ssg_test_suite.oscap as oscap
+import ssg_test_suite.virt
+from ssg_test_suite.log import log
 from data import iterate_over_rules
 
-NS= {'xccdf':"http://checklists.nist.gov/xccdf/1.2"}
+NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
+
 
 def parse_parameters(script):
     params = {}
@@ -98,14 +99,15 @@ def get_script_context(script):
 
 
 def perform_rule_check(options):
-    dom = ssgts.virt.connect_domain(options.hypervisor, options.domain_name)
+    dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
+                                             options.domain_name)
     if dom is None:
         sys.exit(1)
-    atexit.register(ssgts.virt.snapshots.clear)
+    atexit.register(ssg_test_suite.virt.snapshots.clear)
 
-    ssgts.virt.snapshots.create('origin')
-    ssgts.virt.start_domain(dom)
-    domain_ip = ssgts.virt.determine_ip(dom)
+    ssg_test_suite.virt.snapshots.create('origin')
+    ssg_test_suite.virt.start_domain(dom)
+    domain_ip = ssg_test_suite.virt.determine_ip(dom)
     scanned_something = False
     for rule_dir, rule, scripts in iterate_over_rules():
         if options.target == 'ALL':
@@ -133,7 +135,7 @@ def perform_rule_check(options):
             script_context = get_script_context(script)
             log.debug(('Using test script {0} '
                        'with context {1}').format(script, script_context))
-            ssgts.virt.snapshots.create('script')
+            ssg_test_suite.virt.snapshots.create('script')
             # copy all helper scripts, so scenario script can use them
             script_path = os.path.join(rule_dir, script)
             helper_paths = map(lambda x: os.path.join(rule_dir, x), helpers)
@@ -144,49 +146,50 @@ def perform_rule_check(options):
             script_params = parse_parameters(script_path)
             has_worked = False
             profiles = get_viable_profiles(script_params['profiles'],
-                                               options.datastream,
-                                               options.benchmark_id)
+                                           options.datastream,
+                                           options.benchmark_id)
             if len(profiles) > 1:
-                ssgts.virt.snapshots.create('profile')
+                ssg_test_suite.virt.snapshots.create('profile')
             for profile in profiles:
-                ssgts.log.preload_log(logging.INFO,
-                                    ("Script {0} "
-                                     "using profile {1} OK").format(script,
-                                                                    profile),
-                                    log_target='pass')
-                ssgts.log.preload_log(logging.ERROR,
-                                    ("Script {0} "
-                                     "using profile {1} "
-                                     "found issue:").format(script,
-                                                            profile),
-                                    log_target='fail')
+                ssg_test_suite.log.preload_log(logging.INFO,
+                                               ("Script {0} "
+                                                "using profile {1} "
+                                                "OK").format(script,
+                                                             profile),
+                                               log_target='pass')
+                ssg_test_suite.log.preload_log(logging.ERROR,
+                                               ("Script {0} "
+                                                "using profile {1} "
+                                                "found issue:").format(script,
+                                                                       profile),
+                                               log_target='fail')
                 has_worked = True
-                if ssgts.oscap.run_rule(domain_ip=domain_ip,
-                                      profile=profile,
-                                      stage="initial",
-                                      datastream=options.datastream,
-                                      benchmark_id=options.benchmark_id,
-                                      rule_id=rule,
-                                      context=script_context,
-                                      script_name=script,
-                                      remediation=False,
-                                      dont_clean=options.dont_clean):
+                if oscap.run_rule(domain_ip=domain_ip,
+                                  profile=profile,
+                                  stage="initial",
+                                  datastream=options.datastream,
+                                  benchmark_id=options.benchmark_id,
+                                  rule_id=rule,
+                                  context=script_context,
+                                  script_name=script,
+                                  remediation=False,
+                                  dont_clean=options.dont_clean):
                     if script_context in ['fail', 'error']:
-                        ssgts.oscap.run_rule(domain_ip=domain_ip,
-                                           profile=profile,
-                                           stage="remediation",
-                                           datastream=options.datastream,
-                                           benchmark_id=options.benchmark_id,
-                                           rule_id=rule,
-                                           context='fixed',
-                                           script_name=script,
-                                           remediation=True,
-                                           dont_clean=options.dont_clean)
-                ssgts.virt.snapshots.revert(delete=False)
+                        oscap.run_rule(domain_ip=domain_ip,
+                                       profile=profile,
+                                       stage="remediation",
+                                       datastream=options.datastream,
+                                       benchmark_id=options.benchmark_id,
+                                       rule_id=rule,
+                                       context='fixed',
+                                       script_name=script,
+                                       remediation=True,
+                                       dont_clean=options.dont_clean)
+                ssg_test_suite.virt.snapshots.revert(delete=False)
             if not has_worked:
                 log.error("Nothing has been tested!")
-            ssgts.virt.snapshots.delete()
+            ssg_test_suite.virt.snapshots.delete()
             if len(profiles) > 1:
-                ssgts.virt.snapshots.revert()
+                ssg_test_suite.virt.snapshots.revert()
     if not scanned_something:
         log.error("Rule {0} has not been found".format(options.target))

@@ -6,7 +6,7 @@ import time
 
 import xml.etree.ElementTree as ET
 
-from ssgts.log import log
+from ssg_test_suite.log import log
 
 # filled in by connectDomain function
 snapshots = None
@@ -70,7 +70,6 @@ class SnapshotStack(object):
         snapshot.delete()
         log.debug(("Snapshot '{0}' deleted "
                    "successfully").format(snapshot.getName()))
-
 
     def clear(self):
         log.debug('Reverting all created snapshots in reverse order')

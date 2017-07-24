@@ -9,14 +9,14 @@ import shlex
 import subprocess
 import sys
 
-import ssgts.virt
-from ssgts.log import log
+import ssg_test_suite.virt
+from ssg_test_suite.log import log
 
 _CONTEXT_RETURN_CODES = {'pass': 0,
-                        'fail': 2,
-                        'error': 1,
-                        'notapplicable': 0,
-                        'fixed': 0}
+                         'fail': 2,
+                         'error': 1,
+                         'notapplicable': 0,
+                         'fixed': 0}
 
 
 def run_profile(domain_ip,
@@ -37,9 +37,9 @@ def run_profile(domain_ip,
     report_path = os.path.join(log.log_dir, '{0}-{1}'.format(profile,
                                                              stage))
     verbose_path = os.path.join(log.log_dir, '{0}-{1}'.format(profile,
-                                                             stage))
-    formatting['report'] = ssgts.log.find_name(report_path, '.html')
-    verbose_path = ssgts.log.find_name(verbose_path, '.verbose.log')
+                                                              stage))
+    formatting['report'] = ssg_test_suite.log.find_name(report_path, '.html')
+    verbose_path = ssg_test_suite.log.find_name(verbose_path, '.verbose.log')
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
                            '--benchmark-id {benchmark_id} '
@@ -84,13 +84,13 @@ def run_rule(domain_ip,
     formatting['rem'] = "--remediate" if remediation else ""
 
     report_path = os.path.join(log.log_dir, '{0}-{1}-{2}'.format(rule_id,
-                                                                      script_name,
-                                                                      stage))
+                                                                 script_name,
+                                                                 stage))
     verbose_path = os.path.join(log.log_dir, '{0}-{1}-{2}'.format(rule_id,
-                                                              script_name,
-                                                              stage))
-    formatting['report'] = ssgts.log.find_name(report_path, '.html')
-    verbose_path = ssgts.log.find_name(verbose_path, '.verbose.log')
+                                                                  script_name,
+                                                                  stage))
+    formatting['report'] = ssg_test_suite.log.find_name(report_path, '.html')
+    verbose_path = ssg_test_suite.log.find_name(verbose_path, '.verbose.log')
 
     command = shlex.split(('oscap-ssh root@{domain_ip} 22 xccdf eval '
                            '--benchmark-id {benchmark_id} '
@@ -112,7 +112,7 @@ def run_rule(domain_ip,
 
     except subprocess.CalledProcessError, e:
         if e.returncode != expected_return_code:
-            ssgts.log.preload_log(logging.ERROR,
+            ssg_test_suite.log.preload_log(logging.ERROR,
                             ('Scan has exited with return code {0}, '
                              'instead of expected {1} '
                              'during stage {2}').format(e.returncode,
@@ -124,7 +124,7 @@ def run_rule(domain_ip,
     else:
         # success branch - command exited with return code 0
         if expected_return_code != 0:
-            ssgts.log.preload_log(logging.ERROR,
+            ssg_test_suite.log.preload_log(logging.ERROR,
                                 ('Scan has exited with return code 0, '
                                  'instead of expected {0} '
                                  'during stage {1}').format(expected_return_code,
@@ -138,20 +138,20 @@ def run_rule(domain_ip,
                                     output,
                                     re.MULTILINE)
     except IndexError:
-        ssgts.log.preload_log(logging.ERROR,
-                            ('Rule {0} has not been '
-                             'evaluated! Wrong profile '
-                             'selected?').format(rule_id),
-                            'fail')
+        ssg_test_suite.log.preload_log(logging.ERROR,
+                                       ('Rule {0} has not been '
+                                        'evaluated! Wrong profile '
+                                        'selected?').format(rule_id),
+                                       'fail')
         success = False
     else:
         if context not in actual_results:
-            ssgts.log.preload_log(logging.ERROR,
-                                ('Rule result should have been '
-                                 '"{0}", but is "{1}"!'
-                                 ).format(context,
-                                          ', '.join(actual_results)),
-                                'fail')
+            ssg_test_suite.log.preload_log(logging.ERROR,
+                                           ('Rule result should have been '
+                                            '"{0}", but is "{1}"!'
+                                            ).format(context,
+                                                     ', '.join(actual_results)),
+                                           'fail')
             success = False
 
     if success and not dont_clean:
@@ -159,8 +159,8 @@ def run_rule(domain_ip,
         # as we have not encountered any anomalies
         os.remove(formatting['report'])
     if success:
-        ssgts.log.log_preloaded('pass')
+        ssg_test_suite.log.log_preloaded('pass')
     else:
-        ssgts.log.log_preloaded('fail')
+        ssg_test_suite.log.log_preloaded('fail')
 
     return success
