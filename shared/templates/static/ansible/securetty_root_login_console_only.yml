@@ -3,11 +3,10 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Disable Host-Based Authentication
+- name: "Restrict Virtual Console Root Logins"
   lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^HostbasedAuthentication
-    line: HostbasedAuthentication no
+    dest: /etc/securetty
+    regexp: '^vc'
+    state: absent
   tags:
     @ANSIBLE_TAGS@

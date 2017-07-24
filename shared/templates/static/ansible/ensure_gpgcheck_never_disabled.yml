@@ -1,0 +1,21 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+#
+- name: Find All Yum Repositories
+  find:
+    paths: "/etc/yum.repos.d/"
+    patterns: "*.repo"
+  register: yum_find
+
+- name: Ensure gpgcheck Enabled For All Yum Package Repositories
+  with_items: "{{ yum_find.files }}"
+  lineinfile:
+    create: yes
+    dest: "{{ item.path }}"
+    regexp: '^gpgcheck'
+    line: 'gpgcheck=1'
+  tags:
+    @ANSIBLE_TAGS@

@@ -5,9 +5,12 @@
 # disruption = low
 - name: "Disable SSH Root Login"
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^PermitRootLogin"
-    line="PermitRootLogin no"
+    create: yes
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    insertafter: '(?i)^#?authentication'
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

@@ -5,9 +5,11 @@
 # disruption = low
 - name: "Disable Kerberos Authentication"
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^KerberosAuthentication"
-    line="KerberosAuthentication no"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: (?i)^#?kerberosauthentication
+    line: KerberosAuthentication no
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

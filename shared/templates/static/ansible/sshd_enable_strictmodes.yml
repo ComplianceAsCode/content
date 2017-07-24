@@ -5,9 +5,11 @@
 # disruption = low
 - name: "Enable Use of Strict Mode Checking"
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^StrictModes"
-    line="StrictModes yes"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: (?i)^#?strictmodes
+    line: StrictModes yes
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

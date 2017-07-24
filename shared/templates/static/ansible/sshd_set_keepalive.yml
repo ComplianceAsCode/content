@@ -3,11 +3,13 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Set SSH Client Alive Count"
+- name: Set SSH Client Alive Count
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^ClientAliveCountMax"
-    line="ClientAliveCountMax 0"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^ClientAliveCountMax
+    line: tClientAliveCountMax 0
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

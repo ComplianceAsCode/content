@@ -3,11 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Disable SSH Support for Rhosts RSA Authentication"
+- name: Disable SSH Support for Rhosts RSA Authentication
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^RhostsRSAAuthentication"
-    line="RhostsRSAAuthentication no"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^RhostsRSAAuthentication
+    line: RhostsRSAAuthentication no
+    validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@

@@ -1,9 +1,9 @@
 # platform = multi_platform_rhel
-- name: "Set accounts logon fail delay to (ansible-populate var_accounts_fail_delay)"
+- name: Set accounts logon fail delay to (ansible-populate var_accounts_fail_delay)
   lineinfile:
-    dest="/etc/login.defs"
-    regexp="^FAIL_DELAY"
-    line="FAIL_DELAY (ansible-populate var_accounts_fail_delay)"
+    dest: /etc/login.defs
+    regexp: ^FAIL_DELAY
+    line: FAIL_DELAY (ansible-populate var_accounts_fail_delay)
   tags:
     @ANSIBLE_TAGS@
 

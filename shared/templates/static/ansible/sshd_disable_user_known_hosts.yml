@@ -5,9 +5,11 @@
 # disruption = low
 - name: "Disable SSH Support for User Known Hosts"
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^IgnoreUserKnownHosts"
-    line="IgnoreUserKnownHosts yes"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^IgnoreUserKnownHosts
+    line: IgnoreUserKnownHosts yes
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

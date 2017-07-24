@@ -3,11 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Disable SSH Support for .rhosts Files"
+- name: Disable SSH Support for .rhosts Files
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^IgnoreRhosts"
-    line="IgnoreRhosts yes"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^IgnoreRhosts
+    line: IgnoreRhosts yes
+    validate: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@

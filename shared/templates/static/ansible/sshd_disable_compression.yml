@@ -5,9 +5,11 @@
 # disruption = low
 - name: "Disable Compression or Set Compression to delayed"
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^Compression"
-    line="Compression delayed"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: (?i)^#?compression 
+    line: Compression delayed
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

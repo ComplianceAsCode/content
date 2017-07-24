@@ -3,11 +3,11 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Disable Host-Based Authentication
+- name: Set Interactive Session Timeout
   lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^HostbasedAuthentication
-    line: HostbasedAuthentication no
+      create: yes
+      dest: /etc/profile
+      regexp: ^#?TMOUT
+      line: TMOUT=(ansible-populate var_accounts_tmout)
   tags:
     @ANSIBLE_TAGS@

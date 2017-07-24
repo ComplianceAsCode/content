@@ -9,7 +9,7 @@
     dest: /etc/ssh/sshd_config
     regexp: "^Protocol [0-9]"
     line: "Protocol 2"
-  notify:
-    - reload ssh
+    validate: sshd -t -f %s
+  #notify: :reload ssh
   tags:
     @ANSIBLE_TAGS@

@@ -3,11 +3,13 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Set SSH Idle Timeout Interval"
+- name: Set SSH Idle Timeout Interval
   lineinfile:
-    create=yes
-    dest="/etc/ssh/sshd_config"
-    regexp="^ClientAliveInterval"
-    line="ClientAliveInterval (ansible-populate sshd_idle_timeout_value)"
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^ClientAliveInterval
+    line: ClientAliveInterval (ansible-populate sshd_idle_timeout_value)
+    validate: sshd -t -f %s
+  #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@
