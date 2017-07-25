@@ -197,6 +197,7 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
     definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
     defstoremove = []
     for definition in definitions:
+        incomplete = False;
         for extdefinition in definition.findall(".//{%s}extend_definition" % oval_ns):
             # Verify each extend_definition in the definition
             extdefinitionref = extdefinition.get("definition_ref")
@@ -206,13 +207,16 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
 
             if referreddefinition is None:
                 # There is no oval satisfying the extend_definition referal
-                defstoremove.append((definition, extdefinitionref))
+                incomplete = True
+                sys.stderr.write("WARNING: OVAL definition '%s' extends non-existing '%s', "
+                        "removing it from OVAL definitions.\n"
+                        % (definition.get("id"), extdefinitionref))
+            
+        if incomplete:
+            defstoremove.append(definition)
 
     for definition in defstoremove:
-        sys.stderr.write("WARNING: OVAL check '%s' extends non-existing '%s' "
-                "OVAL definition, removing check from OVAL definitions.\n"
-                % (definition[0].get("id"), definition[1]))
-        definitions.remove(definition[0])
+        definitions.remove(definition)
 
 
 def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
