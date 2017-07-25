@@ -4,15 +4,15 @@
 # complexity = low
 # disruption = medium
 . /usr/share/scap-security-guide/remediation_functions
-populate sysctl_SYSCTLID_value
+populate sysctl_%SYSCTLID%_value
 
 #
-# Set runtime for SYSCTLVAR
+# Set runtime for %SYSCTLVAR%
 #
-/sbin/sysctl -q -n -w SYSCTLVAR=$sysctl_SYSCTLID_value
+/sbin/sysctl -q -n -w %SYSCTLVAR%=$sysctl_%SYSCTLID%_value
 
 #
-# If SYSCTLVAR present in /etc/sysctl.conf, change value to appropriate value
-#	else, add "SYSCTLVAR = value" to /etc/sysctl.conf
+# If %SYSCTLVAR% present in /etc/sysctl.conf, change value to appropriate value
+#	else, add "%SYSCTLVAR% = value" to /etc/sysctl.conf
 #
-replace_or_append '/etc/sysctl.conf' '^SYSCTLVAR' "$sysctl_SYSCTLID_value" '@CCENUM@'
+replace_or_append '/etc/sysctl.conf' '^%SYSCTLVAR%' "$sysctl_%SYSCTLID%_value" '@CCENUM@'

@@ -3,10 +3,10 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-include install_PKGNAME
+include install_%PKGNAME%
 
-class install_PKGNAME {
-  package { 'PKGNAME':
+class install_%PKGNAME% {
+  package { '%PKGNAME%':
     ensure => 'installed',
   }
 }

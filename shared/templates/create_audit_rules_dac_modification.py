@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 #
 # create_audit_rules_dac_modification.py
 #        generate template-based checks for audit rules dac modifications

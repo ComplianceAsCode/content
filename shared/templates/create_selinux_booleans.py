@@ -1,12 +1,9 @@
-#!/usr/bin/env python2
-
 #
 # create_selinux_booleans.py
 #   automatically generate checks for selinux booleans
 
 import sys
 import re
-
 
 from template_common import FilesGenerator, UnknownTargetError
 
@@ -25,15 +22,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_OVAL_sebool",
                         {
-                            "SEBOOLID": sebool_id,
-                            "SEBOOL_BOOL": sebool_bool
+                            "%SEBOOLID%": sebool_id,
+                            "%SEBOOL_BOOL%": sebool_bool
                         },
                         "./oval/sebool_{0}.xml", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_OVAL_sebool_var",
                         {
-                            "SEBOOLID": sebool_id
+                            "%SEBOOLID%": sebool_id
                         },
                         "./oval/sebool_{0}.xml", sebool_id
                     )
@@ -43,15 +40,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_BASH_sebool",
                         {
-                            "SEBOOLID": sebool_id,
-                            "SEBOOL_BOOL": sebool_bool
+                            "%SEBOOLID%": sebool_id,
+                            "%SEBOOL_BOOL%": sebool_bool
                         },
                         "./bash/sebool_{0}.sh", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_BASH_sebool_var",
                         {
-                            "SEBOOLID": sebool_id
+                            "%SEBOOLID%": sebool_id
                         },
                         "./bash/sebool_{0}.sh", sebool_id
                     )
@@ -61,15 +58,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_ANSIBLE_sebool",
                         {
-                            "SEBOOLID": sebool_id,
-                            "SEBOOL_BOOL": sebool_bool
+                            "%SEBOOLID%": sebool_id,
+                            "%SEBOOL_BOOL%": sebool_bool
                         },
                         "./ansible/sebool_{0}.yml", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_ANSIBLE_sebool_var",
                         {
-                            "SEBOOLID": sebool_id
+                            "%SEBOOLID%": sebool_id
                         },
                         "./ansible/sebool_{0}.yml", sebool_id
                     )
@@ -79,7 +76,7 @@ class SEBoolGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-                   "seboolvariable,seboolstate")
+               "seboolvariable,seboolstate")
 
     def _bool_state(self, sebool_state):
         sebool = ""

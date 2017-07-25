@@ -1,9 +1,6 @@
-#!/usr/bin/env python2
-
 #
 # create_mount_options.py
 #        generate template-based checks for partition mount rights
-
 
 import re
 
@@ -19,8 +16,8 @@ class MountOptionsGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_ANSIBLE_mount_options",
                     {
-                        "MOUNTPOINT":       mount_point,
-                        "MOUNTOPTION":       re.sub(' ', ',', mount_option),
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
                     },
                     "./ansible/mount_option{0}.yml", point_id + '_' + mount_option
                 )
@@ -29,8 +26,8 @@ class MountOptionsGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_ANACONDA_mount_options",
                     {
-                        "MOUNTPOINT":       mount_point,
-                        "MOUNTOPTION":       re.sub(' ', ',', mount_option),
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
                     },
                     "./anaconda/mount_option{0}.anaconda", point_id + '_' + mount_option
                 )
@@ -39,9 +36,9 @@ class MountOptionsGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_OVAL_mount_options",
                     {
-                        "MOUNTPOINT":       mount_point,
-                        "MOUNTOPTION":      mount_option,
-                        "POINTID":     point_id,
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": mount_option,
+                        "%POINTID%":     point_id,
                     },
                     "./oval/mount_option{0}.xml", point_id + "_" + mount_option
                 )

@@ -85,6 +85,12 @@ class FilesGenerator(object):
             filestring = template_file.read()
 
         for key, value in constants_dict.iteritems():
+            if not key.startswith("%") or not key.endswith("%"):
+                raise RuntimeError(
+                    "Refuse to replace '%s' because it doesn't start and end "
+                    "with the %% character. Please follow conventions! "
+                    "Class name: %s" % (key, self.__class__))
+
             filestring = filestring.replace(key, value)
 
         for pattern, replacement in regex_replace:

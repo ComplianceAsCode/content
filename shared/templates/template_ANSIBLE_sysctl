@@ -3,10 +3,10 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-- name: Ensure sysctl SYSCTLVAR is set to SYSCTLVAL
+- name: Ensure sysctl %SYSCTLVAR% is set to %SYSCTLVAL%
   sysctl:
-    name: SYSCTLVAR
-    value: SYSCTLVAL
+    name: %SYSCTLVAR%
+    value: %SYSCTLVAL%
     state: present
     reload: yes
   tags:

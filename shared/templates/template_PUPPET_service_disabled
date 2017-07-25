@@ -3,10 +3,10 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-include disable_SERVICENAME
+include disable_%SERVICENAME%
 
-class disable_SERVICENAME {
-  service {'DAEMONNAME':
+class disable_%SERVICENAME% {
+  service {'%DAEMONNAME%':
     enable => false,
     ensure => 'stopped',
   }
