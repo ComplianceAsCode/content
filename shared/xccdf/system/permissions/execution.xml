@@ -90,7 +90,7 @@ only for developers trying to debug problems.</rationale>
 <ref nist="SC-5" cis="1.6.1" />
 </Rule>
 
-<Rule id="sysctl_fs_suid_dumpable" prodtype="rhel7">
+<Rule id="sysctl_fs_suid_dumpable" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Disable Core Dumps for SUID programs</title>
 <description><sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" /></description>
 <ocil><sysctl-check-macro sysctl="fs.suid_dumpable" value="0" /></ocil>
@@ -102,7 +102,7 @@ of such data.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26900-1" />
 <oval id="sysctl_fs_suid_dumpable" />
-<ref nist="SI-11" cis="1.6.1" />
+<ref anssi="NT28(R23)" nist="SI-11" cis="1.6.1" />
 </Rule>
 </Group>
 
@@ -154,7 +154,7 @@ systems if supported by the hardware.</rationale>
 <ref nist="SC-39" disa="2530" cui="3.1.7" />
 </Rule>
 
-<Rule id="sysctl_kernel_randomize_va_space" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_kernel_randomize_va_space" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Enable Randomized Layout of Virtual Address Space</title>
 <description><sysctl-desc-macro sysctl="kernel.randomize_va_space" value="2" /></description>
 <ocil><sysctl-check-macro sysctl="kernel.randomize_va_space" value="2" /></ocil>
@@ -167,7 +167,7 @@ in order to re-purpose it using return oriented programming (ROP) techniques.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27127-0" />
 <oval id="sysctl_kernel_randomize_va_space" />
-<ref nist="SC-30(2)" cis="1.6.1" cui="3.1.7" />
+<ref anssi="NT28(R23)" nist="SC-30(2)" cis="1.6.1" cui="3.1.7" />
 </Rule>
 </Group>
 
@@ -225,7 +225,7 @@ allow users to turn the feature on or off at will.</rationale>
 
 </Group> <!--<Group id="enable_nx"> -->
 
-<Rule id="sysctl_kernel_dmesg_restrict" prodtype="rhel7">
+<Rule id="sysctl_kernel_dmesg_restrict" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Restrict Access to Kernel Message Buffer</title>
 <description><sysctl-desc-macro sysctl="kernel.dmesg_restrict" value="1" /></description>
 <ocil><sysctl-check-macro sysctl="kernel.dmesg_restrict" value="1" /></ocil>
@@ -233,8 +233,28 @@ allow users to turn the feature on or off at will.</rationale>
 address information.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27050-4" />
-<ref nist="SI-11" disa="1314" cui="3.1.5" />
+<ref anssi="NT28(R23)" nist="SI-11" disa="1314" cui="3.1.5" />
 <oval id="sysctl_kernel_dmesg_restrict" />
 </Rule> 
+
+<Rule id="sysctl_kernel_sysrq" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+<title>Deactivate sysrql facitily</title>
+<description><sysctl-desc-macro sysctl="kernel.sysrq" value="0" /></description>
+<ocil><sysctl-check-macro sysctl="kernel.sysrq" value="0" /></ocil>
+<rationale>Unprivileged access to the system lifecycle through the sysfs may impact disponibility and current security state of the target.</rationale>
+<ref anssi="NT28(R23)" />
+<oval id="sysctl_kernel_sysrq" />
+</Rule>
+
+<Rule id="sysctl_vm_mmap_min_addr" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+<title>Set minimal virtual adress for memory mapping</title>
+<description><sysctl-desc-macro sysctl="vm.mmap_min_addr" value="65536" /></description>
+<ocil><sysctl-check-macro sysctl="vm.mmap_min_addr" value="65536" /></ocil>
+<rationale>This avoid to allocate to specific virtual addresses such as address 0, which may generate invalid behavior at execution time.</rationale>
+<platform idref="cpe:/a:machine" />
+<ref anssi="NT28(R23)" />
+<oval id="sysctl_vm_mmap_min_addr" />
+</Rule>
+
 
 </Group> <!--<Group id="restrictions"> -->

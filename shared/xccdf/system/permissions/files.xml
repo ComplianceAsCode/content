@@ -17,7 +17,7 @@ need read access to the <tt>passwd</tt> file in order to function properly, but
 read access to the <tt>shadow</tt> file allows malicious attacks against system
 passwords, and should never be enabled.</description>
 
-<Rule id="userowner_shadow_file" severity="medium" prodtype="rhel7">
+<Rule id="userowner_shadow_file" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
@@ -31,10 +31,12 @@ which could weaken the system security posture.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="groupowner_shadow_file" severity="medium" prodtype="rhel7">
+<Rule id="groupowner_shadow_file" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Group Who Owns <tt>shadow</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
-<ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
+<description prodtype="rhel7"><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
+<description prodtype="debian8,debian9,ubuntu1404,ubuntu1604"><filegroupowner-desc-macro file="/etc/shadow" group="shadow"/></description>
+<ocil prodtype="rel7"><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
+<ocil prodtype="debian8,debian9,ubuntu1404,ubuntu1604"><filegroupowner-check-macro file="/etc/shadow" group="shadow"/></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
 <ident prodtype="rhel7" cce="27125-4" />
@@ -42,7 +44,7 @@ critical for system security.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_permissions_etc_shadow" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_etc_shadow" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
 <ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
@@ -56,7 +58,7 @@ which could weaken the system security posture.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_owner_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_owner_etc_group" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify User Who Owns <tt>group</tt> File</title>
 <description><fileowner-desc-macro file="/etc/group" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
@@ -67,7 +69,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-6" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_groupowner_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_groupowner_etc_group" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Group Who Owns <tt>group</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/group" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
@@ -78,7 +80,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_permissions_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_etc_group" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Permissions on <tt>group</tt> File</title>
 <description><fileperms-desc-macro file="/etc/group" perms="644"/></description>
 <ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
@@ -89,7 +91,7 @@ on the system. Protection of this file is important for system security.</ration
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_owner_etc_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="file_owner_etc_gshadow" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify User Who Owns <tt>gshadow</tt> File</title>
 <description><fileowner-desc-macro file="/etc/gshadow" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
@@ -111,7 +113,19 @@ is critical for system security.</rationale>
 <ref nist="AC-6" disa=""/>
 </Rule>
 
-<Rule id="file_permissions_etc_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="file_groupowner_etc_gshadow" severity="medium" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+<title>Verify Group Who Owns <tt>gshadow</tt> File</title>
+<description><filegroupowner-desc-macro file="/etc/gshadow" group="shadow"/></description>
+<ocil><filegroupowner-check-macro file="/etc/gshadow" group="shadow"/></ocil>
+<rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+is critical for system security.</rationale>
+<ident prodtype="rhel7" cce="26840-9" />
+<oval id="file_groupowner_etc_gshadow" />
+<ref nist="AC-6" disa=""/>
+</Rule>
+
+
+<Rule id="file_permissions_etc_gshadow" severity="medium" prodtype="rhel7,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Permissions on <tt>gshadow</tt> File</title>
 <description><fileperms-desc-macro file="/etc/gshadow" perms="0000"/></description>
 <ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
@@ -122,7 +136,7 @@ is critical for system security.</rationale>
 <ref nist="AC-6" disa=""/>
 </Rule>
 
-<Rule id="file_owner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
+<Rule id="file_owner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify User Who Owns <tt>passwd</tt> File</title>
 <description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
 <ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
@@ -133,7 +147,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_groupowner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
+<Rule id="file_groupowner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Group Who Owns <tt>passwd</tt> File</title>
 <description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
 <ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
@@ -144,7 +158,7 @@ the system. Protection of this file is critical for system security.</rationale>
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
 
-<Rule id="file_permissions_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
+<Rule id="file_permissions_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12,debian8,debian9,ubuntu1404,ubuntu1604">
 <title>Verify Permissions on <tt>passwd</tt> File</title>
 <description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
 <ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
@@ -156,6 +170,25 @@ is critical for system security.</rationale>
 <oval id="file_permissions_etc_passwd" />
 <ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" />
 </Rule>
+
+<Rule id="file_permissions_systemmap" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+<title>Verify that local System.map file (if exists) is readable only by root</title>
+<description>Files containing sensitive informations should be protected by restrictive
+permissions. Most of the time, there is no need that these files need to be read by any non-root user
+<fileperms-desc-macro file="/boot/System.map-*" perms="0600"/>
+<fileowner-desc-macro file="/boot/System.map-*" owner="root"/>
+</description>
+<ocil>
+ <fileperms-check-macro file="/boot/Sysem.map-*" perms="-rw-------"/>
+ <fileowner-check-macro file="/boot/System.map-*" owner="root"/>
+</ocil>
+<rationale>The <tt>System.map</tt> file contains information about kernel symbols and
+	can give some hints to generate local exploitation.
+</rationale>
+<oval id="file_permissions_systemmap" />
+<ref anssi="NT28(R13)" />
+</Rule>
+
 </Group>
 
 
@@ -513,4 +546,27 @@ users.
 <ref prodtype="rhel7" stigid="021030" />
 <ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
+
+<Rule id="sysctl_fs_protected_symlinks" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+<title>Disallow creating symlinks to a file you not own</title>
+<description><sysctl-desc-macro sysctl="fs.protected_symlinks" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="fs.protected_symlinks" value="1" /></ocil>
+<rationale>Disallowing such symlink mitigate vulnerabilities based on insecure file system
+accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+<tt>open()</tt> or <tt>creat()</tt>.</rationale>
+<oval id="sysctl_fs_protected_symlinks" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
+<Rule id="sysctl_fs_protected_hardlinks" prodtype="debian8,debian9,ubuntu1404,ubuntu1604">
+<title>Disallow creating symlinks to a file you not own</title>
+<description><sysctl-desc-macro sysctl="fs.protected_hardlinks" value="1" /></description>
+<ocil><sysctl-check-macro sysctl="fs.protected_hardlinks" value="1" /></ocil>
+<rationale>Disallowing such hardlink mitigate vulnerabilities based on insecure file system
+accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+<tt>open()</tt> or <tt>creat()</tt>.</rationale>
+<oval id="sysctl_fs_protected_hardlinks" />
+<ref nist="SI-11" cis="1.6.1" anssi="NT28(R23)" />
+</Rule>
+
 </Group>

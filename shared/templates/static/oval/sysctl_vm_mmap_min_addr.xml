@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="compliance" id="sysctl_vm_mmap_min_addr" version="3">
+    <metadata>
+      <title>Kernel "vm.mmap_min_addr" Parameter Configuration and Runtime Check</title>
+      <affected family="unix">
+        <platform>multi_platform_debian</platform>
+        <platform>multi_platform_ubuntu</platform>
+      </affected>
+      <description>The "vm.mmap_min_addr" kernel parameter should be set to the appropriate value in both system configuration and system runtime.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="vm.mmap_min_addr configuration setting check" definition_ref="sysctl_static_vm_mmap_min_addr" />
+      <extend_definition comment="vm.mmap_min_addr runtime setting check" definition_ref="sysctl_runtime_vm_mmap_min_addr" />
+    </criteria>
+  </definition>
+</def-group>

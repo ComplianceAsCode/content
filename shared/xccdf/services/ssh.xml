@@ -392,7 +392,7 @@ logout record can eliminate those users who disconnected, which helps narrow the
 </rationale>
 <oval id="sshd_set_loglevel_info" />
 <ref cis="5.2.9"/>
-<ref prodtype="debian8" cis="9.3.2"/>
+<ref prodtype="debian8,debian9,ubuntu1404,ubuntu1604" cis="9.3.2"/>
 </Rule>
 
 <!-- FIXME: figure out whether/how to say something discrete here -->
@@ -506,7 +506,7 @@ Setting the MaxAuthTries parameter to a low number will minimize the risk of suc
 brute force attacks to the SSH server.
 </rationale>
 <oval id="sshd_set_max_auth_tries" value="sshd_max_auth_tries_value"/>
-<ref prodtype="debian8" cis="9.3.5" />
+<ref prodtype="debian8,debian9,ubuntu1404,ubuntu1604" cis="9.3.5" />
 </Rule>
 
 <Rule id="sshd_disable_rhosts" severity="medium">
