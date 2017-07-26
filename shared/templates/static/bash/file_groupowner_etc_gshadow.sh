@@ -1,2 +1,2 @@
-# platform = multi_platform_rhel, Red Hat Enterprise Linux 5
+# platform = multi_platform_rhel
 chgrp root /etc/gshadow

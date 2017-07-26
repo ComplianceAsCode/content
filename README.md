@@ -88,6 +88,10 @@ remote machine but the SSG content doesn't need to be.
 # oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
+## Legacy Content
+
+- Red Hat Enterprise Linux 5 is considered End-of-Life as of March 31, 2017. Click [here](https://github.com/OpenSCAP/scap-security-guide/releases/tag/v0.1.34) for the last release containing Red Hat Enterprise Linux 5 content.
+
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
@@ -98,7 +102,7 @@ You can also join the `#openscap` IRC channel on `chat.freenode.net`.
 
 ## COPR Repo
 
-We have created a new COPR repository that provides unofficial builds of latest versions of openscap, scap-security-guide, scap-workbench and openscap-daemon packages. The packages are suitable for use on Red Hat Enterprise Linux 5, 6 and 7 and CentOS 5, 6 and 7.
+We have created a new COPR repository that provides unofficial builds of latest versions of openscap, scap-security-guide, scap-workbench and openscap-daemon packages. The packages are suitable for use on Red Hat Enterprise Linux 6 and 7 and CentOS 6 and 7.
 
 The COPR repository is located on:
 https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/
