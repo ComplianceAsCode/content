@@ -2,12 +2,14 @@
 from __future__ import print_function
 
 import atexit
+import logging
 import sys
 import xml.etree.cElementTree as ET
 
-from ssg_test_suite.log import log
 import ssg_test_suite.oscap
 import ssg_test_suite.virt
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
 
@@ -19,14 +21,14 @@ def get_viable_profiles(selected_profile, datastream, benchmark):
     root = ET.parse(datastream).getroot()
     benchmark_node = root.find("*//xccdf:Benchmark[@id='{0}']".format(benchmark), NS)
     if benchmark_node is None:
-        log.error('Benchmark not found within DataStream')
+        logging.error('Benchmark not found within DataStream')
         return []
     for ds_profile_element in benchmark_node.findall('xccdf:Profile', NS):
         ds_profile = ds_profile_element.attrib['id']
         if ds_profile == selected_profile or 'ALL' == selected_profile:
             valid_profiles += [ds_profile]
     if not valid_profiles:
-        log.error('No profile matched with "{0}"'.format(selected_profile))
+        logging.error('No profile matched with "{0}"'.format(selected_profile))
     return valid_profiles
 
 
@@ -48,7 +50,7 @@ def perform_profile_check(options):
     if len(profiles) > 1:
         ssg_test_suite.virt.snapshots.create('profile')
     for profile in profiles:
-        log.info("Evaluation of profile {0}.".format(profile))
+        logging.info("Evaluation of profile {0}.".format(profile))
         has_worked = True
         ssg_test_suite.oscap.run_profile(domain_ip,
                                          profile,
@@ -68,7 +70,7 @@ def perform_profile_check(options):
                                          options.benchmark_id)
         ssg_test_suite.virt.snapshots.revert(delete=False)
     if not has_worked:
-        log.error("Nothing has been tested!")
+        logging.error("Nothing has been tested!")
     ssg_test_suite.virt.snapshots.delete()
     # depending on number of profiles we have either "origin" snapshot
     # still to be reverted (multiple profiles) or we are reverted

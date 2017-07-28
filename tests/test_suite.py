@@ -2,17 +2,18 @@
 from __future__ import print_function
 
 import argparse
+import logging
 import os
 import os.path
 import sys
 import time
 
-from lib.log import log
-import ssg_test_suite.log
+from ssg_test_suite.log import LogHelper
 import ssg_test_suite.oscap
 import ssg_test_suite.virt
 import ssg_test_suite.profile
 import ssg_test_suite.rule
+
 
 parser = argparse.ArgumentParser()
 
@@ -89,7 +90,13 @@ parser_rule.add_argument("--dontclean",
                          help="Do not remove html reports of successful runs")
 
 options = parser.parse_args()
-ssg_test_suite.log.add_console_logger(options.loglevel)
+
+log = logging.getLogger()
+# this is general logger level - needs to be
+# debug otherwise it cuts silently everything
+log.setLevel(logging.DEBUG)
+
+LogHelper.add_console_logger(log, options.loglevel)
 # logging dir needs to be created based on other options
 # thus we have to postprocess it
 if options.logdir is None:
@@ -99,9 +106,9 @@ if options.logdir is None:
                                'logs',
                                '{0}-{1}'.format(options.target,
                                                 date_string))
-    logging_dir = ssg_test_suite.log.find_name(logging_dir)
+    logging_dir = LogHelper.find_name(logging_dir)
 else:
-    logging_dir = ssg_test_suite.log.find_name(options.logdir)
-ssg_test_suite.log.add_logging_dir(logging_dir)
+    logging_dir = LogHelper.find_name(options.logdir)
+LogHelper.add_logging_dir(log, logging_dir)
 
 options.func(options)

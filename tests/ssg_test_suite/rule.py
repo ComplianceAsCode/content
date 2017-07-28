@@ -14,8 +14,10 @@ import xml.etree.cElementTree as ET
 
 import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
-from ssg_test_suite.log import log
+from ssg_test_suite.log import LogHelper
 from data import iterate_over_rules
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
 
@@ -38,7 +40,7 @@ def get_viable_profiles(scenarios_profiles, datastream, benchmark):
     root = ET.parse(datastream).getroot()
     benchmark_node = root.find("*//xccdf:Benchmark[@id='{0}']".format(benchmark), NS)
     if benchmark_node is None:
-        log.error('Benchmark not found within DataStream')
+        logging.error('Benchmark not found within DataStream')
         return []
     for ds_profile_element in benchmark_node.findall('xccdf:Profile', NS):
         ds_profile = ds_profile_element.attrib['id']
@@ -46,7 +48,7 @@ def get_viable_profiles(scenarios_profiles, datastream, benchmark):
             if scen_profile in ds_profile:
                 valid_profiles += [ds_profile]
     if not valid_profiles:
-        log.error('No profile matched with "{0}"'.format(", ".join(scenarios_profiles)))
+        logging.error('No profile matched with "{0}"'.format(", ".join(scenarios_profiles)))
     return valid_profiles
 
 
@@ -54,9 +56,9 @@ def send_scripts(rule_dir, domain_ip, *scripts_list):
     # scripts_list is list of absolute paths
     remote_dir = './'
     machine = "root@{0}".format(domain_ip)
-    log.debug("Uploading scripts {0}".format(scripts_list))
+    logging.debug("Uploading scripts {0}".format(scripts_list))
     rule_name = os.path.basename(rule_dir)
-    log_file_name = os.path.join(log.log_dir, rule_name + ".upload.log")
+    log_file_name = os.path.join(LogHelper.LOG_DIR, rule_name + ".upload.log")
 
     command = "scp {0} {1}:{2}".format(' '.join(scripts_list),
                                        machine,
@@ -70,9 +72,10 @@ def send_scripts(rule_dir, domain_ip, *scripts_list):
 def apply_script(rule_dir, domain_ip, script):
     script_remote_path = os.path.join('./', script)
     machine = "root@{0}".format(domain_ip)
-    log.debug("Applying script {0}".format(script))
+    logging.debug("Applying script {0}".format(script))
     rule_name = os.path.basename(rule_dir)
-    log_file_name = os.path.join(log.log_dir, rule_name + ".prescripts.log")
+    log_file_name = os.path.join(LogHelper.LOG_DIR,
+                                 rule_name + ".prescripts.log")
 
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
@@ -84,7 +87,7 @@ def apply_script(rule_dir, domain_ip, script):
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError, e:
-            log.error(("Rule testing script {0} "
+            logging.error(("Rule testing script {0} "
                        "failed with exit code {1}").format(script,
                                                            e.returncode))
             return False
@@ -116,9 +119,9 @@ def perform_rule_check(options):
         elif options.target not in rule_dir:
             # we are not ALL, and not passing this criterion ... skipping
             continue
-        log.info(rule)
+        logging.info(rule)
         scanned_something = True
-        log.debug("Testing rule directory {0}".format(rule_dir))
+        logging.debug("Testing rule directory {0}".format(rule_dir))
         # get list of helper scripts (non-standard name)
         # and scenario scripts
         helpers = []
@@ -126,14 +129,14 @@ def perform_rule_check(options):
         for script in scripts:
             script_context = get_script_context(script)
             if script_context is None:
-                log.debug('Registering helper script {0}'.format(script))
+                logging.debug('Registering helper script {0}'.format(script))
                 helpers += [script]
             else:
                 scenarios += [script]
 
         for script in scenarios:
             script_context = get_script_context(script)
-            log.debug(('Using test script {0} '
+            logging.debug(('Using test script {0} '
                        'with context {1}').format(script, script_context))
             ssg_test_suite.virt.snapshots.create('script')
             # copy all helper scripts, so scenario script can use them
@@ -142,7 +145,7 @@ def perform_rule_check(options):
             send_scripts(rule_dir, domain_ip, script_path, *helper_paths)
 
             if not apply_script(rule_dir, domain_ip, script):
-                log.error("Environment failed to prepare, skipping test")
+                logging.error("Environment failed to prepare, skipping test")
             script_params = parse_parameters(script_path)
             has_worked = False
             profiles = get_viable_profiles(script_params['profiles'],
@@ -151,18 +154,18 @@ def perform_rule_check(options):
             if len(profiles) > 1:
                 ssg_test_suite.virt.snapshots.create('profile')
             for profile in profiles:
-                ssg_test_suite.log.preload_log(logging.INFO,
-                                               ("Script {0} "
-                                                "using profile {1} "
-                                                "OK").format(script,
-                                                             profile),
-                                               log_target='pass')
-                ssg_test_suite.log.preload_log(logging.ERROR,
-                                               ("Script {0} "
-                                                "using profile {1} "
-                                                "found issue:").format(script,
-                                                                       profile),
-                                               log_target='fail')
+                LogHelper.preload_log(logging.INFO,
+                                      ("Script {0} "
+                                       "using profile {1} "
+                                       "OK").format(script,
+                                                    profile),
+                                      log_target='pass')
+                LogHelper.preload_log(logging.ERROR,
+                                      ("Script {0} "
+                                       "using profile {1} "
+                                       "found issue:").format(script,
+                                                              profile),
+                                      log_target='fail')
                 has_worked = True
                 if oscap.run_rule(domain_ip=domain_ip,
                                   profile=profile,
@@ -187,9 +190,9 @@ def perform_rule_check(options):
                                        dont_clean=options.dont_clean)
                 ssg_test_suite.virt.snapshots.revert(delete=False)
             if not has_worked:
-                log.error("Nothing has been tested!")
+                logging.error("Nothing has been tested!")
             ssg_test_suite.virt.snapshots.delete()
             if len(profiles) > 1:
                 ssg_test_suite.virt.snapshots.revert()
     if not scanned_something:
-        log.error("Rule {0} has not been found".format(options.target))
+        logging.error("Rule {0} has not been found".format(options.target))
