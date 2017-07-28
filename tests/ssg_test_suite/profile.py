@@ -8,6 +8,7 @@ import xml.etree.cElementTree as ET
 
 import ssg_test_suite.oscap
 import ssg_test_suite.virt
+from ssg_test_suite.virt import SnapshotStack
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -35,11 +36,12 @@ def get_viable_profiles(selected_profile, datastream, benchmark):
 def perform_profile_check(options):
     dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
                                              options.domain_name)
+    SnapshotStack.DOMAIN = dom
     if dom is None:
         sys.exit(1)
-    atexit.register(ssg_test_suite.virt.snapshots.clear)
+    atexit.register(SnapshotStack.clear)
 
-    ssg_test_suite.virt.snapshots.create('origin')
+    SnapshotStack.create('origin')
     ssg_test_suite.virt.start_domain(dom)
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
 
@@ -48,7 +50,7 @@ def perform_profile_check(options):
                                    options.datastream,
                                    options.benchmark_id)
     if len(profiles) > 1:
-        ssg_test_suite.virt.snapshots.create('profile')
+        SnapshotStack.create('profile')
     for profile in profiles:
         logging.info("Evaluation of profile {0}.".format(profile))
         has_worked = True
@@ -68,10 +70,10 @@ def perform_profile_check(options):
                                          'final',
                                          options.datastream,
                                          options.benchmark_id)
-        ssg_test_suite.virt.snapshots.revert(delete=False)
+        SnapshotStack.revert(delete=False)
     if not has_worked:
         logging.error("Nothing has been tested!")
-    ssg_test_suite.virt.snapshots.delete()
+    SnapshotStack.delete()
     # depending on number of profiles we have either "origin" snapshot
     # still to be reverted (multiple profiles) or we are reverted
     # completely (only one profile was run)

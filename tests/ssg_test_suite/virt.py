@@ -9,9 +9,6 @@ import xml.etree.ElementTree as ET
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
-# filled in by connectDomain function
-snapshots = None
-
 
 class SnapshotStack(object):
     SNAPSHOT_BASE = ("<domainsnapshot>"
@@ -20,36 +17,36 @@ class SnapshotStack(object):
                      "     Full snapshot by SSG Test Suite"
                      "  </description>"
                      "</domainsnapshot>")
+    SNAPSHOT_STACK = []
+    DOMAIN = None
 
-    def __init__(self, domain):
-        self.stack = []
-        self.domain = domain
-        super(SnapshotStack, self).__init__()
-
-    def create(self, snapshot_name):
+    @classmethod
+    def create(cls, snapshot_name):
         logging.debug("Creating snapshot '{0}'".format(snapshot_name))
-        snapshot_xml = self.SNAPSHOT_BASE.format(name=snapshot_name)
-        snapshot = self.domain.snapshotCreateXML(snapshot_xml,
+        snapshot_xml = cls.SNAPSHOT_BASE.format(name=snapshot_name)
+        snapshot = cls.DOMAIN.snapshotCreateXML(snapshot_xml,
                                     libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC)
 
-        self.stack.append(snapshot)
+        cls.SNAPSHOT_STACK.append(snapshot)
         return snapshot
 
-    def revert_forced(self, snapshot):
+    @classmethod
+    def revert_forced(cls, snapshot):
         snapshot_name = snapshot.getName()
         logging.debug("Forced reverting of snapshot '{0}'".format(snapshot_name))
-        self.domain.revertToSnapshot(snapshot)
+        cls.DOMAIN.revertToSnapshot(snapshot)
         snapshot.delete()
-        self.stack.remove(snapshot)
+        cls.SNAPSHOT_STACK.remove(snapshot)
         logging.debug('Revert successful')
 
-    def revert(self, delete=True):
+    @classmethod
+    def revert(cls, delete=True):
         try:
-            snapshot = self.stack.pop()
+            snapshot = cls.SNAPSHOT_STACK.pop()
         except IndexError:
             logging.error("No snapshot in stack anymore")
         else:
-            self.domain.revertToSnapshot(snapshot)
+            cls.DOMAIN.revertToSnapshot(snapshot)
             if delete:
                 logging.debug(("Hard revert of snapshot "
                            "'{0}' successful").format(snapshot.getName()))
@@ -59,29 +56,45 @@ class SnapshotStack(object):
                 # another use
                 logging.debug(("Soft revert of snapshot "
                            "'{0}' successful").format(snapshot.getName()))
-                self.stack.append(snapshot)
+                cls.SNAPSHOT_STACK.append(snapshot)
 
-    def delete(self, snapshot=None):
+    @classmethod
+    def delete(cls, snapshot=None):
         # removing snapshot from the stack without doing a revert - use
         # coupled with revert without delete
         if snapshot:
-            self.stack.remove(snapshot)
+            cls.SNAPSHOT_STACK.remove(snapshot)
         else:
-            snapshot = self.stack.pop()
+            snapshot = cls.SNAPSHOT_STACK.pop()
         snapshot.delete()
         logging.debug(("Snapshot '{0}' deleted "
                    "successfully").format(snapshot.getName()))
 
-    def clear(self):
+    @classmethod
+    def clear(cls):
         logging.debug('Reverting all created snapshots in reverse order')
-        while self.stack:
-            snapshot = self.stack.pop()
+        while cls.SNAPSHOT_STACK:
+            snapshot = cls.SNAPSHOT_STACK.pop()
             snapshot_name = snapshot.getName()
             logging.debug("Reverting of snapshot '{0}'".format(snapshot_name))
-            self.domain.revertToSnapshot(snapshot)
+            cls.DOMAIN.revertToSnapshot(snapshot)
             snapshot.delete()
             logging.debug('Revert successful')
         logging.info('All snapshots reverted successfully')
+
+
+def connect_domain(hypervisor, domain_name):
+    conn = libvirt.open(hypervisor)
+    if conn is None:
+        logging.error('Failed to open connection to the hypervisor')
+        return None
+
+    try:
+        dom = conn.lookupByName(domain_name)
+    except:
+        logging.error("Failed to find domain '{0}'".format(domain_name))
+        return None
+    return dom
 
 
 def determine_ip(domain):
@@ -127,23 +140,6 @@ def determine_ip(domain):
                 if ipaddr['type'] == libvirt.VIR_IP_ADDR_TYPE_IPV4:
                     logging.debug('IP address is {0}'.format(ipaddr['addr']))
                     return ipaddr['addr']
-
-
-def connect_domain(hypervisor, domain_name):
-    global snapshots
-
-    conn = libvirt.open(hypervisor)
-    if conn is None:
-        logging.error('Failed to open connection to the hypervisor')
-        return None
-
-    try:
-        dom = conn.lookupByName(domain_name)
-    except:
-        logging.error("Failed to find domain '{0}'".format(domain_name))
-        return None
-    snapshots = SnapshotStack(dom)
-    return dom
 
 
 def start_domain(domain):

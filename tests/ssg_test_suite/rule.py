@@ -14,6 +14,7 @@ import xml.etree.cElementTree as ET
 
 import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
+from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite.log import LogHelper
 from data import iterate_over_rules
 
@@ -104,11 +105,12 @@ def get_script_context(script):
 def perform_rule_check(options):
     dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
                                              options.domain_name)
+    SnapshotStack.DOMAIN = dom
     if dom is None:
         sys.exit(1)
-    atexit.register(ssg_test_suite.virt.snapshots.clear)
+    atexit.register(SnapshotStack.clear)
 
-    ssg_test_suite.virt.snapshots.create('origin')
+    SnapshotStack.create('origin')
     ssg_test_suite.virt.start_domain(dom)
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
     scanned_something = False
@@ -138,7 +140,7 @@ def perform_rule_check(options):
             script_context = get_script_context(script)
             logging.debug(('Using test script {0} '
                        'with context {1}').format(script, script_context))
-            ssg_test_suite.virt.snapshots.create('script')
+            SnapshotStack.create('script')
             # copy all helper scripts, so scenario script can use them
             script_path = os.path.join(rule_dir, script)
             helper_paths = map(lambda x: os.path.join(rule_dir, x), helpers)
@@ -152,7 +154,7 @@ def perform_rule_check(options):
                                            options.datastream,
                                            options.benchmark_id)
             if len(profiles) > 1:
-                ssg_test_suite.virt.snapshots.create('profile')
+                SnapshotStack.create('profile')
             for profile in profiles:
                 LogHelper.preload_log(logging.INFO,
                                       ("Script {0} "
@@ -188,11 +190,11 @@ def perform_rule_check(options):
                                        script_name=script,
                                        remediation=True,
                                        dont_clean=options.dont_clean)
-                ssg_test_suite.virt.snapshots.revert(delete=False)
+                SnapshotStack.revert(delete=False)
             if not has_worked:
                 logging.error("Nothing has been tested!")
-            ssg_test_suite.virt.snapshots.delete()
+            SnapshotStack.delete()
             if len(profiles) > 1:
-                ssg_test_suite.virt.snapshots.revert()
+                SnapshotStack.revert()
     if not scanned_something:
         logging.error("Rule {0} has not been found".format(options.target))
