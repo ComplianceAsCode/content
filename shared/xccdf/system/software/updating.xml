@@ -249,6 +249,17 @@ NOTE: For U.S. Military systems, this requirement does not mandate DoD certifica
 this purpose; however, the certificate used to verify the software must be from an 
 approved Certificate Authority.
 </rationale>
+<warning category="general">
+Automated remediation for this configuration check is temporarily disabled.
+Enabling gpgcheck for repository metadata will disable installation of
+software from repositories that do not sign the metadata. Official Red Hat
+Enterprise Linux repositories do not provide a repository metadata signature.
+As a consequence, setting <tt>repo_gpgcheck</tt> to <tt>1</tt> on a typical
+system prevents <tt>yum</tt> from installation of software packages, including
+security updates and packages required by this guide.
+This issue of Red Hat Enterprise Linux repositories was reported in
+<weblink-macro link="https://bugzilla.redhat.com/show_bug.cgi?id=1410638" />.
+</warning>
 <ident prodtype="rhel7" cce="CCE-80348-6" />
 <oval id="ensure_gpgcheck_repo_metadata" />
 <ref prodtype="rhel7" stigid="020070" />
