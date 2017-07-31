@@ -17,67 +17,64 @@ class SnapshotStack(object):
                      "     Full snapshot by SSG Test Suite"
                      "  </description>"
                      "</domainsnapshot>")
-    SNAPSHOT_STACK = []
-    DOMAIN = None
 
-    @classmethod
-    def create(cls, snapshot_name):
+    def __init__(self, domain):
+        self.snapshot_stack = []
+        self.domain = domain
+
+    def create(self, snapshot_name):
         logging.debug("Creating snapshot '{0}'".format(snapshot_name))
-        snapshot_xml = cls.SNAPSHOT_BASE.format(name=snapshot_name)
-        snapshot = cls.DOMAIN.snapshotCreateXML(snapshot_xml,
+        snapshot_xml = self.SNAPSHOT_BASE.format(name=snapshot_name)
+        snapshot = self.domain.snapshotCreateXML(snapshot_xml,
                                     libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC)
 
-        cls.SNAPSHOT_STACK.append(snapshot)
+        self.snapshot_stack.append(snapshot)
         return snapshot
 
-    @classmethod
-    def revert_forced(cls, snapshot):
+    def revert_forced(self, snapshot):
         snapshot_name = snapshot.getName()
         logging.debug("Forced reverting of snapshot '{0}'".format(snapshot_name))
-        cls.DOMAIN.revertToSnapshot(snapshot)
+        self.domain.revertToSnapshot(snapshot)
         snapshot.delete()
-        cls.SNAPSHOT_STACK.remove(snapshot)
+        self.snapshot_stack.remove(snapshot)
         logging.debug('Revert successful')
 
-    @classmethod
-    def revert(cls, delete=True):
+    def revert(self, delete=True):
         try:
-            snapshot = cls.SNAPSHOT_STACK.pop()
+            snapshot = self.snapshot_stack.pop()
         except IndexError:
             logging.error("No snapshot in stack anymore")
         else:
-            cls.DOMAIN.revertToSnapshot(snapshot)
+            self.domain.revertToSnapshot(snapshot)
             if delete:
                 logging.debug(("Hard revert of snapshot "
-                           "'{0}' successful").format(snapshot.getName()))
+                               "'{0}' successful").format(snapshot.getName()))
                 snapshot.delete()
             else:
                 # this is soft revert - we are keeping the snapshot for
                 # another use
                 logging.debug(("Soft revert of snapshot "
-                           "'{0}' successful").format(snapshot.getName()))
-                cls.SNAPSHOT_STACK.append(snapshot)
+                               "'{0}' successful").format(snapshot.getName()))
+                self.snapshot_stack.append(snapshot)
 
-    @classmethod
-    def delete(cls, snapshot=None):
+    def delete(self, snapshot=None):
         # removing snapshot from the stack without doing a revert - use
         # coupled with revert without delete
         if snapshot:
-            cls.SNAPSHOT_STACK.remove(snapshot)
+            self.snapshot_stack.remove(snapshot)
         else:
-            snapshot = cls.SNAPSHOT_STACK.pop()
+            snapshot = self.snapshot_stack.pop()
         snapshot.delete()
         logging.debug(("Snapshot '{0}' deleted "
-                   "successfully").format(snapshot.getName()))
+                       "successfully").format(snapshot.getName()))
 
-    @classmethod
-    def clear(cls):
+    def clear(self):
         logging.debug('Reverting all created snapshots in reverse order')
-        while cls.SNAPSHOT_STACK:
-            snapshot = cls.SNAPSHOT_STACK.pop()
+        while self.snapshot_stack:
+            snapshot = self.snapshot_stack.pop()
             snapshot_name = snapshot.getName()
             logging.debug("Reverting of snapshot '{0}'".format(snapshot_name))
-            cls.DOMAIN.revertToSnapshot(snapshot)
+            self.domain.revertToSnapshot(snapshot)
             snapshot.delete()
             logging.debug('Revert successful')
         logging.info('All snapshots reverted successfully')

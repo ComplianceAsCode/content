@@ -89,8 +89,8 @@ def apply_script(rule_dir, domain_ip, script):
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError, e:
             logging.error(("Rule testing script {0} "
-                       "failed with exit code {1}").format(script,
-                                                           e.returncode))
+                           "failed with exit code {1}").format(script,
+                                                               e.returncode))
             return False
     return True
 
@@ -105,12 +105,12 @@ def get_script_context(script):
 def perform_rule_check(options):
     dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
                                              options.domain_name)
-    SnapshotStack.DOMAIN = dom
     if dom is None:
         sys.exit(1)
-    atexit.register(SnapshotStack.clear)
+    snapshot_stack = SnapshotStack(dom)
+    atexit.register(snapshot_stack.clear)
 
-    SnapshotStack.create('origin')
+    snapshot_stack.create('origin')
     ssg_test_suite.virt.start_domain(dom)
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
     scanned_something = False
@@ -139,8 +139,8 @@ def perform_rule_check(options):
         for script in scenarios:
             script_context = get_script_context(script)
             logging.debug(('Using test script {0} '
-                       'with context {1}').format(script, script_context))
-            SnapshotStack.create('script')
+                           'with context {1}').format(script, script_context))
+            snapshot_stack.create('script')
             # copy all helper scripts, so scenario script can use them
             script_path = os.path.join(rule_dir, script)
             helper_paths = map(lambda x: os.path.join(rule_dir, x), helpers)
@@ -154,7 +154,7 @@ def perform_rule_check(options):
                                            options.datastream,
                                            options.benchmark_id)
             if len(profiles) > 1:
-                SnapshotStack.create('profile')
+                snapshot_stack.create('profile')
             for profile in profiles:
                 LogHelper.preload_log(logging.INFO,
                                       ("Script {0} "
@@ -190,11 +190,11 @@ def perform_rule_check(options):
                                        script_name=script,
                                        remediation=True,
                                        dont_clean=options.dont_clean)
-                SnapshotStack.revert(delete=False)
+                snapshot_stack.revert(delete=False)
             if not has_worked:
                 logging.error("Nothing has been tested!")
-            SnapshotStack.delete()
+            snapshot_stack.delete()
             if len(profiles) > 1:
-                SnapshotStack.revert()
+                snapshot_stack.revert()
     if not scanned_something:
         logging.error("Rule {0} has not been found".format(options.target))
