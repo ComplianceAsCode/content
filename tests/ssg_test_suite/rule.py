@@ -20,10 +20,9 @@ from data import iterate_over_rules
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
-NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
 
 
-def parse_parameters(script):
+def _parse_parameters(script):
     params = {}
     with open(script, 'r') as script_file:
         for parameter in ['profiles', 'templates']:
@@ -36,7 +35,9 @@ def parse_parameters(script):
     return params
 
 
-def get_viable_profiles(scenarios_profiles, datastream, benchmark):
+def get_viable_profiles(selected_profiles, datastream, benchmark):
+    NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
+
     valid_profiles = []
     root = ET.parse(datastream).getroot()
     benchmark_node = root.find("*//xccdf:Benchmark[@id='{0}']".format(benchmark), NS)
@@ -45,15 +46,20 @@ def get_viable_profiles(scenarios_profiles, datastream, benchmark):
         return []
     for ds_profile_element in benchmark_node.findall('xccdf:Profile', NS):
         ds_profile = ds_profile_element.attrib['id']
-        for scen_profile in scenarios_profiles:
-            if scen_profile in ds_profile:
+        if 'ALL' in selected_profiles:
+            valid_profiles += [ds_profile]
+            continue
+        for sel_profile in selected_profiles:
+            # this means substring - we expect selected profile might be
+            # just a shorter version of proper datastream profile id
+            if sel_profile in ds_profile:
                 valid_profiles += [ds_profile]
     if not valid_profiles:
-        logging.error('No profile matched with "{0}"'.format(", ".join(scenarios_profiles)))
+        logging.error('No profile matched with "{0}"'.format(", ".join(selected_profiles)))
     return valid_profiles
 
 
-def send_scripts(rule_dir, domain_ip, *scripts_list):
+def _send_scripts(rule_dir, domain_ip, *scripts_list):
     # scripts_list is list of absolute paths
     remote_dir = './'
     machine = "root@{0}".format(domain_ip)
@@ -70,7 +76,7 @@ def send_scripts(rule_dir, domain_ip, *scripts_list):
                               stderr=subprocess.STDOUT)
 
 
-def apply_script(rule_dir, domain_ip, script):
+def _apply_script(rule_dir, domain_ip, script):
     script_remote_path = os.path.join('./', script)
     machine = "root@{0}".format(domain_ip)
     logging.debug("Applying script {0}".format(script))
@@ -95,7 +101,7 @@ def apply_script(rule_dir, domain_ip, script):
     return True
 
 
-def get_script_context(script):
+def _get_script_context(script):
     result = re.search('.*\.([^.]*)\.[^.]*$', script)
     if result is None:
         return None
@@ -129,7 +135,7 @@ def perform_rule_check(options):
         helpers = []
         scenarios = []
         for script in scripts:
-            script_context = get_script_context(script)
+            script_context = _get_script_context(script)
             if script_context is None:
                 logging.debug('Registering helper script {0}'.format(script))
                 helpers += [script]
@@ -137,18 +143,18 @@ def perform_rule_check(options):
                 scenarios += [script]
 
         for script in scenarios:
-            script_context = get_script_context(script)
+            script_context = _get_script_context(script)
             logging.debug(('Using test script {0} '
                            'with context {1}').format(script, script_context))
             snapshot_stack.create('script')
             # copy all helper scripts, so scenario script can use them
             script_path = os.path.join(rule_dir, script)
             helper_paths = map(lambda x: os.path.join(rule_dir, x), helpers)
-            send_scripts(rule_dir, domain_ip, script_path, *helper_paths)
+            _send_scripts(rule_dir, domain_ip, script_path, *helper_paths)
 
-            if not apply_script(rule_dir, domain_ip, script):
+            if not _apply_script(rule_dir, domain_ip, script):
                 logging.error("Environment failed to prepare, skipping test")
-            script_params = parse_parameters(script_path)
+            script_params = _parse_parameters(script_path)
             has_worked = False
             profiles = get_viable_profiles(script_params['profiles'],
                                            options.datastream,
