@@ -27,6 +27,7 @@ from create_audit_rules_usergroup_modification import AuditRulesUserGroupModific
 from create_audit_rules_execution import AuditRulesExecutionGenerator
 from create_file_groupowner import FileGroupOwnerGenerator
 from create_file_owner import FileOwnerGenerator
+from create_file_permissions import FilePermissionsGenerator
 
 
 class Builder(object):
@@ -55,6 +56,7 @@ class Builder(object):
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
             "file_groupowner.csv":              FileGroupOwnerGenerator(),
             "file_owner.csv":                   FileOwnerGenerator(),
+            "file_permissions.csv":             FilePermissionsGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
