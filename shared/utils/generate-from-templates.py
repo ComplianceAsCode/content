@@ -19,6 +19,7 @@ from create_services_disabled import ServiceDisabledGenerator
 from create_services_enabled import ServiceEnabledGenerator
 from create_sysctl import SysctlGenerator
 from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
+from create_audit_rules_unsuccessful_file_modification import AuditRulesUnsuccessfulFileModificationGenerator
 
 
 class Builder(object):
@@ -39,6 +40,7 @@ class Builder(object):
             "mount_options.csv":                MountOptionsGenerator(),
             "selinux_booleans.csv":             SEBoolGenerator(),
             "audit_rules_dac_modification.csv": AuditRulesDacModificationGenerator(),
+            "audit_rules_unsuccessful_file_modification.csv":   AuditRulesUnsuccessfulFileModificationGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
