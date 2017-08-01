@@ -93,6 +93,16 @@ class FilesGenerator(object):
 
             filestring = filestring.replace(key, value)
 
+            trimmed_key = key[1:-1]  # the key without the % padding chars
+            if trimmed_key in filestring:
+                raise RuntimeError(
+                    "Trimmed key '%s' was found in the filestring after the "
+                    "substitution was performed. This is usually a typo or a "
+                    "mistake in the template, the python generator or both. "
+                    "In the rare case where this is expected please rename the "
+                    "key to something unambiguous. Class name: %s"
+                    % (trimmed_key, self.__class__))
+
         for pattern, replacement in regex_replace:
             filestring = re.sub(pattern, replacement, filestring)
 
