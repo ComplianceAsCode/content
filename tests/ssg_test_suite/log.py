@@ -7,6 +7,10 @@ import sys
 
 
 class LogHelper(object):
+    """Provide focal point for logging. LOG_DIR is useful when output of script
+    is saved into file. Log preloading is a way to how to log outcome before
+    the output itself.
+    """
     FORMATTER = logging.Formatter('%(levelname)s - %(message)s')
     INTERMEDIATE_LOGS = {'pass': [], 'fail': []}
     LOG_DIR = None
@@ -14,6 +18,11 @@ class LogHelper(object):
 
     @classmethod
     def find_name(cls, original_path, suffix=""):
+        """Find file name which is still not present in given directory
+
+        Returns
+        path -- original_path + number + suffix
+        """
         log_number = 0
         # search for valid log directory, as we can run more than one
         # run per minute, first has only timestamp, rest has numbered suffix
@@ -35,6 +44,7 @@ class LogHelper(object):
 
     @classmethod
     def add_console_logger(cls, logger, level):
+        """Convenience function to set defaults for console logger"""
         console_handler = logging.StreamHandler()
         console_handler.setFormatter(cls.FORMATTER)
         console_handler.setLevel(level)
@@ -44,6 +54,10 @@ class LogHelper(object):
 
     @classmethod
     def add_logging_dir(cls, logger, _dirname):
+        """Convenience function to set default logging into file.
+
+        Also sets LOG_DIR and LOG_FILE
+        """
         os.makedirs(_dirname)
         logfile = os.path.join(_dirname, 'test_suite.log')
 
@@ -57,6 +71,14 @@ class LogHelper(object):
 
     @classmethod
     def preload_log(cls, log_level, log_line, log_target=None):
+        """Save log for later use. Fill named buffer `log_target`with the log
+        line for later use.
+
+        Special case:
+        If `log_target` is default, i.e. None, all buffers will be filled with
+        the same log line.
+        """
+
         if log_target is None:
             # None means "All"
             for target in cls.INTERMEDIATE_LOGS:
@@ -66,6 +88,9 @@ class LogHelper(object):
 
     @classmethod
     def log_preloaded(cls, log_target):
+        """Log messages preloaded in one of the named buffers. Wipe out all
+        buffers afterwards.
+        """
         for log_level, log_line in cls.INTERMEDIATE_LOGS[log_target]:
             logging.log(log_level, log_line)
         # cleanup

@@ -15,6 +15,14 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 def perform_profile_check(options):
+    """Perform profile check.
+
+    Iterate over profiles in datastream and perform scanning of unaltered VM
+    using every profile according to input. Also perform remediation run.
+
+    Return value not defined, textual output and generated reports is the
+    result.
+    """
     dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
                                              options.domain_name)
     if dom is None:

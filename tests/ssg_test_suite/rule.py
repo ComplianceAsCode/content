@@ -23,6 +23,7 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 def _parse_parameters(script):
+    """Parse parameters from script header"""
     params = {}
     with open(script, 'r') as script_file:
         for parameter in ['profiles', 'templates']:
@@ -36,6 +37,9 @@ def _parse_parameters(script):
 
 
 def get_viable_profiles(selected_profiles, datastream, benchmark):
+    """Read datastream, and return set intersection of profiles of given
+    benchmark and those provided in `selected_profiles` parameter.
+    """
     NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
 
     valid_profiles = []
@@ -60,6 +64,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
 
 
 def _send_scripts(rule_dir, domain_ip, *scripts_list):
+    """Upload scripts to VM."""
     # scripts_list is list of absolute paths
     remote_dir = './'
     machine = "root@{0}".format(domain_ip)
@@ -77,6 +82,7 @@ def _send_scripts(rule_dir, domain_ip, *scripts_list):
 
 
 def _apply_script(rule_dir, domain_ip, script):
+    """Run particular test script on VM and log it's output."""
     script_remote_path = os.path.join('./', script)
     machine = "root@{0}".format(domain_ip)
     logging.debug("Applying script {0}".format(script))
@@ -102,6 +108,7 @@ def _apply_script(rule_dir, domain_ip, script):
 
 
 def _get_script_context(script):
+    """Return context of the script."""
     result = re.search('.*\.([^.]*)\.[^.]*$', script)
     if result is None:
         return None
@@ -109,6 +116,16 @@ def _get_script_context(script):
 
 
 def perform_rule_check(options):
+    """Perform rule check.
+
+    Iterate over rule-testing scenarios and utilize `oscap-ssh` to test every
+    scenario. Expected result is encoded in scenario file name. In case of
+    `fail` or `error` results expected, continue with remediation and
+    reevaluation. Revert system to clean state using snapshots.
+
+    Return value not defined, textual output and generated reports is the
+    result.
+    """
     dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
                                              options.domain_name)
     if dom is None:

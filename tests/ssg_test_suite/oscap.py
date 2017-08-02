@@ -27,6 +27,11 @@ def run_profile(domain_ip,
                 datastream,
                 benchmark_id,
                 remediation=False):
+    """Run `oscap-ssh` command with provided parameters to check given profile.
+    Log output into LogHelper.LOG_DIR.
+
+    Return True if command ends with exit codes 0 or 2
+    """
 
     formatting = {'domain_ip': domain_ip,
                   'profile': profile,
@@ -75,6 +80,12 @@ def run_rule(domain_ip,
              script_name,
              remediation=False,
              dont_clean=False):
+    """Run `oscap-ssh` command with provided parameters to check given rule,
+    utilizing --rule option. Log output to LogHelper.LOG_DIR directory.
+
+    Return True if result is as expected by context parameter. Check both
+    exit code and output message.
+    """
 
     formatting = {'domain_ip': domain_ip,
                   'profile': profile,
