@@ -1,0 +1,65 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Search for privileged commands
+  shell: "find / -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null | cat"
+  check_mode: no
+  register: find_result
+  tags:
+    @ANSIBLE_TAGS@
+
+# Inserts/replaces the rule in /etc/audit/rules.d
+
+- name: Search /etc/audit/rules.d for audit rule entries
+  find:
+    paths: "/etc/audit/rules.d"
+    recurse: no
+    contains: "^.*path={{ item }} .*$"
+    patterns: "*.rules"
+  with_items:
+    - "{{ find_result.stdout_lines }}"
+  register: files_result
+  tags:
+    @ANSIBLE_TAGS@
+  
+- name: Overwrites the rule in rules.d
+  lineinfile:
+    path: "{{ item.1.path }}"
+    line: '-a always,exit -F path={{ item.0.item }} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    create: no
+    regexp: "^.*path={{ item.0.item }} .*$"
+  with_subelements:
+    - "{{ files_result.results }}"
+    - files
+  tags:
+    @ANSIBLE_TAGS@
+    
+- name: Adds the rule in rules.d
+  lineinfile:
+    path: /etc/audit/rules.d/privileged.rules
+    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    create: yes
+  with_items:
+    - "{{ files_result.results }}"
+  when: item.matched == 0
+  tags:
+    @ANSIBLE_TAGS@
+  
+# Adds/overwrites the rule in /etc/audit/audit.rules
+
+- name: Inserts/replaces the rule in audit.rules
+  lineinfile:
+    path: /etc/audit/audit.rules
+    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    create: yes
+    regexp: "^.*path={{ item.item }} .*$"
+  with_items:
+    - "{{ files_result.results }}"
+  tags:
+    @ANSIBLE_TAGS@
+
+
+
