@@ -21,6 +21,7 @@ from create_sysctl import SysctlGenerator
 from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
 from create_audit_rules_unsuccessful_file_modification import AuditRulesUnsuccessfulFileModificationGenerator
 from create_audit_rules_file_deletion_events import AuditRulesFileDeletionEventsGenerator
+from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
 
 
 class Builder(object):
@@ -43,6 +44,7 @@ class Builder(object):
             "audit_rules_dac_modification.csv": AuditRulesDacModificationGenerator(),
             "audit_rules_unsuccessful_file_modification.csv":   AuditRulesUnsuccessfulFileModificationGenerator(),
             "audit_rules_file_deletion_events.csv":  AuditRulesFileDeletionEventsGenerator(),
+            "audit_rules_login_events.csv":  AuditRulesLoginEventsGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
