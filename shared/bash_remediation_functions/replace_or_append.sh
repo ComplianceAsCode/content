@@ -70,8 +70,8 @@ function replace_or_append {
   fi
 
   # If the key exists, change it. Otherwise, add it to the config_file.
-  if `grep -qi $key $config_file` ; then
-    eval $sed_command "s/$key.*/$formatted_output/g" $config_file
+  if `grep -qi "$key" $config_file` ; then
+    eval '$sed_command "s/$key.*/$formatted_output/g" $config_file'
   else
     # \n is precaution for case where file ends without trailing newline
     echo -e "\n# Per $cce: Set $formatted_output in $config_file" >> $config_file
