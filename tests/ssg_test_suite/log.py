@@ -8,7 +8,7 @@ import sys
 
 class LogHelper(object):
     """Provide focal point for logging. LOG_DIR is useful when output of script
-    is saved into file. Log preloading is a way to how to log outcome before
+    is saved into file. Log preloading is a way to log outcome before
     the output itself.
     """
     FORMATTER = logging.Formatter('%(levelname)s - %(message)s')
@@ -16,8 +16,8 @@ class LogHelper(object):
     LOG_DIR = None
     LOG_FILE = None
 
-    @classmethod
-    def find_name(cls, original_path, suffix=""):
+    @staticmethod
+    def find_name(original_path, suffix=""):
         """Find file name which is still not present in given directory
 
         Returns
