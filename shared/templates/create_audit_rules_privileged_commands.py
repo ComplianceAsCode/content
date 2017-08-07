@@ -10,6 +10,7 @@ from template_common import FilesGenerator, UnknownTargetError
 import os
 import re
 
+
 class AuditRulesPrivilegedCommandsGenerator(FilesGenerator):
     def generate(self, target, args):
         path = args[0]
@@ -19,7 +20,7 @@ class AuditRulesPrivilegedCommandsGenerator(FilesGenerator):
                 "./template_OVAL_audit_rules_privileged_commands",
                 {
                     "%NAME%":	name,
-                    "%PATH%":	re.sub("/", "\/", path)
+                    "%PATH%":	path.replace("/", "\\/")
                 },
                 "./oval/audit_rules_privileged_commands_{0}.xml", name
             )
