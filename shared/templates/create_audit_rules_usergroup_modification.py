@@ -10,6 +10,7 @@ from template_common import FilesGenerator, UnknownTargetError
 import os
 import re
 
+
 class AuditRulesUserGroupModificationGenerator(FilesGenerator):
     def generate(self, target, args):
         path = args[0]
@@ -19,7 +20,7 @@ class AuditRulesUserGroupModificationGenerator(FilesGenerator):
                 "./template_OVAL_audit_rules_usergroup_modification",
                 {
                     "%NAME%":	name,
-                    "%PATH%":	re.sub("/", "\\/", path)
+                    "%PATH%":	path.replace("/", "\\/")
                 },
                 "./oval/audit_rules_usergroup_modification_{0}.xml", name
             )
@@ -49,4 +50,3 @@ class AuditRulesUserGroupModificationGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "PATH")
-               

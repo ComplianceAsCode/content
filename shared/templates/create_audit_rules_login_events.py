@@ -10,6 +10,7 @@ from template_common import FilesGenerator, UnknownTargetError
 import os
 import re
 
+
 class AuditRulesLoginEventsGenerator(FilesGenerator):
     def generate(self, target, args):
         path = args[0]
@@ -19,7 +20,7 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
                 "./template_OVAL_audit_rules_login_events",
                 {
                     "%NAME%":	name,
-                    "%PATH%":	re.sub("/", "\/", path)
+                    "%PATH%":	path.replace("/", "\\/")
                 },
                 "./oval/audit_rules_login_events_{0}.xml", name
             )
@@ -49,4 +50,3 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "PATH")
-               
