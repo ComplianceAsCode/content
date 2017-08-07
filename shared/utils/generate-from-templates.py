@@ -23,6 +23,7 @@ from create_audit_rules_unsuccessful_file_modification import AuditRulesUnsucces
 from create_audit_rules_file_deletion_events import AuditRulesFileDeletionEventsGenerator
 from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
 from create_audit_rules_privileged_commands import AuditRulesPrivilegedCommandsGenerator
+from create_audit_rules_usergroup_modification import AuditRulesUserGroupModificationGenerator
 
 
 class Builder(object):
@@ -47,6 +48,7 @@ class Builder(object):
             "audit_rules_file_deletion_events.csv":  AuditRulesFileDeletionEventsGenerator(),
             "audit_rules_login_events.csv":  AuditRulesLoginEventsGenerator(),
             "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
+            "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
