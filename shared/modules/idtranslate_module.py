@@ -5,9 +5,7 @@ except ImportError:
 
 
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-oval_cs = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
-ocil_cs = "http://scap.nist.gov/schema/ocil/2"
 
 ovaltag_to_abbrev = {
     'definition': 'def',
