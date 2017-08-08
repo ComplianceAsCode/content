@@ -1,12 +1,12 @@
-# platform = multi_platform_rhel
+# platform = %PLATFORMS%
 # reboot = false
 # strategy = restrict
 # complexity = medium
 # disruption = medium
 
-- name: Set /etc/group group ownership to root
+- name: Set %PATH% group ownership to root
   file:
-    path: /etc/group
+    path: %PATH%
     group: root
   tags:
     @ANSIBLE_TAGS@
