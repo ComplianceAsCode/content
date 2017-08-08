@@ -98,7 +98,7 @@ class XCCDFBenchmark(object):
 
         rules = []
 
-        if profile == "all":
+        if ( profile == "all" ) or ( profile == "none" ):
             # "all" is a virtual profile that selects all rules
             rules = self.indexed_rules.values()
         else:
@@ -394,7 +394,7 @@ def main():
                         action="store",
                         help="Show statistics for this XCCDF Profile only. If "
                         "not provided the script will show stats for all "
-                        "available profiles.")
+                        "available profiles. none gives stats for all rules.")
     parser.add_argument("--benchmark", "-b", required=True,
                         action="store",
                         help="Specify XCCDF file to act on. Must be a plain "
