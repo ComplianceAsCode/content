@@ -57,6 +57,7 @@ def main():
                 "File '%s' does not appear to be a bash script. Skipping!"
                 % (file_)
             )
+            continue
 
         filename, ext = os.path.splitext(file_)
 
