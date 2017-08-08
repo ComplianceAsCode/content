@@ -19,11 +19,12 @@ WRLINUX = 'Wind River Linux'
 multi_product_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
                       "wrlinux", "opensuse", "sle"]
 
+PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
+
 
 def parse_product_name(product):
     product_version = None
-    r = re.compile("([a-zA-Z\-]+)([0-9]+)")
-    match = r.match(product)
+    match = PRODUCT_NAME_PARSER.match(product)
 
     if match is not None:
         if isinstance(match.group(1), str) or \
