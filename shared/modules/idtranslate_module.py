@@ -49,7 +49,7 @@ def split_namespace(tag):
     """returns a tuple of (namespace,name) removing any fragment id
     from namespace"""
 
-    if tag[:1] == "{":
+    if tag[0] == "{":
         namespace, name = tag[1:].split("}", 1)
         return namespace.split("#")[0], name
     else:
@@ -57,7 +57,7 @@ def split_namespace(tag):
 
 
 def namespace_to_prefix(tag):
-    namespace, name = split_namespace(tag)
+    namespace, _ = split_namespace(tag)
     if namespace == ocil_ns:
         return "ocil"
     if namespace == oval_ns:
@@ -93,13 +93,11 @@ class IDTranslator(object):
         self.content_id = content_id
 
     def generate_id(self, tagname, name):
-        str_id = "%s:%s-%s:%s:%d" % (
+        return "%s:%s-%s:%s:1" % (
             namespace_to_prefix(tagname),
             self.content_id, name,
-            tagname_to_abbrev(tagname),
-            1
+            tagname_to_abbrev(tagname)
         )
-        return str_id
 
     def translate(self, tree, store_defname=False):
         for element in tree.getiterator():
