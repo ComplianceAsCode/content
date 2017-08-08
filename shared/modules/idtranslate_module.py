@@ -1,5 +1,3 @@
-import sys
-
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
