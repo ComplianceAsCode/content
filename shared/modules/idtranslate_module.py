@@ -103,8 +103,8 @@ class IDTranslator(object):
             if idname:
                 # store the old name if requested (for OVAL definitions)
                 if store_defname and \
-                        element.tag == "{" + oval_ns + "}definition":
-                    metadata = element.find("{" + oval_ns + "}metadata")
+                        element.tag == "{%s}definition" % oval_ns:
+                    metadata = element.find("{%s}metadata" % oval_ns)
                     if metadata is None:
                         metadata = ElementTree.SubElement(element, "metadata")
                     defnam = ElementTree.Element(
@@ -114,23 +114,25 @@ class IDTranslator(object):
                 # set the element to the new identifier
                 element.set("id", self.generate_id(element.tag, idname))
                 # continue
-            if element.tag == "{" + oval_ns + "}filter":
-                element.text = self.generate_id("{" + oval_ns + "}state",
+            if element.tag == "{%s}filter" % oval_ns:
+                element.text = self.generate_id("{%s}state" % oval_ns,
                                                 element.text)
                 continue
-            if element.tag == "{" + oval_ns + "#independent}var_ref":
-                element.text = self.generate_id("{" + oval_ns + "}variable",
+            if element.tag == "{%s#independent}var_ref" % oval_ns:
+                element.text = self.generate_id("{%s}variable" % oval_ns,
                                                 element.text)
                 continue
             for attr in element.keys():
                 if attr in ovalrefattr_to_tag.keys():
-                    element.set(attr, self.generate_id("{" + oval_ns + "}" +
-                                ovalrefattr_to_tag[attr], element.get(attr)))
+                    element.set(attr, self.generate_id(
+                        "{%s}%s" % (oval_ns, ovalrefattr_to_tag[attr]),
+                        element.get(attr)))
                 if attr in ocilrefattr_to_tag.keys():
-                    element.set(attr, self.generate_id("{" + ocil_ns + "}" +
-                                ocilrefattr_to_tag[attr], element.get(attr)))
-            if element.tag == "{" + ocil_ns + "}test_action_ref":
-                element.text = self.generate_id("{" + ocil_ns + "}action",
+                    element.set(attr, self.generate_id(
+                        "{%s}%s" % (ocil_ns, ocilrefattr_to_tag[attr]),
+                        element.get(attr)))
+            if element.tag == "{%s}test_action_ref" % ocil_ns:
+                element.text = self.generate_id("{%s}action" % ocil_ns,
                                                 element.text)
 
         return tree
