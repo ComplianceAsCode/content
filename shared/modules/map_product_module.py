@@ -39,33 +39,36 @@ def parse_product_name(product):
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
 
-    if "chromium" in version:
+    if version.startswith("multi_platform_"):
+        return map_product(version[len("multi_platform_"):])
+
+    if version.startswith("chromium"):
         return CHROMIUM
-    if "fedora" in version:
+    if version.startswith("fedora"):
         return FEDORA
-    if "firefox" in version:
+    if version.startswith("firefox"):
         return FIREFOX
-    if "jre" in version:
+    if version.startswith("jre"):
         return JRE
-    if "rhel" in version:
+    if version.startswith("rhel"):
         return RHEL
-    if "webmin" in version:
+    if version.startswith("webmin"):
         return WEBMIN
-    if "debian" in version:
+    if version.startswith("debian"):
         return DEBIAN
-    if "ubuntu" in version:
+    if version.startswith("ubuntu"):
         return UBUNTU
-    if "rhevm" in version:
+    if version.startswith("rhevm"):
         return RHEVM
-    if "eap" in version:
+    if version.startswith("eap"):
         return EAP
-    if "fuse" in version:
+    if version.startswith("fuse"):
         return FUSE
-    if "opensuse" in version:
+    if version.startswith("opensuse"):
         return OPENSUSE
-    if "sle" in version:
+    if version.startswith("sle"):
         return SUSE
-    if "wrlinux" in version:
+    if version.startswith("wrlinux"):
         return WRLINUX
 
     raise RuntimeError("Can't map version '%s' to any known product!"
