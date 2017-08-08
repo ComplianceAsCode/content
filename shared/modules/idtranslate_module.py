@@ -62,7 +62,10 @@ def namespace_to_prefix(tag):
         return "ocil"
     if namespace == oval_ns:
         return "oval"
-    sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
+
+    raise RuntimeError(
+        "Error: unknown checksystem referenced in tag : %s" % tag
+    )
 
 
 def tagname_to_abbrev(tag):
@@ -75,7 +78,10 @@ def tagname_to_abbrev(tag):
         return ociltag_to_abbrev[tag]
     if namespace == oval_ns:
         return ovaltag_to_abbrev[tag]
-    sys.exit("Error: unknown checksystem referenced in tag : %s" % tag)
+
+    raise RuntimeError(
+        "Error: unknown checksystem referenced in tag : %s" % tag
+    )
 
 
 class IDTranslator(object):
