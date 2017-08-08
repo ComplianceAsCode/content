@@ -16,7 +16,8 @@ OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 
-multi_product_list = ['rhel', 'fedora', 'rhel-osp', 'debian', 'ubuntu', 'wrlinux', 'opensuse', 'sle']
+multi_product_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
+                      "wrlinux", "opensuse", "sle"]
 
 
 def parse_product_name(product):
@@ -25,10 +26,11 @@ def parse_product_name(product):
     match = r.match(product)
 
     if match is not None:
-         if isinstance(match.group(1), str) or isinstance(match.group(1), unicode):
-             product = match.group(1)
-         if match.group(2).isdigit():
-             product_version = match.group(2)
+        if isinstance(match.group(1), str) or \
+                isinstance(match.group(1), unicode):
+            product = match.group(1)
+        if match.group(2).isdigit():
+            product_version = match.group(2)
 
     return product, product_version
 
