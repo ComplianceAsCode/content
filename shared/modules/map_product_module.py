@@ -40,7 +40,14 @@ def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
 
     if version.startswith("multi_platform_"):
-        return map_product(version[len("multi_platform_"):])
+        trimmed_version = version[len("multi_platform_"):]
+        if trimmed_version not in multi_product_list:
+            raise RuntimeError(
+                "%s is an invalid product version. If it's multi_platform the "
+                "suffix has to be from (%s)."
+                % (version, ", ".join(multi_product_list))
+            )
+        return map_product(trimmed_version)
 
     if version.startswith("chromium"):
         return CHROMIUM
