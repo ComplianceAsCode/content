@@ -69,7 +69,7 @@ if [ "$tool" != 'auditctl' ] && [ "$tool" != 'augenrules' ]
 then
 	echo "Unknown audit rules loading tool: $1. Aborting."
 	echo "Use either 'auditctl' or 'augenrules'!"
-	exit 1
+	return 1
 # If audit tool is 'auditctl', then add '/etc/audit/audit.rules'
 # file to the list of files to be inspected
 elif [ "$tool" == 'auditctl' ]
@@ -215,6 +215,6 @@ do
 	fi
 done
 
-exit $retval
+return $retval
 
 }
