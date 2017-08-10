@@ -151,8 +151,6 @@ def main():
         profiles = xccdf_utils.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
-        # add the default profile
-        profiles[""] = "(default)"
 
         if not profiles:
             raise RuntimeError(
