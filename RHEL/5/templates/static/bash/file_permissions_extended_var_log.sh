@@ -1,1 +1,0 @@
-setfacl -RLb /var/log/*

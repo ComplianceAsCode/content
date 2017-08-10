@@ -1,0 +1,24 @@
+<def-group>
+  <definition class="compliance" id="package_%PKGNAME%_removed"
+  version="1">
+    <metadata>
+      <title>Package %PKGNAME% Removed</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The RPM package %PKGNAME% should be removed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package %PKGNAME% is removed"
+      test_ref="test_package_%PKGNAME%_removed" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  id="test_package_%PKGNAME%_removed" version="1"
+  comment="package %PKGNAME% is removed">
+    <linux:object object_ref="obj_package_%PKGNAME%_removed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_%PKGNAME%_removed" version="1">
+    <linux:name>%PKGNAME%</linux:name>
+  </linux:rpminfo_object>
+</def-group>

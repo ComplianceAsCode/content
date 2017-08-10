@@ -1,1 +1,0 @@
-setfacl --remove-all /dev/audio* /dev/snd/* 2>/dev/null

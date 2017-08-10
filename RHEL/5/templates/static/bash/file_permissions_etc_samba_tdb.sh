@@ -1,1 +1,0 @@
-chmod 0600 /etc/samba/passdb.tdb /etc/samba/secrets.tdb

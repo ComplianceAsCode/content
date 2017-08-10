@@ -1,8 +1,8 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
 
 """
 Takes given XCCDF or DataStream and adds RHEL derivative operating system(s) CPE name next
-to RHEL CPE names. Can automatically recognize RHEL5, 6, 7 CPEs and adds the derivitive OS ones
+to RHEL CPE names. Can automatically recognize RHEL6, 7, etc. CPEs and adds the derivitive OS ones
 next to those accordingly.
 
 Apart from adding the CPEs it adds a notice informing the user that the content
@@ -24,15 +24,11 @@ XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 
 RHEL_CENTOS_CPE_MAPPING = {
-    "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:centos:centos:4",
-    "cpe:/o:redhat:enterprise_linux:5": "cpe:/o:centos:centos:5",
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
 }
 
 RHEL_SL_CPE_MAPPING = {
-    "cpe:/o:redhat:enterprise_linux:4": "cpe:/o:scientificlinux:scientificlinux:4",
-    "cpe:/o:redhat:enterprise_linux:5": "cpe:/o:scientificlinux:scientificlinux:5",
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:scientificlinux:scientificlinux:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
 }

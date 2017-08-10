@@ -1,3 +1,4 @@
+# platform = Webmin
 if [ "$(grep -c '^passwd_re=' /etc/webmin/useradmin/config)" = "0" ]; then
 	echo "passwd_re=^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])(?=.*[\W]).*$" >> /etc/webmin/useradmin/config
 else

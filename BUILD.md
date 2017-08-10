@@ -2,13 +2,13 @@
 
 ## From source
 
-1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils`, `openscap-python`, and `python-lxml` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
+1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils`, and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
 
- `# yum -y install cmake openscap-utils openscap-python python-lxml git`
+ `# yum -y install cmake openscap-utils git`
 
- On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `python-lxml`, `python-openscap`, and `xsltproc` and their dependencies are installed as well as `git`.
+ On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `xsltproc`, and their dependencies are installed as well as `git`.
 
- `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils python-lxml python-openscap xsltproc git`
+ `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils xsltproc git`
 
  Optional: Install the ShellCheck package.
 
@@ -138,4 +138,4 @@ To build content only for a specific distribution, add the relevant name as a fl
 
 Using `docker cp` to copy all the generated content to the your host:
 
-`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)`
+`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build`

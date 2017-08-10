@@ -1,7 +1,0 @@
-# platform = Red Hat Enterprise Linux 7
-- name: "Disable POST password expiration"
-  lineinfile:
-    create=yes
-    dest="/etc/default/useradd"
-    regexp="^INACTIVE"
-    line="INACTIVE=-1"

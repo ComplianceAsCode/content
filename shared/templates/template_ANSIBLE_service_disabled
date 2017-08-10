@@ -1,13 +1,15 @@
-# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7, multi_platform_fedora, Debian 8, Ubuntu 16.04
+# platform = multi_platform_all
 # reboot = false
 # strategy = disable
 # complexity = low
 # disruption = low
-- name: Disable service SERVICENAME
+- name: "Disable service %SERVICENAME%"
   service:
     name="{{item}}"
     enabled="no"
     state="stopped"
   with_items:
-    - SERVICENAME
+    - %DAEMONNAME%
+  tags:
+    @ANSIBLE_TAGS@
 

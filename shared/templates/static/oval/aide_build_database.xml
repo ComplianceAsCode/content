@@ -1,0 +1,84 @@
+<def-group>
+  <definition class="compliance" id="aide_build_database" version="2">
+    <metadata>
+      <title>Aide Database Must Exist</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The aide database must be initialized.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
+      <!-- Only the configuration when location of the Aide database file is specified in the
+           form of absolute path is checked. To check any possible relative path configuration
+           that might happen would require to browse whole file system (resources expensive operation).
+           Case when Aide database file is configured to be written into an SQL table (possibly
+           even on remote host) is out of scope of this check -->
+      <criterion test_ref="test_aide_build_new_database_absolute_path" />
+      <criterion test_ref="test_aide_operational_database_absolute_path" />
+    </criteria>
+  </definition>
+
+  <!-- OVAL object to collect directory path for Aide build database directory -->
+  <ind:textfilecontent54_object id="object_aide_build_database_dirpath" version="1">
+    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^@@define[\s]DBDIR[\s]+(/.*)$</ind:pattern>
+    <ind:instance operation="equals" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL object to collect filename for Aide build database -->
+  <ind:textfilecontent54_object id="object_aide_build_new_database_filename" version="1">
+    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^database_out=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
+    <!-- From aide.conf(5) - "If there are multiple database_out lines, then the first one is used" =>
+         therefore we will retrieve only the first instance -->
+    <ind:instance operation="equals" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL object to collect filename for Aide build database -->
+  <ind:textfilecontent54_object id="object_aide_operational_database_filename" version="1">
+    <ind:filepath>/etc/aide.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^database=file:@@{DBDIR}/([a-z.]+)$</ind:pattern>
+    <!-- From aide.conf(5) - "If there are multiple database_out lines, then the first one is used" =>
+                  therefore we will retrieve only the first instance -->
+    <ind:instance operation="equals" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- OVAL variable to concatenate directory path and filename of new Aide build database file into final absolute path -->
+  <local_variable id="variable_aide_build_new_database_absolute_path" datatype="string" comment="Absolute path of Aide build database file" version="1">
+    <concat>
+      <object_component object_ref="object_aide_build_database_dirpath" item_field="subexpression" />
+      <literal_component>/</literal_component>
+      <object_component object_ref="object_aide_build_new_database_filename" item_field="subexpression" />
+    </concat>
+  </local_variable>
+
+  <!-- OVAL variable to concatenate directory path and filename of operational Aide build database file into final absolute path -->
+  <local_variable id="variable_aide_operational_database_absolute_path" datatype="string" comment="Absolute path of Aide build database file" version="1">
+    <concat>
+      <object_component object_ref="object_aide_build_database_dirpath" item_field="subexpression" />
+      <literal_component>/</literal_component>
+      <object_component object_ref="object_aide_operational_database_filename" item_field="subexpression" />
+    </concat>
+  </local_variable>
+
+  <unix:file_test id="test_aide_build_new_database_absolute_path" check="all" check_existence="all_exist"
+  comment="Testing existence of new aide database file" version="1">
+    <unix:object object_ref="object_aide_build_new_database_absolute_path" />
+  </unix:file_test>
+
+  <unix:file_object id="object_aide_build_new_database_absolute_path" version="1">
+    <unix:filepath var_ref="variable_aide_build_new_database_absolute_path" var_check="at least one" />
+  </unix:file_object>
+
+  <unix:file_test id="test_aide_operational_database_absolute_path" check="all" check_existence="all_exist"
+  comment="Testing existence of operational aide database file" version="1">
+    <unix:object object_ref="object_aide_operational_database_absolute_path" />
+  </unix:file_test>
+
+  <unix:file_object id="object_aide_operational_database_absolute_path" version="1">
+    <unix:filepath var_ref="variable_aide_operational_database_absolute_path" var_check="at least one" />
+  </unix:file_object>
+
+</def-group>

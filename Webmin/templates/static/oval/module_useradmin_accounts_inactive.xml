@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="module_useradmin_accounts_inactive" version="1">
+    <metadata>
+      <title>Configure new accounts to lock out after a number of days 
+	  of no activity.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>New users created through the UserAdmin Webmin module 
+	  must include required account expiration criteria.</description>
+    </metadata>
+    <!-- default_inactive is configured in /etc/webmin/useradmin/config ... -->
+    <criteria operator="AND">
+	  <criterion comment="Changing expired passwords is enabled."
+	  test_ref="test_webmin_module_useradmin_accounts_inactive" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check default_inactive is configured in /etc/webmin/useradmin/config" 
+  id="test_webmin_module_useradmin_accounts_inactive" version="1">
+    <ind:object object_ref="object_webmin_module_useradmin_accounts_inactive" />
+    <ind:state state_ref="state_webmin_module_useradmin_accounts_inactive" />
+    <ind:state state_ref="state_webmin_module_useradmin_accounts_inactive_not_zero" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_module_useradmin_accounts_inactive" version="1">
+    <ind:filepath>/etc/webmin/useradmin/config</ind:filepath>
+    <ind:pattern operation="pattern match">^default_inactive=+(\d+)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_webmin_module_useradmin_accounts_inactive" version="1">
+    <ind:subexpression operation="less than or equal" var_ref="var_webmin_module_useradmin_accounts_inactive" datatype="int" />
+  </ind:textfilecontent54_state>
+  <ind:textfilecontent54_state id="state_webmin_module_useradmin_accounts_inactive_not_zero" version="1">
+    <ind:subexpression operation="not equal">0</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="inactive account expiration in days" datatype="int" id="var_webmin_module_useradmin_accounts_inactive" version="1" />
+  
+</def-group>

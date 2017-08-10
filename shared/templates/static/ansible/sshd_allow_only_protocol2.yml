@@ -1,0 +1,15 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: "Allow Only SSH Protocol 2"
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^Protocol [0-9]"
+    line: "Protocol 2"
+    validate: sshd -t -f %s
+  #notify: :reload ssh
+  tags:
+    @ANSIBLE_TAGS@

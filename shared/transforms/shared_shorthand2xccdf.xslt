@@ -109,6 +109,22 @@
             </xsl:otherwise>
           </xsl:choose>
           <xsl:choose>
+            <xsl:when test="contains(requires/@prodtype, $prod_type) or requires/@prodtype = 'all'">
+              <xsl:apply-templates select="requires"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="requires[not(requires/@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(conflicts/@prodtype, $prod_type) or conflicts/@prodtype = 'all'">
+              <xsl:apply-templates select="conflicts"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="conflicts[not(conflicts/@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
             <xsl:when test="contains(platform/@prodtype, $prod_type) or platform/@prodtype = 'all'">
               <xsl:apply-templates select="platform"/>
             </xsl:when>
@@ -133,7 +149,7 @@
               <xsl:apply-templates select="oval[not(@prodtype)]"/>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform|self::ident|self::oval|self::prodtype)]"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval|self::prodtype)]"/>
         </Rule>
       </xsl:when>
     </xsl:choose>
@@ -156,10 +172,12 @@
       <xsl:apply-templates select="ref"/>
       <xsl:apply-templates select="rationale"/>
       <xsl:apply-templates select="platform"/>
+      <xsl:apply-templates select="requires"/>
+      <xsl:apply-templates select="conflicts"/>
       <xsl:apply-templates select="ident"/>
       <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
       <xsl:apply-templates select="oval"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform|self::ident|self::oval)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval)]"/>
     </Rule>
   </xsl:template>
 
@@ -210,6 +228,22 @@
             </xsl:otherwise>
           </xsl:choose>
           <xsl:choose>
+            <xsl:when test="contains(requires/@prodtype, $prod_type) or requires/@prodtype = 'all'">
+              <xsl:apply-templates select="requires"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="requires[not(requires/@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="contains(conflicts/@prodtype, $prod_type) or conflicts/@prodtype = 'all'">
+              <xsl:apply-templates select="conflicts"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:apply-templates select="conflicts[not(conflicts/@prodtype)]"/>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:choose>
             <xsl:when test="contains(platform/@prodtype, $prod_type) or platform/@prodtype = 'all'">
               <xsl:apply-templates select="platform"/>
             </xsl:when>
@@ -217,7 +251,7 @@
               <xsl:apply-templates select="platform[not(@prodtype)]"/>
             </xsl:otherwise>
           </xsl:choose>
-          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform|self::prodtype)]"/>
+          <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::prodtype)]"/>
         </Group>
       </xsl:when>
     </xsl:choose>
@@ -232,8 +266,10 @@
       <xsl:apply-templates select="warning"/>
       <xsl:apply-templates select="ref"/>
       <xsl:apply-templates select="rationale"/>
+      <xsl:apply-templates select="requires"/>
+      <xsl:apply-templates select="conflicts"/>
       <xsl:apply-templates select="platform"/>
-      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::platform)]"/>
+      <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform)]"/>
     </Group>
   </xsl:template>
 
@@ -280,6 +316,30 @@
             </xsl:choose>
           </ident>
         </xsl:for-each>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="requires">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)"> 
+        <requires>
+          <xsl:attribute name="idref">
+            <xsl:value-of select="@id" />
+          </xsl:attribute>
+        </requires>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="conflicts">
+    <xsl:choose>
+      <xsl:when test="contains(@prodtype, $prod_type) or not(@prodtype)">
+        <conflicts>
+          <xsl:attribute name="idref">
+            <xsl:value-of select="@id" />
+          </xsl:attribute>
+        </conflicts>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
@@ -475,7 +535,7 @@
   </xsl:template>
 
   <!-- put general formatting xhtml into xhtml namespace -->
-  <xsl:template match="p | code | strong | b | em | i | pre | br | hr" >
+  <xsl:template match="p | code | strong | b | em | i | pre | br | hr | small" >
     <xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
       <xsl:apply-templates select="@*|node()"/>
     </xsl:element>

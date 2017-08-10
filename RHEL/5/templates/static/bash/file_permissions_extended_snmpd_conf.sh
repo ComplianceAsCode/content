@@ -1,1 +1,0 @@
-find / -name snmpd.conf 2>/dev/null | xargs setfacl --remove-all

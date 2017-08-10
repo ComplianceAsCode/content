@@ -28,7 +28,7 @@ implementation flaws and should be disabled if possible.
 </rationale>
 <ident prodtype="rhel7" cce="80325-4" />
 <oval id="service_named_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="366"/>
+<ref nist="CM-7" disa="366"/>
 </Rule>
 
 <Rule id="package_bind_removed" prodtype="rhel7">
@@ -44,7 +44,7 @@ removing it provides a safeguard against its activation.
 </rationale>
 <ident prodtype="rhel7" cce="80326-2" />
 <oval id="package_bind_removed" />
-<ref prodtype="rhel7" nist="CM-7" disa="366" cis="3.9" />
+<ref nist="CM-7" disa="366" cis="3.9" />
 </Rule>
 
 </Group> <!--<Group id="disabling_dns_server">-->
@@ -273,7 +273,7 @@ create the shared secret string base64-key-string. Once this secret has been
 obtained and inserted into named.conf on the primary and secondary servers, the
 key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
 .private are no longer needed, and may safely be deleted.</warning>
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80328-8" />
 </Rule>
 

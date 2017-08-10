@@ -1,3 +1,4 @@
+# platform = Webmin
 if [ "$(grep -c '^last_show=' /etc/webmin/useradmin/config)" = "0" ]; then
 	echo "last_show=1" >> /etc/webmin/useradmin/config
 else

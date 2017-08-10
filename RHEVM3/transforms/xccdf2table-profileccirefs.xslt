@@ -5,7 +5,6 @@
 
 <xsl:variable name="cci_list" select="document('../../shared/references/disa-cci-list.xml')/cci:cci_list" />
 <xsl:variable name="os_srg" select="document('../../shared/references/disa-os-srg-v1r4.xml')/cdf:Benchmark" />
-<xsl:variable name="ovaldefs" select="document('../output/unlinked-rhevm3-oval.xml')/ovalns:oval_definitions" />
 
 <xsl:include href="constants.xslt"/>
 <xsl:include href="table-style.xslt"/>

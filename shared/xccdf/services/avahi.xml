@@ -28,7 +28,7 @@ can be trusted.
 </rationale>
 <ident prodtype="rhel7" cce="80338-7" />
 <oval id="service_avahi-daemon_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="366" cis="3.3" />
+<ref nist="CM-7" disa="366" cis="3.3" />
 </Rule>
 </Group>
 
@@ -53,7 +53,7 @@ the following line exists in the <tt>[server]</tt> section:
 Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
 <pre>use-ipv4=no</pre>
 </description>
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80339-5" />
 </Rule>
 
@@ -73,7 +73,7 @@ properly-configured router or firewall should not allow mDNS packets into
 the local network at all, this option provides another check to ensure they
 are not permitted.
 </rationale>
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80340-3" />
 </Rule>
 
@@ -89,7 +89,7 @@ This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
 <ident prodtype="rhel7" cce="80341-1" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 <Rule id="avahi_disable_publishing" prodtype="rhel7">
@@ -103,7 +103,7 @@ and ensure the following line appears in the <tt>[server]</tt> section:
 This helps ensure that only Avahi is responsible for mDNS traffic coming from
 that port on the system.
 </rationale>
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 <ident prodtype="rhel7" cce="80342-9" />
 </Rule>
 
@@ -134,7 +134,7 @@ the types of published information in the event that some information
 must be published.
 </rationale>
 <ident prodtype="rhel7" cce="80343-7" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 </Group>
 </Group>

@@ -36,7 +36,7 @@ long history of security vulnerabilities and should not be used unless approved
 and documented.</rationale>
 <ident prodtype="rhel7" cce="CCE-27285-6" />
 <oval id="xwindows_runlevel_setting" />
-<ref prodtype="rhel7" nist="AC-17(8).1(ii)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="AC-17(8).1(ii)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="package_xorg-x11-server-common_removed" severity="medium" prodtype="rhel7">
@@ -59,7 +59,8 @@ vulnerabilities and should not be installed unless approved and documented.
 </rationale>
 <ident prodtype="rhel7" cce="CCE-27218-7" />
 <oval id="package_xorg-x11-server-common_removed" />
-<ref prodtype="rhel7" nist="AC-17(8).1(ii)" disa="366" cis="3.2" ossrg="SRG-OS-000480-GPOS-00227" stigid="040730"/>
+<ref prodtype="rhel7" stigid="040730" />
+<ref nist="AC-17(8).1(ii)" disa="366" cis="3.2" ossrg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <!-- to add: guidance in /etc/gdm/custom.conf for xdmcp disable, tcplisten disable -->

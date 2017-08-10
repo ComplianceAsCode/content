@@ -26,7 +26,7 @@ do
 		# pam_faillock.so present, authfail even_deny_root directive present?
 		if ! grep -q "^auth.*\[default=die\].*pam_faillock.so.*authfail.*even_deny_root" $pamFile; then
 			# even_deny_root is not present
-			sed -i --follow-symlinks "s/\(^auth.*\[default=die\].*pam_faillock.so.*authfail.*silent.*\).*/\1 even_deny_root/" $pamFile
+			sed -i --follow-symlinks "s/\(^auth.*\[default=die\].*pam_faillock.so.*authfail.*\).*/\1 even_deny_root/" $pamFile
 		fi
 
 	# pam_faillock.so not present yet

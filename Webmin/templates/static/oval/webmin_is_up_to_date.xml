@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance"
+  id="webmin_is_up_to_date" version="1">
+    <metadata>
+      <title>Webmin</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <reference ref_id="cpe:/a:gentoo:webmin"
+      source="CPE" />
+      <description>The Webmin application installed on the system is
+      updated.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Webmin is updated"
+	  test_ref="test_webmin_update" />
+    </criteria>
+  </definition>
+
+  <!-- Webmin Version Check -->
+  <linux:rpminfo_test check="at least one" check_existence="at_least_one_exists" comment="Webmin is updated" id="test_webmin_update" version="1">
+    <linux:object object_ref="obj_webmin" />
+	<linux:state state_ref="state_webmin_update" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_webmin_update" version="1">
+    <linux:evr operation="greater than or equal" datatype="evr_string">0:1.660-1</linux:evr>
+  </linux:rpminfo_state>
+  
+  <external_variable comment="dummy var" datatype="int" id="var_dummy" version="1" />
+</def-group>

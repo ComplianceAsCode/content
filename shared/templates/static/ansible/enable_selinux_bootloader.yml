@@ -1,0 +1,11 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Ensure SELinux Not Disabled in /etc/default/grub
+  replace:
+    dest: /etc/default/grub
+    regexp: selinux=0
+  tags:
+    @ANSIBLE_TAGS@

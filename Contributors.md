@@ -1,11 +1,12 @@
 <!---
 This file is generated using the generate-contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2017-04-28 13:25
+Last Modified: 2017-06-29 18:42
 --->
 
 The following people have contributed to the SCAP Security Guide project
 (listed in alphabetical order):
 
+* Frank J Cameron (CAM1244) <cameron@ctc.com>
 * 0x66656c6978 <0x66656c6978@users.noreply.github.com>
 * Gabe Alford <redhatrises@gmail.com>
 * Christopher Anderson <cba@fedoraproject.org>
@@ -49,6 +50,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kazuo Moriwaka <moriwaka@users.noreply.github.com>
 * Michael Moseley <michael@eclipse.ncsc.mil>
 * Joe Nall <joe@nall.com>
+* Neiloy <neiloy@redhat.com>
 * Michele Newman <mnewman@redhat.com>
 * Kaustubh Padegaonkar <theTuxRacer@gmail.com>
 * Michael Palmiotto <mpalmiotto@tresys.com>

@@ -1,1 +1,0 @@
-setfacl --remove-all /etc/samba/passdb.tdb /etc/samba/secrets.tdb

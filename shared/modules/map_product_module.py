@@ -10,25 +10,28 @@ WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 UBUNTU = 'Ubuntu'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
-EAP = 'JBoss EAP'
+EAP = 'JBoss Enterprise Application Platform'
 FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 
-multi_product_list = ['rhel', 'fedora', 'rhel-osp', 'debian', 'ubuntu', 'wrlinux', 'opensuse', 'sle']
+multi_product_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
+                      "wrlinux", "opensuse", "sle"]
+
+PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
 
 
 def parse_product_name(product):
     product_version = None
-    r = re.compile("([a-zA-Z\-]+)([0-9]+)")
-    match = r.match(product)
+    match = PRODUCT_NAME_PARSER.match(product)
 
     if match is not None:
-         if isinstance(match.group(1), str) or isinstance(match.group(1), unicode):
-             product = match.group(1)
-         if match.group(2).isdigit():
-             product_version = match.group(2)
+        if isinstance(match.group(1), str) or \
+                isinstance(match.group(1), unicode):
+            product = match.group(1)
+        if match.group(2).isdigit():
+            product_version = match.group(2)
 
     return product, product_version
 
@@ -36,39 +39,44 @@ def parse_product_name(product):
 def map_product(version):
     """Maps SSG Makefile internal product name to official product name"""
 
-    product_name = None
+    if version.startswith("multi_platform_"):
+        trimmed_version = version[len("multi_platform_"):]
+        if trimmed_version not in multi_product_list:
+            raise RuntimeError(
+                "%s is an invalid product version. If it's multi_platform the "
+                "suffix has to be from (%s)."
+                % (version, ", ".join(multi_product_list))
+            )
+        return map_product(trimmed_version)
 
-    if re.findall('chromium', version):
-        product_name = CHROMIUM
-    if re.findall('fedora', version):
-        product_name = FEDORA
-    if re.findall('firefox', version):
-        product_name = FIREFOX
-    if re.findall('jre', version):
-        product_name = JRE
-    if re.findall('rhel', version):
-        product_name = RHEL
-    if re.findall('webmin', version):
-        product_name = WEBMIN
-    if re.findall('debian', version):
-        product_name = DEBIAN
-    if re.findall('ubuntu', version):
-        product_name = UBUNTU
-    if re.findall('rhevm', version):
-        product_name = RHEVM
-    if re.findall('eap', version):
-        product_name = EAP
-    if re.findall('fuse', version):
-        product_name = FUSE
-    if re.findall('opensuse', version):
-        product_name = OPENSUSE
-    if re.findall('sle', version):
-        product_name = SUSE
-    if re.findall('wrlinux', version):
-        product_name = WRLINUX
+    if version.startswith("chromium"):
+        return CHROMIUM
+    if version.startswith("fedora"):
+        return FEDORA
+    if version.startswith("firefox"):
+        return FIREFOX
+    if version.startswith("jre"):
+        return JRE
+    if version.startswith("rhel"):
+        return RHEL
+    if version.startswith("webmin"):
+        return WEBMIN
+    if version.startswith("debian"):
+        return DEBIAN
+    if version.startswith("ubuntu"):
+        return UBUNTU
+    if version.startswith("rhevm"):
+        return RHEVM
+    if version.startswith("eap"):
+        return EAP
+    if version.startswith("fuse"):
+        return FUSE
+    if version.startswith("opensuse"):
+        return OPENSUSE
+    if version.startswith("sle"):
+        return SUSE
+    if version.startswith("wrlinux"):
+        return WRLINUX
 
-    if product_name is None:
-        raise RuntimeError("Can't map version '%s' to any known product!"
-                           % (version))
-
-    return product_name
+    raise RuntimeError("Can't map version '%s' to any known product!"
+                       % (version))

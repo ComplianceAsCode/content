@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="sebool_%SEBOOLID%" version="1">
+    <metadata>
+      <title>SELinux "%SEBOOLID%" Boolean Check</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The SELinux "%SEBOOLID%" boolean should be set in the system configuration.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="%SEBOOLID% is configured correctly" test_ref="test_sebool_%SEBOOLID%" />
+    </criteria>
+  </definition>
+
+  <linux:selinuxboolean_test check="all" check_existence="all_exist" comment="%SEBOOLID% is configured correctly" id="test_sebool_%SEBOOLID%" version="1">
+    <linux:object object_ref="object_sebool_%SEBOOLID%" />
+    <linux:state state_ref="state_sebool_%SEBOOLID%" />
+  </linux:selinuxboolean_test>
+
+  <linux:selinuxboolean_object id="object_sebool_%SEBOOLID%" version="1">
+    <linux:name>%SEBOOLID%</linux:name>
+  </linux:selinuxboolean_object>
+
+  <linux:selinuxboolean_state id="state_sebool_%SEBOOLID%" version="1">
+    <linux:name>%SEBOOLID%</linux:name>
+    <linux:current_status datatype="boolean" var_ref="var_%SEBOOLID%"/>
+    <linux:pending_status datatype="boolean" var_ref="var_%SEBOOLID%"/>
+  </linux:selinuxboolean_state>
+
+  <external_variable comment="external variable for %SEBOOLID%" datatype="boolean" id="var_%SEBOOLID%" version="1" />
+
+</def-group>

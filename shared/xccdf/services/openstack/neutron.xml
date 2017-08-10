@@ -1,0 +1,124 @@
+<Group id="neutron" prodtype="osp7">
+<title>Neutron STIG Checklist</title>
+<description>High level overview of Neutron STIG settings to go here!</description>
+
+<Rule id="neutron_file_ownership" prodtype="osp7">
+<title>Check-Neutron-01: Is user/group ownership of config files set to root/neutron?</title>
+<description>
+Configuration files contain critical parameters and information required for smooth functioning of the component. If an unprivileged user, either intentionally or accidentally modifies or deletes any of the parameters or the file itself then it would cause severe availability issues causing a denial of service to the other end users. Thus user ownership of such critical configuration files must be set to root and group ownership must be set to neutron.
+<br />
+<br />
+Run the following commands:
+
+<br />
+<br />
+$ stat -L -c "%U %G" /etc/neutron/neutron.conf | egrep "root neutron"
+$ stat -L -c "%U %G" /etc/neutron/api-paste.ini | egrep "root neutron"
+$ stat -L -c "%U %G" /etc/neutron/policy.json | egrep "root neutron"
+$ stat -L -c "%U %G" /etc/neutron/rootwrap.conf | egrep "root neutron"
+Pass: If user and group ownership of all these config files is set to root and neutron respectively. The above commands show output of root neutron.
+<br />
+<br />
+
+Fail: If the above commands does not return any output as the user and group ownership might have set to any user other than root or any group other than neutron.
+</description>
+<!-- <oval id="neutron_file_ownership" /> -->
+</Rule>
+
+<Rule id="neutron_file_perms" prodtype="osp7">
+<title>Check-Neutron-02: Are strict permissions set for Compute configuration files?</title>
+<description>
+Similar to the previous check, it is recommended to set strict access permissions for such configuration files.
+
+<br />
+<br />
+Run the following commands:
+
+<br />
+<br />
+<tt>
+$ stat -L -c "%a" /etc/neutron/neutron.conf
+<br />
+$ stat -L -c "%a" /etc/neutron/api-paste.ini
+<br />
+$ stat -L -c "%a" /etc/neutron/policy.json
+<br />
+$ stat -L -c "%a" /etc/neutron/rootwrap.conf
+</tt>
+<br />
+<br />
+Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into owner r/w, group r, and no rights to others i.e. “u=rw,g=r,o=”. Note that with Check-Neutron-01: Is user/group ownership of config files set to root/neutron? and permissions set to 640, root has read/write access and neutron has read access to these configuration files. The access rights can also be validated using the following command. This command will only be available on your system if it supports ACLs.
+<br />
+<br />
+<tt>
+$ getfacl --tabular -a /etc/neutron/neutron.conf
+<br />
+getfacl: Removing leading '/' from absolute path names
+<br />
+<br />
+# file: etc/neutron/neutron.conf
+<br />
+USER   root     rw-
+<br />
+GROUP  neutron  r--
+<br />
+mask            r--
+<br />
+other           ---
+</tt>
+<br />
+<br />
+Fail: If permissions are not set to at least 640.
+</description>
+<!-- <oval id="neutron_file_perms" /> -->
+</Rule>
+
+<Rule id="neutron_use_keystone" prodtype="osp7">
+<title>Check-Neutron-03: Is keystone used for authentication?</title>
+<description>
+OpenStack supports various authentication strategies like noauth, keystone etc. If the ‘noauth’ strategy is used then the users could interact with OpenStack services without any authentication. This could be a potential risk since an attacker might gain unauthorized access to the OpenStack components. Thus it is strongly recommended that all services must be authenticated with keystone using their service accounts.
+
+<br />
+<br />
+Pass: If value of parameter auth_strategy under [DEFAULT] section in /etc/neutron/neutron.conf is set to keystone.
+
+<br />
+<br />
+Fail: If value of parameter auth_strategy under [DEFAULT] section is set to noauth or noauth2.
+</description>
+<!-- <oval id="neutron_use_keystone" /> -->
+</Rule>
+
+<Rule id="neutron_use_https" prodtype="osp7">
+<title>Check-Neutron-04: Is secure protocol used for authentication?</title>
+<description>
+OpenStack components communicate with each other using various protocols and the communication might involve sensitive / confidential data. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the components must communicate with each other using a secured communication protocol.
+
+<br />
+<br />
+Pass: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/neutron/neutron.conf is set to https, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/neutron/neutron.conf is set to Identity API endpoint starting with https://.
+
+<br />
+<br />
+Fail: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/neutron/neutron.conf is set to http`, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/neutron/neutron.conf is not set to Identity API endpoint starting with https://.
+</description>
+<!-- <oval id="neutron_use_https" /> -->
+</Rule>
+
+<Rule id="neutron_api_use_ssl" prodtype="osp7">
+<title>Check-Neutron-05: Is SSL enabled on Neutron API server?</title>
+<description>
+Similar to the previous check, it is recommended to enable secure communication on API server.
+
+<br />
+<br />
+Pass: If value of parameter use_ssl under [DEFAULT] section in /etc/neutron/neutron.conf is set to True.
+
+<br />
+<br />
+Fail: If value of parameter use_ssl under [DEFAULT] section in /etc/neutron/neutron.conf is set to False.
+</description>
+<!-- <oval id="neutron_api_use_ssl" /> -->
+</Rule>
+
+</Group>

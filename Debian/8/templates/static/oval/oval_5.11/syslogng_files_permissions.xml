@@ -1,0 +1,70 @@
+<def-group>
+  <definition class="compliance" id="syslogng_files_permissions" version="1">
+    <metadata>
+      <title>Confirm Existence and Permissions of System Log Files</title>
+      <affected family="unix">
+        <platform>Debian 8</platform>
+      </affected>
+      <description>File permissions for all syslog log files should be set correctly.</description>
+    </metadata>
+
+    <criteria operator="AND">
+      <extend_definition comment="syslog-ng daemon is used as local logging daemon" definition_ref="package_syslogng_installed" />
+      <criterion comment="Check permissions of syslog-ng main config file" test_ref="test_permissions_syslogng_file" />
+      <criterion comment="Check permissions of syslog-ng included config files" test_ref="test_permissions_syslogng_slave_files" />
+    </criteria>
+
+  </definition>
+
+  <unix:file_test  check="all" check_existence="all_exist" comment="syslog-ng.conf is writeable only by root" id="test_permissions_syslogng_file" version="1">
+    <unix:object object_ref="object_file_permissions_syslogng_file" />
+    <unix:state state_ref="state_owner_syslogng" />
+    <unix:state state_ref="state_file_permissions_syslogng" />
+  </unix:file_test>
+
+  <unix:file_object comment="system.mapfiles" id="object_file_permissions_syslogng_file" version="1">
+    <unix:path>/etc/syslog-ng</unix:path>
+    <unix:filename>syslog-ng.conf</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_owner_syslogng" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_syslogng" version="1">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <unix:file_test  check="all" check_existence="all_exist" comment="syslog-ng.conf slave files is writeable only by root" id="test_permissions_syslogng_slave_files" version="1">
+    <unix:object object_ref="object_file_permissions_syslogng_slave_files" />
+    <unix:state state_ref="state_owner_syslogng_slaves" />
+    <unix:state state_ref="state_file_permissions_syslogng_slaves" />
+  </unix:file_test>
+
+  <unix:file_object comment="syslogng slaves config files path" id="object_file_permissions_syslogng_slave_files" version="1">
+    <unix:path>/etc/syslog-ng</unix:path>
+    <unix:filename operation="pattern match">^conf.d/*$</unix:filename>
+  </unix:file_object>
+
+  <unix:file_state id="state_owner_syslogng_slaves" version="1">
+    <unix:user_id datatype="int" operation="equals">0</unix:user_id>
+  </unix:file_state>
+
+  <unix:file_state id="state_file_permissions_syslogng_slaves" version="1">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+    <unix:sticky datatype="boolean">false</unix:sticky>
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>

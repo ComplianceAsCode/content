@@ -1,0 +1,33 @@
+# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# reboot = false
+# complexity = low
+# strategy = configure
+# disruption = low
+
+- name: Ensure firewalld is installed
+  package:
+    name="{{item}}"
+    state=present
+  with_items:
+    - firewalld
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: Enable SSHD in firewalld (custom port)
+  firewalld:
+    port: (ansible-populate sshd_listening_port)/tcp
+    permanent: yes
+    state: enabled
+  when: (ansible-populate sshd_listening_port) != 22
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: Enable SSHD in firewalld (default port)
+  firewalld:
+    service: ssh
+    permanent: yes
+    state: enabled
+  when: (ansible-populate sshd_listening_port) == 22
+  tags:
+    @ANSIBLE_TAGS@
+

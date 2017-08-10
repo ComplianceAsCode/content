@@ -1,0 +1,70 @@
+<def-group>
+  <definition class="inventory" id="installed_app_is_java" version="1">
+    <metadata>
+      <title>Java Runtime Environment</title>
+      <affected family="unix">
+        <product>Java Runtime Environment (JRE)</product>
+      </affected>
+      <reference ref_id="installed_app_is_java" source="CPE" />
+      <description>The application installed on the system is Java.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion comment="Oracle Java is installed" test_ref="test_oracle_java" />
+      <criterion comment="Oracle Java from Red Hat" test_ref="test_oracle_java_rhel" />
+      <criterion comment="IBM Java is installed" test_ref="test_ibm_java" />
+      <criterion comment="IBM Java from Red Hat" test_ref="test_ibm_java_rhel" />
+      <criterion comment="Sun Java from Red Hat" test_ref="test_sun_java_rhel" />
+      <criterion comment="OpenJDK is installed" test_ref="test_openjdk_java" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Oracle JRE is installed" id="test_oracle_java" version="1">
+    <linux:object object_ref="obj_oracle_java" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_oracle_java" version="1">
+    <linux:name datatype="string" operation="pattern match">^jre.*$</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Oracle JRE from Red Hat is installed" id="test_oracle_java_rhel" version="1">
+    <linux:object object_ref="obj_oracle_java_rhel" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_oracle_java_rhel" version="1">
+    <linux:name datatype="string" operation="pattern match">^java.*oracle.*$</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="IBM JRE is installed" id="test_ibm_java" version="1">
+    <linux:object object_ref="obj_ibm_java" />
+    <linux:state state_ref="state_ibm_java" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_ibm_java" version="1">
+    <linux:name datatype="string" operation="pattern match">^ibm-java.*$</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_ibm_java" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">.*1.6.0.*</linux:evr>
+  </linux:rpminfo_state>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="IBM JRE from Red Hat is installed" id="test_ibm_java_rhel" version="1">
+    <linux:object object_ref="obj_ibm_java_rhel" />
+    <linux:state state_ref="state_ibm_java_rhel" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_ibm_java_rhel" version="1">
+    <linux:name datatype="string" operation="pattern match">^java.*ibm.*$</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_ibm_java_rhel" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">.*1.6.0.*</linux:evr>
+  </linux:rpminfo_state>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Sun JRE from Red Hat is installed" id="test_sun_java_rhel" version="1">
+    <linux:object object_ref="obj_sun_java_rhel" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_sun_java_rhel" version="1">
+    <linux:name datatype="string" operation="pattern match">^java.*sun.*$</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="Red Hat OpenJDK is installed" id="test_openjdk_java" version="1">
+    <linux:object object_ref="obj_openjdk_java" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_openjdk_java" version="1">
+    <linux:name datatype="string" operation="pattern match">^java.*openjdk.*$</linux:name>
+  </linux:rpminfo_object>
+</def-group>

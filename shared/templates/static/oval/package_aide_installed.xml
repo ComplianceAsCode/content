@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="package_aide_installed"
+  version="1">
+    <metadata>
+      <title>Package aide Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The RPM package aide should be installed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package aide is installed"
+      test_ref="test_package_aide_installed" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_aide_installed" version="1"
+  comment="package aide is installed">
+    <linux:object object_ref="obj_package_aide_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_aide_installed" version="1">
+    <linux:name>aide</linux:name>
+  </linux:rpminfo_object>
+</def-group>

@@ -1,13 +1,30 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
-import subprocess
 import os
 import sys
 import argparse
 
 templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 sys.path.append(templates_dir)
-from template_common import ExitCodes
+from template_common import ActionType
+
+from create_accounts_password import AccountsPasswordGenerator
+from create_kernel_modules_disabled import KernelModulesDisabledGenerator
+from create_mount_options import MountOptionsGenerator
+from create_package_installed import PackageInstalledGenerator
+from create_package_removed import PackageRemovedGenerator
+from create_permission import PermissionGenerator
+from create_selinux_booleans import SEBoolGenerator
+from create_services_disabled import ServiceDisabledGenerator
+from create_services_enabled import ServiceEnabledGenerator
+from create_sysctl import SysctlGenerator
+from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
+from create_audit_rules_unsuccessful_file_modification import AuditRulesUnsuccessfulFileModificationGenerator
+from create_audit_rules_file_deletion_events import AuditRulesFileDeletionEventsGenerator
+from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
+from create_audit_rules_privileged_commands import AuditRulesPrivilegedCommandsGenerator
+from create_audit_rules_usergroup_modification import AuditRulesUserGroupModificationGenerator
+
 
 class Builder(object):
     def __init__(self):
@@ -16,16 +33,22 @@ class Builder(object):
         self.ssg_shared = ""
 
         self.script_dict = {
-            "sysctl_values.csv":            "create_sysctl.py",
-            "services_disabled.csv":        "create_services_disabled.py",
-            "services_enabled.csv":         "create_services_enabled.py",
-            "packages_installed.csv":       "create_package_installed.py",
-            "packages_removed.csv":         "create_package_removed.py",
-            "kernel_modules_disabled.csv":  "create_kernel_modules_disabled.py",
-            "file_dir_permissions.csv":     "create_permission.py",
-            "accounts_password.csv":        "create_accounts_password.py",
-            "mount_options.csv":            "create_mount_options.py",
-            "selinux_booleans.csv":         "create_selinux_booleans.py",
+            "sysctl_values.csv":                SysctlGenerator(),
+            "services_disabled.csv":            ServiceDisabledGenerator(),
+            "services_enabled.csv":             ServiceEnabledGenerator(),
+            "packages_installed.csv":           PackageInstalledGenerator(),
+            "packages_removed.csv":             PackageRemovedGenerator(),
+            "kernel_modules_disabled.csv":      KernelModulesDisabledGenerator(),
+            "file_dir_permissions.csv":         PermissionGenerator(),
+            "accounts_password.csv":            AccountsPasswordGenerator(),
+            "mount_options.csv":                MountOptionsGenerator(),
+            "selinux_booleans.csv":             SEBoolGenerator(),
+            "audit_rules_dac_modification.csv": AuditRulesDacModificationGenerator(),
+            "audit_rules_unsuccessful_file_modification.csv":   AuditRulesUnsuccessfulFileModificationGenerator(),
+            "audit_rules_file_deletion_events.csv":  AuditRulesFileDeletionEventsGenerator(),
+            "audit_rules_login_events.csv":  AuditRulesLoginEventsGenerator(),
+            "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
+            "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
@@ -50,80 +73,6 @@ class Builder(object):
             "oval_5.10": os.path.join(self.input_dir, "csv"),
             "oval_5.11": os.path.join(self.input_dir, "csv", "oval_5.11"),
         }
-
-    def set_ssg_shared(self, shared):
-        self.ssg_shared = shared
-
-    def build(self):
-        for lang in self.langs:
-            dir_ = self._output_dir_for_lang(lang)
-            if not os.path.exists(dir_):
-                os.makedirs(dir_)
-
-        # Build scripts for multiple OVAL versions.
-        # At first for the oldest OVAL, then newer and newer
-        # this will allow to override older implementation
-        # with a never one.
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            for csv_filename in self._get_csv_list():
-                script = self._get_script_for_csv(csv_filename)
-
-                csv_filepath = os.path.join(self._get_csv_dir(), csv_filename)
-                self._run_script(script, csv_filepath)
-
-    def list_inputs(self):
-        for file_ in self.get_input_list():
-            print(file_)
-
-    def list_outputs(self):
-        for file_ in self.get_output_list():
-            print(file_)
-
-    def get_input_list(self):
-        list_ = []
-
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            csv_dir = self._get_csv_dir()
-            for csv in self._get_csv_list():
-                csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath = self._get_script_for_csv(csv)
-
-                list_.append(csv_filepath)
-                list_.append(script_filepath)
-
-                for lang in self.langs:
-                    files_list = self._read_io_files_list(
-                        script_filepath, csv_filepath, lang, "list-inputs"
-                    )
-                    list_.extend(files_list)
-
-        return self._deduplicate(list_)
-
-    def get_output_list(self):
-        list_ = []
-
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
-
-            csv_dir = self._get_csv_dir()
-            for csv in self._get_csv_list():
-                csv_filepath = os.path.join(csv_dir, csv)
-                script_filepath = self._get_script_for_csv(csv)
-
-                for lang in self.langs:
-                    files_list = self._read_io_files_list(
-                        script_filepath, csv_filepath, lang, "list-outputs"
-                    )
-                    list_.extend(files_list)
-
-        return self._deduplicate(list_)
-
-    def set_output_dir(self, output_dir):
-        self.output_dir = output_dir
 
     def _set_current_oval(self, oval):
         self.current_oval = oval
@@ -158,78 +107,88 @@ class Builder(object):
 
         return csvs
 
-    def _get_script_for_csv(self, csv_filename):
+    def _get_generator_for_csv(self, csv_filename):
         try:
-            script_name = self.script_dict[csv_filename]
-            full_path = os.path.join(self.shared_templates_dir, script_name)
-            return full_path
+            return self.script_dict[csv_filename]
 
         except KeyError:
             sys.stderr.write(
-                "Cannot find associated build script for {0}\n"
+                "Cannot find the associated generator class for {0}\n"
                 .format(csv_filename)
             )
-            sys.exit(1)
-
-    def _output_dir_for_lang(self, lang):
-        return os.path.join(self.output_dir, lang)
-
-    def _run_script(self, script, csv_filepath):
-        for lang in self.langs:
-            sp = self._create_subprocess(
-                script=script, csv=csv_filepath, lang=lang, action="build",
-                print_args=True
-            )
-            self._subprocess_check(sp)
-
-    def _read_io_files_list(self, script, csv, lang, action):
-        sp = self._create_subprocess(script, csv, lang, action)
-        return self._get_list_from_subprocess(sp)
-
-    def _create_subprocess(self, script, csv, lang, action, print_args=False):
-        args= [
-            "python", script,
-            "--csv", csv,
-            "--lang", lang,
-            "--input", self._get_template_dir(),
-            "--shared", self.ssg_shared,
-            "--output", self.output_dir,
-            action
-        ]
-        if print_args:
-            sys.stderr.write(" ".join(args) + "\n")
-        return subprocess.Popen(
-                args,
-                stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE
-        )
-
-    def _subprocess_check(self, subprocess):
-        subprocess.wait()
-        no_error_codes = [
-            ExitCodes.OK, ExitCodes.NO_TEMPLATE, ExitCodes.UNKNOWN_TARGET
-        ]
-        if subprocess.returncode in no_error_codes:
-            pass
-        else:
-            comm = subprocess.communicate()
-            raise RuntimeError("Process returned: %s"
-                               % (
-                                   comm[0].decode("utf-8") +
-                                   comm[1].decode("utf-8")
-                                  ))
-
-    def _get_list_from_subprocess(self, subprocess):
-        self._subprocess_check(subprocess)
-        text = subprocess.communicate()[0].decode("utf-8")
-        return [os.path.abspath(line) for line in text.split("\n") if line]
+            #sys.exit(1)
 
     def _deduplicate(self, files):
         return set(os.path.realpath(file_) for file_ in files)
 
+    def build(self):
+        for lang in self.langs:
+            dir_ = os.path.join(self.output_dir, lang)
+            if not os.path.exists(dir_):
+                os.makedirs(dir_)
+
+        # Build scripts for multiple OVAL versions.
+        # At first for the oldest OVAL, then newer and newer
+        # this will allow to override older implementation
+        # with a never one.
+        for oval in self.supported_ovals:
+            self._set_current_oval(oval)
+
+            csv_dir = self._get_csv_dir()
+            for csv_filename in self._get_csv_list():
+                generator = self._get_generator_for_csv(csv_filename)
+                csv_filepath = os.path.join(csv_dir, csv_filename)
+
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = ActionType.BUILD
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+    def get_file_list(self, action):
+        assert(action in [ActionType.INPUT, ActionType.OUTPUT])
+
+        list_ = []
+        if action == ActionType.INPUT:
+            pass
+
+        for oval in self.supported_ovals:
+            self._set_current_oval(oval)
+
+            csv_dir = self._get_csv_dir()
+            for csv in self._get_csv_list():
+                csv_filepath = os.path.join(csv_dir, csv)
+                generator = self._get_generator_for_csv(csv)
+
+                if action == ActionType.INPUT:
+                    list_.append(csv_filepath)
+
+                generator.reset()
+                generator.output_dir = self.output_dir
+                generator.action = action
+                generator.product_input_dir = self._get_template_dir()
+                generator.shared_dir = self.ssg_shared
+
+                for lang in self.langs:
+                    generator.csv_map(csv_filepath, language=lang)
+
+                list_.extend(generator.files)
+
+        return self._deduplicate(list_)
+
+    def list_inputs(self):
+        for file_ in self.get_file_list(ActionType.INPUT):
+            print(file_)
+
+    def list_outputs(self):
+        for file_ in self.get_file_list(ActionType.OUTPUT):
+            print(file_)
+
 
 if __name__ == "__main__":
-    builder = Builder()
     p = argparse.ArgumentParser()
 
     sp = p.add_subparsers(help="actions")
@@ -262,12 +221,13 @@ if __name__ == "__main__":
         )
         sys.exit(1)
 
+    builder = Builder()
     if args.language is not None:
         builder.set_langs([args.language])
 
     builder.set_input_dir(args.input)
-    builder.set_output_dir(args.output)
-    builder.set_ssg_shared(args.shared)
+    builder.output_dir = args.output
+    builder.ssg_shared = args.shared
 
     if args.oval_version == "oval_5.10":
         builder.supported_ovals = ["oval_5.10"]

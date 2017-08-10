@@ -1,0 +1,155 @@
+<Group id="horizon" prodtype="osp7">
+<title>Horizon STIG Checklist</title>
+<description>High level overview of Horizon STIG settings to go here!</description>
+
+<Rule id="horizon_file_ownership" prodtype="osp7">
+<title>Check-Dashboard-01: Is user/group of config files set to root/horizon?</title>
+<description>
+Configuration files contain critical parameters and information required for smooth functioning of the component. If an unprivileged user, either intentionally or accidentally modifies or deletes any of the parameters or the file itself then it would cause severe availability issues causing a denial of service to the other end users. Thus user ownership of such critical configuration files must be set to root and group ownership must be set to horizon.
+<br />
+<br />
+Run the following commands:
+
+<br />
+<tt>
+$ stat -L -c "%U %G"  /etc/openstack-dashboard/local_settings | egrep "root horizon"
+</tt>
+<br />
+<br />
+Pass: If user and group ownership of the config file is set to root and horizon respectively. The above commands show output of root horizon.
+
+<br />
+<br />
+Fail: If the above commands does not return any output as the user and group ownership might have set to any user other than root or any group other than horizon.
+</description>
+<!-- <oval id="horizon_file_ownership" /> -->
+</Rule>
+
+<Rule id="horizon_file_perms" prodtype="osp7">
+<title>Check-Dashboard-02: Are strict permissions set for horizon configuration files?</title>
+<description>
+Similar to the previous check, it is recommended to set strict access permissions for such configuration files.
+<br />
+<br />
+
+Run the following commands:
+<br />
+<tt>
+$ stat -L -c "%a" /etc/openstack-dashboard/local_settings
+</tt>
+<br />
+<br />
+Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into owner r/w, group r, and no rights to others i.e. “u=rw,g=r,o=”. Note that with Check-Dashboard-01: Is user/group of config files set to root/horizon? and permissions set to 640, root has read/write access and horizon has read access to these configuration files. The access rights can also be validated using the following command. This command will only be available on your system if it supports ACLs.
+
+<br />
+<br />
+<tt>
+$ getfacl --tabular -a /etc/openstack-dashboard/local_settings
+<br />
+getfacl: Removing leading '/' from absolute path names
+<br />
+# file: etc/openstack-dashboard/local_settings
+<br />
+USER   root     rw-
+<br />
+GROUP  horizon  r--
+<br />
+mask            r--
+<br />
+other           ---
+</tt>
+<br />
+<br />
+Fail: If permissions are not set to at least 640.
+</description>
+<!-- <oval id="horizon_file_perms" /> -->
+</Rule>
+
+<Rule id="horizon_use_ssl" prodtype="osp7">
+<title>Check-Dashboard-03: Is USE_SSL parameter set to True?</title>
+<description>
+Openstack services communicate with each other using various protocols and the communication might involve sensitive/confidential information. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the services must communicate with each other using a secured communication protocol like HTTPS.
+<br />
+<br />
+Pass: If value of parameter USE_SSL in /etc/openstack-dashboard/local_settings is set to True.
+<br />
+<br />
+Fail: If value of parameter USE_SSL in /etc/openstack-dashboard/local_settings is set to False.
+</description>
+<oval id="horizon_use_ssl" />
+</Rule>
+
+<Rule id="horizon_csrf_cookie_secure" prodtype="osp7">
+<title>Check-Dashboard-04: Is CSRF_COOKIE_SECURE parameter set to True?</title>
+<description>
+CSRF (Cross-site request forgery) is an attack which forces an end user to execute unauthorized commands on a web application in which he/she is currently authenticated. A successful CSRF exploit can compromise end user data and operations in case of normal user. If the targeted end user has admin privileges, this can compromise the entire web application.
+<br />
+<br />
+Pass: If value of parameter CSRF_COOKIE_SECURE in /etc/openstack-dashboard/local_settings is set to True.
+
+<br />
+<br />
+Fail: If value of parameter CSRF_COOKIE_SECURE in /etc/openstack-dashboard/local_settings is set to False.
+</description>
+<oval id="horizon_csrf_cookie_secure" />
+</Rule>
+
+<Rule id="horizon_session_cookie_secure" prodtype="osp7">
+<title>Check-Dashboard-05: Is SESSION_COOKIE_SECURE parameter set to True?</title>
+<description>
+The “SECURE” cookie attribute instructs web browsers to only send the cookie through an encrypted HTTPS (SSL/TLS) connection. This session protection mechanism is mandatory to prevent the disclosure of the session ID through MitM (Man-in-the-Middle) attacks. It ensures that an attacker cannot simply capture the session ID from web browser traffic.
+<br />
+<br />
+Pass: If value of parameter SESSION_COOKIE_SECURE in /etc/openstack-dashboard/local_settings is set to True.
+
+<br />
+<br />
+Fail: If value of parameter SESSION_COOKIE_SECURE in /etc/openstack-dashboard/local_settings is set to False.
+</description>
+<oval id="horizon_session_cookie_secure" />
+</Rule>
+
+<Rule id="horizon_session_cookie_httponly" prodtype="osp7">
+<title>Check-Dashboard-06: Is SESSION_COOKIE_HTTPONLY parameter set to True?</title>
+<description>
+The “HTTPONLY” cookie attribute instructs web browsers not to allow scripts (e.g. JavaScript or VBscript) an ability to access the cookies via the DOM document.cookie object. This session ID protection is mandatory to prevent session ID stealing through XSS attacks.
+<br />
+<br />
+Pass: If value of parameter SESSION_COOKIE_HTTPONLY in /etc/openstack-dashboard/local_settings is set to True.
+
+<br />
+<br />
+Fail: If value of parameter SESSION_COOKIE_HTTPONLY in /etc/openstack-dashboard/local_settings is set to False.
+</description>
+<oval id="horizon_session_cookie_httponly" />
+</Rule>
+
+<Rule id="horizon_password_autocomplete" prodtype="osp7">
+<title>Check-Dashboard-07: Is password_autocomplete set to False?</title>
+<description>
+Common feature that applications use to provide users a convenience is to cache the password locally in the browser (on the client machine) and having it ‘pre-typed’ in all subsequent requests. While this feature can be perceived as extremely friendly for the average user, at the same time, it introduces a flaw, as the user account becomes easily accessible to anyone that uses the same account on the client machine and thus may lead to compromise of the user account.
+<br />
+<br />
+Pass: If value of parameter password_autocomplete in /etc/openstack-dashboard/local_settings is set to off.
+<br />
+<br />
+Fail: If value of parameter password_autocomplete in /etc/openstack-dashboard/local_settings is set to on.
+</description>
+<oval id="horizon_password_autocomplete" />
+</Rule>
+
+<Rule id="horizon_disable_password_reveal" prodtype="osp7">
+<title>Check-Dashboard-08: Is disable_password_reveal set to True?</title>
+<description>
+Similar to the previous check, it is recommended not to reveal password fields.
+<br />
+<br />
+Pass: If value of parameter disable_password_reveal in /etc/openstack-dashboard/local_settings is set to True.
+<br />
+<br />
+Fail: If value of parameter disable_password_reveal in /etc/openstack-dashboard/local_settings is set to False.
+</description>
+<oval id="horizon_disable_password_reveal" />
+</Rule>
+
+</Group>

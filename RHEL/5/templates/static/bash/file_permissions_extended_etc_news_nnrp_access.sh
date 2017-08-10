@@ -1,1 +1,0 @@
-setfacl --remove-all /etc/news/nnrp.access

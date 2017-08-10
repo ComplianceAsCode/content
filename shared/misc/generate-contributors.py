@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 import subprocess
 import re
@@ -22,6 +22,8 @@ email_mappings = {
     "greg@fotonotes.net": "gregelin@gitmachines.com",
     # Jean-Baptiste Donnette
     "donnet_j@epita.fr": "jean-baptiste.donnette@epita.fr",
+    # Marek Haicman
+    "dahaic@users.noreply.github.com": "mhaicman@redhat.com",
     # Martin Preisler
     "martin@preisler.me": "mpreisle@redhat.com",
     # Philippe Thierry

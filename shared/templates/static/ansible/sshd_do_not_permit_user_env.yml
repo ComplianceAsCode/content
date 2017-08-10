@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Do Not Allow SSH Environment Options
+  lineinfile:
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^PermitUserEnvironment
+    line: PermitUserEnvironment no
+    validate: sshd -t -f %s
+  tags:
+    @ANSIBLE_TAGS@

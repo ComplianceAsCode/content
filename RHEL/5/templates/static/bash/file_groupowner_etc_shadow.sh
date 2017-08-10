@@ -1,1 +1,0 @@
-chgrp root /etc/shadow

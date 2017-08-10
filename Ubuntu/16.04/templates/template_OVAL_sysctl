@@ -1,0 +1,15 @@
+<def-group>
+  <definition class="compliance" id="sysctl_%SYSCTLID%" version="3">
+    <metadata>
+      <title>Kernel "%SYSCTLVAR%" Parameter Configuration and Runtime Check</title>
+      <affected family="unix">
+        <platform>Ubuntu 1604</platform>
+      </affected>
+      <description>The "%SYSCTLVAR%" kernel parameter should be set to the appropriate value in both system configuration and system runtime.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="%SYSCTLVAR% configuration setting check" definition_ref="sysctl_static_%SYSCTLID%" />
+      <extend_definition comment="%SYSCTLVAR% runtime setting check" definition_ref="sysctl_runtime_%SYSCTLID%" />
+    </criteria>
+  </definition>
+</def-group>

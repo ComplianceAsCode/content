@@ -1,1 +1,0 @@
-chown root /dev/audio* /dev/snd/*

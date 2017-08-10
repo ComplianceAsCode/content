@@ -1,11 +1,14 @@
-# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7, multi_platform_fedora, Debian 8
+# platform = multi_platform_all
 # reboot = false
 # strategy = enable
 # complexity = low
 # disruption = low
-- name: Ensure PKGNAME is installed
+- name: "Ensure %PKGNAME% is installed"
   package:
     name="{{item}}"
     state=present
   with_items:
-    - PKGNAME
+    - %PKGNAME%
+  tags:
+    @ANSIBLE_TAGS@
+

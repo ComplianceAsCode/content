@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="sysctl_runtime_%SYSCTLID%" version="3">
+    <metadata>
+      <title>Kernel "%SYSCTLVAR%" Parameter Runtime Check</title>
+      <affected family="unix">
+        <platform>Ubuntu 1604</platform>
+      </affected>
+      <description>The kernel "%SYSCTLVAR%" parameter should be set to "%SYSCTLVAL%" in system runtime.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="kernel runtime parameter %SYSCTLVAR% set to %SYSCTLVAL%" test_ref="test_runtime_sysctl_%SYSCTLID%" />
+    </criteria>
+  </definition>
+
+  <unix:sysctl_test check="all" check_existence="all_exist" comment="kernel runtime parameter %SYSCTLVAR% set to %SYSCTLVAL%" id="test_runtime_sysctl_%SYSCTLID%" version="1">
+    <unix:object object_ref="object_sysctl_%SYSCTLID%" />
+    <unix:state state_ref="state_sysctl_%SYSCTLID%" />
+  </unix:sysctl_test>
+
+  <unix:sysctl_object id="object_sysctl_%SYSCTLID%" version="1">
+    <unix:name>%SYSCTLVAR%</unix:name>
+  </unix:sysctl_object>
+
+  <unix:sysctl_state id="state_sysctl_%SYSCTLID%" version="1">
+    <unix:value datatype="int" operation="equals">%SYSCTLVAL%</unix:value>
+  </unix:sysctl_state>
+</def-group>

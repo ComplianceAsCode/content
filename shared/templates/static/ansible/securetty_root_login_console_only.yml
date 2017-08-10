@@ -1,0 +1,12 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: "Restrict Virtual Console Root Logins"
+  lineinfile:
+    dest: /etc/securetty
+    regexp: '^vc'
+    state: absent
+  tags:
+    @ANSIBLE_TAGS@

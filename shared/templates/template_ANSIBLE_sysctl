@@ -1,0 +1,14 @@
+# platform = multi_platform_all
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+- name: Ensure sysctl %SYSCTLVAR% is set to %SYSCTLVAL%
+  sysctl:
+    name: %SYSCTLVAR%
+    value: %SYSCTLVAL%
+    state: present
+    reload: yes
+  tags:
+    @ANSIBLE_TAGS@
+

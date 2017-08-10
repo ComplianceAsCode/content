@@ -1,0 +1,190 @@
+<Group id="cinder" prodtype="osp7">
+<title>Cinder STIG Checklist</title>
+<description>High level overview of Cinder STIG settings to go here!</description>
+
+<Rule id="cinder_file_ownership" prodtype="osp7">
+<title>Check-Block-01: Is user/group ownership of config files set to root/cinder?</title>
+<description>
+Configuration files contain critical parameters and information required for smooth functioning of the component. If an unprivileged user, either intentionally or accidentally, modifies or deletes any of the parameters or the file itself then it would cause severe availability issues resulting in a denial of service to the other end users. Thus user ownership of such critical configuration files must be set to root and group ownership must be set to cinder.
+<br />
+<br />
+Run the following commands:
+<br />
+<br />
+<tt>
+$ stat -L -c "%U %G" /etc/cinder/cinder.conf | egrep "root cinder"
+<br />
+$ stat -L -c "%U %G" /etc/cinder/api-paste.ini | egrep "root cinder"
+<br />
+$ stat -L -c "%U %G" /etc/cinder/policy.json | egrep "root cinder"
+<br />
+$ stat -L -c "%U %G" /etc/cinder/rootwrap.conf | egrep "root cinder"
+</tt>
+<br />
+<br />
+Pass: If user and group ownership of all these config files is set to root and cinder respectively. The above commands show output of root cinder.
+<br />
+<br />
+Fail: If the above commands does not return any output as the user and group ownership might have set to any user other than root or any group other than cinder.
+</description>
+<!-- <oval id="cinder_file_ownership" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_file_perms" prodtype="osp7">
+<title>Check-Block-02: Are strict permissions set for Compute configuration files?</title>
+<description>
+Similar to the previous check, it is recommended to set strict access permissions for such configuration files.
+<br />
+<br />
+Run the following commands:
+<br />
+<br />
+<tt>
+$ stat -L -c "%a" /etc/cinder/cinder.conf
+<br />
+$ stat -L -c "%a" /etc/cinder/api-paste.ini
+<br />
+$ stat -L -c "%a" /etc/cinder/policy.json
+<br />
+$ stat -L -c "%a" /etc/cinder/rootwrap.conf
+</tt>
+<br />
+<br />
+Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into owner r/w, group r, and no rights to others i.e. “u=rw,g=r,o=”. Note that with Check-Block-01: Is user/group ownership of config files set to root/cinder? and permissions set to 640, root has read/write access and cinder has read access to these configuration files. The access rights can also be validated using the following command. This command will only be available on your system if it supports ACLs.
+
+<br />
+<br />
+<tt>
+$ getfacl --tabular -a /etc/cinder/cinder.conf
+<br />
+getfacl: Removing leading '/' from absolute path names
+<br />
+# file: etc/cinder/cinder.conf
+<br />
+USER   root  rw-
+<br />
+GROUP  cinder  r--
+<br />
+mask         r--
+<br />
+other        ---
+</tt>
+<br />
+<br />
+Fail: If permissions are not set to at least 640.
+</description>
+<!-- <oval id="cinder_file_perms" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_using_keystone" prodtype="osp7">
+<title>Check-Block-03: Is keystone used for authentication?</title>
+<description>
+OpenStack supports various authentication strategies like noauth, keystone etc. If the ‘noauth’ strategy is used then the users could interact with OpenStack services without any authentication. This could be a potential risk since an attacker might gain unauthorized access to the OpenStack components. Thus it is strongly recommended that all services must be authenticated with keystone using their service accounts.
+
+<br />
+<br />
+Pass: If value of parameter auth_strategy under [DEFAULT] section in /etc/cinder/cinder.conf is set to keystone.
+
+<br />
+<br />
+Fail: If value of parameter auth_strategy under [DEFAULT] section is set to noauth.
+</description>
+<!-- <oval id="cinder_using_keystone" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_tls_enabled" prodtype="osp7">
+<title>Check-Block-04: Is TLS enabled for authentication?</title>
+<description>
+OpenStack components communicate with each other using various protocols and the communication might involve sensitive / confidential data. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the components must communicate with each other using a secured communication protocol.
+<br />
+<br />
+Pass: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/cinder/cinder.conf is set to https, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/cinder/cinder.conf is set to Identity API endpoint starting with https:// and value of parameter insecure under the same [keystone_authtoken] section in the same /etc/cinder/cinder.conf is set to False.
+<br />
+<br />
+Fail: If value of parameter auth_protocol under [keystone_authtoken] section in /etc/cinder/cinder.conf is set to http, or if value of parameter identity_uri under [keystone_authtoken] section in /etc/cinder/cinder.conf is not set to Identity API endpoint starting with https:// or value of parameter insecure under the same [keystone_authtoken] section in the same /etc/cinder/cinder.conf is set to True.
+</description>
+<!-- <oval id="cinder_tls_enabled" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_nova_tls" prodtype="osp7">
+<title>Check-Block-05: Does cinder communicates with nova over TLS?</title>
+<description>
+OpenStack components communicate with each other using various protocols and the communication might involve sensitive / confidential data. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the components must communicate with each other using a secured communication protocol.
+
+<br />
+<br />
+Pass: If value of parameter nova_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to False.
+
+<br />
+<br />
+Fail: If value of parameter nova_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to True.
+</description>
+<!-- <oval id="cinder_nova_tls" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_glance_tls" prodtype="osp7">
+<title>Check-Block-06: Does cinder communicates with glance over TLS?</title>
+<description>
+Similar to previous check (Check-Block-05: Does cinder communicates with nova over TLS?), it is recommended all the components must communicate with each other using a secured communication protocol.
+
+<br />
+<br />
+Pass: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to False.
+
+<br />
+<br />
+Fail: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to True.
+</description>
+<!-- <oval id="cinder_glance_tls" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_nas_secure_file_permissions" prodtype="osp7">
+<title>Check-Block-07: Is NAS operating in secure enviornment?</title>
+<description>
+Cinder supports an NFS driver which works differently than a traditional block storage driver. The NFS driver does not actually allow an instance to access a storage device at the block level. Instead, files are created on an NFS share and mapped to instances, which emulates a block device. Cinder supports secure configuration for such files by controlling the file permissions when cinder volumes are created. Cinder configuration can also control whether file operations are run as the root user or the current OpenStack process user.
+
+<br />
+<br />
+Pass: If value of parameter nas_secure_file_permissions under [DEFAULT] section in /etc/cinder/cinder.conf is set to auto. When set to auto, a check is done during cinder startup to determine if there are existing cinder volumes, no volumes will set the option to True, and use secure file permissions. The detection of existing volumes will set the option to False, and use the current insecure method of handling file permissions. If value of parameter nas_secure_file_operations under [DEFAULT] section in /etc/cinder/cinder.conf is set to auto. When set to “auto”, a check is done during cinder startup to determine if there are existing cinder volumes, no volumes will set the option to True, be secure and do NOT run as the root user. The detection of existing volumes will set the option to False, and use the current method of running operations as the root user. For new installations, a “marker file” is written so that subsequent restarts of cinder will know what the original determination had been.
+
+<br />
+<br />
+Fail: If value of parameter nas_secure_file_permissions under [DEFAULT] section in /etc/cinder/cinder.conf is set to False and if value of parameter nas_secure_file_operations under [DEFAULT] section in /etc/cinder/cinder.conf is set to False.
+</description>
+<!-- <oval id="cinder_nas_secure_file_permissions" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+<Rule id="cinder_osapi_max_request_body" prodtype="osp7">
+<title>Check-Block-08: Is max size for the body of a request set to default (114688)?</title>
+<description>
+If the maximum body size per request is not defined, the attacker can craft an arbitrary osapi request of large size causing the service to crash and finally resulting in Denial Of Service attack. Assigning the maximum value ensures that any malicious oversized request gets blocked ensuring continued availability of the service.
+
+<br />
+<br />
+Pass: If value of parameter osapi_max_request_body_size under [DEFAULT] section in /etc/cinder/cinder.conf is set to 114688 or if value of parameter max_request_body_size under [oslo_middleware] section in /etc/cinder/cinder.conf is set to 114688.
+
+<br />
+<br />
+Fail: If value of parameter osapi_max_request_body_size under [DEFAULT] section in /etc/cinder/cinder.conf is not set to 114688 or if value of parameter max_request_body_size under [oslo_middleware] section in /etc/cinder/cinder.conf is not set to 114688.
+</description>
+<!-- <oval id="cinder_osapi_max_request_body" /> -->
+<ident cce="RHELOSP-CCE-TBD" />
+<ref nist="FOO-1(a)" />
+</Rule>
+
+</Group>
+

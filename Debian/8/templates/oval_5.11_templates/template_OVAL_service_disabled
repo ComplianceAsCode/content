@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="service_%SERVICENAME%_disabled" version="1">
+    <metadata>
+      <title>Service %SERVICENAME% Disabled</title>
+      <affected family="unix">
+        <platform>Debian 8</platform>
+      </affected>
+      <description>The %SERVICENAME% service should be disabled if possible.</description>
+    </metadata>
+    <criteria comment="package %PACKAGENAME% removed or service %SERVICENAME% is not configured to start" operator="OR">
+      <extend_definition comment="%PACKAGENAME% removed" definition_ref="package_%PACKAGENAME%_removed" />
+      <criteria operator="OR" comment="service %SERVICENAME% is not configured to start">
+        <criterion comment="%SERVICENAME% not wanted by multi-user.target" test_ref="test_%SERVICENAME%_not_wanted_by_multi_user_target" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_%SERVICENAME%_not_wanted_by_multi_user_target" version="1">
+    <linux:object object_ref="object_multi_user_target_for_%SERVICENAME%" />
+    <linux:state state_ref="state_systemd_%SERVICENAME%_off"/>
+  </linux:systemdunitdependency_test>
+
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_%SERVICENAME%" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+
+  <linux:systemdunitdependency_state id="state_systemd_%SERVICENAME%_off" comment="%SERVICENAME% is not listed in the dependencies" version="1">
+    <linux:dependency entity_check="none satisfy">%DAEMONNAME%.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+</def-group>

@@ -1,1 +1,0 @@
-chown root /etc/samba/passdb.tdb /etc/samba/secrets.tdb

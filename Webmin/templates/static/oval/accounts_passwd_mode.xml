@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="accounts_passwd_mode" version="1">
+    <metadata>
+      <title>Enable the ability for a user to change an expired password.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Webmin must enable a user to change their password when 
+	  it has expired.</description>
+    </metadata>
+    <!-- passwd_mode=2 is configured in /etc/webmin/miniserv.conf ... -->
+    <criteria operator="AND">
+	  <criterion comment="Changing expired passwords is enabled."
+	  test_ref="test_webmin_accounts_passwd_mode" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check passwd_mode=2 is configured in /etc/webmin/miniserv.conf" 
+  id="test_webmin_accounts_passwd_mode" version="1">
+    <ind:object object_ref="object_webmin_accounts_passwd_mode" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_accounts_passwd_mode" version="1">
+    <ind:filepath>/etc/webmin/miniserv.conf</ind:filepath>
+    <ind:pattern
+    operation="pattern match">^passwd_mode=2$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

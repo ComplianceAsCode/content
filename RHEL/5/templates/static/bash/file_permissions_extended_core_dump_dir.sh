@@ -1,1 +1,0 @@
-grep path /etc/kdump.conf | grep -v "#" | awk '{ print $2 }' | xargs setfacl --remove-all

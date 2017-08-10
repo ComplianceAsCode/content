@@ -1,1 +1,0 @@
-sed -i '/^[#|;]/!s/\(guest ok =\).*/\1 no/g' /etc/samba/smb.conf

@@ -32,7 +32,7 @@ a risk of compromising sensitive information.
 </rationale>
 <ident prodtype="rhel7" cce="80244-7" />
 <oval id="service_vsftpd_disabled" />
-<ref prodtype="rhel7" nist="CM-7" disa="1436"/>
+<ref nist="CM-7" disa="1436"/>
 </Rule>
 
 <Rule id="package_vsftpd_removed" severity="high" prodtype="rhel7">
@@ -49,7 +49,8 @@ accidental activation.
 </rationale>
 <ident prodtype="rhel7" cce="80245-4" />
 <oval id="package_vsftpd_removed" />
-<ref prodtype="rhel7" nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" stigid="040690" cis="3.10" />
+<ref prodtype="rhel7" stigid="040690" />
+<ref nist="CM-6(b),CM-7" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="3.10" />
 </Rule>
 
 </Group> <!-- <Group id="disabling_vsftpd"> -->
@@ -68,7 +69,7 @@ set-up vsftpd to provide it.</description>
 and for consistency with future Red Hat releases, the use of vsftpd is recommended.</rationale>
 <ident prodtype="rhel7" cce="80246-2" />
 <oval id="package_vsftpd_installed" />
-<ref prodtype="rhel7" nist="CM-7" />
+<ref nist="CM-7" />
 </Rule>
 
 </Group> <!-- <Group id="ftp_use_vsftpd"> -->
@@ -105,7 +106,7 @@ format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
 <warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
 <ident prodtype="rhel7" cce="80247-0" />
 <oval id="ftp_log_transactions" />
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Rule>
 
 <Rule id="ftp_present_banner" severity="medium" prodtype="rhel7">
@@ -116,9 +117,9 @@ by default. Add or correct the following configuration options:
 </description>
 <rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
 <ident prodtype="rhel7" cce="80248-8" />
-<ref prodtype="rhel7" disa="48" />
+<ref disa="48" />
 <oval id="ftp_present_banner" />
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 <ocil clause="it does not">
 If FTP services are not installed, this is not applicable.
 <br /><br />
@@ -147,7 +148,7 @@ these logins as much as possible.</description>
 <rationale>The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients and servers are widely available, and since SSH provides support for a transfer mode which resembles FTP in user interface, there is no good reason to allow password-based FTP access. </rationale>
 <ident prodtype="rhel7" cce="80249-6" />
 <!--<oval id="ftp_restrict_to_anon" />-->
-<ref prodtype="rhel7" nist="CM-7,AC-3" />
+<ref nist="CM-7,AC-3" />
 </Rule>
 
 <Group id="ftp_limit_users">
@@ -164,7 +165,7 @@ ftp</pre>
 </description>
 <rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via FTP. It was used to prevent system users such as the root user from logging in via the insecure FTP protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via FTP. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous FTP access can be limited to legacy users who have been explicitly identified.</rationale>
 <!--<oval id="ftp_limit_users" />-->
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Group>
 
 </Group> <!-- <Group id="ftp_restrict_users"> -->
@@ -182,7 +183,7 @@ is necessary to ensure that files cannot be uploaded and downloaded from the sam
 </rationale>
 <ident prodtype="rhel7" cce="80250-4" />
 <!--<oval id="ftp_disable_uploads" />-->
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Rule>
 
 <Rule id="ftp_home_partition" prodtype="rhel7">
@@ -192,7 +193,7 @@ be used to verify that this directory is on its own partition.</description>
 <rationale>If there is a mission-critical reason for anonymous users to upload files, precautions must be taken to prevent
 these users from filling a disk used by other services.</rationale>
 <!--<oval id="ftp_home_partition" />-->
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 <ident prodtype="rhel7" cce="80251-2" />
 </Rule>
 
@@ -209,7 +210,7 @@ and server negotiate an arbitrary port to be used for data transfer. The <tt>ip_
 firewalld to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
 FTP server to operate on a system which is running a firewall.</rationale>
 <!--<oval id="ftp_configure_firewall" />-->
-<!--<ref prodtype="rhel7" nist="CM-7" /> -->
+<!--<ref nist="CM-7" /> -->
 </Group>
 
 </Group> <!-- <Group id="ftp_configure_vsftpd"> -->

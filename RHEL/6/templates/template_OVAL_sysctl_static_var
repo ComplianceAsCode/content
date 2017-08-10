@@ -1,0 +1,93 @@
+<def-group>
+  <definition class="compliance" id="sysctl_static_%SYSCTLID%" version="3">
+    <metadata>
+      <title>Kernel "%SYSCTLVAR%" Parameter Configuration Check</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The kernel "%SYSCTLVAR%" parameter should be set to the appropriate value in the system configuration.</description>
+    </metadata>
+    <criteria operator="OR">
+
+      <!-- RHEL-6 sysctl behavior observations:
+           * sysctl honours last occurrence of particular directive,
+           * apply_sysctl() routine called by /etc/rc.d/rc.sysinit script from initscripts RPM package
+             applies sysctl settings in the following order:
+             * first sysctl settings from /etc/sysctl.conf are applied,
+             * then /etc/sysctl.d/* files are first sorted in lexicographic order, and
+             * subsequently sysctl settings from them are applied to form the final configuration
+
+           See https://git.fedorahosted.org/cgit/initscripts.git/tree/rc.d/init.d/functions?h=rhel6-branch#n646
+           for further details.
+
+           Since so far there isn't a way how to perform a lexicographic sort in OVAL, this OVAL check
+           will behave as follows:
+           * perform the verification in reversed order (check /etc/sysctl.d/* first, then /etc/sysctl.conf)
+           * if there's just one /etc/sysctl.d/* file containing the %SYSCTLVAR% directive, return PASS
+             if the requirements are met, FAIL otherwise,
+           * if there are two or more /etc/sysctl.d/* files containing the %SYSCTLVAR% directive, return FAIL
+             (since in this case we aren't able with absolute certainty to tell which /etc/sysctl.d/* file
+             would be applied as the last one)
+           * if there's no /etc/sysctl.d/* file containing the %SYSCTLVAR% directive, and /etc/sysctl.conf
+             contains the %SYSCTLVAR% directive, return PASS if the requirements are met, FAIL otherwise. -->
+
+      <criterion comment="Kernel static parameter %SYSCTLVAR% set to the appropriate value in /etc/sysctl.d/*" test_ref="test_static_sysctld_%SYSCTLID%" />
+      <criteria operator="AND">
+        <criterion comment="Kernel static paramater %SYSCTLVAR% set to the appropriate value in /etc/sysctl.conf" test_ref="test_static_etc_sysctl_%SYSCTLID%" />
+        <criterion comment="Kernel static parameter %SYSCTLVAR% not present in some /etc/sysctl.d/* file" test_ref="test_static_sysctld_%SYSCTLID%_not_used" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- Check the /etc/sysctl.d/* configuration -->
+  <!-- Return PASS only in case there's only one /etc/sysctl.d/* file containing %SYSCTLVAR% set to the appropriate value
+       (otherwise we aren't able to reliably decide if the configuration is safe) -->
+
+  <ind:textfilecontent54_test id="test_static_sysctld_%SYSCTLID%" check="all" check_existence="only_one_exists" comment="Check %SYSCTLVAR% static configuration in /etc/sysctl.d/*" version="1">
+    <ind:object object_ref="object_static_sysctld_%SYSCTLID%" />
+    <ind:state state_ref="state_static_sysctld_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_static_sysctld_%SYSCTLID%" version="1">
+    <!-- Read whole /etc/sysctl.d/* file as a single line so we can retrieve the last %SYSCTLVAR% directive instance -->
+    <ind:behaviors singleline="true" />
+    <ind:path>/etc/sysctl.d</ind:path>
+    <!-- apply_sysctl() routine from /etc/init.d/functions on RHEL-6 applies sysctl configuration from each /etc/sysctl.d/*
+         file: https://git.fedorahosted.org/cgit/initscripts.git/tree/rc.d/init.d/functions?h=rhel6-branch#n646 -->
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">(?:^|.*\n)[^#]*%SYSCTLVAR%[\s]*=[\s]*(\d+)[\s]*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_static_sysctld_%SYSCTLID%" version="1">
+    <ind:subexpression operation="equals"  var_ref="sysctl_%SYSCTLID%_value" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <!-- Check the /etc/sysctl.conf configuration -->
+  <!-- Return PASS only in case %SYSCTLVAR% is set to the appropriate value in /etc/sysctl.conf and simultaneously %SYSCTLVAR% isn't used
+       in some /etc/sysctl.d/* file (otherwise the previous test_static_sysctld_%SYSCTLID% test would be applied) -->
+
+  <!-- First check %SYSCTLVAR% set to the appropriate value in /etc/sysctl.conf -->
+  <ind:textfilecontent54_test id="test_static_etc_sysctl_%SYSCTLID%" check="all" comment="Check %SYSCTLVAR% static configuration in /etc/sysctl.conf" version="1">
+    <ind:object object_ref="object_static_etc_sysctl_%SYSCTLID%" />
+    <!-- Re-use the above defined state (since the requirement is same for both locations) -->
+    <ind:state state_ref="state_static_sysctld_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctl_%SYSCTLID%" version="1">
+    <!-- Read whole /etc/sysctl.conf file as a single line so we can retrieve the last %SYSCTLVAR% directive instance -->
+    <ind:behaviors singleline="true" />
+    <ind:filepath>/etc/sysctl.conf</ind:filepath>
+    <ind:pattern operation="pattern match">(?:^|.*\n)[^#]*%SYSCTLVAR%[\s]*=[\s]*(\d+)[\s]*\n</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Then ensure %SYSCTLVAR% is not listed in some /etc/sysctl.d/* file -->
+  <ind:textfilecontent54_test id="test_static_sysctld_%SYSCTLID%_not_used" check="all" check_existence="none_exist" comment="Check %SYSCTLVAR% is not used in some file from /etc/sysctl.d/* location" version="1">
+    <!-- Re-use the above defined object_static_sysctld_%SYSCTLID% object. We require object of same properties,
+         but this time we require no such object to exist in /etc/sysctl.d/* -->
+    <ind:object object_ref="object_static_sysctld_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <external_variable comment="External variable for %SYSCTLVAR%" datatype="int" id="sysctl_%SYSCTLID%_value" version="1" />
+</def-group>

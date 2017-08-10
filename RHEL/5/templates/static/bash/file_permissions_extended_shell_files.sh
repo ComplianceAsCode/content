@@ -1,1 +1,0 @@
-cat /etc/shells | xargs setfacl --remove-all

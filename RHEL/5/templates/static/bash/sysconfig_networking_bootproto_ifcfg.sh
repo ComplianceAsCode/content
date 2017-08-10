@@ -1,1 +1,0 @@
-sed -i 's/^BOOTPROTO=.*/BOOTPROTO="static"/' /etc/sysconfig/network-scripts/ifcfg-*

@@ -1,1 +1,0 @@
-chown :root /etc/nsswitch.conf

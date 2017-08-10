@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="service_%SERVICENAME%_enabled" version="1">
+    <metadata>
+      <title>Service %SERVICENAME% Enabled</title>
+      <affected family="unix">
+        <platform>Debian 8</platform>
+      </affected>
+      <description>The %SERVICENAME% service should be enabled if possible.</description>
+    </metadata>
+    <criteria comment="package %PACKAGENAME% installed and service %SERVICENAME% is configured to start" operator="AND">
+    <extend_definition comment="%PACKAGENAME% installed" definition_ref="package_%PACKAGENAME%_installed" />
+    <criteria operator="OR" comment="service %SERVICENAME% is configured to start">
+      <criterion comment="multi-user.target wants %SERVICENAME%" test_ref="test_multi_user_wants_%SERVICENAME%" />
+    </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_multi_user_wants_%SERVICENAME%" version="1">
+    <linux:object object_ref="object_multi_user_target_for_%SERVICENAME%" />
+    <linux:state state_ref="state_systemd_%SERVICENAME%_on"/>
+  </linux:systemdunitdependency_test>
+
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_%SERVICENAME%" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+
+  <linux:systemdunitdependency_state id="state_systemd_%SERVICENAME%_on" comment="%SERVICENAME% listed at least once in the dependencies" version="1">
+    <linux:dependency entity_check="at least one">%DAEMONNAME%.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+</def-group>

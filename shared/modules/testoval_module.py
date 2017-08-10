@@ -222,7 +222,7 @@ def main():
             ovaltree.append(element)
     # re-map all the element ids from meaningful names to meaningless
     # numbers
-    testtranslator = idtranslate.idtranslator("scap-security-guide.testing")
+    testtranslator = idtranslate.IDTranslator("scap-security-guide.testing")
     ovaltree = testtranslator.translate(ovaltree)
     (ovalfile, fname) = tempfile.mkstemp(prefix=defname, suffix=".xml")
     os.write(ovalfile, ET.tostring(ovaltree))

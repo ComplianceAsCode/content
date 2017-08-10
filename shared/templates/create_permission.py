@@ -1,17 +1,13 @@
-#!/usr/bin/python2
-
 #
 # create_permission.py
 #        generate template-based checks for file permissions/ownership
 
-
-import sys
 import re
 
 from template_common import FilesGenerator, UnknownTargetError
 
-class PermissionGenerator(FilesGenerator):
 
+class PermissionGenerator(FilesGenerator):
     def generate(self, target, path_info):
         # the csv file contains lines that match the following layout:
         #    directory,file_name,uid,gid,mode
@@ -22,7 +18,7 @@ class PermissionGenerator(FilesGenerator):
         # path_id maps to FILEID in the template
         if file_name == '[NULL]':
             path_id = re.sub('[-\./]', '_', dir_path)
-        elif re.match( r'\^.*\$', file_name, 0):
+        elif re.match(r'\^.*\$', file_name, 0):
             path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\\\./^$*(){}|]',
                                                                      '_', file_name)
             # cleaning trailing end multiple underscores, make sure id is lowercase
@@ -42,33 +38,33 @@ class PermissionGenerator(FilesGenerator):
             full_path = dir_path + '/' + file_name
 
         if target == "bash":
-            if not re.match( r'\^.*\$', file_name, 0):
+            if not re.match(r'\^.*\$', file_name, 0):
                 self.file_from_template(
                     "./template_BASH_permissions",
                     {
-                        "FILEPATH":      full_path,
-                        "FILEMODE":      mode,
+                        "%FILEPATH%":      full_path,
+                        "%FILEMODE%":      mode,
                     },
                     "./bash/file_permissions{0}.sh", path_id
                 )
             else:
-                file_name = re.sub('^\^','', file_name)
+                file_name = re.sub('^\^', '', file_name)
                 self.file_from_template(
                     "./template_BASH_regex_permissions",
                     {
-                        "FILEPATH":      dir_path,
-                        "FILENAME":      file_name,
-                        "FILEMODE":      mode,
+                        "%FILEPATH%":      dir_path,
+                        "%FILENAME%":      file_name,
+                        "%FILEMODE%":      mode,
                     },
                     "./bash/file_permissions{0}.sh", path_id
                 )
 
-        elif target == "ansible" and not re.match( r'\^.*\$', file_name, 0):
+        elif target == "ansible" and not re.match(r'\^.*\$', file_name, 0):
             self.file_from_template(
                 "./template_ANSIBLE_permissions",
                 {
-                    "FILEPATH":      full_path,
-                    "FILEMODE":      mode,
+                    "%FILEPATH%":      full_path,
+                    "%FILEMODE%":      mode,
                 },
                 "./ansible/file_permissions{0}.yml", path_id
             )
@@ -99,16 +95,16 @@ class PermissionGenerator(FilesGenerator):
             # we are ready to create the check
             # open the template and perform the conversions
             self.file_from_template(
-                "./template_permissions",
+                "./template_OVAL_permissions",
                 {
-                    "FILEID":        path_id,
-                    "FILEPATH":      full_path,
-                    "FILEDIR":       dir_path,
-                    "FILEUID":       uid,
-                    "FILEGID":       gid,
-                    "FILEMODE":      mode,
-                    "STATEMODE":     mode_str,
-                    "UNIX_FILENAME": unix_filename
+                    "%FILEID%":        path_id,
+                    "%FILEPATH%":      full_path,
+                    "%FILEDIR%":       dir_path,
+                    "%FILEUID%":       uid,
+                    "%FILEGID%":       gid,
+                    "%FILEMODE%":      mode,
+                    "%STATEMODE%":     mode_str,
+                    "%UNIX_FILENAME%": unix_filename
                 },
                 "./oval/file_permissions{0}.xml", path_id
             )
@@ -118,8 +114,5 @@ class PermissionGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: "
-              "directory path,file name,owner uid (numeric),group "
-              "owner gid (numeric),mode")
-
-if __name__ == "__main__":
-    PermissionGenerator().main()
+               "directory path,file name,owner uid (numeric),group "
+               "owner gid (numeric),mode")

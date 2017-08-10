@@ -1,1 +1,0 @@
-sed -i '/bindpw/d' /etc/ldap.conf

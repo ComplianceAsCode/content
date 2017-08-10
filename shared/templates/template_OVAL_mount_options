@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="compliance" id="mount_option%POINTID%_%MOUNTOPTION%" version="1">
+    <metadata>
+      <title>Add %MOUNTOPTION% Option to %MOUNTPOINT%</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>%MOUNTPOINT% should be mounted with mount option %MOUNTOPTION%.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="%MOUNTOPTION% on %MOUNTPOINT%" test_ref="test%POINTID%_partition_%MOUNTOPTION%" />
+    </criteria>
+  </definition>
+
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="test%POINTID%_partition_%MOUNTOPTION%" version="1" comment="%MOUNTOPTION% on %MOUNTPOINT%">
+    <linux:object object_ref="object%POINTID%_partition_%MOUNTOPTION%" />
+    <linux:state state_ref="state%POINTID%_partition_%MOUNTOPTION%" />
+  </linux:partition_test>
+  <linux:partition_object id="object%POINTID%_partition_%MOUNTOPTION%" version="1">
+    <linux:mount_point>%MOUNTPOINT%</linux:mount_point>
+  </linux:partition_object>
+  <linux:partition_state id="state%POINTID%_partition_%MOUNTOPTION%" version="1">
+    <linux:mount_options datatype="string" entity_check="at least one" operation="equals">%MOUNTOPTION%</linux:mount_options>
+  </linux:partition_state>
+</def-group>

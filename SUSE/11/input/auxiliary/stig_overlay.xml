@@ -1,0 +1,2212 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<overlays xmlns="http://checklists.nist.gov/xccdf/1.1">
+  <overlay disa="764" owner="disastig" ownerid="GEN000000-LNX00320" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="44654" VKey="4268" VRelease="1"/>
+    <title>The system must not have special privilege accounts, such as shutdown and halt.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44652" VKey="1025" VRelease="1"/>
+    <title>The /etc/access.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44653" VKey="1054" VRelease="1"/>
+    <title>The /etc/access.conf file must have a privileged group owner.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00440" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46089" VKey="1055" VRelease="1"/>
+    <title>The /etc/security/access.conf file must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00450" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44757" VKey="22595" VRelease="1"/>
+    <title>The /etc/security/access.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000000-LNX00480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44655" VKey="4334" VRelease="1"/>
+    <title>The /etc/sysctl.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000000-LNX00500" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44656" VKey="4335" VRelease="1"/>
+    <title>The /etc/sysctl.conf file must be group-owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000000-LNX00520" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44657" VKey="4336" VRelease="1"/>
+    <title>The /etc/sysctl.conf file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000000-LNX00530" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44758" VKey="22596" VRelease="1"/>
+    <title>The /etc/sysctl.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="764" owner="disastig" ownerid="GEN000000-LNX00560" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="44658" VKey="4339" VRelease="1"/>
+    <title>The Linux NFS Server must not have the insecure file locking option.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00600" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44665" VKey="4346" VRelease="1"/>
+    <title>The Linux PAM system must not grant sole access to admin privileges to the first user who logs into the console.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000000-LNX00620" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44669" VKey="12038" VRelease="1"/>
+    <title>The /etc/securetty file must be group-owned by root, sys, or bin.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00640" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44672" VKey="12039" VRelease="1"/>
+    <title>The /etc/securetty file must be owned by root.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000000-LNX00660" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44700" VKey="12040" VRelease="1"/>
+    <title>The /etc/securetty file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="192" owner="disastig" ownerid="GEN000000-ZSLE0002" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46164" VKey="34936" VRelease="1"/>
+    <title>Global settings defined in common-{account,auth,password,session} must be applied in the pam.d definition files.</title>
+  </overlay>
+  <overlay disa="213" owner="disastig" ownerid="GEN000020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44760" VKey="756" VRelease="1"/>
+    <title>The system must require authentication upon booting into single-user and maintenance modes.</title>
+  </overlay>
+  <overlay disa="1230" owner="disastig" ownerid="GEN000100" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="44761" VKey="11940" VRelease="1"/>
+    <title>The operating system must be a supported release.</title>
+  </overlay>
+  <overlay disa="1227" owner="disastig" ownerid="GEN000120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44762" VKey="783" VRelease="2"/>
+    <title>System security patches and updates must be installed and up-to-date.</title>
+  </overlay>
+  <overlay disa="293" owner="disastig" ownerid="GEN000140-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44763" VKey="27250" VRelease="2"/>
+    <title>A file integrity baseline including cryptographic hashes must be created.</title>
+  </overlay>
+  <overlay disa="293" owner="disastig" ownerid="GEN000140-3" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44764" VKey="27251" VRelease="1"/>
+    <title>A file integrity baseline including cryptographic hashes must be maintained.
+
+</title>
+  </overlay>
+  <overlay disa="1069" owner="disastig" ownerid="GEN000220" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44765" VKey="11945" VRelease="1"/>
+    <title>A file integrity tool must be used at least weekly to check for unauthorized file changes, particularly the addition of unauthorized system libraries or binaries, or for unauthorized modification to authorized system libraries or binaries.</title>
+  </overlay>
+  <overlay disa="1492" owner="disastig" ownerid="GEN000240" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44771" VKey="4301" VRelease="1"/>
+    <title>The system clock must be synchronized to an authoritative DoD time source.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000241" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44772" VKey="22290" VRelease="1"/>
+    <title>The system clock must be synchronized continuously, or at least daily.
+</title>
+  </overlay>
+  <overlay disa="160" owner="disastig" ownerid="GEN000242" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44773" VKey="22291" VRelease="1"/>
+    <title>The system must use at least two time sources for clock synchronization.</title>
+  </overlay>
+  <overlay disa="160" owner="disastig" ownerid="GEN000244" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44774" VKey="22292" VRelease="1"/>
+    <title>The system must use time sources that are local to the enclave.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000250" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44776" VKey="22294" VRelease="1"/>
+    <title>The time synchronization configuration file (such as /etc/ntp.conf) must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000251" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44779" VKey="22295" VRelease="1"/>
+    <title>The time synchronization file (such as /etc/ntp.conf) must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000252" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44782" VKey="22296" VRelease="1"/>
+    <title>The time synchronization configuration file (such as /etc/ntp.conf) must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000253" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44788" VKey="22297" VRelease="1"/>
+    <title>The time synchronization configuration file (such as /etc/ntp.conf) must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="770" owner="disastig" ownerid="GEN000280" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44791" VKey="760" VRelease="1"/>
+    <title>Direct logins must not be permitted to shared, default, application, or utility accounts.</title>
+  </overlay>
+  <overlay disa="12" owner="disastig" ownerid="GEN000290" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44804" VKey="4269" VRelease="1"/>
+    <title>The system must not have unnecessary accounts.</title>
+  </overlay>
+  <overlay disa="12" owner="disastig" ownerid="GEN000290-1" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44795" VKey="29376" VRelease="1"/>
+    <title>The system must not have the unnecessary games account.</title>
+  </overlay>
+  <overlay disa="12" owner="disastig" ownerid="GEN000290-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44796" VKey="27275" VRelease="1"/>
+    <title>The system must not have the unnecessary news account.</title>
+  </overlay>
+  <overlay disa="12" owner="disastig" ownerid="GEN000290-3" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44800" VKey="27276" VRelease="1"/>
+    <title>The system must not have the unnecessary gopher account.</title>
+  </overlay>
+  <overlay disa="12" owner="disastig" ownerid="GEN000290-4" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44802" VKey="27279" VRelease="1"/>
+    <title>The system must not have the unnecessary ftp account.</title>
+  </overlay>
+  <overlay disa="764" owner="disastig" ownerid="GEN000300" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44807" VKey="761" VRelease="1"/>
+    <title>All accounts on the system must have unique user or account names.</title>
+  </overlay>
+  <overlay disa="764" owner="disastig" ownerid="GEN000320" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44821" VKey="762" VRelease="1"/>
+    <title>All accounts must be assigned unique User Identification Numbers (UIDs).</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000340" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44825" VKey="11946" VRelease="1"/>
+    <title>UIDs reserved for system accounts must not be assigned to non-system accounts.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44826" VKey="780" VRelease="1"/>
+    <title>GIDs reserved for system accounts must not be assigned to non-system groups.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000380" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44827" VKey="781" VRelease="1"/>
+    <title>All GIDs referenced in the /etc/passwd file must be defined in the /etc/group file.</title>
+  </overlay>
+  <overlay disa="48" owner="disastig" ownerid="GEN000400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44969" VKey="763" VRelease="1"/>
+    <title>The Department of Defense (DoD) login banner must be displayed immediately prior to, or as part of, console login prompts.</title>
+  </overlay>
+  <overlay disa="48" owner="disastig" ownerid="GEN000410" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44829" VKey="23732" VRelease="1"/>
+    <title>The FTPS/FTP service on the system must be configured with the Department of Defense (DoD) login banner.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN000440" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44830" VKey="765" VRelease="1"/>
+    <title>Successful and unsuccessful logins and logouts must be logged.</title>
+  </overlay>
+  <overlay disa="54" owner="disastig" ownerid="GEN000450" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44832" VKey="22298" VRelease="1"/>
+    <title>The system must limit users to 10 simultaneous system logins, or a site-defined number, in accordance with operational requirements.</title>
+  </overlay>
+  <overlay disa="52" owner="disastig" ownerid="GEN000452" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44833" VKey="22299" VRelease="1"/>
+    <title>The system must display the date and time of the last successful account login upon login.</title>
+  </overlay>
+  <overlay disa="44" owner="disastig" ownerid="GEN000460" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44834" VKey="766" VRelease="1"/>
+    <title>The system must disable accounts after three consecutive unsuccessful login attempts.</title>
+  </overlay>
+  <overlay disa="2238" owner="disastig" ownerid="GEN000480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44838" VKey="768" VRelease="1"/>
+    <title>The delay between login prompts following a failed login attempt must be at least 4 seconds.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000520" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44858" VKey="769" VRelease="1"/>
+    <title>The root user must not own the logon session for an application requiring a continuous display.</title>
+  </overlay>
+  <overlay disa="198" owner="disastig" ownerid="GEN000540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44859" VKey="1032" VRelease="1"/>
+    <title>Users must not be able to change passwords more than once every 24 hours.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000560" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="44860" VKey="770" VRelease="1"/>
+    <title>The system must not have accounts configured with blank or null passwords.</title>
+  </overlay>
+  <overlay disa="205" owner="disastig" ownerid="GEN000580" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46194" VKey="11947" VRelease="2"/>
+    <title>The system must require passwords contain a minimum of 15 characters.</title>
+  </overlay>
+  <overlay disa="205" owner="disastig" ownerid="GEN000585" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44862" VKey="22302" VRelease="1"/>
+    <title>The system must enforce compliance of the entire password during authentification.</title>
+  </overlay>
+  <overlay disa="803" owner="disastig" ownerid="GEN000590" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44864" VKey="22303" VRelease="1"/>
+    <title>The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes.</title>
+  </overlay>
+  <overlay disa="196" owner="disastig" ownerid="GEN000595" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44865" VKey="22304" VRelease="1"/>
+    <title>The password hashes stored on the system must have been generated using a FIPS 140-2 approved cryptographic hashing algorithm.</title>
+  </overlay>
+  <overlay disa="192" owner="disastig" ownerid="GEN000600" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44866" VKey="11948" VRelease="1"/>
+    <title>The system must require passwords contain at least one uppercase alphabetic character.</title>
+  </overlay>
+  <overlay disa="193" owner="disastig" ownerid="GEN000610" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44867" VKey="22305" VRelease="1"/>
+    <title>The system must require passwords contain at least one lowercase alphabetic character.</title>
+  </overlay>
+  <overlay disa="194" owner="disastig" ownerid="GEN000620" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44875" VKey="11972" VRelease="1"/>
+    <title>The system must require passwords contain at least one numeric character.</title>
+  </overlay>
+  <overlay disa="1619" owner="disastig" ownerid="GEN000640" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44876" VKey="11973" VRelease="1"/>
+    <title>The system must require passwords contain at least one special character.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000680" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44877" VKey="11975" VRelease="1"/>
+    <title>The system must require passwords contain no more than three consecutive repeating characters.</title>
+  </overlay>
+  <overlay disa="180" owner="disastig" ownerid="GEN000700" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44879" VKey="11976" VRelease="1"/>
+    <title>User passwords must be changed at least every 60 days.</title>
+  </overlay>
+  <overlay disa="199" owner="disastig" ownerid="GEN000740" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44880" VKey="11977" VRelease="1"/>
+    <title>All non-interactive/automated processing account passwords must be changed at least once per year or be locked.</title>
+  </overlay>
+  <overlay disa="195" owner="disastig" ownerid="GEN000750" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44881" VKey="22306" VRelease="2"/>
+    <title>The system must require at least eight characters be changed between the old and new passwords during a password change.</title>
+  </overlay>
+  <overlay disa="17" owner="disastig" ownerid="GEN000760" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44882" VKey="918" VRelease="1"/>
+    <title>Accounts must be locked upon 35 days of inactivity.</title>
+  </overlay>
+  <overlay disa="189" owner="disastig" ownerid="GEN000790" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44883" VKey="22307" VRelease="1"/>
+    <title>The system must prevent the use of dictionary words for passwords.</title>
+  </overlay>
+  <overlay disa="200" owner="disastig" ownerid="GEN000800" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44884" VKey="4084" VRelease="1"/>
+    <title>The system must prohibit the reuse of passwords within five iterations.</title>
+  </overlay>
+  <overlay disa="9" owner="disastig" ownerid="GEN000850" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44899" VKey="22308" VRelease="1"/>
+    <title>The system must restrict the ability to switch to the root user to members of a defined group.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000880" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44900" VKey="773" VRelease="1"/>
+    <title>The root account must be the only account having a UID of 0.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000900" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44901" VKey="774" VRelease="1"/>
+    <title>The root users home directory must not be the root directory (/).</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000920" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44902" VKey="775" VRelease="1"/>
+    <title>The root accounts home directory (other than /) must have mode 0700.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN000930" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44903" VKey="22309" VRelease="1"/>
+    <title>The root accounts home directory must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000940" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44905" VKey="776" VRelease="1"/>
+    <title>The root accounts executable search path must be the vendor default and must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000945" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44906" VKey="22310" VRelease="1"/>
+    <title>The root accounts library search path must be the system default and must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000950" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44911" VKey="22311" VRelease="1"/>
+    <title>The root accounts list of preloaded libraries must be empty.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN000960" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44912" VKey="777" VRelease="1"/>
+    <title>The root account must not have world-writable directories in its executable search path.</title>
+  </overlay>
+  <overlay disa="770" owner="disastig" ownerid="GEN000980" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44913" VKey="778" VRelease="1"/>
+    <title>The system must prevent the root account from directly logging in except from the system console.</title>
+  </overlay>
+  <overlay disa="70" owner="disastig" ownerid="GEN001000" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44914" VKey="4298" VRelease="1"/>
+    <title>Remote consoles must be disabled or protected from unauthorized access.</title>
+  </overlay>
+  <overlay disa="770" owner="disastig" ownerid="GEN001020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44915" VKey="11979" VRelease="1"/>
+    <title>The root account must not be used for direct log in.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN001060" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44916" VKey="11980" VRelease="1"/>
+    <title>The system must log successful and unsuccessful access to the root account.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001080" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44918" VKey="1062" VRelease="1"/>
+    <title>The root shell must be located in the / file system.
+</title>
+  </overlay>
+  <overlay disa="197" owner="disastig" ownerid="GEN001100" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="44919" VKey="1046" VRelease="1"/>
+    <title>Root passwords must never be passed over a network in clear text form.</title>
+  </overlay>
+  <overlay disa="770" owner="disastig" ownerid="GEN001120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44922" VKey="1047" VRelease="1"/>
+    <title>The system must not permit root logins using remote access programs such as ssh.
+</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001140" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44924" VKey="784" VRelease="1"/>
+    <title>System files and directories must not have uneven access permissions.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001160" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44926" VKey="785" VRelease="1"/>
+    <title>All files and directories must have a valid owner.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001170" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44927" VKey="22312" VRelease="1"/>
+    <title>All files and directories must have a valid group-owner.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001180" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44931" VKey="786" VRelease="1"/>
+    <title>All network services daemon files must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001190" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44934" VKey="22313" VRelease="1"/>
+    <title>All network services daemon files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="GEN001200" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46272" VKey="794" VRelease="1"/>
+    <title>All system command files must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="GEN001210" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44938" VKey="22314" VRelease="1"/>
+    <title>All system command files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="GEN001220" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44941" VKey="795" VRelease="1"/>
+    <title>All system files, programs, and directories must be owned by a system account.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="GEN001240" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44944" VKey="796" VRelease="1"/>
+    <title>System files, programs, and directories must be group-owned by a system group.</title>
+  </overlay>
+  <overlay disa="1314" owner="disastig" ownerid="GEN001260" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44946" VKey="787" VRelease="1"/>
+    <title>System log files must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="1314" owner="disastig" ownerid="GEN001270" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44948" VKey="22315" VRelease="1"/>
+    <title>System log files must not have extended ACLs, except as needed to support authorized software.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001280" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44949" VKey="792" VRelease="1"/>
+    <title>Manual page files must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001290" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44950" VKey="22316" VRelease="1"/>
+    <title>All manual page files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="GEN001300" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44951" VKey="793" VRelease="1"/>
+    <title>Library files must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="1499" owner="disastig" ownerid="GEN001310" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44952" VKey="22317" VRelease="1"/>
+    <title>All library files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001320" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44953" VKey="789" VRelease="1"/>
+    <title>NIS/NIS+/yp files must be owned by root, sys, or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001340" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46086" VKey="790" VRelease="1"/>
+    <title>NIS/NIS+/yp files must be group-owned by root, sys, or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44954" VKey="791" VRelease="1"/>
+    <title>The NIS/NIS+/yp command files must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001361" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44964" VKey="22318" VRelease="1"/>
+    <title>NIS/NIS+/yp command files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001362" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44972" VKey="22319" VRelease="1"/>
+    <title>The /etc/resolv.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001363" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44974" VKey="22320" VRelease="1"/>
+    <title>The /etc/resolve.conf file must be group-owned by root, bin, sys or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001364" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44976" VKey="22321" VRelease="1"/>
+    <title>The /etc/resolv.conf file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001365" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44978" VKey="22322" VRelease="1"/>
+    <title>The /etc/resolv.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001366" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44981" VKey="22323" VRelease="1"/>
+    <title>The /etc/hosts file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001367" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44982" VKey="22324" VRelease="1"/>
+    <title>The /etc/hosts file must be group-owned by root, bin, sys or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001368" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44983" VKey="22325" VRelease="1"/>
+    <title>The /etc/hosts file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001369" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44984" VKey="22326" VRelease="1"/>
+    <title>The /etc/hosts file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001371" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44985" VKey="22327" VRelease="1"/>
+    <title>The /etc/nsswitch.conf file must be owned by root.
+</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001372" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44986" VKey="22328" VRelease="1"/>
+    <title>The /etc/nsswitch.conf file must be group-owned by root, bin, sys or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001373" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44987" VKey="22329" VRelease="1"/>
+    <title>The /etc/nsswitch.conf file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001374" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44988" VKey="22330" VRelease="1"/>
+    <title>The /etc/nsswitch.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="1182" owner="disastig" ownerid="GEN001375" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="44989" VKey="22331" VRelease="1"/>
+    <title>For systems using DNS resolution, at least two name servers must be configured.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001378" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44990" VKey="22332" VRelease="1"/>
+    <title>The /etc/passwd file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001379" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44991" VKey="22333" VRelease="1"/>
+    <title>The /etc/passwd file must be group-owned by root, bin, sys or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001380" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44992" VKey="798" VRelease="1"/>
+    <title>The /etc/passwd file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001390" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44993" VKey="22334" VRelease="1"/>
+    <title>The /etc/passwd file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001391" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44995" VKey="22335" VRelease="1"/>
+    <title>The /etc/group file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001392" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44997" VKey="22336" VRelease="1"/>
+    <title>The /etc/group file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001393" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44998" VKey="22337" VRelease="1"/>
+    <title>The /etc/group file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001394" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="44999" VKey="22338" VRelease="1"/>
+    <title>The /etc/group file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45000" VKey="797" VRelease="1"/>
+    <title>The /etc/shadow (or equivalent) file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001410" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45001" VKey="22339" VRelease="2"/>
+    <title>The /etc/shadow file (or equivalent) must be group-owned by root, bin, sys, or shadow.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45003" VKey="800" VRelease="1"/>
+    <title>The /etc/shadow (or equivalent) file must have mode 0400.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001430" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45006" VKey="22340" VRelease="1"/>
+    <title>The /etc/shadow file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001440" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45010" VKey="899" VRelease="1"/>
+    <title>All interactive users must be assigned a home directory in the /etc/passwd file.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001460" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45014" VKey="900" VRelease="1"/>
+    <title>All interactive user home directories defined in the /etc/passwd file must exist.</title>
+  </overlay>
+  <overlay disa="201" owner="disastig" ownerid="GEN001470" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45016" VKey="22347" VRelease="1"/>
+    <title>The /etc/passwd file must not contain password hashes.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001475" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45017" VKey="22348" VRelease="1"/>
+    <title>The /etc/group file must not contain any group password hashes.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45028" VKey="901" VRelease="1"/>
+    <title>All user home directories must have mode 0750 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001490" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45029" VKey="22350" VRelease="1"/>
+    <title>User home directories must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001500" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45030" VKey="902" VRelease="1"/>
+    <title>All interactive user home directories must be owned by their respective users.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001520" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46273" VKey="903" VRelease="1"/>
+    <title>All interactive user home directories must be group-owned by the home directory owners primary group.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001540" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45035" VKey="914" VRelease="1"/>
+    <title>All files and directories contained in interactive user home directories must be owned by the home directorys owner.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001550" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45038" VKey="22351" VRelease="1"/>
+    <title>All files and directories contained in user home directories must be group-owned by a group of which the home directorys owner is a member.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001560" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45040" VKey="915" VRelease="1"/>
+    <title>All files and directories contained in user home directories must have mode 0750 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001570" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45042" VKey="22352" VRelease="1"/>
+    <title>All files and directories contained in user home directories must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001580" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45043" VKey="906" VRelease="1"/>
+    <title>All run control scripts must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001590" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45059" VKey="22353" VRelease="1"/>
+    <title>All run control scripts must have no extended ACLs.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001600" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45064" VKey="907" VRelease="1"/>
+    <title>Run control scripts executable search paths must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001605" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45066" VKey="22354" VRelease="1"/>
+    <title>Run control scripts library search paths must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001610" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45067" VKey="22355" VRelease="1"/>
+    <title>Run control scripts lists of preloaded libraries must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001640" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45068" VKey="910" VRelease="1"/>
+    <title>Run control scripts must not execute world-writable programs or scripts.
+</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001660" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45073" VKey="4089" VRelease="1"/>
+    <title>All system start-up files must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001680" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45091" VKey="4090" VRelease="1"/>
+    <title>All system start-up files must be group-owned by root, sys, bin, other, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001700" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45092" VKey="4091" VRelease="1"/>
+    <title>System start-up files must only execute programs owned by a privileged UID or an application.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001720" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45095" VKey="11981" VRelease="1"/>
+    <title>All global initialization files must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001730" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45102" VKey="22356" VRelease="1"/>
+    <title>All global initialization files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001740" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45104" VKey="11982" VRelease="1"/>
+    <title>All global initialization files must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001760" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45105" VKey="11983" VRelease="1"/>
+    <title>All global initialization files must be group-owned by root, sys, bin, other, system, or the system default.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001780" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45106" VKey="825" VRelease="1"/>
+    <title>Global initialization files must contain the mesg -n or mesg n commands.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001800" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45113" VKey="788" VRelease="1"/>
+    <title>All skeleton files (typically those in /etc/skel) must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001810" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45134" VKey="22357" VRelease="1"/>
+    <title>Skeleton files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001820" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45136" VKey="11984" VRelease="1"/>
+    <title>All skeleton files and directories (typically in /etc/skel) must be owned by root or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001830" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45139" VKey="22358" VRelease="2"/>
+    <title>All skeleton files (typically in /etc/skel) must be group-owned by root, bin or sys.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001840" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45141" VKey="11985" VRelease="1"/>
+    <title>All global initialization files executable search paths must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001845" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45145" VKey="22359" VRelease="1"/>
+    <title>Global initialization files library search paths must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001850" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45149" VKey="22360" VRelease="1"/>
+    <title>Global initialization files lists of preloaded libraries must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001860" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45151" VKey="904" VRelease="1"/>
+    <title>All local initialization files must be owned by the home directorys user or root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001870" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45153" VKey="22361" VRelease="1"/>
+    <title>Local initialization files must be group-owned by the users primary group or root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001880" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45154" VKey="905" VRelease="1"/>
+    <title>All local initialization files must have mode 0740 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001890" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45156" VKey="22362" VRelease="1"/>
+    <title>Local initialization files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001900" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46274" VKey="11986" VRelease="1"/>
+    <title>All local initialization files executable search paths must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001901" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45160" VKey="22363" VRelease="1"/>
+    <title>Local initialization files library search paths must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001902" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45161" VKey="22364" VRelease="1"/>
+    <title>Local initialization files lists of preloaded libraries must contain only absolute paths.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN001940" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45162" VKey="4087" VRelease="1"/>
+    <title>User start-up files must not execute world-writable programs.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN001980" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45164" VKey="11987" VRelease="1"/>
+    <title>The .rhosts, .shosts, hosts.equiv, shosts.equiv, /etc/passwd, /etc/shadow, and/or /etc/group files must not contain a plus (+) without defining entries for NIS+ netgroups.</title>
+  </overlay>
+  <overlay disa="196" owner="disastig" ownerid="GEN002000" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45165" VKey="913" VRelease="1"/>
+    <title>There must be no .netrc files on the system.
+</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45166" VKey="4427" VRelease="1"/>
+    <title>All .rhosts, .shosts, or host.equiv files must only contain trusted host-user pairs.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002040" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45167" VKey="11988" VRelease="1"/>
+    <title>There must be no .rhosts, .shosts, hosts.equiv, or shosts.equiv files on the system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002060" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45168" VKey="4428" VRelease="1"/>
+    <title>All .rhosts, .shosts, .netrc, or hosts.equiv files must be accessible by only root or the owner.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002100" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45169" VKey="11989" VRelease="1"/>
+    <title>The .rhosts file must not be supported in PAM.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45170" VKey="916" VRelease="1"/>
+    <title>The /etc/shells (or equivalent) file must exist.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002140" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45171" VKey="917" VRelease="1"/>
+    <title>All shells referenced in /etc/passwd must be listed in the /etc/shells file, except any shells specified for the purpose of preventing logins.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002200" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45172" VKey="921" VRelease="1"/>
+    <title>All shell files must be owned by root or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002210" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45173" VKey="22365" VRelease="1"/>
+    <title>All shell files must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002220" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45174" VKey="922" VRelease="1"/>
+    <title>All shell files must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002230" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45175" VKey="22366" VRelease="1"/>
+    <title>All shell files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="318" owner="disastig" ownerid="GEN002260" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45176" VKey="923" VRelease="1"/>
+    <title>The system must be checked for extraneous device files at least weekly.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002280" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45177" VKey="924" VRelease="1"/>
+    <title>Device files and directories must only be writable by users with a system account or as configured by the vendor.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002300" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45178" VKey="925" VRelease="1"/>
+    <title>Device files used for backup must only be readable and/or writable by root or the backup user.</title>
+  </overlay>
+  <overlay disa="368" owner="disastig" ownerid="GEN002380" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45184" VKey="801" VRelease="2"/>
+    <title>The owner, group-owner, mode, ACL, and location of files with the setuid bit set must be documented using site-defined procedures.</title>
+  </overlay>
+  <overlay disa="318" owner="disastig" ownerid="GEN002400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45185" VKey="803" VRelease="2"/>
+    <title>The system must be checked weekly for unauthorized setuid files as well as unauthorized modification to authorized setuid files.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45187" VKey="805" VRelease="1"/>
+    <title>Removable media, remote file systems, and any file system not containing approved setuid files must be mounted with the nosuid option.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002430" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45190" VKey="22368" VRelease="1"/>
+    <title>Removable media, remote file systems, and any file system not containing approved device files must be mounted with the nodev option.</title>
+  </overlay>
+  <overlay disa="368" owner="disastig" ownerid="GEN002440" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45192" VKey="802" VRelease="1"/>
+    <title>The owner, group-owner, mode, ACL and location of files with the setgid bit set must be documented using site-defined procedures.</title>
+  </overlay>
+  <overlay disa="318" owner="disastig" ownerid="GEN002460" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45200" VKey="804" VRelease="2"/>
+    <title>The system must be checked weekly for unauthorized setgid files as well as unauthorized modification to authorized setgid files.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45201" VKey="1010" VRelease="1"/>
+    <title>Public directories must be the only world-writable directories and world-writable files must be located only in public directories.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002500" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45202" VKey="806" VRelease="1"/>
+    <title>The sticky bit must be set on all public directories.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002520" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45203" VKey="807" VRelease="1"/>
+    <title>All public directories must be owned by root or an application account.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45204" VKey="11990" VRelease="1"/>
+    <title>All public directories must be group-owned by root or an application group.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002560" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45205" VKey="808" VRelease="1"/>
+    <title>The system and user default umask must be 077.</title>
+  </overlay>
+  <overlay disa="178" owner="disastig" ownerid="GEN002640" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45206" VKey="810" VRelease="1"/>
+    <title>Default system accounts must be disabled or removed.</title>
+  </overlay>
+  <overlay disa="169" owner="disastig" ownerid="GEN002660" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45207" VKey="811" VRelease="1"/>
+    <title>Auditing must be implemented.</title>
+  </overlay>
+  <overlay disa="162" owner="disastig" ownerid="GEN002680" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45208" VKey="812" VRelease="1"/>
+    <title>System audit logs must be owned by root.</title>
+  </overlay>
+  <overlay disa="163" owner="disastig" ownerid="GEN002690" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45209" VKey="22702" VRelease="1"/>
+    <title>System audit logs must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="163" owner="disastig" ownerid="GEN002700" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45210" VKey="813" VRelease="1"/>
+    <title>System audit logs must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="163" owner="disastig" ownerid="GEN002710" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45211" VKey="22369" VRelease="1"/>
+    <title>All system audit files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="1493" owner="disastig" ownerid="GEN002715" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45272" VKey="22370" VRelease="1"/>
+    <title>System audit tool executables must be owned by root.</title>
+  </overlay>
+  <overlay disa="1493" owner="disastig" ownerid="GEN002716" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45274" VKey="22371" VRelease="1"/>
+    <title>System audit tool executables must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="1493" owner="disastig" ownerid="GEN002717" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45277" VKey="22372" VRelease="1"/>
+    <title>System audit tool executables must have mode 0750 or less permissive.</title>
+  </overlay>
+  <overlay disa="1493" owner="disastig" ownerid="GEN002718" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45279" VKey="22373" VRelease="1"/>
+    <title>System audit tool executables must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="139" owner="disastig" ownerid="GEN002719" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45285" VKey="22374" VRelease="1"/>
+    <title>The audit system must alert the SA in the event of an audit processing failure.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002720" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45295" VKey="814" VRelease="1"/>
+    <title>The audit system must be configured to audit failed attempts to access files and programs.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002720-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45286" VKey="29236" VRelease="1"/>
+    <title>The audit system must be configured to audit failed attempts to access files and programs.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002720-3" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45287" VKey="29237" VRelease="1"/>
+    <title>The audit system must be configured to audit failed attempts to access files and programs.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002720-4" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45289" VKey="29238" VRelease="1"/>
+    <title>The audit system must be configured to audit failed attempts to access files and programs.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002720-5" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45292" VKey="29239" VRelease="1"/>
+    <title>The audit system must be configured to audit failed attempts to access files and programs.</title>
+  </overlay>
+  <overlay disa="143" owner="disastig" ownerid="GEN002730" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45298" VKey="22375" VRelease="1"/>
+    <title>The audit system must alert the SA when the audit storage volume approaches its capacity.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002740" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45303" VKey="815" VRelease="1"/>
+    <title>The audit system must be configured to audit file deletions.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002740-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45300" VKey="29240" VRelease="1"/>
+    <title>The audit system must be configured to audit file deletions.</title>
+  </overlay>
+  <overlay disa="18" owner="disastig" ownerid="GEN002750" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45305" VKey="22376" VRelease="1"/>
+    <title>The audit system must be configured to audit account creation.</title>
+  </overlay>
+  <overlay disa="1403" owner="disastig" ownerid="GEN002751" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45308" VKey="22377" VRelease="1"/>
+    <title>The audit system must be configured to audit account modification.</title>
+  </overlay>
+  <overlay disa="1404" owner="disastig" ownerid="GEN002752" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45319" VKey="22378" VRelease="1"/>
+    <title>The audit system must be configured to audit account disabling.</title>
+  </overlay>
+  <overlay disa="1405" owner="disastig" ownerid="GEN002753" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45323" VKey="22382" VRelease="1"/>
+    <title>The audit system must be configured to audit account termination.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46161" VKey="816" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-10" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45328" VKey="29249" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45331" VKey="29241" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-3" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45332" VKey="29242" VRelease="2"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-4" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45333" VKey="29243" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-6" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45336" VKey="29245" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-7" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45337" VKey="29246" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-8" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45338" VKey="29247" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="347" owner="disastig" ownerid="GEN002760-9" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45339" VKey="29248" VRelease="1"/>
+    <title>The audit system must be configured to audit all administrative, privileged, and security actions.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002800" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45340" VKey="818" VRelease="1"/>
+    <title>The audit system must be configured to audit login, logout, and session initiation.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45447" VKey="819" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-10" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45341" VKey="29272" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-11" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45342" VKey="29274" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-12" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45343" VKey="29275" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-13" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45344" VKey="29279" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45345" VKey="29250" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-3" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45401" VKey="29251" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-4" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45407" VKey="29252" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-5" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45409" VKey="29253" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-6" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45421" VKey="29255" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-7" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45426" VKey="29257" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002820-8" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45433" VKey="29259" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="E-14058-2" owner="disastig" ownerid="GEN002820-9" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45442" VKey="29261" VRelease="1"/>
+    <title>The audit system must be configured to audit all discretionary access control permission modifications.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002825" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45556" VKey="22383" VRelease="1"/>
+    <title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002825-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45451" VKey="29281" VRelease="1"/>
+    <title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules - delete_module.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002825-3" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45462" VKey="29284" VRelease="1"/>
+    <title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules - /sbin/insmod.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002825-4" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45549" VKey="29286" VRelease="1"/>
+    <title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules -/sbin/modprobe.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN002825-5" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45552" VKey="29288" VRelease="1"/>
+    <title>The audit system must be configured to audit the loading and unloading of dynamic kernel modules - /sbin/rmmod</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN002860" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45560" VKey="4357" VRelease="1"/>
+    <title>Audit logs must be rotated daily.</title>
+  </overlay>
+  <overlay disa="136" owner="disastig" ownerid="GEN002870" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45564" VKey="24357" VRelease="2"/>
+    <title>The system must be configured to send audit records to a remote audit server.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002960" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45568" VKey="974" VRelease="1"/>
+    <title>Access to the cron utility must be controlled using the cron.allow and/or cron.deny file(s).</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002980" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45573" VKey="975" VRelease="1"/>
+    <title>The cron.allow file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN002990" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45574" VKey="22384" VRelease="1"/>
+    <title>The cron.allow file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003000" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45576" VKey="976" VRelease="1"/>
+    <title>Cron must not execute group-writable or world-writable programs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45580" VKey="977" VRelease="1"/>
+    <title>Cron must not execute programs in, or subordinate to, world-writable directories.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003040" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45585" VKey="11994" VRelease="1"/>
+    <title>Crontabs must be owned by root or the crontab creator.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003050" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45596" VKey="22385" VRelease="1"/>
+    <title>Crontab files must be group-owned by root, cron, or the crontab creators primary group.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003060" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46275" VKey="11995" VRelease="1"/>
+    <title>Default system accounts (with the exception of root) must not be listed in the cron.allow file or must be included in the cron.deny file, if cron.allow does not exist.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003080" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45600" VKey="978" VRelease="2"/>
+    <title>Crontab files must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003080-2" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45599" VKey="29289" VRelease="2"/>
+    <title>Files in cron script directories must have mode 0700 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003090" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45601" VKey="22386" VRelease="1"/>
+    <title>Crontab files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003100" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45602" VKey="979" VRelease="1"/>
+    <title>Cron and crontab directories must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003110" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45603" VKey="22387" VRelease="1"/>
+    <title>Cron and crontab directories must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45604" VKey="980" VRelease="1"/>
+    <title>Cron and crontab directories must be owned by root or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003140" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45609" VKey="981" VRelease="1"/>
+    <title>Cron and crontab directories must be group-owned by root, sys, bin or cron.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN003160" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45615" VKey="982" VRelease="1"/>
+    <title>Cron logging must be implemented.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003180" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45619" VKey="983" VRelease="1"/>
+    <title>The cronlog file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003190" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45622" VKey="22388" VRelease="1"/>
+    <title>The cron log files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003200" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45626" VKey="4358" VRelease="1"/>
+    <title>The cron.deny file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003210" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45628" VKey="22389" VRelease="1"/>
+    <title>The cron.deny file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003220" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45633" VKey="4360" VRelease="1"/>
+    <title>Cron programs must not set the umask to a value less restrictive than 077.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003240" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45637" VKey="4361" VRelease="1"/>
+    <title>The cron.allow file must be owned by root, bin, or sys.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003245" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45639" VKey="22390" VRelease="1"/>
+    <title>The at.allow file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003250" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45640" VKey="22391" VRelease="1"/>
+    <title>The cron.allow file must be group-owned by root, bin, sys, or cron.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003252" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45641" VKey="22392" VRelease="1"/>
+    <title>The at.deny file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003255" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45642" VKey="22393" VRelease="1"/>
+    <title>The at.deny file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003260" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45644" VKey="4430" VRelease="1"/>
+    <title>The cron.deny file must be owned by root, bin, or sys.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003270" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45645" VKey="22394" VRelease="2"/>
+    <title>The cron.deny file must be group-owned by root, bin, sys.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003280" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45648" VKey="984" VRelease="2"/>
+    <title>Access to the at utility must be controlled via the at.allow and/or at.deny file(s).</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003300" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45649" VKey="985" VRelease="1"/>
+    <title>The at.deny file must not be empty if it exists.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003320" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45656" VKey="986" VRelease="1"/>
+    <title>Default system accounts (with the exception of root) must not be listed in the at.allow file or must be included in the at.deny file if the at.allow file does not exist.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003340" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45667" VKey="987" VRelease="1"/>
+    <title>The at.allow file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45668" VKey="988" VRelease="1"/>
+    <title>The at daemon must not execute group-writable or world-writable programs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003380" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45669" VKey="989" VRelease="1"/>
+    <title>The at daemon must not execute programs in, or subordinate to, world-writable directories.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45670" VKey="4364" VRelease="1"/>
+    <title>The at directory must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003410" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45671" VKey="22395" VRelease="1"/>
+    <title>The at directory must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45672" VKey="4365" VRelease="2"/>
+    <title>The atjobs directory must be owned by root, bin, daemon or at.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003430" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45673" VKey="22396" VRelease="2"/>
+    <title>The atjobs directory must be group-owned by root, bin, daemon, sys, or at.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003440" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45674" VKey="4366" VRelease="1"/>
+    <title>At jobs must not set the umask to a value less restrictive than 077.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003460" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45675" VKey="4367" VRelease="1"/>
+    <title>The at.allow file must be owned by root, bin, or sys.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003470" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45676" VKey="22397" VRelease="1"/>
+    <title>The at.allow file must be group-owned by root, bin, sys, or cron.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45677" VKey="4368" VRelease="1"/>
+    <title>The at.deny file must be owned by root, bin, or sys.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003490" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45678" VKey="22398" VRelease="1"/>
+    <title>The at.deny file must be group-owned by root, bin, sys, or cron.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN003500" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45679" VKey="11996" VRelease="1"/>
+    <title>Process core dumps must be disabled unless needed.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003501" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46151" VKey="22399" VRelease="1"/>
+    <title>The system must be configured to store any process core dumps in a specific, centralized directory.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003502" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46152" VKey="22400" VRelease="1"/>
+    <title>The centralized process core dump data directory must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003503" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46153" VKey="22401" VRelease="1"/>
+    <title>The centralized process core dump data directory must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003504" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46154" VKey="22402" VRelease="1"/>
+    <title>The centralized process core dump data directory must have mode 0700 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003505" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46155" VKey="22403" VRelease="1"/>
+    <title>The centralized process core dump data directory must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN003510" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45680" VKey="22404" VRelease="1"/>
+    <title>Kernel core dumps must be disabled unless needed.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003520" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45704" VKey="11997" VRelease="1"/>
+    <title>The kernel core dump data directory must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003521" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45708" VKey="22405" VRelease="1"/>
+    <title>The kernel core dump data directory must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003522" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45711" VKey="22406" VRelease="1"/>
+    <title>The kernel core dump data directory must have mode 0700 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003523" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45715" VKey="22407" VRelease="1"/>
+    <title>The kernel core dump data directory must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN003540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45717" VKey="11999" VRelease="1"/>
+    <title>The system must implement non-executable program stacks.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003581" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45718" VKey="22408" VRelease="1"/>
+    <title>Network interfaces must not be configured to allow user control.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003600" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45719" VKey="12002" VRelease="1"/>
+    <title>The system must not forward IPv4 source-routed packets.</title>
+  </overlay>
+  <overlay disa="" owner="disastig" ownerid="GEN003601" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45720" VKey="23741" VRelease="1"/>
+    <title>TCP backlog queue sizes must be set appropriately.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003602" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45721" VKey="22409" VRelease="1"/>
+    <title>The system must not process Internet Control Message Protocol (ICMP)  timestamp requests.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003603" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45722" VKey="22410" VRelease="1"/>
+    <title>The system must not respond to Internet Control Message Protocol v4 (ICMPv4) echoes sent to a broadcast address.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003604" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45723" VKey="22411" VRelease="1"/>
+    <title>The system must not respond to Internet Control Message Protocol (ICMP) timestamp requests sent to a broadcast address.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003605" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46156" VKey="22412" VRelease="1"/>
+    <title>The system must not apply reversed source routing to TCP responses.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003606" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46276" VKey="22413" VRelease="1"/>
+    <title>The system must prevent local applications from generating source-routed packets.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003607" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45724" VKey="22414" VRelease="1"/>
+    <title>The system must not accept source-routed IPv4 packets.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003608" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45725" VKey="22415" VRelease="1"/>
+    <title>Proxy Address Resolution Protocol (Proxy ARP) must not be enabled on the system.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003609" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45726" VKey="22416" VRelease="1"/>
+    <title>The system must ignore IPv4 Internet Control Message Protocol (ICMP) redirect messages.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003610" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45727" VKey="22417" VRelease="1"/>
+    <title>The system must not send IPv4 Internet Control Message Protocol (ICMP) redirects.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN003611" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45728" VKey="22418" VRelease="1"/>
+    <title>The system must log martian packets.</title>
+  </overlay>
+  <overlay disa="1092" owner="disastig" ownerid="GEN003612" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46277" VKey="22419" VRelease="1"/>
+    <title>The system must be configured to use TCP syncookies when experiencing a TCP SYN flood.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003619" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45738" VKey="22421" VRelease="1"/>
+    <title>The system must not be configured for network bridging.</title>
+  </overlay>
+  <overlay disa="1208" owner="disastig" ownerid="GEN003620" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45739" VKey="12003" VRelease="1"/>
+    <title>A separate file system must be used for user home directories (such as /home or an equivalent).</title>
+  </overlay>
+  <overlay disa="1208" owner="disastig" ownerid="GEN003621" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45743" VKey="23736" VRelease="1"/>
+    <title>The system must use a separate file system for /var.</title>
+  </overlay>
+  <overlay disa="1208" owner="disastig" ownerid="GEN003623" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45745" VKey="23738" VRelease="1"/>
+    <title>The system must use a separate file system for the system audit data path.</title>
+  </overlay>
+  <overlay disa="1208" owner="disastig" ownerid="GEN003624" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45752" VKey="23739" VRelease="1"/>
+    <title>The system must use a separate file system for /tmp (or equivalent).</title>
+  </overlay>
+  <overlay disa="553" owner="disastig" ownerid="GEN003640" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45753" VKey="4304" VRelease="1"/>
+    <title>The root file system must employ journaling or another mechanism ensuring file system consistency.</title>
+  </overlay>
+  <overlay disa="553" owner="disastig" ownerid="GEN003650" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45754" VKey="22422" VRelease="1"/>
+    <title>All local file systems must employ journaling or another mechanism ensuring file system consistency.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN003660" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45755" VKey="12004" VRelease="1"/>
+    <title>The system must log informational authentication data.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN003700" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45756" VKey="12005" VRelease="1"/>
+    <title>Inetd and xinetd must be disabled or removed if no network services utilizing them are enabled.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003720" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45757" VKey="821" VRelease="1"/>
+    <title>The inetd.conf file, xinetd.conf file, and the xinetd.d directory must be owned by root or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003730" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45758" VKey="22423" VRelease="1"/>
+    <title>The inetd.conf file, xinetd.conf file, and the xinetd.d directory must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003740" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45759" VKey="822" VRelease="2"/>
+    <title>The xinetd.conf files must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003745" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45760" VKey="22424" VRelease="1"/>
+    <title>The inetd.conf and xinetd.conf files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003750" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45761" VKey="22425" VRelease="1"/>
+    <title>The xinetd.d directory must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003755" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45762" VKey="22426" VRelease="1"/>
+    <title>The xinetd.d directory must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003760" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45763" VKey="823" VRelease="1"/>
+    <title>The services file must be owned by root or bin.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003770" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45764" VKey="22427" VRelease="1"/>
+    <title>The services file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003780" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45765" VKey="824" VRelease="1"/>
+    <title>The services file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003790" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45782" VKey="22428" VRelease="1"/>
+    <title>The services file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="134" owner="disastig" ownerid="GEN003800" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45783" VKey="1011" VRelease="1"/>
+    <title>Inetd or xinetd logging/tracing must be enabled.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN003810" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45785" VKey="22429" VRelease="1"/>
+    <title>The portmap or rpcbind service must not be running unless needed.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN003815" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45786" VKey="22430" VRelease="1"/>
+    <title>The portmap or rpcbind service must not be installed unless needed.</title>
+  </overlay>
+  <overlay disa="68" owner="disastig" ownerid="GEN003820" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45787" VKey="4687" VRelease="1"/>
+    <title>The rsh daemon must not be running.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN003825" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45789" VKey="22431" VRelease="1"/>
+    <title>The rshd service must not be installed.</title>
+  </overlay>
+  <overlay disa="68" owner="disastig" ownerid="GEN003830" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45805" VKey="22432" VRelease="1"/>
+    <title>The rlogind service must not be running.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN003835" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45806" VKey="22433" VRelease="1"/>
+    <title>The rlogind service must not be installed.</title>
+  </overlay>
+  <overlay disa="1435" owner="disastig" ownerid="GEN003840" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45807" VKey="4688" VRelease="1"/>
+    <title>The rexec daemon must not be running.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN003845" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45808" VKey="22434" VRelease="1"/>
+    <title>The rexecd service must not be installed.</title>
+  </overlay>
+  <overlay disa="197" owner="disastig" ownerid="GEN003850" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45809" VKey="24386" VRelease="1"/>
+    <title>The telnet daemon must not be running.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN003860" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45810" VKey="4701" VRelease="1"/>
+    <title>The system must not have the finger service active.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN003865" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45811" VKey="12049" VRelease="1"/>
+    <title>Network analysis tools must not be installed.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN003900" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45812" VKey="827" VRelease="1"/>
+    <title>The hosts.lpd file (or equivalent) must not contain a + character.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003920" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45813" VKey="828" VRelease="1"/>
+    <title>The hosts.lpd (or equivalent) file must be owned by root, bin, sys, or lp.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003930" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45814" VKey="22435" VRelease="1"/>
+    <title>The hosts.lpd (or equivalent) file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003940" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45816" VKey="829" VRelease="1"/>
+    <title>The hosts.lpd (or equivalent) must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003950" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45817" VKey="22436" VRelease="1"/>
+    <title>The hosts.lpd (or equivalent) file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003960" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45818" VKey="4369" VRelease="1"/>
+    <title>The traceroute command owner must be root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN003980" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45819" VKey="4370" VRelease="1"/>
+    <title>The traceroute command must be group-owned by sys, bin, root, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004000" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45822" VKey="4371" VRelease="1"/>
+    <title>The traceroute file must have mode 0700 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004010" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45824" VKey="22437" VRelease="1"/>
+    <title>The traceroute file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004220" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45825" VKey="4382" VRelease="1"/>
+    <title>Administrative accounts must not run a web browser, except as needed for local service administration.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45827" VKey="831" VRelease="1"/>
+    <title>The alias file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004370" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45848" VKey="22438" VRelease="2"/>
+    <title>The aliases file must be group-owned by root, sys, bin, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004380" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45849" VKey="832" VRelease="1"/>
+    <title>The alias file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004390" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45850" VKey="22439" VRelease="1"/>
+    <title>The alias file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004400" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45851" VKey="833" VRelease="1"/>
+    <title>Files executed through a mail aliases file must be owned by root and must reside within a directory owned and writable only by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004410" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45852" VKey="22440" VRelease="1"/>
+    <title>Files executed through a mail aliases file must be group-owned by root, bin, sys, or system, and must reside within a directory group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45853" VKey="834" VRelease="2"/>
+    <title>Files executed through a mail aliases file must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004430" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45854" VKey="22441" VRelease="1"/>
+    <title>Files executed through a mail aliases file must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004440" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45856" VKey="835" VRelease="2"/>
+    <title>Sendmail logging must not be set to less than nine in the sendmail.cf file.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN004460" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45858" VKey="836" VRelease="1"/>
+    <title>The system syslog service must log informational and more severe SMTP service messages.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45859" VKey="837" VRelease="1"/>
+    <title>The SMTP service log file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004500" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45861" VKey="838" VRelease="1"/>
+    <title>The SMTP service log file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004510" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45862" VKey="22442" VRelease="1"/>
+    <title>The SMTP service log file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45863" VKey="12006" VRelease="2"/>
+    <title>The SMTP service HELP command must not be enabled.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004560" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46278" VKey="4384" VRelease="1"/>
+    <title>The SMTP services SMTP greeting must not provide version information.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004580" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45868" VKey="4385" VRelease="1"/>
+    <title>The system must not use .forward files.</title>
+  </overlay>
+  <overlay disa="1230" owner="disastig" ownerid="GEN004600" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45869" VKey="4689" VRelease="1"/>
+    <title>The SMTP service must be an up-to-date version.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004620" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45870" VKey="4690" VRelease="1"/>
+    <title>The sendmail server must have the debug feature disabled.</title>
+  </overlay>
+  <overlay disa="1230" owner="disastig" ownerid="GEN004640" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45871" VKey="4691" VRelease="1"/>
+    <title>The SMTP service must not have a uudecode alias active.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004660" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45872" VKey="4692" VRelease="1"/>
+    <title>The SMTP service must not have the EXPN feature active.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004680" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45873" VKey="4693" VRelease="1"/>
+    <title>The SMTP service must not have the Verify (VRFY) feature active.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004700" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45874" VKey="4694" VRelease="1"/>
+    <title>The sendmail service must not have the wizard backdoor active.</title>
+  </overlay>
+  <overlay disa="1305" owner="disastig" ownerid="GEN004710" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45875" VKey="23952" VRelease="1"/>
+    <title>Mail relaying must be restricted.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN004800" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45876" VKey="12010" VRelease="1"/>
+    <title>Unencrypted FTP must not be used on the system.</title>
+  </overlay>
+  <overlay disa="1475" owner="disastig" ownerid="GEN004820" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45877" VKey="846" VRelease="1"/>
+    <title>Anonymous FTP must not be active on the system unless authorized.</title>
+  </overlay>
+  <overlay disa="787" owner="disastig" ownerid="GEN004840" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45878" VKey="4702" VRelease="1"/>
+    <title>If the system is an anonymous FTP server, it must be isolated to the DMZ network.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004880" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45879" VKey="840" VRelease="1"/>
+    <title>The ftpusers file must exist.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004900" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45880" VKey="841" VRelease="1"/>
+    <title>The ftpusers file must contain account names not allowed to use FTP.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004920" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45881" VKey="842" VRelease="1"/>
+    <title>The ftpusers file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004930" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45882" VKey="22444" VRelease="1"/>
+    <title>The ftpusers file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004940" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45883" VKey="843" VRelease="1"/>
+    <title>The ftpusers file must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN004950" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45884" VKey="22445" VRelease="1"/>
+    <title>The ftpusers file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="130" owner="disastig" ownerid="GEN004980" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45885" VKey="845" VRelease="1"/>
+    <title>The FTP daemon must be configured for logging or verbose mode.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005000" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45886" VKey="4387" VRelease="1"/>
+    <title>Anonymous FTP accounts must not have a functional shell.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46157" VKey="4388" VRelease="1"/>
+    <title>The anonymous FTP account must be configured to use chroot or a similarly isolated environment.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005040" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45887" VKey="12011" VRelease="1"/>
+    <title>All FTP users must have a default umask of 077.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005080" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45888" VKey="847" VRelease="1"/>
+    <title>The TFTP daemon must operate in secure mode which provides access only to a single directory on the host file system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005100" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45902" VKey="848" VRelease="1"/>
+    <title>The TFTP daemon must have mode 0755 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45906" VKey="849" VRelease="1"/>
+    <title>The TFTP daemon must be configured to vendor specifications, including a dedicated TFTP user account, a non-login shell such as /bin/false, and a home directory owned by the TFTP user.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005140" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45909" VKey="4695" VRelease="1"/>
+    <title>Any active TFTP daemon must be authorized and approved in the system accreditation package.</title>
+  </overlay>
+  <overlay disa="297" owner="disastig" ownerid="GEN005160" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45911" VKey="850" VRelease="1"/>
+    <title>Any X Windows host must write .Xauthority files.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005190" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45919" VKey="22446" VRelease="1"/>
+    <title>The .Xauthority files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005200" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45920" VKey="4697" VRelease="1"/>
+    <title>X displays must not be exported to the world.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN005280" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45938" VKey="4696" VRelease="1"/>
+    <title>The system must not have the UUCP service active.</title>
+  </overlay>
+  <overlay disa="178" owner="disastig" ownerid="GEN005300" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45941" VKey="993" VRelease="1"/>
+    <title>SNMP communities, users, and passphrases must be changed from the default.</title>
+  </overlay>
+  <overlay disa="1435" owner="disastig" ownerid="GEN005305" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45944" VKey="22447" VRelease="1"/>
+    <title>The SNMP service must use only SNMPv3 or its successors.</title>
+  </overlay>
+  <overlay disa="1453" owner="disastig" ownerid="GEN005306" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45948" VKey="22448" VRelease="1"/>
+    <title>The SNMP service must require the use of a FIPS 140-2 approved cryptographic hash algorithm as part of its authentication and integrity methods.</title>
+  </overlay>
+  <overlay disa="68" owner="disastig" ownerid="GEN005307" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45952" VKey="22449" VRelease="1"/>
+    <title>The SNMP service must require the use of a FIPS 140-2 approved encryption algorithm for protecting the privacy of SNMP messages.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005320" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45955" VKey="994" VRelease="1"/>
+    <title>The snmpd.conf file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005340" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45961" VKey="995" VRelease="1"/>
+    <title>Management Information Base (MIB) files must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005350" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45964" VKey="22450" VRelease="1"/>
+    <title>Management Information Base (MIB) files must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45965" VKey="12019" VRelease="1"/>
+    <title>The snmpd.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005365" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45966" VKey="22451" VRelease="1"/>
+    <title>The snmpd.conf file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005375" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45969" VKey="22452" VRelease="1"/>
+    <title>The snmpd.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="1208" owner="disastig" ownerid="GEN005380" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45971" VKey="4392" VRelease="1"/>
+    <title>If the system is a Network Management System (NMS) server, it must only run the NMS and any software required by the NMS.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005390" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45972" VKey="22453" VRelease="1"/>
+    <title>The /etc/syslog.conf file must have mode 0640 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005395" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45974" VKey="22454" VRelease="1"/>
+    <title>The /etc/syslog.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45976" VKey="4393" VRelease="1"/>
+    <title>The /etc/rsyslog.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="" owner="disastig" ownerid="GEN005400-ZSLE0001" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46279" VKey="35025" VRelease="1"/>
+    <title>The /etc/rsyslog.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45978" VKey="4394" VRelease="1"/>
+    <title>The /etc/rsyslog.conf file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="" owner="disastig" ownerid="GEN005420-ZSLE0003" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46280" VKey="35026" VRelease="1"/>
+    <title>The /etc/rsyslog.conf file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005440" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45984" VKey="12020" VRelease="1"/>
+    <title>The system must not be used as a syslog server (loghost) for systems external to the enclave.</title>
+  </overlay>
+  <overlay disa="136" owner="disastig" ownerid="GEN005450" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45985" VKey="22455" VRelease="1"/>
+    <title>The system must use a remote syslog server (loghost).</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005460" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45989" VKey="4395" VRelease="1"/>
+    <title>The system must only use remote syslog servers (log hosts) that is justified and documented using site-defined procedures.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45991" VKey="12021" VRelease="1"/>
+    <title>The syslog daemon must not accept remote messages unless it is a syslog server documented using site-defined procedures.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN005500" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45997" VKey="4295" VRelease="2"/>
+    <title>The SSH daemon must be configured to only use the SSHv2 protocol.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN005501" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45999" VKey="22456" VRelease="1"/>
+    <title>The SSH client must be configured to only use the SSHv2 protocol.</title>
+  </overlay>
+  <overlay disa="69" owner="disastig" ownerid="GEN005504" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46002" VKey="22457" VRelease="2"/>
+    <title>The SSH daemon must only listen on management network addresses unless authorized for uses other than management.</title>
+  </overlay>
+  <overlay disa="68" owner="disastig" ownerid="GEN005505" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46004" VKey="22458" VRelease="2"/>
+    <title>The SSH daemon must be configured to only use FIPS 140-2 approved ciphers.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005506" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46010" VKey="22459" VRelease="2"/>
+    <title>The SSH daemon must be configured to not use Cipher-Block Chaining (CBC) ciphers.</title>
+  </overlay>
+  <overlay disa="1453" owner="disastig" ownerid="GEN005507" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46012" VKey="22460" VRelease="3"/>
+    <title>The SSH daemon must be configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms.</title>
+  </overlay>
+  <overlay disa="68" owner="disastig" ownerid="GEN005510" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46015" VKey="22461" VRelease="1"/>
+    <title>The SSH client must be configured to only use FIPS 140-2 approved ciphers.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005511" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46017" VKey="22462" VRelease="1"/>
+    <title>The SSH client must be configured to not use Cipher-Block Chaining (CBC)-based ciphers.</title>
+  </overlay>
+  <overlay disa="1453" owner="disastig" ownerid="GEN005512" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46020" VKey="22463" VRelease="2"/>
+    <title>The SSH client must be configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005521" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46033" VKey="22470" VRelease="2"/>
+    <title>The SSH daemon must restrict login ability to specific users and/or groups.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005522" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46050" VKey="22471" VRelease="1"/>
+    <title>The SSH public host key files must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005523" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46051" VKey="22472" VRelease="1"/>
+    <title>The SSH private host key files must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005524" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46052" VKey="22473" VRelease="2"/>
+    <title>The SSH daemon must not permit GSSAPI authentication unless needed.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005525" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46053" VKey="22474" VRelease="1"/>
+    <title>The SSH client must not permit GSSAPI authentication unless needed.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005526" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46087" VKey="22475" VRelease="2"/>
+    <title>The SSH daemon must not permit Kerberos authentication unless needed.</title>
+  </overlay>
+  <overlay disa="54" owner="disastig" ownerid="GEN005533" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46097" VKey="22482" VRelease="1"/>
+    <title>The SSH daemon must limit connections to a single session.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005536" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46098" VKey="22485" VRelease="2"/>
+    <title>The SSH daemon must perform strict mode checking of home directory configuration files.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005537" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46100" VKey="22486" VRelease="2"/>
+    <title>The SSH daemon must use privilege separation.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005538" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46105" VKey="22487" VRelease="2"/>
+    <title>The SSH daemon must not allow rhosts RSA authentication.
+</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005539" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46107" VKey="22488" VRelease="2"/>
+    <title>The SSH daemon must not allow compression or must only allow compression after successful authentication.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46108" VKey="12022" VRelease="1"/>
+    <title>The SSH daemon must be configured for IP filtering.</title>
+  </overlay>
+  <overlay disa="48" owner="disastig" ownerid="GEN005550" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46109" VKey="22489" VRelease="2"/>
+    <title>The SSH daemon must be configured with the Department of Defense (DoD) logon banner.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005560" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46110" VKey="4397" VRelease="1"/>
+    <title>The system must be configured with a default gateway for IPv4 if the system uses IPv4, unless the system is a router.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005570" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46111" VKey="22490" VRelease="1"/>
+    <title>The system must be configured with a default gateway for IPv6 if the system uses IPv6, unless the system is a router.</title>
+  </overlay>
+  <overlay disa="1208" owner="disastig" ownerid="GEN005580" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46112" VKey="4398" VRelease="1"/>
+    <title>A system used for routing must not run other network services or applications.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005590" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46113" VKey="22665" VRelease="1"/>
+    <title>The system must not be running any routing protocol daemons, unless the system is a router.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005600" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46114" VKey="12023" VRelease="1"/>
+    <title>IP forwarding for IPv4 must not be enabled, unless the system is a router.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005610" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46115" VKey="22491" VRelease="2"/>
+    <title>The system must not have IP forwarding for IPv6 enabled, unless the system is an IPv6 router.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005740" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46117" VKey="928" VRelease="1"/>
+    <title>The Network File System (NFS) export configuration file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005750" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46118" VKey="22492" VRelease="1"/>
+    <title>The Network File System (NFS) export configuration file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005760" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46119" VKey="929" VRelease="1"/>
+    <title>The Network File System (NFS) export configuration file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005770" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46120" VKey="22493" VRelease="1"/>
+    <title>The Network File System (NFS) exports configuration file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005800" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46121" VKey="931" VRelease="1"/>
+    <title>All Network File System (NFS) exported system files and system directories must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005810" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46122" VKey="22496" VRelease="1"/>
+    <title>All Network File System (NFS) exported system files and system directories must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="62" owner="disastig" ownerid="GEN005820" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46123" VKey="932" VRelease="1"/>
+    <title>The Network File System (NFS) anonymous UID and GID must be configured to values without permissions.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN005840" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46124" VKey="933" VRelease="1"/>
+    <title>The Network File System (NFS) server must be configured to restrict file system access to local hosts.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005880" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46125" VKey="935" VRelease="1"/>
+    <title>The Network File System (NFS) server must not allow remote root access.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN005900" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46126" VKey="936" VRelease="1"/>
+    <title>The nosuid option must be enabled on all Network File System (NFS) client mounts.</title>
+  </overlay>
+  <overlay disa="1154" owner="disastig" ownerid="GEN006000" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46127" VKey="12024" VRelease="1"/>
+    <title>The system must not have a public Instant Messaging (IM) client installed.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN006040" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46128" VKey="12025" VRelease="1"/>
+    <title>The system must not have any peer-to-peer file-sharing application installed.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN006060" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46129" VKey="4321" VRelease="1"/>
+    <title>The system must not run Samba unless needed.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN006080" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46130" VKey="1026" VRelease="1"/>
+    <title>The Samba Web Administration Tool (SWAT) must be restricted to the local host or require SSL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006100" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46131" VKey="1027" VRelease="1"/>
+    <title>The /etc/smb.conf file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46132" VKey="1056" VRelease="1"/>
+    <title>The /etc/smb.conf file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006140" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46133" VKey="1028" VRelease="1"/>
+    <title>The /etc/smb.conf file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006150" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46134" VKey="22497" VRelease="1"/>
+    <title>The /etc/smb.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006160" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46135" VKey="1029" VRelease="1"/>
+    <title>The /etc/smbpasswd file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006180" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46136" VKey="1058" VRelease="1"/>
+    <title>The smbpasswd file must be group-owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006200" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46137" VKey="1059" VRelease="1"/>
+    <title>The smbpasswd file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006210" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46138" VKey="22498" VRelease="1"/>
+    <title>The /etc/smbpasswd file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006220" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46139" VKey="1030" VRelease="1"/>
+    <title>The smb.conf file must use the hosts option to restrict access to Samba.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN006225" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46140" VKey="22499" VRelease="1"/>
+    <title>Samba must be configured to use an authentication mechanism other than share.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN006230" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46281" VKey="22500" VRelease="1"/>
+    <title>Samba must be configured to use encrypted passwords.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN006235" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46141" VKey="22501" VRelease="1"/>
+    <title>Samba must be configured to not allow guest access to shares.</title>
+  </overlay>
+  <overlay disa="381" owner="disastig" ownerid="GEN006240" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46142" VKey="1023" VRelease="1"/>
+    <title>The system must not run an Internet Network News (INN) server.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006260" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46143" VKey="4273" VRelease="1"/>
+    <title>The /etc/news/incoming.conf (or equivalent) must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006270" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46144" VKey="22502" VRelease="2"/>
+    <title>The /etc/news/incoming.conf file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006280" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46145" VKey="4274" VRelease="1"/>
+    <title>The /etc/news/infeed.conf (or equivalent) must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006290" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45894" VKey="22503" VRelease="1"/>
+    <title>The /etc/news/hosts.nntp.nolimit file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006300" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45896" VKey="4275" VRelease="1"/>
+    <title>The /etc/news/readers.conf (or equivalent) must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006310" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45897" VKey="22504" VRelease="1"/>
+    <title>The /etc/news/nnrp.access file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006320" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45898" VKey="4276" VRelease="1"/>
+    <title>The /etc/news/passwd.nntp file (or equivalent) must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006330" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45899" VKey="22505" VRelease="1"/>
+    <title>The /etc/news/passwd.nntp file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006340" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45901" VKey="4277" VRelease="1"/>
+    <title>Files in /etc/news must be owned by root or news.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN006360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45905" VKey="4278" VRelease="1"/>
+    <title>The files in /etc/news must be group-owned by root or news.</title>
+  </overlay>
+  <overlay disa="1436" owner="disastig" ownerid="GEN006380" ruleid="XXXX" severity="high">
+    <VMSinfo SVKey="45908" VKey="4399" VRelease="1"/>
+    <title>The system must not use UDP for NIS/NIS+.</title>
+  </overlay>
+  <overlay disa="1435" owner="disastig" ownerid="GEN006400" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46282" VKey="867" VRelease="1"/>
+    <title>The Network Information System (NIS) protocol must not be used.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN006420" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45910" VKey="12026" VRelease="1"/>
+    <title>NIS maps must be protected through hard-to-guess domain names.</title>
+  </overlay>
+  <overlay disa="1259" owner="disastig" ownerid="GEN006480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45912" VKey="782" VRelease="2"/>
+    <title>The system must have a host-based intrusion detection tool installed.</title>
+  </overlay>
+  <overlay disa="1266" owner="disastig" ownerid="GEN006560" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45913" VKey="12028" VRelease="1"/>
+    <title>The system vulnerability assessment tool, host-based intrusion detection tool, and file integrity tool must notify the SA and the IAO of a security breach or a suspected security breach.</title>
+  </overlay>
+  <overlay disa="698" owner="disastig" ownerid="GEN006565" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45914" VKey="22506" VRelease="1"/>
+    <title>The system package management tool must be used to verify system software periodically.</title>
+  </overlay>
+  <overlay disa="1297" owner="disastig" ownerid="GEN006570" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45915" VKey="22507" VRelease="1"/>
+    <title>The file integrity tool must be configured to verify ACLs.</title>
+  </overlay>
+  <overlay disa="1297" owner="disastig" ownerid="GEN006571" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45918" VKey="22508" VRelease="1"/>
+    <title>The file integrity tool must be configured to verify extended attributes.</title>
+  </overlay>
+  <overlay disa="1297" owner="disastig" ownerid="GEN006575" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="45928" VKey="22509" VRelease="1"/>
+    <title>The file integrity tool must use FIPS 140-2 approved cryptographic hashes for validating file contents.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN006580" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45929" VKey="940" VRelease="1"/>
+    <title>The system must use an access control program.</title>
+  </overlay>
+  <overlay disa="126" owner="disastig" ownerid="GEN006600" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45930" VKey="941" VRelease="1"/>
+    <title>The systems access control program must log each system access attempt.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN006620" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45931" VKey="12030" VRelease="1"/>
+    <title>The systems access control program must be configured to grant or deny system access to specific hosts.</title>
+  </overlay>
+  <overlay disa="1668" owner="disastig" ownerid="GEN006640" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45967" VKey="12765" VRelease="1"/>
+    <title>The system must use and update a DoD-approved virus scan program.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45968" VKey="22511" VRelease="1"/>
+    <title>The Stream Control Transmission Protocol (SCTP) must be disabled unless required.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007080" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45970" VKey="22514" VRelease="1"/>
+    <title>The Datagram Congestion Control Protocol (DCCP) must be disabled unless required.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007140" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46099" VKey="22517" VRelease="1"/>
+    <title>The Lightweight User Datagram Protocol (UDP-Lite) must be disabled unless required.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007200" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46101" VKey="22520" VRelease="1"/>
+    <title>The Internetwork Packet Exchange (IPX) protocol must be disabled or not installed.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007260" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45973" VKey="22524" VRelease="1"/>
+    <title>The AppleTalk protocol must be disabled or not installed.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007480" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45975" VKey="22530" VRelease="1"/>
+    <title>The Reliable Datagram Sockets (RDS) protocol must be disabled or not installed unless required.</title>
+  </overlay>
+  <overlay disa="382" owner="disastig" ownerid="GEN007540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45977" VKey="22533" VRelease="1"/>
+    <title>The Transparent Inter-Process Communication (TIPC) protocol must be disabled or uninstalled.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007660" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45979" VKey="22539" VRelease="1"/>
+    <title>The Bluetooth protocol handler must be disabled or not installed.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007700" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45980" VKey="22541" VRelease="1"/>
+    <title>The IPv6 protocol handler must not be bound to the network stack unless needed.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007720" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45981" VKey="22542" VRelease="1"/>
+    <title>The IPv6 protocol handler must be prevented from dynamic loading unless needed.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007780" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45982" VKey="22545" VRelease="1"/>
+    <title>The system must not have 6to4 enabled.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007800" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45983" VKey="22546" VRelease="1"/>
+    <title>The system must not have Teredo enabled.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007820" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45986" VKey="22547" VRelease="1"/>
+    <title>The system must not have IP tunnels configured.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN007840" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45987" VKey="22548" VRelease="1"/>
+    <title>The DHCP client must be disabled if not needed.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN007850" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45988" VKey="22549" VRelease="2"/>
+    <title>The DHCP client must not send dynamic DNS updates.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007860" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45990" VKey="22550" VRelease="2"/>
+    <title>The system must ignore IPv6 ICMP redirect messages.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007900" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46104" VKey="22552" VRelease="1"/>
+    <title>The system must use an appropriate reverse-path filter for IPv6 network traffic, if the system uses IPv6.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007920" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45992" VKey="22553" VRelease="1"/>
+    <title>The system must not forward IPv6 source-routed packets.</title>
+  </overlay>
+  <overlay disa="1551" owner="disastig" ownerid="GEN007940" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46106" VKey="22554" VRelease="1"/>
+    <title>The system must not accept source-routed IPv6 packets.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN007950" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45993" VKey="23972" VRelease="1"/>
+    <title>The system must not respond to ICMPv6 echo requests sent to a broadcast address.</title>
+  </overlay>
+  <overlay disa="305" owner="disastig" ownerid="GEN007960" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46283" VKey="23953" VRelease="1"/>
+    <title>The ldd command must be disabled unless it protects against the execution of untrusted files.</title>
+  </overlay>
+  <overlay disa="1453" owner="disastig" ownerid="GEN007980" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45996" VKey="22555" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the system must use a TLS connection using FIPS 140-2 approved cryptographic algorithms.</title>
+  </overlay>
+  <overlay disa="185" owner="disastig" ownerid="GEN008000" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45998" VKey="22556" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, certificates used to authenticate to the LDAP server must be provided from DoD PKI or a DoD-approved external PKI.</title>
+  </overlay>
+  <overlay disa="185" owner="disastig" ownerid="GEN008020" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46000" VKey="22557" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS connection must require the server provide a certificate with a valid trust path to a trusted CA.</title>
+  </overlay>
+  <overlay disa="185" owner="disastig" ownerid="GEN008040" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46285" VKey="22558" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the system must verify the LDAP servers certificate has not been revoked.</title>
+  </overlay>
+  <overlay disa="196" owner="disastig" ownerid="GEN008050" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="45865" VKey="24384" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the /etc/ldap.conf file (or equivalent) must not contain passwords.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008060" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46005" VKey="22559" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information the /etc/ldap.conf (or equivalent) file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008080" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46006" VKey="22560" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the /etc/ldap.conf (or equivalent) file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008100" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46007" VKey="22561" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the /etc/ldap.conf (or equivalent) file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008120" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46018" VKey="22562" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the /etc/ldap.conf (or equivalent) file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008140" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46092" VKey="22563" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the TLS certificate authority file and/or directory (as appropriate) must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008160" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46030" VKey="22564" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the TLS certificate authority file and/or directory (as appropriate) must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008180" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46093" VKey="22565" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the TLS certificate authority file and/or directory (as appropriate) must have mode 0644 (0755 for directories) or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008200" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46095" VKey="22566" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS certificate authority file and/or directory (as appropriate) must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008220" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46034" VKey="22567" VRelease="1"/>
+    <title>For systems using NSS LDAP, the TLS certificate file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008240" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46035" VKey="22568" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS certificate file must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008260" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46036" VKey="22569" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS certificate file must have mode 0644 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008280" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46037" VKey="22570" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS certificate file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008300" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46038" VKey="22571" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS key file must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008320" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46039" VKey="22572" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS key file must be group-owned by root, bin, or sys.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008340" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46041" VKey="22573" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS key file must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008360" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46042" VKey="22574" VRelease="1"/>
+    <title>If the system is using LDAP for authentication or account information, the LDAP TLS key file must not have an extended ACL.</title>
+  </overlay>
+  <overlay disa="1199" owner="disastig" ownerid="GEN008380" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46043" VKey="22575" VRelease="1"/>
+    <title>A root kit check tool must be run on the system at least weekly.</title>
+  </overlay>
+  <overlay disa="366" owner="disastig" ownerid="GEN008440" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46045" VKey="22577" VRelease="1"/>
+    <title>Automated file system mounting tools must not be enabled unless needed.</title>
+  </overlay>
+  <overlay disa="1118" owner="disastig" ownerid="GEN008520" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46049" VKey="22582" VRelease="1"/>
+    <title>The system must employ a local firewall.</title>
+  </overlay>
+  <overlay disa="1109" owner="disastig" ownerid="GEN008540" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46060" VKey="22583" VRelease="1"/>
+    <title>The systems local firewall must implement a deny-all, allow-by-exception policy.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008720" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46075" VKey="4250" VRelease="1"/>
+    <title>The systems boot loader configuration file(s) must have mode 0600 or less permissive.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008740" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46076" VKey="22585" VRelease="1"/>
+    <title>The systems boot loader configuration file(s) must not have extended ACLs.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008760" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46077" VKey="22586" VRelease="1"/>
+    <title>The systems boot loader configuration files must be owned by root.</title>
+  </overlay>
+  <overlay disa="225" owner="disastig" ownerid="GEN008780" ruleid="XXXX" severity="medium">
+    <VMSinfo SVKey="46078" VKey="22587" VRelease="1"/>
+    <title>The systems boot loader configuration file(s) must be group-owned by root, bin, sys, or system.</title>
+  </overlay>
+  <overlay disa="351" owner="disastig" ownerid="GEN008800" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46080" VKey="22588" VRelease="2"/>
+    <title>The system package management tool must cryptographically verify the authenticity of software packages during installation.</title>
+  </overlay>
+  <overlay disa="1233" owner="disastig" ownerid="GEN008820" ruleid="XXXX" severity="low">
+    <VMSinfo SVKey="46084" VKey="22589" VRelease="1"/>
+    <title>The system package management tool must not automatically obtain updates.</title>
+  </overlay>
+</overlays>

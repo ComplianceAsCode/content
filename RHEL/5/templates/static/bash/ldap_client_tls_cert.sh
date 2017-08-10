@@ -1,1 +1,0 @@
-sed -i 's/ ldap//g' /etc/nsswitch.conf

@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Enable SSH Warning Banner
+  lineinfile:
+    create: yes
+    dest: /etc/ssh/sshd_config
+    regexp: ^Banner
+    line: Banner /etc/issue
+    validate: sshd -t -f %s
+  tags:
+    @ANSIBLE_TAGS@

@@ -1,0 +1,42 @@
+<def-group>
+  <definition class="compliance" id="sessions_login_banner" version="1">
+    <metadata>
+      <title>Display approved login banner prior to login.</title>
+      <affected family="unix">
+        <product>Webmin</product>
+      </affected>
+      <description>Display approved login banner prior to login.</description>
+    </metadata>
+    <!-- loginbanner is configured in /etc/webmin/config ... -->
+    <criteria operator="AND">
+	  <criterion comment="Display approved login banner prior to login."
+	  test_ref="test_webmin_sessions_login_banner" />
+	  <criterion comment="Display approved login banner text prior to login."
+	  test_ref="test_webmin_sessions_login_banner_text" />
+   </criteria>
+  </definition>
+  
+  <ind:textfilecontent54_test check="all" comment="Check loginbanner is configured in /etc/webmin/config" 
+  id="test_webmin_sessions_login_banner" version="1">
+    <ind:object object_ref="object_webmin_sessions_login_banner" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_login_banner" version="1">
+    <ind:filepath>/etc/webmin/config</ind:filepath>
+    <ind:pattern operation="pattern match">^loginbanner=/etc/webmin/login_banner$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="Check loginbanner content is configured in /etc/webmin/login_banner" 
+  id="test_webmin_sessions_login_banner_text" version="1">
+    <ind:object object_ref="object_webmin_sessions_login_banner_text" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object 
+  id="object_webmin_sessions_login_banner_text" version="1">
+    <ind:filepath>/etc/webmin/login_banner</ind:filepath>
+    <ind:pattern var_ref="var_webmin_sessions_login_banner_text" operation="pattern match" />
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <external_variable comment="warning banner text variable" datatype="string" id="var_webmin_sessions_login_banner_text" version="1" />
+  
+</def-group>

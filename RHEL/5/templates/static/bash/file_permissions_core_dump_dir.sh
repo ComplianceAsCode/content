@@ -1,1 +1,0 @@
-grep path.*/ /etc/kdump.conf | awk '{ print $2 }' | xargs chmod 700

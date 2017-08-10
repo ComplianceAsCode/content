@@ -6,6 +6,8 @@
     state="stopped"
   with_items:
     - avahi-daemon
+  tags:
+    @ANSIBLE_TAGS@
 
 - name: Disable avahi socket
   service:
@@ -14,3 +16,6 @@
     state="stopped"
   with_items:
     - avahi-socket
+  tags:
+    @ANSIBLE_TAGS@
+

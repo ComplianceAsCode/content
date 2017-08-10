@@ -11,12 +11,10 @@
 	<xsl:template match="/">
 		<html>
 		<head>
-			<title>
-			CCIs from <xsl:value-of select="cdf:Benchmark/cdf:title"/> Mapped to <xsl:value-of select="$title"/>
- 			</title>
+			<title>CCIs from <xsl:value-of select="cdf:Benchmark/cdf:title"/> Mapped to <xsl:value-of select="$title"/></title>
 		</head>
 		<body>
-			<br/> <br/> 
+			<br/> <br/>
 			<div style="text-align: center; font-size: x-large; font-weight:bold">
 			CCIs from <xsl:value-of select="cdf:Benchmark/cdf:title"/> Mapped to <xsl:value-of select="$title"/>
 			</div>
@@ -48,8 +46,6 @@
 				</xsl:choose>
 			</thead>
 			<xsl:for-each select=".//cdf:Rule">
-				<xsl:sort select="cdf:version"/>
-
 				<xsl:variable name="curr_cci" select="string(number(substring-after(cdf:ident,'CCI-')))"/> 
 				<xsl:choose>
 					<!-- output multiple rows if we're in flat mode and at least one ref exists -->
@@ -67,7 +63,7 @@
 
 
 	<xsl:template name="output-row-nested">
-      <xsl:param name="rule" />
+		<xsl:param name="rule" />
 		<tr>
 		<td> <xsl:value-of select="$rule/cdf:version"/> </td> 
 		<td> <xsl:value-of select="$rule/cdf:ident"/> </td> 
@@ -80,50 +76,48 @@
 		<td>
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:if test="cdf:reference[@href=$disa-cciuri]" > 
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
 			    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 			    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 			    <xsl:variable name="srg_cci" select="$rule/cdf:ident"  />
-		  		<xsl:if test="$cci_expanded=$srg_cci" >
+				<xsl:if test="$cci_expanded=$srg_cci" >
 					<table>
 					<tr>
 					<td> <xsl:value-of select="$item/cdf:title"/> </td>
 					<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
-			  		</tr>
+					</tr>
 					</table>
-		  		</xsl:if>
+				</xsl:if>
 			</xsl:for-each>
-			</xsl:if>
 		</xsl:for-each>
 	  </td>
 	  </tr>
 	</xsl:template>
 
 	<xsl:template name="output-rows-flat">
-      <xsl:param name="rule" />
-   		<!-- iterate over the items (everything with references) in the (externally-provided) XCCDF document -->
+		<xsl:param name="rule" />
+		<!-- iterate over the items (everything with references) in the (externally-provided) XCCDF document -->
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
+			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
 			    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
 			    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
 			    <xsl:variable name="srg_cci" select="$rule/cdf:ident"  />
-		  		<xsl:if test="$cci_expanded=$srg_cci" >
+				<xsl:if test="$cci_expanded=$srg_cci" >
 					<tr>
-					<td> <xsl:value-of select="$rule/cdf:version"/> </td> 
-					<td> <xsl:value-of select="$rule/cdf:ident"/> </td> 
+					<td> <xsl:value-of select="$rule/cdf:version"/> </td>
+					<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
 					<td> <xsl:value-of select="$rule/cdf:title"/> </td>
 					<td> <xsl:call-template name="extract-vulndiscussion">
 							<xsl:with-param name="desc" select="$rule/cdf:description"/>
-						 </xsl:call-template> 
+						 </xsl:call-template>
 					</td>
 					<td> <xsl:value-of select="$item/@id"/> </td>
 					<td> <xsl:value-of select="$item/cdf:title"/> </td>
 					<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
 					<td> <xsl:apply-templates select="$item/cdf:check/cdf:check-content"/> </td>
-			  		</tr>
-		  		</xsl:if>
+					</tr>
+				</xsl:if>
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
@@ -140,7 +134,7 @@
 	<!-- get rid of XHTML namespace since we're outputting to HTML -->
 	<xsl:template match="xhtml:*">
 		<xsl:element name="{local-name()}">
- 			<xsl:apply-templates select="node()|@*"/>
+			<xsl:apply-templates select="node()|@*"/>
 		</xsl:element>
 	</xsl:template>
 

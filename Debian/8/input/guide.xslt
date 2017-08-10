@@ -4,12 +4,14 @@
 <!-- This transform assembles all fragments into one "shorthand" XCCDF document
      Accepts the following parameters:
 
-     * SHARED_RP	(required)	Holds the resolved ABSOLUTE path
-					to the SSG's "shared/" directory.
+     * SHARED_RP    (required)  Holds the resolved ABSOLUTE path
+                    to the SSG's "shared/" directory.
+     * BUILD_RP     (required)  Holds the resolved ABSOLUTE path
+                    to the SSG's build directory - $CMAKE_BINARY_PATH
 -->
 
-<!-- Define the default value of the required "SHARED_RP" parameter -->
 <xsl:param name="SHARED_RP" select='undef' />
+<xsl:param name="BUILD_RP" select='undef' />
 
 
   <xsl:template match="Benchmark">
@@ -30,15 +32,10 @@
         <value>This is a placeholder.</value>
       </Value>
 
-      <!-- Adding remediation functions from concat($SHARED_RP, '/xccdf/remediation_functions.xml')
-           location here -->
-      <xsl:if test=" string($SHARED_RP) != 'undef' ">
-        <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
-      </xsl:if>
-      
+      <xsl:apply-templates select="document(concat($BUILD_RP, '/bash-remediation-functions.xml'))" />
+
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/system.xml'))" />
-      
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/services.xml'))" />
     </xsl:copy>
   </xsl:template>
@@ -50,11 +47,12 @@
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/software.xml'))" /> 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/partitions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/access.xml')" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/accounts.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
     </xsl:copy>
   </xsl:template>
-  
+
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />

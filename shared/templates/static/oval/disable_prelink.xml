@@ -1,0 +1,30 @@
+<def-group>
+  <definition class="compliance" id="disable_prelink" version="3">
+    <metadata>
+      <title>Disable Prelinking</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_rhel-osp</platform>
+      </affected>
+      <description>The prelinking feature can interfere with the operation of
+      checksum integrity tools (e.g. AIDE), mitigates the protection provided
+      by ASLR, and requires additional CPU cycles by software upgrades.
+      </description>
+    </metadata>
+    <criteria operator="OR" comment="Conditions for prelinking disabled are satisfied">
+      <extend_definition comment="prelink RPM package not installed" definition_ref="package_prelink_removed" />
+      <criterion comment="Prelinking is disabled" test_ref="test_prelinking_disabled" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="Tests whether prelinking is disabled" id="test_prelinking_disabled" version="1">
+    <ind:object object_ref="object_prelinking_disabled" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_prelinking_disabled" version="2">
+    <ind:filepath>/etc/sysconfig/prelink</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*PRELINKING=no[\s]*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>

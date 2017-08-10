@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="network_sniffer_disabled" version="1">
+    <metadata>
+      <title>Disable the network sniffer</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>Disable the network sniffer</description>
+    </metadata>
+    <criteria>
+      <criterion comment="promisc interfaces" test_ref="test_promisc_interfaces" negate="true" />
+    </criteria>
+  </definition>
+
+  <unix:interface_test check="all" check_existence="at_least_one_exists" id="test_promisc_interfaces" version="1" comment="check all network interfaces for PROMISC flag">
+    <unix:object object_ref="object_promisc_interfaces" />
+    <unix:state state_ref="state_promisc" />
+  </unix:interface_test>
+
+  <unix:interface_object id="object_promisc_interfaces" version="1">
+    <unix:name operation="pattern match">^.*$</unix:name>
+    <filter action="include">state_promisc</filter>
+  </unix:interface_object>
+
+  <unix:interface_state id="state_promisc" version="1">
+    <unix:flag datatype="string" entity_check="at least one" operation="equals">PROMISC</unix:flag>
+  </unix:interface_state>
+
+</def-group>

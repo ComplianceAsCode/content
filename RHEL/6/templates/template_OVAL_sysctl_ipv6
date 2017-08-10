@@ -1,0 +1,18 @@
+<def-group>
+  <definition class="compliance" id="sysctl_%SYSCTLID%" version="4">
+    <metadata>
+      <title>Kernel "%SYSCTLVAR%" Parameter Configuration and Runtime Check</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>The "%SYSCTLVAR%" kernel parameter should be set to the appropriate value in both system configuration and system runtime.</description>
+    </metadata>
+    <criteria comment="IPv6 disabled or %SYSCTLVAR% set correctly" operator="OR">
+      <extend_definition comment="is IPv6 enabled?" definition_ref="kernel_module_ipv6_option_disabled" />
+      <criteria operator="AND">
+        <extend_definition comment="%SYSCTLVAR% configuration setting check" definition_ref="sysctl_static_%SYSCTLID%" />
+        <extend_definition comment="%SYSCTLVAR% runtime setting check" definition_ref="sysctl_runtime_%SYSCTLID%" />
+      </criteria>
+    </criteria>
+  </definition>
+</def-group>

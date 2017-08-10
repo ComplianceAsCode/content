@@ -39,6 +39,9 @@ document for more info.
 
 Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
 
+## Build from the source
+Please see the [BUILD.md](BUILD.md) document for build instructions.
+
 ## Usage
 We assume you have installed SCAP Security Guide system-wide into a
 standard location as instructed in the previous section.
@@ -62,7 +65,7 @@ all possible choices using:
 # oscap info /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
-Please see the [User Manual](http://static.open-scap.org/openscap-1.0/oscap_user_manual.html)
+Please see the [User Manual](https://static.open-scap.org/openscap-1.2/oscap_user_manual.html)
 for more info.
 
 ### SCAP Workbench
@@ -71,7 +74,7 @@ customization. It is suitable for scanning a single machine, either local
 or remote (via SSH). New versions of SCAP Workbench have SSG integration
 and will automatically offer it when the application is started.
 
-Please see the [User Manual](http://static.open-scap.org/scap-workbench-1.1/)
+Please see the [User Manual](https://static.open-scap.org/scap-workbench-1.1/)
 for more info.
 
 ### `oscap-ssh` tool
@@ -85,6 +88,10 @@ remote machine but the SSG content doesn't need to be.
 # oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
+## Legacy Content
+
+- Red Hat Enterprise Linux 5 is considered End-of-Life as of March 31, 2017. Click [here](https://github.com/OpenSCAP/scap-security-guide/releases/tag/v0.1.34) for the last release containing Red Hat Enterprise Linux 5 content.
+
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
@@ -95,7 +102,7 @@ You can also join the `#openscap` IRC channel on `chat.freenode.net`.
 
 ## COPR Repo
 
-We have created a new COPR repository that provides unofficial builds of latest versions of openscap, scap-security-guide, scap-workbench and openscap-daemon packages. The packages are suitable for use on Red Hat Enterprise Linux 5, 6 and 7 and CentOS 5, 6 and 7.
+We have created a new COPR repository that provides unofficial builds of latest versions of openscap, scap-security-guide, scap-workbench and openscap-daemon packages. The packages are suitable for use on Red Hat Enterprise Linux 6 and 7 and CentOS 6 and 7.
 
 The COPR repository is located on:
 https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/
