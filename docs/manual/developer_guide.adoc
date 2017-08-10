@@ -230,3 +230,33 @@ The maintainer should check Bohdi packages for that update for positive/negative
 After 7 days the build can be pushed to -stable (under assumption it didn't reach positive karma >= 3 sooner), meaning in the next day or two it's reachable via yum subscribed to epel-6 repository directly.
 
 
+== Updating Reference and Overlay Content
+
+=== Reference Content
+
+==== STIG Reference Content
+
+=== STIG Overlay Content
+
+`stig_overlay.xml` maps an official product/version STIG release with a
+SSG product/version STIG release.
+
+
+**`stig_overlay.xml` should never be manually created or updated. It should
+always be generated using `create-stig-overlay.py`.**
+
+==== Creating stig_overlay.xml
+
+To create `stig_overlay.xml`, there are two things that are required: an
+official non-draft STIG release from DISA containing a XCCDF file
+(e.g. `U_Red_Hat_Enterprise_Linux_7_STIG_V1R1_Manual-xccdf.xml` and a SSG
+generated XCCDF file (e.g. `ssg-rhel7-xccdf.xml`)
+
+Example using `create-stig-overlay.py`:
+----
+$ shared/utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel7-xccdf.xml -o RHEL/7/input/auxiliary/stig_overlay.xml
+----
+
+==== Updating stig_overlay.xml
+
+- Feature needs to be added to shared/utils/create-stig-overlay.py
