@@ -12,3 +12,11 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME lock-enabled"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/screensaver/lock-enabled'
+    line: '/org/gnome/desktop/screensaver/lock-enabled'
+  tags:
+    @ANSIBLE_TAGS@
