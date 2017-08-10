@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable WiFi Network Notification in GNOME3"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/nm-applet
+    option: suppress-wireless-networks-available
+    value: true
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME3 disablement of WiFi"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/nm-applet/suppress-wireless-networks-available'
+    line: '/org/gnome/nm-applet/suppress-wireless-networks-available'
+  tags:
+    @ANSIBLE_TAGS@
