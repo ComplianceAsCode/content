@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable Ctrl-Alt-Del Reboot Key Sequence in GNOME3"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/settings-daemon/plugins/media-keys
+    option: logout
+    value: string ''
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME disablement of Ctrl-Alt-Del"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/settings-daemon/plugins/media-keys/logout'
+    line: '/org/gnome/settings-daemon/plugins/media-keys/logout'
+  tags:
+    @ANSIBLE_TAGS@
