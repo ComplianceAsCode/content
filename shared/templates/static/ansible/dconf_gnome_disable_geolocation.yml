@@ -1,0 +1,38 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable Geolocation in GNOME3 - location tracking"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/system/location
+    option: enabled
+    value: false
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Disable Geolocation in GNOME3 - clock location tracking"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/clocks
+    option: gelocation
+    value: false
+    create: yes
+
+- name: "Prevent user modification of GNOME geolocation - location tracking"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/system/location/enabled'
+    line: '/org/gnome/system/location/enabled'
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME geolocation - clock location tracking"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/clocks/geolocation'
+    line: '/org/gnome/clocks/geolocation'
+  tags:
+    @ANSIBLE_TAGS@
