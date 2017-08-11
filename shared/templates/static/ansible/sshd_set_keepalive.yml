@@ -8,7 +8,7 @@
     create: yes
     dest: /etc/ssh/sshd_config
     regexp: ^ClientAliveCountMax
-    line: tClientAliveCountMax 0
+    line: ClientAliveCountMax 0
     validate: sshd -t -f %s
   #notify: restart sshd
   tags:
