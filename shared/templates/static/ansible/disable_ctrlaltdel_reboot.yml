@@ -1,8 +1,8 @@
 # platform = multi_platform_rhel
 - name: Disable Ctrl-Alt-Del Reboot Activation
-  systemd:
-    name: ctrl-alt-del
-    masked: yes
-    daemon_reload: yes
-#  tags:
-#    @ANSIBLE_TAGS@
+  file:
+    src: /dev/null
+    dest: /etc/systemd/system/ctrl-alt-del.target
+    state: link
+  tags:
+    @ANSIBLE_TAGS@
