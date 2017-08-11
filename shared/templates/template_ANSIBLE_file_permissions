@@ -4,10 +4,20 @@
 # complexity = medium
 # disruption = medium
 
-- name: Set %PATH% permissions
+- name: Find %PATH% file(s)
+  find:
+    paths: "{{ '%PATH%' | dirname }}"
+    patterns: "{{ '%PATH%' | basename }}"
+  register: files_found
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: Set permissions
   file:
-    path: %PATH%
+    path: "{{ item.path }}"
     mode: %MODE%
+  with_items:
+    - "{{ files_found.files }}"
   tags:
     @ANSIBLE_TAGS@
 
