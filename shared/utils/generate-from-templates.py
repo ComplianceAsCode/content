@@ -25,6 +25,7 @@ from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
 from create_audit_rules_privileged_commands import AuditRulesPrivilegedCommandsGenerator
 from create_audit_rules_usergroup_modification import AuditRulesUserGroupModificationGenerator
 from create_audit_rules_execution import AuditRulesExecutionGenerator
+from create_file_groupowner import FileGroupOwnerGenerator
 
 
 class Builder(object):
@@ -51,6 +52,7 @@ class Builder(object):
             "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
             "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
+            "file_groupowner.csv":              FileGroupOwnerGenerator(),
         }
         self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
