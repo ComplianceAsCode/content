@@ -33,6 +33,9 @@
 
       <xsl:apply-templates select="document('profiles/container-base.xml')" />
 
+      <!-- Profiles added here will be adapted to evaluate containers -->
+      <xsl:apply-templates select="document('profiles/stig-rhel7-disa.xml')" mode="container"/>
+
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
         <title>A conditional clause for check statements.</title>
@@ -52,6 +55,31 @@
   </xsl:template>
 
   <xsl:include href="../../shared/xccdf/shared_guide.xslt"/>
+
+  <xsl:template match="Profile" mode="container">
+      <xsl:copy>
+        <xsl:apply-templates select="@*" />
+        <xsl:attribute name="id">
+              <xsl:value-of select="concat(@id, '-container')" />
+        </xsl:attribute>
+        <xsl:attribute name="extends">
+          <xsl:text>container-base</xsl:text>
+        </xsl:attribute>
+        <xsl:element name="title">
+          <xsl:attribute name="override">
+            <xsl:text>true</xsl:text>
+          </xsl:attribute>
+          <xsl:value-of select="title"/>
+        </xsl:element>
+        <xsl:element name="description">
+          <xsl:attribute name="override">
+            <xsl:text>true</xsl:text>
+          </xsl:attribute>
+          <xsl:value-of select="description"/>
+        </xsl:element>
+        <xsl:apply-templates select="node()[not(self::title|self::description)]"/>
+      </xsl:copy>
+  </xsl:template>
 
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
