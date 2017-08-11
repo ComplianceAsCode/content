@@ -31,6 +31,8 @@
       <xsl:apply-templates select="document('profiles/docker-host.xml')" />
       <xsl:apply-templates select="document('profiles/nist-800-171-cui.xml')" />
 
+      <xsl:apply-templates select="document('profiles/container-base.xml')" />
+
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">
         <title>A conditional clause for check statements.</title>
