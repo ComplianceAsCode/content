@@ -1,4 +1,6 @@
 # platform = Red Hat Enterprise Linux 7
+. /usr/share/scap-security-guide/remediation_functions
+populate var_screensaver_lock_delay
 
 # Define constants to be reused below
 ORG_GNOME_DESKTOP_SCREENSAVER="org/gnome/desktop/screensaver"
@@ -34,7 +36,7 @@ then
 	echo "" >> $SSG_DCONF_LOCK_ENABLED_FILE
 	echo "[org/gnome/desktop/screensaver]" >>  $SSG_DCONF_LOCK_ENABLED_FILE
 	echo "lock-enabled=true" >> $SSG_DCONF_LOCK_ENABLED_FILE
-	echo "lock-delay=uint32 0" >> $SSG_DCONF_LOCK_ENABLED_FILE
+	echo "lock-delay=uint32 ${var_screensaver_lock_delay} " >> $SSG_DCONF_LOCK_ENABLED_FILE
 fi
 
 # Verify if 'lock-enabled' modification is locked. If not, lock it

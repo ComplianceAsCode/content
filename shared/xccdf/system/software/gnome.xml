@@ -285,12 +285,21 @@ settings, see <b><weblink-macro link="https://access.redhat.com/documentation/en
 </description>
 
 <Value id="inactivity_timeout_value" type="number" operator="equals">
-<title>Inactivity timeout</title>
-<description>Choose allowed duration of inactive SSH connections, shells, and X sessions</description>
+<title>Screensaver Inactivity timeout</title>
+<description>Choose allowed duration (in seconds) of inactive graphical sessions</description>
 <value>900</value>
 <value selector="5_minutes">300</value>
 <value selector="10_minutes">600</value>
 <value selector="15_minutes">900</value>
+</Value>
+
+<Value id="var_screensaver_lock_delay" type="number" operator="equals">
+<title>Screensaver Inactivity timeout</title>
+<description>Choose allowed duration (in seconds) of inactive graphical sessions</description>
+<value>0</value>
+<value selector="immediate">0</value>
+<value selector="5_seconds">5</value>
+<value selector="10_seconds">10</value>
 </Value>
 
 <Rule id="dconf_gnome_screensaver_idle_delay" severity="medium" prodtype="rhel7">
@@ -413,10 +422,10 @@ of the information system but does not want to logout because of the temporary n
 <title>Set GNOME3 Screensaver Lock Delay After Activation Period</title>
 <description>
 To activate the locking delay of the screensaver in the GNOME3 desktop when 
-the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 5</tt> in
+the screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 <sub idref="var_screensaver_lock_delay"/></tt> in
 <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
 <pre>[org/gnome/desktop/screensaver]
-lock-delay=uint32 5
+lock-delay=uint32 <sub idref="var_screensaver_lock_delay"/>
 </pre>
 Once the setting has been added, add a lock to
 <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
@@ -427,7 +436,7 @@ After the settings have been set, run <tt>dconf update</tt>.
 <ocil clause="the screensaver lock delay is missing, or is set to a value greater than 5">
 To check that the screen locks immediately when activated, run the following command:
 <pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
-If properly configured, the output should be <tt>'uint32 5'</tt>.
+If properly configured, the output should be <tt>'uint32 <sub idref="var_screensaver_lock_delay"/>'</tt>.
 <br /><br/>
 To ensure that users cannot change how long until the the screensaver locks, run the following:
 <pre>$ grep lock-delay /etc/dconf/db/local.d/locks/*</pre>
@@ -439,7 +448,7 @@ of the information system but does not want to logout because of the temporary n
 </rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80370-0" />
-<oval id="dconf_gnome_screensaver_lock_delay" />
+<oval id="dconf_gnome_screensaver_lock_delay" value="var_screensaver_lock_delay" />
 <ref prodtype="rhel7" stigid="010110" />
 <ref nist="AC-11(a)" disa="56" pcidss="Req-8.1.8" ossrg="OS-SRG-000029-GPOS-00010" cui="3.1.10" />
 </Rule>
