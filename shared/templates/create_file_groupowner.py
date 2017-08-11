@@ -11,11 +11,13 @@ class FileGroupOwnerGenerator(FilesGenerator):
     def generate(self, target, args):
         path = args[0]
         name = re.sub('[-\./]', '_', path)
-        platforms = args[1].replace(';', ',')
-        
-        if len(args) > 2:
-            name = '_' + args[2]
-        
+        group = args[1]
+        platforms = args[2].replace(';', ',')
+
+        # Fourth column is the alternative name, it overwrites the convention
+        if len(args) > 3:
+            name = '_' + args[3]
+
         if not path:
             raise RuntimeError(
                 "ERROR: input violation: the path must be defined")
@@ -39,6 +41,7 @@ class FileGroupOwnerGenerator(FilesGenerator):
                 "./template_BASH_file_groupowner",
                 {
                     "%PATH%": path,
+                    "%GROUP%": group,
                     "%PLATFORMS%": platforms,
                 },
                 "./bash/file_groupowner{0}.sh", name
@@ -49,6 +52,7 @@ class FileGroupOwnerGenerator(FilesGenerator):
                 "./template_ANSIBLE_file_groupowner",
                 {
                     "%PATH%": path,
+                    "%GROUP%": group,
                     "%PLATFORMS%": platforms,
                 },
                 "./ansible/file_groupowner{0}.yml", name

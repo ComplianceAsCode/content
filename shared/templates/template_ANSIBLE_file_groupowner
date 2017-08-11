@@ -15,7 +15,7 @@
 - name: Set group ownership to %GROUP%
   file:
     path: "{{ item.path }}"
-    group: root
+    group: %GROUP%
   with_items:
     - "{{ files_found.files }}"
   tags:
