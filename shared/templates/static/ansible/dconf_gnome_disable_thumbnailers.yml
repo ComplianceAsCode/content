@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable All GNOME3 Thumbnailers"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/desktop/thumbnailers
+    option: disable-all
+    value: true
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME3 Thumbnailers"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/thumbnailers/disable-all'
+    line: '/org/gnome/desktop/thumbnailers/disable-all'
+  tags:
+    @ANSIBLE_TAGS@

@@ -1,0 +1,59 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable GNOME3 Automounting - automount"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/desktop/media-handling
+    option: automount
+    value: false
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME3 Automounting - automount"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/media-handling/automount'
+    line: '/org/gnome/desktop/media-handling/automount'
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Disable GNOME3 Automounting - automount-open"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/desktop/media-handling
+    option: automount-open
+    value: false
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME3 Automounting - automount-open"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/media-handling/automount-open'
+    line: '/org/gnome/desktop/media-handling/automount-open'
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Disable GNOME3 Automounting - autorun-never"
+  ini_file:
+    dest: /etc/dconf/db/local.d/00-security-settings
+    section: org/gnome/desktop/media-handling
+    option: autorun-never
+    value: true
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME3 Automounting - autorun-never"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/media-handling/autorun-never'
+    line: '/org/gnome/desktop/media-handling/autorun-never'
+  tags:
+    @ANSIBLE_TAGS@
+
