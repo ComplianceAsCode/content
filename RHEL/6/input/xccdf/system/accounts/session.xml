@@ -43,10 +43,15 @@ Terminating an idle session within a short time period reduces
 the window of opportunity for unauthorized personnel to take control of a 
 management session enabled on the console or console port that has been 
 left unattended.
+
+Setting the <tt>TMOUT</tt> option to readonly in <tt>/etc/profile</tt> ensures that 
+users will not be able to disable the option or alter its value.
+The following line should be appended to <tt>/etc/profile</tt>
+<pre>readonly TMOUT</pre>
 </description>
 <rationale>
 </rationale>
-<ocil clause="value of TMOUT is not greater than or equal to expected setting">
+<ocil clause="value of TMOUT is not greater than or equal to expected setting or TMOUT is not set to readonly">
 Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
 on the system:
 <pre>$ sudo grep TMOUT /etc/profile</pre>
