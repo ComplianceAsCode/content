@@ -12,10 +12,10 @@
   tags:
     @ANSIBLE_TAGS@
 
-- name: Set user ownership to root
+- name: Set user ownership to %USER%
   file:
     path: "{{ item.path }}"
-    owner: root
+    owner: %USER%
   with_items:
     - "{{ files_found.files }}"
   tags:
