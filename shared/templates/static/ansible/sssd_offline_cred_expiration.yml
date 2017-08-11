@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Configure SSD to Expire Offline Credentials"
+  ini_file:
+    dest: /etc/sssd/sssd.conf
+    section: pam
+    option: offline_credentials_expiration
+    value: 1
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
