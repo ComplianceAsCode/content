@@ -1094,5 +1094,7 @@ If the system is configured to audit this activity, it will return a line.
 
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
+  <!-- Removes machine Elements. Rules not recommended for containers have already been filtered out by now -->
+  <xsl:template match="machine"/>
 
 </xsl:stylesheet>

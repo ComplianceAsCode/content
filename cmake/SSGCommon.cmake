@@ -132,7 +132,8 @@ endmacro()
 macro(ssg_build_xccdf_unlinked PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam ssg_version "${SSG_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        COMMAND "${SSG_SHARED_UTILS}/filter-machine-rules.py" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"  "${CMAKE_CURRENT_BINARY_DIR}/filtered_shorthand.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam ssg_version "${SSG_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt" "${CMAKE_CURRENT_BINARY_DIR}/filtered_shorthand.xml"
         COMMAND "${OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         DEPENDS generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
