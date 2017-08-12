@@ -33,7 +33,7 @@ or modification of the file.
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="26860-7" />
 <oval id="file_user_owner_grub2_cfg" />
 <ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
@@ -52,7 +52,7 @@ destruction or modification of the file.
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="26812-8" />
 <oval id="file_group_owner_grub2_cfg" />
 <ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
@@ -74,7 +74,7 @@ permissions: <tt>-rw-------</tt>
 Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="27054-6" />
 <oval id="file_permissions_grub2_cfg" />
 <ref nist="AC-6(7)" disa="225" cis="1.4.1" cui="3.4.5" />
@@ -130,7 +130,7 @@ the grub2 superuser account and password, please refer to
 To prevent hard-coded passwords, automatic remediation of this control is not available. Remediation
 must be automated as a component of machine provisioning, or followed manually as outlined above.
 </warning>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="27309-4" />
 <oval id="bootloader_password" />
 <ref prodtype="rhel7" stigid="010480" />
@@ -187,7 +187,7 @@ the grub2 superuser account and password, please refer to
 To prevent hard-coded passwords, automatic remediation of this control is not available. Remediation
 must be automated as a component of machine provisioning, or followed manually as outlined above.
 </warning>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="80354-4" />
 <oval id="bootloader_uefi_password" />
 <ref prodtype="rhel7" stigid="010490" />
@@ -219,7 +219,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="27287-2" />
 <oval id="require_singleuser_auth" />
 <ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3"/>
@@ -245,7 +245,7 @@ This prevents attackers with physical access from trivially bypassing security
 on the machine through valid troubleshooting configurations and gaining root
 access when the system is rebooted.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="80206-6" />
 <oval id="service_debug-shell_disabled" />
 <ref cui="3.4.5" />
@@ -313,7 +313,7 @@ that interactive boot is enabled at boot time.
 Using interactive boot, the console user could disable auditing, firewalls,
 or other services, weakening system security.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
 is automatically updated each time a new kernel is installed. Note that any
 changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
@@ -371,7 +371,7 @@ session lock.
 <br /><br />
 The <tt>screen</tt> package allows for a session lock to be implemented and configured.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<machine />
 <ident prodtype="rhel7" cce="27351-6" />
 <oval id="package_screen_installed" />
 <ref prodtype="rhel7" stigid="010090" />
