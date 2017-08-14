@@ -3,7 +3,7 @@
 #
 # verify-input-sanity.py
 #   perform sanity checks on the individual OVAL checks that exist within
-#   the src/input/oval directory
+#   the src/oval directory
 #
 
 # the python modules that we need
@@ -51,20 +51,20 @@ print
 ################################################################################
 ##
 #
-# The directory src/input/oval contains all of the OVAL checks that are
+# The directory src/oval contains all of the OVAL checks that are
 # implemented within scap-security-guide. In order to build the XCCDF and OVAL
 # properly, several helper scripts expect that the ID assigned to each OVAL
 # check matches its file name.
 #
 # Assume we have an OVAL check called "mount_option_var_tmp_bind.xml" in the
-# src/input/oval directory. The ID of this check *must* be
+# src/oval directory. The ID of this check *must* be
 # "mount_option_var_tmp_bind" like so:
 #
 # <def-group>
 #   <definition class="compliance" id="mount_option_var_tmp_bind" version="1">
 #     <metadata>
 #
-# This piece of Python will step through each OVAL check in src/input/oval
+# This piece of Python will step through each OVAL check in src/oval
 # and verify that the ID assigned to the check matches the name of the file.
 # If a mismatch is found, then a warning is printed to stdout.
 #
@@ -73,7 +73,7 @@ print
 #
 
 # make the oval directory our working directory
-os.chdir("../input/oval")
+os.chdir("../oval")
 
 # generate a list of all the OVAL checks
 oval_file_list = []
@@ -100,7 +100,7 @@ for oval_check in oval_file_list:
         # check now we make sure that the name of the file matches the oval id
         if oval_check.find(oval_id + ".xml") < 0:
             print ("  WARNING: OVAL check " +
-                   oval_check.replace("./", "src/input/oval/") +
+                   oval_check.replace("./", "src/oval/") +
                    " has ID \"" + oval_id + "\"")
             print ("           the ID should match the file name" +
                    " without the .xml\n")
@@ -111,7 +111,7 @@ for oval_check in oval_file_list:
 #
 # This section of Python looks through all of the XCCDF files for references to
 # OVAL checks. If a reference is found we want to make sure that a
-# corresponding OVAL check exists in the src/input/oval directory. We print
+# corresponding OVAL check exists in the src/oval directory. We print
 # a relatively polite warning if a XCCDF Rule references an OVAL check that
 # does not exist.
 #
@@ -126,7 +126,7 @@ for oval_check in oval_file_list:
 #
 
 # make the input directory our working directory
-# remember that we are currently at "../input/oval"
+# remember that we are currently at "../oval"
 os.chdir("..")
 
 # exclude these directories in the search for XCCDF files
@@ -151,7 +151,7 @@ for xccdf_file in xccdf_xml_files:
             tree = ET.fromstring(xccdf_xml_contents)
         except ET.XMLSyntaxError as e:
             print ("  XML syntax error in file %s:"
-                   % xccdf_file.replace("./", "src/input/"))
+                   % xccdf_file.replace("./", "src/"))
             print " ", e.msg, "\n"
         # extract all of the rules that are defined within the XCCDF
         xccdf_rules = tree.findall(".//Rule")
@@ -168,11 +168,11 @@ for xccdf_file in xccdf_xml_files:
                                + "\" references OVAL check \"" +
                                oval_ref.get("id") + "\" which does not exist")
                         print ("           problem occurs in file: " +
-                               xccdf_file.replace("./", "src/input/") + "\n")
+                               xccdf_file.replace("./", "src/") + "\n")
                 else:
                     print ("  WARNING: XCCDF Rule \"" + xccdf_rule.get("id")
                            + "\" in file " + xccdf_file.replace("./",
-                           "src/input/") + " contains a null OVAL check\n")
+                           "src/") + " contains a null OVAL check\n")
 
 # we are done
 exit()
