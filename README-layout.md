@@ -59,8 +59,8 @@ and applications.  The sub-directories in the shared directory augment the
 sub-directories in the OS and application areas, though the tree structure
 is somewhat different.
 
-    OS-or-app/input/oval ... shared/oval
-    OS-or-app/input/remediations ... shared/remediations
+    OS-or-app/oval ... shared/oval
+    OS-or-app/remediations ... shared/remediations
     OS-or-app/transforms ... shared/transforms
     OS-or-app/utils ... shared/utils
 

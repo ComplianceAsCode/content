@@ -105,19 +105,19 @@ macro(ssg_build_guide_xml PRODUCT)
 endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
-    file(GLOB AUXILIARY_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/auxiliary/*.xml")
-    file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/profiles/*.xml")
-    file(GLOB XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/input/xccdf/**/*.xml")
+    file(GLOB AUXILIARY_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/*.xml")
+    file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/*.xml")
+    file(GLOB XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/**/*.xml")
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam SHARED_RP "${SSG_SHARED}" --stringparam BUILD_RP "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam SHARED_RP "${SSG_SHARED}" --stringparam BUILD_RP "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_SOURCE_DIR}/guide.xslt" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS generate-internal-${PRODUCT}-guide.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/input/guide.xslt"
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/guide.xslt"
         DEPENDS ${AUXILIARY_DEPS}
         DEPENDS ${PROFILE_DEPS}
         DEPENDS ${XCCDF_RULE_DEPS}
@@ -384,7 +384,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
 endmacro()
 
 macro(ssg_build_cpe_dictionary PRODUCT)
-    set(SSG_CPE_DICTIONARY "${CMAKE_CURRENT_SOURCE_DIR}/input/oval/platform/${PRODUCT}-cpe-dictionary.xml")
+    set(SSG_CPE_DICTIONARY "${CMAKE_CURRENT_SOURCE_DIR}/oval/platform/${PRODUCT}-cpe-dictionary.xml")
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
@@ -1092,7 +1092,7 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_CURRENT_SOURCE_DIR}/input/auxiliary/stig_overlay.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/stig_overlay.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
