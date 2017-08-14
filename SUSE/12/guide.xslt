@@ -39,7 +39,7 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:include href="../../../shared/xccdf/shared_guide.xslt"/>
+  <xsl:include href="../../shared/xccdf/shared_guide.xslt"/>
 
   <!-- copy everything else through to final output -->
   <xsl:template match="@*|node()">
