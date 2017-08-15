@@ -12,25 +12,23 @@ class FileGroupOwnerGenerator(FilesGenerator):
         path = args[0]
         name = re.sub('[-\./]', '_', path)
         group = args[1]
-        platforms = args[2].replace(';', ',')
 
-        # Fourth column is the alternative name, it overwrites the convention
-        if len(args) > 3:
-            name = '_' + args[3]
+        # Third column is the alternative name, it overwrites the convention
+        if len(args) > 2:
+            name = '_' + args[2]
 
         if not path:
             raise RuntimeError(
                 "ERROR: input violation: the path must be defined")
-        if not platforms:
+        if not group:
             raise RuntimeError(
-                "ERROR: input violation: the platforms must be defined")
+                "ERROR: input violation: the group must be defined")
 
 #        if target == "oval":
 #            self.file_from_template(
 #                "./template_OVAL_file_groupowner",
 #                {
 #                    "%PATH%": path,
-#                    "%PLATFORMS%": platforms,
 #                    "%NAME%": name
 #                },
 #                "./oval/file_groupowner{0}.xml", name
@@ -42,7 +40,6 @@ class FileGroupOwnerGenerator(FilesGenerator):
                 {
                     "%PATH%": path,
                     "%GROUP%": group,
-                    "%PLATFORMS%": platforms,
                 },
                 "./bash/file_groupowner{0}.sh", name
             )
@@ -53,7 +50,6 @@ class FileGroupOwnerGenerator(FilesGenerator):
                 {
                     "%PATH%": path,
                     "%GROUP%": group,
-                    "%PLATFORMS%": platforms,
                 },
                 "./ansible/file_groupowner{0}.yml", name
             )
@@ -63,4 +59,4 @@ class FileGroupOwnerGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PATH, PLATFORM_1[;PLATFORM_N][,ALT_NAME]")
+               "PATH, GROUP [,ALT_NAME]")
