@@ -12,11 +12,10 @@ class FileOwnerGenerator(FilesGenerator):
         path = args[0]
         name = re.sub('[-\./]', '_', path)
         user = args[1]
-        platforms = args[2].replace(';', ',')
 
-        # Fourth column is the alternative name, it overwrites the convention
-        if len(args) > 3:
-            name = '_' + args[3]
+        # Third column is the alternative name, it overwrites the convention
+        if len(args) > 2:
+            name = '_' + args[2]
 
         if not path:
             raise RuntimeError(
@@ -24,16 +23,12 @@ class FileOwnerGenerator(FilesGenerator):
         if not user:
             raise RuntimeError(
                 "ERROR: input violation: the user must be defined")
-        if not platforms:
-            raise RuntimeError(
-                "ERROR: input violation: the platforms must be defined")
 
 #        if target == "oval":
 #            self.file_from_template(
 #                "./template_OVAL_file_owner",
 #                {
 #                    "%PATH%": path,
-#                    "%PLATFORMS%": platforms,
 #                    "%NAME%": name
 #                },
 #                "./oval/file_owner{0}.xml", name
@@ -45,7 +40,6 @@ class FileOwnerGenerator(FilesGenerator):
                 {
                     "%PATH%": path,
                     "%USER%": user,
-                    "%PLATFORMS%": platforms,
                 },
                 "./bash/file_owner{0}.sh", name
             )
@@ -56,7 +50,6 @@ class FileOwnerGenerator(FilesGenerator):
                 {
                     "%PATH%": path,
                     "%USER%": user,
-                    "%PLATFORMS%": platforms,
                 },
                 "./ansible/file_owner{0}.yml", name
             )
@@ -66,4 +59,4 @@ class FileOwnerGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PATH, USER, PLATFORM_1[;PLATFORM_N][,ALT_NAME]")
+               "PATH, USER [,ALT_NAME]")
