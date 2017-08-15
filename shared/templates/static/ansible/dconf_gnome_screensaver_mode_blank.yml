@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Implement Blank Screensaver"
+  ini_file:
+    dest: "/etc/dconf/db/local/d/00-security-settings"
+    section: "org/gnome/desktop/screensaver"
+    option: picture-uri
+    value: string ''
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME picture-uri"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/screensaver/picture-uri'
+    line: '/org/gnome/desktop/screensaver/picture-uri'
+  tags:
+    @ANSIBLE_TAGS@

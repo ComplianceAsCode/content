@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Disable Full Username on Splash Screen"
+  ini_file:
+    dest: "/etc/dconf/db/local/d/00-security-settings"
+    section: "org/gnome/desktop/screensaver"
+    option: show-full-name-in-top-bar
+    value: false
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME show-full-name-in-top-bar"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/desktop/screensaver/show-full-name-in-top-bar'
+    line: '/org/gnome/desktop/screensaver/show-full-name-in-top-bar'
+  tags:
+    @ANSIBLE_TAGS@
