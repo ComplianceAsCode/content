@@ -12,11 +12,10 @@ class FilePermissionsGenerator(FilesGenerator):
         path = args[0]
         name = re.sub('[-\./]', '_', path)
         mode = args[1]
-        platforms = args[2].replace(';', ',')
 
-        # Fourth column is the alternative name, it overwrites the convention
-        if len(args) > 3:
-            name = '_' + args[3]
+        # Third column is the alternative name, it overwrites the convention
+        if len(args) > 2:
+            name = '_' + args[2]
 
         if not path:
             raise RuntimeError(
@@ -24,9 +23,6 @@ class FilePermissionsGenerator(FilesGenerator):
         if not mode:
             raise RuntimeError(
                 "ERROR: input violation: the mode must be defined")
-        if not platforms:
-            raise RuntimeError(
-                "ERROR: input violation: the platforms must be defined")
 
 #        if target == "oval":
 #            self.file_from_template(
@@ -46,7 +42,6 @@ class FilePermissionsGenerator(FilesGenerator):
                 {
                     "%PATH%": path,
                     "%MODE%": mode,
-                    "%PLATFORMS%": platforms,
                 },
                 "./bash/file_permissions{0}.sh", name
             )
@@ -57,7 +52,6 @@ class FilePermissionsGenerator(FilesGenerator):
                 {
                     "%PATH%": path,
                     "%MODE%": mode,
-                    "%PLATFORMS%": platforms,
                 },
                 "./ansible/file_permissions{0}.yml", name
             )
@@ -67,4 +61,4 @@ class FilePermissionsGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PATH, MODE, PLATFORM_1[;PLATFORM_N][,ALT_NAME]")
+               "PATH, MODE, [,ALT_NAME]")
