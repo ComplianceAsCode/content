@@ -185,6 +185,10 @@ def main():
         root_element.get("id").replace("_benchmark_", "_benchmark_PCIDSS-")
     )
 
+    for title_element in \
+            root_element.findall("./{%s}title" % (XCCDF_NAMESPACE)):
+        title_element.text += " (PCI-DSS centric)"
+
     # filter out all profiles except PCI-DSS
     for profile in \
             benchmark.findall("./{%s}Profile" % (XCCDF_NAMESPACE)):
