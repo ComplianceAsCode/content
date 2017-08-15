@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Configure SSSD's Memory Cache to Expire"
+  ini_file:
+    dest: /etc/sssd/sssd.conf
+    section: nss
+    option: memcache_timeout
+    value: 86400
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@

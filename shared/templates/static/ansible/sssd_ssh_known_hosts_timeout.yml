@@ -1,0 +1,14 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Configure SSSD to Expire SSH Known Hosts"
+  ini_file:
+    dest: /etc/sssd/sssd.conf
+    section: ssh
+    option: ssh_known_hosts_timeout
+    value: 86400
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
