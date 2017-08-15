@@ -6,8 +6,8 @@
 - name:  Verify that Inactive Boot is Disabled
   lineinfile:
     create: yes
-    dest: /etc/sysconfig/init
-    regexp: ^PROMPT=
-    line: PROMPT=no
+    dest: /etc/default/grub
+    regexp: ^systemd.confirm_spawn=
+    line: systemd.confirm_spawn=no
   tags:
     @ANSIBLE_TAGS@
