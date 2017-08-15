@@ -9,7 +9,6 @@
     dest: /etc/rsyslog.conf
     regexp: "^\\*\\.\\*"
     line: "*.* @@(ansible-populate rsyslog_remote_loghost_address)"
-  when: "'(ansible-populate rsyslog_remote_loghost_address)' != 'NULL'"
   tags:
     @ANSIBLE_TAGS@
 

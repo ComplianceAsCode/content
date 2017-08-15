@@ -232,10 +232,10 @@ better to store log messages both centrally and on each host, so
 that they can be correlated if necessary.</description>
 
 <Value id="rsyslog_remote_loghost_address" type="string"
-operator="equals" interactive="0">
+operator="equals" interactive="1">
 <title>Remote Log Server</title>
 <description>Specify an URI or IP address of a remote host where the log messages will be sent and stored.</description>
-<value selector="default">NULL</value>
+<value selector="default">logcollector</value>
 </Value>
 
 <Rule id="rsyslog_remote_loghost" prodtype="rhel7">
@@ -261,6 +261,8 @@ To use TCP for log message delivery:
 <br/>
 To use RELP for log message delivery:
 <pre>*.* :omrelp:<i>loghost.example.com</i></pre>
+<br/>
+There must be a resolvable DNS CNAME or Alias record set to "<sub idref="rsyslog_remote_loghost_address"/>" for logs to be sent correctly to the centralized logging utility.
 </description>
 <ocil clause="none of these are present">
 To ensure logs are sent to a remote host, examine the file
