@@ -1,0 +1,23 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Find %PATH% file(s)
+  find:
+    paths: "{{ '%PATH%' | dirname }}"
+    patterns: "{{ '%PATH%' | basename }}"
+  register: files_found
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: Set user ownership to %USER%
+  file:
+    path: "{{ item.path }}"
+    owner: %USER%
+  with_items:
+    - "{{ files_found.files }}"
+  tags:
+    @ANSIBLE_TAGS@
+
