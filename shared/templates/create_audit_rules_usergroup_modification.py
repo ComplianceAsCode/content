@@ -27,21 +27,21 @@ class AuditRulesUserGroupModificationGenerator(FilesGenerator):
 
         elif target == "bash":
             self.file_from_template(
-                "./template_BASH_audit_rules_login_events",
+                "./template_BASH_audit_rules_usergroup_modification",
                 {
                     "%PATH%":	path
                 },
-                "./bash/audit_rules_login_events_{0}.sh", name
+                "./bash/audit_rules_usergroup_modification_{0}.sh", name
             )
 
         elif target == "ansible":
             self.file_from_template(
-                "./template_ANSIBLE_audit_rules_login_events",
+                "./template_ANSIBLE_audit_rules_usergroup_modification",
                 {
                     "%NAME%":	name,
                     "%PATH%":	path
                 },
-                "./ansible/audit_rules_login_events_{0}.yml", name
+                "./ansible/audit_rules_usergroup_modification_{0}.yml", name
             )
 
         else:
