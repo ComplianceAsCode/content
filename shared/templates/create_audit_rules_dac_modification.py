@@ -23,6 +23,26 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
                 },
                 "./oval/audit_rules_dac_modification_{0}.xml", attr
             )
+
+        elif target == "bash":
+            self.file_from_template(
+                "./template_BASH_audit_rules_dac_modification",
+                {
+                    "%PATH%":	path
+                },
+                "./bash/audit_rules_dac_modification_{0}.sh", name
+            )
+
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_dac_modification",
+                {
+                    "%NAME%":	name,
+                    "%PATH%":	path
+                },
+                "./ansible/audit_rules_dac_modification_{0}.yml", name
+            )
+
         else:
             raise UnknownTargetError(target)
 
