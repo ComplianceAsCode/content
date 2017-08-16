@@ -3,13 +3,11 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Set SSH Client Alive Count
+- name: Ensure the Default UMASK is Set Correctly
   lineinfile:
     create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^ClientAliveCountMax
-    line: ClientAliveCountMax 0
-    validate: sshd -t -f %s
-  #notify: restart sshd
+    dest: /etc/login.defs
+    regexp: ^UMASK
+    line: UMASK (ansible-populate var_accounts_user_umask)
   tags:
     @ANSIBLE_TAGS@
