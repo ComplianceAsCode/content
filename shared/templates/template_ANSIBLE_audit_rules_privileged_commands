@@ -10,7 +10,7 @@
   find:
     paths: "/etc/audit/rules.d"
     recurse: no
-    contains: "^.*path=%PATH%.*$"
+    contains: "-k audit_rules_usergroup_modification.$"
     patterns: "*.rules"
   register: find_%NAME%
 
@@ -29,7 +29,7 @@
 - name: Inserts/replaces the rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path=%NAME% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
@@ -39,10 +39,7 @@
 - name: Inserts/replaces the rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path=%NAME% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
-
-
-
