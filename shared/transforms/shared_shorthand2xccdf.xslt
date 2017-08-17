@@ -468,16 +468,20 @@
             <xsl:value-of select="$ovaluri" />
           </xsl:attribute>
 
-          <xsl:if test="@value">
+          <xsl:for-each select="@*">
+          <xsl:choose>
+          <xsl:when test="contains(name(),'value')">
             <check-export>
               <xsl:attribute name="export-name">
-                <xsl:value-of select="@value" />
+                <xsl:value-of select="." />
               </xsl:attribute>
               <xsl:attribute name="value-id">
-                <xsl:value-of select="@value" />
+                <xsl:value-of select="." />
               </xsl:attribute>
             </check-export>
-          </xsl:if>
+          </xsl:when>
+          </xsl:choose>
+          </xsl:for-each>
 
           <check-content-ref>
             <xsl:attribute name="href">
