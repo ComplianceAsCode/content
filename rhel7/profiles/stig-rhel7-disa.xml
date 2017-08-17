@@ -594,6 +594,8 @@ Storage deployments.
 <select idref="package_openssh-server_installed" selected="true" />
 
 <!-- SRG-OS-000423-GPOS-00187, SV-86859r2_rule, RHEL-07-040310 -->
+<!-- Other Rules will know that SSH is required to be installed -->
+<refine-value idref="sshd_required" selector="yes" />
 <select idref="service_sshd_enabled" selected="true" />
 
 <!-- SRG-OS-000163-GPOS-00072, SV-86861r2_rule, RHEL-07-040320 -->
