@@ -60,6 +60,8 @@
     dest: /etc/audit/audit.rules
   with_items:
     - "-a always,exit -F arch=b32 -S %ATTR% -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
+  tags:
+    @ANSIBLE_TAGS@
 
 - name: "Inserts/replaces the %ATTR% rule in audit.rules when on x86_64"
   lineinfile:
