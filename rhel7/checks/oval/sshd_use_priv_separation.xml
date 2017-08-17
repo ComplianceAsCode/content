@@ -8,12 +8,16 @@
       <description>Use priviledge separation to cause the SSH process to drop
 root privileges when not needed.</description>
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met"
+    <criteria comment="SSH is not installed or conditions are met"
     operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <criterion comment="Check UsePrivilegeSeparation in /etc/ssh/sshd_config"
-      test_ref="test_sshd_use_priv_separation" />
+      <extend_definition comment="sshd is not required and not installed, or requirement is unset"
+      definition_ref="sshd_not_required_or_unset" />
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required and installed, or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        <criterion comment="Check UsePrivilegeSeparation in /etc/ssh/sshd_config"
+        test_ref="test_sshd_use_priv_separation" />
+      </criteria>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"

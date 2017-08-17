@@ -8,12 +8,16 @@
       <description>SSH can allow authentication through the obsolete rsh command
       through the use of the authenticating user's SSH keys. This should be disabled.</description>
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met"
+    <criteria comment="SSH is not installed or conditions are met"
     operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <criterion comment="Check RhostsRSAAuthentication in /etc/ssh/sshd_config"
-      negate="true" test_ref="test_sshd_disable_rhosts_rsa" />
+      <extend_definition comment="sshd is not required and not installed, or requirement is unset"
+      definition_ref="sshd_not_required_or_unset" />
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required and installed, or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        <criterion comment="Check RhostsRSAAuthentication in /etc/ssh/sshd_config"
+        negate="true" test_ref="test_sshd_disable_rhosts_rsa" />
+      </criteria>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
