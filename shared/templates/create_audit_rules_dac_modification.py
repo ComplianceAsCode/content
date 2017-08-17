@@ -10,11 +10,11 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
     def generate(self, target, audit_info):
         # the csv file contains lines that match the following layout:
         #    attr
+        attr = audit_info[0]
 
         if target == "oval":
             # we are ready to create the check
             # open the template and perform the conversions
-            attr = audit_info[0]
 
             self.file_from_template(
                 "./template_OVAL_audit_rules_dac_modification",
@@ -28,19 +28,18 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_audit_rules_dac_modification",
                 {
-                    "%PATH%":	path
+                    "%ATTR%":	attr,
                 },
-                "./bash/audit_rules_dac_modification_{0}.sh", name
+                "./bash/audit_rules_dac_modification_{0}.sh", attr
             )
 
         elif target == "ansible":
             self.file_from_template(
                 "./template_ANSIBLE_audit_rules_dac_modification",
                 {
-                    "%NAME%":	name,
-                    "%PATH%":	path
+                    "%ATTR%":	attr,
                 },
-                "./ansible/audit_rules_dac_modification_{0}.yml", name
+                "./ansible/audit_rules_dac_modification_{0}.yml", attr
             )
 
         else:
