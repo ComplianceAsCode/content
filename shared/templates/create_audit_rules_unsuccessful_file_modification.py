@@ -30,14 +30,14 @@ class AuditRulesUnsuccessfulFileModificationGenerator(FilesGenerator):
                 "./bash/audit_rules_unsuccessful_file_modification_{0}.sh", name
             )
 
-#        elif target == "ansible":
-#            self.file_from_template(
-#                "./template_ANSIBLE_audit_rules_privileged_commands",
-#                {
-#                    "%NAME%":	name
-#                },
-#                "./ansible/audit_rules_unsuccessful_file_modification_{0}.yml", name
-#            )
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_privileged_commands",
+                {
+                    "%NAME%":	name
+                },
+                "./ansible/audit_rules_unsuccessful_file_modification_{0}.yml", name
+            )
 
         else:
             raise UnknownTargetError(target)
