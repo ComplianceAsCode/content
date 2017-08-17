@@ -67,6 +67,16 @@ operator="equals" interactive="0">
 <value selector="default">hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com</value>
 </Value>
 
+<Value id="sshd_required" type="number"
+operator="equals" interactive="0">
+<title>SSH is required to be installed</title>
+<description>Specify if the Policy requires SSH to be installed. Used by SSH Rules
+to determine if SSH should be uninstalled or configured.</description>
+<value selector="">0</value>
+<value selector="no">1</value>
+<value selector="yes">2</value>
+</Value>
+
 <Rule id="package_openssh-server_installed" severity="medium" prodtype="rhel7">
 <title>Install the OpenSSH Server Package</title>
 <description>
