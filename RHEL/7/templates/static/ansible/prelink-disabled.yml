@@ -1,0 +1,7 @@
+- name: disable prelinking
+  lineinfile:
+    path: /etc/sysconfig/prelink
+    regexp: '^PRELINK'
+    line: 'PRELINKING=no'
+  tags:
+    @ANSIBLE_TAGS@
