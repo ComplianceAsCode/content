@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="compliance" id="configure_firewalld_ports" version="1">
+    <metadata>
+      <title>Configure the Firewalld Ports</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Configure the firewalld ports to allow approved
+      services to have access to the system.</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="ssh port is enabled" definition_ref="firewalld_sshd_port_enabled" />
+    </criteria>
+  </definition>
+
+</def-group>
