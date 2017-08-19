@@ -1,0 +1,7 @@
+- name: disable RSH
+  service:
+    name: rsh
+    state: stopped
+    enabled: false
+  tags:
+    @ANSIBLE_TAGS@
