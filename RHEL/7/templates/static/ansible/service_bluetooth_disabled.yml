@@ -1,0 +1,19 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: check if bluetooth service exists
+  shell: "if systemctl list-units | grep bluetooth; then echo true; else echo false; fi;"
+  register: bluetooth
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: disable bluetooth
+  service:
+    name: bluetooth
+    state: stopped
+    enabled: false
+  when: bluetooth.stdout == true
+  tags:
+    @ANSIBLE_TAGS@
