@@ -33,7 +33,7 @@ boot.</description>
 activation of the wireless interface, generally requiring administrators
 to reboot the system first.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27397-9" />
 <!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
 <ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
@@ -103,7 +103,7 @@ to prevent the loading of the Bluetooth module:
 <rationale>If Bluetooth functionality must be disabled, preventing the kernel
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27327-6" />
 <oval id="kernel_module_bluetooth_disabled" />
 <ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551"

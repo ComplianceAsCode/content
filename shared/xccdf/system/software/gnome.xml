@@ -41,7 +41,7 @@ system-db:distro</pre>
 Failure to have a functional DConf profile prevents GNOME3 configuration settings
 from being enforced for all users and allows various security risks.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27446-4" />
 <oval id="enable_dconf_user_profile" />
 </Rule>
@@ -78,7 +78,7 @@ AutomaticLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80104-3" />
 <oval id="gnome_gdm_disable_automatic_login" />
 <ref prodtype="rhel7" stigid="010440" />
@@ -106,7 +106,7 @@ TimedLoginEnable=false</pre>
 Failure to restrict system access to authenticated users negatively impacts operating
 system security.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80105-0" />
 <oval id="gnome_gdm_disable_guest_login" />
 <ref prodtype="rhel7" stigid="010450" />
@@ -141,7 +141,7 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/disable
 <rationale>Leaving the user list enabled is a security risk since it allows anyone
 with physical access to the system to quickly enumerate known user accounts
 without logging in.</rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80106-8" />
 <oval id="dconf_gnome_disable_user_list" />
 <ref nist="AC-23" />
@@ -178,7 +178,7 @@ A user who is at the console can reboot the system at the login screen. If resta
 are pressed at the login screen, this can create the risk of short-term loss of availability of systems
 due to reboot.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80107-6" />
 <oval id="dconf_gnome_disable_restart_shutdown" />
 <ref prodtype="rhel7" stigid="TBD" />
@@ -214,7 +214,7 @@ Smart card login provides two-factor authentication stronger than
 that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80108-4" />
 <oval id="dconf_gnome_enable_smartcard_auth" />
 <ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
@@ -252,7 +252,7 @@ Setting the password retry prompts that are permitted on a per-session basis to 
 requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80109-2" />
 <ref cui="3.1.8" />
 <oval id="dconf_gnome_login_retries" />
@@ -334,7 +334,7 @@ temporary nature of the absence. Rather than relying on the user to manually loc
 system session prior to vacating the vicinity, GNOME3 can be configured to identify when
 a user's session has idled and take action to initiate a session lock.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80110-0" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
 <ref prodtype="rhel7" stigid="010070" />
@@ -376,7 +376,7 @@ real-time screen display (such as network management products) require the
 login session does not have administrator rights and the display station is located in a
 controlled-access area.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80111-8" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
 <ref prodtype="rhel7" stigid="010100" />
@@ -411,7 +411,7 @@ If properly configured, the output for <tt>lock-enabled</tt> should be <tt>/org/
 A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
 of the information system but does not want to logout because of the temporary nature of the absense.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80112-6" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
 <ref prodtype="rhel7" stigid="010060" />
@@ -446,7 +446,7 @@ If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gn
 A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
 of the information system but does not want to logout because of the temporary nature of the absense.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80370-0" />
 <oval id="dconf_gnome_screensaver_lock_delay" value="var_screensaver_lock_delay" />
 <ref prodtype="rhel7" stigid="010110" />
@@ -481,7 +481,7 @@ If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/
 Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80113-4" />
 <oval id="dconf_gnome_screensaver_mode_blank" />
 <ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" cjis="5.5.5" cui="3.1.10" />
@@ -516,7 +516,7 @@ If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/
 Setting the splash screen to not reveal the logged in user's name
 conceals who has access to the system from passersby.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80114-2" />
 <oval id="dconf_gnome_screensaver_user_info" />
 </Rule>
@@ -544,7 +544,7 @@ Rather than relying on the user to manually lock their operating system session 
 GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
 session lock. As such, users should not be allowed to change session settings.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80371-8" />
 <oval id="dconf_gnome_session_user_locks" />
 <ref prodtype="rhel7" stigid="010081" />
@@ -599,7 +599,7 @@ can reboot the system. If accidentally pressed, as could happen in
 the case of mixed OS environment, this can create the risk of short-term
 loss of availability of systems due to unintentional reboot.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_disable_ctrlaltdel_reboot" />
 <ident prodtype="rhel7" cce="80124-1" />
 <ref prodtype="rhel7" stigid="TBD" />
@@ -640,7 +640,7 @@ the Graphical User Interface (GUI) when they would not have them otherwise could
 unintended configuration changes as well as a nefarious user the capability to make system
 changes such as adding new accounts, etc.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_disable_user_admin" />
 <ident prodtype="rhel7" cce="80115-9" />
 <ref cui="3.1.5" />
@@ -677,7 +677,7 @@ Power settings should not be enabled on systems that are not mobile devices.
 Enabling power settings on non-mobile devices could have unintended processing
 consequences on standard systems.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_disable_power_settings" />
 <ident prodtype="rhel7" cce="80116-7" />
 </Rule>
@@ -721,7 +721,7 @@ Power settings should not be enabled on systems that are not mobile devices.
 Enabling power settings on non-mobile devices could have unintended processing
 consequences on standard systems.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_disable_geolocation" />
 <ident prodtype="rhel7" cce="80117-5" />
 </Rule>
@@ -763,7 +763,7 @@ If properly configured, the output should be
 Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_disable_wifi_create" />
 <ident prodtype="rhel7" cce="80118-3" />
 <ref cui="3.1.16" />
@@ -800,7 +800,7 @@ If properly configured, the output should be
 Wireless network connections should not be allowed to be configured by general
 users on a given system as it could open the system to backdoor attacks.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_disable_wifi_notification" />
 <ident prodtype="rhel7" cce="80119-1" />
 <ref cui="3.1.16" />
@@ -843,7 +843,7 @@ If properly configured, the output should be
 Username and password prompting is required for remote access. Otherwise, non-authorized
 and nefarious users can access the system freely.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_remote_access_credential_prompt" />
 <ident prodtype="rhel7" cce="80120-9" />
 <ref cui="3.1.12" />
@@ -878,7 +878,7 @@ If properly configured, the output should be
 Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <oval id="dconf_gnome_remote_access_encryption" />
 <ident prodtype="rhel7" cce="80121-7" />
 <ref prodtype="rhel7" stigid="TBD" />
@@ -932,7 +932,7 @@ the introduction of malware via removable media.
 It will, however, also prevent desktop users from legitimate use
 of removable media.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80122-5" />
 <oval id="dconf_gnome_disable_automount" />
 <ref nist="AC-19(a),AC-19(d),AC-19(e)" cui="3.1.7" />
@@ -969,7 +969,7 @@ file to exploit this flaw. Assuming the attacker could place the malicious file 
 (via a web upload for example) and assuming a user browses the same location using Nautilus, the
 malicious file would exploit the thumbnailer with the potential for malicious code execution. It
 is best to disable these thumbnailer applications unless they are explicitly required.</rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80123-3" />
 <oval id="dconf_gnome_disable_thumbnailers" />
 <ref nist="CM-7" />

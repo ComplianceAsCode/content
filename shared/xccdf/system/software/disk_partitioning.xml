@@ -37,7 +37,7 @@ The <tt>/tmp</tt> partition is used as temporary storage by many programs.
 Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27173-4" />
 <oval id="partition_for_tmp" />
 <ref prodtype="rhel7" stigid="021340" />
@@ -58,7 +58,7 @@ system services such as daemons or other programs which use it.
 It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories installed by other software packages.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="26404-4" />
 <oval id="partition_for_var" />
 <ref prodtype="rhel7" stigid="021320" />
@@ -78,7 +78,7 @@ Placing <tt>/var/log</tt> in its own partition
 enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="26967-0" />
 <oval id="partition_for_var_log" />
 <ref nist="AU-9,SC-32" disa="" cis="1.1.11" />
@@ -100,7 +100,7 @@ and other files, and helps ensure that
 auditing cannot be halted due to the partition running out
 of space.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="26971-2" />
 <oval id="partition_for_var_log_audit" />
 <ref prodtype="rhel7" stigid="021330" />
@@ -123,7 +123,7 @@ Ensuring that <tt>/home</tt> is mounted on its own partition enables the
 setting of more restrictive mount options, and also helps ensure that
 users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80144-9" />
 <oval id="partition_for_home" />
 <ref prodtype="rhel7" stigid="021310" />
@@ -172,7 +172,7 @@ The risk of a system's physical compromise, particularly mobile systems such as
 laptops, places its data at risk of compromise.  Encrypting this data mitigates
 the risk of its loss if the system is lost.
 </rationale>
-<machine />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27128-8" />
 <ref nist="SC-13,SC-28(1)" disa="1199,2476" ossrg="SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079"
 cui="3.13.16" />

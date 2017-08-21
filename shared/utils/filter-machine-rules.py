@@ -62,9 +62,10 @@ def main():
                       % (profile_id, select_idref))
                 continue
 
-            x = rule.find('./machine')
-            if x is not None:
-                profile.remove(select)
+            restrictions = rule.find('./environment-restriction')
+            if restrictions is not None and \
+                    restrictions.get("container") == "false":
+                        profile.remove(select)
 
     xccdf_tree.write(args.output)
 
