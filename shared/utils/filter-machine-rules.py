@@ -44,9 +44,9 @@ def main():
             raise RuntimeError("Profile without id attribute, "
                                "there is something very wrong!")
 
-        # Only filter Rules in profiles for containers
-        if not profile_id.endswith("-container"):
-            continue
+        container_profile = False
+        if profile_id.endswith("-container"):
+            container_profile = True
 
         all_selects = profile.findall("./select")
         for select in all_selects:
@@ -63,8 +63,12 @@ def main():
                 continue
 
             restrictions = rule.find('./environment-restriction')
-            if restrictions is not None and \
-                    restrictions.get("container") == "false":
+            if restrictions is not None:
+                if container_profile:
+                    if restrictions.get("container") == "false":
+                        profile.remove(select)
+                else:
+                    if restrictions.get("machine") == "false":
                         profile.remove(select)
 
     xccdf_tree.write(args.output)
