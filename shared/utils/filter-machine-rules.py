@@ -11,13 +11,22 @@ except ImportError:
     import cElementTree as ElementTree
 
 import sys
+import argparse
 
 
 def main():
-    xccdf_file = sys.argv[1]
-    xccdf_out_file = sys.argv[2]
+    p = argparse.ArgumentParser()
+    p.add_argument("--input", required=True)
+    p.add_argument("--output", required=True)
 
-    xccdf_tree = ElementTree.parse(xccdf_file)
+    args, unknown = p.parse_known_args()
+    if unknown:
+        sys.stderr.write(
+            "Unknown positional arguments " + ",".join(unknown) + ".\n"
+        )
+        sys.exit(1)
+
+    xccdf_tree = ElementTree.parse(args.input)
 
     indexed_rules = {}
     for rule in xccdf_tree.findall(".//Rule"):
@@ -57,7 +66,7 @@ def main():
             if x is not None:
                 profile.remove(select)
 
-    xccdf_tree.write(xccdf_out_file)
+    xccdf_tree.write(args.output)
 
 
 if __name__ == "__main__":
