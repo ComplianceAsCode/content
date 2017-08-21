@@ -23,6 +23,31 @@ Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is avai
 LDAP client, ensure that a working LDAP server is present on the
 network.</warning>
 
+<Rule id="enable_ldap_client" severity="medium" prodtype="rhel7">
+<title>Enable the LDAP Client For Use in Authconfig</title>
+<description>To determine if LDAP is being used for authentication, use the following
+command:
+<pre>$ sudo grep -i useldapauth /etc/sysconfig/authconfig</pre>
+<br /><br />
+If <tt>USELDAPAUTH=yes</tt>, then LDAP is being used. If not, set <tt>USELDAPAUTH</tt>
+to <tt>yes</tt>.
+</description>
+<ocil clause="USELDAPAUTH=yes is not configured correctly in /etc/sysconfig/authconfig">
+To determine if LDAP is being used for authentication, use the following
+command:
+<pre>$ sudo grep -i useldapauth /etc/sysconfig/authconfig</pre>
+The output should return:
+<pre>USELDAPAUTH=yes</pre>
+</ocil>
+<rationale>Without cryptographic integrity protections, information can be
+altered by unauthorized users without detection. The ssl directive specifies
+whether to use TLS or not. If not specified it will default to no.
+It should be set to start_tls rather than doing LDAP over SSL.</rationale>
+<ref nist="AC-17(2),CM-7" disa="1453" ossrg="SRG-OS-000250-GPOS-00093" />
+<ident prodtype="rhel7" cce="80448-4" />
+<oval id="enable_ldap_client" />
+</Rule>
+
 <Rule id="ldap_client_start_tls" severity="medium" prodtype="rhel7">
 <title>Configure LDAP Client to Use TLS For All Transactions</title>
 <description>This check verifies that RHEL7 implements cryptography
