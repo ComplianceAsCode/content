@@ -9,9 +9,17 @@ remediation works.
 
 ## Prerequisites
 For the Test Suite to work, you need to have libvirt domains prepared for testing.
+SSG Test Suite currently does not provide automated provisioning of domains.
+You can use kickstart usable for Red Hat Enterprise Linux 7 (and of course CentOS 7) in
+```kickstarts``` directory, which installs machine to be capable of building openscap
+and builds and installs the latest upstream code.
+
+If you want to use your own domain, make sure `openscap-1.2.15` and `qemu-quest-agent`
+are installed there, `root` is accessible via ssh and that `yum` command is able
+to install packages.
 
 ### Domain preparation (example CentOS)
-1. Install domain, using kickstarts/centos7.cfg
+1. Install domain, using kickstarts/rhel_centos_7.cfg
 1. Import ssh key to the machine
 1. Setup repo, so machine can install and uninstall packages
 
