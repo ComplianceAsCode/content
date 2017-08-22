@@ -38,18 +38,33 @@ scenario is run separately to eliminate need for cleanup.
 
 ## Running test suite in profile mode
 Example of evaluation of default profile (common):
-```./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml```
+
+```
+./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml
+```
+
 For further options, see
-```./test_suite.py profile --help```
+
+```
+./test_suite.py profile --help
+```
+
 
 ## Running test suite in rule mode
 Example of evaluation of rule ```rule_sysctl_net_ipv4_conf_default_secure_redirects```:
-```./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml ipv4_conf_default_secure_redirects```
+
+```
+./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml ipv4_conf_default_secure_redirects
+```
+
 Notice there is not full rule name used on the command line. Test suite runs
 every rule, which contains given substring in the name. So all that is needed
 is to use unique substring.
 Again, for further options, see
-```./test_suite.py rule --help```
+
+```
+./test_suite.py rule --help
+```
 
 ## How rule validation scenarios work
 In directory ```data``` are directories mirroring ```group/group/.../rule```
@@ -85,4 +100,7 @@ further referenced as *DIR*).
 1. PROFIT (nothing more to do)
 
 Now, you can perform validation check with command
-```./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml rule_sshd_disable_kerb_auth```
+
+```
+./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml rule_sshd_disable_kerb_auth
+```
