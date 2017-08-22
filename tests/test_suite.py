@@ -36,8 +36,7 @@ common_parser.add_argument("--domain",
 common_parser.add_argument("--datastream",
                            dest="datastream",
                            metavar="DATASTREAM",
-                           default=("/usr/share/xml/scap/ssg/content/"
-                                    "ssg-rhel7-ds.xml"),
+                           required=True,
                            help=("Path to the Source DataStream on this machine"
                                  " which is going to be tested"))
 common_parser.add_argument("--benchmark-id",
