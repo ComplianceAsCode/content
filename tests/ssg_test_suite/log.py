@@ -1,9 +1,10 @@
 from __future__ import print_function
 import logging
-logging.getLogger(__name__).addHandler(logging.NullHandler())
 import os
 import os.path
 import sys
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 class LogHelper(object):

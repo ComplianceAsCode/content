@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 from __future__ import print_function
-
 import argparse
 import logging
 import os.path
@@ -10,9 +9,9 @@ import subprocess
 import sys
 
 import ssg_test_suite.virt
+from ssg_test_suite.log import LogHelper
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
-from ssg_test_suite.log import LogHelper
 
 _CONTEXT_RETURN_CODES = {'pass': 0,
                          'fail': 2,
@@ -66,7 +65,7 @@ def run_profile(domain_ip,
         if e.returncode != 2:
             success = False
             logging.error(('Profile run should end with return code 0 or 2 '
-                       'not "{0}" as it did!').format(e.returncode))
+                           'not "{0}" as it did!').format(e.returncode))
     return success
 
 
@@ -96,12 +95,14 @@ def run_rule(domain_ip,
 
     formatting['rem'] = "--remediate" if remediation else ""
 
-    report_path = os.path.join(LogHelper.LOG_DIR, '{0}-{1}-{2}'.format(rule_id,
-                                                                       script_name,
-                                                                       stage))
-    verbose_path = os.path.join(LogHelper.LOG_DIR, '{0}-{1}-{2}'.format(rule_id,
-                                                                        script_name,
-                                                                        stage))
+    report_path = os.path.join(LogHelper.LOG_DIR,
+                               '{0}-{1}-{2}'.format(rule_id,
+                                                    script_name,
+                                                    stage))
+    verbose_path = os.path.join(LogHelper.LOG_DIR,
+                                '{0}-{1}-{2}'.format(rule_id,
+                                                     script_name,
+                                                     stage))
     formatting['report'] = LogHelper.find_name(report_path, '.html')
     verbose_path = LogHelper.find_name(verbose_path, '.verbose.log')
 

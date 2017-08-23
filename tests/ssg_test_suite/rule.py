@@ -21,7 +21,6 @@ from data import iterate_over_rules
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
-
 def _parse_parameters(script):
     """Parse parameters from script header"""
     params = {}
