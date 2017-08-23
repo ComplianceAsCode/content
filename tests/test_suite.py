@@ -42,7 +42,7 @@ common_parser.add_argument("--datastream",
 common_parser.add_argument("--benchmark-id",
                            dest="benchmark_id",
                            metavar="BENCHMARK",
-                           default="xccdf_org.ssgproject.content_benchmark_RHEL-7",
+                           required=True,
                            help="Benchmark in the Source DataStream to be used")
 common_parser.add_argument("--loglevel",
                            dest="loglevel",
@@ -71,9 +71,8 @@ parser_rule = subparsers.add_parser('rule',
 parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
 
 parser_profile.add_argument("target",
-                            nargs="?",
+                            nargs="+",
                             metavar="DSPROFILE",
-                            default='xccdf_org.ssgproject.content_profile_common',
                             help=("Profiles to be tested, ALL means every "
                                   "profile of particular benchmark will be "
                                   "evaluated"))

@@ -35,7 +35,7 @@ def perform_profile_check(options):
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
 
     has_worked = False
-    profiles = get_viable_profiles([options.target],
+    profiles = get_viable_profiles(options.target,
                                    options.datastream,
                                    options.benchmark_id)
     if len(profiles) > 1:
