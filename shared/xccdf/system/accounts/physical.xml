@@ -252,21 +252,23 @@ access when the system is rebooted.
 <!--ref nist="IA-2(1),AC-3" disa="213" /-->
 </Rule>
 
-<Rule id="disable_ctrlaltdel_ctrlaltdelburstaction" severity="high" prodtype="rhel7">
-<title>Disable Ctrl-Alt-Del CtrlAltDelBurstAction</title>
+<Rule id="disable_ctrlaltdel_burstaction" severity="high" prodtype="rhel7">
+<title>Disable CtrlAltDelBurstAction</title>
 <description>
 By default, <tt>SystemD</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
-key sequence is pressed Ctrl-Alt-Delete more than 7 times in 2s.
+key sequence is pressed Ctrl-Alt-Delete more than 7 times in 2 seconds.
 <br /><br />
-To configure the system to ignore the <tt>Ctrl-Alt-Del CtrlAltDelBurstAction</tt>
+To configure the system to ignore the <tt>CtrlAltDelBurstAction</tt>
 setting modify <tt>/etc/systemd/system.conf</tt>:
-<pre>CtrlAltDelBurstAction=none</pre>
+<pre>$ sudo sed -i 's/^#CtrlAltDelBurstAction=.*/CtrlAltDelBurstAction=none/' /etc/systemd/system.conf</pre>
 </description>
 <ocil clause="the system is configured to reboot when Ctrl-Alt-Del is pressed
-more than 7 times in 2s.">
+more than 7 times in 2 seconds.">
 To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
 enter the following command:
-<pre>$ sudo sed -i 's/^#CtrlAltDelBurstAction=.*/CtrlAltDelBurstAction=none/' /etc/systemd/system.conf</pre>
+<pre>$ sudo grep -i ctrlaltdelburstaction /etc/systemd/system.conf</pre>
+The output should return:
+<pre>CtrlAltDelBurstAction=none</pre>
 </ocil>
 <rationale>
 A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
@@ -280,10 +282,10 @@ if running in <tt>graphical.target</tt> mode (e.g. in GNOME, KDE, etc.)! The
 <tt>Ctrl-Alt-Del</tt> key sequence will only be disabled if running in
 the non-graphical <tt>multi-user.target</tt> mode.
 </warning>
-<oval id="disable_ctrlaltdel_ctrlaltdelburstaction" />
-<ident prodtype="rhel7" cce="xxxx" />
-<ref prodtype="rhel7" stigid="xxxx" />
-<ref nist="xxxx" disa="xxxx" ossrg="xxxx" cui="xxxx" />
+<oval id="disable_ctrlaltdel_burstaction" />
+<ident prodtype="rhel7" cce="CCE-80449-2" />
+<ref prodtype="rhel7" />
+<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.4.5" />
 </Rule>
 
 <Rule id="disable_ctrlaltdel_reboot" severity="high" prodtype="rhel7">
