@@ -7,13 +7,11 @@
       </affected>
       <description>Require the use of TLS for ldap clients.</description>
     </metadata>
-    <criteria operator="OR">
-      <extend_definition comment="nss-pam-ldapd not present or in use"
-      definition_ref="package_nss-pam-ldapd_removed" />
+    <criteria operator="AND">
+      <extend_definition comment="LDAP is in use"
+      definition_ref="enable_ldap_client" />
       <criterion comment="look for tls_cacertdir in /etc/nslcd.conf"
       test_ref="test_ldap_client_tls_cacertdir" />
-      <criterion comment="look for tls_cacertfile in /etc/nslcd.conf"
-      test_ref="test_ldap_client_tls_cacertfile" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"

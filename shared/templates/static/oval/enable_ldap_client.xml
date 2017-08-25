@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="enable_ldap_client" version="1">
+    <metadata>
+      <title>Enable the LDAP Client For Use in Authconfig</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Enable LDAP in authconfig.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="LDAP client is enabled"
+      test_ref="test_enable_ldap_client" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="LDAP client is enabled"
+  id="test_enable_ldap_client" version="1">
+    <ind:object object_ref="obj_enable_ldap_client" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_enable_ldap_client" version="1">
+    <ind:filepath>/etc/sysconfig/authconfig</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*USELDAPAUTH=yes[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
