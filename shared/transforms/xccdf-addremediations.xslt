@@ -73,9 +73,9 @@
     - NIST-800-53-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_171">
     - NIST-800-171-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_pci_dss">
     - PCI-DSS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_cjis">
-    - CJIS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_ossrg">
-    - DISA-OS-SRG-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_stigid">
-    - DISA-STIG-<xsl:value-of select="."/></xsl:for-each></xsl:variable>
+    - CJIS-<xsl:value-of select="."/></xsl:for-each><xsl:if test="$ref_disa_ossrg"><xsl:for-each select="$ref_disa_ossrg">
+    - DISA-OS-SRG-<xsl:value-of select="."/></xsl:for-each></xsl:if><xsl:if test="$ref_disa_stigid"><xsl:for-each select="$ref_disa_stigid">
+    - DISA-STIG-<xsl:value-of select="."/></xsl:for-each></xsl:if></xsl:variable>
 
   <xsl:variable name="rep1">
     <xsl:call-template name="find-and-replace">
