@@ -64,20 +64,18 @@
   <xsl:variable name="ref_disa_ossrg" elect="$rule/xccdf:reference[starts-with(@href, 'https://iase.disa.mil/stigs/os/general/Pages/index.aspx/')]/text()"/>
   <xsl:variable name="ref_disa_stigid" elect="$rule/xccdf:reference[starts-with(@href, 'https://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx')]/text()"/>
 
-  <xsl:variable name="ansible_tags">
-    - <xsl:value-of select="$rule/@id"/>
-    - <xsl:value-of select="$rule/@severity"/>_severity
-    <xsl:if test="$fix/@strategy">- <xsl:value-of select="$fix/@strategy"/>_strategy</xsl:if>
-    <xsl:if test="$fix/@complexity">- <xsl:value-of select="$fix/@complexity"/>_complexity</xsl:if>
-    <xsl:if test="$fix/@disruption">- <xsl:value-of select="$fix/@disruption"/>_disruption</xsl:if>
-    <xsl:for-each select="$ident_cce">- <xsl:value-of select="."/></xsl:for-each>
-    <xsl:for-each select="$ref_nist800_53">- NIST-800-53-<xsl:value-of select="."/></xsl:for-each>
-    <xsl:for-each select="$ref_nist800_171">- NIST-800-171-<xsl:value-of select="."/></xsl:for-each>
-    <xsl:for-each select="$ref_pci_dss">- PCI-DSS-<xsl:value-of select="."/></xsl:for-each>
-    <xsl:for-each select="$ref_cjis">- CJIS-<xsl:value-of select="."/></xsl:for-each>
-    <xsl:for-each select="$ref_disa_ossrg">- DISA-OS-SRG-<xsl:value-of select="."/></xsl:for-each>
-    <xsl:for-each select="$ref_disa_stigid">- DISA-STIG-<xsl:value-of select="."/></xsl:for-each>
-  </xsl:variable>
+  <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
+    - <xsl:value-of select="$rule/@severity"/>_severity<xsl:if test="$fix/@strategy">
+    - <xsl:value-of select="$fix/@strategy"/>_strategy</xsl:if><xsl:if test="$fix/@complexity">
+    - <xsl:value-of select="$fix/@complexity"/>_complexity</xsl:if><xsl:if test="$fix/@disruption">
+    - <xsl:value-of select="$fix/@disruption"/>_disruption</xsl:if><xsl:for-each select="$ident_cce">
+    - <xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_53">
+    - NIST-800-53-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_nist800_171">
+    - NIST-800-171-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_pci_dss">
+    - PCI-DSS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_cjis">
+    - CJIS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_ossrg">
+    - DISA-OS-SRG-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_stigid">
+    - DISA-STIG-<xsl:value-of select="."/></xsl:for-each></xsl:variable>
 
   <xsl:variable name="rep1">
     <xsl:call-template name="find-and-replace">
