@@ -9,7 +9,7 @@
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">FEDORA</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:fedoraproject:fedora:25,cpe:/o:fedoraproject:fedora:24,cpe:/o:fedoraproject:fedora:23</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/o:fedoraproject:fedora:28,cpe:/o:fedoraproject:fedora:27,cpe:/o:fedoraproject:fedora:26,cpe:/o:fedoraproject:fedora:25</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="os-stigid-concat" />
 
