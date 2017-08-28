@@ -1,5 +1,3 @@
 # platform = Red Hat Enterprise Linux 7, multi_platform_fedora
 
-SYSTEMCONF='/etc/systemd/system.conf'
-
-sed -i 's/^#CtrlAltDelBurstAction=.*/CtrlAltDelBurstAction=none/' "$SYSTEMCONF"
+replace_or_append '/etc/systemd/system.conf' '^CtrlAltDelBurstAction=' 'none' '@CCENUM@' '%s=%s'
