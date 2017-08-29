@@ -4,7 +4,7 @@
 # complexity = high
 # disruption = medium
 - name: "Read list of files with incorrect permissions"
-  shell: "rpm -Va | grep '^.M' | sed -r 's;^.*\\s+(.+);\\1;g'"
+  shell: "rpm -Va | grep '^.M' | cut -d ' ' -f5- | sed -r 's;^.*\\s+(.+);\\1;g'"
   register: files_with_incorrect_permissions
   failed_when: False
   changed_when: False
