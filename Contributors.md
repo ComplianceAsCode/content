@@ -1,6 +1,6 @@
 <!---
 This file is generated using the generate-contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2017-06-29 18:42
+Last Modified: 2017-08-29 13:14
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -11,9 +11,11 @@ The following people have contributed to the SCAP Security Guide project
 * Gabe Alford <redhatrises@gmail.com>
 * Christopher Anderson <cba@fedoraproject.org>
 * Chuck Atkins <chuck.atkins@kitware.com>
+* Ryan Ballanger <root@rballang-admin-2.fastenal.com>
 * Molly Jo Bault <Molly.Jo.Bault@ballardtech.com>
 * Joseph Bisch <joseph.bisch@gmail.com>
 * Jeffrey Blank <blank@eclipse.ncsc.mil>
+* Ted Brunell <tbrunell@redhat.com>
 * Blake Burkhart <blake.burkhart@us.af.mil>
 * Patrick Callahan <pmc@patrickcallahan.com>
 * Nick Carboni <ncarboni@redhat.com>
@@ -27,6 +29,7 @@ The following people have contributed to the SCAP Security Guide project
 * Greg Elin <gregelin@gitmachines.com>
 * Andrew Gilmore <agilmore2@gmail.com>
 * Joshua Glemza <jglemza@nasa.gov>
+* Loren Gordon <lorengordon@users.noreply.github.com>
 * Steve Grubb <sgrubb@redhat.com>
 * Marek Haicman <mhaicman@redhat.com>
 * Trey Henefield <thenefield@gmail.com>
@@ -54,10 +57,12 @@ The following people have contributed to the SCAP Security Guide project
 * Michele Newman <mnewman@redhat.com>
 * Kaustubh Padegaonkar <theTuxRacer@gmail.com>
 * Michael Palmiotto <mpalmiotto@tresys.com>
+* Max R.D. Parmer <maxp@trystero.is>
 * pcactr <paul.c.arnold4.ctr@mail.mil>
 * Kenneth Peeples <kennethwpeeples@gmail.com>
 * Frank Lin PIAT <fpiat@klabs.be>
 * Martin Preisler <mpreisle@redhat.com>
+* Wesley Ceraso Prudencio <wcerasop@redhat.com>
 * Raphael Sanchez Prudencio <rsprudencio@redhat.com>
 * T.O. Radzy Radzykewycz <radzy@windriver.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
@@ -80,7 +85,9 @@ The following people have contributed to the SCAP Security Guide project
 * Philippe Thierry <phil@reseau-libre.net>
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>
+* VadimDor <29509093+VadimDor@users.noreply.github.com>
 * Shawn Wells <shawn@redhat.com>
+* Roy Williams <roywilli@roywilli.redhat.com>
 * Rob Wilmoth <rwilmoth@redhat.com>
 * Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
 * Kevin Zimmerman <kevin.zimmerman@kitware.com>
