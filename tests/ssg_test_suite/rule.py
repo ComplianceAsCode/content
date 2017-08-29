@@ -137,12 +137,17 @@ def perform_rule_check(options):
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
     scanned_something = False
     for rule_dir, rule, scripts in iterate_over_rules():
-        if options.target == 'ALL':
+        if 'ALL' in options.target:
             # we want to have them all
             pass
-        elif options.target not in rule_dir:
-            # we are not ALL, and not passing this criterion ... skipping
-            continue
+        else:
+            perform = False
+            for target in options.target:
+                if target in rule_dir:
+                    perform = True
+                    break
+            if not perform:
+                continue
         logging.info(rule)
         scanned_something = True
         logging.debug("Testing rule directory {0}".format(rule_dir))

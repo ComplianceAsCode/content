@@ -29,21 +29,22 @@ common_parser.add_argument("--domain",
                            required=True,
                            help=("Specify libvirt domain to be used as a test "
                                  "bed. This domain will get remediations "
-                                 "applied in it, possibly making system unusable "
-                                 "for a moment. Snapshot will be reverted "
-                                 "immediately afterwards. "
+                                 "applied in it, possibly making system "
+                                 "unusable for a moment. Snapshot will be "
+                                 "reverted immediately afterwards. "
                                  "Domain will be returned without changes"))
 common_parser.add_argument("--datastream",
                            dest="datastream",
                            metavar="DATASTREAM",
                            required=True,
-                           help=("Path to the Source DataStream on this machine"
-                                 " which is going to be tested"))
+                           help=("Path to the Source DataStream on this "
+                                 "machine which is going to be tested"))
 common_parser.add_argument("--benchmark-id",
                            dest="benchmark_id",
                            metavar="BENCHMARK",
                            required=True,
-                           help="Benchmark in the Source DataStream to be used")
+                           help=("Benchmark in the Source DataStream "
+                                 "to be used."))
 common_parser.add_argument("--loglevel",
                            dest="loglevel",
                            metavar="LOGLEVEL",
@@ -54,7 +55,8 @@ common_parser.add_argument("--logdir",
                            metavar="LOGDIR",
                            default=None,
                            help="Directory to which all output is saved")
-subparsers = parser.add_subparsers(help='Subcommands: profile, rule')
+subparsers = parser.add_subparsers(dest='subparser_name',
+                                   help='Subcommands: profile, rule')
 
 parser_profile = subparsers.add_parser('profile',
                                        help=('Testing profile-based '
@@ -73,15 +75,19 @@ parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
 parser_profile.add_argument("target",
                             nargs="+",
                             metavar="DSPROFILE",
-                            help=("Profiles to be tested, ALL means every "
+                            help=("Profiles to be tested, 'ALL' means every "
                                   "profile of particular benchmark will be "
-                                  "evaluated"))
+                                  "evaluated."))
 
 parser_rule.add_argument("target",
-                         nargs="?",
+                         nargs="+",
                          metavar="RULE",
-                         default="ALL",
-                         help="Rule to be tested")
+                         help=("Rule to be tested, 'ALL' means every "
+                               "rule-testing scenario will be evaluated. Each "
+                               "target is handled as a substring - so you can "
+                               "ask for subset of all rules this way. (If you "
+                               "type ipv6 as a target, all rules containing "
+                               "ipv6 within id will be performed."))
 parser_rule.add_argument("--dontclean",
                          dest="dont_clean",
                          action="store_true",
@@ -97,13 +103,23 @@ log.setLevel(logging.DEBUG)
 LogHelper.add_console_logger(log, options.loglevel)
 # logging dir needs to be created based on other options
 # thus we have to postprocess it
+if 'ALL' in options.target:
+    options.target = ['ALL']
 if options.logdir is None:
     # default!
+    prefix = options.subparser_name
+    body = ""
+    if 'ALL' in options.target:
+        body = 'ALL'
+    else:
+        body = 'custom'
+
     date_string = time.strftime('%Y-%m-%d-%H%M', time.localtime())
     logging_dir = os.path.join(os.getcwd(),
                                'logs',
-                               '{0}-{1}'.format(options.target,
-                                                date_string))
+                               '{0}-{1}-{2}'.format(prefix,
+                                                    body,
+                                                    date_string))
     logging_dir = LogHelper.find_name(logging_dir)
 else:
     logging_dir = LogHelper.find_name(options.logdir)
