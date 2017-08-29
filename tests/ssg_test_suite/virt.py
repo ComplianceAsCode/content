@@ -17,6 +17,8 @@ class SnapshotStack(object):
                      "     Full snapshot by SSG Test Suite"
                      "  </description>"
                      "</domainsnapshot>")
+    CREATE_FLAGS = libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC
+    REVERT_FLAGS = self.REVERT_FLAGS
 
     def __init__(self, domain):
         self.snapshot_stack = []
@@ -26,15 +28,16 @@ class SnapshotStack(object):
         logging.debug("Creating snapshot '{0}'".format(snapshot_name))
         snapshot_xml = self.SNAPSHOT_BASE.format(name=snapshot_name)
         snapshot = self.domain.snapshotCreateXML(snapshot_xml,
-                                    libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC)
+                                                 self.CREATE_FLAGS)
 
         self.snapshot_stack.append(snapshot)
         return snapshot
 
     def revert_forced(self, snapshot):
         snapshot_name = snapshot.getName()
-        logging.debug("Forced reverting of snapshot '{0}'".format(snapshot_name))
-        self.domain.revertToSnapshot(snapshot)
+        logging.debug("Forced revert of snapshot '{0}'".format(snapshot_name))
+        self.domain.revertToSnapshot(snapshot,
+                                     self.REVERT_FLAGS)
         snapshot.delete()
         self.snapshot_stack.remove(snapshot)
         logging.debug('Revert successful')
@@ -45,7 +48,8 @@ class SnapshotStack(object):
         except IndexError:
             logging.error("No snapshot in stack anymore")
         else:
-            self.domain.revertToSnapshot(snapshot)
+            self.domain.revertToSnapshot(snapshot,
+                                         self.REVERT_FLAGS)
             if delete:
                 logging.debug(("Hard revert of snapshot "
                                "'{0}' successful").format(snapshot.getName()))
@@ -74,7 +78,8 @@ class SnapshotStack(object):
             snapshot = self.snapshot_stack.pop()
             snapshot_name = snapshot.getName()
             logging.debug("Reverting of snapshot '{0}'".format(snapshot_name))
-            self.domain.revertToSnapshot(snapshot)
+            self.domain.revertToSnapshot(snapshot,
+                                         self.REVERT_FLAGS)
             snapshot.delete()
             logging.debug('Revert successful')
         logging.info('All snapshots reverted successfully')
@@ -98,8 +103,8 @@ def determine_ip(domain):
     GUEST_AGENT_XML = ("<channel type='unix'>"
                        "  <source mode='bind'/>"
                        "  <target type='virtio'"
-                                 "name='org.qemu.guest_agent.0'"
-                                 "state='connected'/>"
+                       "          name='org.qemu.guest_agent.0'"
+                       "          state='connected'/>"
                        "</channel>")
 
     domain_xml = ET.fromstring(domain.XMLDesc())
@@ -116,7 +121,7 @@ def determine_ip(domain):
         # guest agent is not connected properly
         # let's try to reattach the guest-agent device
         guest_agent_xml_string = None
-        domain_xml = ET.fromstring(dom.XMLDesc())
+        domain_xml = ET.fromstring(domain.XMLDesc())
         for guest_agent_node in domain_xml.iter('channel'):
             if guest_agent_node.attrib['type'] == 'unix':
                 guest_agent_xml_string = ET.tostring(guest_agent_node)
