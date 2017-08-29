@@ -18,7 +18,7 @@ class SnapshotStack(object):
                      "  </description>"
                      "</domainsnapshot>")
     CREATE_FLAGS = libvirt.VIR_DOMAIN_SNAPSHOT_CREATE_ATOMIC
-    REVERT_FLAGS = self.REVERT_FLAGS
+    REVERT_FLAGS = libvirt.VIR_DOMAIN_SNAPSHOT_REVERT_FORCE
 
     def __init__(self, domain):
         self.snapshot_stack = []
@@ -93,7 +93,7 @@ def connect_domain(hypervisor, domain_name):
 
     try:
         dom = conn.lookupByName(domain_name)
-    except:
+    except libvirt.libvirtError:
         logging.error("Failed to find domain '{0}'".format(domain_name))
         return None
     return dom
