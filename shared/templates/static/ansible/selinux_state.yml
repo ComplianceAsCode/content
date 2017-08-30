@@ -3,7 +3,7 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: "Ensure SELinux State is Enforcing (persistent)"
+- name: "@RULE_TITLE@"
   selinux:
     state: (ansible-populate var_selinux_state)
   tags:
