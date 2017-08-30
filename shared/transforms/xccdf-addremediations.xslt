@@ -74,7 +74,7 @@
     - NIST-800-171-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_pci_dss">
     - PCI-DSS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_cjis">
     - CJIS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_ossrg">
-    - DISA-OS-SRG-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_stigid">
+    - DISA-OS-<xsl:value-of select="."/></xsl:for-each><xsl:for-each select="$ref_disa_stigid">
     - DISA-STIG-<xsl:value-of select="."/></xsl:for-each></xsl:variable>
 
   <xsl:variable name="rep1">
