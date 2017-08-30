@@ -34,15 +34,15 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
                 "./bash/audit_rules_login_events_{0}.sh", name
             )
 
-#        elif target == "ansible":
-#            self.file_from_template(
-#                "./template_ANSIBLE_audit_rules_login_events",
-#                {
-#                    "%NAME%":	name,
-#                    "%PATH%":	path
-#                },
-#                "./ansible/audit_rules_login_events_{0}.yml", name
-#            )
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_login_events",
+                {
+                    "%NAME%":	name,
+                    "%PATH%":	path
+                },
+                "./ansible/audit_rules_login_events_{0}.yml", name
+            )
 
         else:
             raise UnknownTargetError(target)
