@@ -62,7 +62,7 @@
   <xsl:variable name="ref_pci_dss" select="$rule/xccdf:reference[starts-with(@href, 'https://www.pcisecuritystandards.org/')]/text()"/>
   <xsl:variable name="ref_cjis" select="$rule/xccdf:reference[starts-with(@href, 'https://www.fbi.gov/file-repository/cjis-security-policy')]/text()"/>
   <xsl:variable name="ref_disa_ossrg" select="$rule/xccdf:reference[starts-with(@href, 'http://iase.disa.mil/stigs/srgs/Pages/index.aspx')]/text()"/>
-  <xsl:variable name="ref_disa_stigid" select="$rule/xccdf:reference[starts-with(@href, 'https://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx')]/text()"/>
+  <xsl:variable name="ref_disa_stigid" select="$rule/xccdf:reference[starts-with(@href, 'http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx')]/text()"/>
 
   <xsl:variable name="ansible_tags">- <xsl:value-of select="$rule/@id"/>
     - <xsl:value-of select="$rule/@severity"/>_severity<xsl:if test="$fix/@strategy">
