@@ -1,0 +1,9 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+- name: "System Audit Logs Must Have Mode 0640 or Less Permissive"
+  file: dest=/var/log/audit/ mode=0640 recurse=yes
+  tags:
+    @ANSIBLE_TAGS@

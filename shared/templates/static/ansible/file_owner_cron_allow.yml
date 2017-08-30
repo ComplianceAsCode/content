@@ -1,0 +1,11 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+- name: Verify User Who Owns /etc/cron.allow file
+  file:
+    path: /etc/cron.allow
+    owner: root
+  tags:
+    @ANSIBLE_TAGS@

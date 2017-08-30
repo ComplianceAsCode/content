@@ -1,0 +1,11 @@
+# platform=multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = medium
+# disruption = medium
+- name: Verify /boot/grub2/grub.cfg Group Ownership
+  file:
+    path: /boot/grub2/grub.cfg
+    group: root
+  tags:
+    @ANSIBLE_TAGS@
