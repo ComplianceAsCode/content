@@ -2268,6 +2268,13 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 
+<!-- DEVELOPERS NOTE ON audit_rules_privileged_commands
+     This rule exists purely because legacy compliance benchmarks, such as
+     the DoD STIG, grouped multiple configuration evaluations into a single rule.
+
+     They have now been broken out into the audit_rules_privileged_commands_* rules.
+
+     It is recommended to use the audit_rules_privileged_commands_* rules instead -->
 <Rule id="audit_rules_privileged_commands" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum, the audit system should collect the execution of
