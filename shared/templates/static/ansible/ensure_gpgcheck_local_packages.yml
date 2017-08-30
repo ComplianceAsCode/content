@@ -1,0 +1,38 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Check existence of yum on Fedora"
+  stat:
+    path: /etc/yum.conf
+  register: yum_config_file
+  check_mode: no
+  when: ansible_distribution == "Fedora"
+
+# Old versions of Fedora use yum
+
+- name: "Ensure GPG check Enabled for Local Packages (Yum)"
+  ini_file:
+    dest: "{{item}}"
+    section: main
+    option: localpkg_gpgcheck
+    value: 1
+    create: True
+  with_items: "/etc/yum.conf"
+  when: ansible_distribution == "RedHat" or yum_config_file.stat.exists
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Ensure GPG check Enabled for Local Packages (DNF)"
+  ini_file:
+    dest: "{{item}}"
+    section: main
+    option: localpkg_gpgcheck
+    value: 1
+    create: True
+  with_items: "/etc/dnf/dnf.conf"
+  when: ansible_distribution == "Fedora"
+  tags:
+    @ANSIBLE_TAGS@
+
