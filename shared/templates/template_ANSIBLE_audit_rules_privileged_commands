@@ -26,7 +26,7 @@
       - "{{ find_%NAME%.files | map(attribute='path') | list | first }}"
   when: find_%NAME%.matched > 0
 
-- name: Inserts/replaces the rule in rules.d
+- name: Inserts/replaces the %NAME% rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
     line: '-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
@@ -34,15 +34,12 @@
   tags:
     @ANSIBLE_TAGS@
     
-# Inserts/replaces the rule in /etc/audit/audit.rules
+# Inserts/replaces the %NAME% rule in /etc/audit/audit.rules
 
-- name: Inserts/replaces the rule in audit.rules
+- name: Inserts/replaces the %NAME% rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
     line: '-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
-
-
-

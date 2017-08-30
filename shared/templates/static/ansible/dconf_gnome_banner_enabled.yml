@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: "Enable GNOME3 Login Warning Banner"
+  ini_file:
+    dest: "/etc/dconf/db/local/d/00-security-settings"
+    section: "org/gnome/login-screen"
+    option: banner-message-enabled
+    value: true
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Prevent user modification of GNOME banner-message-enabled"
+  lineinfile:
+    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
+    regexp: '^/org/gnome/login-screen/banner-message-enable'
+    line: '/org/gnome/login-screen/banner-message-enable'
+  tags:
+    @ANSIBLE_TAGS@
