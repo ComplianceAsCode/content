@@ -20,7 +20,7 @@ To be able to find any problems with misconfiguration of
 the docker daemon and running containers, the docker service
 has to be enabled.
 </rationale>
-<platform idref="cpe:/a:machine"/>
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80440-1" />
 <ref nist="" disa="" ossrg="" />
 <oval id="service_docker_enabled" />
@@ -41,7 +41,7 @@ devices is discouraged. The suggested way of configuring device mapper storage
 driver is direct-lvm. Choosing the right storage driver and backing filesystem
 is crucial to stability and performance.
 </rationale>
-<platform idref="cpe:/a:machine"/>
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80441-9" />
 <oval id="docker_storage_configured" />
 </Rule>

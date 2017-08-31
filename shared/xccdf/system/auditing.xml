@@ -117,7 +117,7 @@ Additionally, a properly configured audit subsystem ensures that actions of
 individual system users can be uniquely traced to those users so they
 can be held accountable for their actions.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27407-6" />
 <oval id="service_auditd_enabled" />
 <ref prodtype="rhel7" stigid="030000" />
@@ -151,7 +151,7 @@ its activities can be audited. Although <tt>auditd</tt> takes care of enabling
 this for all processes which launch after it does, adding the kernel argument
 ensures it is set for every process during boot.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">The GRUB 2 configuration file, <tt>grub.cfg</tt>,
 is automatically updated each time a new kernel is installed. Note that any
 changes to <tt>/etc/default/grub</tt> require rebuilding the <tt>grub.cfg</tt>
@@ -304,7 +304,7 @@ determine how many logs the system is configured to retain after rotation:
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum log
 file size and the number of logs retained.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27348-2" />
 <oval id="auditd_data_retention_num_logs" value="var_auditd_num_logs" />
 <ref nist="AU-1(b),AU-11,IR-5" pcidss="Req-10.7" cjis="5.4.1.1" cui="3.3.1" />
@@ -329,7 +329,7 @@ determine how much data the system will retain in each audit log file:
 <rationale>The total storage for audit log files must be large enough to retain
 log information over the period required. This is a function of the maximum
 log file size and the number of logs retained.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27319-3" />
 <oval id="auditd_data_retention_max_log_file" value="var_auditd_max_log_file" />
 <ref nist="AU-1(b),AU-11,IR-5" pcidss="Req-10.7" cis="5.2.1.1" cjis="5.4.1.1" />
@@ -365,7 +365,7 @@ minimizes the chances of the system unexpectedly running out of disk space by
 being overwhelmed with log data. However, for systems that must never discard
 log data, or which use external processes to transfer it and reclaim space,
 <tt>keep_logs</tt> can be employed.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27231-0" />
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
 <ref nist="AU-1(b),AU-4,AU-11,IR-5" pcidss="Req-10.7" cis="5.2.1.3" cjis="5.4.1.1" />
@@ -418,7 +418,7 @@ Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt
 </ocil>
 <rationale>Notifying administrators of an impending disk space problem may
 allow them to take corrective action prior to any disruption.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27375-5" />
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
 <ref nist="AU-1(b),AU-4,AU-5(1),AU-5(b),IR-5" disa="1855" pcidss="Req-10.7" cis="5.2.1.2" ossrg="SRG-OS-000343-GPOS-00134" tigid="030340" cjis="5.4.1.1" cui="3.3.1" />
@@ -449,7 +449,7 @@ or halt when disk space has run low:
 audit records. If a separate partition or logical volume of adequate size
 is used, running low on space for audit records should never occur.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27370-6" />
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" pcidss="Req-10.7" cis="5.2.1.2" cjis="5.4.1.1" cui="3.3.1" />
@@ -471,7 +471,7 @@ account when it needs to notify an administrator:
 </ocil>
 <rationale>Email sent to the root account is typically aliased to the
 administrators of the system, who can take appropriate action.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27394-6" />
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref prodtype="rhel7" stigid="030350" />
@@ -499,7 +499,7 @@ case-insensitive.
 <rationale>Audit data should be synchronously written to disk to ensure
 log integrity. These parameters assure that all audit event data is fully
 synchronized with the log files on the disk.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27331-8" />
 <oval id="auditd_data_retention_flush" value="var_auditd_flush" />
 <ref nist="AU-9,AU-12(1)" disa="1576" cui="3.3.1" />
@@ -522,7 +522,7 @@ If the plugin is active, the output will show <tt>yes</tt>.
 records to a centralized server for management directly. It does, however,
 include a plug-in for audit event multiplexor (audispd) to pass audit records
 to the local syslog server</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ref nist="AU-1(b),AU-3(2),IR-5" disa="136" pcidss="Req-10.5.3" cjis="5.4.1.1" cui="3.3.1" />
 <oval id="auditd_audispd_syslog_plugin_activated" />
 <ident prodtype="rhel7" cce="27341-7" />
@@ -596,7 +596,7 @@ the audit capability, and system operation may be adversely affected.
 Audit processing failures include software/hardware errors, failures in the
 audit capturing mechanisms, and audit storage capacity being reached or
 exceeded.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80381-7" />
 <oval id="audit_rules_system_shutdown" />
 <ref prodtype="rhel7" stigid="030010" />
@@ -638,7 +638,7 @@ not required. See an example of multiple combined syscalls:
 nefarious activities in log files, as well as to confuse network services that
 are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27290-6" />
 <oval id="audit_rules_time_adjtimex" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
@@ -672,7 +672,7 @@ not required. See an example of multiple combined syscalls:
 nefarious activities in log files, as well as to confuse network services that
 are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27216-1" />
 <oval id="audit_rules_time_settimeofday" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
@@ -712,7 +712,7 @@ If the system is 64-bit only, this is not applicable<br />
 nefarious activities in log files, as well as to confuse network services that
 are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27299-7" />
 <oval id="audit_rules_time_stime" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
@@ -746,7 +746,7 @@ desired, but is not required. See an example of multiple combined syscalls:
 nefarious activities in log files, as well as to confuse network services that
 are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27219-5" />
 <oval id="audit_rules_time_clock_settime" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1" cui="3.1.7" />
@@ -778,7 +778,7 @@ If the system is configured to audit this activity, it will return a line.
 nefarious activities in log files, as well as to confuse network services that
 are highly dependent upon an accurate system time (such as sshd). All changes
 to the system time should be audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27310-2" />
 <oval id="audit_rules_time_watch_localtime" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(b),IR-5" cis="5.2.4" pcidss="Req-10.4.2.b" disa="1487,169" cjis="5.4.1.1"  cui="3.1.7" />
@@ -818,7 +818,7 @@ each file specified (and with <tt>perm=wa</tt> for each).
 <rationale>In addition to auditing new user and group accounts, these watches
 will alert the system administrator(s) to any modifications. Any unexpected
 users, groups, or modifications should be investigated for legitimacy.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27192-4" />
 <oval id="audit_rules_usergroup_modification" />
 <ref prodtype="rhel7" stigid="030710" />
@@ -854,7 +854,7 @@ each file specified (and with <tt>perm=wa</tt> for each).
 <rationale>In addition to auditing new user and group accounts, these watches
 will alert the system administrator(s) to any modifications. Any unexpected
 users, groups, or modifications should be investigated for legitimacy.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80433-6" />
 <oval id="audit_rules_usergroup_modification_group" />
 <ref prodtype="rhel7" stigid="030871" />
@@ -890,7 +890,7 @@ each file specified (and with <tt>perm=wa</tt> for each).
 <rationale>In addition to auditing new user and group accounts, these watches
 will alert the system administrator(s) to any modifications. Any unexpected
 users, groups, or modifications should be investigated for legitimacy.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80432-8" />
 <oval id="audit_rules_usergroup_modification_gshadow" />
 <ref prodtype="rhel7" stigid="030872" />
@@ -926,7 +926,7 @@ each file specified (and with <tt>perm=wa</tt> for each).
 <rationale>In addition to auditing new user and group accounts, these watches
 will alert the system administrator(s) to any modifications. Any unexpected
 users, groups, or modifications should be investigated for legitimacy.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80431-0" />
 <oval id="audit_rules_usergroup_modification_shadow" />
 <ref prodtype="rhel7" stigid="030873" />
@@ -962,7 +962,7 @@ each file specified (and with <tt>perm=wa</tt> for each).
 <rationale>In addition to auditing new user and group accounts, these watches
 will alert the system administrator(s) to any modifications. Any unexpected
 users, groups, or modifications should be investigated for legitimacy.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80435-1" />
 <oval id="audit_rules_usergroup_modification_passwd" />
 <ref prodtype="rhel7" stigid="030870" />
@@ -999,7 +999,7 @@ each file specified (and with <tt>perm=wa</tt> for each).
 <rationale>In addition to auditing new user and group accounts, these watches
 will alert the system administrator(s) to any modifications. Any unexpected
 users, groups, or modifications should be investigated for legitimacy.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80430-2" />
 <oval id="audit_rules_usergroup_modification_opasswd" />
 <ref prodtype="rhel7" stigid="030874" />
@@ -1038,7 +1038,7 @@ each file specified (and <tt>perm=wa</tt> should be indicated for each).
 <rationale>The network environment should not be modified by anything other
 than administrator action. Any change to network parameters should be
 audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27076-9" />
 <oval id="audit_rules_networkconfig_modification" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" cjis="5.4.1.1" cis="5.2.6" cui="3.1.7" />
@@ -1062,7 +1062,7 @@ Audit logs must be mode 0640 or less permissive.
 <rationale>
 If users can write to audit logs, audit trails can be modified or destroyed.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27205-4" />
 <oval id="file_permissions_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="" pcidss="Req-10.5" cjis="5.4.1.1" cui="3.3.1" />
@@ -1080,7 +1080,7 @@ If users can write to audit logs, audit trails can be modified or destroyed.
 </ocil>
 <rationale>Unauthorized disclosure of audit records can reveal system and configuration data to
 attackers, thus compromising its confidentiality.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80125-8" />
 <oval id="file_ownership_var_log_audit" />
 <ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="163" ossrg="SRG-OS-000058-GPOS-00028" pcidss="Req-10.5.1" cjis="5.4.1.1" cui="3.3.1" />
@@ -1109,7 +1109,7 @@ configuration, a line should be returned (including
 <rationale>The system's mandatory access policy (SELinux) should not be
 arbitrarily changed by anything other than administrator action. All changes to
 MAC policy should be audited.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27168-4" />
 <oval id="audit_rules_mac_modification" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" cis="5.2.7" cjis="5.4.1.1" cui="3.1.8" />
@@ -1138,7 +1138,7 @@ arch=b32 replaced with arch=b64 as follows:
 attempting to gain access to information that would otherwise be disallowed.
 Auditing DAC modifications can facilitate the identification of patterns of
 abuse among both authorized and unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 
 <Rule id="audit_rules_dac_modification_chmod" prodtype="rhel7">
 <title>Record Events that Modify the System's Discretionary Access Controls - chmod</title>
@@ -1161,7 +1161,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ocil clause="the system is not configured to audit permission changes">
 <audit-syscall-check-macro syscall="chmod" />
 </ocil>
@@ -1200,7 +1200,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1236,7 +1236,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1272,7 +1272,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1308,7 +1308,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1344,7 +1344,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1385,7 +1385,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1421,7 +1421,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1457,7 +1457,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1498,7 +1498,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1534,7 +1534,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1574,7 +1574,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1610,7 +1610,7 @@ If the system is 64 bit then also add the following line:
 gain access to information that would otherwise be disallowed. Auditing DAC modifications
 can facilitate the identification of patterns of abuse among both authorized and
 unauthorized users.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1667,7 +1667,7 @@ edits of files involved in storing logon events:
 </description>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27204-7" />
 <oval id="audit_rules_login_events" />
 <ref nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" disa="172,2884" pcidss="Req-10.2.3" cis="5.2.8" cjis="5.4.1.1" cui="3.1.7" />
@@ -1694,7 +1694,7 @@ To verify that auditing is configured for system administrator actions, run the 
 </ocil>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80382-5" />
 <oval id="audit_rules_login_events_tallylog" />
 <ref prodtype="rhel7" stigid="030600" />
@@ -1722,7 +1722,7 @@ To verify that auditing is configured for system administrator actions, run the 
 </ocil>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80383-3" />
 <oval id="audit_rules_login_events_faillock" />
 <ref prodtype="rhel7" stigid="030610" />
@@ -1750,7 +1750,7 @@ To verify that auditing is configured for system administrator actions, run the 
 </ocil>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80384-1" />
 <oval id="audit_rules_login_events_lastlog" />
 <ref prodtype="rhel7" stigid="030620" />
@@ -1780,7 +1780,7 @@ edits of files involved in storing such process information:
 </description>
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27301-1" />
 <oval id="audit_rules_session_events" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" cis="5.2.9" cjis="5.4.1.1" cui="3.1.7" />
@@ -1836,7 +1836,7 @@ To verify that the audit system collects unauthorized file accesses, run the fol
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27347-4" />
 <oval id="audit_rules_unsuccessful_file_modification" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" disa="172,2884" pcidss="Req-10.2.4,Req-10.2.1" cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" />
@@ -1870,7 +1870,7 @@ If the system is 64 bit then also add the following lines:
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1910,7 +1910,7 @@ If the system is 64 bit then also add the following lines:
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1950,7 +1950,7 @@ If the system is 64 bit then also add the following lines:
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -1990,7 +1990,7 @@ If the system is 64 bit then also add the following lines:
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -2030,7 +2030,7 @@ If the system is 64 bit then also add the following lines:
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -2070,7 +2070,7 @@ If the system is 64 bit then also add the following lines:
 </ocil>
 <rationale>Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
 these events could serve as evidence of potential system compromise.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <warning category="general">Note that these rules can be configured in a
 number of ways while still achieving the desired effect. Here the system calls
 have been placed independent of other system calls. Grouping these system
@@ -2131,7 +2131,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80391-6" />
 <oval id="audit_rules_execution_semanage" />
 <ref prodtype="rhel7" stigid="030560" />
@@ -2168,7 +2168,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80392-4" />
 <oval id="audit_rules_execution_setsebool" />
 <ref prodtype="rhel7" stigid="030570" />
@@ -2205,7 +2205,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80393-2" />
 <oval id="audit_rules_execution_chcon" />
 <ref prodtype="rhel7" stigid="030580" />
@@ -2242,7 +2242,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80394-0" />
 <oval id="audit_rules_execution_restorecon" />
 <ref prodtype="rhel7" stigid="030590" />
@@ -2311,7 +2311,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27437-3" />
 <oval id="audit_rules_privileged_commands" />
 <ref prodtype="rhel7" stigid="030360" />
@@ -2348,7 +2348,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80395-7" />
 <oval id="audit_rules_privileged_commands_passwd" />
 <ref prodtype="rhel7" stigid="030630" />
@@ -2385,7 +2385,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80396-5" />
 <oval id="audit_rules_privileged_commands_unix_chkpwd" />
 <ref prodtype="rhel7" stigid="030640" />
@@ -2422,7 +2422,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80397-3" />
 <oval id="audit_rules_privileged_commands_gpasswd" />
 <ref prodtype="rhel7" stigid="030650" />
@@ -2459,7 +2459,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80398-1" />
 <oval id="audit_rules_privileged_commands_chage" />
 <ref prodtype="rhel7" stigid="030660" />
@@ -2496,7 +2496,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80399-9" />
 <oval id="audit_rules_privileged_commands_userhelper" />
 <ref prodtype="rhel7" stigid="030670" />
@@ -2533,7 +2533,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80400-5" />
 <oval id="audit_rules_privileged_commands_su" />
 <ref prodtype="rhel7" stigid="030680" />
@@ -2570,7 +2570,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80401-3" />
 <oval id="audit_rules_privileged_commands_sudo" />
 <ref prodtype="rhel7" stigid="030690" />
@@ -2607,7 +2607,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80402-1" />
 <oval id="audit_rules_privileged_commands_sudoedit" />
 <ref prodtype="rhel7" stigid="030730" />
@@ -2644,7 +2644,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80403-9" />
 <oval id="audit_rules_privileged_commands_newgrp" />
 <ref prodtype="rhel7" stigid="030710" />
@@ -2681,7 +2681,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80404-7" />
 <oval id="audit_rules_privileged_commands_chsh" />
 <ref prodtype="rhel7" stigid="030720" />
@@ -2718,7 +2718,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80405-4" />
 <oval id="audit_rules_privileged_commands_umount" />
 <ref prodtype="rhel7" stigid="030750" />
@@ -2755,7 +2755,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80406-2" />
 <oval id="audit_rules_privileged_commands_postdrop" />
 <ref prodtype="rhel7" stigid="030760" />
@@ -2792,7 +2792,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80407-0" />
 <oval id="audit_rules_privileged_commands_postqueue" />
 <ref prodtype="rhel7" stigid="030770" />
@@ -2829,7 +2829,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80408-8" />
 <oval id="audit_rules_privileged_commands_ssh_keysign" />
 <ref prodtype="rhel7" stigid="030780" />
@@ -2866,7 +2866,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80409-6" />
 <oval id="audit_rules_privileged_commands_pt_chown" />
 <ref prodtype="rhel7" stigid="030790" />
@@ -2903,7 +2903,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80410-4" />
 <oval id="audit_rules_privileged_commands_crontab" />
 <ref prodtype="rhel7" stigid="030800" />
@@ -2940,7 +2940,7 @@ which attempt to subvert their normal role of providing some necessary but
 limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80411-2" />
 <oval id="audit_rules_privileged_commands_pam_timestamp_check" />
 <ref prodtype="rhel7" stigid="030810" />
@@ -2972,7 +2972,7 @@ To verify that auditing is configured for all media exportation events, run the 
 where classified information, Privacy Act information, and intellectual property could be lost. An audit
 trail should be created each time a filesystem is mounted to help identify and guard against information
 loss.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27447-2" />
 <oval id="audit_rules_media_export" />
 <ref prodtype="rhel7" stigid="030740" />
@@ -3020,7 +3020,7 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" cis="5.2.14" disa="366,172,2884" cjis="5.4.1.1" cui="3.1.7" />
@@ -3047,7 +3047,7 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80412-0" />
 <oval id="audit_rules_file_deletion_events_rmdir" />
 <ref prodtype="rhel7" stigid="030900" />
@@ -3075,7 +3075,7 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events_unlink" />
 <ref prodtype="rhel7" stigid="030910" />
@@ -3103,7 +3103,7 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events_unlinkat" />
 <ref prodtype="rhel7" stigid="030920" />
@@ -3131,7 +3131,7 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27206-2" />
 <oval id="audit_rules_file_deletion_events_rename" />
 <ref prodtype="rhel7" stigid="030880" />
@@ -3159,7 +3159,7 @@ appropriate for your system:
 <rationale>Auditing file deletions will create an audit trail for files that are removed
 from the system. The audit trail could aid in system troubleshooting, as well as, detecting
 malicious processes that attempt to delete log files to conceal their presence.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80413-8" />
 <oval id="audit_rules_file_deletion_events_renameat" />
 <ref prodtype="rhel7" stigid="030890" />
@@ -3189,7 +3189,7 @@ To verify that auditing is configured for system administrator actions, run the 
 </ocil>
 <rationale>The actions taken by system administrators should be audited to keep a record
 of what was executed on the system, as well as, for accountability purposes.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27461-3" />
 <oval id="audit_rules_sysadmin_actions" />
 <ref prodtype="rhel7" stigid="030700" />
@@ -3242,7 +3242,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27129-6" />
 <oval id="audit_rules_kernel_module_loading" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" cis="5.2.17" disa="172" cjis="5.4.1.1" cui="3.1.7" />
@@ -3267,7 +3267,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80414-6" />
 <oval id="audit_rules_kernel_module_loading_init" />
 <ref prodtype="rhel7" stigid="030820" />
@@ -3293,7 +3293,7 @@ b64 as appropriate for your system:
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80415-3" />
 <oval id="audit_rules_kernel_module_loading_delete" />
 <ref prodtype="rhel7" stigid="030830" />
@@ -3320,7 +3320,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80446-8" />
 <oval id="audit_rules_kernel_module_loading_insmod" />
 <ref prodtype="rhel7" stigid="030840" />
@@ -3347,7 +3347,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80416-1" />
 <oval id="audit_rules_kernel_module_loading_rmmod" />
 <ref prodtype="rhel7" stigid="030850" />
@@ -3374,7 +3374,7 @@ To verify that auditing is configured for system administrator actions, run the 
 <rationale>The addition/removal of kernel modules can be used to alter the behavior of
 the kernel and potentially introduce malicious code into kernel space. It is important
 to have an audit trail of modules that have been introduced into the kernel.</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="80417-9" />
 <oval id="audit_rules_kernel_module_loading_modprobe" />
 <ref prodtype="rhel7" stigid="030860" />
@@ -3402,7 +3402,7 @@ With this setting, a reboot will be required to change any audit rules.
 well as malicious modification of the audit rules, although it may be
 problematic if legitimate changes are needed during system
 operation</rationale>
-<platform idref="cpe:/a:machine" />
+<environment-restriction container="false" />
 <ident prodtype="rhel7" cce="27097-5" />
 <oval id="audit_rules_immutable" />
 <ref nist="AC-6,AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5" pcidss="Req-10.5.2"
