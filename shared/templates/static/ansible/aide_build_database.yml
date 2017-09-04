@@ -24,3 +24,12 @@
     backup: yes
   tags:
     @ANSIBLE_TAGS@
+
+- name: Schedule AIDE cron job"
+  cron:
+    name: "run AIDE check"
+    minute: 05
+    hour: 04
+    weekday: 0
+    user: root
+    job: "/usr/sbin/aide --check"
