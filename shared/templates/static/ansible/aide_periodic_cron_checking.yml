@@ -3,7 +3,16 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Schedule AIDE cron job"
+- name: "Ensure AIDE is installed"
+  package:
+    name="{{item}}"
+    state=present
+  with_items:
+    - aide
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "@RULE_TITLE@"
   cron:
     name: "run AIDE check"
     minute: 05
