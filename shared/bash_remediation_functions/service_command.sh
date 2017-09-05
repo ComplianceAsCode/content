@@ -46,12 +46,20 @@ else
   chkconfig_state="off"
 fi
 
+inode=$(ls -di / | cut -d ' ' -f1)
 # If chkconfig_util is not empty, use chkconfig/service commands.
 if ! [ "x$chkconfig_util" = x ] ; then
-  $service_util $service $service_operation
+
+  if [ $inode -eq "2" ]
+  then
+      $service_util $service $service_operation
+  fi
   $chkconfig_util --level 0123456 $service $chkconfig_state
 else
-  $service_util $service_operation $service
+  if [ $inode -eq "2" ]
+  then
+      $service_util $service_operation $service
+  fi
   $service_util $service_state $service
 fi
 
