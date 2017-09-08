@@ -39,3 +39,5 @@ if [ nic_bound = false ];then
     # Add first NIC to SSH enabled zone
     firewall-cmd --zone=$firewalld_sshd_zone --add-interface=${eth_interface_list[0]}
 fi
+
+firewall-cmd --reload
