@@ -259,4 +259,15 @@ $ shared/utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-m
 
 ==== Updating stig_overlay.xml
 
-- Feature needs to be added to shared/utils/create-stig-overlay.py
+To update `stig_overlay.xml`, use the `create-stig-overlay.py` script that
+not only will update `stig_overlay.xml` but will create and/or update
+`legacy_stig_overlay.xml`.
+
+`legacy_stig_overlay.xml` is an XML file that contains all the STIG
+mappings that haven been removed from previous releases.
+
+Example using `create-stig-overlay.py`:
+----
+./shared/utils/create-stig-overlay.py --backup --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel6-xccdf.xml --original-overlay=RHEL/7/auxiliary/stig_overlay.xml -o RHEL/7/auxiliary/stig_overlay.xml
+----
+

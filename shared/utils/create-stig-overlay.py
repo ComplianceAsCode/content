@@ -4,6 +4,7 @@ import re
 import sys
 import optparse
 import os
+import copy
 import lxml.etree as ET
 
 
@@ -12,6 +13,7 @@ stig_ns = "http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx"
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
+legacyfile = "legacy_stig_overlay.xml"
 
 
 def yes_no_prompt():
@@ -51,7 +53,6 @@ def ssg_xccdf_stigid_mapping(ssgtree):
                     stigid = ref_stig_id.text
                     xccdftostig_idmapping[stigid] = xccdfid
 
-
     return xccdftostig_idmapping
 
 
@@ -59,7 +60,42 @@ def getkey(elem):
     return elem.get("ownerid")
 
 
-def new_stig_overlay(xccdftree, ssgtree, outfile):
+def update_legacy_stig_overlay(ssgtree, overlayfile, legacyfile):
+    new_overlay = []
+    legacy_overlay = []
+
+    for overlay in ssgtree.findall(".//overlay"):
+        new_overlay.append(overlay.get("ownerid"))
+
+    if not os.path.isfile(legacyfile):
+        tree = ET.Element("overlays", xmlns=xccdf_ns)
+        root = tree
+    else:
+        tree = ET.parse(legacyfile)
+        legacy_overlay = []
+        for overlay in tree.findall(".//{%s}overlay" % xccdf_ns):
+            legacy_overlay.append(overlay.get("ownerid"))
+        root = tree.getroot()
+
+    original_overlay = ET.parse(overlayfile)
+    for overlay in original_overlay.findall("//{%s}overlay" % xccdf_ns):
+        ownerid = overlay.get("ownerid")
+        if ownerid not in new_overlay and ownerid not in legacy_overlay:
+            elements = copy.deepcopy(overlay)
+            root.append(elements)
+
+    lines = root.findall(".//{%s}overlay" % xccdf_ns)
+    root[:] = sorted(lines, key=getkey)
+
+    with open(legacyfile, 'w') as f:
+        f.write(ET.tostring(tree, pretty_print=True, encoding="UTF-8",
+                xml_declaration=True))
+
+    print("\nUpdated Legacy STIG overlay file: %s" % legacyfile)
+
+
+def new_stig_overlay(xccdftree, ssgtree, outfile, backup=False,
+                     overlayfile=False, legacyfile=False):
     if not ssgtree:
         ssg_mapping = False
     else:
@@ -101,8 +137,12 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
     tree = ET.ElementTree(new_stig_overlay)
-    tree.write(outfile, pretty_print=True, encoding="UTF-8", xml_declaration=True)
+    tree.write(outfile, pretty_print=True, encoding="UTF-8",
+               xml_declaration=True)
     print("\nGenerated the new STIG overlay file: %s" % outfile)
+
+    if backup:
+        update_legacy_stig_overlay(tree, overlayfile, legacyfile)
 
 
 def parse_options():
@@ -117,6 +157,18 @@ def parse_options():
                       action="store", dest="disa_xccdf_filename",
                       help="A DISA generated XCCDF Manual checks file. \
                             For example: disa-stig-rhel6-v1r12-xccdf-manual.xml")
+    parser.add_option("--original-overlay", default=outfile,
+                      action="store", dest="original",
+                      help="A currently existing STIG overlay XML content file \
+                           [default: %default]")
+    parser.add_option("--legacy", default=legacyfile,
+                      action="store", dest="legacy",
+                      help="The Legacy STIG overlay XML content file \
+                           [default: %default]")
+    parser.add_option("-b", "--backup", default=False,
+                      action="store_true", dest="backup",
+                      help="Backup the STIG overlay XML file \
+                           [default: %default]")
     parser.add_option("-o", "--output", default=outfile,
                       action="store", dest="output_file",
                       help="STIG overlay XML content file \
@@ -146,13 +198,18 @@ def main():
         ssg_xccdftree = ET.parse(options.ssg_xccdf_filename)
         ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
         if ssg != "SCAP Security Guide Project":
-            sys.exit("%s is not a valid SSG generated XCCDF file." % os.path.basename(ssg_xccdf_filename))
+            sys.exit("%s is not a valid SSG generated XCCDF file." % ssg_xccdf_filename)
 
     disa = disa_xccdftree.find(".//{%s}source" % dc_ns).text
     if disa != "STIG.DOD.MIL":
-        sys.exit("%s is not a valid DISA generated manual XCCDF file." % os.path.basename(disa_xccdf_filename))
-
-    new_stig_overlay(disa_xccdftree, ssg_xccdftree, options.output_file)
+        sys.exit("%s is not a valid DISA generated manual XCCDF file." % disa_xccdf_filename)
+    if not options.backup:
+        new_stig_overlay(disa_xccdftree, ssg_xccdftree, options.output_file)
+    else:
+        if not os.path.isfile(options.original):
+            sys.exit("%s does not exist!" % options.original)
+        new_stig_overlay(disa_xccdftree, ssg_xccdftree, options.output_file,
+                         options.backup, options.original, options.legacy)
 
 
 if __name__ == "__main__":
