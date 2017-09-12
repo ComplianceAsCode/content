@@ -26,7 +26,7 @@ firewall-cmd --permanent --zone=$firewalld_sshd_zone --add-service=ssh
 
 # Check if any eth interface is bounded to the zone with SSH service enabled
 nic_bound=false
-eth_interface_list=$(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep '^en')
+eth_interface_list=$(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep -E '^(en|eth)')
 for interface in $eth_interface_list; do
     zone_of_interface=$(firewall-cmd --get-zone-of-interface=$interface)
     if [ "$zone_of_interface" == "$firewalld_sshd_zone" ]; then
