@@ -29,13 +29,13 @@ nic_bound=false
 eth_interface_list=$(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep '^en')
 for interface in $eth_interface_list; do
     zone_of_interface=$(firewall-cmd --get-zone-of-interface=$interface)
-    if [ "$zone_of_interface" == "$ssh_zone" ]; then
+    if [ "$zone_of_interface" == "$firewalld_sshd_zone" ]; then
         nic_bound=true
         break;
     fi
 done
 
-if [ nic_bound = false ];then
+if [ $nic_bound = false ];then
     # Add first NIC to SSH enabled zone
     firewall-cmd --zone=$firewalld_sshd_zone --add-interface=${eth_interface_list[0]}
 fi
