@@ -7,7 +7,9 @@
 . /usr/share/scap-security-guide/remediation_functions
 
 package_command install firewalld
+
 populate sshd_listening_port
+
 populate firewalld_sshd_zone
 
 if [ $sshd_listening_port -ne 22 ] ; then
