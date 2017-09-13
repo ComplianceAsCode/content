@@ -41,6 +41,22 @@ operator="equals" interactive="0">
 <value selector="default">22</value>
 </Value>
 
+<Value id="firewalld_sshd_zone" type="string"
+operator="equals" interactive="0">
+<title>SSH enabled firewalld zone</title>
+<description>Specify firewalld zone to enable SSH service. This value is used only for remediation purposes.</description>
+<value selector="">public</value>
+<value selector="block">block</value>
+<value selector="dmz">dmz</value>
+<value selector="drop">drop</value>
+<value selector="external">external</value>
+<value selector="home">home</value>
+<value selector="internal">internal</value>
+<value selector="public">public</value>
+<value selector="trusted">trusted</value>
+<value selector="work">work</value>
+</Value>
+
 <Value id="sshd_approved_macs" type="string"
 operator="equals" interactive="0">
 <title>SSH Approved MACs by FIPS</title>

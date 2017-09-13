@@ -8,22 +8,7 @@
 
 package_command install firewalld
 
-populate sshd_listening_port
-
 populate firewalld_sshd_zone
-
-if [ $sshd_listening_port -ne 22 ] ; then
-    # Remove all ports from SSH service
-
-    if [ ! -f /etc/firewalld/services/ssh.xml ]; then
-        cp /usr/lib/firewalld/services/ssh.xml /etc/firewall/services/ssh.xml
-    fi
-
-    sed -i '/<port port="[0-9]+" protocol="\S+"\/>/d' /etc/firewalld/services/ssh.xml
-    # Add port defined in sshd_listening_port to ssh service
-    sed -i "/<\/description>/a \
-  <port port=\"$sshd_listening_port\" protocol=\"tcp\"/>" /etc/firewalld/services/ssh.xml
-fi
 
 # This assumes that firewalld_sshd_zone is one of the pre-defined zones
 if [ ! -f /etc/firewalld/zones/${firewalld_sshd_zone}.xml ]; then

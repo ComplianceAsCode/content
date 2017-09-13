@@ -11,7 +11,10 @@
     <criteria operator="OR">
       <criterion comment="ssh service is enabled in services" test_ref="test_firewalld_service_sshd_enabled" />
       <criterion comment="ssh port is enabled in services" test_ref="test_firewalld_service_sshd_port_enabled" />
-      <criterion comment="ssh service is enabled in zones" test_ref="test_firewalld_zone_sshd_enabled" />
+      <criteria operator="AND">
+        <criterion comment="ssh service is enabled in zones" test_ref="test_firewalld_zone_sshd_enabled" />
+        <criterion comment="there is at least one NIC assigned to a zone with ssh enabled" test_ref="test_nic_assigned_to_sshd_enabled_zone" />
+      </criteria>
       <criterion comment="ssh port is enabled in zones" test_ref="test_firewalld_zone_sshd_port_enabled" />
     </criteria>
   </definition>
@@ -48,7 +51,7 @@
     <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
   </ind:xmlfilecontent_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="ssh port is enabled in zones"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="ssh port is enabled in zones"
   id="test_firewalld_zone_sshd_port_enabled" version="1">
     <ind:object object_ref="object_firewalld_zone_sshd_port_enabled" />
     <ind:state state_ref="state_sshd_listening_port" />
@@ -58,6 +61,39 @@
     <ind:filename operation="pattern match">^.*\.xml$</ind:filename>
     <ind:pattern operation="pattern match">&lt;port.*port="(\d+)"</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <!-- Grab list of zones which enable service ssh -->
+  <local_variable id="var_firewalld_sshd_enabled_zones" datatype="string" version="1" comment="firewalld zones with ssh service enabled">
+    <regex_capture pattern="(\S+).xml">
+      <object_component item_field="filename" object_ref="object_firewalld_zone_sshd_enabled" />
+    </regex_capture>
+  </local_variable>
+
+  <!-- check if any of the zones with NIC assigned allows sshd service -->
+  <ind:xmlfilecontent_test check="all" check_existence="at_least_one_exists" comment="ssh service is enabled in zones"
+  id="test_nic_assigned_to_sshd_enabled_zone" version="1">
+    <ind:object object_ref="object_zones_with_nics" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="object_zones_with_nics" version="1">
+    <ind:path>/etc/firewalld/zones</ind:path>
+    <ind:filename operation="pattern match" var_check="at least one" var_ref="var_firewalld_zones_with_assigned_nics"/>
+    <ind:xpath>/zone/service[@name='ssh']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <!-- List of Zones with NIC assigned to it -->
+  <local_variable id="var_firewalld_zones_with_assigned_nics" datatype="string" version="1" comment="firewalld zones with ssh service enabled">
+        <concat>
+         <object_component item_field="subexpression" object_ref="object_nic_assigned_to_firewalld_zone" />
+            <literal_component>.xml</literal_component>
+        </concat>
+  </local_variable>
+  <ind:textfilecontent54_object comment="Check config of all NIC"
+  id="object_nic_assigned_to_firewalld_zone" version="1">
+    <ind:path>/etc/sysconfig/network-scripts</ind:path>
+    <ind:filename operation="pattern match">ifcfg-.*</ind:filename>
+    <ind:pattern operation="pattern match">^ZONE=(.*)$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state comment="port ssh is listening" id="state_sshd_listening_port" version="1">
