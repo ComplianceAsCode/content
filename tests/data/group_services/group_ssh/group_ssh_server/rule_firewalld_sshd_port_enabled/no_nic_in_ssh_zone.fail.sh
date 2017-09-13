@@ -15,7 +15,7 @@ eth_interfaces=$(ip link show up | cut -d ' ' -f2 | cut -d ':' -s -f1 | grep -E 
 # Note: Interfaces managed by NetworkManager will be assigned to the default firewalld zone
 for zone in $all_zones; do
     for interface in $eth_interfaces; do
-        firewall-cmd --permanent --zone=$zone --remove-interface=$eth_interface
+        firewall-cmd --permanent --zone=$zone --remove-interface=$interface
     done
 done
 
