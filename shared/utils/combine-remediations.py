@@ -285,16 +285,17 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                     if "populate" in fixparts[idx]:
                         varname, fixtextcontribution = get_populate_replacement(remediation_type, fixparts[idx])
                         # Define new XCCDF <sub> element for the variable
-                        xccdfvarsub = ElementTree.SubElement(fix, "sub",
+                        xccdfvarsub = ElementTree.Element("sub",
                                                         idref=varname)
 
                         # If this is first sub element,
                         # the textcontribution needs to go to fix text
                         # other wise, append to last subelement
-                        if list(fix).index(xccdfvarsub) == 0:
+                        nfixchildren = len(list(fix))
+                        if nfixchildren == 0:
                             fix.text += fixtextcontribution
                         else:
-                            previouselem = fix[list(fix).index(xccdfvarsub) - 1]
+                            previouselem = fix[nfixchildren-1]
                             previouselem.tail += fixtextcontribution
 
                         # If second pair element is not empty, append it as
@@ -304,6 +305,8 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                         # Otherwise append just enclosing '"'
                         else:
                             xccdfvarsub.tail = '"' + '\n'
+                        # Append the new subelement to the fix element
+                        fix.append(xccdfvarsub)
                     # This chunk contains call of other remediation function
                     else:
                         # Extract remediation function name
