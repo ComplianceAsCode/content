@@ -23,8 +23,9 @@ POP3 server, the dovecot software should be disabled and removed.
 Running an IMAP or POP3 server provides a network-based
 avenue of attack, and should be disabled if not needed.
 </rationale>
-<ident prodtype="rhel7" cce="80294-2" cis="2.2.11" />
+<ident prodtype="rhel7" cce="80294-2" />
 <oval id="service_dovecot_disabled" />
+<ref cis="2.2.11" />
 </Rule>
 
 <Rule id="package_dovecot_removed" prodtype="rhel7">
