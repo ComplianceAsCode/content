@@ -279,7 +279,10 @@ def main():
 
         index_select_options = ""
         if len(index_options.keys()) > 1:
-            for benchmark_id in index_options.keys():
+            # we sort by length of the benchmark_id to make sure the "default"
+            # comes up first in the list
+            for benchmark_id in sorted(index_options.keys(),
+                                       key=lambda val: (len(val), val)):
                 index_select_options += "<optgroup label=\"benchmark: %s\">\n" \
                     % (benchmark_id)
                 index_select_options += "\n".join(index_options[benchmark_id])
