@@ -152,7 +152,7 @@ def main():
     # TODO: Make the index file nicer
 
     index_links = []
-    index_options = []
+    index_options = {}
     index_initial_src = None
 
     def benchmark_profile_pair_sort_key(
@@ -220,12 +220,16 @@ def main():
                 "<a target=\"guide\" href=\"%s\">%s</a>" %
                 (guide_filename, "%s in %s" % (profile_title, benchmark_id))
             )
-            index_options.append(
+
+            if benchmark_id not in index_options:
+                index_options[benchmark_id] = []
+            index_options[benchmark_id].append(
                 "<option value=\"%s\" data-benchmark-id=\"%s\" data-profile-id=\"%s\">%s</option>" %
                 (guide_filename,
                  "" if len(benchmarks) == 1 else benchmark_id, profile_id,
-                 "%s in %s" % (profile_title, benchmark_id))
+                 profile_title)
             )
+
             if index_initial_src is None:
                 index_initial_src = guide_filename
 
@@ -273,6 +277,16 @@ def main():
 
         queue.join()
 
+        index_select_options = ""
+        if len(index_options.keys()) > 1:
+            for benchmark_id in index_options.keys():
+                index_select_options += "<optgroup label=\"benchmark: %s\">\n" \
+                    % (benchmark_id)
+                index_select_options += "\n".join(index_options[benchmark_id])
+                index_select_options += "</optgroup>\n"
+        else:
+            index_select_options += "\n".join(index_options.values())
+
         index_source = "".join([
             "<!DOCTYPE html>\n",
             "<html lang=\"en\">\n",
@@ -319,7 +333,7 @@ def main():
             "\t\t\t<select style=\"margin-bottom: 5px\" ",
             "onchange=\"change_profile(this.options[this.selectedIndex]);\"",
             ">\n",
-            "\n".join(index_options) + "\n",
+            "\n", index_select_options, "\n",
             "\t\t\t</select>\n",
             "\t\t\t<div id='eval_snippet' style='background: #eee; padding: 3px; border: 1px solid #000'>",
             "select a profile to display its guide and a command line snippet needed to use it",
