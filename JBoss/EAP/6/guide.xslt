@@ -18,7 +18,7 @@
       <xsl:copy-of select="@*|node()" />
 
        <!-- Adding profiles here -->
-       <xsl:apply-templates select="document('profiles/stig-eap6-upstream.xml')" />
+       <xsl:apply-templates select="document('profiles/stig-eap6-disa.xml')" />
 
        <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
        <Value id="conditional_clause" type="string" operator="equals">
@@ -31,7 +31,6 @@
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_app.xml'))" />
       <xsl:apply-templates select="document('xccdf/application/eap6.xml')" />
-      <xsl:apply-templates select="document('xccdf/application/auditing.xml')" />
     </xsl:copy>
   </xsl:template>
 
