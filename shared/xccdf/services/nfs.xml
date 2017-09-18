@@ -38,7 +38,6 @@ this service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80228-0" />
 <oval id="service_nfslock_disabled" />
-<ref cis="3.8" />
 </Rule>
 
 <Rule id="service_rpcgssd_disabled" prodtype="rhel7">
@@ -52,7 +51,6 @@ service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80229-8" />
 <oval id="service_rpcgssd_disabled" />
-<ref cis="3.8" />
 </Rule>
 
 <Rule id="service_rpcbind_disabled" prodtype="rhel7">
@@ -68,7 +66,7 @@ servers) then this service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80230-6" />
 <oval id="service_rpcbind_disabled" />
-<ref cis="3.8" />
+<ref cis="2.2.7" />
 </Rule>
 
 <Rule id="service_rpcidmapd_disabled" prodtype="rhel7">
@@ -80,7 +78,6 @@ this service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80231-4" />
 <oval id="service_rpcidmapd_disabled" />
-<ref cis="3.8" />
 </Rule>
 </Group> <!-- end disabling_nfs_services -->
 
@@ -231,7 +228,7 @@ is not designated as a NFS server then this service should be disabled.
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident prodtype="rhel7" cce="80237-1" />
-<ref nist="AC-3" />
+<ref nist="AC-3" cis="2.2.7" />
 <oval id="service_nfs_disabled" />
 </Rule>
 
