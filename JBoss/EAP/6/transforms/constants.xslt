@@ -9,7 +9,7 @@
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">Jboss-EAP-6</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0,cpe:/a:redhat:jboss_enterprise_application_platform:6.0.1,cpe:/a:redhat:jboss_enterprise_application_platform:6.1.0,cpe:/a:redhat:jboss_enterprise_application_platform:6.2.0,cpe:/a:redhat:jboss_enterprise_application_platform:6.2.1,cpe:/a:redhat:jboss_enterprise_application_platform:6.2.2,cpe:/a:redhat:jboss_enterprise_application_platform:6.2.3,cpe:/a:redhat:jboss_enterprise_application_platform:6.2.4,cpe:/a:redhat:jboss_enterprise_application_platform:6.3.0,cpe:/a:redhat:jboss_enterprise_application_platform:6.3.1,cpe:/a:redhat:jboss_enterprise_application_platform:6.3.2,cpe:/a:redhat:jboss_enterprise_application_platform:6.3.3,cpe:/a:redhat:jboss_enterprise_application_platform:6.4.4</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appserver-uri"/>
 <xsl:variable name="os-stigid-concat" />
 
