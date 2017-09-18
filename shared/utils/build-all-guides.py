@@ -288,7 +288,7 @@ def main():
                 index_select_options += "\n".join(index_options[benchmark_id])
                 index_select_options += "</optgroup>\n"
         else:
-            index_select_options += "\n".join(index_options.values())
+            index_select_options += "\n".join(index_options.values()[0])
 
         index_source = "".join([
             "<!DOCTYPE html>\n",
