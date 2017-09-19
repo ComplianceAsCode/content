@@ -419,7 +419,8 @@ compromose the password.
 <ident prodtype="rhel7" cce="27293-0" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
 <ref prodtype="rhel7" stigid="010280" />
-<ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046" pcidss="Req-8.2.3" cis="6.3.2" />
+<ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046"
+pcidss="Req-8.2.3" cis="6.3.2" cjis="5.6.2.1.1" />
 </Rule>
 
 <Rule id="accounts_password_pam_ucredit" severity="medium" prodtype="rhel7">
@@ -549,7 +550,8 @@ Note that passwords which are changed on compromised systems will still be compr
 <ident prodtype="rhel7" cce="26631-2" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
 <ref prodtype="rhel7" stigid="010160" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040"
+cjis="5.6.2.1.1" />
 </Rule>
 
 <Rule id="accounts_password_pam_minclass" severity="medium" prodtype="rhel7">
