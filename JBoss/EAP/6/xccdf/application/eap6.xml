@@ -13,7 +13,7 @@ Red Hat Enterprise Linux systems.
 </description>
 
 <Rule id="jboss_eap_configure_secure_management_access" severity="medium">
-<title></title>
+<title>Enable HTTPS for Management Sessions</title>
 <description>
 Follow the specific instructions in the Red Hat Security Guide for EAP version
 6.3 to configure the management console for HTTPS.
@@ -58,7 +58,7 @@ all management access to a restricted network.
 </Rule>
 
 <Rule id="jboss_eap_configure_https" severity="medium">
-<title></title>
+<title>Enable HTTPS for JBoss Web Interface</title>
 <description>
 Follow procedure "4.4. Configure the JBoss Web Server to use HTTPS."
 The detailed procedure is found in the JBoss EAP 6.3 Security Guide available at
@@ -113,7 +113,7 @@ specifies the preferred configurations for government systems.
 </Rule>
 
 <Rule id="jboss_eap_configure_host_access_restrictions" severity="high">
-<title></title>
+<title>Configure Host Access Restrictions for Applications</title>
 <description>
 Configure the Java security manager to enforce access restrictions to the host
 system resources in accordance with application design and resource
@@ -164,7 +164,7 @@ initiate network sockets in order to connect to another system.
 </Rule>
 
 <Rule id="jboss_eap_configure_security_manager" severity="high">
-<title></title>
+<title>Enable the Java Security Manager</title>
 <description>
 For a domain installation:
 Enable the respective JAVA_OPTS flag in both the
@@ -250,7 +250,7 @@ within the Java Security Manager.
 </Rule>
 
 <Rule id="jboss_eap_enable_rbac" severity="high">
-<title></title>
+<title>Enable Role Based Access Control (RBAC)</title>
 <description>
 Run the following command.
 <pre>&lt;JBOSS_HOME&gt;/bin/jboss-cli.sh -c -> connect -> cd
@@ -298,7 +298,7 @@ nist="" stigid="JBOS-AS-000035"/>
 </Rule>
 
 <Rule id="jboss_eap_configure_user_roles" severity="medium">
-<title></title>
+<title>Configure JBoss User Roles</title>
 <description>
 Document approved management users and their roles. Configure the application
 server to use RBAC and ensure users are placed into the appropriate roles.
@@ -346,7 +346,7 @@ JBoss resources can occur.
 </Rule>
 
 <Rule id="jboss_eap_configure_application_authentication" severity="high">
-<title></title>
+<title>Remove Silent Authentication - Application Security Realm</title>
 <description>
 Log on to the OS of the JBoss server with OS permissions that allow access to
 JBoss.
@@ -395,7 +395,7 @@ violates best practice requirements regarding accountability.
 </Rule>
 
 <Rule id="jboss_eap_configure_management_authentication" severity="high">
-<title></title>
+<title>Remove Silent Authentication - Management Security Realm</title>
 <description>
 Log on to the OS of the JBoss server with OS permissions that allow access to
 JBoss.
@@ -445,7 +445,7 @@ violates best practice requirements regarding accountability.
 </Rule>
 
 <Rule id="jboss_eap_configure_security_realm" severity="high">
-<title></title>
+<title>Secure the JBoss Management Interfaces</title>
 <description>
 Identify the security realm used for management of the system. By default,
 this is called <tt>Management Realm</tt>.
@@ -504,7 +504,7 @@ secured.
 </Rule>
 
 <Rule id="jboss_eap_configure_auditing" severity="medium">
-<title></title>
+<title>Configure JBoss Auditing and Logging</title>
 <description>
 Launch the jboss-cli management interface.
 Connect to the server by typing
@@ -555,7 +555,7 @@ disa="130,131,132,133,134,169,172,1464" nist="" stigid="JBOS-AS-000080"/>
 </Rule>
 
 <Rule id="jboss_eap_configure_auditor_roles" severity="medium">
-<title></title>
+<title>Configure JBoss Auditor Role</title>
 <description>
 Obtain documented approvals from ISSM, and assign the appropriate personnel
 into the <pre>Auditor</pre> role.
@@ -595,7 +595,7 @@ individuals or roles appointed by the ISSM).
 </Rule>
 
 <Rule id="jboss_eap_configure_logging_level" severity="medium">
-<title></title>
+<title>Configure JBoss Logging Level</title>
 <description>
 Log on to the OS of the JBoss server with OS permissions that allow access to
 JBoss.
@@ -655,7 +655,7 @@ adequate log information.
 </Rule>
 
 <Rule id="jboss_eap_configure_log_permissions" severity="medium">
-<title></title>
+<title>Configure JBoss Log Permissions</title>
 <description>
 Configure the OS file permissions on the application server to protect log
 information from unauthorized access.
@@ -714,7 +714,7 @@ disa="162,163,164" nist="" stigid="JBOS-AS-000165"/>
 </Rule>
 
 <Rule id="jboss_eap_configure_offloading_max" severity="medium">
-<title></title>
+<title>Configure JBoss Log Off-Loading Frequency</title>
 <description>
 Configure the application server to off-load log records every seven days onto
 a different system or media from the system being logged.
@@ -745,7 +745,7 @@ a catastrophic system failure, the log records will be retained.
 </Rule>
 
 <Rule id="jboss_eap_configure_user_permissions" severity="medium">
-<title></title>
+<title>Configure mgmt-users.properties File Permissions</title>
 <description>
 Configure the file permissions to allow access to authorized users only.
 Owner can be full access. Group can be full access. 
@@ -791,7 +791,7 @@ all.
 </Rule>
 
 <Rule id="jboss_eap_restrict_jboss_account" severity="high">
-<title></title>
+<title>Restrict the JBoss Account</title>
 <description>
 Use the relevant OS commands to restrict JBoss user account from interactively
 logging on to the console of the JBoss system.
@@ -822,7 +822,7 @@ capabilities.
 </Rule>
 
 <Rule id="jboss_eap_disable_analytics" severity="medium">
-<title></title>
+<title>Disable Google Analytics</title>
 <description>
 Using the EAP web console, log on using admin credentials.
 On the bottom right-hand side of the screen, select <tt>Settings</tt>,
@@ -854,7 +854,7 @@ exfiltration. This capability must be disabled.
 </Rule>
 
 <Rule id="jboss_eap_unprivileged_mode" severity="high">
-<title></title>
+<title>Restrict JBoss Account</title>
 <description>
 Run the JBoss server with non-admin rights.
 </description>
@@ -905,7 +905,7 @@ JBoss EAP server must not be run as the admin user.
 </Rule>
 
 <Rule id="jboss_eap_remove_quickstarts" severity="medium">
-<title></title>
+<title>Remove JBoss Quickstarts</title>
 <description>
 Delete the QuickStarts folder.
 </description>
@@ -924,7 +924,7 @@ vectors. QuickStarts must be removed.
 </Rule>
 
 <Rule id="jboss_eap_remove_jmx" severity="medium">
-<title></title>
+<title>Remove the JMX Subsystem</title>
 <description>
 Log on to the OS of the JBoss server with OS permissions that allow access to
 JBoss.
@@ -973,7 +973,7 @@ must be removed.
 </Rule>
 
 <Rule id="jboss_eap_disable_replace_welcome_page" severity="low">
-<title></title>
+<title>Disable or Replace the JBoss Welcome Page</title>
 <description>
 Use the Management CLI script <pre>$JBOSS_HOME/bin/jboss-cli.sh</pre> to run the following
 command. You may need to change the profile to modify a different managed domain
@@ -1013,7 +1013,7 @@ page.
 </Rule>
 
 <Rule id="jboss_eap_remove_unnecessary_apps" severity="medium">
-<title></title>
+<title>Remove Unnecessary Applications</title>
 <description>
 Identify, authorize, and document all applications that are deployed to the
 application server. Remove unauthorized applications.
@@ -1048,7 +1048,7 @@ case of an application server, unnecessary and/or unapproved applications.
 </Rule>
 
 <Rule id="jboss_eap_configure_ports" severity="medium">
-<title></title>
+<title>Configure JBoss Management and Application Ports</title>
 <description>
 Open the EAP web console by pointing a web browser to <pre>HTTPS://<i>Servername</i>:9990</pre>
 Log on to the admin console using admin credentials
@@ -1100,7 +1100,7 @@ impacting application server operation capabilities.
 </Rule>
 
 <Rule id="jboss_eap_configure_ldap" severity="medium">
-<title></title>
+<title>Configure LDAP</title>
 <description>
 Follow steps in section 11.8 - Management Interface Security in the
 JBoss_Enterprise_Application_Platform-6.3
@@ -1145,7 +1145,7 @@ configured to utilize a centralized authentication mechanism.
 </Rule>
 
 <Rule id="jboss_eap_configure_multifactor_authentication" severity="medium">
-<title></title>
+<title>Configure Multi-Factor Authentication</title>
 <description>
 Configure the application server to authenticate privileged users via
 multifactor/certificate-based authentication mechanisms when using network
@@ -1219,7 +1219,7 @@ soft certificate.
 </Rule>
 
 <Rule id="jboss_eap_remove_group_accounts" severity="medium">
-<title></title>
+<title>Remove JBoss Group Acount Access</title>
 <description>
 Configure the application server so required users are individually
 authenticated by creating individual user accounts. Utilize an LDAP server that
@@ -1286,7 +1286,7 @@ non-repudiation for actions taken.
 </Rule>
 
 <Rule id="jboss_eap_configure_management_network" severity="medium">
-<title></title>
+<title>Separate JBoss Management Network</title>
 <description>
 Refer to Section 4.9 of the JBoss EAP 6.3 Installation guide for detailed
 instructions on how to start JBoss as a service.
@@ -1352,7 +1352,7 @@ on the same segment as the management interface.
 </Rule>
 
 <Rule id="jboss_eap_configure_management_ldap" severity="medium">
-<title></title>
+<title>Configure LDAP for Management Interfaces</title>
 <description>
 Follow steps in section 11.8 - Management Interface Security in the
 JBoss_Enterprise_Application_Platform-6.3
@@ -1402,7 +1402,7 @@ individual.
 </Rule>
 
 <Rule id="jboss_eap_configure_keystore" severity="medium">
-<title></title>
+<title>Enable the JBoss Keystore</title>
 <description>
 Configure the application server to use the java keystore and JBoss vault as
 per section 11.13.1 -Password Vault System in the
@@ -1440,7 +1440,7 @@ Vault to securely store sensitive strings in plain-text files.
 </Rule>
 
 <Rule id="jboss_eap_encrypt_keystore_passwords" severity="medium">
-<title></title>
+<title>Encrypt JBoss Keystore Passwords</title>
 <description>
 Configure the application server to mask the java keystore password as per the
 procedure described in section 11.13.3 -Password Vault System in the
@@ -1477,8 +1477,8 @@ to ensure the Keystore password is encrypted.
 <ref appsrg="SRG-APP-000171-AS-000119" disa="196" nist="" stigid="JBOS-AS-000300"/>
 </Rule>
 
-<Rule id="jboss_eap_disable_anonymous_access" severity="medium">
-<title></title>
+<Rule id="jboss_eap_require_password_access" severity="medium">
+<title>Require Password Authentication</title>
 <description>
 Configure the LDAP Security Realm using default settings that sets <tt>allow-empty-values</tt>
 to <tt>..</tt> LDAP Security Realm creation is described in
@@ -1508,12 +1508,12 @@ or user IDs and passwords in order to authenticate. When the application server
 transmits or receives passwords, the passwords must be encrypted.
 </rationale>
 <ident cce=""/>
-<oval id="jboss_eap_disable_anonymous_access"/>
+<oval id="jboss_eap_require_password_access"/>
 <ref appsrg="SRG-APP-000172-AS-000120" disa="197" nist="" stigid="JBOS-AS-000305"/>
 </Rule>
 
 <Rule id="jboss_eap_use_secure_ldap_port" severity="medium">
-<title></title>
+<title>Use Secure Standard LDAP Port</title>
 <description>
 Follow steps in section 11.8 - Management Interface Security in the
 JBoss_Enterprise_Application_Platform-6.3
@@ -1559,7 +1559,7 @@ traffic must be encrypted.
 </Rule>
 
 <Rule id="jboss_eap_secure_keystore_permissions" severity="medium">
-<title></title>
+<title>Restrict Access to the JBoss Keystore</title>
 <description>
 Configure the application server OS file permissions on the corresponding
 private key to restrict access to authorized accounts or roles.
@@ -1607,7 +1607,7 @@ usually maintained in a file stored on the file system.
 </Rule>
 
 <Rule id="jboss_eap_service_separate_networks" severity="medium">
-<title></title>
+<title>Use Separate Management and Application Networks</title>
 <description>
 Start the application server with a <tt>-bmanagement</tt> and a <tt>-b</tt> flag so that admin
 management functionality and hosted applications are separated.
@@ -1675,7 +1675,7 @@ address is used for public/application access.
 </Rule>
 
 <Rule id="jboss_eap_file_permissions" severity="medium">
-<title></title>
+<title>Configure JBoss Application File Permissions</title>
 <description>
 Configure file permissions on the JBoss folder to protect from unauthorized
 access.
@@ -1722,7 +1722,7 @@ ensure data stored on the device is protected.
 </Rule>
 
 <Rule id="jboss_eap_logs_permissions" severity="medium">
-<title></title>
+<title>Configure JBoss Log Directory Permissions</title>
 <description>
 Configure file permissions on the JBoss log folder to protect from unauthorized
 access.
@@ -1794,7 +1794,7 @@ the proper file permissions are utilized when the log files are created.
 </Rule>
 
 <Rule id="jboss_eap_disable_domain_admin_console" severity="medium">
-<title></title>
+<title>Disable Network Access to the Admin Console</title>
 <description>
 Run the <pre>&lt;JBOSS_HOME&gt;/bin/jboss-clii</pre> command line interface utility.
 Connect to
@@ -1837,7 +1837,7 @@ controller.
 </Rule>
 
 <Rule id="jboss_eap_audit_privileged_actions" severity="medium">
-<title></title>
+<title>Audit JBoss Privileged Actions</title>
 <description>
 Launch the jboss-cli management interface substituting standalone or domain for
 <i>CONFIG</i> based upon the server installation.
@@ -1940,7 +1940,7 @@ different system or media than the system being logged.
 </Rule>
 
 <Rule id="jboss_eap_disable_automatic_deployment" severity="medium">
-<title></title>
+<title>Disable Automatic Deployment</title>
 <description>
 Determine the JBoss server configuration as being either standalone or domain.
 Launch the relevant jboss-cli management interface substituting standalone or
@@ -1986,8 +1986,8 @@ environment, but not in production.
 <ref appsrg="SRG-APP-000380-AS-000088" disa="1813" nist="" stigid="JBOS-AS-000545"/>
 </Rule>
 
-<Rule id="jboss_eap_audit_enforcement_actions" severity="medium">
-<title></title>
+<Rule id="jboss_eap_log_deployments" severity="medium">
+<title>Log Application Deployments</title>
 <description>
 Launch the jboss-cli management interface substituting standalone or domain for
 <i>CONFIG</i> based upon the server installation.
@@ -2027,12 +2027,12 @@ permissions (access restriction). Log items may consist of lists of actions
 blocked by access restrictions or changes identified after the fact.
 </rationale>
 <ident cce=""/>
-<oval id="jboss_eap_audit_enforcement_actions"/>
+<oval id="jboss_eap_log_deployments"/>
 <ref appsrg="SRG-APP-000381-AS-000089" disa="1814" nist="" stigid="JBOS-AS-000550"/>
 </Rule>
 
 <Rule id="jboss_eap_use_approved_ca_cert" severity="medium">
-<title></title>
+<title>Use Approved DoD Certificate Authorities</title>
 <description>
 Locate the cacerts file for the JVM. This can be done using the appropriate
 find command for the OS and change to the directory where the cacerts file is
@@ -2073,7 +2073,7 @@ established certificate authorities for verification.
 </Rule>
 
 <Rule id="jboss_eap_configure_ha_lb" severity="medium">
-<title></title>
+<title>Configure Load Balancing (LB) or High Availability (HA)</title>
 <description>
 Configure the application server to provide LB or HA services for the hosted
 application.
@@ -2128,7 +2128,7 @@ platform that is load-balanced and provides high availability.
 </Rule>
 
 <Rule id="jboss_eap_use_tls" severity="medium">
-<title></title>
+<title>Use Approves TLS version</title>
 <description>
 Reference section 4.6 of the JBoss EAP 6.3 Security Guide located on the Red
 Hat vendor's web site for step-by-step instructions on establishing SSL
@@ -2179,7 +2179,7 @@ the preferred configurations for government systems.
 </Rule>
 
 <Rule id="jboss_eap_use_approved_ciphers" severity="medium">
-<title></title>
+<title>Use Approved Ciphers</title>
 <description>
 Reference section 4.6 of the JBoss EAP 6.3 Security Guide located on the Red
 Hat vendor's website for step-by-step instructions on establishing SSL
@@ -2243,7 +2243,7 @@ systems.
 </Rule>
 
 <Rule id="jboss_eap_vendor_supported" severity="high">
-<title></title>
+<title>JBoss Version Is Vendor Supported</title>
 <description>
 Obtain vendor support from Red Hat.
 </description>
@@ -2271,7 +2271,7 @@ obtained and made available.
 </Rule>
 
 <Rule id="jboss_eap_system_up_to_date" severity="high">
-<title></title>
+<title>JBoss System Is Patched</title>
 <description>
 Configure the operating system and the application server to use a patch
 management system or process that ensures security-relevant updates are
@@ -2298,7 +2298,7 @@ obtained and made available.
 </Rule>
 
 <Rule id="jboss_eap_use_dod_approved_certs" severity="medium">
-<title></title>
+<title>Use DoD Approved Certificates</title>
 <description>
 Configure the application server to use DoD- or CNSS-approved Class 3 or Class
 4 PKI certificates.
@@ -2339,7 +2339,7 @@ business-to-business transactions.
 </Rule>
 
 <Rule id="jboss_eap_roll_over_transfer_logs" severity="medium">
-<title></title>
+<title>Roll Over and Transfer JBoss Logs</title>
 <description>
 Open the web-based management interface by opening a browser and pointing it to
 <tt>HTTPS://<i>EAP_SERVER</i>:9990/</tt>
