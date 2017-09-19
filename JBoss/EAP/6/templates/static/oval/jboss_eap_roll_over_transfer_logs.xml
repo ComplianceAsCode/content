@@ -13,19 +13,27 @@
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test id="test_jboss_eap_roll_over_transfer_logs" version="1" check="all" comment="Check EAP Version">
-    <ind:object object_ref="obj_jboss_eap_roll_over_transfer_logs" />
-    <ind:state state_ref="state_jboss_eap_roll_over_transfer_logs" />
-  </ind:textfilecontent54_test>
+  <ind:environmentvariable58_object id="obj_env_rollover_log" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
 
-  <ind:textfilecontent54_object id="obj_jboss_eap_roll_over_transfer_logs" version="1">
-    <ind:path></ind:path>
-    <ind:filename>boot.log</ind:filename>
-    <ind:pattern operation="pattern match">Release ID: JBoss \[EAP\] ([0-9\.]{3,5})</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_jboss_eap_roll_over_transfer_logs" version="1">
-    <ind:subexpression operation="pattern match">6\.(0|1)\.[0-2]+</ind:subexpression>
-  </ind:textfilecontent54_state>
+  <local_variable id="local_var_rollover_jboss_home" version="1" datatype="string" comment="version location">
+    <concat>
+      <object_component object_ref="obj_env_rollover_log" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_roll_over_transfer_logs" version="1" check="all" comment="Check EAP roll over transfer logs">
+    <ind:object object_ref="obj_jboss_eap_roll_over_transfer_logs" />
+  </ind:xmlfilecontent_test>
+
+  <ind:xmlfilecontent_object id="obj_jboss_eap_roll_over_transfer_logs" version="1">
+    <ind:path var_ref="local_var_rollover_jboss_home"/>
+    <ind:filename>standalone.xml</ind:filename>
+    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='periodic-rotating-file-handler'][@name='FILE']</ind:xpath>
+  </ind:xmlfilecontent_object>
 
 </def-group>
