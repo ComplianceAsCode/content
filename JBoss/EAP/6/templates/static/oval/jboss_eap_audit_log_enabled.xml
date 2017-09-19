@@ -1,0 +1,37 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_logging_connection">
+    <metadata>
+      <title>JBoss Enterprise Application Platform 6 Audit Logging</title>
+      <description>EAP Audit logging must be enabled</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_eap_audit_logging_check" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_installed_eap6_home" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_jboss_home" version="1" datatype="string" comment="version location">
+    <concat>
+      <object_component object_ref="obj_env_installed_eap6_home" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+  <ind:xmlfilecontent_test id="test_eap_audit_logging_check" version="1" check="all" comment="Check EAP Audit Logging is Enabled">
+    <ind:object object_ref="obj_eap_audit_logging_check" />
+  </ind:xmlfilecontent_test>
+
+  <ind:xmlfilecontent_object id="obj_eap_audit_logging_check" version="1">
+    <ind:path var_ref="local_var_jboss_home"/>
+    <ind:filename>standalone.xml</ind:filename>
+    <ind:xpath>//*[name()='server']/*[name()='management']/*[name()='audit-log']/*[name()='logger'][@enabled='true']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+</def-group>
