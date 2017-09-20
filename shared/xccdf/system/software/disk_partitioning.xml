@@ -41,7 +41,7 @@ restrictive mount options, which can help protect programs which use it.
 <ident prodtype="rhel7" cce="27173-4" />
 <oval id="partition_for_tmp" />
 <ref prodtype="rhel7" stigid="021340" />
-<ref nist="SC-32(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cis="1.1.2" />
+<ref nist="SC-32(1)" disa="366" srg="SRG-OS-000480-GPOS-00227" cis="1.1.2" />
 </Rule>
 
 <Rule id="partition_for_var" severity="low" prodtype="rhel7">
@@ -62,7 +62,7 @@ world-writable directories installed by other software packages.
 <ident prodtype="rhel7" cce="26404-4" />
 <oval id="partition_for_var" />
 <ref prodtype="rhel7" stigid="021320" />
-<ref nist="SC-32(1)" cis="1.1.6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="SC-32(1)" cis="1.1.6" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="partition_for_var_log" prodtype="rhel7">
@@ -105,7 +105,7 @@ of space.
 <oval id="partition_for_var_log_audit" />
 <ref prodtype="rhel7" stigid="021330" />
 <ref nist="AU-4,AU-9,SC-32(1)" disa="366" cis="1.1.12"
-ossrg="SRG-OS-000480-GPOS-00227" />
+srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="partition_for_home" severity="low" prodtype="rhel7">
@@ -127,7 +127,7 @@ users cannot trivially fill partitions used for log or audit data storage.
 <ident prodtype="rhel7" cce="80144-9" />
 <oval id="partition_for_home" />
 <ref prodtype="rhel7" stigid="021310" />
-<ref nist="SC-32(1)" disa="366,1208" cis="1.1.13" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="SC-32(1)" disa="366,1208" cis="1.1.13" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="encrypt_partitions" severity="high" prodtype="rhel7">
@@ -174,7 +174,7 @@ the risk of its loss if the system is lost.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27128-8" />
-<ref nist="SC-13,SC-28(1)" disa="1199,2476" ossrg="SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079"
+<ref nist="SC-13,SC-28(1)" disa="1199,2476" srg="SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079"
 cui="3.13.16" />
 </Rule>
 
