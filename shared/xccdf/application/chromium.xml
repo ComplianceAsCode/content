@@ -113,9 +113,9 @@ security requirements.
 <warning category="general">If the <tt>.json</tt> file in
 <tt>/etc/chromium/policies/managed</tt> is not formatted correctly,
 no policies will be configured or set correctly.</warning>
-<ident stig="" />
+<ident cce="" />
 <oval id="chromium_policy_file" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="" />
 </Rule>
 
 <Rule id="chromium_disable_firewall_traversal">
@@ -137,9 +137,9 @@ The output should contain:
 Remote connections should never be allowed to bypass the system firewall
 as there is no way to verify if they can be trusted.
 </rationale>
-<ident stig="DTBC0001" />
+<ident cce="" />
 <oval id="chromium_disable_firewall_traversal" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0001" />
 </Rule>
 
 <Rule id="chromium_block_desktop_notifications">
@@ -161,9 +161,9 @@ Disabling Chromium's ability to display notifications on the desktop helps preve
 malicious websites from controlling desktop notifications or fooling users into
 clicking on a potentially compromised notification.
 </rationale>
-<ident stig="DTBC0003" />
+<ident cce="" />
 <oval id="chromium_block_desktop_notifications" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0003" />
 </Rule>
 
 <Rule id="chromium_disable_popups">
@@ -183,9 +183,9 @@ The output should contain:
 Pop-up windows should be disabled to prevent malicious websites from controlling
 pop-up windows or fooling users into clicking on the wrong window.
 </rationale>
-<ident stig="DTBC0004" />
+<ident cce="" />
 <oval id="chromium_disable_popups" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0004" />
 </Rule>
 
 <Rule id="chromium_disallow_location_tracking">
@@ -208,9 +208,9 @@ create a tracking cookie on the browser. If the information of what sites are
 being accessed is made available to unauthorized persons, this violates 
 confidentiality requirements, and over time poses a significant OPSEC issue.
 </rationale>
-<ident stig="DTBC0002" />
+<ident cce="" />
 <oval id="chromium_disallow_location_tracking" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0002" />
 </Rule>
 
 <Rule id="chromium_blacklist_extension_installation">
@@ -231,9 +231,9 @@ The output should contain:
 Extensions can access almost anything on a system. This means they pose a high risk
 to any system that would allow all extensions to be installed by default.
 </rationale>
-<ident stig="DTBC0006" />
+<ident cce="" />
 <oval id="chromium_blacklist_extension_installation" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0006" />
 </Rule>
 
 <Rule id="chromium_extension_whitelist">
@@ -256,9 +256,9 @@ The output should contain:
 The whitelist should only contain organizationally approved extensions. This is to prevent
 a user from accidently whitelisitng a malicious extension.
 </rationale>
-<ident stig="DTBC0003" />
+<ident cce="" />
 <oval id="chromium_extension_whitelist" value="var_extension_whitelist" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0003" />
 </Rule>
 
 <Rule id="chromium_default_search_provider_name">
@@ -278,9 +278,9 @@ The output should contain:
 When doing internet searches, it is important to set an organizationally approved search
 provider as well as use an encrypted connection via https.
 </rationale>
-<ident stig="DTBC0007" />
+<ident cce="" />
 <oval id="chromium_default_search_provider_name" value="var_default_search_provider_name" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0007" />
 </Rule>
 
 <Rule id="chromium_enable_encrypted_searching">
@@ -300,9 +300,9 @@ The output should contain:
 <rationale>
 When doing internet searches, it is important to use an encrypted connection via https.
 </rationale>
-<ident stig="DTBC0008" />
+<ident cce="" />
 <oval id="chromium_enable_encrypted_searching" value="var_enable_encrypted_searching" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0008" />
 </Rule>
 
 <Rule id="chromium_default_search_provider">
@@ -321,9 +321,9 @@ The output should contain:
 A default search is performed when the user types text in the omnibox that is not a URL.
 This should be organizationally defined and not allowed to be changed by a user.
 </rationale>
-<ident stig="DTBC0009" />
+<ident cce="" />
 <oval id="chromium_default_search_provider" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0009" />
 </Rule>
 
 <Rule id="chromium_disable_cleartext_passwords">
@@ -342,9 +342,9 @@ The output should contain:
 <rationale>
 Cleartext passwords would allow another individual to see password via shoulder surfing.
 </rationale>
-<ident stig="DTBC0010" />
+<ident cce="" />
 <oval id="chromium_disable_cleartext_passwords" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0010" />
 </Rule>
 
 <Rule id="chromium_disable_password_manager">
@@ -365,9 +365,9 @@ Enables saving passwords and using saved passwords in Google Chromium. Malicious
 sites may take advantage of this feature by using hidden fields gain access
 to the stored information.
 </rationale>
-<ident stig="DTBC0011" />
+<ident cce="" />
 <oval id="chromium_disable_password_manager" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0011" />
 </Rule>
 
 <Rule id="chromium_http_authentication">
@@ -386,9 +386,9 @@ The output should contain:
 <rationale>
 Specifies which HTTP Authentication schemes are supported by Google Chromium.
 </rationale>
-<ident stig="DTBC0012" />
+<ident cce="" />
 <oval id="chromium_http_authentication" value="var_trusted_home_page" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0012" />
 </Rule>
 
 <Rule id="chromium_disable_outdated_plugins">
@@ -408,9 +408,9 @@ Running outdated plugins could lead to system compromise through the use
 of known exploits. Having plugins updated to the most current version
 ensures the smallest attack surfuce possible. 
 </rationale>
-<ident stig="DTBC0013" />
+<ident cce="" />
 <oval id="chromium_disable_outdated_plugins" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0013" />
 </Rule>
 
 <Rule id="chromium_plugins_require_authorization">
@@ -430,9 +430,9 @@ The output should contain:
 Outdated plugins can compromise security and should request authorization from
 the user before running.
 </rationale>
-<ident stig="DTBC0014" />
+<ident cce="" />
 <oval id="chromium_plugins_require_authorization" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0014" />
 </Rule>
 
 <Rule id="chromium_disable_thirdparty_cookies">
@@ -454,9 +454,9 @@ are not from the domain that is in the browser's address bar. This prevents
 cookies from being set by web page elements that are not from the domain
 that is in the browser's address bar.
 </rationale>
-<ident stig="DTBC0015" />
+<ident cce="" />
 <oval id="chromium_disable_thirdparty_cookies" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0015" />
 </Rule>
 
 <Rule id="chromium_disable_background_processing">
@@ -478,9 +478,9 @@ resources that might otherwise be needed. Second, it does not make it
 obvious to the user that it is running and poorly written extensions could
 cause instability on the system.
 </rationale>
-<ident stig="DTBC0017" />
+<ident cce="" />
 <oval id="chromium_disable_background_processing" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0017" />
 </Rule>
 
 <Rule id="chromium_disable_3d_graphics_api">
@@ -501,9 +501,9 @@ This setting prevents web pages from accessing the graphics processing unit
 (GPU). Specifically, web pages cannot access the WebGL API and plugins cannot
 use the Pepper 3D API in order to reduce the attack surface.
 </rationale>
-<ident stig="DTBC0019" />
+<ident cce="" />
 <oval id="chromium_disable_3d_graphics_api" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0019" />
 </Rule>
 
 <Rule id="chromium_disable_google_sync">
@@ -524,9 +524,9 @@ of information such as email, calendars, viewing history, etc. This feature must
 be disabled because the organization does not have control over the servers the
 data is stored on.
 </rationale>
-<ident stig="DTBC0020" />
+<ident cce="" />
 <oval id="chromium_disable_google_sync" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0020" />
 </Rule>
 
 <Rule id="chromium_disable_protocol_schemas">
@@ -550,9 +550,9 @@ If a scheme or its associated protocol used by a browser is insecure or obsolete
 vulnerabilities can be exploited resulting in exposed data or unrestricted access
 to the browser's system.
 </rationale>
-<ident stig="DTBC0021" />
+<ident cce="" />
 <oval id="chromium_disable_protocol_schemas" value="var_url_blacklist" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0021" />
 </Rule>
 
 <Rule id="chromium_disable_autocomplete">
@@ -573,9 +573,9 @@ It is possible with the AutoFill feature that it will cache sensitive data and s
 it in the user's profile, where it might not be protected as rigorously as required by
 organizational policy.
 </rationale>
-<ident stig="DTBC0022" />
+<ident cce="" />
 <oval id="chromium_disable_autocomplete" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0022" />
 </Rule>
 
 <Rule id="chromium_disable_cloud_print_sharing">
@@ -596,9 +596,9 @@ Google Chromium has the capability to act as a proxy between Google Cloud Print
 and legacy printers connected to the machine. Users can then enable the cloud
 print proxy by authentication with their Google account. 
 </rationale>
-<ident stig="DTBC0023" />
+<ident cce="" />
 <oval id="chromium_disable_cloud_print_sharing" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0023" />
 </Rule>
 
 <Rule id="chromium_disable_network_prediction">
@@ -617,9 +617,9 @@ The output should contain:
 This controls not only DNS prefetching but also TCP and SSL preconnection
 and prerendering of web pages.
 </rationale>
-<ident stig="DTBC0025" />
+<ident cce="" />
 <oval id="chromium_disable_network_prediction" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0025" />
 </Rule>
 
 <Rule id="chromium_disable_metrics_reporting">
@@ -639,9 +639,9 @@ The output should contain:
 Anonymous reporting of usage and crash-related data is sent to Google.
 A crash report could contain sensitive information from the computer's memory.
 </rationale>
-<ident stig="DTBC0026" />
+<ident cce="" />
 <oval id="chromium_disable_metrics_reporting" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0026" />
 </Rule>
 
 <Rule id="chromium_disable_search_suggestions">
@@ -662,9 +662,9 @@ The output should contain:
 Search suggestion should be disabled as it could lead to searches being conducted
 that were never intended to be made.
 </rationale>
-<ident stig="DTBC0027" />
+<ident cce="" />
 <oval id="chromium_disable_search_suggestions" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0027" />
 </Rule>
 
 <Rule id="chromium_disable_saved_passwords">
@@ -684,9 +684,9 @@ Importing of saved passwords should be disabled as it could lead to
 unencrypted account passwords stored on the system from another browser
 to be viewed.
 </rationale>
-<ident stig="DTBC0029" />
+<ident cce="" />
 <oval id="chromium_disable_saved_passwords" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0029" />
 </Rule>
 
 <Rule id="chromium_disable_incognito_mode">
@@ -708,9 +708,9 @@ Incognito mode allows the user to browse the Internet without recording their
 browsing history/activity. From a forensics perspective, this is unacceptable.
 Best practice requires that browser history is retained.   
 </rationale>
-<ident stig="DTBC0030" />
+<ident cce="" />
 <oval id="chromium_disable_incognito_mode" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0030" />
 </Rule>
 
 <Rule id="chromium_disable_plugin_blacklist">
@@ -732,9 +732,9 @@ Plugins can access almost anything on a system and users can enable or install t
 at will. This means they pose a high risk to any system that would allow all plugins
 to be installed by default.
 </rationale>
-<ident stig="DTBC0034" />
+<ident cce="" />
 <oval id="chromium_disable_plugin_blacklist" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0034" />
 </Rule>
 
 <Rule id="chromium_enable_approved_plugins">
@@ -755,9 +755,9 @@ The output should contain:
 The whitelist should only contain organizationally approved plugins. This is to prevent
 a user from accidently whitelisitng a malicious plugin.
 </rationale>
-<ident stig="DTBC0035" />
+<ident cce="" />
 <oval id="chromium_enable_approved_plugins" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0035" />
 </Rule>
 
 <Rule id="chromium_disable_automatic_installation">
@@ -778,9 +778,9 @@ The automatic search and installation of missing or not installed plugins should
 disabled as this can cause significant risk if a unapproved or vulnerable plugin were
 to be installed without proper permissions or authorization.
 </rationale>
-<ident stig="DTBC0036" />
+<ident cce="" />
 <oval id="chromium_disable_automatic_installation" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0036" />
 </Rule>
 
 <Rule id="chromium_check_cert_revocation">
@@ -801,9 +801,9 @@ Certificates are revoked when they have been compromised or are no longer valid,
 and this option protects users from submitting confidential data to a site that
 may be fraudulent or not secure.
 </rationale>
-<ident stig="DTBC0037" />
+<ident cce="" />
 <oval id="chromium_check_cert_revocation" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0037" />
 </Rule>
 
 <Rule id="chromium_enable_safe_browsing">
@@ -824,9 +824,9 @@ The output should contain:
 Safe browsing uses a signature database to test sites when they are be loaded
 to ensure that sites do not contain any known malware.
 </rationale>
-<ident stig="DTBC0038" />
+<ident cce="" />
 <oval id="chromium_enable_safe_browsing" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0038" />
 </Rule>
 
 <Rule id="chromium_enable_browser_history">
@@ -845,9 +845,9 @@ The output should contain:
 <rationale>
 Best practice requires that browser history is retained.
 </rationale>
-<ident stig="DTBC0039" />
+<ident cce="" />
 <oval id="chromium_enable_browser_history" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0039" />
 </Rule>
 
 <Rule id="chromium_default_block_plugins">
@@ -867,9 +867,9 @@ The output should contain:
 Websites should not be allowed to automatically run plugins as the plugins
 may be outdated or compromised.
 </rationale>
-<ident stig="DTBC0040" />
+<ident cce="" />
 <oval id="chromium_default_block_plugins" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0040" />
 </Rule>
 
 <Rule id="chromium_disable_session_cookies">
@@ -889,9 +889,9 @@ The output should contain:
 Cookies should only be allowed per session and only for approved URLs as 
 permanently stored cookies can be used for malicious intent.
 </rationale>
-<ident stig="DTBC0045" />
+<ident cce="" />
 <oval id="chromium_disable_session_cookies" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0045" />
 </Rule>
 
 <Rule id="chromium_trusted_home_page">
@@ -914,9 +914,9 @@ If no home page is defined then there is a possibility that a URL to a malicious
 site may be used as a home page which could effectively cause a denial of service
 to the browser.
 </rationale>
-<ident stig="DTBC0048" />
+<ident cce="" />
 <oval id="chromium_trusted_home_page" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0048" />
 </Rule>
 
 <Rule id="chromium_whitelist_plugin_urls">
@@ -938,8 +938,8 @@ The output should contain:
 <rationale>
 Only approved plugins for approved sites should be allowed to be utilized.
 </rationale>
-<ident stig="DTBC0051" />
+<ident cce="" />
 <oval id="chromium_whitelist_plugin_urls" />
-<ref nist="" disa="" />
+<ref nist="" disa="" stigid="DTBC0051" />
 </Rule>
 </Group>
