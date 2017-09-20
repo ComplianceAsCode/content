@@ -39,8 +39,8 @@ The result should contain:
 <rationale>The ssl directive specifies whether to use ssl or not. If
 not specified it will default to no. It should be set to start_tls rather
 than doing LDAP over SSL.</rationale>
-<ref nist="CM-7" disa="776,778,1453" />
-<ident cce="26690-8" stig="RHEL-06-000252" />
+<ref nist="CM-7" disa="776,778,1453" stigid="RHEL-06-000252"/>
+<ident cce="26690-8" />
 <oval id="ldap_client_start_tls" />
 </Rule>
 
@@ -67,8 +67,8 @@ or
 tls_checkpeer is configured (which is the default for openldap versions 2.1 and
 up). These directives define the path to the trust certificates signed by the
 site CA.</rationale>
-<ref nist="CM-7" disa="776,778,1453" />
-<ident cce="27189-0" stig="RHEL-06-000253" />
+<ref nist="CM-7" disa="776,778,1453" stigid="RHEL-06-000253" />
+<ident cce="27189-0" />
 <oval id="ldap_client_tls_cacertpath" />
 </Rule>
 
@@ -102,9 +102,10 @@ The output should show the following:
 It is needed only by the OpenLDAP server system, not clients which use LDAP for authentication. If
 the system is not intended for use as an LDAP server, <tt>openldap-servers</tt> should be removed.
 </rationale>
-<ident cce="26858-1" stig="RHEL-06-000256" />
+<ident cce="26858-1" />
 <oval id="package_openldap-servers_removed" />
-<ref nist="CM-7" disa="366"/>
+<ref nist="CM-7" disa="366" stigid="RHEL-06-000256"
+srg="SRG-OS-999999" />
 </Rule>
 
 
