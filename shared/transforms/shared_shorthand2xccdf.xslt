@@ -445,7 +445,14 @@
             <xsl:value-of select="normalize-space(concat($os-stigid-concat, .))" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="normalize-space($refitem)" />
+            <xsl:choose>
+              <xsl:when test="name() = 'disa'">
+                <xsl:value-of select='format-number($refitem, "CCI-000000")' />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="normalize-space($refitem)" />
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
       </reference>
