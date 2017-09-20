@@ -388,8 +388,9 @@
 
   <!-- output individual reference -->
   <xsl:template name="ref-output">
-      <xsl:param name="refsource"/>
-      <xsl:param name="refitem"/>
+    <xsl:param name="refsource"/>
+    <xsl:param name="refitem"/>
+    <xsl:if test="$refitem != ''">
       <reference>
         <xsl:attribute name="href">
         <!-- populate the href attribute with a global reference-->
@@ -445,6 +446,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </reference>
+    </xsl:if>
   </xsl:template>
 
   <!-- expand reference to OVAL ID -->
