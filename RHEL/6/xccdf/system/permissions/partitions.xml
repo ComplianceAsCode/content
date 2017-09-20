@@ -71,9 +71,10 @@ To verify that binaries cannot be directly executed from removable media, run th
 The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
 in the output are not removable media.
 </ocil>
-<ident cce="27196-5" stig="RHEL-06-000271" />
+<ident cce="27196-5" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" stigid="RHEL-06-000271"
+srg="SRG-OS-000035" />
 </Rule>
 
 <!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
@@ -122,9 +123,9 @@ from being executed out of <tt>/tmp</tt>.
 such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26720-3" stig="RHEL-06-000528" />
+<ident cce="26720-3" />
 <oval id="mount_option_tmp_noexec" />
-<ref nist="CM-7,MP-2" disa="381" />
+<ref nist="CM-7,MP-2" disa="381" stigid="RHEL-06-000528" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="mount_option_tmp_nosuid">

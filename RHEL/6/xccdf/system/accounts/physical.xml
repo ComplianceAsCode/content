@@ -34,9 +34,10 @@ or modification of the file.
 Only root should be able to modify important boot parameters.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26995-1" stig="RHEL-06-000065" />
+<ident cce="26995-1" />
 <oval id="file_user_owner_grub_conf" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" stigid="RHEL-06-000065"
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="file_group_owner_grub_conf" severity="medium">
@@ -52,9 +53,10 @@ The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-own
 file should not have any access privileges anyway.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27022-3" stig="RHEL-06-000066" />
+<ident cce="27022-3" />
 <oval id="file_group_owner_grub_conf" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" />
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" stigid="RHEL-06-000066"
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="file_permissions_grub_conf" severity="medium">
@@ -74,9 +76,10 @@ Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26949-8" stig="RHEL-06-000067" />
+<ident cce="26949-8" />
 <oval id="file_permissions_grub_conf" />
-<ref nist="AC-6(7)" disa="225"/>
+<ref nist="AC-6(7)" disa="225" stigid="RHEL-06-000067"
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="bootloader_password" severity="medium">
@@ -104,9 +107,10 @@ important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26911-8" stig="RHEL-06-000068" />
+<ident cce="26911-8" />
 <oval id="bootloader_password" />
-<ref nist="IA-2(1),IA-5(e) AC-3" disa="213" />
+<ref nist="IA-2(1),IA-5(e) AC-3" disa="213" stigid="RHEL-06-000068"
+srg="SRG-OS-000080" />
 </Rule>
 
 </Group>
@@ -135,9 +139,10 @@ on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27040-5" stig="RHEL-06-000069" />
+<ident cce="27040-5" />
 <oval id="require_singleuser_auth" />
-<ref nist="IA-2(1),AC-3" disa="213" />
+<ref nist="IA-2(1),AC-3" disa="213" stigid="RHEL-06-000069"
+srg="SRG-OS-000080" />
 </Rule>
 
 <Rule id="disable_ctrlaltdel_reboot" severity="high">
@@ -179,7 +184,8 @@ key sequence if running in <tt>runlevel 6</tt> (e.g. in GNOME, KDE, etc.)! The
 the non-graphical <tt>runlevel 3</tt>.
 </warning>
 <oval id="disable_ctrlaltdel_reboot" />
-<ident cce="27567-7" stig="RHEL-06-000286" />
+<ident cce="27567-7" />
+<ref stigid="RHEL-06-000286" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="disable_interactive_boot" severity="medium">
@@ -213,9 +219,10 @@ Using interactive boot, the console user could disable auditing, firewalls, or
 other services, weakening system security.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27043-9" stig="RHEL-06-000070" />
+<ident cce="27043-9" />
 <oval id="disable_interactive_boot" />
-<ref nist="SC-2,AC-3" disa="213"/>
+<ref nist="SC-2,AC-3" disa="213" stigid="RHEL-06-000070"
+srg="SRG-OS-000080" />
 </Rule>
 
 <Group id="screen_locking">
@@ -254,8 +261,8 @@ Installing <tt>screen</tt> ensures a console locking capability is available
 for users who may need to suspend console logins.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26940-7" stig="RHEL-06-000071" />
-<ref disa="58" />
+<ident cce="26940-7" />
+<ref disa="58" stigid="RHEL-06-000071" srg="SRG-OS-000030" />
 <oval id="package_screen_installed" />
 </Rule>
 </Group>
@@ -298,8 +305,9 @@ exempt from using smart card (CAC) authentication:
 that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
-<ident cce="27440-7" stig="RHEL-06-000349" />
-<ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" />
+<ident cce="27440-7" />
+<ref disa="765,766,767,768,771,772,884" pcidss="Req-8.3" stigid="RHEL-06-000349"
+srg="SRG-OS-000105" />
 <oval id="smartcard_auth" />
 </Rule>
 

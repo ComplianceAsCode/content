@@ -36,9 +36,10 @@ The command should return the string below:
 The Red Hat GPG key is necessary to cryptographically verify packages
 are from Red Hat.
 </rationale>
-<ident cce="26506-6" stig="RHEL-06-000008" />
+<ident cce="26506-6" />
 <oval id="ensure_redhat_gpgkey_installed" />
-<ref nist="SI-7,MA-1(b)" disa="351" pcidss="Req-6.2" />
+<ref nist="SI-7,MA-1(b)" disa="351" pcidss="Req-6.2" stigid="RHEL-06-000008"
+srg="SRG-OS-000090" />
 </Rule>
 
 <!-- REMINDER: Before telling people to update their systems
@@ -67,9 +68,10 @@ Ensuring the validity of packages' cryptographic signatures prior to
 installation ensures the authenticity of the software and
 protects against malicious tampering.
 </rationale>
-<ident cce="26709-6" stig="RHEL-06-000013" />
+<ident cce="26709-6" />
 <oval id="ensure_gpgcheck_globally_activated" />
-<ref nist="SI-7,MA-1(b)" disa="352,663" pcidss="Req-6.2" />
+<ref nist="SI-7,MA-1(b)" disa="352,663" pcidss="Req-6.2" stigid="RHEL-06-000013"
+srg="SRG-OS-000103" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled" severity="low">
@@ -91,9 +93,10 @@ Ensuring all packages' cryptographic signatures are valid prior to
 installation ensures the authenticity of the software and
 protects against malicious tampering.
 </rationale>
-<ident cce="26647-8" stig="RHEL-06-000015" />
+<ident cce="26647-8" />
 <oval id="ensure_gpgcheck_never_disabled" />
-<ref nist="SI-7,MA-1(b)" disa="352,663" pcidss="Req-6.2" />
+<ref nist="SI-7,MA-1(b)" disa="352,663" pcidss="Req-6.2" stigid="RHEL-06-000015"
+srg="SRG-OS-000103" />
 </Rule>
 
 <Rule id="security_patches_up_to_date" severity="medium">
@@ -124,9 +127,10 @@ to determine if the system is missing applicable updates.
 Installing software updates is a fundamental mitigation against
 the exploitation of publicly-known vulnerabilities.
 </rationale>
-<ident cce="27635-2" stig="RHEL-06-000011" />
+<ident cce="27635-2" />
 <!-- Particular OVAL check is defined directly via <check> element above -->
 <!-- DO NOT REFERENCE an OVAL id here !!! -->
-<ref nist="SI-2,MA-1(b)" disa="1227,1233" pcidss="Req-6.2" />
+<ref nist="SI-2,MA-1(b)" disa="1227,1233" pcidss="Req-6.2" stigid="RHEL-06-000011"
+srg="SRG-OS-000191" />
 </Rule>
 </Group>
