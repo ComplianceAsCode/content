@@ -128,6 +128,7 @@ system. The operating system's Information Management Officer (IMO)/Information 
 Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
 monitoring system trap when there is an unauthorized modification of a configuration item.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26952-2" />
 <oval id="aide_periodic_cron_checking"/>
 <ref prodtype="rhel7" stigid="020030" />
@@ -554,6 +555,7 @@ and running, run the following command(s):
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <warning category="general">Due to McAfee HIPS being 3rd party software, automated
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_antivirus" />
@@ -573,6 +575,7 @@ for Linux and McAfee Host-based Security System (HBSS) services.
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <oval id="service_nails_enabled" />
 <ident prodtype="rhel7" cce="80128-2" />
 <ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
@@ -593,6 +596,7 @@ $ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
 Virus scanning software can be used to detect if a system has been compromised by
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
+<platform idref="cpe:/a:machine" />
 <!--oval id="mcafee_antivirus_definitions_updated" /-->
 <ident prodtype="rhel7" cce="80129-0" />
 <ref prodtype="rhel7" stigid="032010" />
