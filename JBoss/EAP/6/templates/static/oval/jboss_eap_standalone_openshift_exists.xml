@@ -1,0 +1,35 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_standalone_openshift_exists">
+    <metadata>
+      <title>Standalone-openshift.xml exists</title>
+      <description>Standalone-openshift.xml exists</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria >
+      <criterion test_ref="test_standalone_openshift_exists" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="Check if standalone-openshift.xml exists" id="test_standalone_openshift_exists" version="1">
+    <unix:object object_ref="standalone_openshift_exists" />
+  </unix:file_test>
+  <unix:file_object comment="Check if standalone-openshift.xml exists" id="standalone_openshift_exists" version="1">
+    <unix:path var_ref="local_var_eap_standalone_openshift_exists" />
+    <unix:filename>standalone-openshift.xml</unix:filename>
+  </unix:file_object>
+
+  <ind:environmentvariable58_object id="obj_env_eap_standalone_openshift_exists" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_eap_standalone_openshift_exists" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="obj_env_eap_standalone_openshift_exists" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+</def-group>
