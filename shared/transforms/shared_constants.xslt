@@ -13,7 +13,8 @@
 <xsl:variable name="cnss1253uri">http://www.cnss.gov/Assets/pdf/CNSSI-1253.pdf</xsl:variable>
 <xsl:variable name="dcid63uri">not_officially_available</xsl:variable>
 <xsl:variable name="disa-cciuri">http://iase.disa.mil/stigs/cci/Pages/index.aspx</xsl:variable>
-<xsl:variable name="disa-srguri">http://iase.disa.mil/stigs/srgs/Pages/index.aspx</xsl:variable>
+<xsl:variable name="disa-ossrguri">http://iase.disa.mil/stigs/os/general/Pages/index.aspx</xsl:variable>
+<xsl:variable name="disa-appsrguri">http://iase.disa.mil/stigs/app-security/app-servers/Pages/index.aspx</xsl:variable>
 <!-- Fix for issue https://github.com/OpenSCAP/scap-security-guide/issues/1035 -->
 <xsl:variable name="disa-stigs-os-unix-linux-uri">http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-stigs-os-mainframe-uri">http://iase.disa.mil/stigs/os/mainframe/Pages/index.aspx</xsl:variable>

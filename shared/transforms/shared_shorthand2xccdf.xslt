@@ -425,9 +425,12 @@
               <xsl:value-of select="$cisuri" />
             </xsl:if>
           </xsl:if>
-          <xsl:if test="$refsource = 'ossrg'">
-            <xsl:if test="$disa-srguri != 'empty'">
-              <xsl:value-of select="$disa-srguri" />
+          <xsl:if test="$refsource = 'srg'">
+            <xsl:if test="starts-with($refitem, 'SRG-OS-')">
+              <xsl:value-of select="$disa-ossrguri" />
+            </xsl:if>
+            <xsl:if test="starts-with($refitem, 'SRG-APP-')">
+              <xsl:value-of select="$disa-appsrguri" />
             </xsl:if>
           </xsl:if>
           <xsl:if test="$refsource = 'stigid'">
