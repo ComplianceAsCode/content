@@ -52,7 +52,7 @@ via HTTPS.
 This requirement is in conjunction with the requirement to isolate
 all management access to a restricted network.
 </rationale>
-<ident cce=""/>
+<ident cce="80450-0" />
 <oval id="jboss_eap_configure_secure_management_access"/>
 <ref appsrg="SRG-APP-000014-AS-000009" disa="68" nist="" stigid="JBOS-AS-000010"/>
 </Rule>
@@ -107,7 +107,7 @@ enabled, and non-FIPS-approved SSL versions must be disabled.
 NIST SP 800-52
 specifies the preferred configurations for government systems.
 </rationale>
-<ident cce=""/>
+<ident cce="80451-8" />
 <oval id="jboss_eap_configure_https"/>
 <ref appsrg="SRG-APP-000015-AS-000010" disa="1453" nist="" stigid="JBOS-AS-000015"/>
 </Rule>
@@ -158,7 +158,7 @@ security policy will define what rights the application has to the underlying
 system. For example, rights to make changes to files on the host system or to
 initiate network sockets in order to connect to another system.
 </rationale>
-<ident cce=""/>
+<ident cce="80452-6" />
 <oval id="jboss_eap_configure_host_access_restrictions"/>
 <ref appsrg="SRG-APP-000033-AS-000024" disa="213" nist="" stigid="JBOS-AS-000025"/>
 </Rule>
@@ -244,7 +244,7 @@ denied.
 To protect the host system, the JBoss application server must be run
 within the Java Security Manager.
 </rationale>
-<ident cce=""/>
+<ident cce="80453-4" />
 <oval id="jboss_eap_configure_security_manager"/>
 <ref appsrg="SRG-APP-000033-AS-000024" disa="213" nist="" stigid="JBOS-AS-000030"/>
 </Rule>
@@ -291,7 +291,7 @@ designated management role, thereby limiting access to only the JBoss
 functionality that they are supposed to have. Without RBAC, the JBoss server is
 not able to enforce authorized access according to role.
 </rationale>
-<ident cce=""/>
+<ident cce="80454-2" />
 <oval id="jboss_eap_enable_rbac"/>
 <ref appsrg="SRG-APP-000033-AS-000024,SRG-APP-000340-AS-000185" disa="213,2235"
 nist="" stigid="JBOS-AS-000035"/>
@@ -340,7 +340,7 @@ the ManagementRealm but only when role-based access controls (RBAC) is enabled.
 If management users are not in the appropriate role, unauthorized access to
 JBoss resources can occur.
 </rationale>
-<ident cce=""/>
+<ident cce="80455-9" />
 <oval id="jboss_eap_configure_user_roles"/>
 <ref appsrg="SRG-APP-000033-AS-000024" disa="213" nist="" stigid="JBOS-AS-000040"/>
 </Rule>
@@ -389,7 +389,7 @@ authenticating on an individual user basis. By default $localuser is a
 Superuser. This introduces an integrity and availability vulnerability and
 violates best practice requirements regarding accountability.
 </rationale>
-<ident cce=""/>
+<ident cce="80456-7" />
 <oval id="jboss_eap_configure_application_authentication"/>
 <ref appsrg="SRG-APP-000033-AS-000024" disa="213" nist="" stigid="JBOS-AS-000045"/>
 </Rule>
@@ -439,7 +439,7 @@ authenticating on an individual user basis. By default $localuser is a
 Superuser. This introduces an integrity and availability vulnerability and
 violates best practice requirements regarding accountability.
 </rationale>
-<ident cce=""/>
+<ident cce="80457-5"/>
 <oval id="jboss_eap_configure_management_authentication"/>
 <ref appsrg="SRG-APP-000033-AS-000024" disa="213" nist="" stigid="JBOS-AS-000050"/>
 </Rule>
@@ -498,7 +498,7 @@ attribute is omitted or removed from the management interface definition, access
 to that interface is no longer secure. The JBoss management interfaces must be
 secured.
 </rationale>
-<ident cce=""/>
+<ident cce="80458-3"/>
 <oval id="jboss_eap_configure_security_realm"/>
 <ref appsrg="SRG-APP-000033-AS-000024" disa="213" nist="" stigid="JBOS-AS-000075"/>
 </Rule>
@@ -548,7 +548,7 @@ management interface access but does provide a default file handler. This
 handler needs to be enabled. Configuring this setting meets several STIG
 auditing requirements.
 </rationale>
-<ident cce=""/>
+<ident cce="80459-1"/>
 <oval id="jboss_eap_configure_auditing"/>
 <ref appsrg="SRG-APP-000089-AS-000050,SRG-APP-000092-AS-000053,SRG-APP-000095-AS-000056,SRG-APP-000096-AS-000059,SRG-APP-000096-AS-000060,SRG-APP-000098-AS-000061,SRG-APP-000099-AS-000062,SRG-APP-000495-AS-000220,SRG-APP-000499-AS-000224,SRG-APP-000499-AS-000224,SRG-APP-000503-AS-000228,SRG-APP-000504-AS-000229,SRG-APP-000505-AS-000230,SRG-APP-000506-AS-000231,SRG-APP-000509-AS-000234"
 disa="130,131,132,133,134,169,172,1464" nist="" stigid="JBOS-AS-000080"/>
@@ -589,7 +589,7 @@ The
 personnel or roles that can select loggable events are only the ISSM (or
 individuals or roles appointed by the ISSM).
 </rationale>
-<ident cce=""/>
+<ident cce="80460-9"/>
 <oval id="jboss_eap_configure_auditor_roles"/>
 <ref appsrg="SRG-APP-000090-AS-000051" disa="171" nist="" stigid="JBOS-AS-000085"/>
 </Rule>
@@ -649,7 +649,7 @@ being logged by the ROOT logger. This can result in failed forensic
 investigations. The ROOT logger level must be INFO level or lower to provide
 adequate log information.
 </rationale>
-<ident cce=""/>
+<ident cce="80461-7"/>
 <oval id="jboss_eap_configure_logging_level"/>
 <ref appsrg="SRG-APP-000100-AS-000063" disa="1487" nist="" stigid="JBOS-AS-000135"/>
 </Rule>
@@ -707,7 +707,7 @@ information (e.g., log records, log settings, transaction logs, and log reports)
 needed to successfully log information system activity. Application servers must
 protect log information from unauthorized access.
 </rationale>
-<ident cce=""/>
+<ident cce="80462-5"/>
 <oval id="jboss_eap_configure_log_permissions"/>
 <ref appsrg="SRG-APP-000118-AS-000078,SRG-APP-000119-AS-000079,SRG-APP-000120-AS-000080"
 disa="162,163,164" nist="" stigid="JBOS-AS-000165"/>
@@ -739,7 +739,7 @@ records to a different system or onto separate media from the system the
 application server is actually running on helps to assure that, in the event of
 a catastrophic system failure, the log records will be retained.
 </rationale>
-<ident cce=""/>
+<ident cce="80463-3"/>
 <oval id="jboss_eap_configure_offloading_max"/>
 <ref appsrg="SRG-APP-000125-AS-000084" disa="1348" nist="" stigid="JBOS-AS-000195"/>
 </Rule>
@@ -785,7 +785,7 @@ code of another project user. The application server must also be able to
 specify that non-privileged users cannot modify any shared library code at
 all.
 </rationale>
-<ident cce=""/>
+<ident cce="80464-1"/>
 <oval id="jboss_eap_configure_user_permissions"/>
 <ref appsrg="SRG-APP-000133-AS-000092" disa="1499" nist="" stigid="JBOS-AS-000210"/>
 </Rule>
@@ -816,7 +816,7 @@ surface against the JBoss system. The right to interactively log on to the
 system using the JBoss account should be limited according to the OS
 capabilities.
 </rationale>
-<ident cce=""/>
+<ident cce="80465-8"/>
 <oval id="jboss_eap_restrict_jboss_account"/>
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000220"/>
 </Rule>
@@ -848,7 +848,7 @@ console design, features, and content to the immediate needs of the customers.
 Sending analytical data to the vendor introduces risk of unauthorized data
 exfiltration. This capability must be disabled.
 </rationale>
-<ident cce=""/>
+<ident cce="80466-6"/>
 <oval id="jboss_eap_disable_analytics"/>
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000225"/>
 </Rule>
@@ -899,7 +899,7 @@ to operate. If the server is compromised, the attacker will have the same
 rights as the application server, which in that case would be admin rights. The
 JBoss EAP server must not be run as the admin user.
 </rationale>
-<ident cce=""/>
+<ident cce="80467-4"/>
 <oval id="jboss_eap_unprivileged_mode"/>
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000230"/>
 </Rule>
@@ -918,7 +918,7 @@ JBoss QuickStarts are demo applications that can be deployed quickly. Demo
 applications are not written with security in mind and often open new attack
 vectors. QuickStarts must be removed.
 </rationale>
-<ident cce=""/>
+<ident cce="80468-2"/>
 <oval id="jboss_eap_remove_quickstarts" />
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000235"/>
 </Rule>
@@ -967,7 +967,7 @@ operations remotely. In a managed domain configuration, the JMX subsystem is
 removed by default. For a standalone configuration, it is enabled by default and
 must be removed.
 </rationale>
-<ident cce=""/>
+<ident cce="80469-0"/>
 <oval id="jboss_eap_remove_jmx"/>
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000240"/>
 </Rule>
@@ -1007,7 +1007,7 @@ Guide and Online User Groups hosted at locations on the Internet. The welcome
 page is unnecessary and should be disabled or replaced with a valid web
 page.
 </rationale>
-<ident cce=""/>
+<ident cce="80470-8"/>
 <oval id="jboss_eap_disable_replace_welcome_page"/>
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000245"/>
 </Rule>
@@ -1042,7 +1042,7 @@ the attack surface and increases risk to the application server. Securing any
 server involves identifying and removing any unnecessary services and, in the
 case of an application server, unnecessary and/or unapproved applications.
 </rationale>
-<ident cce=""/>
+<ident cce="80471-6"/>
 <oval id="jboss_eap_remove_unnecessary_apps"/>
 <ref appsrg="SRG-APP-000141-AS-000095" disa="381" nist="" stigid="JBOS-AS-000250"/>
 </Rule>
@@ -1094,7 +1094,7 @@ deemed unusable by the organization. The application server must have the
 capability to both reconfigure and disable the assigned ports without adversely
 impacting application server operation capabilities.
 </rationale>
-<ident cce=""/>
+<ident cce="80472-4"/>
 <oval id="jboss_eap_configure_ports"/>
 <ref appsrg="SRG-APP-000142-AS-000014" disa="382" nist="" stigid="JBOS-AS-000255"/>
 </Rule>
@@ -1139,7 +1139,7 @@ To
 ensure accountability and prevent unauthorized access, the JBoss Server must be
 configured to utilize a centralized authentication mechanism.
 </rationale>
-<ident cce=""/>
+<ident cce="80473-2"/>
 <oval id="jboss_eap_configure_ldap"/>
 <ref appsrg="SRG-APP-000148-AS-000101" disa="764" nist="" stigid="JBOS-AS-000260"/>
 </Rule>
@@ -1213,7 +1213,7 @@ accessing the application server via a network connection, administrative access
 to the application server must be PKI Hardware Token enabled or a DoD-approved
 soft certificate.
 </rationale>
-<ident cce=""/>
+<ident cce="80474-0"/>
 <oval id="jboss_eap_configure_multifactor_authentication"/>
 <ref appsrg="SRG-APP-000149-AS-000102" disa="765" nist="" stigid="JBOS-AS-000265"/>
 </Rule>
@@ -1280,7 +1280,7 @@ servers must ensure that individual users are authenticated prior to
 authenticating via role or group authentication. This is to ensure that there is
 non-repudiation for actions taken.
 </rationale>
-<ident cce=""/>
+<ident cce="80475-7"/>
 <oval id="jboss_eap_remove_group_accounts"/>
 <ref appsrg="SRG-APP-000153-AS-000104" disa="770" nist="" stigid="JBOS-AS-000275"/>
 </Rule>
@@ -1346,7 +1346,7 @@ network that has been designated as a management network and has restricted
 access. Similarly, the public interface must be bound to a network that is not
 on the same segment as the management interface.
 </rationale>
-<ident cce=""/>
+<ident cce="80476-5"/>
 <oval id="jboss_eap_configure_management_network"/>
 <ref appsrg="SRG-APP-000158-AS-000108" disa="778" nist="" stigid="JBOS-AS-000285"/>
 </Rule>
@@ -1396,7 +1396,7 @@ accounts (e.g., guest and anonymous accounts). It is commonly the case that a
 user account is the name of an information system account associated with an
 individual.
 </rationale>
-<ident cce=""/>
+<ident cce="80477-3"/>
 <oval id="jboss_eap_configure_management_ldap"/>
 <ref appsrg="SRG-APP-000163-AS-000111" disa="795" nist="" stigid="JBOS-AS-000290"/>
 </Rule>
@@ -1434,7 +1434,7 @@ Plain-text configuration files, such as XML deployment descriptors, need to
 specify passwords and other sensitive information. Use the JBoss EAP Password
 Vault to securely store sensitive strings in plain-text files.
 </rationale>
-<ident cce=""/>
+<ident cce="80478-1"/>
 <oval id="jboss_eap_configure_keystore"/>
 <ref appsrg="SRG-APP-000171-AS-000119" disa="196" nist="" stigid="JBOS-AS-000295"/>
 </Rule>
@@ -1472,7 +1472,7 @@ password in an encrypted format.
 The admin must utilize this process in order
 to ensure the Keystore password is encrypted.
 </rationale>
-<ident cce=""/>
+<ident cce="80479-9"/>
 <oval id="jboss_eap_encrypt_keystore_passwords"/>
 <ref appsrg="SRG-APP-000171-AS-000119" disa="196" nist="" stigid="JBOS-AS-000300"/>
 </Rule>
@@ -1507,7 +1507,7 @@ Application servers have the capability to utilize either certificates (tokens)
 or user IDs and passwords in order to authenticate. When the application server
 transmits or receives passwords, the passwords must be encrypted.
 </rationale>
-<ident cce=""/>
+<ident cce="80480-7"/>
 <oval id="jboss_eap_require_password_access"/>
 <ref appsrg="SRG-APP-000172-AS-000120" disa="197" nist="" stigid="JBOS-AS-000305"/>
 </Rule>
@@ -1553,7 +1553,7 @@ connections are not protected during transmission, sensitive authentication
 credentials can be stolen. When the application server utilizes LDAP, the LDAP
 traffic must be encrypted.
 </rationale>
-<ident cce=""/>
+<ident cce="80481-5"/>
 <oval id="jboss_eap_use_secure_ldap_port"/>
 <ref appsrg="SRG-APP-000172-AS-000121" disa="197" nist="" stigid="JBOS-AS-000310"/>
 </Rule>
@@ -1601,7 +1601,7 @@ keep the private keys. Java-based application servers utilize the Java keystore,
 which provides storage for cryptographic keys and certificates. The keystore is
 usually maintained in a file stored on the file system.
 </rationale>
-<ident cce=""/>
+<ident cce="80482-3"/>
 <oval id="jboss_eap_secure_keystore_permissions"/>
 <ref appsrg="SRG-APP-000176-AS-000125" disa="186" nist="" stigid="JBOS-AS-000320"/>
 </Rule>
@@ -1669,7 +1669,7 @@ Command line
 flags are used to specify which network address is used for management and which
 address is used for public/application access.
 </rationale>
-<ident cce=""/>
+<ident cce="80483-1"/>
 <oval id="jboss_eap_service_separate_networks"/>
 <ref appsrg="SRG-APP-000211-AS-000146" disa="1082" nist="" stigid="JBOS-AS-000355"/>
 </Rule>
@@ -1716,7 +1716,7 @@ external/removable hard drives, personal digital assistants, flash/thumb drives,
 etc., there is risk of data loss and data compromise. Steps must be taken to
 ensure data stored on the device is protected.
 </rationale>
-<ident cce=""/>
+<ident cce="80484-9"/>
 <oval id="jboss_eap_file_permissions"/>
 <ref appsrg="SRG-APP-000231-AS-000133" disa="1199" nist="" stigid="JBOS-AS-000400"/>
 </Rule>
@@ -1788,7 +1788,7 @@ usually written to logs contained on the file system. The application server
 will usually create new log files as needed and must take steps to ensure that
 the proper file permissions are utilized when the log files are created.
 </rationale>
-<ident cce=""/>
+<ident cce="80485-6"/>
 <oval id="jboss_eap_logs_permissions"/>
 <ref appsrg="SRG-APP-000267-AS-000170" disa="1314" nist="" stigid="JBOS-AS-000425"/>
 </Rule>
@@ -1831,7 +1831,7 @@ the attack surfaces; therefore, management services on domain member servers
 must be disabled and management services performed via the domain
 controller.
 </rationale>
-<ident cce=""/>
+<ident cce="80486-4"/>
 <oval id="jboss_eap_disable_domain_admin_console"/>
 <ref appsrg="SRG-APP-000316-AS-000199" disa="2322" nist="" stigid="JBOS-AS-000470"/>
 </Rule>
@@ -1873,7 +1873,7 @@ If privileged activity is not logged, no forensic logs
 can be used to establish accountability for privileged actions that occur on the
 system.
 </rationale>
-<ident cce=""/>
+<ident cce="80487-2"/>
 <oval id="jboss_eap_audit_privileged_actions"/>
 <ref appsrg="SRG-APP-000343-AS-000030" disa="2234" nist="" stigid="JBOS-AS-000480"/>
 </Rule>
@@ -1934,7 +1934,7 @@ of records, as well as the backup and archiving of those records. Application
 servers and their related components are required to off-load log records onto a
 different system or media than the system being logged.
 </rationale>
-<ident cce=""/>
+<ident cce="80488-0"/>
 <oval id="jboss_eap_configure_syslog"/>
 <ref appsrg="SRG-APP-000358-AS-000064" disa="1851" nist="" stigid="JBOS-AS-000505"/>
 </Rule>
@@ -1981,7 +1981,7 @@ must also provide a capability to restrict the use of automatic application
 deployment. Automatic code deployments are allowable in a development
 environment, but not in production.
 </rationale>
-<ident cce=""/>
+<ident cce="80489-8"/>
 <oval id="jboss_eap_disable_automatic_deployment"/>
 <ref appsrg="SRG-APP-000380-AS-000088" disa="1813" nist="" stigid="JBOS-AS-000545"/>
 </Rule>
@@ -2026,7 +2026,7 @@ be as simple as denying access to a file based on the application of file
 permissions (access restriction). Log items may consist of lists of actions
 blocked by access restrictions or changes identified after the fact.
 </rationale>
-<ident cce=""/>
+<ident cce="80490-6"/>
 <oval id="jboss_eap_log_deployments"/>
 <ref appsrg="SRG-APP-000381-AS-000089" disa="1814" nist="" stigid="JBOS-AS-000550"/>
 </Rule>
@@ -2067,7 +2067,7 @@ establishment of secure sessions includes, for example, the use of SSL/TLS
 certificates. The application server must only allow the use of DoD PKI-
 established certificate authorities for verification.
 </rationale>
-<ident cce=""/>
+<ident cce="80491-4"/>
 <oval id="jboss_eap_use_approved_ca_cert"/>
 <ref appsrg="SRG-APP-000427-AS-000264" disa="2470" nist="" stigid="JBOS-AS-000625"/>
 </Rule>
@@ -2122,7 +2122,7 @@ I system must maintain the highest level of integrity and availability. By HA
 clustering the application server, the hosted application and data are given a
 platform that is load-balanced and provides high availability.
 </rationale>
-<ident cce=""/>
+<ident cce="80492-2"/>
 <oval id="jboss_eap_configure_ha_lb"/>
 <ref appsrg="SRG-APP-000435-AS-000069" disa="2385" nist="" stigid="JBOS-AS-000640"/>
 </Rule>
@@ -2173,7 +2173,7 @@ TLS must be enabled,
 and non-FIPS-approved SSL versions must be disabled. NIST SP 800-52 specifies
 the preferred configurations for government systems.
 </rationale>
-<ident cce=""/>
+<ident cce="80493-0"/>
 <oval id="jboss_eap_use_tls"/>
 <ref appsrg="SRG-APP-000439-AS-000155" disa="2418" nist="" stigid="JBOS-AS-000650"/>
 </Rule>
@@ -2237,7 +2237,7 @@ TLS must be enabled, and non-FIPS-approved SSL versions must be
 disabled. NIST SP 800-52 specifies the preferred configurations for government
 systems.
 </rationale>
-<ident cce=""/>
+<ident cce="80494-8"/>
 <oval id="jboss_eap_use_approved_ciphers"/>
 <ref appsrg="SRG-APP-000440-AS-000167" disa="2421" nist="" stigid="JBOS-AS-000655"/>
 </Rule>
@@ -2265,7 +2265,7 @@ that patches and updates be applied to JBoss in a timely manner as many attacks
 against JBoss focus on unpatched systems. It is critical that support be
 obtained and made available.
 </rationale>
-<ident cce=""/>
+<ident cce="80495-5"/>
 <oval id="jboss_eap_vendor_supported"/>
 <ref appsrg="SRG-APP-000456-AS-000266" disa="2605" nist="" stigid="JBOS-AS-000680"/>
 </Rule>
@@ -2292,7 +2292,7 @@ that patches and updates be applied to JBoss in a timely manner as many attacks
 against JBoss focus on unpatched systems. It is critical that support be
 obtained and made available.
 </rationale>
-<ident cce=""/>
+<ident cce="80496-3"/>
 <oval id="jboss_eap_system_up_to_date"/>
 <ref appsrg="SRG-APP-000456-AS-000266" disa="2605" nist="" stigid="JBOS-AS-000685"/>
 </Rule>
@@ -2333,7 +2333,7 @@ by DoD or CNS creates an integrity risk. The application server must utilize
 approved DoD or CNS Class 3 or Class 4 certificates for software signing and
 business-to-business transactions.
 </rationale>
-<ident cce=""/>
+<ident cce="80497-1"/>
 <oval id="jboss_eap_use_dod_approved_certs"/>
 <ref appsrg="SRG-APP-000514-AS-000137" disa="2450" nist="" stigid="JBOS-AS-000730"/>
 </Rule>
@@ -2400,7 +2400,7 @@ manual.
 Off-loading is a common process in information systems with limited log
 storage capacity.
 </rationale>
-<ident cce=""/>
+<ident cce="80498-9"/>
 <oval id="jboss_eap_roll_over_transfer_logs"/>
 <ref appsrg="SRG-APP-000515-AS-000203" disa="1851" nist="" stigid="JBOS-AS-000735"/>
 </Rule>
