@@ -7,12 +7,8 @@
         <platform>JBoss Enterprise Application Platform 6</platform>
       </affected>
     </metadata>
-    <criteria operator="AND">
-      <criterion test_ref="test_jboss_eap_configure_syslog_standalone" />
-      <criteria operator="OR">
-        <extend_definition definition_ref="jboss_eap_standalone_openshift_exists" negate="true" />
-        <criterion test_ref="test_jboss_eap_configure_syslog_openshift" />
-      </criteria>
+    <criteria>
+      <criterion test_ref="test_jboss_eap_configure_syslog" />
     </criteria>
   </definition>
 
@@ -28,21 +24,21 @@
     </concat>
   </local_variable>
 
-  <ind:xmlfilecontent_test id="test_jboss_eap_configure_syslog_standalone" version="1" check="all" comment="Check EAP for ">
-    <ind:object object_ref="obj_jboss_eap_configure_syslog_logs_standalone" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_syslog_logs_standalone" version="1">
-    <ind:path var_ref="local_var_configure_syslog_jboss_home"/>
-    <ind:filename>standalone.xml</ind:filename>
-    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='syslog-handler']</ind:xpath>
-  </ind:xmlfilecontent_object>
+  <local_variable id="local_var_profile_syslog" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
 
-  <ind:xmlfilecontent_test id="test_jboss_eap_configure_syslog_openshift" version="1" check="all" comment="Check EAP for ">
-    <ind:object object_ref="obj_jboss_eap_configure_syslog_logs_openshift" />
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_configure_syslog" version="1" check="all" comment="Check EAP for ">
+    <ind:object object_ref="obj_jboss_eap_configure_syslog_logs" />
   </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_syslog_logs_openshift" version="1">
+  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_syslog_logs" version="1">
     <ind:path var_ref="local_var_configure_syslog_jboss_home"/>
-    <ind:filename>standalone-openshift.xml</ind:filename>
+    <ind:filename var_ref="local_var_profile_syslog" />
     <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='syslog-handler']</ind:xpath>
   </ind:xmlfilecontent_object>
 

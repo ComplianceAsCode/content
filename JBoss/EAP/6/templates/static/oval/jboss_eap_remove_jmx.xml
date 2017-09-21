@@ -7,12 +7,8 @@
         <platform>JBoss Enterprise Application Platform 6</platform>
       </affected>
     </metadata>
-    <criteria operator="AND">
-      <criterion test_ref="test_jboss_eap_jmx_installed_standalone" negate="true" />
-      <criteria operator="OR">
-        <extend_definition definition_ref="jboss_eap_standalone_openshift_exists" negate="true" />
-        <criterion test_ref="test_jboss_eap_jmx_installed_openshift" negate="true" />
-      </criteria>
+    <criteria>
+      <criterion test_ref="test_jboss_eap_jmx_installed" negate="true" />
     </criteria>
   </definition>
 
@@ -28,21 +24,21 @@
     </concat>
   </local_variable>
 
-  <ind:xmlfilecontent_test id="test_jboss_eap_jmx_installed_standalone" version="1" check="all" comment="Check EAP for ">
-    <ind:object object_ref="obj_jboss_eap_remove_jmx_standalone" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="obj_jboss_eap_remove_jmx_standalone" version="1">
-    <ind:path var_ref="local_var_remove_jmx_jboss_home"/>
-    <ind:filename>standalone.xml</ind:filename>
-    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='remoting-connector']</ind:xpath>
-  </ind:xmlfilecontent_object>
+  <local_variable id="local_var_profile_remove_jmx" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
 
-  <ind:xmlfilecontent_test id="test_jboss_eap_jmx_installed_openshift" version="1" check="all" comment="Check EAP for ">
-    <ind:object object_ref="obj_jboss_eap_remove_jmx_openshift" />
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_jmx_installed" version="1" check="all" comment="Check EAP for ">
+    <ind:object object_ref="obj_jboss_eap_remove_jmx" />
   </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="obj_jboss_eap_remove_jmx_openshift" version="1">
+  <ind:xmlfilecontent_object id="obj_jboss_eap_remove_jmx" version="1">
     <ind:path var_ref="local_var_remove_jmx_jboss_home"/>
-    <ind:filename>standalone-openshift.xml</ind:filename>
+    <ind:filename var_ref="local_var_profile_remove_jmx"/>
     <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='remoting-connector']</ind:xpath>
   </ind:xmlfilecontent_object>
 
