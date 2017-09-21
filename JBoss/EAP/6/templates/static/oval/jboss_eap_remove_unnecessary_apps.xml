@@ -23,7 +23,7 @@
   <unix:file_object id="obj_eap_remove_apps" version="1">
     <unix:behaviors recurse_direction="down"/>
     <unix:path var_ref="local_var_eap_remove_apps_path"/>
-    <unix:filename operation="pattern match">^((?!README.txt).)*$</unix:filename>
+    <unix:filename operation="pattern match">^((?!(README.txt|.*\.rar|.*\.deployed|.*\.undeployed)|.*\.dodeploy).)*$</unix:filename>
   </unix:file_object>
 
   <local_variable id="local_var_eap_remove_apps_path" version="1" datatype="string" comment="version location">
