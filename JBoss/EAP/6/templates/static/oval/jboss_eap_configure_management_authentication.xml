@@ -7,15 +7,10 @@
         <platform>JBoss Enterprise Application Platform 6</platform>
       </affected>
     </metadata>
-    <criteria operator="AND">
-      <criterion test_ref="test_eap_configure_management_authentication_standalone" />
-      <criteria operator="OR">
-        <extend_definition definition_ref="jboss_eap_standalone_openshift_exists" negate="true" />
-        <criterion test_ref="test_eap_configure_management_authentication_openshift" />
-      </criteria>
+    <criteria>
+      <criterion test_ref="test_eap_configure_management_authentication" />
     </criteria>
   </definition>
-
 
   <ind:environmentvariable58_object id="obj_env_eap_configure_management_authentication" version="1">
     <ind:pid xsi:nil="true" datatype="int" />
@@ -29,26 +24,24 @@
     </concat>
   </local_variable>
 
-  <ind:xmlfilecontent_test id="test_eap_configure_management_authentication_standalone" version="1" check="all" comment="Check EAP Audit Logging is Enabled">
-    <ind:object object_ref="obj_eap_configure_management_authentication_standalone" />
+  <local_variable id="local_var_profile_management_authentication" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_eap_configure_management_authentication" version="1" check="all" comment="Check EAP Audit Logging is Enabled">
+    <ind:object object_ref="obj_eap_configure_management_authentication" />
     <ind:state state_ref="state_eap_configure_management_authentication" />
   </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="obj_eap_configure_management_authentication_standalone" version="1">
+  <ind:xmlfilecontent_object id="obj_eap_configure_management_authentication" version="1">
     <ind:path var_ref="local_var_eap_configure_management_authentication"/>
-    <ind:filename>standalone.xml</ind:filename>
+    <ind:filename var_ref="local_var_profile_management_authentication" />
     <ind:xpath>count(//*[name()='server']/*[name()='management']/*[name()='security-realms']/*[name()='security-realm'][@name='ManagementRealm']/*[name()='authentication']/*[name()='local'])</ind:xpath>
   </ind:xmlfilecontent_object>
-
-  <ind:xmlfilecontent_test id="test_eap_configure_management_authentication_openshift" version="1" check="all" comment="Check EAP Audit Logging is Enabled">
-    <ind:object object_ref="obj_eap_configure_management_authentication_openshift" />
-    <ind:state state_ref="state_eap_configure_management_authentication" />
-  </ind:xmlfilecontent_test>
-  <ind:xmlfilecontent_object id="obj_eap_configure_management_authentication_openshift" version="1">
-    <ind:path var_ref="local_var_eap_configure_management_authentication"/>
-    <ind:filename>standalone-openshift.xml</ind:filename>
-    <ind:xpath>count(//*[name()='server']/*[name()='management']/*[name()='security-realms']/*[name()='security-realm'][@name='ManagementRealm']/*[name()='authentication']/*[name()='local'])</ind:xpath>
-  </ind:xmlfilecontent_object>
-
 
   <ind:xmlfilecontent_state id="state_eap_configure_management_authentication" comment="ensure that the number of local authentication elements in the ManagementRealm is 0"  version="1">
     <ind:value_of datatype="int" operation="equals">0</ind:value_of>
