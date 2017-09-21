@@ -388,8 +388,9 @@
 
   <!-- output individual reference -->
   <xsl:template name="ref-output">
-      <xsl:param name="refsource"/>
-      <xsl:param name="refitem"/>
+    <xsl:param name="refsource"/>
+    <xsl:param name="refitem"/>
+    <xsl:if test="$refitem != ''">
       <reference>
         <xsl:attribute name="href">
         <!-- populate the href attribute with a global reference-->
@@ -424,9 +425,12 @@
               <xsl:value-of select="$cisuri" />
             </xsl:if>
           </xsl:if>
-          <xsl:if test="$refsource = 'ossrg'">
-            <xsl:if test="$disa-srguri != 'empty'">
-              <xsl:value-of select="$disa-srguri" />
+          <xsl:if test="$refsource = 'srg'">
+            <xsl:if test="starts-with($refitem, 'SRG-OS-')">
+              <xsl:value-of select="$disa-ossrguri" />
+            </xsl:if>
+            <xsl:if test="starts-with($refitem, 'SRG-APP-')">
+              <xsl:value-of select="$disa-appsrguri" />
             </xsl:if>
           </xsl:if>
           <xsl:if test="$refsource = 'stigid'">
@@ -441,10 +445,18 @@
             <xsl:value-of select="normalize-space(concat($os-stigid-concat, .))" />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="normalize-space($refitem)" />
+            <xsl:choose>
+              <xsl:when test="name() = 'disa'">
+                <xsl:value-of select='format-number($refitem, "CCI-000000")' />
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="normalize-space($refitem)" />
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
       </reference>
+    </xsl:if>
   </xsl:template>
 
   <!-- expand reference to OVAL ID -->
