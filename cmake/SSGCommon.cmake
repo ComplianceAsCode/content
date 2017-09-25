@@ -1138,3 +1138,19 @@ macro(ssg_build_zipfile ZIPNAME)
         DEPENDS "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
     )
 endmacro()
+
+macro(ssg_build_nist_zipfile ZIPNAME)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "nist-zipfile/"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "nist-zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-rhel{6,7}-ds.xml" "nist-zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E chdir "nist-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-nist.zip" --format=zip "${ZIPNAME}"
+        COMMENT "Building NIST zipfile at ${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+        )
+    add_custom_target(
+        nist-zipfile
+        DEPENDS "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+    )
+endmacro()
