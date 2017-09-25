@@ -317,9 +317,9 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     else()
-        set(OVAL_510_COMBINE_PATHS "oval_5.10:${BUILD_CHECKS_DIR}/shared/oval" "oval_5.10:${SSG_SHARED}/templates/static/oval" "oval_5.10:${BUILD_CHECKS_DIR}/oval" "oval_5.10:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/templates/static/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
     endif()
 
     if(SSG_OVAL_511_ENABLED)
@@ -328,9 +328,9 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
         if("${PRODUCT}" MATCHES "rhel-osp7")
             # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
         else()
-            set(OVAL_511_COMBINE_PATHS "oval_5.11:${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "oval_5.11:${SSG_SHARED}/templates/static/oval/oval_5.11" "oval_5.11:${BUILD_CHECKS_DIR}/oval/oval_5.11" "oval_5.11:${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${SSG_SHARED}/templates/static/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
         endif()
 
         add_custom_command(
@@ -366,7 +366,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
             # We have to remove all old shared checks in case the user removed something from the CSV files
             COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
             COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_510_COMBINE_PATHS}
+            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "5.10" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_510_COMBINE_PATHS}
             COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             DEPENDS ${OVAL_CHECKS_DEPENDS}
             DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
