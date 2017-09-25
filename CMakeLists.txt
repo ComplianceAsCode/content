@@ -182,8 +182,10 @@ ssg_build_bash_remediation_functions()
 # want sources to build from should get the tarball instead.
 if(SSG_OVAL_511_ENABLED)
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}")
 else()
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
+    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
 endif()
 
 if (SSG_PRODUCT_CHROMIUM)
