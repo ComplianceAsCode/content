@@ -173,8 +173,8 @@ def main():
     print("Static bash files:")
     static_bash_finder = BashDuplicatesFinder(
         root_dir,
-        os.path.join("**", "static", "bash"),
-        os.path.join("shared", "templates", "static", "bash")
+        os.path.join("**", "remediations", "bash"),
+        os.path.join("shared", "remediations", "bash")
     )
     if static_bash_finder.search():
         without_duplicates = False
@@ -194,8 +194,8 @@ def main():
     print("Static oval files:")
     static_oval_finder = OvalDuplicatesFinder(
         root_dir,
-        os.path.join("**", "static", "oval"),
-        os.path.join("shared", "templates", "static", "oval")
+        os.path.join("**", "oval"),
+        os.path.join("shared", "oval")
     )
     if static_oval_finder.search():
         without_duplicates = False
