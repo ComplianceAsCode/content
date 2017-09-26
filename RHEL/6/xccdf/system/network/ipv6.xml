@@ -46,9 +46,10 @@ Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27153-6" stig="RHEL-06-000098" />
+<ident cce="27153-6" />
 <oval id="kernel_module_ipv6_option_disabled" />
-<ref nist="CM-7" disa="1551"/>
+<ref nist="CM-7" disa="1551" stigid="RHEL-06-000098"
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="network_ipv6_disable_interfaces">
@@ -256,9 +257,10 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27166-8" stig="RHEL-06-000099" />
+<ident cce="27166-8" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref nist="CM-7" disa="1551" cis="4.4.1.2" />
+<ref nist="CM-7" disa="1551" cis="4.4.1.2" stigid="RHEL-06-000099" 
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_source_route" severity="medium">

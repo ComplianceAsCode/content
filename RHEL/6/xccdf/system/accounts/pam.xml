@@ -75,9 +75,9 @@ of unsuccessful attempts that were made to login to their account
 allows the user to determine if any unauthorized activity has occurred
 and gives them an opportunity to notify administrators.
 </rationale>
-<ident cce="27291-4" stig="RHEL-06-000372" />
+<ident cce="27291-4" />
 <oval id="display_login_attempts" />
-<ref disa="366" pcidss="Req-10.2.4" />
+<ref disa="366" pcidss="Req-10.2.4" stigid="RHEL-06-000372" srg="SRG-OS-999999" />
 </Rule>
 
 <Group id="password_quality">
@@ -279,9 +279,9 @@ Look for the value of the <tt>maxrepeat</tt> parameter. The DoD requirement is 3
 <rationale>
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident cce="27227-8" stig="RHEL-06-000299" />
+<ident cce="27227-8" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
-<ref nist="IA-5(c)" disa="366"/>
+<ref nist="IA-5(c)" disa="366" stigid="RHEL-06-000299" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="accounts_password_pam_dcredit">
@@ -303,9 +303,10 @@ This would appear as <tt>dcredit=-1</tt>.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="26374-9" stig="RHEL-06-000056" />
+<ident cce="26374-9" />
 <oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
-<ref nist="IA-5(b),IA-5(c)" disa="194" pcidss="Req-8.2.3" />
+<ref nist="IA-5(b),IA-5(c)" disa="194" pcidss="Req-8.2.3" stigid="RHEL-06-000056"
+srg="SRG-OS-000071" />
 </Rule>
 
 <Rule id="accounts_password_pam_minlen">
@@ -350,9 +351,10 @@ This would appear as <tt>ucredit=-1</tt>.
 Requiring a minimum number of uppercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26601-5" stig="RHEL-06-000057" />
+<ident cce="26601-5" />
 <oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" cui="3.5.7" pcidss="Req-8.2.3" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" cui="3.5.7" pcidss="Req-8.2.3"
+stigid="RHEL-06-000057" srg="SRG-OS-000069" />
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit">
@@ -374,9 +376,10 @@ This would appear as <tt>ocredit=-1</tt>.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26409-3" stig="RHEL-06-000058" />
+<ident cce="26409-3" />
 <oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="266" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619"
+stigid="RHEL-06-000058" srg="SRG-OS-000266" />
 </Rule>
 
 <Rule id="accounts_password_pam_lcredit">
@@ -398,9 +401,10 @@ This would appear as <tt>lcredit=-1</tt>.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="26631-2" stig="RHEL-06-000059" />
+<ident cce="26631-2" />
 <oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" pcidss="Req-8.2.3" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" pcidss="Req-8.2.3"
+stigid="RHEL-06-000059" srg="SRG-OS-000070"/>
 </Rule>
 
 <Rule id="accounts_password_pam_difok">
@@ -422,9 +426,10 @@ Requiring a minimum number of different characters during password changes ensur
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
-<ident cce="26615-5" stig="RHEL-06-000060" />
+<ident cce="26615-5" />
 <oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195"/>
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" stigid="RHEL-06-000060"
+srg="SRG-OS-000072" />
 </Rule>
 
 <Rule id="accounts_password_pam_minclass">
@@ -508,9 +513,10 @@ The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="26844-1" stig="RHEL-06-000061" />
+<ident cce="26844-1" />
 <oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
-<ref nist="AC-7(a)" disa="44" pcidss="Req-8.1.6" />
+<ref nist="AC-7(a)" disa="44" pcidss="Req-8.1.6" stigid="RHEL-06-000061"
+srg="SRG-OS-000021" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium">
@@ -540,9 +546,10 @@ prevents direct password guessing attacks.  Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident cce="27110-6" stig="RHEL-06-000356" />
+<ident cce="27110-6" />
 <oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
-<ref nist="AC-7(b)" disa="47" cidss="Req-8.1.7" />
+<ref nist="AC-7(b)" disa="47" cidss="Req-8.1.7" stigid="RHEL-06-000356"
+srg="SRG-OS-000022" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_interval" severity="medium">
@@ -569,9 +576,9 @@ For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&
 Locking out user accounts after a number of incorrect attempts within a
 specific period of time prevents direct password guessing attacks.
 </rationale>
-<ident cce="27215-3" stig="RHEL-06-000357" />
+<ident cce="27215-3" />
 <oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
-<ref nist="AC-7(a)" disa="1452" />
+<ref nist="AC-7(a)" disa="1452" stigid="RHEL-06-000357" srg="SRG-OS-000249" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" severity="medium">
@@ -600,9 +607,10 @@ The output should show the following at the end of the line:
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
-<ident cce="26741-9" stig="RHEL-06-000274" />
+<ident cce="26741-9" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
-<ref nist="IA-5(f),IA-5(1)(e)" disa="200" pcidss="Req-8.2.5" />
+<ref nist="IA-5(f),IA-5(1)(e)" disa="200" pcidss="Req-8.2.5" stigid="RHEL-06-000274"
+srg="SRG-OS-000077" />
 </Rule>
 </Group>
 
@@ -633,8 +641,9 @@ ensure that the <tt>pam_unix.so</tt> module includes the argument
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident cce="26303-8" stig="RHEL-06-000062" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1" />
+<ident cce="26303-8" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1"
+stigid="RHEL-06-000062" srg="SRG-OS-000120" />
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
@@ -652,8 +661,9 @@ Inspect <tt>/etc/login.defs</tt> and ensure the following line appears:
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident cce="27228-6" stig="RHEL-06-000063" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1" />
+<ident cce="27228-6" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1"
+stigid="RHEL-06-000063" srg="SRG-OS-000120" />
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
 
@@ -673,8 +683,9 @@ in the <tt>[default]</tt> section:
 <rationale>
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident cce="27229-4" stig="RHEL-06-000064" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1" />
+<ident cce="27229-4" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="803" pcidss="Req-8.2.1"
+stigid="RHEL-06-000064" srg="SRG-OS-000120" />
 <oval id="set_password_hashing_algorithm_libuserconf" />
 </Rule>
 </Group>

@@ -38,7 +38,6 @@ this service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80228-0" />
 <oval id="service_nfslock_disabled" />
-<ref cis="3.8" />
 </Rule>
 
 <Rule id="service_rpcgssd_disabled" prodtype="rhel7">
@@ -52,7 +51,6 @@ service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80229-8" />
 <oval id="service_rpcgssd_disabled" />
-<ref cis="3.8" />
 </Rule>
 
 <Rule id="service_rpcbind_disabled" prodtype="rhel7">
@@ -68,7 +66,7 @@ servers) then this service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80230-6" />
 <oval id="service_rpcbind_disabled" />
-<ref cis="3.8" />
+<ref cis="2.2.7" />
 </Rule>
 
 <Rule id="service_rpcidmapd_disabled" prodtype="rhel7">
@@ -80,7 +78,6 @@ this service should be disabled.
 </description>
 <ident prodtype="rhel7" cce="80231-4" />
 <oval id="service_rpcidmapd_disabled" />
-<ref cis="3.8" />
 </Rule>
 </Group> <!-- end disabling_nfs_services -->
 
@@ -231,7 +228,7 @@ is not designated as a NFS server then this service should be disabled.
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
 <ident prodtype="rhel7" cce="80237-1" />
-<ref nist="AC-3" />
+<ref nist="AC-3" cis="2.2.7" />
 <oval id="service_nfs_disabled" />
 </Rule>
 
@@ -301,7 +298,7 @@ should be installed to their default location on the local filesystem.</rational
 <ident prodtype="rhel7" cce="80240-5" />
 <oval id="mount_option_nosuid_remote_filesystems" />
 <ref prodtype="rhel7" stigid="021020" />
-<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="mount_option_noexec_remote_filesystems" severity="medium" prodtype="rhel7">
@@ -322,7 +319,7 @@ administrative access.</rationale>
 <ident prodtype="rhel7" cce="80436-9" />
 <oval id="mount_option_noexec_remote_filesystems" />
 <ref prodtype="rhel7" stigid="021021" />
-<ref nist="AC-6" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="mount_option_krb_sec_remote_filesystems" severity="medium" prodtype="rhel7">
@@ -345,7 +342,7 @@ systems to more securely authenticate the remote mount request.
 <ident prodtype="rhel7" cce="27458-9" />
 <oval id="mount_option_krb_sec_remote_filesystems" />
 <ref prodtype="rhel7" stigid="040750" />
-<ref nist="AC-14(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="AC-14(1)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -478,7 +475,7 @@ systems to more securely authenticate the remote mount request.
 </rationale>
 <ident prodtype="rhel7" cce="27464-7" />
 <oval id="use_kerberos_security_all_exports" />
-<ref nist="AC-14(1)" disa="366" ossrg="SRG-OS-000480-GPOS-00227" />
+<ref nist="AC-14(1)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group> <!-- nfs_configuring_servers -->

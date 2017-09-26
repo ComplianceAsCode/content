@@ -1,0 +1,49 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_configure_application_authentication">
+    <metadata>
+      <title>Remove Silent Authentication - Application Security Realm</title>
+      <description>Verify that Silent Authentication has been removed from the default Application security realm.</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_eap_configure_application_authentication" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_eap_configure_application_authentication" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_eap_configure_application_authentication" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="obj_env_eap_configure_application_authentication" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_profile_application_authentication" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_eap_configure_application_authentication" version="1" check="all" comment="Check EAP Audit Logging is Enabled">
+    <ind:object object_ref="obj_eap_configure_application_authentication" />
+    <ind:state state_ref="state_eap_configure_application_authentication" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_eap_configure_application_authentication" version="1">
+    <ind:path var_ref="local_var_eap_configure_application_authentication"/>
+    <ind:filename var_ref="local_var_eap_configure_application_authentication" />
+    <ind:xpath>count(//*[name()='server']/*[name()='management']/*[name()='security-realms']/*[name()='security-realm'][@name='ApplicationRealm']/*[name()='authentication']/*[name()='local'])</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_state id="state_eap_configure_application_authentication" comment="ensure that the number of local authentication elements in the ApplicationRealm is 0"  version="1">
+    <ind:value_of datatype="int" operation="equals">0</ind:value_of>
+  </ind:xmlfilecontent_state>
+</def-group>

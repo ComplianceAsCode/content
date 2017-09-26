@@ -1,0 +1,45 @@
+<def-group>
+  <definition class="compliance" id="jboss_eap_file_permissions" version="2">
+    <metadata>
+      <title>Configure JBoss Directory Permissions</title>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+      <description>File permissions for JBOSS_HOME should be set correctly.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_jboss_eap_file_permissions" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_jboss_eap_file_permissions" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_jboss_eap_file_permissions" version="1" datatype="string" comment="JBOSS_HOME location">
+    <concat>
+      <object_component object_ref="obj_env_jboss_eap_file_permissions" item_field="value" />
+      <literal_component datatype="string">/</literal_component>
+    </concat>
+  </local_variable>
+
+  <!-- check folders -->
+  <unix:file_test check="all" check_existence="all_exist" id="test_jboss_eap_file_permissions" version="1" comment="testing that the all files have the required permissions">
+    <unix:object object_ref="object_jboss_eap_file_permissions" />
+    <unix:state state_ref="state_jboss_eap_file_permissions" />
+  </unix:file_test>
+
+  <unix:file_object id="object_jboss_eap_file_permissions" version="1" comment="JBOSS_HOME">
+    <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" /> <!-- recurse, don't just test that folder -->
+    <unix:path var_ref="local_var_jboss_eap_file_permissions" />
+    <unix:filename operation="pattern match">.+</unix:filename>
+  </unix:file_object>
+
+  <!-- single shared condition -->
+  <unix:file_state id="state_jboss_eap_file_permissions" version="1" comment="checks for o-rw">
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+  </unix:file_state> 
+
+</def-group>

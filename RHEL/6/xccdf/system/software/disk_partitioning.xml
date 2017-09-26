@@ -38,9 +38,9 @@ Placing <tt>/tmp</tt> in its own partition enables the setting of more
 restrictive mount options, which can help protect programs which use it.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26435-8" stig="RHEL-06-000001" />
+<ident cce="26435-8" />
 <oval id="partition_for_tmp" />
-<ref nist="SC-32" disa="1208"/>
+<ref nist="SC-32" disa="1208" stigid="RHEL-06-000001" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="partition_for_var">
@@ -58,9 +58,9 @@ It is not uncommon for the <tt>/var</tt> directory to contain
 world-writable directories installed by other software packages.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26639-5" stig="RHEL-06-000002" />
+<ident cce="26639-5" />
 <oval id="partition_for_var" />
-<ref nist="SC-32" disa="1208"/>
+<ref nist="SC-32" disa="1208" stigid="RHEL-06-000002" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="partition_for_var_log">
@@ -77,9 +77,9 @@ enables better separation between log files
 and other files in <tt>/var/</tt>.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26215-4" stig="RHEL-06-000003" />
+<ident cce="26215-4" />
 <oval id="partition_for_var_log" />
-<ref nist="AU-9,SC-32" disa="1208"/>
+<ref nist="AU-9,SC-32" disa="1208" stigid="RHEL-06-000003" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="partition_for_var_log_audit">
@@ -99,9 +99,9 @@ auditing cannot be halted due to the partition running out
 of space.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26436-6" stig="RHEL-06-000004" />
+<ident cce="26436-6" />
 <oval id="partition_for_var_log_audit" />
-<ref nist="AU-4,AU-9,SC-32" disa="137,138,1208"/>
+<ref nist="AU-4,AU-9,SC-32" disa="137,138,1208" stigid="RHEL-06-000004" srg="SRG-OS-000044" />
 </Rule>
 
 <Rule id="partition_for_home">
@@ -120,9 +120,9 @@ setting of more restrictive mount options, and also helps ensure that
 users cannot trivially fill partitions used for log or audit data storage.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26557-9" stig="RHEL-06-000007" />
+<ident cce="26557-9" />
 <oval id="partition_for_home" />
-<ref nist="SC-32" disa="1208"/>
+<ref nist="SC-32" disa="1208" stigid="RHEL-06-000007" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="encrypt_partitions" >
@@ -159,8 +159,9 @@ laptops, places its data at risk of compromise.  Encrypting this data mitigates
 the risk of its loss if the system is lost.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27596-6" stig="RHEL-06-000275" />
-<ref nist="SC-13, SC-28" disa="1019,1199,1200" />
+<ident cce="27596-6" />
+<ref nist="SC-13, SC-28" disa="1019,1199,1200" stigid="RHEL-06-000275"
+srg="SRG-OS-000131,SRG-OS-000185,SRG-OS-000230"/>
 </Rule>
 
 </Group>

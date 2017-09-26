@@ -1,0 +1,65 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_configure_logging_level">
+    <metadata>
+      <title>Configure JBoss Logging Level</title>
+      <description>Verify that the logging level for the ROOT logger is INFO.</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria operator="OR">
+      <criterion test_ref="test_jboss_eap_configure_logging_level_info" />
+      <criterion test_ref="test_jboss_eap_configure_logging_level_debug" />
+      <criterion test_ref="test_jboss_eap_configure_logging_level_trace" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_jboss_eap_configure_logging_level" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_jboss_eap_configure_logging_level" version="1" datatype="string" comment="configuration location">
+    <concat>
+      <object_component object_ref="obj_env_jboss_eap_configure_logging_level" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_profile_logging_level" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_configure_logging_level_info" version="1" check="all" comment="Check that root logging is INFO level">
+    <ind:object object_ref="obj_jboss_eap_configure_logging_level_info" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_logging_level_info" version="1">
+    <ind:path var_ref="local_var_jboss_eap_configure_logging_level"/>
+    <ind:filename var_ref="local_var_jboss_eap_configure_logging_level" />
+    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='root-logger']/*[name()='level'][@name='INFO']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_configure_logging_level_debug" version="1" check="all" comment="Check that root logging is DEBUG level">
+    <ind:object object_ref="obj_jboss_eap_configure_logging_level_trace" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_logging_level_debug" version="1">
+    <ind:path var_ref="local_var_jboss_eap_configure_logging_level"/>
+    <ind:filename var_ref="local_var_jboss_eap_configure_logging_level" />
+    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='root-logger']/*[name()='level'][@name='DEBUG']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_configure_logging_level_trace" version="1" check="all" comment="Check that root logging is TRACE level">
+    <ind:object object_ref="obj_jboss_eap_configure_logging_level_debug" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_logging_level_trace" version="1">
+    <ind:path var_ref="local_var_jboss_eap_configure_logging_level"/>
+    <ind:filename var_ref="local_var_jboss_eap_configure_logging_level" />
+    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='root-logger']/*[name()='level'][@name='TRACE']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+</def-group>

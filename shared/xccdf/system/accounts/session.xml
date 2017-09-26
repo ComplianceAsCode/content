@@ -71,7 +71,7 @@ Check if the system is configured to create home directories for local interacti
 <ident prodtype="rhel7" cce="80434-4" />
 <oval id="accounts_have_homedir_login_defs" />
 <ref prodtype="rhel7" stigid="020610" />
-<ref ossrg="SRG-OS-000480-GPOS-00227" />
+<ref srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="accounts_tmout" severity="medium" prodtype="rhel7">
@@ -124,7 +124,7 @@ You should receive output similar to the following:
 <ident prodtype="rhel7" cce="27081-9" />
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
 <ref prodtype="rhel7" stigid="040000" />
-<ref nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" />
+<ref nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" cjis="5.5.2.2" />
 </Rule>
 
 <Rule id="accounts_logon_fail_delay" prodtype="rhel7">
@@ -149,7 +149,7 @@ enter credentials helps to slow a single-threaded brute force attack.
 <ident prodtype="rhel7" cce="80352-8" />
 <oval id="accounts_logon_fail_delay" value="var_accounts_fail_delay" />
 <ref prodtype="rhel7" stigid="010430" />
-<ref nist="CM-6(b)" disa="366" ossrg="SRG-OS-000480-GPOS-00226" />
+<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00226" />
 </Rule>
 
 <Group id="root_paths">
@@ -330,7 +330,7 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <ident prodtype="rhel7" cce="80202-5" />
 <oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
-<ref nist="SA-8" disa="366"/>
+<ref nist="SA-8" disa="366" cis="5.4.4" />
 </Rule>
 
 <Rule id="accounts_umask_etc_csh_cshrc" prodtype="rhel7">
@@ -376,7 +376,7 @@ All output must show the value of <tt>umask</tt> set as shown in the below:
 umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
-<ref nist="SA-8" disa="366"/>
+<ref nist="SA-8" disa="366" cis="5.4.4" />
 </Rule>
 
 <Rule id="accounts_umask_etc_login_defs" prodtype="rhel7">
@@ -400,7 +400,7 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 <ident prodtype="rhel7" cce="80205-8" />
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
 <ref prodtype="rhel7" stigid="020240" />
-<ref nist="CM-6(b),SA-8" disa="366" ossrg="SRG-OS-000480-GPOS-00228" />
+<ref nist="CM-6(b),SA-8" disa="366" srg="SRG-OS-000480-GPOS-00228" />
 </Rule>
 
 </Group>

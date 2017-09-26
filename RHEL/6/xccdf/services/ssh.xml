@@ -80,9 +80,10 @@ SSH protocol version 1 suffers from design flaws that
 result in security vulnerabilities and
 should not be used.
 </rationale>
-<ident cce="27072-8" stig="RHEL-06-000227" />
+<ident cce="27072-8" />
 <oval id="sshd_allow_only_protocol2" />
-<ref nist="AC-3(10),IA-5(1)(c)" disa="776,774,1436" />
+<ref nist="AC-3(10),IA-5(1)(c)" disa="776,774,1436" stigid="RHEL-06-000227"
+srg="SRG-OS-000112" />
 </Rule>
 
 <Rule id="sshd_limit_user_access">
@@ -169,9 +170,10 @@ Causing idle users to be automatically logged out
 guards against compromises one system leading trivially
 to compromises on another.
 </rationale>
-<ident cce="26919-1" stig="RHEL-06-000230" />
+<ident cce="26919-1" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
-<ref nist="AC-2(5),SA-8" pcidss="Req-8.1.8" disa="879,1133"/>
+<ref nist="AC-2(5),SA-8" pcidss="Req-8.1.8" disa="879,1133" stigid="RHEL-06-000230"
+srg="SRG-OS-000163" />
 </Rule>
 
 
@@ -192,9 +194,10 @@ If properly configured, output should be:
 This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
-<ident cce="26282-4" stig="RHEL-06-000231" />
+<ident cce="26282-4" />
 <oval id="sshd_set_keepalive" />
-<ref nist="AC-2(5),SA-8" disa="879,1133"/>
+<ref nist="AC-2(5),SA-8" disa="879,1133" stigid="RHEL-06-000231"
+srg="SRG-OS-000126" />
 </Rule>
 
 
@@ -215,9 +218,10 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
-<ident cce="27124-7" stig="RHEL-06-000234" />
+<ident cce="27124-7" />
 <oval id="sshd_disable_rhosts" />
-<ref nist="AC-3" disa="765,766"/>
+<ref nist="AC-3" disa="765,766" stigid="RHEL-06-000234" 
+srg="SRG-OS-000106" />
 </Rule>
 
 
@@ -239,9 +243,10 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
-<ident cce="27091-8" stig="RHEL-06-000236" />
+<ident cce="27091-8" />
 <oval id="disable_host_auth" />
-<ref nist="AC-3" disa="765,766"/>
+<ref nist="AC-3" disa="765,766" stigid="RHEL-06-000236" 
+srg="SRG-OS-000106" />
 </Rule>
 
 
@@ -261,9 +266,10 @@ Permitting direct root login reduces auditable information about who ran
 privileged commands on the system
 and also allows direct attack attempts on root's password.
 </rationale>
-<ident cce="27100-7" stig="RHEL-06-000237" />
+<ident cce="27100-7" />
 <oval id="sshd_disable_root_login" />
-<ref nist="AC-3,AC-6(2),IA-2(1)" disa="770" />
+<ref nist="AC-3,AC-6(2),IA-2(1)" disa="770" stigid="RHEL-06-000237"
+srg="SRG-OS-000109" />
 </Rule>
 
 
@@ -284,9 +290,10 @@ Configuring this setting for the SSH daemon provides additional assurance that
 remote login via SSH will require a password,
 even in the event of misconfiguration elsewhere.
 </rationale>
-<ident cce="26887-0" stig="RHEL-06-000239" />
+<ident cce="26887-0" />
 <oval id="sshd_disable_empty_passwords" />
-<ref nist="AC-3" disa="765,766"/>
+<ref nist="AC-3" disa="765,766" stigid="RHEL-06-000239"
+srg="SRG-OS-000106" />
 </Rule>
 
 <Rule id="sshd_enable_warning_banner" severity="medium">
@@ -307,9 +314,10 @@ facilitates possible legal action against attackers.  Alternatively, systems
 whose ownership should not be obvious should ensure usage of a banner that does
 not provide easy attribution.
 </rationale>
-<ident cce="27112-2" stig="RHEL-06-000240" />
+<ident cce="27112-2" />
 <oval id="sshd_enable_warning_banner" />
-<ref nist="AC-8(a)" disa="48" />
+<ref nist="AC-8(a)" disa="48" stigid="RHEL-06-000240"
+srg="SRG-OS-000023" />
 </Rule>
 
 
@@ -330,9 +338,9 @@ If properly configured, output should be:
 SSH environment options potentially allow users to bypass
 access restriction in some configurations.
 </rationale>
-<ident cce="27201-3" stig="RHEL-06-000241" />
+<ident cce="27201-3" />
 <oval id="sshd_do_not_permit_user_env" />
-<ref disa="1414" />
+<ref disa="1414" stigid="RHEL-06-000241" srg="SRG-OS-000242" />
 </Rule>
 
 <Rule id="sshd_use_approved_ciphers" severity="medium">
@@ -355,9 +363,10 @@ AES and 3DES ciphers.
 Approved algorithms should impart some level of confidence in their
 implementation. These are also required for compliance.
 </rationale>
-<ident cce="26555-3" stig="RHEL-06-000243" />
+<ident cce="26555-3" />
 <oval id="sshd_use_approved_ciphers" />
-<ref nist="AC-3,AC-17(2),SI-7,IA-5(1)(c),IA-7" disa="803,1144,1145,1146" />
+<ref nist="AC-3,AC-17(2),SI-7,IA-5(1)(c),IA-7" disa="803,1144,1145,1146" stigid="RHEL-06-000243" 
+srg="SRG-OS-000169" />
 </Rule>
 
 

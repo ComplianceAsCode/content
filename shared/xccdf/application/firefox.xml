@@ -49,8 +49,8 @@ and deploying Firefox configuration settings. It also prevents validating
 settings easily from automated security tools.
 </rationale>
 <oval id="firefox_preferences-lock_settings_obscure" />
-<ident stig="DTBF070" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF070" />
 </Rule>
 
 <Rule id="firefox_preferences-lock_settings_config_file" severity="medium">
@@ -71,8 +71,8 @@ Locked settings prevents users from accessing about:config and changing
 the security settings set by the system administrator.
 </rationale>
 <oval id="firefox_preferences-lock_settings_config_file" />
-<ident stig="DTBF070" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF070" />
 </Rule>
 
 </Group>
@@ -162,8 +162,8 @@ Automatic updates from untrusted sites puts the enclave at
 risk of attack and may override security settings.
 </rationale>
 <oval id="firefox_preferences-addons_plugin_updates" />
-<ident stig="DTBF090" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF090" />
 </Rule>
 
 <Rule id="firefox_preferences-autofill_forms" severity="medium">
@@ -187,8 +187,8 @@ is not saved. This mitigates the risk of a website gleaning private
 information from prefilled information.
 </rationale>
 <oval id="firefox_preferences-autofill_forms" />
-<ident stig="DTBF140" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF140" />
 </Rule>
 
 <Rule id="firefox_preferences-autofill_passwords" severity="medium">
@@ -211,8 +211,8 @@ the saved password files and gain access to the user's accounts on
 various hosts.
 </rationale>
 <oval id="firefox_preferences-autofill_passwords" />
-<ident stig="DTBF150" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF150" />
 </Rule>
 
 <Rule id="firefox_preferences-auto-update_of_firefox" severity="medium">
@@ -236,8 +236,8 @@ many other default settings which point to untrusted sites which must be
 changed to point to an authorized update site that is not publicly accessible.
 </rationale>
 <oval id="firefox_preferences-auto-update_of_firefox" />
-<ident stig="DTBF080" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF080" />
 </Rule>
 
 <Group id="firefox_preferences-cookies">
@@ -270,8 +270,8 @@ Data operation when closing the browser in order to clear cookies and
 other data installed by websites visited during the session.
 </rationale>
 <oval id="firefox_preferences-cookies_clear" />
-<ident stig="DTBF170" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF170" />
 </Rule>
 
 <Rule id="firefox_preferences-cookies_user_notice" severity="medium">
@@ -295,8 +295,8 @@ Data operation when closing the browser in order to clear cookies and
 other data installed by websites visited during the session.
 </rationale>
 <oval id="firefox_preferences-cookies_user_notice" />
-<ident stig="DTBF170" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF170" />
 </Rule>
 
 </Group>
@@ -327,8 +327,8 @@ type is automatically opened in the future. This can be a security issue. New fi
 types cannot be added directly to the Application plugin listing.
 </rationale>
 <oval id="firefox_preferences-open_confirmation" value="var_required_file_types"/>
-<ident stig="DTBF110" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF110" />
 </Rule>
 
 <Rule id="firefox_preferences-password_store" severity="medium">
@@ -350,8 +350,8 @@ Autofill of a password can be enabled when a site is visited. This feature could
 be used to autofill the certificate pin which could lead to compromise of DoD information.
 </rationale>
 <oval id="firefox_preferences-password_store" />
-<ident stig="DTBF160" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF160" />
 </Rule>
 
 <Rule id="firefox_preferences-search_update" severity="medium">
@@ -374,8 +374,8 @@ This setting overrides a number of other settings which may direct the applicati
 to access external URLs.
 </rationale>
 <oval id="firefox_preferences-search_update" />
-<ident stig="DTBF085" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF085" />
 </Rule>
 
 <Rule id="firefox_preferences-shell_protocol" severity="medium">
@@ -397,8 +397,8 @@ If enabled, this setting would allow the browser to access the Windows shell.
 This could allow access to the underlying system.
 </rationale>
 <oval id="firefox_preferences-shell_protocol" />
-<ident stig="DTBF105" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF105" />
 </Rule>
 
 <Rule id="firefox_preferences-ssl_version_2" severity="medium">
@@ -420,8 +420,8 @@ Use of versions prior to TLS 1.0 are not permitted because these versions are
 non-standard. SSL 2.0 and SSL 3.0 contain a number of security flaws.
 </rationale>
 <oval id="firefox_preferences-ssl_version_2" />
-<ident stig="DTBF010" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF010" />
 </Rule>
 
 <Rule id="firefox_preferences-ssl_protocol_tls" severity="medium">
@@ -440,8 +440,8 @@ Earlier versions of SSL have known security vulnerabilities and are not
 authorized for use in DOD environments.
 </rationale>
 <oval id="firefox_preferences-ssl_protocol_tls" />
-<ident stig="DTBF030" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF030" />
 </Rule>
 
 <Rule id="firefox_preferences-verification" severity="medium">
@@ -463,8 +463,8 @@ security for DoD information. Access will be denied to the user if
 certificate management is not configured.
 </rationale>
 <oval id="firefox_preferences-verification" />
-<ident stig="DTBF050" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF050" />
 </Rule>
 
 <Rule id="firefox_preferences-ssl_version_3" severity="medium">
@@ -485,8 +485,8 @@ Earlier versions of SSL have known security vulnerabilities and are not
 authorized for use in DOD.
 </rationale>
 <oval id="firefox_preferences-ssl_version_3" />
-<ident stig="DTBF020" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF020" />
 </Rule>
 
 <Rule id="firefox_preferences-home_page" severity="medium">
@@ -512,8 +512,8 @@ mitigate the possibility of automatic inadvertent execution of scripts
 added to a previously safe site.
 </rationale>
 <oval id="firefox_preferences-home_page" value="var_default_home_page"/>
-<ident stig="DTBF017" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF017" />
 </Rule>
 
 <Rule id="installed_firefox_version_supported" severity="high">
@@ -544,8 +544,8 @@ patches. These updates are not available for unsupported version which
 can leave the application vulnerable to attack.
 </rationale>
 <oval id="installed_firefox_version_supported" />
-<ident stig="DTBF003" />
-<ref nist="DCMC-1" disa="" />
+<ident cce="" />
+<ref nist="DCMC-1" disa="" stigid="DTBF003" />
 </Rule>
 
 <Rule id="firefox_preferences-javascript_status_bar_text" severity="medium">
@@ -569,8 +569,8 @@ Webpage authors can disable many features of a popup window that they open.
 This setting prevents the status bar from being hidden.
 </rationale>
 <oval id="firefox_preferences-javascript_status_bar_text" />
-<ident stig="DTBF185" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF185" />
 </Rule>
 
 <Rule id="firefox_preferences-javascript_context_menus" severity="medium">
@@ -592,8 +592,8 @@ A website may execute JavaScript that can make changes to these
 context menus. This can help disguise an attack.
 </rationale>
 <oval id="firefox_preferences-javascript_context_menus" />
-<ident stig="DTBF183" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF183" />
 </Rule>
 
 <Rule id="firefox_preferences-javascript_status_bar_changes" severity="medium">
@@ -616,8 +616,8 @@ to the browser’s appearance to hide unauthorized activity. This activity
 can help disguise an attack taking place in a minimized background window.
 </rationale>
 <oval id="firefox_preferences-javascript_status_bar_changes" />
-<ident stig="DTBF184" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF184" />
 </Rule>
 
 <Rule id="firefox_preferences-javascript_window_resizing" severity="medium">
@@ -639,8 +639,8 @@ JavaScript can make changes to the browser’s appearance. This activity
 can help disguise an attack taking place in a minimized background window.
 </rationale>
 <oval id="firefox_preferences-javascript_window_resizing" />
-<ident stig="DTBF181" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF181" />
 </Rule>
 
 <Rule id="firefox_preferences-javascript_window_changes" severity="medium">
@@ -662,8 +662,8 @@ JavaScript can make changes to the browser’s appearance. Allowing a website
 to use JavaScript to raise and lower browser windows may disguise an attack.
 </rationale>
 <oval id="firefox_preferences-javascript_window_changes" />
-<ident stig="DTBF182" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF182" />
 </Rule>
 
 <Rule id="firefox_preferences-non-secure_page_warning" severity="medium">
@@ -686,8 +686,8 @@ conditions in a previous page are not currently being viewed under
 the same security settings.
 </rationale>
 <oval id="firefox_preferences-non-secure_page_warning" />
-<ident stig="DTBF130" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF130" />
 </Rule>
 
 <Rule id="firefox_preferences-pop-up_windows" severity="medium">
@@ -708,8 +708,8 @@ Popup windows may be used to launch an attack within a new browser window
 with altered settings.
 </rationale>
 <oval id="firefox_preferences-pop-up_windows" />
-<ident stig="DTBF180" />
-<ref nist="ECSC-1" disa="" />
+<ident cce="" />
+<ref nist="ECSC-1" disa="" stigid="DTBF180" />
 </Rule>
 
 <Rule id="firefox_preferences-auto-download_actions" severity="medium">
@@ -734,7 +734,7 @@ file is opened with a selected external application or saved to disk
 instead.
 </rationale>
 <oval id="firefox_preferences-auto-download_actions" />
-<ident stig="DTBF100" />
-<ref nist="DCMC-1" disa="" />
+<ident cce="" />
+<ref nist="DCMC-1" disa="" stigid="DTBF100" />
 </Rule>
 </Group>

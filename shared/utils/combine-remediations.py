@@ -283,12 +283,22 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 if re.match(pattern, fixparts[idx], re.DOTALL) is not None:
                     # This chunk contains call of 'populate' function
                     if "populate" in fixparts[idx]:
-                        varname, fixtextcontribution = get_populate_replacement(remediation_type, fixparts[idx])
-                        # Append the contribution
-                        fix.text += fixtextcontribution
+                        varname, fixtextcontrib = get_populate_replacement(
+                                remediation_type,
+                                fixparts[idx])
                         # Define new XCCDF <sub> element for the variable
-                        xccdfvarsub = ElementTree.Element("sub",
-                                                        idref=varname)
+                        xccdfvarsub = ElementTree.Element("sub", idref=varname)
+
+                        # If this is first sub element,
+                        # the textcontribution needs to go to fix text
+                        # otherwise, append to last subelement
+                        nfixchildren = len(list(fix))
+                        if nfixchildren == 0:
+                            fix.text += fixtextcontrib
+                        else:
+                            previouselem = fix[nfixchildren-1]
+                            previouselem.tail += fixtextcontrib
+
                         # If second pair element is not empty, append it as
                         # tail for the subelement (prefixed with closing '"')
                         if fixparts[idx + 1] is not None:

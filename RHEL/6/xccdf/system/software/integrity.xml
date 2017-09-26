@@ -59,9 +59,10 @@ Install the AIDE package with the command:
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident cce="27024-9" stig="RHEL-06-000016" />
+<ident cce="27024-9" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28, SI-7" disa="1069" pcidss="Req-11.5" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28, SI-7" disa="1069" pcidss="Req-11.5"
+stigid="RHEL-06-000016" srg="SRG-OS-000232" />
 </Rule>
 
 <Rule id="aide_build_database" severity="medium">
@@ -85,9 +86,10 @@ To find the location of the AIDE databse file, run the following command:
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident cce="27135-3" stig="RHEL-06-000018" />
+<ident cce="27135-3" />
 <oval id="aide_build_database" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" pcidss="Req-11.5" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" pcidss="Req-11.5"
+stigid="RHEL-06-000018" srg="SRG-OS-000232" />
 </Rule>
 
 <Rule id="aide_periodic_cron_checking" severity="medium">
@@ -106,8 +108,9 @@ By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
 </rationale>
 <oval id="aide_periodic_cron_checking" />
-<ident cce="27222-9" stig="RHEL-06-000306" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" pcidss="Req-11.5" />
+<ident cce="27222-9" />
+<ref nist="CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7" disa="374,416,1069,1263,1297,1589" pcidss="Req-11.5"
+stigid="RHEL-06-000306" srg="SRG-OS-000202,SRG-OS-000094,SRG-OS-000098,SRG-OS-000232,SRG-OS-000196,SRG-OS-000265" />
 </Rule>
 </Group>
 
@@ -152,9 +155,10 @@ the RPM verify command may continue to fail even after file permissions have
 been correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
 Bugzilla #1277603.</b>
 </warning>
-<ident cce="26731-0" stig="RHEL-06-000518" />
+<ident cce="26731-0" />
 <oval id="rpm_verify_permissions" />
-<ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" pcidss="Req-11.5" />
+<ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" pcidss="Req-11.5"
+stigid="RHEL-06-000518" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
@@ -183,9 +187,10 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident cce="27223-7" stig="RHEL-06-000519" />
+<ident cce="27223-7" />
 <oval id="rpm_verify_hashes" />
-<ref nist="CM-6(d),SI-7" disa="1496" pcidss="Req-11.5" />
+<ref nist="CM-6(d),SI-7" disa="1496" pcidss="Req-11.5"
+stigid="RHEL-06-000519" srg="SRG-OS-999999,SRG-OS-000278" />
 </Rule>
 
 </Group>
@@ -220,8 +225,9 @@ Verify this intrusion detection software is active.
 Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.  
 </rationale>
-<ident cce="27409-2" stig="RHEL-06-000285" />
-<ref nist="SC-7" disa="1263" pcidss="Req-11.4" />
+<ident cce="27409-2" />
+<ref nist="SC-7" disa="1263" pcidss="Req-11.4" stigid="RHEL-06-000285"
+srg="SRG-OS-000196" />
 </Rule>
 
 <Rule id="install_antivirus">
@@ -260,8 +266,8 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems. 
 </rationale>
 <oval id="install_antivirus" />
-<ident cce="27529-7" stig="RHEL-06-000284" />
-<ref nist="SC-28, SI-3" disa="1239,1668"/>
+<ident cce="27529-7" />
+<ref nist="SC-28, SI-3" disa="1239,1668" stigid="RHEL-06-000284" srg="SRG-OS-000270" />
 </Rule>
 
 </Group>

@@ -1,0 +1,45 @@
+<def-group>
+  <definition version="1" class="compliance" id="jboss_eap_configure_syslog">
+    <metadata>
+      <title>Configure JBoss to Use Syslog</title>
+      <description>EAP should be configured to export logs to syslog</description>
+      <affected family="undefined">
+        <platform>JBoss Enterprise Application Platform 6</platform>
+      </affected>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_jboss_eap_configure_syslog" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="obj_env_configure_syslog" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>JBOSS_HOME</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable id="local_var_configure_syslog_jboss_home" version="1" datatype="string" comment="version location">
+    <concat>
+      <object_component object_ref="obj_env_configure_syslog" item_field="value" />
+      <literal_component datatype="string">/standalone/configuration/</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="local_var_profile_syslog" version="1" datatype="string" comment="configuration profile">
+    <concat>
+      <variable_component var_ref="var_jboss_profile" />
+      <literal_component datatype="string">.xml</literal_component>
+    </concat>
+  </local_variable>
+
+  <external_variable comment="external variable for Jboss profile" datatype="string" id="var_jboss_profile" version="1" />
+
+  <ind:xmlfilecontent_test id="test_jboss_eap_configure_syslog" version="1" check="all" comment="Check EAP for ">
+    <ind:object object_ref="obj_jboss_eap_configure_syslog_logs" />
+  </ind:xmlfilecontent_test>
+  <ind:xmlfilecontent_object id="obj_jboss_eap_configure_syslog_logs" version="1">
+    <ind:path var_ref="local_var_configure_syslog_jboss_home"/>
+    <ind:filename var_ref="local_var_profile_syslog" />
+    <ind:xpath>//*[name()='server']/*[name()='profile']/*[name()='subsystem']/*[name()='syslog-handler']</ind:xpath>
+  </ind:xmlfilecontent_object>
+
+</def-group>

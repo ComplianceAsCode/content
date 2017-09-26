@@ -30,9 +30,10 @@ module, but will not prevent an administrator (or another program) from using th
 <rationale>USB storage devices such as thumb drives can be used to introduce
 malicious software.</rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="27016-5" stig="RHEL-06-000503" />
+<ident cce="27016-5" />
 <oval id="kernel_module_usb-storage_disabled" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250,85" stigid="RHEL-06-000503"
+srg="SRG-OS-000273" />
 </Rule>
 
 <Rule id="bootloader_nousb_argument">
@@ -103,9 +104,9 @@ rather than relying on the automounter.
 <rationale>Disabling the automounter permits the administrator to 
 statically control filesystem mounting through <tt>/etc/fstab</tt>. 
 </rationale>
-<ident cce="26976-1" stig="RHEL-06-000526" />
+<ident cce="26976-1" />
 <oval id="service_autofs_disabled" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="366" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="366" stigid="RHEL-06-000526" srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="kernel_module_cramfs_disabled">

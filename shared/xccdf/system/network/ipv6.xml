@@ -47,7 +47,7 @@ the vulnerability to exploitation.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80175-3" />
 <oval id="sysctl_kernel_ipv6_disable" />
-<ref nist="CM-7" disa="1551" cis="4.4.2" cui="3.1.20" />
+<ref nist="CM-7" disa="1551" cui="3.1.20" />
 </Rule>
 
 <Rule id="network_ipv6_disable_interfaces" prodtype="rhel7">
@@ -190,7 +190,7 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 <ident prodtype="rhel7" cce="80179-5" />
 <oval id="sysctl_net_ipv6_conf_all_accept_source_route" value="sysctl_net_ipv6_conf_all_accept_source_route_value" />
 <ref prodtype="rhel7" stigid="040830" />
-<ref nist="AC-4" disa="366" ossrg="SRG-OS-000480-GPOS-00227" cui="3.1.20" />
+<ref nist="AC-4" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_ra" prodtype="rhel7">
@@ -207,7 +207,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80180-3" />
 <oval id="sysctl_net_ipv6_conf_all_accept_ra" value="sysctl_net_ipv6_conf_all_accept_ra_value" />
-<ref nist="CM-7" cis="4.4.1.1" cui="3.1.20" />
+<ref nist="CM-7" cis="3.3.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_ra" prodtype="rhel7">
@@ -224,7 +224,7 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80181-1" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
-<ref nist="CM-7" cis="4.4.1.1" cui="3.1.20" />
+<ref nist="CM-7" cis="3.3.1" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_redirects" severity="medium" prodtype="rhel7">
@@ -241,7 +241,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80182-9" />
 <oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
-<ref nist="CM-7" disa="1551" cis="4.4.1.2" cui="3.1.20" />
+<ref nist="CM-7" disa="1551" cis="3.3.2" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium" prodtype="rhel7">
@@ -258,7 +258,7 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80183-7" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref nist="CM-7" disa="1551" cis="4.4.1.2" cui="3.1.20" />
+<ref nist="CM-7" disa="1551" cis="3.3.2" cui="3.1.20" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_default_accept_source_route" severity="medium" prodtype="rhel7">
@@ -298,7 +298,7 @@ only appropriate for systems acting as routers.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80356-9" />
 <oval id="sysctl_net_ipv6_conf_all_forwarding" value="sysctl_net_ipv6_conf_all_forwarding_value" />
-<ref nist="CM-7,SC-5" disa="366" cis="4.1.1" />
+<ref nist="CM-7,SC-5" disa="366" />
 </Rule>
 
 </Group><!--<Group id="disabling_ipv6_autoconfig">-->

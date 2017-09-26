@@ -96,7 +96,7 @@ baseline.
 <select idref="dir_perms_world_writable_sticky_bits" selected="true" />
 
 <!--	1.1.22 Disable Automounting (Scored) -->
-<!-- TO DO -->
+<select idref="service_autofs_disabled" selected="true" />
 
 <!--	1.2 	Configure Software Updates -->
 <!--	1.2.1	Ensure package manager repositories are configured (Not Scored) -->
@@ -199,56 +199,131 @@ baseline.
 <!-- 2.1.4 Ensure echo services are not enabled (Scored) -->
 <!-- 2.1.5 Ensure time services are not enabled (Scored) -->
 <!-- 2.1.6 Ensure tftp server is not enabled (Scored) -->
+<select idref="service_tftp_disabled" selected="true" />
+
 <!-- 2.1.7 Ensure xinetd is not enabled (Scored) -->
+<select idref="service_xinetd_disabled" selected="true" />
+
 <!-- 2.2 Special Purpose Services -->
 <!-- 2.2.1.1 Ensure time synchronization is in use (Not Scored) -->
 <!-- 2.2.1.2 Ensure ntp is configured (Scored) -->
 <!-- 2.2.1.3 Ensure chrony is configured (Scored) -->
 <!-- 2.2.2 Ensure X Window System is not installed (Scored) -->
 <!-- 2.2.3 Ensure Avahi Server is not enabled (Scored) -->
+<select idref="service_avahi-daemon_disabled" selected="true" />
+
 <!-- 2.2.4 Ensure CUPS is not enabled (Scored) -->
 <!-- 2.2.5 Ensure DHCP Server is not enabled (Scored) -->
+<select idref="service_dhcpd_disabled" selected="true" />
+
 <!-- 2.2.6 Ensure LDAP server is not enabled (Scored) -->
 <!-- 2.2.7 Ensure NFS and RPC are not enabled (Scored) -->
+<select idref="service_rpcbind_disabled" selected="true" />
+<select idref="service_nfs_disabled" selected="true" />
+
 <!-- 2.2.8 Ensure DNS Server is not enabled (Scored) -->
+<select idref="service_named_disabled" selected="true" />
+
 <!-- 2.2.9 Ensure FTP Server is not enabled (Scored) -->
+<select idref="service_vsftpd_disabled" selected="true" />
+
 <!-- 2.2.10 Ensure HTTP server is not enabled (Scored) -->
+<select idref="service_httpd_disabled" selected="true" />
+
 <!-- 2.2.11 Ensure IMAP and POP3 server is not enabled (Scored) -->
+<select idref="service_dovecot_disabled" selected="true" />
+
 <!-- 2.2.12 Ensure Samba is not enabled (Scored) -->
+<select idref="service_smb_disabled" selected="true" />
+
 <!-- 2.2.13 Ensure HTTP Proxy Server is not enabled (Scored) -->
+<select idref="service_squid_disabled" selected="true" />
+
 <!-- 2.2.14 Ensure SNMP Server is not enabled (Scored) -->
+<select idref="service_snmpd_disabled" selected="true" />
+
 <!-- 2.2.15 Ensure mail transfer agent is configured for local-only mode (Scored) -->
+<select idref="postfix_network_listening_disabled" selected="true" />
+
 <!-- 2.2.16 Ensure NIS Server is not enabled (Scored) -->
 <!-- 2.2.17 Ensure rsh server is not enabled (Scored) -->
-<!-- 2.2.18 Ensure talk server is not enabled (Scored) -->
-<!-- 2.2.19 Ensure telnet server is not enabled (Scored) -->
-<!-- 2.2.20 Ensure tftp server is not enabled (Scored) -->
-<!-- 2.2.21 Ensure rsync service is not enabled (Scored) -->
+<select idref="service_rexec_disabled" selected="true" />
+<select idref="service_rsh_disabled" selected="true" />
+<select idref="service_rlogin_disabled" selected="true" />
+
+<!-- 2.2.18 Ensure telnet server is not enabled (Scored) -->
+<select idref="service_telnet_disabled" selected="true" />
+
+<!-- 2.2.19 Ensure tftp server is not enabled (Scored) -->
+<!-- 2.2.20 Ensure rsync service is not enabled (Scored) -->
+<!-- 2.2.21 Ensure talk server is not enabled (Scored) -->
 <!-- 2.3 Service Clients -->
 <!-- 2.3.1 Ensure NIS Client is not installed (Scored) -->
+<select idref="package_ypbind_removed" selected="true" />
+
 <!-- 2.3.2 Ensure rsh client is not installed (Scored) -->
+<select idref="package_rsh_removed" selected="true" />
+
 <!-- 2.3.3 Ensure talk client is not installed (Scored) -->
+<select idref="package_talk_removed" selected="true" />
+
 <!-- 2.3.4 Ensure telnet client is not installed (Scored) -->
+<select idref="package_telnet_removed" selected="true" />
+
 <!-- 2.3.5 Ensure LDAP client is not installed (Scored) -->
 <!-- 3 Network Configuration -->
 <!-- 3.1 Network Parameters (Host Only) -->
 <!-- 3.1.1 Ensure IP forwarding is disabled (Scored) -->
+<select idref="sysctl_net_ipv4_ip_forward" selected="true" />
+
 <!-- 3.1.2 Ensure packet redirect sending is disabled (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_send_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_send_redirects" selected="true" />
+
 <!-- 3.2 Network Parameters (Host and Router) -->
 <!-- 3.2.1 Ensure source routed packets are not accepted (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_accept_source_route" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_source_route" selected="true" />
+
 <!-- 3.2.2 Ensure ICMP redirects are not accepted (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_accept_redirects" selected="true" />
+
 <!-- 3.2.3 Ensure secure ICMP redirects are not accepted (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_secure_redirects" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_secure_redirects" selected="true" />
+
 <!-- 3.2.4 Ensure suspicious packets are logged (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_log_martians" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_log_martians" selected="true" />
+
 <!-- 3.2.5 Ensure broadcast ICMP requests are ignored (Scored) -->
+<select idref="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" selected="true" />
+
 <!-- 3.2.6 Ensure bogus ICMP responses are ignored (Scored) -->
+<select idref="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" selected="true" />
+
 <!-- 3.2.7 Ensure Reverse Path Filtering is enabled (Scored) -->
+<select idref="sysctl_net_ipv4_conf_all_rp_filter" selected="true" />
+<select idref="sysctl_net_ipv4_conf_default_rp_filter" selected="true" />
+
 <!-- 3.2.8 Ensure TCP SYN Cookies is enabled (Scored) -->
+<select idref="sysctl_net_ipv4_tcp_syncookies" selected="true" />
+
 <!-- 3.3 IPv6 -->
 <!-- 3.3.1 Ensure IPv6 router advertisements are not accepted (Scored) -->
+<select idref="sysctl_net_ipv6_conf_all_accept_ra" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_ra" selected="true" />
+
 <!-- 3.3.2 Ensure IPv6 redirects are not accepted (Scored) -->
+<select idref="sysctl_net_ipv6_conf_all_accept_redirects" selected="true" />
+<select idref="sysctl_net_ipv6_conf_default_accept_redirects" selected="true" />
+
 <!-- 3.3.3 Ensure IPv6 is disabled (Not Scored) -->
 <!-- 3.4 TCP Wrappers -->
 <!-- 3.4.1 Ensure TCP Wrappers is installed (Scored) -->
+<select idref="package_tcp_wrappers_installed" selected="true" />
+
 <!-- 3.4.2 Ensure /etc/hosts.allow is configured (Scored) -->
 <!-- 3.4.3 Ensure /etc/hosts.deny is configured (Scored) -->
 <!-- 3.4.4 Ensure permissions on /etc/hosts.allow are configured (Scored) -->
@@ -402,6 +477,8 @@ baseline.
 <!-- 5.4.2 Ensure system accounts are non-login (Scored) -->
 <!-- 5.4.3 Ensure default group for the root account is GID 0 (Scored) -->
 <!-- 5.4.4 Ensure default user umask is 027 or more restrictive (Scored) -->
+<select idref="accounts_umask_etc_bashrc" selected="true" />
+<select idref="accounts_umask_etc_profile" selected="true" />
 
 <!-- 5.5 Ensure root login is restricted to system console (Not Scored) -->
 <select idref="no_direct_root_logins" selected="true" />
@@ -411,18 +488,44 @@ baseline.
 <!-- 6.1 System File Permissions -->
 <!-- 6.1.1 Audit system file permissions (Not Scored) -->
 <!-- 6.1.2 Ensure permissions on /etc/passwd are configured (Scored) -->
+<select idref="file_owner_etc_passwd" selected="true" />
+<select idref="file_groupowner_etc_passwd" selected="true" />
+<select idref="file_permissions_etc_passwd" selected="true" />
+
 <!-- 6.1.3 Ensure permissions on /etc/shadow are configured (Scored) -->
+<select idref="userowner_shadow_file" selected="true" />
+<select idref="groupowner_shadow_file" selected="true" />
+<select idref="file_permissions_etc_shadow" selected="true" />
+
 <!-- 6.1.4 Ensure permissions on /etc/group are configured (Scored) -->
+<select idref="file_owner_etc_group" selected="true" />
+<select idref="file_groupowner_etc_group" selected="true" />
+<select idref="file_permissions_etc_group" selected="true" />
+
 <!-- 6.1.5 Ensure permissions on /etc/gshadow are configured (Scored) -->
+<select idref="file_owner_etc_gshadow" selected="true" />
+<select idref="file_groupowner_etc_gshadow" selected="true" />
+<select idref="file_permissions_etc_gshadow" selected="true" />
+
 <!-- 6.1.6 Ensure permissions on /etc/passwd- are configured (Scored) -->
 <!-- 6.1.7 Ensure permissions on /etc/shadow- are configured (Scored) -->
 <!-- 6.1.8 Ensure permissions on /etc/group- are configured (Scored) -->
 <!-- 6.1.9 Ensure permissions on /etc/gshadow- are configured (Scored) -->
 <!-- 6.1.10 Ensure no world writable files exist (Scored) -->
+<select idref="file_permissions_unauthorized_world_writable" selected="true" />
+
 <!-- 6.1.11 Ensure no unowned files or directories exist (Scored) -->
+<select idref="no_files_unowned_by_user" selected="true" />
+
 <!-- 6.1.12 Ensure no ungrouped files or directories exist (Scored) -->
+<select idref="file_permissions_ungroupowned" selected="true" />
+
 <!-- 6.1.13 Audit SUID executables (Not Scored) -->
+<select idref="file_permissions_unauthorized_suid" selected="true" />
+
 <!-- 6.1.14 Audit SGID executables (Not Scored) -->
+<select idref="file_permissions_unauthorized_sgid" selected="true" />
+
 <!-- 6.2 User and Group Settings -->
 <!-- 6.2.1 Ensure password fields are not empty (Scored) -->
 <!-- 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd (Scored) -->
@@ -438,6 +541,8 @@ baseline.
 <!-- 6.2.12 Ensure no users have .netrc files (Scored) -->
 <!-- 6.2.13 Ensure users' .netrc Files are not group or world accessible (Scored) -->
 <!-- 6.2.14 Ensure no users have .rhosts files (Scored) -->
+<select idref="no_rsh_trust_files" selected="true" />
+
 <!-- 6.2.15 Ensure all groups in /etc/passwd exist in /etc/group (Scored) -->
 <!-- 6.2.16 Ensure no duplicate UIDs exist (Scored) -->
 <!-- 6.2.17 Ensure no duplicate GIDs exist (Scored) -->

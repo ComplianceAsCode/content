@@ -48,7 +48,7 @@ system security.
 <platform idref="cpe:/a:machine"/>
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <oval id="gnome_gdm_disable_automatic_login" />
-<ref nist="CM-6(b)" disa="366" stig="TBD"/>
+<ref nist="CM-6(b)" disa="366" stigid=""/>
 </Rule>
 
 <Rule id="gnome_gdm_disable_guest_login" severity="high">
@@ -75,7 +75,7 @@ system security.
 <platform idref="cpe:/a:machine"/>
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <oval id="gnome_gdm_disable_guest_login" />
-<ref nist="CM-6(b)" disa="366" stig="TBD"/>
+<ref nist="CM-6(b)" disa="366" stigid=""/>
 </Rule>
 
 <Rule id="gconf_gdm_disable_user_list" severity="medium">
@@ -101,7 +101,8 @@ without logging in.</rationale>
 <platform idref="cpe:/a:machine"/>
 <oval id="gconf_gdm_disable_user_list" />
 <ident cce="27230-2" />
-<ref nist="AC-23" />
+<ref nist="AC-23" disa="366" stigid="RHEL-06-000527"
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="gconf_gnome_disable_restart_shutdown" severity="high">
@@ -128,7 +129,7 @@ due to reboot.
 <platform idref="cpe:/a:machine"/>
 <!--ident cce="RHEL6-CCE-TBD" /-->
 <oval id="gconf_gnome_disable_restart_shutdown" />
-<ref nist="AC-6" disa="366" stig="TBD" />
+<ref nist="AC-6" disa="366" stigid="" />
 </Rule>
 
 </Group>
@@ -195,9 +196,10 @@ screensaver will start, and can be combined with
 screen locking to prevent access from passersby.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26828-4" stig="RHEL-06-000257" />
+<ident cce="26828-4" />
 <oval id="gconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" stigid="RHEL-06-000257"
+srg="SRG-OS-000029" />
 </Rule>
 
 <Rule id="gconf_gnome_screensaver_idle_activation_enabled" severity="medium">
@@ -222,9 +224,10 @@ login session does not have administrator rights and the display station is loca
 controlled-access area.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26600-7" stig="RHEL-06-000258" />
+<ident cce="26600-7" />
 <oval id="gconf_gnome_screensaver_idle_activation_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" stigid="RHEL-06-000258"
+srg="SRG-OS-000029" />
 </Rule>
 
 <Rule id="gconf_gnome_screensaver_lock_enabled" severity="medium">
@@ -248,9 +251,10 @@ ensures password entry will be required in order to
 access the system, preventing access by passersby.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26235-2" stig="RHEL-06-000259" />
+<ident cce="26235-2" />
 <oval id="gconf_gnome_screensaver_lock_enabled" />
-<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" stigid="RHEL-06-000259"
+srg="SRG-OS-000029" />
 </Rule>
 
 <Rule id="gconf_gnome_screensaver_mode_blank" >
@@ -273,9 +277,10 @@ Setting the screensaver mode to blank-only conceals the
 contents of the display from passersby.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<ident cce="26638-7" stig="RHEL-06-000260" />
+<ident cce="26638-7" />
 <oval id="gconf_gnome_screensaver_mode_blank" />
-<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" />
+<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" stigid="RHEL-06-000260"
+srg="SRG-OS-000031" />
 </Rule>
 
 <Rule id="gconf_gnome_screensaver_max_idle_time" severity="medium">
@@ -300,9 +305,9 @@ opportunity for unauthorized personnel to take control of a management session
 and will also free up resources utilized by an idle session.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<!--ident cce="26828-4" stig="RHEL-06-000257" /-->
+<!--ident cce="26828-4"  /-->
 <oval id="gconf_gnome_screensaver_max_idle_time" value="inactivity_timeout_value" />
-<!--ref nist="AC-11(a)" disa="57"/-->
+<!--ref nist="AC-11(a)" disa="57" stigid="RHEL-06-000257"/-->
 </Rule>
 
 <Rule id="gconf_gnome_screensaver_max_idle_action" severity="medium">
@@ -326,9 +331,9 @@ opportunity for unauthorized personnel to take control of a management session
 and will also free up resources utilized by an idle session.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<!--ident cce="26828-4" stig="RHEL-06-000257" /-->
+<!--ident cce="26828-4"  /-->
 <oval id="gconf_gnome_screensaver_max_idle_action" value="inactivity_timeout_value" />
-<!--ref nist="AC-11(a)" disa="57"/-->
+<!--ref nist="AC-11(a)" disa="57" stigid="RHEL-06-000257"/-->
 </Rule>
 
 </Group>
@@ -372,7 +377,7 @@ loss of availability of systems due to unintentional reboot.
 <platform idref="cpe:/a:machine"/>
 <oval id="gconf_gnome_disable_ctrlaltdel_reboot" />
 <!--ident cce="RHEL6-CCE-TBD" /-->
-<ref nist="AC-6" disa="366" stig="TBD" />
+<ref nist="AC-6" disa="366" stigid="" />
 </Rule>
 
 <Rule id="gconf_gnome_disable_clock_temperature" severity="medium">
@@ -396,9 +401,9 @@ system from connecting to the internet and diclosing the system
 location when set by a user.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<!--ident cce="26235-2" stig="RHEL-06-000259" /-->
+<!--ident cce="26235-2"  /-->
 <oval id="gconf_gnome_disable_clock_temperature" />
-<!--ref nist="AC-11(a)" disa="57" /-->
+<!--ref nist="AC-11(a)" disa="57" stigid="RHEL-06-000259"/-->
 </Rule>
 
 <Rule id="gconf_gnome_disable_clock_weather" severity="medium">
@@ -422,9 +427,9 @@ system from connecting to the internet and diclosing the system
 location when set by a user.
 </rationale>
 <platform idref="cpe:/a:machine"/>
-<!--ident cce="26235-2" stig="RHEL-06-000259" /-->
+<!--ident cce="26235-2"  /-->
 <oval id="gconf_gnome_disable_clock_weather" />
-<!--ref nist="AC-11(a)" disa="57" /-->
+<!--ref nist="AC-11(a)" disa="57" stigid="RHEL-06-000259"/-->
 </Rule>
 
 

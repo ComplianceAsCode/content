@@ -152,31 +152,30 @@ This means:
  * build the source RPM (result will be in /rpmbuild/SRPMS)
 
 Next, return back to fedpkg & import the SRPM created in the previous step:
-
+----
 $ fedpkg import path_to_rpm
-
+----
 This will change content of 'sources' file (include new md5sum) & update scap-security-guide.spec.
-
+----
 $ git status [to see what will get committed]
-
 $ git commit [to confirm changes. The commit message should contain the string "Resolves: rh bz# id_of_epel_bug_we_created_before"
-
+----
 Make scratch build to see the uploaded content (spec + tarball) would actually build in the Koji build system via:
-
+----
 $ fedpkg scratch-build --srpm path_to_srpm_created_locally_before
-
+----
 NOTE: scratch-build to work with actually committed git repository content, it requires the new content to already be "git push-ed" to the repository. But since we want to verify if the content would build ye before pushing changes into the EPEL-6 repository, we need to provide the --srpm option pointing fedpkg to the local source RPM package we have created one step before.
 
 Once the scratch build passes (visible in Koji web interface, or also on command line), we can push the changes to the git repository via:
-
+----
 $ git push origin el6
-
+----
 After successful push, our / latest push should be visibile at (in el6 branch) http://pkgs.fedoraproject.org/cgit/scap-security-guide.git/
 
 Now it's safe (scratch build succeeded & we pushed the changes to the Fedora's git) to build real new package via:
-
+----
 $ fedpkg build
-
+----
 This again generates clickable link, at which point it's possible to see the progress / result of the build. Once the new package build in Koji finishes successfully, we flip the previously created EPEL-6 bug to MODIFIED (ASSIGNED => MODIFIED) and mention the new package name-version-release in the "Fixed in Version:" field of that bug.
 
 6) Having new build available, it's necessary to schedule new Bodhi update (something like advisory to be tied with new package). I am using UI:
@@ -191,20 +190,19 @@ Add New Update
 
 Package: name-version-release of Koji build goes here (e.g. scap-security-guide-0.1-16.el6)
 
-Type: select one of - bugfix /* intented for updates fixing bugs */
+Type: select one of
 
-enhancement /* intended for adding new features */
-
-security /* intended for fixing security flaws */
-
-newpackage /* intended for updates introducing new RPM packages */
+ - bugfix (intented for updates fixing bugs)
+ - enhancement (intended for adding new features)
+ - security (intended for fixing security flaws)
+ - newpackage (intended for updates introducing new RPM packages)
 
 options
-Request: select "testing" option of -testing /* intended for udpates that should reach -testing repo first, before -stable) */
+Request: select "testing" option of
 
--stable /* updates directly into -stable (maybe fore critical) */
-
--none /* don't use this */
+ - testing (intended for udpates that should reach -testing repo first, before -stable))
+ - stable (updates directly into -stable (maybe fore critical))
+ - none (don't use this)
 
 Bugs: Provide previously created EPEL-6 RH BZ#, ensure the "Close bugs when update is stable" option is checked!
 

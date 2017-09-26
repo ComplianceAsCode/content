@@ -22,6 +22,7 @@ Postfix was coded with security in mind and can also be more effectively contain
 SELinux as its modular design has resulted in separate processes performing specific actions.
 More information is available on its website, <weblink-macro link="http://www.postfix.org"/>.
 </description>
+<platform idref="cpe:/a:machine" />
 
 <Rule id="service_postfix_enabled" prodtype="rhel7">
 <title>Enable Postfix Service</title>
@@ -83,7 +84,7 @@ and not from the network, which protects it from network attack.
 </rationale>
 <ident prodtype="rhel7" cce="80289-2" />
 <oval id="postfix_network_listening_disabled" />
-<ref nist="CM-7" disa="382" cis="3.16" />
+<ref nist="CM-7" disa="382" cis="2.2.15" />
 </Rule>
 
 </Group>

@@ -7,11 +7,34 @@
         <platform>JBoss Enterprise Application Platform 6</platform>
       </affected>
       <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.0.1" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.1.0" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.2.0" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.2.1" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.2.2" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.2.3" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.2.4" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.3.0" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.3.1" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.3.2" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.3.3" />
+      <reference source="CPE" ref_id="cpe:/a:redhat:jboss_enterprise_application_platform:6.4.4" />
     </metadata>
-    <criteria>
+    <criteria operator="OR">
       <criterion test_ref="test_installed_eap_version_6" />
+      <criterion test_ref="test_installed_eap_version_6_container" />
+      <criterion test_ref="test_package_eap6_installed" />
     </criteria>
   </definition>
+
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_eap6_installed" version="1"
+  comment="package eap6 is installed">
+    <linux:object object_ref="obj_package_eap6_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_eap6_installed" version="1">
+    <linux:name>eap6</linux:name>
+  </linux:rpminfo_object>
 
   <ind:environmentvariable58_object id="obj_env_installed_eap6_home" version="1">
     <ind:pid xsi:nil="true" datatype="int" />
@@ -22,28 +45,32 @@
     <ind:object object_ref="obj_installed_eap_version_6" />
     <ind:state state_ref="state_installed_eap_version_6" />
   </ind:textfilecontent54_test>
-
   <ind:textfilecontent54_object id="obj_installed_eap_version_6" version="1">
     <ind:path var_ref="local_var_installed_eap_version_6"/>
-    <ind:filename>boot.log</ind:filename>
-    <ind:pattern operation="pattern match">Release ID: JBoss \[EAP\] ([0-9\.]{3,5})</ind:pattern>
+    <ind:filename>version.txt</ind:filename>
+    <ind:pattern operation="pattern match">Red[\s]+Hat[\s]+JBoss[\s]+Enterprise[\s]+Application[\s]+Platform[\s]+\-[\s]+Version[\s]+(.*)GA</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_installed_eap_version_6_container" version="1" check="all" comment="Check EAP Version">
+    <ind:object object_ref="obj_installed_eap_version_6_container" />
+    <ind:state state_ref="state_installed_eap_version_6" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_installed_eap_version_6_container" version="1">
+    <ind:filepath>/opt/eap/version.txt</ind:filepath>
+    <ind:pattern operation="pattern match">Red[\s]+Hat[\s]+JBoss[\s]+Enterprise[\s]+Application[\s]+Platform[\s]+\-[\s]+Version[\s]+(.*)GA</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
   <ind:textfilecontent54_state id="state_installed_eap_version_6" version="1">
-    <ind:subexpression operation="pattern match">6\.(0|1)\.[0-2]+</ind:subexpression>
+    <ind:subexpression operation="pattern match">6\.[0-4]+\.[0-9]+</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  <local_variable id="local_var_installed_eap_version_6" version="1" datatype="string" comment="log location">
+  <local_variable id="local_var_installed_eap_version_6" version="1" datatype="string" comment="version location">
     <concat>
       <object_component object_ref="obj_env_installed_eap6_home" item_field="value" />
-      <literal_component>/server/</literal_component>
-      <!--variable_component var_ref="const_var_eap6_server_env"/-->
-      <literal_component>/log</literal_component>
+      <literal_component datatype="string">/</literal_component>
     </concat>
   </local_variable>
-
-  <constant_variable comment="server profile OVAL content is run against" datatype="string" version="1" id="const_var_eap6_server_env">
-    <value>production</value>
-  </constant_variable>
 
 </def-group>
