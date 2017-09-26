@@ -32,23 +32,3 @@ multi_platform_opensuse = 42.0,42.1
 multi_platform_rhev = 
 multi_platform_sle = 11,12
 
-#
-# OVAL Schema version
-#
-[Schema Version]
-# The default OVAL content version for RHEL/7, Fedora, Debian/8 and
-# OpenStack/RHEL-OSP/7 products is OVAL-5.10! (To support portion of the
-# benchmark not using OVAL-5.11 language constructs successfully to build also
-# with older oscap versions).
-#
-# But if during building the content we detect underlying oscap version on the
-# system supports OVAL-5.11 language version already, we increase the produced
-# OVAL document version to "5.11". See 'make checks' target in Makefiles for
-# these products for further details.
-rhel7_oval_version = 5.10
-fedora_oval_version = 5.10
-debian8_oval_version = 5.10
-ubuntu1604_oval_version = 5.11
-ubuntu1404_oval_version = 5.10
-wrlinux_oval_version = 5.10
-oval_version = 5.10

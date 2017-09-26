@@ -60,24 +60,13 @@ def parse_conf_file(conf_file, product):
     parser = SafeConfigParser()
     parser.read(conf_file)
     multi_platform = {}
-    oval_version = None
 
     for section in parser.sections():
         for name, setting in parser.items(section):
             setting = re.sub('.;:', ',', re.sub(' ', '', setting))
-            if name == product + '_oval_version':
-                oval_version = setting
-            elif not oval_version and name == 'oval_version':
-                oval_version = setting
-            else:
-                multi_platform[name] = [item for item in setting.split(",")]
+            multi_platform[name] = [item for item in setting.split(",")]
 
-    if oval_version is None:
-        sys.stderr.write("ERROR! The setting returned a value of \'%s\'!\n"
-                         % oval_version)
-        sys.exit(1)
-
-    return oval_version, multi_platform
+    return multi_platform
 
 
 def check_is_applicable_for_product(oval_check_def, product):
@@ -266,20 +255,6 @@ def check_oval_version(oval_version):
         sys.exit(1)
 
 
-def parse_oval_dir_parameter(version_oval_dir):
-    try:
-        oval_version, filename = version_oval_dir.split(":", 1)
-        check_oval_version(oval_version)
-        return (oval_version, filename)
-
-    except ValueError:
-        sys.stderr.write(
-            "Parameter \"%s\" is not in format <oval_version>:<dir>, "
-            "e.g <oval_5.10:mydirectory>\n" % (version_oval_dir)
-        )
-        sys.exit(1)
-
-
 def check_is_loaded(loaded_dict, filename, version):
     if filename in loaded_dict:
         if loaded_dict[filename] >= version:
@@ -296,7 +271,7 @@ def check_is_loaded(loaded_dict, filename, version):
     return False
 
 
-def checks(product, oval_dirs):
+def checks(product, oval_version, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
        oval_dirs: list of directory with oval files (later has higher priority)
@@ -307,9 +282,8 @@ def checks(product, oval_dirs):
     reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
     already_loaded = dict()  # filename -> oval_version
 
-    for version_oval_dir in reversed_dirs:
+    for oval_dir in reversed_dirs:
         try:
-            oval_version, oval_dir = parse_oval_dir_parameter(version_oval_dir)
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
@@ -342,14 +316,12 @@ def main():
                    help="which product are we building for? example: rhel7")
     p.add_argument("--oval_config", required=True,
                    help="Location of the oval.config file.")
-    p.add_argument("--oval_version",
+    p.add_argument("--oval_version", required=True,
                    help="OVAL version to use. Example: 5.11, 5.10, ...")
     p.add_argument("--output", type=argparse.FileType('w'), required=True)
     p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
-                   help="Prefixed directory(ies) from which we will collect "
-                   "OVAL definitions to combine. Prefix OVAL 5.10 dirs with "
-                   "oval_5.10 - example: oval_5.10:absolute/path/to/dir. Prefix"
-                   "OVAL 5.11 dirs with oval_5.11. Order matters, latter "
+                   help="Directory(ies) from which we will collect "
+                   "OVAL definitions to combine. Order matters, latter "
                    "directories override former.")
 
     args, unknown = p.parse_known_args()
@@ -359,24 +331,16 @@ def main():
         )
         sys.exit(1)
 
-    oval_schema_version = None
-    runtime_oval_schema_version = args.oval_version
-
     if os.path.isfile(args.oval_config):
-        config_oval_schema_version, multi_platform = \
+        multi_platform = \
             parse_conf_file(args.oval_config, args.product)
-        if runtime_oval_schema_version is not None and \
-           runtime_oval_schema_version != config_oval_schema_version:
-            oval_schema_version = runtime_oval_schema_version
-        else:
-            oval_schema_version = config_oval_schema_version
-        header = _header(oval_schema_version, args.ssg_version)
+        header = _header(args.oval_version, args.ssg_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))
         sys.exit(1)
 
-    body = checks(args.product, args.ovaldirs)
+    body = checks(args.product, args.oval_version, args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
