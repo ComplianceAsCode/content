@@ -3,20 +3,21 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- name: "Enable GNOME3 Login Warning Banner"
+- name: "@RULE_TITLE@"
   ini_file:
-    dest: "/etc/dconf/db/local/d/00-security-settings"
-    section: "org/gnome/login-screen"
-    option: banner-message-enabled
+    dest: /etc/dconf/db/gdm.d/00-security-settings
+    section: org/gnome/login-screen
+    option: banner-message-enable
     value: true
     create: yes
   tags:
     @ANSIBLE_TAGS@
 
-- name: "Prevent user modification of GNOME banner-message-enabled"
+- name: "Prevent user modification of GNOME3 Login Warning Banner"
   lineinfile:
-    path: /etc/dconf/db/local.d/locks/00-security-settings-lock
-    regexp: '^/org/gnome/login-screen/banner-message-enable'
-    line: '/org/gnome/login-screen/banner-message-enable'
+    path: '/etc/dconf/db/gdm.d/locks/00-security-settings-lock'
+    regexp: '^org/gnome/login-screen/banner-message-enable'
+    line: 'org/gnome/login-screen/banner-message-enable'
+    state: present
   tags:
     @ANSIBLE_TAGS@
