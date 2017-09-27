@@ -306,10 +306,10 @@ Contributions can be made for rules, checks, remediations or even utilities. The
 
 ==== Checks
 
-Checks are used to evaluate a rule. They are written using a custom OVAL syntax and are stored as xml files inside the _template/static/oval_ directory for the desired platform.
+Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _template/static/oval_ directory for the desired platform.
 During the building process, SSG will transform the checks in OVAL compliant checks.
 
-In order to create a new check, you must create a file in the correct directory, and name it the same as its future OVAL _id_ attribute.
+In order to create a new check, you must create a file in the appropriate directory, and name it the same as the Rule _id_. This _id_ will also be used as the OVAL _id_ attribute.
 The content of the file should follow the OVAL specification with these exceptions:
 
  * The root tag must be `<def-group>`
@@ -419,7 +419,7 @@ Here is an example of a Ansible remediation that ensures the SELinux is enabled 
 
 ==== Bash
 
-Bash remediations are stored as shell script files in directory _/template/static/bash_ under the targeted platform. You can make use of any available command, but beware of too specific or complex solutions, as it may lead to a narrow range of supported platforms. There are a number of tested bash remediations functions available in _shared/bash_remediation_functions/_ directory, it is possible one of them is exactly what you are looking for.
+Bash remediations are stored as shell script files in directory _/template/static/bash_ under the targeted platform. You can make use of any available command, but beware of too specific or complex solutions, as it may lead to a narrow range of supported platforms. There are a number of already written bash remediations functions available in _shared/bash_remediation_functions/_ directory, it is possible one of them is exactly what you are looking for.
 
 Following, you can see an example of a bash remediation that sets the maximum number of days a password may be used:
 
