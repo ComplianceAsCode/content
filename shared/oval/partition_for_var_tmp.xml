@@ -1,0 +1,23 @@
+<def-group>
+  <definition class="compliance" id="partition_for_var_tmp" version="1">
+    <metadata>
+      <title>Ensure /var/tmp Located On Separate Partition</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>The /var/tmp directory is a world-writable directory used for
+      temporary file storage. Verify that it has its own partition or logical
+      volume.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_var_tmp_partition" comment="/var/tmp on own partition" />
+    </criteria>
+  </definition>
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="test_var_tmp_partition" version="1" comment="/var/tmp on own partition">
+    <linux:object object_ref="object_own_var_tmp_partition" />
+  </linux:partition_test>
+  <linux:partition_object id="object_own_var_tmp_partition" version="1">
+    <linux:mount_point>/var/tmp</linux:mount_point>
+  </linux:partition_object>
+</def-group>
