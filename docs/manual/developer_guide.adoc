@@ -258,3 +258,360 @@ $ shared/utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-m
 ==== Updating stig_overlay.xml
 
 - Feature needs to be added to shared/utils/create-stig-overlay.py
+
+== Contributing with XCCDFs, OVALs and remediations
+
+There are three main types of content in SSG, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
+SSG also has its own templating mechanism, allowing content writers to create models and use it to generate a number of checks and remediations.
+
+The SSG content is primarily divided by platform and it can be seen on its directory structure:
+
+
+====
+[%hardbreaks]
+*scap-security-guide/*
+├── _build_
+├── Chromium
+├── Debian
+├── _docs_
+├── Fedora
+├── Firefox
+├── JBoss
+├── JBossEAP5
+├── JRE
+├── OpenStack
+├── OpenSUSE
+├── RHEL
+├── RHEVM3
+├── shared
+├── SUSE
+├── Ubuntu
+├── Webmin
+└── WRLinux
+====
+
+Except for _build_ and _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
+The shared directory contains checks and remediations that can be used by more than one platform. It also contains some utilities, that will be covered later.
+
+=== Contributing
+
+Contributions can be made for rules, checks, remediations or even utilities. There are different sets of guidelines for each type, for this reason there is a different topic for each of them.
+
+==== Rules
+
+...
+// shared/references/cce-rhel-avail.txt
+
+==== Checks
+
+Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _template/static/oval_ directory for the desired platform.
+During the building process, SSG will transform the checks in OVAL compliant checks.
+
+In order to create a new check, you must create a file in the appropriate directory, and name it the same as the Rule _id_. This _id_ will also be used as the OVAL _id_ attribute.
+The content of the file should follow the OVAL specification with these exceptions:
+
+ * The root tag must be `<def-group>`
+ * Don't use the tags `<definitions>` `<tests>` `<objects>` `<states>`, instead, put the tags `<definition>` `<*_test>` `<*_object>` `<*_state>` directly inside the `<def-group>` tag.
+ * *TODO* Namespaces
+
+This is an example of a check, written using the custom OVAL syntax, that checks if the group that owns the file _/etc/cron.allow_ is the root:
+
+[source,xml]
+----
+<def-group>
+  <definition class="compliance" id="file_groupowner_cron_allow" version="1">
+    <metadata>
+      <title>Verify group who owns 'cron.allow' file</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The /etc/cron.allow file should be owned by the appropriate
+      group.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_groupowner_etc_cron_allow" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="any_exist"
+  comment="Testing group ownership /etc/cron.allow" id="test_groupowner_etc_cron_allow"
+  version="1">
+    <unix:object object_ref="object_groupowner_cron_allow_file" />
+    <unix:state state_ref="state_groupowner_cron_allow_file" />
+  </unix:file_test>
+  <unix:file_state id="state_groupowner_cron_allow_file" version="1">
+    <unix:group_id datatype="int">0</unix:group_id>
+  </unix:file_state>
+  <unix:file_object comment="/etc/cron.allow"
+  id="object_groupowner_cron_allow_file" version="1">
+    <unix:filepath>/etc/cron.allow</unix:filepath>
+  </unix:file_object>
+----
+
+=== Remediations
+
+Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda and Puppet.
+They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly. 
+Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
+
+[source,yml]
+----
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+----
+
+[cols="3*", options="header"]
+|===
+| Field | Description | Accepted values
+
+| platform
+| CPE name, CPE applicability language expression or even SSG wildcards declaring which platforms the fix can be applied
+| link:https://github.com/OpenSCAP/openscap/blob/maint-1.2/cpe/openscap-cpe-dict.xml[Default CPE dictionary is packaged along with openscap]. Custom CPE dictionaries can be used. SSG wildcards are multi_platform_[all, oval, fedora, debian, ubuntu, linux, rhel, openstack, opensuse, rhev, sle].
+
+| reboot
+| Whether or not a reboot is necessary after the fix
+| true, false
+
+
+| strategy
+| The method or approach for making the described fix. Only informative for now
+| unknown, configure, disable, enable, patch, policy, restrict, update
+
+| complexity
+| The estimated complexity or difficulty of applying the fix to the target. Only informative for now
+| unknown, low, medium, high
+
+
+| disruption
+| An estimate of the potential for disruption or operational degradation that the application of this fix will impose on the target. Only informative for now
+| unknown, low, medium, high
+|===
+
+==== Ansible
+
+Ansible remediations are stored as yml files in directory _/template/static/ansible_ under the targeted platform. They are meant to be executed by Ansible itself when requested by openscap, so they are
+written using link:ttp://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
+
+- The remediation content must be only the _tasks_ section of what would be a playbook
+- The _tags_ section must be present in each task as shown in the example, it'll be replaced during the building process
+- Notifications and handlers are not supported
+
+Here is an example of a Ansible remediation that ensures the SELinux is enabled in grub:
+
+[source,yml]
+----
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Ensure SELinux Not Disabled in /etc/default/grub
+  replace:
+    dest: /etc/default/grub
+    regexp: selinux=0
+  tags:
+    @ANSIBLE_TAGS@
+----
+
+==== Bash
+
+Bash remediations are stored as shell script files in directory _/template/static/bash_ under the targeted platform. You can make use of any available command, but beware of too specific or complex solutions, as it may lead to a narrow range of supported platforms. There are a number of already written bash remediations functions available in _shared/bash_remediation_functions/_ directory, it is possible one of them is exactly what you are looking for.
+
+Following, you can see an example of a bash remediation that sets the maximum number of days a password may be used:
+
+[source,sh]
+----
+# platform = Red Hat Enterprise Linux 7
+. /usr/share/scap-security-guide/remediation_functions
+populate var_accounts_maximum_age_login_defs
+
+grep -q ^PASS_MAX_DAYS /etc/login.defs && \
+  sed -i "s/PASS_MAX_DAYS.*/PASS_MAX_DAYS     $var_accounts_maximum_age_login_defs/g" /etc/login.defs
+if ! [ $? -eq 0 ]; then
+    echo "PASS_MAX_DAYS      $var_accounts_maximum_age_login_defs" >> /etc/login.defs
+fi
+----
+
+==== Templating
+
+Often, a set of very related checks and/or remediations needs to be created. Instead of creating them individually, you can use the templating mechanism provided by the SSG. It supports OVAL checks and Ansible, Bash, Anaconda and Puppet remediations.
+In order to use this mechanism, you have to:
+
+1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
+Use variables where appropriate. Variables must be surrounded by the symbol % and be uppercase, like `%NAME%` or `%PATH_TO_FILE%`.
+
+This is an example of an OVAL template file called _template_OVAL_mount_options_
+
+[source,xml]
+----
+<def-group>
+  <definition class="compliance" id="mount_option%POINTID%_%MOUNTOPTION%" version="1">
+    <metadata>
+      <title>Add %MOUNTOPTION% Option to %MOUNTPOINT%</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>%MOUNTPOINT% should be mounted with mount option %MOUNTOPTION%.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="%MOUNTOPTION% on %MOUNTPOINT%" test_ref="test%POINTID%_partition_%MOUNTOPTION%" />
+    </criteria>
+  </definition>
+
+  <linux:partition_test check="all" check_existence="all_exist"
+  id="test%POINTID%_partition_%MOUNTOPTION%" version="1" comment="%MOUNTOPTION% on %MOUNTPOINT%">
+    <linux:object object_ref="object%POINTID%_partition_%MOUNTOPTION%" />
+    <linux:state state_ref="state%POINTID%_partition_%MOUNTOPTION%" />
+  </linux:partition_test>
+  <linux:partition_object id="object%POINTID%_partition_%MOUNTOPTION%" version="1">
+    <linux:mount_point>%MOUNTPOINT%</linux:mount_point>
+  </linux:partition_object>
+  <linux:partition_state id="state%POINTID%_partition_%MOUNTOPTION%" version="1">
+    <linux:mount_options datatype="string" entity_check="at least one" operation="equals">%MOUNTOPTION%</linux:mount_options>
+  </linux:partition_state>
+</def-group>
+----
+
+And here is the Ansible template file called template_ANSIBLE_mount_options:
+
+[source,yml]
+----
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = high
+- name: "get back device associated to mountpoint"
+  shell: mount | grep ' %MOUNTPOINT% ' |cut -d ' ' -f 1
+  register: device_name
+  check_mode: no
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "get back device previous mount option"
+  shell: mount | grep ' %MOUNTPOINT% ' | sed -re 's:.*\((.*)\):\1:'
+  register: device_cur_mountoption
+  check_mode: no
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "get back device fstype"
+  shell: mount | grep ' %MOUNTPOINT% ' | cut -d ' ' -f 5
+  register: device_fstype
+  check_mode: no
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Ensure permission %MOUNTOPTION% are set on %MOUNTPOINT%"
+  mount:
+    path: "%MOUNTPOINT%"
+    src: "{{device_name.stdout}}"
+    opts: "{{device_cur_mountoption.stdout}},%MOUNTOPTION%"
+    state: "mounted"
+    fstype: "{{device_fstype.stdout}}"
+  tags:
+    @ANSIBLE_TAGS@
+----
+
+2) Create a csv (comma-separated-values) file in the _/template/csv_ directory with the same name of the template followed by the extension _.csv_. It should contain all the instances you want to generate from the template, one per line. Use the line to supply values to the variables.
+
+This is the file mount_options.csv
+
+[source,csv]
+----
+/dev/shm,nodev
+/dev/shm,noexec
+/dev/shm,nosuid
+/home,nosuid
+/tmp,nodev
+/tmp,noexec
+/tmp,nosuid
+----
+
+3) Create a python file containing the generator class. The name of the file should start with _create__ and then be followed by the template name and the extension _.py_. The generator class name should also be the template name, in Camel case, followed by _Generator_.
+
+You have to define the function _generate(self, target, argv)_, where the second argument represents the type of template being used in that moment and the third argument is an array containing all the values in a single line of the csv file. Therefore, this function will be called once for each type of template and each line of the csv file.
+
+Inside the _generate_ function, you must call the other function _file_from_template_ passing as parameter one of the template files you've created, the variables you've defined and their values,  and the name of the output file, that should be named in the same manner as if it was created manually.
+
+This is the file with the generator class for the mount_options template, it's called create_mount_options.py:
+
+[source,python]
+----
+#
+# create_mount_options.py
+#        generate template-based checks for partition mount rights
+
+import re
+
+from template_common import FilesGenerator, UnknownTargetError
+
+
+class MountOptionsGenerator(FilesGenerator):
+    def generate(self, target, path_info):
+        mount_point, mount_option = path_info
+        point_id = re.sub('[-\./]', '_', mount_point)
+        if mount_point:
+            if target == "ansible":
+                self.file_from_template(
+                    "./template_ANSIBLE_mount_options",
+                    {
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
+                    },
+                    "./ansible/mount_option{0}.yml", point_id + '_' + mount_option
+                )
+
+            elif target == "anaconda":
+                self.file_from_template(
+                    "./template_ANACONDA_mount_options",
+                    {
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
+                    },
+                    "./anaconda/mount_option{0}.anaconda", point_id + '_' + mount_option
+                )
+
+            elif target == "oval":
+                self.file_from_template(
+                    "./template_OVAL_mount_options",
+                    {
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": mount_option,
+                        "%POINTID%":     point_id,
+                    },
+                    "./oval/mount_option{0}.xml", point_id + "_" + mount_option
+                )
+            else:
+                raise UnknownTargetError(target)
+
+    def csv_format(self):
+        return("CSV should contains lines of the format: "
+               "mount_point,mount_option,[mount_option]+")
+----
+
+4) Finally, you have to ensure the SSG knows your template. To do that, you have to edit the file _shared/utils/generate-from-template.py_ and include the generator class you've just created and declare which csv file to use along with it.
+
+This is an example of a patch to add a new template into the templating system:
+
+[source,patch]
+----
+@@ -21,6 +21,7 @@
+ from create_sysctl            import SysctlGenerator
+ from create_services_disabled import ServiceDisabledGenerator
+ from create_services_enabled  import ServiceEnabledGenerator
++from create_mount_options     import MountOptionsGenerator
+
+@@ -43,6 +44,7 @@ def __init__(self):
+             "sysctl_values.csv":       SysctlGenerator(),
+             "services_disabled.csv":   ServiceDisabledGenerator(),
+             "services_disabled.csv":   ServiceDisabledGenerator(),
+             "services_enabled.csv":    ServiceEnabledGenerator(),
++            "mount_options.csv":       MountOptionsGenerator(),
+         }
+         self.supported_ovals = ["oval_5.10"]
+----
+
+=== Utilities
