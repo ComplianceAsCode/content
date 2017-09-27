@@ -12,7 +12,7 @@
 <!-- Define URI of official CIS Red Hat Enterprise Linux 6 Benchmark -->
 <xsl:variable name="cisuri">https://benchmarks.cisecurity.org/tools2/linux/CIS_Red_Hat_Enterprise_Linux_6_Benchmark_v1.1.0.pdf</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
-<xsl:variable name="os-stigid-concat">DISA FSO </xsl:variable>
+<xsl:variable name="os-stigid-concat"></xsl:variable>
 
 <!-- Define URI for custom CCE identifier which can be used for mapping to corporate policy -->
 <!--xsl:variable name="custom-cce-uri">https://www.example.org</xsl:variable-->
