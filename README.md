@@ -90,7 +90,8 @@ remote machine but the SSG content doesn't need to be.
 
 ## Legacy Content
 
-- Red Hat Enterprise Linux 5 is considered End-of-Life as of March 31, 2017. Click [here](https://github.com/OpenSCAP/scap-security-guide/releases/tag/v0.1.34) for the last release containing Red Hat Enterprise Linux 5 content.
+- Red Hat Enterprise Linux 5 is considered End-of-Life as of March 31, 2017. [SSG 0.1.34](https://github.com/OpenSCAP/scap-security-guide/releases/tag/v0.1.34) contains the last release with Red Hat Enterprise Linux 5 content.
+- JBoss EAP 5 is considered End-of-Life as of November 30, 2016 [SSG 0.1.35](https://github.com/OpenSCAP/scap-security-guide/releases/tag/v0.1.35) contains the last release with JBoss EAP 5 content.
 
 ## Support
 
