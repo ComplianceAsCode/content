@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
 
 <!-- This transform removes Groups from the XCCDF document.  In general, these
-     are expected to be Groups added from files in the inputs/auxiliary
+     are expected to be Groups added from files in the overlays/
      directory.  -->
 
 
