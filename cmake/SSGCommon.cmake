@@ -201,8 +201,8 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         OUTPUT_VARIABLE SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS "${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
-    file(GLOB EXTRA_LANGUAGE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}/*")
-    file(GLOB EXTRA_SHARED_LANGUAGE_DEPENDS "${SSG_SHARED}/templates/static/${LANGUAGE}/*")
+    file(GLOB EXTRA_LANGUAGE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/remediations/${LANGUAGE}/*")
+    file(GLOB EXTRA_SHARED_LANGUAGE_DEPENDS "${SSG_SHARED}/remediations/${LANGUAGE}/*")
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
@@ -214,7 +214,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}"
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
-        COMMAND "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/templates/static/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/${LANGUAGE}"
+        COMMAND "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/remediations/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/remediations/${LANGUAGE}"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
@@ -288,8 +288,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
-    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/*.xml")
-    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/templates/static/oval/*.xml")
+    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/oval/*.xml")
+    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/oval/*.xml")
 
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
 
@@ -317,20 +317,20 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/oval")
     else()
-        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/templates/static/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval")
+        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/oval")
     endif()
 
     if(SSG_OVAL_511_ENABLED)
-        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11/*.xml")
-        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/templates/static/oval/oval_5.11/*.xml")
+        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11/*.xml")
+        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/oval/oval_5.11/*.xml")
 
         if("${PRODUCT}" MATCHES "rhel-osp7")
             # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11")
         else()
-            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${SSG_SHARED}/templates/static/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/templates/static/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${SSG_SHARED}/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11")
         endif()
 
         add_custom_command(
