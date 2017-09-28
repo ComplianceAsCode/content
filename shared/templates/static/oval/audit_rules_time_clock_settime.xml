@@ -43,7 +43,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_art_clock_settime_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -52,7 +52,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_art_clock_settime_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -61,7 +61,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_art_clock_settime_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b32[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -70,7 +70,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_art_clock_settime_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k[\s]+)time-change[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+arch=b64[\s]+(-S[\s]+clock_settime[\s]+|([\s]+|[,])clock_settime([\s]+|[,]))-F[\s]+a0=(?:0x)?0[\s]+(?:-F[\s]+key=|-k)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
