@@ -7,7 +7,7 @@
 #
 # What architecture are we on?
 #
-- name: "Set architecture for audit %NAME% tasks
+- name: Set architecture for audit %NAME% tasks
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
@@ -59,7 +59,7 @@
 #    
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
-- name: "Inserts/replaces the %NAME% rule in /etc/audit/audit.rules when on x86"
+- name: Inserts/replaces the %NAME% rule in /etc/audit/audit.rules when on x86
   lineinfile:
     line: "{{ item }}"
     state: present
@@ -70,7 +70,7 @@
   tags:
     @ANSIBLE_TAGS@
 
-- name: "Inserts/replaces the %NAME% rule in audit.rules when on x86_64"
+- name: Inserts/replaces the %NAME% rule in audit.rules when on x86_64
   lineinfile:
     line: "{{ item }}"
     state: present
