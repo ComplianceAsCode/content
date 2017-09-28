@@ -61,14 +61,14 @@ cui="3.4.5" />
 
 <Rule id="file_permissions_grub2_cfg" severity="medium" prodtype="rhel7">
 <title>Verify /boot/grub2/grub.cfg Permissions</title>
-<description>File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to 600.
-<fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="600"/>
+<description>File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to exclude access to all except root.
+<fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="go="/>
 </description>
 <ocil clause ="it does not">
 To check the permissions of /boot/grub2/grub.cfg, run the command:
 <pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
 If properly configured, the output should indicate the following
-permissions: <tt>-rw-------</tt>
+permissions: <tt>-rw-------</tt> (or <tt>-rwx------</tt> on a system with an EFI partition).
 </ocil>
 <rationale>
 Proper permissions ensure that only the root user can modify important boot
