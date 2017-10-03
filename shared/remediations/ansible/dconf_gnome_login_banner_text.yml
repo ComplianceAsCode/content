@@ -7,17 +7,17 @@
   ini_file:
     dest: /etc/dconf/db/gdm.d/00-security-settings
     section: org/gnome/login-screen
-    option: banner-message-enable
-    value: true
+    option: banner-message-text
+    value: string '(ansible-populate login_banner_text)'
     create: yes
   tags:
-    @ANSIBLE_TAGS@
+    @ANSIBLE_TAGS@  
 
-- name: "Prevent user modification of GNOME3 Login Warning Banner"
+- name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
   lineinfile:
     path: '/etc/dconf/db/gdm.d/locks/00-security-settings-lock'
-    regexp: '^org/gnome/login-screen/banner-message-enable'
-    line: 'org/gnome/login-screen/banner-message-enable'
+    regexp: '^org/gnome/login-screen/banner-message-text'
+    line: 'org/gnome/login-screen/banner-message-text'
     state: present
   tags:
     @ANSIBLE_TAGS@
