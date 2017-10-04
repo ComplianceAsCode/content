@@ -47,8 +47,8 @@
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_os.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/system.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/services.xml'))" />
-      <!-- the auxiliary Groups here will be removed prior to some outputs -->
-      <xsl:apply-templates select="document('auxiliary/srg_support.xml')" />
+      <!-- the overlays Groups here will be removed prior to some outputs -->
+      <xsl:apply-templates select="document('overlays/srg_support.xml')" />
     </xsl:copy>
   </xsl:template>
 

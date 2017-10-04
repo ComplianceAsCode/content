@@ -105,7 +105,7 @@ macro(ssg_build_guide_xml PRODUCT)
 endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
-    file(GLOB AUXILIARY_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/*.xml")
+    file(GLOB OVERLAYS_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/overlays/*.xml")
     file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/*.xml")
     file(GLOB XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/**/*.xml")
 
@@ -118,7 +118,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS generate-internal-${PRODUCT}-guide.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/guide.xslt"
-        DEPENDS ${AUXILIARY_DEPS}
+        DEPENDS ${OVERLAYS_DEPS}
         DEPENDS ${PROFILE_DEPS}
         DEPENDS ${XCCDF_RULE_DEPS}
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
@@ -455,7 +455,7 @@ endmacro()
 macro(ssg_build_xccdf_final PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        # Remove auxiliary Groups which are only for use in tables, and not guide output.
+        # Remove overlays Groups which are only for use in tables, and not guide output.
         COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_SOURCE_DIR}/shared/transforms/shared_xccdf-removeaux.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
         COMMAND "${SED_EXECUTABLE}" -i "s/oval-linked.xml/ssg-${PRODUCT}-oval.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SED_EXECUTABLE}" -i "s/ocil-linked.xml/ssg-${PRODUCT}-ocil.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
@@ -1092,7 +1092,7 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_CURRENT_SOURCE_DIR}/auxiliary/stig_overlay.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam overlay "${CMAKE_CURRENT_SOURCE_DIR}/overlays/stig_overlay.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/unlinked-stig-xccdf.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf-apply-overlay-stig.xslt"
