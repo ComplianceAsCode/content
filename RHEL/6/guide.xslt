@@ -24,9 +24,7 @@
        <xsl:apply-templates select="document('profiles/desktop.xml')" />
        <xsl:apply-templates select="document('profiles/server.xml')" />
        <xsl:apply-templates select="document('profiles/ftp-server.xml')" />
-       <xsl:apply-templates select="document('profiles/stig-rhel6-workstation-upstream.xml')" />
-       <xsl:apply-templates select="document('profiles/stig-rhel6-server-gui-upstream.xml')" />
-       <xsl:apply-templates select="document('profiles/stig-rhel6-server-upstream.xml')" />
+       <xsl:apply-templates select="document('profiles/stig-rhel6-disa.xml')" />
        <xsl:apply-templates select="document('profiles/usgcb-rhel6-server.xml')" />
        <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
        <xsl:apply-templates select="document('profiles/CSCF-RHEL6-MLS.xml')" />
