@@ -384,7 +384,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
 endmacro()
 
 macro(ssg_build_cpe_dictionary PRODUCT)
-    set(SSG_CPE_DICTIONARY "${CMAKE_CURRENT_SOURCE_DIR}/oval/platform/${PRODUCT}-cpe-dictionary.xml")
+    set(SSG_CPE_DICTIONARY "${CMAKE_CURRENT_SOURCE_DIR}/cpe/${PRODUCT}-cpe-dictionary.xml")
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
