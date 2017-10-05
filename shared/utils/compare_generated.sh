@@ -2,7 +2,7 @@
 if [ "$#" -lt 2 ];
 then
 	echo "Usage:"
-	echo -e "\t$0 <original repo> <updated repo> <remediations/oval> [meld]"
+	echo -e "\t$0 <original repo> <updated repo> <fixes/oval> [meld]"
 	echo ""
 	echo -e "\tBoth repositories have to be already compiled! (make)"
 	echo -e "\tCompare <fix> elements from original DS with fixes in updated DSs"
