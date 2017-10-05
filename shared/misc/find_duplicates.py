@@ -194,8 +194,8 @@ def main():
     print("Static oval files:")
     static_oval_finder = OvalDuplicatesFinder(
         root_dir,
-        os.path.join("**", "oval"),
-        os.path.join("shared", "oval")
+        os.path.join("**", "checks", "oval"),
+        os.path.join("shared", "checks", "oval")
     )
     if static_oval_finder.search():
         without_duplicates = False

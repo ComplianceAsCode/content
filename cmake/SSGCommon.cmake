@@ -288,8 +288,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
-    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/oval/*.xml")
-    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/oval/*.xml")
+    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/*.xml")
+    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/checks/oval/*.xml")
 
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
 
@@ -317,20 +317,20 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/oval")
+        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
     else()
-        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/oval")
+        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
     endif()
 
     if(SSG_OVAL_511_ENABLED)
-        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11/*.xml")
-        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/oval/oval_5.11/*.xml")
+        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/oval_5.11/*.xml")
+        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/checks/oval/oval_5.11/*.xml")
 
         if("${PRODUCT}" MATCHES "rhel-osp7")
             # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/oval_5.11")
         else()
-            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${SSG_SHARED}/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/oval/oval_5.11")
+            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${SSG_SHARED}/checks/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/oval_5.11")
         endif()
 
         add_custom_command(

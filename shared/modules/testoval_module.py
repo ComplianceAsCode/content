@@ -9,7 +9,7 @@ from ConfigParser import SafeConfigParser
 
 import idtranslate_module as idtranslate
 
-SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/oval/'
+SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 
