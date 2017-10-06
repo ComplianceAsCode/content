@@ -1,9 +1,9 @@
 #!/usr/bin/env python2
 
 # OpenSCAP as of version 1.2.8 doesn't support OCIL check system yet. For
-# example attempt to build RHEL/6 SSG benchmark produces the following error:
+# example attempt to build rhel6 SSG benchmark produces the following error:
 #
-# scap-security-guide/RHEL/6 ] make content
+# scap-security-guide/rhel6 ] make content
 # ..
 # OpenSCAP Error: Unknown document type: 'ocil-ssg.xml' [oscap_source.c:172]
 #
