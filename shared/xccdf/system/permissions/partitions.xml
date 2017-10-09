@@ -242,4 +242,51 @@ necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be
 <ref nist="CM-7" cis="1.1.6" />
 </Rule>
 
+<Rule id="mount_option_var_tmp_nodev" prodtype="rhel7">
+<title>Add nodev Option to /var/tmp</title>
+<description>
+The <tt>nodev</tt> mount option can be used to prevent device files from
+being created in <tt>/var/tmp</tt>.
+Legitimate character and block devices should not exist
+within temporary directories like <tt>/var/tmp</tt>. 
+<mount-desc-macro option="nodev" part="/var/tmp" />
+</description>
+<rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
+located on the root partition. The only exception to this is chroot jails.</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="TBD" />
+<oval id="mount_option_var_tmp_nodev" />
+<ref cis="1.1.8" />
+</Rule>
+
+<Rule id="mount_option_var_tmp_noexec" prodtype="rhel7">
+<title>Add noexec Option to /var/tmp</title>
+<description>The <tt>noexec</tt> mount option can be used to prevent binaries
+from being executed out of <tt>/var/tmp</tt>.
+<mount-desc-macro option="noexec" part="/var/tmp" />
+</description>
+<rationale>Allowing users to execute binaries from world-writable directories
+such as <tt>/var/tmp</tt> should never be necessary in normal operation and
+can expose the system to potential compromise.</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="TBD" />
+<oval id="mount_option_var_tmp_noexec" />
+<ref cis="1.1.10" />
+</Rule>
+
+<Rule id="mount_option_var_tmp_nosuid" prodtype="rhel7">
+<title>Add nosuid Option to /var/tmp</title>
+<description>The <tt>nosuid</tt> mount option can be used to prevent
+execution of setuid programs in <tt>/var/tmp</tt>. The SUID and SGID permissions
+should not be required in these world-writable directories.
+<mount-desc-macro option="nosuid" part="/var/tmp" />
+</description>
+<rationale>The presence of SUID and SGID executables should be tightly controlled. Users
+should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="TBD" />
+<oval id="mount_option_var_tmp_nosuid" />
+<ref cis="1.1.9" />
+</Rule>
+
 </Group>
