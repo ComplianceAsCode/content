@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_efi_grub2_cfg" version="1">
+    <metadata>
+      <title>File /boot/efi/EFI/redhat/grub.cfg Permissions</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>File permissions for /boot/efi/EFI/redhat/grub.cfg should be set to 0700 (or stronger).</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions_efi_grub2_cfg" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/boot/efi/EFI/redhat/grub.cfg owned by root" id="test_file_permissions_efi_grub2_cfg" version="1">
+    <unix:object object_ref="object_file_permissions_efi_grub2_cfg" />
+    <unix:state state_ref="state_file_permissions_efi_grub2_cfg" />
+  </unix:file_test>
+
+  <unix:file_object comment="/boot/efi/EFI/redhat/grub.cfg" id="object_file_permissions_efi_grub2_cfg" version="1">
+    <unix:filepath>/boot/efi/EFI/redhat/grub.cfg</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions_efi_grub2_cfg" version="1">
+    <unix:gread datatype="boolean">false</unix:gread>
+    <unix:gwrite datatype="boolean">false</unix:gwrite>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oread datatype="boolean">false</unix:oread>
+    <unix:owrite datatype="boolean">false</unix:owrite>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+</def-group>
