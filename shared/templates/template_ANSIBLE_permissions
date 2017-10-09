@@ -3,7 +3,7 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- name: "Ensure permission %FILEMODE% on %FILEPATH%"
+- name: Ensure permission %FILEMODE% on %FILEPATH%
   file:
     path="{{item}}"
     mode=%FILEMODE%
