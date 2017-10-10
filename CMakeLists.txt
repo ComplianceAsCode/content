@@ -66,11 +66,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     )
 endif()
 
-# TODO: refactor oscap detection into a find module
-find_program(OSCAP_EXECUTABLE NAMES oscap)
-if (NOT OSCAP_EXECUTABLE)
-    message(SEND_ERROR "The oscap tool is required!")
-endif()
+find_package(OPENSCAP REQUIRED)
 
 execute_process(
     COMMAND "${OSCAP_EXECUTABLE}" --v
