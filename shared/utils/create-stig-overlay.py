@@ -8,7 +8,9 @@ import lxml.etree as ET
 
 
 owner = "disastig"
-stig_ns = "http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx"
+stig_ns = ["http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx",
+           "http://iase.disa.mil/stigs/os/general/Pages/index.aspx",
+           "http://iase.disa.mil/stigs/app-security/app-servers/Pages/index.aspx"]
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
@@ -39,27 +41,40 @@ def ssg_xccdf_stigid_mapping(ssgtree):
     xccdftostig_idmapping = {}
 
     for rule in ssgtree.findall(".//{%s}Rule" % xccdf_ns):
+        srgs = []
+        rhid = ""
+
         xccdfid = rule.get("id")
         if xccdfid is not None:
-            ident_stig_id = rule.find("./{%s}ident[@system='%s']" % (xccdf_ns, stig_ns))
-            if ident_stig_id is not None:
-                stigid = ident_stig_id.text
-                xccdftostig_idmapping[stigid.strip("DISA FSO ")] = xccdfid
-            else:
-                ref_stig_id = rule.find("./{%s}reference[@href='%s']" % (xccdf_ns, stig_ns))
-                if ref_stig_id is not None:
-                    stigid = ref_stig_id.text
-                    xccdftostig_idmapping[stigid] = xccdfid
-
+            for references in stig_ns:
+                stig = [ids for ids in rule.findall(".//{%s}reference[@href='%s']" % (xccdf_ns, references))]
+                for ref in reversed(stig):
+                    if not ref.text.startswith("SRG-"):
+                        rhid = ref.text
+                    else:
+                        srgs.append(ref.text)
+            xccdftostig_idmapping.update({rhid: {xccdfid: srgs}})
 
     return xccdftostig_idmapping
+
+
+def get_nested_stig_items(ssg_mapping, srg):
+    mapped_id = "XXXX"
+    for rhid, srgs in ssg_mapping.iteritems():
+        for xccdfid, srglist in srgs.iteritems():
+            if srg in srglist and len(srglist) > 1:
+                mapped_id = xccdfid
+                break
+
+    return mapped_id
 
 
 def getkey(elem):
     return elem.get("ownerid")
 
 
-def new_stig_overlay(xccdftree, ssgtree, outfile):
+def new_stig_overlay(xccdftree, ssgtree, outfile,
+                     overlayfile=False):
     if not ssgtree:
         ssg_mapping = False
     else:
@@ -83,9 +98,9 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
             mapped_id = "XXXX"
         else:
             try:
-                mapped_id = ssg_mapping[version]
+                mapped_id = ''.join(ssg_mapping[version].keys())
             except KeyError as e:
-                mapped_id = "XXXX"
+                mapped_id = get_nested_stig_items(ssg_mapping, srg)
 
         overlay = ET.SubElement(new_stig_overlay, "overlay", owner=owner,
                                 ruleid=mapped_id, ownerid=version, disa=ident,
@@ -101,7 +116,8 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
     tree = ET.ElementTree(new_stig_overlay)
-    tree.write(outfile, pretty_print=True, encoding="UTF-8", xml_declaration=True)
+    tree.write(outfile, pretty_print=True, encoding="UTF-8",
+               xml_declaration=True)
     print("\nGenerated the new STIG overlay file: %s" % outfile)
 
 
@@ -146,11 +162,11 @@ def main():
         ssg_xccdftree = ET.parse(options.ssg_xccdf_filename)
         ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
         if ssg != "SCAP Security Guide Project":
-            sys.exit("%s is not a valid SSG generated XCCDF file." % os.path.basename(ssg_xccdf_filename))
+            sys.exit("%s is not a valid SSG generated XCCDF file." % ssg_xccdf_filename)
 
     disa = disa_xccdftree.find(".//{%s}source" % dc_ns).text
     if disa != "STIG.DOD.MIL":
-        sys.exit("%s is not a valid DISA generated manual XCCDF file." % os.path.basename(disa_xccdf_filename))
+        sys.exit("%s is not a valid DISA generated manual XCCDF file." % disa_xccdf_filename)
 
     new_stig_overlay(disa_xccdftree, ssg_xccdftree, options.output_file)
 
