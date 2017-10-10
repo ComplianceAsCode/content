@@ -68,19 +68,9 @@ endif()
 
 find_package(OPENSCAP REQUIRED)
 
-execute_process(
-    COMMAND "${OSCAP_EXECUTABLE}" --v
-    OUTPUT_VARIABLE OSCAP_V_OUTPUT
-)
 if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
     set(SSG_OVAL_511_ENABLED OFF CACHE BOOL "OVAL 5.11 disabled because your version of OpenSCAP doesn't support it" FORCE)
     message(WARNING "Your version of OpenSCAP does not support OVAL 5.11, disabling OVAL 5.11 for the SSG build.")
-endif()
-
-if("${OSCAP_V_OUTPUT}" MATCHES "^OpenSCAP command line tool \\(oscap\\) ([0-9\\.]+)")
-    set(OSCAP_VERSION "${CMAKE_MATCH_1}")
-else()
-    set(OSCAP_VERSION "unknown")
 endif()
 
 execute_process(
