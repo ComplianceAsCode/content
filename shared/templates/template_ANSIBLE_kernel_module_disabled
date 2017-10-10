@@ -3,7 +3,7 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
-- name: "Ensure kernel module '%KERNMODULE%' is disabled"
+- name: Ensure kernel module '%KERNMODULE%' is disabled
   lineinfile:
     create=yes
     dest="/etc/modprobe.d/{{item}}.conf"
