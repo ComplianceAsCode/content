@@ -80,6 +80,64 @@ parameters.
 <ref nist="AC-6(7)" disa="225" cis="1.4.1" cui="3.4.5" />
 </Rule>
 
+<Rule id="file_user_owner_efi_grub2_cfg" severity="medium" prodtype="rhel7">
+<title>Verify /boot/efi/EFI/redhat/grub.cfg User Ownership</title>
+<description>The file <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should
+be owned by the <tt>root</tt> user to prevent destruction
+or modification of the file.
+<fileowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root"/>
+</description>
+<ocil><fileowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root"/></ocil>
+<rationale>
+Only root should be able to modify important boot parameters.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="TBD" />
+<oval id="file_user_owner_efi_grub2_cfg" />
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
+cui="3.4.5" />
+</Rule>
+
+<Rule id="file_group_owner_efi_grub2_cfg" severity="medium" prodtype="rhel7">
+<title>Verify /boot/efi/EFI/redhat/grub.cfg Group Ownership</title>
+<description>The file <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should
+be group-owned by the <tt>root</tt> group to prevent
+destruction or modification of the file.
+<filegroupowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" group="root"/>
+</description>
+<ocil><filegroupowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" group="root"/></ocil>
+<rationale>
+The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
+file should not have any access privileges anyway.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="TBD" />
+<oval id="file_group_owner_efi_grub2_cfg" />
+<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
+cui="3.4.5" />
+</Rule>
+
+<Rule id="file_permissions_efi_grub2_cfg" severity="medium" prodtype="rhel7">
+<title>Verify /boot/efi/EFI/redhat/grub.cfg Permissions</title>
+<description>File permissions for <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should be set to 600.
+<fileperms-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" perms="700"/>
+</description>
+<ocil clause ="it does not">
+To check the permissions of /boot/efi/EFI/redhat/grub.cfg, run the command:
+<pre>$ sudo ls -lL /boot/efi/EFI/redhat/grub.cfg</pre>
+If properly configured, the output should indicate the following
+permissions: <tt>-rwx------</tt>
+</ocil>
+<rationale>
+Proper permissions ensure that only the root user can modify important boot
+parameters.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="TBD" />
+<oval id="file_permissions_efi_grub2_cfg" />
+<ref nist="AC-6(7)" disa="225" cis="1.4.1" cui="3.4.5" />
+</Rule>
+
 <Rule id="bootloader_password" severity="high" prodtype="rhel7">
 <title>Set Boot Loader Password</title>
 <description>The grub2 boot loader should have a superuser account and password
