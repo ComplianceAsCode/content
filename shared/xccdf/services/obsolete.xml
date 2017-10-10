@@ -326,7 +326,7 @@ activation of NIS or NIS+ services.
 <ident prodtype="rhel7" cce="27399-5" />
 <oval id="package_ypserv_removed" />
 <ref prodtype="rhel7" stigid="020010" />
-<ref nist="AC-17(8),CM-7(a)" disa="381" srg="SRG-OS-000095-GPOS-00049" />
+<ref nist="AC-17(8),CM-7(a)" disa="381" srg="SRG-OS-000095-GPOS-00049" cis="2.2.16" />
 </Rule>
 
 <Rule id="service_ypbind_disabled" severity="medium" prodtype="rhel7">
@@ -482,6 +482,7 @@ risk of the accidental (or intentional) activation of talk services.
 </rationale>
 <ident prodtype="rhel7" cce="27210-4" />
 <oval id="package_talk-server_removed" />
+<ref cis="2.2.21" />
 </Rule>
 
 <Rule id="package_talk_removed" prodtype="rhel7">
