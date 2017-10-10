@@ -227,6 +227,208 @@ The maintainer should check Bohdi packages for that update for positive/negative
 
 After 7 days the build can be pushed to -stable (under assumption it didn't reach positive karma >= 3 sooner), meaning in the next day or two it's reachable via yum subscribed to epel-6 repository directly.
 
+== Creating Content
+
+=== Directory Structure/Layout
+
+==== Top Level Structure/Layout
+
+Under the top level directory, there are directories and/or files for different products,
+shared content, documentation, READMEs, Licenses, build files/configuration, etc.
+
+For example:
+
+[source,bash]
+----
+$ ls scap-security-guide/
+
+build
+BUILD.md
+chromium
+cmake
+CMakeLists.txt
+Contributors.md
+Contributors.xml
+debian8
+DISCLAIMER
+Dockerfile
+docs
+fedora
+firefox
+jboss_eap6
+jboss_fuse6
+jre
+LICENSE
+opensuse
+oval.config.in
+README.md
+rhel6
+rhel7
+rhevm3
+rhosp7
+shared
+sle11
+sle12
+tests
+ubuntu14
+ubuntu16
+webmin
+wrlinux
+----
+
+===== Important Top Level Directory Descriptions
+
+|===
+|Directory |Description
+
+|```build```
+| Can be used to build the content using CMake.
+
+|```cmake```
+| Contains the CMake build configuration files.
+
+|```docs```
+| Contains the Markdown Manuals, MAN pages, etc.
+
+|```shared```
+| Contains content, tools and utilities, scripts, etc. that can be used for
+multiple products.
+
+|```tests```
+| Contains the test suite for content validation and testing.
+|===
+
+The remaining directories such as `fedora`, `rhel7`, etc. are product
+directories.
+
+===== Important Top Level File Descriptions
+
+|===
+|File |Description
+
+|```BUILD.md```
+| Contains the content build instructions
+
+
+|```CMakeLists.txt```
+| Top-level CMake build configuration file
+
+|```Contributors.md```
+| *DO NOT MANUALLY EDIT* script-generated file
+
+|```Contributors.xml```
+| *DO NOT MANUALLY EDIT* script-generated file
+
+|```DISCLAIMER```
+| Disclaimer for usage of content
+
+|```Dockerfile```
+| CentOS7 Docker build file
+
+|```LICENSE```
+| Content license
+
+|```oval.config.in```
+| _Deprecated in future releases:_
+Build configuration for mapping product
+version to correspond `multi_platform` product tags
+
+|```README.md```
+| Project README file
+
+|===
+
+==== Product Structure/Layout
+
+When creating a new product, use the guidelines below for the directory layout:
+
+* *Do not* use capital letters
+* If product versions are required, use major versions only. For example,
+`rhel7`, `ubuntu16`, etc.
+* If the content to be produced does not matter on versions, *do not* add version
+numbers. For example: `fedora`, `firefox`, etc.
+* In addition, use only a maxdepth of 3 directories.
+
+Following these guidelines help with the usability and browsability of
+using and navigating the content.
+
+For example:
+[source,bash]
+----
+$ tree -d rhel7
+
+rhel7
+├── checks
+│   └── oval
+├── cpe
+├── fixes
+│   ├── ansible
+│   └── bash
+├── kickstart
+├── overlays
+├── profiles
+├── templates
+│   ├── csv
+├── transforms
+└── utils
+
+13 directories
+----
+
+===== Product Level Directory Descriptions
+
+|===
+|Directory |Description
+
+|```checks```
+|```[red]#Required#``` Contains content such as OVAL to check whether or not a
+system is configured correctly to meet government or commercial compliance
+standards. Can contain the following directories: ```oval```
+
+|```cpe```
+|```[red]#Required#``` Contains the Common Platform Enumeration (CPE) product
+identifier that is provided from link:https://nvd.nist.gov/products/cpe[NIST].
+
+|```fixes```
+|```[red]#Required#``` Contains scripts in various languages that fixes
+configuration to meet government or commercial compliance standards. Can contain
+the following directories: ```bash``` ```ansible``` ```puppet``` ```anaconda```
+
+|```kickstart```
+|```[red]#Optional#``` Contains product kickstart or build files to be used in
+testing, development, or production (not recommended) of compliance content.
+
+|```overlays```
+|```[red]#Required#``` Contains overlay files for specific standards
+organizations such as NIST, DISA STIG, PCI-DSS, etc.
+
+|```profiles```
+|```[red]#Required#``` Contains profiles that are created and tailored to meet
+government or commercial compliance standards.
+
+|```templates```
+|```[red]#Required#``` Can contain the following directories: ```csv```
+
+|```tests```
+|```[red]#Optional#``` Can contain local tests to the product. The top-level
+```tests``` directory is preferred over using this directory.
+
+|```transforms```
+|```[red]#Required#``` Contains XSLT files and scripts that are used to
+transform the content into the expected compliance document such as XCCDF, OVAL,
+Datastream, etc.
+
+|```xccdf```
+|```[red]#Optional#``` If the correct content does not exist in
+```shared/xccdf```, use this directory to create the human-readable compliance
+guide.
+|===
+
+[IMPORTANT]
+====
+For any of the ```[red]#Required#``` directories that may not yet add content,
+add a `.gitkeep` file for any empty directories.
+====
 
 == Updating Reference and Overlay Content
 
@@ -259,6 +461,33 @@ $ shared/utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-m
 
 - Feature needs to be added to shared/utils/create-stig-overlay.py
 
+== Tools and Utilities
+
+=== Testing OVAL Content
+
+Located in `shared/utils` directory, the `testoval.py` script allows easy testing of oval
+definitions. It wraps the definition and makes up an oval file ready for
+scanning, very useful for testing new OVAL content or modifying existing ones.
+
+Example usage:
+
+----
+$ ./shared/utils/testoval.py install_hid.xml
+----
+
+Create or add an alias to the script so that you don't have to type out the full path
+everytime that you would like to use the `testoval.py` script.
+
+----
+$ alias testoval='/home/_username_/scap-security-guide/shared/utils/testoval.py'
+----
+
+An alternative is adding the directory where `testoval.py` resides to your PATH.
+
+----
+$ export PATH=$PATH:/home/_username_/scap-security-guide/shared/utils/
+----
+
 == Contributing with XCCDFs, OVALs and remediations
 
 There are three main types of content in SSG, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
@@ -271,23 +500,26 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 [%hardbreaks]
 *scap-security-guide/*
 ├── _build_
-├── Chromium
-├── Debian
+├── chromium
+├── debian8
 ├── _docs_
-├── Fedora
-├── Firefox
-├── JBoss
-├── JBossEAP5
-├── JRE
-├── OpenStack
-├── OpenSUSE
-├── RHEL
-├── RHEVM3
+├── fedora
+├── firefox
+├── jboss_eap6
+├── jboss_fuse6
+├── jre
+├── opensuse
+├── rhel6
+├── rhel7
+├── rhevm3
+├── rhosp7
 ├── shared
-├── SUSE
-├── Ubuntu
-├── Webmin
-└── WRLinux
+├── sle11
+├── sle12
+├── ubuntu14
+├── ubuntu16
+├── webmin
+├── wrlinux
 ====
 
 Except for _build_ and _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
@@ -350,7 +582,7 @@ This is an example of a check, written using the custom OVAL syntax, that checks
 === Remediations
 
 Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda and Puppet.
-They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly. 
+They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
 Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
 
 [source,yml]
