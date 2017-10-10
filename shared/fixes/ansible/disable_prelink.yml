@@ -3,10 +3,22 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- name: Verify Prelink is installed
+  command: rpm -q prelink
+  args:
+    warn: no
+  register: prelink_installed
+  ignore_errors: true
+  failed_when: prelink_installed.rc > 1
+  changed_when: false
+  tags:
+    @ANSIBLE_TAGS@  
+
 - name: disable prelinking
   lineinfile:
     path: /etc/sysconfig/prelink
     regexp: '^PRELINKING='
     line: 'PRELINKING=no'
+  when: prelink_installed.rc == 0
   tags:
     @ANSIBLE_TAGS@
