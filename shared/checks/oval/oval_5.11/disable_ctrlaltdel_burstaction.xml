@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="disable_ctrlaltdel_burstaction" version="1">
+    <metadata>
+      <title>Disable Ctrl-Alt-Del Burst Action</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Configure the CtrlAltDelBurstAction setting in /etc/systemd/system.conf
+      to none to prevent a reboot if Ctrl-Alt-Delete is pressed more than 7 times in 2 seconds.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="check CtrlAltDelBurstAction is set to none"
+      test_ref="test_disable_ctrlaltdel_burstaction" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="check if CtrlAltDelBurstAction is set to none"
+  id="test_disable_ctrlaltdel_burstaction" version="1">
+    <ind:object object_ref="obj_disable_ctrlaltdel_burstaction" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_disable_ctrlaltdel_burstaction" version="1">
+    <ind:filepath>/etc/systemd/system.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*CtrlAltDelBurstAction[\s]*=[\s]*none$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
