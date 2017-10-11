@@ -179,7 +179,7 @@ macro(ssg_build_ocil_unlinked PRODUCT)
 endmacro()
 
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
-    set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/remediations")
+    set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes")
 
     execute_process(
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-inputs
@@ -205,7 +205,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     file(GLOB EXTRA_SHARED_LANGUAGE_DEPENDS "${SSG_SHARED}/fixes/${LANGUAGE}/*")
 
     add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
         OUTPUT ${LANGUAGE_REMEDIATIONS_OUTPUTS}
         OUTPUT ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
@@ -214,7 +214,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}"
         COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
-        COMMAND "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
+        COMMAND "${SSG_SHARED_UTILS}/combine-remediations.py" --product "${PRODUCT}" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
@@ -223,11 +223,11 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         DEPENDS ${EXTRA_SHARED_LANGUAGE_DEPENDS}
         DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
         DEPENDS "${SSG_SHARED_UTILS}/combine-remediations.py"
-        COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-remediations.xml"
+        COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-fixes.xml"
     )
     add_custom_target(
-        generate-internal-${PRODUCT}-${LANGUAGE}-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-remediations.xml"
+        generate-internal-${PRODUCT}-${LANGUAGE}-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
     )
 
     if (SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
@@ -250,11 +250,10 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         )
         add_dependencies(${PRODUCT}-validate validate-ssg-${PRODUCT}-bash-remediation-inputs)
     endif()
-
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
-    message(STATUS "Scanning for dependencies of ${PRODUCT} remediations (bash, ansible, puppet and anaconda)...")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet and anaconda)...")
     _ssg_build_remediations_for_language(${PRODUCT} "bash")
     _ssg_build_remediations_for_language(${PRODUCT} "ansible")
     _ssg_build_remediations_for_language(${PRODUCT} "puppet")
@@ -266,18 +265,18 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-remediations.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-remediations.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-remediations.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-remediations.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam bash_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/bash-fixes.xml" --stringparam ansible_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ansible-fixes.xml" --stringparam puppet_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/puppet-fixes.xml" --stringparam anaconda_remediations "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/anaconda-fixes.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked.xml"
         DEPENDS generate-internal-${PRODUCT}-xccdf-unlinked-ocilrefs.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-ocilrefs.xml"
-        DEPENDS generate-internal-${PRODUCT}-bash-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/bash-remediations.xml"
-        DEPENDS generate-internal-${PRODUCT}-ansible-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ansible-remediations.xml"
-        DEPENDS generate-internal-${PRODUCT}-puppet-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/puppet-remediations.xml"
-        DEPENDS generate-internal-${PRODUCT}-anaconda-remediations.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-remediations.xml"
+        DEPENDS generate-internal-${PRODUCT}-bash-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/bash-fixes.xml"
+        DEPENDS generate-internal-${PRODUCT}-ansible-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/ansible-fixes.xml"
+        DEPENDS generate-internal-${PRODUCT}-puppet-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/puppet-fixes.xml"
+        DEPENDS generate-internal-${PRODUCT}-anaconda-fixes.xml
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/anaconda-fixes.xml"
         DEPENDS "${SSG_SHARED_TRANSFORMS}/xccdf-addremediations.xslt"
         COMMENT "[${PRODUCT}-content] generating xccdf-unlinked.xml"
     )
