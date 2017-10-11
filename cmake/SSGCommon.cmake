@@ -253,7 +253,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
-    message(STATUS "Scanning for dependencies of ${PRODUCT} remediations (bash, ansible, puppet and anaconda)...")
+    message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet and anaconda)...")
     _ssg_build_remediations_for_language(${PRODUCT} "bash")
     _ssg_build_remediations_for_language(${PRODUCT} "ansible")
     _ssg_build_remediations_for_language(${PRODUCT} "puppet")
