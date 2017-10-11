@@ -336,6 +336,32 @@ and will also free up resources utilized by an idle session.
 <!--ref nist="AC-11(a)" disa="57" stigid="RHEL-06-000257"/-->
 </Rule>
 
+<Rule id="gconf_gnome_screen_locking_keybindings" severity="low">
+<title>Set GNOME Screen Locking Keybindings</title>
+<description>
+Run the following command to prevent changes to the screensaver
+lock keybindings: 
+<pre>$ sudo gconftool-2 --direct \
+  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+  --type string \
+  --set /apps/gnome_settings_daemon/keybindings/screensaver "&lt;Control&gt;&lt;Alt&gt;l"</pre>
+</description>
+<ocil clause="GNOME screensaver locking keybindings are configured and cannot be changed">
+To check the screensaver locking keybindings, run the following command:
+<pre>$ gconftool-2 -g /apps/gnome_settings_daemon/keybindings/screensaver</pre>
+If properly configured, the output should be <tt>&lt;Control&gt;&lt;Alt&gt;l</tt>.
+</ocil>
+<rationale>
+The ability to lock graphical desktop sessions manually allows users to
+easily secure their accounts should they need to depart from their workstations
+temporarily.
+</rationale>
+<platform idref="cpe:/a:machine"/>
+<oval id="gconf_gnome_screen_locking_keybindings" />
+<ident cce="80503-6" />
+<ref nist="AC-6" disa="58" srg="SRG-OS-000030" stigid="RHEL-06-000508" />
+</Rule>
+
 </Group>
 
 <Group id="gnome_system_settings">
@@ -362,7 +388,7 @@ Graphical User Interface (GUI) instead of rebooting the system, run the followin
   --type string \
   --set /apps/gnome_settings_daemon/keybindings/power ""</pre>
 </description>
-<ocil clause="GNOME3 is configured to reboot when Ctrl-Alt-Del is pressed">
+<ocil clause="GNOME is configured to reboot when Ctrl-Alt-Del is pressed">
 To ensure the system is configured to ignore the Ctrl-Alt-Del sequence,
 run the following command:
 <pre>$ gconftool-2 -g /apps/gnome_settings_daemon/keybindings/power</pre>

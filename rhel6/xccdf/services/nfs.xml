@@ -437,6 +437,28 @@ viewed or edited by an unauthorized user.
 <ref disa="764" stigid="RHEL-06-000309" srg="SRG-OS-000104" />
 </Rule>
 
+<Rule id="no_all_squash_exports" severity="low">
+<title>Ensure All-Squashing Disabled On All Exports</title>
+<description>
+The <tt>all_squash</tt> maps all uids and gids to an anonymous user.
+This should be disabled by removing any instances of the
+<tt>all_squash</tt> option from the file <tt>/etc/exports</tt>.
+</description>
+<ocil clause="there is output">
+To verify all squashing has been disabled, run the following command:
+<pre>$ grep all_squash /etc/exports</pre>
+</ocil>
+<rationale>
+The all_squash option maps all client requests to a single anonymous
+uid/gid on the NFS server, negating the ability to track file access
+by user ID.
+</rationale>
+<oval id="no_all_squash_exports" />
+<ident cce="80505-1" />
+<ref disa="764" stigid="RHEL-06-000515" srg="SRG-OS-000104" />
+</Rule>
+
+
 </Group> <!-- nfs_configuring_servers -->
 
 </Group>

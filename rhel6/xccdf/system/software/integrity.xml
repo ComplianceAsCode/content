@@ -132,8 +132,9 @@ See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 <description>
 The RPM package management system can check file access
 permissions of installed software packages, including many that are
-important to system security. 
-After locating a file with incorrect permissions, run the following command to determine which package owns it:
+important to system security. After locating a file with incorrect
+permissions which can be found with <pre>$ rpm -Va | grep '^.M'</pre>,
+run the following command to determine which package owns it:
 <pre>$ rpm -qf <i>FILENAME</i></pre>
 Next, run the following command to reset its permissions to 
 the correct values:
@@ -158,7 +159,38 @@ Bugzilla #1277603.</b>
 <ident cce="26731-0" />
 <oval id="rpm_verify_permissions" />
 <ref nist="AC-6,CM-6(d),SI-7" disa="1493,1494,1495" pcidss="Req-11.5"
-stigid="RHEL-06-000518" srg="SRG-OS-999999" />
+stigid="RHEL-06-000518" srg="SRG-OS-999999,SRG-OS-000256" />
+</Rule>
+
+<Rule id="rpm_verify_ownership">
+<title>Verify and Correct Ownership with RPM</title>
+<description>
+The RPM package management system can check file ownership
+permissions of installed software packages, including many that are
+important to system security. After locating a file with incorrect
+permissions, which can be found with
+<pre>rpm -Va | grep "^.....\(U\|.G\)"</pre>
+run the following command to determine which package owns it:
+<pre>$ rpm -qf <i>FILENAME</i></pre>
+Next, run the following command to reset its permissions to
+the correct values:
+<pre>$ sudo rpm --setugids <i>PACKAGENAME</i></pre>
+</description>
+<ocil clause="there is output">
+The following command will list which files on the system have ownership different from what
+is expected by the RPM database:
+<pre>$ rpm -Va | grep "^.....\(U\|.G\)"</pre>
+</ocil>
+<rationale>
+Ownership of binaries and configuration files that is incorrect
+could allow an unauthorized user to gain privileges that they should
+not have. The ownership set by the vendor should be maintained. Any
+deviations from this baseline should be investigated.
+</rationale>
+<ident cce="80499-7" />
+<oval id="rpm_verify_ownership" />
+<ref nist="AC-6,CM-6(d),SI-7" disa="1494"
+stigid="RHEL-06-000279" srg="SRG-OS-000257,SRG-OS-000258" />
 </Rule>
 
 <Rule id="rpm_verify_hashes">
