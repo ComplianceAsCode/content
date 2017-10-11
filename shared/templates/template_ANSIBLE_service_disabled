@@ -8,6 +8,8 @@
     name="{{item}}"
     enabled="no"
     state="stopped"
+  register: service_result
+  failed_when: "service_result|failed and ('find' not in service_result.msg and 'found' not in service_result.msg)"
   with_items:
     - %DAEMONNAME%
   tags:
