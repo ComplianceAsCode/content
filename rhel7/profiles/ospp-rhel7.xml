@@ -286,6 +286,8 @@ the consensus process.
 <select idref="service_rexec_disabled" selected="true" />
 <select idref="service_rlogin_disabled" selected="true" />
 <select idref="service_rsh_disabled" selected="true" />
+<!-- Other Rules will know that SSH is required to be installed -->
+<refine-value idref="sshd_required" selector="yes" />
 <select idref="service_sshd_enabled" selected="true" />
 <select idref="service_telnet_disabled" selected="true" />
 <select idref="service_xinetd_disabled" selected="true" />

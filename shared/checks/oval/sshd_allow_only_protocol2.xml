@@ -9,13 +9,15 @@
       </affected>
       <description>The OpenSSH daemon should be running protocol 2.</description>
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met" operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <extend_definition comment="rpm package openssh-server removed"
-      definition_ref="package_openssh-server_removed" />
-      <criterion comment="Check Protocol in /etc/ssh/sshd_config"
-      test_ref="test_sshd_allow_only_protocol2" />
+    <criteria comment="SSH is not installed or conditions are met" operator="OR">
+      <extend_definition comment="sshd is not required and not installed, or requirement is unset"
+      definition_ref="sshd_not_required_or_unset" />
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required and installed, or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        <criterion comment="Check Protocol in /etc/ssh/sshd_config"
+        test_ref="test_sshd_allow_only_protocol2" />
+      </criteria>
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="all_exist"

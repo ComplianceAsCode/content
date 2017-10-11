@@ -467,8 +467,8 @@ def main():
                                              checkcontentref.get("name"))
             checkcontentref.set("name", checkid)
             checkcontentref.set("href", newovalfile)
-            checkexport = check.find("./{%s}check-export" % xccdf_ns)
-            if checkexport is not None:
+            checkexports = check.findall("./{%s}check-export" % xccdf_ns)
+            for checkexport in checkexports:
                 newexportname = translator.generate_id("{" + oval_ns + "}variable",
                                                        checkexport.get("export-name"))
                 checkexport.set("export-name", newexportname)
