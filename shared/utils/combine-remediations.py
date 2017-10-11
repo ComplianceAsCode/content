@@ -186,6 +186,14 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """
 
     if remediation_type == "ansible":
+        fix.text = re.sub(
+            r'- \(xccdf-var\s+(\S+)\)',
+            r'- name: Populate XCCDF variable \1  # promote to variable\n'
+            r'  set_facts:\n'
+            r'    \1: (ansible-populate \1)',
+            fix.text
+        )
+
         pattern = r'\(ansible-populate\s*(\S+)\)'
 
         # we will get list what looks like
