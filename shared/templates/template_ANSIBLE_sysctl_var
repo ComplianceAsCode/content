@@ -3,10 +3,12 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
+- (xccdf-var sysctl_%SYSCTLID%_value)
+
 - name: Ensure sysctl %SYSCTLVAR% is set
   sysctl:
     name: %SYSCTLVAR%
-    value: (ansible-populate sysctl_%SYSCTLID%_value)
+    value: "{{ sysctl_%SYSCTLID%_value }}"
     state: present
     reload: yes
   tags:
