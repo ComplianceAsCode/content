@@ -229,6 +229,7 @@ SSH protocol version 1 is an insecure implementation of the SSH protocol and
 has many well-known vulnerability exploits. Exploits of the SSH daemon could provide
 immediate root access to the system.
 </rationale>
+<warning category="general">As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol supported is version 2, and line <pre>Protocol 2</pre> in <tt>/etc/ssh/sshd_config</tt> is not necessary.</warning>
 <ident prodtype="rhel7" cce="27320-1" />
 <oval id="sshd_allow_only_protocol2" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040390" />
