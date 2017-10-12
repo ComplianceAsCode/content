@@ -8,7 +8,7 @@
 - name: Set SELinux boolean %SEBOOLID% accordingly
   seboolean:
     name: %SEBOOLID%
-    state: {{ var_%SEBOOLID% }}
+    state: "{{ var_%SEBOOLID% }}"
     persistent: yes
   tags:
     @ANSIBLE_TAGS@
