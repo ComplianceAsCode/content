@@ -13,12 +13,14 @@
   tags:
     @ANSIBLE_TAGS@
 
+- (xccdf-var sshd_listening_port)
+
 - name: Enable SSHD in firewalld (custom port)
   firewalld:
-    port: (ansible-populate sshd_listening_port)/tcp
+    port: "{{ sshd_listening_port }}/tcp"
     permanent: yes
     state: enabled
-  when: (ansible-populate sshd_listening_port) != 22
+  when: sshd_listening_port != 22
   tags:
     @ANSIBLE_TAGS@
 
@@ -27,7 +29,7 @@
     service: ssh
     permanent: yes
     state: enabled
-  when: (ansible-populate sshd_listening_port) == 22
+  when: sshd_listening_port == 22
   tags:
     @ANSIBLE_TAGS@
 
