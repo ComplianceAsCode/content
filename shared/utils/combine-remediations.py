@@ -186,7 +186,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """
 
     if remediation_type == "ansible":
-        fix.text = re.sub(
+        fix_text = re.sub(
             r'- \(xccdf-var\s+(\S+)\)',
             r'- name: Populate XCCDF variable \1  # promote to variable\n'
             r'  set_facts:\n'
@@ -198,7 +198,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
         # we will get list what looks like
         # [text, varname, text, varname, ..., text]
-        parts = re.split(pattern, fix.text)
+        parts = re.split(pattern, fix_text)
 
         fix.text = parts[0]  # add first "text"
         for index in range(1, len(parts), 2):
