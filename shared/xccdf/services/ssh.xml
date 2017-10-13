@@ -220,7 +220,10 @@ line appears:
 <pre>Protocol 2</pre>
 </description>
 <ocil clause="it is commented out or is not set correctly to Protocol 2">
-To check which SSH protocol version is allowed, run the following command:
+To check which SSH protocol version is allowed, check version of <tt>openssh-server</tt> with following command:
+<pre>$ rpm -qi openssh-server | grep Version</pre>
+Versions equal to or higher than 7.4 only allow Protocol 2.
+If version is lower than 7.4, run the following command to check configuration:
 <pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
 If configured properly, output should be <pre>Protocol 2</pre>
 </ocil>
