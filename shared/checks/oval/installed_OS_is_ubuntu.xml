@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_ubuntu" version="1">
+    <metadata>
+      <title>Ubuntu</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed is an Ubuntu System</description>
+    </metadata>
+    <criteria comment="System is Ubuntu" operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="lsb-based distrib" test_ref="test_lsb" />
+      <criterion comment="Ubuntu is installed" test_ref="test_ubuntu" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/lsb-release exists" id="test_lsb" version="1">
+    <unix:object object_ref="obj_lsb" />
+  </unix:file_test>
+  <unix:file_object comment="check /etc/lsb-release file" id="obj_lsb" version="1">
+    <unix:filepath>/etc/lsb-release</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check Ubuntu" id="test_ubuntu" version="1">
+    <ind:object object_ref="obj_ubuntu" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ubuntu" version="1" comment="Check Ubuntu">
+    <ind:filepath>/etc/lsb-release</ind:filepath>
+    <ind:pattern operation="pattern match">^DISTRIB_ID=Ubuntu$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
