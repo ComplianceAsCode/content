@@ -1,0 +1,58 @@
+<def-group>
+  <definition class="compliance" id="sshd_version_equal_or_higher_than_74" version="1">
+    <metadata>
+      <title>OpenSSH Server is 7.4 or newer</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if version of OpenSSH Server is equal or higher than 7.4</description>
+    </metadata>
+    <criteria comment="OpenSSH Server version is equal or higher than 7.4" operator="OR">
+      <criteria comment="System uses RPM based packages" operator="AND">
+        <criteria comment="System uses RPM based packages" operator="OR">
+          <extend_definition comment="RHEL7 OS installed" definition_ref="installed_OS_is_rhel7" />
+          <extend_definition comment="RHEL6 OS installed" definition_ref="installed_OS_is_rhel6" />
+          <extend_definition comment="CentOS7 OS installed" definition_ref="installed_OS_is_centos7" />
+          <extend_definition comment="CentOS6 OS installed" definition_ref="installed_OS_is_centos6" />
+          <extend_definition comment="Fedora OS installed" definition_ref="installed_OS_is_fedora" />
+          <extend_definition comment="OpenSUSE OS installed" definition_ref="installed_OS_is_opensuse" />
+          <extend_definition comment="SLE11 OS installed" definition_ref="installed_OS_is_sle11" />
+          <extend_definition comment="SLE12 OS installed" definition_ref="installed_OS_is_sle12" />
+        </criteria>
+        <criterion comment="Check RPM OpenSSH Server is equal or higher than 7.4"
+        test_ref="test_rpm_openssh-server_version" />
+      </criteria>
+      <criteria comment="System uses DEB based packages" operator="AND">
+        <criteria comment="System uses RPM based packages" operator="OR">
+          <extend_definition comment="Ubuntu 1404 OS installed" definition_ref="installed_OS_is_ubuntu1404" />
+          <extend_definition comment="Ubuntu 1604 OS installed" definition_ref="installed_OS_is_ubuntu1604" />
+          <extend_definition comment="Debian 8 OS installed" definition_ref="installed_OS_is_debian8" />
+        </criteria>
+        <criterion comment="Check DEB version of OpenSSH Server is equal or higher than 7.4"
+        test_ref="test_deb_openssh-server_version" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="OpenSSH is version 7.4 or higher" id="test_rpm_openssh-server_version" version="1">
+    <linux:object object_ref="obj_rpm_openssh-server-version" />
+    <linux:state state_ref="state_rpm_openssh-server-version" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_rpm_openssh-server-version" version="1">
+    <linux:name>openssh-server</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_rpm_openssh-server-version" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">0:7.4</linux:evr>
+  </linux:rpminfo_state>
+
+  <linux:dpkginfo_test check="at least one" check_existence="any_exist" comment="OpenSSH is version 7.4 or higher" id="test_deb_openssh-server_version" version="1">
+    <linux:object object_ref="obj_deb_openssh-server-version" />
+    <linux:state state_ref="state_deb_openssh-server-version" />
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_deb_openssh-server-version" version="1">
+    <linux:name>openssh-server</linux:name>
+  </linux:dpkginfo_object>
+  <linux:dpkginfo_state id="state_deb_openssh-server-version" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">0:7.4</linux:evr>
+  </linux:dpkginfo_state>
+</def-group>
