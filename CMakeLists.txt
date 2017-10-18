@@ -66,7 +66,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     )
 endif()
 
-find_package(OPENSCAP REQUIRED)
+find_package(OpenSCAP REQUIRED)
 
 if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
     set(SSG_OVAL_511_ENABLED OFF CACHE BOOL "OVAL 5.11 disabled because your version of OpenSCAP doesn't support it" FORCE)
@@ -74,7 +74,7 @@ if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11
 endif()
 
 execute_process(
-    COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OSCAP_EXECUTABLE}"
+    COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
     RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
 )
 # OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
@@ -114,7 +114,7 @@ message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
 message(STATUS " ")
 
 message(STATUS "Tools:")
-message(STATUS "oscap: ${OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
+message(STATUS "oscap: ${OPENSCAP_OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message(STATUS "xsltproc: ${XSLTPROC_EXECUTABLE}")
 message(STATUS "xmllint: ${XMLLINT_EXECUTABLE}")
 message(STATUS "xmlwf: ${XMLWF_EXECUTABLE}")
