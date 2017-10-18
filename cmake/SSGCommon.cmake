@@ -133,7 +133,7 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam ssg_version "${SSG_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         DEPENDS generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt"
@@ -404,7 +404,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
@@ -416,7 +416,7 @@ macro(ssg_build_cpe_dictionary PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
         DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
@@ -459,7 +459,7 @@ macro(ssg_build_xccdf_final PRODUCT)
         COMMAND "${SED_EXECUTABLE}" -i "s/oval-linked.xml/ssg-${PRODUCT}-oval.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SED_EXECUTABLE}" -i "s/ocil-linked.xml/ssg-${PRODUCT}-ocil.xml/g" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SSG_SHARED_UTILS}/unselect-empty-xccdf-groups.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf resolve -o "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-internal-${PRODUCT}-linked-xccdf-oval-ocil.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/xccdf-linked.xml"
@@ -473,7 +473,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
@@ -490,7 +490,7 @@ macro(ssg_build_xccdf_final PRODUCT)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam reverse_DNS "org.${SSG_VENDOR}.content" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "/usr/share/openscap/xsl/xccdf_1.1_to_1.2.xsl" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam reverse_DNS "org.${SSG_VENDOR}.content" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml" "${OPENSCAP_XCCDF_XSL_1_2}" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-xccdf-1.2.xml"
@@ -501,7 +501,7 @@ macro(ssg_build_xccdf_final PRODUCT)
     )
     #add_custom_command(
     #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMAND "${OSCAP_EXECUTABLE}" xccdf-1.2 validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
+    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf-1.2 validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
     #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
     #    DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
     #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
@@ -527,7 +527,7 @@ macro(ssg_build_oval_final PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
         DEPENDS generate-ssg-${PRODUCT}-oval.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
@@ -553,7 +553,7 @@ macro(ssg_build_ocil_final PRODUCT)
     )
     #add_custom_command(
     #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #    COMMAND "${OSCAP_EXECUTABLE}" ocil validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ocil validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
     #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
     #    DEPENDS generate-ssg-${PRODUCT}-ocil.xml
     #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
@@ -581,7 +581,7 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
     )
     #add_custom_command(
     #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMAND "${OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
+    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
     #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
     #    DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
     #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
@@ -599,10 +599,10 @@ macro(ssg_build_sds PRODUCT)
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             # use --skip-valid here to avoid repeatedly validating everything
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
@@ -623,9 +623,9 @@ macro(ssg_build_sds PRODUCT)
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             # use --skip-valid here to avoid repeatedly validating everything
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND "${OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SSG_SHARED_UTILS}/sds-move-ocil-to-checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
@@ -646,7 +646,7 @@ macro(ssg_build_sds PRODUCT)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -858,7 +858,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
         DEPENDS generate-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
@@ -883,7 +883,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
-        COMMAND "${OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
         DEPENDS generate-ssg-${DERIVATIVE}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
