@@ -1,6 +1,7 @@
 import sys
 import os
 import re
+import argparse
 import tempfile
 import subprocess
 import datetime
@@ -17,6 +18,15 @@ conf_file = re.sub('shared.*', '', __file__) + '/build/oval.config'
 footer = '</oval_definitions>'
 ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
 
+try:
+    from openscap import oscap_get_version
+    if oscap_get_version() < 1.2:
+        oval_version = 5.10
+    else:
+        oval_version = 5.11
+except ImportError:
+    oval_version = 5.10
+
 # globals, to make recursion easier in case we encounter extend_definition
 definitions = ET.Element("definitions")
 tests = ET.Element("tests")
@@ -24,7 +34,8 @@ objects = ET.Element("objects")
 states = ET.Element("states")
 variables = ET.Element("variables")
 
-def _header(schema_version):
+
+def _header(oval_version):
     header = '''<?xml version="1.0" encoding="UTF-8"?>
 <oval_definitions
     xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
@@ -43,7 +54,7 @@ def _header(schema_version):
         <oval:product_version>0.0.1</oval:product_version>
         <oval:schema_version>%s</oval:schema_version>
         <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (schema_version, timestamp)
+    </generator>''' % (oval_version, timestamp)
 
     return header
 
@@ -126,8 +137,8 @@ def replace_external_vars(tree):
         #     print envkey + " = " + envval
         # sys.exit()
         if extvar_id not in os.environ.keys():
-            print ("External_variable specified, but no value provided via "
-                  + "environment variable")
+            print ("External_variable specified, but no value provided via \
+                   environment variable")
             sys.exit(2)
         # replace tag name: external -> local
         node.tag = ovalns + "local_variable"
@@ -165,10 +176,22 @@ def read_ovaldefgroup_file(testfile):
     return body
 
 
-def usage():
-    """Display script usage and exit"""
-    print ("Usage: " + sys.argv[0] + " [-q | --quiet | --silent] definition_file.xml")
-    sys.exit(2)
+def parse_options():
+    usage = "usage: %(prog)s [options] definition_file.xml"
+    parser = argparse.ArgumentParser(usage=usage, version="%(prog)s ")
+    # only some options are on by default
+
+    parser.add_argument("--oval_version", default=oval_version,
+                        dest="oval_version", action="store",
+                        help="OVAL version to use. Example: 5.11, 5.10, ... \
+                        [Default: %(default)s]")
+    parser.add_argument("-q", "--quiet", "--silent", default=False,
+                        action="store_true", dest="silent_mode",
+                        help="Don't show any output when testing OVAL files")
+    parser.add_argument("xmlfile", metavar="XMLFILE", help="OVAL XML file")
+    args = parser.parse_args()
+
+    return args
 
 
 def main():
@@ -179,43 +202,17 @@ def main():
     global variables
     global silent_mode
 
-    silent_mode = False
-    silent_mode_options = ['-q', '--quiet', '--silent']
+    args = parse_options()
+    silent_mode = args.silent_mode
+    oval_version = args.oval_version
 
-    if len(sys.argv) < 2 or len(sys.argv) > 3:
-        print ("Provide the name of an XML file, which contains" +
-               " the definition to test.")
-        usage()
-
-    if len(sys.argv) == 3 and sys.argv[1] in silent_mode_options:
-        if sys.argv[2].rfind('.xml') != -1:
-            silent_mode = True
-            sys.argv.pop(1)
-        else:
-            usage()
-
-    if len(sys.argv) != 2 or sys.argv[1].rfind('.xml') == -1:
-        usage()
-
-    if not len(sys.argv) == 4:
-        try:
-            from openscap import oscap_get_version
-            if oscap_get_version() < 1.2:
-                schema = 5.10
-            else:
-                schema = 5.11
-        except ImportError:
-            schema = parse_conf_file(conf_file)
-    else:
-        # FUTURE: replace with sys arg
-        schema = '5.10'
-
-    testfile = sys.argv[1]
-    header = _header(schema)
+    testfile = args.xmlfile
+    header = _header(oval_version)
     testfile = find_testfile(testfile)
     body = read_ovaldefgroup_file(testfile)
     defname = add_oval_elements(body, header)
     ovaltree = ET.fromstring(header + footer)
+
     # append each major element type, if it has subelements
     for element in [definitions, tests, objects, states, variables]:
         if element.getchildren():
@@ -228,8 +225,9 @@ def main():
     os.write(ovalfile, ET.tostring(ovaltree))
     os.close(ovalfile)
     if not silent_mode:
-        print ("Evaluating with OVAL tempfile : " + fname)
-        print ("Writing results to : " + fname + "-results")
+        print ("Evaluating with OVAL tempfile: " + fname)
+        print ("OVAL Schema Version: %s" % oval_version)
+        print ("Writing results to: " + fname + "-results")
     cmd = "oscap oval eval --results " + fname + "-results " + fname
     oscap_child = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     cmd_out = oscap_child.communicate()[0]
