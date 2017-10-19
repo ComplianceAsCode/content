@@ -271,6 +271,21 @@ def check_is_loaded(loaded_dict, filename, version):
     return False
 
 
+def check_oval_version_from_oval(xml_content, oval_version):
+    oval_file_tree = ElementTree.fromstring(_header("", "") + xml_content + footer)
+    for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
+        file_oval_version = defgroup.get("oval_version")
+  
+    if file_oval_version is None:
+        # oval_version does not exist in <def-group/>
+        # which means the OVAL is supported for any version.
+        # By default, that version is 5.10
+        file_oval_version = "5.10"
+ 
+    if tuple(oval_version.split(".")) >= tuple(file_oval_version.split(".")):
+        return True
+
+
 def checks(product, oval_version, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
@@ -292,6 +307,8 @@ def checks(product, oval_version, oval_dirs):
                         if not check_is_applicable_for_product(xml_content, product):
                             continue
                         if check_is_loaded(already_loaded, filename, oval_version):
+                            continue
+                        if not check_oval_version_from_oval(xml_content, oval_version):
                             continue
                         body.append(xml_content)
                         included_checks_count += 1
