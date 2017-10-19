@@ -540,13 +540,15 @@ Contributions can be made for rules, checks, remediations or even utilities. The
 
 ==== Checks
 
-Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _template/static/oval_ directory for the desired platform.
+Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
 During the building process, SSG will transform the checks in OVAL compliant checks.
 
 In order to create a new check, you must create a file in the appropriate directory, and name it the same as the Rule _id_. This _id_ will also be used as the OVAL _id_ attribute.
 The content of the file should follow the OVAL specification with these exceptions:
 
  * The root tag must be `<def-group>`
+ * If the OVAL check has to be a certain OVAL version, you can add `oval_version="oval_version_number"` as an attribute to the root tag.
+   Otherwise if `oval_version` does not exist in `<def-group>`, it is assumed that the OVAL file applies to _any_ OVAL version.
  * Don't use the tags `<definitions>` `<tests>` `<objects>` `<states>`, instead, put the tags `<definition>` `<*_test>` `<*_object>` `<*_state>` directly inside the `<def-group>` tag.
  * *TODO* Namespaces
 
@@ -554,7 +556,7 @@ This is an example of a check, written using the custom OVAL syntax, that checks
 
 [source,xml]
 ----
-<def-group>
+<def-group oval_version="5.11">
   <definition class="compliance" id="file_groupowner_cron_allow" version="1">
     <metadata>
       <title>Verify group who owns 'cron.allow' file</title>
