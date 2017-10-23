@@ -56,19 +56,6 @@ def _header(schema_version, ssg_version):
                        schema_version, timestamp)
 
 
-def parse_conf_file(conf_file, product):
-    parser = SafeConfigParser()
-    parser.read(conf_file)
-    multi_platform = {}
-
-    for section in parser.sections():
-        for name, setting in parser.items(section):
-            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
-            multi_platform[name] = [item for item in setting.split(",")]
-
-    return multi_platform
-
-
 def check_is_applicable_for_product(oval_check_def, product):
     """Based on the <platform> specifier of the OVAL check determine if this
     OVAL check is applicable for this product. Return 'True' if so, 'False'
@@ -77,8 +64,8 @@ def check_is_applicable_for_product(oval_check_def, product):
     product, product_version = parse_product_name(product)
 
     # Define general platforms
-    multi_platforms = ['<platform>multi_platform_all',
-                       '<platform>multi_platform_' + product ]
+    multi_platforms = ['<platform>all',
+                       '<platform>' + product ]
 
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
@@ -109,30 +96,53 @@ def check_is_applicable_for_product(oval_check_def, product):
     return False
 
 
-def add_platforms(xml_tree, multi_platform):
+def add_platform_element(platform_text, product, product_version):
+    platform = ElementTree.Element(
+                        "{%s}platform" % oval_ns)
+    if platform_text == "all":
+        platform.text = map_product(product) + \
+                            " " + product_version
+    else:
+        platform.text = map_product(platform_text) + \
+                            " " + product_version
+
+    return platform
+
+
+def add_platforms(xml_tree, product):
+    platform = ""
+    product, product_version = parse_product_name(product)
+    multi_product_list.extend("all".split())
+
     for affected in xml_tree.findall(".//{%s}affected" % oval_ns):
         if affected.get("family") != "unix":
             continue
 
-        for plat_elem in affected:
-            try:
-                if plat_elem.text == 'multi_platform_oval':
-                    for platforms in multi_platform[plat_elem.text]:
-                        for plat in multi_platform[platforms]:
-                            platform = ElementTree.Element(
-                                "{%s}platform" % oval_ns)
-                            platform.text = map_product(platforms) + ' ' + plat
-                            affected.insert(1, platform)
+        for plat_elem in affected.findall(".//{%s}platform" % oval_ns):
+            platform_text = plat_elem.text
+            if platform_text in multi_product_list and \
+               (platform_text == product or platform_text == "all"):
+                platform = add_platform_element(platform_text, product, product_version)
+                # Insert expanded product's platform element
+                affected.insert(1, platform)
+                # Remove multi platform short form e.g. rhel
+                affected.remove(plat_elem)
+            elif platform_text not in multi_product_list:
+                mapped_product = map_product(product) + " " + product_version
+                if mapped_product == platform_text:
+                    # Platform most likely contains product's full name and version
+                    # e.g. Red Hat Enterprise Linux 7
+                    pass
                 else:
-                    for platforms in multi_platform[plat_elem.text]:
-                        platform = ElementTree.Element("{%s}platform" % oval_ns)
-                        platform.text = map_product(plat_elem.text) + ' ' + platforms
-                        affected.insert(0, platform)
-            except KeyError:
-                pass
-
-            # Remove multi_platform element
-            if re.findall('multi_platform', plat_elem.text):
+                    # Platform most likely contains product's short name and version
+                    # e.g. rhel7
+                    platform = add_platform_element(platform_text, product, product_version)
+                    # Insert expanded product's platform element
+                    affected.insert(1, platform)
+                    # Remove platform short form e.g. rhel7
+                    affected.remove(plat_elem)
+            else:
+                # Remove platforms not associated with the product
                 affected.remove(plat_elem)
 
     return xml_tree
@@ -348,22 +358,14 @@ def main():
         )
         sys.exit(1)
 
-    if os.path.isfile(args.oval_config):
-        multi_platform = \
-            parse_conf_file(args.oval_config, args.product)
-        header = _header(args.oval_version, args.ssg_version)
-    else:
-        sys.stderr.write("The directory specified does not contain the %s "
-                         "file!\n" % (args.oval_config))
-        sys.exit(1)
-
+    header = _header(args.oval_version, args.ssg_version)
     body = checks(args.product, args.oval_version, args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ElementTree.fromstring(
+    tree = ElementTree.fromstring(
         ("%s%s%s" % (header, body, footer)).encode("utf-8"))
-    tree = add_platforms(corrected_tree, multi_platform)
+    tree = add_platforms(tree, args.product)
     definitions = ElementTree.Element("{%s}definitions" % oval_ns)
     tests = ElementTree.Element("{%s}tests" % oval_ns)
     objects = ElementTree.Element("{%s}objects" % oval_ns)
