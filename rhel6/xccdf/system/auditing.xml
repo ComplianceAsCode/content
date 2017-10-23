@@ -222,6 +222,39 @@ normally.</i>
 <value selector="halt">halt</value>
 </Value>
 
+<Value id="var_auditd_space_left" type="number" >
+<title>Size remaining in disk space before prompting space_left_action</title>
+<description>The setting for space_left (MB) in /etc/audit/auditd.conf</description>
+<value selector="">100</value>
+<value selector="100MB">100</value>
+<value selector="250MB">250</value>
+<value selector="500MB">500</value>
+<value selector="750MB">750</value>
+<value selector="1000MB">1000</value>
+</Value>
+
+<Value id="var_auditd_disk_error_action" type="string" >
+<title>Action for auditd to take when disk errors</title>
+<description>The setting for disk_error_action in /etc/audit/auditd.conf</description>
+<value selector="">single</value>
+<value selector="syslog">syslog</value>
+<value selector="email">email</value>
+<value selector="exec">exec</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
+<Value id="var_auditd_disk_full_action" type="string" >
+<title>Action for auditd to take when disk is full</title>
+<description>The setting for disk_full_action in /etc/audit/auditd.conf</description>
+<value selector="">single</value>
+<value selector="syslog">syslog</value>
+<value selector="email">email</value>
+<value selector="exec">exec</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
 <Value id="var_auditd_action_mail_acct" type="string" >
 <title>Account for auditd to send email when actions occurs</title>
 <description>The setting for action_mail_acct in /etc/audit/auditd.conf</description>
@@ -414,6 +447,33 @@ is used, running low on space for audit records should never occur.
 srg="SRG-OS-999999" />
 </Rule>
 
+<Rule id="auditd_data_retention_space_left" severity="medium">
+<title>Configure auditd space_left on Low Disk Space</title>
+<description>The <tt>auditd</tt> service can be configured to take an action
+when disk space is running low but prior to running out of space completely.
+Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+substituting <i>SIZE_in_MB</i> appropriately:
+<pre>space_left = <i>SIZE_in_MB</i></pre>
+Set this value to the appropriate size in Megabytes cause the system to
+notify the user of an issue.
+</description>
+<ocil clause="the system is not configured a specfic size in MB to notify administrators
+of an issue">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured correctly:
+<pre>space_left <i>SIZE_in_MB</i></pre>
+</ocil>
+<rationale>
+Notifying administrators of an impending disk space problem may allow them to
+take corrective action prior to any disruption.
+</rationale>
+<platform idref="cpe:/a:machine"/>
+<ident cce="80507-7" />
+<oval id="auditd_data_retention_space_left" value="var_auditd_space_left" />
+<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="143" pcidss="Req-10.7" stigid="RHEL-06-000311"
+srg="SRG-OS-000048" />
+</Rule>
+
 <Rule id="auditd_data_retention_action_mail_acct" severity="medium">
 <title>Configure auditd mail_acct Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to send email to
@@ -435,6 +495,72 @@ administrators of the system, who can take appropriate action.</rationale>
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref nist="AU-1(b),AU-4,AU-5(a),IR-5" disa="139,144" pcidss="Req-10.7.a" stigid="RHEL-06-000313"
 srg="SRG-OS-000046" />
+</Rule>
+
+<Rule id="auditd_data_disk_full_action" severity="medium">
+<title>Configure auditd Disk Full Action when Disk Space Is Full</title>
+<description>The <tt>auditd</tt> service can be configured to take an action
+when disk space is running low but prior to running out of space completely.
+Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+substituting <i>ACTION</i> appropriately:
+<pre>disk_full_action = <i>ACTION</i></pre>
+Set this value to <tt>single</tt> to cause the system to switch to single-user
+mode for corrective action. Acceptable values also include <tt>syslog</tt>,
+<tt>exec</tt>, <tt>single</tt>, and <tt>halt</tt>. For certain systems, the need for availability
+outweighs the need to log all actions, and a different setting should be
+determined. Details regarding all possible values for <i>ACTION</i> are described in the
+<tt>auditd.conf</tt> man page.
+</description>
+<ocil clause="the system is not configured to switch to single-user
+mode for corrective action">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured to either log to syslog,
+switch to single-user mode, execute a script,
+or halt when the disk is out of space:
+<pre>disk_full_action single</pre>
+</ocil>
+<rationale>
+Taking appropriate action in case of a filled audit storage volume will minimize
+the possibility of losing audit records.
+</rationale>
+<platform idref="cpe:/a:machine"/>
+<ident cce="80500-2" />
+<oval id="auditd_data_disk_full_action" value="var_auditd_disk_full_action" />
+<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140" stigid="RHEL-06-000510"
+srg="SRG-OS-000047" />
+</Rule>
+
+<Rule id="auditd_data_disk_error_action" severity="medium">
+<title>Configure auditd Disk Error Action on Disk Error</title>
+<description>The <tt>auditd</tt> service can be configured to take an action
+when there is a disk error.
+Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+substituting <i>ACTION</i> appropriately:
+<pre>disk_error_action = <i>ACTION</i></pre>
+Set this value to <tt>single</tt> to cause the system to switch to single-user
+mode for corrective action. Acceptable values also include <tt>syslog</tt>,
+<tt>exec</tt>, <tt>single</tt>, and <tt>halt</tt>. For certain systems, the need for availability
+outweighs the need to log all actions, and a different setting should be
+determined. Details regarding all possible values for <i>ACTION</i> are described in the
+<tt>auditd.conf</tt> man page.
+</description>
+<ocil clause="the system is not configured to switch to single-user
+mode for corrective action">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured to either log to syslog,
+switch to single-user mode, execute a script,
+or halt when the disk errors:
+<pre>disk_error_action single</pre>
+</ocil>
+<rationale>
+Taking appropriate action in case of disk errors will minimize the possibility of
+losing audit records.
+</rationale>
+<platform idref="cpe:/a:machine"/>
+<ident cce="80501-0" />
+<oval id="auditd_data_disk_error_action" value="var_auditd_disk_error_action" />
+<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140" stigid="RHEL-06-000511"
+srg="SRG-OS-999999" />
 </Rule>
 
 <Rule id="auditd_data_retention_flush">
@@ -733,6 +859,31 @@ audited.</rationale>
 <oval id="audit_rules_networkconfig_modification" />
 <ref nist="AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5"
 stigid="RHEL-06-000182" srg="SRG-OS-999999" />
+</Rule>
+
+<Rule id="directory_permissions_var_log_audit">
+<title>System Audit Logs Must Have Mode 0750 or Less Permissive</title>
+<description>
+If <tt>log_group</tt> in <tt>/etc/audit/auditd.conf</tt> is set to a group other than the <tt>root</tt>
+group account, change the mode of the audit log files with the following command:
+<pre>$ sudo chmod 0750 /var/log/audit</pre>
+<br/>
+Otherwise, change the mode of the audit log files with the following command:
+<pre>$ sudo chmod 0700 /var/log/audit</pre>
+</description>
+<ocil clause="any are more permissive">
+Run the following command to check the mode of the system audit logs:
+<pre>$ sudo ls -ld /var/log/audit</pre>
+Audit log directories must be mode 0700 or less permissive.
+</ocil>
+<rationale>
+If users can write to audit logs, audit trails can be modified or destroyed.
+</rationale>
+<platform idref="cpe:/a:machine"/>
+<ident cce="80502-8" />
+<oval id="directory_permissions_var_log_audit" />
+<ref nist="AC-6,AU-1(b),AU-9,IR-5" disa="164"
+stigid="RHEL-06-000385" srg="SRG-OS-000059" />
 </Rule>
 
 <Rule id="file_permissions_var_log_audit">

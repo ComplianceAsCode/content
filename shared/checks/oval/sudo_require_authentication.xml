@@ -1,0 +1,15 @@
+<def-group>
+  <definition class="compliance" id="sudo_require_authentication" version="1">
+    <metadata>
+      <title>Ensure Users Re-Authenticate for Privilege Escalation - sudo</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 6</platform>
+      </affected>
+      <description>Checks sudo usage without password</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition definition_ref="sudo_remove_no_authenticate" />
+      <extend_definition definition_ref="sudo_remove_nopasswd" />
+    </criteria>
+  </definition>
+</def-group>

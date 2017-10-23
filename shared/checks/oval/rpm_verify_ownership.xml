@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="rpm_verify_ownership" version="3">
+    <metadata>
+      <title>Verify File Ownership Using RPM</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>Verify ownership of installed packages
+      by comparing the installed files with information about the
+      files taken from the package metadata stored in the RPM
+      database.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_verify_all_rpms_user_ownership" comment="user ownership of all files matches local rpm database" />
+      <criterion test_ref="test_verify_all_rpms_group_ownership" comment="group ownership of all files matches local rpm database" />
+    </criteria>
+  </definition>
+  <linux:rpmverifyfile_test check_existence="none_exist" id="test_verify_all_rpms_user_ownership" version="1" check="all" comment="user ownership of all files matches local rpm database">
+    <linux:object object_ref="object_files_fail_user_ownership"/>
+  </linux:rpmverifyfile_test>
+  <linux:rpmverifyfile_test check_existence="none_exist" id="test_verify_all_rpms_group_ownership" version="1" check="all" comment="group ownership of all files matches local rpm database">
+    <linux:object object_ref="object_files_fail_group_ownership"/>
+  </linux:rpmverifyfile_test>
+  <linux:rpmverifyfile_object id="object_files_fail_user_ownership" version="1" comment="rpm verify of all files">
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
+    <linux:name operation="pattern match">.*</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_files_fail_user_ownership</filter>
+  </linux:rpmverifyfile_object>
+  <linux:rpmverifyfile_object id="object_files_fail_group_ownership" version="1" comment="rpm verify of all files">
+    <linux:behaviors nomd5="true" noghostfiles="true"/>
+    <linux:name operation="pattern match">.*</linux:name>
+    <linux:epoch operation="pattern match">.*</linux:epoch>
+    <linux:version operation="pattern match">.*</linux:version>
+    <linux:release operation="pattern match">.*</linux:release>
+    <linux:arch operation="pattern match">.*</linux:arch>
+    <linux:filepath operation="pattern match">.*</linux:filepath>
+    <filter action="include">state_files_fail_group_ownership</filter>
+  </linux:rpmverifyfile_object>
+  <linux:rpmverifyfile_state id="state_files_fail_user_ownership" version="1">
+    <linux:ownership_differs>fail</linux:ownership_differs>
+  </linux:rpmverifyfile_state>
+  <linux:rpmverifyfile_state id="state_files_fail_group_ownership" version="1">
+    <linux:group_differs>fail</linux:group_differs>
+  </linux:rpmverifyfile_state>
+</def-group>
