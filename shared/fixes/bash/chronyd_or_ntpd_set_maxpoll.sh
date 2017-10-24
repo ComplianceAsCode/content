@@ -2,7 +2,7 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_time_service_set_maxpoll
 
-if ! `/usr/sbin/pidof ntpd`; then
+if ! [ `/usr/sbin/pidof ntpd` ] ; then
     config_file="/etc/chrony.conf"
 else
     config_file="/etc/ntp.conf"
