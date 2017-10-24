@@ -34,7 +34,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_ntp_set_maxpoll" version="1">
     <ind:filepath>/etc/ntp.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^server[\s]+[\S\]+.*maxpoll[\s]+(\d+)</ind:pattern>
+    <ind:pattern operation="pattern match">^server[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -46,7 +46,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_chrony_set_maxpoll" version="1">
     <ind:filepath>/etc/chrony.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^server[\s]+[\S\]+.*maxpoll[\s]+(\d+)</ind:pattern>
+    <ind:pattern operation="pattern match">^server[\s]+[\S]+.*maxpoll[\s]+(\d+)</ind:pattern>
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
