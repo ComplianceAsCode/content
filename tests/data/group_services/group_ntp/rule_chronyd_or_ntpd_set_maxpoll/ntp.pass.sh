@@ -10,3 +10,4 @@ if ! grep "^server.*maxpoll 10" /etc/ntp.conf; then
 fi
 
 systemctl enable ntpd.service
+systemctl start ntpd.service

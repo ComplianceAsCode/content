@@ -12,5 +12,3 @@ fi
 echo "server test.ntp.org" >> /etc/chrony.conf
 
 systemctl enable chronyd.service
-
-cat /etc/chrony.conf
