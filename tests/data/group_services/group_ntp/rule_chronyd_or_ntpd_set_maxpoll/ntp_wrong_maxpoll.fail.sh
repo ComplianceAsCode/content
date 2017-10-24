@@ -5,9 +5,9 @@
 yum install -y ntp
 yum remove -y chrony
 
-if ! grep "^server.*maxpoll 10" /etc/ntp.conf; then
-    sed -i "s/^server.*/&1 maxpoll 10/" /etc/ntp.conf
-fi
+sed -i "s/^server.*/&1 maxpoll 17/" /etc/ntp.conf
 
 systemctl enable ntpd.service
+
+# The remediation configures ntp only if ntpd is running
 systemctl start ntpd.service
