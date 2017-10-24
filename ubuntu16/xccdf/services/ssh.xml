@@ -21,6 +21,19 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
+<Value id="sshd_required" type="number"
+operator="equals" interactive="0">
+<title>SSH is required to be installed</title>
+<description>Specify if the Policy requires SSH to be installed. Used by SSH Rules
+to determine if SSH should be uninstalled or configured.<br />
+A value of 0 means that the policy doesn't care if OpenSSH server is installed or not. If it is installed, scanner will check for it's configuration, if it's not installed, the check will pass.<br />
+A value of 1 indicates that OpenSSH server package is not required by the policy;<br />
+A value of 2 indicates that OpenSSH server package is required by the policy.<br /></description>
+<value selector="">0</value>
+<value selector="no">1</value>
+<value selector="yes">2</value>
+</Value>
+
 <Rule id="service_sshd_disabled">
 <title>Disable SSH Server if possible (unusual cases)</title>
 <description>Most of the time, the SSH server is needed. However, it can be disabled, do so.
@@ -59,7 +72,7 @@ result in security vulnerabilities and
 should not be used.
 </rationale>
 <ident cce="" />
-<oval id="sshd_allow_only_protocol2" />
+<oval id="sshd_allow_only_protocol2" value="sshd_required" />
 <ref nist="AC-17(7),IA-5(1)(c)" anssi="NT007(R1)" />
 </Rule>
 
@@ -91,7 +104,7 @@ guards against compromises one system leading trivially
 to compromises on another.
 </rationale>
 <ident cce="" />
-<oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value"/>
+<oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value" value2="sshd_required" />
 <ref nist="AC-2(5),SA-8" pcidss="Req-8.1.8" />
 </Rule>
 
@@ -114,7 +127,7 @@ This ensures a user login will be terminated as soon as the <tt>ClientAliveCount
 is reached.
 </rationale>
 <ident cce="" />
-<oval id="sshd_set_keepalive" />
+<oval id="sshd_set_keepalive" value="sshd_required" />
 <ref nist="AC-2(5),SA-8"  />
 </Rule>
 
@@ -135,7 +148,7 @@ privileged commands on the system
 and also allows direct attack attempts on root's password.
 </rationale>
 <ident cce="" />
-<oval id="sshd_disable_root_login" />
+<oval id="sshd_disable_root_login" value="sshd_required" />
 <ref nist="AC-3,AC-6(2),IA-2(1)" anssi="NT007(R21)"  />
 </Rule>
 
@@ -158,7 +171,7 @@ remote login via SSH will require a password,
 even in the event of misconfiguration elsewhere.
 </rationale>
 <ident cce="" />
-<oval id="sshd_disable_empty_passwords" />
+<oval id="sshd_disable_empty_passwords" value="sshd_required" />
 <ref nist="AC-3" anssi="NT007(R17)" />
 </Rule>
 
