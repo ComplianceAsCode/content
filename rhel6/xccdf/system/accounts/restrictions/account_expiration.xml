@@ -111,4 +111,32 @@ expiration greatly reduces the risk of accounts being misused or hijacked.
 srg="SRG-OS-000121,SRG-OS-000123" />
 </Rule>
 
+<Rule id="account_use_centralized_automated_auth" severity="medium">
+<title>Use Centralized and Automated Authentication</title>
+<description>
+Implement an automated system for managing user accounts that minimizes the
+risk of errors, either intentional or deliberate. This system
+should integrate with an existing enterprise user management system, such as
+one based on Identity Management tools such as Active Directory, Kerberos,
+Directory Server, etc.
+</description>
+<ocil clause="the system is not using a centralized authentication mechanism, or it is not automated">
+Verify that the system is integrated with a centralized authentication mechanism
+such as as Active Directory, Kerberos, Directory Server, etc. that has
+automated account mechanisms in place.
+</ocil>
+<rationale>
+A comprehensive account management process that includes automation helps to
+ensure the accounts designated as requiring attention are consistently and
+promptly addressed. Enterprise environments make user account management
+challenging and complex. A user management process requiring administrators to
+manually address account management functions adds risk of potential
+oversight.
+</rationale>
+<ident cce="80509-3"/>
+<oval id="account_use_centralized_automated_auth" />
+<ref disa="15" nist="" srg="SRG-OS-000001" stigid="RHEL-06-000524"/>
+</Rule>
+
+
 </Group>
