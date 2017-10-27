@@ -273,7 +273,7 @@ configured to use removable media as the boot loader.
 <platform idref="cpe:/a:machine" />
 <ident cce="80517-6"/>
 <oval id="bootloader_no_removeable_media"/>
-<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid="RHEL-07-021700"/>
+<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid="021700"/>
 </Rule>
 
 <Rule id="bootloader_uefi_no_removeable_media" severity="medium" prodtype="rhel7">
@@ -326,7 +326,7 @@ by configuring the bootloader password.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27287-2" />
 <oval id="require_singleuser_auth" />
-<ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3"/>
+<ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3" srg="SRG-OS-000080-GPOS-00048" stigid="010481" />
 </Rule>
 
 <Rule id="service_debug-shell_disabled" severity="medium" prodtype="rhel7">
@@ -556,7 +556,7 @@ Access Card.
 <platform idref="cpe:/a:machine" />
 <ident cce="80519-2"/>
 <oval id="smartcard_install_packages"/>
-<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="RHEL-07-041001"/>
+<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041001"/>
 </Rule>
 
 <Rule id="smartcard_configure_cert_checking" severity="medium" prodtype="rhel7">
@@ -591,7 +591,7 @@ Access Card.
 <platform idref="cpe:/a:machine" />
 <ident cce="80520-0"/>
 <oval id="smartcard_configure_cert_checking"/>
-<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="RHEL-07-041003"/>
+<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041003"/>
 </Rule>
 
 <Rule id="smartcard_auth" severity="medium" prodtype="rhel7">

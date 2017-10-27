@@ -73,6 +73,9 @@ Storage deployments.
 <!-- SRG-OS-000028-GPOS-00009, SV-86515r2_rule, RHEL-07-010060 -->
 <select idref="dconf_gnome_screensaver_lock_enabled" selected="true" />
 
+<!-- SRG-OS-000375-GPOS-00160, RHEL-07-010061 -->
+<select idref="dconf_gnome_enable_smartcard_auth" selected="true" />
+
 <!-- SRG-OS-000029-GPOS-00010, SV-86517r2_rule, RHEL-07-010070 -->
 <select idref="dconf_gnome_screensaver_idle_delay" selected="true" />
 
@@ -186,6 +189,9 @@ Storage deployments.
 <!-- SRG-OS-000080-GPOS-00048, SV-86585r1_rule, RHEL-07-010480 -->
 <select idref="bootloader_password" selected="true" />
 
+<!-- SRG-OS-000080-GPOS-00048, RHEL-07-010481 -->
+<select idref="require_singleuser_auth" selected="true" />
+
 <!-- SRG-OS-000080-GPOS-00048, SV-86587r1_rule, RHEL-07-010490 -->
 <select idref="bootloader_uefi_password" selected="true" />
 
@@ -219,6 +225,9 @@ Storage deployments.
 
 <!-- SRG-OS-000114-GPOS-00059, SV-86607r1_rule, RHEL-07-020100 -->
 <select idref="kernel_module_usb-storage_disabled" selected="true" />
+
+<!-- SRG-OS-000378-GPOS-00163, RHEL-07-020101 -->
+<select idref="kernel_module_dccp_disabled" selected="true" />
 
 <!-- SRG-OS-000114-GPOS-00059, SV-86609r1_rule, RHEL-07-020110 -->
 <select idref="service_autofs_disabled" selected="true" />
@@ -590,6 +599,9 @@ Storage deployments.
 
 <!-- SRG-OS-000250-GPOS-00093, SV-86855r2_rule, RHEL-07-040200 -->
 <select idref="sssd_ldap_configure_tls_ca" selected="true" />
+
+<!-- SRG-OS-000480-GPOS-00227, RHEL-07-040201 -->
+<select idref="sysctl_kernel_randomize_va_space" selected="true" />
 
 <!-- SRG-OS-000423-GPOS-00187, SV-86857r1_rule, RHEL-07-040300 -->
 <select idref="package_openssh-server_installed" selected="true" />
