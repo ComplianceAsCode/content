@@ -254,7 +254,7 @@ cis="1.4.2" />
 </Rule>
 
 <Rule id="bootloader_no_removeable_media" severity="medium" prodtype="rhel7">
-<title>UEFI Boat Loader Is Not Installed On Removeable Media</title>
+<title>Boat Loader Is Not Installed On Removeable Media</title>
 <description>
 The system must not allow removable media to be used as the boot loader.
 Remove alternate methods of booting the system from removable media.
@@ -277,7 +277,7 @@ configured to use removable media as the boot loader.
 </Rule>
 
 <Rule id="bootloader_uefi_no_removeable_media" severity="medium" prodtype="rhel7">
-<title>Boat Loader Is Not Installed On Removeable Media</title>
+<title>UEFI Boat Loader Is Not Installed On Removeable Media</title>
 <description>
 The system must not allow removable media to be used as the boot loader.
 Remove alternate methods of booting the system from removable media.
@@ -529,8 +529,8 @@ In Red Hat Enterprise Linux servers and workstations, hardware token login
 is not enabled by default and must be enabled in the system settings.
 </description>
 
-<Rule id="smartcard_install_packages" severity="medium" prodtype="rhel7">
-<title>Install Smart Card Packagages For Multifactor Authentication</title>
+<Rule id="install_smartcard_packages" severity="medium" prodtype="rhel7">
+<title>Install Smart Card Packages For Multifactor Authentication</title>
 <description>
 Configure the operating system to implement multifactor authentication by
 installing the required packages with the following command:
@@ -555,7 +555,7 @@ Access Card.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <ident cce="80519-2"/>
-<oval id="smartcard_install_packages"/>
+<oval id="install_smartcard_packages"/>
 <ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041001"/>
 </Rule>
 
