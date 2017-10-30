@@ -209,6 +209,30 @@ there are systems which must be allowed to relay mail, but which cannot be
 trusted to relay unconditionally, configure SMTP AUTH with SSL support.
 </description>
 
+<Rule id="postfix_prevent_unrestricted_relay" severity="medium" prodtype="rhel7">
+<title>Prevent Unrestricted Mail Relaying</title>
+<description>
+Modify the <pre>/etc/postfix/main.cf</pre> file to restrict client connections
+to the local network with the following command:
+<pre>$ sudo postconf -e 'smtpd_client_restrictions = permit_mynetworks,reject'</pre>
+</description>
+<ocil clause="it is not">
+To verify the system is configured to prevent unrestricted mail relaying,
+run the following command:
+<pre>$ sudo postconf -n smtpd_client_restrictions</pre>
+The output should return:
+<pre>smtpd_client_restrictions = permit_mynetworks,reject</pre>
+</ocil>
+<rationale>
+If unrestricted mail relaying is permitted, unauthorized senders could use this
+host as a mail relay for the purpose of sending spam or other unauthorized
+activity.
+</rationale>
+<ident cce="80512-7"/>
+<oval id="postfix_prevent_unrestricted_relay"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="040680"/>
+</Rule>
+
 <Group id="postfix_server_mail_relay_set_trusted_networks">
 <title>Configure Trusted Networks and Hosts</title>
 <description>Edit <tt>/etc/postfix/main.cf</tt>, and configure the contents of

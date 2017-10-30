@@ -73,6 +73,9 @@ Storage deployments.
 <!-- SRG-OS-000028-GPOS-00009, SV-86515r2_rule, RHEL-07-010060 -->
 <select idref="dconf_gnome_screensaver_lock_enabled" selected="true" />
 
+<!-- SRG-OS-000375-GPOS-00160, RHEL-07-010061 -->
+<select idref="dconf_gnome_enable_smartcard_auth" selected="true" />
+
 <!-- SRG-OS-000029-GPOS-00010, SV-86517r2_rule, RHEL-07-010070 -->
 <select idref="dconf_gnome_screensaver_idle_delay" selected="true" />
 
@@ -125,13 +128,13 @@ Storage deployments.
 <select idref="accounts_minimum_age_login_defs" selected="true" />
 
 <!-- SRG-OS-000075-GPOS-00043, SV-86551r1_rule, RHEL-07-010240 -->
-<!-- TO DO -->
+<select idref="accounts_password_set_min_life_existing" selected="true" />
 
 <!-- SRG-OS-000076-GPOS-00044, SV-86553r1_rule, RHEL-07-010250 -->
 <select idref="accounts_maximum_age_login_defs" selected="true" />
 
 <!-- SRG-OS-000076-GPOS-00044, SV-86555r1_rule, RHEL-07-010260 -->
-<!-- TO DO -->
+<select idref="accounts_password_set_max_life_existing" selected="true" />
 
 <!-- SRG-OS-000077-GPOS-00045, SV-86557r1_rule, RHEL-07-010270 -->
 <select idref="accounts_password_pam_unix_remember" selected="true" />
@@ -186,6 +189,9 @@ Storage deployments.
 <!-- SRG-OS-000080-GPOS-00048, SV-86585r1_rule, RHEL-07-010480 -->
 <select idref="bootloader_password" selected="true" />
 
+<!-- SRG-OS-000080-GPOS-00048, RHEL-07-010481 -->
+<select idref="require_singleuser_auth" selected="true" />
+
 <!-- SRG-OS-000080-GPOS-00048, SV-86587r1_rule, RHEL-07-010490 -->
 <select idref="bootloader_uefi_password" selected="true" />
 
@@ -199,7 +205,7 @@ Storage deployments.
 <select idref="package_ypserv_removed" selected="true" />
 
 <!-- SRG-OS-000324-GPOS-00125, SV-86595r1_rule, RHEL-07-020020 -->
-<!-- TO DO -->
+<select idref="selinux_user_login_roles" selected="true" />
 
 <!-- SRG-OS-000363-GPOS-00150, SV-86597r1_rule, RHEL-07-020030 -->
 <select idref="package_aide_installed" selected="true" />
@@ -219,6 +225,9 @@ Storage deployments.
 
 <!-- SRG-OS-000114-GPOS-00059, SV-86607r1_rule, RHEL-07-020100 -->
 <select idref="kernel_module_usb-storage_disabled" selected="true" />
+
+<!-- SRG-OS-000378-GPOS-00163, RHEL-07-020101 -->
+<select idref="kernel_module_dccp_disabled" selected="true" />
 
 <!-- SRG-OS-000114-GPOS-00059, SV-86609r1_rule, RHEL-07-020110 -->
 <select idref="service_autofs_disabled" selected="true" />
@@ -259,46 +268,46 @@ Storage deployments.
 <select idref="file_permissions_ungroupowned" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86635r1_rule, RHEL-07-020600 -->
-<!-- TO DO -->
+<select idref="accounts_user_interactive_home_directory_defined" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86637r1_rule, RHEL-07-020610 -->
 <select idref="accounts_have_homedir_login_defs" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86639r1_rule, RHEL-07-020620 -->
-<!-- TO DO -->
+<select idref="accounts_user_interactive_home_directory_exists" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86641r1_rule, RHEL-07-020630 -->
-<!-- TO DO -->
+<select idref="file_permissions_home_directories" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86643r2_rule, RHEL-07-020640 -->
-<!-- TO DO -->
+<select idref="file_ownership_home_directories" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86645r2_rule, RHEL-07-020650 -->
-<!-- TO DO -->
+<select idref="file_groupownership_home_directories" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86647r1_rule, RHEL-07-020660 -->
-<!-- TO DO -->
+<select idref="accounts_users_home_files_ownership" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86649r1_rule, RHEL-07-020670 -->
-<!-- TO DO -->
+<select idref="accounts_users_home_files_groupownership" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86651r1_rule, RHEL-07-020680 -->
-<!-- TO DO -->
+<select idref="accounts_users_home_files_permissions" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86653r1_rule, RHEL-07-020690 -->
-<!-- TO DO -->
+<select idref="accounts_user_dot_user_ownership" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86655r2_rule, RHEL-07-020700 -->
-<!-- TO DO -->
+<select idref="accounts_user_dot_group_ownership" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86657r1_rule, RHEL-07-020710 -->
-<!-- TO DO -->
+<select idref="file_permission_user_init_files" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86659r2_rule, RHEL-07-020720 -->
-<!-- TO DO -->
+<select idref="accounts_user_home_paths_only" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86661r1_rule, RHEL-07-020730 -->
-<!-- TO DO -->
+<select idref="accounts_user_dot_no_world_writable_programs" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86663r1_rule, RHEL-07-020900 -->
 <select idref="selinux_all_devicefiles_labeled" selected="true" />
@@ -316,7 +325,7 @@ Storage deployments.
 <select idref="dir_perms_world_writable_system_owned" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86673r1_rule, RHEL-07-021040 -->
-<!-- TO DO -->
+<select idref="accounts_umask_interactive_users" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86675r1_rule, RHEL-07-021100 -->
 <select idref="rsyslog_cron_logging" selected="true" />
@@ -355,7 +364,7 @@ Storage deployments.
 <select idref="aide_use_fips_hashes" selected="true" />
 
 <!-- SRG-OS-000364-GPOS-00151, SV-86699r1_rule, RHEL-07-021700 -->
-<!-- TO DO -->
+<select idref="bootloader_no_removeable_media" selected="true" />
 
 <!-- SRG-OS-000095-GPOS-00049, SV-86701r1_rule, RHEL-07-021710 -->
 <select idref="package_telnet-server_removed" selected="true" />
@@ -367,16 +376,16 @@ Storage deployments.
 <select idref="audit_rules_system_shutdown" selected="true" />
 
 <!-- SRG-OS-000342-GPOS-00133, SV-86707r1_rule, RHEL-07-030300 -->
-<!-- TO DO -->
+<select idref="auditd_audispd_configure_remote_server" selected="true" />
 
 <!-- SRG-OS-000342-GPOS-00133, SV-86709r1_rule, RHEL-07-030310 -->
-<!-- TO DO -->
+<select idref="auditd_audispd_encrypt_sent_records" selected="true" />
 
 <!-- SRG-OS-000342-GPOS-00133, SV-86711r2_rule, RHEL-07-030320 -->
-<!-- TO DO -->
+<select idref="auditd_audispd_disk_full_action" selected="true" />
 
 <!-- SRG-OS-000343-GPOS-00134, SV-86713r1_rule, RHEL-07-030330 -->
-<!-- TO DO -->
+<select idref="auditd_data_retention_space_left" selected="true" />
 
 <!-- SRG-OS-000343-GPOS-00134, SV-86715r1_rule, RHEL-07-030340 -->
 <select idref="auditd_data_retention_space_left_action" selected="true" />
@@ -490,7 +499,7 @@ Storage deployments.
 <select idref="audit_rules_sysadmin_actions" selected="true" />
 
 <!-- SRG-OS-000037-GPOS-00015, SV-86789r3_rule, RHEL-07-030710 -->
-<!-- TO DO -->
+<select idref="audit_rules_privileged_commands_newgrp" selected="true" />
 
 <!-- SRG-OS-000037-GPOS-00015, SV-86791r3_rule, RHEL-07-030720 -->
 <select idref="audit_rules_privileged_commands_chsh" selected="true" />
@@ -586,10 +595,13 @@ Storage deployments.
 <select idref="ldap_client_start_tls" selected="true" />
 
 <!-- SRG-OS-000250-GPOS-00093, SV-86853r2_rule, RHEL-07-040190 -->
-<!-- TO DO -->
+<select idref="sssd_ldap_configure_tls_ca_dir" selected="true" />
 
 <!-- SRG-OS-000250-GPOS-00093, SV-86855r2_rule, RHEL-07-040200 -->
-<!-- TO DO -->
+<select idref="sssd_ldap_configure_tls_ca" selected="true" />
+
+<!-- SRG-OS-000480-GPOS-00227, RHEL-07-040201 -->
+<select idref="sysctl_kernel_randomize_va_space" selected="true" />
 
 <!-- SRG-OS-000423-GPOS-00187, SV-86857r1_rule, RHEL-07-040300 -->
 <select idref="package_openssh-server_installed" selected="true" />
@@ -651,7 +663,7 @@ Storage deployments.
 <select idref="chronyd_or_ntpd_set_maxpoll" selected="true" />
 
 <!-- SRG-OS-000420-GPOS-00186, SV-86895r1_rule, RHEL-07-040510 -->
-<!-- TO DO -->
+<select idref="configure_firewalld_rate_limiting" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86897r1_rule, RHEL-07-040520 -->
 <select idref="service_firewalld_enabled" selected="true" />
@@ -660,10 +672,10 @@ Storage deployments.
 <select idref="display_login_attempts" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86901r1_rule, RHEL-07-040540 -->
-<!-- TO DO -->
+<select idref="no_user_host_based_files" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86903r1_rule, RHEL-07-040550 -->
-<!-- TO DO -->
+<select idref="no_host_based_files" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86905r1_rule, RHEL-07-040600 -->
 <select idref="network_configure_name_resolution" selected="true" />
@@ -690,7 +702,7 @@ Storage deployments.
 <select idref="network_sniffer_disabled" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86921r2_rule, RHEL-07-040680 -->
-<!-- TO DO -->
+<select idref="postfix_prevent_unrestricted_relay" selected="true" />
 
 <!-- SRG-OS-000480-GPOS-00227, SV-86923r1_rule, RHEL-07-040690 -->
 <select idref="package_vsftpd_removed" selected="true" />
@@ -726,22 +738,22 @@ Storage deployments.
 <select idref="sysctl_net_ipv6_conf_all_accept_source_route" selected="true" />
 
 <!-- SRG-OS-000375-GPOS-00160, SV-87041r2_rule, RHEL-07-041001 -->
-<!-- TO DO -->
+<select idref="install_smartcard_packages" selected="true" />
 
 <!-- SRG-OS-000375-GPOS-00160, SV-87051r2_rule, RHEL-07-041002 -->
 <select idref="sssd_enable_pam_services" selected="true" />
 
 <!-- SRG-OS-000375-GPOS-00160, SV-87057r2_rule, RHEL-07-041003 -->
-<!-- TO DO -->
+<select idref="smartcard_configure_cert_checking" selected="true" />
 
 <!-- SRG-OS-000375-GPOS-00160, SV-87059r2_rule, RHEL-07-041004 -->
 <!-- TO DO -->
 
 <!-- SRG-OS-000029-GPOS-00010, SV-87807r2_rule, RHEL-07-010081 -->
-<select idref="dconf_gnome_session_user_locks" selected="true" />
+<select idref="dconf_gnome_screensaver_user_locks" selected="true" />
 
 <!-- SRG-OS-000029-GPOS-00010, SV-87809r2_rule, RHEL-07-010082 -->
-<!-- TO DO -->
+<select idref="dconf_gnome_session_idle_user_locks" selected="true" />
 
 <!-- SRG-OS-000069-GPOS-00037, SV-87811r2_rule, RHEL-07-010119 -->
 <select idref="accounts_password_pam_retry" selected="true" />
@@ -750,7 +762,7 @@ Storage deployments.
 <select idref="mount_option_noexec_remote_filesystems" selected="true" />
 
 <!-- SRG-OS-000342-GPOS-00133, SV-87815r2_rule, RHEL-07-030321 -->
-<!-- TO DO -->
+<select idref="auditd_audispd_network_failure_action" selected="true" />
 
 <!-- SRG-OS-000004-GPOS-00004, SV-87817r2_rule, RHEL-07-030871 -->
 <select idref="audit_rules_usergroup_modification_group" selected="true" />
@@ -768,6 +780,6 @@ Storage deployments.
 <select idref="sysctl_net_ipv4_conf_all_accept_redirects" selected="true" />
 
 <!-- SRG-OS-000424-GPOS-00188, SV-87829r1_rule, RHEL-07-041010 -->
-<!-- TO DO -->
+<select idref="wireless_disable_interfaces" selected="true" />
 
 </Profile>

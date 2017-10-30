@@ -39,9 +39,10 @@ to reboot the system first.
 <ref nist="AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
 </Rule>
 
-<Rule id="wireless_disable_interfaces">
+<Rule id="wireless_disable_interfaces" severity="medium">
 <title>Deactivate Wireless Network Interfaces</title>
-<description>Deactivating wireless network interfaces should prevent
+<description>
+Deactivating wireless network interfaces should prevent
 normal usage of the wireless capability.
 <br /><br />
 First, identify the interfaces available with the command:
@@ -60,13 +61,24 @@ disable the interface for future boots, remove the appropriate
 interface file from <tt>/etc/sysconfig/network-scripts</tt>:
 <pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
 </description>
-<rationale>Wireless networking allows attackers within physical proximity to
-launch network-based attacks against systems, including those against local LAN
-protocols which were not designed with security in mind.
+<ocil clause="it is not">
+To verify that wireless interfaces have been disabled, run the following
+command:
+<pre>$ ifconfig -a</pre>
+The output should not contain any wireless interface.
+</ocil>
+<rationale>
+The use of wireless networking can introduce many different attack vectors into
+the organization's network. Common attack vectors such as malicious
+association and ad hoc networks will allow an attacker to spoof a wireless
+access point (AP), allowing validated systems to connect to the malicious AP and
+enabling the attacker to monitor and record network traffic. These malicious APs
+can also serve to create a man-in-the-middle attack or be used to create a
+denial of service to valid network resources.
 </rationale>
 <ident cce="27057-9" />
 <oval id="wireless_disable_interfaces" />
-<ref nist="AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
+<ref nist="AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,2418" srg="" stigid="RHEL-06-000293" />
 </Rule>
 
 <Rule id="service_bluetooth_disabled" severity="medium">

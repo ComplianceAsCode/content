@@ -175,6 +175,40 @@ accepted.</rationale>
 <ref nist="CM-6(b),CM-7" disa="366" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.1" cui="3.1.3,3.4.7,3.13.6" />
 </Rule>
 
+<Rule id="configure_firewalld_rate_limiting" severity="medium" prodtype="rhel7">
+<title>Configure firewalld To Rate Limit Connections</title>
+<description>
+Create a direct firewall rule to protect against DoS attacks with the following
+command:
+<pre>$ sudo firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -p tcp -m limit --limit 25/minute --limit-burst 100  -j ACCEPT</pre>
+</description>
+<ocil clause="firewalld is not rate limiting connections">
+To verify the operating system protects against or limits the effects of DoS
+attacks by ensuring the operating system is implementing rate-limiting measures
+on impacted network interfaces, run the following command:
+<pre>$ sudo firewall-cmd --permanent --direct --get-rules ipv4 filter INPUT_direct</pre>
+The output should return:
+<pre>0 -p tcp -m limit --limit 25/minute --limit-burst 100 -j ACCEPT</pre>
+</ocil>
+<rationale>
+DoS is a condition when a resource is not available for legitimate users. When
+this occurs, the organization either cannot accomplish its mission or must
+operate at degraded capacity.
+<br/><br/>
+This requirement addresses the configuration of
+the operating system to mitigate the impact of DoS attacks that have occurred or
+are ongoing on system availability. For each system, known and potential DoS
+attacks must be identified and solutions for each type implemented. A variety of
+technologies exist to limit or, in some cases, eliminate the effects of DoS
+attacks (e.g., limiting processes or establishing memory partitions). Employing
+increased capacity and bandwidth, combined with service redundancy, may reduce
+the susceptibility to some DoS attacks.
+</rationale>
+<ident cce="80542-4"/>
+<oval id="configure_firewalld_rate_limiting"/>
+<ref disa="2385" nist="" srg="SRG-OS-000420-GPOS-00186" stigid="040510"/>
+</Rule>
+
 <Rule id="configure_firewalld_ports" severity="medium" prodtype="rhel7">
 <title>Configure the Firewalld Ports</title>
 <description>Configure the <tt>firewalld</tt> ports to allow approved

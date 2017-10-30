@@ -268,6 +268,17 @@ normally.</i>
 <value selector="halt">halt</value>
 </Value>
 
+<Value id="var_auditd_space_left" type="number" >
+<title>Size remaining in disk space before prompting space_left_action</title>
+<description>The setting for space_left (MB) in /etc/audit/auditd.conf</description>
+<value selector="">100</value>
+<value selector="100MB">100</value>
+<value selector="250MB">250</value>
+<value selector="500MB">500</value>
+<value selector="750MB">750</value>
+<value selector="1000MB">1000</value>
+</Value>
+
 <Value id="var_auditd_action_mail_acct" type="string" >
 <title>Account for auditd to send email when actions occurs</title>
 <description>The setting for action_mail_acct in /etc/audit/auditd.conf</description>
@@ -284,6 +295,39 @@ normally.</i>
 <value selector="incremental">incremental</value>
 <value selector="data">data</value>
 <value selector="sync">sync</value>
+</Value>
+
+<Value id="var_audispd_network_failure_action" type="string" >
+<title>Action for audispd to take when network fails</title>
+<description>The setting for network_failure_action in /etc/audisp/audisp-remote.conf</description>
+<value selector="">single</value>
+<value selector="ignore">ignore</value>
+<value selector="syslog">syslog</value>
+<value selector="email">email</value>
+<value selector="exec">exec</value>
+<value selector="suspend">suspend</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
+<Value id="var_audispd_disk_full_action" type="string" >
+<title>Action for audispd to take when disk is full</title>
+<description>The setting for disk_full_action in /etc/audisp/audisp-remote.conf</description>
+<value selector="">single</value>
+<value selector="ignore">ignore</value>
+<value selector="syslog">syslog</value>
+<value selector="email">email</value>
+<value selector="exec">exec</value>
+<value selector="suspend">suspend</value>
+<value selector="single">single</value>
+<value selector="halt">halt</value>
+</Value>
+
+<Value id="var_audispd_remote_server" type="string" >
+<title>Remote server for audispd to send audit records</title>
+<description>The setting for remote_server in /etc/audisp/audisp-remote.conf</description>
+<value selector="">127.0.0.1</value>
+<value selector="default">myhost.mydomain.com</value>
 </Value>
 
 <Rule id="auditd_data_retention_num_logs" severity="medium" prodtype="rhel7">
@@ -455,6 +499,33 @@ is used, running low on space for audit records should never occur.
 <ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" pcidss="Req-10.7" cis="5.2.1.2" cjis="5.4.1.1" cui="3.3.1" />
 </Rule>
 
+<Rule id="auditd_data_retention_space_left" severity="medium" prodtype="rhel7">
+<title>Configure auditd space_left on Low Disk Space</title>
+<description>The <tt>auditd</tt> service can be configured to take an action
+when disk space is running low but prior to running out of space completely.
+Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+substituting <i>SIZE_in_MB</i> appropriately:
+<pre>space_left = <i>SIZE_in_MB</i></pre>
+Set this value to the appropriate size in Megabytes cause the system to
+notify the user of an issue.
+</description>
+<ocil clause="the system is not configured a specfic size in MB to notify administrators
+of an issue">
+Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+determine if the system is configured correctly:
+<pre>space_left <i>SIZE_in_MB</i></pre>
+</ocil>
+<rationale>
+Notifying administrators of an impending disk space problem may allow them to
+take corrective action prior to any disruption.
+</rationale>
+<platform idref="cpe:/a:machine"/>
+<ident cce="80537-4" />
+<oval id="auditd_data_retention_space_left" value="var_auditd_space_left" />
+<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="1855" pcidss="Req-10.7" stigid="030330"
+srg="SRG-OS-000343-GPOS-00134" />
+</Rule>
+
 <Rule id="auditd_data_retention_action_mail_acct" severity="medium" prodtype="rhel7">
 <title>Configure auditd mail_acct Action on Low Disk Space</title>
 <description>The <tt>auditd</tt> service can be configured to send email to
@@ -526,6 +597,130 @@ to the local syslog server</rationale>
 <ref nist="AU-1(b),AU-3(2),IR-5" disa="136" pcidss="Req-10.5.3" cjis="5.4.1.1" cui="3.3.1" />
 <oval id="auditd_audispd_syslog_plugin_activated" />
 <ident prodtype="rhel7" cce="27341-7" />
+</Rule>
+
+<Rule id="auditd_audispd_network_failure_action" severity="medium" prodtype="rhel7">
+<title>Configure audispd's Plugin network_failure_action On Network Failure</title>
+<description>
+Configure the action the operating system takes if there is an error sending
+audit records to a remote system. Edit the file <tt>/etc/audisp/audisp-remote.conf</tt>.
+Add or modify the following line, substituting <i>ACTION</i> appropriately:
+<pre>network_failure_action = <i>ACTION</i></pre>
+Set this value to <tt>single</tt> to cause the system to switch to single user
+mode for corrective action. Acceptable values also include <tt>syslog</tt> and
+<tt>halt</tt>. For certain systems, the need for availability
+outweighs the need to log all actions, and a different setting should be
+determined.
+</description>
+<ocil clause="the system is not configured to switch to single user
+mode for corrective action">
+Inspect <tt>/etc/audisp/audisp-remote.conf</tt> and locate the following line to
+determine if the system is configured to either send to syslog, switch to single user mode,
+or halt when there is a network failure with audispd:
+<pre>grep -i network_failure_action /etc/audisp/audisp-remote.conf</pre>
+The output should return something similar to:
+<pre>network_failure_action = single</pre>
+Acceptable values also include <tt>syslog</tt> and
+<tt>halt</tt>.
+</ocil>
+<rationale>
+Taking appropriate action when there is an error sending audit records to a
+remote system will minimize the possibility of losing audit records.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80538-2"/>
+<oval id="auditd_audispd_network_failure_action" value="var_audispd_network_failure_action" />
+<ref disa="1851" nist="" srg="SRG-OS-000342-GPOS-00133" stigid="030321"/>
+</Rule>
+
+<Rule id="auditd_audispd_disk_full_action" severity="medium" prodtype="rhel7">
+<title>Configure audispd's Plugin disk_full_action When Disk Is Full</title>
+<description>
+Configure the action the operating system takes if the disk the audit records
+are written to becomes full. Edit the file <tt>/etc/audisp/audisp-remote.conf</tt>.
+Add or modify the following line, substituting <i>ACTION</i> appropriately:
+<pre>disk_full_action = <i>ACTION</i></pre>
+Set this value to <tt>single</tt> to cause the system to switch to single user
+mode for corrective action. Acceptable values also include <tt>syslog</tt> and
+<tt>halt</tt>. For certain systems, the need for availability
+outweighs the need to log all actions, and a different setting should be
+determined.
+</description>
+<ocil clause="the system is not configured to switch to single user mode for corrective action">
+Inspect <tt>/etc/audisp/audisp-remote.conf</tt> and locate the following line to
+determine if the system is configured to either send to syslog, switch to single user mode,
+or halt when the disk is full:
+<pre>grep -i disk_full_action /etc/audisp/audisp-remote.conf</pre>
+The output should return something similar to:
+<pre>disk_full_action = single</pre>
+Acceptable values also include <tt>syslog</tt> and
+<tt>halt</tt>.
+</ocil>
+<rationale>
+Taking appropriate action in case of a filled audit storage volume will
+minimize the possibility of losing audit records.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80539-0"/>
+<oval id="auditd_audispd_disk_full_action" value="var_audispd_disk_full_action" />
+<ref disa="1851" nist="" srg="SRG-OS-000342-GPOS-00133" stigid="030320"/>
+</Rule>
+
+<Rule id="auditd_audispd_encrypt_sent_records" severity="medium" prodtype="rhel7">
+<title>Encrypt Audit Records Sent With audispd Plugin</title>
+<description>
+Configure the operating system to encrypt the transfer of off-loaded audit
+records onto a different system or media from the system being audited.
+Uncomment the <tt>enable_krb5</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>,
+and set it with the following line:
+<pre>enable_krb5 = yes</pre>
+</description>
+<ocil clause="audispd is not encrypting audit records when sent over the network">
+To verify the audispd plugin encrypts audit records off-loaded onto a different
+system or media from the system being audited, run the following command:
+<pre>$ sudo grep -i enable_krb5 /etc/audisp/audisp-remote.conf</pre>
+The output should return the following:
+<pre>enable_krb5 = yes</pre>
+</ocil>
+<rationale>
+Information stored in one location is vulnerable to accidental or incidental deletion
+or alteration. Off-loading is a common process in information systems with limited
+audit storage capacity.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80540-8"/>
+<oval id="auditd_audispd_encrypt_sent_records"/>
+<ref disa="1851" nist="" srg="SRG-OS-000342-GPOS-00133" stigid="030310"/>
+</Rule>
+
+<Rule id="auditd_audispd_configure_remote_server" severity="medium" prodtype="rhel7">
+<title>Configure audispd Plugin To Send Logs To Remote Server</title>
+<description>
+Configure the audispd plugin to off-load audit records onto a different
+system or media from the system being audited.
+Set the <tt>remote_server</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>
+with an IP address or hostname of the system that the audispd plugin should
+send audit records to. For example replacing <i>REMOTE_SYSTEM</i> with an IP
+address or hostname:
+<pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+</description>
+<ocil clause="audispd is not sending logs to a remote system">
+To verify the audispd plugin off-loads audit records onto a different system or
+media from the system being audited, run the following command:
+<pre>$ sudo grep -i remote_server /etc/audisp/audisp-remote.conf</pre>
+The output should return something similar to where <i>REMOTE_SYSTEM</i>
+is an IP address or hostname:
+<pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+</ocil>
+<rationale>
+Information stored in one location is vulnerable to accidental or incidental
+deletion or alteration.Off-loading is a common process in information systems
+with limited audit storage capacity.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80541-6"/>
+<oval id="auditd_audispd_configure_remote_server" value="var_audispd_remote_server" /> 
+<ref disa="1851" nist="" srg="SRG-OS-000342-GPOS-00133" stigid="030300"/>
 </Rule>
 
 </Group>

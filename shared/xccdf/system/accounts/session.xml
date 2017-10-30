@@ -220,6 +220,317 @@ and potentially malicious code.
 </Rule>
 </Group>
 
+<Rule id="accounts_user_dot_no_world_writable_programs" severity="medium" prodtype="rhel7">
+<title>User Initialization Files Must Not Run World-Writable Programs</title>
+<description>
+Set the mode on files being executed by the user initialization files with the
+following command:
+<pre>$ sudo chmod 0755 <i>FILE</i></pre>
+</description>
+<ocil clause="files are executing world-writable programs">
+To verify that local initialization files do not execute world-writable programs,
+execute the following command:
+<pre>$ sudo find /home -perm -002 -type f -exec ls -ld {} -name ".[^.]*"\;</pre>
+There should be no output.
+</ocil>
+<rationale>
+If user start-up files execute world-writable programs, especially in
+unprotected directories, they could be maliciously modified to destroy user
+files or otherwise compromise the system at the user level. If the system is
+compromised at the user level, it is easier to elevate privileges to eventually
+compromise the system at the root and network level.
+</rationale>
+<ident cce="80523-4"/>
+<oval id="accounts_user_dot_no_world_writable_programs"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020730"/>
+</Rule>
+
+<Rule id="accounts_user_home_paths_only" severity="medium" prodtype="rhel7">
+<title>Ensure that Users Path Contains Only Local Directories</title>
+<description>
+Ensure that all interactive user initialization files executable search
+path statements do not contain statements that will reference a working
+directory other than the users home directory.
+</description>
+<ocil clause="paths contain more than local home directories">
+To verify that all interactive user initialization files executable search
+path statements do not contain statements that will reference a working
+directory other than the users home directory, run the following command:
+<pre>$ sudo grep -r PATH /home/</pre>
+Inspect the output for any PATH is references directories outside the home directory.
+</ocil>
+<rationale>
+The executable search path (typically the PATH environment variable) contains a
+list of directories for the shell to search to find executables. If this path
+includes the current working directory (other than the users home directory),
+executables in these directories may be executed instead of system commands.
+This variable is formatted as a colon-separated list of directories. If there is
+an empty entry, such as a leading or trailing colon or two consecutive colons,
+this is interpreted as the current working directory. If deviations from the
+default system search path for the local interactive user are required, they
+must be documented with the Information System Security Officer (ISSO).
+</rationale>
+<ident cce="80524-2"/>
+<oval id="accounts_user_home_paths_only"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020720"/>
+</Rule>
+
+<Rule id="file_permission_user_init_files" severity="medium" prodtype="rhel7">
+<title>Ensure All User Initialization Files Have Mode 0740 Or Less Permissive</title>
+<description>
+Set the mode of the user initialization files to <tt>0740</tt> with the
+following command:
+<pre>$ sudo chmod 0740 /home/<i>USER</i>/.<i>INIT_FILE</i></pre>
+</description>
+<ocil clause="they are not 0740 or more permissive">
+To verify that all user initialization files have a mode of <tt>0740</tt> or
+less permissive, run the following command:
+<pre>$ sudo find /home -type f -name '\.*' \( -perm -0002 -o -perm -0020 \)</pre>
+There should be no output.
+</ocil>
+<rationale>
+Local initialization files are used to configure the user's shell environment
+upon logon. Malicious modification of these files could compromise accounts upon
+logon.
+</rationale>
+<ident cce="80525-9"/>
+<oval id="file_permission_user_init_files"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020710"/>
+</Rule>
+
+<Rule id="accounts_user_dot_group_ownership" severity="medium" prodtype="rhel7">
+<title>User Initialization Files Must Be Group-Owned By The Primary User</title>
+<description>
+Change the group owner of interactive users files to the group found
+in <pre>/etc/passwd</pre> for the user. To change the group owner of a local
+interactive user home directory, use the following command:
+<pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i>/.<i>INIT_FILE</i></pre>
+</description>
+<ocil clause="they are not">
+To verify the local initialization files of all local interactive users are group-
+owned by the appropriate user, inspect the primary group of the respective
+users in <tt>/etc/passwd</tt> and verify all initialization files under the
+respective users home directory. Check the group owner of all local interactive users
+initialization files.
+</ocil>
+<rationale>
+Local initialization files for interactive users are used to configure the
+user's shell environment upon logon. Malicious modification of these files could
+compromise accounts upon logon.
+</rationale>
+<ident cce="80526-7"/>
+<oval id="accounts_user_dot_group_ownership"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020700"/>
+</Rule>
+
+<Rule id="accounts_user_dot_user_ownership" severity="medium" prodtype="rhel7">
+<title>User Initialization Files Must Be Owned By the Primary User</title>
+<description>
+Set the owner of the user initialization files for interactive users to
+the primary owner with the following command:
+<pre>$ sudo chown <i>USER</i> /home/<i>USER</i>/.*</pre>
+</description>
+<ocil clause="they are not">
+To verify all local initialization files for interactive users are owned by the
+primary user, run the following command:
+<pre>$ sudo ls -al /home/<i>USER</i>/.*</pre>
+The user initialization files should be owned by <i>USER</i>.
+</ocil>
+<rationale>
+Local initialization files are used to configure the user's shell environment
+upon logon. Malicious modification of these files could compromise accounts upon
+logon.
+</rationale>
+<ident cce="80527-5"/>
+<oval id="accounts_user_dot_user_ownership"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020690"/>
+</Rule>
+
+<Rule id="accounts_user_interactive_home_directory_defined" severity="medium" prodtype="rhel7">
+<title>All Interactive Users Must Have A Home Directory Defined</title>
+<description>
+Assign home directories to all interactive users that currently do not
+have a home directory assigned.
+</description>
+<ocil clause="users home directory is not defined">
+To verify interactive users on the system have a home directory assigned,
+run the following command:
+<pre>$ sudo awk -F":" '{print $1 ":" $6}' /etc/passwd</pre>
+Inspect the output and verify that all interactive users have a home directory
+defined.
+</ocil>
+<rationale>
+If local interactive users are not assigned a valid home directory, there is no
+place for the storage and control of files they should own.
+</rationale>
+<ident cce="80528-3"/>
+<oval id="accounts_user_interactive_home_directory_defined"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020600"/>
+</Rule>
+
+<Rule id="accounts_user_interactive_home_directory_exists" severity="medium" prodtype="rhel7">
+<title>All Interactive Users Home Directories Must Exist</title>
+<description>
+Create home directories to all interactive users that currently do not
+have a home directory assigned. Use the following commands to create the user
+home directory assigned in <tt>/etc/passwd</tt>:
+<pre>$ sudo mkdir /home/<i>USER</i></pre>
+</description>
+<ocil clause="users home directory does not exist">
+To verify the assigned home directory of all interactive users on the system
+exist, run the following command:
+<pre>$ sudo pwck -r</pre>
+The output should not return any interactive users.
+</ocil>
+<rationale>
+If a local interactive user has a home directory defined that does not exist,
+the user may be given access to the / directory as the current working directory
+upon logon. This could create a Denial of Service because the user would not be
+able to access their logon configuration files, and it may give them visibility
+to system files they normally would not be able to access.
+</rationale>
+<ident cce="80529-1"/>
+<oval id="accounts_user_interactive_home_directory_exists"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020620"/>
+</Rule>
+
+<Rule id="file_permissions_home_directories" severity="medium" prodtype="rhel7">
+<title>All Interactive User Home Directories Must Have mode 0750 Or Less Permissive</title>
+<description>
+Change the mode of interactive users home directories to <tt>0750</tt>. To
+change the mode of interactive users home directory, use the
+following command:
+<pre>$ sudo chmod 0750 /home/<i>USER</i></pre>
+</description>
+<ocil clause="they are more permissive">
+To verify the assigned home directory of all interactive user home directories
+have a mode of <pre>0750</pre> or less permissive, run the following command:
+<pre>$ sudo ls -l /home</pre>
+Inspect the output for any directories with incorrect permissions.
+</ocil>
+<rationale>
+Excessive permissions on local interactive user home directories may allow
+unauthorized access to user files by other users.
+</rationale>
+<ident cce="80530-9"/>
+<oval id="file_permissions_home_directories"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020630"/>
+</Rule>
+
+<Rule id="file_ownership_home_directories" severity="medium" prodtype="rhel7">
+<title>All Interactive User Home Directories Must Be Owned By The Primary User</title>
+<description>
+Change the owner of interactive users home directories to that correct
+owner. To change the owner of a interactive users home directory, use
+the following command:
+<pre>$ sudo chown <i>USER</i> /home/<i>USER</i></pre>
+</description>
+<ocil clause="the user ownership is incorrect">
+To verify the home directory ownership, run the following command:
+<pre>$ sudo ls -ld $(egrep ':[0-9]{4}' /etc/passwd | cut -d: -f6)</pre>
+</ocil>
+<rationale>
+If a local interactive user does not own their home directory, unauthorized
+users could access or modify the user's files, and the users may not be able to
+access their own files.
+</rationale>
+<ident cce="80531-7"/>
+<oval id="file_ownership_home_directories"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020640"/>
+</Rule>
+
+<Rule id="file_groupownership_home_directories" severity="medium" prodtype="rhel7">
+<title>All Interactive User Home Directories Must Be Group-Owned By The Primary User</title>
+<description>
+Change the group owner of interactive users home directory to the
+group found in <tt>/etc/passwd</tt>. To change the group owner of
+interactive users home directory, use the following command:
+<pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i></pre>
+</description>
+<ocil clause="the group ownership is incorrect">
+To verify the assigned home directory of all interactive users is group-
+owned by that users primary GID, run the following command:
+<pre>$ sudo ls -ld $ (egrep ':[0-9]{4}' /etc/passwd | cut -d: -f6)</pre>
+</ocil>
+<rationale>
+If the Group Identifier (GID) of a local interactive users home directory is
+not the same as the primary GID of the user, this would allow unauthorized
+access to the users files, and users that share the same group may not be
+able to access files that they legitimately should.
+</rationale>
+<ident cce="80532-5"/>
+<oval id="file_groupownership_home_directories"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020650"/>
+</Rule>
+
+<Rule id="accounts_users_home_files_ownership" severity="medium" prodtype="rhel7">
+<title>All User Files and Directories In The Home Directory Must Be Owned By The Primary User</title>
+<description>
+Change the owner of a interactive users files and directories to that
+owner. To change the of a local interactive users files and
+directories, use the following command:
+<pre>$ sudo chown -R <i>USER</i> /home/<i>USER</i></pre>
+</description>
+<ocil clause="the user ownership is incorrect">
+To verify all files and directories in interactive users home directory
+are owned by the user, run the following command:
+<pre>$ sudo ls -lLR /home/<i>USER</i></pre>
+</ocil>
+<rationale>
+If local interactive users do not own the files in their directories,
+unauthorized users may be able to access them. Additionally, if files are not
+owned by the user, this could be an indication of system compromise.
+</rationale>
+<ident cce="80533-3"/>
+<oval id="accounts_users_home_files_ownership"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020660"/>
+</Rule>
+
+<Rule id="accounts_users_home_files_groupownership" severity="medium" prodtype="rhel7">
+<title>All User Files and Directories In The Home Directory Must Be Group-Owned By The Primary User</title>
+<description>
+Change the group of a local interactive users files and directories to a
+group that the interactive user is a member of. To change the group owner of a
+local interactive users files and directories, use the following command:
+<pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i>/<i>FILE_DIR</i></pre>
+</description>
+<ocil clause="the group ownership is incorrect">
+To verify all files and directories in interactive user home directory are
+group-owned by a group the user is a member of, run the
+following command:
+<pre>$ sudo ls -lLR /home/<i>USER</i></pre>
+</ocil>
+<rationale>
+If a local interactive users files are group-owned by a group of which the
+user is not a member, unintended users may be able to access them.
+</rationale>
+<ident cce="80534-1"/>
+<oval id="accounts_users_home_files_groupownership"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020670"/>
+</Rule>
+
+<Rule id="accounts_users_home_files_permissions" severity="medium" prodtype="rhel7">
+<title>All User Files and Directories In The Home Directory Must Have Mode 0750 Or Less Permissive</title>
+<description>
+Set the mode on files and directories in the local interactive user home
+directory with the following command:
+<pre>$ sudo chmod 0750 /home/<i>USER</i>/<i>FILE_DIR</i></pre>
+</description>
+<ocil clause="home directory files or folders have incorrect permissions">
+To verify all files and directories contained in interactive user home
+directory, excluding local initialization files, have a mode of <tt>0750</tt>,
+run the following command:
+<pre>$ sudo ls -lLR /home/<i>USER</i></pre>
+</ocil>
+<rationale>
+If a local interactive user files have excessive permissions, unintended users
+may be able to access or modify them.
+</rationale>
+<ident cce="80535-8"/>
+<oval id="accounts_users_home_files_permissions"/>
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020680"/>
+</Rule>
+
 <Rule id="file_permissions_home_dirs" prodtype="rhel7">
 <title>Ensure that User Home Directories are not Group-Writable or World-Readable</title>
 <description>For each human user of the system, view the
@@ -401,6 +712,30 @@ umask <sub idref="var_accounts_user_umask" /></pre>
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
 <ref prodtype="rhel7" stigid="020240" />
 <ref nist="CM-6(b),SA-8" disa="366" srg="SRG-OS-000480-GPOS-00228" />
+</Rule>
+
+<Rule id="accounts_umask_interactive_users" severity="medium" prodtype="rhel7">
+<title>Ensure the Default Umask is Set Correctly For Interactive Users</title>
+<description>
+Remove the <tt>UMASK</tt> environment variable from all interactive users initialization files.
+</description>
+<ocil clause="the above command returns no output, or if the umask is configured incorrectly">
+Verify the <tt>UMASK</tt> setting is not configured for interactive users,
+run the following command:
+<pre>$ sudo grep -ri "UMASK" /home</pre>
+There should be no output.
+</ocil>
+<rationale>
+The umask controls the default access mode assigned to newly created files. A
+umask of 077 limits new files to mode 700 or less permissive. Although umask can
+be represented as a four-digit number, the first digit representing special
+access modes is typically ignored or required to be 0. This requirement
+applies to the globally configured system defaults and the local interactive
+user defaults for each account on the system.
+</rationale>
+<ident cce="80536-6"/>
+<oval id="accounts_umask_interactive_users" value="var_accounts_user_umask" />
+<ref disa="1814" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="021040"/>
 </Rule>
 
 </Group>

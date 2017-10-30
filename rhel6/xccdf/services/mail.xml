@@ -65,6 +65,14 @@ should be used instead.
 <description>This section discusses settings for Postfix in a submission-only
 e-mail configuration.</description>
 
+<Value id="var_postfix_root_mail_alias" type="string"
+operator="equals" interactive="0">
+<title>Postfix Root Mail Alias</title>
+<description>Specify an email address (string) for a root mail alias.</description>
+<value selector="">system.administrator@mail.mil</value>
+<value selector="default">system.administrator@mail.mil</value>
+</Value>
+
 <Rule id="postfix_network_listening_disabled" severity="medium">
 <title>Disable Postfix Network Listening</title>
 <description>
@@ -85,6 +93,30 @@ and not from the network, which protects it from network attack.
 <ident cce="26780-7" />
 <oval id="postfix_network_listening_disabled" />
 <ref nist="CM-7" disa="382" stigid="RHEL-06-000249" srg="SRG-OS-000096" />
+</Rule>
+
+<Rule id="postfix_client_configure_mail_alias" severity="medium">
+<title>Configure System to Forward All Mail For The Root Account</title>
+<description>
+Set up an alias for root that forwards to a monitored email address:
+<pre>$ sudo echo "root: <sub idref="var_postfix_root_mail_alias" />" >> /etc/aliases
+$ sudo newaliases</pre>
+</description>
+<ocil clause="it is not">
+Find the list of alias maps used by the Postfix mail server:
+<pre>$ sudo postconf alias_maps</pre>
+Query the Postfix alias maps for an alias for the <i>root</i> user:
+<pre>$ sudo postmap -q root hash:/etc/aliases</pre>
+The output should return an alias.
+</ocil>
+<rationale>
+A number of system services utilize email messages sent to the root user to
+notify system administrators of active or impending issues.  These messages must
+be forwarded to at least one monitored email address.
+</rationale>
+<ident cce="80508-5"/>
+<oval id="postfix_client_configure_mail_alias" value="var_postfix_root_mail_alias" />
+<ref disa="366" nist="" srg="SRG-OS-999999" stigid="RHEL-06-000521"/>
 </Rule>
 
 </Group>

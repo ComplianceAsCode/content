@@ -253,6 +253,64 @@ must be automated as a component of machine provisioning, or followed manually a
 cis="1.4.2" />
 </Rule>
 
+<Rule id="bootloader_no_removeable_media" severity="medium" prodtype="rhel7">
+<title>Boat Loader Is Not Installed On Removeable Media</title>
+<description>
+The system must not allow removable media to be used as the boot loader.
+Remove alternate methods of booting the system from removable media.
+<tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable
+media which should not exist in the line:
+<pre>set root='hd0,msdos1'</pre>
+</description>
+<ocil clause="it is not">
+To verify the system is not configured to use a boot loader on removable media,
+run the following command:
+<pre>$ sudo grep "set root='hd0" /boot/grub2/grub.cfg</pre>
+The output should return something similar to:
+<pre>set root='hd0,msdos1'</pre>
+<tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable
+media which should not exist in the line:
+<pre>set root='hd0,msdos1'</pre>
+</ocil>
+<rationale>
+Malicious users with removable boot media can gain access to a system
+configured to use removable media as the boot loader.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80517-6"/>
+<oval id="bootloader_no_removeable_media"/>
+<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid="021700"/>
+</Rule>
+
+<Rule id="bootloader_uefi_no_removeable_media" severity="medium" prodtype="rhel7">
+<title>UEFI Boat Loader Is Not Installed On Removeable Media</title>
+<description>
+The system must not allow removable media to be used as the boot loader.
+Remove alternate methods of booting the system from removable media.
+<tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable
+media which should not exist in the line:
+<pre>set root='hd0,msdos1'</pre>
+</description>
+<ocil clause="it is not">
+To verify the system is not configured to use a boot loader on removable media,
+run the following command:
+<pre>$ sudo grep "set root='hd0" /boot/efi/EFI/redhat/grub.cfg</pre>
+The output should return something similar to:
+<pre>set root='hd0,msdos1'</pre>
+<tt>usb0</tt>, <tt>cd</tt>, <tt>fd0</tt>, etc. are some examples of removeable
+media which should not exist in the line:
+<pre>set root='hd0,msdos1'</pre>
+</ocil>
+<rationale>
+Malicious users with removable boot media can gain access to a system
+configured to use removable media as the boot loader.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80518-4"/>
+<oval id="bootloader_uefi_no_removeable_media"/>
+<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid=""/>
+</Rule>
+
 </Group>
 
 <Rule id="require_singleuser_auth" severity="medium" prodtype="rhel7">
@@ -280,7 +338,7 @@ by configuring the bootloader password.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27287-2" />
 <oval id="require_singleuser_auth" />
-<ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3"/>
+<ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3" srg="SRG-OS-000080-GPOS-00048" stigid="010481" />
 </Rule>
 
 <Rule id="service_debug-shell_disabled" severity="medium" prodtype="rhel7">
@@ -482,6 +540,71 @@ provides stronger, two-factor authentication than using a username and password.
 In Red Hat Enterprise Linux servers and workstations, hardware token login
 is not enabled by default and must be enabled in the system settings.
 </description>
+
+<Rule id="install_smartcard_packages" severity="medium" prodtype="rhel7">
+<title>Install Smart Card Packages For Multifactor Authentication</title>
+<description>
+Configure the operating system to implement multifactor authentication by
+installing the required packages with the following command:
+<pre>$ sudo yum install esc pam_pkcs11 authconfig-gtk</pre>
+</description>
+<ocil clause="smartcard software is not installed">
+To verify the operating system has the packages required for multifactor
+authentication installed, run the following command:
+<pre>$ sudo yum list installed esc pam_pkcs11 authconfig-gtk</pre>
+</ocil>
+<rationale>
+Using an authentication device, such as a CAC or token that is separate from
+the information system, ensures that even if the information system is
+compromised, that compromise will not affect credentials stored on the
+authentication device.
+<br/><br/>
+Multifactor solutions that require devices separate from
+information systems gaining access include, for example, hardware tokens
+providing time-based or challenge-response authenticators and smart cards such
+as the U.S. Government Personal Identity Verification card and the DoD Common
+Access Card.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80519-2"/>
+<oval id="install_smartcard_packages"/>
+<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041001"/>
+</Rule>
+
+<Rule id="smartcard_configure_cert_checking" severity="medium" prodtype="rhel7">
+<title>Configure Smart Card Certificate Status Checking</title>
+<description>
+Configure the operating system to do certificate status checking for PKI
+authentication. Modify all of the <tt>cert_policy</tt> lines in
+<tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> to include <tt>ocsp_on</tt> like so:
+<pre>cert_policy = ca, ocsp_on, signature;</pre>
+</description>
+<ocil clause="ocsp_on is not configured">
+To verify the operating system implements certificate status checking for PKI
+authentication, run the following command:
+<pre>$ sudo grep -i cert_policy /etc/pam_pkcs11/pam_pkcs11.conf</pre>
+The output should return multiple lines similiar to the following:
+<pre>cert_policy = ca, ocsp_on, signature;
+cert_policy = ca, ocsp_on, signature;
+cert_policy = ca, ocsp_on, signature;</pre>
+</ocil>
+<rationale>
+Using an authentication device, such as a CAC or token that is separate from
+the information system, ensures that even if the information system is
+compromised, that compromise will not affect credentials stored on the
+authentication device.
+<br/><br/>
+Multifactor solutions that require devices separate from
+information systems gaining access include, for example, hardware tokens
+providing time-based or challenge-response authenticators and smart cards such
+as the U.S. Government Personal Identity Verification card and the DoD Common
+Access Card.
+</rationale>
+<platform idref="cpe:/a:machine" />
+<ident cce="80520-0"/>
+<oval id="smartcard_configure_cert_checking"/>
+<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041003"/>
+</Rule>
 
 <Rule id="smartcard_auth" severity="medium" prodtype="rhel7">
 <title>Enable Smart Card Login</title>
