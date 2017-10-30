@@ -1,0 +1,31 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="service_dovecot_disabled" version="1">
+    <metadata>
+      <title>Service dovecot Disabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The dovecot service should be disabled if possible.</description>
+    </metadata>
+    <criteria comment="package dovecot removed or service dovecot is not configured to start" operator="OR">
+      <extend_definition comment="dovecot removed" definition_ref="package_dovecot_removed" />
+      <criteria operator="OR" comment="service dovecot is not configured to start">
+        <criterion comment="dovecot not wanted by multi-user.target" test_ref="test_dovecot_not_wanted_by_multi_user_target" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_dovecot_not_wanted_by_multi_user_target" version="1">
+    <linux:object object_ref="object_multi_user_target_for_dovecot" />
+    <linux:state state_ref="state_systemd_dovecot_off"/>
+  </linux:systemdunitdependency_test>
+
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_dovecot" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+
+  <linux:systemdunitdependency_state id="state_systemd_dovecot_off" comment="dovecot is not listed in the dependencies" version="1">
+    <linux:dependency entity_check="none satisfy">dovecot.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+</def-group>
