@@ -41,8 +41,11 @@ image::Patching-githubURL.png[align="left"]
 GitHub dynamically generates the appropriate git URLs, and dynamically generates zip-compressed archives should you desire them. In the right-most column, near the bottom, you will see the various git clone options:
 
 === Committing to your Local Repository
+When you begin to work on your patch, make sure that you are on the right and up-to-date branch.
+Then, create a new branch for your fix - e.g. `git checkout -b my_new_feature`.
 
-... text to describe ....
+Proceed with your work, if your work can be logically divided into multiple parts, try to structure your work so you avoid huge commits that affect logically unrelated parts of the project.
+When you push to your forked repository for the first time, you will have to provide additional arguments to `git push`, because you are pushing a new branch to the remote repository: `git push -u origin my_new_feature`.
 
 ==== Edits via GUI
 The GitHub website supports in-line editing of files. This is extremely convenient when making small changes, such as fixing typos. When you've found a file in need of edits, note the "Edit" button within the file's toolbar:
@@ -73,11 +76,22 @@ image::Patching-Pull_Requests.png[align="left"]
 image::Patching-Create_Pull.png[align="left"]
 
 4) You will be requested to input a patch title and description. Be concise, but thorough enough for a community member to understand logic behind your changes. Paste into the description field testing evidence (e.g. running testoval.py on any submitted OVAL, or before/after for remediation scripts).
+
+If you work on a feature or a bugfix that has an associated issue, either
+
+- assign yourself to the issue (if you have rights), or
+- mention the issue number in the pull request.
+
+This will improve the odds that multiple people won't work on a single issue without being aware of each other's work.
 After completing the form, select "Send pull request":
 
 image::Patching-Send_Pull_Request.png[align="left"]
 
-5) A community member will review your patch. They will either merge the patch upstream, indicate additional changes/documentation needed, or decline the patch. You'll automatically be notified via EMail of any status updates.
+5) Keep historical records clean - don't use git history-altering magic in your branch during your work on the pull request.
+If you e.g. squash commits, the pull request page will be broken - if you made some mistakes, got feedback and corrected those mistakes based on the feedback, nobody will be able to learn from your pull request, because commits introducing mistakes will disappear and comments of reviewers therefore won't make sense.
+You can always squash commits while merging the pull request, or you can close a complicated pull request, create a new one (in another branch) with streamlined commits and reference the old PR in the streamlined one, so it is possible to backtrack what went on.
+
+6) A community member will review your patch. They will either merge the patch upstream, indicate additional changes/documentation needed, or decline the patch. You'll automatically be notified via EMail of any status updates.
 
 == Building Official RPMs
 
