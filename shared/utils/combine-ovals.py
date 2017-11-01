@@ -246,7 +246,7 @@ def append(element, newchild):
 def check_oval_version(oval_version):
     """Not necessary, but should help with typos"""
 
-    supported_versions = ["oval_5.10", "oval_5.11"]
+    supported_versions = ["5.10", "5.11"]
     if oval_version not in supported_versions:
         supported_versions_str = ", ".join(supported_versions)
         sys.stderr.write(
