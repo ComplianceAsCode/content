@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="service_all_disabled" version="1">
+    <metadata>
+      <title>All services disabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>Check if all services, except for systemd-* getty* and autorv*, are disabled</description>
+    </metadata>
+    <criteria comment="no service is configured to start in systemd">
+      <criterion comment="all services disabled" test_ref="test_service_all_disabled" />
+    </criteria>
+  </definition>
+
+  <linux:systemdunitproperty_test check="all" check_existence="none_exist"
+   comment="no service is configured to start in systemd"
+   id="test_service_all_disabled" version="1">
+    <linux:object object_ref="object_service_all_disabled"/>
+    <linux:state state_ref="state_service_all_disabled"/>
+  </linux:systemdunitproperty_test>
+
+  <linux:systemdunitproperty_object comment="no service is configured to start in systemd"
+   id="object_service_all_disabled" version="1">
+    <linux:unit operation="pattern match">^(?!systemd-)(?!getty)(?!autovt)\S+\.service</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+
+  <linux:systemdunitproperty_state id="state_service_all_disabled" version="1">
+    <linux:value operation="not equal">enabled</linux:value>
+  </linux:systemdunitproperty_state>
+</def-group>

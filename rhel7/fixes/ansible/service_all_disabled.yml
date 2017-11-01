@@ -1,0 +1,9 @@
+# platform = multi_platform_rhel,multi_platform_fedora
+# reboot = true
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: "Disable all enabled services, except for systemd-* getty* and autovt*"
+  shell: systemctl list-unit-files | grep enabled | grep -oP '^(?!systemd-)(?!getty)(?!autovt)\S+\.service' | xargs systemctl disable
+  tags:
+    @ANSIBLE_TAGS@
