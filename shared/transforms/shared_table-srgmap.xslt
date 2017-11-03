@@ -46,7 +46,7 @@
 				</xsl:choose>
 			</thead>
 			<xsl:for-each select=".//cdf:Rule">
-				<xsl:variable name="curr_cci" select="string(number(substring-after(cdf:ident,'CCI-')))"/> 
+				<xsl:variable name="curr_cci" select="cdf:ident"/>
 				<xsl:choose>
 					<!-- output multiple rows if we're in flat mode and at least one ref exists -->
 					<xsl:when test="$flat and $items/cdf:reference[@href=$disa-cciuri and text()=$curr_cci]">
@@ -77,10 +77,9 @@
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]"> 
-			    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
-			    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
-			    <xsl:variable name="srg_cci" select="$rule/cdf:ident"  />
-				<xsl:if test="$cci_expanded=$srg_cci" >
+				<xsl:variable name="ssg_cci" select='self::node()[text()]' />
+				<xsl:variable name="srg_cci" select="$rule/cdf:ident"  />
+				<xsl:if test="$ssg_cci=$srg_cci" >
 					<table>
 					<tr>
 					<td> <xsl:value-of select="$item/cdf:title"/> </td>
@@ -100,10 +99,9 @@
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
 			<xsl:for-each select="cdf:reference[@href=$disa-cciuri]">
-			    <xsl:variable name="cci_formatted" select='format-number(self::node()[text()], "000000")' />
-			    <xsl:variable name="cci_expanded" select="concat('CCI-', $cci_formatted)"  />
+			    <xsl:variable name="ssg_cci" select='self::node()[text()]' />
 			    <xsl:variable name="srg_cci" select="$rule/cdf:ident"  />
-				<xsl:if test="$cci_expanded=$srg_cci" >
+				<xsl:if test="$ssg_cci=$srg_cci" >
 					<tr>
 					<td> <xsl:value-of select="$rule/cdf:version"/> </td>
 					<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
