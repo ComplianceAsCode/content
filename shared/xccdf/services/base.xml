@@ -411,16 +411,20 @@ operation, but unless used this service can be disabled.</rationale>
 <ref nist="CM-7" />
 </Rule>
 
-<Rule id="service_all_disabled" prodtype="rhel7">
-<title>All services disabled</title>
-<description>Check if all services, except for systemd-* getty* and autorv*,
-are disabled</description>
-<rationale>By good practice there shouldn't be services running in a container, 
-unless they are really specialized to do so. We will abide to good practices 
-and our containers will be checked that there are no services configured to 
-start. If user would like be allowed to start a service they will have to 
-tailor and remove this rule.</rationale>
-<oval id="service_all_disabled" />
+<Rule id="container_all_services_disabled" prodtype="rhel7">
+<title>All Services Disabled In Container</title>
+<description>
+Check if all services, except for systemd, getty, and autorv services,
+are disabled.
+</description>
+<rationale>
+Good practices dictate that there should not be any services running in a container, 
+unless they are really specialized to do so. Abiding by good practices,
+containers will be checked that there are no services configured to 
+start unless specifically designed to do so by the developer or user.
+</rationale>
+<platform idref="cpe:/a:container" />
+<oval id="container_all_services_disabled" />
 </Rule>
 
 </Group>
