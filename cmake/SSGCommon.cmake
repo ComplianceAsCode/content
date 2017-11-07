@@ -53,9 +53,9 @@
 # OSCAP_OVAL_VERSION is passed into generate-from-templates.py and it specifies
 # the highest OVAL version we can use.
 if(SSG_OVAL_511_ENABLED)
-    set(OSCAP_OVAL_VERSION "oval_5.11")
+    set(OSCAP_OVAL_VERSION "5.11")
 else()
-    set(OSCAP_OVAL_VERSION "oval_5.10")
+    set(OSCAP_OVAL_VERSION "5.10")
 endif()
 
 if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
@@ -287,8 +287,8 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
-    file(GLOB EXTRA_OVAL_510_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/*.xml")
-    file(GLOB EXTRA_SHARED_OVAL_510_DEPS "${SSG_SHARED}/checks/oval/*.xml")
+    file(GLOB EXTRA_OVAL_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/*.xml")
+    file(GLOB EXTRA_SHARED_OVAL_DEPS "${SSG_SHARED}/checks/oval/*.xml")
 
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
 
@@ -316,66 +316,31 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     if("${PRODUCT}" MATCHES "rhel-osp7")
         # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
+        set(OVAL_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
     else()
-        set(OVAL_510_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
+        set(OVAL_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
     endif()
 
-    if(SSG_OVAL_511_ENABLED)
-        file(GLOB EXTRA_OVAL_511_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/oval_5.11/*.xml")
-        file(GLOB EXTRA_SHARED_OVAL_511_DEPS "${SSG_SHARED}/checks/oval/oval_5.11/*.xml")
-
-        if("${PRODUCT}" MATCHES "rhel-osp7")
-            # Don't traverse $(SHARED_OVAL) for the case of RHEL-OSP7 product for now
-            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/oval_5.11")
-        else()
-            set(OVAL_511_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval/oval_5.11" "${SSG_SHARED}/checks/oval/oval_5.11" "${BUILD_CHECKS_DIR}/oval/oval_5.11" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/oval_5.11")
-        endif()
-
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            OUTPUT ${OVAL_CHECKS_OUTPUTS}
-            OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
-            # We have to remove all old checks in case the user removed something from the CSV files
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
-            COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
-            # We have to remove all old shared checks in case the user removed something from the CSV files
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
-            COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "5.11" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_510_COMBINE_PATHS} ${OVAL_511_COMBINE_PATHS}
-            COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            DEPENDS ${OVAL_CHECKS_DEPENDS}
-            DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
-            DEPENDS ${EXTRA_OVAL_511_DEPS}
-            DEPENDS ${EXTRA_SHARED_OVAL_511_DEPS}
-            DEPENDS ${EXTRA_OVAL_510_DEPS}
-            DEPENDS ${EXTRA_SHARED_OVAL_510_DEPS}
-            DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
-            DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
-            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml (OVAL 5.11 checks enabled)"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            OUTPUT ${OVAL_CHECKS_OUTPUTS}
-            OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
-            # We have to remove all old checks in case the user removed something from the CSV files
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
-            COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
-            # We have to remove all old shared checks in case the user removed something from the CSV files
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
-            COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-            COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "5.10" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_510_COMBINE_PATHS}
-            COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            DEPENDS ${OVAL_CHECKS_DEPENDS}
-            DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
-            DEPENDS ${EXTRA_OVAL_510_DEPS}
-            DEPENDS ${EXTRA_SHARED_OVAL_510_DEPS}
-            DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
-            DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
-            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml (OVAL 5.11 checks disabled)"
-        )
-    endif()
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        OUTPUT ${OVAL_CHECKS_OUTPUTS}
+        OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
+        # We have to remove all old checks in case the user removed something from the CSV files
+        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
+        # We have to remove all old shared checks in case the user removed something from the CSV files
+        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
+        COMMAND "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
+        COMMAND "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product "${PRODUCT}" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "${OSCAP_OVAL_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
+        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        DEPENDS ${OVAL_CHECKS_DEPENDS}
+        DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
+        DEPENDS ${EXTRA_OVAL_DEPS}
+        DEPENDS ${EXTRA_SHARED_OVAL_DEPS}
+        DEPENDS "${SSG_SHARED_UTILS}/generate-from-templates.py"
+        DEPENDS "${SSG_SHARED_UTILS}/combine-ovals.py"
+        COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
+    )
     add_custom_target(
         generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
