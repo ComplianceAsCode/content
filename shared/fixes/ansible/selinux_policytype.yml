@@ -5,8 +5,11 @@
 # disruption = low
 - (xccdf-var var_selinux_policy_name)
 
-- name: "Configure SELinux Policy"
-  selinux:
-    policy: "{{ var_selinux_policy_name }}"
+- name: "@RULE_TITLE@"
+  lineinfile:
+    path: /etc/sysconfig/selinux
+    regexp: '^SELINUXTYPE='
+    line: "SELINUXTYPE={{ var_selinux_policy_name }}"
+    create: yes
   tags:
     @ANSIBLE_TAGS@
