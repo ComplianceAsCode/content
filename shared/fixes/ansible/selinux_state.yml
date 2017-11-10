@@ -6,7 +6,10 @@
 - (xccdf-var var_selinux_state)
 
 - name: "@RULE_TITLE@"
-  selinux:
-    state: "{{ var_selinux_state }}"
+  lineinfile:
+    path: /etc/sysconfig/selinux
+    regexp: '^SELINUX='
+    line: "SELINUX={{ var_selinux_state }}"
+    create: yes
   tags:
     @ANSIBLE_TAGS@
