@@ -45,6 +45,7 @@
     `$ make -j4 rhel7-content  # SCAP XML files for RHEL7`
     `$ make -j4 rhel7-guides  # HTML guides for RHEL7`
     `$ make -j4 rhel7-tables  # HTML tables for RHEL7`
+    `$ make -j4 rhel7-roles  # remediation roles for RHEL7`
     `$ make -j4 rhel7  # everything above for RHEL7`
 
   * Configure options before building
