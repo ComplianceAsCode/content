@@ -62,7 +62,7 @@
     </arithmetic>
   </local_variable>
 
-  <ind:variable_test id="tst_accounts_umask_etc_bashrc" version="1" check="all"
+  <ind:variable_test id="tst_accounts_umask_etc_bashrc" version="1" check="all" check_existence="all_exist"
   comment="Test the retrieved /etc/bashrc umask value(s) match the var_accounts_user_umask requirement">
     <ind:object object_ref="obj_accounts_umask_etc_bashrc" />
     <ind:state state_ref="ste_accounts_umask_etc_bashrc" />
