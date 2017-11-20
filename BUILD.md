@@ -72,8 +72,8 @@
   `ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
 
 4. Discover the following:
- * A pretty prose guide **in rhel7-guide.html** containing practical, actionable information for administrators
- * A concise spreadsheet representation (potentially useful as the basis for an SRTM document) in **rhel7-table-nistrefs-server.html**
+ * A pretty prose guide **in ssg-rhel7-guide-index.html** containing practical, actionable information for administrators
+ * A concise spreadsheet representation (potentially useful as the basis for an SRTM document) in **table-rhel7-nistrefs-stig-rhel7-disa.html**
  * Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:
     * **ssg-rhel7-xccdf.xml**
     * **ssg-rhel7-oval.xml**
