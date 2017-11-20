@@ -35,17 +35,18 @@
     `$ cd scap-security-guide/`
     `$ cd build/`
     `$ cmake ../`
-    `$ make -j4 rhel6`
+    `$ make -j4 rhel7`
 
   * Other targets only for one specific product:
 
     `$ cd scap-security-guide/`
     `$ cd build/`
     `$ cmake ../`
-    `$ make -j4 rhel6-content  # SCAP XML files for RHEL6`
-    `$ make -j4 rhel6-guides  # HTML guides for RHEL6`
-    `$ make -j4 rhel6-tables  # HTML tables for RHEL6`
-    `$ make -j4 rhel6  # everything above for RHEL6`
+    `$ make -j4 rhel7-content  # SCAP XML files for RHEL7`
+    `$ make -j4 rhel7-guides  # HTML guides for RHEL7`
+    `$ make -j4 rhel7-tables  # HTML tables for RHEL7`
+    `$ make -j4 rhel7-roles  # remediation roles for RHEL7`
+    `$ make -j4 rhel7  # everything above for RHEL7`
 
   * Configure options before building
 
@@ -71,12 +72,12 @@
   `ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
 
 4. Discover the following:
- * A pretty prose guide **in rhel6-guide.html** containing practical, actionable information for administrators
- * A concise spreadsheet representation (potentially useful as the basis for an SRTM document) in **rhel6-table-nistrefs-server.html**
+ * A pretty prose guide **in ssg-rhel7-guide-index.html** containing practical, actionable information for administrators
+ * A concise spreadsheet representation (potentially useful as the basis for an SRTM document) in **table-rhel7-nistrefs-stig-rhel7-disa.html**
  * Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:
-    * **ssg-rhel6-xccdf.xml**
-    * **ssg-rhel6-oval.xml**
-    * **ssg-rhel6-ds.xml**
+    * **ssg-rhel7-xccdf.xml**
+    * **ssg-rhel7-oval.xml**
+    * **ssg-rhel7-ds.xml**
 
 5. Install
   * Custom location
