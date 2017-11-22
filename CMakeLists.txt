@@ -169,6 +169,11 @@ include(SSGCommon)
 
 add_custom_target(stats)
 add_custom_target(profile-stats)
+add_custom_target(galaxy-ansible-roles)
+add_custom_command(
+    TARGET galaxy-ansible-roles POST_BUILD
+    COMMAND "${SSG_SHARED_UTILS}/update_galaxy_ansible_roles.py" --ssg-build-roles-directory "${CMAKE_BINARY_DIR}/roles/" --meta-template-path "${SSG_SHARED_UTILS}/galaxy_ansible_role_meta_template.yml"
+)
 
 ssg_build_bash_remediation_functions()
 
