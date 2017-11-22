@@ -55,6 +55,11 @@ common_parser.add_argument("--logdir",
                            metavar="LOGDIR",
                            default=None,
                            help="Directory to which all output is saved")
+common_parser.add_argument("--ansible",
+                           dest="ansible",
+                           action="store_true",
+                           default=False,
+                           help="Use ansible instead of bash remediations")
 subparsers = parser.add_subparsers(dest='subparser_name',
                                    help='Subcommands: profile, rule')
 

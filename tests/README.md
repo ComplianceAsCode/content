@@ -14,9 +14,10 @@ You can use kickstart usable for Red Hat Enterprise Linux 7 (and of course CentO
 ```kickstarts``` directory, which installs machine to be capable of building openscap
 and builds and installs the latest upstream code.
 
-If you want to use your own domain, make sure `openscap-1.2.15` and `qemu-quest-agent`
+If you want to use your own domain, make sure `openscap-1.2.15` and `qemu-guest-agent`
 are installed there, `root` is accessible via ssh and that `yum` command is able
-to install packages.
+to install packages. For testing Ansible remediations, it is sufficient to have `root`
+accessible via ssh on the libvirt domain and have Ansible installed on the host machine.
 
 ### Domain preparation (example CentOS)
 1. Install domain, using kickstarts/rhel_centos_7.cfg

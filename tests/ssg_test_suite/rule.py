@@ -205,6 +205,7 @@ def perform_rule_check(options):
                                   context=script_context,
                                   script_name=script,
                                   remediation=False,
+                                  ansible=options.ansible,
                                   dont_clean=options.dont_clean):
                     if script_context in ['fail', 'error']:
                         oscap.run_rule(domain_ip=domain_ip,
@@ -216,6 +217,7 @@ def perform_rule_check(options):
                                        context='fixed',
                                        script_name=script,
                                        remediation=True,
+                                       ansible=options.ansible,
                                        dont_clean=options.dont_clean)
                 snapshot_stack.revert(delete=False)
             if not has_worked:
