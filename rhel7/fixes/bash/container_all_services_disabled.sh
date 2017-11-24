@@ -2,4 +2,4 @@
 #
 # Disable all enabled services except for systemd, getty, and autovt services
 #
-systemctl list-unit-files | grep enabled | grep -oP '^(?!systemd-)(?!getty)(?!autovt)\S+\.service' | xargs systemctl disable
+systemctl list-unit-files --type=service | grep enabled | grep -oP '^(?!systemd-)(?!getty)(?!autovt)\S+\.service' | xargs systemctl disable
