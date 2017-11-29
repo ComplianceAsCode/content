@@ -30,6 +30,11 @@
       <xsl:apply-templates select="document('profiles/cjis-rhel7-server.xml')" />
       <xsl:apply-templates select="document('profiles/docker-host.xml')" />
       <xsl:apply-templates select="document('profiles/nist-800-171-cui.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-ansible-tower-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-http-disa.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-ipa-server-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/stig-satellite-upstream.xml')" />
+
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
       <Value id="conditional_clause" type="string" operator="equals">

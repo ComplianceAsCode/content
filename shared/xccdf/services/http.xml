@@ -97,6 +97,169 @@ the webserver.
 <tt>/etc/httpd/conf/httpd.conf</tt>. Apply the recommendations in the remainder
 of this section to this file.</description>
 
+<Value id="var_httpd_loglevel" type="string" >
+<title>HTTPD Log Level</title>
+<description>The setting for LogLevel in /etc/httpd/conf/httpd.conf</description>
+<value selector="">warn</value>
+<value selector="alert">alert</value>
+<value selector="crit">crit</value>
+<value selector="emerg">emerg</value>
+<value selector="error">error</value>
+<value selector="warn">warn</value>
+</Value>
+
+<Value id="var_max_keepalive_requests" type="number" >
+<title>Maximum KeepAlive Requests for HTTPD</title>
+<description>The setting for MaxKeepAliveRequests in httpd.conf</description>
+<value selector="">100</value>
+<value selector="100">100</value>
+<value selector="500">500</value>
+<value selector="1000">1000</value>
+<value selector="10000">10000</value>
+<value selector="100000">100000</value>
+</Value>
+
+<Rule id="httpd_enable_error_logging" severity="medium" prodtype="rhel7">
+<title>Enable HTTPD Error Logging</title>
+<description>
+<tt>ErrorLog</tt> should be enabled and set to the following in
+<tt>/etc/httpd/conf/httpd.conf</tt>:
+<pre>ErrorLog "logs/error_log"</pre>
+</description>
+<ocil clause="it is not">
+To verify if <tt>ErrorLog</tt> is configured correctly in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep -i errorlog /etc/httpd/conf/httpd.conf</pre>
+The output should return the following:
+<pre>ErrorLog "logs/error_log"</pre>
+</ocil>
+<rationale>
+The server error logs are invaluable because they can also be used to identify
+potential problems and enable proactive remediation. Log data can reveal
+anomalous behavior such as "not found" or "unauthorized" errors that may
+be an evidence of attack attempts. Failure to enable error logging can
+significantly reduce the ability of Web Administrators to detect or remediate
+problems.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_enable_error_logging"/>
+<ref disa="" nist="" srg="" stigid="WA00605"/>
+</Rule>
+
+<Rule id="httpd_configure_log_format" severity="medium" prodtype="rhel7">
+<title>Configure Error Log Format</title>
+<description>
+<tt>LogFormat</tt> should be enabled and set to the following in
+<tt>/etc/httpd/conf/httpd.conf</tt>:
+<pre>LogFormat "a %A %h %H %l %m %s %t %u %U \"%{Referer}i\" \"%{User-Agent}i\"" combined</pre>
+</description>
+<ocil clause="it is not">
+To verify if <tt>LogFormat</tt> is configured correctly in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep -i logformat /etc/httpd/conf/httpd.conf</pre>
+The output should contain the following:
+<pre>LogFormat "a %A %h %H %l %m %s %t %u %U \"%{Referer}i\" \"%{User-Agent}i\"" combined</pre>
+</ocil>
+<rationale>
+The server error logs are invaluable because they can also be used to identify
+potential problems and enable proactive remediation. Log data can reveal
+anomalous behavior such as "not found" or "unauthorized" errors that may
+be an evidence of attack attempts. Failure to enable error logging can
+significantly reduce the ability of Web Administrators to detect or remediate
+problems. The LogFormat directive defines the format and information to be
+included in the access log entries.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_log_format"/>
+<ref disa="" nist="" srg="" stigid="WA00612"/>
+</Rule>
+
+<Rule id="httpd_enable_system_logging" severity="medium" prodtype="rhel7">
+<title>Enable HTTPD System Logging</title>
+<description>
+<tt>CustomLog</tt> should be enabled and set to the following in
+<tt>/etc/httpd/conf/httpd.conf</tt>:
+<pre>CustomLog "logs/access_log" combined</pre>
+</description>
+<ocil clause="it is not">
+To verify if <tt>CustomLog</tt> is configured correctly in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep -i customlog /etc/httpd/conf/httpd.conf</pre>
+The output should return the following:
+<pre>CustomLog "logs/access_log" combined</pre>
+</ocil>
+<rationale>
+The server error logs are invaluable because they can also be used to identify
+potential problems and enable proactive remediation. Log data can reveal
+anomalous behavior such as "not found" or "unauthorized" errors that may
+be an evidence of attack attempts. Failure to enable error logging can
+significantly reduce the ability of Web Administrators to detect or remediate
+problems. The CustomLog directive specifies the log file, syslog facility, or
+piped logging utility.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_enable_system_logging"/>
+<ref disa="" nist="" srg="" stigid="WA00615"/>
+</Rule>
+
+<Rule id="httpd_enable_loglevel" severity="medium" prodtype="rhel7">
+<title>Enable HTTPD LogLevel</title>
+<description>
+<tt>LogLevel</tt> should be enabled and set to <sub idref="var_httpd_loglevel" />.
+Add or edit the following in <tt>/etc/httpd/conf/httpd.conf</tt>:
+<pre>LogLevel <sub idref="var_httpd_loglevel" /></pre>
+</description>
+<ocil clause="it is not">
+To verify if <tt>LogLevel</tt> is configured correctly in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep -i loglevel /etc/httpd/conf/httpd.conf</pre>
+The command should return the following:
+<pre>LogLevel warn</pre>
+</ocil>
+<rationale>
+The server error logs are invaluable because they can also be used to identify
+potential problems and enable proactive remediation. Log data can reveal
+anomalous behavior such as "not found" or "unauthorized" errors that may
+be an evidence of attack attempts. Failure to enable error logging can
+significantly reduce the ability of Web Administrators to detect or remediate
+problems. While the ErrorLog directive configures the error log file name, the
+LogLevel directive is used to configure the severity level for the error logs.
+The log level values are the standard syslog levels: emerg, alert, crit, error,
+warn, notice, info and debug.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_enable_loglevel" value="var_httpd_loglevel" />
+<ref disa="" nist="" srg="" stigid="WA00620"/>
+</Rule>
+
+<Rule id="httpd_configure_max_keepalive_requests" severity="medium" prodtype="rhel7">
+<title>Configure The Number of Allowed Simultaneous Requests</title>
+<description>
+The <tt>MaxKeepAliveRequests</tt> directive should be set and configured to
+<sub idref="var_max_keepalive_requests" /> or greater by setting the following
+in <tt>/etc/httpd/conf/httpd.conf</tt>:
+<pre>MaxKeepAliveRequests <sub idref="var_max_keepalive_requests" /></pre>
+</description>
+<ocil clause="it is not">
+To verify if <tt>MaxKeepAliveRequests</tt> is configured correctly in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep -i maxkeepaliverequests /etc/httpd/conf/httpd.conf</pre>
+The command should return the following:
+<pre>MaxKeepAliveRequests 100</pre>
+</ocil>
+<rationale>
+Resource exhaustion can occur when an unlimited number of concurrent requests
+are allowed on a web site, facilitating a denial of service attack. Mitigating
+this kind of attack will include limiting the number of concurrent HTTP/HTTPS
+requests per IP address and may include, where feasible, limiting parameter
+values associated with keepalive, (i.e., a parameter used to limit the amount of
+time a connection may be inactive).
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_max_keepalive_requests" value="var_max_keepalive_requests"/>
+<ref disa="" nist="" srg="" stigid="WG110"/>
+</Rule>
+
 <Group id="httpd_restrict_info_leakage">
 <title>Restrict Web Server Information Leakage</title>
 <description>
@@ -181,6 +344,34 @@ LoadModule alias_module modules/mod_alias.so</pre>
 Minimizing the number of loadable modules available to the web server reduces risk
 by limiting the capabilities allowed by the web server.
 </description>
+
+<Rule id="httpd_enable_log_config" severity="medium" prodtype="rhel7">
+<title>Enable log_config_module For HTTPD Logging</title>
+<description>
+The <tt>log_config_module</tt> should exist and be configured in
+the <tt>/etc/httpd/conf/httpd.conf</tt> file by adding the following module to
+configure logging:
+<pre>log_config_module</pre>
+</description>
+<ocil clause="it is not">
+To verify that the <tt>log_config_module</tt> exists in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep log_config_module /etc/httpd/conf/httpd.conf</pre>
+The output should return:
+<pre>&lt;IfModule log_config_module&gt;</pre>
+</ocil>
+<rationale>
+A major tool in exploring the web site use, attempted use, unusual conditions,
+and problems are reported in the access and error logs. In the event of a
+security incident, these logs can provide the SA and the web manager with
+valuable information. Without these log files, SAs and web managers are
+seriously hindered in their efforts to respond appropriately to suspicious or
+criminal actions targeted at the web site.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_enable_log_config"/>
+<ref disa="" nist="" srg="" stigid="WG240"/>
+</Rule>
 
 <Group id="httpd_basic_authentication">
 <title>Minimize Modules for HTTP Basic Authentication</title>
@@ -481,6 +672,116 @@ control for a specified directory. All web directories should be configured on a
 case-by-case basis, allowing access only where needed.
 </description>
 
+<Rule id="httpd_disable_anonymous_ftp_access" severity="medium" prodtype="rhel7">
+<title>Disable Anonymous FTP Access</title>
+<description>
+If any directories that contain dynamic scripts can be accessed via FTP by
+any group or user that does not require access, remove permissions to such
+directories that allow anonymous access. Also, ensure that any such
+access employs an encrypted connection.
+</description>
+<ocil clause="it is not">
+Locate the directories containing the CGI scripts. These directories should be
+language-specific (e.g., PERL, ASP, JS, JSP, etc.). Examine the file permissions
+on the directories using the following command:
+<pre>ls -l <i>directories</i></pre>
+Anonymous FTP users must not have access to these directories.
+</ocil>
+<rationale>
+The directories containing the CGI scripts, such as PERL, must not be
+accessible to anonymous users via FTP. This applies to all directories that
+contain scripts that can dynamically produce web pages in an interactive manner
+(i.e., scripts based upon user-provided input). Such scripts contain information
+that could be used to compromise a web service, access system resources, or
+deface a web site.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_disable_anonymous_ftp_access"/>
+<ref disa="" nist="" srg="" stigid="WG430"/>
+</Rule>
+
+<Rule id="httpd_ignore_htaccess_files" severity="medium" prodtype="rhel7">
+<title>Ignore HTTPD .htaccess Files</title>
+<description>
+Set <tt>AllowOverride</tt> to <tt>none</tt> for each instant of
+<tt>&lt;Directory&gt;</tt>.
+</description>
+<ocil clause="it is not">
+To preclude access to the servers root directory, ensure the following
+directive is in the <tt>httpd.conf</tt> file. This entry will also stop users
+from setting up <tt>.htaccess</tt> files which can override security features
+configured in <tt>/etc/httpd/conf/httpd.conf</tt>.
+<pre>AllowOverride none</pre>
+</ocil>
+<rationale>
+CGI scripts represents one of the most common and exploitable means of
+compromising a web server. By definition, CGI are executable by the operating
+system of the host server. While access control is provided via the web service,
+the execution of CGI programs is not otherwise limited unless the SA or Web
+Manager takes specific measures. CGI programs can access and alter data files,
+launch other programs and use the network. CGI programs can be written in any
+available programming language. C, PERL, PHP, Javascript, VBScript and shell
+(sh, ksh, bash) are popular choices.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_ignore_htaccess_files"/>
+<ref disa="" nist="" srg="" stigid="WG400"/>
+</Rule>
+
+<Rule id="httpd_anonymous_content_sharing" severity="medium" prodtype="rhel7">
+<title>Web Content Directories Must Not Be Shared Anonymously</title>
+<description>
+Web content directories should not be shared anonymously over remote filesystems
+such as <tt>nfs</tt> and <tt>smb</tt>. Remove the shares from the applicable
+directories.
+</description>
+<ocil clause="it is not">
+To verify that web content directories should not be shared anonymously over
+remote filesystems such as <tt>nfs</tt> and <tt>smb</tt>, inspect each instance
+of <tt>DocumentRoot</tt> and <tt>serverRoot</tt> and verify that no entry in
+<tt>/etc/fstab</tt> exists or no remote filesystem process is running for
+any instance.
+<pre>$ ps -ef | grep "nfs\|smb"</pre>
+</ocil>
+<rationale>
+Sharing web content is a security risk when a web server is involved. Users
+accessing the share anonymously could experience privileged access to the
+content of such directories. Network sharable directories expose those
+directories and their contents to unnecessary access. Any unnecessary exposure
+increases the risk that someone could exploit that access and either compromises
+the web content or cause web server performance problems.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_anonymous_content_sharing"/>
+<ref disa="" nist="" srg="" stigid="WG210"/>
+</Rule>
+
+<Rule id="httpd_configure_script_permissions" severity="high" prodtype="rhel7">
+<title>Remove Write Permissions From Filesystem Paths And Server Scripts</title>
+<description>
+Configure permissions for each instance of <tt>Alias</tt>,
+<tt>ScriptAlias</tt>, and <tt>ScriptAliasMatch</tt> that exist.
+<pre>$ sudo find <i>DIR</i> -type d -exec chmod 755 {} \;
+$ sudo find <i>DIR</i> -type f -exec chmod 555 {} \;</pre>
+Where <i>DIR</i> matches the paths from <tt>Alias</tt>,
+<tt>ScriptAlias</tt>, and <tt>ScriptAliasMatch</tt>.
+</description>
+<ocil clause="it is not">
+Verify that the files and directories of each instance of <tt>Alias</tt>,
+<tt>ScriptAlias</tt>, and <tt>ScriptAliasMatch</tt> that exist
+have the correct file and directory permissions applied.
+</ocil>
+<rationale>
+Excessive permissions for the anonymous web user account are one of the most
+common faults contributing to the compromise of a web server. If this user is
+able to upload and execute files on the web server, the organization or owner of
+the server will no longer have control of the asset.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_script_permissions"/>
+<ref disa="" nist="" srg="" stigid="WG290"/>
+</Rule>
+
 <Rule id="httpd_restrict_root_directory" prodtype="rhel7">
 <title>Restrict Root Directory</title>
 <description>
@@ -600,6 +901,102 @@ unauthorized parties.
 <ident prodtype="rhel7" cce="80320-5" />
 </Rule>
 
+<Rule id="httpd_configure_tls" severity="medium" prodtype="rhel7">
+<title>Enable Transport Layer Security (TLS) Encryption</title>
+<description>
+Disable old SSL and TLS version and enable the latest TLS encryption by setting
+the following in <tt>/etc/httpd/conf.modules.d/ssl.conf</tt>:
+<pre>SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1</pre>
+Make sure to also set <tt>SSLEngine</tt> to <tt>on</tt> in
+<tt>/etc/httpd/conf.modules.d/ssl.conf</tt> like the following:
+<pre>SSLEngine on</pre>
+</description>
+<ocil clause="it is not">
+To verify that TLS is configured properly in
+<tt>/etc/httpd/conf.modules.d/ssl.conf</tt>, run the following command:
+<pre>$ grep -i "sslengine\|sslprotocol" /etc/httpd/conf.d/ssl.conf</pre>
+The output should return the following:
+<pre>
+SSLEngine on
+SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+</pre>
+</ocil>
+<rationale>
+Transport Layer Security (TLS) encryption is a required security setting for a
+private web server. Encryption of private information is essential to ensuring
+data confidentiality. If private information is not encrypted, it can be
+intercepted and easily read by an unauthorized party. A web server must
+use a FIPS 140-2 approved TLS version, and all non-FIPS-approved SSL versions
+must be disabled.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_tls"/>
+<ref disa="" nist="" srg="" stigid="WG340"/>
+</Rule>
+
+<Rule id="httpd_require_client_certs" severity="medium" prodtype="rhel7">
+<title>Require Client Certificates</title>
+<description>
+<tt>SSLVerifyClient</tt> should be set and configured to <tt>require</tt> by
+setting the following in <tt>/etc/httpd/conf/httpd.conf</tt>:
+<pre>SSLVerifyClient require</pre>
+</description>
+<ocil clause="it is not">
+To verify if <tt>SSLVerifyClient</tt> is configured correctly in
+<tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+<pre>$ grep -i sslverifyclient /etc/httpd/conf/httpd.conf</pre>
+The command should return the following:
+<pre>SSLVerifyClient require</pre>
+</ocil>
+<rationale>
+Web sites requiring authentication within the DoD must utilize PKI as an
+authentication mechanism for web users. Information systems residing behind web
+servers requiring authorization based on individual identity must use the
+identity provided by certificate-based authentication to support access control
+decisions.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_require_client_certs"/>
+<ref disa="" nist="" srg="" stigid="WG140"/>
+</Rule>
+
+<Rule id="httpd_configure_valid_server_cert" severity="medium" prodtype="rhel7">
+<title>Configure A Valid Server Certificate</title>
+<description>
+Configure the web site to use a valid organizationally defined certificate.
+For DoD, this is a DoD server certificate issued by the DoD CA.
+</description>
+<ocil clause="it is not">
+Open browser window and browse to the appropriate site. Before entry to the
+site, you should be presented with the server's PKI credentials. Review
+these credentials for authenticity.
+<br/><br/>
+For DoD, find an entry which cites:
+<pre>
+Issuer:
+CN =
+DOD CLASS 3 CA-3
+OU = PKI
+OU = DoD
+O = U.S. Government
+C = US
+</pre>
+</ocil>
+<rationale>
+This check verifies that DoD is a hosted web site's CA. The certificate is
+actually a DoD-issued server certificate used by the organization being
+reviewed. This is used to verify the authenticity of the web site to the user.
+If the certificate is not for the server (Certificate belongs to), if the
+certificate is not issued by DoD (Certificate was issued by), or if the current
+date is not included in the valid date (Certificate is valid from), then there
+is no assurance that the use of the certificate is valid. The entire purpose of
+using a certificate is, therefore, compromised.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_valid_server_cert"/>
+<ref disa="" nist="" srg="" stigid="WG350"/>
+</Rule>
+
 </Group> <!-- <Group id="httpd_deploy_mod_ssl"> -->
 
 <Group id="httpd_deploy_mod_security">
@@ -693,6 +1090,57 @@ sql.safe_mode = On
 
 </Group> <!-- <Group id="httpd_configure_php_securely"> -->
 
+<Group id="httpd_configure_perl_securely">
+<title>Configure PHP Securely</title>
+<description>
+PERL (Practical Extraction and Report Language) is an interpreted language
+optimized for scanning arbitrary text files, extracting information from those
+text files, and printing reports based on that information. The language is
+often used in shell scripting and is intended to be practical, easy to use, and
+efficient means of generating interactive web pages for the user.
+</description>
+
+<Rule id="httpd_configure_perl_taint" severity="medium" prodtype="rhel7">
+<title>Configure HTTP PERL Scripts To Use TAINT Option</title>
+<description>
+If the <tt>mod_perl</tt> module is installed, enable Perl Taint checking in
+<tt>/etc/httpd/conf/httpd.conf</tt>. To enable Perl Taint
+checking, add or uncomment the following to <tt>/etc/httpd/conf.d/perl.conf</tt>:
+<pre>PerlSwitches -T</pre>
+</description>
+<ocil clause="it is not">
+To verify if the <tt>mod_perl</tt> is installed, run the following command:
+<pre>$ rpm -qa | grep mod_perl</pre>
+If the <tt>mod_perl</tt> module is installed, verify that <tt>PerlSwitches -T</tt>
+is enabled in <tt>/etc/httpd/conf.d/perl.conf</tt> by running the following
+command:
+<pre>$ grep -i "PerlSwitches -T" /etc/httpd/conf.d/perl.conf</pre>
+The output should return uncommented:
+<pre>PerlSwitches -T</pre>
+</ocil>
+<rationale>
+PERL (Practical Extraction and Report Language) is an interpreted language
+optimized for scanning arbitrary text files, extracting information from those
+text files, and printing reports based on that information. The language is
+often used in shell scripting and is intended to be practical, easy to use, and
+efficient means of generating interactive web pages for the user. Unfortunately,
+many widely available freeware PERL programs (scripts) are extremely insecure.
+This is most readily accomplished by a malicious user substituting input to a
+PERL script during a POST or a GET operation.
+<br/><br/>
+Consequently, the founders of
+PERL have developed a mechanism named TAINT that protects the system from
+malicious input sent from outside the program. When the data is tainted, it
+cannot be used in programs or functions such as eval(), system(), exec(), pipes,
+or popen(). The script will exit with a warning message.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_perl_taint"/>
+<ref disa="" nist="" srg="" stigid="WG460"/>
+</Rule>
+
+</Group> <!-- <Group id="httpd_configure_perl_securely"> -->
+
 <Group id="httpd_configure_os_protect_web_server">
 <title>Configure Operating System to Protect Web Server</title>
 <description>
@@ -700,22 +1148,86 @@ The following configuration steps should be taken on the system which hosts the
 web server, in order to provide as safe an environment as possible for the web server.
 </description>
 
+<Rule id="httpd_configure_remote_session_encryption" severity="high" prodtype="rhel7">
+<title>Ensure Remote Administrative Access Is Encrypted</title>
+<description>
+Ensure that the SSH server service is enabled.
+<systemd-service-macro enable="true" service="sshd" />
+</description>
+<ocil>
+<systemd-check-macro enable="true" service="sshd" />
+</ocil>
+<rationale>
+Logging into a web server remotely using an unencrypted protocol or service
+when performing updates and maintenance is a major risk. Data, such as user
+account, is transmitted in plaintext and can easily be compromised. When
+performing remote administrative tasks, a protocol or service that encrypts the
+communication channel must be used.
+<br/><br/>
+An alternative to remote administration of
+the web server is to perform web server administration locally at the console.
+Local administration at the console implies physical access to the server.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_remote_session_encryption"/>
+<ref disa="" nist="" srg="" stigid="WG230"/>
+</Rule>
+
+<Rule id="httpd_antivirus_scan_uploads" severity="medium" prodtype="rhel7">
+<title>Scan All Uploaded Content for Malicious Software</title>
+<description>
+Install anti-virus software on the system and set it to automatically scan new
+files that are introduced to the web server.
+</description>
+<ocil clause="it is not">
+Remote web authors should not be able to upload files to the Document Root
+directory structure without virus checking and checking for malicious or mobile
+code.
+</ocil>
+<rationale>
+Remote web authors should not be able to upload files to the Document Root
+directory structure without virus checking and checking for malicious or mobile
+code. A remote web user, whose agency has a Memorandum of Agreement (MOA) with
+the hosting agency and has submitted a DoD form 2875 (System Authorization
+Access Request (SAAR)) or an equivalent document, will be allowed to post files
+to a temporary location on the server. All posted files to this temporary
+location will be scanned for viruses and content checked for malicious or mobile
+code. Only files free of viruses and malicious or mobile code will be posted to
+the appropriate DocumentRoot directory.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_antivirus_scan_uploads"/>
+<ref disa="" nist="" srg="" stigid="WG237"/>
+</Rule>
+
 <Group id="httpd_restrict_file_dir_access">
 <title>Restrict File and Directory Access</title>
 <description>
 Minimize access to critical <tt>httpd</tt> files and directories.
 </description>
 
-<Rule id="dir_perms_var_log_httpd" prodtype="rhel7">
+<Rule id="dir_perms_var_log_httpd" severity="medium" prodtype="rhel7">
 <title>Set Permissions on the <tt>/var/log/httpd/</tt> Directory</title>
 <description>
 Ensure that the permissions on the web server log directory is set to 700:
 <pre>$ sudo chmod 700 /var/log/httpd/</pre>
 This is its default setting.
 </description>
+<ocil clause="it is more permissive">
+Run the following command to check the mode of the <tt>httpd</tt> log
+directory:
+<pre>$ ls -l /var/log/ | grep httpd</pre>
+Log directory must be mode 0700 or less permissive.
+</ocil>
 <rationale>
-Access to the web server's log files may allow an unauthorized user or attacker
-to access information about the web server or alter the server's log files.
+A major tool in exploring the web site use, attempted use, unusual conditions,
+and problems are the access and error logs. In the event of a security incident,
+these logs can provide the SA and the web manager with valuable information. To
+ensure the integrity of the log files and protect the SA and the web manager
+from a conflict of interest related to the maintenance of these files, only the
+members of the Auditors group will be granted permissions to move, copy, and
+delete these files in the course of their duties related to the archiving of
+these files.
 </rationale>
 <ident prodtype="rhel7" cce="80322-1" />
 <oval id="dir_perms_var_log_httpd" />
@@ -773,9 +1285,33 @@ to access information about the web server or to alter the server's configuratio
 <ident prodtype="rhel7" cce="80382-5" />
 </Rule>
 
+<Rule id="http_configure_log_file_ownership" severity="medium" prodtype="rhel7">
+<title>HTTPD Log Files Must Be Owned By Root</title>
+<description>
+All <tt>httpd</tt> logs must be owned by root user and group. By default,
+the path for httpd logs is <tt>/var/log/httpd/</tt>
+<fileowner-desc-macro file="/var/log/httpd" owner="root"/>
+<fileowner-desc-macro file="/var/log/httpd/*" owner="root"/>
+</description>
+<ocil>
+<fileowner-desc-macro file="/var/log/httpd" owner="root"/>
+<fileowner-desc-macro file="/var/log/httpd/*" owner="root"/>
+</ocil>
+<rationale>
+A major tool in exploring the web site use, attempted use, unusual conditions,
+and problems are the access and error logs. In the event of a security incident,
+these logs can provide the SA and the web administrator with valuable
+information. Because of the information that is captured in the logs, it is
+critical that only authorized individuals have access to the logs.
+</rationale>
+<ident cce=""/>
+<oval id="http_configure_log_file_ownership"/>
+<ref disa="" nist="" srg="" stigid="WG255"/>
+</Rule>
+
 </Group> <!-- <Group id="httpd_restrict_file_dir_access"> -->
 
-<Group id="httpd_configure_firewalld">
+<Rule id="httpd_configure_firewalld" severity="low" prodtype="rhel7">
 <title>Configure <tt>firewalld</tt> to Allow Access to the Web Server</title>
 <description>
 By default, <tt>firewalld</tt>
@@ -783,8 +1319,22 @@ blocks access to the ports used by the web server.
 <firewalld-desc-macro allow="true" proto="tcp" service="http" />
 <firewalld-desc-macro allow="true" proto="tcp" service="https" />
 </description>
-
-</Group> <!-- <Group id="httpd_configure_firewalld"> -->
+<ocil clause="it is not">
+Review the web site to determine if HTTP and HTTPs are used in accordance with
+well known ports (e.g., 80 and 443) or those ports and services as registered
+and approved for use by the DoD PPSM.
+<firewalld-desc-macro allow="true" proto="tcp" service="http" />
+<firewalld-desc-macro allow="true" proto="tcp" service="https" />
+</ocil>
+<rationale>
+Failure to comply with DoD ports, protocols, and services (PPS) requirements
+can result in compromise of enclave boundary protections and/or functionality
+of the AIS.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_firewalld"/>
+<ref disa="" nist="" srg="" stigid="WG610"/>
+</Rule>
 
 <Group id="httpd_chroot">
 <title>Run <tt>httpd</tt> in a <tt>chroot</tt> Jail if Practical</title>
@@ -805,6 +1355,234 @@ configuration.
 </Group> <!-- <Group id="httpd_chroot"> -->
 
 </Group> <!-- <Group id="httpd_configure_os_protect_web_server"> -->
+
+<Group id="httpd_secure_content">
+<title>Configure HTTPD-Served Web Content Securely</title>
+<description>
+Running <tt>httpd</tt> inside a <tt>chroot</tt> jail is designed to isolate the
+web server process to a small section of the filesystem, limiting the damage if
+it is compromised. Versions of Apache greater than 2.2.10 (such as the one
+included with Red Hat Enterprise Linux 7) provide the <tt>ChrootDir</tt> directive. To run Apache
+inside a chroot jail in <tt>/chroot/apache</tt>, add the following line to
+<tt>/etc/httpd/conf/httpd.conf</tt>: <pre>ChrootDir /chroot/apache</pre> This
+necessitates placing all files required by <tt>httpd</tt> inside
+<tt>/chroot/apache</tt> , including <tt>httpd</tt>'s binaries, modules,
+configuration files, and served web pages. The details of this configuration
+are beyond the scope of this guide. This may also require additional SELinux
+configuration.
+</description>
+
+<Value id="var_web_login_banner_text" type="string" operator="equals" interactive="0">
+<title>Login Banner Verbiage</title>
+<description>Enter an appropriate login banner for your organization. Please note that new lines must
+be expressed by the '\n' character and special characters like parentheses and quotation marks must be escaped with '\'.</description>
+<!-- <value selector="any_text">.+</value> -->
+<value selector="usgcb_default">--[\s\n]+WARNING[\s\n]+--[\s\n]*This[\s\n]+system[\s\n]+is[\s\n]+for[\s\n]+the[\s\n]+use[\s\n]+of[\s\n]+authorized[\s\n]+users[\s\n]+only.[\s\n]+Individuals[\s\n]*using[\s\n]+this[\s\n]+computer[\s\n]+system[\s\n]+without[\s\n]+authority[\s\n]+or[\s\n]+in[\s\n]+excess[\s\n]+of[\s\n]+their[\s\n]*authority[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+having[\s\n]+all[\s\n]+their[\s\n]+activities[\s\n]+on[\s\n]+this[\s\n]+system[\s\n]*monitored[\s\n]+and[\s\n]+recorded[\s\n]+by[\s\n]+system[\s\n]+personnel.[\s\n]+Anyone[\s\n]+using[\s\n]+this[\s\n]*system[\s\n]+expressly[\s\n]+consents[\s\n]+to[\s\n]+such[\s\n]+monitoring[\s\n]+and[\s\n]+is[\s\n]+advised[\s\n]+that[\s\n]*if[\s\n]+such[\s\n]+monitoring[\s\n]+reveals[\s\n]+possible[\s\n]+evidence[\s\n]+of[\s\n]+criminal[\s\n]+activity[\s\n]*system[\s\n]+personal[\s\n]+may[\s\n]+provide[\s\n]+the[\s\n]+evidence[\s\n]+of[\s\n]+such[\s\n]+monitoring[\s\n]+to[\s\n]+law[\s\n]*enforcement[\s\n]+officials.</value>
+<value selector="dod_default">You[\s\n]+are[\s\n]+accessing[\s\n]+a[\s\n]+U.S.[\s\n]+Government[\s\n]+\(USG\)[\s\n]+Information[\s\n]+System[\s\n]+\(IS\)[\s\n]+that[\s\n]+is[\s\n]+provided[\s\n]+for[\s\n]+USG-authorized[\s\n]+use[\s\n]+only.[\s\n]*By[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+\(which[\s\n]+includes[\s\n]+any[\s\n]+device[\s\n]+attached[\s\n]+to[\s\n]+this[\s\n]+IS\),[\s\n]+you[\s\n]+consent[\s\n]+to[\s\n]+the[\s\n]+following[\s\n]+conditions\:[\s\n]*-[\s\n]*The[\s\n]+USG[\s\n]+routinely[\s\n]+intercepts[\s\n]+and[\s\n]+monitors[\s\n]+communications[\s\n]+on[\s\n]+this[\s\n]+IS[\s\n]+for[\s\n]+purposes[\s\n]+including,[\s\n]+but[\s\n]+not[\s\n]+limited[\s\n]+to,[\s\n]+penetration[\s\n]+testing,[\s\n]+COMSEC[\s\n]+monitoring,[\s\n]+network[\s\n]+operations[\s\n]+and[\s\n]+defense,[\s\n]+personnel[\s\n]+misconduct[\s\n]+\(PM\),[\s\n]+law[\s\n]+enforcement[\s\n]+\(LE\),[\s\n]+and[\s\n]+counterintelligence[\s\n]+\(CI\)[\s\n]+investigations.[\s\n]*-[\s\n]*At[\s\n]+any[\s\n]+time,[\s\n]+the[\s\n]+USG[\s\n]+may[\s\n]+inspect[\s\n]+and[\s\n]+seize[\s\n]+data[\s\n]+stored[\s\n]+on[\s\n]+this[\s\n]+IS.[\s\n]*-[\s\n]*Communications[\s\n]+using,[\s\n]+or[\s\n]+data[\s\n]+stored[\s\n]+on,[\s\n]+this[\s\n]+IS[\s\n]+are[\s\n]+not[\s\n]+private,[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+routine[\s\n]+monitoring,[\s\n]+interception,[\s\n]+and[\s\n]+search,[\s\n]+and[\s\n]+may[\s\n]+be[\s\n]+disclosed[\s\n]+or[\s\n]+used[\s\n]+for[\s\n]+any[\s\n]+USG-authorized[\s\n]+purpose.[\s\n]*-[\s\n]*This[\s\n]+IS[\s\n]+includes[\s\n]+security[\s\n]+measures[\s\n]+\(e.g.,[\s\n]+authentication[\s\n]+and[\s\n]+access[\s\n]+controls\)[\s\n]+to[\s\n]+protect[\s\n]+USG[\s\n]+interests--not[\s\n]+for[\s\n]+your[\s\n]+personal[\s\n]+benefit[\s\n]+or[\s\n]+privacy.[\s\n]*-[\s\n]*Notwithstanding[\s\n]+the[\s\n]+above,[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+does[\s\n]+not[\s\n]+constitute[\s\n]+consent[\s\n]+to[\s\n]+PM,[\s\n]+LE[\s\n]+or[\s\n]+CI[\s\n]+investigative[\s\n]+searching[\s\n]+or[\s\n]+monitoring[\s\n]+of[\s\n]+the[\s\n]+content[\s\n]+of[\s\n]+privileged[\s\n]+communications,[\s\n]+or[\s\n]+work[\s\n]+product,[\s\n]+related[\s\n]+to[\s\n]+personal[\s\n]+representation[\s\n]+or[\s\n]+services[\s\n]+by[\s\n]+attorneys,[\s\n]+psychotherapists,[\s\n]+or[\s\n]+clergy,[\s\n]+and[\s\n]+their[\s\n]+assistants.[\s\n]+Such[\s\n]+communications[\s\n]+and[\s\n]+work[\s\n]+product[\s\n]+are[\s\n]+private[\s\n]+and[\s\n]+confidential.[\s\n]+See[\s\n]+User[\s\n]+Agreement[\s\n]+for[\s\n]+details.</value>
+<value selector="dod_short">I\'ve[\s\n]+read[\s\n]+\&amp;[\s\n]+consent[\s\n]+to[\s\n]+terms[\s\n]+in[\s\n]+IS[\s\n]+user[\s\n]+agreem\'t.</value>
+<value selector="dss_odaa_default">[\s\n]+Use[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+constitutes[\s\n]+consent[\s\n]+to[\s\n]+monitoring[\s\n]+at[\s\n]+all[\s\n]+times.[\s\n]+This[\s\n]+is[\s\n]+a[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system.[\s\n]+All[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+and[\s\n]+related[\s\n]+equipment[\s\n]+are[\s\n]+intended[\s\n]+for[\s\n]+the[\s\n]+communication,[\s\n]+transmission,[\s\n]+processing,[\s\n]+and[\s\n]+storage[\s\n]+of[\s\n]+official[\s\n]+U.S.[\s\n]+Government[\s\n]+or[\s\n]+other[\s\n]+authorized[\s\n]+information[\s\n]+only.[\s\n]+All[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+monitoring[\s\n]+at[\s\n]+all[\s\n]+times[\s\n]+to[\s\n]+ensure[\s\n]+proper[\s\n]+functioning[\s\n]+of[\s\n]+equipment[\s\n]+and[\s\n]+systems[\s\n]+including[\s\n]+security[\s\n]+devices[\s\n]+and[\s\n]+systems,[\s\n]+to[\s\n]+prevent[\s\n]+unauthorized[\s\n]+use[\s\n]+and[\s\n]+violations[\s\n]+of[\s\n]+statutes[\s\n]+and[\s\n]+security[\s\n]+regulations,[\s\n]+to[\s\n]+deter[\s\n]+criminal[\s\n]+activity,[\s\n]+and[\s\n]+for[\s\n]+other[\s\n]+similar[\s\n]+purposes.[\s\n]+Any[\s\n]+user[\s\n]+of[\s\n]+a[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+should[\s\n]+be[\s\n]+aware[\s\n]+that[\s\n]+any[\s\n]+information[\s\n]+placed[\s\n]+in[\s\n]+the[\s\n]+system[\s\n]+is[\s\n]+subject[\s\n]+to[\s\n]+monitoring[\s\n]+and[\s\n]+is[\s\n]+not[\s\n]+subject[\s\n]+to[\s\n]+any[\s\n]+expectation[\s\n]+of[\s\n]+privacy.[\s\n]+If[\s\n]+monitoring[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+reveals[\s\n]+possible[\s\n]+evidence[\s\n]+of[\s\n]+violation[\s\n]+of[\s\n]+criminal[\s\n]+statutes,[\s\n]+this[\s\n]+evidence[\s\n]+and[\s\n]+any[\s\n]+other[\s\n]+related[\s\n]+information,[\s\n]+including[\s\n]+identification[\s\n]+information[\s\n]+about[\s\n]+the[\s\n]+user,[\s\n]+may[\s\n]+be[\s\n]+provided[\s\n]+to[\s\n]+law[\s\n]+enforcement[\s\n]+officials.[\s\n]+If[\s\n]+monitoring[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+reveals[\s\n]+violations[\s\n]+of[\s\n]+security[\s\n]+regulations[\s\n]+or[\s\n]+unauthorized[\s\n]+use,[\s\n]+employees[\s\n]+who[\s\n]+violate[\s\n]+security[\s\n]+regulations[\s\n]+or[\s\n]+make[\s\n]+unauthorized[\s\n]+use[\s\n]+of[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+systems[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+appropriate[\s\n]+disciplinary[\s\n]+action.[\s\n]+Use[\s\n]+of[\s\n]+this[\s\n]+or[\s\n]+any[\s\n]+other[\s\n]+DoD[\s\n]+interest[\s\n]+computer[\s\n]+system[\s\n]+constitutes[\s\n]+consent[\s\n]+to[\s\n]+monitoring[\s\n]+at[\s\n]+all[\s\n]+times.</value>
+<!-- First banner in 'dod_banners' must be the banner for desktop, laptop, and other devices which accomodate banners of 1300 characters -->
+<value selector="dod_banners">^(You[\s\n]+are[\s\n]+accessing[\s\n]+a[\s\n]+U.S.[\s\n]+Government[\s\n]+\(USG\)[\s\n]+Information[\s\n]+System[\s\n]+\(IS\)[\s\n]+that[\s\n]+is[\s\n]+provided[\s\n]+for[\s\n]+USG-authorized[\s\n]+use[\s\n]+only.[\s\n]*By[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+\(which[\s\n]+includes[\s\n]+any[\s\n]+device[\s\n]+attached[\s\n]+to[\s\n]+this[\s\n]+IS\),[\s\n]+you[\s\n]+consent[\s\n]+to[\s\n]+the[\s\n]+following[\s\n]+conditions\:[\s\n]*-[\s\n]*The[\s\n]+USG[\s\n]+routinely[\s\n]+intercepts[\s\n]+and[\s\n]+monitors[\s\n]+communications[\s\n]+on[\s\n]+this[\s\n]+IS[\s\n]+for[\s\n]+purposes[\s\n]+including,[\s\n]+but[\s\n]+not[\s\n]+limited[\s\n]+to,[\s\n]+penetration[\s\n]+testing,[\s\n]+COMSEC[\s\n]+monitoring,[\s\n]+network[\s\n]+operations[\s\n]+and[\s\n]+defense,[\s\n]+personnel[\s\n]+misconduct[\s\n]+\(PM\),[\s\n]+law[\s\n]+enforcement[\s\n]+\(LE\),[\s\n]+and[\s\n]+counterintelligence[\s\n]+\(CI\)[\s\n]+investigations.[\s\n]*-[\s\n]*At[\s\n]+any[\s\n]+time,[\s\n]+the[\s\n]+USG[\s\n]+may[\s\n]+inspect[\s\n]+and[\s\n]+seize[\s\n]+data[\s\n]+stored[\s\n]+on[\s\n]+this[\s\n]+IS.[\s\n]*-[\s\n]*Communications[\s\n]+using,[\s\n]+or[\s\n]+data[\s\n]+stored[\s\n]+on,[\s\n]+this[\s\n]+IS[\s\n]+are[\s\n]+not[\s\n]+private,[\s\n]+are[\s\n]+subject[\s\n]+to[\s\n]+routine[\s\n]+monitoring,[\s\n]+interception,[\s\n]+and[\s\n]+search,[\s\n]+and[\s\n]+may[\s\n]+be[\s\n]+disclosed[\s\n]+or[\s\n]+used[\s\n]+for[\s\n]+any[\s\n]+USG-authorized[\s\n]+purpose.[\s\n]*-[\s\n]*This[\s\n]+IS[\s\n]+includes[\s\n]+security[\s\n]+measures[\s\n]+\(e.g.,[\s\n]+authentication[\s\n]+and[\s\n]+access[\s\n]+controls\)[\s\n]+to[\s\n]+protect[\s\n]+USG[\s\n]+interests--not[\s\n]+for[\s\n]+your[\s\n]+personal[\s\n]+benefit[\s\n]+or[\s\n]+privacy.[\s\n]*-[\s\n]*Notwithstanding[\s\n]+the[\s\n]+above,[\s\n]+using[\s\n]+this[\s\n]+IS[\s\n]+does[\s\n]+not[\s\n]+constitute[\s\n]+consent[\s\n]+to[\s\n]+PM,[\s\n]+LE[\s\n]+or[\s\n]+CI[\s\n]+investigative[\s\n]+searching[\s\n]+or[\s\n]+monitoring[\s\n]+of[\s\n]+the[\s\n]+content[\s\n]+of[\s\n]+privileged[\s\n]+communications,[\s\n]+or[\s\n]+work[\s\n]+product,[\s\n]+related[\s\n]+to[\s\n]+personal[\s\n]+representation[\s\n]+or[\s\n]+services[\s\n]+by[\s\n]+attorneys,[\s\n]+psychotherapists,[\s\n]+or[\s\n]+clergy,[\s\n]+and[\s\n]+their[\s\n]+assistants.[\s\n]+Such[\s\n]+communications[\s\n]+and[\s\n]+work[\s\n]+product[\s\n]+are[\s\n]+private[\s\n]+and[\s\n]+confidential.[\s\n]+See[\s\n]+User[\s\n]+Agreement[\s\n]+for[\s\n]+details.|I\'ve[\s\n]+read[\s\n]+\&amp;[\s\n]+consent[\s\n]+to[\s\n]+terms[\s\n]+in[\s\n]+IS[\s\n]+user[\s\n]+agreem\'t.)$</value>
+</Value>
+
+<Rule id="httpd_configure_documentroot" severity="low" prodtype="rhel7">
+<title>Each Web Content Directory Must Contain An index.html File</title>
+<description>
+Every <tt>DocumentRoot</tt> that is configured should have an
+<tt>index.html</tt> file that exists. Add an <tt>index.html</tt> file to every
+configured <tt>DocumentRoot</tt>.
+</description>
+<ocil clause="it is not">
+To verify that each web content directory has an <tt>index.html</tt> file,
+run the following command:
+<pre>$ sudo find `grep -i documentroot /etc/httpd/conf/httpd.conf | awk -F'"' '{print $2}'` -name index.html</pre>
+The output should return an <tt>index.html</tt> file for every
+<tt>DocumentRoot</tt> that is set.
+</ocil>
+<rationale>
+The goal is to completely control the web users experience in navigating any
+portion of the web document root directories. Ensuring all web content
+directories have at least the equivalent of an index.html file is a significant
+factor to accomplish this end. Also, enumeration techniques, such as URL
+parameter manipulation, rely upon being able to obtain information about the web
+server's directory structure by locating directories with default pages. This
+practice helps ensure that the anonymous web user will not obtain directory
+browsing information or an error message that reveals the server type and
+version.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_documentroot"/>
+<ref disa="" nist="" srg="" stigid="WG170"/>
+</Rule>
+
+<Rule id="partition_for_web_content" severity="medium" prodtype="rhel7">
+<title>Ensure Web Content Located on Separate partition</title>
+<description>
+The <tt>DocumentRoot</tt> directory is used for storing web content and data.
+Ensure that the <tt>DocumentRoot</tt> directory exists on a separate logical
+volume at installation time, or migrate it using LVM.
+</description>
+<ocil clause="it is not">
+To verify that each web content directory exists on separate partitions,
+run the following command:
+<pre>$ grep `grep -i documentroot /etc/httpd/conf/httpd.conf | awk -F'"' '{print $2}'` /etc/fstab</pre>
+Each of the corresponding <tt>DocumentRoot</tt> entries should have a
+corresponding entry in <tt>/etc/fstab</tt>.
+</ocil>
+<rationale>
+Application partitioning enables an additional security measure by securing
+user traffic under one security context, while managing system and application
+files under another. Web content is can be to an anonymous web user. For such
+an account to have access to system files of any type is a major security risk
+that is avoidable and desirable. Failure to partition the system files from the
+web site documents increases risk of attack via directory traversal, or impede
+web site availability due to drive space exhaustion.
+</rationale>
+<ident cce=""/>
+<oval id="partition_for_web_content"/>
+<ref disa="" nist="" srg="" stigid="WG205"/>
+</Rule>
+
+<Rule id="httpd_encrypt_file_uploads" severity="high" prodtype="rhel7">
+<title>Encrypt All File Uploads</title>
+<description>
+Use only secure encrypted logons and connections for uploading files to the web
+site.
+</description>
+<ocil clause="it is not">
+Determine if there is a process for the uploading of files to the web site.
+This process should include the requirement for the use of a secure encrypted
+logon and secure encrypted connection. If the remote users are uploading files
+without utilizing approved encryption methods, this is a finding.
+</ocil>
+<rationale>
+Logging in to a web server via an unencrypted protocol or service, to upload
+documents to the web site, is a risk if proper encryption is not utilized to
+protect the data being transmitted. An encrypted protocol or service must be
+used for remote access to web administration tasks.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_encrypt_file_uploads"/>
+<ref disa="" nist="" srg="" stigid="WG235"/>
+</Rule>
+
+<Rule id="httpd_configure_banner_page" severity="low" prodtype="rhel7">
+<title>Configure A Banner Page For Each Website</title>
+<description>
+Configure a login banner for each website when authentication is required for
+user access.
+</description>
+<ocil clause="it is not display the required banner">
+The document, DoDI 8500.01, establishes the policy on the use of DoD
+information systems. It requires the use of a standard Notice and Consent Banner
+and standard text to be included in user agreements. The banner should be set
+to the following:
+</ocil>
+<rationale>
+A consent banner will be in place to make prospective entrants aware that the
+website they are about to enter is a DoD web site and their activity is subject
+to monitoring. The document, DoDI 8500.01, establishes the policy on the use of
+DoD information systems. It requires the use of a standard Notice and Consent
+Banner and standard text to be included in user agreements. The requirement for
+the banner is for websites with security and access controls. These are
+restricted and not publicly accessible. If the website does not require
+authentication/authorization for use, then the banner does not need to be
+present. A manual check of the document root directory for a banner page file
+(such as banner.html) or navigation to the website via a browser can be used to
+confirm the information provided from interviewing the web staff.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_configure_banner_page" value="var_web_login_banner_text" />
+<ref disa="" nist="" srg="" stigid="WG265"/>
+</Rule>
+
+<Rule id="httpd_remove_robots_file" severity="medium" prodtype="rhel7">
+<title>The robots.txt Files Must Not Exist</title>
+<description>
+Remove any <tt>robots.txt</tt> files that may exist with any web content.
+Other methods must be employed if there is information on the web site that
+needs protection from search engines and public view. Inspect all instances of
+<tt>DocumentRoot</tt> and <tt>Alias</tt> and remove any <tt>robots.txt</tt> file.
+<pre>$ sudo rm -f path/to/robots.txt</pre>
+</description>
+<ocil clause="it is not">
+Inspect all instances of <tt>DocumentRoot</tt> and <tt>Alias</tt>. No
+<tt>robots.txt</tt> file should exist.
+</ocil>
+<rationale>
+Search engines are constantly at work on the Internet. Search engines are
+augmented by agents, often referred to as spiders or bots, which endeavor to
+capture and catalog web-site content. In turn, these search engines make the
+content they obtain and catalog available to any public web user.
+<br/><br/>
+To request
+that a well behaved search engine not crawl and catalog a site, the web site may
+contain a file called robots.txt. This file contains directories and files that
+the web server SA desires not be crawled or cataloged, but this file can also be
+used, by an attacker or poorly coded search engine, as a directory and file
+index to a site. This information may be used to reduce an attacker's time
+searching and traversing the web site to find files that might be relevant. If
+information on the web site needs to be protected from search engines and public
+view, other methods must be used.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_remove_robots_file"/>
+<ref disa="" nist="" srg="" stigid="WG310"/>
+</Rule>
+
+<Rule id="httpd_disable_content_symlinks" severity="high" prodtype="rhel7">
+<title>Disable Web Content Symbolic Links</title>
+<description>
+For each <tt>&lt;Directory&gt;</tt> instance, remove the following:
+<pre>FollowSymLinks</pre>
+If symbolic links are allowed, the following can be added for each
+<tt>&lt;Directory&gt;</tt> instance:
+<pre>Options SymLinksIfOwnerMatchDisable</pre>
+</description>
+<ocil clause="it is not">
+Inspect each <tt>&lt;Directory&gt;</tt> instance and verify that either
+<pre>FollowSymLinks</pre> does not exist, or
+<pre>Options SymLinksIfOwnerMatchDisable</pre> is configured properly.
+</ocil>
+<rationale>
+A symbolic link allows a file or a directory to be referenced using a symbolic
+name raising a potential hazard if symbolic linkage is made to a sensitive area.
+When web scripts are executed and symbolic links are allowed, the web user could
+be allowed to access locations on the web server that are outside the scope of
+the web document root or home directory.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_disable_content_symlinks"/>
+<ref disa="" nist="" srg="" stigid="WG360"/>
+</Rule>
+
+<Rule id="httpd_limit_java_files" severity="low" prodtype="rhel7">
+<title>Remove .java And .jpp Files</title>
+<description>
+<tt>.java</tt> and <tt>.jpp</tt> files should not exist and should be removed
+from the web server.
+</description>
+<ocil clause="it is not">
+To verify that no <tt>.java</tt> and <tt>.jpp</tt> files exist, run the
+following command:
+<pre>find / -name *.java -o -name *.jpp</pre>
+The output should not return any <tt>.java</tt> or <tt>.jpp</tt> files
+</ocil>
+<rationale>
+From the source code in a .java or a .jpp file, the Java compiler produces a
+binary file with an extension of .class. The .java or .jpp file would,
+therefore, reveal sensitive information regarding an application's logic and
+permissions to resources on the server. By contrast, the .class file, because it
+is intended to be machine independent, is referred to as bytecode. Bytecodes are
+run by the Java Virtual Machine (JVM), or the Java Runtime Environment (JRE),
+via a browser configured to permit Java code.
+</rationale>
+<ident cce=""/>
+<oval id="httpd_limit_java_files"/>
+<ref disa="" nist="" srg="" stigid="WG490"/>
+</Rule>
+
+</Group> <!-- <Group id="httpd_secure_content"> -->
 
 </Group> <!-- <Group id="securing_httpd"> -->
 
