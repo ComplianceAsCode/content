@@ -61,12 +61,6 @@
     </arithmetic>
   </local_variable>
 
-  <!-- The 'var_umask_for_daemons_umask_as_number' variable is created by evaluation of
-       the referenced 'var_umask_for_daemons_as_number' OVAL definition -->
-  <external_variable id="var_umask_for_daemons_umask_as_number"
-  comment="Required umask converted from string to octal number"
-  datatype="int" version="1"/>
-
   <ind:variable_test id="tst_umask_for_daemons" version="1" check="all"
   comment="Test the retrieved /etc/init.d/functions umask value(s) match the var_umask_for_daemons requirement">
     <ind:object object_ref="obj_umask_for_daemons" />
@@ -77,6 +71,8 @@
     <ind:var_ref>var_etc_init_d_functions_umask_as_number</ind:var_ref>
   </ind:variable_object>
 
+  <!-- The 'var_umask_for_daemons_umask_as_number' variable is created by evaluation of
+       the referenced 'var_umask_for_daemons_as_number' OVAL definition -->
   <ind:variable_state id="ste_umask_for_daemons" version="1">
     <ind:value datatype="int" operation="bitwise and" var_ref="var_umask_for_daemons_umask_as_number" />
   </ind:variable_state>
