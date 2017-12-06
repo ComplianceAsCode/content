@@ -26,6 +26,7 @@
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/system/location/enabled'
     line: '/org/gnome/system/location/enabled'
+    create: yes
   tags:
     @ANSIBLE_TAGS@
 
@@ -34,5 +35,6 @@
     path: /etc/dconf/db/local.d/locks/00-security-settings-lock
     regexp: '^/org/gnome/clocks/geolocation'
     line: '/org/gnome/clocks/geolocation'
+    create: yes
   tags:
     @ANSIBLE_TAGS@
