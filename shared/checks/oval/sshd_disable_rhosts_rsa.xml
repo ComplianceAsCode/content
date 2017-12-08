@@ -15,8 +15,11 @@
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required and installed, or requirement is unset"
         definition_ref="sshd_required_or_unset" />
-        <criterion comment="Check RhostsRSAAuthentication in /etc/ssh/sshd_config"
-        negate="true" test_ref="test_sshd_disable_rhosts_rsa" />
+        <criteria comment="SSH version is equal or higher than 7.4 has deprecated RhostsRSAAuthentication" operator="OR">
+          <extend_definition comment="OpenSSH version 7.4 or higher has deprecated RhostsRSAAuthentication" definition_ref="sshd_version_equal_or_higher_than_74" />
+          <criterion comment="Check RhostsRSAAuthentication in /etc/ssh/sshd_config"
+          negate="true" test_ref="test_sshd_disable_rhosts_rsa" />
+        </criteria>
       </criteria>
     </criteria>
   </definition>
