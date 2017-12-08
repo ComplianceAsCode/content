@@ -603,6 +603,11 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>RhostsRSAAuthentication no</pre>
 </description>
 <ocil>
+To check which SSH protocol version is allowed, check version of
+<tt>openssh-server</tt> with following command:
+<pre>$ rpm -qi openssh-server | grep Version</pre>
+Versions equal to or higher than 7.4 have deprecated the <tt>RhostsRSAAuthentication</tt> option.
+If version is lower than 7.4, run the following command to check configuration:
 <sshd-check-macro option="RhostsRSAAuthentication" value="no" default="yes" />
 </ocil>
 <rationale>
@@ -610,6 +615,10 @@ Configuring this setting for the SSH daemon provides additional
 assurance that remove login via SSH will require a password, even
 in the event of misconfiguration elsewhere.
 </rationale>
+<warning category="general">As of <tt>openssh-server</tt> version <tt>7.4</tt> and above,
+the <tt>RhostsRSAAuthentication</tt> option has been deprecated, and the line
+<pre>RhostsRSAAuthentication no</pre> in <tt>/etc/ssh/sshd_config</tt> is not
+necessary.</warning>
 <ident prodtype="rhel7" cce="80373-4" />
 <oval id="sshd_disable_rhosts_rsa" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040330" />
