@@ -9,11 +9,7 @@
       <description>If SSHD is not required, we check it is not installed. If SSH requirement is unset, we are good.</description>
     </metadata>
     <criteria comment="SSH not required or not set" operator="OR">
-      <criteria comment="SSH is not required and not installed" operator="AND">
-        <criterion test_ref="test_sshd_not_required" />
-        <extend_definition comment="rpm package openssh-server removed"
-        definition_ref="package_openssh-server_removed" />
-      </criteria>
+      <criterion test_ref="test_sshd_not_required" />
       <extend_definition comment="SSH requirement is unset"
       definition_ref="sshd_requirement_unset" />
     </criteria>
