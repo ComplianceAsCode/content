@@ -1,3 +1,5 @@
+source fix_audit_syscall_rule.sh
+
 # Perform the remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
 # system calls on Red Hat Enterprise Linux 7 or Fedora OSes
 function rhel7_fedora_perform_audit_adjtimex_settimeofday_stime_remediation {
