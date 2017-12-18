@@ -21,6 +21,7 @@ bash_rem_system = "urn:xccdf:fix:script:sh"
 ansible_rem_system = "urn:xccdf:fix:script:ansible"
 puppet_rem_system = "urn:xccdf:fix:script:puppet"
 anaconda_rem_system = "urn:redhat:anaconda:pre"
+stig_ns = "http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx"
 cce_system = "https://nvd.nist.gov/cce/index.cfm"
 ssg_version_uri = \
     "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
@@ -31,7 +32,7 @@ class RuleStats(object):
     def __init__(self, rid=None, roval=None,
                  rbash_fix=None, ransible_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None,
-                 rcce=None):
+                 rcce=None, stig_id=None):
         self.dict = {
             'id': rid,
             'oval': roval,
@@ -39,7 +40,8 @@ class RuleStats(object):
             'ansible_fix': ransible_fix,
             'puppet_fix': rpuppet_fix,
             'anaconda_fix': ranaconda_fix,
-            'cce': rcce
+            'cce': rcce,
+            'stig_id': stig_id,
         }
 
 
@@ -89,7 +91,8 @@ class XCCDFBenchmark(object):
             'missing_anaconda_fixes': [],
             'assigned_cces': [],
             'assigned_cces_pct': 0,
-            'missing_cces': []
+            'missing_cces': [],
+            'missing_stig_ids': [],
         }
 
         rule_stats = []
@@ -140,10 +143,13 @@ class XCCDFBenchmark(object):
                                          (xccdf_ns, anaconda_rem_system))
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
                                 (xccdf_ns, cce_system))
+                stig_id = rule.find("./{%s}reference[@href=\"%s\"]" %
+                                    (xccdf_ns, stig_ns))
+
                 rule_stats.append(
                     RuleStats(rule.get("id"), oval,
                               bash_fix, ansible_fix, puppet_fix, anaconda_fix,
-                              cce)
+                              cce, stig_id)
                 )
 
         if not rule_stats:
@@ -191,6 +197,12 @@ class XCCDFBenchmark(object):
 
         profile_stats['implemented_anaconda_fixes'] = \
             [x.dict['id'] for x in rule_stats if x.dict['anaconda_fix'] is not None]
+
+        profile_stats['missing_stig_ids'] = []
+        if 'stig' in profile_stats['profile_id']:
+            profile_stats['missing_stig_ids'] = \
+                [x.dict['id'] for x in rule_stats if x.dict['stig_id'] is None]
+
         profile_stats['implemented_anaconda_fixes_pct'] = \
             float(len(profile_stats['implemented_anaconda_fixes'])) / \
             profile_stats['rules_count'] * 100
@@ -217,6 +229,7 @@ class XCCDFBenchmark(object):
         impl_ansible_fixes_count = len(profile_stats['implemented_ansible_fixes'])
         impl_puppet_fixes_count = len(profile_stats['implemented_puppet_fixes'])
         impl_anaconda_fixes_count = len(profile_stats['implemented_anaconda_fixes'])
+        missing_stig_ids_count = len(profile_stats['missing_stig_ids'])
         impl_cces_count = len(profile_stats['assigned_cces'])
 
         if options.format == "plain":
@@ -342,6 +355,15 @@ class XCCDFBenchmark(object):
                     self.console_print(profile_stats['missing_anaconda_fixes'],
                                        console_width)
 
+                if profile_stats['missing_stig_ids']:
+                    print("*** rules of '%s' profile missing "
+                          "STIG IDs: %d of %d have them [%d%% missing]"
+                          % (profile, rules_count - missing_stig_ids_count,
+                             rules_count,
+                             (100.0 * missing_stig_ids_count / rules_count)))
+                    self.console_print(profile_stats['missing_stig_ids'],
+                                       console_width)
+
             if options.missing_cces and profile_stats['missing_cces']:
                 print("***Rules of '%s' " % profile + "profile missing " +
                       "CCE identifier: %d of %d [%d%% complete]" %
@@ -359,6 +381,7 @@ class XCCDFBenchmark(object):
                 del profile_stats['missing_ansible_fixes']
                 del profile_stats['missing_puppet_fixes']
                 del profile_stats['missing_anaconda_fixes']
+                del profile_stats['missing_stig_ids']
             if not options.missing_cces:
                 del profile_stats['missing_cces']
             if not options.implemented_ovals:
