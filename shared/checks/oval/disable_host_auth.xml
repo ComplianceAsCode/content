@@ -7,12 +7,19 @@
       </affected>
       <description>SSH host-based authentication should be disabled.</description>
     </metadata>
-    <criteria comment="SSH is not installed or conditions are met" operator="OR">
-      <extend_definition comment="sshd is not required and not installed, or requirement is unset"
-      definition_ref="sshd_not_required_or_unset" />
+    <criteria comment="SSH is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+      </criteria>
       <criteria comment="sshd is installed and configured" operator="AND">
-        <extend_definition comment="sshd is required and installed, or requirement is unset"
+        <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+        definition_ref="package_openssh-server_installed" />
         <criterion comment="Check HostbasedAuthentication in /etc/ssh/sshd_config"
         test_ref="test_sshd_hostbasedauthentication" />
       </criteria>

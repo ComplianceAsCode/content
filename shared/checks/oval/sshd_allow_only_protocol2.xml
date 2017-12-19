@@ -9,12 +9,19 @@
       </affected>
       <description>The OpenSSH daemon should be running protocol 2.</description>
     </metadata>
-    <criteria comment="SSH is not installed or conditions are met" operator="OR">
-      <extend_definition comment="sshd is not required and not installed, or requirement is unset"
-      definition_ref="sshd_not_required_or_unset" />
+    <criteria comment="SSH is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+      </criteria>
       <criteria comment="sshd is installed and configured" operator="AND">
-        <extend_definition comment="sshd is required and installed, or requirement is unset"
+        <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server installed"
+        definition_ref="package_openssh-server_installed" />
         <criteria comment="SSH version is equal or higher than 7.4 or it is configured with protocol 2" operator="OR">
           <extend_definition comment="OpenSSH version 7.4 or higher supports only protocol 2" definition_ref="sshd_version_equal_or_higher_than_74" />
           <criterion comment="Check Protocol in /etc/ssh/sshd_config"
