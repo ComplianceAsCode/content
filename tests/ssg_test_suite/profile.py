@@ -47,13 +47,15 @@ def perform_profile_check(options):
                                          profile,
                                          'initial',
                                          options.datastream,
-                                         options.benchmark_id)
+                                         options.benchmark_id,
+                                         ansible=options.ansible)
         ssg_test_suite.oscap.run_profile(domain_ip,
                                          profile,
                                          'remediation',
                                          options.datastream,
                                          options.benchmark_id,
-                                         remediation=True)
+                                         remediation=True,
+                                         ansible=options.ansible)
         ssg_test_suite.oscap.run_profile(domain_ip,
                                          profile,
                                          'final',
