@@ -12,6 +12,8 @@
         <criteria comment="Red Hat Installed" operator="OR">
           <extend_definition comment="RHEL6 installed" definition_ref="installed_OS_is_rhel6" />
           <extend_definition comment="RHEL7 installed" definition_ref="installed_OS_is_rhel7" />
+          <extend_definition comment="SL6 installed" definition_ref="installed_OS_is_sl6" />
+          <extend_definition comment="SL7 installed" definition_ref="installed_OS_is_sl7" />
         </criteria>
         <criterion comment="package gpg-pubkey-fd431d51-4ae0493b is installed"
         test_ref="test_package_gpgkey-fd431d51-4ae0493b_installed" />
