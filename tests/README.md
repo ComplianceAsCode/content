@@ -21,7 +21,7 @@ accessible via ssh on the libvirt domain and have Ansible installed on the host 
 
 ### Domain preparation (example CentOS)
 1. Install domain, using `kickstarts/rhel_centos_7.cfg`
-   Typically, you supply a boot option `inst.ks=https://raw.githubusercontent.com/matejak/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.
+   Typically, you supply a boot option `inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.
 1. Import ssh key to the machine and make sure that you can use them to log in as the `root` superuser.
 1. Setup repo, so machine can install and uninstall packages.
 
