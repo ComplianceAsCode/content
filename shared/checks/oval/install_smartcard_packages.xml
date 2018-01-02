@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="compliance" id="install_smartcard_packages" version="1">
+    <metadata>
+      <title>Install needed packages for smartcard use.</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>The RPM packages esc pam_pkcs11 and authconfig-gtk must be installed.</description>
+    </metadata>
+      <criteria comment="packages for smartcard use are installed">
+      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
+      <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
+      <extend_definition comment="authconfig-gtk package is installed" definition_ref="package_authconfig-gtk_installed" />
+      </criteria>
+  </definition>
+</def-group>
