@@ -101,7 +101,7 @@ def _apply_script(rule_dir, domain_ip, script):
             subprocess.check_call(shlex.split(command),
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError, e:
+        except subprocess.CalledProcessError as e:
             logging.error(("Rule testing script {0} "
                            "failed with exit code {1}").format(script,
                                                                e.returncode))
@@ -200,17 +200,17 @@ def perform_rule_check(options):
                                        "found issue:").format(script,
                                                               profile),
                                       log_target='fail')
+                runner = options.remediate_using
                 has_worked = True
                 if oscap.run_rule(domain_ip=domain_ip,
                                   profile=profile,
-                                  stage="initial",
+                                  stage='initial',
                                   datastream=options.datastream,
                                   benchmark_id=options.benchmark_id,
                                   rule_id=rule,
                                   context=script_context,
                                   script_name=script,
-                                  remediation=False,
-                                  ansible=options.ansible,
+                                  runner=runner,
                                   dont_clean=options.dont_clean):
                     # check if remediation is present
                     is_supported = ['all']
@@ -222,14 +222,13 @@ def perform_rule_check(options):
                        set(is_supported) & set(script_params['remediation']):
                         oscap.run_rule(domain_ip=domain_ip,
                                        profile=profile,
-                                       stage="remediation",
+                                       stage='remediation',
                                        datastream=options.datastream,
                                        benchmark_id=options.benchmark_id,
                                        rule_id=rule,
                                        context='fixed',
                                        script_name=script,
-                                       remediation=True,
-                                       ansible=options.ansible,
+                                       runner=runner,
                                        dont_clean=options.dont_clean)
                 snapshot_stack.revert(delete=False)
             if not has_worked:
