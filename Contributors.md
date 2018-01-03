@@ -1,6 +1,6 @@
 <!---
 This file is generated using the generate-contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2017-10-31 16:57
+Last Modified: 2018-01-03 15:03
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -16,6 +16,7 @@ The following people have contributed to the SCAP Security Guide project
 * Jose Luis BG <bgjoseluis@gmail.com>
 * Joseph Bisch <joseph.bisch@gmail.com>
 * Jeffrey Blank <blank@eclipse.ncsc.mil>
+* Olivier Bonhomme <ptitoliv@ptitoliv.net>
 * Ted Brunell <tbrunell@redhat.com>
 * Blake Burkhart <blake.burkhart@us.af.mil>
 * Patrick Callahan <pmc@patrickcallahan.com>
@@ -41,6 +42,7 @@ The following people have contributed to the SCAP Security Guide project
 * Robin Price II <robin@redhat.com>
 * Jeremiah Jahn <jeremiah@goodinassociates.com>
 * Stephan Joerrens <Stephan.Joerrens@fiduciagad.de>
+* Charles Kernstock <charles.kernstock@ultra-ats.com>
 * Yuli Khodorkovskiy <ykhodorkovskiy@tresys.com>
 * Luke Kordell <luke.t.kordell@lmco.com>
 * kspargur <kspargur@kspargur.csb>
@@ -48,6 +50,7 @@ The following people have contributed to the SCAP Security Guide project
 * Ian Lee <lee1001@llnl.gov>
 * Jan Lieskovsky <jlieskov@redhat.com>
 * Šimon Lukašík <slukasik@redhat.com>
+* Matus Marhefka <mmarhefk@redhat.com>
 * Jamie Lorwey Martin <jlmartin@redhat.com>
 * Michael McConachie <michael@redhat.com>
 * Khary Mendez <kharyam@gmail.com>
@@ -65,6 +68,7 @@ The following people have contributed to the SCAP Security Guide project
 * Max R.D. Parmer <maxp@trystero.is>
 * pcactr <paul.c.arnold4.ctr@mail.mil>
 * Kenneth Peeples <kennethwpeeples@gmail.com>
+* Nathan Peters <petna01@ca.com>
 * Frank Lin PIAT <fpiat@klabs.be>
 * Stefan Pietsch <mail.ipv4v6+gh@gmail.com>
 * Martin Preisler <mpreisle@redhat.com>
@@ -93,7 +97,7 @@ The following people have contributed to the SCAP Security Guide project
 * Philippe Thierry <phil@reseau-libre.net>
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>
-* Matěj Týč <matej.tyc@gmail.com>
+* Matěj Týč <matyc@redhat.com>
 * VadimDor <29509093+VadimDor@users.noreply.github.com>
 * Shawn Wells <shawn@redhat.com>
 * Roy Williams <roywilli@roywilli.redhat.com>
