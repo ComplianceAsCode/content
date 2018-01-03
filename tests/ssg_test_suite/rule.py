@@ -175,6 +175,8 @@ def perform_rule_check(options):
 
             if not _apply_script(rule_dir, domain_ip, script):
                 logging.error("Environment failed to prepare, skipping test")
+                snapshot_stack.revert()
+                continue
             script_params = _parse_parameters(script_path)
             has_worked = False
             profiles = get_viable_profiles(script_params['profiles'],
