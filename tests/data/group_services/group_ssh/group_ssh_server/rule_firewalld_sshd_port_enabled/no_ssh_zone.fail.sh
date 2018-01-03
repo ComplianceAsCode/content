@@ -3,7 +3,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
 
 # ensure firewalld installed
-yum install firewalld
+yum install -y firewalld
 
 all_zones=$(firewall-cmd --get-zones)
 for zone in $all_zones;do

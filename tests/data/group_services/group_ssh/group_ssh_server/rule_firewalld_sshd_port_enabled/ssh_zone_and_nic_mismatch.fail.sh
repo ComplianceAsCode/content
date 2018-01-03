@@ -3,7 +3,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
 
 # ensure firewalld installed
-yum install firewalld
+yum install -y firewalld
 
 # Make sure there is only one zone with ssh service enabled
 all_zones=$(firewall-cmd --get-zones)
