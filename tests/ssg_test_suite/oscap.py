@@ -5,6 +5,8 @@ import os.path
 import re
 import shlex
 import subprocess
+import collections
+import xml.etree.ElementTree
 import sys
 
 import ssg_test_suite.virt
@@ -19,6 +21,21 @@ _CONTEXT_RETURN_CODES = {'pass': 0,
                          'fixed': 0}
 
 _ANSIBLE_TEMPLATE = 'urn:xccdf:fix:script:ansible'
+_BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
+_XCCDF_NS = 'http://checklists.nist.gov/xccdf/1.2'
+
+
+def triage_xml_results(fname):
+    tree = xml.etree.ElementTree.parse(fname)
+    all_xml_results = tree.findall(".//{%s}rule-result" % _XCCDF_NS)
+
+    triaged = collections.DefaultDict(set)
+    for result in list(all_xml_results):
+        idref = result.get("idref")
+        status = result.find("{%s}result" % _XCCDF_NS).text
+        triaged[status].add(idref)
+
+    return triaged
 
 
 def run_cmd(command, verbose_path):
@@ -100,44 +117,49 @@ def ansible_playbook_set_hosts(playbook):
             f.write(line)
 
 
+def get_result_id_from_arf(arf_path, verbose_path):
+    command = ['oscap', 'info', arf_path]
+    command_string = ' '.join(command)
+    returncode, output = run_cmd(command_string, verbose_path)
+    if returncode != 0:
+        raise RuntimeError('{0} returned {1} exit code'.
+                           format(command_string, returncode))
+    res_id = find_result_id_in_output(output)
+    if res_id is None:
+        raise RuntimeError('Failed to find result ID in {0}'
+                           .format(arf_path))
+    return res_id
+
+
+def generate_fixes_remotely(formatting, verbose_path):
+    command_base = ['oscap', 'xccdf', 'generate', 'fix']
+    command_options = [
+        '--benchmark-id', formatting['benchmark_id'],
+        '--profile', formatting['profile'],
+        '--template', formatting['output_template'],
+        '--output', '/{output_file}'.format(** formatting),
+    ]
+    command_operands = ['/{arf_file}'.format(** formatting)]
+    if 'result_id' in formatting:
+        command_options.extend(['--result-id', formatting['result_id']])
+
+    command_string = ' '.join(command_base + command_options + command_operands)
+    rc = run_cmd_remote(command_string, formatting['domain_ip'], verbose_path)[0]
+    if rc != 0:
+        raise RuntimeError('Command {0} ended with return code {1} (0 was expected).'
+                           .format(command_string, rc))
+
+
 def run_stage_remediation_ansible(run_type, formatting, verbose_path):
-    """Sends ARF results file (generated in the initial stage) to the remote
-       machine, generates fix in form of the Ansible playbook from it (done on
-       the remote machine) and then downloads the generated playbook file back
-       to the host machine. Playbook is then applied to the remote machine.
-
-       Returns False on error, or True in case of successful Ansible playbook
+    """
+       Returns False on error, or True in case of successful bash scripts
        run."""
-    if run_type == 'rule':
-        command = 'oscap info {}'.format(formatting['arf'])
-        returncode, output = run_cmd(command, verbose_path)
-        if returncode != 0:
-            return False
-        res_id = find_result_id_in_output(output)
-        if res_id is None:
-            logging.error(('Failed to find result ID in '
-                           '{0}').format(formatting['arf']))
-            return False
-        formatting['result_id'] = '--result-id {}'.format(res_id)
-    else:
-        formatting['result_id'] = ''
-
-    if not send_files_remote(verbose_path, '/', formatting['domain_ip'],
-                             formatting['arf']):
-        return False
-    if run_cmd_remote(('oscap xccdf generate fix '
-                       '--benchmark-id {benchmark_id} '
-                       '--profile {profile} '
-                       '{result_id} '
-                       '--template {ansible_template} '
-                       '--output /{playbook_file} '
-                       '/{arf_file}').format(**formatting),
-                      formatting['domain_ip'],
-                      verbose_path)[0] != 0:
-        return False
+    formatting['output_template'] = _ANSIBLE_TEMPLATE
+    send_arf_to_remote_machine_and_generate_remediations_there(
+        run_type, formatting, verbose_path)
     if not get_file_remote(verbose_path, LogHelper.LOG_DIR,
                            formatting['domain_ip'],
-                           '/' + formatting['playbook_file']):
+                           '/' + formatting['output_file']):
         return False
     ansible_playbook_set_hosts(formatting['playbook'])
     command = ('ansible-playbook -i {domain_ip}, -u root '
@@ -157,6 +179,54 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
     return True
 
 
+def run_stage_remediation_bash(run_type, formatting, verbose_path):
+    """
+       Returns False on error, or True in case of successful Ansible playbook
+       run."""
+    formatting['output_template'] = _BASH_TEMPLATE
+    send_arf_to_remote_machine_and_generate_remediations_there(
+        run_type, formatting, verbose_path)
+    if not get_file_remote(verbose_path, LogHelper.LOG_DIR,
+                           formatting['domain_ip'],
+                           '/' + formatting['output_file']):
+        return False
+
+    command_string = '/bin/bash /{output_file}'.format(** formatting)
+    returncode, output = run_cmd_remote(command_string, formatting['domain_ip'], verbose_path)
+    # Appends output of script execution to the verbose_path file.
+    with open(verbose_path, 'a') as f:
+        f.write('Stdout of "{}":'.format(command_string))
+        f.write(output)
+    if returncode != 0:
+        msg = (
+            'Bash script remediation run has exited with return code {} '
+            'instead of expected 0'.format(returncode)
+        )
+        LogHelper.preload_log(logging.ERROR, msg, 'fail')
+        return False
+    return True
+
+
+def send_arf_to_remote_machine_and_generate_remediations_there(run_type, formatting, verbose_path):
+    if run_type == 'rule':
+        try:
+            res_id = get_result_id_from_arf(formatting['arf'], verbose_path)
+        except Exception as exc:
+            logging.error(str(exc))
+            return False
+        formatting['result_id'] = res_id
+
+    if not send_files_remote(
+            verbose_path, '/', formatting['domain_ip'], formatting['arf']):
+        return False
+
+    try:
+        generate_fixes_remotely(formatting, verbose_path)
+    except Exception as exc:
+        logging.error(str(exc))
+        return False
+
+
 class GenericRunner(object):
     def __init__(self, domain_ip, profile, datastream, benchmark_id):
         self.domain_ip = domain_ip
@@ -168,6 +238,7 @@ class GenericRunner(object):
         self.arf_path = ''
         self.verbose_path = ''
         self.report_path = ''
+        self.results_path = ''
         self.stage = 'undefined'
 
         self.command_base = []
@@ -195,6 +266,13 @@ class GenericRunner(object):
     def _get_report_file(self):
         raise NotImplementedError()
 
+    def _make_results_path(self):
+        results_file = self._get_results_file()
+        self.results_path = LogHelper.find_name(results_file, '.xml')
+
+    def _get_results_file(self):
+        raise NotImplementedError()
+
     def prepare_oscap_ssh_arguments(self):
         full_hostname = 'root@{}'.format(self.domain_ip)
         self.command_base.extend(['oscap-ssh', full_hostname, '22', 'xccdf', 'eval'])
@@ -213,6 +291,7 @@ class GenericRunner(object):
         self._make_verbose_path()
         self._make_report_path()
         self._make_arf_path()
+        self._make_results_path()
 
         self.command_base = []
         self.command_options = []
@@ -227,6 +306,11 @@ class GenericRunner(object):
             result = self.final()
         else:
             raise RuntimeError('Unknown stage: {}.'.format(stage))
+
+        if result:
+            LogHelper.log_preloaded('pass')
+        else:
+            LogHelper.log_preloaded('fail')
         return result
 
     def make_oscap_call(self):
@@ -236,10 +320,27 @@ class GenericRunner(object):
         return self.make_oscap_call()
 
     def remediation(self):
+        self.command_options += ['--remediate']
         return self.make_oscap_call()
 
     def final(self):
+        self.command_options += ['--results', self.results_path]
         return self.make_oscap_call()
+
+    def analyze(self):
+        triaged_results = triage_xml_results(self.results_path)
+        return triaged_results
+
+    def _get_formatting_dict_for_remediation(self):
+        formatting = {
+            'domain_ip': self.domain_ip,
+            'profile': self.profile,
+            'datastream': self.datastream,
+            'benchmark_id': self.benchmark_id
+        }
+        formatting['arf'] = self.arf_path
+        formatting['arf_file'] = self.arf_file
+        return formatting
 
 
 class ProfileRunner(GenericRunner):
@@ -251,6 +352,9 @@ class ProfileRunner(GenericRunner):
 
     def _get_report_file(self):
         return '{0}-{1}'.format(self.profile, self.stage)
+
+    def _get_results_file(self):
+        return '{0}-results'.format(self.profile)
 
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
@@ -269,7 +373,6 @@ class RuleRunner(GenericRunner):
             rule_id, context, script_name, dont_clean):
         super(RuleRunner, self).__init__(
             domain_ip, profile, datastream, benchmark_id,
-            rule_id, context, script_name,
         )
 
         self.rule_id = rule_id
@@ -286,6 +389,9 @@ class RuleRunner(GenericRunner):
     def _get_report_file(self):
         return '{0}-{1}-{2}'.format(self.rule_id, self.script_name, self.stage)
 
+    def _get_results_file(self):
+        return '{0}-{1}-results'.format(self.profile, self.script_name)
+
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
         self.command_options.extend(
@@ -294,6 +400,7 @@ class RuleRunner(GenericRunner):
 
         expected_return_code = _CONTEXT_RETURN_CODES[self.context]
         returncode, output = run_cmd(command, self.verbose_path)
+        success = True
         if returncode != expected_return_code:
             LogHelper.preload_log(logging.ERROR,
                                   ('Scan has exited with return code {0}, '
@@ -332,67 +439,65 @@ class RuleRunner(GenericRunner):
 
         return success
 
+    def _get_formatting_dict_for_remediation(self):
+        formatting = super(RuleRunner, self)._get_formatting_dict_for_remediation()
+        formatting['rule_id'] = self.rule_id
+
+        return formatting
+
 
 class AnsibleProfileRunner(ProfileRunner):
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
-        return self.make_oscap_call()
+        return super(AnsibleProfileRunner, self).initial()
 
     def remediation(self):
-        formatting = {
-            'domain_ip': self.domain_ip,
-            'profile': self.profile,
-            'datastream': self.datastream,
-            'benchmark_id': self.benchmark_id
-        }
-        formatting['rem'] = '--remediate'
-        formatting['arf'] = self.arf_path
-        formatting['arf_file'] = self.arf_file
-        formatting['ansible_template'] = _ANSIBLE_TEMPLATE
-        formatting['playbook_file'] = '{0}.yml'.format(self.profile)
+        formatting = self._get_formatting_dict_for_remediation()
+        formatting['output_file'] = '{0}.yml'.format(self.profile)
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
-                                              formatting['playbook_file'])
+                                              formatting['output_file'])
 
         return run_stage_remediation_ansible('profile', formatting, self.verbose_path)
 
-    def final(self):
-        return self.make_oscap_call()
+
+class BashProfileRunner(ProfileRunner):
+    def initial(self):
+        self.command_options += ['--results-arf', self.arf_path]
+        return super(BashProfileRunner, self).initial()
+
+    def remediation(self):
+        formatting = self._get_formatting_dict_for_remediation()
+        formatting['output_file'] = '{0}.sh'.format(self.profile)
+
+        return run_stage_remediation_bash('profile', formatting, self.verbose_path)
+
+
+class BashRuleRunner(RuleRunner):
+    def initial(self):
+        self.command_options += ['--results-arf', self.arf_path]
+        return super(BashProfileRunner, self).initial()
+
+    def remediation(self):
+        formatting = self._get_formatting_dict_for_remediation()
+        formatting['output_file'] = '{0}.sh'.format(self.rule_id)
+
+        success = run_stage_remediation_bash('rule', formatting, self.verbose_path)
+        return success
 
 
 class AnsibleRuleRunner(RuleRunner):
-    def run_stage(self, stage):
-        success = super(AnsibleRuleRunner, self).run_stage(stage)
-        if success:
-            LogHelper.log_preloaded('pass')
-        else:
-            LogHelper.log_preloaded('fail')
-        return success
-
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
-        return self.make_oscap_call()
+        return super(BashProfileRunner, self).initial()
 
     def remediation(self):
-        formatting = {
-            'domain_ip': self.domain_ip,
-            'profile': self.profile,
-            'datastream': self.datastream,
-            'benchmark_id': self.benchmark_id,
-            'rule_id': self.rule_id,
-        }
-        formatting['rem'] = '--remediate'
-        formatting['arf'] = self.arf_path
-        formatting['arf_file'] = self.arf_file
-        formatting['ansible_template'] = _ANSIBLE_TEMPLATE
-        formatting['playbook_file'] = '{0}.yml'.format(self.rule_id)
+        formatting = self._get_formatting_dict_for_remediation()
+        formatting['output_file'] = '{0}.yml'.format(self.rule_id)
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
-                                              formatting['playbook_file'])
+                                              formatting['output_file'])
 
         success = run_stage_remediation_ansible('rule', formatting, self.verbose_path)
         return success
-
-    def final(self):
-        return self.make_oscap_call()
 
 
 def run_profile(domain_ip,
@@ -400,19 +505,14 @@ def run_profile(domain_ip,
                 stage,
                 datastream,
                 benchmark_id,
-                runner='bash'):
+                runner):
     """Run `oscap-ssh` command with provided parameters to check given profile.
     Log output into LogHelper.LOG_DIR.
 
     Return True if command ends with exit codes 0 or 2 for bash remediations or
     with 0 for Ansible remediations, otherwise return False.
     """
-
-    if runner == 'bash':
-        runner_cls = ProfileRunner
-    elif runner == 'ansible':
-        runner_cls = AnsibleProfileRunner
-
+    runner_cls = REMEDIATION_PROFILE_RUNNERS[runner]
     runner = runner_cls(
         domain_ip, profile, datastream, benchmark_id)
     success = runner.run_stage(stage)
@@ -427,7 +527,7 @@ def run_rule(domain_ip,
              rule_id,
              context,
              script_name,
-             runner='bash',
+             runner,
              dont_clean=False):
     """Run `oscap-ssh` command with provided parameters to check given rule,
     utilizing --rule option. Log output to LogHelper.LOG_DIR directory.
@@ -435,14 +535,23 @@ def run_rule(domain_ip,
     Return True if result is as expected by context parameter. Check both
     exit code and output message.
     """
-
-    if runner == 'bash':
-        runner_cls = RuleRunner
-    elif runner == 'ansible':
-        runner_cls = AnsibleRuleRunner
-
+    runner_cls = REMEDIATION_RULE_RUNNERS[runner]
     runner = runner_cls(
         domain_ip, profile, datastream, benchmark_id,
         rule_id, context, script_name, dont_clean)
     success = runner.run_stage(stage)
     return success
+
+
+REMEDIATION_PROFILE_RUNNERS = {
+    'oscap': ProfileRunner,
+    'bash': BashProfileRunner,
+    'ansible': AnsibleProfileRunner,
+}
+
+
+REMEDIATION_RULE_RUNNERS = {
+    'oscap': RuleRunner,
+    'bash': BashRuleRunner,
+    'ansible': AnsibleRuleRunner,
+}
