@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# remediation = none
 # profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
 
 # ensure firewalld installed
