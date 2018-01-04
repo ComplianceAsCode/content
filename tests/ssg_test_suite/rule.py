@@ -23,11 +23,14 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 def _parse_parameters(script):
     """Parse parameters from script header"""
-    params = {}
+    params = {'profiles': [],
+              'templates': [],
+              'remediation': ['all']}
     with open(script, 'r') as script_file:
-        for parameter in ['profiles', 'templates']:
+        script_content = script_file.read()
+        for parameter in params:
             found = re.search('^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
-                              script_file.read(),
+                              script_content,
                               re.MULTILINE)
             if found is None:
                 continue
@@ -175,6 +178,8 @@ def perform_rule_check(options):
 
             if not _apply_script(rule_dir, domain_ip, script):
                 logging.error("Environment failed to prepare, skipping test")
+                snapshot_stack.revert()
+                continue
             script_params = _parse_parameters(script_path)
             has_worked = False
             profiles = get_viable_profiles(script_params['profiles'],
@@ -207,7 +212,14 @@ def perform_rule_check(options):
                                   remediation=False,
                                   ansible=options.ansible,
                                   dont_clean=options.dont_clean):
-                    if script_context in ['fail', 'error']:
+                    # check if remediation is present
+                    is_supported = ['all']
+                    if options.ansible:
+                        is_supported.append('ansible')
+                    else:
+                        is_supported.append('bash')
+                    if script_context in ['fail', 'error'] and \
+                       set(is_supported) & set(script_params['remediation']):
                         oscap.run_rule(domain_ip=domain_ip,
                                        profile=profile,
                                        stage="remediation",
