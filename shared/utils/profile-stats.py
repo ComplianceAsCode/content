@@ -355,7 +355,7 @@ class XCCDFBenchmark(object):
                     self.console_print(profile_stats['missing_anaconda_fixes'],
                                        console_width)
 
-            if options.missing_stig and profile_stats['missing_stig_ids']:
+            if options.missing_stig_ids and profile_stats['missing_stig_ids']:
                 print("*** rules of '%s' profile missing "
                       "STIG IDs: %d of %d have them [%d%% missing]"
                       % (profile, rules_count - missing_stig_ids_count,
@@ -425,8 +425,8 @@ def main():
     parser.add_argument("--implemented-ovals", default=False,
                         action="store_true", dest="implemented_ovals",
                         help="Show IDs of implemented OVAL checks.")
-    parser.add_argument("--missing-stig", default=False,
-                        action="store_true", dest="missing_stig",
+    parser.add_argument("--missing-stig-ids", default=False,
+                        action="store_true", dest="missing_stig_ids",
                         help="Show rules in STIG profiles that don't have STIG IDs.")
     parser.add_argument("--missing-ovals", default=False,
                         action="store_true", dest="missing_ovals",
@@ -479,6 +479,7 @@ def main():
         args.missing_ovals = True
         args.missing_fixes = True
         args.missing_cces = True
+        args.missing_stig_ids = True
 
     benchmark = XCCDFBenchmark(args.benchmark)
     ret = []
