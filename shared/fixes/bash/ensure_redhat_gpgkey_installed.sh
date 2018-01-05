@@ -15,7 +15,7 @@ then
   IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint "${REDHAT_RELEASE_KEY}" | grep 'Key fingerprint ='))
   GPG_RESULT=$?
   # Reset IFS back to default
-  unset $IFS
+  unset IFS
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
