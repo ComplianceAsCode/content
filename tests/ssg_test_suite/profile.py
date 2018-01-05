@@ -61,7 +61,7 @@ def perform_profile_check(options):
                                          'final',
                                          options.datastream,
                                          options.benchmark_id,
-                                         runner='bash')
+                                         runner=runner)
         snapshot_stack.revert(delete=False)
     if not has_worked:
         logging.error("Nothing has been tested!")

@@ -8,6 +8,7 @@ import subprocess
 import collections
 import xml.etree.ElementTree
 import sys
+import json
 
 import ssg_test_suite.virt
 from ssg_test_suite.log import LogHelper
@@ -25,11 +26,25 @@ _BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
 _XCCDF_NS = 'http://checklists.nist.gov/xccdf/1.2'
 
 
+def analysis_to_serializable(analysis):
+    result = dict(analysis)
+    for key, value in analysis.items():
+        if type(value) == set:
+            result[key] = tuple(value)
+    return result
+
+
+def save_analysis_to_json(analysis, output_fname):
+    analysis2 = analysis_to_serializable(analysis)
+    with open(output_fname, "w") as f:
+        json.dump(analysis2, f)
+
+
 def triage_xml_results(fname):
     tree = xml.etree.ElementTree.parse(fname)
     all_xml_results = tree.findall(".//{%s}rule-result" % _XCCDF_NS)
 
-    triaged = collections.DefaultDict(set)
+    triaged = collections.defaultdict(set)
     for result in list(all_xml_results):
         idref = result.get("idref")
         status = result.find("{%s}result" % _XCCDF_NS).text
@@ -317,7 +332,10 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def initial(self):
-        return self.make_oscap_call()
+        self.command_options += ['--results', self.results_path]
+        result = self.make_oscap_call()
+        save_analysis_to_json(self.analyze("initial"), "analysis-initial.json")
+        return result
 
     def remediation(self):
         self.command_options += ['--remediate']
@@ -325,10 +343,15 @@ class GenericRunner(object):
 
     def final(self):
         self.command_options += ['--results', self.results_path]
-        return self.make_oscap_call()
+        result = self.make_oscap_call()
+        save_analysis_to_json(
+            self.analyze("final"), "analysis-final-{}.json".format(self.__class__.__name__))
+        return result
 
-    def analyze(self):
+    def analyze(self, stage):
         triaged_results = triage_xml_results(self.results_path)
+        triaged_results["stage"] = stage
+        triaged_results["runner"] = self.__class__.__name__
         return triaged_results
 
     def _get_formatting_dict_for_remediation(self):
@@ -475,7 +498,7 @@ class BashProfileRunner(ProfileRunner):
 class BashRuleRunner(RuleRunner):
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
-        return super(BashProfileRunner, self).initial()
+        return super(BashRuleRunner, self).initial()
 
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
@@ -488,7 +511,7 @@ class BashRuleRunner(RuleRunner):
 class AnsibleRuleRunner(RuleRunner):
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
-        return super(BashProfileRunner, self).initial()
+        return super(AnsibleRuleRunner, self).initial()
 
     def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
