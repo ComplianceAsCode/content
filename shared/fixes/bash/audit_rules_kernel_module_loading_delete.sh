@@ -9,7 +9,7 @@
 #       it's not required on a 64-bit system to check also for the presence
 #       of 32-bit's equivalent of the corresponding rule. Therefore for
 #       each system it's enought to check presence of system's native rule form.
-[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b64")
+[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
