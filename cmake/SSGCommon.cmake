@@ -28,7 +28,7 @@
 # this wrapper you wouldn't have been able to do parallel builds of multiple
 # targets at once. E.g.:
 #
-# $ make -j 4 rhel7-guides rhel7-validate
+# $ make -j 4 rhel7-guides rhel7-stats
 #
 # Without the wrapper targets the command above would start generating the
 # XCCDF, OVAL and OCIL files 2 times in parallel which would result in
@@ -469,18 +469,6 @@ macro(ssg_build_ocil_final PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
     )
-    #add_custom_command(
-    #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ocil validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-    #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #    DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-    #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-ocil.xml"
-    #)
-    #add_custom_target(
-    #    validate-ssg-${PRODUCT}-ocil.xml
-    #    DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #)
 endmacro()
 
 macro(ssg_build_pci_dss_xccdf PRODUCT)
@@ -497,18 +485,6 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
         generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
     )
-    #add_custom_command(
-    #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #)
-    #add_custom_target(
-    #    validate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #)
 endmacro()
 
 macro(ssg_build_sds PRODUCT)
@@ -562,17 +538,10 @@ macro(ssg_build_sds PRODUCT)
         generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
+
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
-        DEPENDS generate-ssg-${PRODUCT}-ds.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-ds.xml"
-    )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-ds.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
     )
 endmacro()
 
@@ -626,7 +595,6 @@ endmacro()
 
 macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
-    add_custom_target(${PRODUCT}-validate)
 
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
@@ -657,13 +625,6 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
     )
-
-    add_dependencies(
-        ${PRODUCT}-validate
-        #validate-ssg-${PRODUCT}-ocil.xml
-        validate-ssg-${PRODUCT}-ds.xml
-    )
-    add_dependencies(validate ${PRODUCT}-validate)
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
@@ -755,7 +716,6 @@ endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_custom_target(${DERIVATIVE}-content)
-    add_custom_target(${DERIVATIVE}-validate)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
@@ -769,17 +729,9 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
+    add_test(
+        NAME "validate-ssg-${DERIVATIVE}-xccdf.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
-        DEPENDS generate-ssg-${DERIVATIVE}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
-        COMMENT "[${DERIVATIVE}-validate] validating ssg-${DERIVATIVE}-xccdf.xml"
-    )
-    add_custom_target(
-        validate-ssg-${DERIVATIVE}-xccdf.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
     )
 
     add_custom_command(
@@ -794,17 +746,9 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
+    add_test(
+        NAME "validate-ssg-${DERIVATIVE}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
-        DEPENDS generate-ssg-${DERIVATIVE}-ds.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
-        COMMENT "[${DERIVATIVE}-validate] validating ssg-${DERIVATIVE}-ds.xml"
-    )
-    add_custom_target(
-        validate-ssg-${DERIVATIVE}-ds.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
     )
 
     add_custom_target(${DERIVATIVE} ALL)
@@ -815,13 +759,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-xccdf.xml
         generate-ssg-${DERIVATIVE}-ds.xml
     )
-
-    add_dependencies(
-        ${DERIVATIVE}-validate
-        validate-ssg-${DERIVATIVE}-xccdf.xml
-        validate-ssg-${DERIVATIVE}-ds.xml
-    )
-    add_dependencies(validate ${DERIVATIVE}-validate)
 
     add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
 
