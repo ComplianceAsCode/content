@@ -22,6 +22,7 @@ set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 option(SSG_OVAL_511_ENABLED "If enabled, OVAL 5.11 and OVAL 5.10 checks will be used in the final content. Otherwise only 5.10 checks will be used." TRUE)
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests. Shellcheck tests don't pass right now, this option is discouraged until that's fixed." FALSE)
+option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
 option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" TRUE)
@@ -106,6 +107,7 @@ if (NOT SED_EXECUTABLE)
 endif()
 
 find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
+find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
 
 configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
 
@@ -122,6 +124,7 @@ message(STATUS "xmllint: ${XMLLINT_EXECUTABLE}")
 message(STATUS "xmlwf: ${XMLWF_EXECUTABLE}")
 message(STATUS "sed: ${SED_EXECUTABLE}")
 message(STATUS "shellcheck (optional): ${SHELLCHECK_EXECUTABLE}")
+message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")

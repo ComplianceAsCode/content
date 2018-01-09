@@ -558,6 +558,14 @@ macro(ssg_build_html_guides PRODUCT)
         generate-ssg-${PRODUCT}-guide-index.html
         DEPENDS "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
     )
+
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-ssg-${PRODUCT}-guides"
+            # despite checking just the index this actually tests all the guides because the index links to them
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
