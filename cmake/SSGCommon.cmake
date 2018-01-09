@@ -848,6 +848,13 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-by-ref-${REF})
 
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-${REF}refs.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
+        )
+    endif()
+
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
@@ -868,6 +875,13 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-nistrefs-${PROFILE})
 
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-nistrefs-${PROFILE}.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
+        )
+    endif()
+
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
@@ -887,6 +901,13 @@ macro(ssg_build_html_cce_table PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-cces)
+
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-cces.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
+        )
+    endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -923,6 +944,18 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
         DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-srg)
+
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-srgmap.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
+        )
+
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-srgmap-flat.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
+        )
+    endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -971,6 +1004,18 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
+
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-stig.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
+        )
+
+        add_test(
+            NAME "linkchecker-tables-table-${PRODUCT}-stig-manual.html"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
+        )
+    endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
