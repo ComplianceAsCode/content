@@ -417,21 +417,13 @@ macro(ssg_build_xccdf_final PRODUCT)
         generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml  # because of verify-references
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DEPENDS "${SSG_SHARED_UTILS}/verify-references.py"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf.xml"
     )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
+    add_test(
+        NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
 
     add_custom_command(
@@ -445,18 +437,6 @@ macro(ssg_build_xccdf_final PRODUCT)
         generate-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
     )
-    #add_custom_command(
-    #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf-1.2 validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf-1.2.xml"
-    #)
-    #add_custom_target(
-    #    validate-ssg-${PRODUCT}-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #)
 endmacro()
 
 macro(ssg_build_oval_final PRODUCT)
@@ -688,8 +668,6 @@ macro(ssg_build_product PRODUCT)
 
     add_dependencies(
         ${PRODUCT}-validate
-        validate-ssg-${PRODUCT}-xccdf.xml
-        #validate-ssg-${PRODUCT}-xccdf-1.2.xml
         validate-ssg-${PRODUCT}-oval.xml
         #validate-ssg-${PRODUCT}-ocil.xml
         validate-ssg-${PRODUCT}-ds.xml
