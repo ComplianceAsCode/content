@@ -153,6 +153,8 @@ message(STATUS "Webmin: ${SSG_PRODUCT_WEBMIN}")
 
 message(STATUS " ")
 
+enable_testing()
+
 include(SSGCommon)
 
 # Targets 'validate', 'stats', 'profile-stats' and 'zipfile' need to be added
