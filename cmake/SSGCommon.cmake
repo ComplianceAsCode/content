@@ -451,17 +451,9 @@ macro(ssg_build_oval_final PRODUCT)
         generate-ssg-${PRODUCT}-oval.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-oval.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-oval.xml"
-    )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-oval.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
     )
 endmacro()
 
@@ -668,7 +660,6 @@ macro(ssg_build_product PRODUCT)
 
     add_dependencies(
         ${PRODUCT}-validate
-        validate-ssg-${PRODUCT}-oval.xml
         #validate-ssg-${PRODUCT}-ocil.xml
         validate-ssg-${PRODUCT}-ds.xml
     )
