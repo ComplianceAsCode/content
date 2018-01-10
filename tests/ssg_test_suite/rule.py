@@ -200,37 +200,13 @@ def perform_rule_check(options):
                                        "found issue:").format(script,
                                                               profile),
                                       log_target='fail')
-                runner = options.remediate_using
                 has_worked = True
-                if oscap.run_rule(domain_ip=domain_ip,
-                                  profile=profile,
-                                  stage='initial',
-                                  datastream=options.datastream,
-                                  benchmark_id=options.benchmark_id,
-                                  rule_id=rule,
-                                  context=script_context,
-                                  script_name=script,
-                                  runner=runner,
-                                  dont_clean=options.dont_clean):
-                    # check if remediation is present
-                    is_supported = set(['all'])
-                    is_supported.add(
-                        oscap.REMEDIATION_RUNNER_TO_REMEDIATION_MEANS[options.remediate_using])
-                    if (script_context in ['fail', 'error']
-                            and set(script_params['remediation']).intersection(is_supported)):
-                        success = oscap.run_rule(
-                            domain_ip=domain_ip, profile=profile,
-                            stage='remediation', datastream=options.datastream,
-                            benchmark_id=options.benchmark_id, rule_id=rule,
-                            context='fixed', script_name=script,
-                            runner=runner, dont_clean=options.dont_clean)
-                        if success:
-                            success = oscap.run_rule(
-                                domain_ip=domain_ip, profile=profile,
-                                stage='final', datastream=options.datastream,
-                                benchmark_id=options.benchmark_id, rule_id=rule,
-                                context='pass', script_name=script,
-                                runner=runner, dont_clean=options.dont_clean)
+                run_rule_checks(
+                    domain_ip, profile, options.datastream,
+                    options.benchmark_id, rule, script_context,
+                    script, script_params, options.remediate_using,
+                    options.dont_clean,
+                )
                 snapshot_stack.revert(delete=False)
             if not has_worked:
                 logging.error("Nothing has been tested!")
@@ -239,3 +215,51 @@ def perform_rule_check(options):
                 snapshot_stack.revert()
     if not scanned_something:
         logging.error("Rule {0} has not been found".format(options.target))
+
+
+def run_rule_checks(
+        domain_ip, profile, datastream, benchmark_id, rule,
+        script_context, script_name, script_params, runner, dont_clean):
+    def oscap_run_rule(stage, context):
+        return oscap.run_rule(
+            domain_ip=domain_ip,
+            profile=profile,
+            stage=stage,
+            datastream=datastream,
+            benchmark_id=benchmark_id,
+            rule_id=rule,
+            context=context,
+            script_name=script_name,
+            runner=runner,
+            dont_clean=dont_clean)
+
+    success = oscap_run_rule('initial', script_context)
+    if not success:
+        msg = ("The initial scan failed for rule '{}'."
+               .format(rule))
+        logging.error(msg)
+        return False
+
+    is_supported = set(['all'])
+    is_supported.add(
+        oscap.REMEDIATION_RUNNER_TO_REMEDIATION_MEANS[runner])
+    supported_and_available_remediations = set(
+        script_params['remediation']).intersection(is_supported)
+
+    if (script_context not in ['fail', 'error']
+            or len(supported_and_available_remediations) == 0):
+        return success
+
+    success = oscap_run_rule('remediation', 'fixed')
+    if not success:
+        msg = ("The remediation failed for rule '{}'."
+               .format(rule))
+        logging.error(msg)
+        return success
+
+    success = oscap_run_rule('final', 'pass')
+    if not success:
+        msg = ("The check after remediation failed for rule '{}'."
+               .format(rule))
+        logging.error(msg)
+    return success
