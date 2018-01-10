@@ -21,7 +21,7 @@ ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_TYPE} ${DISA_SRG_VERSION})
 
-ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-server-upstream" ${DISA_STIG_VERSION})
+ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-disa" ${DISA_STIG_VERSION})
 
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "centos6")
