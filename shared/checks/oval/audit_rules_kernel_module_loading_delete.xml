@@ -8,44 +8,44 @@
       </affected>
       <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
     </metadata>
-      <criteria operator="OR">
 
-        <!-- Test the augenrules case -->
-        <criteria operator="AND">
-          <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
-          <criteria operator="OR">
-            <!-- System isn't 64-bit => we check presence of 32-bit version of delete_module audit DAC rule -->
-            <criteria operator="AND">
-              <extend_definition comment="32-bit system" definition_ref="system_info_architecture_x86" />
-              <criterion comment="audit augenrules 32-bit delete_module" test_ref="test_32bit_ardm_delete_module_augenrules" />
-            </criteria>
-            <!-- System is 64-bit => we check presence of 64-bit version of delete_module audit DAC rule -->
-            <criteria operator="AND">
-              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
-              <criterion comment="audit augenrules 64-bit delete_module" test_ref="test_64bit_ardm_delete_module_augenrules" />
-            </criteria>
+    <criteria operator="OR">
+
+      <!-- Test the augenrules case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criteria operator="OR">
+          <!-- System isn't 64-bit => we check presence of 32-bit version of delete_module audit DAC rule -->
+          <criteria operator="AND">
+            <extend_definition comment="32-bit system" definition_ref="system_info_architecture_x86" />
+            <criterion comment="audit augenrules 32-bit delete_module" test_ref="test_32bit_ardm_delete_module_augenrules" />
+          </criteria>
+          <!-- System is 64-bit => we check presence of 64-bit version of delete_module audit DAC rule -->
+          <criteria operator="AND">
+            <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
+            <criterion comment="audit augenrules 64-bit delete_module" test_ref="test_64bit_ardm_delete_module_augenrules" />
           </criteria>
         </criteria>
-
-        <!-- OR test the auditctl case -->
-        <criteria operator="AND">
-          <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-          <criteria operator="OR">
-            <!-- System isn't 64-bit => we check presence of 32-bit version of delete_module audit DAC rule -->
-            <criteria operator="AND">
-              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
-              <criterion comment="audit auditctl 32-bit delete_module" test_ref="test_32bit_ardm_delete_module_auditctl" />
-            </criteria>
-            <!-- System is 64-bit => we check presence of 64-bit version of delete_module audit DAC rule -->
-            <criteria operator="AND">
-              <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
-              <criterion comment="audit auditctl 64-bit delete_module" test_ref="test_64bit_ardm_delete_module_auditctl" />
-            </criteria>
-          </criteria>
-        </criteria>
-			
       </criteria>
 
+      <!-- OR test the auditctl case -->
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criteria operator="OR">
+          <!-- System isn't 64-bit => we check presence of 32-bit version of delete_module audit DAC rule -->
+          <criteria operator="AND">
+            <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
+            <criterion comment="audit auditctl 32-bit delete_module" test_ref="test_32bit_ardm_delete_module_auditctl" />
+          </criteria>
+          <!-- System is 64-bit => we check presence of 64-bit version of delete_module audit DAC rule -->
+          <criteria operator="AND">
+            <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
+            <criterion comment="audit auditctl 64-bit delete_module" test_ref="test_64bit_ardm_delete_module_auditctl" />
+          </criteria>
+        </criteria>
+      </criteria>
+			
+    </criteria>
   </definition>
 
   <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit delete_module" id="test_32bit_ardm_delete_module_augenrules" version="1">
