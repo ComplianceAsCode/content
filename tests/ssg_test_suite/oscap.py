@@ -259,6 +259,9 @@ class GenericRunner(object):
         self.results_path = ''
         self.stage = 'undefined'
 
+        self.clean_files = True
+        self._filenames_to_clean_afterwards = set()
+
         self.command_base = []
         self.command_options = []
         self.command_operands = []
@@ -272,24 +275,33 @@ class GenericRunner(object):
 
     def _make_verbose_path(self):
         verbose_file = self._get_verbose_file()
-        self.verbose_path = LogHelper.find_name(verbose_file, '.verbose.log')
+        verbose_path = os.path.join(LogHelper.LOG_DIR, verbose_file)
+        self.verbose_path = LogHelper.find_name(verbose_path, '.verbose.log')
 
     def _get_verbose_file(self):
         raise NotImplementedError()
 
     def _make_report_path(self):
         report_file = self._get_report_file()
-        self.report_path = LogHelper.find_name(report_file, '.html')
+        report_path = os.path.join(LogHelper.LOG_DIR, report_file)
+        self.report_path = LogHelper.find_name(report_path, '.html')
 
     def _get_report_file(self):
         raise NotImplementedError()
 
     def _make_results_path(self):
         results_file = self._get_results_file()
-        self.results_path = LogHelper.find_name(results_file, '.xml')
+        results_path = os.path.join(LogHelper.LOG_DIR, results_file)
+        self.results_path = LogHelper.find_name(results_path, '.xml')
 
     def _get_results_file(self):
         raise NotImplementedError()
+
+    def _generate_report_file(self):
+        self.command_options.extend([
+            '--report', self.report_path,
+        ])
+        self._filenames_to_clean_afterwards.add(self.report_path)
 
     def prepare_oscap_ssh_arguments(self):
         full_hostname = 'root@{}'.format(self.domain_ip)
@@ -298,7 +310,6 @@ class GenericRunner(object):
         self.command_options.extend([
             '--benchmark-id', self.benchmark_id,
             '--profile', self.profile,
-            '--report', self.report_path,
             '--verbose', 'DEVEL',
             '--progress', '--oval-results',
         ])
@@ -326,6 +337,10 @@ class GenericRunner(object):
         else:
             raise RuntimeError('Unknown stage: {}.'.format(stage))
 
+        if self.clean_files:
+            for fname in self._filenames_to_clean_afterwards:
+                os.remove(fname)
+
         if result:
             LogHelper.log_preloaded('pass')
         else:
@@ -342,7 +357,6 @@ class GenericRunner(object):
     def initial(self):
         self.command_options += ['--results', self.results_path]
         result = self.make_oscap_call()
-        save_analysis_to_json(self.analyze("initial"), "analysis-initial.json")
         return result
 
     def remediation(self):
@@ -351,9 +365,6 @@ class GenericRunner(object):
     def final(self):
         self.command_options += ['--results', self.results_path]
         result = self.make_oscap_call()
-        save_analysis_to_json(
-            self.analyze("final"),
-            "analysis-final-{}.json".format(self.__class__.__name__))
         return result
 
     def analyze(self, stage):
@@ -389,6 +400,7 @@ class ProfileRunner(GenericRunner):
 
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
+        self._generate_report_file()
         returncode = run_cmd(self.get_command, self.verbose_path)[0]
         if returncode not in [0, 2]:
             logging.error(('Profile run should end with return code 0 or 2 '
@@ -408,7 +420,9 @@ class RuleRunner(GenericRunner):
         self.rule_id = rule_id
         self.context = context
         self.script_name = script_name
-        self.dont_clean = dont_clean
+        self.clean_files = not dont_clean
+
+        self._oscap_output = ''
 
     def _get_arf_file(self):
         return '{0}-initial-arf.xml'.format(self.rule_id)
@@ -424,13 +438,14 @@ class RuleRunner(GenericRunner):
 
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
+        self._generate_report_file()
         self.command_options.extend(
             ['--rule', self.rule_id])
-        command = self.command_base + self.command_options + self.command_operands
+
+        returncode, self._oscap_output = run_cmd(self.get_command, self.verbose_path)
 
         expected_return_code = _CONTEXT_RETURN_CODES[self.context]
-        returncode, output = run_cmd(self.get_command, self.verbose_path)
-        success = True
+
         if returncode != expected_return_code:
             LogHelper.preload_log(logging.ERROR,
                                   ('Scan has exited with return code {0}, '
@@ -439,11 +454,20 @@ class RuleRunner(GenericRunner):
                                                        expected_return_code,
                                                        self.stage),
                                   'fail')
-            success = False
+            return False
+        return True
 
+    def final(self):
+        success = super(RuleRunner, self).final()
+        success = success and self._analyze_output_of_oscap_call()
+
+        return success
+
+    def _analyze_output_of_oscap_call(self):
+        local_success = True
         # check expected result
         actual_results = re.findall('{0}:(.*)$'.format(self.rule_id),
-                                    output,
+                                    self._oscap_output,
                                     re.MULTILINE)
         if actual_results:
             if self.context not in actual_results:
@@ -453,21 +477,15 @@ class RuleRunner(GenericRunner):
                                        ).format(self.context,
                                                 ', '.join(actual_results)),
                                       'fail')
-                success = False
+                local_success = False
         else:
             LogHelper.preload_log(logging.ERROR,
                                   ('Rule {0} has not been '
                                    'evaluated! Wrong profile '
                                    'selected?').format(self.rule_id),
                                   'fail')
-            success = False
-
-        if success and not self.dont_clean:
-            # to save space, we are going to remove the report
-            # as we have not encountered any anomalies
-            os.remove(self.report_path)
-
-        return success
+            local_success = False
+        return local_success
 
     def _get_formatting_dict_for_remediation(self):
         formatting = super(RuleRunner, self)._get_formatting_dict_for_remediation()
@@ -596,4 +614,11 @@ REMEDIATION_RULE_RUNNERS = {
     'oscap': OscapRuleRunner,
     'bash': BashRuleRunner,
     'ansible': AnsibleRuleRunner,
+}
+
+
+REMEDIATION_RUNNER_TO_REMEDIATION_MEANS = {
+    'oscap': 'bash',
+    'bash': 'bash',
+    'ansible': 'ansible',
 }

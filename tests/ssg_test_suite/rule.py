@@ -213,23 +213,24 @@ def perform_rule_check(options):
                                   runner=runner,
                                   dont_clean=options.dont_clean):
                     # check if remediation is present
-                    is_supported = ['all']
-                    if options.ansible:
-                        is_supported.append('ansible')
-                    else:
-                        is_supported.append('bash')
-                    if script_context in ['fail', 'error'] and \
-                       set(is_supported) & set(script_params['remediation']):
-                        oscap.run_rule(domain_ip=domain_ip,
-                                       profile=profile,
-                                       stage='remediation',
-                                       datastream=options.datastream,
-                                       benchmark_id=options.benchmark_id,
-                                       rule_id=rule,
-                                       context='fixed',
-                                       script_name=script,
-                                       runner=runner,
-                                       dont_clean=options.dont_clean)
+                    is_supported = set(['all'])
+                    is_supported.add(
+                        oscap.REMEDIATION_RUNNER_TO_REMEDIATION_MEANS[options.remediate_using])
+                    if (script_context in ['fail', 'error']
+                            and set(script_params['remediation']).intersection(is_supported)):
+                        success = oscap.run_rule(
+                            domain_ip=domain_ip, profile=profile,
+                            stage='remediation', datastream=options.datastream,
+                            benchmark_id=options.benchmark_id, rule_id=rule,
+                            context='fixed', script_name=script,
+                            runner=runner, dont_clean=options.dont_clean)
+                        if success:
+                            success = oscap.run_rule(
+                                domain_ip=domain_ip, profile=profile,
+                                stage='final', datastream=options.datastream,
+                                benchmark_id=options.benchmark_id, rule_id=rule,
+                                context='pass', script_name=script,
+                                runner=runner, dont_clean=options.dont_clean)
                 snapshot_stack.revert(delete=False)
             if not has_worked:
                 logging.error("Nothing has been tested!")
