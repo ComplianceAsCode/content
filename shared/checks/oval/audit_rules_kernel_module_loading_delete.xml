@@ -34,7 +34,7 @@
         <criteria operator="OR">
           <!-- System isn't 64-bit => we check presence of 32-bit version of delete_module audit DAC rule -->
           <criteria operator="AND">
-            <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" />
+            <extend_definition comment="32-bit system" definition_ref="system_info_architecture_x86" />
             <criterion comment="audit auditctl 32-bit delete_module" test_ref="test_32bit_ardm_delete_module_auditctl" />
           </criteria>
           <!-- System is 64-bit => we check presence of 64-bit version of delete_module audit DAC rule -->
