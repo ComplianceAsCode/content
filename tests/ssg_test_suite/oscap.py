@@ -434,7 +434,8 @@ class RuleRunner(GenericRunner):
         return '{0}-{1}-{2}'.format(self.rule_id, self.script_name, self.stage)
 
     def _get_results_file(self):
-        return '{0}-{1}-results'.format(self.profile, self.script_name)
+        return '{0}-{1}-{2}-results-{3}'.format(
+            self.rule_id, self.script_name, self.profile, self.stage)
 
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
