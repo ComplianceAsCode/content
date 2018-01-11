@@ -34,6 +34,10 @@
       <xsl:apply-templates select="document('profiles/stig-http-disa.xml')" />
       <xsl:apply-templates select="document('profiles/stig-ipa-server-upstream.xml')" />
       <xsl:apply-templates select="document('profiles/stig-satellite-upstream.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_nt28_minimal.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_nt28_intermediary.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_nt28_enhanced.xml')" />
+      <xsl:apply-templates select="document('profiles/anssi_nt28_high.xml')" />
 
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
