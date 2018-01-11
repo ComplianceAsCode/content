@@ -1,0 +1,20 @@
+<Profile id="anssi_nt28_minimal">
+<title>ANSSI DAT-NT28 (minimal)</title>
+<description>Draft profile for ANSSI compliance at the minimal level. ANSSI stands for Agence nationale de la sécurité des systèmes d'information. Based on https://www.ssi.gouv.fr/.</description>
+
+<!-- partitioning -->
+<!-- system -->
+<select idref="sudo_remove_nopasswd" selected="true"/>
+<select idref="sudo_remove_no_authenticate" selected="true"/>
+
+
+<!-- services -->
+<select idref="package_rsyslog_installed" selected="true"/>
+<select idref="service_rsyslog_enabled" selected="true"/>
+
+<!-- critical files -->
+<select idref="file_permissions_etc_shadow" selected="true"/>
+<select idref="file_permissions_etc_gshadow" selected="true"/>
+<select idref="file_permissions_etc_passwd" selected="true"/>
+<select idref="file_permissions_etc_group" selected="true"/>
+</Profile>
