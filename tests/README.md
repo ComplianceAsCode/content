@@ -11,7 +11,7 @@ remediation works.
 For the Test Suite to work, you need to have libvirt domains prepared for testing.
 SSG Test Suite currently does not provide automated provisioning of domains.
 You can use kickstart usable for Red Hat Enterprise Linux 7 (and of course CentOS 7) in
-```kickstarts``` directory, which installs machine to be capable of building openscap
+`kickstarts` directory, which installs machine to be capable of building openscap
 and builds and installs the latest upstream code.
 
 If you want to use your own domain, make sure `openscap-1.2.15` and `qemu-guest-agent`
@@ -20,20 +20,21 @@ to install packages. For testing Ansible remediations, it is sufficient to have 
 accessible via ssh on the libvirt domain and have Ansible installed on the host machine.
 
 ### Domain preparation (example CentOS)
-1. Install domain, using kickstarts/rhel_centos_7.cfg
-1. Import ssh key to the machine
-1. Setup repo, so machine can install and uninstall packages
+1. Install domain, using `kickstarts/rhel_centos_7.cfg`
+   Typically, you supply a boot option `inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.
+1. Import ssh key to the machine and make sure that you can use them to log in as the `root` superuser.
+1. Setup repo, so machine can install and uninstall packages.
 
 *NOTE*: Create snapshot after all these steps, to manually revert in case the
 test suite breaks something and fails to revert. Do not use snapshot names
-starting with "ssg\_"
+starting with `ssg\_`
 
 ## Two modes of operation
 SSG Test Suite currently supports two ways of DataStream evaluation. Simpler
-one to use is ```profile```, which scans and remedies target domain based on
+one to use is `profile`, which scans and remedies target domain based on
 particular profile.
 
-Second, more complex, is ```rule```, which runs set of validation scenarios
+Second, more complex, is `rule`, which runs set of validation scenarios
 for particular subset of rules. Each rule has its own scenarios, and each
 scenario is run separately to eliminate need for cleanup.
 
@@ -41,8 +42,14 @@ scenario is run separately to eliminate need for cleanup.
 Example of evaluation of default profile (common):
 
 ```
-./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml
+./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml --benchmark-id bid profile-id
 ```
+
+where the domain (in this case `ssg-test-suite-centos`), is name of the virtual machine,
+datastream is a datastream file in the local filesystem,
+the benchmark id can be identified by examining the datastream XML,
+and
+profile-id is not matched by the suffix, so specify it literally (use `oscap info --profiles` to see available profiles).
 
 For further options, see
 
