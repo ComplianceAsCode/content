@@ -177,8 +177,9 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
                            '/' + formatting['output_file']):
         return False
     ansible_playbook_set_hosts(formatting['playbook'])
-    command = ('ansible-playbook',  '-i', '{0},'.format(formatting['domain_ip']),
-               '-u' 'root', formatting['playbook'])
+    command = (
+        'ansible-playbook',  '-i', '{0},'.format(formatting['domain_ip']),
+        '-u' 'root', formatting['playbook'])
     command_string = ' '.join(command)
     returncode, output = run_cmd(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
@@ -186,11 +187,11 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
         f.write('Stdout of "{}":'.format(command_string))
         f.write(output)
     if returncode != 0:
-        LogHelper.preload_log(logging.ERROR,
-                              ('Ansible playbook remediation run has '
-                               'exited with return code {} instead of '
-                               'expected 0').format(returncode),
-                              'fail')
+        msg = (
+            'Ansible playbook remediation run has '
+            'exited with return code {} instead of expected 0'
+            .format(returncode))
+        LogHelper.preload_log(logging.ERROR, msg, 'fail')
         return False
     return True
 
@@ -217,8 +218,7 @@ def run_stage_remediation_bash(run_type, formatting, verbose_path):
     if returncode != 0:
         msg = (
             'Bash script remediation run has exited with return code {} '
-            'instead of expected 0'.format(returncode)
-        )
+            'instead of expected 0'.format(returncode))
         LogHelper.preload_log(logging.ERROR, msg, 'fail')
         return False
     return True
@@ -448,13 +448,12 @@ class RuleRunner(GenericRunner):
         expected_return_code = _CONTEXT_RETURN_CODES[self.context]
 
         if returncode != expected_return_code:
-            LogHelper.preload_log(logging.ERROR,
-                                  ('Scan has exited with return code {0}, '
-                                   'instead of expected {1} during '
-                                   'stage {2}').format(returncode,
-                                                       expected_return_code,
-                                                       self.stage),
-                                  'fail')
+            msg = (
+                'Scan has exited with return code {0}, '
+                'instead of expected {1} during stage {2}'
+                .format(returncode, expected_return_code, self.stage)
+            )
+            LogHelper.preload_log(logging.ERROR, msg, 'fail')
             return False
         return True
 
@@ -480,19 +479,18 @@ class RuleRunner(GenericRunner):
                                       'fail')
                 local_success = False
         else:
-            LogHelper.preload_log(logging.ERROR,
-                                  ('Rule {0} has not been '
-                                   'evaluated! Wrong profile '
-                                   'selected?').format(self.rule_id),
-                                  'fail')
+            msg = (
+                'Rule {0} has not been evaluated! Wrong profile selected?'
+                .format(self.rule_id))
+            LogHelper.preload_log(logging.ERROR, msg, 'fail')
             local_success = False
         return local_success
 
     def _get_formatting_dict_for_remediation(self):
-        formatting = super(RuleRunner, self)._get_formatting_dict_for_remediation()
-        formatting['rule_id'] = self.rule_id
+        fmt = super(RuleRunner, self)._get_formatting_dict_for_remediation()
+        fmt['rule_id'] = self.rule_id
 
-        return formatting
+        return fmt
 
 
 class OscapProfileRunner(ProfileRunner):

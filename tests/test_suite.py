@@ -54,13 +54,16 @@ common_parser.add_argument("--logdir",
                            metavar="LOGDIR",
                            default=None,
                            help="Directory to which all output is saved")
-common_parser.add_argument("--remediate-using",
-                           dest="remediate_using",
-                           default="oscap",
-                           choices=ssg_test_suite.oscap.REMEDIATION_RULE_RUNNERS.keys(),
-                           help="What type of remediations to use - openscap online one, "
-                           "or remediation done by using remediation roles "
-                           "that are saved to disk beforehand.")
+
+common_parser.add_argument(
+    "--remediate-using",
+    dest="remediate_using",
+    default="oscap",
+    choices=ssg_test_suite.oscap.REMEDIATION_RULE_RUNNERS.keys(),
+    help="What type of remediations to use - openscap online one, "
+    "or remediation done by using remediation roles "
+    "that are saved to disk beforehand.")
+
 subparsers = parser.add_subparsers(dest='subparser_name',
                                    help='Subcommands: profile, rule')
 
