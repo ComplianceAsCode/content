@@ -15,16 +15,15 @@ script_desc = \
     "check implemented, how many have a remediation available, ..."
 
 
-xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
-oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-bash_rem_system = "urn:xccdf:fix:script:sh"
-ansible_rem_system = "urn:xccdf:fix:script:ansible"
-puppet_rem_system = "urn:xccdf:fix:script:puppet"
-anaconda_rem_system = "urn:redhat:anaconda:pre"
-stig_ns = "http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx"
-cce_system = "https://nvd.nist.gov/cce/index.cfm"
-ssg_version_uri = \
-    "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
+xccdf_ns = ssgcommon.XCCDF11_NS
+oval_ns = ssgcommon.oval_namespace
+bash_rem_system = ssgcommon.bash_system
+ansible_rem_system = ssgcommon.ansible_system
+puppet_rem_system = ssgcommon.puppet_system
+anaconda_rem_system = ssgcommon.anaconda_system
+cce_system = ssgcommon.cce_system
+ssg_version_uri = ssgcommon.ssg_version_uri
+stig_ns = ssgcommon.stig_ns
 console_width = 80
 
 

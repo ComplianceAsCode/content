@@ -27,33 +27,10 @@ sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 from map_product_module import map_product, parse_product_name, multi_product_list
+import ssgcommon
 
-oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-footer = "</oval_definitions>"
-
-
-def _header(schema_version, ssg_version):
-    timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-    return """<?xml version="1.0" encoding="UTF-8"?>
-<oval_definitions
-    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
-    xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-    xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-    xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">
-    <generator>
-        <oval:product_name>combine-ovals.py from SCAP Security Guide</oval:product_name>
-        <oval:product_version>ssg: %s, python: %s</oval:product_version>
-        <oval:schema_version>%s</oval:schema_version>
-        <oval:timestamp>%s</oval:timestamp>
-    </generator>""" % (ssg_version, platform.python_version(),
-                       schema_version, timestamp)
+oval_ns = ssgcommon.oval_namespace
+footer = ssgcommon.oval_footer
 
 
 def parse_conf_file(conf_file, product):
@@ -272,7 +249,7 @@ def check_is_loaded(loaded_dict, filename, version):
 
 
 def check_oval_version_from_oval(xml_content, oval_version):
-    oval_file_tree = ElementTree.fromstring(_header("", "") + xml_content + footer)
+    oval_file_tree = ElementTree.fromstring(ssgcommon.oval_header + xml_content + footer)
     for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
         file_oval_version = defgroup.get("oval_version")
   
@@ -351,7 +328,7 @@ def main():
     if os.path.isfile(args.oval_config):
         multi_platform = \
             parse_conf_file(args.oval_config, args.product)
-        header = _header(args.oval_version, args.ssg_version)
+        header = ssgcommon.oval_generated_header("combine-ovals.py", args.oval_version, args.ssg_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))

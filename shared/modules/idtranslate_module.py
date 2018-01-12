@@ -3,9 +3,10 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
+import ssgcommon
 
-oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
+oval_ns = ssgcommon.oval_namespace
+ocil_ns = ssgcommon.ocil_namespace
 
 ovaltag_to_abbrev = {
     'definition': 'def',

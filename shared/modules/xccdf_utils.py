@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 """
 A couple generic XCCDF utilities used by build-all-guides.py and
 build-all-remediation-roles.py
@@ -8,9 +6,10 @@ Author: Martin Preisler <mpreisle@redhat.com>
 """
 
 import re
+import ssgcommon
 
-XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
-XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
+XCCDF11_NS = ssgcommon.XCCDF11_NS
+XCCDF12_NS = ssgcommon.XCCDF12_NS
 
 # if a profile ID ends with a string listed here we skip it
 PROFILE_ID_BLACKLIST = ["test", "index", "default"]
