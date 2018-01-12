@@ -65,6 +65,7 @@ else()
 endif()
 
 set(SSG_LINKCHECKER_GUIDE_FILE_LIST "")
+set(SSG_LINKCHECKER_TABLE_FILE_LIST "")
 
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
@@ -561,11 +562,9 @@ macro(ssg_build_html_guides PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
     )
 
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        # despite checking just the index this actually tests all the guides because the index links to them
-        # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
-        set(SSG_LINKCHECKER_GUIDE_FILE_LIST "${SSG_LINKCHECKER_GUIDE_FILE_LIST};${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html" PARENT_SCOPE)
-    endif()
+    # despite checking just the index this actually tests all the guides because the index links to them
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_GUIDE_FILE_LIST "${SSG_LINKCHECKER_GUIDE_FILE_LIST};${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html" PARENT_SCOPE)
 endmacro()
 
 macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
@@ -848,12 +847,8 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-by-ref-${REF})
 
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-${REF}refs.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
-        )
-    endif()
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -875,12 +870,8 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-nistrefs-${PROFILE})
 
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-nistrefs-${PROFILE}.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
-        )
-    endif()
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -902,12 +893,8 @@ macro(ssg_build_html_cce_table PRODUCT)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-cces)
 
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-cces.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
-        )
-    endif()
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -945,17 +932,9 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-srg)
 
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-srgmap.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
-        )
-
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-srgmap-flat.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
-        )
-    endif()
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" PARENT_SCOPE)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1005,17 +984,8 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
 
-    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-stig.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
-        )
-
-        add_test(
-            NAME "linkchecker-tables-table-${PRODUCT}-stig-manual.html"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
-        )
-    endif()
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html" PARENT_SCOPE)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1024,10 +994,17 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
 endmacro()
 
 macro(ssg_define_linkchecker_tests)
-    add_test(
-        NAME "linkchecker-ssg-guides"
-        COMMAND "${LINKCHECKER_EXECUTABLE}" ${SSG_LINKCHECKER_GUIDE_FILE_LIST}
-    )
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-ssg-guides"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" ${SSG_LINKCHECKER_GUIDE_FILE_LIST}
+        )
+
+        add_test(
+            NAME "linkchecker-ssg-tables"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" ${SSG_LINKCHECKER_TABLE_FILE_LIST}
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_zipfile ZIPNAME)
