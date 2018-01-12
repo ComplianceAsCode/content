@@ -555,8 +555,37 @@ Contributions can be made for rules, checks, remediations or even utilities. The
 
 ==== Rules
 
-...
-// shared/references/cce-rhel-avail.txt
+Rules are input in a quasi-XCCDF format, which is basically an XML container.
+They describe the desired state of the system and may contain labels if they are parts of higher-level standards.
+
+Rules are defined as members of a `Group` in a XML file, most likely below the `shared/xccdf` directory.
+The exact location depends on a rule cathegory.
+For an example of rule group, see `shared/xccdf/system/software/disk_partitioning.xml`.
+
+A rule itself has these attributes:
+
+* `id`: The primary key for the rule. It is referenced by profiles.
+* `severity`: Can be `low`, `medium`, or `high`.
+
+A rule contains those elements:
+
+* `title`: Human-readable title of the rule.
+* `rationale`: Human-readable description of the reason why the rule exists and why it is important from the technical point of view.
+* `description`: Human-readable description, which provides broader context for non-experts.
+* `ocil`: Defines assert statements. The `clause` attribute contains the statement, and the element text describes how to determine whether the statement is true or false. Check out rule `encrypt_partitions` in `shared/xccdf/system/software/disk_partitioning.xml`, that contains the `partitions do not have a type of crypto_LUKS` clause.
+
+A rule may contain those element tags:
+
+* `oval`: Link to the check that is able to determine whether the scanned system complies to the rule. Checks are written in the OVAL language (see the section Checks for further info).
+* `ident`: This is related to products/CCEs that the rule applies to.
+* `ref`: If the rule is part of a standard, it is referenced using the `ref` element. One rule can have multiple `ref` elements.
+
+Rules are disabled by default - even if the scanner knows about them, they are effectively ignored during the scan or remediation.
+A rule may be enabled by a profile, so when the scanner is scanning the given profile, the profile is taken into account.
+For example, the rule identified by `partition_for_tmp` defined in `shared/xccdf/system/software/disk_partitioning.xml` is enabled by the `RHEL7` `C2S` profile in `rhel7/profiles/C2S.xml`.
+
+Checks and remediations are not part of rule definitions - those are just referenced by rules.
+
 
 ==== Checks
 
