@@ -64,6 +64,8 @@ else()
     set(OSCAP_OVAL_SCHEMATRON_OPTION "")
 endif()
 
+set(SSG_LINKCHECKER_GUIDE_FILE_LIST "")
+
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
 
@@ -560,11 +562,9 @@ macro(ssg_build_html_guides PRODUCT)
     )
 
     if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
-        add_test(
-            NAME "linkchecker-ssg-${PRODUCT}-guides"
-            # despite checking just the index this actually tests all the guides because the index links to them
-            COMMAND "${LINKCHECKER_EXECUTABLE}" "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
-        )
+        # despite checking just the index this actually tests all the guides because the index links to them
+        # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+        set(SSG_LINKCHECKER_GUIDE_FILE_LIST "${SSG_LINKCHECKER_GUIDE_FILE_LIST};${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html" PARENT_SCOPE)
     endif()
 endmacro()
 
@@ -1021,6 +1021,13 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+endmacro()
+
+macro(ssg_define_linkchecker_tests)
+    add_test(
+        NAME "linkchecker-ssg-guides"
+        COMMAND "${LINKCHECKER_EXECUTABLE}" ${SSG_LINKCHECKER_GUIDE_FILE_LIST}
+    )
 endmacro()
 
 macro(ssg_build_zipfile ZIPNAME)

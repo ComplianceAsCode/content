@@ -239,6 +239,8 @@ if (SSG_PRODUCT_WEBMIN)
     add_subdirectory("webmin")
 endif()
 
+ssg_define_linkchecker_tests()
+
 install(FILES "${CMAKE_SOURCE_DIR}/LICENSE"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES "${CMAKE_SOURCE_DIR}/README.md"
