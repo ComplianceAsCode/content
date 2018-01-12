@@ -20,6 +20,7 @@ sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 import idtranslate_module as idtranslate
+import ssgcommon
 
 # This script requires two arguments: an "unlinked" XCCDF file and an ID name
 # scheme. This script is designed to convert and synchronize check IDs
@@ -28,12 +29,12 @@ import idtranslate_module as idtranslate
 # meaningless numbers.
 
 
-oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-oval_cs = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
-ocil_cs = "http://scap.nist.gov/schema/ocil/2"
-xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
-cce_uri = "http://cce.mitre.org"
+oval_ns = ssgcommon.oval_namespace
+oval_cs = ssgcommon.oval_namespace
+ocil_ns = ssgcommon.ocil_namespace
+ocil_cs = ssgcommon.ocil_cs
+xccdf_ns = ssgcommon.XCCDF11_NS
+cce_uri = ssgcommon.cce_uri
 
 
 def parse_xml_file(xmlfile):

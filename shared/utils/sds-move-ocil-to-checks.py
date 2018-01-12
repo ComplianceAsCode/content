@@ -37,15 +37,22 @@
 #   $ ./sds-move-ocil-to-checks.py ssg-rhel6-ds.xml new-ds.xml
 
 import sys
+import os
 
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
     import cElementTree as ElementTree
 
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
+
 xlink_ns = "http://www.w3.org/1999/xlink"
-datastream_ns = "http://scap.nist.gov/schema/scap/source/1.2"
-ocil_ns = "http://scap.nist.gov/schema/ocil/2.0"
+datastream_ns = ssgcommon.datastream_namespace
+ocil_ns = ssgcommon.ocil_namespace
 
 
 def move_ocil_ref_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp):

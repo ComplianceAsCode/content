@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+import os
+
 try:
     from xml.etree import cElementTree as etree
 except ImportError:
@@ -8,6 +10,12 @@ except ImportError:
 import re
 import sys
 import argparse
+
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
 
 parser = argparse.ArgumentParser(
     description='Add STIG references to XCCDF files.')
@@ -20,7 +28,7 @@ args = parser.parse_args()
 reference = args.reference
 destination = args.destination
 
-xccdf_namespace = "http://checklists.nist.gov/xccdf/1.1"
+xccdf_namespace = ssgcommon.XCCDF11_NS
 stig_href = 'http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx'
 stig_references_beginning = 'http://iase.disa.mil/stigs/'
 

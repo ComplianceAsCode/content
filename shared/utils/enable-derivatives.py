@@ -16,12 +16,19 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
+import os
 import sys
 import re
 from optparse import OptionParser
 
-XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
-XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
+
+XCCDF11_NS = ssgcommon.XCCDF11_NS
+XCCDF12_NS = ssgcommon.XCCDF12_NS
 
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",

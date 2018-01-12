@@ -38,9 +38,16 @@ Usage:
   ./verify-references.py -h
 """
 
-xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
-oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
-ocil_cs = "http://scap.nist.gov/schema/ocil/2"
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
+
+
+xccdf_ns = ssgcommon.XCCDF11_NS
+oval_ns = ssgcommon.oval_namespace
+ocil_cs = ssgcommon.ocil_cs
 
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"

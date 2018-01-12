@@ -13,6 +13,8 @@ build datastreams from them!
 
 Author: Martin Preisler <mpreisle@redhat.com>
 """
+import os
+import sys
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -21,9 +23,15 @@ except ImportError:
 
 from optparse import OptionParser
 
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
+
 OSCAP_PATH = "oscap"
 
-XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
+XCCDF11_NS = ssgcommon.XCCDF11_NS
 TRUE_STRINGS = ["true", "1", "True", "TRUE"]
 
 

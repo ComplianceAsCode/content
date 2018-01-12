@@ -8,41 +8,27 @@
 
 # the python modules that we need
 import os
-import datetime
+import sys
 import lxml.etree as ET
 
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
 
 # the "oval_header" variable must be prepended to the body of the check to form
 # valid XML
-oval_header = '''<?xml version="1.0" encoding="UTF-8"?>
-<oval_definitions
-    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-    xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-    xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
-       <generator>
-        <oval:product_name>testoval.py</oval:product_name>
-        <oval:product_version>0.0.1</oval:product_version>
-        <oval:schema_version>5.10</oval:schema_version>
-        <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (timestamp)
+oval_header = ssgcommon.oval_generated_header("verify-input-sanity.py", "5.10", "0.0.1")
 
 # the "oval_footer" variable must be appended to the body of the check to form
 # valid XML
-oval_footer = '</oval_definitions>'
+oval_footer = ssgcommon.oval_footer
 
 # the namespace we are working in
-oval_namespace = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
-xccdf_header = '<?xml version="1.0" encoding="UTF-8"?><xccdf>'
-xccdf_footer = '</xccdf>'
+oval_namespace = ssgcommon.oval_namespace
+xccdf_header = ssgcommon.xccdf_header
+xccdf_footer = ssgcommon.xccdf_footer
 
 # print a blank line to keep things pretty
 print
@@ -91,10 +77,10 @@ for oval_check in oval_file_list:
         # parse the XML at this point
         tree = ET.fromstring(oval_xml_contents)
         # extract the ID of the check
-        definition_node = tree.findall("./" + oval_namespace + "def-group/*")
+        definition_node = tree.findall("./{%s}def-group/*" % oval_namespace)
         oval_id = "Error"
         for node in definition_node:
-            if node.tag == (oval_namespace + "definition"):
+            if node.tag == ("{%s}definition" % oval_namespace):
                 oval_id = node.get("id")
         # at this point the variable oval_id should contain the id of the oval
         # check now we make sure that the name of the file matches the oval id

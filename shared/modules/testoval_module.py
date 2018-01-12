@@ -4,19 +4,18 @@ import re
 import argparse
 import tempfile
 import subprocess
-import datetime
+import ssgcommon
 import lxml.etree as ET
 from ConfigParser import SafeConfigParser
 
 import idtranslate_module as idtranslate
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
-timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+timestamp = ssgcommon.timestamp
 
 
-conf_file = re.sub('shared.*', '', __file__) + '/build/oval.config'
-footer = '</oval_definitions>'
-ovalns = "{http://oval.mitre.org/XMLSchema/oval-definitions-5}"
+footer = ssgcommon.oval_footer
+ovalns = ssgcommon.oval_namespace
 
 try:
     from openscap import oscap_get_version
@@ -33,48 +32,6 @@ tests = ET.Element("tests")
 objects = ET.Element("objects")
 states = ET.Element("states")
 variables = ET.Element("variables")
-
-
-def _header(oval_version):
-    header = '''<?xml version="1.0" encoding="UTF-8"?>
-<oval_definitions
-    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-    xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-    xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd">
-       <generator>
-        <oval:product_name>testoval.py</oval:product_name>
-        <oval:product_version>0.0.1</oval:product_version>
-        <oval:schema_version>%s</oval:schema_version>
-        <oval:timestamp>%s</oval:timestamp>
-    </generator>''' % (oval_version, timestamp)
-
-    return header
-
-
-def parse_conf_file(conf_file):
-    parser = SafeConfigParser()
-    parser.read(conf_file)
-    oval_version = None
-
-    for section in parser.sections():
-        for name, setting in parser.items(section):
-            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
-            if not oval_version and name == 'oval_version':
-                oval_version = setting
-
-    if oval_version is None:
-        print 'ERROR! The setting returned a value of \'%s\'!' % oval_version
-        sys.exit(1)
-
-    return oval_version
 
 
 # append new child ONLY if it's not a duplicate
@@ -97,17 +54,16 @@ def add_oval_elements(body, header):
     tree = replace_external_vars(tree)
     # parse new file(string) as an etree, so we can arrange elements
     # appropriately
-    for childnode in tree.findall("./" + ovalns + "def-group/*"):
+    for childnode in tree.findall("./{%s}def-group/*" % ovalns):
         # print "childnode.tag is " + childnode.tag
         if childnode.tag is ET.Comment:
             continue
-        if childnode.tag == (ovalns + "definition"):
+        if childnode.tag == ("{%s}definition" % ovalns):
             append(definitions, childnode)
             defname = childnode.get("id")
             # extend_definition is a special case:  must include a whole other
             # definition
-            for defchild in childnode.findall(".//" + ovalns +
-                                              "extend_definition"):
+            for defchild in childnode.findall(".//{%s}extend_definition" % ovalns):
                 defid = defchild.get("definition_ref")
                 extend_ref = find_testfile(defid+".xml")
                 includedbody = read_ovaldefgroup_file(extend_ref)
@@ -130,18 +86,18 @@ def replace_external_vars(tree):
 
     # external_variable is a special case: we turn it into a local_variable so
     # we can test
-    for node in tree.findall(".//"+ovalns+"external_variable"):
+    for node in tree.findall(".//{%s}external_variable" % ovalns):
         print ("External_variable with id : " + node.get("id"))
         extvar_id = node.get("id")
         # for envkey, envval in os.environ.iteritems():
         #     print envkey + " = " + envval
         # sys.exit()
         if extvar_id not in os.environ.keys():
-            print ("External_variable specified, but no value provided via \
-                   environment variable")
+            print ("External_variable specified, but no value provided via " \
+                   "environment variable")
             sys.exit(2)
         # replace tag name: external -> local
-        node.tag = ovalns + "local_variable"
+        node.tag = "{%s}local_variable" % ovalns
         literal = ET.Element("literal_component")
         literal.text = os.environ[extvar_id]
         node.append(literal)
@@ -207,7 +163,7 @@ def main():
     oval_version = args.oval_version
 
     testfile = args.xmlfile
-    header = _header(oval_version)
+    header = ssgcommon.oval_generated_header("testoval.py", oval_version, "0.0.1")
     testfile = find_testfile(testfile)
     body = read_ovaldefgroup_file(testfile)
     defname = add_oval_elements(body, header)

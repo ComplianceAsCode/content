@@ -23,10 +23,17 @@ import logging
 from xml.etree import cElementTree as ElementTree
 import json
 import sys
+import os
 import copy
 
 
-XCCDF_NAMESPACE = "http://checklists.nist.gov/xccdf/1.2"
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "../modules"))
+import ssgcommon
+
+XCCDF_NAMESPACE = ssgcommon.XCCDF12_NS
 FILENAME = "PCI_DSS_v3.pdf"
 REMOTE_URL = "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf"
 
