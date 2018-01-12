@@ -40,8 +40,8 @@ common_parser.add_argument("--datastream",
                            required=True,
                            help=("Path to the Source DataStream on this "
                                  "machine which is going to be tested"))
-common_parser.add_argument("--ref-id",
-                           dest="ref_id",
+common_parser.add_argument("--xccdf-id",
+                           dest="xccdf_id",
                            metavar="REF-ID",
                            required=True,
                            help="Reference ID related to benchmark to be used."
@@ -113,7 +113,7 @@ log.setLevel(logging.DEBUG)
 
 try:
     bench_id = xml_operations.infer_benchmark_id_from_component_ref_id(
-        options.datastream, options.ref_id)
+        options.datastream, options.xccdf_id)
     options.benchmark_id = bench_id
 except RuntimeError as exc:
     msg = "Error inferring benchmark ID: {}".format(str(exc))
