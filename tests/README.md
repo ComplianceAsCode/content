@@ -42,12 +42,12 @@ scenario is run separately to eliminate need for cleanup.
 Example of evaluation of default profile (common):
 
 ```
-./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml --benchmark-id bid profile-id
+./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml --ref-id rid profile-id
 ```
 
 where the domain (in this case `ssg-test-suite-centos`), is name of the virtual machine,
 datastream is a datastream file in the local filesystem,
-the benchmark id can be identified by examining the datastream XML,
+the ref-id can be obtained by running `oscap info` over the datastream XML,
 and
 profile-id is not matched by the suffix, so specify it literally (use `oscap info --profiles` to see available profiles).
 
