@@ -600,9 +600,6 @@ Checks are connected to rules by the `oval` rule element.
 Remediations (i.e. fixes) are assigned to rules based on their basename.
 Therefore, the rule `sshd_print_last_log` has a `bash` fix associated as there is a `bash` script `shared/fixes/bash/sshd_print_last_log.sh`. As there is an Ansible playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has also an Ansible fix associated.
 
-
-
-
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
