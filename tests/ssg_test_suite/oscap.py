@@ -396,7 +396,7 @@ class ProfileRunner(GenericRunner):
         return '{0}-{1}'.format(self.profile, self.stage)
 
     def _get_results_file(self):
-        return '{0}-results'.format(self.profile)
+        return '{0}-{1}-results'.format(self.profile, self.stage)
 
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()

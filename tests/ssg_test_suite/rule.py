@@ -247,8 +247,8 @@ def run_rule_checks(
     supported_and_available_remediations = set(
         script_params['remediation']).intersection(is_supported)
 
-    if (script_context not in ['fail', 'error']
-            or len(supported_and_available_remediations) == 0):
+    if (script_context not in ['fail', 'error'] or
+            len(supported_and_available_remediations) == 0):
         return success
 
     success = oscap_run_rule('remediation', 'fixed')
