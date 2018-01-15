@@ -988,11 +988,11 @@ macro(ssg_build_html_anssirefs_table PRODUCT PROFILE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "${PROFILE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileanssirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" -stringparam profile "anssi_${PROFILE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-anssirefs-${PROFILE}.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileanssirefs.xslt" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-profileanssirefs.xslt"
-        COMMENT "[${PRODUCT}-tables] generating HTML ANSSI refs table for ${PROFILE} profile"
+        COMMENT "[${PRODUCT}-tables] generating HTML ANSSI refs table for anssi_${PROFILE} profile"
     )
     add_custom_target(
         generate-${PRODUCT}-table-anssirefs-${PROFILE}
