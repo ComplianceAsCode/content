@@ -58,7 +58,7 @@ message(STATUS "")
 # Strictly speaking in-source will work but will be very messy, let's
 # discourage our users from using them
 if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-    message(SEND_ERROR "In-source builds are not supported! Please use out of source builds:\n"
+    message(FATAL_ERROR "In-source builds are not supported! Please use out of source builds:\n"
        "$ cd scap-security-guide\n"
        "$ rm CMakeCache.txt\n"
        "$ cd build\n"
