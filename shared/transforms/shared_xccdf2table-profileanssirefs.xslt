@@ -53,7 +53,8 @@
 		<tr>
 			<td> 
 				<xsl:for-each select="cdf:reference[@href=$anssiuri]">
-					<xsl:sort data-type="text" select="text()"/>
+					<xsl:sort select="substring-before(.,'(')" data-type="text" />
+					<xsl:sort select="substring-before(substring-after(.,'(R'),')')" data-type="number" />
 					<xsl:value-of select="text()"/>
 					<br/>
 				</xsl:for-each>
