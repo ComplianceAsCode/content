@@ -3,10 +3,18 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- name: Does prelink file exist
+  stat:
+    path=/etc/sysconfig/prelink
+  register: prelink_exists
+  tags:
+    @ANSIBLE_TAGS@  
+
 - name: disable prelinking
   lineinfile:
     path: /etc/sysconfig/prelink
     regexp: '^PRELINKING='
     line: 'PRELINKING=no'
+  when: prelink_exists.stat.exists == True
   tags:
     @ANSIBLE_TAGS@
