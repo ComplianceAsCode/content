@@ -169,11 +169,23 @@ Now that the XCCDF language is written, let's see how it looks in the HTML guide
 $ cd /var/www/html/scap-security-guide/rhel6
 $ make content
 
-To ensure your XCCDF is still SCAP compliant, run a quick “make validate”:
-$ make validate
-oscap xccdf validate-xml output/ssg-rhel6-xccdf.xml
-oscap oval validate-xml output/ssg-rhel6-oval.xml
-oscap oval validate-xml output/ssg-rhel6-cpe-oval.xml
+To ensure your XCCDF is still SCAP compliant, run a quick validation test:
+$ ctest -R validate-ssg-rhel6 -j 4
+Test project /home/mpreisle/d/scap-security-guide/build
+    Start 57: validate-ssg-rhel6-cpe-dictionary.xml
+    Start 58: validate-ssg-rhel6-cpe-oval.xml
+    Start 59: validate-ssg-rhel6-xccdf.xml
+    Start 61: validate-ssg-rhel6-oval.xml
+1/5 Test #57: validate-ssg-rhel6-cpe-dictionary.xml ...   Passed    0.10 sec
+2/5 Test #59: validate-ssg-rhel6-xccdf.xml ............   Passed    0.21 sec
+    Start 62: validate-ssg-rhel6-ds.xml
+3/5 Test #58: validate-ssg-rhel6-cpe-oval.xml .........   Passed    2.00 sec
+4/5 Test #62: validate-ssg-rhel6-ds.xml ...............   Passed    1.90 sec
+5/5 Test #61: validate-ssg-rhel6-oval.xml .............   Passed   97.82 sec
+
+100% tests passed, 0 tests failed out of 5
+
+Total Test time (real) =  97.83 sec
 -->
 			</screen>
 		</para>
@@ -190,7 +202,8 @@ The <description> tag has the ability to handle XHTML arguments. Let's wrap our 
 
 Once updated, re-run the build:
 <screen>
-$ make clean; make content; make validate
+    $ make -j 4
+    $ ctest -j 4
 </screen>
 
 Upon completion, refresh your web browser to see the updated content.
