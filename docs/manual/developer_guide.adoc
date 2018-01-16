@@ -555,8 +555,52 @@ Contributions can be made for rules, checks, remediations or even utilities. The
 
 ==== Rules
 
-...
-// shared/references/cce-rhel-avail.txt
+Rules are input in a simplified XCCDF format, which is basically an XML container.
+Rules are defined as members of a `Group` in a XML file.
+In the likely case if the rule can be reused in multiple platforms, the file containing the definition will be placed under the `shared/xccdf` directory.
+If the rule is platform-specific, place it under the `<platform>/xccdf` directory.
+The exact location depends on a rule category.
+For an example of rule group, see `shared/xccdf/system/software/disk_partitioning.xml`.
+
+Rules describe the desired state of the system and may contain references if they are parts of higher-level standards.
+For example, the `partition_for_tmp` rule from the mentioned file is part of STIG, so definition of the rule contains the `ref` reference to it.
+
+A rule itself has these attributes:
+
+* `id`: The primary key for the rule. It is referenced by profiles.
+* `severity`: Can be `low`, `medium`, or `high`.
+
+A rule contains those elements that are text-centric:
+
+* `title`: Human-readable title of the rule.
+* `rationale`: Human-readable HTML description of the reason why the rule exists and why it is important from the technical point of view. For example, rationale of the `partition_for_tmp` rule states that:
++
+The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
+* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
++
+The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
+* `ocil`: Defines assert statements. The `clause` attribute contains the statement, and the element text describes how to determine whether the statement is true or false. Check out rule `encrypt_partitions` in `shared/xccdf/system/software/disk_partitioning.xml`, that contains the `partitions do not have a type of crypto_LUKS` clause.
+
+A rule may contain those reference-type elements:
+
+* `oval`: Link to the check that is able to determine whether the scanned system complies to the rule. Checks are written in the OVAL language (see the section Checks for further info).
+* `ident`: This is related to products/CCEs that the rule applies to.
++
+When the rule is related to RHEL, it should have a CCE.
+Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
+* `ref`: If the rule is part of a standard, it is referenced using the `ref` element. One rule can have multiple `ref` elements.
+
+Some of existing rule definitions contain elements that use macros.
+You can find definitions of those macros in one of the files in the `shared/transforms` directory.
+For example, the `ocil` element of `partition_for_tmp` uses the `partition-check-macro`, which is defined in `shared/transforms/shared_shorthand2xccdf.xslt`.
+
+Rules are unselected by default - even if the scanner reads rule definitions, they are effectively ignored during the scan or remediation.
+A rule may be selected by any number of profiles, so when the scanner is scanning using a profile the rule is included in, the rule is taken into account.
+For example, the rule identified by `partition_for_tmp` defined in `shared/xccdf/system/software/disk_partitioning.xml` is included in the `RHEL7 C2S` profile in `rhel7/profiles/C2S.xml`.
+
+Checks are connected to rules by the `oval` rule element.
+Remediations (i.e. fixes) are assigned to rules based on their basename.
+Therefore, the rule `sshd_print_last_log` has a `bash` fix associated as there is a `bash` script `shared/fixes/bash/sshd_print_last_log.sh`. As there is an Ansible playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has also an Ansible fix associated.
 
 ==== Checks
 
