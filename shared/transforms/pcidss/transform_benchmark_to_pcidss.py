@@ -40,7 +40,7 @@ REMOTE_URL = "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf"
 
 def construct_xccdf_group(id_, desc, children, rules, rule_usage_map):
     ret = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-    ret.set("id", "xccdf_org.ssgproject.content_group_pcidss-req-%s" % (id_))
+    ret.set("id", ssgcommon.OSCAP_GROUP_PCIDSS + "-%s" % (id_))
     ret.set("selected", "true")
     title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
     title.text = id_
@@ -133,7 +133,7 @@ def main():
 
     if len(values) > 0:
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-        group.set("id", "xccdf_org.ssgproject.content_group_values")
+        group.set("id", ssgcommon.OSCAP_GROUP_VAL)
         group.set("selected", "true")
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Values"
@@ -171,7 +171,7 @@ def main():
         )
 
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-        group.set("id", "xccdf_org.ssgproject.content_group_non-pci-dss")
+        group.set("id", ssgcommon.OSCAP_GROUP_NON_PCI)
         group.set("selected", "true")
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Non PCI-DSS"
@@ -211,9 +211,7 @@ def main():
 
         # filter out old group selectors from the PCI-DSS profile
         for select in profile.findall("./{%s}select" % (XCCDF_NAMESPACE)):
-            if select.get("idref").startswith(
-                "xccdf_org.ssgproject.content_group_"
-            ):
+            if select.get("idref").startswith(ssgcommon.OSCAP_GROUP):
                 # we will remove all group selectors, all PCI-DSS groups are
                 # selected by default so we don't need any in the final
                 # PCI-DSS Benchmark

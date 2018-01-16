@@ -27,6 +27,7 @@ sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 import xccdf_utils
+import ssgcommon
 
 
 OSCAP_PATH = "oscap"
@@ -188,12 +189,10 @@ def main():
 
         profile_id_for_path = "default" if not profile_id else profile_id
         benchmark_id_for_path = benchmark_id
-        if benchmark_id_for_path.startswith(
-            "xccdf_org.ssgproject.content_benchmark_"
-        ):
+        if benchmark_id_for_path.startswith(ssgcommon.OSCAP_DS_STRING):
             benchmark_id_for_path = \
                 benchmark_id_for_path[
-                    len("xccdf_org.ssgproject.content_benchmark_"):
+                    len(ssgcommon.OSCAP_DS_STRING):
                 ]
 
         if len(benchmarks) == 1 or \

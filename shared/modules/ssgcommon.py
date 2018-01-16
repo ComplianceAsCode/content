@@ -33,6 +33,12 @@ cce_uri = "http://cce.mitre.org"
 stig_ns = "http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx"
 ssg_version_uri = \
     "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
+OSCAP_VENDOR = "org.ssgproject"
+OSCAP_DS_STRING = "xccdf_%s.content_benchmark_" % OSCAP_VENDOR
+OSCAP_GROUP = "xccdf_%s.content_group_" % OSCAP_VENDOR
+OSCAP_GROUP_PCIDSS = "xccdf_%s.content_group_pcidss-req" % OSCAP_VENDOR
+OSCAP_GROUP_VAL = "xccdf_%s.content_group_values" % OSCAP_VENDOR
+OSCAP_GROUP_NON_PCI = "xccdf_%s.content_group_non-pci-dss" % OSCAP_VENDOR
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 
