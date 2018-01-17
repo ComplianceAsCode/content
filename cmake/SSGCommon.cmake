@@ -675,8 +675,6 @@ macro(ssg_build_product PRODUCT)
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-roles)
     add_dependencies(zipfile "${PRODUCT}-roles")
-    
-    add_dependencies(galaxy-ansible-roles ${PRODUCT}-roles)
 
     ssg_make_stats_for_product(${PRODUCT})
     add_dependencies(stats ${PRODUCT}-stats)
@@ -804,8 +802,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         DEPENDS generate-all-roles-${DERIVATIVE}-sh
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-roles)
-    
-    add_dependencies(galaxy-ansible-roles ${DERIVATIVE}-roles)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
