@@ -28,7 +28,7 @@
 # this wrapper you wouldn't have been able to do parallel builds of multiple
 # targets at once. E.g.:
 #
-# $ make -j 4 rhel7-guides rhel7-validate
+# $ make -j 4 rhel7-guides rhel7-stats
 #
 # Without the wrapper targets the command above would start generating the
 # XCCDF, OVAL and OCIL files 2 times in parallel which would result in
@@ -63,6 +63,9 @@ if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
 else()
     set(OSCAP_OVAL_SCHEMATRON_OPTION "")
 endif()
+
+set(SSG_LINKCHECKER_GUIDE_FILE_LIST "")
+set(SSG_LINKCHECKER_TABLE_FILE_LIST "")
 
 macro(ssg_build_bash_remediation_functions)
     file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
@@ -235,25 +238,17 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
     )
 
-    if (SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
+if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
         file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
 
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
+        add_test(
+            NAME "shellcheck-${PRODUCT}-bash-fixes"
             # format gcc so that people using IDEs can click on errors to get to the problematic lines
             # SC1071: ShellCheck only supports sh/bash/ksh scripts
             # SC1091: Not following: /usr/share/scap-security-guide/remediation_functions
             # TODO: Stop ignoring the exit code as we fix the bash issues
-            COMMAND "${SHELLCHECK_EXECUTABLE}" --format gcc --shell bash --exclude SC1071,SC1091 ${BASH_REMEDIATION_FUNCTIONS} ${LANGUAGE_REMEDIATIONS_DEPENDS} ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS} ${EXTRA_LANGUAGE_DEPENDS} ${EXTRA_SHARED_LANGUAGE_DEPENDS} || "true"
-            COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
-            VERBATIM
-            COMMENT "[${PRODUCT}-validate] validating inputs for bash remediations"
+            COMMAND "${SHELLCHECK_EXECUTABLE}" --format gcc --shell bash --exclude SC1071,SC1091 ${BASH_REMEDIATION_FUNCTIONS} ${LANGUAGE_REMEDIATIONS_DEPENDS} ${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS} ${EXTRA_LANGUAGE_DEPENDS} ${EXTRA_SHARED_LANGUAGE_DEPENDS}
         )
-        add_custom_target(
-            validate-ssg-${PRODUCT}-bash-remediation-inputs
-            DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/shellcheck-validation-bash-remediations"
-        )
-        add_dependencies(${PRODUCT}-validate validate-ssg-${PRODUCT}-bash-remediation-inputs)
     endif()
 endmacro()
 
@@ -372,29 +367,13 @@ macro(ssg_build_cpe_dictionary PRODUCT)
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-cpe-dictionary.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" cpe validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-cpe-dictionary.xml"
     )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-dictionary.xml"
-    )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-cpe-oval.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
-        DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-cpe-oval.xml"
-    )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-cpe-oval.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-cpe-oval.xml"
     )
 endmacro()
 
@@ -441,21 +420,13 @@ macro(ssg_build_xccdf_final PRODUCT)
         generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml  # because of verify-references
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DEPENDS "${SSG_SHARED_UTILS}/verify-references.py"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf.xml"
     )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-xccdf.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf.xml"
+    add_test(
+        NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
+        COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
 
     add_custom_command(
@@ -469,18 +440,6 @@ macro(ssg_build_xccdf_final PRODUCT)
         generate-ssg-${PRODUCT}-xccdf-1.2.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
     )
-    #add_custom_command(
-    #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf-1.2 validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
-    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-xccdf-1.2.xml"
-    #)
-    #add_custom_target(
-    #    validate-ssg-${PRODUCT}-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-xccdf-1.2.xml"
-    #)
 endmacro()
 
 macro(ssg_build_oval_final PRODUCT)
@@ -495,17 +454,9 @@ macro(ssg_build_oval_final PRODUCT)
         generate-ssg-${PRODUCT}-oval.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-oval.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" oval validate ${OSCAP_OVAL_SCHEMATRON_OPTION} "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
-        DEPENDS generate-ssg-${PRODUCT}-oval.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-oval.xml"
-    )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-oval.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-oval.xml"
     )
 endmacro()
 
@@ -521,18 +472,6 @@ macro(ssg_build_ocil_final PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
     )
-    #add_custom_command(
-    #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ocil validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-    #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #    DEPENDS generate-ssg-${PRODUCT}-ocil.xml
-    #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-ocil.xml"
-    #)
-    #add_custom_target(
-    #    validate-ssg-${PRODUCT}-ocil.xml
-    #    DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ocil.xml"
-    #)
 endmacro()
 
 macro(ssg_build_pci_dss_xccdf PRODUCT)
@@ -549,18 +488,6 @@ macro(ssg_build_pci_dss_xccdf PRODUCT)
         generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
     )
-    #add_custom_command(
-    #    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #    COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #)
-    #add_custom_target(
-    #    validate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
-    #    DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-    #)
 endmacro()
 
 macro(ssg_build_sds PRODUCT)
@@ -614,17 +541,10 @@ macro(ssg_build_sds PRODUCT)
         generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
+
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
-        DEPENDS generate-ssg-${PRODUCT}-ds.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        COMMENT "[${PRODUCT}-validate] validating ssg-${PRODUCT}-ds.xml"
-    )
-    add_custom_target(
-        validate-ssg-${PRODUCT}-ds.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${PRODUCT}-ds.xml"
     )
 endmacro()
 
@@ -641,6 +561,10 @@ macro(ssg_build_html_guides PRODUCT)
         generate-ssg-${PRODUCT}-guide-index.html
         DEPENDS "${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html"
     )
+
+    # despite checking just the index this actually tests all the guides because the index links to them
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_GUIDE_FILE_LIST "${SSG_LINKCHECKER_GUIDE_FILE_LIST};${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-index.html" PARENT_SCOPE)
 endmacro()
 
 macro(ssg_build_remediation_roles PRODUCT TEMPLATE EXTENSION)
@@ -678,7 +602,6 @@ endmacro()
 
 macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
-    add_custom_target(${PRODUCT}-validate)
 
     ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
@@ -709,18 +632,6 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
     )
-
-    add_dependencies(
-        ${PRODUCT}-validate
-        validate-ssg-${PRODUCT}-xccdf.xml
-        #validate-ssg-${PRODUCT}-xccdf-1.2.xml
-        validate-ssg-${PRODUCT}-oval.xml
-        #validate-ssg-${PRODUCT}-ocil.xml
-        validate-ssg-${PRODUCT}-cpe-dictionary.xml
-        validate-ssg-${PRODUCT}-cpe-oval.xml
-        validate-ssg-${PRODUCT}-ds.xml
-    )
-    add_dependencies(validate ${PRODUCT}-validate)
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
 
@@ -812,7 +723,6 @@ endmacro()
 
 macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_custom_target(${DERIVATIVE}-content)
-    add_custom_target(${DERIVATIVE}-validate)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
@@ -826,17 +736,9 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
-        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" xccdf validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
+    add_test(
+        NAME "validate-ssg-${DERIVATIVE}-xccdf.xml"
         COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
-        DEPENDS generate-ssg-${DERIVATIVE}-xccdf.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
-        COMMENT "[${DERIVATIVE}-validate] validating ssg-${DERIVATIVE}-xccdf.xml"
-    )
-    add_custom_target(
-        validate-ssg-${DERIVATIVE}-xccdf.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-xccdf.xml"
     )
 
     add_custom_command(
@@ -851,17 +753,9 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
     )
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
+    add_test(
+        NAME "validate-ssg-${DERIVATIVE}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
-        COMMAND "${CMAKE_COMMAND}" -E touch "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
-        DEPENDS generate-ssg-${DERIVATIVE}-ds.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
-        COMMENT "[${DERIVATIVE}-validate] validating ssg-${DERIVATIVE}-ds.xml"
-    )
-    add_custom_target(
-        validate-ssg-${DERIVATIVE}-ds.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/validation-ssg-${DERIVATIVE}-ds.xml"
     )
 
     add_custom_target(${DERIVATIVE} ALL)
@@ -872,13 +766,6 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         generate-ssg-${DERIVATIVE}-xccdf.xml
         generate-ssg-${DERIVATIVE}-ds.xml
     )
-
-    add_dependencies(
-        ${DERIVATIVE}-validate
-        validate-ssg-${DERIVATIVE}-xccdf.xml
-        validate-ssg-${DERIVATIVE}-ds.xml
-    )
-    add_dependencies(validate ${DERIVATIVE}-validate)
 
     add_dependencies(zipfile "generate-ssg-${DERIVATIVE}-ds.xml")
 
@@ -960,6 +847,9 @@ macro(ssg_build_html_table_by_ref PRODUCT REF)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-by-ref-${REF})
 
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html" PARENT_SCOPE)
+
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-${REF}refs.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
@@ -979,6 +869,9 @@ macro(ssg_build_html_nistrefs_table PRODUCT PROFILE)
         DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-nistrefs-${PROFILE})
+
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-nistrefs-${PROFILE}.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1020,6 +913,9 @@ macro(ssg_build_html_cce_table PRODUCT)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-cces)
 
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html" PARENT_SCOPE)
+
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-cces.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
@@ -1055,6 +951,10 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
         DEPENDS "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-srg)
+
+    # needs PARENT_SCOPE because this is done across different cmake files via add_directory(..)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" PARENT_SCOPE)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" PARENT_SCOPE)
 
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
@@ -1104,10 +1004,27 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
     )
     add_dependencies(${PRODUCT}-tables generate-${PRODUCT}-table-stig)
 
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html" PARENT_SCOPE)
+    set(SSG_LINKCHECKER_TABLE_FILE_LIST "${SSG_LINKCHECKER_TABLE_FILE_LIST};${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" PARENT_SCOPE)
+
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
     install(FILES "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-testinfo.html"
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
+endmacro()
+
+macro(ssg_define_linkchecker_tests)
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+        add_test(
+            NAME "linkchecker-ssg-guides"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" --check-extern ${SSG_LINKCHECKER_GUIDE_FILE_LIST}
+        )
+
+        add_test(
+            NAME "linkchecker-ssg-tables"
+            COMMAND "${LINKCHECKER_EXECUTABLE}" --check-extern ${SSG_LINKCHECKER_TABLE_FILE_LIST}
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_zipfile ZIPNAME)

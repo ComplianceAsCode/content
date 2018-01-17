@@ -10,7 +10,7 @@
 <xsl:variable name="prod_type">ubuntu</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for Ubuntu Linux v1.0 -->
-<xsl:variable name="cisuri">fixme</xsl:variable>
+<xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/ubuntu_linux/</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="os-stigid-concat" />
 
