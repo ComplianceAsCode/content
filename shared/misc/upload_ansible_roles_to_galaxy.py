@@ -106,11 +106,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Updates SSG Galaxy Ansible Roles')
     parser.add_argument(
-        "--ssg-build-roles-directory",
+        "--ssg-build-roles-directory", required=True,
         help="Path to directory containing the ssg generated roles",
         dest="ssg_build_roles_directory")
     parser.add_argument(
-        "--meta-template-path",
+        "--meta-template-path", required=True,
         help="Path to metadata file template",
         dest="meta_template_path")
     args = parser.parse_args()
