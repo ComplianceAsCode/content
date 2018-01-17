@@ -115,13 +115,11 @@ if __name__ == "__main__":
         dest="meta_template_path")
     args = parser.parse_args()
 
-    ssg_build_roles_directory = args.ssg_build_roles_directory
-    meta_template_path = args.meta_template_path
     organization_name = "OpenSCAP-Ansible-Roles"
 
     roles = \
         [f[:-4]
-         for f in os.listdir(ssg_build_roles_directory) if f.endswith(".yml")]
+         for f in os.listdir(args.ssg_build_roles_directory) if f.endswith(".yml")]
 
     print "Input your GitHub credentials:"
     username = raw_input("username or token: ")
@@ -149,5 +147,5 @@ if __name__ == "__main__":
 
     # Update repositories
     for repo in github_org.get_repos():
-        update_repository(repo, ssg_build_roles_directory +
-                          repo.name + ".yml", meta_template_path)
+        update_repository(repo, args.ssg_build_roles_directory +
+                          repo.name + ".yml", args.meta_template_path)
