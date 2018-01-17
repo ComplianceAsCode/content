@@ -1,11 +1,8 @@
 #!/usr/bin/env python2
 
 from github import Github
-from os import listdir
-from os import system
-from os import chdir
-from os import getcwd
 from tempfile import mkdtemp
+import os
 import shutil
 import sys
 import re
@@ -28,14 +25,14 @@ def create_empty_repositories(github_new_repos):
 
 def clone_and_init_repositories(repositories_to_create):
     for repo in repositories_to_create:
-        system(
+        os.system(
             "git clone git@github.com:OpenSCAP-Ansible-Roles/%s.git" % repo)
-        system("ansible-galaxy init " + repo + " --force")
-        chdir(repo)
-        system('git add .')
-        system('git commit -a -m "Initial commit"')
-        system('git push origin master')
-        chdir("..")
+        os.system("ansible-galaxy init " + repo + " --force")
+        os.chdir(repo)
+        os.system('git add .')
+        os.system('git commit -a -m "Initial commit"')
+        os.system('git push origin master')
+        os.chdir("..")
 
 
 def update_repository(repository, local_file_path, meta_template_path):
@@ -114,8 +111,9 @@ if __name__ == "__main__":
     meta_template_path = args.meta_template_path
     organization_name = "OpenSCAP-Ansible-Roles"
 
-    roles = [f[:-4]
-             for f in listdir(ssg_build_roles_directory) if f.endswith(".yml")]
+    roles = \
+        [f[:-4]
+         for f in os.listdir(ssg_build_roles_directory) if f.endswith(".yml")]
 
     print "Input your GitHub credentials:"
     username = raw_input("USER: ")
@@ -132,11 +130,11 @@ if __name__ == "__main__":
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
         # Locally clone and init repositories
-        current_dir = getcwd()
+        current_dir = os.getcwd()
         temp_dir = mkdtemp()
-        chdir(temp_dir)
+        os.chdir(temp_dir)
         clone_and_init_repositories(github_new_repos)
-        chdir(current_dir)
+        os.chdir(current_dir)
         shutil.rmtree(temp_dir)
 
     # Update repositories
