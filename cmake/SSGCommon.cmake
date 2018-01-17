@@ -997,12 +997,12 @@ macro(ssg_define_linkchecker_tests)
     if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
         add_test(
             NAME "linkchecker-ssg-guides"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" ${SSG_LINKCHECKER_GUIDE_FILE_LIST}
+            COMMAND "${LINKCHECKER_EXECUTABLE}" --check-extern ${SSG_LINKCHECKER_GUIDE_FILE_LIST}
         )
 
         add_test(
             NAME "linkchecker-ssg-tables"
-            COMMAND "${LINKCHECKER_EXECUTABLE}" ${SSG_LINKCHECKER_TABLE_FILE_LIST}
+            COMMAND "${LINKCHECKER_EXECUTABLE}" --check-extern ${SSG_LINKCHECKER_TABLE_FILE_LIST}
         )
     endif()
 endmacro()
