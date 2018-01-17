@@ -4,7 +4,6 @@ from github import Github
 from tempfile import mkdtemp
 import os
 import shutil
-import sys
 import re
 import argparse
 import getpass
