@@ -117,8 +117,8 @@ if __name__ == "__main__":
          for f in os.listdir(ssg_build_roles_directory) if f.endswith(".yml")]
 
     print "Input your GitHub credentials:"
-    username = raw_input("USER: ")
-    password = getpass.getpass("PASS: ")
+    username = raw_input("username or token: ")
+    password = getpass.getpass("password (or empty for token): ")
 
     github = Github(username, password)
     github_org = github.get_organization(organization_name)
