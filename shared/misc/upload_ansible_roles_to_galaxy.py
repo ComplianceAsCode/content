@@ -45,6 +45,8 @@ def clone_and_init_repositories(repositories_to_create):
 
 
 def update_repository(repository, local_file_path, meta_template_path):
+    print("Processing %s..." % repository.name)
+
     with open(local_file_path, 'r') as f:
         filedata = f.read()
 
@@ -92,8 +94,6 @@ def update_repository(repository, local_file_path, meta_template_path):
                 "Updates meta/main.yml",
                 local_meta_content,
                 remote_meta_file.sha)
-
-    print "Finished processing " + repository.name
 
 
 def main():
