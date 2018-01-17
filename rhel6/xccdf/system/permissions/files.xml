@@ -365,8 +365,9 @@ requiring global read/write access.
 access to a file when it is discovered. However, check with
 documentation for specific applications before making changes.
 Also, monitor for recurring world-writable files, as these may be
-symptoms of a misconfigured application or user
-account.</description>
+symptoms of a misconfigured application or user account. Finally,
+this applies to real files and not virtual files that are a part of
+pseudo file systems such as <tt>sysfs</tt> or <tt>procfs</tt>.</description>
 <ocil clause="there is output">
 To find world-writable files, run the following command:
 <pre>$ sudo find / -xdev -type f -perm -002</pre>
