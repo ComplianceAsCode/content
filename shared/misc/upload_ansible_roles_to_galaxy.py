@@ -1,12 +1,19 @@
 #!/usr/bin/env python2
 
-from github import Github
 from tempfile import mkdtemp
 import os
+import sys
 import shutil
 import re
 import argparse
 import getpass
+
+try:
+    from github import Github
+except ImportError:
+    sys.stderr.write("Please install PyGithub, on Fedora it's in the "
+                     "python-PyGithub package.\n")
+    sys.exit(1)
 
 
 def create_empty_repositories(github_new_repos):
