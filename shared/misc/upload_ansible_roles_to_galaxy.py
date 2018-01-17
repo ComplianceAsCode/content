@@ -17,7 +17,7 @@ except ImportError:
     sys.exit(1)
 
 
-def create_empty_repositories(github_new_repos):
+def create_empty_repositories(github_new_repos, github_org):
     for github_new_repo in github_new_repos:
         print "Creating new Github repository: " + github_new_repo
         github_org.create_repo(
@@ -45,14 +45,8 @@ def clone_and_init_repositories(repositories_to_create):
 
 
 def update_repository(repository, local_file_path, meta_template_path):
-    try:
-        f = open(local_file_path, 'r')
-    except (IOError, OSError):
-        print "Ansible role " + repository.name + " not found!"
-        return
-
-    filedata = f.read()
-    f.close()
+    with open(local_file_path, 'r') as f:
+        filedata = f.read()
 
     local_file_content = filedata.replace("   tasks:", "#   tasks:")
     remote_file = repository.get_file_contents("/tasks/main.yml")
@@ -85,9 +79,8 @@ def update_repository(repository, local_file_path, meta_template_path):
             remote_readme_file.sha)
 
     if meta_template_path:
-        f = open(meta_template_path, 'r')
-        meta_template = f.read()
-        f.close()
+        with open(meta_template_path, 'r') as f:
+            meta_template = f.read()
 
         local_meta_content = meta_template.replace("@DESCRIPTION@", title)
         remote_meta_file = repository.get_file_contents("/meta/main.yml")
@@ -103,7 +96,7 @@ def update_repository(repository, local_file_path, meta_template_path):
     print "Finished processing " + repository.name
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description='Updates SSG Galaxy Ansible Roles')
     parser.add_argument(
@@ -132,9 +125,9 @@ if __name__ == "__main__":
     github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Create empty repositories
-    github_new_repos = list(set(roles) - set(github_repositories))
+    github_new_repos = sorted(list(set(roles) - set(github_repositories)))
     if github_new_repos:
-        create_empty_repositories(github_new_repos)
+        create_empty_repositories(github_new_repos, github_org)
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
         # Locally clone and init repositories
@@ -148,8 +141,12 @@ if __name__ == "__main__":
             shutil.rmtree(temp_dir)
 
     # Update repositories
-    for repo in github_org.get_repos():
+    for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
         update_repository(
             repo, os.path.join(args.build_roles_dir, repo.name + ".yml"),
             args.meta_template_path
         )
+
+
+if __name__ == "__main__":
+    main()
