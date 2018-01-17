@@ -5,5 +5,5 @@
 
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 
-fix_audit_watch_rule "auditctl" "/usr/sbin/modprobe" "x" "modules"
-fix_audit_watch_rule "augenrules" "/usr/sbin/modprobe" "x" "modules"
+fix_audit_watch_rule "auditctl" "/sbin/modprobe" "x -F auid!=4294967295" "module-change"
+fix_audit_watch_rule "augenrules" "/sbin/modprobe" "x -F auid!=4294967295" "module-change"
