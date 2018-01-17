@@ -28,10 +28,12 @@ def clone_and_init_repositories(repositories_to_create):
             "git clone git@github.com:OpenSCAP-Ansible-Roles/%s.git" % repo)
         os.system("ansible-galaxy init " + repo + " --force")
         os.chdir(repo)
-        os.system('git add .')
-        os.system('git commit -a -m "Initial commit"')
-        os.system('git push origin master')
-        os.chdir("..")
+        try:
+            os.system('git add .')
+            os.system('git commit -a -m "Initial commit"')
+            os.system('git push origin master')
+        finally:
+            os.chdir("..")
 
 
 def update_repository(repository, local_file_path, meta_template_path):
@@ -47,7 +49,7 @@ def update_repository(repository, local_file_path, meta_template_path):
     local_file_content = filedata.replace("   tasks:", "#   tasks:")
     remote_file = repository.get_file_contents("/tasks/main.yml")
 
-    if (local_file_content != remote_file.decoded_content):
+    if local_file_content != remote_file.decoded_content:
         repository.update_file(
             "/tasks/main.yml",
             "Updates tasks/main.yml",
@@ -55,7 +57,7 @@ def update_repository(repository, local_file_path, meta_template_path):
             remote_file.sha)
         print "Updating tasks/main.yml in " + repository.name
 
-    separator = "###############################################################################"
+    separator = "#" * 79
     header = filedata[filedata.find(
         separator) + len(separator) + 3:filedata.rfind(separator) - 3]
     header = header.replace('# ', '')
@@ -66,7 +68,7 @@ def update_repository(repository, local_file_path, meta_template_path):
     local_readme_content = title + '\n=========\n\n' + header
     remote_readme_file = repository.get_file_contents("/README.md")
 
-    if (local_readme_content != remote_readme_file.decoded_content):
+    if local_readme_content != remote_readme_file.decoded_content:
         print "Updating README.md in " + repository.name
         repository.update_file(
             "/README.md",
@@ -82,7 +84,7 @@ def update_repository(repository, local_file_path, meta_template_path):
         local_meta_content = meta_template.replace("@DESCRIPTION@", title)
         remote_meta_file = repository.get_file_contents("/meta/main.yml")
 
-        if (local_meta_content != remote_meta_file.decoded_content):
+        if local_meta_content != remote_meta_file.decoded_content:
             print "Updating meta/main.yml in " + repository.name
             repository.update_file(
                 "/meta/main.yml",
@@ -129,12 +131,14 @@ if __name__ == "__main__":
         github_repositories = [repo.name for repo in github_org.get_repos()]
 
         # Locally clone and init repositories
-        current_dir = os.getcwd()
         temp_dir = mkdtemp()
-        os.chdir(temp_dir)
-        clone_and_init_repositories(github_new_repos)
-        os.chdir(current_dir)
-        shutil.rmtree(temp_dir)
+        current_dir = os.getcwd()
+        try:
+            os.chdir(temp_dir)
+            clone_and_init_repositories(github_new_repos)
+        finally:
+            os.chdir(current_dir)
+            shutil.rmtree(temp_dir)
 
     # Update repositories
     for repo in github_org.get_repos():
