@@ -2,6 +2,7 @@
 
 from tempfile import mkdtemp
 import os
+import os.path
 import sys
 import shutil
 import re
@@ -106,9 +107,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Updates SSG Galaxy Ansible Roles')
     parser.add_argument(
-        "--ssg-build-roles-directory", required=True,
-        help="Path to directory containing the ssg generated roles",
-        dest="ssg_build_roles_directory")
+        "--build-roles-dir", required=True,
+        help="Path to directory containing the ssg generated roles. Most "
+        "likely this is going to be scap-security-guide/build/roles",
+        dest="build_roles_dir")
     parser.add_argument(
         "--meta-template-path", required=True,
         help="Path to metadata file template",
@@ -119,7 +121,7 @@ if __name__ == "__main__":
 
     roles = \
         [f[:-4]
-         for f in os.listdir(args.ssg_build_roles_directory) if f.endswith(".yml")]
+         for f in os.listdir(args.build_roles_dir) if f.endswith(".yml")]
 
     print "Input your GitHub credentials:"
     username = raw_input("username or token: ")
@@ -147,5 +149,7 @@ if __name__ == "__main__":
 
     # Update repositories
     for repo in github_org.get_repos():
-        update_repository(repo, args.ssg_build_roles_directory +
-                          repo.name + ".yml", args.meta_template_path)
+        update_repository(
+            repo, os.path.join(args.build_roles_dir, repo.name + ".yml"),
+            args.meta_template_path
+        )
