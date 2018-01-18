@@ -5,6 +5,11 @@
 # disruption = low
 - (xccdf-var var_%SEBOOLID%)
 
+- name: Ensure libsemanage-python installed
+  package:
+    name: libsemanage-python
+    state: latest
+
 - name: Set SELinux boolean %SEBOOLID% accordingly
   seboolean:
     name: %SEBOOLID%
