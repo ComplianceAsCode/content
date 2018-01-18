@@ -16,6 +16,9 @@ except ImportError:
                      "python-PyGithub package.\n")
     sys.exit(1)
 
+GIT_COMMIT_AUTHOR = \
+    "SSG Ansible role uploader <scap-security-guide@lists.fedorahosted.org>"
+
 
 def create_empty_repositories(github_new_repos, github_org):
     for github_new_repo in github_new_repos:
@@ -38,7 +41,8 @@ def clone_and_init_repositories(repositories_to_create):
         os.chdir(repo)
         try:
             os.system('git add .')
-            os.system('git commit -a -m "Initial commit"')
+            os.system('git commit -a -m "Initial commit" --author "%s"'
+                      % GIT_COMMIT_AUTHOR)
             os.system('git push origin master')
         finally:
             os.chdir("..")
@@ -58,7 +62,10 @@ def update_repository(repository, local_file_path, meta_template_path):
             "/tasks/main.yml",
             "Updates tasks/main.yml",
             local_file_content,
-            remote_file.sha)
+            remote_file.sha,
+            author=GIT_COMMIT_AUTHOR
+        )
+
         print "Updating tasks/main.yml in " + repository.name
 
     separator = "#" * 79
@@ -74,11 +81,14 @@ def update_repository(repository, local_file_path, meta_template_path):
 
     if local_readme_content != remote_readme_file.decoded_content:
         print "Updating README.md in " + repository.name
+
         repository.update_file(
             "/README.md",
             "Updates README.md",
             local_readme_content,
-            remote_readme_file.sha)
+            remote_readme_file.sha,
+            author=GIT_COMMIT_AUTHOR
+        )
 
     if meta_template_path:
         with open(meta_template_path, 'r') as f:
@@ -93,7 +103,8 @@ def update_repository(repository, local_file_path, meta_template_path):
                 "/meta/main.yml",
                 "Updates meta/main.yml",
                 local_meta_content,
-                remote_meta_file.sha)
+                remote_meta_file.sha,
+                author=GIT_COMMIT_AUTHOR)
 
 
 def main():
