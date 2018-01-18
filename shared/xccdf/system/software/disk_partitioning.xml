@@ -170,7 +170,10 @@ Any <i>PASSPHRASE</i> is stored in the Kickstart in plaintext, and the Kickstart
 Omitting the <tt>--passphrase=</tt> option from the partition definition will cause the
 installer to pause and interactively ask for the passphrase during installation.
 <br /><br />
-Detailed information on encrypting partitions using LUKS can be found on
+By default, the <tt>Anaconda</tt> installer uses <tt>aes-xts-plain64</tt> cipher
+with a minimum <tt>512</tt> bit key size which should be compatible with FIPS enabled.
+<br /><br />
+Detailed information on encrypting partitions using LUKS or LUKS ciphers can be found on
 the Red Hat Documentation web site:<br />
 <weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html"/>
 </description>
