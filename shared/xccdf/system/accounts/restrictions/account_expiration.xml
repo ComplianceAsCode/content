@@ -37,7 +37,8 @@ signifies inactivity) until an account is permanently disabled, add or correct
 the following lines in <tt>/etc/default/useradd</tt>, substituting
 <tt><i>NUM_DAYS</i></tt> appropriately:
 <pre>INACTIVE=<i><sub idref="var_account_disable_post_pw_expiration"/></i></pre>
-A value of 35 is recommended.  
+A value of 35 is recommended; however, this profile expects that the value is set to
+<tt><sub idref="var_account_disable_post_pw_expiration"/></tt>.
 If a password is currently on the
 verge of expiration, then 35 days remain until the account is automatically
 disabled. However, if the password will not expire for another 60 days, then 95
