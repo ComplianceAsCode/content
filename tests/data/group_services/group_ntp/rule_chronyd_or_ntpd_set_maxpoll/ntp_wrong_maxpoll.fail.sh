@@ -5,7 +5,7 @@
 yum install -y ntp
 yum remove -y chrony
 
-sed -i "s/^server.*/&1 maxpoll 17/" /etc/ntp.conf
+sed -i "s/^server.*/& maxpoll 17/" /etc/ntp.conf
 
 systemctl enable ntpd.service
 

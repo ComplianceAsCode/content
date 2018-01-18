@@ -6,7 +6,7 @@ yum install -y chrony
 yum remove -y ntp
 
 if ! grep "^server.*maxpoll 10" /etc/chrony.conf; then
-    sed -i "s/^server.*/&1 maxpoll 10/" /etc/chrony.conf
+    sed -i "s/^server.*/& maxpoll 10/" /etc/chrony.conf
 fi
 
 systemctl enable chronyd.service
