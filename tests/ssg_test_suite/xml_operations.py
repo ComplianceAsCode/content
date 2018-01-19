@@ -25,16 +25,12 @@ def infer_benchmark_id_from_component_ref_id(datastream, ref_id):
 
     comp_id = component_ref_node.get('{%s}href' % NAMESPACES['xlink'])
     comp_id = comp_id.lstrip('#')
-    component_node = root.find("ds:component[@id='{0}']"
-                               .format(comp_id), NAMESPACES)
-    if component_node is None:
-        msg = 'Component of Id {} not found within datastream'.format(comp_id)
-        raise RuntimeError(msg)
 
-    benchmark_node = component_node.find("xccdf:Benchmark", NAMESPACES)
+    query = ".//ds:component[@id='{}']/xccdf:Benchmark".format(comp_id)
+    benchmark_node = root.find(query, NAMESPACES)
     if benchmark_node is None:
         msg = (
-            'Benchmark not found within comonent of Id {}'
+            'Benchmark not found within component of Id {}'
             .format(comp_id)
         )
         raise RuntimeError(msg)
