@@ -1,2 +1,10 @@
 # platform = multi_platform_rhel
-find / -type f -name .shosts -fstype local -exec rm -f '{}' \;
+
+# Identify local mounts
+MOUNT_LIST=$(df | grep "^/dev" | awk '{ print $6 }') 
+
+# Find file on each listed mount point
+for cur_mount in ${MOUNT_LIST}
+do
+	find ${cur_mount} -xdev -type f -name ".shosts" -exec rm -f {} \;
+done
