@@ -2,12 +2,21 @@
 
 import json
 import argparse
+import os
+import os.path
 import sys
 
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
     import cElementTree as ElementTree
+
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
+
 
 script_desc = \
     "Obtains and displays XCCDF profile statistics. Namely number " + \
@@ -154,7 +163,7 @@ class XCCDFBenchmark(object):
         if not rule_stats:
             print('Unable to retrieve statistics for %s profile' % profile)
             sys.exit(1)
-        
+
         rule_stats.sort(key=lambda r: r.dict['id'])
 
         profile_stats['profile_id'] = profile
