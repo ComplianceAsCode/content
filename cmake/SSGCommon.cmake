@@ -1013,7 +1013,7 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_define_linkchecker_tests)
+macro(ssg_define_guide_and_table_tests)
     if (SSG_HTML_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
         add_test(
             NAME "linkchecker-ssg-guides"
@@ -1024,6 +1024,18 @@ macro(ssg_define_linkchecker_tests)
             NAME "linkchecker-ssg-tables"
             COMMAND "${LINKCHECKER_EXECUTABLE}" --check-extern ${SSG_HTML_TABLE_FILE_LIST}
         )
+    endif()
+
+    if (GREP_EXECUTABLE)
+        foreach(TABLE ${SSG_HTML_TABLE_FILE_LIST})
+            # -z treats newlines as regular chars so we can match multi-line
+            # -v inverts the match, we are trying to make sure the tables don't
+            #    match this pattern
+            add_test(
+                NAME "sanity-ssg-tables-${TABLE}"
+                COMMAND "${GREP_EXECUTABLE}" "-zv" "</thead>[[:space:]]*</table>" "${TABLE}"
+            )
+        endforeach()
     endif()
 endmacro()
 

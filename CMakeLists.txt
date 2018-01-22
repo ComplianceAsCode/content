@@ -108,6 +108,7 @@ endif()
 
 find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
 find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
+find_program(GREP_EXECUTABLE NAMES grep)
 
 configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
 
@@ -125,6 +126,7 @@ message(STATUS "xmlwf: ${XMLWF_EXECUTABLE}")
 message(STATUS "sed: ${SED_EXECUTABLE}")
 message(STATUS "shellcheck (optional): ${SHELLCHECK_EXECUTABLE}")
 message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
+message(STATUS "grep (optional): ${GREP_EXECUTABLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -239,7 +241,7 @@ if (SSG_PRODUCT_WEBMIN)
     add_subdirectory("webmin")
 endif()
 
-ssg_define_linkchecker_tests()
+ssg_define_guide_and_table_tests()
 
 install(FILES "${CMAKE_SOURCE_DIR}/LICENSE"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
