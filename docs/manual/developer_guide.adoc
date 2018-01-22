@@ -917,3 +917,17 @@ This is an example of a patch to add a new template into the templating system:
 ----
 
 === Utilities
+
+=== Tests (ctest)
+
+SCAP Security Guide uses ctest to orchestrate testing upstream. To run the test suite go to the build folder and execute `ctest`:
+```
+cd build/
+ctest -j 4
+```
+
+Check out the various `ctest` options to perform specific testing, you can rerun just one test or skip all tests that match a regex. (See -R, -E and other options in the ctest man page)
+
+Tests are added using the add_test cmake call. Each test should finish with a 0 exit-code in case everything went well and a non-zero if something failed. Output (both stdout and stderr) are collected by ctest and stored in logs or displayed. Make sure you never hard-code a path to any tool when doing testing (or anything really) in the cmake code. Always use configuration to find all the paths and then use the respective variable.
+
+See some of the existing testing code in `cmake/SSGCommon.cmake`.
