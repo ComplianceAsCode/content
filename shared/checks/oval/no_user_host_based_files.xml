@@ -1,0 +1,22 @@
+<def-group oval_version="5.10">
+  <definition class="compliance" id="no_user_host_based_files" version="1">
+    <metadata>
+      <title>No .shosts file deployed on the system</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>There should not be any .shosts files on the system.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_no_shosts" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="none_exist" comment="look for .shosts in /" id="test_no_shosts" version="1">
+    <unix:object object_ref="object_no_shosts_files_root" />
+  </unix:file_test>
+  <unix:file_object comment="look for any .shosts file on the system" id="object_no_shosts_files_root" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">\.shosts</unix:filename>
+  </unix:file_object>
+</def-group>
