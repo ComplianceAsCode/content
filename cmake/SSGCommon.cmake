@@ -1027,13 +1027,14 @@ macro(ssg_define_guide_and_table_tests)
     endif()
 
     if (GREP_EXECUTABLE)
-        foreach(TABLE ${SSG_HTML_TABLE_FILE_LIST})
+        foreach(TABLE_FILE ${SSG_HTML_TABLE_FILE_LIST})
+            string(REPLACE "${CMAKE_BINARY_DIR}/tables/" "" TEST_NAME "${TABLE_FILE}")
             # -z treats newlines as regular chars so we can match multi-line
             # -v inverts the match, we are trying to make sure the tables don't
             #    match this pattern
             add_test(
-                NAME "sanity-ssg-tables-${TABLE}"
-                COMMAND "${GREP_EXECUTABLE}" "-zv" "</thead>[[:space:]]*</table>" "${TABLE}"
+                NAME "sanity-ssg-tables-${TEST_NAME}"
+                COMMAND "${GREP_EXECUTABLE}" "-zv" "</thead>[[:space:]]*</table>" "${TABLE_FILE}"
             )
         endforeach()
     endif()
