@@ -10,10 +10,10 @@ import shlex
 import string
 import subprocess
 import sys
-import xml.etree.cElementTree as ET
 
 import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
+from ssg_test_suite import xml_operations
 from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite.log import LogHelper
 from data import iterate_over_rules
@@ -42,15 +42,11 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     """Read datastream, and return set intersection of profiles of given
     benchmark and those provided in `selected_profiles` parameter.
     """
-    NS = {'xccdf': "http://checklists.nist.gov/xccdf/1.2"}
 
     valid_profiles = []
-    root = ET.parse(datastream).getroot()
-    benchmark_node = root.find("*//xccdf:Benchmark[@id='{0}']".format(benchmark), NS)
-    if benchmark_node is None:
-        logging.error('Benchmark not found within DataStream')
-        return []
-    for ds_profile_element in benchmark_node.findall('xccdf:Profile', NS):
+    all_profiles = xml_operations.get_all_profiles_in_benchmark(
+        datastream, benchmark, logging)
+    for ds_profile_element in all_profiles:
         ds_profile = ds_profile_element.attrib['id']
         if 'ALL' in selected_profiles:
             valid_profiles += [ds_profile]

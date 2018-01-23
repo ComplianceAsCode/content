@@ -6,12 +6,14 @@ import logging
 import os
 import os.path
 import time
+import sys
 
 from ssg_test_suite.log import LogHelper
 import ssg_test_suite.oscap
 import ssg_test_suite.virt
 import ssg_test_suite.profile
 import ssg_test_suite.rule
+from ssg_test_suite import xml_operations
 
 
 parser = argparse.ArgumentParser()
@@ -38,12 +40,12 @@ common_parser.add_argument("--datastream",
                            required=True,
                            help=("Path to the Source DataStream on this "
                                  "machine which is going to be tested"))
-common_parser.add_argument("--benchmark-id",
-                           dest="benchmark_id",
-                           metavar="BENCHMARK",
+common_parser.add_argument("--xccdf-id",
+                           dest="xccdf_id",
+                           metavar="REF-ID",
                            required=True,
-                           help=("Benchmark in the Source DataStream "
-                                 "to be used."))
+                           help="Reference ID related to benchmark to be used."
+                                " Get one using 'oscap info <datastream>'.")
 common_parser.add_argument("--loglevel",
                            dest="loglevel",
                            metavar="LOGLEVEL",
@@ -108,6 +110,16 @@ log = logging.getLogger()
 # this is general logger level - needs to be
 # debug otherwise it cuts silently everything
 log.setLevel(logging.DEBUG)
+
+try:
+    bench_id = xml_operations.infer_benchmark_id_from_component_ref_id(
+        options.datastream, options.xccdf_id)
+    options.benchmark_id = bench_id
+except RuntimeError as exc:
+    msg = "Error inferring benchmark ID: {}".format(str(exc))
+    logging.error(msg)
+    sys.exit(1)
+
 
 LogHelper.add_console_logger(log, options.loglevel)
 # logging dir needs to be created based on other options

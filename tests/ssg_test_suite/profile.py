@@ -4,7 +4,6 @@ from __future__ import print_function
 import atexit
 import logging
 import sys
-import xml.etree.cElementTree as ET
 
 import ssg_test_suite.oscap
 import ssg_test_suite.virt
