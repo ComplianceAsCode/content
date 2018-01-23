@@ -1012,7 +1012,7 @@ macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
 endmacro()
 
 macro(ssg_define_guide_and_table_tests)
-    if (SSG_HTML_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
+    if (SSG_LINKCHECKER_VALIDATION_ENABLED AND LINKCHECKER_EXECUTABLE)
         add_test(
             NAME "linkchecker-ssg-guides"
             COMMAND "${LINKCHECKER_EXECUTABLE}" --check-extern ${SSG_HTML_GUIDE_FILE_LIST}
