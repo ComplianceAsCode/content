@@ -79,6 +79,19 @@ def generate_role_for_input_content(input_content, benchmark_id, profile_id, tem
     return ret
 
 
+def add_minimum_ansible_version(ansible_src):
+    pre_task = (""" - hosts: all
+   pre_tasks:
+     - name: Verify Ansible meets SCAP-Security-Guide version requirements.
+       assert:
+         that: "ansible_version.full | version_compare('2.3', '>=')"
+         msg: >
+           "You must update Ansible to at least version 2.3 to use this role."
+          """)
+
+    return ansible_src.replace(" - hosts: all", pre_task, 1)
+
+
 def get_cpu_count():
     try:
         return max(1, multiprocessing.cpu_count())
@@ -233,6 +246,10 @@ def main():
                 role_src = generate_role_for_input_content(
                     input_path, benchmark_id, profile_id, args.template
                 )
+
+                if args.extension == "yml" and \
+                   args.template == "urn:xccdf:fix:script:ansible":
+                    role_src = add_minimum_ansible_version(role_src)
                 with open(role_path, "w") as f:
                     f.write(role_src.encode("utf-8"))
 
