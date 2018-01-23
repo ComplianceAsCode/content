@@ -1,8 +1,15 @@
 #!/usr/bin/env python2
 
-import subprocess
 import tempfile
 import sys
+import os.path
+
+
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
 
 
 svg_benchmark = """<?xml version="1.0"?>
@@ -29,32 +36,6 @@ svg_benchmark = """<?xml version="1.0"?>
 """
 
 
-def subprocess_check_output(*popenargs, **kwargs):
-    # Backport of subprocess.check_output taken from
-    # https://gist.github.com/edufelipe/1027906
-    #
-    # Originally from Python 2.7 stdlib under PSF, compatible with LGPL2+
-    # Copyright (c) 2003-2005 by Peter Astrand <astrand@lysator.liu.se>
-    # Changes by Eduardo Felipe
-
-    process = subprocess.Popen(stdout=subprocess.PIPE, *popenargs, **kwargs)
-    output, unused_err = process.communicate()
-    retcode = process.poll()
-    if retcode:
-        cmd = kwargs.get("args")
-        if cmd is None:
-            cmd = popenargs[0]
-        error = subprocess.CalledProcessError(retcode, cmd)
-        error.output = output
-        raise error
-    return output
-
-
-if hasattr(subprocess, "check_output"):
-    # if available we just use the real function
-    subprocess_check_output = subprocess.check_output
-
-
 def main():
     oscap_executable = sys.argv[1]
 
@@ -62,7 +43,7 @@ def main():
     xccdf.write(svg_benchmark.encode("utf-8"))
     xccdf.flush()
 
-    out = subprocess_check_output(
+    out = ssgcommon.subprocess_check_output(
         [oscap_executable, "xccdf", "generate", "guide", xccdf.name]
     ).decode("utf-8")
 
