@@ -63,7 +63,7 @@ def subprocess_check_output(*popenargs, **kwargs):
     # Backport of subprocess.check_output taken from
     # https://gist.github.com/edufelipe/1027906
     #
-    # Originally from Python 2.7 stdlib under PSF, compatible with LGPL2+
+    # Originally from Python 2.7 stdlib under PSF, compatible with BSD-3
     # Copyright (c) 2003-2005 by Peter Astrand <astrand@lysator.liu.se>
     # Changes by Eduardo Felipe
 
