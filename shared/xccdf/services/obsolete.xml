@@ -303,16 +303,16 @@ unauthenticated access to a system.</rationale>
 <Rule id="no_host_based_files" severity="high" prodtype="rhel7">
 <title>Remove Host-Based Authentication Files</title>
 <description>
-The <tt>/etc/shosts.equiv</tt> file list remote hosts
+The <tt>shosts.equiv</tt> file list remote hosts
 and users that are trusted by the local system.
 To remove these files, run the following command to delete them from any
 location:
-<pre>$ sudo rm /etc/shosts.equiv</pre>
+<pre>$ sudo rm /[path]/[to]/[file]/shosts.equiv</pre>
 </description>
 <ocil clause="these files exist">
-To verify that there are no <tt>/etc/shosts.equiv</tt> files
+To verify that there are no <tt>shosts.equiv</tt> files
 on the system, run the following command:
-<pre>$ sudo ls /etc/shosts.equiv</pre>
+<pre>$ find / -name shosts.equiv</pre>
 No output should be returned.
 </ocil>
 <rationale>
