@@ -39,6 +39,7 @@
       <xsl:apply-templates select="document('profiles/anssi_nt28_enhanced.xml')" />
       <xsl:apply-templates select="document('profiles/anssi_nt28_high.xml')" />
       <xsl:apply-templates select="document('profiles/hippa.xml')" />
+      <xsl:apply-templates select="document('profiles/ospp42-draft-rhel7.xml')" />
 
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->
