@@ -472,6 +472,12 @@
           <xsl:if test="$refsource = 'anssi'">
             <xsl:value-of select="$anssiuri" />
           </xsl:if>
+          <xsl:if test="$refsource = 'hippa'">
+            <xsl:value-of select="$hippauri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'iso27001-2013'">
+            <xsl:value-of select="$iso27001-2013uri" />
+          </xsl:if>
           <xsl:if test="$refsource = 'cis'">
             <!-- Precaution for repeated occurrence of issue:
                  https://github.com/OpenSCAP/scap-security-guide/issues/1288 -->
