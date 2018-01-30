@@ -412,7 +412,8 @@ log data, or which use external processes to transfer it and reclaim space,
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27231-0" />
 <oval id="auditd_data_retention_max_log_file_action" value="var_auditd_max_log_file_action" />
-<ref nist="AU-1(b),AU-4,AU-11,IR-5" pcidss="Req-10.7" cis="5.2.1.3" cjis="5.4.1.1" />
+<ref nist="AU-1(b),AU-4,AU-11,IR-5" pcidss="Req-10.7" cis="5.2.1.3" cjis="5.4.1.1"
+hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 
 <!--
@@ -465,7 +466,9 @@ allow them to take corrective action prior to any disruption.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27375-5" />
 <oval id="auditd_data_retention_space_left_action" value="var_auditd_space_left_action"/>
-<ref nist="AU-1(b),AU-4,AU-5(1),AU-5(b),IR-5" disa="1855" pcidss="Req-10.7" cis="5.2.1.2" srg="SRG-OS-000343-GPOS-00134" cjis="5.4.1.1" cui="3.3.1" />
+<ref nist="AU-1(b),AU-4,AU-5(1),AU-5(b),IR-5" disa="1855" pcidss="Req-10.7"
+cis="5.2.1.2" srg="SRG-OS-000343-GPOS-00134" cjis="5.4.1.1" cui="3.3.1"
+hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 
 <Rule id="auditd_data_retention_admin_space_left_action" severity="medium" prodtype="rhel7">
@@ -497,7 +500,9 @@ is used, running low on space for audit records should never occur.
 <ident prodtype="rhel7" cce="27370-6" />
 <ref prodtype="rhel7" stigid="030340" />
 <oval id="auditd_data_retention_admin_space_left_action" value="var_auditd_admin_space_left_action" />
-<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" pcidss="Req-10.7" cis="5.2.1.2" cjis="5.4.1.1" cui="3.3.1" />
+<ref nist="AU-1(b),AU-4,AU-5(b),IR-5" disa="140,1343" pcidss="Req-10.7"
+cis="5.2.1.2" cjis="5.4.1.1" cui="3.3.1" hipaa="164.312(a)(2)(ii)"
+iso27001-2013="A.12.3.1" />
 </Rule>
 
 <Rule id="auditd_data_retention_space_left" severity="medium" prodtype="rhel7">
@@ -547,7 +552,9 @@ administrators of the system, who can take appropriate action.</rationale>
 <ident prodtype="rhel7" cce="27394-6" />
 <oval id="auditd_data_retention_action_mail_acct" value="var_auditd_action_mail_acct" />
 <ref prodtype="rhel7" stigid="030350" />
-<ref nist="AU-1(b),AU-4,AU-5(1),AU-5(a),IR-5" disa="1855" pcidss="Req-10.7.a" cis="5.2.1.2" srg="SRG-OS-000343-GPOS-00134" cjis="5.4.1.1" cui="3.3.1" />
+<ref nist="AU-1(b),AU-4,AU-5(1),AU-5(a),IR-5" disa="1855" pcidss="Req-10.7.a"
+cis="5.2.1.2" srg="SRG-OS-000343-GPOS-00134" cjis="5.4.1.1" cui="3.3.1"
+hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 
 <Rule id="auditd_data_retention_flush" prodtype="rhel7">
