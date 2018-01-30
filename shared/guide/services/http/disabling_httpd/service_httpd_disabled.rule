@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable httpd Service'
+
+description: '<systemd-service-macro enable="false" service="httpd" />'
+
+rationale: |-
+    Running web server software provides a network-based avenue
+    of attack, and should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80300-7
+
+references:
+    cis: 2.2.10
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="httpd" />'

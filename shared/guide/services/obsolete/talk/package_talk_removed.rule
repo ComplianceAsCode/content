@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall talk Package'
+
+description: |-
+    The <tt>talk</tt> package contains the client program for the
+    Internet talk protocol, which allows the user to chat with other users on
+    different systems. Talk is a communication program which copies lines from one
+    terminal to the terminal of another user.
+    <yum-macro install="false" package="talk" />
+
+rationale: |-
+    The talk software presents a security risk as it uses unencrypted protocols
+    for communications. Removing the <tt>talk</tt> package decreases the
+    risk of the accidental (or intentional) activation of talk client program.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27432-4
+
+references:
+    cis: 2.3.3
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+ocil: '<package-check-macro package="talk" />'

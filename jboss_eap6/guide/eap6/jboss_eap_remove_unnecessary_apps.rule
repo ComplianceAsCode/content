@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Remove Unnecessary Applications'
+
+description: |-
+    Identify, authorize, and document all applications that are deployed to the
+    application server. Remove unauthorized applications.
+
+rationale: |-
+    Extraneous services and applications running on an application server expands
+    the attack surface and increases risk to the application server. Securing any
+    server involves identifying and removing any unnecessary services and, in the
+    case of an application server, unnecessary and/or unapproved applications.
+
+severity: medium
+
+identifiers:
+    cce: 80471-6
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000250
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Run the command:
+    <br /><br />
+    <pre>ls /deployment</pre>
+    <br /><br />
+    The list of deployed applications is displayed.
+    Have the system admin identify the applications listed and confirm they are
+    approved applications.
+    <br /><br />
+    If the system admin cannot provide documentation proving
+    their authorization for deployed applications, this is a finding.

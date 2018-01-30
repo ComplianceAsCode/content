@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns <tt>shadow</tt> File'
+
+description: '<filegroupowner-desc-macro file="/etc/shadow" group="root" />'
+
+rationale: |-
+    The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
+    critical for system security.
+
+severity: medium
+
+identifiers:
+    cce: 26967-0
+
+references:
+    disa: 225
+    nist: AC-6
+    pcidss: Req-8.7.c
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000034
+
+ocil: '<filegroupowner-check-macro file="/etc/shadow" group="root" />'

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Uninstall vsftpd Package'
+
+description: '<yum-macro install="false" package="vsftpd" />'
+
+rationale: |-
+    Removing the vsftpd package decreases the risk of its
+    accidental activation.
+
+severity: unknown
+
+identifiers:
+    cce: 26687-4
+
+references:
+    disa: 1436
+    nist: CM-7
+
+ocil: '<package-check-macro package="vsftpd" />'

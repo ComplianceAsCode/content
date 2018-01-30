@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure audispd''s Plugin disk_full_action When Disk Is Full'
+
+description: |-
+    Configure the action the operating system takes if the disk the audit records
+    are written to becomes full. Edit the file <tt>/etc/audisp/audisp-remote.conf</tt>.
+    Add or modify the following line, substituting <i>ACTION</i> appropriately:
+    <pre>disk_full_action = <i>ACTION</i></pre>
+    Set this value to <tt>single</tt> to cause the system to switch to single user
+    mode for corrective action. Acceptable values also include <tt>syslog</tt> and
+    <tt>halt</tt>. For certain systems, the need for availability
+    outweighs the need to log all actions, and a different setting should be
+    determined.
+
+rationale: |-
+    Taking appropriate action in case of a filled audit storage volume will
+    minimize the possibility of losing audit records.
+
+severity: medium
+
+identifiers:
+    cce: 80539-0
+
+references:
+    disa: 1851
+    nist: ""
+    srg: SRG-OS-000342-GPOS-00133
+    stigid: "030320"
+
+ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
+
+ocil: |-
+    Inspect <tt>/etc/audisp/audisp-remote.conf</tt> and locate the following line to
+    determine if the system is configured to either send to syslog, switch to single user mode,
+    or halt when the disk is full:
+    <pre>grep -i disk_full_action /etc/audisp/audisp-remote.conf</pre>
+    The output should return something similar to:
+    <pre>disk_full_action = single</pre>
+    Acceptable values also include <tt>syslog</tt> and
+    <tt>halt</tt>.

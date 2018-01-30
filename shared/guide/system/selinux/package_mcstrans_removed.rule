@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Uninstall mcstrans Package'
+
+description: |-
+    The <tt>mcstransd</tt> daemon provides category label information
+    to client processes requesting information. The label translations are defined
+    in <tt>/etc/selinux/targeted/setrans.conf</tt>.
+    <yum-macro install="false" package="mcstrans" />
+
+rationale: |-
+    Since this service is not used very often, disable it to reduce the
+    amount of potentially vulnerable code running on the system.
+
+    NOTE: This rule was added in support of the CIS RHEL6 v1.2.0 benchmark. Please
+    note that Red Hat does not feel this rule is security relevant.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80445-0
+
+references:
+    cis@rhel7: 1.6.1.5

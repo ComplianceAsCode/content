@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure the Firewalld Ports'
+
+description: |-
+    Configure the <tt>firewalld</tt> ports to allow approved
+    services to have access to the system. To configure <tt>firewalld</tt>
+    to open ports, run the following command:
+    <pre>$ sudo firewall-cmd --permanent --add-port=<i>port_number</i>/tcp</pre>
+    or
+    <pre>$ sudo firewall-cmd --permanent --add-port=<i>service_name</i></pre>
+    Run the command list above for each of the ports listed below:
+    <firewalld-desc-macro allow="true" proto="tcp" service="ssh" />
+
+rationale: "In order to prevent unauthorized connection of devices, unauthorized transfer of information,\nor unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or\nrestrict unused or unnecessary physical and logical ports/protocols on information systems. \n<br /><br />\nOperating systems are capable of providing a wide variety of functions and services. Some of the functions\nand services provided by default may not be necessary to support essential organizational operations.\nAdditionally, it is sometimes convenient to provide multiple services from a single component\n(e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component. \n<br /><br />\nTo support the requirements and principles of least functionality, the operating system must support the\norganizational requirements, providing only essential capabilities and limiting the use of ports, protocols,\nand/or services to only those\
+    \ required, authorized, and approved to conduct official business or to address\nauthorized quality of life issues."
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80447-6
+
+references:
+    disa: 382,2314
+    nist: CM-7,CM-7.1(iii),CM-7(b),AC-17(1)
+    srg: SRG-OS-000096-GPOS-00050,SRG-OS-000297-GPOS-00115
+    stigid@rhel7: "040100"
+
+ocil_clause: 'the default rules are not configured'
+
+ocil: |-
+    Inspect the list of enabled firewall ports and verify they are configured
+    correctly by running the following command:
+    <pre>$ sudo firewall-cmd --list-all</pre>

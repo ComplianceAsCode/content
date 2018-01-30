@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Verify /boot/efi/EFI/redhat/grub.cfg User Ownership'
+
+description: |-
+    The file <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should
+    be owned by the <tt>root</tt> user to prevent destruction
+    or modification of the file.
+    <fileowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root" />
+
+rationale: 'Only root should be able to modify important boot parameters.'
+
+severity: medium
+
+identifiers:
+    cce@rhel7: TBD
+
+references:
+    cis: 1.4.1
+    cjis: 5.5.2.2
+    cui: 3.4.5
+    disa: 225
+    nist: AC-6(7)
+    pcidss: Req-7.1
+
+ocil: '<fileowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root" />'

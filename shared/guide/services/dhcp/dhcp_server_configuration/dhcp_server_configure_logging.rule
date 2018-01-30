@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure Logging'
+
+description: |-
+    Ensure that the following line exists in
+    <tt>/etc/rsyslog.conf</tt>:
+    <pre>daemon.*           /var/log/daemon.log</pre>
+    Configure logwatch or other log monitoring tools to summarize error conditions
+    reported by the dhcpd process.
+
+rationale: |-
+    By default, dhcpd logs notices to the daemon facility. Sending all
+    daemon messages to a dedicated log file is part of the syslog configuration
+    outlined in the Logging and Auditing section
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80336-1
+
+references:
+    nist: AU-12

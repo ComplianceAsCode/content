@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable KDump Kernel Crash Analyzer (kdump)'
+
+description: |-
+    The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
+    system call to boot a secondary kernel ("capture" kernel) following a system
+    crash, which can load information from the crashed kernel for analysis.
+    <systemd-service-macro enable="false" service="kdump" />
+
+rationale: "Kernel core dumps may contain the full contents of system memory at the time of the crash.\nKernel core dumps consume a considerable amount of disk space and may result in denial of \nservice by exhausting the available space on the target file system partition.\nUnless the system is used for kernel development or testing, there\nis little need to run the kdump service."
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80258-7
+
+references:
+    disa: 366
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
+    nist: AC-17(8),CM-7,CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021300"
+
+ocil: '<systemd-check-macro enable="false" service="kdump" />'

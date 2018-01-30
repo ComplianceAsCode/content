@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Disable Kerberos Authentication'
+
+description: |-
+    Unless needed, SSH should not permit extraneous or unnecessary
+    authentication mechanisms like Kerberos. To disable Kerberos authentication, add
+    or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>KerberosAuthentication no</pre>
+
+rationale: |-
+    Kerberos authentication for SSH is often implemented using GSSAPI. If Kerberos
+    is enabled through SSH, the SSH daemon provides a means of access to the
+    system's Kerberos implementation. Vulnerabilities in the system's Kerberos
+    implementations may be subject to exploitation.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80221-5
+
+references:
+    cui: 3.1.12
+    disa: 368,318,1812,1813,1814
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: CM-6(c)
+    ospp@rhel7: FIA_AFL.1
+    srg: SRG-OS-000364-GPOS-00151
+    stigid@rhel7: "040440"
+
+ocil_clause: 'it is commented out or is not disabled'
+
+ocil: |-
+    To check if KerberosAuthentication is disabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep KerberosAuthentication /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>no</pre>

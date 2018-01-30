@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable vsftpd Service'
+
+description: '<systemd-service-macro enable="false" service="vsftpd" />'
+
+rationale: |-
+    Running FTP server software provides a network-based avenue
+    of attack, and should be disabled if not needed.
+    Furthermore, the FTP protocol is unencrypted and creates
+    a risk of compromising sensitive information.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80244-7
+
+references:
+    cis: 2.2.9
+    disa: 1436
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="vsftpd" />'

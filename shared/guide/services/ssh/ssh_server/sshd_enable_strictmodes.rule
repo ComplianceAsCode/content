@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable Use of Strict Mode Checking'
+
+description: |-
+    SSHs StrictModes option checks file and ownership permissions in
+    the user's home directory <tt>.ssh</tt> folder before accepting login. If world-
+    writable permissions are found, logon is rejected. To enable StrictModes in SSH,
+    add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>StrictModes yes</pre>
+
+rationale: |-
+    If other users have access to modify user-specific SSH configuration files, they
+    may be able to log into the system as another user.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80222-3
+
+references:
+    cui: 3.1.12
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040450"
+
+ocil_clause: 'it is commented out or is not enabled'
+
+ocil: |-
+    To check if StrictModes is enabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep StrictModes /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>yes</pre>

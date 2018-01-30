@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'The Java Configuration File Exists'
+
+description: |-
+    If the Java configuration file does not exist, it can be added by running:
+    <pre>$ sudo mkdir -p -m 755 /etc/.java/deployment
+    $ sudo touch /etc/.java/deployment/deployment.config
+    $ sudo chmod 644 /etc/.java/deployment/deployment.config</pre>
+
+rationale: |-
+    The deployment.config file is used for specifying the location and execution of
+    system-level properties for the Java Runtime Environment. By default no
+    deployment.config file exists; thus, no system-wide deployment.properties file exists.
+    Without the deployment.config file, setting particular options for the Java
+    control panel is impossible.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: DCBP-1
+    stigid: JRE0070-UX
+
+ocil_clause: 'it does not exist'
+
+ocil: |-
+    To verify that the <tt>deployment.config</tt> file exists,
+    run the following command:
+    <pre>$ ls /etc/.java/deployment</pre>
+    The output should contain:
+    <pre>deployment.config</pre>

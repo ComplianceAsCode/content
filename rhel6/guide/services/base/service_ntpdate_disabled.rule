@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Disable ntpdate Service (ntpdate)'
+
+description: |-
+    The <tt>ntpdate</tt> service sets the local hardware clock by polling NTP servers
+    when the system boots. It synchronizes to the NTP servers listed in
+    <tt>/etc/ntp/step-tickers</tt> or <tt>/etc/ntp.conf</tt>
+    and then sets the local hardware clock to the newly synchronized
+    system time.
+    <chkconfig-service-macro enable="false" service="ntpdate" />
+
+rationale: |-
+    The <tt>ntpdate</tt> service may only be suitable for systems which
+    are rebooted frequently enough that clock drift does not cause problems between
+    reboots. In any event, the functionality of the ntpdate service is now
+    available in the ntpd program and should be considered deprecated.
+
+severity: unknown
+
+identifiers:
+    cce: 27256-7
+
+references:
+    disa: 382
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000265
+
+ocil: '<service-check-macro enable="false" service="ntpdate" />'

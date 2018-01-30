@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure auditd admin_space_left Action on Low Disk Space'
+
+description: |-
+    The <tt>auditd</tt> service can be configured to take an action
+    when disk space is running low but prior to running out of space completely.
+    Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+    substituting <i>ACTION</i> appropriately:
+    <pre>admin_space_left_action = <i>ACTION</i></pre>
+    Set this value to <tt>single</tt> to cause the system to switch to single user
+    mode for corrective action. Acceptable values also include <tt>suspend</tt> and
+    <tt>halt</tt>. For certain systems, the need for availability
+    outweighs the need to log all actions, and a different setting should be
+    determined. Details regarding all possible values for <i>ACTION</i> are described in the
+    <tt>auditd.conf</tt> man page.
+
+rationale: |-
+    Administrators should be made aware of an inability to record
+    audit records. If a separate partition or logical volume of adequate size
+    is used, running low on space for audit records should never occur.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27370-6
+
+references:
+    cis: 5.2.1.2
+    cjis: 5.4.1.1
+    cui: 3.3.1
+    disa: 140,1343
+    hipaa: 164.312(a)(2)(ii)
+    iso27001-2013: A.12.3.1
+    nist: AU-1(b),AU-4,AU-5(b),IR-5
+    pcidss: Req-10.7
+    stigid@rhel7: "030340"
+
+ocil_clause: 'the system is not configured to switch to single user mode for corrective action'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured to either suspend, switch to single user mode,
+    or halt when disk space has run low:
+    <pre>admin_space_left_action single</pre>

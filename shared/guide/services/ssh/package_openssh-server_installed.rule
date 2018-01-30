@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,ol7
+
+title: 'Install the OpenSSH Server Package'
+
+description: |-
+    The <tt>openssh-server</tt> package should be installed.
+    <yum-macro install="true" package="openssh-server" />
+
+rationale: |-
+    Without protection of the transmitted information, confidentiality, and
+    integrity may be compromised because unprotected communications can be
+    intercepted and either read or altered.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80215-7
+
+references:
+    disa: 2418,2420,2421,2422
+    nist: SC-8
+    srg: SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190
+    stigid@rhel7: "040300"
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="openssh-server" />'

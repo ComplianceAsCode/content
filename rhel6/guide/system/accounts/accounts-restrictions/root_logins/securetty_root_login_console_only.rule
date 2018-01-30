@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Restrict Virtual Console Root Logins'
+
+description: |-
+    To restrict root logins through the (deprecated) virtual console devices,
+    ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
+    <pre>vc/1
+    vc/2
+    vc/3
+    vc/4</pre>
+
+rationale: |-
+    Preventing direct root login to virtual console devices
+    helps ensure accountability for actions taken on the system
+    using the root account.
+
+severity: medium
+
+identifiers:
+    cce: 26855-7
+
+references:
+    disa: 770
+    nist: AC-6(2)
+    srg: SRG-OS-000109
+    stigid: RHEL-06-000027
+
+ocil_clause: 'root login over virtual console devices is permitted'
+
+ocil: |-
+    To check for virtual console entries which permit root login, run the
+    following command:
+    <pre>$ sudo grep ^vc/[0-9] /etc/securetty</pre>
+    If any output is returned, then root logins over virtual console devices is permitted.

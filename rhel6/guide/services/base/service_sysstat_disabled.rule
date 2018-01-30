@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable System Statistics Reset Service (sysstat)'
+
+description: |-
+    The <tt>sysstat</tt> service resets various I/O and CPU
+    performance statistics to zero in order to begin counting from a fresh state
+    at boot time.
+    <chkconfig-service-macro enable="false" service="sysstat" />
+
+rationale: |-
+    By default the <tt>sysstat</tt> service merely runs a program at
+    boot to reset the statistics, which can be retrieved using programs such as
+    <tt>sar</tt> and <tt>sadc</tt>. These may provide useful insight into system
+    operation, but unless used this service can be disabled.
+
+severity: unknown
+
+identifiers:
+    cce: 27265-8
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="sysstat" />'

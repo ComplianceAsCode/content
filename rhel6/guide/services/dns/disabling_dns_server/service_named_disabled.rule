@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Disable DNS Server'
+
+description: '<chkconfig-service-macro enable="false" service="named" />'
+
+rationale: |-
+    All network services involve some risk of compromise due to
+    implementation flaws and should be disabled if possible.
+
+severity: unknown
+
+identifiers:
+    cce: 26873-0
+
+references:
+    disa: 366
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="named" />'

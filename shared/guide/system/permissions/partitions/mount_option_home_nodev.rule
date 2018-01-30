@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Add nodev Option to /home'
+
+description: |-
+    The <tt>nodev</tt> mount option can be used to prevent device files from
+    being created in <tt>/home</tt>.
+    Legitimate character and block devices should exist only in
+    the <tt>/dev</tt> directory on the root partition or within chroot
+    jails built for system services.
+    <mount-desc-macro option="nodev" part="/home" />
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory
+    located on the root partition. The only exception to this is chroot jails.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: TBD
+
+references:
+    cis: 1.1.14

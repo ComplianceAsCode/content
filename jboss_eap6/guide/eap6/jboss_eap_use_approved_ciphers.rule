@@ -1,0 +1,73 @@
+documentation_complete: true
+
+title: 'Use Approved Ciphers'
+
+description: |-
+    Reference section 4.6 of the JBoss EAP 6.3 Security Guide located on the Red
+    Hat vendor's website for step-by-step instructions on establishing SSL
+    encryption on JBoss.
+    <br /><br />
+    The overall steps include:
+    <br /><br />
+    1. Add an HTTPS connector.
+    2. Configure the SSL encryption certificate and keys.
+    3. Set the Cipher to an approved algorithm.
+
+rationale: |-
+    Preventing the disclosure or modification of transmitted information requires
+    that application servers take measures to employ approved cryptography in order
+    to protect the information during transmission over the network. This is usually
+    achieved through the use of Transport Layer Security (TLS), SSL VPN, or IPSec
+    tunnel.
+    <br /><br />
+    If data in transit is unencrypted, it is vulnerable to disclosure and
+    modification. If approved cryptographic algorithms are not used, encryption
+    strength cannot be assured.
+    <br /><br />
+    FIPS 140-2 approved TLS versions include TLS V1.0
+    or greater.
+    <br /><br />
+    TLS must be enabled, and non-FIPS-approved SSL versions must be
+    disabled. NIST SP 800-52 specifies the preferred configurations for government
+    systems.
+
+severity: medium
+
+identifiers:
+    cce: 80494-8
+
+references:
+    disa: 2421
+    nist: ""
+    srg: SRG-APP-000440-AS-000167
+    stigid: JBOS-AS-000655
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Validate that the TLS protocol is used for HTTPS connections.
+    Run the command:
+    <pre>ls /subsystem=web/connector=https/ssl=configuration</pre>
+    <br /><br />
+    Review the
+    cipher suites. The following suites are acceptable as per NIST 800-52r1 section
+    3.3.1 - Cipher Suites. Refer to the NIST document for a complete list of
+    acceptable cipher suites. The source NIST document and approved encryption
+    algorithms/cipher suites are subject to change and should be referenced.
+    <pre>
+    AES_128_CBC
+    AES_256_CBC
+    AES_128_GCM
+    AES_128_CCM
+    AES_256_CCM
+    </pre>
+    <br /><br />
+    If the cipher
+    suites utilized by the TLS server are not approved by NIST as per 800-52r1, this
+    is a finding.

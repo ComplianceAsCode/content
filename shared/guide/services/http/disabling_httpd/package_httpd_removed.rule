@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall httpd Package'
+
+description: '<yum-macro install="false" package="httpd" />'
+
+rationale: |-
+    If there is no need to make the web server software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80301-5
+
+references:
+    nist: CM-7
+
+ocil: '<package-check-macro package="httpd" />'

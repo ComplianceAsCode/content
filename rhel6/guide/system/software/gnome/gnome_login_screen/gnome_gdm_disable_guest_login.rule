@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Disable GDM Guest Login'
+
+description: |-
+    The GNOME Display Manager (GDM) can allow users to login without credentials
+    which can be useful for public kiosk scenarios. Allowing users to login without credentials
+    or "guest" account access has inherent security risks and should be disabled. To do disable
+    timed logins or guest account access, set the <tt>TimedLoginEnable</tt> to <tt>false</tt> in
+    the <tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
+    <pre>[daemon]
+    TimedLoginEnable=false</pre>
+
+rationale: |-
+    Failure to restrict system access to authenticated users negatively impacts operating
+    system security.
+
+severity: high
+
+references:
+    disa: 366
+    nist: CM-6(b)
+    stigid: ""
+
+ocil_clause: 'GDM allows a guest to login without credentials'
+
+ocil: |-
+    To verify that timed logins are disabled, run the following command:
+    <pre>$ grep -Pzoi "^\[daemon]\\ntimedlogin.*" /etc/gdm/custom.conf</pre>
+    The output should show the following:
+    <pre>[daemon]
+    TimedLoginEnable=false</pre>

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install the Samba Common Package'
+
+description: |-
+    The <tt>samba-common</tt> package should be installed.
+    <yum-macro install="true" package="samba-common" />
+
+rationale: 'If the samba-common package is not installed, samba cannot be configured.'
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80360-1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro install="true" package="samba-common" />'

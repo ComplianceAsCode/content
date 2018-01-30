@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Configure Kernel Parameter to Ignore ICMP Broadcast Echo Requests'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />'
+
+rationale: |-
+    Ignoring ICMP echo requests (pings) sent to broadcast or multicast
+    addresses makes the system slightly more difficult to enumerate on the network.
+
+severity: unknown
+
+identifiers:
+    cce: 26883-9
+
+references:
+    disa: 1551
+    nist: CM-7,SC-5
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000092
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />'

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure AIDE to Use FIPS 140-2 for Validating Hashes'
+
+description: |-
+    By default, the <tt>sha512</tt> option is added to the <tt>NORMAL</tt> ruleset in AIDE.
+    If using a custom ruleset or the <tt>sha512</tt> option is missing, add <tt>sha512</tt>
+    to the appropriate ruleset.
+    For example, add <tt>sha512</tt> to the following line in <tt>/etc/aide.conf</tt>:
+    <pre>NORMAL = FIPSR+sha512</pre>
+    AIDE rules can be configured in multiple ways; this is merely one example that is already
+    configured by default.
+
+rationale: |-
+    File integrity tools use cryptographic hashes for verifying file contents and directories
+    have not been altered. These hashes must be FIPS 140-2 approved cryptographic hashes.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80377-5
+
+references:
+    cui: 3.13.11
+    disa: 366
+    nist: SI-7(1)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021620"
+
+ocil_clause: 'the sha512 option is missing or not added to the correct ruleset'
+
+ocil: |-
+    To determine that AIDE is configured for FIPS 140-2 file hashing, run the following command:
+    <pre>$ grep sha512 /etc/aide.conf</pre>
+    Verify that the <tt>sha512</tt> option is added to the correct ruleset.

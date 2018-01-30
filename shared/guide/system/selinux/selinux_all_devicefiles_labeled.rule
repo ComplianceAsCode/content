@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure No Device Files are Unlabeled by SELinux'
+
+description: "Device files, which are used for communication with important\nsystem resources, should be labeled with proper SELinux types. If any device\nfiles do not carry the SELinux type <tt>device_t</tt>, report the bug so \nthat policy can be corrected. Supply information about what the device is\nand what programs use it.\n<br /><br />\nTo check for unlabeled device files, run the following command:\n<pre>$ sudo find /dev -context *:device_t:* \\( -type c -o -type b \\) -printf \"%p %Z\\n\"</pre>\nIt should produce no output in a well-configured system."
+
+rationale: |-
+    If a device file carries the SELinux type <tt>device_t</tt>, then SELinux
+    cannot properly restrict access to the device file.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27326-8
+
+references:
+    cui: '3.1.2, 3.1.5,3.7.2'
+    disa: 22,32,368,318,1812,1813,1814
+    nist: AC-6,AU-9,CM-3(f),CM-7
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "020900"
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    To check for unlabeled device files, run the following command:
+    <pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
+    It should produce no output in a well-configured system.

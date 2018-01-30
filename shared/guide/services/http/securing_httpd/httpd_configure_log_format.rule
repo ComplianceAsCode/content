@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure Error Log Format'
+
+description: |-
+    <tt>LogFormat</tt> should be enabled and set to the following in
+    <tt>/etc/httpd/conf/httpd.conf</tt>:
+    <pre>LogFormat "a %A %h %H %l %m %s %t %u %U \"%{Referer}i\" \"%{User-Agent}i\"" combined</pre>
+
+rationale: |-
+    The server error logs are invaluable because they can also be used to identify
+    potential problems and enable proactive remediation. Log data can reveal
+    anomalous behavior such as "not found" or "unauthorized" errors that may
+    be an evidence of attack attempts. Failure to enable error logging can
+    significantly reduce the ability of Web Administrators to detect or remediate
+    problems. The LogFormat directive defines the format and information to be
+    included in the access log entries.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WA00612
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify if <tt>LogFormat</tt> is configured correctly in
+    <tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+    <pre>$ grep -i logformat /etc/httpd/conf/httpd.conf</pre>
+    The output should contain the following:
+    <pre>LogFormat "a %A %h %H %l %m %s %t %u %U \"%{Referer}i\" \"%{User-Agent}i\"" combined</pre>

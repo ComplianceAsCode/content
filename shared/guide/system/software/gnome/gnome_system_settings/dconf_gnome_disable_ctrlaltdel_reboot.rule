@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Ctrl-Alt-Del Reboot Key Sequence in GNOME3'
+
+description: "By default, <tt>GNOME</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>\nkey sequence is pressed.\n<br /><br />\nTo configure the system to ignore the <tt>Ctrl-Alt-Del</tt> key sequence from the\nGraphical User Interface (GUI) instead of rebooting the system, add or set \n<tt>logout</tt> to <tt>string ''</tt> in\n<tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:\n<pre>[org/gnome/settings-daemon/plugins/media-keys]\nlogout=string ''\n</pre>\nOnce the settings have been added, add a lock to\n<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.\nFor example:\n<pre>/org/gnome/settings-daemon/plugins/media-keys/logout</pre>\nAfter the settings have been set, run <tt>dconf update</tt>."
+
+rationale: |-
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+    can reboot the system. If accidentally pressed, as could happen in
+    the case of mixed OS environment, this can create the risk of short-term
+    loss of availability of systems due to unintentional reboot.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80124-1
+
+references:
+    cui: 3.1.2
+    disa: 366
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: TBD
+
+ocil_clause: 'GNOME3 is configured to reboot when Ctrl-Alt-Del is pressed'
+
+ocil: |-
+    To ensure the system is configured to ignore the Ctrl-Alt-Del sequence,
+    run the following command:
+    <pre>$ gsettings get org.gnome.settings-daemon.plugins.media-keys logout</pre>
+    If properly configured, the output should be <tt>''</tt>.
+    To ensure that users cannot enable the Ctrl-Alt-Del sequence, run the following:
+    <pre>$ grep logout /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be
+    <tt>/org/gnome/settings-daemon/plugins/media-keys/logout</tt>

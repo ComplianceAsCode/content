@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Ensure Oracle Linux GPG Key Installed'
+
+description: |-
+    To ensure the system can cryptographically verify base software
+    packages come from Oracle (and to connect to the Unbreakable Linux Network to
+    receive them), the Oracle GPG key must properly be installed.
+    To install the Oracle GPG key, run:
+    <pre>$ sudo uln_register</pre>
+    If the system is not connected to the Internet,
+    then install the Oracle GPG key from trusted media such as
+    the Oracle installation CD-ROM or DVD. Assuming the disc is mounted
+    in <tt>/media/cdrom</tt>, use the following command as the root user to import
+    it into the keyring:
+    <pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>
+
+rationale: |-
+    Changes to software components can have significant effects on the
+    overall security of the operating system. This requirement ensures
+    the software has not been tampered with and that it has been provided
+    by a trusted vendor. The Oracle GPG key is necessary to
+    cryptographically verify packages are from Oracle.
+
+severity: high
+
+references:
+    cis: 1.2.2
+    disa: 1749
+    nist: CM-5(3),SI-7,MA-1(b)
+    ossrg: 366
+    pcidss: Req-6.2
+
+ocil_clause: 'the Oracle GPG Key is not installed'
+
+ocil: |-
+    To ensure that the GPG key is installed, run:
+    <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
+    The command should return the string below:
+    <pre>gpg(Oracle OSS group (Open Source Software group) &lt;build@oss.oracle.com&gt;</pre>

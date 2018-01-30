@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Disable Interactive Boot'
+
+description: |-
+    To disable the ability for users to perform interactive startups, perform both
+    of the following:
+    <ol>
+    <li>Edit the file <tt>/etc/sysconfig/init</tt>. Add or correct the line:
+    <pre>PROMPT=no</pre></li>
+    <li>Inspect the kernel boot arguments (which follow the word <tt>kernel</tt>)
+    in <tt>/etc/grub.conf</tt> and ensure the <tt>confirm</tt> argument is <b>not</b>
+    present.</li>
+    </ol>
+    Both the <tt>PROMPT</tt> option of the <tt>/etc/sysconfig/init</tt> file and
+    the <tt>confirm</tt> kernel boot argument of the <tt>/etc/grub.conf</tt> file
+    allow the console user to perform an interactive system startup, in which it is
+    possible to select the set of services which are started on boot.
+
+rationale: |-
+    Using interactive boot, the console user could disable auditing, firewalls, or
+    other services, weakening system security.
+
+severity: medium
+
+identifiers:
+    cce: 27043-9
+
+references:
+    disa: 213
+    nist: SC-2,AC-3
+    srg: SRG-OS-000080
+    stigid: RHEL-06-000070
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To check whether interactive boot is disabled, run the following commands:
+    <ol>
+    <li><pre>$ grep PROMPT /etc/sysconfig/init</pre> If interactive boot is
+    disabled, the output will show: <pre>PROMPT=no</pre></li>
+    <li><pre>$ grep confirm /etc/grub.conf</pre> If interactive boot is disabled,
+    there should be no output.</li>
+    </ol>

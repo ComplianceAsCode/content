@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install the McAfee Runtime Libraries and Linux Agent'
+
+description: 'Install the McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma).'
+
+rationale: |-
+    The McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma) are dependencies
+    for VirusScan Enterprise for Linux (VSEL) and Host-based Security System (HBSS)
+    to run.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80367-6
+
+ocil_clause: 'the HBSS HIPS module is not installed'
+
+ocil: |-
+    To verify that McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma)
+    are installed, run the following command(s):
+    <pre>$ rpm -q MFEcma</pre>
+    <pre>$ rpm -q MFErt</pre>

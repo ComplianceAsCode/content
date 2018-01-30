@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure Users Cannot Change GNOME3 Screensaver Settings'
+
+description: |-
+    If not already configured, ensure that users cannot change GNOME3 screensaver lock settings
+    by adding <tt>/org/gnome/desktop/screensaver/lock-delay</tt>
+    to <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/lock-delay</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+    physical vicinity of the information system but does not logout because of the temporary nature of the absence.
+    Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity,
+    GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
+    session lock. As such, users should not be allowed to change session settings.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80371-8
+
+references:
+    cui: 3.1.10
+    disa: 57
+    nist: AC-11(a)
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: SRG-OS-00029-GPOS-0010
+    stigid@rhel7: "010081"
+
+ocil_clause: 'GNOME3 session settings are not locked or configured properly'
+
+ocil: |-
+    To ensure that users cannot change session idle and lock settings, run the following:
+    <pre>$ grep 'lock-delay' /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should return:
+    <tt>/org/gnome/desktop/screensaver/lock-delay</tt>

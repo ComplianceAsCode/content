@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Add nosuid Option to Removable Media Partitions'
+
+description: |-
+    The <tt>nosuid</tt> mount option prevents set-user-identifier (SUID)
+    and set-group-identifier (SGID) permissions from taking effect. These permissions
+    allow users to execute binaries with the same permissions as the owner and group
+    of the file respectively. Users should not be allowed to introduce SUID and SGID
+    files into the system via partitions mounted from removeable media.
+    <mount-desc-macro option="nosuid" part="any removable media partitions" />
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled. Allowing
+    users to introduce SUID or SGID binaries from partitions mounted off of
+    removable media would allow them to introduce their own highly-privileged programs.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80148-0
+
+references:
+    cis: 1.1.19
+    disa: 366
+    nist: AC-6,AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021010"

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Enable Process Accounting (psacct)'
+
+description: |-
+    The process accounting service, <tt>psacct</tt>, works with programs
+    including <tt>acct</tt> and <tt>ac</tt> to allow system administrators to view
+    user activity, such as commands issued by users of the system.
+    <chkconfig-service-macro enable="true" service="psacct" />
+
+rationale: |-
+    The <tt>psacct</tt> service can provide administrators a convenient
+    view into some user activities. However, it should be noted that the auditing
+    system and its audit records provide more authoritative and comprehensive
+    records.
+
+severity: unknown
+
+identifiers:
+    cce: 27259-1
+
+references:
+    nist: AU-12,CM-7
+
+ocil: '<service-check-macro enable="false" service="psacct" />'

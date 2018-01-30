@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Disable DHCP Client'
+
+description: |-
+    For each interface on the system (e.g. eth0), edit
+    <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> and make the
+    following changes:
+    <ul>
+    <li> Correct the BOOTPROTO line to read:
+    <pre>BOOTPROTO=none</pre>
+    </li>
+    <li> Add or correct the following lines, substituting the appropriate
+    values based on your site's addressing scheme:
+    <pre>NETMASK=255.255.255.0
+    IPADDR=192.168.1.2
+    GATEWAY=192.168.1.1</pre>
+    </li>
+    </ul>
+
+rationale: |-
+    DHCP relies on trusting the local network. If the local network is not trusted,
+    then it should not be used.  However, the automatic configuration provided by
+    DHCP is commonly used and the alternative, manual configuration, presents an
+    unacceptable burden in many circumstances.
+
+severity: unknown
+
+identifiers:
+    cce: 27021-5
+
+references:
+    disa: 366
+    nist: CM-7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000292
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To verify that DHCP is not being used, examine the following file for each interface:
+    <pre># /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+    Look for the following:
+    <pre>BOOTPROTO=none</pre>
+    and the following, substituting the appropriate values based on your site's addressing scheme:
+    <pre>NETMASK=255.255.255.0
+    IPADDR=192.168.1.2
+    GATEWAY=192.168.1.1</pre>

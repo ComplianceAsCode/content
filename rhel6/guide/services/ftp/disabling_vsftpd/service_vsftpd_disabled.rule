@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable vsftpd Service'
+
+description: '<chkconfig-service-macro enable="false" service="vsftpd" />'
+
+rationale: |-
+    Running FTP server software provides a network-based avenue
+    of attack, and should be disabled if not needed.
+    Furthermore, the FTP protocol is unencrypted and creates
+    a risk of compromising sensitive information.
+
+severity: unknown
+
+identifiers:
+    cce: 26948-0
+
+references:
+    disa: 1436
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="vsftpd" />'

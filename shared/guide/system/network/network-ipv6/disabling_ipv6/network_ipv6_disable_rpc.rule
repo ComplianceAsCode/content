@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Support for RPC IPv6'
+
+description: |-
+    RPC services for NFSv4 try to load transport modules for
+    <tt>udp6</tt> and <tt>tcp6</tt> by default, even if IPv6 has been disabled in
+    <tt>/etc/modprobe.d</tt>. To prevent RPC services such as <tt>rpc.mountd</tt>
+    from attempting to start IPv6 network listeners, remove or comment out the
+    following two lines in <tt>/etc/netconfig</tt>:
+    <pre>udp6       tpi_clts      v     inet6    udp     -       -
+    tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80177-9
+
+references:
+    cui: 3.1.20
+    nist: CM-7

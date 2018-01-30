@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Remove the X Windows Package Group'
+
+description: |-
+    By removing the xorg-x11-server-common package, the system no longer has X Windows
+    installed. If X Windows is not installed then the system cannot boot into graphical user mode.
+    This prevents the system from being accidentally or maliciously booted into a <tt>graphical.target</tt>
+    mode. To do so, run the following command:
+    <pre>$ sudo yum groupremove "X Window System"</pre>
+    <pre>$ sudo yum remove xorg-x11-server-common</pre>
+
+rationale: |-
+    Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
+    vulnerabilities and should not be installed unless approved and documented.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: CCE-27218-7
+
+references:
+    cis: 2.2.2
+    disa: 366
+    nist: AC-17(8).1(ii)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040730"
+
+ocil_clause: 'the X Windows package group or xorg-x11-server-common has not be removed'
+
+ocil: |-
+    To ensure the X Windows package group is removed, run the following command:
+    <pre>$ rpm -qi xorg-x11-server-common</pre>
+    The output should be:
+    <pre>package xorg-x11-server-common is not installed</pre>

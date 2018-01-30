@@ -1,0 +1,95 @@
+documentation_complete: true
+
+title: 'Enable the Java Security Manager'
+
+description: |-
+    For a domain installation:
+    Enable the respective JAVA_OPTS flag in both the
+    domain.conf and the domain.conf.bat files.
+    <br /><br />
+    For a standalone installation:
+    Enable the respective JAVA_OPTS flag in both the standalone.conf and the
+    standalone.conf.bat files.
+
+rationale: |-
+    The Java Security Manager is a java class that manages the external boundary of
+    the Java Virtual Machine (JVM) sandbox, controlling how code executing within
+    the JVM can interact with resources outside the JVM.
+    <br /><br />
+    The Java Security Manager
+    uses a security policy to determine whether a given action will be
+    permitted or
+    denied.
+    <br /><br />
+    To protect the host system, the JBoss application server must be run
+    within the Java Security Manager.
+
+severity: high
+
+identifiers:
+    cce: 80453-4
+
+references:
+    disa: 213
+    nist: ""
+    srg: SRG-APP-000033-AS-000024
+    stigid: JBOS-AS-000030
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To determine if the Java Security Manager is enabled for JBoss, you must
+    examine the startup commands. JBoss can be configured to run in either
+    <tt>domain</tt> or a <tt>standalone</tt> mode. <i>JBOSS_HOME</i> is the variable
+    home directory for the JBoss installation. Use relevant OS commands to navigate
+    the file system.
+    <br /><br />
+    A. For a managed domain installation, review the domain.conf
+    and domain.conf.bat files:
+    <br /><br />
+    <pre>JBOSS_HOME/bin/domain.conf
+    JBOSS_HOME/bin/domain.conf.bat</pre>
+    <br /><br />
+    In domain.conf file, ensure there is a JAVA_OPTS
+    flag that loads the Java Security Manager as well as a relevant Java Security
+    policy.  The following is an example:
+    <br /><br />
+    <pre>JAVA_OPTS="$JAVA_OPTS
+    -Djava.security.manager -Djava.security.policy==$PWD/server.policy
+    -Djboss.home.dir=/path/to/JBOSS_HOME -Djboss.modules.policy-
+    permissions=true"</pre>
+    <br /><br />
+    In domain.conf.bat file, ensure JAVA_OPTS flag is set.
+    The following is an example:
+    <br /><br />
+    set <pre>JAVA_OPTS="%JAVA_OPTS%
+    -Djava.security.manager -Djava.security.policy==/path/to/server.policy
+    -Djboss.home.dir=/path/to/JBOSS_HOME -Djboss.modules.policy-
+    permissions=true"</pre>
+    <br /><br />
+    B. For a standalone installation, review the
+    standalone.conf and standalone.conf.bat files:
+    <br /><br />
+    <pre>
+    JBOSS_HOME/bin/standalone.conf
+    JBOSS_HOME/bin/standalone.conf.bat
+    </pre>
+    <br /><br />
+    In the standalone.conf file, ensure the
+    JAVA_OPTS flag is set. The following is an example:
+    <br /><br />
+    <pre>
+    JAVA_OPTS="$JAVA_OPTS
+    -Djava.security.manager -Djava.security.policy==$PWD/server.policy
+    -Djboss.home.dir=$JBOSS_HOME -Djboss.modules.policy-permissions=true"</pre>
+    <br /><br />
+    In
+    the standalone.conf.bat file, ensure the JAVA_OPTS flag is set. The following
+    is an example:
+    <br /><br />
+    set <pre>JAVA_OPTS="%JAVA_OPTS% -Djava.security.manager
+    -Djava.security.policy==/path/to/server.policy -Djboss.home.dir=%JBOSS_HOME%
+    -Djboss.modules.policy-permissions=true"</pre>
+    <br /><br />
+    If the security manager is not
+    enabled and a security policy not defined, this is a finding.

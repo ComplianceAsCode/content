@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Enable GNOME3 Login Warning Banner'
+
+description: |-
+    In the default graphical environment, displaying a login warning banner
+    in the GNOME Display Manager's login screen can be enabled on the login
+    screen by setting <tt>banner-message-enable</tt> to <tt>true</tt>.
+    <br /><br />
+    To enable, add or edit <tt>banner-message-enable</tt> to
+    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/login-screen]
+    banner-message-enable=true</pre>
+    Once the setting has been added, add a lock to
+    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/login-screen/banner-message-enable</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+    The banner text must also be set.
+
+rationale: |-
+    Display of a standardized and approved use notification before granting access to the operating system
+    ensures privacy and security notification verbiage used is consistent with applicable federal laws,
+    Executive Orders, directives, policies, regulations, standards, and guidance.
+    <br /><br />
+    For U.S. Government systems, system use notifications are required only for access via login interfaces
+    with human users and are not required when such human interfaces do not exist.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 26970-4
+
+references:
+    cis: 1.7.2
+    cui: 3.1.9
+    disa: 48
+    nist: AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: OS-SRG-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088
+    stigid@rhel7: "010030"
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To ensure a login warning banner is enabled, run the following:
+    <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/*</pre>
+    If properly configured, the output should be <tt>true</tt>.
+    To ensure a login warning banner is locked and cannot be changed by a user, run the following:
+    <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-enable</tt>.

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Rsyslog Logs Sent To Remote Host'
+
+description: |-
+    If system logs are to be useful in detecting malicious
+    activities, it is necessary to send logs to a remote server. An
+    intruder who has compromised the root account on a system may
+    delete the log entries which indicate that the system was attacked
+    before they are seen by an administrator.
+    <br /><br />
+    However, it is recommended that logs be stored on the local
+    host in addition to being sent to the loghost, especially if
+    <tt>rsyslog</tt> has been configured to use the UDP protocol to send
+    messages over a network. UDP does not guarantee reliable delivery,
+    and moderately busy sites will lose log messages occasionally,
+    especially in periods of high traffic which may be the result of an
+    attack. In addition, remote <tt>rsyslog</tt> messages are not
+    authenticated in any way by default, so it is easy for an attacker to
+    introduce spurious messages to the central log server. Also, some
+    problems cause loss of network connectivity, which will prevent the
+    sending of messages to the central server. For all of these reasons, it is
+    better to store log messages both centrally and on each host, so
+    that they can be correlated if necessary.

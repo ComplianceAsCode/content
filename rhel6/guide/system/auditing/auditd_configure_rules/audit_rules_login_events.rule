@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Record Attempts to Alter Login and Logout Events'
+
+description: |-
+    The audit system already collects login info for all users and root. To watch for attempted manual edits of
+    files involved in storing login events, add the following to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-w /var/log/tallylog -p wa -k logins
+    -w /var/run/faillock/ -p wa -k logins
+    -w /var/log/lastlog -p wa -k logins</pre>
+
+rationale: |-
+    Manual editing of these files may indicate nefarious activity, such
+    as an attacker attempting to remove evidence of an intrusion.
+
+severity: unknown
+
+identifiers:
+    cce: 26691-6
+
+references:
+    nist: AC-3(10),AU-1(b),AU-12(a),AU-12(c),IR-5

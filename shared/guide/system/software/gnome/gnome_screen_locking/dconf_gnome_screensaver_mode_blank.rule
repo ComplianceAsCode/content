@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Implement Blank Screensaver'
+
+description: |-
+    To set the screensaver mode in the GNOME3 desktop to a blank screen,
+    add or set <tt>picture-uri</tt> to <tt>string ''</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/desktop/screensaver]
+    picture-uri=string ''
+    </pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/picture-uri</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Setting the screensaver mode to blank-only conceals the
+    contents of the display from passersby.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80113-4
+
+references:
+    cjis: 5.5.5
+    cui: 3.1.10
+    disa: 60
+    nist: AC-11(b)
+    ospp@rhel7: FMT_MOF_EXT.1
+    pcidss: Req-8.1.8
+
+ocil_clause: 'it is not set or configured properly'
+
+ocil: |-
+    To ensure the screensaver is configured to be blank, run the following command:
+    <pre>$ gsettings get org.gnome.desktop.screensaver picture-uri</pre>
+    If properly configured, the output should be <tt>''</tt>.
+
+    To ensure that users cannot set the screensaver background, run the following:
+    <pre>$ grep picture-uri /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/picture-uri</tt>

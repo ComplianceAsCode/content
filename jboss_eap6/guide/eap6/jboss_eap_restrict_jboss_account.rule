@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Restrict the JBoss Account'
+
+description: |-
+    Use the relevant OS commands to restrict JBoss user account from interactively
+    logging on to the console of the JBoss system.
+    <br /><br />
+    For Windows systems, use GPO.
+    For UNIX like systems using ssh DenyUsers <i>account id</i> or follow established
+    procedure for restricting access.
+
+rationale: |-
+    JBoss does not require admin rights to operate and should be run as a regular
+    user. In addition, if the user account was to be compromised and the account
+    was allowed interactive logon rights, this would increase the risk and attack
+    surface against the JBoss system. The right to interactively log on to the
+    system using the JBoss account should be limited according to the OS
+    capabilities.
+
+severity: high
+
+identifiers:
+    cce: 80465-8
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000220
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Identify the user account used to run the JBoss server. Use relevant OS
+    commands to determine logon rights to the system. This account should not have
+    full shell/interactive access to the system.
+    <br /><br />
+    If the user account used to
+    operate JBoss can log on interactively, this is a finding.

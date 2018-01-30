@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Configure JBoss Log Off-Loading Frequency'
+
+description: |-
+    Configure the application server to off-load log records every seven days onto
+    a different system or media from the system being logged.
+
+rationale: |-
+    JBoss logs by default are written to the local file system. A centralized
+    logging solution like syslog should be used whenever possible; however, any log
+    data stored to the file system needs to be off-loaded. JBoss EAP does not
+    provide an automated backup capability. Instead, reliance is placed on OS or
+    third-party tools to back up or off-load the log files.
+    <br /><br />
+    Protection of log data
+    includes assuring log data is not accidentally lost or deleted. Off-loading log
+    records to a different system or onto separate media from the system the
+    application server is actually running on helps to assure that, in the event of
+    a catastrophic system failure, the log records will be retained.
+
+severity: medium
+
+identifiers:
+    cce: 80463-3
+
+references:
+    disa: 1348
+    nist: ""
+    srg: SRG-APP-000125-AS-000084
+    stigid: JBOS-AS-000195
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Interview the system admin and obtain details on how the log files are being
+    off-loaded to a different system or media.
+    <br /><br />
+    If the log files are not off-loaded
+    a minimum of every 7 days, this is a finding.

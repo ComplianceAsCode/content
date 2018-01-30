@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify that Interactive Boot is Disabled'
+
+description: |-
+    Red Hat Enterprise Linux systems support an "interactive boot" option that can
+    be used to prevent services from being started. On a Red Hat Enterprise Linux 7
+    system, interactive boot can be enabled by providing a <tt>1</tt>,
+    <tt>yes</tt>, <tt>true</tt>, or <tt>on</tt> value to the
+    <tt>systemd.confirm_spawn</tt> kernel argument in <tt>/etc/default/grub</tt>.
+    Remove any instance of <pre>systemd.confirm_spawn=(1|yes|true|on)</pre> from
+    the kernel arguments in that file to disable interactive boot.
+
+rationale: |-
+    Using interactive boot, the console user could disable auditing, firewalls,
+    or other services, weakening system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27335-9
+
+references:
+    cui: 3.1.2,3.4.5
+    disa: 213
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: SC-2,AC-3
+    ospp@rhel7: FIA_AFL.1
+
+ocil_clause: 'Interactive boot is enabled at boot time'
+
+ocil: |-
+    Inspect <tt>/etc/default/grub</tt> for any instances of
+    <tt>systemd.confirm_spawn=(1|yes|true|on)</tt> in the kernel boot arguments.
+    Presence of a <tt>systemd.confirm_spawn=(1|yes|true|on)</tt> indicates
+    that interactive boot is enabled at boot time.

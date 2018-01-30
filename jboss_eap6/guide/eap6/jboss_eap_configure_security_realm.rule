@@ -1,0 +1,68 @@
+documentation_complete: true
+
+title: 'Secure the JBoss Management Interfaces'
+
+description: |-
+    Identify the security realm used for management of the system. By default,
+    this is called <tt>Management Realm</tt>.
+    <br /><br />
+    If a management security realm is not
+    already available, reference the Jboss EAP 6.3 system administration guide for
+    instructions on how to create a security realm for management purposes. Create
+    the management realm, and assign authentication and authorization access
+    restrictions to the management realm.
+    <br /><br />
+    Assign the management interfaces to the management realm.
+
+rationale: |-
+    JBoss utilizes the concept of security realms to secure the management
+    interfaces used for JBoss server administration. If the security realm
+    attribute is omitted or removed from the management interface definition, access
+    to that interface is no longer secure. The JBoss management interfaces must be
+    secured.
+
+severity: high
+
+identifiers:
+    cce: 80458-3
+
+references:
+    disa: 213
+    nist: ""
+    srg: SRG-APP-000033-AS-000024
+    stigid: JBOS-AS-000075
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <pre>&lt;JBOSS_HOME&gt;/bin/</pre>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Identify the management interfaces. To identity the management interfaces, run
+    the following command:
+    <br /><br />
+    For standalone servers:
+    <pre>ls /core-service=management/management-interface=</pre>
+    <br /><br />
+    For managed domain installations:
+    <pre>ls /host=HOST_NAME/core-service=management/management-interface=</pre>
+    <br /><br />
+    By default,
+    JBoss provides two management interfaces; they are named <tt>NATIVE-INTERFACE</tt>
+    and <tt>HTTP-INTERFACE</tt>. The system may or may not have both
+    interfaces enabled. For each management interface listed as a result of the
+    previous command, append the name of the management interface to the end of the
+    following command.
+    <br /><br />
+    For a standalone system:
+    <br /><br />
+    <pre>ls /core-service=management/management-interface=&lt;MANAGEMENT INTERFACE NAME&gt;</pre>
+    <br /><br />
+    For a managed domain:
+    <pre>ls /host=HOST_NAME/core-service=management/management-interface=&lt;MANAGEMENT INTERFACE NAME&gt;</pre>
+    <br /><br />
+    If the <pre>security-realm=</pre> attribute is not
+    associated with a management realm, this is a finding.

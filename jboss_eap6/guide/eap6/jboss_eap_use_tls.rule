@@ -1,0 +1,60 @@
+documentation_complete: true
+
+title: 'Use Approves TLS version'
+
+description: |-
+    Reference section 4.6 of the JBoss EAP 6.3 Security Guide located on the Red
+    Hat vendor's web site for step-by-step instructions on establishing SSL
+    encryption on JBoss.
+    <br /><br />
+    The overall steps include:
+    <br /><br />
+    1. Add an HTTPS connector.
+    2. Configure the SSL encryption certificate and keys.
+    3. Set the protocol to TLS V1.1 or V1.2.
+
+rationale: |-
+    Preventing the disclosure of transmitted information requires that the
+    application server take measures to employ some form of cryptographic mechanism
+    in order to protect the information during transmission. This is usually
+    achieved through the use of Transport Layer Security (TLS).
+    <br /><br />
+    JBoss relies on
+    the underlying SSL implementation running on the OS. This can be either Java
+    based or OpenSSL. The SSL protocol setting determines which SSL protocol is
+    used. SSL has known security vulnerabilities, so TLS should be used instead.
+    If data is transmitted unencrypted, the data then becomes vulnerable to
+    disclosure. The disclosure may reveal user identifier/password combinations,
+    website code revealing business logic, or other user personal information.
+    <br /><br />
+    FIPS 140-2 approved TLS versions include TLS V1.0 or greater.
+    <br /><br />
+    TLS must be enabled,
+    and non-FIPS-approved SSL versions must be disabled. NIST SP 800-52 specifies
+    the preferred configurations for government systems.
+
+severity: medium
+
+identifiers:
+    cce: 80493-0
+
+references:
+    disa: 2418
+    nist: ""
+    srg: SRG-APP-000439-AS-000155
+    stigid: JBOS-AS-000650
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Validate that the TLS protocol is used for HTTPS connections.
+    Run the command:
+    <pre>ls /subsystem=web/connector=https/ssl=configuration</pre>
+    <br /><br />
+    If a TLS V1.1 or V1.2 protocol is not returned, this is a finding.

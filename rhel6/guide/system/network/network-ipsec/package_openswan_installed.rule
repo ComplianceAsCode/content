@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Install openswan or libreswan Package'
+
+description: |-
+    The openswan and libreswan packages provide an implementation of
+    IPsec and IKE, which permits the creation of secure tunnels over untrusted
+    networks.
+    <yum-macro install="true" package="openswan" />
+    <yum-macro install="true" package="libreswan" />
+
+rationale: |-
+    Providing the ability for remote users or systems
+    to initiate a secure VPN connection protects information when it is
+    transmitted over a wide area network.
+
+severity: unknown
+
+identifiers:
+    cce: 27626-1
+
+references:
+    disa: 1130,1131
+    nist: 'AC-17, MA-4, SC-8'
+    pcidss: Req-4.1
+    srg: SRG-OS-000160
+    stigid: RHEL-06-000321
+
+ocil_clause: 'the package is not installed'
+
+ocil: |-
+    <package-check-macro package="openswan" />
+    <package-check-macro package="libreswan" />
+    <br /><br />
+    If the system does not communicate over untrusted networks, this is not applicable.

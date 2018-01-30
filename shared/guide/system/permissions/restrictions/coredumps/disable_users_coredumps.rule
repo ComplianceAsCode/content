@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Core Dumps for All Users'
+
+description: |-
+    To disable core dumps for all users, add the following line to
+    <tt>/etc/security/limits.conf</tt>:
+    <pre>*     hard   core    0</pre>
+
+rationale: |-
+    A core dump includes a memory image taken at the time the operating system
+    terminates an application. The memory image could contain sensitive data and is generally useful
+    only for developers trying to debug problems.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80169-6
+
+references:
+    cis: 1.5.1
+    nist: SC-5
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that core dumps are disabled for all users, run the following command:
+    <pre>$ grep core /etc/security/limits.conf</pre>
+    The output should be:
+    <pre>*     hard   core    0</pre>

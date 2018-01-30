@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure Kernel Parameter to Log Martian Packets By Default'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.log_martians" value="1" />'
+
+rationale: |-
+    The presence of "martian" packets (which have impossible addresses)
+    as well as spoofed packets, source-routed packets, and redirects could be a
+    sign of nefarious network activity. Logging these packets enables this activity
+    to be detected.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80161-3
+
+references:
+    cis: 3.2.4
+    cui: 3.1.20
+    disa: 126
+    nist: AC-17(7),CM-7,SC-5(3)
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.log_martians" value="1" />'

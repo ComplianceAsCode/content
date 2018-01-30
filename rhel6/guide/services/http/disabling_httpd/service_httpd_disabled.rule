@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Disable httpd Service'
+
+description: '<chkconfig-service-macro enable="false" service="httpd" />'
+
+rationale: |-
+    Running web server software provides a network-based avenue
+    of attack, and should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce: 27075-1
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="httpd" />'

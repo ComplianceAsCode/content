@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Verify /boot/efi/EFI/redhat/grub.cfg Permissions'
+
+description: |-
+    File permissions for <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should be set to 600.
+    <fileperms-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" perms="700" />
+
+rationale: |-
+    Proper permissions ensure that only the root user can modify important boot
+    parameters.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: TBD
+
+references:
+    cis: 1.4.1
+    cui: 3.4.5
+    disa: 225
+    nist: AC-6(7)
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To check the permissions of /boot/efi/EFI/redhat/grub.cfg, run the command:
+    <pre>$ sudo ls -lL /boot/efi/EFI/redhat/grub.cfg</pre>
+    If properly configured, the output should indicate the following
+    permissions: <tt>-rwx------</tt>

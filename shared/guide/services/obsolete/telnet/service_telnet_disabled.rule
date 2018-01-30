@@ -1,0 +1,53 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable telnet Service'
+
+description: |-
+    The <tt>telnet</tt> service configuration file <tt>/etc/xinetd.d/telnet</tt>
+    is not created automatically. If it was created manually, check the
+    <tt>/etc/xinetd.d/telnet</tt> file and ensure that <tt>disable = no</tt>
+    is changed to read <tt>disable = yes</tt> as follows below:
+    <pre>
+    # description: The telnet server serves telnet sessions; it uses \\
+    #       unencrypted username/password pairs for authentication.
+    service telnet
+    {
+            flags           = REUSE
+            socket_type     = stream
+
+            wait            = no
+            user            = root
+            server          = /usr/sbin/in.telnetd
+            log_on_failure  += USERID
+            disable         = yes
+    }
+    </pre>
+    If the <tt>/etc/xinetd.d/telnet</tt> file does not exist, make sure that
+    the activation of the <tt>telnet</tt> service on system boot is disabled
+    via the following command:
+    <systemd-socket-macro enable="false" socket="rexec" />
+
+rationale: |-
+    The telnet protocol uses unencrypted network communication, which
+    means that data from the login session, including passwords and
+    all other information transmitted during the session, can be
+    stolen by eavesdroppers on the network. The telnet protocol is also
+    subject to man-in-the-middle attacks.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27401-9
+
+references:
+    cis: 2.2.18
+    cui: 3.1.13,3.4.7
+    disa: ""
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8),CM-7,IA-5(1)(c)
+
+ocil: |-
+    <systemd-socket-check-macro enable="false" socket="telnet" />
+    <xinetd-systemd-check-macro enable="false" service="telnet" />

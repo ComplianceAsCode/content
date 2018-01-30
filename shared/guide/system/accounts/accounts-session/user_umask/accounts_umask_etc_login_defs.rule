@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure the Default Umask is Set Correctly in login.defs'
+
+description: |-
+    To ensure the default umask controlled by <tt>/etc/login.defs</tt> is set properly,
+    add or correct the <tt>UMASK</tt> setting in <tt>/etc/login.defs</tt> to read as follows:
+    <pre>UMASK <sub idref="var_accounts_user_umask" /></pre>
+
+rationale: |-
+    The umask value influences the permissions assigned to files when they are created.
+    A misconfigured umask value could result in files with excessive permissions that can be read and
+    written to by unauthorized users.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80205-8
+
+references:
+    disa: 366
+    nist: CM-6(b),SA-8
+    srg: SRG-OS-000480-GPOS-00228
+    stigid@rhel7: "020240"
+
+ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
+
+ocil: |-
+    Verify the <tt>UMASK</tt> setting is configured correctly in the <tt>/etc/login.defs</tt> file by
+    running the following command:
+    <pre># grep -i "UMASK" /etc/login.defs</pre>
+    All output must show the value of <tt>umask</tt> set as shown in the below:
+    <pre># grep -i "UMASK" /etc/login.defs
+    umask <sub idref="var_accounts_user_umask" /></pre>

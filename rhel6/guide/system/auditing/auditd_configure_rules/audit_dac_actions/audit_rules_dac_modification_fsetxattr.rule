@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Discretionary Access Controls - fsetxattr'
+
+description: |-
+    At a minimum the audit system should collect file
+    permission changes for all users and root. Add the following to
+    <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F arch=b32 -S fsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+    If the system is 64 bit then also add the following:
+    <pre>-a always,exit -F arch=b64 -S fsetxattr -F auid&gt;=500 -F auid!=4294967295 -k perm_mod</pre>
+
+rationale: |-
+    The changing of file permissions could indicate that a user is attempting to
+    gain access to information that would otherwise be disallowed. Auditing DAC modifications
+    can facilitate the identification of patterns of abuse among both authorized and
+    unauthorized users.
+
+severity: unknown
+
+identifiers:
+    cce: 27180-9
+
+references:
+    disa: 126
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.5.5
+    srg: SRG-OS-000064
+    stigid: RHEL-06-000191
+
+ocil: '<audit-syscall-check-macro syscall="fsetxattr" />'

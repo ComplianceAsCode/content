@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Restrict exposed kernel pointers addresses access'
+
+description: '<sysctl-desc-macro sysctl="kernel.kptr_restrict" value="1" />'
+
+rationale: |-
+    Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes
+    kernel writeable structures that can contain functions pointers. If a write vulnereability occurs
+    in the kernel allowing a write access to any of this structure, the kernel can be compromise. This
+    option disallow any program withtout the CAP_SYSLOG capability from getting the kernel pointers addresses,
+    replacing them with 0.
+
+severity: low
+
+references:
+    anssi: NT28(R23)
+
+ocil: '<sysctl-check-macro sysctl="kernel.kptr_restrict" value="1" />'

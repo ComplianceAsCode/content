@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Full User Name on Splash Shield'
+
+description: |-
+    By default when the screen is locked, the splash shield will show the user's
+    full name. This should be disabled to prevent casual observers from seeing
+    who has access to the system. This can be disabled by adding or setting
+    <tt>show-full-name-in-top-bar</tt> to <tt>false</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/desktop/screensaver]
+    show-full-name-in-top-bar=false
+    </pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/show-full-name-in-top-bar</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Setting the splash screen to not reveal the logged in user's name
+    conceals who has access to the system from passersby.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80114-2
+
+references:
+    ospp@rhel7: FMT_MOF_EXT.1
+
+ocil_clause: 'it is not set or configured properly'
+
+ocil: |-
+    To ensure the splash screen is configured not to show user name, run the following command:
+    <pre>$ gsettings get org.gnome.desktop.screensaver show-full-name-in-top-bar</pre>
+    If properly configured, the output should be <tt>false</tt>.
+    To ensure that users cannot enable user name on the lock screen, run the following:
+    <pre>$ grep show-full-name-in-top-bar /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/show-full-name-in-top-bar</tt>

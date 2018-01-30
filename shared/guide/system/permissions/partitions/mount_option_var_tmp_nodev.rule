@@ -1,0 +1,19 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Add nodev Option to /var/tmp'
+
+description: "The <tt>nodev</tt> mount option can be used to prevent device files from\nbeing created in <tt>/var/tmp</tt>.\nLegitimate character and block devices should not exist\nwithin temporary directories like <tt>/var/tmp</tt>. \n<mount-desc-macro option=\"nodev\" part=\"/var/tmp\" />"
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory
+    located on the root partition. The only exception to this is chroot jails.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: TBD
+
+references:
+    cis: 1.1.8

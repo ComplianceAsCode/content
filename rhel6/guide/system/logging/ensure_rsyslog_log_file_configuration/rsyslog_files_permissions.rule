@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Ensure System Log Files Have Correct Permissions'
+
+description: "The file permissions for all log files written by\n<tt>rsyslog</tt> should be set to 600, or more restrictive.\nThese log files are determined by the second part of each Rule line in\n<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. \nFor each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,\nrun the following command to inspect the file's permissions:\n<pre>$ ls -l <i>LOGFILE</i></pre>\nIf the permissions are not 600 or more restrictive,\nrun the following command to correct this:\n<pre>$ sudo chmod 0600 <i>LOGFILE</i></pre>"
+
+rationale: |-
+    Log files can contain valuable information regarding system
+    configuration. If the system log files are not protected unauthorized
+    users could change the logged data, eliminating their forensic value.
+
+severity: medium
+
+identifiers:
+    cce: 27190-8
+
+references:
+    disa: 1314
+    nist: SI-11
+    pcidss: Req-10.5.1,Req-10.5.2
+    srg: SRG-OS-000206
+    stigid: RHEL-06-000135
+
+ocil_clause: 'the permissions are not correct'
+
+ocil: "The file permissions for all log files written by <tt>rsyslog</tt> \nshould be set to 600, or more restrictive.\nThese log files are determined by the second part of each Rule line in\n<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>.\nTo see the permissions of a given log file, run the following command:\n<pre>$ ls -l <i>LOGFILE</i></pre>\nThe permissions should be 600, or more restrictive. Some log files referenced\nin /etc/rsyslog.conf may be created by other programs and may require \nexclusion from consideration, such as /var/log/boot.log."

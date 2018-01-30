@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Enable cron Service'
+
+description: |-
+    The <tt>crond</tt> service is used to execute commands at
+    preconfigured times. It is required by almost all systems to perform necessary
+    maintenance tasks, such as notifying root of system activity.
+    <systemd-service-macro enable="true" service="crond" />
+
+rationale: |-
+    Due to its usage for maintenance and security-supporting tasks,
+    enabling the cron daemon is essential.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27323-5
+
+references:
+    cis: 5.1.1
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="true" service="crond" />'

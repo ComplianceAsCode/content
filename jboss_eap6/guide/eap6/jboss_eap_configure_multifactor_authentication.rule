@@ -1,0 +1,83 @@
+documentation_complete: true
+
+title: 'Configure Multi-Factor Authentication'
+
+description: |-
+    Configure the application server to authenticate privileged users via
+    multifactor/certificate-based authentication mechanisms when using network
+    access to the management interface.
+
+rationale: |-
+    Multifactor authentication creates a layered defense and makes it more
+    difficult for an unauthorized person to access the application server. If one
+    factor is compromised or broken, the attacker still has at least one more
+    barrier to breach before successfully breaking into the target. Unlike a simple
+    username/password scenario where the attacker could gain access by knowing both
+    the username and password without the user knowing his account was compromised,
+    multifactor authentication adds the requirement that the attacker must have
+    something from the user, such as a token, or to biometrically be the user.
+    Multifactor authentication is defined as: using two or more factors to achieve
+    authentication.
+    <br /><br />
+    Factors include:
+    (i) something a user knows (e.g.,
+    password/PIN);
+    (ii) something a user has (e.g., cryptographic identification
+    device, token); or
+    (iii) something a user is (e.g., biometric). A CAC or PKI
+    Hardware Token meets this definition.
+    <br /><br />
+    A privileged account is defined as an
+    information system account with authorizations of a privileged user. These
+    accounts would be capable of accessing the web management interface.
+    <br /><br />
+    When
+    accessing the application server via a network connection, administrative access
+    to the application server must be PKI Hardware Token enabled or a DoD-approved
+    soft certificate.
+
+severity: medium
+
+identifiers:
+    cce: 80474-0
+
+references:
+    disa: 765
+    nist: ""
+    srg: SRG-APP-000149-AS-000102
+    stigid: JBOS-AS-000265
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Follow these steps:
+    1. Identify the security realm assigned to the management
+    interfaces by using the following command:
+    <br /><br />
+    For standalone systems:
+    <pre>ls /core-service=management/management-interface=<i>INTERFACE-NAME</i></pre>
+    <br /><br />
+    For
+    managed domain systems:
+    <pre>ls /host=master/core-service=management/management-interface=<i>INTERFACE-NAME</i></pre>
+    <br /><br />
+    Document the name of the security-realm associated with each management interface.
+    <br /><br />
+    2. Review the security realm
+    using the command:
+    <br /><br />
+    For standalone systems:
+    <pre>ls /core-service=management/security-realm=<i>SECURITY_REALM_NAME</i>/authentication</pre>
+    <br /><br />
+    For managed domains:
+    <pre>ls /host=master/core-service=management/security-realm=<i>SECURITY_REALM_NAME</i>/authentication</pre>
+    <br /><br />
+    If the command in step 2 does
+    not return a security realm that uses certificates for authentication, this is a
+    finding.

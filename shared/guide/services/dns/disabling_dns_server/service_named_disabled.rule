@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable DNS Server'
+
+description: '<systemd-service-macro enable="false" service="named" />'
+
+rationale: |-
+    All network services involve some risk of compromise due to
+    implementation flaws and should be disabled if possible.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80325-4
+
+references:
+    cis: 2.2.8
+    disa: 366
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="named" />'

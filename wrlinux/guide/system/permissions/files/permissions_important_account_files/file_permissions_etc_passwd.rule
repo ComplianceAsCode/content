@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Verify Permissions on <tt>passwd</tt> File'
+
+description: '<fileperms-desc-macro file="/etc/passwd" perms="0644" />'
+
+rationale: |-
+    If the <tt>/etc/passwd</tt> file is writable by a group-owner or the world the risk of its compromise is increased.
+    The file contains the list of accounts on the system and associated information, and protection of this file is critical for system security.
+
+severity: medium
+
+references:
+    disa: ""
+    nist: AC-6
+    pcidss: Req-8.7.c
+
+ocil: '<fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--" />'

@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the abrt_upload_watch_anon_write SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>abrt_upload_watch_anon_write</tt> is enabled.
+    This setting should be disabled as it allows the Automatic Bug Report Tool (ABRT)
+    to modify public files used for public file transfer services.
+    <sebool-macro enable="false" sebool="abrt_upload_watch_anon_write" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80421-1
+
+references:
+    cui: 3.7.2
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'abrt_upload_watch_anon_write is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="abrt_upload_watch_anon_write" />'

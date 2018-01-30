@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure Kernel Parameter for Accepting Secure Redirects for All Interfaces'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />'
+
+rationale: |-
+    Accepting "secure" ICMP redirects (from those gateways listed as
+    default gateways) has few legitimate uses. It should be disabled unless it is
+    absolutely required.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80159-7
+
+references:
+    cis: 3.2.3
+    cui: 3.1.20
+    disa: 1503,1551
+    nist: AC-4,CM-7,SC-5
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />'

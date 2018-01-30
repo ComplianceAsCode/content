@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the selinuxuser_execheap SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>selinuxuser_execheap</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="selinuxuser_execheap" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
+    stigid@rhel7: TBD
+
+ocil_clause: 'selinuxuser_execheap is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="selinuxuser_execheap" />'

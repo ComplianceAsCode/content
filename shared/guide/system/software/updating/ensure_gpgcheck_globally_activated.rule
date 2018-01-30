@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora,ol7
+
+title: 'Ensure gpgcheck Enabled In Main Yum Configuration'
+
+description: |-
+    The <tt>gpgcheck</tt> option controls whether
+    RPM packages' signatures are always checked prior to installation.
+    To configure yum to check package signatures before installing
+    them, ensure the following line appears in <tt>/etc/yum.conf</tt> in
+    the <tt>[main]</tt> section:
+    <pre>gpgcheck=1</pre>
+
+rationale: "Changes to any software components can have significant effects on the overall security \nof the operating system. This requirement ensures the software has not been tampered with\nand that it has been provided by a trusted vendor.\n<br />\nAccordingly, patches, service packs, device drivers, or operating system components must\nbe signed with a certificate recognized and approved by the organization.\n<br />\nVerifying the authenticity of the software prior to installation\nvalidates the integrity of the patch or upgrade received from\na vendor. This ensures the software has not been tampered with and\nthat it has been provided by a trusted vendor. Self-signed\ncertificates are disallowed by this requirement. Certificates\nused to verify the software must be from an approved Certificate\nAuthority (CA)."
+
+severity: high
+
+identifiers:
+    cce@rhel7: 26989-4
+
+references:
+    cis: 1.2.2
+    cjis: 5.10.4.1
+    cui: 3.4.8
+    disa: 1749
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    nist: CM-5(3),SI-7,MA-1(b)
+    ospp@rhel7: FAU_GEN.1.1.c
+    pcidss: Req-6.2
+    srg: SRG-OS-000366-GPOS-00153
+    stigid@rhel7: "020050"
+
+ocil_clause: 'GPG checking is not enabled'
+
+ocil: |-
+    To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
+    inspect <tt>/etc/yum.conf</tt> and ensure the following appears in the
+    <tt>[main]</tt> section:
+    <pre>gpgcheck=1</pre>
+    A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
+    <tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
+    disabled.

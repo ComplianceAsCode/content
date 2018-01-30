@@ -1,0 +1,69 @@
+documentation_complete: true
+
+title: 'Configure JBoss Logging Level'
+
+description: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script to start the Command Line Interface (CLI).
+    Connect to the server and authenticate.
+    <br /><br />
+    The PROFILE NAMEs included with a
+    Managed Domain JBoss configuration are:
+    <tt>default</tt>, <tt>full</tt>, <tt>full-ha</tt>, or <tt>ha</tt>
+    For a Managed Domain configuration, you must check
+    each profile name:
+    <br /><br />
+    For each PROFILE NAME, run the command:
+    <pre>/profile=<i>PROFILE NAME</i>/subsystem=logging/root-logger=ROOT:write-attribute(name=level,value=INFO)</pre>
+    <br /><br />
+    For a Standalone configuration:
+    <pre>/subsystem=logging/root-logger=ROOT:write-attribute(name=level,value=INFO)</pre>
+
+rationale: |-
+    800 records less data and may result in an insufficient amount of information
+    being logged by the ROOT logger. This can result in failed forensic
+    investigations. The ROOT logger level must be INFO level or lower to provide
+    adequate log information.
+
+severity: medium
+
+identifiers:
+    cce: 80461-7
+
+references:
+    disa: 1487
+    nist: ""
+    srg: SRG-APP-000100-AS-000063
+    stigid: JBOS-AS-000135
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script to start the Command Line Interface (CLI).
+    Connect to the server and authenticate.
+    <br /><br />
+    The PROFILE NAMEs included with a
+    Managed Domain JBoss configuration are:
+    <tt>default</tt>, <tt>full</tt>, <tt>full-ha</tt>, or <tt>ha</tt>
+    For a Managed Domain configuration, you must check
+    each profile name:
+    <br /><br />
+    For each PROFILE NAME, run the command:
+    <pre>ls /profile=<i>PROFILE NAME</i>/subsystem=logging/root-logger=ROOT</pre>
+    <br /><br />
+    If ROOT logger
+    <tt>level</tt> is not set to INFO, DEBUG or TRACE
+    This is a finding for each
+    <i>PROFILE NAME</i> (default, full, full-ha and ha)
+    <br /><br />
+    For a Standalone configuration:
+    <pre>ls /subsystem=logging/root-logger=ROOT</pre>
+    <br /><br />
+    If "level" not = INFO, DEBUG or TRACE, this is a finding.

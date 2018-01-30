@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Disable Bluetooth Service'
+
+description: |-
+    <chkconfig-service-macro enable="false" service="bluetooth" />
+    <pre>$ sudo service bluetooth stop</pre>
+
+rationale: |-
+    Disabling the <tt>bluetooth</tt> service prevents the system from attempting
+    connections to Bluetooth devices, which entails some security risk.
+    Nevertheless, variation in this risk decision may be expected due to the
+    utility of Bluetooth connectivity and its limited range.
+
+severity: medium
+
+identifiers:
+    cce: 27081-9
+
+references:
+    disa: 85,1551
+    nist: AC-18(a),AC-18(d),AC-18(3),CM-7
+    srg: SRG-OS-000034
+    stigid: RHEL-06-000331
+
+ocil_clause: 'the service is configured to run'
+
+ocil: "To check that the <code>bluetooth</code> service is disabled in system boot configuration, run the following command: \n<pre># chkconfig <code>bluetooth</code> --list</pre>\nOutput should indicate the <code>bluetooth</code> service has either not been installed or has been disabled at all runlevels, as shown in the example below:\n<pre># chkconfig <code>bluetooth</code> --list\n<code>bluetooth</code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</pre>"

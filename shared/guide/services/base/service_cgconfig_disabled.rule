@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Control Group Config (cgconfig)'
+
+description: |-
+    Control groups allow an administrator to allocate system resources (such as CPU,
+    memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
+    a system. The <tt>cgconfig</tt> daemon starts at boot and establishes the predefined control groups.
+    <systemd-service-macro enable="false" service="cgconfig" />
+
+rationale: |-
+    Unless control groups are used to manage system resources, running the cgconfig
+    service is not necessary.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80254-6
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="cgconfig" />'

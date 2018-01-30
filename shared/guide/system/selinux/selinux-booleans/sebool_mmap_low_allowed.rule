@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the mmap_low_allowed SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mmap_low_allowed</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="mmap_low_allowed" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'mmap_low_allowed is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="mmap_low_allowed" />'

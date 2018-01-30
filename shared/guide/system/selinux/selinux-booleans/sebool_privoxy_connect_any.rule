@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the privoxy_connect_any SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>privoxy_connect_any</tt> is enabled.
+    This setting should be disabled.
+    <sebool-macro enable="false" sebool="privoxy_connect_any" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'privoxy_connect_any is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="privoxy_connect_any" />'

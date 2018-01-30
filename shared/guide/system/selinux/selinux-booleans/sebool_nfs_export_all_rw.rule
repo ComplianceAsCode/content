@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the nfs_export_all_rw SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>nfs_export_all_rw</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows NFS to
+    export read/write mounts.
+    <sebool-macro enable="true" sebool="nfs_export_all_rw" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'nfs_export_all_rw is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="nfs_export_all_rw" />'

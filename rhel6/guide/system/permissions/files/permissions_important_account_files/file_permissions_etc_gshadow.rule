@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Verify Permissions on <tt>gshadow</tt> File'
+
+description: '<fileperms-desc-macro file="/etc/gshadow" perms="0000" />'
+
+rationale: |-
+    The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+    is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce: 26951-4
+
+references:
+    disa: 225
+    nist: AC-6
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000038
+
+ocil: '<fileperms-check-macro file="/etc/gshadow" perms="----------" />'

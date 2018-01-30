@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Add noexec Option to Removable Media Partitions'
+
+description: "The <tt>noexec</tt> mount option prevents the direct\nexecution of binaries on the mounted filesystem. \nPreventing the direct execution of binaries from removable media (such as a USB\nkey) provides a defense against malicious software that may be present on such\nuntrusted media.\n<mount-desc-macro option=\"noexec\" part=\"any removable media partitions\" />"
+
+rationale: |-
+    Allowing users to execute binaries from removable media such as USB keys exposes
+    the system to potential compromise.
+
+severity: unknown
+
+identifiers:
+    cce: 27196-5
+
+references:
+    disa: 87
+    nist: AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2
+    srg: SRG-OS-000035
+    stigid: RHEL-06-000271
+
+ocil_clause: 'removable media partitions are present'
+
+ocil: |-
+    To verify that binaries cannot be directly executed from removable media, run the following command:
+    <pre>$ grep -v noexec /etc/fstab</pre>
+    The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
+    in the output are not removable media.

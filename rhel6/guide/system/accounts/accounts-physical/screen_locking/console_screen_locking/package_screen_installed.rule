@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Install the screen Package'
+
+description: |-
+    To enable console screen locking, install the <tt>screen</tt> package:
+    <pre>$ sudo yum install screen</pre>
+    Instruct users to begin new terminal sessions with the following command:
+    <pre>$ screen</pre>
+    The console can now be locked with the following key combination:
+    <pre>ctrl+a x</pre>
+
+rationale: |-
+    Installing <tt>screen</tt> ensures a console locking capability is available
+    for users who may need to suspend console logins.
+
+severity: unknown
+
+identifiers:
+    cce: 26940-7
+
+references:
+    disa: 58
+    srg: SRG-OS-000030
+    stigid: RHEL-06-000071
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="screen" />'

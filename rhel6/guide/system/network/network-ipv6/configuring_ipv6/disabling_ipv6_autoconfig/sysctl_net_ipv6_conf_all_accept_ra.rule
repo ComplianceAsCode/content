@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Configure Accepting IPv6 Router Advertisements'
+
+description: '<sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_ra" value="0" />'
+
+rationale: 'An illicit router advertisement message could result in a man-in-the-middle attack.'
+
+severity: unknown
+
+identifiers:
+    cce: RHEL6-CCE-TBD
+
+references:
+    cis: 4.4.1.1
+    nist: CM-7
+
+ocil: '<sysctl-check-macro sysctl="net.ipv6.conf.all.accept_ra" value="0" />'

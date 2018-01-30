@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Ensure Red Hat GPG Key Installed'
+
+description: "To ensure the system can cryptographically verify base software\npackages come from Red Hat (and to connect to the Red Hat Network to\nreceive them), the Red Hat GPG key must properly be installed.  \nTo install the Red Hat GPG key, run:\n<pre>$ sudo subscription-manager register</pre>\nIf the system is not connected to the Internet or an RHN Satellite,\nthen install the Red Hat GPG key from trusted media such as\nthe Red Hat installation CD-ROM or DVD. Assuming the disc is mounted\nin <tt>/media/cdrom</tt>, use the following command as the root user to import\nit into the keyring:\n<pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>"
+
+rationale: |-
+    The Red Hat GPG key is necessary to cryptographically verify packages
+    are from Red Hat.
+
+severity: high
+
+identifiers:
+    cce: 26506-6
+
+references:
+    disa: 351
+    nist: SI-7,MA-1(b)
+    pcidss: Req-6.2
+    srg: SRG-OS-000090
+    stigid: RHEL-06-000008
+
+ocil_clause: 'the Red Hat GPG Key is not installed'
+
+ocil: |-
+    To ensure that the GPG key is installed, run:
+    <pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
+    The command should return the string below:
+    <pre>gpg(Red Hat, Inc. (release key 2)  &lt;security@redhat.com&gt;</pre>

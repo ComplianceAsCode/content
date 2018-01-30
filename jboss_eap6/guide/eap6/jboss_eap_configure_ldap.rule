@@ -1,0 +1,54 @@
+documentation_complete: true
+
+title: 'Configure LDAP'
+
+description: |-
+    Follow steps in section 11.8 - Management Interface Security in the
+    JBoss_Enterprise_Application_Platform-6.3
+    -Administration_and_Configuration_Guide-en-US document.
+    <br /><br />
+    1. Create an outbound connection to the LDAP server.
+    2. Create an LDAP-enabled security realm.
+    3. Reference the new security domain in the Management Interface.
+
+rationale: |-
+    To assure accountability and prevent unauthorized access, application server
+    users must be uniquely identified and authenticated. This is typically
+    accomplished via the use of a user store that is either local (OS-based) or
+    centralized (Active Directory/LDAP) in nature. It should be noted that JBoss
+    does not specifically mention Active Directory since AD is LDAP aware.
+    <br /><br />
+    To
+    ensure accountability and prevent unauthorized access, the JBoss Server must be
+    configured to utilize a centralized authentication mechanism.
+
+severity: medium
+
+identifiers:
+    cce: 80473-2
+
+references:
+    disa: 764
+    nist: ""
+    srg: SRG-APP-000148-AS-000101
+    stigid: JBOS-AS-000260
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    <br /><br />
+    To obtain the list of security realms run the command:
+    <pre>ls /core-service=management/security-realm=</pre>
+    <br /><br />
+    Review each security realm using the
+    command:
+    <pre>ls /core-service=management/security-realm=<i>SECURITY_REALM_NAME</i>/authentication</pre>
+    <br /><br />
+    If this command does not
+    return a security realm that uses LDAP for authentication, this is a finding.

@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Ensure gpgcheck Enabled In Main Yum Configuration'
+
+description: |-
+    The <tt>gpgcheck</tt> option controls whether
+    RPM packages' signatures are always checked prior to installation.
+    To configure yum to check package signatures before installing
+    them, ensure the following line appears in <tt>/etc/yum.conf</tt> in
+    the <tt>[main]</tt> section:
+    <pre>gpgcheck=1</pre>
+
+rationale: |-
+    Ensuring the validity of packages' cryptographic signatures prior to
+    installation ensures the authenticity of the software and
+    protects against malicious tampering.
+
+severity: medium
+
+identifiers:
+    cce: 26709-6
+
+references:
+    disa: 352,663
+    nist: SI-7,MA-1(b)
+    pcidss: Req-6.2
+    srg: SRG-OS-000103
+    stigid: RHEL-06-000013
+
+ocil_clause: 'GPG checking is not enabled'
+
+ocil: |-
+    To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
+    inspect <tt>/etc/yum.conf</tt> and ensure the following appears in the
+    <tt>[main]</tt> section:
+    <pre>gpgcheck=1</pre>
+    A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
+    <tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
+    disabled.

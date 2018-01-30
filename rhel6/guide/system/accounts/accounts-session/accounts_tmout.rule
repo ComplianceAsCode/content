@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Set Interactive Session Timeout'
+
+description: "Terminating an idle session within a short time period reduces \nthe window of opportunity for unauthorized personnel to take control of a \nmanagement session enabled on the console or console port that has been \nleft unattended."
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce: 27333-4
+
+ocil_clause: 'value of TMOUT is not greater than or equal to expected setting'
+
+ocil: |-
+    Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
+    on the system:
+    <pre>$ sudo grep TMOUT /etc/profile</pre>

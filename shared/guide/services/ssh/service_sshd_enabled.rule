@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the OpenSSH Service'
+
+description: |-
+    The SSH server service, sshd, is commonly needed.
+    <systemd-service-macro enable="true" service="sshd" />
+
+rationale: |-
+    Without protection of the transmitted information, confidentiality, and
+    integrity may be compromised because unprotected communications can be
+    intercepted and either read or altered.
+    <br /><br />
+    This checklist item applies to both internal and external networks and all types
+    of information system components from which information can be transmitted (e.g., servers,
+    mobile devices, notebook computers, printers, copiers, scanners, etc). Communication paths
+    outside the physical protection of a controlled boundary are exposed to the possibility
+    of interception and modification.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80216-5
+
+references:
+    cui: 3.1.13,3.5.4,3.13.8
+    disa: 2418,2420,2421,2422
+    nist: SC-8
+    srg: SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190
+    stigid@rhel7: "040310"
+
+ocil: '<systemd-check-macro enable="true" service="sshd" />'

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Set SSH Idle Timeout Interval'
+
+description: "SSH allows administrators to set an idle timeout\ninterval.\nAfter this interval has passed, the idle user will be\nautomatically logged out.\n<br /><br />\nTo set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as\nfollows:\n<pre>ClientAliveInterval <b>interval</b></pre>\nThe timeout <b>interval</b> is given in seconds. To have a timeout\nof 10 minutes, set <b>interval</b> to 600.\n<br /><br />\nIf a shorter timeout has already been set for the login shell, that value will \npreempt any SSH setting made here. Keep in mind that some processes may stop SSH\nfrom correctly detecting that the user is idle."
+
+rationale: |-
+    Terminating an idle ssh session within a short time period reduces the window of
+    opportunity for unauthorized personnel to take control of a management session
+    enabled on the console or console port that has been let unattended.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27433-2
+
+references:
+    cis: 5.2.12
+    cjis: 5.5.6
+    cui: 3.1.11
+    disa: 1133,2361
+    nist: AC-2(5),SA-8(i),AC-12
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109
+    stigid@rhel7: "040320"
+
+ocil_clause: 'it is commented out or not configured properly'
+
+ocil: |-
+    Run the following command to see what the timeout interval is:
+    <pre>$ sudo grep ClientAliveInterval /etc/ssh/sshd_config</pre>
+    If properly configured, the output should be:
+    <pre>ClientAliveInterval 600</pre>

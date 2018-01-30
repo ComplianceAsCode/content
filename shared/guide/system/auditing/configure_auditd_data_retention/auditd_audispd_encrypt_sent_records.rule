@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Encrypt Audit Records Sent With audispd Plugin'
+
+description: |-
+    Configure the operating system to encrypt the transfer of off-loaded audit
+    records onto a different system or media from the system being audited.
+    Uncomment the <tt>enable_krb5</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>,
+    and set it with the following line:
+    <pre>enable_krb5 = yes</pre>
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental deletion
+    or alteration. Off-loading is a common process in information systems with limited
+    audit storage capacity.
+
+severity: medium
+
+identifiers:
+    cce: 80540-8
+
+references:
+    disa: 1851
+    nist: ""
+    srg: SRG-OS-000342-GPOS-00133
+    stigid: "030310"
+
+ocil_clause: 'audispd is not encrypting audit records when sent over the network'
+
+ocil: |-
+    To verify the audispd plugin encrypts audit records off-loaded onto a different
+    system or media from the system being audited, run the following command:
+    <pre>$ sudo grep -i enable_krb5 /etc/audisp/audisp-remote.conf</pre>
+    The output should return the following:
+    <pre>enable_krb5 = yes</pre>

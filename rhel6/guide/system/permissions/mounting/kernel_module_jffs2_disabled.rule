@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Disable Mounting of <tt>jffs2</tt>'
+
+description: |-
+    <module-disable-macro module="jffs2" />
+    This effectively prevents usage of this uncommon filesystem.
+
+rationale: |-
+    Linux kernel modules which implement filesystems that are not needed by the
+    local system should be disabled.
+
+severity: unknown
+
+identifiers:
+    cce: 26670-0
+
+references:
+    nist: CM-7

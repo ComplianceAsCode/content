@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the CUPS Service'
+
+description: '<systemd-service-macro enable="false" service="cups" />'
+
+rationale: 'Turn off unneeded services to reduce attack surface.'
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80282-7
+
+references:
+    cis: 2.2.4
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="cups" />'

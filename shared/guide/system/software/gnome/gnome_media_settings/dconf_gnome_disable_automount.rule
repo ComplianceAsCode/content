@@ -1,0 +1,55 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable GNOME3 Automounting'
+
+description: |-
+    The system's default desktop environment, GNOME3, will mount
+    devices and removable media (such as DVDs, CDs and USB flash drives) whenever
+    they are inserted into the system. To disable automount and autorun within GNOME3, add or set
+    <tt>automount</tt> to <tt>false</tt>, <tt>automount-open</tt> to <tt>false</tt>, and
+    <tt>autorun-never</tt> to <tt>true</tt> in <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    For example:
+    <pre>[org/gnome/desktop/media-handling]
+    automount=false
+    automount-open=false
+    autorun-never=true</pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/media-handling/automount
+    /org/gnome/desktop/media-handling/automount-open
+    /org/gnome/desktop/media-handling/autorun-never</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Disabling automatic mounting in GNOME3 can prevent
+    the introduction of malware via removable media.
+    It will, however, also prevent desktop users from legitimate use
+    of removable media.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80122-5
+
+references:
+    cui: 3.1.7
+    nist: AC-19(a),AC-19(d),AC-19(e)
+
+ocil_clause: 'GNOME automounting is not disabled'
+
+ocil: |-
+    These settings can be verified by running the following:
+    <pre>$ gsettings get org.gnome.desktop.media-handling automount
+    $ gsettings get org.gnome.desktop.media-handling automount-open
+    $ gsettings get org.gnome.desktop.media-handling autorun-never</pre>
+    If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
+    If properly configured, the output for <tt>automount-open</tt>should be <tt>false</tt>.
+    If properly configured, the output for <tt>autorun-never</tt> should be <tt>true</tt>.
+    To ensure that users cannot enable automount and autorun in GNOME3, run the following:
+    <pre>$ grep 'automount\|autorun' /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
+    If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/auto-open</tt>
+    If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>

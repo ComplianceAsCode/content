@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Require Authentication for Single User Mode'
+
+description: |-
+    Single-user mode is intended as a system recovery
+    method, providing a single user root access to the system by
+    providing a boot option at startup. By default, no authentication
+    is performed if single-user mode is selected.
+    <br /><br />
+    To require entry of the root password even if the system is
+    started in single-user mode, add or correct the following line in the
+    file <tt>/etc/sysconfig/init</tt>:
+    <pre>SINGLE=/sbin/sulogin</pre>
+
+rationale: |-
+    This prevents attackers with physical access from trivially bypassing security
+    on the machine and gaining root access. Such accesses are further prevented
+    by configuring the bootloader password.
+
+severity: medium
+
+identifiers:
+    cce: 27040-5
+
+references:
+    disa: 213
+    nist: IA-2(1),AC-3
+    srg: SRG-OS-000080
+    stigid: RHEL-06-000069
+
+ocil_clause: 'the output is different'
+
+ocil: |-
+    To check if authentication is required for single-user mode, run the following command:
+    <pre>$ grep SINGLE /etc/sysconfig/init</pre>
+    The output should be the following:
+    <pre>SINGLE=/sbin/sulogin</pre>

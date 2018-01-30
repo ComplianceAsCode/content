@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Disable Google Analytics'
+
+description: |-
+    Using the EAP web console, log on using admin credentials.
+    On the bottom right-hand side of the screen, select <tt>Settings</tt>,
+    uncheck the <tt>Enable Data Usage Collection</tt> box, and save the
+    configuration.
+
+rationale: |-
+    The Google Analytics feature aims to help Red Hat EAP team understand how
+    customers are using the console and which parts of the console matter the most
+    to the customers. This information will, in turn, help the team to adapt the
+    console design, features, and content to the immediate needs of the customers.
+    Sending analytical data to the vendor introduces risk of unauthorized data
+    exfiltration. This capability must be disabled.
+
+severity: medium
+
+identifiers:
+    cce: 80466-6
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000225
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Open the EAP web console by pointing a web browser to
+    <pre>HTTPS://<i>SERVERNAME</i>:9443</pre>
+    or <pre>HTTP://<i>SERVERNAME</i>:9990</pre>
+    <br /><br />
+    Log on to the admin console using admin
+    credentials.
+    On the bottom right-hand side of the screen, select <tt>Settings</tt>.
+    If the <tt>Enable Data Usage Collection</tt> box is checked, this is a
+    finding.

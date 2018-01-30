@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify that Shared Library Files Have Root Ownership'
+
+description: |-
+    System-wide shared library files, which are linked to executables
+    during process load time or run time, are stored in the following directories
+    by default:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    Kernel modules, which can be added to the kernel during runtime, are also
+    stored in <tt>/lib/modules</tt>. All files in these directories should be
+    owned by the <tt>root</tt> user. If the directory, or any file in these
+    directories, is found to be owned by a user other than root correct its
+    ownership with the following command:
+    <pre>$ sudo chown root <i>FILE</i></pre>
+
+rationale: |-
+    Files from shared library directories are loaded into the address
+    space of processes (including privileged ones) or of the kernel itself at
+    runtime. Proper ownership is necessary to protect the integrity of the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 26648-6
+
+references:
+    disa: ""
+    nist: AC-6
+
+ocil_clause: 'any of these files are not owned by root'
+
+ocil: "Shared libraries are stored in the following directories:\n<pre>/lib\n/lib64\n/usr/lib\n/usr/lib64\n</pre>\nFor each of these directories, run the following command to find files not \nowned by root:\n<pre>$ sudo find -L <i>$DIR</i> \\! -user root -exec chown root {} \\;</pre>"

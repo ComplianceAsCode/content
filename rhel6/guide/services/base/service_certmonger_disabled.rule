@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable Certmonger Service (certmonger)'
+
+description: |-
+    Certmonger is a D-Bus based service that attempts to simplify interaction
+    with certifying authorities on networks which use public-key infrastructure. It is often
+    combined with Red Hat's IPA (Identity Policy Audit) security information management
+    solution to aid in the management of certificates.
+    <chkconfig-service-macro enable="false" service="certmonger" />
+
+rationale: |-
+    The services provided by certmonger may be essential for systems
+    fulfilling some roles a PKI infrastructure, but its functionality is not necessary
+    for many other use cases.
+
+severity: unknown
+
+identifiers:
+    cce: 27267-4
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="certmonger" />'

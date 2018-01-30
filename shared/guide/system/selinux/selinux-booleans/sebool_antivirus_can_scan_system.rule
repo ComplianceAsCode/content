@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the antivirus_can_scan_system SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>antivirus_can_scan_system</tt> is disabled.
+    This setting should be enabled as it allows antivirus programs to read non-security
+    files on a system.
+    <sebool-macro enable="true" sebool="antivirus_can_scan_system" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80422-9
+
+references:
+    cui: 3.7.2
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'antivirus_can_scan_system is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="antivirus_can_scan_system" />'

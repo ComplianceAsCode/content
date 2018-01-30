@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Disable Booting from USB Devices in Boot Firmware'
+
+description: |-
+    Configure the system boot firmware (historically called BIOS on PC
+    systems) to disallow booting from USB drives.
+
+rationale: |-
+    Booting a system from a USB device would allow an attacker to
+    circumvent any security measures provided by the operating system. Attackers
+    could mount partitions and modify the configuration of the OS.
+
+severity: unknown
+
+identifiers:
+    cce: 26923-3
+
+references:
+    disa: 1250
+    nist: AC-19(a),AC-19(d),AC-19(e)

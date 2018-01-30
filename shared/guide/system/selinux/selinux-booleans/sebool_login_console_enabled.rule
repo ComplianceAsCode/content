@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the login_console_enabled SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>login_console_enabled</tt> is enabled.
+    If this setting is disabled, it should be enabled as it allows login from
+    <tt>/dev/console</tt> to a console session.
+    <sebool-macro enable="true" sebool="login_console_enabled" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'login_console_enabled is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="login_console_enabled" />'

@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Require Authentication for Single User Mode'
+
+description: |-
+    Single-user mode is intended as a system recovery
+    method, providing a single user root access to the system by
+    providing a boot option at startup. By default, no authentication
+    is performed if single-user mode is selected.
+    <br /><br />
+    By default, single-user mode is protected by requiring a password and is set
+    in <tt>/usr/lib/systemd/system/rescue.service</tt>.
+
+rationale: |-
+    This prevents attackers with physical access from trivially bypassing security
+    on the machine and gaining root access. Such accesses are further prevented
+    by configuring the bootloader password.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27287-2
+
+references:
+    cis: 1.4.3
+    cui: 3.1.1,3.4.5
+    disa: 213
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: IA-2(1),AC-3
+    ospp@rhel7: FIA_AFL.1
+    srg: SRG-OS-000080-GPOS-00048
+    stigid: "010481"
+    stigid@rhel7: "010481"
+
+ocil_clause: 'the output is different'
+
+ocil: |-
+    To check if authentication is required for single-user mode, run the following command:
+    <pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
+    The output should be similar to the following, and the line must begin with
+    ExecStart and /sbin/sulogin:
+    <pre>ExecStart=-/sbin/sulogin</pre>

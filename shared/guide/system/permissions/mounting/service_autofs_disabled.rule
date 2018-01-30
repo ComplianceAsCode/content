@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable the Automounter'
+
+description: |-
+    The <tt>autofs</tt> daemon mounts and unmounts filesystems, such as user
+    home directories shared via NFS, on demand. In addition, autofs can be used to handle
+    removable media, and the default configuration provides the cdrom device as <tt>/misc/cd</tt>.
+    However, this method of providing access to removable media is not common, so autofs
+    can almost always be disabled if NFS is not in use. Even if NFS is required, it may be
+    possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
+    rather than relying on the automounter.
+    <br /><br />
+    <systemd-service-macro enable="false" service="autofs" />
+
+rationale: |-
+    Disabling the automounter permits the administrator to
+    statically control filesystem mounting through <tt>/etc/fstab</tt>.
+    <br /><br />
+    Additionally, automatically mounting filesystems permits easy introduction of
+    unknown devices, thereby facilitating malicious activity.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27498-5
+
+references:
+    cis: 1.1.22
+    cui: 3.4.6
+    disa: 366,778,1958
+    hipaa: 164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)
+    nist: AC-19(a),AC-19(d),AC-19(e),IA-3
+    srg: SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "020110"
+
+ocil: '<systemd-check-macro enable="false" service="autofs" />'

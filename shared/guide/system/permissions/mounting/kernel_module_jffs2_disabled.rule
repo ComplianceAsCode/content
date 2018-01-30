@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Mounting of <tt>jffs2</tt>'
+
+description: |-
+    <module-disable-macro module="jffs2" />
+    This effectively prevents usage of this uncommon filesystem.
+
+rationale: |-
+    Linux kernel modules which implement filesystems that are not needed by the
+    local system should be disabled.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 80139-9
+
+references:
+    cis: 1.1.1.3
+    cui: 3.4.6
+    nist: CM-7

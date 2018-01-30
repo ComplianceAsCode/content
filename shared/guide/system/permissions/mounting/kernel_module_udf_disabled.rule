@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Mounting of <tt>udf</tt>'
+
+description: |-
+    <module-disable-macro module="udf" />
+    This effectively prevents usage of this uncommon filesystem.
+
+rationale: |-
+    Linux kernel modules which implement filesystems that are not needed by the
+    local system should be disabled.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 80143-1
+
+references:
+    cis: 1.1.1.7
+    cui: 3.4.6
+    nist: CM-7

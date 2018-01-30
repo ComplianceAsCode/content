@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Disable Kernel Support for USB via Bootloader Configuration'
+
+description: "All USB support can be disabled by adding the <tt>nousb</tt>\nargument to the kernel's boot loader configuration. To do so, \nappend \"nousb\" to the kernel line in <tt>/etc/grub.conf</tt> as shown:\n<pre>kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet nousb</pre>\n<i><b>WARNING:</b> Disabling all kernel support for USB will cause problems for\nsystems with USB-based keyboards, mice, or printers. This configuration is\ninfeasible for systems which require USB devices, which is common.</i>"
+
+rationale: |-
+    Disabling the USB subsystem within the Linux kernel at system boot will
+    protect against potentially malicious USB devices, although it is only practical
+    in specialized systems.
+
+severity: unknown
+
+identifiers:
+    cce: 27011-6
+
+references:
+    disa: 1250
+    nist: AC-19(a),AC-19(d),AC-19(e)

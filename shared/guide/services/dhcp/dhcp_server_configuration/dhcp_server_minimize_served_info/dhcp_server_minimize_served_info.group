@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Minimize Served Information'
+
+description: |-
+    Edit /etc/dhcp/dhcpd.conf. Examine each address range section within
+    the file, and ensure that the following options are not defined unless there is
+    an operational need to provide this information via DHCP:
+    <pre>option domain-name
+    option domain-name-servers
+    option nis-domain
+    option nis-servers
+    option ntp-servers
+    option routers
+    option time-offset</pre>

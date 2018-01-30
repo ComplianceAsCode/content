@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure Kernel Parameter to Ignore ICMP Broadcast Echo Requests'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />'
+
+rationale: |-
+    Responding to broadcast (ICMP) echoes facilitates network mapping
+    and provides a vector for amplification attacks.
+    <br />
+    Ignoring ICMP echo requests (pings) sent to broadcast or multicast
+    addresses makes the system slightly more difficult to enumerate on the network.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80165-4
+
+references:
+    cis: 3.2.5
+    cjis: 5.10.1.1
+    cui: 3.1.20
+    disa: 366
+    nist: AC-4,CM-7,SC-5
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040630"
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />'

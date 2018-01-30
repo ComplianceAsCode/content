@@ -1,0 +1,76 @@
+documentation_complete: true
+
+title: 'Remove JBoss Group Acount Access'
+
+description: |-
+    Configure the application server so required users are individually
+    authenticated by creating individual user accounts. Utilize an LDAP server that
+    is configured according to DOD policy.
+
+rationale: |-
+    To assure individual accountability and prevent unauthorized access,
+    application server users (and any processes acting on behalf of application
+    server users) must be individually identified and authenticated.
+    <br /><br />
+    A group
+    authenticator is a generic account used by multiple individuals. Use of a group
+    authenticator alone does not uniquely identify individual users.
+    <br /><br />
+    Application
+    servers must ensure that individual users are authenticated prior to
+    authenticating via role or group authentication. This is to ensure that there is
+    non-repudiation for actions taken.
+
+severity: medium
+
+identifiers:
+    cce: 80475-7
+
+references:
+    disa: 770
+    nist: ""
+    srg: SRG-APP-000153-AS-000104
+    stigid: JBOS-AS-000275
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    If the application server management interface is configured to use LDAP
+    authentication this requirement is NA.
+    <br /><br />
+    Determine the mode in which the JBoss
+    server is operating by authenticating to the OS, changing to the
+    <tt>&lt;JBOSS_HOME&gt;/bin/</tt> folder and executing the <pre>jboss-cli</pre> script.
+    Connect to the
+    server and authenticate.
+    Run the command: <pre>ls</pre> and examine the <tt>launch-type</tt> setting.
+    <br /><br />
+    User account information is stored in the following
+    files for a JBoss server configured in standalone mode. The command line flags
+    passed to the <tt>standalone</tt> startup script determine the standalone
+    operating mode:
+    <pre>
+    &lt;JBOSS_HOME&gt;/standalone/configuration/standalone.xml
+    &lt;JBOSS_HOME&gt;/standalone/configuration/standalone-full.xml
+    &lt;JBOSS_HOME&gt;/standalone/configuration/standalone.-full-ha.xml
+    &lt;JBOSS_HOME&gt;/standalone/configuration/standalone.ha.xml
+    </pre>
+    <br /><br />
+    For a Managed Domain:
+    <pre>
+    &lt;JBOSS_HOME&gt;/domain/configuration/domain.xml
+    </pre>
+    <br /><br />
+    Review both files for generic or
+    shared user accounts.
+    <br /><br />
+    Open each xml file with a text editor and locate the
+    &lt;management-interfaces&gt; section.
+    Review the <pre>&lt;user name = "xxxxx"&gt;</pre> sub-
+    section where <pre>xxxxx</pre> will be a user name.
+    <br /><br />
+    Have the system
+    administrator identify the user of each user account.
+    <br /><br />
+    If user accounts are not
+    assigned to individual users, this is a finding.

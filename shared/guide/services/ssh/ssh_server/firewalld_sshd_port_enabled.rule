@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable SSH Server <tt>firewalld</tt> Firewall exception'
+
+description: |-
+    By default, inbound connections to SSH's port are allowed. If
+    the SSH server is being used but denied by the firewall, this exception should
+    be added to the firewall configuration.
+    <br /><br />
+    <firewalld-desc-macro allow="true" proto="tcp" service="ssh" />
+
+rationale: |-
+    If inbound SSH connections are expected, adding a firewall rule exception
+    will allow remote access through the SSH port.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80361-9
+
+references:
+    cui: 3.1.12
+
+ocil: '<firewalld-check-macro allow="true" port="22" proto="tcp" service="ssh" />'

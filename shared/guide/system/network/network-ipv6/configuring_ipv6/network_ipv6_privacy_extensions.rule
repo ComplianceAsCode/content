@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Use Privacy Extensions for Address'
+
+description: |-
+    To introduce randomness into the automatic generation of IPv6
+    addresses, add or correct the following line in
+    <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>:
+    <pre>IPV6_PRIVACY=rfc3041</pre>
+    Automatically-generated IPv6 addresses are based on the underlying hardware
+    (e.g. Ethernet) address, and so it becomes possible to track a piece of
+    hardware over its lifetime using its traffic. If it is important for a system's
+    IP address to not trivially reveal its hardware address, this setting should be
+    applied.
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80185-2
+
+references:
+    cui: 3.1.20
+    disa: 366

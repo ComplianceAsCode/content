@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure /var/log/audit Located On Separate Partition'
+
+description: |-
+    Audit logs are stored in the <tt>/var/log/audit</tt> directory.  Ensure that it
+    has its own partition or logical volume at installation time, or migrate it
+    later using LVM. Make absolutely certain that it is large enough to store all
+    audit logs that will be created by the auditing daemon.
+
+rationale: |-
+    Placing <tt>/var/log/audit</tt> in its own partition
+    enables better separation between audit files
+    and other files, and helps ensure that
+    auditing cannot be halted due to the partition running out
+    of space.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 26971-2
+
+references:
+    cis: 1.1.12
+    disa: 366
+    hipaa: 164.312(a)(2)(ii)
+    iso27001-2013: A.12.3.1
+    nist: AU-4,AU-9,SC-32(1)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021330"
+
+ocil: '<partition-check-macro part="/var/log/audit " />'

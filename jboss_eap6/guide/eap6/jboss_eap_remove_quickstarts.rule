@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Remove JBoss Quickstarts'
+
+description: 'Delete the QuickStarts folder.'
+
+rationale: |-
+    JBoss QuickStarts are demo applications that can be deployed quickly. Demo
+    applications are not written with security in mind and often open new attack
+    vectors. QuickStarts must be removed.
+
+severity: medium
+
+identifiers:
+    cce: 80468-2
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000235
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Examine the <tt>&lt;JBOSS_HOME&gt;</tt> folder. If a <tt>jboss-eap-6.3.0-GA-quickstarts</tt> folder
+    exits, this is a finding.

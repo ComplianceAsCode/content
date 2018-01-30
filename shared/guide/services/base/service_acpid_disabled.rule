@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Advanced Configuration and Power Interface (acpid)'
+
+description: |-
+    The Advanced Configuration and Power Interface Daemon (<tt>acpid</tt>)
+    dispatches ACPI events (such as power/reset button depressed) to userspace
+    programs.
+    <systemd-service-macro enable="false" service="acpid" />
+
+rationale: |-
+    ACPI support is highly desirable for systems in some network roles,
+    such as laptops or desktops. For other systems, such as servers, it may permit
+    accidental or trivially achievable denial of service situations and disabling
+    it is appropriate.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80252-0
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="acpid" />'

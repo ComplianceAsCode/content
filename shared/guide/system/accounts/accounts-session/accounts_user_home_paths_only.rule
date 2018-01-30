@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure that Users Path Contains Only Local Directories'
+
+description: |-
+    Ensure that all interactive user initialization files executable search
+    path statements do not contain statements that will reference a working
+    directory other than the users home directory.
+
+rationale: |-
+    The executable search path (typically the PATH environment variable) contains a
+    list of directories for the shell to search to find executables. If this path
+    includes the current working directory (other than the users home directory),
+    executables in these directories may be executed instead of system commands.
+    This variable is formatted as a colon-separated list of directories. If there is
+    an empty entry, such as a leading or trailing colon or two consecutive colons,
+    this is interpreted as the current working directory. If deviations from the
+    default system search path for the local interactive user are required, they
+    must be documented with the Information System Security Officer (ISSO).
+
+severity: medium
+
+identifiers:
+    cce: 80524-2
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "020720"
+
+ocil_clause: 'paths contain more than local home directories'
+
+ocil: |-
+    To verify that all interactive user initialization files executable search
+    path statements do not contain statements that will reference a working
+    directory other than the users home directory, run the following command:
+    <pre>$ sudo grep -r PATH /home/</pre>
+    Inspect the output for any PATH is references directories outside the home directory.

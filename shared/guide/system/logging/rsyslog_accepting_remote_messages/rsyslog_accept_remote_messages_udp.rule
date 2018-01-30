@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Enable rsyslog to Accept Messages via UDP, if Acting As Log Server'
+
+description: |-
+    The <tt>rsyslog</tt> daemon should not accept remote messages
+    unless the system acts as a log server.
+    If the system needs to act as a central log server, add the following lines to
+    <tt>/etc/rsyslog.conf</tt> to enable reception of messages over UDP:
+    <pre>$ModLoad imudp
+    $UDPServerRun 514</pre>
+
+rationale: |-
+    Many devices, such as switches, routers, and other Unix-like systems, may only support
+    the traditional syslog transmission over UDP. If the system must act as a log server,
+    this enables it to receive their messages as well.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80194-4
+
+references:
+    cis: 4.2.1.5
+    nist: AU-9

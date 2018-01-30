@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Permissions and ownership on <tt>passwd</tt> File'
+
+description: |-
+    <fileperms-desc-macro file="/etc/passwd" perms="0644" />
+      <fileowner-desc-macro file="/etc/passwd" owner="root" />
+      <filegroupowner-desc-macro file="/etc/passwd" group="root" />
+
+rationale: |-
+    The <tt>/etc/shadow</tt> file contains information about the users that are configured on
+    the system. Protection of this file is critical for system security.
+
+severity: medium
+
+references:
+    disa: ""
+    nist: AC-6
+
+ocil: |-
+    <fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--" />
+      <fileowner-check-macro file="/etc/passwd" owner="root" />
+      <filegroupowner-check-macro file="/etc/passwd" group="root" />

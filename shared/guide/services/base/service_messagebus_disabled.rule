@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable D-Bus IPC Service (messagebus)'
+
+description: "D-Bus provides an IPC mechanism used by \na growing list of programs, such as those used for Gnome, Bluetooth, and Avahi.\nDue to these dependencies, disabling D-Bus may not be practical for\nmany systems.\n<systemd-service-macro enable=\"false\" service=\"messagebus\" />"
+
+rationale: |-
+    If no services which require D-Bus are needed, then it
+    can be disabled. As a broker for IPC between processes of different privilege levels,
+    it could be a target for attack. However, disabling D-Bus is likely to be
+    impractical for any system which needs to provide
+    a graphical login session.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80260-3
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="messagebus" />'

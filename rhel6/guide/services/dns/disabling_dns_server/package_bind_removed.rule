@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Uninstall bind Package'
+
+description: |-
+    To remove the <tt>bind</tt> package, which contains the
+    <tt>named</tt> service, run the following command:
+    <pre>$ sudo yum erase bind</pre>
+
+rationale: |-
+    If there is no need to make DNS server software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+identifiers:
+    cce: 27030-6
+
+references:
+    disa: 366
+    nist: CM-7
+
+ocil: '<package-check-macro package="bind" />'

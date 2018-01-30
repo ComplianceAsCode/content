@@ -1,0 +1,50 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure HTTP PERL Scripts To Use TAINT Option'
+
+description: |-
+    If the <tt>mod_perl</tt> module is installed, enable Perl Taint checking in
+    <tt>/etc/httpd/conf/httpd.conf</tt>. To enable Perl Taint
+    checking, add or uncomment the following to <tt>/etc/httpd/conf.d/perl.conf</tt>:
+    <pre>PerlSwitches -T</pre>
+
+rationale: |-
+    PERL (Practical Extraction and Report Language) is an interpreted language
+    optimized for scanning arbitrary text files, extracting information from those
+    text files, and printing reports based on that information. The language is
+    often used in shell scripting and is intended to be practical, easy to use, and
+    efficient means of generating interactive web pages for the user. Unfortunately,
+    many widely available freeware PERL programs (scripts) are extremely insecure.
+    This is most readily accomplished by a malicious user substituting input to a
+    PERL script during a POST or a GET operation.
+    <br /><br />
+    Consequently, the founders of
+    PERL have developed a mechanism named TAINT that protects the system from
+    malicious input sent from outside the program. When the data is tainted, it
+    cannot be used in programs or functions such as eval(), system(), exec(), pipes,
+    or popen(). The script will exit with a warning message.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG460
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify if the <tt>mod_perl</tt> is installed, run the following command:
+    <pre>$ rpm -qa | grep mod_perl</pre>
+    If the <tt>mod_perl</tt> module is installed, verify that <tt>PerlSwitches -T</tt>
+    is enabled in <tt>/etc/httpd/conf.d/perl.conf</tt> by running the following
+    command:
+    <pre>$ grep -i "PerlSwitches -T" /etc/httpd/conf.d/perl.conf</pre>
+    The output should return uncommented:
+    <pre>PerlSwitches -T</pre>

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Set Account Expiration Following Inactivity'
+
+description: "To specify the number of days after a password expires (which\nsignifies inactivity) until an account is permanently disabled, add or correct\nthe following lines in <tt>/etc/default/useradd</tt>, substituting\n<tt><i>NUM_DAYS</i></tt> appropriately:\n<pre>INACTIVE=<i><sub idref=\"account_disable_post_pw_expiration\" /></i></pre>\nA value of 35 is recommended.  \nIf a password is currently on the\nverge of expiration, then 35 days remain until the account is automatically\ndisabled. However, if the password will not expire for another 60 days, then 95\ndays could elapse until the account would be automatically disabled. See the\n<tt>useradd</tt> man page for more information.  Determining the inactivity\ntimeout must be done with careful consideration of the length of a \"normal\"\nperiod of inactivity for users in the particular environment. Setting\nthe timeout too low incurs support costs and also has the potential to impact\navailability of the system to legitimate users."
+
+rationale: |-
+    Disabling inactive accounts ensures that accounts which may not
+    have been responsibly removed are not available to attackers
+    who may have compromised their credentials.
+
+severity: unknown
+
+identifiers:
+    cce: 27283-1
+
+references:
+    disa: 16,17,795
+    nist: 'AC-2(2), AC-2(3)'
+    pcidss: Req-8.1.4
+    srg: SRG-OS-000118
+    stigid: RHEL-06-000334
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To verify the <tt>INACTIVE</tt> setting, run the following command:
+    <pre>grep "INACTIVE" /etc/default/useradd</pre>
+    The output should indicate the <tt>INACTIVE</tt> configuration option is set
+    to an appropriate integer as shown in the example below:
+    <pre>$ sudo grep "INACTIVE" /etc/default/useradd
+    INACTIVE=<sub idref="account_disable_post_pw_expiration" /></pre>

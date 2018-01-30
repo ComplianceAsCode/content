@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Configure LDAP for Management Interfaces'
+
+description: |-
+    Follow steps in section 11.8 - Management Interface Security in the
+    JBoss_Enterprise_Application_Platform-6.3
+    -Administration_and_Configuration_Guide-en-US document.
+    <br /><br />
+    1. Create an outbound connection to the LDAP server.
+    2. Create an LDAP-enabled security realm.
+    3. Reference the new security domain in the Management Interface.
+
+rationale: |-
+    JBoss EAP provides a security realm called ManagementRealm. By default, this
+    realm uses the mgmt-users.properties file for authentication. Using file-based
+    authentication does not allow the JBoss server to be in compliance with a wide
+    range of user management requirements such as automatic disabling of inactive
+    accounts as per DoD policy. To address this issue, the management interfaces
+    used to manage the JBoss server must be associated with a security realm that
+    provides centralized authentication management. Examples are AD or LDAP.
+    Management of user identifiers is not applicable to shared information system
+    accounts (e.g., guest and anonymous accounts). It is commonly the case that a
+    user account is the name of an information system account associated with an
+    individual.
+
+severity: medium
+
+identifiers:
+    cce: 80477-3
+
+references:
+    disa: 795
+    nist: ""
+    srg: SRG-APP-000163-AS-000111
+    stigid: JBOS-AS-000290
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Obtain the list of management interfaces by running the command:
+    <pre>ls /core-service=management/management-interface</pre>
+    <br /><br />
+    Identify the security realm used
+    by each management interface configuration by running the command:
+    <pre>ls /core-service=management/management-interface=<i>MANAGEMENT-INTERFACE-NAME</i></pre>
+    Determine if the security realm assigned to the management interface uses LDAP
+    for authentication by running the command:
+    <pre>ls /core-service=management/security-realm=<i>SECURITY_REALM_NAME</i>/authentication</pre>
+    <br /><br />
+    If the security
+    realm assigned to the management interface does not utilize LDAP for
+    authentication, this is a finding.

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable Auditing for Processes Which Start Prior to the Audit Daemon'
+
+description: |-
+    To ensure all processes can be audited, even
+    those which start prior to the audit daemon, add the argument
+    <tt>audit=1</tt> to the kernel line in <tt>/etc/grub.conf</tt>, in the manner below:
+    <pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet audit=1</pre>
+
+rationale: |-
+    Each process on the system carries an "auditable" flag which
+    indicates whether its activities can be audited. Although <tt>auditd</tt>
+    takes care of enabling this for all processes which launch after it
+    does, adding the kernel argument ensures it is set for every
+    process during boot.
+
+severity: low
+
+identifiers:
+    cce: 26785-6
+
+references:
+    disa: 169
+    nist: AC-17(1),AU-14(1),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-10,IR-5
+    pcidss: Req-10.3
+    srg: SRG-OS-000062
+    stigid: RHEL-06-000525
+
+ocil_clause: 'auditing is not enabled at boot time'
+
+ocil: |-
+    Inspect the kernel boot arguments (which follow the word <tt>kernel</tt>) in
+    <tt>/etc/grub.conf</tt>. If they include <tt>audit=1</tt>, then
+    auditing is enabled at boot time.

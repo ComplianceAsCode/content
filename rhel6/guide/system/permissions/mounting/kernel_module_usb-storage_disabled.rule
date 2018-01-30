@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable Modprobe Loading of USB Storage Driver'
+
+description: "To prevent USB storage devices from being used, configure the kernel module loading system\nto prevent automatic loading of the USB storage driver. \n<module-disable-macro module=\"usb-storage\" />\nThis will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>\nmodule, but will not prevent an administrator (or another program) from using the\n<tt>insmod</tt> program to load the module manually."
+
+rationale: |-
+    USB storage devices such as thumb drives can be used to introduce
+    malicious software.
+
+severity: unknown
+
+identifiers:
+    cce: 27016-5
+
+references:
+    disa: 1250,85
+    nist: AC-19(a),AC-19(d),AC-19(e)
+    srg: SRG-OS-000273
+    stigid: RHEL-06-000503
+
+ocil: '<module-disable-check-macro module="usb-storage" />'

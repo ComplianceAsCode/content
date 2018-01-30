@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Record Attempts to Alter Time Through clock_settime'
+
+description: "On a 32-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:\n<pre># time-change\n-a always,exit -F arch=b32 -S clock_settime -F a0=0x0 -F key=time-change</pre>\nOn a 64-bit system, add the following to <tt>/etc/audit/audit.rules</tt>:\n<pre># time-change\n-a always,exit -F arch=b64 -S clock_settime -F a0=0x0 -F key=time-change</pre>\nThe -k option allows for the specification of a key in string form that can \nbe used for better reporting capability through ausearch and aureport.\nMultiple system calls can be defined on the same line to save space if \ndesired, but is not required. See an example of multiple combined syscalls:\n<pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>"
+
+rationale: "Arbitrary changes to the system time can be used to obfuscate \nnefarious activities in log files, as well as to confuse network services that \nare highly dependent upon an accurate system time (such as sshd). All changes \nto the system time should be audited."
+
+severity: unknown
+
+identifiers:
+    cce: 27170-0
+
+references:
+    disa: 1487,169
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.4.2.b
+    srg: SRG-OS-000062
+    stigid: RHEL-06-000171
+
+ocil_clause: 'the system is not configured to audit time changes'
+
+ocil: '<audit-syscall-check-macro syscall="clock_settime" />'

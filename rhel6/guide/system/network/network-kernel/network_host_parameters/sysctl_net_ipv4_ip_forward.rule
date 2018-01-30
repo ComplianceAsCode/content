@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable Kernel Parameter for IP Forwarding'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.ip_forward" value="0" />'
+
+rationale: |-
+    IP forwarding permits the kernel to forward packets from one network
+    interface to another. The ability to forward packets between two networks is
+    only appropriate for systems acting as routers.
+
+severity: medium
+
+identifiers:
+    cce: 26866-4
+
+references:
+    disa: 366
+    nist: 'CM-7, SC-5'
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000082
+
+ocil: |-
+    <sysctl-check-macro sysctl="net.ipv4.ip_forward" value="0" />
+    The ability to forward packets is only appropriate for routers.

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Remove .java And .jpp Files'
+
+description: |-
+    <tt>.java</tt> and <tt>.jpp</tt> files should not exist and should be removed
+    from the web server.
+
+rationale: |-
+    From the source code in a .java or a .jpp file, the Java compiler produces a
+    binary file with an extension of .class. The .java or .jpp file would,
+    therefore, reveal sensitive information regarding an application's logic and
+    permissions to resources on the server. By contrast, the .class file, because it
+    is intended to be machine independent, is referred to as bytecode. Bytecodes are
+    run by the Java Virtual Machine (JVM), or the Java Runtime Environment (JRE),
+    via a browser configured to permit Java code.
+
+severity: low
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG490
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that no <tt>.java</tt> and <tt>.jpp</tt> files exist, run the
+    following command:
+    <pre>find / -name *.java -o -name *.jpp</pre>
+    The output should not return any <tt>.java</tt> or <tt>.jpp</tt> files

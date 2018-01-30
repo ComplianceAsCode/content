@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Verify that System Executables Have Root Ownership'
+
+description: |-
+    System executables are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/libexec
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin</pre>
+    All files in these directories should be owned by the <tt>root</tt> user.
+    If any file <i>FILE</i> in these directories is found
+    to be owned by a user other than root, correct its ownership with the
+    following command:
+    <pre>$ sudo chown root <i>FILE</i></pre>
+
+rationale: 'System binaries are executed by privileged users as well as system services, and restrictive permissions are necessary to ensure that their execution of these programs cannot be co-opted.'
+
+severity: medium
+
+references:
+    disa: ""
+    nist: AC-6
+
+ocil_clause: 'any system executables are found to not be owned by root'
+
+ocil: |-
+    System executables are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/libexec
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin</pre>
+    To find system executables that are not owned by <tt>root</tt>,
+    run the following command for each directory <i>DIR</i> which contains system executables:
+    <pre>$ sudo find <i>DIR/</i> \! -user root</pre>

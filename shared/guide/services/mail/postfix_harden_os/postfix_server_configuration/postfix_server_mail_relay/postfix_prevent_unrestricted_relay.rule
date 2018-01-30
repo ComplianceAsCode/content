@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Prevent Unrestricted Mail Relaying'
+
+description: |-
+    Modify the <pre>/etc/postfix/main.cf</pre> file to restrict client connections
+    to the local network with the following command:
+    <pre>$ sudo postconf -e 'smtpd_client_restrictions = permit_mynetworks,reject'</pre>
+
+rationale: |-
+    If unrestricted mail relaying is permitted, unauthorized senders could use this
+    host as a mail relay for the purpose of sending spam or other unauthorized
+    activity.
+
+severity: medium
+
+identifiers:
+    cce: 80512-7
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "040680"
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify the system is configured to prevent unrestricted mail relaying,
+    run the following command:
+    <pre>$ sudo postconf -n smtpd_client_restrictions</pre>
+    The output should return:
+    <pre>smtpd_client_restrictions = permit_mynetworks,reject</pre>

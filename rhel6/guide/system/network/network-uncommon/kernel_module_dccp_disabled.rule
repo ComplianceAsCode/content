@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable DCCP Support'
+
+description: |-
+    The Datagram Congestion Control Protocol (DCCP) is a
+    relatively new transport layer protocol, designed to support
+    streaming media and telephony.
+    <module-disable-macro module="dccp" />
+
+rationale: |-
+    Disabling DCCP protects
+    the system against exploitation of any flaws in its implementation.
+
+severity: medium
+
+identifiers:
+    cce: 26448-1
+
+references:
+    disa: 382
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000124
+
+ocil: '<module-disable-check-macro module="dccp" />'

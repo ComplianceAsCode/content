@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Record Attempts to Alter Process and Session Initiation Information'
+
+description: |-
+    The audit system already collects process information for all
+    users and root. To watch for attempted manual edits of files involved in
+    storing such process information, add the following to
+    <tt>/etc/audit/audit.rules</tt>:
+    <pre>-w /var/run/utmp -p wa -k session
+    -w /var/log/btmp -p wa -k session
+    -w /var/log/wtmp -p wa -k session</pre>
+
+rationale: |-
+    Manual editing of these files may indicate nefarious activity, such
+    as an attacker attempting to remove evidence of an intrusion.
+
+severity: unknown
+
+identifiers:
+    cce: 26610-6
+
+references:
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.3

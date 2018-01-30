@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Ensure Software Patches Installed'
+
+description: |-
+    If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
+    or a yum server, run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+    can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
+
+rationale: |-
+    Installing software updates is a fundamental mitigation against
+    the exploitation of publicly-known vulnerabilities.
+
+severity: medium
+
+identifiers:
+    cce: 27635-2
+
+references:
+    disa: 1227,1233
+    nist: SI-2,MA-1(b)
+    pcidss: Req-6.2
+    srg: SRG-OS-000191
+    stigid: RHEL-06-000011
+
+ocil_clause: 'updates are not installed'
+
+ocil: |-
+    If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
+    a yum server which provides updates, invoking the following command will
+    indicate if updates are available:
+    <pre>$ sudo yum check-update</pre>
+    If the system is not configured to update from one of these sources,
+    run the following command to list when each package was last updated:
+    <pre>$ rpm -qa -last</pre>
+    Compare this to Red Hat Security Advisories (RHSA) listed at
+    <weblink-macro link="https://access.redhat.com/security/updates/active/" />
+    to determine if the system is missing applicable updates.

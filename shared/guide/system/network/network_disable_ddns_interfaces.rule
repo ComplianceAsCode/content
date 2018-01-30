@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Client Dynamic DNS Updates'
+
+description: |-
+    Dynamic DNS allows clients to dynamically update their own DNS records.
+    The updates are transmitted by unencrypted means which can reveal information
+    to a potential malicious user. If the system does not require Dynamic DNS,
+    remove all <tt>DHCP_HOSTNAME</tt> references from the
+    <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt> scripts. If
+    <tt>dhclient</tt> is used, remove all <tt>send host-name <i>hostname</i></tt>
+    references from the <tt>/etc/dhclient.conf</tt> configuration file and/or any
+    reference from the <tt>/etc/dhcp</tt> directory.
+
+rationale: |-
+    Dynamic DNS updates transmit unencrypted information about a system
+    including its name and address and should not be used unless needed.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80357-7
+
+references:
+    disa: 366
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'client Dynamic DNS updates are not disabled'
+
+ocil: |-
+    To verify that clients cannot automatically update DNS records, perform the
+    following:
+    <pre>$ grep -i dhcp_hostname /etc/sysconfig/network-scripts/ifcfg-*</pre>
+    <pre>$ grep -rni "send host-name" /etc/dhclient.conf /etc/dhcp</pre>
+    The output should return no results.

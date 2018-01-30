@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - finit_module'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+    to read audit rules during daemon startup (the default), add the following lines to a file
+    with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+    loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+    rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+    in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+    b64 as appropriate for your system:
+    <pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
+
+rationale: |-
+    The addition/removal of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80547-3
+
+references:
+    cis: 5.2.17
+    cui: 3.1.7
+    disa: 172
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    nist: AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    ospp@rhel7: FAU_GEN.1.1.c
+    pcidss: Req-10.2.7
+    srg: SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222
+    stigid@rhel7: "030820"
+
+ocil: '<audit-syscall-check-macro syscall="finit_module" />'

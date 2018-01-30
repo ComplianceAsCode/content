@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify /boot/grub2/grub.cfg Permissions'
+
+description: |-
+    File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to 600.
+    <fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="600" />
+
+rationale: |-
+    Proper permissions ensure that only the root user can modify important boot
+    parameters.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27054-6
+
+references:
+    cis: 1.4.1
+    cui: 3.4.5
+    disa: 225
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: AC-6(7)
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To check the permissions of /boot/grub2/grub.cfg, run the command:
+    <pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
+    If properly configured, the output should indicate the following
+    permissions: <tt>-rw-------</tt>

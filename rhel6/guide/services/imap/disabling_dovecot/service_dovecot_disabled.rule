@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Disable Dovecot Service'
+
+description: '<chkconfig-service-macro enable="false" service="dovecot" />'
+
+rationale: |-
+    Running an IMAP or POP3 server provides a network-based
+    avenue of attack, and should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce: 26922-5
+
+ocil: '<service-check-macro enable="false" service="dovecot" />'

@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Configure auditd space_left Action on Low Disk Space'
+
+description: "The <tt>auditd</tt> service can be configured to take an action\nwhen disk space <i>starts</i> to run low. \nEdit the file <tt>/etc/audit/auditd.conf</tt>. Modify the following line,\nsubstituting <i>ACTION</i> appropriately:\n<pre>space_left_action = <i>ACTION</i></pre>\nPossible values for <i>ACTION</i> are described in the <tt>auditd.conf</tt> man page.\nThese include:\n<ul>\n<li><tt>ignore</tt></li>\n<li><tt>syslog</tt></li>\n<li><tt>email</tt></li>\n<li><tt>exec</tt></li>\n<li><tt>suspend</tt></li>\n<li><tt>single</tt></li>\n<li><tt>halt</tt></li>\n</ul>\nSet this to <tt>email</tt> (instead of the default,\nwhich is <tt>suspend</tt>) as it is more likely to get prompt attention. Acceptable values\nalso include <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>."
+
+rationale: |-
+    Notifying administrators of an impending disk space problem may
+    allow them to take corrective action prior to any disruption.
+
+severity: medium
+
+identifiers:
+    cce: 27238-5
+
+references:
+    disa: 140,143
+    nist: AU-1(b),AU-4,AU-5(b),IR-5
+    pcidss: Req-10.7
+    srg: SRG-OS-000045
+    stigid: RHEL-06-000005
+
+ocil_clause: 'the system is not configured to send an email to the system administrator when disk space is starting to run low'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured to email the administrator when
+    disk space is starting to run low:
+    <tt>$ sudo grep space_left_action /etc/audit/auditd.conf</tt>
+    <pre>space_left_action</pre>
+    Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.

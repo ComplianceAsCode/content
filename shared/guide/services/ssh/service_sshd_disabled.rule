@@ -1,0 +1,19 @@
+documentation_complete: true
+
+prodtype: rhel7,ol7
+
+title: 'Disable SSH Server If Possible (Unusual)'
+
+description: |-
+    The SSH server service, sshd, is commonly needed.
+    However, if it can be disabled, do so.
+    <systemd-service-macro enable="false" service="sshd" />
+    This is unusual, as SSH is a common method for encrypted and authenticated
+    remote access.
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80217-3

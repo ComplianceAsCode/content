@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Set Last Login/Access Notification'
+
+description: |-
+    To configure the system to notify users of last login/access
+    using <tt>pam_lastlog</tt>, add the following line immediately after <tt>session  required  pam_limits.so</tt>:
+    <pre>session       required     pam_lastlog.so showfailed</pre>
+
+rationale: |-
+    Users need to be aware of activity that occurs regarding
+    their account. Providing users with information regarding the number
+    of unsuccessful attempts that were made to login to their account
+    allows the user to determine if any unauthorized activity has occurred
+    and gives them an opportunity to notify administrators.
+
+severity: unknown
+
+identifiers:
+    cce: 27291-4
+
+references:
+    disa: 366
+    pcidss: Req-10.2.4
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000372
+
+ocil_clause: 'that is not the case'
+
+ocil: |-
+    To ensure that last login/access notification is configured correctly, run
+    the following command:
+    <pre>$ grep pam_lastlog.so /etc/pam.d/system-auth</pre>
+    The output should show output <tt>showfailed</tt>.

@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Disable Logwatch on Clients if a Logserver Exists'
+
+description: "Does your site have a central logserver which has been configured to report on logs received from all systems? \nIf so:\n<pre> \n$ sudo rm /etc/cron.daily/0logwatch \n</pre>\nIf no logserver exists, it will be necessary for each machine to run Logwatch individually. Using a central \nlogserver provides the security and reliability benefits discussed earlier, and also makes monitoring logs easier \nand less time-intensive for administrators."
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce: 27162-7

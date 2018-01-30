@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable Avahi Server Software'
+
+description: '<chkconfig-service-macro enable="false" service="avahi-daemon" />'
+
+rationale: |-
+    Because the Avahi daemon service keeps an open network
+    port, it is subject to network attacks. Its functionality
+    is convenient but is only appropriate if the local network
+    can be trusted.
+
+severity: unknown
+
+identifiers:
+    cce: 27087-6
+
+references:
+    disa: 366
+    nist: CM-7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000246
+
+ocil: '<service-check-macro enable="false" service="avahi-daemon" />'

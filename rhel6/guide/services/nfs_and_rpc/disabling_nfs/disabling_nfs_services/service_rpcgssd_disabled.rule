@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Disable Secure RPC Client Service (rpcgssd)'
+
+description: |-
+    The rpcgssd service manages RPCSEC GSS contexts required to secure protocols
+    that use RPC (most often Kerberos and NFS). The rpcgssd service is the
+    client-side of RPCSEC GSS. If the system does not require secure RPC then this
+    service should be disabled.
+    <chkconfig-service-macro enable="false" service="rpcgssd" />
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce: 26864-9

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable DHCP Service'
+
+description: |-
+    The <tt>dhcpd</tt> service should be disabled on
+    any system that does not need to act as a DHCP server.
+    <systemd-service-macro enable="false" service="dhcpd" />
+
+rationale: |-
+    Unmanaged or unintentionally activated DHCP servers may provide faulty information
+    to clients, interfering with the operation of a legitimate site
+    DHCP server if there is one.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80330-4
+
+references:
+    cis: 2.2.5
+    disa: 366
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="dhcpd" />'

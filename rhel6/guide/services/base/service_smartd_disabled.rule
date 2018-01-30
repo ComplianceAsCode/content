@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable SMART Disk Monitoring Service (smartd)'
+
+description: |-
+    SMART (Self-Monitoring, Analysis, and Reporting Technology) is a
+    feature of hard drives that allows them to detect symptoms of disk failure and
+    relay an appropriate warning.
+    <chkconfig-service-macro enable="false" service="smartd" />
+
+rationale: |-
+    SMART can help protect against denial of
+    service due to failing hardware. Nevertheless, if it is not needed or the
+    system's drives are not SMART-capable (such as solid state drives), it can be
+    disabled.
+
+severity: unknown
+
+identifiers:
+    cce: 26853-2
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="smartd" />'

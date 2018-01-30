@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Uninstall the ssl compliant telnet server'
+
+description: 'The telnet daemon, even with ssl support, should be uninstalled.'
+
+rationale: 'telnet, even with ssl support, should not be installed. When remote shell is required, up-to-date ssh daemon can be used.'
+
+severity: high
+
+identifiers:
+    cce: ""
+
+references:
+    anssi: NT007(R02)
+    nist: AC-17(8),CM-7

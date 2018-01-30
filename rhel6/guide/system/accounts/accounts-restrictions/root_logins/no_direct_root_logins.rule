@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Direct root Logins Not Allowed'
+
+description: |-
+    To further limit access to the <tt>root</tt> account, administrators
+    can disable root logins at the console by editing the <tt>/etc/securetty</tt> file.
+    This file lists all devices the root user is allowed to login to. If the file does
+    not exist at all, the root user can login through any communication device on the
+    system, whether via the console or via a raw network interface. This is dangerous
+    as user can login to his machine as root via Telnet, which sends the password in
+    plain text over the network. By default, Red Hat Enteprise Linux's
+    <tt>/etc/securetty</tt> file only allows the root user to login at the console
+    physically attached to the machine. To prevent root from logging in, remove the
+    contents of this file. To prevent direct root logins, remove the contents of this
+    file by typing the following command:
+    <pre>
+    $ sudo echo &gt; /etc/securetty
+    </pre>
+
+rationale: |-
+    Disabling direct root logins ensures proper accountability and multifactor
+    authentication to privileged accounts. Users will first login, then escalate
+    to privileged (root) access via su / sudo. This is required for FISMA Low
+    and FISMA Moderate systems.
+
+severity: medium
+
+identifiers:
+    cce: 26891-2
+
+references:
+    nist: IA-2(1)
+
+ocil_clause: 'the /etc/securetty file is not empty'
+
+ocil: |-
+    To ensure root may not directly login to the system over physical consoles,
+    run the following command:
+    <pre>cat /etc/securetty</pre>
+    If any output is returned, this is a finding.

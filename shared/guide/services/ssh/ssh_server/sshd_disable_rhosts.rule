@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Disable SSH Support for .rhosts Files'
+
+description: |-
+    SSH can emulate the behavior of the obsolete rsh
+    command in allowing users to enable insecure access to their
+    accounts via <tt>.rhosts</tt> files.
+    <br /><br />
+    To ensure this behavior is disabled, add or correct the
+    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>IgnoreRhosts yes</pre>
+
+rationale: |-
+    SSH trust relationships mean a compromise on one host
+    can allow an attacker to move trivially to other hosts.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27377-1
+
+references:
+    cis: 5.2.6
+    cjis: 5.5.6
+    cui: 3.1.12
+    disa: 366
+    nist: AC-3,CM-6(a)
+    ospp@rhel7: FIA_AFL.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040350"
+
+ocil: '<sshd-check-macro default="yes" option="IgnoreRhosts" value="yes" />'

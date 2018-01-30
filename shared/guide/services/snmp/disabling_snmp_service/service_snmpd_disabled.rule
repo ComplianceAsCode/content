@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable <tt>snmpd</tt> Service'
+
+description: '<systemd-service-macro enable="false" service="snmpd" />'
+
+rationale: |-
+    Running SNMP software provides a network-based avenue of attack, and
+    should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80274-4
+
+references:
+    cis: 2.2.14
+
+ocil: '<systemd-check-macro enable="false" service="snmpd" />'

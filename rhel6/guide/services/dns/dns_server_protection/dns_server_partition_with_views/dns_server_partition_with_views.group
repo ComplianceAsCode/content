@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Use Views to Partition External and Internal Information'
+
+description: |-
+    If it is not possible to run external and internal nameservers on
+    separate physical machines, run BIND9 and simulate this feature using views.
+    Edit <tt>/etc/named.conf</tt>. Add or correct the following directives (where
+    SUBNET is the numerical IP representation of your organization in the form
+    xxx.xxx.xxx.xxx/xx):
+    <pre>acl internal {
+      SUBNET ;
+      localhost;
+    };
+    view "internal-view" {
+      match-clients { internal; };
+      zone "." IN {
+        type hint;
+        file "db.cache";
+      };
+      zone "internal.example.com " IN {
+        ...
+      };
+    };
+
+    view "external-view" {
+      match-clients { any; };
+      recursion no;
+      zone "example.com " IN {
+        ...
+      };
+    };</pre>

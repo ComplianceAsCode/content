@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure SELinux Not Disabled in /etc/default/grub'
+
+description: |-
+    SELinux can be disabled at boot time by an argument in
+    <tt>/etc/default/grub</tt>.
+    Remove any instances of <tt>selinux=0</tt> from the kernel arguments in that
+    file to prevent SELinux from being disabled at boot.
+
+rationale: |-
+    Disabling a major host protection feature, such as SELinux, at boot time prevents
+    it from confining system services at boot time.  Further, it increases
+    the chances that it will remain off during system operation.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 26961-3
+
+references:
+    cis: 1.6.1.1
+    cui: 3.1.2,3.7.2
+    disa: 22,32
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
+    nist: AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)
+
+ocil_clause: 'SELinux is disabled at boot time'
+
+ocil: |-
+    Inspect <tt>/etc/default/grub</tt> for any instances of <tt>selinux=0</tt>
+    in the kernel boot arguments.  Presence of <tt>selinux=0</tt> indicates
+    that SELinux is disabled at boot time.

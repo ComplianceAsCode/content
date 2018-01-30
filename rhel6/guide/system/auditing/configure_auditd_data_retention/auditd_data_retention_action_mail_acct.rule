@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Configure auditd mail_acct Action on Low Disk Space'
+
+description: |-
+    The <tt>auditd</tt> service can be configured to send email to
+    a designated account in certain situations. Add or correct the following line
+    in <tt>/etc/audit/auditd.conf</tt> to ensure that administrators are notified
+    via email for those situations:
+    <pre>action_mail_acct = <sub idref="var_auditd_action_mail_acct" /></pre>
+
+rationale: |-
+    Email sent to the root account is typically aliased to the
+    administrators of the system, who can take appropriate action.
+
+severity: medium
+
+identifiers:
+    cce: 27241-9
+
+references:
+    disa: 139,144
+    nist: AU-1(b),AU-4,AU-5(a),IR-5
+    pcidss: Req-10.7.a
+    srg: SRG-OS-000046
+    stigid: RHEL-06-000313
+
+ocil_clause: 'auditd is not configured to send emails per identified actions'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured to send email to an
+    account when it needs to notify an administrator:
+    <pre>action_mail_acct = root</pre>

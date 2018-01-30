@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall openldap-servers Package'
+
+description: |-
+    The <tt>openldap-servers</tt> package should be removed if not in use.
+    Is this system the OpenLDAP server? If not, remove the package.
+    <pre>$ sudo yum erase openldap-servers</pre>
+    The openldap-servers RPM is not installed by default on Red Hat Enterprise Linux 7
+    system. It is needed only by the OpenLDAP server, not by the
+    clients which use LDAP for authentication. If the system is not
+    intended for use as an LDAP Server it should be removed.
+
+rationale: |-
+    Unnecessary packages should not be installed to decrease the attack
+    surface of the system.  While this software is clearly essential on an LDAP
+    server, it is not necessary on typical desktop or workstation systems.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80293-4
+
+references:
+    disa: 366
+    nist: CM-7
+
+ocil_clause: 'it does not'
+
+ocil: "To verify the <tt>openldap-servers</tt> package is not installed, \nrun the following command:\n<pre>$ rpm -q openldap-servers</pre>\nThe output should show the following:\n<pre>package openldap-servers is not installed</pre>"

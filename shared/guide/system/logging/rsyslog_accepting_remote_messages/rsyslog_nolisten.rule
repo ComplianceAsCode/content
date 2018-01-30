@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server'
+
+description: |-
+    The <tt>rsyslog</tt> daemon should not accept remote messages
+    unless the system acts as a log server.
+    To ensure that it is not listening on the network, ensure the following lines are
+    <i>not</i> found in <tt>/etc/rsyslog.conf</tt>:
+    <pre>$ModLoad imtcp
+    $InputTCPServerRun <i>port</i>
+    $ModLoad imudp
+    $UDPServerRun <i>port</i>
+    $ModLoad imrelp
+    $InputRELPServerRun <i>port</i></pre>
+
+rationale: |-
+    Any process which receives messages from the network incurs some risk
+    of receiving malicious messages. This risk can be eliminated for
+    rsyslog by configuring it not to listen on the network.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80192-8
+
+references:
+    disa: 318,368,1812,1813,1814
+    nist: AU-9(2),AC-4,CM-6(c)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "031010"

@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Verify and Correct File Permissions with RPM'
+
+description: "The RPM package management system can check file access\npermissions of installed software packages, including many that are\nimportant to system security. After locating a file with incorrect\npermissions which can be found with <pre>$ rpm -Va | grep '^.M'</pre>,\nrun the following command to determine which package owns it:\n<pre>$ rpm -qf <i>FILENAME</i></pre>\nNext, run the following command to reset its permissions to \nthe correct values:\n<pre>$ sudo rpm --setperms <i>PACKAGENAME</i></pre>"
+
+rationale: |-
+    Permissions on system binaries and configuration files that are too generous
+    could allow an unauthorized user to gain privileges that they should not have.
+    The permissions set by the vendor should be maintained. Any deviations from
+    this baseline should be investigated.
+
+severity: unknown
+
+identifiers:
+    cce: 26731-0
+
+references:
+    disa: 1493,1494,1495
+    nist: AC-6,CM-6(d),SI-7
+    pcidss: Req-11.5
+    srg: SRG-OS-999999,SRG-OS-000256
+    stigid: RHEL-06-000518
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will list which files on the system have permissions different from what
+    is expected by the RPM database:
+    <pre>$ rpm -Va | grep '^.M'</pre>

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Install the dracut-fips Package'
+
+description: |-
+    To enable FIPS, the system requires that the <tt>dracut-fips</tt>
+    package be installed.
+    <yum-macro install="true" package="dracut-fips" />
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: medium
+
+identifiers:
+    cce: RHEL6-CCE-TBD
+
+references:
+    disa: 68,2450
+    nist: AC-17(2)
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="dracut-fips" />'

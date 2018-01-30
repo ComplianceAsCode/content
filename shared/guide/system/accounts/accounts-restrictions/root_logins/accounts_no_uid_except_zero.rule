@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify Only Root Has UID 0'
+
+description: "If any account other than root has a UID of 0, this misconfiguration should \nbe investigated and the accounts other than root should be removed or \nhave their UID changed.\n<br />\nIf the account is associated with system commands or applications the UID should be changed\nto one greater than \"0\" but less than \"1000.\" Otherwise assign a UID greater than \"1000\" that\nhas not already been assigned."
+
+rationale: |-
+    An account has root authority if it has a UID of 0. Multiple accounts
+    with a UID of 0 afford more opportunity for potential intruders to
+    guess a password for a privileged account. Proper configuration of
+    sudo is recommended to afford multiple system administrators
+    access to root privileges in an accountable manner.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27175-9
+
+references:
+    cis: 6.2.5
+    cui: 3.1.1,3.1.5
+    disa: 366
+    nist: AC-6,IA-2(1),IA-4
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "020310"
+
+ocil_clause: 'any account other than root has a UID of 0'
+
+ocil: "To list all password file entries for accounts with UID 0, run the following command:\n<pre>$ awk -F: '($3 == \"0\") {print}' /etc/passwd</pre>\nThis should print only one line, for the user root.\n<br />\nIf there is a finding, change the UID of the failing (non-root) user. If the account is\nassociated with the system commands or applications the UID should be changed to one \ngreater than <tt>0</tt> but less than <tt>1000</tt>. Otherwise assign a UID of\ngreater than <tt>1000</tt> that has not already been assigned."

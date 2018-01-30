@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Enable NX or XD Support in the BIOS'
+
+description: |-
+    Reboot the system and enter the BIOS or Setup configuration menu.
+    Navigate the BIOS configuration menu and make sure that the option is enabled. The setting may be located
+    under a Security section. Look for Execute Disable (XD) on Intel-based systems and No Execute (NX)
+    on AMD-based systems.
+
+rationale: |-
+    Computers with the ability to prevent this type of code execution frequently put an option in the BIOS that will
+    allow users to turn the feature on or off at will.
+
+severity: unknown
+
+identifiers:
+    cce: 27163-5
+
+references:
+    nist: CM-6(b)

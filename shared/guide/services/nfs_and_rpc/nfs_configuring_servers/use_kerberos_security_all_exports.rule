@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Use Kerberos Security on All Exports'
+
+description: |-
+    Using Kerberos on all exported mounts prevents a malicious client or user from
+    impersonating a system user. To cryptography authenticate users to the NFS server,
+    add <tt>sec=krb5:krb5i:krb5p</tt> to each export in <tt>/etc/exports</tt>.
+
+rationale: |-
+    When an NFS server is configured to use AUTH_SYS a selected userid and groupid are used to handle
+    requests from the remote user. The userid and groupid could mistakenly or maliciously be set
+    incorrectly. The AUTH_GSS method of authentication uses certificates on the server and client
+    systems to more securely authenticate the remote mount request.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27464-7
+
+references:
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-14(1)
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'the setting is not configured, has the ''sys'' option added, or does not have all Kerberos options added'
+
+ocil: |-
+    To verify the <tt>sec</tt> option is configured for all NFS mounts, run the following command:
+    <pre>$ grep "sec=" /etc/exports</pre>
+    All configured NFS exports should show the <tt>sec=krb5:krb5i:krb5p</tt> setting in parentheses.
+    This is not applicable if NFS is not implemented.

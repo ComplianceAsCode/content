@@ -1,0 +1,60 @@
+documentation_complete: true
+
+title: 'Configure Host Access Restrictions for Applications'
+
+description: |-
+    Configure the Java security manager to enforce access restrictions to the host
+    system resources in accordance with application design and resource
+    requirements.
+
+rationale: |-
+    The Java Security Manager is a java class that manages the external boundary of
+    the Java Virtual Machine (JVM) sandbox, controlling how code executing within
+    the JVM can interact with resources outside the JVM.
+    <br /><br />
+    The JVM requires a
+    security policy in order to restrict application access. A properly configured
+    security policy will define what rights the application has to the underlying
+    system. For example, rights to make changes to files on the host system or to
+    initiate network sockets in order to connect to another system.
+
+severity: high
+
+identifiers:
+    cce: 80452-6
+
+references:
+    disa: 213
+    nist: ""
+    srg: SRG-APP-000033-AS-000024
+    stigid: JBOS-AS-000025
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Obtain documentation from the admin that identifies the applications hosted on
+    the JBoss server as well as the corresponding rights the application requires.
+    For example, if the application requires network socket permissions and file
+    write permissions, those requirements should be documented.
+    <br /><br />
+    1. Identify the
+    JBoss installation as either domain or standalone and review the relevant
+    configuration file.
+    For domain installs: <tt>JBOSS_HOME/bin/domain.conf</tt>
+    For
+    standalone installs: <tt>JBOSS_HOME/bin/standalone.conf</tt>
+    <br /><br />
+    2. Identify the location
+    and name of the security policy by reading the JAVA_OPTS flag
+    <pre>-Djava.security.policy=<i>file name</i></pre>
+    where <i>file name</i> will indicate name and
+    location of security policy. If the application uses a policy URL, obtain URL
+    and policy file from system admin.
+    <br /><br />
+    3. Review security policy and ensure hosted
+    applications have the appropriate restrictions placed on them as per documented
+    application functionality requirements.
+    <br /><br />
+    If the security policy does not
+    restrict application access to host resources as per documented requirements,
+    this is a finding.

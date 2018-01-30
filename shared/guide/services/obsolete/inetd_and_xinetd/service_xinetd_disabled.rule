@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable xinetd Service'
+
+description: '<systemd-service-macro enable="false" service="xinetd" />'
+
+rationale: |-
+    The xinetd service provides a dedicated listener service for some programs,
+    which is no longer necessary for commonly-used network services. Disabling
+    it ensures that these uncommon services are not running, and also prevents
+    attacks against xinetd itself.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27443-1
+
+references:
+    cis: 2.1.7
+    cui: 3.4.7
+    disa: 305
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8),CM-7
+
+ocil: |-
+    If network services are using the xinetd service, this is not applicable.
+    <br /><br />
+    <systemd-check-macro enable="false" service="xinetd" />

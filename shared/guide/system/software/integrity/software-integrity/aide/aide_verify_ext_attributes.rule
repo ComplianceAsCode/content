@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure AIDE to Verify Extended Attributes'
+
+description: |-
+    By default, the <tt>xattrs</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
+    If using a custom ruleset or the <tt>xattrs</tt> option is missing, add <tt>xattrs</tt>
+    to the appropriate ruleset.
+    For example, add <tt>xattrs</tt> to the following line in <tt>/etc/aide.conf</tt>:
+    <pre>FIPSR = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
+    AIDE rules can be configured in multiple ways; this is merely one example that is already
+    configured by default.
+
+rationale: |-
+    Extended attributes in file systems are used to contain arbitrary data and file metadata
+    with security implications.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80376-7
+
+references:
+    disa: 366
+    nist: SI-7.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021610"
+
+ocil_clause: 'the xattrs option is missing or not added to the correct ruleset'
+
+ocil: |-
+    To determine that AIDE is verifying extended file attributes, run the following command:
+    <pre>$ grep xattrs /etc/aide.conf</pre>
+    Verify that the <tt>xattrs</tt> option is added to the correct ruleset.

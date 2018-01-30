@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Deactivate Wireless Network Interfaces'
+
+description: |-
+    Deactivating wireless network interfaces should prevent
+    normal usage of the wireless capability.
+    <br /><br />
+    Configure the system to disable all wireless network interfaces with the
+    following command:
+    <pre>$ sudo nmcli radio wifi off</pre>
+
+rationale: |-
+    The use of wireless networking can introduce many different attack vectors into
+    the organization's network. Common attack vectors such as malicious association
+    and ad hoc networks will allow an attacker to spoof a wireless access point
+    (AP), allowing validated systems to connect to the malicious AP and enabling the
+    attacker to monitor and record network traffic. These malicious APs can also
+    serve to create a man-in-the-middle attack or be used to create a denial of
+    service to valid network resources.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27358-1
+
+references:
+    cis: 4.3.1
+    cui: 3.1.16
+    disa: 85,2418
+    nist: AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7
+    srg: SRG-OS-000424-GPOS-00188
+    stigid: "041010"
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Verify that there are no wireless interfaces configured on the system
+    with the following command:
+    <pre>$ sudo nmcli device</pre>
+    The output should contain the following:
+    <pre>wifi disconnected</pre>

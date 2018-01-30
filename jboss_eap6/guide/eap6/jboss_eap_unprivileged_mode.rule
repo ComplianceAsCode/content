@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Restrict JBoss Account'
+
+description: 'Run the JBoss server with non-admin rights.'
+
+rationale: |-
+    JBoss EAP application server can be run as the OS admin, which is not advised.
+    Running the application server with admin privileges increases the attack
+    surface by granting the application server more rights than it requires in order
+    to operate. If the server is compromised, the attacker will have the same
+    rights as the application server, which in that case would be admin rights. The
+    JBoss EAP server must not be run as the admin user.
+
+severity: high
+
+identifiers:
+    cce: 80467-4
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000230
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    The script that is used to start JBoss determines the mode in which JBoss will
+    operate, which will be in either in standalone mode or domain mode. Both
+    scripts are installed by default in the <tt>&lt;JBOSS_HOME&gt;/bin/</tt> folder.
+    <br /><br />
+    In addition
+    to running the JBoss server as an interactive script launched from the command
+    line, JBoss can also be started as a service.
+    <br /><br />
+    The scripts used to start JBoss are:
+    Red Hat:
+    <pre>
+    standalone.sh
+    domain.sh
+    </pre>
+    <br /><br />
+    Windows:
+    <pre>
+    standalone.bat
+    domain.bat
+    </pre>
+    <br /><br />
+    Use the relevant OS commands to determine JBoss ownership.
+    <br /><br />
+    When running as a process:
+    Red Hat: <pre>ps -ef|grep -i jboss</pre>.
+    Windows: <pre>services.msc</pre>.
+    Search for the JBoss process, which by default is named <tt>JBOSSEAP6</tt>.
+    <br /><br />
+    If
+    the user account used to launch the JBoss script or start the JBoss process has
+    admin rights on the system, this is a finding.

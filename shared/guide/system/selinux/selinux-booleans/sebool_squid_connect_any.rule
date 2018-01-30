@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the squid_connect_any SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>squid_connect_any</tt> is enabled.
+    This setting should be disabled as squid should only connect on specified
+    ports.
+    <sebool-macro enable="false" sebool="squid_connect_any" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'squid_connect_any is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="squid_connect_any" />'

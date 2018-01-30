@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns <tt>shadow</tt> File'
+
+description: '<fileowner-desc-macro file="/etc/shadow" owner="root" />'
+
+rationale: |-
+    The <tt>/etc/shadow</tt> file contains the list of local system accounts and stores password hashes.
+    Protection of this file is critical for system security.
+    Failure to give ownership of this file to root provides the designated owner with access to sensitive information which could weaken the system security posture.
+
+severity: medium
+
+references:
+    disa: ""
+    nist: AC-6
+    pcidss: Req-8.7.c
+
+ocil: '<fileowner-check-macro file="/etc/shadow" owner="root" />'

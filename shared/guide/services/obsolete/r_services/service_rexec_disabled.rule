@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable rexec Service'
+
+description: "The <tt>rexec</tt> service, which is available with\nthe <tt>rsh-server</tt> package and runs as a service through xinetd or separately\nas a systemd socket, should be disabled.\nIf using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rexec</tt>. \nIf using systemd, <systemd-socket-macro enable=\"false\" socket=\"rexec\" />"
+
+rationale: |-
+    The rexec service uses unencrypted network communications, which
+    means that data from the login session, including passwords and
+    all other information transmitted during the session, can be
+    stolen by eavesdroppers on the network.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27408-4
+
+references:
+    cis: 2.2.17
+    cui: 3.1.13,3.4.7
+    disa: 68,1436
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8),CM-7
+
+ocil: |-
+    <systemd-socket-check-macro enable="false" socket="rexec" />
+    <xinetd-systemd-check-macro enable="false" service="rexec" />

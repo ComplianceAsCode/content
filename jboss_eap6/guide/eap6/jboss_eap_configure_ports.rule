@@ -1,0 +1,61 @@
+documentation_complete: true
+
+title: 'Configure JBoss Management and Application Ports'
+
+description: |-
+    Open the EAP web console by pointing a web browser to <pre>HTTPS://<i>Servername</i>:9990</pre>
+    Log on to the admin console using admin credentials
+    Select the
+    <tt>Configuration</tt> tab
+    Expand the <tt>General Configuration</tt> sub
+    system by clicking on the <tt>+</tt>
+    Select <tt>Socket Binding</tt>
+    Select the
+    <tt>View</tt> option next to <tt>standard-sockets</tt>
+    Select
+    <tt>Inbound</tt>
+    <br /><br />
+    Select the port that needs to be reconfigured and select
+    <tt>Edit</tt>.
+
+rationale: |-
+    Some networking protocols may not meet organizational security requirements to
+    protect data and components.
+    <br /><br />
+    Application servers natively host a number of
+    various features, such as management interfaces, httpd servers and message
+    queues. These features all run on TCPIP ports. This creates the potential that
+    the vendor may choose to utilize port numbers or network services that have been
+    deemed unusable by the organization. The application server must have the
+    capability to both reconfigure and disable the assigned ports without adversely
+    impacting application server operation capabilities.
+
+severity: medium
+
+identifiers:
+    cce: 80472-4
+
+references:
+    disa: 382
+    nist: ""
+    srg: SRG-APP-000142-AS-000014
+    stigid: JBOS-AS-000255
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Open the EAP web console by pointing a web browser to <pre>HTTPS://<i>Servername</i>:9443</pre>
+    or <pre>HTTP://<i>Servername</i>:9990</pre>
+    <br /><br />
+    Log on to the admin console using admin credentials
+    Select the <tt>Configuration</tt> tab
+    Expand the <tt>General Configuration</tt> sub system by clicking on the <tt>+</tt>
+    Select <tt>Socket Binding</tt>
+    Select the <tt>View</tt> option next to <tt>standard-sockets</tt>
+    Select <tt>Inbound</tt>
+    <br /><br />
+    Review the configured ports and
+    determine if they are all approved by the PPSM CAL.
+    <br /><br />
+    If all the ports are not
+    approved by the PPSM CAL, this is a finding.

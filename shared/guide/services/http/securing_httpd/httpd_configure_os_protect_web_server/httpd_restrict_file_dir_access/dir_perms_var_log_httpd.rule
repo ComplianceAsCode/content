@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Set Permissions on the <tt>/var/log/httpd/</tt> Directory'
+
+description: |-
+    Ensure that the permissions on the web server log directory is set to 700:
+    <pre>$ sudo chmod 700 /var/log/httpd/</pre>
+    This is its default setting.
+
+rationale: |-
+    A major tool in exploring the web site use, attempted use, unusual conditions,
+    and problems are the access and error logs. In the event of a security incident,
+    these logs can provide the SA and the web manager with valuable information. To
+    ensure the integrity of the log files and protect the SA and the web manager
+    from a conflict of interest related to the maintenance of these files, only the
+    members of the Auditors group will be granted permissions to move, copy, and
+    delete these files in the course of their duties related to the archiving of
+    these files.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80322-1
+
+references:
+    nist: CM-7
+
+ocil_clause: 'it is more permissive'
+
+ocil: |-
+    Run the following command to check the mode of the <tt>httpd</tt> log
+    directory:
+    <pre>$ ls -l /var/log/ | grep httpd</pre>
+    Log directory must be mode 0700 or less permissive.

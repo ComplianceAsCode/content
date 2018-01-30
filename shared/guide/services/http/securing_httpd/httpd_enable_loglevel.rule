@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable HTTPD LogLevel'
+
+description: |-
+    <tt>LogLevel</tt> should be enabled and set to <sub idref="var_httpd_loglevel" />.
+    Add or edit the following in <tt>/etc/httpd/conf/httpd.conf</tt>:
+    <pre>LogLevel <sub idref="var_httpd_loglevel" /></pre>
+
+rationale: |-
+    The server error logs are invaluable because they can also be used to identify
+    potential problems and enable proactive remediation. Log data can reveal
+    anomalous behavior such as "not found" or "unauthorized" errors that may
+    be an evidence of attack attempts. Failure to enable error logging can
+    significantly reduce the ability of Web Administrators to detect or remediate
+    problems. While the ErrorLog directive configures the error log file name, the
+    LogLevel directive is used to configure the severity level for the error logs.
+    The log level values are the standard syslog levels: emerg, alert, crit, error,
+    warn, notice, info and debug.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WA00620
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify if <tt>LogLevel</tt> is configured correctly in
+    <tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+    <pre>$ grep -i loglevel /etc/httpd/conf/httpd.conf</pre>
+    The command should return the following:
+    <pre>LogLevel warn</pre>

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Record Events that Modify the System''s Mandatory Access Controls'
+
+description: |-
+    Add the following to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-w /etc/selinux/ -p wa -k MAC-policy</pre>
+
+rationale: |-
+    The system's mandatory access policy (SELinux) should not be
+    arbitrarily changed by anything other than administrator action. All changes to
+    MAC policy should be audited.
+
+severity: unknown
+
+identifiers:
+    cce: 26657-7
+
+references:
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.5.5
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000183
+
+ocil_clause: 'the system is not configured to audit attempts to change the MAC policy'
+
+ocil: |-
+    To determine if the system is configured to audit changes to its SELinux
+    configuration files, run the following command:
+    <pre>$ sudo auditctl -l | grep "dir=/etc/selinux"</pre>
+    If the system is configured to watch for changes to its SELinux
+    configuration, a line should be returned (including
+    <tt>perm=wa</tt> indicating permissions that are watched).

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading'
+
+description: |-
+    Add the following to <tt>/etc/audit/audit.rules</tt> in order
+    to capture kernel module loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+    <pre>-w /sbin/insmod -p x -k modules
+    -w /sbin/rmmod -p x -k modules
+    -w /sbin/modprobe -p x -k modules
+    -a always,exit -F arch=<i>ARCH</i> -S init_module -S delete_module -k modules</pre>
+
+rationale: |-
+    The addition/removal of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+severity: unknown
+
+identifiers:
+    cce: 26611-4
+
+references:
+    disa: 126
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.7
+    srg: SRG-OS-000064
+    stigid: RHEL-06-000202
+
+ocil: |-
+    <audit-syscall-check-macro syscall="init_module" />
+    <audit-syscall-check-macro syscall="delete_module" />

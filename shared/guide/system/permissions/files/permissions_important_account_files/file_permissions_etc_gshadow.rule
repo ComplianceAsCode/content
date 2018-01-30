@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify Permissions on <tt>gshadow</tt> File'
+
+description: '<fileperms-desc-macro file="/etc/gshadow" perms="0000" />'
+
+rationale: |-
+    The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
+    is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27162-7
+
+references:
+    cis: 6.1.5
+    disa: ""
+    nist: AC-6
+
+ocil: '<fileperms-check-macro file="/etc/gshadow" perms="----------" />'

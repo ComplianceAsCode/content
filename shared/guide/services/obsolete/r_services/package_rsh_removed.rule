@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall rsh Package'
+
+description: |-
+    The <tt>rsh</tt> package contains the client commands
+    for the rsh services
+
+rationale: |-
+    These legacy clients contain numerous security exposures and have
+    been replaced with the more secure SSH package. Even if the server is removed,
+    it is best to ensure the clients are also removed to prevent users from
+    inadvertently attempting to use these commands and therefore exposing
+    their credentials. Note that removing the <tt>rsh</tt> package removes
+    the clients for <tt>rsh</tt>,<tt>rcp</tt>, and <tt>rlogin</tt>.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27274-0
+
+references:
+    cis: 2.3.2
+    cui: 3.1.13
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    iso27001-2013: A.8.2.3,A.13.1.1,A.13.2.1,A.13.2.3,A.14.1.2,A.14.1.3
+
+ocil: '<yum-macro install="false" package="rsh" />'

@@ -1,0 +1,67 @@
+documentation_complete: true
+
+title: 'Configure JBoss Log Permissions'
+
+description: |-
+    Configure the OS file permissions on the application server to protect log
+    information from unauthorized access.
+
+rationale: |-
+    If log data were to become compromised, then competent forensic analysis and
+    discovery of the true source of potentially malicious system activity is
+    difficult, if not impossible, to achieve.
+    <br /><br />
+    When not configured to use a
+    centralized logging solution like a syslog server, the JBoss EAP application
+    server writes log data to log files that are stored on the OS; appropriate file
+    permissions must be used to restrict access.
+    <br /><br />
+    Log information includes all
+    information (e.g., log records, log settings, transaction logs, and log reports)
+    needed to successfully log information system activity. Application servers must
+    protect log information from unauthorized access.
+
+severity: medium
+
+identifiers:
+    cce: 80462-5
+
+references:
+    disa: 162,163,164
+    nist: ""
+    srg: SRG-APP-000118-AS-000078,SRG-APP-000119-AS-000079,SRG-APP-000120-AS-000080
+    stigid: JBOS-AS-000165
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Examine the log file locations and inspect the file permissions. Interview the
+    system admin to determine log file locations. The default location for the log
+    files is:
+    <br /><br />
+    Standalone configuration:
+    <pre>
+    &lt;JBOSS_HOME&gt;/standalone/log/
+    </pre>
+    <br /><br />
+    Managed
+    Domain configuration:
+    <pre>
+    &lt;JBOSS_HOME&gt;/domain/servers/<i>servername</i>/log/
+    &lt;JBOSS_HOME&gt;/domain/log/
+    </pre>
+    <br /><br />
+    Review the file permissions for the log file
+    directories. The method used for identifying file permissions will be based
+    upon the OS the EAP server is installed on.
+    <br /><br />
+    Identify all users with file
+    permissions that allow them to read, modify, or delete log files.
+    <br /><br />
+    Request documentation from
+    system admin that identifies the users who are authorized to read, modify, or delete log files.
+    <br /><br />
+    If
+    unauthorized users are allowed to read, modify, or delete log files, or if documentation that
+    identifies the users who are authorized to read, modify, or delete log files is missing, this is a
+    finding.

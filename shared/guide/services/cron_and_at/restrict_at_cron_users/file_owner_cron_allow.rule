@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Verify User Who Owns <tt>/etc/cron.allow</tt> file'
+
+description: |-
+    If <tt>/etc/cron.allow</tt> exists, it must be owned by <tt>root</tt>.
+    <fileowner-desc-macro file="/etc/cron.allow" owner="root" />
+
+rationale: |-
+    If the owner of the cron.allow file is not set to root, the possibility exists for an
+    unauthorized user to view or edit sensitive information.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80378-3
+
+references:
+    disa: 366
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021110"
+
+ocil: '<fileowner-check-macro file="/etc/cron.allow" owner="root" />'

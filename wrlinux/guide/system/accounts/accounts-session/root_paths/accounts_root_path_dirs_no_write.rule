@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Ensure that Root''s Path Does Not Include World or Group-Writable Directories'
+
+description: |-
+    For each element in root's path, run:
+    <pre>$ sudo ls -ld <i>DIR</i></pre>
+    and ensure that write permissions are disabled for group and other.
+
+rationale: 'Such entries increase the risk that root could execute code provided by unprivileged users, and potentially malicious code.'
+
+severity: unknown
+
+references:
+    disa: 366
+    nist: CM-6(b)
+
+ocil_clause: 'group or other write permissions exist'
+
+ocil: |-
+    To ensure write permissions are disabled for group and other for each element in root's path, run the following command:
+    <pre>$ sudo ls -ld <i>DIR</i></pre>

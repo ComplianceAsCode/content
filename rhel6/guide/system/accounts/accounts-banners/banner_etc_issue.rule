@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Modify the System Login Banner'
+
+description: "To configure the system login banner:\n<br /><br />\nEdit <tt>/etc/issue</tt>. Replace the default text with a message\ncompliant with the local site policy or a legal disclaimer.\n\nThe DoD required text is either:\n<br /><br />\n<tt>You are accessing a U.S. Government (USG) Information System (IS) that is\nprovided for USG-authorized use only. By using this IS (which includes any\ndevice attached to this IS), you consent to the following conditions: \n<br />-The USG routinely intercepts and monitors communications on this IS for purposes\nincluding, but not limited to, penetration testing, COMSEC monitoring, network\noperations and defense, personnel misconduct (PM), law enforcement (LE), and\ncounterintelligence (CI) investigations. \n<br />-At any time, the USG may inspect and seize data stored on this IS. \n<br />-Communications using, or data stored on, this IS are not private, are subject \nto routine monitoring, interception, and search, and may be disclosed or used\
+    \ \nfor any USG-authorized purpose. \n<br />-This IS includes security measures (e.g., authentication and access controls) \nto protect USG interests -- not for your personal benefit or privacy. \n<br />-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative\nsearching or monitoring of the content of privileged communications, or work\nproduct, related to personal representation or services by attorneys,\npsychotherapists, or clergy, and their assistants. Such communications and work\nproduct are private and confidential. See User Agreement for details.</tt>\n<br /><br />\nOR:\n<br /><br />\n<tt>Use of this or any other DoD interest computer system constitutes consent to monitoring at all times.\n<br />This is a DoD interest computer system. All DoD interest computer systems and related equipment are intended\nfor the communication, transmission, processing, and storage of official U.S. Government or other authorized\ninformation only. All\
+    \ DoD interest computer systems are subject to monitoring at all times to ensure proper\nfunctioning of equipment and systems including security devices and systems, to prevent unauthorized use and\nviolations of statutes and security regulations, to deter criminal activity, and for other similar purposes. Any user of\na DoD interest computer system should be aware that any information placed in the system is subject to\nmonitoring and is not subject to any expectation of privacy.\n<br />If monitoring of this or any other DoD interest computer system reveals possible evidence of violation of criminal\nstatutes, this evidence and any other related information, including identification information about the user, may\nbe provided to law enforcement officials. If monitoring of this or any other DoD interest computer systems reveals\nviolations of security regulations or unauthorized use, employees who violate security regulations or make\nunauthorized use of DoD interest computer systems\
+    \ are subject to appropriate disciplinary action.\n<br />Use of this or any other DoD interest computer system constitutes consent to monitoring at all times.</tt>\n<br /><br />\nOR:\n<br /><br />\n<tt>I've read &amp; consent to terms in IS user agreem't.</tt>"
+
+rationale: |-
+    An appropriate warning message reinforces policy awareness during the login
+    process and facilitates possible legal action against attackers.
+
+severity: medium
+
+identifiers:
+    cce: 26974-6
+
+references:
+    disa: 48,1384,1385,1386,1387,1388
+    nist: AC-8(a),AC-8(b),AC-8(c)
+    srg: SRG-OS-000228
+    stigid: RHEL-06-000073
+
+ocil_clause: 'it does not display the required banner'
+
+ocil: |-
+    To check if the system login banner is compliant,
+    run the following command:
+    <pre>$ cat /etc/issue</pre>

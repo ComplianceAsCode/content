@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable HTTPD System Logging'
+
+description: |-
+    <tt>CustomLog</tt> should be enabled and set to the following in
+    <tt>/etc/httpd/conf/httpd.conf</tt>:
+    <pre>CustomLog "logs/access_log" combined</pre>
+
+rationale: |-
+    The server error logs are invaluable because they can also be used to identify
+    potential problems and enable proactive remediation. Log data can reveal
+    anomalous behavior such as "not found" or "unauthorized" errors that may
+    be an evidence of attack attempts. Failure to enable error logging can
+    significantly reduce the ability of Web Administrators to detect or remediate
+    problems. The CustomLog directive specifies the log file, syslog facility, or
+    piped logging utility.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WA00615
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify if <tt>CustomLog</tt> is configured correctly in
+    <tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+    <pre>$ grep -i customlog /etc/httpd/conf/httpd.conf</pre>
+    The output should return the following:
+    <pre>CustomLog "logs/access_log" combined</pre>

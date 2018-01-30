@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'System Audit Logs Must Be Owned By Root'
+
+description: |-
+    All audit logs must be owned by root user and group. By default, the path for audit log is <pre>/var/log/audit/</pre>.
+    <fileowner-desc-macro file="/var/log/audit" owner="root" />
+    <fileowner-desc-macro file="/var/log/audit/*" owner="root" />
+
+rationale: |-
+    Unauthorized disclosure of audit records can reveal system and configuration data to
+    attackers, thus compromising its confidentiality.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80125-8
+
+references:
+    cjis: 5.4.1.1
+    cui: 3.3.1
+    disa: 163
+    nist: AC-6,AU-1(b),AU-9,IR-5
+    pcidss: Req-10.5.1
+    srg: SRG-OS-000058-GPOS-00028
+
+ocil: |-
+    <fileowner-desc-macro file="/var/log/audit" owner="root" />
+    <fileowner-desc-macro file="/var/log/audit/*" owner="root" />

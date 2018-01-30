@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set Default firewalld Zone for Incoming Packets'
+
+description: |-
+    To set the default zone to <tt>drop</tt> for
+    the built-in default zone which processes incoming IPv4 and IPv6 packets,
+    modify the following line in
+    <tt>/etc/firewalld/firewalld.conf</tt> to be:
+    <pre>DefaultZone=drop</pre>
+
+rationale: |-
+    In <tt>firewalld</tt> the default zone is applied only after all
+    the applicable rules in the table are examined for a match. Setting the
+    default zone to <tt>drop</tt> implements proper design for a firewall, i.e.
+    any packets which are not explicitly permitted should not be
+    accepted.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27349-0
+
+references:
+    cjis: 5.10.1
+    cui: 3.1.3,3.4.7,3.13.6
+    disa: 366
+    nist: CM-6(b),CM-7
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040810"
+
+ocil_clause: 'the default zone is not set to DROP'
+
+ocil: |-
+    Inspect the file <tt>/etc/firewalld/firewalld.conf</tt> to determine
+    the default zone for the <tt>firewalld</tt>. It should be set to <tt>DefaultZone=drop</tt>:
+    <pre>$ sudo grep DefaultZone /etc/firewalld/firewalld.conf</pre>

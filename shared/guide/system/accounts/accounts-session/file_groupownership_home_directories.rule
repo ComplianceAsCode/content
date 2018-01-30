@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'All Interactive User Home Directories Must Be Group-Owned By The Primary User'
+
+description: |-
+    Change the group owner of interactive users home directory to the
+    group found in <tt>/etc/passwd</tt>. To change the group owner of
+    interactive users home directory, use the following command:
+    <pre>$ sudo chgrp <i>USER_GROUP</i> /home/<i>USER</i></pre>
+
+rationale: |-
+    If the Group Identifier (GID) of a local interactive users home directory is
+    not the same as the primary GID of the user, this would allow unauthorized
+    access to the users files, and users that share the same group may not be
+    able to access files that they legitimately should.
+
+severity: medium
+
+identifiers:
+    cce: 80532-5
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "020650"
+
+ocil_clause: 'the group ownership is incorrect'
+
+ocil: |-
+    To verify the assigned home directory of all interactive users is group-
+    owned by that users primary GID, run the following command:
+    <pre>$ sudo ls -ld $ (egrep ':[0-9]{4}' /etc/passwd | cut -d: -f6)</pre>

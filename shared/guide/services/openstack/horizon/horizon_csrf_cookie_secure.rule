@@ -1,0 +1,19 @@
+documentation_complete: true
+
+prodtype: osp7
+
+title: 'Check-Dashboard-04: Is CSRF_COOKIE_SECURE parameter set to True?'
+
+description: |-
+    CSRF (Cross-site request forgery) is an attack which forces an end user to execute unauthorized commands on a web application in which he/she is currently authenticated. A successful CSRF exploit can compromise end user data and operations in case of normal user. If the targeted end user has admin privileges, this can compromise the entire web application.
+    <br />
+    <br />
+    Pass: If value of parameter CSRF_COOKIE_SECURE in /etc/openstack-dashboard/local_settings is set to True.
+
+    <br />
+    <br />
+    Fail: If value of parameter CSRF_COOKIE_SECURE in /etc/openstack-dashboard/local_settings is set to False.
+
+rationale: ""
+
+severity: unknown

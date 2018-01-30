@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify /etc/grub.conf Group Ownership'
+
+description: "The file <tt>/etc/grub.conf</tt> should \nbe group-owned by the <tt>root</tt> group to prevent \ndestruction or modification of the file.\n<filegroupowner-desc-macro file=\"/etc/grub.conf\" group=\"root\" />"
+
+rationale: |-
+    The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
+    file should not have any access privileges anyway.
+
+severity: medium
+
+identifiers:
+    cce: 27022-3
+
+references:
+    disa: 225
+    nist: AC-6(7)
+    pcidss: Req-7.1
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000066
+
+ocil: '<filegroupowner-check-macro file="/etc/grub.conf" group="root" />'

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Software RAID Monitor (mdmonitor)'
+
+description: |-
+    The <tt>mdmonitor</tt> service is used for monitoring a software RAID array; hardware
+    RAID setups do not use this service.
+    <systemd-service-macro enable="false" service="mdmonitor" />
+
+rationale: |-
+    If software RAID monitoring is not required,
+    there is no need to run this service.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80259-5
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="mdmonitor" />'

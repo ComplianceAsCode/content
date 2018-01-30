@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Record Events that Modify User/Group Information - /etc/shadow'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following lines to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>, in order to capture events that modify
+    account changes:
+    <br /><br />
+    <pre>-w /etc/shadow -p wa -k audit_rules_usergroup_modification</pre>
+    <br /><br />
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt> file, in order to capture events that modify
+    account changes:
+    <br /><br />
+    <pre>-w /etc/shadow -p wa -k audit_rules_usergroup_modification</pre>
+
+rationale: |-
+    In addition to auditing new user and group accounts, these watches
+    will alert the system administrator(s) to any modifications. Any unexpected
+    users, groups, or modifications should be investigated for legitimacy.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80431-0
+
+references:
+    cis: 5.2.5
+    cjis: 5.4.1.1
+    cui: 3.1.7
+    disa: 18,172,1403,2130
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    nist: AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    ospp@rhel7: FAU_GEN.1.1.c
+    pcidss: Req-10.2.5
+    srg: SRG-OS-000004-GPOS-00004
+    stigid@rhel7: "030873"
+
+ocil_clause: 'the system is not configured to audit account changes'
+
+ocil: |-
+    To determine if the system is configured to audit account changes,
+    run the following command:
+    <br /><br />
+    <pre>auditctl -l | egrep '(/etc/shadow)'</pre>
+    <br /><br />
+    If the system is configured to watch for account changes, lines should be returned for
+    each file specified (and with <tt>perm=wa</tt> for each).

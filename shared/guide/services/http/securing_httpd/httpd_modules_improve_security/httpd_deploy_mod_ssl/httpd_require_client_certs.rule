@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Require Client Certificates'
+
+description: |-
+    <tt>SSLVerifyClient</tt> should be set and configured to <tt>require</tt> by
+    setting the following in <tt>/etc/httpd/conf/httpd.conf</tt>:
+    <pre>SSLVerifyClient require</pre>
+
+rationale: |-
+    Web sites requiring authentication within the DoD must utilize PKI as an
+    authentication mechanism for web users. Information systems residing behind web
+    servers requiring authorization based on individual identity must use the
+    identity provided by certificate-based authentication to support access control
+    decisions.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG140
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify if <tt>SSLVerifyClient</tt> is configured correctly in
+    <tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+    <pre>$ grep -i sslverifyclient /etc/httpd/conf/httpd.conf</pre>
+    The command should return the following:
+    <pre>SSLVerifyClient require</pre>

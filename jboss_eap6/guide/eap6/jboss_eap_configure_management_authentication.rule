@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Remove Silent Authentication - Management Security Realm'
+
+description: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <pre>&lt;JBOSS_HOME&gt;/bin/</pre>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Remove the local element from the Management Realm.
+    For standalone servers run
+    the following command:
+    <pre>/core-service=management/securityrealm=ManagementRealm/authentication=local:remove</pre>
+    <br /><br />
+    For managed domain installations run the following command:
+    <pre>/host=HOST_NAME/core-service=management/securityrealm=ManagementRealm/authentication=local:remove</pre>
+
+rationale: |-
+    Silent Authentication is a configuration setting that allows local OS users
+    access to the JBoss server and a wide range of operations without specifically
+    authenticating on an individual user basis. By default $localuser is a
+    Superuser. This introduces an integrity and availability vulnerability and
+    violates best practice requirements regarding accountability.
+
+severity: high
+
+identifiers:
+    cce: 80457-5
+
+references:
+    disa: 213
+    nist: ""
+    srg: SRG-APP-000033-AS-000024
+    stigid: JBOS-AS-000050
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Verify that Silent Authentication has been removed from the default Management
+    security realm.
+    Run the following command.
+    <br /><br />
+    For standalone servers run the
+    following command:
+    <pre>ls /core-service=management/securityrealm=ManagementRealm/authentication</pre>
+    <br /><br />
+    For
+    managed domain installations run the following command:
+    <pre>ls /host=HOST_NAME/core-service=management/securityrealm=ManagementRealm/authentication</pre>
+    <br /><br />
+    If <tt>local</tt> is returned, this is a finding.

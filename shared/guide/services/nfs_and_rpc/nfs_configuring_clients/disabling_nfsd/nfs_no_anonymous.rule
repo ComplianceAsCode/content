@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Specify UID and GID for Anonymous NFS Connections'
+
+description: "To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:\n<pre>\nanonuid=<tt>value greater than UID_MAX from /etc/login.defs</tt>\nanongid=<tt>value greater than GID_MAX from /etc/login.defs</tt> \n</pre>\nAlternatively, functionally equivalent values of 60001, 65534, 65535 may be used."
+
+rationale: "Specifying the anonymous UID and GID ensures that the remote root user is mapped \nto a local account which has no permissions on the system."
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80236-3
+
+ocil_clause: 'anonuid or anongid are not set to a value greater than UID_MAX (for anonuid) and GID_MAX (for anongid)'
+
+ocil: |-
+    Inspect the mounts configured in <tt>/etc/exports</tt>. Each mount should specify a value
+    greater than UID_MAX and GID_MAX as defined in /etc/login.defs.

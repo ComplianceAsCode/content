@@ -1,0 +1,60 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Authenticate Zone Transfers'
+
+description: |-
+    If it is necessary for a secondary nameserver to receive zone data
+    via zone transfer from the primary server, follow the instructions here.  Use
+    dnssec-keygen to create a symmetric key file in the current directory:
+    <pre>$ cd /tmp
+    $ sudo dnssec-keygen -a HMAC-MD5 -b 128 -n HOST dns.example.com
+    Kdns.example.com .+aaa +iiiii</pre>
+    This output is the name of a file containing the new key. Read the file to find
+    the base64-encoded key string:
+    <pre>$ sudo cat Kdns.example.com .+NNN +MMMMM .key
+    dns.example.com IN KEY 512 3 157 base64-key-string</pre>
+    Add the directives to <tt>/etc/named.conf</tt> on the primary server:
+    <pre>key zone-transfer-key {
+      algorithm hmac-md5;
+      secret "base64-key-string ";
+    };
+    zone "example.com " IN {
+      type master;
+      allow-transfer { key zone-transfer-key; };
+      ...
+    };</pre>
+    Add the directives below to <tt>/etc/named.conf</tt> on the secondary nameserver:
+    <pre>key zone-transfer-key {
+      algorithm hmac-md5;
+      secret "base64-key-string ";
+    };
+
+    server IP-OF-MASTER {
+      keys { zone-transfer-key; };
+    };
+
+    zone "example.com " IN {
+      type slave;
+      masters { IP-OF-MASTER ; };
+      ...
+    };</pre>
+
+rationale: |-
+    The BIND transaction signature (TSIG) functionality allows primary
+    and secondary nameservers to use a shared secret to verify authorization to
+    perform zone transfers. This method is more secure than using IP-based limiting
+    to restrict nameserver access, since IP addresses can be easily spoofed.
+    However, if you cannot configure TSIG between your servers because, for
+    instance, the secondary nameserver is not under your control and its
+    administrators are unwilling to configure TSIG, you can configure an
+    allow-transfer directive with numerical IP addresses or ACLs as a last resort.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80328-8
+
+references:
+    nist: CM-7

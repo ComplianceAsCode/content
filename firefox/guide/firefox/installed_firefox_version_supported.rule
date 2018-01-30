@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Supported Version of Firefox Installed'
+
+description: |-
+    If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
+    or a yum server, run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+    can be manually downloaded and installed using <tt>rpm</tt>.
+
+rationale: |-
+    Use of versions of an application which are not supported by the vendor
+    are not permitted. Vendors respond to security flaws with updates and
+    patches. These updates are not available for unsupported version which
+    can leave the application vulnerable to attack.
+
+severity: high
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: DCMC-1
+    stigid: DTBF003
+
+ocil_clause: 'it is not updated'
+
+ocil: |-
+    If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
+    a yum server which provides updates, invoking the following command will
+    indicate if updates are available:
+    <pre>$ sudo yum check-update</pre>
+    If the system is not configured to update from one of these sources,
+    run the following command to list when each package was last updated:
+    <pre>$ rpm -qa -last</pre>
+    Compare this to Red Hat Security Advisories (RHSA) listed at
+    <weblink-macro link="https://access.redhat.com/security/updates/active/" />
+    to determine if the system is missing applicable updates.

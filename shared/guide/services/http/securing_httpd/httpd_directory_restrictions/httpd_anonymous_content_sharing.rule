@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Web Content Directories Must Not Be Shared Anonymously'
+
+description: |-
+    Web content directories should not be shared anonymously over remote filesystems
+    such as <tt>nfs</tt> and <tt>smb</tt>. Remove the shares from the applicable
+    directories.
+
+rationale: |-
+    Sharing web content is a security risk when a web server is involved. Users
+    accessing the share anonymously could experience privileged access to the
+    content of such directories. Network sharable directories expose those
+    directories and their contents to unnecessary access. Any unnecessary exposure
+    increases the risk that someone could exploit that access and either compromises
+    the web content or cause web server performance problems.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG210
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that web content directories should not be shared anonymously over
+    remote filesystems such as <tt>nfs</tt> and <tt>smb</tt>, inspect each instance
+    of <tt>DocumentRoot</tt> and <tt>serverRoot</tt> and verify that no entry in
+    <tt>/etc/fstab</tt> exists or no remote filesystem process is running for
+    any instance.
+    <pre>$ ps -ef | grep "nfs\|smb"</pre>

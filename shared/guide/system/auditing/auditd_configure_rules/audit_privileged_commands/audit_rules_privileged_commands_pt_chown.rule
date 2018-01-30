@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands - pt_chown'
+
+description: |-
+    At a minimum, the audit system should collect the execution of
+    privileged commands for all users and root. If the <tt>auditd</tt> daemon is
+    configured to use the <tt>augenrules</tt> program to read audit rules during
+    daemon startup (the default), add a line of the following form to a file with
+    suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F path=/usr/libexec/pt_chown -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the following
+    form to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F path=/usr/libexec/pt_chown -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged</pre>
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threast.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80409-6
+
+references:
+    cui: 3.1.7
+    disa: 135,172,2884
+    nist: AU-3(1),AU-12(c)
+    srg: SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215
+    stigid@rhel7: "030790"
+
+ocil_clause: 'it is not the case'
+
+ocil: |-
+    To verify that auditing of privileged command use is configured, run the
+    following command:
+    <pre>$ sudo grep pt_chown /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+    It should return a relevant line in the audit rules.

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure rsyslog is Installed'
+
+description: "Rsyslog is installed by default. \n<yum-macro install=\"true\" package=\"rsyslog\" />"
+
+rationale: |-
+    The rsyslog package provides the rsyslog daemon, which provides
+    system logging services.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80187-8
+
+references:
+    anssi: NT28(R5),NT28(R46)
+    cis: 4.2.3
+    disa: 1311,1312
+    hipaa: 164.312(a)(2)(ii)
+    iso27001-2013: A.12.3.1
+    nist: AU-9(2)
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="rsyslog" />'

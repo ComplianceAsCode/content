@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Disable Java Execution From Untrusted Sources'
+
+description: |-
+    To ensure that Java cannot execute from untrusted sources, set
+    <tt>deployment.security.askgrantdialog.notinca</tt> to equal <tt>false</tt>
+    in <tt>/etc/.java/deployment/deployment.properties</tt>.
+
+rationale: |-
+    Permitting execution of signed Java applets from un-trusted sources
+    may result in acquiring malware, and risks system modification, invasion of
+    privacy, or denial of service.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: DCBP-1
+    stigid: JRE0001-UX
+
+ocil_clause: 'it does not exist or is not configured properly'
+
+ocil: |-
+    To verify that Java cannot execute from untrusted sources,
+    run the following command:
+    <pre>$ grep 'askgrantdialog.notinca=false' /etc/.java/deployment/deployment.properties</pre>
+    If properly configured, the output should return:
+    <pre>deployment.security.askgrantdialog.notinca=false</pre>

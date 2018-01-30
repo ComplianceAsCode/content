@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'The DoD Root Certificate Exists'
+
+description: |-
+    The DoD root certificate should be installed in the Shared System Certificates store
+    for Firefox to be able to access the DoD certificate. To install the root certificated
+    into the Shared System Certificates store, copy the DoD root certificate into
+    <tt>/etc/pki/ca-trust/source/anchors</tt>. Once the file is copied, run the following
+    command:
+    <pre>$ sudo update-ca-trust extract</pre>
+
+rationale: |-
+    The DOD root certificate will ensure that the trust chain is
+    established for server certificates issued from the DOD CA.
+
+severity: medium
+
+identifiers:
+    cce: 27457-1
+
+references:
+    disa: 54
+    nist: AC-10
+
+ocil_clause: 'it is not installed'
+
+ocil: "To verify that the DoD root certificate is installed,\nlist all certificates in <tt>/etc/pki/ca-trust/source/anchors</tt>\nand compare them to the DoD root certificate. If there is a match\nto the DoD root certificate, then the DoD root certificate is \ninstalled."

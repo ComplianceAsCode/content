@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Ensure <tt>auditd</tt> Collects File Deletion Events by User'
+
+description: |-
+    At a minimum the audit system should collect file
+    deletion events for all users and root. Add the following to
+    <tt>/etc/audit/audit.rules</tt>, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid&gt;=500 -F auid!=4294967295 -k delete</pre>
+
+rationale: |-
+    Auditing file deletions will create an audit trail for files that are removed
+    from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+    malicious processes that attempt to delete log files to conceal their presence.
+
+severity: unknown
+
+identifiers:
+    cce: 26651-0
+
+references:
+    disa: 126
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.2,Req-10.2.5.b
+    srg: SRG-OS-000064
+    stigid: RHEL-06-000200
+
+ocil: |-
+    <audit-syscall-check-macro syscall="unlink" />
+    <audit-syscall-check-macro syscall="unlinkat" />
+    <audit-syscall-check-macro syscall="rename" />
+    <audit-syscall-check-macro syscall="renameat" />

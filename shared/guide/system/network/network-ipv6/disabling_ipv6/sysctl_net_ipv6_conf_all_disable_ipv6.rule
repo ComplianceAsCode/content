@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable IPv6 Networking Support Automatic Loading'
+
+description: |-
+    To disable support for (<tt>ipv6</tt>) add the following line to
+    <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
+    <tt>/etc/sysctl.d</tt>):
+    <pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>
+    This disables IPv6 on all network interfaces as other services and system
+    functionality require the IPv6 stack loaded to work.
+
+rationale: |-
+    Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
+    the vulnerability to exploitation.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80175-3
+
+references:
+    cis: 3.3.3
+    cui: 3.1.20
+    disa: 1551
+    nist: CM-7
+
+ocil_clause: 'the ipv6 support is disabled on network interfaces'
+
+ocil: "If the system uses IPv6, this is not applicable.\n<br /><br />\nIf the system is configured to prevent the usage of the\n<tt>ipv6</tt> on network interfaces, it will contain a line\nof the form:\n<pre>net.ipv6.conf.all.disable_ipv6 = 1</pre>\nSuch lines may be inside any file in the <tt>/etc/sysctl.d</tt> directory. \nThis permits insertion of the IPv6 kernel module (which other parts of \nthe system expect to be present), but otherwise keeps all network interfaces\nfrom using IPv6.\nRun the following command to search for such\nlines in all files in <tt>/etc/sysctl.d</tt>:\n<pre xml:space=\"preserve\">$ grep -r ipv6 /etc/sysctl.d</pre>"

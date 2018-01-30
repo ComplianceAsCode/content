@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Require Encryption for Remote Access in GNOME3'
+
+description: |-
+    By default, <tt>GNOME</tt> requires encryption when using <tt>Vino</tt> for remote access.
+    To prevent remote access encryption from being disabled, add or set
+    <tt>require-encryption</tt> to <tt>true</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/Vino]
+    require-encryption=true
+    </pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/Vino/require-encryption</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Open X displays allow an attacker to capture keystrokes and to execute commands
+    remotely.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80121-7
+
+references:
+    cui: 3.1.13
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: CM-2(1)(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: TBD
+
+ocil_clause: 'remote access connections are not encrypted'
+
+ocil: |-
+    To ensure that remote access connections are encrypted, run the following command:
+    <pre>$ gsettings get org.gnome.Vino require-encrpytion</pre>
+    If properly configured, the output should be <tt>true</tt>.
+    To ensure that users cannot disable encrypted remote connections, run the following:
+    <pre>$ grep require-encryption /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be
+    <tt>/org/gnome/Vino/require-encryption</tt>

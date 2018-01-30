@@ -1,0 +1,57 @@
+documentation_complete: true
+
+title: 'Configure JBoss User Roles'
+
+description: |-
+    Document approved management users and their roles. Configure the application
+    server to use RBAC and ensure users are placed into the appropriate roles.
+
+rationale: |-
+    Security realms are a series of mappings between users and passwords and users
+    and roles. There are 2 JBoss security realms provided by default; they are
+    <tt>management realm</tt> and <tt>application realm</tt>.
+    <br /><br />
+    Management realm
+    stores authentication information for the management API, which provides
+    functionality for the web-based management console and the management command
+    line interface (CLI).
+    <br /><br />
+    mgmt-groups.properties stores user to group mapping for
+    the ManagementRealm but only when role-based access controls (RBAC) is enabled.
+    If management users are not in the appropriate role, unauthorized access to
+    JBoss resources can occur.
+
+severity: medium
+
+identifiers:
+    cce: 80455-9
+
+references:
+    disa: 213
+    nist: ""
+    srg: SRG-APP-000033-AS-000024
+    stigid: JBOS-AS-000040
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Review the <tt>mgmt-users.properties</tt> file.  Also review the <tt>&lt;management /&gt;</tt> section
+    in the standalone.xml or domain.xml configuration files. The relevant xml file
+    will depend on if the JBoss server is configured in standalone or domain mode.
+    Ensure all users listed in these files are approved for management access to the
+    JBoss server and are in the appropriate role.
+    <br /><br />
+    For domain configurations:
+    <pre>
+    &lt;JBOSS_HOME&gt;/domain/configuration/mgmt-users.properties.
+    &lt;JBOSS_HOME&gt;/domain/configuration/domain.xml
+    </pre>
+    <br /><br />
+    For standalone configurations:
+    <pre>
+    &lt;JBOSS_HOME&gt;/standalone/configuration/mgmt-users.properties.
+    &lt;JBOSS_HOME&gt;/standalone/configuration/standalone.xml
+    </pre>
+    <br /><br />
+    If the users listed are
+    not in the appropriate role, this is a finding.

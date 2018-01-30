@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Disable Automatic Downloads of MIME Types'
+
+description: |-
+    MIME type files are automatically downloaded or executed in Firefox. This
+    can be disabled by setting <tt>browser.helperApps.alwaysAsk.force</tt> to
+    <tt>true</tt>.
+
+rationale: |-
+    The default action for file types for which a plugin is installed is to
+    automatically download and execute the file using the associated plugin.
+    Firefox allows users to change the specified download action so that the
+    file is opened with a selected external application or saved to disk
+    instead.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: DCMC-1
+    stigid: DTBF100
+
+ocil_clause: 'it is not disabled'
+
+ocil: |-
+    To verify that user interaction is required for the downloading of MIME types,
+    run the following command:
+    <pre>$ grep 'browser.helperApps.alwaysAsk.force' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    The output should return:
+    <pre>lockPref("browser.helperApps.alwaysAsk.force", "true");</pre>

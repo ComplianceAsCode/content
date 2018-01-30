@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Serve Avahi Only via Required Protocol'
+
+description: |-
+    If you are using only IPv4, edit <tt>/etc/avahi/avahi-daemon.conf</tt> and ensure
+    the following line exists in the <tt>[server]</tt> section:
+    <pre>use-ipv6=no</pre>
+    Similarly, if you are using only IPv6, disable IPv4 sockets with the line:
+    <pre>use-ipv4=no</pre>
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80339-5
+
+references:
+    nist: CM-7

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the antivirus_use_jit SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>antivirus_use_jit</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="antivirus_use_jit" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80423-7
+
+references:
+    cui: 3.7.2
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'antivirus_use_jit is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="antivirus_use_jit" />'

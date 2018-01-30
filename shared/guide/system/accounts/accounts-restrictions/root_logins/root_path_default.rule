@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Root Path Must Be Vendor Default'
+
+description: |-
+    Assuming root shell is bash, edit the following files:
+    <pre>~/.profile</pre>
+    <pre>~/.bashrc</pre>
+    Change any <tt>PATH</tt> variables to the vendor default for root and remove any
+    empty <tt>PATH</tt> entries or references to relative paths.
+
+rationale: |-
+    The root account's executable search path must be the vendor default, and must
+    contain only absolute paths.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80210-8
+
+references:
+    nist: SA-8
+
+ocil_clause: 'any of these conditions are not met'
+
+ocil: |-
+    To view the root user's <tt>PATH</tt>, run the following command:
+    <pre>$ sudo env | grep PATH</pre>
+    If correctly configured, the <tt>PATH</tt> must: use vendor default settings,
+    have no empty entries, and have no entries beginning with a character
+    other than a slash (/).

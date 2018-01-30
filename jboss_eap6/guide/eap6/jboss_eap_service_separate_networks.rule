@@ -1,0 +1,77 @@
+documentation_complete: true
+
+title: 'Use Separate Management and Application Networks'
+
+description: |-
+    Start the application server with a <tt>-bmanagement</tt> and a <tt>-b</tt> flag so that admin
+    management functionality and hosted applications are separated.
+    <br /><br />
+    Refer to
+    section 4.9 in the JBoss EAP 6.3 Installation Guide for specific instructions on
+    how to start the JBoss server as a service.
+
+rationale: |-
+    The application server consists of the management interface and hosted
+    applications. By separating the management interface from hosted applications,
+    the user must authenticate as a privileged user to the management interface
+    before being presented with management functionality. This prevents non-
+    privileged users from having visibility to functions not available to the user.
+    By limiting visibility, a compromised non-privileged account does not offer
+    information to the attacker or functionality and information needed to further
+    the attack on the application server.
+    <br /><br />
+    JBoss is designed to operate with
+    separate application and management interfaces.
+    The JBoss server is started via
+    a script. To start the JBoss server in domain mode, the admin will execute the
+    /bin/domain.sh or domain.bat script.
+    <br /><br />
+    To start the JBoss server in standalone
+    mode, the admin will execute /bin/standalone.bat or standalone.sh.
+    <br /><br />
+    Command line
+    flags are used to specify which network address is used for management and which
+    address is used for public/application access.
+
+severity: medium
+
+identifiers:
+    cce: 80483-1
+
+references:
+    disa: 1082
+    nist: ""
+    srg: SRG-APP-000211-AS-000146
+    stigid: JBOS-AS-000355
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    If JBoss is not started with separate management and public interfaces, this is
+    a finding.
+    <br /><br />
+    Review the network design documents to identify the IP address space
+    for the management network.
+    <br /><br />
+    Use relevant OS commands and administrative
+    techniques to determine how the system administrator starts the JBoss server.
+    This includes interviewing the system admin, using the <pre>ps -ef|grep</pre>
+    command for UNIX like systems or checking command line flags and properties on
+    batch scripts for Windows systems.
+    <br /><br />
+    Ensure the startup syntax used to start
+    JBoss specifies a management network address and a public network address.
+    <br /><br />
+    The
+    <tt>-b</tt> flag specifies the public address space.
+    The
+    <tt>-bmanagement</tt> flag specifies the management address space.
+    <br /><br />
+    Example:
+    <pre>
+    &lt;JBOSS_HOME&gt;/bin/standalone.sh -bmanagement 10.10.10.35 -b 192.168.10.25
+    </pre>
+    <br /><br />
+    If
+    JBoss is not started with separate management and public interfaces, this is a
+    finding.

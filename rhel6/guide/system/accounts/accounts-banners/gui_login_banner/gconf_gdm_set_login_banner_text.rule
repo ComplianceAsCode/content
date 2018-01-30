@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Set GUI Warning Banner Text'
+
+description: |-
+    To set the text shown by the GNOME Display Manager
+    in the login screen, run the following command:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type string \
+      --set /apps/gdm/simple-greeter/banner_message_text \
+      "Text of the warning banner here"</pre>
+    When entering a warning banner that spans several lines, remember
+    to begin and end the string with <tt>"</tt>. This command writes
+    directly either to the <tt>/etc/gconf/gconf.xml.mandatory/%gconf-tree.xml</tt>
+    if it exists or to the file <tt>/etc/gconf/gconf.xml.mandatory/apps/gdm/simple-greeter/%gconf.xml</tt>.
+    Either of these files can later be edited directly if necessary.
+
+rationale: |-
+    An appropriate warning message reinforces policy awareness during the login
+    process and facilitates possible legal action against attackers.
+
+severity: medium
+
+identifiers:
+    cce: 27017-3
+
+references:
+    disa: 48,1384,1385,1386,1387,1388
+    nist: AC-8(a),AC-8(b),AC-8(c)
+    srg: SRG-OS-000228
+    stigid: RHEL-06-000326
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To ensure the login warning banner text is properly set, run the following:
+    <pre>$ gconftool-2 -g /apps/gdm/simple-greeter/banner_message_text</pre>
+    If properly configured, the proper banner text will appear within this schema.

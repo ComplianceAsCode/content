@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf/</tt>'
+
+description: '<fileperms-desc-macro file="/etc/http/conf/*" perms="0640" />'
+
+rationale: |-
+    Access to the web server's configuration files may allow an unauthorized user or attacker
+    to access information about the web server or to alter the server's configuration files.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80324-7
+
+references:
+    nist: CM-7
+
+ocil: '<fileperms-check-macro file="/etc/http/conf/*" perms="-rw-r-----" />'

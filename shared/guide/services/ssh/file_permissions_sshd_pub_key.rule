@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files'
+
+description: '<fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644" />'
+
+rationale: |-
+    If a public host key file is modified by an unauthorized user, the SSH service
+    may be compromised.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27311-0
+
+references:
+    cui: 3.1.13,3.13.10
+    disa: 366
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040410"
+
+ocil: '<fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--" />'

@@ -1,0 +1,56 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure auditd space_left Action on Low Disk Space'
+
+description: |-
+    The <tt>auditd</tt> service can be configured to take an action
+    when disk space <i>starts</i> to run low.
+    Edit the file <tt>/etc/audit/auditd.conf</tt>. Modify the following line,
+    substituting <i>ACTION</i> appropriately:
+    <pre>space_left_action = <i>ACTION</i></pre>
+    Possible values for <i>ACTION</i> are described in the <tt>auditd.conf</tt> man page.
+    These include:
+    <ul>
+    <li><tt>ignore</tt></li>
+    <li><tt>syslog</tt></li>
+    <li><tt>email</tt></li>
+    <li><tt>exec</tt></li>
+    <li><tt>suspend</tt></li>
+    <li><tt>single</tt></li>
+    <li><tt>halt</tt></li>
+    </ul>
+    Set this to <tt>email</tt> (instead of the default,
+    which is <tt>suspend</tt>) as it is more likely to get prompt attention. Acceptable values
+    also include <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.
+
+rationale: |-
+    Notifying administrators of an impending disk space problem may
+    allow them to take corrective action prior to any disruption.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27375-5
+
+references:
+    cis: 5.2.1.2
+    cjis: 5.4.1.1
+    cui: 3.3.1
+    disa: 1855
+    hipaa: 164.312(a)(2)(ii)
+    iso27001-2013: A.12.3.1
+    nist: AU-1(b),AU-4,AU-5(1),AU-5(b),IR-5
+    pcidss: Req-10.7
+    srg: SRG-OS-000343-GPOS-00134
+
+ocil_clause: 'the system is not configured to send an email to the system administrator when disk space is starting to run low'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured to email the administrator when
+    disk space is starting to run low:
+    <tt>$ sudo grep space_left_action /etc/audit/auditd.conf</tt>
+    <pre>space_left_action</pre>
+    Acceptable values are <tt>email</tt>, <tt>suspend</tt>, <tt>single</tt>, and <tt>halt</tt>.

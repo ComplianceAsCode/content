@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Bluetooth Service'
+
+description: |-
+    <systemd-service-macro enable="false" service="bluetooth" />
+    <pre>$ sudo service bluetooth stop</pre>
+
+rationale: |-
+    Disabling the <tt>bluetooth</tt> service prevents the system from attempting
+    connections to Bluetooth devices, which entails some security risk.
+    Nevertheless, variation in this risk decision may be expected due to the
+    utility of Bluetooth connectivity and its limited range.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27328-4
+
+references:
+    cui: 3.1.16
+    disa: 85,1551
+    nist: AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7
+
+ocil: '<systemd-check-macro enable="false" service="bluetooth" />'

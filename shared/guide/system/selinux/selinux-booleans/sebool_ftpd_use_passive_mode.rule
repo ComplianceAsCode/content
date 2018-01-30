@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the ftpd_use_passive_mode SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>ftpd_use_passive_mode</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="ftpd_use_passive_mode" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'ftpd_use_passive_mode is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="ftpd_use_passive_mode" />'

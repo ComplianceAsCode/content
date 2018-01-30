@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install the Host Intrusion Prevention System (HIPS) Module'
+
+description: |-
+    Install the McAfee Host Intrusion Prevention System (HIPS) Module if it is absolutely
+    necessary. If SELinux is enabled, do not install or enable this module.
+
+rationale: |-
+    Without a host-based intrusion detection tool, there is no system-level defense
+    when an intruder gains access to a system or network. Additionally, a host-based
+    intrusion prevention tool can provide methods to immediately lock out detected
+    intrusion attempts.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80368-4
+
+references:
+    disa: 366,1263
+    nist: SC-7,SI-4(1).1
+    pcidss: Req-11.4
+    srg: STG-OS-000480-GPOS-00227
+
+ocil_clause: 'the HBSS HIPS module is not installed'
+
+ocil: |-
+    To verify that McAfee HIPS is installed, run the following command(s):
+    <pre>$ rpm -q MFEhiplsm</pre>

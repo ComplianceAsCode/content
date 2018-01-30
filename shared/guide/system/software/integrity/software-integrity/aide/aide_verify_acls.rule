@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure AIDE to Verify Access Control Lists (ACLs)'
+
+description: |-
+    By default, the <tt>acl</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
+    If using a custom ruleset or the <tt>acl</tt> option is missing, add <tt>acl</tt>
+    to the appropriate ruleset.
+    For example, add <tt>acl</tt> to the following line in <tt>/etc/aide.conf</tt>:
+    <pre>FIPSR = p+i+n+u+g+s+m+c+acl+selinux+xattrs+sha256</pre>
+    AIDE rules can be configured in multiple ways; this is merely one example that is already
+    configured by default.
+
+rationale: |-
+    ACLs can provide permissions beyond those permitted through the file mode and must be
+    verified by the file integrity tools.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80375-9
+
+references:
+    disa: 366
+    nist: SI-7.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021600"
+
+ocil_clause: 'the acl option is missing or not added to the correct ruleset'
+
+ocil: |-
+    To determine that AIDE is verifying ACLs, run the following command:
+    <pre>$ grep acl /etc/aide.conf</pre>
+    Verify that the <tt>acl</tt> option is added to the correct ruleset.

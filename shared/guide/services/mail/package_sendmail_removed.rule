@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall Sendmail Package'
+
+description: |-
+    Sendmail is not the default mail transfer agent and is
+    not installed by default.
+    <yum-macro install="false" package="sendmail" />
+
+rationale: |-
+    The sendmail software was not developed with security in mind and
+    its design prevents it from being effectively contained by SELinux.  Postfix
+    should be used instead.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80288-4
+
+references:
+    nist: CM-7
+
+ocil: '<package-check-macro package="sendmail" />'

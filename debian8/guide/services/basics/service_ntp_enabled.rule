@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Enable the ntpd service'
+
+description: 'The ntpd service should be enabled.'
+
+rationale: 'Time synchronization (using NTP) is required by almost all network and administrative tasks (syslog, cryptographic based services (authentication, etc.), etc.). Ntpd is regulary maintained and updated, supporting security features such as RFC 5906.'
+
+severity: high
+
+identifiers:
+    cce: ""
+
+references:
+    anssi: NT012(R03)
+    disa: 160
+    nist: AU-8(1)
+    pcidss: Req-10.4
+
+ocil: '<service-check-macro enable="true" service="ntp" />'

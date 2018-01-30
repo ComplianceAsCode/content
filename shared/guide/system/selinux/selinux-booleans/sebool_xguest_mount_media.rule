@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the xguest_mount_media SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>xguest_mount_media</tt> is enabled.
+    This setting should be disabled as guest users should not be able to mount
+    any media.
+    <sebool-macro enable="false" sebool="xguest_mount_media" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'xguest_mount_media is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="xguest_mount_media" />'

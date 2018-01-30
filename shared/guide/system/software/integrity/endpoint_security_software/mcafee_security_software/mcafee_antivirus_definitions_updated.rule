@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Virus Scanning Software Definitions Are Updated'
+
+description: 'Ensure virus definition files are no older than 7 days or their last release.'
+
+rationale: |-
+    Virus scanning software can be used to detect if a system has been compromised by
+    computer viruses, as well as to limit their spread to other systems.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80129-0
+
+references:
+    disa: 366,1239,1668
+    nist: SC-28,SI-3,SI-3(1)(ii)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "032010"
+
+ocil_clause: 'signatures are out of date'
+
+ocil: |-
+    To check on the age of McAfee virus definition files, run the following command:
+    <pre>$ sudo cd /opt/NAI/LinuxShield/engine/dat
+    $ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>

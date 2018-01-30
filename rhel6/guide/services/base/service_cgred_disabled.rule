@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable Control Group Rules Engine (cgred)'
+
+description: |-
+    The <tt>cgred</tt> service moves tasks into control groups according to
+    parameters set in the <tt>/etc/cgrules.conf</tt> configuration file.
+    <chkconfig-service-macro enable="false" service="cgred" />
+
+rationale: |-
+    Unless control groups are used to manage system resources, running the cgred service
+    service is not necessary.
+
+severity: unknown
+
+identifiers:
+    cce: 27252-6
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="cgred" />'

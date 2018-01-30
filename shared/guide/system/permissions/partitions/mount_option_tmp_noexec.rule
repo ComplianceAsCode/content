@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Add noexec Option to /tmp'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries
+    from being executed out of <tt>/tmp</tt>.
+    <mount-desc-macro option="noexec" part="/tmp" />
+
+rationale: |-
+    Allowing users to execute binaries from world-writable directories
+    such as <tt>/tmp</tt> should never be necessary in normal operation and
+    can expose the system to potential compromise.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80150-6
+
+references:
+    cis: 1.1.5
+    nist: CM-7,MP-2

@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Squid'
+
+description: '<systemd-service-macro enable="false" service="squid" />'
+
+rationale: |-
+    Running proxy server software provides a network-based avenue
+    of attack, and should be removed if not needed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80285-0
+
+references:
+    cis: 2.2.13
+
+ocil: '<systemd-check-macro enable="false" service="squid" />'

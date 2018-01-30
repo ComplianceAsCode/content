@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set Password Minimum Age'
+
+description: |-
+    To specify password minimum age for new accounts,
+    edit the file <tt>/etc/login.defs</tt>
+    and add or correct the following line:
+    <pre>PASS_MIN_DAYS <sub idref="var_accounts_minimum_age_login_defs" /></pre>
+    A value of 1 day is considered sufficient for many
+    environments. The DoD requirement is 1.
+    The profile requirement is <tt><sub idref="var_accounts_minimum_age_login_defs" /></tt>.
+
+rationale: "Enforcing a minimum password lifetime helps to prevent repeated password changes to defeat\nthe password reuse or history enforcement requirement. If users are allowed to immediately\nand continually change their password, then the password could be repeatedly changed in a \nshort period of time to defeat the organization's policy regarding password reuse.\n<br /><br />\nSetting the minimum password age protects against users cycling back to a favorite password\nafter satisfying the password reuse requirement."
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27002-5
+
+references:
+    cjis: 5.6.2.1.1
+    cui: 3.5.8
+    disa: 198
+    nist: IA-5(f),IA-5(1)(d)
+    srg: SRG-OS-000075-GPOS-00043
+    stigid@rhel7: "010230"
+
+ocil_clause: 'it is not equal to or greater than the required value'
+
+ocil: |-
+    To check the minimum password age, run the command:
+    <pre>$ grep PASS_MIN_DAYS /etc/login.defs</pre>

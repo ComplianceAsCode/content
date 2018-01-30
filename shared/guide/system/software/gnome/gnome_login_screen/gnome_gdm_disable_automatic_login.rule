@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable GDM Automatic Login'
+
+description: |-
+    The GNOME Display Manager (GDM) can allow users to automatically login without
+    user interaction or credentials. User should always be required to authenticate themselves
+    to the system that they are authorized to use. To disable user ability to automatically
+    login to the system, set the <tt>AutomaticLoginEnable</tt> to <tt>false</tt> in the
+    <tt>[daemon]</tt> section in <tt>/etc/gdm/custom.conf</tt>. For example:
+    <pre>[daemon]
+    AutomaticLoginEnable=false</pre>
+
+rationale: |-
+    Failure to restrict system access to authenticated users negatively impacts operating
+    system security.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80104-3
+
+references:
+    cui: 3.1.1
+    disa: 366
+    nist: CM-6(b)
+    ospp@rhel7: FIA_AFL.1
+    srg: SRG-OS-000480-GPOS-00229
+    stigid@rhel7: "010440"
+
+ocil_clause: 'GDM allows users to automatically login'
+
+ocil: |-
+    To verify that automatic logins are disabled, run the following command:
+    <pre>$ grep -Pzoi "^\[daemon]\\nautomaticlogin.*" /etc/gdm/custom.conf</pre>
+    The output should show the following:
+    <pre>[daemon]
+    AutomaticLoginEnable=false</pre>

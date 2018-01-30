@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable Red Hat Subscription Manager Daemon (rhsmcertd)'
+
+description: |-
+    The Red Hat Subscription Manager (rhsmcertd) periodically checks for
+    changes in the entitlement certificates for a registered system and updates it
+    accordingly.
+    <chkconfig-service-macro enable="false" service="rhsmcertd" />
+
+rationale: |-
+    The <tt>rhsmcertd</tt> service can provide administrators with some
+    additional control over which of their systems are entitled to particular
+    subscriptions. However, for systems that are managed locally or which are not
+    expected to require remote changes to their subscription status, it is
+    unnecessary and can be disabled.
+
+severity: unknown
+
+identifiers:
+    cce: 27262-5
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="rhsmcertd" />'

@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable WIFI Network Notification in GNOME3'
+
+description: |-
+    By default, <tt>GNOME</tt> disables WIFI notification. This should be permanently set
+    so that users do not connect to a wireless network when the system finds one.
+    While useful for mobile devices, this setting should be disabled for all other systems.
+    To configure the system to disable the WIFI notication, add or set
+    <tt>suppress-wireless-networks-available</tt> to <tt>true</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/nm-applet]
+    suppress-wireless-networks-available=true
+    </pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/nm-applet/suppress-wireless-networks-available</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Wireless network connections should not be allowed to be configured by general
+    users on a given system as it could open the system to backdoor attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80119-1
+
+references:
+    cui: 3.1.16
+
+ocil_clause: 'wireless network notification is enabled and not disabled'
+
+ocil: |-
+    To ensure that wireless network notification is disabled, run the following command:
+    <pre>$ gsettings get org.gnome.nm-applet suppress-wireless-networks-available</pre>
+    If properly configured, the output should be <tt>true</tt>.
+    To ensure that users cannot enable wireless notification, run the following:
+    <pre>$ grep wireless-networks-available /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be
+    <tt>/org/gnome/nm-applet/suppress-wireless-networks-available</tt>

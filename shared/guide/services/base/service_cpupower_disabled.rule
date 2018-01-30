@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable CPU Speed (cpupower)'
+
+description: |-
+    The <tt>cpupower</tt> service can adjust the clock speed of supported CPUs based upon
+    the current processing load thereby conserving power and reducing heat.
+    <systemd-service-macro enable="false" service="cpupower" />
+
+rationale: |-
+    The <tt>cpupower</tt> service is only necessary if adjusting the CPU clock speed
+    provides benefit. Traditionally this has included laptops (to enhance battery life),
+    but may also apply to server or desktop environments where conserving power is
+    highly desirable or necessary.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80256-1
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="cpupower" />'

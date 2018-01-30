@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable anacron Service'
+
+description: "The <tt>cronie-anacron</tt> package, which provides <tt>anacron</tt>\nfunctionality, is installed by default. \n<yum-macro install=\"false\" package=\"cronie-anacron\" />"
+
+rationale: |-
+    The <tt>anacron</tt> service provides <tt>cron</tt> functionality for systems
+    such as laptops and workstations that may be shut down during the normal times
+    that <tt>cron</tt> jobs are scheduled to run. On systems which do not require this
+    additional functionality, <tt>anacron</tt> could needlessly increase the possible
+    attack surface for an intruder.
+
+severity: unknown
+
+identifiers:
+    cce: 27158-5
+
+references:
+    nist: CM-7
+
+ocil: '<package-check-macro package="cronie-anacron" />'

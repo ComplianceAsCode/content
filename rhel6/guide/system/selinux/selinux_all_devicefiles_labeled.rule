@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Ensure No Device Files are Unknown to SELinux'
+
+description: |-
+    Device files, which are used for communication with important
+    system resources, should be labeled with proper SELinux types. If any device
+    files carry the SELinux type <tt>device_t</tt>, report the bug so that policy can be corrected. Supply information about what the device is and what programs use it.
+
+rationale: |-
+    If a device file carries the SELinux type <tt>device_t</tt>, then SELinux
+    cannot properly restrict access to the device file.
+
+severity: unknown
+
+identifiers:
+    cce: 26774-0
+
+references:
+    disa: 22,32
+    nist: AC-6,AU-9,CM-7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000025
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    To check for unlabeled device files, run the following command:
+    <pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
+    It should produce no output in a well-configured system.

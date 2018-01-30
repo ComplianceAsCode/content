@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'All Interactive Users Home Directories Must Exist'
+
+description: |-
+    Create home directories to all interactive users that currently do not
+    have a home directory assigned. Use the following commands to create the user
+    home directory assigned in <tt>/etc/passwd</tt>:
+    <pre>$ sudo mkdir /home/<i>USER</i></pre>
+
+rationale: |-
+    If a local interactive user has a home directory defined that does not exist,
+    the user may be given access to the / directory as the current working directory
+    upon logon. This could create a Denial of Service because the user would not be
+    able to access their logon configuration files, and it may give them visibility
+    to system files they normally would not be able to access.
+
+severity: medium
+
+identifiers:
+    cce: 80529-1
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "020620"
+
+ocil_clause: 'users home directory does not exist'
+
+ocil: |-
+    To verify the assigned home directory of all interactive users on the system
+    exist, run the following command:
+    <pre>$ sudo pwck -r</pre>
+    The output should not return any interactive users.

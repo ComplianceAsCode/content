@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure auditd flush priority'
+
+description: |-
+    The <tt>auditd</tt> service can be configured to
+    synchronously write audit event data to disk. Add or correct the following
+    line in <tt>/etc/audit/auditd.conf</tt> to ensure that audit event data is
+    fully synchronized with the log files on the disk:
+    <pre>flush = <sub idref="var_auditd_flush" /></pre>
+
+rationale: |-
+    Audit data should be synchronously written to disk to ensure
+    log integrity. These parameters assure that all audit event data is fully
+    synchronized with the log files on the disk.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27331-8
+
+references:
+    cui: 3.3.1
+    disa: 1576
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    nist: AU-9,AU-12(1)
+
+ocil_clause: 'auditd is not configured to synchronously write audit event data to disk'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured to synchronize audit event data
+    with the log files on the disk:
+    <tt>$ sudo grep flush /etc/audit/auditd.conf</tt>
+    <pre>flush = DATA</pre>
+    Acceptable values are <tt>DATA</tt>, and <tt>SYNC</tt>. The setting is
+    case-insensitive.

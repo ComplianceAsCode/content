@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Disable Kernel Parameter for Sending ICMP Redirects by Default'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />'
+
+rationale: |-
+    Sending ICMP redirects permits the system to instruct other systems
+    to update their routing information.  The ability to send ICMP redirects is
+    only appropriate for systems acting as routers.
+
+severity: medium
+
+identifiers:
+    cce: 27001-7
+
+references:
+    disa: 1551
+    nist: AC-4,CM-7,SC-5,SC-7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000080
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />'

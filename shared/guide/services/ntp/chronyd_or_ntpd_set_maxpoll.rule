@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure Time Service Maxpoll Interval'
+
+description: |-
+    The <tt>maxpoll</tt> should be configured to
+    <sub idref="var_time_service_set_maxpoll" /> in <tt>/etc/ntp.conf</tt> or
+    <tt>/etc/chrony.conf</tt> to continuously poll time servers. To configure
+    <tt>maxpoll</tt> in <tt>/etc/ntp.conf</tt> or <tt>/etc/chrony.conf</tt>
+    add the following:
+    <pre>maxpoll <sub idref="var_time_service_set_maxpoll" /></pre>
+
+rationale: |-
+    Inaccurate time stamps make it more difficult to correlate
+    events and can lead to an inaccurate analysis. Determining the correct
+    time a particular event occurred on a system is critical when conducting
+    forensic analysis and investigating system events. Sources outside the
+    configured acceptable allowance (drift) may be inaccurate.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80439-3
+
+references:
+    disa: 1891,2046
+    nist: AU-8(1)(a)
+    srg: 'SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144'
+    stigid@rhel7: "040500"
+
+ocil_clause: 'it does not exist or maxpoll has not been set to the expected value'
+
+ocil: |-
+    To verify that <tt>maxpoll</tt> has been set properly, perform the following:
+    <pre>$ sudo grep maxpoll /etc/ntp.conf /etc/chrony.conf</pre>
+    The output should return
+    <pre>maxpoll <sub idref="var_time_service_set_maxpoll" /></pre>.

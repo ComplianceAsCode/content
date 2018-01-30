@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'JBoss System Is Patched'
+
+description: |-
+    Configure the operating system and the application server to use a patch
+    management system or process that ensures security-relevant updates are
+    installed within the time period directed by the ISSM.
+
+rationale: |-
+    The JBoss product is available as Open Source; however, the Red Hat vendor
+    provides updates, patches and support for the JBoss product. It is imperative
+    that patches and updates be applied to JBoss in a timely manner as many attacks
+    against JBoss focus on unpatched systems. It is critical that support be
+    obtained and made available.
+
+severity: high
+
+identifiers:
+    cce: 80496-3
+
+references:
+    disa: 2605
+    nist: ""
+    srg: SRG-APP-000456-AS-000266
+    stigid: JBOS-AS-000685
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Interview the system admin and obtain details on their patch management
+    processes as it relates to the OS and the Application Server.
+    <br /><br />
+    If there is no
+    active, documented patch management process in use for these components, this is
+    a finding.

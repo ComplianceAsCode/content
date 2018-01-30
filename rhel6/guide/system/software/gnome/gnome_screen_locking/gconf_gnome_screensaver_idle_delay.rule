@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Set GNOME Login Inactivity Timeout'
+
+description: |-
+    Run the following command to set the idle time-out value for
+    inactivity in the GNOME desktop to <sub idref="inactivity_timeout_value" /> minutes:
+    <pre>$ sudo gconftool-2 \
+      --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type int \
+      --set /desktop/gnome/session/idle_delay <sub idref="inactivity_timeout_value" /></pre>
+
+rationale: |-
+    Setting the idle delay controls when the
+    screensaver will start, and can be combined with
+    screen locking to prevent access from passersby.
+
+severity: medium
+
+identifiers:
+    cce: 26828-4
+
+references:
+    disa: 57
+    nist: AC-11(a)
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000029
+    stigid: RHEL-06-000257
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To check the current idle time-out value, run the following command:
+    <pre>$ gconftool-2 -g /desktop/gnome/session/idle_delay</pre>
+    If properly configured, the output should be <tt><sub idref="inactivity_timeout_value" /></tt>.

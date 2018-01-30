@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Add nosuid Option to /home'
+
+description: |-
+    The <tt>nosuid</tt> mount option can be used to prevent
+    execution of setuid programs in <tt>/home</tt>. The SUID and SGID permissions
+    should not be required in these user data directories.
+    <mount-desc-macro option="nosuid" part="/home" />
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled. Users
+    should not be able to execute SUID or SGID binaries from user home directory partitions.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 81153-9
+
+references:
+    cis: 1.1.3
+    nist: CM-7,MP-2
+    stigid@rhel7: "021000"

@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Uninstall samba Package'
+
+description: '<yum-macro install="false" package="samba" />'
+
+rationale: "If there is no need to mount directories and file systems to\nWindows systems, then this service can be deleted to reduce \nthe potential attack surface."
+
+severity: unknown
+
+identifiers:
+    cce: CCE-27102-3
+
+ocil: '<package-check-macro package="samba" />'

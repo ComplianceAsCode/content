@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Verify ip6tables Enabled if Using IPv6'
+
+description: '<chkconfig-service-macro enable="true" service="ip6tables" />'
+
+rationale: |-
+    The <tt>ip6tables</tt> service provides the system's host-based firewalling
+    capability for IPv6 and ICMPv6.
+
+severity: medium
+
+identifiers:
+    cce: 27006-6
+
+references:
+    disa: 32,66,1115,1118,1092,1117,1098,1100,1097,1414
+    nist: AC-4,CA-3(c),CM-7
+    srg: SRG-OS-000152,SRG-OS-000145,SRG-OS-000146
+    stigid: RHEL-06-000103
+
+ocil: |-
+    If IPv6 is disabled, this is not applicable.
+    <br /><br />
+    <service-check-macro enable="true" service="ip6tables" />

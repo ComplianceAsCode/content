@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install the Policy Auditor (PA) Module'
+
+description: 'Install the Policy Auditor (PA) Module.'
+
+rationale: |-
+    Without a host-based intrusion detection tool, there is no system-level defense
+    when an intruder gains access to a system or network. Additionally, a host-based
+    intrusion prevention tool can provide methods to immediately lock out detected
+    intrusion attempts.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80369-2
+
+references:
+    disa: 366,1263
+    nist: SC-7,SI-4(1).1
+    pcidss: Req-11.4
+    srg: STG-OS-000480-GPOS-00227
+
+ocil_clause: 'the HBSS PA module is not installed'
+
+ocil: |-
+    To verify that HBSS PA is installed, run the following command(s):
+    <pre>$ sudo ls /opt/McAfee/auditengine/bin/auditmanager</pre>

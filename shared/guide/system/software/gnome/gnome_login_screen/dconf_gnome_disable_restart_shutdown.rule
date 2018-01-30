@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable the GNOME3 Login Restart and Shutdown Buttons'
+
+description: "In the default graphical environment, users logging\ndirectly into the system are greeted with a login screen that allows\nany user, known or unknown, the ability the ability to shutdown or restart\nthe system. This functionality should be disabled by setting \n<tt>disable-restart-buttons</tt> to <tt>true</tt>.\n<br /><br />\nTo disable, add or edit <tt>disable-restart-buttons</tt> to\n<tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:\n<pre>[org/gnome/login-screen]\ndisable-restart-buttons=true</pre>\nOnce the setting has been added, add a lock to\n<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.\nFor example:\n<pre>/org/gnome/login-screen/disable-restart-buttons</pre>\nAfter the settings have been set, run <tt>dconf update</tt>."
+
+rationale: |-
+    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons
+    are pressed at the login screen, this can create the risk of short-term loss of availability of systems
+    due to reboot.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80107-6
+
+references:
+    cui: 3.1.2
+    disa: 366
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: TBD
+
+ocil_clause: 'disable-restart-buttons has not been configured or is not disabled'
+
+ocil: |-
+    To ensure disable and restart on the login screen are disabled, run the following command:
+    <pre>$ grep disable-restart-buttons /etc/dconf/db/gdm.d/*</pre>
+    The output should be <tt>true</tt>.
+    To ensure that users cannot enable disable and restart on the login screen, run the following:
+    <pre>$ grep disable-restart-buttons /etc/dconf/db/gdm.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/login-screen/disable-restart-buttons</tt>

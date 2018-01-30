@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Set GNOME3 Screensaver Lock Delay After Activation Period'
+
+description: "To activate the locking delay of the screensaver in the GNOME3 desktop when \nthe screensaver is activated, add or set <tt>lock-delay</tt> to <tt>uint32 <sub idref=\"var_screensaver_lock_delay\" /></tt> in\n<tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:\n<pre>[org/gnome/desktop/screensaver]\nlock-delay=uint32 <sub idref=\"var_screensaver_lock_delay\" />\n</pre>\nOnce the setting has been added, add a lock to\n<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.\nFor example:\n<pre>/org/gnome/desktop/screensaver/lock-delay</pre>\nAfter the settings have been set, run <tt>dconf update</tt>."
+
+rationale: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+    of the information system but does not want to logout because of the temporary nature of the absense.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80370-0
+
+references:
+    cui: 3.1.10
+    disa: 56
+    nist: AC-11(a)
+    ospp@rhel7: FMT_MOF_EXT.1
+    pcidss: Req-8.1.8
+    srg: OS-SRG-000029-GPOS-00010
+    stigid@rhel7: "010110"
+
+ocil_clause: 'the screensaver lock delay is missing, or is set to a value greater than 5'
+
+ocil: |-
+    To check that the screen locks immediately when activated, run the following command:
+    <pre>$ gsettings get org.gnome.desktop.screensaver lock-delay</pre>
+    If properly configured, the output should be <tt>'uint32 <sub idref="var_screensaver_lock_delay" />'</tt>.
+    <br /><br />
+    To ensure that users cannot change how long until the the screensaver locks, run the following:
+    <pre>$ grep lock-delay /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output for <tt>lock-delay</tt> should be <tt>/org/gnome/desktop/screensaver/lock-delay</tt>

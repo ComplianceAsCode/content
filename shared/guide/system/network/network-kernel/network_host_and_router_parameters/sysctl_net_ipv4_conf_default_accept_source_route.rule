@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure Kernel Parameter for Accepting Source-Routed Packets By Default'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />'
+
+rationale: "Source-routed packets allow the source of the packet to suggest routers\nforward the packet along a different path than configured on the router, which can \nbe used to bypass network security measures.\n<br />\nAccepting source-routed packets in the IPv4 protocol has few legitimate\nuses. It should be disabled unless it is absolutely required, such as when\nIPv4 forwarding is enabled and the system is legitimately functioning as\na router."
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80162-1
+
+references:
+    cis: 3.2.1
+    cjis: 5.10.1.1
+    cui: 3.1.20
+    disa: 366,1551
+    nist: AC-4,CM-7,SC-5,SC-7
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040620"
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />'

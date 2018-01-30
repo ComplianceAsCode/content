@@ -1,0 +1,55 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora,ol7
+
+title: 'Verify File Hashes with RPM'
+
+description: |-
+    Without cryptographic integrity protections, system
+    executables and files can be altered by unauthorized users without
+    detection.
+    The RPM package management system can check the hashes of
+    installed software packages, including many that are important to system
+    security.
+    To verify that the cryptographic hash of system files and commands match vendor
+    values, run the following command to list which files on the system
+    have hashes that differ from what is expected by the RPM database:
+    <pre>$ rpm -Va | grep '^..5'</pre>
+    A "c" in the second column indicates that a file is a configuration file, which
+    may appropriately be expected to change.  If the file was not expected to
+    change, investigate the cause of the change using audit logs or other means.
+    The package can then be reinstalled to restore the file.
+    Run the following command to determine which package owns the file:
+    <pre>$ rpm -qf <i>FILENAME</i></pre>
+    The package can be reinstalled from a yum repository using the command:
+    <pre>$ sudo yum reinstall <i>PACKAGENAME</i></pre>
+    Alternatively, the package can be reinstalled from trusted media using the command:
+    <pre>$ sudo rpm -Uvh <i>PACKAGENAME</i></pre>
+
+rationale: |-
+    The hashes of important files like system executables should match the
+    information given by the RPM database. Executables with erroneous hashes could
+    be a sign of nefarious activity on the system.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27157-7
+
+references:
+    cis: 1.2.6
+    cjis: 5.10.4.1
+    cui: 3.3.8,3.4.1
+    disa: 663
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    nist: CM-6(d),CM-6(3),SI-7(1)
+    pcidss: Req-11.5
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "010020"
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will list which files on the system
+    have file hashes different from what is expected by the RPM database.
+    <pre>$ rpm -Va | awk '$1 ~ /..5/ &amp;&amp; $2 != "c"'</pre>

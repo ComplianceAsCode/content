@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Disable the Automounter'
+
+description: |-
+    The <tt>autofs</tt> daemon mounts and unmounts filesystems, such as user
+    home directories shared via NFS, on demand. In addition, autofs can be used to handle
+    removable media, and the default configuration provides the cdrom device as <tt>/misc/cd</tt>.
+    However, this method of providing access to removable media is not common, so autofs
+    can almost always be disabled if NFS is not in use. Even if NFS is required, it may be
+    possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
+    rather than relying on the automounter.
+    <br /><br />
+    <chkconfig-service-macro enable="false" service="autofs" />
+
+rationale: "Disabling the automounter permits the administrator to \nstatically control filesystem mounting through <tt>/etc/fstab</tt>."
+
+severity: low
+
+identifiers:
+    cce: 26976-1
+
+references:
+    disa: 366
+    nist: AC-19(a),AC-19(d),AC-19(e)
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000526
+
+ocil: '<service-check-macro enable="false" service="autofs" />'

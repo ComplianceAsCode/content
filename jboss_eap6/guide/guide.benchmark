@@ -1,0 +1,56 @@
+---
+documentation_complete: true
+
+title: Guide to the Secure Configuration of <product-name-macro/>
+
+status: draft
+
+description: |
+    This guide presents a catalog of security-relevant
+    configuration settings for <product-name-macro/>. It is a rendering of
+    content structured in the eXtensible Configuration Checklist Description Format (XCCDF)
+    in order to support security automation.  The SCAP content is
+    is available in the config_item="scap-security-guide" package which is developed at
+    <weblink-macro link="https://www.open-scap.org/security-policies/scap-security-guide" />.
+    <br/><br/>
+    Providing system administrators with such guidance informs them how to securely
+    configure systems under their control in a variety of network roles. Policy
+    makers and baseline creators can use this catalog of settings, with its
+    associated references to higher-level security control catalogs, in order to
+    assist them in security baseline creation. This guide is a italics="catalog, not a
+    checklist," and satisfaction of every item is not likely to be possible or
+    sensible in many operational scenarios. However, the XCCDF format enables
+    granular selection and adjustment of settings, and their association with OVAL
+    and OCIL content provides an automated checking capability. Transformations of
+    this document, and its associated automated checking content, are capable of
+    providing baselines that meet a diverse set of policy objectives. Some example
+    XCCDF italics="Profiles", which are selections of items that form checklists and
+    can be used as baselines, are available with this guide. They can be
+    processed, in an automated fashion, with tools that support the Security
+    Content Automation Protocol (SCAP). The DISA STIG for <product-name-macro/>,
+    which provides required settings for US Department of Defense systems, is
+    one example of a baseline created from this guidance.
+
+notice:
+    id: terms_of_use
+    description: |
+        Do not attempt to implement any of the settings in
+        this guide without first testing them in a non-operational environment. The
+        creators of this guidance assume no responsibility whatsoever for its use by
+        other parties, and makes no guarantees, expressed or implied, about its
+        quality, reliability, or any other characteristic.
+
+front-matter: |
+    The SCAP Security Guide Project<br/>
+    <weblink-macro link="https://www.open-scap.org/security-policies/scap-security-guide" />
+
+rear-matter: |
+    Red Hat and Red Hat Enterprise Linux are either registered
+    trademarks or trademarks of Red Hat, Inc. in the United States and other
+    countries. All other names are registered trademarks or trademarks of their
+    respective companies.
+
+cpes:
+    - <platform-cpes-macro/>
+
+version: 0.9

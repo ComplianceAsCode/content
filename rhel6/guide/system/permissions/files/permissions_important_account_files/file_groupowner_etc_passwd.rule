@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Group Who Owns <tt>passwd</tt> File'
+
+description: '<filegroupowner-desc-macro file="/etc/passwd" group="root" />'
+
+rationale: |-
+    The <tt>/etc/passwd</tt> file contains information about the users that are configured on
+    the system. Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce: 26856-5
+
+references:
+    disa: 225
+    nist: AC-6
+    pcidss: Req-8.7.c
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000040
+
+ocil: '<filegroupowner-check-macro file="/etc/passwd" group="root" />'

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions and ownership on <tt>gshadow</tt> File'
+
+description: |-
+    <fileperms-desc-macro file="/etc/gshadow" perms="0640" />
+      <fileowner-desc-macro file="/etc/gshadow" owner="root" />
+      <filegroupowner-desc-macro file="/etc/gshadow" group="shadow" />
+
+rationale: |-
+    The <tt>/etc/shadow</tt> file contains group password hashes. Protection of this file
+    is critical for system security.
+
+severity: medium
+
+references:
+    anssi: NT28(R36)
+    disa: ""
+    nist: AC-6
+
+ocil: |-
+    <fileperms-check-macro file="/etc/gshadow" perms="-rw-r-----" />
+      <fileowner-check-macro file="/etc/gshadow" owner="root" />
+      <filegroupowner-check-macro file="/etc/gshadow" group="shadow" />

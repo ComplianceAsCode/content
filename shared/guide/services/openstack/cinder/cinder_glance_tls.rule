@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: osp7
+
+title: 'Check-Block-06: Does cinder communicates with glance over TLS?'
+
+description: |-
+    Similar to previous check (Check-Block-05: Does cinder communicates with nova over TLS?), it is recommended all the components must communicate with each other using a secured communication protocol.
+
+    <br />
+    <br />
+    Pass: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to False.
+
+    <br />
+    <br />
+    Fail: If value of parameter glance_api_insecure under [DEFAULT] section in /etc/cinder/cinder.conf is set to True.
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce: RHELOSP-CCE-TBD
+
+references:
+    nist: FOO-1(a)

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the unconfined_chrome_sandbox_transition SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>unconfined_chrome_sandbox_transition</tt> is enabled.
+    If this setting is disabled, it should be enabled.
+    <sebool-macro enable="true" sebool="unconfined_chrome_sandbox_transition" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'unconfined_chrome_sandbox_transition is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="unconfined_chrome_sandbox_transition" />'

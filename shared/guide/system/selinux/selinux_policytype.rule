@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure SELinux Policy'
+
+description: |-
+    The SELinux <tt>targeted</tt> policy is appropriate for
+    general-purpose desktops and servers, as well as systems in many other roles.
+    To configure the system to use this policy, add or correct the following line
+    in <tt>/etc/selinux/config</tt>:
+    <pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>
+    Other policies, such as <tt>mls</tt>, provide additional security labeling
+    and greater confinement but are not compatible with many general-purpose
+    use cases.
+
+rationale: |-
+    Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy
+    ensures the system will confine processes that are likely to be
+    targeted for exploitation, such as network or system services.
+    <br /><br />
+    Note: During the development or debugging of SELinux modules, it is common to
+    temporarily place non-production systems in <tt>permissive</tt> mode. In such
+    temporary cases, SELinux policies should be developed, and once work
+    is completed, the system should be reconfigured to
+    <tt><sub idref="var_selinux_policy_name" /></tt>.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27279-9
+
+references:
+    cis: 1.6.1.3
+    cui: 3.1.2,3.7.2
+    disa: 2696
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)
+    nist: AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)
+    srg: SRG-OS-000445-GPOS-00199
+    stigid@rhel7: "020220"
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+    <pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>

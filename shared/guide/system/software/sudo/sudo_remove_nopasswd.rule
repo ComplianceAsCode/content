@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD'
+
+description: "The sudo <tt>NOPASSWD</tt> tag, when specified, allows a user to execute commands using\nsudo without having to authenticate. This should be disabled by making sure that the\n<tt>NOPASSWD</tt> tag does not exist in <tt>/etc/sudoers</tt> configuration file or \nany sudo configuration snippets in <tt>/etc/sudoers.d/</tt>."
+
+rationale: |-
+    Without re-authentication, users may access resources or perform tasks for which they
+    do not have authorization.
+    <br /><br />
+    When operating systems provide the capability to escalate a functional capability, it
+    is critical that the user re-authenticate.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80351-0
+
+references:
+    anssi: NT28(R5)
+    disa: 2038
+    nist: IA-11
+    srg: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158
+    stigid@rhel7: "010340"
+
+ocil_clause: 'nopasswd is enabled in sudo'
+
+ocil: |-
+    To determine if <tt>NOPASSWD</tt> has been configured for sudo, run the following command:
+    <pre>$ sudo grep -ri nopasswd /etc/sudoers /etc/sudoers.d/</pre>
+    The command should return no output.

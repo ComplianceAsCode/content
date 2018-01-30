@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Disable Automatic Bug Reporting Tool (abrtd)'
+
+description: |-
+    The Automatic Bug Reporting Tool (<tt>abrtd</tt>) daemon collects
+    and reports crash data when an application crash is detected. Using a variety
+    of plugins, abrtd can email crash reports to system administrators, log crash
+    reports to files, or forward crash reports to a centralized issue tracking
+    system such as RHTSupport.
+    <chkconfig-service-macro enable="false" service="abrtd" />
+
+rationale: |-
+    Mishandling crash data could expose sensitive information about
+    vulnerabilities in software executing on the local system, as well as sensitive
+    information from within a process's address space or registers.
+
+severity: unknown
+
+identifiers:
+    cce: 27247-6
+
+references:
+    disa: 381
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000261
+
+ocil: '<service-check-macro enable="false" service="abrtd" />'

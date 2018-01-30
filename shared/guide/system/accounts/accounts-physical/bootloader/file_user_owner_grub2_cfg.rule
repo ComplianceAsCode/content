@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify /boot/grub2/grub.cfg User Ownership'
+
+description: |-
+    The file <tt>/boot/grub2/grub.cfg</tt> should
+    be owned by the <tt>root</tt> user to prevent destruction
+    or modification of the file.
+    <fileowner-desc-macro file="/boot/grub2/grub.cfg" owner="root" />
+
+rationale: 'Only root should be able to modify important boot parameters.'
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 26860-7
+
+references:
+    cis: 1.4.1
+    cjis: 5.5.2.2
+    cui: 3.4.5
+    disa: 225
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: AC-6(7)
+    pcidss: Req-7.1
+
+ocil: '<fileowner-check-macro file="/boot/grub2/grub.cfg" owner="root" />'

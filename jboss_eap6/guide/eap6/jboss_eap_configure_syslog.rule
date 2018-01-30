@@ -1,0 +1,70 @@
+documentation_complete: true
+
+title: 'Enable Logging to syslog'
+
+description: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Run
+    the command:
+    <br /><br />
+    Standalone configuration:
+    <pre>ls /subsystem=logging/syslog-handler=</pre>
+    <br /><br />
+    Domain configuration:
+    <pre>ls /profile=default/subsystem=logging/syslog-handler=</pre>
+    <br /><br />
+    If no values are returned, this is a finding.
+
+rationale: |-
+    Information system logging capability is critical for accurate forensic
+    analysis. Log record content that may be necessary to satisfy the requirement of
+    this control includes, but is not limited to, time stamps, source and
+    destination IP addresses, user/process identifiers, event descriptions,
+    application-specific events, success/fail indications, filenames involved,
+    access control or flow control rules invoked.
+    <br /><br />
+    Off-loading is a common process
+    in information systems with limited log storage capacity.
+    <br /><br />
+    Centralized
+    management of log records provides for efficiency in maintenance and management
+    of records, as well as the backup and archiving of those records. Application
+    servers and their related components are required to off-load log records onto a
+    different system or media than the system being logged.
+
+severity: medium
+
+identifiers:
+    cce: 80488-0
+
+references:
+    disa: 1851
+    nist: ""
+    srg: SRG-APP-000358-AS-000064
+    stigid: JBOS-AS-000505
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Run the command:
+    <br /><br />
+    Standalone configuration:
+    <pre>ls /subsystem=logging/syslog-handler=</pre>
+    <br /><br />
+    Domain configuration:
+    <pre>ls /profile=<i>specify</i>/subsystem=logging/syslog-handler=</pre>
+    Where <i>specify</i> = the
+    selected application server profile of; default,full, full-ha or ha.
+    <br /><br />
+    If no values are returned, this is a finding.

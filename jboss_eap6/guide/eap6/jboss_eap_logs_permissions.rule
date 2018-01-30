@@ -1,0 +1,81 @@
+documentation_complete: true
+
+title: 'Configure JBoss Log Directory Permissions'
+
+description: |-
+    Configure file permissions on the JBoss log folder to protect from unauthorized
+    access.
+
+rationale: |-
+    If the application provides too much information in error logs and
+    administrative messages to the screen, this could lead to compromise. The
+    structure and content of error messages need to be carefully considered by the
+    organization and development team. The extent to which the information system is
+    able to identify and handle error conditions is guided by organizational policy
+    and operational requirements.
+    <br /><br />
+    Application servers must protect the error
+    messages that are created by the application server. All application server
+    users' accounts are used for the management of the server and the applications
+    residing on the application server. All accounts are assigned to a certain role
+    with corresponding access rights. The application server must restrict access to
+    error messages so only authorized users may view them. Error messages are
+    usually written to logs contained on the file system. The application server
+    will usually create new log files as needed and must take steps to ensure that
+    the proper file permissions are utilized when the log files are created.
+
+severity: medium
+
+identifiers:
+    cce: 80485-6
+
+references:
+    disa: 1314
+    nist: ""
+    srg: SRG-APP-000267-AS-000170
+    stigid: JBOS-AS-000425
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    If the JBoss log folder is installed in the default location and
+    AS-000133-JBOSS-00079 is not a finding, the log folders are protected and this
+    requirement is not a finding.
+    <br /><br />
+    By default, JBoss installs its log files into a
+    sub-folder of the <pre>jboss-eap-6.3</pre> home folder.
+    Using a UNIX like OS
+    example, the default location for log files is:
+    <br /><br />
+    <pre>
+    JBOSS_HOME/standalone/log
+    JBOSS_HOME/domain/log
+    </pre>
+    <br /><br />
+    For a standalone configuration:
+    <tt>JBOSS_HOME/standalone/log/server.log</tt> Contains all server log messages,
+    including server startup messages.
+    <br /><br />
+    For a domain configuration:
+    <tt>JBOSS_HOME/domain/log/hostcontroller.log</tt>
+    Host Controller boot log. Contains log
+    messages related to the startup of the host controller.
+    <tt>JBOSS_HOME/domain/log/processcontroller.log</tt>
+    Process controller boot log.
+    Contains log messages related to the startup of the process controller.
+    <tt>JBOSS_HOME/domain/servers/SERVERNAME/log/server.log</tt>
+    The server log for the named
+    server. Contains all log messages for that server, including server startup
+    messages.
+    <br /><br />
+    Log on with an OS user account with JBoss access and permissions.
+    Navigate to the <tt>Jboss-eap-6.3</tt> folder using the relevant OS commands
+    for either a UNIX like OS or a Windows OS.
+    <br /><br />
+    Examine the permissions of the JBoss logs folders.
+    <br /><br />
+    Owner can be full access. Group can be full access.
+    All others must be restricted.
+    <br /><br />
+    If the JBoss log folder is world readable or world
+    writeable, this is a finding.

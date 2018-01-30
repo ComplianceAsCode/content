@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: 'Use Approved DoD Certificate Authorities'
+
+description: |-
+    Locate the cacerts file for the JVM. This can be done using the appropriate
+    find command for the OS and change to the directory where the cacerts file is
+    located.
+    <br /><br />
+    Remove the certificates that have a CA that is non-DoD approved, and
+    import DoD CA-approved certificates.
+
+rationale: |-
+    Untrusted Certificate Authorities (CA) can issue certificates, but they may be
+    issued by organizations or individuals that seek to compromise DoD systems or by
+    organizations with insufficient security controls. If the CA used for verifying
+    the certificate is not a DoD-approved CA, trust of this CA has not been
+    established.
+    <br /><br />
+    The DoD will only accept PKI certificates obtained from a DoD-
+    approved internal or external certificate authority. Reliance on CAs for the
+    establishment of secure sessions includes, for example, the use of SSL/TLS
+    certificates. The application server must only allow the use of DoD PKI-
+    established certificate authorities for verification.
+
+severity: medium
+
+identifiers:
+    cce: 80491-4
+
+references:
+    disa: 2470
+    nist: ""
+    srg: SRG-APP-000427-AS-000264
+    stigid: JBOS-AS-000625
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Locate the cacerts file for the JVM. This can be done using the appropriate
+    find command for the OS and change to the directory where the cacerts file is
+    located.
+    <br /><br />
+    To view the certificates stored within this file, execute the java
+    command <pre>keytool -list -v -keystore ./cacerts</pre>.
+    Verify that the Certificate
+    Authority (CA) for each certificate is DoD-approved.
+    <br /><br />
+    If any certificates have a
+    CA that are not DoD-approved, this is a finding.

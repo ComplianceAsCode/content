@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Quagga Service'
+
+description: '<systemd-service-macro enable="false" service="zebra" />'
+
+rationale: |-
+    Routing protocol daemons are typically used on routers to exchange network
+    topology information with other routers. If routing daemons are used when not
+    required, system network information may be unnecessarily transmitted across
+    the network.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27191-6
+
+references:
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: SC-32
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil: '<systemd-check-macro enable="false" service="zebra" />'

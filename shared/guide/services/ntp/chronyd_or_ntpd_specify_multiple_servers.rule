@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Specify Additional Remote NTP Servers'
+
+description: |-
+    Depending on specific functional requirements of a concrete
+    production environment, the Red Hat Enterprise Linux 7 Server system can be
+    configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
+    default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
+    <weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" />
+    for more detailed comparison of the features of both of the choices, and for
+    further guidance how to choose between the two NTP daemons.
+    <br />
+    Additional NTP servers can be specified for time synchronization. To do so,
+    perform the following:
+    <ul>
+    <li> if the system is configured to use the <tt>chronyd</tt> as the NTP daemon
+    (the default), edit the file <tt>/etc/chrony.conf</tt> as follows,</li>
+    <li> if the system is configured to use the <tt>ntpd</tt> as the NTP daemon,
+    edit the file <tt>/etc/ntp.conf</tt> as documented below.</li>
+    </ul>
+    Add additional lines of the following form, substituting the IP address or
+    hostname of a remote NTP server for <em>ntpserver</em>:
+    <pre>server <i>ntpserver</i></pre>
+
+rationale: |-
+    Specifying additional NTP servers increases the availability of
+    accurate time data, in the event that one of the specified servers becomes
+    unavailable. This is typical for a system acting as an NTP server for
+    other systems.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27012-4
+
+references:
+    nist: AU-8(1)
+    pcidss: Req-10.4.3

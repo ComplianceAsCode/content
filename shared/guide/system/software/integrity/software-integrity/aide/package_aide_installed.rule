@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Install AIDE'
+
+description: |-
+    Install the AIDE package with the command:
+    <pre>$ sudo yum install aide</pre>
+
+rationale: 'The AIDE package must be installed if it is to be available for integrity checking.'
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27096-7
+
+references:
+    cis: 1.3.1
+    cjis: 5.10.1.3
+    disa: ""
+    nist: CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7
+    pcidss: Req-11.5
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="aide" />'

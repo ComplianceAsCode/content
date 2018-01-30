@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'System Audit Logs Must Be Owned By Root'
+
+description: '<fileowner-desc-macro file="/var/log" owner="root" />'
+
+rationale: "Failure to give ownership of the audit log files to root allows the designated \nowner, and unauthorized users, potential access to sensitive information."
+
+severity: unknown
+
+identifiers:
+    cce: 27244-3
+
+references:
+    disa: 166
+    nist: AC-6,AU-1(b),AU-9,IR-5
+    pcidss: Req-10.5.1
+    srg: SRG-OS-000057
+    stigid: RHEL-06-000384
+
+ocil: '<fileowner-check-macro file="/var/log" owner="root" />'

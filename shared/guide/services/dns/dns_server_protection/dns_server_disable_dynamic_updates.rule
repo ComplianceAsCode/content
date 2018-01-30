@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Dynamic Updates'
+
+description: |-
+    Is there a mission-critical reason to enable the risky dynamic
+    update functionality? If not, edit <tt>/etc/named.conf</tt>. For each zone
+    specification, correct the following directive if necessary:
+    <pre>zone "example.com " IN {
+      allow-update { none; };
+      ...
+    };</pre>
+
+rationale: |-
+    Dynamic updates allow remote servers to add, delete, or modify any
+    entries in your zone file. Therefore, they should be considered highly risky,
+    and disabled unless there is a very good reason for their use. If dynamic
+    updates must be allowed, IP-based ACLs are insufficient protection, since they
+    are easily spoofed. Instead, use TSIG keys (see the previous section for an
+    example), and consider using the update-policy directive to restrict changes to
+    only the precise type of change needed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80329-6

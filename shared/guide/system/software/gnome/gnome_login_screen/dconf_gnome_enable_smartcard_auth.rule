@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Enable the GNOME3 Login Smartcard Authentication'
+
+description: |-
+    In the default graphical environment, smart card authentication
+    can be enabled on the login screen by setting <tt>enable-smartcard-authentication</tt>
+    to <tt>true</tt>.
+    <br /><br />
+    To enable, add or edit <tt>enable-smartcard-authentication</tt> to
+    <tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/login-screen]
+    enable-smartcard-authentication=true</pre>
+    Once the setting has been added, add a lock to
+    <tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/login-screen/enable-smartcard-authentication</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Smart card login provides two-factor authentication stronger than
+    that provided by a username and password combination. Smart cards leverage PKI
+    (public key infrastructure) in order to provide and verify credentials.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80108-4
+
+references:
+    disa: 765,766,767,768,771,772,884,1954
+    pcidss: Req-8.3
+    srg: SRG-OS-000375-GPOS-00160
+    stigid: "010061"
+
+ocil_clause: 'enable-smartcard-authentication has not been configured or is disabled'
+
+ocil: |-
+    To ensure smart card authentication on the login screen is enabled, run the following command:
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/*</pre>
+    The output should be <tt>true</tt>.
+    To ensure that users cannot disable smart card authentication on the login screen, run the following:
+    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/login-screen/enable-smartcard-authentication</tt>

@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Add nodev Option to Removable Media Partitions'
+
+description: |-
+    The <tt>nodev</tt> mount option prevents files from being
+    interpreted as character or block devices.
+    Legitimate character and block devices should exist only in
+    the <tt>/dev</tt> directory on the root partition or within chroot
+    jails built for system services.
+    <mount-desc-macro option="nodev" part="any removable media partitions" />
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory
+    located on the root partition. An exception to this is chroot jails, and it is
+    not advised to set <tt>nodev</tt> on partitions which contain their root
+    filesystems.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80146-4
+
+references:
+    cis: 1.1.18
+    nist: AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2
