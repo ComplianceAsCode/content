@@ -428,6 +428,23 @@ macro(ssg_build_xccdf_final PRODUCT)
         NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    add_test(
+        NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles"
+        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"title\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+    )
+    add_test(
+        NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions"
+        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"description\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+    )
+    # Sets WILL_FAIL property for all '*-override-true-all-profile-*' tests to
+    # true as it is expected that XPath of a passing test will be empty (and
+    # non-zero exit code is returned in such case).
+    set_tests_properties(
+        "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles"
+        "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions"
+        PROPERTIES
+        WILL_FAIL true
+    )
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
