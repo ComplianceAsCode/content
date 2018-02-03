@@ -81,9 +81,8 @@ system security.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80104-3" />
 <oval id="gnome_gdm_disable_automatic_login" />
-<ref prodtype="rhel7" stigid="010440" />
-<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cui="3.1.1" 
-ospp="FIA_AFL.1" />
+<ref prodtype="rhel7" stigid="010440" ospp="FIA_AFL.1" />
+<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cui="3.1.1" />
 </Rule>
 
 <Rule id="gnome_gdm_disable_guest_login" severity="high" prodtype="rhel7">
@@ -110,8 +109,8 @@ system security.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80105-0" />
 <oval id="gnome_gdm_disable_guest_login" />
-<ref prodtype="rhel7" stigid="010450" />
-<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cui="3.1.1" ospp="FIA_AFL.1" />
+<ref prodtype="rhel7" stigid="010450" ospp="FIA_AFL.1" />
+<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cui="3.1.1" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_user_list" severity="medium" prodtype="rhel7">
@@ -255,7 +254,8 @@ draw additional attention to some types of password-guessing attacks.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80109-2" />
-<ref cui="3.1.8" ospp="FMT_MOF_EXT.1" />
+<ref cui="3.1.8" />
+<ref prodtype="rhel7" ospp="FMT_MOF_EXT.1" />
 <oval id="dconf_gnome_login_retries" />
 </Rule>
 

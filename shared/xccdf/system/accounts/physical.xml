@@ -191,9 +191,9 @@ must be automated as a component of machine provisioning, or followed manually a
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27309-4" />
 <oval id="bootloader_password" />
-<ref prodtype="rhel7" stigid="010480" />
+<ref prodtype="rhel7" stigid="010480" ospp="FIA_AFL.1" />
 <ref nist="IA-2(1),IA-5(e),AC-3" disa="213" srg="SRG-OS-000080-GPOS-00048" 
-cis="1.4.2" cui="3.4.5" ospp="FIA_AFL.1" />
+cis="1.4.2" cui="3.4.5" />
 </Rule>
 
 <Rule id="bootloader_uefi_password" severity="medium" prodtype="rhel7">
@@ -249,9 +249,9 @@ must be automated as a component of machine provisioning, or followed manually a
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80354-4" />
 <oval id="bootloader_uefi_password" />
-<ref prodtype="rhel7" stigid="010490" />
+<ref prodtype="rhel7" stigid="010490" ospp="FIA_AFL.1" />
 <ref nist="AC-3" disa="213" srg="SRG-OS-000080-GPOS-00048" cui="3.4.5"
-cis="1.4.2" ospp="FIA_AFL.1" />
+cis="1.4.2" />
 </Rule>
 
 <Rule id="bootloader_no_removeable_media" severity="medium" prodtype="rhel7">
@@ -339,8 +339,9 @@ by configuring the bootloader password.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27287-2" />
 <oval id="require_singleuser_auth" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" stigid="010481" />
 <ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3" 
-srg="SRG-OS-000080-GPOS-00048" stigid="010481" ospp="FIA_AFL.1" />
+srg="SRG-OS-000080-GPOS-00048" />
 </Rule>
 
 <Rule id="service_debug-shell_disabled" severity="medium" prodtype="rhel7">
@@ -366,7 +367,8 @@ access when the system is rebooted.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="80206-6" />
 <oval id="service_debug-shell_disabled" />
-<ref cui="3.4.5" ospp="FIA_AFL.1" />
+<ref cui="3.4.5" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" />
 <!--ref nist="IA-2(1),AC-3" disa="213" /-->
 </Rule>
 
@@ -483,7 +485,8 @@ file. To update the GRUB 2 configuration file manually, use the
 </warning>
 <ident prodtype="rhel7" cce="27335-9" />
 <oval id="disable_interactive_boot" />
-<ref nist="SC-2,AC-3" disa="213" cui="3.1.2,3.4.5" ospp="FIA_AFL.1" />
+<ref nist="SC-2,AC-3" disa="213" cui="3.1.2,3.4.5" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" /> 
 </Rule>
 
 <Group id="screen_locking">
