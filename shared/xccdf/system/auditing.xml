@@ -983,6 +983,10 @@ to the system time should be audited.</rationale>
 </Rule>
 </Group><!--End <Group id="audit_time_rules"> -->
 
+<!-- DEVELOPER NOTE: The audit_rules_usergroup_modification rule has been
+     		     depricated. Use audit_rules_usergroup_modification_* rules
+		     instead. The audit_rules_usergroup_modification rule may be
+		     removed in future SSG releases. -->
 <Rule id="audit_rules_usergroup_modification" prodtype="rhel7">
 <title>Record Events that Modify User/Group Information</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
@@ -1896,6 +1900,9 @@ edits of files involved in storing logon events:
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 
+<!-- DEVELOPER NOTE: This rule may be depricated in future SSG releases.
+     		     Update rule selections to use audit_rules_login_events_*
+		     rules -->
 <Rule id="audit_rules_login_events" severity="medium" prodtype="rhel7">
 <title>Record Attempts to Alter Logon and Logout Events</title>
 <description>The audit system already collects login information for all users
@@ -2547,6 +2554,9 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 
+<!-- DEVELOPER NOTE: audit_rules_privileged_commands may be depricated
+     		     in future SSG releases. Use audit_rules_privileged_commands_*
+		     instead! -->
 <Rule id="audit_rules_privileged_commands" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum, the audit system should collect the execution of
@@ -3292,6 +3302,8 @@ appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
 </description>
 
+<!-- DEVELOPERS NOTE: audit_rules_file_deletion_events will be depricated in future
+     		      SSG releases. Use audit_rules_file_deletion_events_* instead -->
 <Rule id="audit_rules_file_deletion_events" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
 <description>At a minimum the audit system should collect file deletion events
@@ -3509,8 +3521,8 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <ref prodtype="rhel7" stigid="030700" ospp="FAU_GEN.1.1.c" />
 <ref nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),iAU-3(1),AU-12(a),AU-12(c),IR-5" 
 disa="126,130,135,172,2884" pcidss="Req-10.2.2,Req-10.2.5.b" 
-srg="SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215" 
-cjis="5.4.1.1" cui="3.1.7" />
+srg="SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215"
+cjis="5.4.1.1" cui="3.1.7" ospp="FAU_GEN.1.1.c" />
 </Rule>
 
 <Group id="audit_kernel_module_loading">
@@ -3533,6 +3545,8 @@ b64 as appropriate for your system:
 -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules</pre>
 </description>
 
+<!-- DEVELOPERS NOTE: audit_rules_kernel_module_loading may be depricated in future
+     		      SSG releases. Use audit_rules_kernel_module_loading_* instead -->
 <Rule id="audit_rules_kernel_module_loading" severity="medium" prodtype="rhel7">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
@@ -3588,6 +3602,34 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <ident prodtype="rhel7" cce="80414-6" />
 <oval id="audit_rules_kernel_module_loading_init" />
 <ref prodtype="rhel7" stigid="030820" ospp="FAU_GEN.1.1.c" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" 
+disa="172" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" 
+pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
+</Rule>
+
+<Rule id="audit_rules_kernel_module_loading_finit" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - finit_module</title>
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following lines to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+<pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+b64 as appropriate for your system:
+<pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="finit_module" />
+</ocil>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="80547-3" />
+<oval id="audit_rules_kernel_module_loading_finit" />
+<ref prodtype="rhel7" ospp="FAU_GEN.1.1.c" />
 <ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" 
 disa="172" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" 
 pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
