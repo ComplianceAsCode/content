@@ -1,7 +1,7 @@
 <Profile id="ospp42-draft-rhel7">
 <title>Protection Profile for General Purpose Operating Systems</title>
 <description>This profile reflects mandatory configuration controls identified
-in the Configuration Annex to the Protection Profile for General Purpose Operating
+in the NIAP Configuration Annex to the Protection Profile for General Purpose Operating
 Systems (Protection Profile Version 4.2 draft). 
 
 This Annex is consistent with CNSSI-1253, which requires US National Security
@@ -59,7 +59,6 @@ in US National Security Systems.
 <select idref="package_screen_installed" selected="true" />
 
 <!-- FMT_MOF_EXT.1: Set Screen Lock Timeout Period to 30 Minutes or Less -->
-<!-- TO DO : make rules -->
 <!-- ALSO: This is about screen locking, NOT AUTOMATED LOGOUT e.g. ssh timeout) -->
 <select idref="dconf_gnome_screensaver_idle_activation_enabled" selected="true" />
 <select idref="dconf_gnome_screensaver_idle_delay" selected="true" />
@@ -118,7 +117,9 @@ in US National Security Systems.
 
 <!-- FAU_GEN.1.1.c: Configure the System to Offload Audit Records to a Log Server -->
 <select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
+<select idref="auditd_audispd_configure_remote_server" selected="true" />
 <select idref="rsyslog_remote_loghost" selected="true" />
+<select idref="auditd_audispd_encrypt_sent_records" selected="true" />
 
 <!-- FMT_MOF_EXT.1: Set Logon Warning Banner -->
 <refine-value idref="login_banner_text" selector="usgcb_default" />
@@ -137,6 +138,12 @@ in US National Security Systems.
 
 <!-- FAU_GEN.1.1.c: Audit File and Object Events (Unsuccessful) -->
 <!--	(1) Create (Success/Failure) -->
+<!-- TO DO:
+     -a always,exit -F arch=b32 -S link,mknod,mkdir,symlink,mknodat,linkat,symlinkat -F exit=-EACCES -F key=creation
+-a always,exit -F arch=b64 -S mkdir,creat,link,symlink,mknod,mknodat,linkat,symlinkat -F exit=-EACCES -F key=creation
+-a always,exit -F arch=b32 -S link,mkdir,symlink,mkdirat -F exit=-EPERM -F key=creation
+-a always,exit -F arch=b64 -S mkdir,link,symlink,mkdirat -F exit=-EPERM -F key=creation
+-->
 <select idref="audit_rules_unsuccessful_file_modification_creat" selected="true" />
 
 <!-- 	(2) Access (Success/Failure) -->
@@ -148,6 +155,7 @@ in US National Security Systems.
 
 
 <!--	(3) Delete (Success/Failure) -->
+<!-- TO DO: Update with EACCES and EPERM -->
 <select idref="audit_rules_file_deletion_events_renameat" selected="true" />
 <select idref="audit_rules_file_deletion_events_rename" selected="true" />
 <select idref="audit_rules_file_deletion_events_rmdir" selected="true" />
@@ -183,13 +191,17 @@ in US National Security Systems.
 
 <!-- FAU_GEN.1.1.c: Audit User and Group Management Events (Successful and Unsuccessful) -->
 <!--	(1) User add, delete, modify, suspend, lock (Success/Failure) -->
-<select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
-<select idref="audit_rules_privileged_commands_newgrp" selected="true" />
 <select idref="audit_rules_privileged_commands_passwd" selected="true" />
 <select idref="audit_rules_privileged_commands_unix_chkpwd" selected="true" />
 <select idref="audit_rules_privileged_commands_userhelper" selected="true" />
+<select idref="audit_rules_privileged_commands_chage" selected="true" />
+<select idref="audit_rules_privileged_commands_chsh" selected="true" />
+<select idref="audit_rules_privileged_commands_pt_chown" selected="true" />
+<select idref="audit_rules_sysadmin_actions" selected="true" />
 
 <!--	(2) Group/Role add, delete, modify (Success/Failure) -->
+<select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
+<select idref="audit_rules_privileged_commands_newgrp" selected="true" />
 <select idref="audit_rules_usergroup_modification_group" selected="true" />
 <select idref="audit_rules_usergroup_modification_gshadow" selected="true" />
 <select idref="audit_rules_usergroup_modification_opasswd" selected="true" />
@@ -216,6 +228,7 @@ in US National Security Systems.
 
 <!-- FAU_GEN.1.1.c: Audit Program Initiations (Successful and Unsuccessful) -->
 <select idref="rsyslog_cron_logging" selected="true" />
+<select idref="audit_rules_session_events" selected="true" />
 
 <!-- FAU_GEN.1.1.c: Audit System Reboot, Restart, and Shutdown Events (Success/Failure) -->
 
