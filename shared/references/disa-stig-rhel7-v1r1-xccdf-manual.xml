@@ -764,54 +764,47 @@ If the "HostbasedAuthentication" keyword is not set to "no", is missing, or is c
 
 Generate an encrypted grub2 password for root with the following command:
 
-Note: The hash generated is an example.
-
-# grub-mkpasswd-pbkdf2
+# grub2-setpassword
 Enter Password:
 Reenter Password:
-PBKDF2 hash of your password is grub.pbkdf2.sha512.10000.F3A7CFAA5A51EED123BE8238C23B25B2A6909AFC9812F0D45
 
-Using this hash, modify the "/etc/grub.d/10_linux" file with the following commands to add the password to the root entry:
-
-# cat &lt;&lt; EOF
-&gt; set superusers="root" password_pbkdf2 smithj grub.pbkdf2.sha512.10000.F3A7CFAA5A51EED123BE8238C23B25B2A6909AFC9812F0D45
-&gt; EOF
+The hash of your password is is stored in /boot/grub2/user.cfg
 
 Generate a new "grub.conf" file with the new password with the following commands:
 
-# grub2-mkconfig --output=/tmp/grub2.cfg
-# mv /tmp/grub2.cfg /boot/grub2/grub.cfg</fixtext><fix id="F-78313r1_fix" /><check system="C-72193r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_RHEL_7_STIG.xml" /><check-content>Check to see if an encrypted root password is set. On systems that use a BIOS, use the following command:
+# grub2-mkconfig -o /boot/grub2/grub.cfg</fixtext><fix id="F-78313r1_fix" /><check system="C-72193r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_RHEL_7_STIG.xml" /><check-content>Check to see if an encrypted root password is set. On systems that use a BIOS, use the following commands:
 
 # grep -i password /boot/grub2/grub.cfg
-password_pbkdf2 superusers-account password-hash
+password_pbkdf2 root ${GRUB2_PASSWORD}
 
-If the root password entry does not begin with "password_pbkdf2", this is a finding.</check-content></check></Rule></Group><Group id="V-71963"><title>SRG-OS-000080-GPOS-00048</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-86587r1_rule" severity="high" weight="10.0"><version>RHEL-07-010490</version><title>Systems using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes.</title><description>&lt;VulnDiscussion&gt;If the system does not require valid root authentication before it boots into single-user or maintenance mode, anyone who invokes single-user or maintenance mode is granted privileged access to all files on the system. GRUB 2 is the default boot loader for RHEL 7 and is designed to require a password to boot into single-user mode or make modifications to the boot menu.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;&lt;/Responsibility&gt;&lt;IAControls&gt;&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target Red Hat 7</dc:title><dc:publisher>DISA</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>Red Hat 7</dc:subject><dc:identifier>2777</dc:identifier></reference><ident system="http://iase.disa.mil/cci">CCI-000213</ident><fixtext fixref="F-78315r1_fix">Configure the system to encrypt the boot password for root.
+# cat /boot/grub2/user.cfg
+GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.4D4691C59A015F3426D45A74972EE2AF042F0711F020F42A3F6989337A50E46399B2EC3C7000879C0EDCAF8C9484EE01B3D79F10003FAF15761688E6145E0ED1.336450B1DC48E6C0E38080709E1A67D80094A274A2486A296ECF8CA97D542FA55247F4B0384195361A96987C5936F9B64F0E0977B8EEDE6EA0DF0D3BD35D6D77
+
+Note: the above hash is an example and will be different than the returned hash.
+
+If the root password entry does not begin with "password_pbkdf2", or if /boot/grub2/user.cfg is either empty or missing, this is a finding.</check-content></check></Rule></Group><Group id="V-71963"><title>SRG-OS-000080-GPOS-00048</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-86587r1_rule" severity="high" weight="10.0"><version>RHEL-07-010490</version><title>Systems using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes.</title><description>&lt;VulnDiscussion&gt;If the system does not require valid root authentication before it boots into single-user or maintenance mode, anyone who invokes single-user or maintenance mode is granted privileged access to all files on the system. GRUB 2 is the default boot loader for RHEL 7 and is designed to require a password to boot into single-user mode or make modifications to the boot menu.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;&lt;/Responsibility&gt;&lt;IAControls&gt;&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target Red Hat 7</dc:title><dc:publisher>DISA</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>Red Hat 7</dc:subject><dc:identifier>2777</dc:identifier></reference><ident system="http://iase.disa.mil/cci">CCI-000213</ident><fixtext fixref="F-78315r1_fix">Configure the system to encrypt the boot password for root.
 
 Generate an encrypted grub2 password for root with the following command:
 
-Note: The hash generated is an example.
-
-# grub-mkpasswd-pbkdf2
+# grub2-setpassword
 Enter Password:
 Reenter Password:
 
-PBKDF2 hash of your password is grub.pbkdf2.sha512.10000.F3A7CFAA5A51EED123BE8238C23B25B2A6909AFC9812F0D45
-
-Using this hash, modify the "/etc/grub.d/10_linux" file with the following commands to add the password to the root entry:
-
-# cat &lt;&lt; EOF
-&gt; set superusers="root" password_pbkdf2 smithj grub.pbkdf2.sha512.10000.F3A7CFAA5A51EED123BE8238C23B25B2A6909AFC9812F0D45
-&gt; EOF
+The hash of your password is is stored in /boot/grub2/user.cfg
 
 Generate a new "grub.conf" file with the new password with the following commands:
 
-# grub2-mkconfig --output=/tmp/grub2.cfg
-# mv /tmp/grub2.cfg /boot/efi/EFI/redhat/grub.cfg</fixtext><fix id="F-78315r1_fix" /><check system="C-72195r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_RHEL_7_STIG.xml" /><check-content>Check to see if an encrypted root password is set. On systems that use UEFI, use the following command:
+# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</fixtext><fix id="F-78313r1_fix" /><check system="C-72195r1_chk"><check-content-ref name="M" href="DPMS_XCCDF_Benchmark_RHEL_7_STIG.xml" /><check-content>Check to see if an encrypted root password is set. On systems that use UEFI, use the following commands:
 
 # grep -i password /boot/efi/EFI/redhat/grub.cfg
-password_pbkdf2 superusers-account password-hash
+password_pbkdf2 root ${GRUB2_PASSWORD}
 
-If the root password entry does not begin with "password_pbkdf2", this is a finding.</check-content></check></Rule></Group><Group id="V-71965"><title>SRG-OS-000104-GPOS-00051</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-86589r1_rule" severity="medium" weight="10.0"><version>RHEL-07-010500</version><title>The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.</title><description>&lt;VulnDiscussion&gt;To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
+# cat /boot/efi/EFI/redhat/user.cfg
+GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.4D4691C59A015F3426D45A74972EE2AF042F0711F020F42A3F6989337A50E46399B2EC3C7000879C0EDCAF8C9484EE01B3D79F10003FAF15761688E6145E0ED1.336450B1DC48E6C0E38080709E1A67D80094A274A2486A296ECF8CA97D542FA55247F4B0384195361A96987C5936F9B64F0E0977B8EEDE6EA0DF0D3BD35D6D77
+
+Note: the above hash is an example and will be different than the returned hash.
+
+If the root password entry does not begin with "password_pbkdf2", or if /boot/efi/EFI/redhat/user.cfg is either empty or missing, this is a finding.</check-content></check></Rule></Group><Group id="V-71965"><title>SRG-OS-000104-GPOS-00051</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-86589r1_rule" severity="medium" weight="10.0"><version>RHEL-07-010500</version><title>The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.</title><description>&lt;VulnDiscussion&gt;To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
 
 Organizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following:
 
