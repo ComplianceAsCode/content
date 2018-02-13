@@ -33,7 +33,8 @@ system logging services.
 </rationale>
 <ident prodtype="rhel7" cce="80187-8" />
 <oval id="package_rsyslog_installed" />
-<ref nist="AU-9(2)" disa="1311,1312" cis="4.2.3" anssi="NT28(R5),NT28(R46)"/>
+<ref nist="AU-9(2)" disa="1311,1312" cis="4.2.3" anssi="NT28(R5),NT28(R46)"
+hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 
 <Rule id="service_rsyslog_enabled" severity="medium" prodtype="rhel7">
@@ -49,7 +50,8 @@ logging services, which are essential to system administration.
 </rationale>
 <ident prodtype="rhel7" cce="80188-6" />
 <oval id="service_rsyslog_enabled" />
-<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="4.2.1.1" anssi="NT28(R5),NT28(R46)"/>
+<ref nist="AU-4(1),AU-12" disa="1311,1312,1557,1851" cis="4.2.1.1" anssi="NT28(R5),NT28(R46)"
+hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 
 <Group id="ensure_rsyslog_log_file_configuration">
@@ -285,7 +287,7 @@ place to view the status of multiple hosts within the enterprise.
 <oval id="rsyslog_remote_loghost" value="rsyslog_remote_loghost_address" />
 <ref prodtype="rhel7" stigid="031000" />
 <ref nist="AU-3(2),AU-4(1),AU-9" disa="366,1348,136,1851" cis="4.2.1.4"
-srg="SRG-OS-000480-GPOS-00227" />
+srg="SRG-OS-000480-GPOS-00227" hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 </Group>
 
