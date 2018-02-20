@@ -128,12 +128,14 @@ def main():
     args = parser.parse_args()
 
     role_whitelist = set([
-        "ssg-rhel7-role-ospp-rhel7",
-        "ssg-rhel7-role-pci-dss",
+        "rhel7-role-ospp-rhel7",
+        "rhel7-role-pci-dss",
     ])
 
+    # the first 4 cut chars are for "ssg-"
+    # the last 4 cut chars are for ".yml"
     available_roles = set(
-        [f[:-4]
+        [f[4:-4]
          for f in os.listdir(args.build_roles_dir) if f.endswith(".yml")]
     )
     # print(available_roles)
@@ -168,7 +170,8 @@ def main():
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
         if repo.name in roles:
             update_repository(
-                repo, os.path.join(args.build_roles_dir, repo.name + ".yml")
+                repo, os.path.join(args.build_roles_dir,
+                                   "ssg-" + repo.name + ".yml")
             )
         else:
             print("Repo %s should be deleted, please verify and do that "
