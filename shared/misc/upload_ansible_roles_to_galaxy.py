@@ -164,10 +164,14 @@ def main():
 
     # Update repositories
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-        update_repository(
-            repo, os.path.join(args.build_roles_dir, repo.name + ".yml"),
-            args.meta_template_path
-        )
+        if repo.name in roles:
+            update_repository(
+                repo, os.path.join(args.build_roles_dir, repo.name + ".yml"),
+                args.meta_template_path
+            )
+        else:
+            print("Repo %s should be deleted, please verify and do that "
+                  "manually!" % repo.name)
 
 
 if __name__ == "__main__":
