@@ -18,6 +18,9 @@ except ImportError:
                      "python-PyGithub package.\n")
     sys.exit(1)
 
+
+ORGANIZATION_NAME = "Ansible-Security-Compliance"
+
 GIT_COMMIT_AUTHOR = \
     "SSG Ansible Role Uploader <scap-security-guide@lists.fedorahosted.org>"
 
@@ -38,7 +41,7 @@ def create_empty_repositories(github_new_repos, github_org):
 def clone_and_init_repositories(repositories_to_create):
     for repo in repositories_to_create:
         os.system(
-            "git clone git@github.com:Ansible-Security-Compliance/%s.git" % repo)
+            "git clone git@github.com:%s/%s.git" % (ORGANIZATION_NAME, repo))
         os.system("ansible-galaxy init " + repo + " --force")
         os.chdir(repo)
         try:
@@ -123,8 +126,6 @@ def main():
         dest="meta_template_path")
     args = parser.parse_args()
 
-    organization_name = "Ansible-Security-Compliance"
-
     role_whitelist = set([
         "ssg-rhel7-role-ospp-rhel7",
         "ssg-rhel7-role-pci-dss",
@@ -142,7 +143,7 @@ def main():
     password = getpass.getpass("password (or empty for token): ")
 
     github = Github(username, password)
-    github_org = github.get_organization(organization_name)
+    github_org = github.get_organization(ORGANIZATION_NAME)
     github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Create empty repositories
