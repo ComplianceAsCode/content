@@ -22,6 +22,10 @@ except ImportError:
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
 GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
+META_TEMPLATE_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "galaxy_ansible_role_meta_template.yml"
+)
 
 
 def create_empty_repositories(github_new_repos, github_org):
@@ -51,7 +55,7 @@ def clone_and_init_repository(parent_dir, repo):
         os.chdir("..")
 
 
-def update_repository(repository, local_file_path, meta_template_path):
+def update_repository(repository, local_file_path):
     print("Processing %s..." % repository.name)
 
     with open(local_file_path, 'r') as f:
@@ -95,23 +99,22 @@ def update_repository(repository, local_file_path, meta_template_path):
                 GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
         )
 
-    if meta_template_path:
-        with open(meta_template_path, 'r') as f:
-            meta_template = f.read()
+    with open(META_TEMPLATE_PATH, 'r') as f:
+        meta_template = f.read()
 
-        local_meta_content = meta_template.replace("@DESCRIPTION@", title)
-        remote_meta_file = repository.get_file_contents("/meta/main.yml")
+    local_meta_content = meta_template.replace("@DESCRIPTION@", title)
+    remote_meta_file = repository.get_file_contents("/meta/main.yml")
 
-        if local_meta_content != remote_meta_file.decoded_content:
-            print("Updating meta/main.yml in %s" % repository.name)
-            repository.update_file(
-                "/meta/main.yml",
-                "Updates meta/main.yml",
-                local_meta_content,
-                remote_meta_file.sha,
-                author=InputGitAuthor(
-                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
-            )
+    if local_meta_content != remote_meta_file.decoded_content:
+        print("Updating meta/main.yml in %s" % repository.name)
+        repository.update_file(
+            "/meta/main.yml",
+            "Updates meta/main.yml",
+            local_meta_content,
+            remote_meta_file.sha,
+            author=InputGitAuthor(
+                GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
+        )
 
 
 def main():
@@ -122,10 +125,6 @@ def main():
         help="Path to directory containing the ssg generated roles. Most "
         "likely this is going to be scap-security-guide/build/roles",
         dest="build_roles_dir")
-    parser.add_argument(
-        "--meta-template-path", required=True,
-        help="Path to metadata file template",
-        dest="meta_template_path")
     args = parser.parse_args()
 
     role_whitelist = set([
@@ -169,8 +168,7 @@ def main():
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
         if repo.name in roles:
             update_repository(
-                repo, os.path.join(args.build_roles_dir, repo.name + ".yml"),
-                args.meta_template_path
+                repo, os.path.join(args.build_roles_dir, repo.name + ".yml")
             )
         else:
             print("Repo %s should be deleted, please verify and do that "
