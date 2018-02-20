@@ -125,9 +125,17 @@ def main():
 
     organization_name = "Ansible-Security-Compliance"
 
-    roles = \
+    role_whitelist = set([
+        "ssg-rhel7-role-ospp-rhel7",
+        "ssg-rhel7-role-pci-dss",
+    ])
+
+    available_roles = set(
         [f[:-4]
          for f in os.listdir(args.build_roles_dir) if f.endswith(".yml")]
+    )
+    # print(available_roles)
+    roles = available_roles.intersection(role_whitelist)
 
     print("Input your GitHub credentials:")
     username = raw_input("username or token: ")
