@@ -12,7 +12,7 @@ import argparse
 import getpass
 
 try:
-    from github import Github
+    from github import Github, InputGitAuthor
 except ImportError:
     sys.stderr.write("Please install PyGithub, on Fedora it's in the "
                      "python-PyGithub package.\n")
@@ -20,9 +20,8 @@ except ImportError:
 
 
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
-
-GIT_COMMIT_AUTHOR = \
-    "SSG Ansible Role Uploader <scap-security-guide@lists.fedorahosted.org>"
+GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
+GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 
 
 def create_empty_repositories(github_new_repos, github_org):
@@ -30,7 +29,7 @@ def create_empty_repositories(github_new_repos, github_org):
         print("Creating new Github repository: %s" % github_new_repo)
         github_org.create_repo(
             github_new_repo,
-            description="Role generated SCAP Security Guide",
+            description="Role generated from SCAP Security Guide",
             homepage="https://www.open-scap.org/",
             private=False,
             has_issues=False,
@@ -38,19 +37,18 @@ def create_empty_repositories(github_new_repos, github_org):
             has_downloads=False)
 
 
-def clone_and_init_repositories(repositories_to_create):
-    for repo in repositories_to_create:
-        os.system(
-            "git clone git@github.com:%s/%s.git" % (ORGANIZATION_NAME, repo))
-        os.system("ansible-galaxy init " + repo + " --force")
-        os.chdir(repo)
-        try:
-            os.system('git add .')
-            os.system('git commit -a -m "Initial commit" --author "%s"'
-                      % GIT_COMMIT_AUTHOR)
-            os.system('git push origin master')
-        finally:
-            os.chdir("..")
+def clone_and_init_repository(parent_dir, repo):
+    os.system(
+        "git clone git@github.com:%s/%s.git" % (ORGANIZATION_NAME, repo))
+    os.system("ansible-galaxy init " + repo + " --force")
+    os.chdir(repo)
+    try:
+        os.system('git add .')
+        os.system('git commit -a -m "Initial commit" --author "%s <%s>"'
+                  % (GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL))
+        os.system('git push origin master')
+    finally:
+        os.chdir("..")
 
 
 def update_repository(repository, local_file_path, meta_template_path):
@@ -68,7 +66,8 @@ def update_repository(repository, local_file_path, meta_template_path):
             "Updates tasks/main.yml",
             local_file_content,
             remote_file.sha,
-            author=GIT_COMMIT_AUTHOR
+            author=InputGitAuthor(
+                GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
         )
 
         print("Updating tasks/main.yml in %s" % repository.name)
@@ -92,7 +91,8 @@ def update_repository(repository, local_file_path, meta_template_path):
             "Updates README.md",
             local_readme_content,
             remote_readme_file.sha,
-            author=GIT_COMMIT_AUTHOR
+            author=InputGitAuthor(
+                GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
         )
 
     if meta_template_path:
@@ -109,7 +109,9 @@ def update_repository(repository, local_file_path, meta_template_path):
                 "Updates meta/main.yml",
                 local_meta_content,
                 remote_meta_file.sha,
-                author=GIT_COMMIT_AUTHOR)
+                author=InputGitAuthor(
+                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
+            )
 
 
 def main():
@@ -155,9 +157,10 @@ def main():
         # Locally clone and init repositories
         temp_dir = mkdtemp()
         current_dir = os.getcwd()
+        os.chdir(temp_dir)
         try:
-            os.chdir(temp_dir)
-            clone_and_init_repositories(github_new_repos)
+            for repo in github_new_repos:
+                clone_and_init_repository(temp_dir, repo)
         finally:
             os.chdir(current_dir)
             shutil.rmtree(temp_dir)
