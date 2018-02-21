@@ -120,6 +120,13 @@ def update_repository(repository, local_file_path):
                       description, re.MULTILINE).group(1)
     description = description.replace('\n', '  \n')
 
+    repository.edit(
+        repository.name,
+        description="%s - Ansible role generated from the SCAP Security Guide "
+        "project" % (title),
+        homepage="https://www.open-scap.org/",
+    )
+
     with open(README_TEMPLATE_PATH, 'r') as f:
         readme_template = f.read()
 
