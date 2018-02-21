@@ -24,7 +24,7 @@ GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 META_TEMPLATE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    "galaxy_ansible_role_meta_template.yml"
+    "ansible_galaxy_meta_template.yml"
 )
 
 
