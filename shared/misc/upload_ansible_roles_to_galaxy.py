@@ -81,8 +81,11 @@ def update_repository(repository, local_file_path):
         print("Updating tasks/main.yml in %s" % repository.name)
 
     separator = "#" * 79
-    description = filedata[filedata.find(
-        separator) + len(separator) + 3:filedata.rfind(separator) - 3]
+    first_separator_pos = filedata.find(separator)
+    second_separator_pos = filedata.find(separator,
+                                         first_separator_pos + len(separator))
+    description = filedata[first_separator_pos + len(separator) + 3:
+                           second_separator_pos - 3]
     description = description.replace('# ', '')
     description = description.replace('#', '')
     title = re.search('Profile Title:\s+(.+)$',
