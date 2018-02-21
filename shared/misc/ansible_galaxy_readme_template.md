@@ -25,9 +25,19 @@ Run `ansible-galaxy install Ansible-Security-Compliance.@ROLE_NAME@` to
 download and install the role. Then you can use the following playbook snippet.
 
 
-    - hosts: servers
+    - hosts: all
       roles:
          - { role: Ansible-Security-Compliance.@ROLE_NAME@ }
+
+
+Then first check the playbook using (on the localhost):
+
+    ansible-playbook -i "localhost," -c local --check playbook.yml
+
+To deploy it, use (this may change configuration of your local machine!):
+
+    ansible-playbook -i "localhost," -c local --check playbook.yml
+
 
 License
 -------
