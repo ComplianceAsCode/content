@@ -154,7 +154,7 @@ To meet FISMA Moderate, the bootloader superuser account and password MUST
 differ from the root account and password.
 Once the superuser account and password have been added, update the
 <tt>grub.cfg</tt> file by running:
-<pre>grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre>
+<pre>grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre>
 NOTE: Do NOT manually add the superuser account and password to the
 <tt>grub.cfg</tt> file as the grub2-mkconfig command overwrites this file.
 </description>
@@ -168,7 +168,7 @@ export superusers
 password_pbkdf2 <b>superusers-account</b> <b>${GRUB2_PASSWORD}</b></pre>
 To verify the boot loader superuser account password has been set,
 and the password encrypted, run the following command:
-<pre>sudo cat /boot/efi/EFI/redhat/user.cfg</pre>
+<pre>sudo cat /boot/efi/EFI/fedora/user.cfg</pre>
 The output should show the following (NOTE: the hash will be different):
 <pre>GRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC
 2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0
