@@ -26,6 +26,10 @@ META_TEMPLATE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "ansible_galaxy_meta_template.yml"
 )
+README_TEMPLATE_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "ansible_galaxy_readme_template.md"
+)
 
 
 def create_empty_repositories(github_new_repos, github_org):
@@ -77,14 +81,20 @@ def update_repository(repository, local_file_path):
         print("Updating tasks/main.yml in %s" % repository.name)
 
     separator = "#" * 79
-    header = filedata[filedata.find(
+    description = filedata[filedata.find(
         separator) + len(separator) + 3:filedata.rfind(separator) - 3]
-    header = header.replace('# ', '')
-    header = header.replace('#', '')
-    title = re.search('Profile Title:\s+(.+)$', header, re.MULTILINE).group(1)
-    header = header.replace('\n', '  \n')
+    description = description.replace('# ', '')
+    description = description.replace('#', '')
+    title = re.search('Profile Title:\s+(.+)$',
+                      description, re.MULTILINE).group(1)
+    description = description.replace('\n', '  \n')
 
-    local_readme_content = title + '\n=========\n\n' + header
+    with open(README_TEMPLATE_PATH, 'r') as f:
+        readme_template = f.read()
+
+    local_readme_content = readme_template.replace("@DESCRIPTION@", description)
+    local_readme_content = local_readme_content.replace("@TITLE@", title)
+
     remote_readme_file = repository.get_file_contents("/README.md")
 
     if local_readme_content != remote_readme_file.decoded_content:
