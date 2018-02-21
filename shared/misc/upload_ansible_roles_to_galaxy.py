@@ -94,6 +94,8 @@ def update_repository(repository, local_file_path):
 
     local_readme_content = readme_template.replace("@DESCRIPTION@", description)
     local_readme_content = local_readme_content.replace("@TITLE@", title)
+    local_readme_content = local_readme_content.replace("@ROLE_NAME@",
+                                                        repository.name)
 
     remote_readme_file = repository.get_file_contents("/README.md")
 
