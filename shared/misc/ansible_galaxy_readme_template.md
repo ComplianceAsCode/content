@@ -11,7 +11,7 @@ N/A
 Role Variables
 --------------
 
-TODO
+To customize the role to your liking, check out the [list of variables](vars/main.yml).
 
 Dependencies
 ------------
