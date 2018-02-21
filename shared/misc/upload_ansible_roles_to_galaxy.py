@@ -78,7 +78,8 @@ def update_repository(repository, local_file_path):
     # TODO: what do we do about pre_tasks? ansible language doesn't allow it
     #       for roles
 
-    tasks_local_content = yaml.dump(tasks_data)
+    tasks_local_content = yaml.dump(tasks_data, width=120, indent=4,
+                                    default_flow_style=False)
     tasks_remote_content = repository.get_file_contents("/tasks/main.yml")
 
     if tasks_local_content != tasks_remote_content.decoded_content:
@@ -93,7 +94,8 @@ def update_repository(repository, local_file_path):
 
         print("Updating tasks/main.yml in %s" % repository.name)
 
-    vars_local_content = yaml.dump(vars_data)
+    vars_local_content = yaml.dump(vars_data, width=120, indent=4,
+                                   default_flow_style=False)
     vars_remote_content = repository.get_file_contents("/vars/main.yml")
 
     if vars_local_content != vars_remote_content.decoded_content:
