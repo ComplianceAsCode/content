@@ -10,6 +10,7 @@ import shutil
 import re
 import argparse
 import getpass
+import yaml
 
 try:
     from github import Github, InputGitAuthor
@@ -65,20 +66,47 @@ def update_repository(repository, local_file_path):
     with open(local_file_path, 'r') as f:
         filedata = f.read()
 
-    local_file_content = filedata.replace("   tasks:", "#   tasks:")
-    remote_file = repository.get_file_contents("/tasks/main.yml")
+    role_data = yaml.load(filedata)
+    vars_data = []
+    if "vars" in role_data[0]:
+        vars_data = role_data[0]["vars"]
 
-    if local_file_content != remote_file.decoded_content:
+    tasks_data = []
+    if "tasks" in role_data[0]:
+        tasks_data = role_data[0]["tasks"]
+
+    # TODO: what do we do about pre_tasks? ansible language doesn't allow it
+    #       for roles
+
+    tasks_local_content = yaml.dump(tasks_data)
+    tasks_remote_content = repository.get_file_contents("/tasks/main.yml")
+
+    if tasks_local_content != tasks_remote_content.decoded_content:
         repository.update_file(
             "/tasks/main.yml",
             "Updates tasks/main.yml",
-            local_file_content,
-            remote_file.sha,
+            tasks_local_content,
+            tasks_remote_content.sha,
             author=InputGitAuthor(
                 GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
         )
 
         print("Updating tasks/main.yml in %s" % repository.name)
+
+    vars_local_content = yaml.dump(vars_data)
+    vars_remote_content = repository.get_file_contents("/vars/main.yml")
+
+    if vars_local_content != vars_remote_content.decoded_content:
+        repository.update_file(
+            "/vars/main.yml",
+            "Updates vars/main.yml",
+            vars_local_content,
+            vars_remote_content.sha,
+            author=InputGitAuthor(
+                GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
+        )
+
+        print("Updating vars/main.yml in %s" % repository.name)
 
     separator = "#" * 79
     first_separator_pos = filedata.find(separator)
