@@ -158,6 +158,13 @@ immediately after the superuser account.
 NOTE: It is recommended not to use common administrator account names like root,
 admin, or administrator for the grub2 superuser account.
 <br /><br />
+<<<<<<< HEAD
+=======
+Change the superuser to a different username.  In the below command, bootuser
+is used for the new superuser account name. (The default is 'root').
+<pre>$ sed -i s/root/bootuser/g /etc/grub.d/01_users</pre>
+<br /><br />
+>>>>>>> fix grub2 boot loader password so that is aligns with documentation.
 To meet FISMA Moderate, the bootloader superuser account and password MUST
 differ from the root account and password.
 Once the superuser account and password have been added, update the
