@@ -81,8 +81,19 @@ def update_repository(repository, local_file_path):
     if "tasks" in role_data[0]:
         tasks_data = role_data[0]["tasks"]
 
-    # TODO: what do we do about pre_tasks? ansible language doesn't allow it
-    #       for roles
+    # ansible language doesn't allow pre_tasks for roles, if the only pre task
+    # is the ansible version check we can ignore it because the minimal version
+    # is in role metadata
+    if "pre_tasks" in role_data[0]:
+        pre_tasks_data = role_data[0]["pre_tasks"]
+        if len(pre_tasks_data) == 1 and \
+                pre_tasks_data[0]["name"] == \
+                ssgcommon.ansible_version_requirement_pre_task_name:
+            pass
+        else:
+            sys.stderr.write(
+                "%s contains pre_tasks other than the version check. pre_tasks "
+                "are not supported for ansible roles and will be skipped!.\n")
 
     tasks_local_content = yaml.dump(tasks_data, width=120, indent=4,
                                     default_flow_style=False)
