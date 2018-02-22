@@ -20,6 +20,12 @@ except ImportError:
     sys.exit(1)
 
 
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+import ssgcommon
+
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
 GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
@@ -134,6 +140,8 @@ def update_repository(repository, local_file_path):
 
     local_readme_content = readme_template.replace("@DESCRIPTION@", description)
     local_readme_content = local_readme_content.replace("@TITLE@", title)
+    local_readme_content = local_readme_content.replace(
+        "@MIN_ANSIBLE_VERSION@", ssgcommon.min_ansible_version)
     local_readme_content = local_readme_content.replace("@ROLE_NAME@",
                                                         repository.name)
 
@@ -155,6 +163,8 @@ def update_repository(repository, local_file_path):
         meta_template = f.read()
 
     local_meta_content = meta_template.replace("@DESCRIPTION@", title)
+    local_meta_content = local_meta_content.replace(
+        "@MIN_ANSIBLE_VERSION@", ssgcommon.min_ansible_version)
     remote_meta_file = repository.get_file_contents("/meta/main.yml")
 
     if local_meta_content != remote_meta_file.decoded_content:

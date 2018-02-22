@@ -57,10 +57,10 @@ def add_minimum_ansible_version(ansible_src):
    pre_tasks:
      - name: Verify Ansible meets SCAP-Security-Guide version requirements.
        assert:
-         that: "ansible_version.full | version_compare('2.3', '>=')"
+         that: "ansible_version.full | version_compare('%s', '>=')"
          msg: >
-           "You must update Ansible to at least version 2.3 to use this role."
-          """)
+           "You must update Ansible to at least version %s to use this role."
+          """ % (ssgcommon.min_ansible_version, ssgcommon.min_ansible_version))
 
     return ansible_src.replace(" - hosts: all", pre_task, 1)
 

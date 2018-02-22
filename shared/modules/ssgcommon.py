@@ -42,6 +42,7 @@ OSCAP_GROUP_VAL = "xccdf_%s.content_group_values" % OSCAP_VENDOR
 OSCAP_GROUP_NON_PCI = "xccdf_%s.content_group_non-pci-dss" % OSCAP_VENDOR
 XCCDF11_NS = "http://checklists.nist.gov/xccdf/1.1"
 XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
+min_ansible_version = "2.3"
 
 
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")

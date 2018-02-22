@@ -6,7 +6,7 @@
 Requirements
 ------------
 
-N/A
+- Ansible version @MIN_ANSIBLE_VERSION@ or higher
 
 Role Variables
 --------------
