@@ -504,6 +504,19 @@
           <xsl:when test="name() = 'stigid'">
             <xsl:value-of select="normalize-space(concat($os-stigid-concat, .))" />
           </xsl:when>
+          <xsl:when test="name() = 'cis'">
+            <xsl:value-of select="normalize-space(concat('CIS ', $refitem))" />
+          </xsl:when>
+          <xsl:when test="name() = 'cjis'">
+            <xsl:value-of select="normalize-space(concat('CJIS ', $refitem))" />
+          </xsl:when>
+          <xsl:when test="name() = 'cui'">
+            <xsl:value-of select="normalize-space(concat('NIST 800-171 ', $refitem))" />
+          </xsl:when>
+          <xsl:when test="name() = 'hipaa'">
+            <xsl:value-of select="normalize-space(concat('HIPAA ', $refitem))" />
+          </xsl:when>
+          
           <xsl:otherwise>
             <xsl:choose>
               <xsl:when test="name() = 'disa'">
