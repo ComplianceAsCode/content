@@ -55,12 +55,13 @@ def generate_role_for_input_content(input_content, benchmark_id, profile_id,
 def add_minimum_ansible_version(ansible_src):
     pre_task = (""" - hosts: all
    pre_tasks:
-     - name: Verify Ansible meets SCAP-Security-Guide version requirements.
+     - name: %s
        assert:
-         that: "ansible_version.full | version_compare('2.3', '>=')"
+         that: "ansible_version.full | version_compare('%s', '>=')"
          msg: >
-           "You must update Ansible to at least version 2.3 to use this role."
-          """)
+           "You must update Ansible to at least version %s to use this role."
+          """ % (ssgcommon.ansible_version_requirement_pre_task_name,
+                 ssgcommon.min_ansible_version, ssgcommon.min_ansible_version))
 
     return ansible_src.replace(" - hosts: all", pre_task, 1)
 
