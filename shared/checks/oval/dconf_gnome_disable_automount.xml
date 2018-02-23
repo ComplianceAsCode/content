@@ -13,6 +13,7 @@
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <extend_definition comment="gnome-desktop3 installed" definition_ref="package_gnome-desktop3_installed" negate="true" />
       <criteria comment="Disable GNOME3 automount/autorun and prevent user from changing it" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <criterion comment="Disable automount in GNOME3" test_ref="test_dconf_gnome_disable_automount" />
