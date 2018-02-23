@@ -10,6 +10,8 @@
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <!-- Check if gdm installed since dconf is a dependency of emacs -->
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criteria comment="Disable GUI shutdown and restart buttons and prevent user from changing it" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <criterion comment="Disable restart and shutdown buttons" test_ref="test_disable_restart_buttons" />

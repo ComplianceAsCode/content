@@ -10,6 +10,7 @@
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <extend_definition comment="nm-connection-editor installed" definition_ref="package_nm-connection-editor_installed" negate="true" />
       <criteria operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <criterion comment="Disable wifi notification" test_ref="test_disable_wifi_notification" />

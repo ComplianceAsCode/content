@@ -10,6 +10,8 @@
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <!-- gnome-screensaver is not available in rhel7, gnome-shell handles power saving and security features instead -->
+      <extend_definition comment="gnome-shell installed" definition_ref="package_gnome-shell_installed" negate="true" />
       <criteria comment="Enable screensaver lock and prevent user from changing it" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <extend_definition comment="Check screensaver lock delay settings" definition_ref="dconf_gnome_screensaver_lock_delay" />
