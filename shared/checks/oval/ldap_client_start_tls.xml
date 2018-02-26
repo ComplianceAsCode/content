@@ -7,11 +7,9 @@
       </affected>
       <description>Require the use of TLS for ldap clients.</description>
     </metadata>
-    <criteria operator="AND">
-      <extend_definition comment="LDAP is in use"
-      definition_ref="enable_ldap_client" />
-      <criterion comment="look for ssl start_tls in /etc/nslcd.conf"
-      test_ref="test_ldap_client_start_tls_ssl" />
+    <criteria operator="OR">
+      <extend_definition comment="LDAP is in use" definition_ref="enable_ldap_client" negate="true" />
+      <criterion comment="look for ssl start_tls in /etc/nslcd.conf" test_ref="test_ldap_client_start_tls_ssl" />
     </criteria>
   </definition>
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
