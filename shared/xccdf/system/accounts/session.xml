@@ -172,7 +172,7 @@ It is a good practice for administrators to always execute
 privileged commands by typing the full path to the
 command.</description>
 
-<Rule id="root_path_no_dot" prodtype="rhel7,fedora">
+<Rule id="root_path_no_dot" prodtype="rhel7,fedora,ol7">
 <title>Ensure that Root's Path Does Not Include Relative Paths or Null Directories</title>
 <description>
 Ensure that none of the directories in root's path is equal to a single
@@ -194,7 +194,7 @@ execute code from an untrusted location.
 <ref disa="366" nist="CM-6(b)" />
 </Rule>
 
-<Rule id="accounts_root_path_dirs_no_write" prodtype="rhel7,fedora">
+<Rule id="accounts_root_path_dirs_no_write" prodtype="rhel7,fedora,ol7">
 <title>Ensure that Root's Path Does Not Include World or Group-Writable Directories</title>
 <description>
 For each element in root's path, run:
