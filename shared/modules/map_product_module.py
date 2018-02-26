@@ -13,9 +13,10 @@ FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
+OL = 'Oracle Linux'
 
 multi_product_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
-                      "wrlinux", "opensuse", "sle"]
+                      "wrlinux", "opensuse", "sle", "ol"]
 
 PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
 
@@ -71,6 +72,9 @@ def map_product(version):
         return SUSE
     if version.startswith("wrlinux"):
         return WRLINUX
+    if version.startswith("ol"):
+        return OL
+
 
     raise RuntimeError("Can't map version '%s' to any known product!"
                        % (version))
