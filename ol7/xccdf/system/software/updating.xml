@@ -1,0 +1,91 @@
+<Group id="updating">
+<title>Updating Software</title>
+<description>The <tt>yum</tt> command line tool is used to install and
+update software packages. The system also provides a graphical
+software update tool in the <b>System</b> menu, in the <b>Administration</b> submenu,
+called <b>Software Update</b>.
+<br /><br />
+Oracle Linux system contain an installed software catalog called
+the RPM database, which records metadata of installed packages. Consistently using
+<tt>yum</tt> or the graphical <b>Software Update</b> for all software installation
+allows for insight into the current inventory of installed software on the system.
+</description>
+
+<Rule id="ensure_oracle_gpgkey_installed" severity="high" prodtype="ol7">
+<title>Ensure Oracle Linux GPG Key Installed</title>
+<description>
+To ensure the system can cryptographically verify base software
+packages come from Oracle (and to connect to the Unbreakable Linux Network to
+receive them), the Oracle GPG key must properly be installed.
+To install the Oracle GPG key, run:
+<pre>$ sudo uln_register</pre>
+If the system is not connected to the Internet,
+then install the Oracle GPG key from trusted media such as
+the Oracle installation CD-ROM or DVD. Assuming the disc is mounted
+in <tt>/media/cdrom</tt>, use the following command as the root user to import
+it into the keyring:
+<pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>
+</description>
+<ocil clause="the Oracle GPG Key is not installed">
+To ensure that the GPG key is installed, run:
+<pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
+The command should return the string below:
+<pre>gpg(Oracle OSS group (Open Source Software group) &lt;build@oss.oracle.com&gt;</pre>
+</ocil>
+<rationale>
+Changes to software components can have significant effects on the
+overall security of the operating system. This requirement ensures
+the software has not been tampered with and that it has been provided
+by a trusted vendor. The Oracle GPG key is necessary to
+cryptographically verify packages are from Oracle.
+</rationale>
+<ident prodtype="rhel7" cce="26957-1" />
+<oval id="ensure_oracle_gpgkey_installed" />
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" cis="1.2.2" />
+</Rule>
+
+<!-- REMINDER: Before telling people to update their systems
+     via the security_patches_up_to_date rule, we must
+     ensure they have configured an update source! -->
+<Rule id="ensure_gpgcheck_globally_activated" severity="high" prodtype="rhel7, ol7">
+<title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
+<description>The <tt>gpgcheck</tt> option controls whether
+RPM packages' signatures are always checked prior to installation.
+To configure yum to check package signatures before installing
+them, ensure the following line appears in <tt>/etc/yum.conf</tt> in
+the <tt>[main]</tt> section:
+<pre>gpgcheck=1</pre>
+</description>
+<ocil clause="GPG checking is not enabled">
+To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
+inspect <tt>/etc/yum.conf</tt> and ensure the following appears in the
+<tt>[main]</tt> section:
+<pre>gpgcheck=1</pre>
+A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
+<tt>gpgcheck</tt> line or a setting of <tt>0</tt> indicates that it is
+disabled.
+</ocil>
+<rationale>
+Changes to any software components can have significant effects on the overall security 
+of the operating system. This requirement ensures the software has not been tampered with
+and that it has been provided by a trusted vendor.
+<br />
+Accordingly, patches, service packs, device drivers, or operating system components must
+be signed with a certificate recognized and approved by the organization.
+<br />
+Verifying the authenticity of the software prior to installation
+validates the integrity of the patch or upgrade received from
+a vendor. This ensures the software has not been tampered with and
+that it has been provided by a trusted vendor. Self-signed
+certificates are disallowed by this requirement. Certificates
+used to verify the software must be from an approved Certificate
+Authority (CA).
+</rationale>
+<ident prodtype="rhel7" cce="26989-4" />
+<oval id="ensure_gpgcheck_globally_activated" />
+<ref prodtype="rhel7" stigid="020050" />
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="SRG-OS-000366-GPOS-00153"
+pcidss="Req-6.2" cis="1.2.2" cjis="5.10.4.1" cui="3.4.8" />
+</Rule>
+
+</Group>
