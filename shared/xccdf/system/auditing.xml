@@ -3433,6 +3433,10 @@ If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility
 rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
 in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
 b64 as appropriate for your system:
+If the system has a 32-bit processor, only the 32-bit rule is needed.
+If the system has a 64-bit processor, both arch 32 and 64 rules are needed because it is
+not possible to know if the computer will be booted in 64 or 32 bit mode or for which architecture
+a binary is compiled.
 <pre>-w /usr/sbin/insmod -p x -k modules
 -w /usr/sbin/rmmod -p x -k modules
 -w /usr/sbin/modprobe -p x -k modules
@@ -3462,6 +3466,10 @@ If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility
 rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
 in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
 b64 as appropriate for your system:
+If the system has a 32-bit processor, only the 32-bit rule is needed.
+If the system has a 64-bit processor, both arch 32 and 64 rules are needed because it is
+not possible to know if the computer will be booted in 64 or 32 bit mode or for which architecture
+a binary is compiled.
 <pre>-a always,exit -F arch=<i>ARCH</i> -S init_module -F key=modules</pre>
 </description>
 <ocil>
@@ -3488,6 +3496,10 @@ If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility
 rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
 in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
 b64 as appropriate for your system:
+If the system has a 32-bit processor, only the 32-bit rule is needed.
+If the system has a 64-bit processor, both arch 32 and 64 rules are needed because it is
+not possible to know if the computer will be booted in 64 or 32 bit mode or for which architecture
+a binary is compiled.
 <pre>-a always,exit -F arch=<i>ARCH</i> -S delete_module -F key=modules</pre>
 </description>
 <ocil>
