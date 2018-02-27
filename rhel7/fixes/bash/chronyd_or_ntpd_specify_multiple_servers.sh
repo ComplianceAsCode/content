@@ -2,24 +2,23 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_multiple_time_servers
 
-if ! `/usr/sbin/pidof ntpd`; then
-  if [ `grep -c '^server' /etc/chrony.conf` -lt 2 ]; then 
-    if ! `grep -q '#[[:space:]]*server' /etc/chrony.conf` ; then
-      for i in `echo "$var_multiple_time_servers" | tr ',' '\n'` ; do
-        echo -ne "\nserver $i iburst" >> /etc/chrony.conf
-      done
-    else
-      sed -i 's/#[ ]*server/server/g' /etc/chrony.conf
-    fi
+
+config_file="/etc/ntp.conf"
+/usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
+
+
+# This function is duplicate of function defined in chronyd_or_ntpd_specify_remote_server.sh
+handle_ntp_like_file()
+{
+  local _config_file="$1"
+  if ! grep -q '#[[:space:]]*server' "$_config_file"; then
+    for server in $(echo "$var_multiple_time_servers" | tr ',' '\n') ; do
+      printf '\nserver %s iburst' "$server" >> "$_config_file"
+    done
+  else
+    sed -i 's/#[ \t]*server/server/g' "$_config_file"
   fi
-else
-  if [ `grep -c '^server' /etc/ntp.conf` -lt 2 ]; then
-    if ! `grep -q '#[[:space:]]*server' /etc/ntp.conf` ; then
-      for i in `echo "$var_multiple_time_servers" | tr ',' '\n'` ; do
-        echo -ne "\nserver $i iburst" >> /etc/ntp.conf
-      done
-    else
-      sed -i 's/#[ ]*server/server/g' /etc/ntp.conf
-    fi
-  fi
-fi
+}
+
+
+[ "$(grep -c '^server' "$config_file")" -gt 1 ] || handle_ntp_like_file "$config_file"
