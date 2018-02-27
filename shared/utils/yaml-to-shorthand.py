@@ -13,7 +13,6 @@ class Benchmark(object):
     """
     def __init__(self, id_):
         self.id_ = id_
-        self.complete = False
         self.groups = {}
         self.rules = {}
         self.values = {}
@@ -31,7 +30,6 @@ class Benchmark(object):
         benchmark.rear_matter = yaml_contents["rear-matter"]
         benchmark.cpes = yaml_contents["cpes"]
         benchmark.version = str(yaml_contents["version"])
-        benchmark.complete = True
         return benchmark
 
     def to_xml_element(self):
@@ -101,7 +99,6 @@ class Group(object):
     """
     def __init__(self, id_):
         self.id_ = id_
-        self.complete = False
         self.groups = {}
         self.rules = {}
         self.values = {}
@@ -114,7 +111,6 @@ class Group(object):
         group = Group(group_id)
         group.title = yaml_contents['title']
         group.description = yaml_contents['description']
-        group.complete = True
         return group
 
     def to_xml_element(self):
@@ -166,7 +162,6 @@ class Rule(object):
         rule.severity = yaml_contents['severity']
         rule.references = yaml_contents.get('references')
         rule.identifiers = yaml_contents.get('identifiers')
-        rule.complete = True
         return rule
 
     def to_xml_element(self):
@@ -214,7 +209,6 @@ class Value(object):
         value.description = yaml_contents['description']
         value.type = yaml_contents['type']
         value.options = yaml_contents['options']
-        value.complete = True
         return value
 
     def to_xml_element(self):
