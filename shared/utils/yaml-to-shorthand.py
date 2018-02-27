@@ -166,6 +166,8 @@ class Rule(object):
         rule.severity = yaml_contents['severity']
         rule.references = yaml_contents.get('references')
         rule.identifiers = yaml_contents.get('identifiers')
+        rule.ocil_clause = yaml_contents.get('ocil_clause')
+        rule.ocil = yaml_contents.get('ocil')
         return rule
 
     def to_xml_element(self):
@@ -215,6 +217,11 @@ class Rule(object):
         #       Therefore let's just add an OVAL ref of that ID.
         oval_ref = ET.SubElement(rule, "oval")
         oval_ref.set("id", self.id_)
+
+        if self.ocil:
+            ocil = add_sub_element(rule, 'ocil', self.ocil)
+            if self.ocil_clause:
+                ocil.set("clause", self.ocil_clause)
 
         return rule
 
