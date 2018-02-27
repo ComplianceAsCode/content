@@ -14,7 +14,7 @@ import re
 class AuditRulesLoginEventsGenerator(FilesGenerator):
     def generate(self, target, args):
         path = args[0]
-        name = re.sub('[-\./]', '_', os.path.basename(path))
+        name = re.sub('[-\./]', '_', os.path.basename(os.path.normpath(path)))
         if target == "oval":
             self.file_from_template(
                 "./template_OVAL_audit_rules_login_events",
