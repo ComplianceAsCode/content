@@ -17,9 +17,9 @@ class Benchmark(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.values = {}
         self.groups = {}
         self.rules = {}
-        self.values = {}
 
     @staticmethod
     def from_yaml(yaml_file, id_):
@@ -64,10 +64,10 @@ class Benchmark(object):
         version = ET.SubElement(root, 'version')
         version.text = self.version
 
-        for g in self.groups.values():
-            root.append(g.to_xml_element())
         for v in self.values.values():
             root.append(v.to_xml_element())
+        for g in self.groups.values():
+            root.append(g.to_xml_element())
         for r in self.rules.values():
             root.append(r.to_xml_element())
 
@@ -78,14 +78,14 @@ class Benchmark(object):
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
+    def add_value(self, value):
+        self.values[value.id_] = value
+
     def add_group(self, group):
         self.groups[group.id_] = group
 
     def add_rule(self, rule):
         self.rules[rule.id_] = rule
-
-    def add_value(self, value):
-        self.values[value.id_] = value
 
     def to_xccdf(self):
         """We can easily extend this script to generate a valid XCCDF instead
@@ -103,9 +103,9 @@ class Group(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.values = {}
         self.groups = {}
         self.rules = {}
-        self.values = {}
 
     @staticmethod
     def from_yaml(yaml_file):
@@ -123,10 +123,10 @@ class Group(object):
         title = ET.SubElement(group, 'title')
         title.text = self.title
         add_sub_element(group, 'description', self.description)
-        for g in self.groups.values():
-            group.append(g.to_xml_element())
         for v in self.values.values():
             group.append(v.to_xml_element())
+        for g in self.groups.values():
+            group.append(g.to_xml_element())
         for r in self.rules.values():
             group.append(r.to_xml_element())
         return group
@@ -136,14 +136,14 @@ class Group(object):
         tree = ET.ElementTree(root)
         tree.write(file_name)
 
+    def add_value(self, value):
+        self.values[value.id_] = value
+
     def add_group(self, group):
         self.groups[group.id_] = group
 
     def add_rule(self, rule):
         self.rules[rule.id_] = rule
-
-    def add_value(self, value):
-        self.values[value.id_] = value
 
     def __str__(self):
         return self.id_
@@ -265,7 +265,9 @@ def add_from_directory(parent_group, directory, recurse, output_file):
             subdirectories.append(dir_item_path)
         else:
             name, extension = os.path.splitext(dir_item)
-            if extension == '.benchmark':
+            if extension == '.var':
+                values.append(dir_item_path)
+            elif extension == '.benchmark':
                 if benchmark_file:
                     raise ValueError("Multiple benchmarks in one directory")
                 benchmark_file = dir_item_path
@@ -275,8 +277,6 @@ def add_from_directory(parent_group, directory, recurse, output_file):
                 group_file = dir_item_path
             elif extension == '.rule':
                 rules.append(dir_item_path)
-            elif extension == '.var':
-                values.append(dir_item_path)
             else:
                 print("Encountered file '%s' while recursing, extension '%s' "
                       "is unknown. Skipping.."
@@ -295,15 +295,16 @@ def add_from_directory(parent_group, directory, recurse, output_file):
         group = Group.from_yaml(group_file)
 
     if group is not None:
-        for rule_yaml in rules:
-            rule = Rule.from_yaml(rule_yaml)
-            group.add_rule(rule)
         for value_yaml in values:
             value = Value.from_yaml(value_yaml)
             group.add_value(value)
         if recurse:
             for subdir in subdirectories:
                 add_from_directory(group, subdir, recurse, output_file)
+        for rule_yaml in rules:
+            rule = Rule.from_yaml(rule_yaml)
+            group.add_rule(rule)
+
         if parent_group:
             parent_group.add_group(group)
         else:
