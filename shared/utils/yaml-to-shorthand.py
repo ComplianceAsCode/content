@@ -3,6 +3,7 @@
 import argparse
 import yaml
 import os
+import os.path
 import xml.etree.ElementTree as ET
 import datetime
 
@@ -92,7 +93,8 @@ class Group(object):
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
-        group_id = os.path.basename(yaml_file).split('.')[0]
+
+        group_id, _ = os.path.splitext(os.path.basename(yaml_file))
         group = Group(group_id)
         group.title = yaml_contents['title']
         group.description = yaml_contents['description']
@@ -140,7 +142,7 @@ class Rule(object):
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
-        rule_id = os.path.basename(yaml_file).split('.')[0]
+        rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
         rule = Rule(rule_id)
         rule.title = yaml_contents['title']
         rule.description = yaml_contents['description']
@@ -190,7 +192,7 @@ class Value(object):
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
-        value_id = os.path.basename(yaml_file).split('.')[0]
+        value_id, _ = os.path.splitext(os.path.basename(yaml_file))
         value = Value(value_id)
         value.title = yaml_contents['title']
         value.description = yaml_contents['description']
@@ -248,20 +250,23 @@ def add_from_directory(parent_group, directory, recurse, output_file):
         if os.path.isdir(dir_item_path):
             subdirectories.append(dir_item_path)
         else:
-            print (dir_item)
-            name, extension = dir_item.split('.', 1)
-            if extension == 'benchmark':
+            name, extension = os.path.splitext(dir_item)
+            if extension == '.benchmark':
                 if benchmark_file:
                     raise ValueError("Multiple benchmarks in one directory")
                 benchmark_file = dir_item_path
-            elif extension == 'group':
+            elif extension == '.group':
                 if group_file:
                     raise ValueError("Multiple groups in one directory")
                 group_file = dir_item_path
-            elif extension == 'rule':
+            elif extension == '.rule':
                 rules.append(dir_item_path)
-            elif extension == 'var':
+            elif extension == '.var':
                 values.append(dir_item_path)
+            else:
+                print("Encountered file '%s' while recursing, extension '%s' "
+                      "is unknown. Skipping.."
+                      % (dir_item, extension))
 
     # we treat benchmark as a special form of group in the following code
     group = None
