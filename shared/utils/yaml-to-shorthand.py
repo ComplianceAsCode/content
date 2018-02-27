@@ -4,8 +4,12 @@ import argparse
 import yaml
 import os
 import os.path
-import xml.etree.ElementTree as ET
 import datetime
+
+try:
+    from xml.etree import cElementTree as ET
+except ImportError:
+    import cElementTree as ET
 
 
 class Benchmark(object):
