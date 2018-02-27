@@ -33,6 +33,9 @@ class Benchmark(object):
     @staticmethod
     def from_yaml(yaml_file, id_):
         yaml_contents = open_yaml(yaml_file)
+        if yaml_contents is None:
+            return None
+
         benchmark = Benchmark(id_)
         benchmark.title = yaml_contents["title"]
         benchmark.status = yaml_contents["status"]
@@ -88,12 +91,18 @@ class Benchmark(object):
         tree.write(file_name)
 
     def add_value(self, value):
+        if value is None:
+            return
         self.values[value.id_] = value
 
     def add_group(self, group):
+        if group is None:
+            return
         self.groups[group.id_] = group
 
     def add_rule(self, rule):
+        if rule is None:
+            return
         self.rules[rule.id_] = rule
 
     def to_xccdf(self):
@@ -119,6 +128,8 @@ class Group(object):
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
+        if yaml_contents is None:
+            return None
 
         group_id, _ = os.path.splitext(os.path.basename(yaml_file))
         group = Group(group_id)
@@ -146,12 +157,18 @@ class Group(object):
         tree.write(file_name)
 
     def add_value(self, value):
+        if value is None:
+            return
         self.values[value.id_] = value
 
     def add_group(self, group):
+        if group is None:
+            return
         self.groups[group.id_] = group
 
     def add_rule(self, rule):
+        if rule is None:
+            return
         self.rules[rule.id_] = rule
 
     def __str__(self):
@@ -167,6 +184,9 @@ class Rule(object):
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
+        if yaml_contents is None:
+            return None
+
         rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
         rule = Rule(rule_id)
         rule.title = yaml_contents['title']
@@ -251,6 +271,9 @@ class Value(object):
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
+        if yaml_contents is None:
+            return None
+
         value_id, _ = os.path.splitext(os.path.basename(yaml_file))
         value = Value(value_id)
         value.title = yaml_contents['title']
@@ -283,6 +306,10 @@ class Value(object):
 def open_yaml(yaml_file):
     with open(yaml_file, 'r') as stream:
         yaml_contents = yaml.load(stream)
+        if "documentation_complete" in yaml_contents and \
+                yaml_contents["documentation_complete"] == "false":
+            return None
+
         return yaml_contents
 
 
