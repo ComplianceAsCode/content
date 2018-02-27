@@ -18,6 +18,7 @@ class Benchmark(object):
     def __init__(self, id_):
         self.id_ = id_
         self.values = {}
+        self.bash_remediation_fns_group = None
         self.groups = {}
         self.rules = {}
 
@@ -47,6 +48,10 @@ class Benchmark(object):
         benchmark.cpes = yaml_contents["cpes"]
         benchmark.version = str(yaml_contents["version"])
         return benchmark
+
+    def add_bash_remediation_fns_from_file(self, file_):
+        tree = ET.parse(file_)
+        self.bash_remediation_fns_group = tree.getroot()
 
     def to_xml_element(self):
         root = ET.Element('Benchmark')
@@ -78,6 +83,8 @@ class Benchmark(object):
 
         for v in self.values.values():
             root.append(v.to_xml_element())
+        if self.bash_remediation_fns_group is not None:
+            root.append(self.bash_remediation_fns_group)
         for g in self.groups.values():
             root.append(g.to_xml_element())
         for r in self.rules.values():
@@ -324,7 +331,8 @@ def add_sub_element(parent, tag, data):
     return element
 
 
-def add_from_directory(parent_group, directory, recurse, output_file):
+def add_from_directory(parent_group, directory, recurse,
+                       bash_remediation_fns, output_file):
     benchmark_file = None
     group_file = None
     rules = []
@@ -361,6 +369,7 @@ def add_from_directory(parent_group, directory, recurse, output_file):
     group = None
     if benchmark_file:
         group = Benchmark.from_yaml(benchmark_file, 'product-name')
+        group.add_bash_remediation_fns_from_file(bash_remediation_fns)
 
     if group_file:
         group = Group.from_yaml(group_file)
@@ -371,7 +380,8 @@ def add_from_directory(parent_group, directory, recurse, output_file):
             group.add_value(value)
         if recurse:
             for subdir in subdirectories:
-                add_from_directory(group, subdir, recurse, output_file)
+                add_from_directory(group, subdir, recurse,
+                                   bash_remediation_fns, output_file)
         for rule_yaml in rules:
             rule = Rule.from_yaml(rule_yaml)
             group.add_rule(rule)
@@ -394,14 +404,19 @@ def main():
         help="Input directory with the YAML structure, "
         "e.g.: ~/scap-security-guide/shared/guide/services/ntp"
     )
+    parser.add_argument("--recurse", action="store_true",
+                        help="Include subdirectories.")
+    parser.add_argument("--bash_remediation_fns", required=True,
+                        help="XML with the XCCDF Group containing all bash "
+                        "remediation functions stored as values."
+                        "e.g.: build/bash-remediation-functions.xml")
     parser.add_argument("--output", required=True,
                         help="Output XCCDF shorthand file. "
                         "e.g.: /tmp/shorthand.xml")
-    parser.add_argument("--recurse", action="store_true",
-                        help="Include subdirectories.")
     args = parser.parse_args()
 
-    add_from_directory(None, args.source_dir, args.recurse, args.output)
+    add_from_directory(None, args.source_dir, args.recurse,
+                       args.bash_remediation_fns, args.output)
 
 
 if __name__ == "__main__":
