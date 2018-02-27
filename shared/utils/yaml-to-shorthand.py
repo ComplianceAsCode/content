@@ -210,6 +210,12 @@ class Rule(object):
             if main_ref.attrib:
                 rule.append(main_ref)
 
+        # TODO: This is pretty much a hack, oval ID will be the same as rule ID
+        #       and we don't want the developers to have to keep them in sync.
+        #       Therefore let's just add an OVAL ref of that ID.
+        oval_ref = ET.SubElement(rule, "oval")
+        oval_ref.set("id", self.id_)
+
         return rule
 
     def to_file(self, file_name):
