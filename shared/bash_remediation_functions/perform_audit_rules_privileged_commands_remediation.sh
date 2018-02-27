@@ -51,7 +51,7 @@ then
 #   missing rules should be inserted
 elif [ "$tool" == 'augenrules' ]
 then
-	IFS=$'\n' files_to_inspect=($(find /etc/audit/rules.d -maxdepth 1 -type f -name *.rules -print))
+	IFS=$'\n' files_to_inspect=($(find /etc/audit/rules.d -maxdepth 1 -type f -name '*.rules' -print))
 	output_audit_file="/etc/audit/rules.d/privileged.rules"
 fi
 
@@ -66,11 +66,9 @@ declare -a sbinaries_to_skip=()
 for sbinary in "${privileged_binaries[@]}"
 do
 
-	# Replace possible slash '/' character in sbinary definition so we could use it in sed expressions below
-	sbinary_esc=${sbinary//$'/'/$'\/'}
 	# Check if this sbinary wasn't already handled in some of the previous iterations
 	# Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
-	if [[ $(sed -ne "/${sbinary_esc}$/p" <<< ${sbinaries_to_skip[@]}) ]]
+	if [[ $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
 	then
 		# If so, don't process it second time & go to process next sbinary
 		continue
@@ -90,10 +88,10 @@ do
 		# * existing rule contains all arguments from expected rule form (though can contain
 		#   them in arbitrary order)
 	
-		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'/!d' \
+		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary}"'/!d' \
 				-e '/-F path=[^[:space:]]\+/!d'   -e '/-F perm=.*/!d'                 \
 				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=4294967295/!d'        \
-				-e '/-k privileged/!d' $afile)
+				-e '/-k privileged/!d' "$afile")
 
 		# Increase the count of inspected files for this sbinary
 		count_of_inspected_files=$((count_of_inspected_files + 1))
@@ -113,18 +111,18 @@ do
 			concrete_rule=$base_search
 
 			# Select all other SUID/SGID binaries possibly also present in the found rule
-			IFS=$'\n' handled_sbinaries=($(grep -o -e "-F path=[^[:space:]]\+" <<< $concrete_rule))
+			IFS=$'\n' handled_sbinaries=($(grep -o -e "-F path=[^[:space:]]\+" <<< "$concrete_rule"))
 			IFS=$' ' handled_sbinaries=(${handled_sbinaries[@]//-F path=/})
 
 			# Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
-			sbinaries_to_skip=($(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo $i; done | sort -du))
+			sbinaries_to_skip=($(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du))
 
 			# Separate concrete_rule into three sections using hash '#'
 			# sign as a delimiter around rule's permission section borders
-			concrete_rule=$(echo $concrete_rule | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\)\+/\1#\2#/p")
+			concrete_rule="$(echo "$concrete_rule" | sed -n "s/\(.*\)\+\(-F perm=[rwax]\+\)\+/\1#\2#/p")"
 
 			# Split concrete_rule into head, perm, and tail sections using hash '#' delimiter
-			IFS=$'#' read rule_head rule_perm rule_tail <<<  "$concrete_rule"
+			IFS=$'#' read -r rule_head rule_perm rule_tail <<<  "$concrete_rule"
 
 			# Extract already present exact access type [r|w|x|a] from rule's permission section
 			access_type=${rule_perm//-F perm=/}
@@ -138,7 +136,7 @@ do
 				# Reconstruct the permissions section for the rule
 				new_rule_perm="-F perm=$access_type"
 				# Update existing rule in current audit rules file with the new permission section
-				sed -i "s#${rule_head}\(.*\)${rule_tail}#${rule_head}${new_rule_perm}${rule_tail}#" $afile
+				sed -i "s#${rule_head}\(.*\)${rule_tail}#${rule_head}${new_rule_perm}${rule_tail}#" "$afile"
 
 			fi
 
@@ -156,10 +154,10 @@ do
 
 			# Current audit rules file's content doesn't contain expected rule for this
 			# SUID/SGID binary yet => append it
-			echo $expected_rule >> $output_audit_file
+			echo "$expected_rule" >> "$output_audit_file"
 		fi
 
 	done
 
 done
-}	
+}
