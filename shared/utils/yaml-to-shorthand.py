@@ -21,6 +21,15 @@ class Benchmark(object):
         self.groups = {}
         self.rules = {}
 
+        # This is required for OCIL clauses
+        conditional_clause = Value("conditional_clause")
+        conditional_clause.title = "A conditional clause for check statements."
+        conditional_clause.description = conditional_clause.title
+        conditional_clause.type = "string"
+        conditional_clause.options = {"": "This is a placeholder"}
+
+        self.add_value(conditional_clause)
+
     @staticmethod
     def from_yaml(yaml_file, id_):
         yaml_contents = open_yaml(yaml_file)
