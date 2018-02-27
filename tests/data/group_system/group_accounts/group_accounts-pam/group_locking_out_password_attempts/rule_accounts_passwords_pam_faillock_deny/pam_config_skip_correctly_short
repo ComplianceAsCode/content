@@ -1,5 +1,5 @@
-# This pam config is an example of a pam_faillock and pam_unix configured correctly
-# while skipping modules when pam_unix fails to authenticate
+# This pam config is an example of a faillock and unix configured correctly
+# skipping into between unix and faillock
 
 auth        required      pam_env.so
 auth        required      pam_faildelay.so delay=2000000

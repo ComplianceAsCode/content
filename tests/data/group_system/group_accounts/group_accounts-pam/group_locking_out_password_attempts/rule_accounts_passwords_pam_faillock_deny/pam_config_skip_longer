@@ -1,5 +1,5 @@
-# This pam config allows pam_unix to skip past pam_faillock
-# This way pam_faillock authfail will never log authentication failures
+# This pam config allows unix to skip past faillock
+# This way faillock authfail will never log authentication failures
 
 auth        required      pam_env.so
 auth        required      pam_faildelay.so delay=2000000

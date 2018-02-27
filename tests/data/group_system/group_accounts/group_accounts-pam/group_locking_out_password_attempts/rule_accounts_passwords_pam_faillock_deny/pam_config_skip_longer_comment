@@ -1,10 +1,11 @@
-# This pam config is an example of a faillock and unix configured correctly
-# skipping right on faillock
+# This pam config allows pam_unix to skip past pam_faillock
+# But by mentioning pam_unix in the comment here, it triggers
+# https://bugzilla.redhat.com/show_bug.cgi?id=1549671
 
 auth        required      pam_env.so
 auth        required      pam_faildelay.so delay=2000000
 auth        required      pam_faillock.so preauth silent deny=4 unlock_time=1200
-auth        [success=done ignore=ignore default=2]    pam_unix.so nullok try_first_pass
+auth        [success=done ignore=ignore default=3]    pam_unix.so nullok try_first_pass
 auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
 auth        sufficient    pam_sss.so forward_pass
 auth        [default=die] pam_faillock.so authfail deny=4 unlock_time=1200
