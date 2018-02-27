@@ -3,23 +3,22 @@
 import argparse
 import yaml
 import os
-import shutil
 import xml.etree.ElementTree as ET
 import datetime
 
-class Benchmark:
+
+class Benchmark(object):
+    """Represents XCCDF Benchmark
     """
-    Represents XCCDF Benchmark
-    """
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, id_):
+        self.id_ = id_
         self.complete = False
         self.groups = {}
 
     @staticmethod
-    def from_yaml(yaml_file, id):
+    def from_yaml(yaml_file, id_):
         yaml_contents = open_yaml(yaml_file)
-        benchmark = Benchmark(id)
+        benchmark = Benchmark(id_)
         benchmark.title = yaml_contents["title"]
         benchmark.status = yaml_contents["status"]
         benchmark.description = yaml_contents["description"]
@@ -69,20 +68,20 @@ class Benchmark:
         self.groups[group.id] = group
 
     def to_xccdf(self):
-        """
-        we can easily extend this script to generate a valid XCCDF instead of SSG SHORTHAND
+        """We can easily extend this script to generate a valid XCCDF instead
+        of SSG SHORTHAND.
         """
         raise NotImplementedError
 
     def __str__(self):
-        return self.id
+        return self.id_
 
-class Group:
+class Group(object):
     """
     Represents XCCDF Group
     """
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, id_):
+        self.id_ = id_
         self.complete = False
         self.groups = {}
         self.rules = {}
@@ -100,7 +99,7 @@ class Group:
 
     def to_xml_element(self):
         group = ET.Element('Group')
-        group.set('id', self.id)
+        group.set('id', self.id_)
         title = ET.SubElement(group, 'title')
         title.text = self.title
         add_sub_element(group, 'description', self.description)
@@ -118,25 +117,24 @@ class Group:
         tree.write(file_name)
 
     def add_group(self, group):
-        self.groups[group.id] = group
+        self.groups[group.id_] = group
 
     def add_rule(self, rule):
-        self.rules[rule.id] = rule
+        self.rules[rule.id_] = rule
 
     def add_value(self, value):
-        self.values[value.id] = value
+        self.values[value.id_] = value
 
     def __str__(self):
-        return self.id
+        return self.id_
 
 
-class Rule:
+class Rule(object):
+    """Represents XCCDF Rule
     """
-    Represents XCCDF Rule
-    """
-    def __init__(self, id):
-        self.id = id
-        
+    def __init__(self, id_):
+        self.id_ = id_
+
     @staticmethod
     def from_yaml(yaml_file):
         yaml_contents = open_yaml(yaml_file)
@@ -153,7 +151,7 @@ class Rule:
 
     def to_xml_element(self):
         rule = ET.Element('Rule')
-        rule.set('id', self.id)
+        rule.set('id', self.id_)
         rule.set('severity', self.severity)
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
@@ -179,13 +177,13 @@ class Rule:
         tree.write(file_name)
 
 
-class Value:
+class Value(object):
     """
     Represents XCCDF Value
     """
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, id_):
+        self.id_ = id_
 
     @staticmethod
     def from_yaml(yaml_file):
@@ -201,7 +199,7 @@ class Value:
 
     def to_xml_element(self):
         value = ET.Element('Value')
-        value.set('id', self.id)
+        value.set('id', self.id_)
         value.set('type', self.type)
         title = ET.SubElement(value, 'title')
         title.text = self.title
@@ -213,7 +211,7 @@ class Value:
             value_small.set('selector', str(selector))
             value_small.text = str(option)
         return value
-        
+
     def to_file(self, file_name):
         root = self.to_xml_element()
         tree = ET.ElementTree(root)
