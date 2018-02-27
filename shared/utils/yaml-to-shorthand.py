@@ -235,21 +235,7 @@ def add_sub_element(parent, tag, data):
     return element
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description='Converts SCAP Security Guide YAML dialect to XCCDF Shorthand Format'
-    )
-    parser.add_argument(
-        '--source_dir', required=True,
-        help='Input directory with the YAML structure, eg. ~/scap-security-guide/shared/guide/services/ntp'
-    )
-    parser.add_argument('--output', required=True, help='Output XCCDF shorthand file')
-    parser.add_argument('--recurse', action='store_true', help='Include subdirectories')
-    args = parser.parse_args()
-    return args
-
-
-def add_from_directory(parent_group, directory, recurse):
+def add_from_directory(parent_group, directory, recurse, output_file):
     benchmark_file = None
     group_file = None
     rules = []
@@ -276,7 +262,7 @@ def add_from_directory(parent_group, directory, recurse):
 
     if benchmark_file:
         benchmark = Benchmark.from_yaml(benchmark_file, 'product-name')
-        benchmark.to_file(args.output)
+        benchmark.to_file(output_file)
         return
 
     if group_file:
@@ -289,15 +275,34 @@ def add_from_directory(parent_group, directory, recurse):
             group.add_value(value)
         if recurse:
             for subdir in subdirectories:
-                add_from_directory(group, subdir, recurse)
+                add_from_directory(group, subdir, recurse, output_file)
         if parent_group:
             parent_group.add_group(group)
         else:
             # We are on the top level!
             # Lets dump the XCCDF group to a file
-            group.to_file(args.output)
+            group.to_file(output_file)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Converts SCAP Security Guide YAML benchmark data "
+        "(benchmark, rules, groups) to XCCDF Shorthand Format"
+    )
+    parser.add_argument(
+        "--source_dir", required=True,
+        help="Input directory with the YAML structure, "
+        "e.g.: ~/scap-security-guide/shared/guide/services/ntp"
+    )
+    parser.add_argument("--output", required=True,
+                        help="Output XCCDF shorthand file. "
+                        "e.g.: /tmp/shorthand.xml")
+    parser.add_argument("--recurse", action="store_true",
+                        help="Include subdirectories.")
+    args = parser.parse_args()
+
+    add_from_directory(None, args.source_dir, args.recurse, args.output)
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    add_from_directory(None, args.source_dir, args.recurse)
+    main()
