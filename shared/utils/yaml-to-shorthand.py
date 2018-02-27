@@ -15,6 +15,8 @@ class Benchmark(object):
         self.id_ = id_
         self.complete = False
         self.groups = {}
+        self.rules = {}
+        self.values = {}
 
     @staticmethod
     def from_yaml(yaml_file, id_):
@@ -59,6 +61,14 @@ class Benchmark(object):
         rear_matter.text = self.rear_matter
         version = ET.SubElement(root, 'version')
         version.text = self.version
+
+        for g in self.groups.values():
+            root.append(g.to_xml_element())
+        for v in self.values.values():
+            root.append(v.to_xml_element())
+        for r in self.rules.values():
+            root.append(r.to_xml_element())
+
         return root
 
     def to_file(self, file_name):
@@ -68,6 +78,12 @@ class Benchmark(object):
 
     def add_group(self, group):
         self.groups[group.id_] = group
+
+    def add_rule(self, rule):
+        self.rules[rule.id_] = rule
+
+    def add_value(self, value):
+        self.values[value.id_] = value
 
     def to_xccdf(self):
         """We can easily extend this script to generate a valid XCCDF instead
@@ -267,6 +283,10 @@ def add_from_directory(parent_group, directory, recurse, output_file):
                 print("Encountered file '%s' while recursing, extension '%s' "
                       "is unknown. Skipping.."
                       % (dir_item, extension))
+
+    if group_file and benchmark_file:
+        raise ValueError("A .benchmark file and a .group file were found in "
+                         "the same directory '%s'" % (directory))
 
     # we treat benchmark as a special form of group in the following code
     group = None
