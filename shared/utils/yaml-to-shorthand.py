@@ -37,7 +37,8 @@ class Benchmark(object):
         root.set('xmlns:xhtml', 'http://www.w3.org/1999/xhtml')
         root.set('xmlns:dc', 'http://purl.org/dc/elements/1.1/')
         root.set('id', 'product-name')
-        root.set('xsi:schemaLocation', 'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
+        root.set('xsi:schemaLocation',
+                 'http://checklists.nist.gov/xccdf/1.1 xccdf-1.1.4.xsd')
         root.set('style', 'SCAP_1.1')
         root.set('resolved', 'false')
         root.set('xml:lang', 'en-US')
@@ -45,7 +46,7 @@ class Benchmark(object):
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
         status.text = self.status
         title = ET.SubElement(root, 'title')
-        title.text= self.title
+        title.text = self.title
         description = ET.SubElement(root, 'description')
         description.text = self.description
         notice = ET.SubElement(root, 'notice')
@@ -65,7 +66,7 @@ class Benchmark(object):
         tree.write(file_name)
 
     def add_group(self, group):
-        self.groups[group.id] = group
+        self.groups[group.id_] = group
 
     def to_xccdf(self):
         """We can easily extend this script to generate a valid XCCDF instead
@@ -75,6 +76,7 @@ class Benchmark(object):
 
     def __str__(self):
         return self.id_
+
 
 class Group(object):
     """
@@ -246,6 +248,7 @@ def add_from_directory(parent_group, directory, recurse, output_file):
         if os.path.isdir(dir_item_path):
             subdirectories.append(dir_item_path)
         else:
+            print (dir_item)
             name, extension = dir_item.split('.', 1)
             if extension == 'benchmark':
                 if benchmark_file:
@@ -260,13 +263,15 @@ def add_from_directory(parent_group, directory, recurse, output_file):
             elif extension == 'var':
                 values.append(dir_item_path)
 
+    # we treat benchmark as a special form of group in the following code
+    group = None
     if benchmark_file:
-        benchmark = Benchmark.from_yaml(benchmark_file, 'product-name')
-        benchmark.to_file(output_file)
-        return
+        group = Benchmark.from_yaml(benchmark_file, 'product-name')
 
     if group_file:
         group = Group.from_yaml(group_file)
+
+    if group is not None:
         for rule_yaml in rules:
             rule = Rule.from_yaml(rule_yaml)
             group.add_rule(rule)
@@ -280,7 +285,7 @@ def add_from_directory(parent_group, directory, recurse, output_file):
             parent_group.add_group(group)
         else:
             # We are on the top level!
-            # Lets dump the XCCDF group to a file
+            # Lets dump the XCCDF group or benchmark to a file
             group.to_file(output_file)
 
 
