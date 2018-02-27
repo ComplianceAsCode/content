@@ -175,8 +175,26 @@ class Rule(object):
         add_sub_element(rule, 'title', self.title)
         add_sub_element(rule, 'description', self.description)
         add_sub_element(rule, 'rationale', self.rationale)
+
+        if self.identifiers:
+            main_ident = ET.Element('ident')
+            for ident_type, ident_val in self.identifiers.items():
+                if '@' in ident_type:
+                    # the ident is applicable only on some product
+                    # format : 'policy@product', eg. 'stigid@product'
+                    # for them, we create a separate <ref> element
+                    policy, product = ident_type.split('@')
+                    ident = ET.SubElement(rule, 'ident')
+                    ident.set(policy, str(ident_val))
+                    ident.set('prodtype', product)
+                else:
+                    main_ident.set(ident_type, str(ident_val))
+
+            if main_ident.attrib:
+                rule.append(main_ident)
+
         if self.references:
-            main_ref = ET.SubElement(rule, 'ref')
+            main_ref = ET.Element('ref')
             for ref_type, ref_val in self.references.items():
                 if '@' in ref_type:
                     # the reference is applicable only on some product
@@ -188,6 +206,10 @@ class Rule(object):
                     ref.set('prodtype', product)
                 else:
                     main_ref.set(ref_type, str(ref_val))
+
+            if main_ref.attrib:
+                rule.append(main_ref)
+
         return rule
 
     def to_file(self, file_name):
