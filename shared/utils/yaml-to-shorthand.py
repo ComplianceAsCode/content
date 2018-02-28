@@ -12,6 +12,69 @@ except ImportError:
     import cElementTree as ET
 
 
+def open_yaml(yaml_file):
+    with open(yaml_file, 'r') as stream:
+        yaml_contents = yaml.load(stream)
+        if "documentation_complete" in yaml_contents and \
+                yaml_contents["documentation_complete"] == "false":
+            return None
+
+        return yaml_contents
+
+
+def add_sub_element(parent, tag, data):
+    # This is used because our YAML data contain XML and XHTML elements
+    # ET.SubElement() escapes the < > characters by &lt; and &gt;
+    # and therefore it does not add child elements
+    # we need to do a hack instead
+    # TODO: Remove this function after we move to Markdown everywhere in SSG
+    element = ET.fromstring("<{0}>{1}</{0}>".format(tag, data))
+    parent.append(element)
+    return element
+
+
+class Value(object):
+    """Represents XCCDF Value
+    """
+
+    def __init__(self, id_):
+        self.id_ = id_
+
+    @staticmethod
+    def from_yaml(yaml_file):
+        yaml_contents = open_yaml(yaml_file)
+        if yaml_contents is None:
+            return None
+
+        value_id, _ = os.path.splitext(os.path.basename(yaml_file))
+        value = Value(value_id)
+        value.title = yaml_contents['title']
+        value.description = yaml_contents['description']
+        value.type = yaml_contents['type']
+        value.options = yaml_contents['options']
+        return value
+
+    def to_xml_element(self):
+        value = ET.Element('Value')
+        value.set('id', self.id_)
+        value.set('type', self.type)
+        title = ET.SubElement(value, 'title')
+        title.text = self.title
+        add_sub_element(value, 'description', self.description)
+        for selector, option in self.options.items():
+            # do not confuse Value with big V with value with small v
+            # value is child element of Value
+            value_small = ET.SubElement(value, 'value')
+            value_small.set('selector', str(selector))
+            value_small.text = str(option)
+        return value
+
+    def to_file(self, file_name):
+        root = self.to_xml_element()
+        tree = ET.ElementTree(root)
+        tree.write(file_name)
+
+
 class Benchmark(object):
     """Represents XCCDF Benchmark
     """
@@ -123,8 +186,7 @@ class Benchmark(object):
 
 
 class Group(object):
-    """
-    Represents XCCDF Group
+    """Represents XCCDF Group
     """
     def __init__(self, id_):
         self.id_ = id_
@@ -265,70 +327,6 @@ class Rule(object):
         root = self.to_xml_element()
         tree = ET.ElementTree(root)
         tree.write(file_name)
-
-
-class Value(object):
-    """
-    Represents XCCDF Value
-    """
-
-    def __init__(self, id_):
-        self.id_ = id_
-
-    @staticmethod
-    def from_yaml(yaml_file):
-        yaml_contents = open_yaml(yaml_file)
-        if yaml_contents is None:
-            return None
-
-        value_id, _ = os.path.splitext(os.path.basename(yaml_file))
-        value = Value(value_id)
-        value.title = yaml_contents['title']
-        value.description = yaml_contents['description']
-        value.type = yaml_contents['type']
-        value.options = yaml_contents['options']
-        return value
-
-    def to_xml_element(self):
-        value = ET.Element('Value')
-        value.set('id', self.id_)
-        value.set('type', self.type)
-        title = ET.SubElement(value, 'title')
-        title.text = self.title
-        add_sub_element(value, 'description', self.description)
-        for selector, option in self.options.items():
-            # do not confuse Value with big V with value with small v
-            # value is child element of Value
-            value_small = ET.SubElement(value, 'value')
-            value_small.set('selector', str(selector))
-            value_small.text = str(option)
-        return value
-
-    def to_file(self, file_name):
-        root = self.to_xml_element()
-        tree = ET.ElementTree(root)
-        tree.write(file_name)
-
-
-def open_yaml(yaml_file):
-    with open(yaml_file, 'r') as stream:
-        yaml_contents = yaml.load(stream)
-        if "documentation_complete" in yaml_contents and \
-                yaml_contents["documentation_complete"] == "false":
-            return None
-
-        return yaml_contents
-
-
-def add_sub_element(parent, tag, data):
-    # This is used because our YAML data contain XML and XHTML elements
-    # ET.SubElement() escapes the < > characters by &lt; and &gt;
-    # and therefore it does not add child elements
-    # we need to do a hack instead
-    # TODO: Remove this function after we move to Markdown everywhere in SSG
-    element = ET.fromstring("<{0}>{1}</{0}>".format(tag, data))
-    parent.append(element)
-    return element
 
 
 def add_from_directory(parent_group, directory, recurse,
