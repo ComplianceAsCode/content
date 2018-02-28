@@ -5,6 +5,7 @@ import yaml
 import os
 import os.path
 import datetime
+import codecs
 
 try:
     from xml.etree import cElementTree as ET
@@ -13,7 +14,7 @@ except ImportError:
 
 
 def open_yaml(yaml_file):
-    with open(yaml_file, 'r') as stream:
+    with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = yaml.load(stream)
         if "documentation_complete" in yaml_contents and \
                 yaml_contents["documentation_complete"] == "false":
@@ -28,9 +29,63 @@ def add_sub_element(parent, tag, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    element = ET.fromstring("<{0}>{1}</{0}>".format(tag, data))
+    ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
+    element = ET.fromstring(ustr.encode("utf-8"))
     parent.append(element)
     return element
+
+
+class Profile(object):
+    """Represents XCCDF profile
+    """
+
+    def __init__(self, id_):
+        self.id_ = id_
+
+    @staticmethod
+    def from_yaml(yaml_file):
+        yaml_contents = open_yaml(yaml_file)
+        if yaml_contents is None:
+            return None
+
+        basename, _ = os.path.splitext(os.path.basename(yaml_file))
+
+        profile = Profile(basename)
+        profile.title = yaml_contents["title"]
+        profile.description = yaml_contents["description"]
+        profile.extends = yaml_contents.get("extends", None)
+        profile.selections = yaml_contents["selections"]
+        return profile
+
+    def to_xml_element(self):
+        el = ET.Element('Profile')
+        el.set("id", self.id_)
+        if self.extends:
+            el.set("extends", self.extends)
+        title = add_sub_element(el, "title", self.title)
+        title.set("override", "true")
+        desc = add_sub_element(el, "description", self.description)
+        desc.set("override", "true")
+
+        for selection in self.selections:
+            if selection.startswith("!"):
+                unselect = ET.Element("select")
+                unselect.set("idref", selection[1:])
+                unselect.set("selected", "false")
+                el.append(unselect)
+            elif "=" in selection:
+                refine_value = ET.Element("refine-value")
+                value_id, selector = selection.split("=", 1)
+                refine_value.set("idref", value_id)
+                refine_value.set("selector", selector)
+                el.append(refine_value)
+            else:
+                select = ET.Element("select")
+                select.set("idref", selection)
+                select.set("selected", "true")
+                el.append(select)
+
+        return el
 
 
 class Value(object):
@@ -80,6 +135,7 @@ class Benchmark(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.profiles = []
         self.values = {}
         self.bash_remediation_fns_group = None
         self.groups = {}
@@ -112,6 +168,18 @@ class Benchmark(object):
         benchmark.version = str(yaml_contents["version"])
         return benchmark
 
+    def add_profiles_from_dir(self, dir_):
+        for dir_item in os.listdir(dir_):
+            dir_item_path = os.path.join(dir_, dir_item)
+            if not os.path.isfile(dir_item_path):
+                continue
+
+            basename, ext = os.path.splitext(os.path.basename(dir_item_path))
+            if ext != '.yml':
+                continue
+
+            self.profiles.append(Profile.from_yaml(dir_item_path))
+
     def add_bash_remediation_fns_from_file(self, file_):
         tree = ET.parse(file_)
         self.bash_remediation_fns_group = tree.getroot()
@@ -143,6 +211,9 @@ class Benchmark(object):
         rear_matter.text = self.rear_matter
         version = ET.SubElement(root, 'version')
         version.text = self.version
+
+        for profile in self.profiles:
+            root.append(profile.to_xml_element())
 
         for v in self.values.values():
             root.append(v.to_xml_element())
@@ -329,15 +400,15 @@ class Rule(object):
         tree.write(file_name)
 
 
-def add_from_directory(parent_group, directory, recurse,
+def add_from_directory(parent_group, guide_directory, profiles_dir, recurse,
                        bash_remediation_fns, output_file):
     benchmark_file = None
     group_file = None
     rules = []
     values = []
     subdirectories = []
-    for dir_item in os.listdir(directory):
-        dir_item_path = os.path.join(directory, dir_item)
+    for dir_item in os.listdir(guide_directory):
+        dir_item_path = os.path.join(guide_directory, dir_item)
         if os.path.isdir(dir_item_path):
             subdirectories.append(dir_item_path)
         else:
@@ -361,12 +432,14 @@ def add_from_directory(parent_group, directory, recurse,
 
     if group_file and benchmark_file:
         raise ValueError("A .benchmark file and a .group file were found in "
-                         "the same directory '%s'" % (directory))
+                         "the same directory '%s'" % (guide_directory))
 
     # we treat benchmark as a special form of group in the following code
     group = None
     if benchmark_file:
         group = Benchmark.from_yaml(benchmark_file, 'product-name')
+        if profiles_dir:
+            group.add_profiles_from_dir(profiles_dir)
         group.add_bash_remediation_fns_from_file(bash_remediation_fns)
 
     if group_file:
@@ -378,7 +451,7 @@ def add_from_directory(parent_group, directory, recurse,
             group.add_value(value)
         if recurse:
             for subdir in subdirectories:
-                add_from_directory(group, subdir, recurse,
+                add_from_directory(group, subdir, profiles_dir, recurse,
                                    bash_remediation_fns, output_file)
         for rule_yaml in rules:
             rule = Rule.from_yaml(rule_yaml)
@@ -398,9 +471,15 @@ def main():
         "(benchmark, rules, groups) to XCCDF Shorthand Format"
     )
     parser.add_argument(
-        "--source_dir", required=True,
-        help="Input directory with the YAML structure, "
-        "e.g.: ~/scap-security-guide/shared/guide/services/ntp"
+        "--guide_dir", required=True,
+        help="Input directory with the YAML structure for Benchmark or Group "
+        "e.g.: ~/scap-security-guide/shared/guide/services/ntp or"
+        "~/scap-security-guide/shared/guide"
+    )
+    parser.add_argument(
+        "--profiles_dir", required=False,
+        help="Input directory with profiles in YAML format, "
+        "e.g.: ~/scap-security-guide/rhel7/profiles"
     )
     parser.add_argument("--recurse", action="store_true",
                         help="Include subdirectories.")
@@ -413,7 +492,7 @@ def main():
                         "e.g.: /tmp/shorthand.xml")
     args = parser.parse_args()
 
-    add_from_directory(None, args.source_dir, args.recurse,
+    add_from_directory(None, args.guide_dir, args.profiles_dir, args.recurse,
                        args.bash_remediation_fns, args.output)
 
 
