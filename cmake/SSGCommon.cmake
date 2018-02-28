@@ -110,7 +110,8 @@ endmacro()
 macro(ssg_build_shorthand_xml PRODUCT)
     file(GLOB OVERLAYS_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/overlays/*.xml")
     file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/*.xml")
-    file(GLOB XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/**/*.xml")
+    file(GLOB_RECURSE XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/*.xml")
+    file(GLOB_RECURSE SHARED_XCCDF_RULE_DEPS "${SSG_SHARED}/xccdf/*.xml")
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
@@ -124,6 +125,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS ${OVERLAYS_DEPS}
         DEPENDS ${PROFILE_DEPS}
         DEPENDS ${XCCDF_RULE_DEPS}
+        DEPENDS ${SHARED_XCCDF_RULE_DEPS}
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
     add_custom_target(
