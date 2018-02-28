@@ -6,19 +6,4 @@ populate var_multiple_time_servers
 config_file="/etc/ntp.conf"
 /usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
 
-
-# This function is duplicate of function defined in chronyd_or_ntpd_specify_remote_server.sh
-handle_ntp_like_file()
-{
-  local _config_file="$1"
-  if ! grep -q '#[[:space:]]*server' "$_config_file"; then
-    for server in $(echo "$var_multiple_time_servers" | tr ',' '\n') ; do
-      printf '\nserver %s iburst' "$server" >> "$_config_file"
-    done
-  else
-    sed -i 's/#[ \t]*server/server/g' "$_config_file"
-  fi
-}
-
-
-[ "$(grep -c '^server' "$config_file")" -gt 1 ] || handle_ntp_like_file "$config_file"
+[ "$(grep -c '^server' "$config_file")" -gt 1 ] || rhel7_handle_ntp_like_file "$config_file" "$var_multiple_time_servers"
