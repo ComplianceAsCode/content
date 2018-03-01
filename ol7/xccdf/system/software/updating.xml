@@ -39,7 +39,6 @@ the software has not been tampered with and that it has been provided
 by a trusted vendor. The Oracle GPG key is necessary to
 cryptographically verify packages are from Oracle.
 </rationale>
-<ident prodtype="rhel7" cce="26957-1" />
 <oval id="ensure_oracle_gpgkey_installed" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" cis="1.2.2" />
 </Rule>
@@ -47,7 +46,7 @@ cryptographically verify packages are from Oracle.
 <!-- REMINDER: Before telling people to update their systems
      via the security_patches_up_to_date rule, we must
      ensure they have configured an update source! -->
-<Rule id="ensure_gpgcheck_globally_activated" severity="high" prodtype="rhel7, ol7">
+<Rule id="ensure_gpgcheck_globally_activated" severity="high" prodtype="ol7">
 <title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option controls whether
 RPM packages' signatures are always checked prior to installation.
@@ -81,9 +80,7 @@ certificates are disallowed by this requirement. Certificates
 used to verify the software must be from an approved Certificate
 Authority (CA).
 </rationale>
-<ident prodtype="rhel7" cce="26989-4" />
 <oval id="ensure_gpgcheck_globally_activated" />
-<ref prodtype="rhel7" stigid="020050" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="SRG-OS-000366-GPOS-00153"
 pcidss="Req-6.2" cis="1.2.2" cjis="5.10.4.1" cui="3.4.8" />
 </Rule>
@@ -122,10 +119,8 @@ recent security patches and updates are not installed, unauthorized
 users may take advantage of weaknesses in the unpatched software. The
 lack of prompt attention to patching could result in a system compromise.
 </rationale>
-<ident prodtype="rhel7" cce="26895-3" />
 <!-- Particular OVAL check is defined directly via <check> element above -->
 <!-- DO NOT REFERENCE an OVAL id here !!! -->
-<ref prodtype="rhel7" stigid="020260" />
 <ref nist="SI-2,SI-2(c),MA-1(b)" disa="366" pcidss="Req-6.2" cis="1.8" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.4.1" />
 </Rule>
 

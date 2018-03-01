@@ -3,7 +3,6 @@
     <metadata>
       <title>Find setgid files system packages</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Oracle Linux 7</platform>
       </affected>
       <description>All files with setgid should be owned by a base system package</description>
@@ -29,7 +28,7 @@
     <unix:sgid datatype="boolean">true</unix:sgid>
   </unix:file_state>
 
-  <!-- list of all setgid files included with base RHEL7 system -->
+  <!-- list of all setgid files included with base OL7 system -->
   <unix:file_state id="state_sgid_whitelist" version="1">
     <unix:filepath var_ref="var_sgid_whitelist" var_check="at least one" />
   </unix:file_state>
