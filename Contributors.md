@@ -1,6 +1,6 @@
 <!---
 This file is generated using the generate-contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2018-01-03 15:03
+Last Modified: 2018-03-01 16:18
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -9,6 +9,7 @@ The following people have contributed to the SCAP Security Guide project
 * Frank J Cameron (CAM1244) <cameron@ctc.com>
 * 0x66656c6978 <0x66656c6978@users.noreply.github.com>
 * Gabe Alford <redhatrises@gmail.com>
+* Firas AlShafei <firas.alshafei@us.abb.com>
 * Christopher Anderson <cba@fedoraproject.org>
 * Chuck Atkins <chuck.atkins@kitware.com>
 * Ryan Ballanger <root@rballang-admin-2.fastenal.com>
@@ -38,7 +39,7 @@ The following people have contributed to the SCAP Security Guide project
 * Rebekah Hayes <rhayes@corp.rivierautilities.com>
 * Trey Henefield <thenefield@gmail.com>
 * hex2a <hex2a@users.noreply.github.com>
-* John Hooks <jhooks@starscream.pa.jhbcomputers.com>
+* John Hooks <hooksie11@gmail.com>
 * Robin Price II <robin@redhat.com>
 * Jeremiah Jahn <jeremiah@goodinassociates.com>
 * Stephan Joerrens <Stephan.Joerrens@fiduciagad.de>
@@ -55,6 +56,7 @@ The following people have contributed to the SCAP Security Guide project
 * Michael McConachie <michael@redhat.com>
 * Khary Mendez <kharyam@gmail.com>
 * Rodney Mercer <rmercer@harris.com>
+* Matt Micene <nzwulfin@gmail.com>
 * Brian Millett <bmillett@gmail.com>
 * mmosel <mmosel@kde.example.com>
 * Zbynek Moravec <zmoravec@redhat.com>
@@ -63,12 +65,13 @@ The following people have contributed to the SCAP Security Guide project
 * Joe Nall <joe@nall.com>
 * Neiloy <neiloy@redhat.com>
 * Michele Newman <mnewman@redhat.com>
+* OnceUponALoop <firas.alshafei@gmail.com>
 * Kaustubh Padegaonkar <theTuxRacer@gmail.com>
 * Michael Palmiotto <mpalmiotto@tresys.com>
 * Max R.D. Parmer <maxp@trystero.is>
 * pcactr <paul.c.arnold4.ctr@mail.mil>
 * Kenneth Peeples <kennethwpeeples@gmail.com>
-* Nathan Peters <petna01@ca.com>
+* Nathan Peters <Nathaniel.Peters@ca.com>
 * Frank Lin PIAT <fpiat@klabs.be>
 * Stefan Pietsch <mail.ipv4v6+gh@gmail.com>
 * Martin Preisler <mpreisle@redhat.com>
@@ -78,6 +81,7 @@ The following people have contributed to the SCAP Security Guide project
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
 * Chris Reynolds <c.reynolds82@gmail.com>
 * Pat Riehecky <riehecky@fnal.gov>
+* rlucente-se-jboss <rlucente@redhat.com>
 * Joshua Roys <roysjosh@gmail.com>
 * rrenshaw <bofh69@yahoo.com>
 * Chris Ruffalo <chris.ruffalo@gmail.com>

@@ -26,6 +26,9 @@ email_mappings = {
     "dahaic@users.noreply.github.com": "mhaicman@redhat.com",
     # Martin Preisler
     "martin@preisler.me": "mpreisle@redhat.com",
+    # Nathan Peters
+    "nathan@nathanpeters.com": "Nathaniel.Peters@ca.com",
+    "petna01@ca.com": "Nathaniel.Peters@ca.com",
     # Philippe Thierry
     "phil@internal.reseau-libre.net": "phil@reseau-libre.net",
     "philippe.thierry@reseau-libre.net": "phil@reseau-libre.net",
@@ -54,7 +57,8 @@ email_mappings = {
 }
 
 name_mappings = {
-    "Gabe": "Gabe Alford"
+    "Gabe": "Gabe Alford",
+    "Olivier": "Olivier Bonhomme",
 }
 
 
