@@ -1,4 +1,7 @@
 function substitute_in_pam_file {
+    # If invoked with no arguments, exit. This is an intentional behavior.
+    [ $# -gt 1 ] || return 0
+    [ $# = 3 ] || die "$0 requires zero or exactly three arguments"
 	local _pamfile="$1" _directive="$2" _value="$3"
 	# pam_faillock.so already present?
 	if grep -q "^auth.*pam_faillock.so.*" "$_pamFile"; then
