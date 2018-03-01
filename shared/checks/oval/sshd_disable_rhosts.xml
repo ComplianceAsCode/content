@@ -26,7 +26,7 @@
       </criteria>
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Tests the value of the IgnoreRhosts[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/ssh/sshd_config file"
   id="test_sshd_rsh_emulation_disabled" version="1">
     <ind:object object_ref="obj_sshd_rsh_emulation_disabled" />
@@ -34,7 +34,7 @@
   <ind:textfilecontent54_object id="obj_sshd_rsh_emulation_disabled"
   version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)IgnoreRhosts(?-i)[\s]+no[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)IgnoreRhosts(?-i)[\s]+yes[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
