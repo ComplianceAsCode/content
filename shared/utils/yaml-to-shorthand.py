@@ -184,10 +184,11 @@ class Benchmark(object):
                 print(dir_item_path)
 
     def add_bash_remediation_fns_from_file(self, action, file_):
-        tree = ET.parse(file_)
-        self.bash_remediation_fns_group = tree.getroot()
         if action == "list-inputs":
             print(file_)
+        else:
+            tree = ET.parse(file_)
+            self.bash_remediation_fns_group = tree.getroot()
 
     def to_xml_element(self):
         root = ET.Element('Benchmark')
@@ -462,19 +463,21 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
 
     if group is not None:
         for value_yaml in values:
-            value = Value.from_yaml(value_yaml)
-            group.add_value(value)
             if action == "list-inputs":
                 print(value_yaml)
+            else:
+                value = Value.from_yaml(value_yaml)
+                group.add_value(value)
         if recurse:
             for subdir in subdirectories:
                 add_from_directory(action, group, subdir, profiles_dir,
                                    recurse, bash_remediation_fns, output_file)
         for rule_yaml in rules:
-            rule = Rule.from_yaml(rule_yaml)
-            group.add_rule(rule)
             if action == "list-inputs":
                 print(rule_yaml)
+            else:
+                rule = Rule.from_yaml(rule_yaml)
+                group.add_rule(rule)
 
         if parent_group:
             parent_group.add_group(group)
