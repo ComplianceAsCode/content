@@ -198,17 +198,12 @@ class Benchmark(object):
         status = ET.SubElement(root, 'status')
         status.set('date', datetime.date.today().strftime("%Y-%m-%d"))
         status.text = self.status
-        title = ET.SubElement(root, 'title')
-        title.text = self.title
-        description = ET.SubElement(root, 'description')
-        description.text = self.description
-        notice = ET.SubElement(root, 'notice')
+        add_sub_element(root, "title", self.title)
+        add_sub_element(root, "description", self.description)
+        notice = add_sub_element(root, "notice", self.notice_description)
         notice.set('id', self.notice_id)
-        notice.text = self.notice_description
-        front_matter = ET.SubElement(root, 'front-matter')
-        front_matter.text = self.front_matter
-        rear_matter = ET.SubElement(root, 'rear-matter')
-        rear_matter.text = self.rear_matter
+        add_sub_element(root, "front-matter", self.front_matter)
+        add_sub_element(root, "rear-matter", self.rear_matter)
         version = ET.SubElement(root, 'version')
         version.text = self.version
 
