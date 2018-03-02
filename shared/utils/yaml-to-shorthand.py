@@ -204,6 +204,11 @@ class Benchmark(object):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
+        for cpe in self.cpes:
+            if "platform-cpes-macro" in cpe:
+                ET.SubElement(root, "platform-cpes-macro")
+            else:
+                add_sub_element(root, "platform", cpe)
         version = ET.SubElement(root, 'version')
         version.text = self.version
 
