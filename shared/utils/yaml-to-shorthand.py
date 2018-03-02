@@ -6,6 +6,7 @@ import os
 import os.path
 import datetime
 import codecs
+import sys
 
 try:
     from xml.etree import cElementTree as ET
@@ -168,7 +169,7 @@ class Benchmark(object):
         benchmark.version = str(yaml_contents["version"])
         return benchmark
 
-    def add_profiles_from_dir(self, dir_):
+    def add_profiles_from_dir(self, action, dir_):
         for dir_item in os.listdir(dir_):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
@@ -179,10 +180,14 @@ class Benchmark(object):
                 continue
 
             self.profiles.append(Profile.from_yaml(dir_item_path))
+            if action == "list-inputs":
+                print(dir_item_path)
 
-    def add_bash_remediation_fns_from_file(self, file_):
+    def add_bash_remediation_fns_from_file(self, action, file_):
         tree = ET.parse(file_)
         self.bash_remediation_fns_group = tree.getroot()
+        if action == "list-inputs":
+            print(file_)
 
     def to_xml_element(self):
         root = ET.Element('Benchmark')
@@ -406,8 +411,8 @@ class Rule(object):
         tree.write(file_name)
 
 
-def add_from_directory(parent_group, guide_directory, profiles_dir, recurse,
-                       bash_remediation_fns, output_file):
+def add_from_directory(action, parent_group, guide_directory, profiles_dir,
+                       recurse, bash_remediation_fns, output_file):
     benchmark_file = None
     group_file = None
     rules = []
@@ -445,30 +450,39 @@ def add_from_directory(parent_group, guide_directory, profiles_dir, recurse,
     if benchmark_file:
         group = Benchmark.from_yaml(benchmark_file, 'product-name')
         if profiles_dir:
-            group.add_profiles_from_dir(profiles_dir)
-        group.add_bash_remediation_fns_from_file(bash_remediation_fns)
+            group.add_profiles_from_dir(action, profiles_dir)
+        group.add_bash_remediation_fns_from_file(action, bash_remediation_fns)
+        if action == "list-inputs":
+            print(benchmark_file)
 
     if group_file:
         group = Group.from_yaml(group_file)
+        if action == "list-inputs":
+            print(group_file)
 
     if group is not None:
         for value_yaml in values:
             value = Value.from_yaml(value_yaml)
             group.add_value(value)
+            if action == "list-inputs":
+                print(value_yaml)
         if recurse:
             for subdir in subdirectories:
-                add_from_directory(group, subdir, profiles_dir, recurse,
-                                   bash_remediation_fns, output_file)
+                add_from_directory(action, group, subdir, profiles_dir,
+                                   recurse, bash_remediation_fns, output_file)
         for rule_yaml in rules:
             rule = Rule.from_yaml(rule_yaml)
             group.add_rule(rule)
+            if action == "list-inputs":
+                print(rule_yaml)
 
         if parent_group:
             parent_group.add_group(group)
         else:
             # We are on the top level!
             # Lets dump the XCCDF group or benchmark to a file
-            group.to_file(output_file)
+            if action == "build":
+                group.to_file(output_file)
 
 
 def main():
@@ -496,10 +510,18 @@ def main():
     parser.add_argument("--output", required=True,
                         help="Output XCCDF shorthand file. "
                         "e.g.: /tmp/shorthand.xml")
+    parser.add_argument("action",
+                        choices=["build", "list-inputs", "list-outputs"],
+                        help="Which action to perform.")
     args = parser.parse_args()
 
-    add_from_directory(None, args.guide_dir, args.profiles_dir, args.recurse,
-                       args.bash_remediation_fns, args.output)
+    # save a whole bunch of time
+    if args.action == "list-outputs":
+        print(args.output)
+        sys.exit(0)
+
+    add_from_directory(args.action, None, args.guide_dir, args.profiles_dir,
+                       args.recurse, args.bash_remediation_fns, args.output)
 
 
 if __name__ == "__main__":

@@ -108,24 +108,18 @@ macro(ssg_build_guide_xml PRODUCT)
 endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
-    file(GLOB OVERLAYS_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/overlays/*.xml")
-    file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/*.xml")
-    file(GLOB_RECURSE XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/*.xml")
-    file(GLOB_RECURSE SHARED_XCCDF_RULE_DEPS "${SSG_SHARED}/xccdf/*.xml")
+    execute_process(
+        COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --recurse --guide_dir "${SSG_SHARED}/guide" --profiles_dir "${CMAKE_CURRENT_SOURCE_DIR}/profiles" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
+        OUTPUT_VARIABLE SHORTHAND_INPUTS_STR
+    )
+    string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam SHARED_RP "${SSG_SHARED}" --stringparam BUILD_RP "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_SOURCE_DIR}/guide.xslt" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
+        COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --recurse --guide_dir "${SSG_SHARED}/guide" --profiles_dir "${CMAKE_CURRENT_SOURCE_DIR}/profiles" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
-        DEPENDS generate-internal-${PRODUCT}-guide.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/guide.xslt"
-        DEPENDS ${OVERLAYS_DEPS}
-        DEPENDS ${PROFILE_DEPS}
-        DEPENDS ${XCCDF_RULE_DEPS}
-        DEPENDS ${SHARED_XCCDF_RULE_DEPS}
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
     add_custom_target(
@@ -138,7 +132,7 @@ macro(ssg_build_xccdf_unlinked PRODUCT)
     file(GLOB STIG_REFERENCE_FILE_LIST "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-*-xccdf-manual.xml")
     list(APPEND STIG_REFERENCE_FILE_LIST "not-found")
     list(GET STIG_REFERENCE_FILE_LIST 0 STIG_REFERENCE_FILE)
-    
+
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml"
         COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam ssg_version "${SSG_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/xccdf-unlinked-resolved.xml" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/shorthand2xccdf.xslt" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
