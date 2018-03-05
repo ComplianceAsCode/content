@@ -109,14 +109,14 @@ endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
     execute_process(
-        COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --recurse --guide_dir "${SSG_SHARED}/guide" --profiles_dir "${CMAKE_CURRENT_SOURCE_DIR}/profiles" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
+        COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --guide_dir "${SSG_SHARED}/guide" --profiles_dir "${CMAKE_CURRENT_SOURCE_DIR}/profiles" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
         OUTPUT_VARIABLE SHORTHAND_INPUTS_STR
     )
     string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
-        COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --recurse --guide_dir "${SSG_SHARED}/guide" --profiles_dir "${CMAKE_CURRENT_SOURCE_DIR}/profiles" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
+        COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --guide_dir "${SSG_SHARED}/guide" --profiles_dir "${CMAKE_CURRENT_SOURCE_DIR}/profiles" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"

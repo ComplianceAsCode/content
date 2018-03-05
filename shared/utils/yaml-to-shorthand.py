@@ -425,7 +425,7 @@ class Rule(object):
 
 
 def add_from_directory(action, parent_group, guide_directory, profiles_dir,
-                       recurse, bash_remediation_fns, output_file):
+                       bash_remediation_fns, output_file):
     benchmark_file = None
     group_file = None
     rules = []
@@ -480,10 +480,11 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             else:
                 value = Value.from_yaml(value_yaml)
                 group.add_value(value)
-        if recurse:
-            for subdir in subdirectories:
-                add_from_directory(action, group, subdir, profiles_dir,
-                                   recurse, bash_remediation_fns, output_file)
+
+        for subdir in subdirectories:
+            add_from_directory(action, group, subdir, profiles_dir,
+                               bash_remediation_fns, output_file)
+
         for rule_yaml in rules:
             if action == "list-inputs":
                 print(rule_yaml)
@@ -516,8 +517,6 @@ def main():
         help="Input directory with profiles in YAML format, "
         "e.g.: ~/scap-security-guide/rhel7/profiles"
     )
-    parser.add_argument("--recurse", action="store_true",
-                        help="Include subdirectories.")
     parser.add_argument("--bash_remediation_fns", required=True,
                         help="XML with the XCCDF Group containing all bash "
                         "remediation functions stored as values."
@@ -536,7 +535,7 @@ def main():
         sys.exit(0)
 
     add_from_directory(args.action, None, args.guide_dir, args.profiles_dir,
-                       args.recurse, args.bash_remediation_fns, args.output)
+                       args.bash_remediation_fns, args.output)
 
 
 if __name__ == "__main__":
