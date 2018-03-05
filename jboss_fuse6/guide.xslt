@@ -32,12 +32,12 @@
       <xsl:apply-templates select="document(concat($BUILD_RP, '/bash-remediation-functions.xml'))" />
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_app.xml'))" /> 
-      <xsl:apply-templates select="document('xccdf/application/fuse6.xml')" />
-      <xsl:apply-templates select="document('xccdf/application/policy.xml')" />
-      <xsl:apply-templates select="document('xccdf/application/karaf.xml')" />
-      <xsl:apply-templates select="document('xccdf/application/amq.xml')" />
-      <xsl:apply-templates select="document('xccdf/application/camel.xml')" />
-      <xsl:apply-templates select="document('xccdf/application/cxf.xml')" />
+      <xsl:apply-templates select="document('xccdf/fuse6.xml')" />
+      <xsl:apply-templates select="document('xccdf/policy.xml')" />
+      <xsl:apply-templates select="document('xccdf/karaf.xml')" />
+      <xsl:apply-templates select="document('xccdf/amq.xml')" />
+      <xsl:apply-templates select="document('xccdf/camel.xml')" />
+      <xsl:apply-templates select="document('xccdf/cxf.xml')" />
     </xsl:copy>
   </xsl:template>
  
