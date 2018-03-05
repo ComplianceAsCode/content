@@ -9,7 +9,6 @@ RHEL = 'Red Hat Enterprise Linux'
 WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 UBUNTU = 'Ubuntu'
-RHEVM = 'Red Hat Enterprise Virtualization Manager'
 EAP = 'JBoss Enterprise Application Platform'
 FUSE = 'JBoss Fuse'
 OPENSUSE = 'OpenSUSE'
@@ -65,8 +64,6 @@ def map_product(version):
         return DEBIAN
     if version.startswith("ubuntu"):
         return UBUNTU
-    if version.startswith("rhevm"):
-        return RHEVM
     if version.startswith("eap"):
         return EAP
     if version.startswith("fuse"):
