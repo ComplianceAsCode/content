@@ -698,8 +698,10 @@ macro(ssg_build_product PRODUCT)
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
     install(
+        # The globbing expression below is made loose so that it can also match
+        # guides for PCIDSS centric benchmarks
         CODE "
-        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-*.html\") \n
+        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-*.html\") \n
         if(NOT IS_ABSOLUTE ${SSG_GUIDE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
                 TYPE FILE FILES \${GUIDE_FILES})
