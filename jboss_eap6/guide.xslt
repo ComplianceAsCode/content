@@ -30,7 +30,7 @@
       <xsl:apply-templates select="document(concat($BUILD_RP, '/bash-remediation-functions.xml'))" />
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_app.xml'))" />
-      <xsl:apply-templates select="document('xccdf/application/eap6.xml')" />
+      <xsl:apply-templates select="document('xccdf/eap6.xml')" />
     </xsl:copy>
   </xsl:template>
 
