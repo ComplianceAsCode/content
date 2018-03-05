@@ -507,15 +507,9 @@ def main():
         "(benchmark, rules, groups) to XCCDF Shorthand Format"
     )
     parser.add_argument(
-        "--guide_dir", required=True,
-        help="Input directory with the YAML structure for Benchmark or Group "
-        "e.g.: ~/scap-security-guide/shared/guide/services/ntp or"
-        "~/scap-security-guide/shared/guide"
-    )
-    parser.add_argument(
-        "--profiles_dir", required=False,
-        help="Input directory with profiles in YAML format, "
-        "e.g.: ~/scap-security-guide/rhel7/profiles"
+        "--product-yaml", required=True, dest="product_yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
     parser.add_argument("--bash_remediation_fns", required=True,
                         help="XML with the XCCDF Group containing all bash "
@@ -534,7 +528,22 @@ def main():
         print(args.output)
         sys.exit(0)
 
-    add_from_directory(args.action, None, args.guide_dir, args.profiles_dir,
+    # TODO: Remove this once all products are ported over
+    if not os.path.isfile(args.product_yaml):
+        sys.exit(0)
+
+    product_yaml = open_yaml(args.product_yaml)
+    base_dir = os.path.dirname(args.product_yaml)
+    benchmark_root = required_yaml_key(product_yaml, "benchmark_root")
+    profiles_root = required_yaml_key(product_yaml, "profiles_root")
+    # we have to "absolutize" the paths the right way, relative to the
+    # product yaml path
+    if not os.path.isabs(benchmark_root):
+        benchmark_root = os.path.join(base_dir, benchmark_root)
+    if not os.path.isabs(profiles_root):
+        profiles_root = os.path.join(base_dir, profiles_root)
+
+    add_from_directory(args.action, None, benchmark_root, profiles_root,
                        args.bash_remediation_fns, args.output)
 
 
