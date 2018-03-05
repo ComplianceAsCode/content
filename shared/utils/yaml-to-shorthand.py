@@ -24,6 +24,14 @@ def open_yaml(yaml_file):
         return yaml_contents
 
 
+def required_yaml_key(yaml_contents, key):
+    if key in yaml_contents:
+        return yaml_contents[key]
+
+    raise ValueError("%s is required but was not found in:\n%s" %
+                     (key, repr(yaml_contents)))
+
+
 def add_sub_element(parent, tag, data):
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
@@ -52,10 +60,10 @@ class Profile(object):
         basename, _ = os.path.splitext(os.path.basename(yaml_file))
 
         profile = Profile(basename)
-        profile.title = yaml_contents["title"]
-        profile.description = yaml_contents["description"]
+        profile.title = required_yaml_key(yaml_contents, "title")
+        profile.description = required_yaml_key(yaml_contents, "description")
         profile.extends = yaml_contents.get("extends", None)
-        profile.selections = yaml_contents["selections"]
+        profile.selections = required_yaml_key(yaml_contents, "selections")
         return profile
 
     def to_xml_element(self):
@@ -104,10 +112,10 @@ class Value(object):
 
         value_id, _ = os.path.splitext(os.path.basename(yaml_file))
         value = Value(value_id)
-        value.title = yaml_contents['title']
-        value.description = yaml_contents['description']
-        value.type = yaml_contents['type']
-        value.options = yaml_contents['options']
+        value.title = required_yaml_key(yaml_contents, "title")
+        value.description = required_yaml_key(yaml_contents, "description")
+        value.type = required_yaml_key(yaml_contents, "type")
+        value.options = required_yaml_key(yaml_contents, "options")
         return value
 
     def to_xml_element(self):
@@ -158,15 +166,19 @@ class Benchmark(object):
             return None
 
         benchmark = Benchmark(id_)
-        benchmark.title = yaml_contents["title"]
-        benchmark.status = yaml_contents["status"]
-        benchmark.description = yaml_contents["description"]
-        benchmark.notice_id = yaml_contents["notice"]['id']
-        benchmark.notice_description = yaml_contents['notice']["description"]
-        benchmark.front_matter = yaml_contents["front-matter"]
-        benchmark.rear_matter = yaml_contents["rear-matter"]
-        benchmark.cpes = yaml_contents["cpes"]
-        benchmark.version = str(yaml_contents["version"])
+        benchmark.title = required_yaml_key(yaml_contents, "title")
+        benchmark.status = required_yaml_key(yaml_contents, "status")
+        benchmark.description = required_yaml_key(yaml_contents, "description")
+        notice_contents = required_yaml_key(yaml_contents, "notice")
+        benchmark.notice_id = required_yaml_key(notice_contents, "id")
+        benchmark.notice_description = required_yaml_key(notice_contents,
+                                                         "description")
+        benchmark.front_matter = required_yaml_key(yaml_contents,
+                                                   "front-matter")
+        benchmark.rear_matter = required_yaml_key(yaml_contents,
+                                                  "rear-matter")
+        benchmark.cpes = yaml_contents.get("cpes", [])
+        benchmark.version = str(required_yaml_key(yaml_contents, "version"))
         return benchmark
 
     def add_profiles_from_dir(self, action, dir_):
@@ -280,8 +292,8 @@ class Group(object):
         group_id, _ = os.path.splitext(os.path.basename(yaml_file))
         group = Group(group_id)
         group.prodtype = yaml_contents.get("prodtype", "all")
-        group.title = yaml_contents['title']
-        group.description = yaml_contents['description']
+        group.title = required_yaml_key(yaml_contents, "title")
+        group.description = required_yaml_key(yaml_contents, "description")
         return group
 
     def to_xml_element(self):
@@ -339,14 +351,14 @@ class Rule(object):
         rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
         rule = Rule(rule_id)
         rule.prodtype = yaml_contents.get("prodtype", "all")
-        rule.title = yaml_contents['title']
-        rule.description = yaml_contents['description']
-        rule.rationale = yaml_contents['rationale']
-        rule.severity = yaml_contents['severity']
-        rule.references = yaml_contents.get('references')
-        rule.identifiers = yaml_contents.get('identifiers')
-        rule.ocil_clause = yaml_contents.get('ocil_clause')
-        rule.ocil = yaml_contents.get('ocil')
+        rule.title = required_yaml_key(yaml_contents, "title")
+        rule.description = required_yaml_key(yaml_contents, "description")
+        rule.rationale = required_yaml_key(yaml_contents, "rationale")
+        rule.severity = required_yaml_key(yaml_contents, "severity")
+        rule.references = yaml_contents.get("references", [])
+        rule.identifiers = yaml_contents.get("identifiers", [])
+        rule.ocil_clause = yaml_contents.get("ocil_clause")
+        rule.ocil = yaml_contents.get("ocil")
         return rule
 
     def to_xml_element(self):
