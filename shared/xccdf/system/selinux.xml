@@ -67,7 +67,8 @@ the chances that it will remain off during system operation.
 <ident prodtype="rhel7" cce="26961-3" />
 <oval id="enable_selinux_bootloader" />
 <ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="22,32"
-cis="1.6.1.1" cui="3.1.2,3.7.2" />
+cis="1.6.1.1" cui="3.1.2,3.7.2"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
 <Rule id="selinux_state" severity="high" prodtype="rhel7">
@@ -92,7 +93,8 @@ privileges.
 <oval id="selinux_state" value="var_selinux_state"/>
 <ref prodtype="rhel7" stigid="020210" />
 <ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2165,2696"
-cis="1.6.1.2" srg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2" />
+cis="1.6.1.2" srg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
 <Rule id="selinux_policytype" severity="high" prodtype="rhel7">
@@ -126,7 +128,8 @@ is completed, the system should be reconfigured to
 <oval id="selinux_policytype" value="var_selinux_policy_name"/>
 <ref prodtype="rhel7" stigid="020220" />
 <ref nist="AC-3,AC-3(3),AC-3(4),AC-4,AC-6,AU-9,SI-6(a)" disa="2696"
-cis="1.6.1.3" srg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2" />
+cis="1.6.1.3" srg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
 <Rule id="package_setroubleshoot_removed" prodtype="rhel7">
@@ -179,7 +182,8 @@ or allow privileges that the daemon does not require.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <oval id="selinux_confinement_of_daemons" />
-<ref nist="AC-6,AU-9,CM-7" cis="1.6.1.6" cui="3.1.2,3.1.5,3.7.2" />
+<ref nist="AC-6,AU-9,CM-7" cis="1.6.1.6" cui="3.1.2,3.1.5,3.7.2" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 <ident prodtype="rhel7" cce="27288-0" />
 </Rule>
 
@@ -7514,7 +7518,7 @@ If this setting is enabled, it should be disabled.
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_execheap" value="var_selinuxuser_execheap" />
 <ref prodtype="rhel7" stigid="TBD" />
-<ref nist="TBD" disa="TBD" srg="TBD" />
+<ref hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)"  />
 </Rule>
 
 <Rule id="sebool_selinuxuser_execmod" severity="medium" prodtype="rhel7">
@@ -7532,7 +7536,7 @@ If this setting is disabled, it should be enabled.
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_execmod" value="var_selinuxuser_execmod" />
 <ref prodtype="rhel7" stigid="TBD" />
-<ref nist="TBD" disa="TBD" srg="TBD" />
+<ref hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_execstack" severity="medium" prodtype="rhel7">
@@ -7551,7 +7555,7 @@ to make their stack executable.
 <ident prodtype="rhel7" cce="RHEL7-CCE-TBD" />
 <oval id="sebool_selinuxuser_execstack" value="var_selinuxuser_execstack" />
 <ref prodtype="rhel7" stigid="TBD" />
-<ref nist="TBD" disa="TBD" srg="TBD" />
+<ref hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
 <Rule id="sebool_selinuxuser_mysql_connect_enabled" severity="medium" prodtype="rhel7">
