@@ -102,7 +102,8 @@ of such data.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26900-1" />
 <oval id="sysctl_fs_suid_dumpable" />
-<ref nist="SI-11" cis="1.5.1" />
+<ref nist="SI-11" cis="1.5.1" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 </Group>
 
@@ -151,7 +152,8 @@ systems if supported by the hardware.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27211-2" />
 <oval id="sysctl_kernel_exec_shield" />
-<ref nist="SC-39" disa="2530" cui="3.1.7" cis="1.5.2" />
+<ref nist="SC-39" disa="2530" cui="3.1.7" cis="1.5.2" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
 <Rule id="sysctl_kernel_randomize_va_space" severity="medium" prodtype="rhel7">
@@ -167,7 +169,9 @@ in order to re-purpose it using return oriented programming (ROP) techniques.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27127-0" />
 <oval id="sysctl_kernel_randomize_va_space" />
-<ref nist="SC-30(2)" cis="1.5.1" cui="3.1.7" disa="366" srg="SRG-OS-000480-GPOS-00227" stigid="040201" />
+<ref nist="SC-30(2)" cis="1.5.1" cui="3.1.7" disa="366" srg="SRG-OS-000480-GPOS-00227" 
+stigid="040201" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 </Group>
 
@@ -233,7 +237,8 @@ allow users to turn the feature on or off at will.</rationale>
 address information.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="27050-4" />
-<ref nist="SI-11" disa="1314" cui="3.1.5" />
+<ref nist="SI-11" disa="1314" cui="3.1.5"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 <oval id="sysctl_kernel_dmesg_restrict" />
 </Rule> 
 
