@@ -33,7 +33,9 @@ malicious software.</rationale>
 <ident prodtype="rhel7" cce="27277-3" />
 <oval id="kernel_module_usb-storage_disabled" />
 <ref prodtype="rhel7" stigid="020100" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227" cui="3.1.21" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" 
+srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227" cui="3.1.21" 
+hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" />
 </Rule>
 
 <Rule id="bootloader_nousb_argument" prodtype="rhel7">
@@ -53,7 +55,8 @@ in specialized systems.
 <platform idref="cpe:/a:machine" />
 <ident prodtype="rhel7" cce="26548-8" />
 <oval id="bootloader_nousb_argument" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" 
+hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" />
 </Rule>
 
 <Rule id="bios_disable_usb_boot" prodtype="rhel7">
@@ -110,7 +113,10 @@ unknown devices, thereby facilitating malicious activity.
 <ident prodtype="rhel7" cce="27498-5" />
 <oval id="service_autofs_disabled" />
 <ref prodtype="rhel7" stigid="020110" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227" cui="3.4.6" cis="1.1.22" />
+<ref nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" 
+srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227" cui="3.4.6" 
+cis="1.1.22"
+hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" />
 </Rule>
 
 <Rule id="kernel_module_cramfs_disabled" prodtype="rhel7" severity="low">
