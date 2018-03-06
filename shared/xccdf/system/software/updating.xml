@@ -42,7 +42,8 @@ cryptographically verify packages are from Red Hat.
 <ident prodtype="rhel7" cce="26957-1" />
 <oval id="ensure_redhat_gpgkey_installed" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="366" 
-pcidss="Req-6.2" cis="1.2.3" cjis="5.10.4.1" cui="3.4.8" />
+pcidss="Req-6.2" cis="1.2.3" cjis="5.10.4.1" cui="3.4.8" 
+hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
 </Rule>
 
 <!-- REMINDER: Before telling people to update their systems
@@ -86,7 +87,8 @@ Authority (CA).
 <oval id="ensure_gpgcheck_globally_activated" />
 <ref prodtype="rhel7" stigid="020050" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="SRG-OS-000366-GPOS-00153"
-pcidss="Req-6.2" cis="1.2.2" cjis="5.10.4.1" cui="3.4.8" />
+pcidss="Req-6.2" cis="1.2.2" cjis="5.10.4.1" cui="3.4.8"
+hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_never_disabled" severity="high" prodtype="rhel7">
@@ -115,7 +117,8 @@ Authority (CA).
 <ident prodtype="rhel7" cce="26876-3" />
 <oval id="ensure_gpgcheck_never_disabled" />
 <ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="366" pcidss="Req-6.2" 
-cjis="5.10.4.1" cui="3.4.8" />
+cjis="5.10.4.1" cui="3.4.8" 
+hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
 </Rule>
 
 <Rule id="security_patches_up_to_date" severity="high" prodtype="rhel7">
@@ -211,7 +214,8 @@ be signed with a certificate recognized and approved by the organization.
 <ident prodtype="rhel7" cce="CCE-80347-8" />
 <oval id="ensure_gpgcheck_local_packages" />
 <ref prodtype="rhel7" stigid="020060" />
-<ref nist="CM-5(3)" disa="1749" srg="SRG-OS-000366-GPOS-00153" cui="3.4.8" />
+<ref nist="CM-5(3)" disa="1749" srg="SRG-OS-000366-GPOS-00153" cui="3.4.8" 
+hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
 </Rule>
 
 <Rule id="ensure_gpgcheck_repo_metadata" severity="high" prodtype="rhel7">
@@ -264,7 +268,8 @@ This issue of Red Hat Enterprise Linux repositories was reported in
 <ident prodtype="rhel7" cce="CCE-80348-6" />
 <oval id="ensure_gpgcheck_repo_metadata" />
 <ref prodtype="rhel7" stigid="020070" />
-<ref nist="CM-5(3)" disa="1749" srg="SRG-OS-000366-GPOS-00153" />
+<ref nist="CM-5(3)" disa="1749" srg="SRG-OS-000366-GPOS-00153" 
+hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
 </Rule>
 
 </Group>
