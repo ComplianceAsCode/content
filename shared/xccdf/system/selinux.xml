@@ -46,7 +46,7 @@ For more information on SELinux, see <b><weblink-macro link="https://access.redh
 <value selector="mls">mls</value>
 </Value>
 
-<Rule id="enable_selinux_bootloader" severity="medium" prodtype="rhel7">
+<Rule id="enable_selinux_bootloader" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure SELinux Not Disabled in /etc/default/grub</title>
 <description>SELinux can be disabled at boot time by an argument in
 <tt>/etc/default/grub</tt>.
@@ -71,7 +71,7 @@ cis="1.6.1.1" cui="3.1.2,3.7.2"
 hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
-<Rule id="selinux_state" severity="high" prodtype="rhel7">
+<Rule id="selinux_state" severity="high" prodtype="rhel7,fedora">
 <title>Ensure SELinux State is Enforcing</title>
 <description>The SELinux state should be set to <tt><sub idref="var_selinux_state" /></tt> at
 system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
@@ -97,7 +97,7 @@ cis="1.6.1.2" srg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2"
 hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
-<Rule id="selinux_policytype" severity="high" prodtype="rhel7">
+<Rule id="selinux_policytype" severity="high" prodtype="rhel7,fedora">
 <title>Configure SELinux Policy</title>
 <description>The SELinux <tt>targeted</tt> policy is appropriate for
 general-purpose desktops and servers, as well as systems in many other roles.
@@ -132,7 +132,7 @@ cis="1.6.1.3" srg="SRG-OS-000445-GPOS-00199" cui="3.1.2,3.7.2"
 hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),164.312(a),164.312(e)" />
 </Rule>
 
-<Rule id="package_setroubleshoot_removed" prodtype="rhel7">
+<Rule id="package_setroubleshoot_removed" prodtype="rhel7,fedora">
 <title>Uninstall setroubleshoot Package</title>
 <description>The SETroubleshoot service notifies desktop users of SELinux
 denials. The service provides information around configuration errors,
@@ -146,7 +146,7 @@ have running on a server</rationale>
 <ref cis="1.6.1.4" />
 </Rule>
 
-<Rule id="package_mcstrans_removed" prodtype="rhel7">
+<Rule id="package_mcstrans_removed" prodtype="rhel7,fedora">
 <title>Uninstall mcstrans Package</title>
 <description>The <tt>mcstransd</tt> daemon provides category label information
 to client processes requesting information. The label translations are defined
@@ -164,7 +164,7 @@ note that Red Hat does not feel this rule is security relevant.
 <ref prodtype="rhel7" cis="1.6.1.5" />
 </Rule>
 
-<Rule id="selinux_confinement_of_daemons" severity="medium" prodtype="rhel7">
+<Rule id="selinux_confinement_of_daemons" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure No Daemons are Unconfined by SELinux</title>
 <description>
 Daemons for which the SELinux policy does not contain rules will inherit the
@@ -187,7 +187,7 @@ hipaa="164.308(a)(1)(ii)(D),164.308(a)(3),164.308(a)(4),164.310(b),164.310(c),16
 <ident prodtype="rhel7" cce="27288-0" />
 </Rule>
 
-<Rule id="selinux_all_devicefiles_labeled" severity="medium" prodtype="rhel7">
+<Rule id="selinux_all_devicefiles_labeled" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure No Device Files are Unlabeled by SELinux</title>
 <description>Device files, which are used for communication with important
 system resources, should be labeled with proper SELinux types. If any device
