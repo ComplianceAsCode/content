@@ -70,7 +70,7 @@ information on the capabilities and configuration of each of the NTP daemons.
 <value selector="36_hours">17</value>
 </Value>
 
-<Rule id="service_chronyd_or_ntpd_enabled" prodtype="rhel7" severity="medium">
+<Rule id="service_chronyd_or_ntpd_enabled" prodtype="rhel7,fedora" severity="medium">
 <title>Enable the NTP Daemon</title>
 <description>
 <systemd-service-macro enable="true" service="chronyd" />
@@ -104,7 +104,7 @@ information on this is available at
 <ref cis="2.2.1.1" cui="3.3.7" disa="160" nist="AU-8(1)" pcidss="Req-10.4" />
 </Rule>
 
-<Rule id="chronyd_or_ntpd_specify_remote_server" prodtype="rhel7" severity="medium">
+<Rule id="chronyd_or_ntpd_specify_remote_server" prodtype="rhel7,fedora" severity="medium">
 <title>Specify a Remote NTP Server</title>
 <description>Depending on specific functional requirements of a concrete
 production environment, the Red Hat Enterprise Linux 7 Server system can be
@@ -147,7 +147,7 @@ logs from multiple sources or correlate computer events with real time events.
 <ref cis="3.6" cui="3.3.7" disa="160" nist="AU-8(1)" pcidss="Req-10.4.1,Req-10.4.3" />
 </Rule>
 
-<Rule id="chronyd_or_ntpd_specify_multiple_servers" prodtype="rhel7">
+<Rule id="chronyd_or_ntpd_specify_multiple_servers" prodtype="rhel7,fedora">
 <title>Specify Additional Remote NTP Servers</title>
 <description>Depending on specific functional requirements of a concrete
 production environment, the Red Hat Enterprise Linux 7 Server system can be
@@ -179,7 +179,7 @@ other systems.
 <ref nist="AU-8(1)" pcidss="Req-10.4.3" />
 </Rule>
 
-<Rule id="chronyd_or_ntpd_set_maxpoll" prodtype="rhel7">
+<Rule id="chronyd_or_ntpd_set_maxpoll" prodtype="rhel7,fedora">
 <title>Configure Time Service Maxpoll Interval</title>
 <description>The <tt>maxpoll</tt> should be configured to
 <sub idref="var_time_service_set_maxpoll" /> in <tt>/etc/ntp.conf</tt> or
