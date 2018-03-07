@@ -66,7 +66,7 @@
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/pam.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/session.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/physical.xml'))" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/banners.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/banners.xml'))" />
     </xsl:copy>
   </xsl:template>
 
