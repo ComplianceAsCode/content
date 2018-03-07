@@ -16,7 +16,7 @@ effectively prevent execution of the IPv6 networking stack is to
 instruct the system not to activate the IPv6 kernel module.
 </description>
 
-<Rule id="sysctl_kernel_ipv6_disable" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_kernel_ipv6_disable" prodtype="rhel7,fedora" severity="medium">
 <title>Disable IPv6 Networking Support Automatic Loading</title>
 <description>To disable support for (<tt>ipv6</tt>) add the following line to
 <tt>/etc/sysctl.d/ipv6.conf</tt> (or another file in
@@ -45,21 +45,21 @@ Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
 the vulnerability to exploitation.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80175-3" />
+<ident cce="80175-3" prodtype="rhel7" />
 <oval id="sysctl_kernel_ipv6_disable" />
-<ref nist="CM-7" disa="1551" cui="3.1.20" cis="3.3.3" />
+<ref cis="3.3.3" cui="3.1.20" disa="1551" nist="CM-7" />
 </Rule>
 
-<Rule id="network_ipv6_disable_interfaces" prodtype="rhel7">
+<Rule id="network_ipv6_disable_interfaces" prodtype="rhel7,fedora">
 <title>Disable Interface Usage of IPv6</title>
 <description>To disable interface usage of IPv6, add or correct the following lines in <tt>/etc/sysconfig/network</tt>:
 <pre>NETWORKING_IPV6=no
 IPV6INIT=no</pre>
 </description>
-<ident prodtype="rhel7" cce="80176-1" />
+<ident cce="80176-1" prodtype="rhel7" />
 </Rule>
 
-<Rule id="network_ipv6_disable_rpc" prodtype="rhel7">
+<Rule id="network_ipv6_disable_rpc" prodtype="rhel7,fedora">
 <title>Disable Support for RPC IPv6</title>
 <description>RPC services for NFSv4 try to load transport modules for
 <tt>udp6</tt> and <tt>tcp6</tt> by default, even if IPv6 has been disabled in
@@ -69,11 +69,11 @@ following two lines in <tt>/etc/netconfig</tt>:
 <pre>udp6       tpi_clts      v     inet6    udp     -       -
 tcp6       tpi_cots_ord  v     inet6    tcp     -       -</pre>
 </description>
-<ident prodtype="rhel7" cce="80177-9" />
+<ident cce="80177-9" prodtype="rhel7" />
 <oval id="network_ipv6_disable_rpc" />
-<ref nist="CM-7" cui="3.1.20" />
+<ref cui="3.1.20" nist="CM-7" />
 </Rule>
-</Group><!--<Group id="disabling_ipv6">-->
+</Group>
 
 <Group id="configuring_ipv6">
 <title>Configure IPv6 Settings if Necessary</title>
@@ -93,8 +93,7 @@ sending router solicitations):
 <pre>IPV6_AUTOCONF=no</pre>
 </description>
 
-<Value id="sysconfig_network_IPV6_AUTOCONF_value" type="string"
-operator="equals" interactive="0">
+<Value id="sysconfig_network_IPV6_AUTOCONF_value" interactive="0" operator="equals" type="string">
 <title>IPV6_AUTOCONF</title>
 <description>Toggle global IPv6 auto-configuration (only, if global
 forwarding is disabled)</description>
@@ -103,8 +102,7 @@ forwarding is disabled)</description>
 <value selector="disabled">no</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_all_accept_source_route_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_all_accept_source_route_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.all.accept_source_route</title>
 <description>Trackers could be using source-routed packets to
 generate traffic that seems to be intra-net, but actually was
@@ -114,8 +112,7 @@ created outside and has been redirected.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_default_accept_ra_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_default_accept_ra_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.default.accept_ra</title>
 <description>Accept default router advertisements by default?</description>
 <value>0</value>
@@ -123,8 +120,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_all_accept_ra_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_all_accept_ra_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.all.accept_ra</title>
 <description>Accept all router advertisements?</description>
 <value>0</value>
@@ -132,8 +128,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_default_accept_redirects_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.default.accept_redirects</title>
 <description>Toggle ICMP Redirect Acceptance By Default</description>
 <value>0</value>
@@ -141,8 +136,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_all_accept_redirects_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.all.accept_redirects</title>
 <description>Toggle ICMP Redirect Acceptance</description>
 <value>0</value>
@@ -150,8 +144,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_default_accept_source_route_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_default_accept_source_route_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.default.accept_source_route</title>
 <description>Trackers could be using source-routed packets to
 generate traffic that seems to be intra-net, but actually was
@@ -161,8 +154,7 @@ created outside and has been redirected.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv6_conf_all_forwarding_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv6_conf_all_forwarding_value" interactive="0" operator="equals" type="number">
 <title>net.ipv6.conf.all.forwarding</title>
 <description>Toggle IPv6 Forwarding</description>
 <value>0</value>
@@ -170,7 +162,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Rule id="sysctl_net_ipv6_conf_all_accept_source_route" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv6_conf_all_accept_source_route" prodtype="rhel7" severity="medium">
 <title>Configure Kernel Parameter for Accepting Source-Routed Packets for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_source_route" value="0" />
@@ -187,10 +179,10 @@ the system is functioning as a router.
 Accepting source-routed packets in the IPv6 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80179-5" />
+<ident cce="80179-5" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_all_accept_source_route" value="sysctl_net_ipv6_conf_all_accept_source_route_value" />
 <ref prodtype="rhel7" stigid="040830" />
-<ref nist="AC-4" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.20" />
+<ref cui="3.1.20" disa="366" nist="AC-4" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sysctl_net_ipv6_conf_all_accept_ra" prodtype="rhel7">
@@ -205,12 +197,12 @@ uses. It should be disabled unless it is absolutely required.</rationale>
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80180-3" />
+<ident cce="80180-3" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_all_accept_ra" value="sysctl_net_ipv6_conf_all_accept_ra_value" />
-<ref nist="CM-7" cis="3.3.1" cui="3.1.20" />
+<ref cis="3.3.1" cui="3.1.20" nist="CM-7" />
 </Rule>
 
-<Rule id="sysctl_net_ipv6_conf_default_accept_ra" prodtype="rhel7">
+<Rule id="sysctl_net_ipv6_conf_default_accept_ra" prodtype="rhel7,fedora">
 <title>Configure Accepting IPv6 Router Advertisements</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_ra" value="0" />
@@ -222,12 +214,12 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 An illicit router advertisement message could result in a man-in-the-middle attack.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80181-1" />
+<ident cce="80181-1" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_default_accept_ra" value="sysctl_net_ipv6_conf_default_accept_ra_value" />
-<ref nist="CM-7" cis="3.3.1" cui="3.1.20" />
+<ref cis="3.3.1" cui="3.1.20" nist="CM-7" />
 </Rule>
 
-<Rule id="sysctl_net_ipv6_conf_all_accept_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv6_conf_all_accept_redirects" prodtype="rhel7" severity="medium">
 <title>Configure Accepting IPv6 Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />
@@ -239,12 +231,12 @@ An illicit router advertisement message could result in a man-in-the-middle atta
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80182-9" />
+<ident cce="80182-9" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_all_accept_redirects" value="sysctl_net_ipv6_conf_all_accept_redirects_value" />
-<ref nist="CM-7" disa="1551" cis="3.3.2" cui="3.1.20" />
+<ref cis="3.3.2" cui="3.1.20" disa="1551" nist="CM-7" />
 </Rule>
 
-<Rule id="sysctl_net_ipv6_conf_default_accept_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv6_conf_default_accept_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Accepting IPv6 Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_redirects" value="0" />
@@ -256,12 +248,12 @@ An illicit ICMP redirect message could result in a man-in-the-middle attack.
 An illicit ICMP redirect message could result in a man-in-the-middle attack.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80183-7" />
+<ident cce="80183-7" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_default_accept_redirects" value="sysctl_net_ipv6_conf_default_accept_redirects_value" />
-<ref nist="CM-7" disa="1551" cis="3.3.2" cui="3.1.20" />
+<ref cis="3.3.2" cui="3.1.20" disa="1551" nist="CM-7" />
 </Rule>
 
-<Rule id="sysctl_net_ipv6_conf_default_accept_source_route" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv6_conf_default_accept_source_route" prodtype="rhel7" severity="medium">
 <title>Configure Kernel Parameter for Accepting Source-Routed Packets for Interfaces By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_source_route" value="0" />
@@ -278,12 +270,12 @@ the system is functioning as a router.
 Accepting source-routed packets in the IPv6 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80335-1" />
+<ident cce="80335-1" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_default_accept_source_route" value="sysctl_net_ipv6_conf_default_accept_source_route_value" />
-<ref nist="AC-4" disa="366" cui="3.1.20" />
+<ref cui="3.1.20" disa="366" nist="AC-4" />
 </Rule>
 
-<Rule id="sysctl_net_ipv6_conf_all_forwarding" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv6_conf_all_forwarding" prodtype="rhel7" severity="medium">
 <title>Disable Kernel Parameter for IPv6 Forwarding</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv6.conf.all.forwarding" value="0" />
@@ -296,14 +288,14 @@ The ability to forward packets is only appropriate for routers.
 interface to another. The ability to forward packets between two networks is
 only appropriate for systems acting as routers.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80356-9" />
+<ident cce="80356-9" prodtype="rhel7" />
 <oval id="sysctl_net_ipv6_conf_all_forwarding" value="sysctl_net_ipv6_conf_all_forwarding_value" />
-<ref nist="CM-7,SC-5" disa="366" />
+<ref disa="366" nist="CM-7,SC-5" />
 </Rule>
 
-</Group><!--<Group id="disabling_ipv6_autoconfig">-->
+</Group>
 
-<Rule id="network_ipv6_static_address" prodtype="rhel7">
+<Rule id="network_ipv6_static_address" prodtype="rhel7,fedora">
 <title>Manually Assign Global IPv6 Address</title>
 <description>To manually assign an IP address for an interface, edit the
 file <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>. Add or correct the
@@ -313,12 +305,12 @@ Manually assigning an IP address is preferable to accepting one from routers or
 from the network otherwise. The example address here is an IPv6 address
 reserved for documentation purposes, as defined by RFC3849.
 </description>
-<ident prodtype="rhel7" cce="80184-5" />
+<ident cce="80184-5" prodtype="rhel7" />
 <oval id="network_ipv6_static_address" />
 <ref disa="366" />
 </Rule>
 
-<Rule id="network_ipv6_privacy_extensions" prodtype="rhel7">
+<Rule id="network_ipv6_privacy_extensions" prodtype="rhel7,fedora">
 <title>Use Privacy Extensions for Address</title>
 <description>To introduce randomness into the automatic generation of IPv6
 addresses, add or correct the following line in
@@ -330,12 +322,12 @@ hardware over its lifetime using its traffic. If it is important for a system's
 IP address to not trivially reveal its hardware address, this setting should be
 applied.
 </description>
-<ident prodtype="rhel7" cce="80185-2" />
+<ident cce="80185-2" prodtype="rhel7" />
 <oval id="network_ipv6_privacy_extensions" />
-<ref disa="366" cui="3.1.20" />
+<ref cui="3.1.20" disa="366" />
 </Rule>
 
-<Rule id="network_ipv6_default_gateway" prodtype="rhel7">
+<Rule id="network_ipv6_default_gateway" prodtype="rhel7,fedora">
 <title>Manually Assign IPv6 Router Address</title>
 <description>Edit the file
 <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>, and add or correct
@@ -344,7 +336,7 @@ the following line (substituting your gateway IP as appropriate):
 Router addresses should be manually set and not accepted via any
 auto-configuration or router advertisement.
 </description>
-<ident prodtype="rhel7" cce="80186-0" />
+<ident cce="80186-0" prodtype="rhel7" />
 <oval id="network_ipv6_default_gateway" />
 <ref disa="366" />
 </Rule>
@@ -387,5 +379,5 @@ required.
 </description>
 </Group>
 
-</Group><!--<Group id="configuring_ipv6">-->
-</Group><!--<Group id="network-ipv6">-->
+</Group>
+</Group>

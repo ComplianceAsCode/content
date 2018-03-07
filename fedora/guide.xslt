@@ -94,16 +94,13 @@
   <xsl:template match="Group[@id='network']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/network/kernel.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/wireless.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/ipv6.xml')" />
-      <!-- iptables have been replaced in Fedora in favour of firewalld. Uncomment the following
-           line in the moment you would truly want to add iptables rules back -->
-      <!-- <xsl:apply-templates select="document('xccdf/system/network/iptables.xml')" /> -->
-      <xsl:apply-templates select="document('xccdf/system/network/firewalld.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/ssl.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/uncommon.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/network/ipsec.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/kernel.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/wireless.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/ipv6.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/firewalld.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/ssl.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/uncommon.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/network/ipsec.xml'))" />
     </xsl:copy>
   </xsl:template>
 

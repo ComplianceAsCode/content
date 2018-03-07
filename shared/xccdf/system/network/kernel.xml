@@ -11,7 +11,7 @@ which affect networking and have security implications are described here.
 kernel parameters ensure that the host will not perform routing
 of network traffic.</description>
 
-<Rule id="sysctl_net_ipv4_conf_default_send_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_default_send_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Disable Kernel Parameter for Sending ICMP Redirects by Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />
@@ -26,13 +26,13 @@ from the system's route table possibly revealing portions of the network topolog
 The ability to send ICMP redirects is only appropriate for systems acting as routers.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80156-3" />
+<ident cce="80156-3" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_default_send_redirects" />
 <ref prodtype="rhel7" stigid="040650" />
-<ref nist="AC-4,CM-7,SC-5,SC-7" disa="366" cis="3.1.2" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.1.2" cjis="5.10.1.1" cui="3.1.20" disa="366" nist="AC-4,CM-7,SC-5,SC-7" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_all_send_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_all_send_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Disable Kernel Parameter for Sending ICMP Redirects for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.send_redirects" value="0" />
@@ -47,13 +47,13 @@ from the system's route table possibly revealing portions of the network topolog
 The ability to send ICMP redirects is only appropriate for systems acting as routers.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80156-3" />
+<ident cce="80156-3" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_all_send_redirects" />
 <ref prodtype="rhel7" stigid="040660" />
-<ref nist="AC-4,CM-7,SC-5(1)" disa="366" cis="3.1.2" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.1.2" cjis="5.10.1.1" cui="3.1.20" disa="366" nist="AC-4,CM-7,SC-5(1)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_ip_forward" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_ip_forward" prodtype="rhel7,fedora" severity="medium">
 <title>Disable Kernel Parameter for IP Forwarding</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.ip_forward" value="0" />
@@ -68,10 +68,10 @@ not required, system network information may be unnecessarily transmitted across
 the network.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80157-1" />
+<ident cce="80157-1" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_ip_forward" />
 <ref prodtype="rhel7" stigid="040740" />
-<ref nist="CM-7,SC-5,SC-32" disa="366" cis="3.1.1" srg="SRG-OS-000480-GPOS-00227" cui="3.1.20" />
+<ref cis="3.1.1" cui="3.1.20" disa="366" nist="CM-7,SC-5,SC-32" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 
@@ -81,8 +81,7 @@ the network.
 acting as either hosts or routers to improve the system's ability defend
 against certain types of IPv4 protocol attacks.</description>
 
-<Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_all_accept_source_route_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.all.accept_source_route</title>
 <description>Trackers could be using source-routed packets to
 generate traffic that seems to be intra-net, but actually was
@@ -92,8 +91,7 @@ created outside and has been redirected.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_all_accept_redirects_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.all.accept_redirects</title>
 <description>Disable ICMP Redirect Acceptance</description>
 <value selector="">0</value>
@@ -101,8 +99,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_all_secure_redirects_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.all.secure_redirects</title>
 <description>Enable to prevent hijacking of routing path by only
 allowing redirects from gateways known in routing
@@ -112,8 +109,7 @@ table. Disable to refuse acceptance of secure ICMP redirected packets on all int
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_log_martians_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_default_log_martians_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.default.log_martians</title>
 <description>Disable so you don't Log Spoofed Packets, Source
 Routed Packets, Redirect Packets</description>
@@ -122,8 +118,7 @@ Routed Packets, Redirect Packets</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_log_martians_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_all_log_martians_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.all.log_martians</title>
 <description>Disable so you don't Log Spoofed Packets, Source
 Routed Packets, Redirect Packets</description>
@@ -132,8 +127,7 @@ Routed Packets, Redirect Packets</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_default_accept_source_route_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.default.accept_source_route</title>
 <description>Disable IP source routing?</description>
 <value selector="">0</value>
@@ -141,8 +135,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_default_accept_redirects_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.default.accept_redirects</title>
 <description>Disable ICMP Redirect Acceptance?</description>
 <value selector="">0</value>
@@ -150,8 +143,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_default_secure_redirects_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.default.secure_redirects</title>
 <description>Enable to prevent hijacking of routing path by only
 allowing redirects from gateways known in routing
@@ -161,8 +153,7 @@ table. Disable to refuse acceptance of secure ICMP redirected packages by defaul
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.icmp_echo_ignore_broadcasts</title>
 <description>Ignore all ICMP ECHO and TIMESTAMP requests sent to it
 via broadcast/multicast</description>
@@ -171,8 +162,7 @@ via broadcast/multicast</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.icmp_ignore_bogus_error_responses</title>
 <description>Enable to prevent unnecessary logging</description>
 <value selector="">1</value>
@@ -180,8 +170,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_tcp_syncookies_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_tcp_syncookies_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.tcp_syncookies</title>
 <description>Enable to turn on TCP SYN Cookie
 Protection</description>
@@ -190,8 +179,7 @@ Protection</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_all_rp_filter_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.all.rp_filter</title>
 <description>Enable to enforce sanity checking, also called ingress
 filtering or egress filtering. The point is to drop a packet if the
@@ -203,8 +191,7 @@ it arrived.</description>
 <value selector="disabled">0</value>
 </Value>
 
-<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" type="number"
-operator="equals" interactive="0">
+<Value id="sysctl_net_ipv4_conf_default_rp_filter_value" interactive="0" operator="equals" type="number">
 <title>net.ipv4.conf.default.rp_filter</title>
 <description>Enables source route verification</description>
 <value selector="">1</value>
@@ -212,7 +199,7 @@ operator="equals" interactive="0">
 <value selector="disabled">0</value>
 </Value>
 
-<Rule id="sysctl_net_ipv4_conf_all_accept_source_route" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_all_accept_source_route" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter for Accepting Source-Routed Packets for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_source_route" value="0" />
@@ -229,13 +216,13 @@ the system is functioning as a router.
 Accepting source-routed packets in the IPv4 protocol has few legitimate
 uses. It should be disabled unless it is absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27434-0" />
+<ident cce="27434-0" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_all_accept_source_route" value="sysctl_net_ipv4_conf_all_accept_source_route_value" />
 <ref prodtype="rhel7" stigid="040610" />
-<ref nist="AC-4,CM-7,SC-5" disa="366" srg="SRG-OS-000480-GPOS-00227" cis="3.2.1" cui="3.1.20" />
+<ref cis="3.2.1" cui="3.1.20" disa="366" nist="AC-4,CM-7,SC-5" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_all_accept_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_all_accept_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter for Accepting ICMP Redirects for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_redirects" value="0" />
@@ -251,13 +238,13 @@ attack.
 This feature of the IPv4 protocol has few legitimate uses. It should be disabled unless 
 absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80158-9" />
+<ident cce="80158-9" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_all_accept_redirects" value="sysctl_net_ipv4_conf_all_accept_redirects_value" />
 <ref prodtype="rhel7" stigid="040641" />
-<ref nist="CM-6(d),CM-7,SC-5" disa="366,1503,1551" cis="3.2.2" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.2.2" cjis="5.10.1.1" cui="3.1.20" disa="366,1503,1551" nist="CM-6(d),CM-7,SC-5" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_all_secure_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_all_secure_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter for Accepting Secure Redirects for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />
@@ -269,12 +256,12 @@ absolutely required.</rationale>
 default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80159-7" />
+<ident cce="80159-7" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_all_secure_redirects" value="sysctl_net_ipv4_conf_all_secure_redirects_value" />
-<ref nist="AC-4,CM-7,SC-5" disa="1503,1551" cis="3.2.3" cui="3.1.20" />
+<ref cis="3.2.3" cui="3.1.20" disa="1503,1551" nist="AC-4,CM-7,SC-5" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_all_log_martians" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_all_log_martians" prodtype="rhel7,fedora">
 <title>Configure Kernel Parameter to Log Martian Packets</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />
@@ -287,12 +274,12 @@ as well as spoofed packets, source-routed packets, and redirects could be a
 sign of nefarious network activity. Logging these packets enables this activity
 to be detected.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80160-5" />
+<ident cce="80160-5" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_all_log_martians" value="sysctl_net_ipv4_conf_all_log_martians_value" />
-<ref nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="3.2.4" cui="3.1.20" />
+<ref cis="3.2.4" cui="3.1.20" disa="126" nist="AC-17(7),CM-7,SC-5(3)" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_default_log_martians" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_default_log_martians" prodtype="rhel7,fedora">
 <title>Configure Kernel Parameter to Log Martian Packets By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.log_martians" value="1" />
@@ -305,12 +292,12 @@ as well as spoofed packets, source-routed packets, and redirects could be a
 sign of nefarious network activity. Logging these packets enables this activity
 to be detected.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80161-3" />
+<ident cce="80161-3" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_default_log_martians" value="sysctl_net_ipv4_conf_default_log_martians_value" />
-<ref nist="AC-17(7),CM-7,SC-5(3)" disa="126" cis="3.2.4" cui="3.1.20" />
+<ref cis="3.2.4" cui="3.1.20" disa="126" nist="AC-17(7),CM-7,SC-5(3)" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_default_accept_source_route" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_default_accept_source_route" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter for Accepting Source-Routed Packets By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />
@@ -327,13 +314,13 @@ uses. It should be disabled unless it is absolutely required, such as when
 IPv4 forwarding is enabled and the system is legitimately functioning as
 a router.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80162-1" />
+<ident cce="80162-1" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_default_accept_source_route" value="sysctl_net_ipv4_conf_default_accept_source_route_value" />
 <ref prodtype="rhel7" stigid="040620" />
-<ref nist="AC-4,CM-7,SC-5,SC-7" disa="366,1551" srg="SRG-OS-000480-GPOS-00227" cis="3.2.1" cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.2.1" cjis="5.10.1.1" cui="3.1.20" disa="366,1551" nist="AC-4,CM-7,SC-5,SC-7" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_default_accept_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_default_accept_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter for Accepting ICMP Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />
@@ -349,13 +336,13 @@ attack.
 This feature of the IPv4 protocol has few legitimate uses. It should be disabled unless 
 absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80163-9" />
+<ident cce="80163-9" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_default_accept_redirects" value="sysctl_net_ipv4_conf_default_accept_redirects_value" />
 <ref prodtype="rhel7" stigid="040640" />
-<ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="3.2.2" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.2.2" cjis="5.10.1.1" cui="3.1.20" disa="1551" nist="AC-4,CM-7,SC-5,SC-7" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_default_secure_redirects" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_default_secure_redirects" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter for Accepting Secure Redirects By Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.secure_redirects" value="0" />
@@ -367,12 +354,12 @@ absolutely required.</rationale>
 default gateways) has few legitimate uses. It should be disabled unless it is
 absolutely required.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80164-7" />
+<ident cce="80164-7" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_default_secure_redirects" value="sysctl_net_ipv4_conf_default_secure_redirects_value" />
-<ref nist="AC-4,CM-7,SC-5,SC-7" disa="1551" cis="3.2.3" cui="3.1.20" />
+<ref cis="3.2.3" cui="3.1.20" disa="1551" nist="AC-4,CM-7,SC-5,SC-7" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter to Ignore ICMP Broadcast Echo Requests</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_echo_ignore_broadcasts" value="1" />
@@ -387,14 +374,13 @@ Ignoring ICMP echo requests (pings) sent to broadcast or multicast
 addresses makes the system slightly more difficult to enumerate on the network.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80165-4" />
+<ident cce="80165-4" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_icmp_echo_ignore_broadcasts" value="sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value" />
 <ref prodtype="rhel7" stigid="040630" />
-<ref nist="AC-4,CM-7,SC-5" disa="366" srg="SRG-OS-000480-GPOS-00227" cis="3.2.5"
-cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.2.5" cjis="5.10.1.1" cui="3.1.20" disa="366" nist="AC-4,CM-7,SC-5" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" prodtype="rhel7,fedora">
 <title>Configure Kernel Parameter to Ignore Bogus ICMP Error Responses</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.icmp_ignore_bogus_error_responses" value="1" />
@@ -405,12 +391,12 @@ cjis="5.10.1.1" cui="3.1.20" />
 <rationale>Ignoring bogus ICMP error responses reduces
 log size, although some activity would not be logged.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80166-2" />
+<ident cce="80166-2" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_icmp_ignore_bogus_error_responses" value="sysctl_net_ipv4_icmp_ignore_bogus_error_responses_value" />
-<ref nist="CM-7,SC-5" cis="3.2.6" cui="3.1.20" />
+<ref cis="3.2.6" cui="3.1.20" nist="CM-7,SC-5" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_tcp_syncookies" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_tcp_syncookies" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter to Use TCP Syncookies</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.tcp_syncookies" value="1" />
@@ -426,13 +412,12 @@ source. This feature is activated when a flood condition is detected, and
 enables the system to continue servicing valid connection requests.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27495-1" />
+<ident cce="27495-1" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_tcp_syncookies" value="sysctl_net_ipv4_tcp_syncookies_value" />
-<ref nist="AC-4,SC-5(1)(2),SC-5(2),SC-5(3)" disa="366" srg="SRG-OS-000480-GPOS-00227" 
-cis="3.2.8" cjis="5.10.1.1" cui="3.1.20" />
+<ref cis="3.2.8" cjis="5.10.1.1" cui="3.1.20" disa="366" nist="AC-4,SC-5(1)(2),SC-5(2),SC-5(3)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_all_rp_filter" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_all_rp_filter" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter to Use Reverse Path Filtering for All Interfaces</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.all.rp_filter" value="1" />
@@ -446,12 +431,12 @@ received on. It should not be used on systems which are routers for
 complicated networks, but is helpful for end hosts and routers serving small
 networks.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80167-0" />
+<ident cce="80167-0" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_all_rp_filter" value="sysctl_net_ipv4_conf_all_rp_filter_value" />
-<ref nist="AC-4,SC-5,SC-7" disa="1551" cis="3.2.7" cui="3.1.20" />
+<ref cis="3.2.7" cui="3.1.20" disa="1551" nist="AC-4,SC-5,SC-7" />
 </Rule>
 
-<Rule id="sysctl_net_ipv4_conf_default_rp_filter" severity="medium" prodtype="rhel7">
+<Rule id="sysctl_net_ipv4_conf_default_rp_filter" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Kernel Parameter to Use Reverse Path Filtering by Default</title>
 <description>
 <sysctl-desc-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />
@@ -465,9 +450,9 @@ received on. It should not be used on systems which are routers for
 complicated networks, but is helpful for end hosts and routers serving small
 networks.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80168-8" />
+<ident cce="80168-8" prodtype="rhel7" />
 <oval id="sysctl_net_ipv4_conf_default_rp_filter" value="sysctl_net_ipv4_conf_default_rp_filter_value" />
-<ref nist="AC-4,SC-5,SC-7" cis="3.2.7" cui="3.1.20" />
+<ref cis="3.2.7" cui="3.1.20" nist="AC-4,SC-5,SC-7" />
 </Rule>
 
 </Group>

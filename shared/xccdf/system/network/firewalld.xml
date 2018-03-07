@@ -1,17 +1,17 @@
 <Group id="network-firewalld">
 <title>firewalld</title>
 <description>The dynamic firewall daemon <tt>firewalld</tt> provides a
-dynamically managed firewall with support for network “zones” to assign
+dynamically managed firewall with support for network &#8220;zones&#8221; to assign
 a level of trust to a network and its associated connections and interfaces.
 It has support for IPv4 and IPv6 firewall settings. It supports Ethernet
 bridges and has a separation of runtime and permanent configuration options.
 It also has an interface for services or applications to add firewall rules
 directly.
-<br/>
+<br />
 A graphical configuration tool, <tt>firewall-config</tt>, is used to configure
 <tt>firewalld</tt>, which in turn uses <tt>iptables</tt> tool to communicate
 with <tt>Netfilter</tt> in the kernel which implements packet filtering.
-<br/>
+<br />
 The firewall service provided by <tt>firewalld</tt> is dynamic rather than
 static because changes to the configuration can be made at anytime and are
 immediately implemented. There is no need to save or apply the changes. No
@@ -27,7 +27,7 @@ based on the level of trust the user has decided to place on the devices and
 traffic within that network. <tt>NetworkManager</tt> informs firewalld to which
 zone an interface belongs. An interface's assigned zone can be changed by
 <tt>NetworkManager</tt> or via the <tt>firewall-config</tt> tool.
-<br/>
+<br />
 The zone settings in <tt>/etc/firewalld/</tt> are a range of preset settings
 which can be quickly applied to a network interface. These are the zones
 provided by firewalld sorted according to the default trust level of the
@@ -59,12 +59,12 @@ other computers on the networks to not harm your computer. Only selected
 incoming connections are accepted.</p></li>
 <li><tt>trusted</tt><br /><p>All network connections are accepted.</p></li>
 </ul>
-<br/>
+<br />
 It is possible to designate one of these zones to be the default zone. When
 interface connections are added to <tt>NetworkManager</tt>, they are assigned
 to the default zone. On installation, the default zone in firewalld is set to
 be the public zone.
-<br/>
+<br />
 To find out all the settings of a zone, for example the <tt>public zone,</tt>
 enter the following command as root:
 <pre># firewall-cmd --zone=public --list-all</pre>
@@ -96,14 +96,14 @@ service reload, enter the following command as root:
 <pre># firewall-cmd --get-service --permanent</pre>
 </description>
 
-<Rule id="package_firewalld_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_firewalld_installed" prodtype="rhel7" severity="medium">
 <title>Install firewalld</title>
 <description>
 Install the firewalld package with the command:
 <pre>$ sudo yum install firewalld</pre>
 </description>
 <ocil clause="the package is not installed">
-<package-check-macro package="firewalld"/>
+<package-check-macro package="firewalld" />
 </ocil>
 <rationale>
 The firewalld package should be installed to provide access control methods.
@@ -112,7 +112,7 @@ The firewalld package should be installed to provide access control methods.
 <oval id="package_firewalld_installed" />
 </Rule>
 
-<Rule id="service_firewalld_enabled" severity="medium" prodtype="rhel7">
+<Rule id="service_firewalld_enabled" prodtype="rhel7,fedora" severity="medium">
 <title>Verify firewalld Enabled</title>
 <description>
 <systemd-service-macro enable="true" service="firewalld" />
@@ -123,13 +123,13 @@ Access control methods provide the ability to enhance system security posture
 by restricting services and known good IP addresses and address ranges. This
 prevents connections from unknown hosts and protocols.
 </rationale>
-<ident prodtype="rhel7" cce="27361-5" />
+<ident cce="27361-5" prodtype="rhel7" />
 <oval id="service_firewalld_enabled" />
 <ref prodtype="rhel7" stigid="040520" />
-<ref nist="CM-6(b)" disa="366" cis="4.7" srg="SRG-OS-000480-GPOS-00227" cui="3.1.3,3.4.7" />
+<ref cis="4.7" cui="3.1.3,3.4.7" disa="366" nist="CM-6(b)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-</Group><!--<Group id="firewalld_activation">-->
+</Group>
 
 <Group id="ruleset_modifications">
 <title>Strengthen the Default Ruleset</title>
@@ -151,7 +151,7 @@ conventions for regular firewalld rules are used throughout this section.
 allows additional services to penetrate the default firewall rules
 and automatically adjusts the <tt>firewalld</tt> ruleset(s).</warning>
 
-<Rule id="set_firewalld_default_zone" severity="medium" prodtype="rhel7">
+<Rule id="set_firewalld_default_zone" prodtype="rhel7,fedora" severity="medium">
 <title>Set Default firewalld Zone for Incoming Packets</title>
 <description>To set the default zone to <tt>drop</tt> for
 the built-in default zone which processes incoming IPv4 and IPv6 packets,
@@ -169,13 +169,13 @@ the applicable rules in the table are examined for a match. Setting the
 default zone to <tt>drop</tt> implements proper design for a firewall, i.e.
 any packets which are not explicitly permitted should not be
 accepted.</rationale>
-<ident prodtype="rhel7" cce="27349-0" />
+<ident cce="27349-0" prodtype="rhel7" />
 <oval id="set_firewalld_default_zone" />
 <ref prodtype="rhel7" stigid="040810" />
-<ref nist="CM-6(b),CM-7" disa="366" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.1" cui="3.1.3,3.4.7,3.13.6" />
+<ref cjis="5.10.1" cui="3.1.3,3.4.7,3.13.6" disa="366" nist="CM-6(b),CM-7" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="configure_firewalld_rate_limiting" severity="medium" prodtype="rhel7">
+<Rule id="configure_firewalld_rate_limiting" prodtype="rhel7" severity="medium">
 <title>Configure firewalld To Rate Limit Connections</title>
 <description>
 Create a direct firewall rule to protect against DoS attacks with the following
@@ -194,7 +194,7 @@ The output should return:
 DoS is a condition when a resource is not available for legitimate users. When
 this occurs, the organization either cannot accomplish its mission or must
 operate at degraded capacity.
-<br/><br/>
+<br /><br />
 This requirement addresses the configuration of
 the operating system to mitigate the impact of DoS attacks that have occurred or
 are ongoing on system availability. For each system, known and potential DoS
@@ -204,12 +204,12 @@ attacks (e.g., limiting processes or establishing memory partitions). Employing
 increased capacity and bandwidth, combined with service redundancy, may reduce
 the susceptibility to some DoS attacks.
 </rationale>
-<ident cce="80542-4"/>
-<oval id="configure_firewalld_rate_limiting"/>
-<ref disa="2385" nist="" srg="SRG-OS-000420-GPOS-00186" stigid="040510"/>
+<ident cce="80542-4" />
+<oval id="configure_firewalld_rate_limiting" />
+<ref disa="2385" nist="" srg="SRG-OS-000420-GPOS-00186" stigid="040510" />
 </Rule>
 
-<Rule id="configure_firewalld_ports" severity="medium" prodtype="rhel7">
+<Rule id="configure_firewalld_ports" prodtype="rhel7" severity="medium">
 <title>Configure the Firewalld Ports</title>
 <description>Configure the <tt>firewalld</tt> ports to allow approved
 services to have access to the system. To configure <tt>firewalld</tt>
@@ -228,123 +228,23 @@ correctly by running the following command:
 <rationale>In order to prevent unauthorized connection of devices, unauthorized transfer of information,
 or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or
 restrict unused or unnecessary physical and logical ports/protocols on information systems. 
-<br/><br/>
+<br /><br />
 Operating systems are capable of providing a wide variety of functions and services. Some of the functions
 and services provided by default may not be necessary to support essential organizational operations.
 Additionally, it is sometimes convenient to provide multiple services from a single component
 (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component. 
-<br/><br/>
+<br /><br />
 To support the requirements and principles of least functionality, the operating system must support the
 organizational requirements, providing only essential capabilities and limiting the use of ports, protocols,
 and/or services to only those required, authorized, and approved to conduct official business or to address
 authorized quality of life issues.</rationale>
-<ident prodtype="rhel7" cce="80447-6" />
+<ident cce="80447-6" prodtype="rhel7" />
 <oval id="configure_firewalld_ports" />
 <ref prodtype="rhel7" stigid="040100" />
-<ref nist="CM-7,CM-7.1(iii),CM-7(b),AC-17(1)" disa="382,2314" srg="SRG-OS-000096-GPOS-00050,SRG-OS-000297-GPOS-00115" />
+<ref disa="382,2314" nist="CM-7,CM-7.1(iii),CM-7(b),AC-17(1)" srg="SRG-OS-000096-GPOS-00050,SRG-OS-000297-GPOS-00115" />
 </Rule>
 
 
-<!--
-<Rule id="set_firewalld_default_rule_forward" severity="medium" prodtype="rhel7">
-<title>Set Default firewalld Policy for Forwarded Packets</title>
-<description>To set the default policy to DROP (instead of ACCEPT) for
-the built-in FORWARD chain which processes packets that will be forwarded from
-one interface to another,
-add or correct the following line in
-<tt>/etc/sysconfig/iptables</tt>:
-<pre>:FORWARD DROP [0:0]</pre>
-</description>
-<rationale>In <tt>firewalld</tt>, the default policy is applied only after all
-the applicable rules in the table are examined for a match. Setting the
-default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
-any packets which are not explicitly permitted should not be
-accepted.</rationale>
-<ocil clause="the default policy for the FORWARD chain is not set to DROP">
-Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
-<pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
-The output should be similar to the following:
-<pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
-:FORWARD DROP [0:0</pre></ocil>
-<ident prodtype="rhel7" cce="80172-0" />
-<ref nist="CM-7" disa="1109" />
-</Rule>
 
-<Group id="firewalld_icmp_disabled">
-<title>Restrict ICMP Message Types</title>
-<description>In <tt>/etc/sysconfig/iptables</tt>, the accepted ICMP messages
-types can be restricted. To accept only ICMP echo reply, destination
-unreachable, and time exceeded messages, remove the line:<br />
-<pre>-A INPUT -p icmp -icmp-type any -j ACCEPT</pre>
-and insert the lines:
-<pre>-A INPUT -p icmp -icmp-type echo-reply -j ACCEPT
--A INPUT -p icmp -icmp-type destination-unreachable -j ACCEPT
--A INPUT -p icmp -icmp-type time-exceeded -j ACCEPT</pre>
-To allow the system to respond to pings, also insert the following line:
-<pre>-A INPUT -p icmp -icmp-type echo-request -j ACCEPT</pre>
-Ping responses can also be limited to certain networks or hosts by using the -s
-option in the previous rule.  Because IPv6 depends so heavily on ICMPv6, it is
-preferable to deny the ICMPv6 packets you know you don't need (e.g. ping
-requests) in <tt>/etc/sysconfig/ip6tables</tt>, while letting everything else
-through:
-<pre>-A INPUT -p icmpv6 -icmpv6-type echo-request -j DROP</pre>
-If you are going to statically configure the machine's address, it should
-ignore Router Advertisements which could add another IPv6 address to the
-interface or alter important network settings:
-<pre>-A INPUT -p icmpv6 -icmpv6-type router-advertisement -j DROP</pre>
-Restricting ICMPv6 message types in <tt>/etc/sysconfig/ip6tables</tt> is not
-recommended because the operation of IPv6 depends heavily on ICMPv6. Thus, great
-care must be taken if any other ICMPv6 types are blocked.
-</description>
-<rationale>Restricting ICMP messages may make a system slightly less
-discoverable to an unsophisticated attacker but is not appropriate for many
-general-purpose use cases and can also make troubleshooting more difficult.
-</rationale>
 </Group>
-
-<Group id="firewalld_log_and_drop_suspicious">
-<title>Log and Drop Packets with Suspicious Source Addresses</title>
-<description>Packets with non-routable source addresses should be rejected, as they may indicate spoofing. Because the
-modified policy will reject non-matching packets, you only need to add these rules if you are interested in also
-logging these spoofing or suspicious attempts before they are dropped. If you do choose to log various suspicious
-traffic, add identical rules with a target of <tt>DROP</tt> after each <i>LOG</i>.
-To log and then drop these IPv4 packets, insert the following rules in <tt>/etc/sysconfig/iptables</tt> (excepting
-any that are intentionally used):
-<pre>-A INPUT -s 10.0.0.0/8 -j LOG -log-prefix "IP DROP SPOOF A: "
--A INPUT -s 172.16.0.0/12 -j LOG -log-prefix "IP DROP SPOOF B: "
--A INPUT -s 192.168.0.0/16 -j LOG -log-prefix "IP DROP SPOOF C: "
--A INPUT -s 224.0.0.0/4 -j LOG -log-prefix "IP DROP MULTICAST D: "
--A INPUT -s 240.0.0.0/5 -j LOG -log-prefix "IP DROP SPOOF E: "
--A INPUT -d 127.0.0.0/8 -j LOG -log-prefix "IP DROP LOOPBACK: "</pre>
-Similarly, you might wish to log packets containing some IPv6 reserved addresses if they are not expected
-on your network:
-<pre>-A INPUT -i eth0 -s ::1 -j LOG -log-prefix "IPv6 DROP LOOPBACK: "
--A INPUT -s 2002:E000::/20 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
--A INPUT -s 2002:7F00::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
--A INPUT -s 2002:0000::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
--A INPUT -s 2002:FF00::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
--A INPUT -s 2002:0A00::/24 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
--A INPUT -s 2002:AC10::/28 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "
--A INPUT -s 2002:C0A8::/32 -j LOG -log-prefix "IPv6 6to4 TRAFFIC: "</pre>
-If you are not expecting to see site-local multicast or auto-tunneled traffic, you can log those:
-<pre>-A INPUT -s FF05::/16 -j LOG -log-prefix "IPv6 SITE-LOCAL MULTICAST: "
--A INPUT -s ::0.0.0.0/96 -j LOG -log-prefix "IPv4 COMPATIBLE IPv6 ADDR: "</pre>
-If you wish to block multicasts to all link-local nodes (e.g. if you are not using router auto-configuration and
-do not plan to have any services that multicast to the entire local network), you can block the link-local
-all-nodes multicast address (before accepting incoming ICMPv6):
-<pre>-A INPUT -d FF02::1 -j LOG -log-prefix "Link-local All-Nodes Multicast: "</pre>
-However, if you're going to allow IPv4 compatible IPv6 addresses (of the form ::0.0.0.0/96), you should
-then consider logging the non-routable IPv4-compatible addresses:
-<pre>-A INPUT -s ::0.0.0.0/104 -j LOG -log-prefix "IP NON-ROUTABLE ADDR: "
--A INPUT -s ::127.0.0.0/104 -j LOG -log-prefix "IP DROP LOOPBACK: "
--A INPUT -s ::224.0.0.0.0/100 -j LOG -log-prefix "IP DROP MULTICAST D: "
--A INPUT -s ::255.0.0.0/104 -j LOG -log-prefix "IP BROADCAST: "</pre>
-If you are not expecting to see any IPv4 (or IPv4-compatible) traffic on your network, consider logging it before it gets dropped:
-<pre>-A INPUT -s ::FFFF:0.0.0.0/96 -j LOG -log-prefix "IPv4 MAPPED IPv6 ADDR: "
--A INPUT -s 2002::/16 -j LOG -log-prefix "IPv6 6to4 ADDR: "</pre>
-The following rule will log all traffic originating from a site-local address, which is deprecated address space:
-<pre>-A INPUT -s FEC0::/10 -j LOG -log-prefix "SITE-LOCAL ADDRESS TRAFFIC: "</pre>
-</description>
-</Group> -->
-</Group><!--Group id="ruleset_modifications"-->
 </Group>
