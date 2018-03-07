@@ -52,7 +52,7 @@
   <xsl:template match="Group[@id='software']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/software/updating.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/updating.xml'))" />
       <xsl:apply-templates select="document('xccdf/system/software/integrity.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/gnome.xml')" />
     </xsl:copy>

@@ -11,7 +11,7 @@ the RPM database, which records metadata of installed packages. Consistently usi
 allows for insight into the current inventory of installed software on the system.
 </description>
 
-<Rule id="ensure_redhat_gpgkey_installed" severity="high" prodtype="rhel7">
+<Rule id="ensure_redhat_gpgkey_installed" prodtype="rhel7" severity="high">
 <title>Ensure Red Hat GPG Key Installed</title>
 <description>
 To ensure the system can cryptographically verify base software
@@ -39,17 +39,13 @@ the software has not been tampered with and that it has been provided
 by a trusted vendor. The Red Hat GPG key is necessary to 
 cryptographically verify packages are from Red Hat.
 </rationale>
-<ident prodtype="rhel7" cce="26957-1" />
+<ident cce="26957-1" prodtype="rhel7" />
 <oval id="ensure_redhat_gpgkey_installed" />
-<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="366" 
-pcidss="Req-6.2" cis="1.2.3" cjis="5.10.4.1" cui="3.4.8" 
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref cis="1.2.3" cjis="5.10.4.1" cui="3.4.8" disa="1749" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="CM-5(3),SI-7,MA-1(b)" pcidss="Req-6.2" srg="366" />
 </Rule>
 
-<!-- REMINDER: Before telling people to update their systems
-     via the security_patches_up_to_date rule, we must
-     ensure they have configured an update source! -->
-<Rule id="ensure_gpgcheck_globally_activated" severity="high" prodtype="rhel7">
+
+<Rule id="ensure_gpgcheck_globally_activated" prodtype="rhel7,fedora" severity="high">
 <title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
 <description>The <tt>gpgcheck</tt> option controls whether
 RPM packages' signatures are always checked prior to installation.
@@ -83,15 +79,13 @@ certificates are disallowed by this requirement. Certificates
 used to verify the software must be from an approved Certificate
 Authority (CA).
 </rationale>
-<ident prodtype="rhel7" cce="26989-4" />
+<ident cce="26989-4" prodtype="rhel7" />
 <oval id="ensure_gpgcheck_globally_activated" />
 <ref prodtype="rhel7" stigid="020050" />
-<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="SRG-OS-000366-GPOS-00153"
-pcidss="Req-6.2" cis="1.2.2" cjis="5.10.4.1" cui="3.4.8"
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref cis="1.2.2" cjis="5.10.4.1" cui="3.4.8" disa="1749" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="CM-5(3),SI-7,MA-1(b)" pcidss="Req-6.2" srg="SRG-OS-000366-GPOS-00153" />
 </Rule>
 
-<Rule id="ensure_gpgcheck_never_disabled" severity="high" prodtype="rhel7">
+<Rule id="ensure_gpgcheck_never_disabled" prodtype="rhel7,fedora" severity="high">
 <title>Ensure gpgcheck Enabled For All Yum Package Repositories</title>
 <description>To ensure signature checking is not disabled for
 any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
@@ -114,14 +108,12 @@ certificates are disallowed by this requirement. Certificates
 used to verify the software must be from an approved Certificate
 Authority (CA).
 </rationale>
-<ident prodtype="rhel7" cce="26876-3" />
+<ident cce="26876-3" prodtype="rhel7" />
 <oval id="ensure_gpgcheck_never_disabled" />
-<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" srg="366" pcidss="Req-6.2" 
-cjis="5.10.4.1" cui="3.4.8" 
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref cjis="5.10.4.1" cui="3.4.8" disa="1749" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="CM-5(3),SI-7,MA-1(b)" pcidss="Req-6.2" srg="366" />
 </Rule>
 
-<Rule id="security_patches_up_to_date" severity="high" prodtype="rhel7">
+<Rule id="security_patches_up_to_date" prodtype="rhel7" severity="high">
 <title>Ensure Software Patches Installed</title>
 <description>If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
 or a yum server, run the following command to install updates:
@@ -132,7 +124,7 @@ can be manually downloaded from the Red Hat Network and installed using <tt>rpm<
 NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
 dictates.
 </description>
-<!-- Directly define remotely located OVAL to be executed when scanning this rule -->
+
 <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
   <check-content-ref href="https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2" />
 </check>
@@ -147,7 +139,7 @@ run the following command to list when each package was last updated:
 <pre>$ rpm -qa -last</pre>
 <br /><br />
 Compare this to Red Hat Security Advisories (RHSA) listed at
-<weblink-macro link="https://access.redhat.com/security/updates/active/"/>
+<weblink-macro link="https://access.redhat.com/security/updates/active/" />
 to determine if the system is missing applicable updates.
 </ocil>
 <rationale>
@@ -157,14 +149,14 @@ recent security patches and updates are not installed, unauthorized
 users may take advantage of weaknesses in the unpatched software. The
 lack of prompt attention to patching could result in a system compromise.
 </rationale>
-<ident prodtype="rhel7" cce="26895-3" />
-<!-- Particular OVAL check is defined directly via <check> element above -->
-<!-- DO NOT REFERENCE an OVAL id here !!! -->
+<ident cce="26895-3" prodtype="rhel7" />
+
+
 <ref prodtype="rhel7" stigid="020260" />
-<ref nist="SI-2,SI-2(c),MA-1(b)" disa="366" pcidss="Req-6.2" cis="1.8" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.4.1" />
+<ref cis="1.8" cjis="5.10.4.1" disa="366" nist="SI-2,SI-2(c),MA-1(b)" pcidss="Req-6.2" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="clean_components_post_updating" severity="low" prodtype="rhel7">
+<Rule id="clean_components_post_updating" prodtype="rhel7" severity="low">
 <title>Ensure YUM Removes Previous Package Versions</title>
 <description>
 <tt>Yum</tt> should be configured to remove previous software components after
@@ -183,13 +175,13 @@ The output should return something similar to:
 Previous versions of software components that are not removed from the information
 system after updates have been installed may be exploited by some adversaries.
 </rationale>
-<ident prodtype="rhel7" cce="CCE-80346-0" />
+<ident cce="CCE-80346-0" prodtype="rhel7" />
 <oval id="clean_components_post_updating" />
 <ref prodtype="rhel7" stigid="020200" />
-<ref nist="SI-2(6)" disa="2617" srg="SRG-OS-000437-GPOS-00194" cui="3.4.8" />
+<ref cui="3.4.8" disa="2617" nist="SI-2(6)" srg="SRG-OS-000437-GPOS-00194" />
 </Rule>
 
-<Rule id="ensure_gpgcheck_local_packages" severity="high" prodtype="rhel7">
+<Rule id="ensure_gpgcheck_local_packages" prodtype="rhel7" severity="high">
 <title>Ensure gpgcheck Enabled for Local Packages</title>
 <description>
 <tt>Yum</tt> should be configured to verify the signature(s) of local packages
@@ -207,18 +199,17 @@ The output should return something similar to:
 Changes to any software components can have significant effects to the overall security
 of the operating system. This requirement ensures the software has not been tampered and
 has been provided by a trusted vendor.
-<br/><br/>
+<br /><br />
 Accordingly, patches, service packs, device drivers, or operating system components must
 be signed with a certificate recognized and approved by the organization.
 </rationale>
-<ident prodtype="rhel7" cce="CCE-80347-8" />
+<ident cce="CCE-80347-8" prodtype="rhel7" />
 <oval id="ensure_gpgcheck_local_packages" />
 <ref prodtype="rhel7" stigid="020060" />
-<ref nist="CM-5(3)" disa="1749" srg="SRG-OS-000366-GPOS-00153" cui="3.4.8" 
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref cui="3.4.8" disa="1749" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="CM-5(3)" srg="SRG-OS-000366-GPOS-00153" />
 </Rule>
 
-<Rule id="ensure_gpgcheck_repo_metadata" severity="high" prodtype="rhel7">
+<Rule id="ensure_gpgcheck_repo_metadata" prodtype="rhel7" severity="high">
 <title>Ensure gpgcheck Enabled for Repository Metadata</title>
 <description>
 Verify the operating system prevents the installation of patches, service packs, device
@@ -240,7 +231,7 @@ The output should return something similar to:
 Changes to any software components can have significant effects to the overall security
 of the operating system. This requirement ensures the software has not been tampered and
 has been provided by a trusted vendor.
-<br/><br/>
+<br /><br />
 Accordingly, patches, service packs, device drivers, or operating system components must
 be signed with a certificate recognized and approved by the organization.
 <br /><br />
@@ -265,11 +256,10 @@ security updates and packages required by this guide.
 This issue of Red Hat Enterprise Linux repositories was reported in
 <weblink-macro link="https://bugzilla.redhat.com/show_bug.cgi?id=1410638" />.
 </warning>
-<ident prodtype="rhel7" cce="CCE-80348-6" />
+<ident cce="CCE-80348-6" prodtype="rhel7" />
 <oval id="ensure_gpgcheck_repo_metadata" />
 <ref prodtype="rhel7" stigid="020070" />
-<ref nist="CM-5(3)" disa="1749" srg="SRG-OS-000366-GPOS-00153" 
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref disa="1749" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="CM-5(3)" srg="SRG-OS-000366-GPOS-00153" />
 </Rule>
 
 </Group>
