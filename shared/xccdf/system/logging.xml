@@ -18,7 +18,7 @@ best effect, and how to use tools provided with the system to maintain and
 monitor logs.</description>
 <platform idref="cpe:/a:machine" />
 
-<Rule id="package_rsyslog_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_rsyslog_installed" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure rsyslog is Installed</title>
 <description>
 Rsyslog is installed by default. 
@@ -37,7 +37,7 @@ system logging services.
 hipaa="164.312(a)(2)(ii)" iso27001-2013="A.12.3.1" />
 </Rule>
 
-<Rule id="service_rsyslog_enabled" severity="medium" prodtype="rhel7">
+<Rule id="service_rsyslog_enabled" severity="medium" prodtype="rhel7,fedora">
 <title>Enable rsyslog Service</title>
 <description>The <tt>rsyslog</tt> service provides syslog-style logging by default on Red Hat Enterprise Linux 7.
 <systemd-service-macro enable="true" service="rsyslog" />
@@ -96,7 +96,7 @@ operator="equals" interactive="0">
 </Value>
 
 
-<Rule id="rsyslog_files_ownership" severity="medium" prodtype="rhel7">
+<Rule id="rsyslog_files_ownership" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure Log Files Are Owned By Appropriate User</title>
 <description>The owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -124,7 +124,7 @@ protected from unauthorized access.</rationale>
 <ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
-<Rule id="rsyslog_files_groupownership" severity="medium" prodtype="rhel7">
+<Rule id="rsyslog_files_groupownership" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure Log Files Are Owned By Appropriate Group</title>
 <description>The group-owner of all log files written by
 <tt>rsyslog</tt> should be root.
@@ -152,7 +152,7 @@ protected from unauthorized access.</rationale>
 <ref nist="AC-6,SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" />
 </Rule>
 
-<Rule id="rsyslog_files_permissions" severity="medium" prodtype="rhel7">
+<Rule id="rsyslog_files_permissions" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure System Log Files Have Correct Permissions</title>
 <description>The file permissions for all log files written by
 <tt>rsyslog</tt> should be set to 600, or more restrictive.
@@ -183,7 +183,7 @@ users could change the logged data, eliminating their forensic value.
 <ref nist="SI-11" disa="1314" pcidss="Req-10.5.1,Req-10.5.2" cis="4.2.1.3" />
 </Rule>
 
-<Rule id="rsyslog_cron_logging" severity="medium" prodtype="rhel7">
+<Rule id="rsyslog_cron_logging" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure <tt>cron</tt> Is Logging To Rsyslog</title>
 <description>Cron logging must be implemented to spot intrusions or trace
 cron job status. If <tt>cron</tt> is not logging to <tt>rsyslog</tt>, it
@@ -241,7 +241,7 @@ operator="equals" interactive="1">
 <value selector="default">logcollector</value>
 </Value>
 
-<Rule id="rsyslog_remote_loghost" prodtype="rhel7">
+<Rule id="rsyslog_remote_loghost" prodtype="rhel7,fedora">
 <title>Ensure Logs Sent To Remote Host</title>
 <description>
 To configure rsyslog to send logs to a remote log server,
@@ -304,7 +304,7 @@ should remain commented out.
 <br /><br />
 </description>
 
-<Rule id="rsyslog_nolisten" prodtype="rhel7">
+<Rule id="rsyslog_nolisten" prodtype="rhel7,fedora">
 <title>Ensure rsyslog Does Not Accept Remote Messages Unless Acting As Log Server</title>
 <description>The <tt>rsyslog</tt> daemon should not accept remote messages
 unless the system acts as a log server.
@@ -328,7 +328,7 @@ rsyslog by configuring it not to listen on the network.
 <ref nist="AU-9(2),AC-4,CM-6(c)" disa="318,368,1812,1813,1814" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="rsyslog_accept_remote_messages_tcp" prodtype="rhel7">
+<Rule id="rsyslog_accept_remote_messages_tcp" prodtype="rhel7,fedora">
 <title>Enable rsyslog to Accept Messages via TCP, if Acting As Log Server</title>
 <description>The <tt>rsyslog</tt> daemon should not accept remote messages
 unless the system acts as a log server.
@@ -346,7 +346,7 @@ messages over a reliable TCP connection.
 <ref nist="AU-9" cis="4.2.1.5" />
 </Rule>
 
-<Rule id="rsyslog_accept_remote_messages_udp" prodtype="rhel7">
+<Rule id="rsyslog_accept_remote_messages_udp" prodtype="rhel7,fedora">
 <title>Enable rsyslog to Accept Messages via UDP, if Acting As Log Server</title>
 <description>The <tt>rsyslog</tt> daemon should not accept remote messages
 unless the system acts as a log server.
@@ -390,7 +390,7 @@ rotated more often than once a day, some other mechanism must be
 used.</description>
 
 
-<Rule id="ensure_logrotate_activated" prodtype="rhel7">
+<Rule id="ensure_logrotate_activated" prodtype="rhel7,fedora">
 <title>Ensure Logrotate Runs Periodically</title>
 <description>The <tt>logrotate</tt> utility allows for the automatic rotation of 
 log files.  The frequency of rotation is specified in <tt>/etc/logrotate.conf</tt>, 
@@ -420,7 +420,7 @@ If logrotate is configured properly, output should include references to
 Is this system the central log server? If so, edit the file <tt>/etc/logwatch/conf/logwatch.conf</tt> as shown below.
 </description>
 
-<Rule id="logwatch_configured_hostlimit" prodtype="rhel7">
+<Rule id="logwatch_configured_hostlimit" prodtype="rhel7,fedora">
 <title>Configure Logwatch HostLimit Line</title>
 <description> On a central logserver, you want Logwatch to summarize all syslog entries, including those which did not originate 
 on the logserver itself. The <tt>HostLimit</tt> setting tells Logwatch to report on all hosts, not just the one on which it 
@@ -430,7 +430,7 @@ is running.
 <oval id="logwatch_configured_hostlimit" />
 </Rule>
 
-<Rule id="logwatch_configured_splithosts" prodtype="rhel7">
+<Rule id="logwatch_configured_splithosts" prodtype="rhel7,fedora">
 <title>Configure Logwatch SplitHosts Line</title>
 <description>
 If <tt>SplitHosts</tt> is set, Logwatch will separate entries by hostname. This makes the report longer but significantly 
@@ -453,7 +453,7 @@ the logserver.</description> -->
 
 </Group> <!-- <Group id="configure_logwatch_on_logserver"> -->
 
-<Rule id="disable_logwatch_for_logserver" prodtype="rhel7">
+<Rule id="disable_logwatch_for_logserver" prodtype="rhel7,fedora">
 <title> Disable Logwatch on Clients if a Logserver Exists</title>
 <description> 
 Does your site have a central logserver which has been configured to report on logs received from all systems? 
