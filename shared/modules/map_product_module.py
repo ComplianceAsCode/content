@@ -6,7 +6,6 @@ FEDORA = 'Fedora'
 FIREFOX = 'Mozilla Firefox'
 JRE = 'Java Runtime Environment'
 RHEL = 'Red Hat Enterprise Linux'
-WEBMIN = 'Webmin'
 DEBIAN = 'Debian'
 UBUNTU = 'Ubuntu'
 RHEVM = 'Red Hat Enterprise Virtualization Manager'
@@ -59,8 +58,6 @@ def map_product(version):
         return JRE
     if version.startswith("rhel"):
         return RHEL
-    if version.startswith("webmin"):
-        return WEBMIN
     if version.startswith("debian"):
         return DEBIAN
     if version.startswith("ubuntu"):
