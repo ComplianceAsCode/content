@@ -43,7 +43,6 @@ option(SSG_PRODUCT_SUSE12 "If enabled, the SLE12 SCAP content will be built" TRU
 option(SSG_PRODUCT_UBUNTU14 "If enabled, the Ubuntu14 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_UBUNTU16 "If enabled, the Ubuntu16 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_WRLINUX "If enabled, the WRLinux SCAP content will be built" TRUE)
-option(SSG_PRODUCT_WEBMIN "If enabled, the Webmin SCAP content will be built" TRUE)
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -156,7 +155,6 @@ message(STATUS "SUSE 12: ${SSG_PRODUCT_SUSE12}")
 message(STATUS "Ubuntu 14: ${SSG_PRODUCT_UBUNTU14}")
 message(STATUS "Ubuntu 16: ${SSG_PRODUCT_UBUNTU16}")
 message(STATUS "WRLinux: ${SSG_PRODUCT_WRLINUX}")
-message(STATUS "Webmin: ${SSG_PRODUCT_WEBMIN}")
 
 message(STATUS " ")
 
@@ -236,9 +234,6 @@ endif()
 
 if (SSG_PRODUCT_WRLINUX)
     add_subdirectory("wrlinux")
-endif()
-if (SSG_PRODUCT_WEBMIN)
-    add_subdirectory("webmin")
 endif()
 
 ssg_define_guide_and_table_tests()
