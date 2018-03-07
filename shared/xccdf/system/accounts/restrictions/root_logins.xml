@@ -22,7 +22,7 @@ via network protocols. Other sections of this document
 include guidance describing how to prevent root from logging in via SSH.
 </description>
 
-<Rule id="no_direct_root_logins" severity="medium" prodtype="rhel7">
+<Rule id="no_direct_root_logins" prodtype="rhel7,fedora" severity="medium">
 <title>Direct root Logins Not Allowed</title>
 <description>To further limit access to the <tt>root</tt> account, administrators
 can disable root logins at the console by editing the <tt>/etc/securetty</tt> file.
@@ -36,7 +36,7 @@ physically attached to the system. To prevent root from logging in, remove the
 contents of this file. To prevent direct root logins, remove the contents of this
 file by typing the following command:
 <pre>
-$ sudo echo > /etc/securetty
+$ sudo echo &gt; /etc/securetty
 </pre>
 </description>
 <ocil clause="the /etc/securetty file is not empty">
@@ -52,12 +52,11 @@ to privileged (root) access via su / sudo. This is required for FISMA Low
 and FISMA Moderate systems.
 </rationale>
 <oval id="no_direct_root_logins" />
-<ident prodtype="rhel7" cce="27294-8" />
-<ref nist="IA-2(1)" cis="5.5" cui="3.1.1,3.1.6"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ident cce="27294-8" prodtype="rhel7" />
+<ref cis="5.5" cui="3.1.1,3.1.6" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="IA-2(1)" />
 </Rule>
 
-<Rule id="securetty_root_login_console_only" severity="medium" prodtype="rhel7">
+<Rule id="securetty_root_login_console_only" prodtype="rhel7,fedora" severity="medium">
 <title>Restrict Virtual Console Root Logins</title>
 <description>
 To restrict root logins through the (deprecated) virtual console devices,
@@ -78,19 +77,18 @@ Preventing direct root login to virtual console devices
 helps ensure accountability for actions taken on the system
 using the root account.
 </rationale>
-<ident prodtype="rhel7" cce="27318-5" />
+<ident cce="27318-5" prodtype="rhel7" />
 <oval id="securetty_root_login_console_only" />
-<ref nist="AC-6(2)" disa="770" cui="3.1.1, 3.1.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cui="3.1.1, 3.1.5" disa="770" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6(2)" />
 </Rule>
 
-<Rule id="restrict_serial_port_logins" prodtype="rhel7">
+<Rule id="restrict_serial_port_logins" prodtype="rhel7,fedora">
 <title>Restrict Serial Port Root Logins</title>
 <description>To restrict root logins on serial ports,
 ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
 <pre>ttyS0
 ttyS1</pre>
-<!-- TODO: discussion/description of serial port -->
+
 </description>
 <ocil clause="root login over serial ports is permitted">
 To check for serial port entries which permit root login,
@@ -103,13 +101,12 @@ Preventing direct root login to serial port interfaces
 helps ensure accountability for actions taken on the systems
 using the root account.
 </rationale>
-<ident prodtype="rhel7" cce="27268-2" />
+<ident cce="27268-2" prodtype="rhel7" />
 <oval id="restrict_serial_port_logins" />
-<ref nist="AC-6(2)" disa="770" cui="3.1.1, 3.1.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cui="3.1.1, 3.1.5" disa="770" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6(2)" />
 </Rule>
 
-<Rule id="no_root_webbrowsing" prodtype="rhel7">
+<Rule id="no_root_webbrowsing" prodtype="rhel7,fedora">
 <title>Restrict Web Browser Use for Administrative Accounts</title>
 <description>
 Enforce policy requiring administrative accounts use web browsers only for
@@ -124,10 +121,10 @@ If a browser vulnerability is exploited while running with administrative privil
 the entire system could be compromised. Specific exceptions for local service
 administration should be documented in site-defined policy.
 </rationale>
-<ident prodtype="rhel7" cce="80209-0" />
+<ident cce="80209-0" prodtype="rhel7" />
 </Rule>
 
-<Rule id="no_shelllogin_for_systemaccounts" severity="medium" prodtype="rhel7">
+<Rule id="no_shelllogin_for_systemaccounts" prodtype="rhel7,fedora" severity="medium">
 <title>Ensure that System Accounts Do Not Run a Shell Upon Login</title>
 <description>
 Some accounts are not associated with a human user of the system, and exist to
@@ -159,12 +156,12 @@ difficult for attackers to make use of system accounts.
 Do not perform the steps in this section on the root account. Doing so might
 cause the system to become inaccessible.
 </warning>
-<ident prodtype="rhel7" cce="26448-1" />
+<ident cce="26448-1" prodtype="rhel7" />
 <oval id="no_shelllogin_for_systemaccounts" />
-<ref nist="AC-2" disa="" cis="5.4.2" />
+<ref cis="5.4.2" disa="" nist="AC-2" />
 </Rule>
 
-<Rule id="accounts_no_uid_except_zero" severity="high" prodtype="rhel7">
+<Rule id="accounts_no_uid_except_zero" prodtype="rhel7,fedora" severity="high">
 <title>Verify Only Root Has UID 0</title>
 <description>
 If any account other than root has a UID of 0, this misconfiguration should 
@@ -192,13 +189,13 @@ guess a password for a privileged account. Proper configuration of
 sudo is recommended to afford multiple system administrators
 access to root privileges in an accountable manner.
 </rationale>
-<ident prodtype="rhel7" cce="27175-9" />
+<ident cce="27175-9" prodtype="rhel7" />
 <oval id="accounts_no_uid_except_zero" />
 <ref prodtype="rhel7" stigid="020310" />
-<ref nist="AC-6,IA-2(1),IA-4" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.1,3.1.5" cis="6.2.5" />
+<ref cis="6.2.5" cui="3.1.1,3.1.5" disa="366" nist="AC-6,IA-2(1),IA-4" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="root_path_default" prodtype="rhel7">
+<Rule id="root_path_default" prodtype="rhel7,fedora">
 <title>Root Path Must Be Vendor Default</title>
 <description>
 Assuming root shell is bash, edit the following files:
@@ -219,31 +216,8 @@ The root account's executable search path must be the vendor default, and must
 contain only absolute paths.
 </rationale>
 <ref nist="SA-8" />
-<ident prodtype="rhel7" cce="80210-8" />
+<ident cce="80210-8" prodtype="rhel7" />
 </Rule>
 
-<!--
-     This is redundant to the previous rule, which insists that the
-     root path is the vendor default.
 
-<Rule id="root_path_no_wwdir" prodtype="rhel7">
-<title>Root Path Must Not Contain World-Writable Directories</title>
-<description>
-If a world-writable directory is found in the <tt>PATH</tt>, remove the 
-world-writable permission for that directory with the following command:
-<pre># chmod o-w <i>/dir</i></pre>
-Alternately, remove the world-writable directory from the <tt>PATH</tt>.
-</description>
-<ocil clause="any world-writable directories are found">
-World-writable permissions on directories in root's path can be checked 
-with the following command:
-<pre># ls -ld 'echo $PATH | sed "s/:/ /g"'</pre>
-</ocil>
-<rationale>
-If the root search path contains a world-writable directory, malicious software 
-could be placed in the path.
-</rationale>
-<ref disa="366" />
-</Rule> -->
 </Group>
-

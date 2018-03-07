@@ -74,10 +74,10 @@
   <xsl:template match="Group[@id='accounts-restrictions']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/root_logins.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/password_storage.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/password_expiration.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/account_expiration.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/root_logins.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/password_storage.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/password_expiration.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/account_expiration.xml'))" />
     </xsl:copy>
   </xsl:template>
 
