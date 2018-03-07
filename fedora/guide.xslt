@@ -84,10 +84,10 @@
   <xsl:template match="Group[@id='permissions']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/partitions.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/mounting.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/files.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/permissions/execution.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/partitions.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/mounting.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/files.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/execution.xml'))" />
     </xsl:copy>
   </xsl:template>
 
