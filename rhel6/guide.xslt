@@ -54,10 +54,10 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('xccdf/system/entropy.xml')" />
-      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/software.xml'))" /> 
-      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/permissions/permissions.xml'))" />
+      <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/software/permissions.xml')" />
       <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
-      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/accounts.xml'))" />
+      <xsl:apply-templates select="document('xccdf/system/accounts.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
       <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
@@ -77,7 +77,7 @@
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/accounts/restrictions/restrictions.xml'))" />
+      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/pam.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/session.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/physical.xml')" />
@@ -128,7 +128,7 @@
       <xsl:apply-templates select="document('xccdf/services/base.xml')" />
       <xsl:apply-templates select="document('xccdf/services/cron.xml')" />
       <xsl:apply-templates select="document('xccdf/services/ssh.xml')" />
-      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/sssd.xml'))" />
+      <xsl:apply-templates select="document('xccdf/services/sssd.xml')" />
       <xsl:apply-templates select="document('xccdf/services/xorg.xml')" />
       <xsl:apply-templates select="document('xccdf/services/avahi.xml')" />
       <xsl:apply-templates select="document('xccdf/services/printing.xml')" />
