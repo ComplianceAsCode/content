@@ -107,14 +107,13 @@
   <xsl:template match="Group[@id='services']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/services/cron.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/ssh.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/ntp.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/audit.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/ftp.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/snmp.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/nfs.xml')" />
-      <xsl:apply-templates select="document('xccdf/services/xorg.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/cron.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/ssh.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/ntp.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/ftp.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/snmp.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/nfs.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/xorg.xml'))" />
     </xsl:copy>
   </xsl:template>
 

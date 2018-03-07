@@ -6,13 +6,12 @@ for data exchanged between two systems, as well as server
 authentication, through the use of public key cryptography. The
 implementation included with the system is called OpenSSH, and more
 detailed documentation is available from its website,
-<weblink-macro link="http://www.openssh.org"/>. Its server program 
+<weblink-macro link="http://www.openssh.org" />. Its server program 
 is called <tt>sshd</tt> and provided by the RPM package
 <tt>openssh-server</tt>.</description>
 <platform idref="cpe:/a:machine" />
 
-<Value id="sshd_idle_timeout_value" type="number"
-operator="equals" interactive="0">
+<Value id="sshd_idle_timeout_value" interactive="0" operator="equals" type="number">
 <title>SSH session Idle time</title>
 <description>Specify duration of allowed idle time.</description>
 <value selector="">300</value>
@@ -24,8 +23,7 @@ operator="equals" interactive="0">
 <value selector="120_minutes">7200</value>
 </Value>
 
-<Value id="sshd_max_auth_tries_value" type="number"
-operator="equals" interactive="0">
+<Value id="sshd_max_auth_tries_value" interactive="0" operator="equals" type="number">
 <title>SSH Max authentication attempts</title>
 <description>Specify the maximum number of authentication attempts per connection.</description>
 <value selector="">4</value>
@@ -35,16 +33,14 @@ operator="equals" interactive="0">
 <value selector="10">10</value>
 </Value>
 
-<Value id="sshd_listening_port" type="number"
-operator="equals" interactive="0">
+<Value id="sshd_listening_port" interactive="0" operator="equals" type="number">
 <title>SSH Server Listening Port</title>
 <description>Specify port the SSH server is listening.</description>
 <value selector="">22</value>
 <value selector="default">22</value>
 </Value>
 
-<Value id="firewalld_sshd_zone" type="string"
-operator="equals" interactive="0">
+<Value id="firewalld_sshd_zone" interactive="0" operator="equals" type="string">
 <title>SSH enabled firewalld zone</title>
 <description>Specify firewalld zone to enable SSH service. This value is used only for remediation purposes.</description>
 <value selector="">public</value>
@@ -59,16 +55,14 @@ operator="equals" interactive="0">
 <value selector="work">work</value>
 </Value>
 
-<Value id="sshd_approved_macs" type="string"
-operator="equals" interactive="0">
+<Value id="sshd_approved_macs" interactive="0" operator="equals" type="string">
 <title>SSH Approved MACs by FIPS</title>
 <description>Specify the FIPS approved MACs (message authentication code) algorithms
 	that are used for data integrity protection by the SSH server.</description>
 <value selector="default">hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com</value>
 </Value>
 
-<Value id="sshd_required" type="number"
-operator="equals" interactive="0">
+<Value id="sshd_required" interactive="0" operator="equals" type="number">
 <title>SSH is required to be installed</title>
 <description>Specify if the Policy requires SSH to be installed. Used by SSH Rules
 to determine if SSH should be uninstalled or configured.<br />
@@ -80,13 +74,13 @@ A value of 2 indicates that OpenSSH server package is required by the policy.<br
 <value selector="yes">2</value>
 </Value>
 
-<Rule id="package_openssh-server_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_openssh-server_installed" prodtype="rhel7" severity="medium">
 <title>Install the OpenSSH Server Package</title>
 <description>
 The <tt>openssh-server</tt> package should be installed.
-<yum-macro install="true" package="openssh-server"/>
+<yum-macro install="true" package="openssh-server" />
 </description>
-<ocil clause="the package is not installed" >
+<ocil clause="the package is not installed">
 <package-check-macro package="openssh-server" />
 </ocil>
 <rationale>
@@ -94,13 +88,13 @@ Without protection of the transmitted information, confidentiality, and
 integrity may be compromised because unprotected communications can be
 intercepted and either read or altered.
 </rationale>
-<ident prodtype="rhel7" cce="80215-7" />
+<ident cce="80215-7" prodtype="rhel7" />
 <oval id="package_openssh-server_installed" />
 <ref prodtype="rhel7" stigid="040300" />
-<ref nist="SC-8" disa="2418,2420,2421,2422" srg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190" />
+<ref disa="2418,2420,2421,2422" nist="SC-8" srg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190" />
 </Rule>
 
-<Rule id="service_sshd_enabled" severity="medium" prodtype="rhel7">
+<Rule id="service_sshd_enabled" prodtype="rhel7" severity="medium">
 <title>Enable the OpenSSH Service</title>
 <description>The SSH server service, sshd, is commonly needed.
 <systemd-service-macro enable="true" service="sshd" />
@@ -119,9 +113,9 @@ mobile devices, notebook computers, printers, copiers, scanners, etc). Communica
 outside the physical protection of a controlled boundary are exposed to the possibility
 of interception and modification.
 </rationale>
-<ident prodtype="rhel7" cce="80216-5" />
+<ident cce="80216-5" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="040310" />
-<ref nist="SC-8" disa="2418,2420,2421,2422" srg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190" cui="3.1.13,3.5.4,3.13.8" />
+<ref cui="3.1.13,3.5.4,3.13.8" disa="2418,2420,2421,2422" nist="SC-8" srg="SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190" />
 <oval id="service_sshd_enabled" />
 </Rule>
 
@@ -133,35 +127,35 @@ However, if it can be disabled, do so.
 This is unusual, as SSH is a common method for encrypted and authenticated
 remote access.
 </description>
-<ident prodtype="rhel7" cce="80217-3" />
+<ident cce="80217-3" prodtype="rhel7" />
 <oval id="service_sshd_disabled" />
 </Rule>
 
 <Rule id="file_permissions_sshd_pub_key" severity="medium">
 <title>Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files</title>
-<description><fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644"/></description>
-<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--"/></ocil>
+<description><fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644" /></description>
+<ocil><fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--" /></ocil>
 <rationale>
 If a public host key file is modified by an unauthorized user, the SSH service
 may be compromised.
 </rationale>
-<ident prodtype="rhel7" cce="27311-0" />
+<ident cce="27311-0" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="040410" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.13,3.13.10" />
+<ref cui="3.1.13,3.13.10" disa="366" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 <oval id="file_permissions_sshd_pub_key" />
 </Rule>
 
 <Rule id="file_permissions_sshd_private_key" severity="medium">
 <title>Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files</title>
-<description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0640"/></description>
-<ocil><fileperms-check-macro file="/etc/ssh/*_key" perms="-rw-r-----"/></ocil>
+<description><fileperms-desc-macro file="/etc/ssh/*_key" perms="0640" /></description>
+<ocil><fileperms-check-macro file="/etc/ssh/*_key" perms="-rw-r-----" /></ocil>
 <rationale>
 If an unauthorized user obtains the private SSH host key file, the host could be
 impersonated.
 </rationale>
-<ident prodtype="rhel7" cce="27485-2" />
+<ident cce="27485-2" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="040420" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.13,3.13.10" />
+<ref cui="3.1.13,3.13.10" disa="366" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 <oval id="file_permissions_sshd_private_key" />
 </Rule>
 
@@ -177,7 +171,7 @@ firewall configuration.
 If inbound SSH connections are not expected, disallowing access to the SSH port will
 avoid possible exploitation of the port by an attacker.
 </rationale>
-<ident prodtype="rhel7" cce="80218-1" />
+<ident cce="80218-1" prodtype="rhel7" />
 <ref cui="3.1.12" />
 <oval id="firewalld_sshd_disabled" />
 </Rule>
@@ -199,13 +193,13 @@ be added to the firewall configuration.
 <firewalld-desc-macro allow="true" proto="tcp" service="ssh" />
 </description>
 <ocil description="the SSH port is blocked, and the exception is missing">
-<firewalld-check-macro allow="true" proto="tcp" service="ssh" port="22"/>
+<firewalld-check-macro allow="true" port="22" proto="tcp" service="ssh" />
 </ocil>
 <rationale>
 If inbound SSH connections are expected, adding a firewall rule exception
 will allow remote access through the SSH port.
 </rationale>
-<ident prodtype="rhel7" cce="80361-9" />
+<ident cce="80361-9" prodtype="rhel7" />
 <ref cui="3.1.12" />
 <oval id="firewalld_sshd_port_enabled" value="sshd_listening_port" />
 </Rule>
@@ -233,12 +227,10 @@ has many well-known vulnerability exploits. Exploits of the SSH daemon could pro
 immediate root access to the system.
 </rationale>
 <warning category="general">As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol supported is version 2, and line <pre>Protocol 2</pre> in <tt>/etc/ssh/sshd_config</tt> is not necessary.</warning>
-<ident prodtype="rhel7" cce="27320-1" />
+<ident cce="27320-1" prodtype="rhel7" />
 <oval id="sshd_allow_only_protocol2" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040390" />
-<ref nist="AC-17(8).1(ii),IA-5(1)(c)" disa="197,366" cis="5.2.2"
-srg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" cjis="5.5.6" cui="3.1.13,3.5.4"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.2" cjis="5.5.6" cui="3.1.13,3.5.4" disa="197,366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-17(8).1(ii),IA-5(1)(c)" srg="SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_limit_user_access">
@@ -254,9 +246,9 @@ Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
 Specifying which accounts are allowed SSH access into the system reduces the
 possibility of unauthorized access to the system.
 </rationale>
-<ident prodtype="rhel7" cce="80219-9" />
-<!-- <oval id="sshd_limit_user_access" /> -->
-<ref nist="AC-3" cui="3.1.12" />
+<ident cce="80219-9" prodtype="rhel7" />
+
+<ref cui="3.1.12" nist="AC-3" />
 </Rule>
 
 <Rule id="sshd_disable_gssapi_auth" severity="medium">
@@ -277,11 +269,10 @@ GSSAPI authentication is used to provide additional authentication mechanisms to
 applications. Allowing GSSAPI authentication through SSH exposes the system's
 GSSAPI to remote hosts, increasing the attack surface of the system.
 </rationale>
-<ident prodtype="rhel7" cce="80220-7" />
+<ident cce="80220-7" prodtype="rhel7" />
 <oval id="sshd_disable_gssapi_auth" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040430" />
-<ref nist="CM-6(c)" disa="368,318,1812,1813,1814" srg="SRG-OS-000364-GPOS-00151" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="368,318,1812,1813,1814" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="CM-6(c)" srg="SRG-OS-000364-GPOS-00151" />
 </Rule>
 
 <Rule id="sshd_disable_kerb_auth" severity="medium">
@@ -303,11 +294,10 @@ is enabled through SSH, the SSH daemon provides a means of access to the
 system's Kerberos implementation. Vulnerabilities in the system's Kerberos
 implementations may be subject to exploitation.
 </rationale>
-<ident prodtype="rhel7" cce="80221-5" />
+<ident cce="80221-5" prodtype="rhel7" />
 <oval id="sshd_disable_kerb_auth" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040440" />
-<ref nist="CM-6(c)" disa="368,318,1812,1813,1814" srg="SRG-OS-000364-GPOS-00151" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="368,318,1812,1813,1814" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="CM-6(c)" srg="SRG-OS-000364-GPOS-00151" />
 </Rule>
 
 <Rule id="sshd_enable_strictmodes" severity="medium">
@@ -328,11 +318,10 @@ If configured properly, output should be <pre>yes</pre>
 If other users have access to modify user-specific SSH configuration files, they
 may be able to log into the system as another user.
 </rationale>
-<ident prodtype="rhel7" cce="80222-3" />
+<ident cce="80222-3" prodtype="rhel7" />
 <oval id="sshd_enable_strictmodes" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040450" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_use_priv_separation" severity="medium">
@@ -353,11 +342,10 @@ SSH daemon privilege separation causes the SSH process to drop root privileges
 when not needed which would decrease the impact of software vulnerabilities in
 the unprivileged section.
 </rationale>
-<ident prodtype="rhel7" cce="80223-1" />
+<ident cce="80223-1" prodtype="rhel7" />
 <oval id="sshd_use_priv_separation" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040460" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.12" 
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_disable_compression" severity="medium">
@@ -381,11 +369,10 @@ If compression is allowed in an SSH connection prior to authentication,
 vulnerabilities in the compression software could result in compromise of the
 system from an unauthenticated connection, potentially wih root privileges.
 </rationale>
-<ident prodtype="rhel7" cce="80224-9" />
+<ident cce="80224-9" prodtype="rhel7" />
 <oval id="sshd_disable_compression" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040470" />
-<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="CM-6(b)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_print_last_log" severity="low">
@@ -405,10 +392,10 @@ If configured properly, output should be <pre>yes</pre>
 Providing users feedback on when account accesses last occurred facilitates user
 recognition and reporting of unauthorized account use.
 </rationale>
-<ident prodtype="rhel7" cce="80225-6" />
+<ident cce="80225-6" prodtype="rhel7" />
 <oval id="sshd_print_last_log" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040360" />
-<ref nist="AC-9" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="AC-9" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_set_loglevel_info" severity="low">
@@ -433,45 +420,14 @@ Response, it is important to determine when a particular user was active on a sy
 logout record can eliminate those users who disconnected, which helps narrow the field.
 </rationale>
 <oval id="sshd_set_loglevel_info" />
-<ref prodtype="rhel7" cis="5.2.3"/>
-<ref prodtype="debian8" cis="9.3.2"/>
+<ref cis="5.2.3" prodtype="rhel7" />
+<ref cis="9.3.2" prodtype="debian8" />
 </Rule>
 
-<!-- FIXME: figure out whether/how to say something discrete here -->
-<!--
-<Group id="sshd_disable_extraneous_authentication">
-<title>Disable Extraneous Authentication Schemes</title>
-<description>OpenSSH comes with a wide variety of authentication schemes that may or may not
-be applicable. It is best practice to explicitly disable all authentication schemes except for
-those which are actually required. This reduces the overall attack surface of the daemon.
-<br />
-In the configuration file excerpt below only public key authentication (PubKeyAuthentication)
-and password authentication (PasswordAuthentication) is permitted. All other schemes are disabled.
-<pre>PasswordAuthentication yes
-PubkeyAuthentication yes
-ChallengeResponseAuthentication no
-GSSAPIAuthentication no
-HostbasedAuthentication no
-KbdInteractiveAuthentication no
-KerberosAuthentication no
-RhostsRSAAuthentication no
-RSAAuthentication no</pre></description>
-</Group>
--->
 
-<!--
-<Rule id="sshd_disable_tunnel" prodtype="rhel7">
-<title>Disable Tunneling</title>
-<description>OpenSSH includes the ability to provide tunneling, which allows
-a user to effectively establish a VPN connection with a firewall/gateway system and then access resources
-sitting behind it. This feature is disabled by default. To explicitly
-disable it:
-<pre>PermitTunnel no</pre>
-</description>
-<rationale>
-</rationale>
-</Group>
--->
+
+
+
 
 
 <Rule id="sshd_set_idle_timeout">
@@ -502,10 +458,10 @@ Terminating an idle ssh session within a short time period reduces the window of
 opportunity for unauthorized personnel to take control of a management session
 enabled on the console or console port that has been let unattended.
 </rationale>
-<ident prodtype="rhel7" cce="27433-2" />
+<ident cce="27433-2" prodtype="rhel7" />
 <oval id="sshd_set_idle_timeout" value="sshd_idle_timeout_value" value2="sshd_required" />
 <ref prodtype="rhel7" stigid="040320" />
-<ref nist="AC-2(5),SA-8(i),AC-12" disa="1133,2361" srg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" pcidss="Req-8.1.8" cis="5.2.12" cjis="5.5.6" cui="3.1.11" />
+<ref cis="5.2.12" cjis="5.5.6" cui="3.1.11" disa="1133,2361" nist="AC-2(5),SA-8(i),AC-12" pcidss="Req-8.1.8" srg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" />
 </Rule>
 
 <Rule id="sshd_set_keepalive" severity="medium">
@@ -524,11 +480,10 @@ If properly configured, output should be:
 This ensures a user login will be terminated as soon as the <tt>ClientAliveCountMax</tt>
 is reached.
 </rationale>
-<ident prodtype="rhel7" cce="27082-7" />
+<ident cce="27082-7" prodtype="rhel7" />
 <oval id="sshd_set_keepalive" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040340" />
-<ref nist="AC-2(5),SA-8,AC-12" disa="1133,2361" srg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" cis="5.2.12" cjis="5.5.6" cui="3.1.11"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.12" cjis="5.5.6" cui="3.1.11" disa="1133,2361" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-2(5),SA-8,AC-12" srg="SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109" />
 </Rule>
 
 <Rule id="sshd_set_max_auth_tries" severity="medium">
@@ -548,9 +503,9 @@ If properly configured, output should be:
 Setting the MaxAuthTries parameter to a low number will minimize the risk of successful
 brute force attacks to the SSH server.
 </rationale>
-<oval id="sshd_set_max_auth_tries" value="sshd_max_auth_tries_value"/>
-<ref prodtype="debian8" cis="9.3.5" />
-<ref prodtype="rhel7" cis="5.2.5" />
+<oval id="sshd_set_max_auth_tries" value="sshd_max_auth_tries_value" />
+<ref cis="9.3.5" prodtype="debian8" />
+<ref cis="5.2.5" prodtype="rhel7" />
 </Rule>
 
 <Rule id="sshd_disable_rhosts" severity="medium">
@@ -564,17 +519,16 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>IgnoreRhosts yes</pre>
 </description>
 <ocil>
-<sshd-check-macro option="IgnoreRhosts" value="yes" default="yes" />
+<sshd-check-macro default="yes" option="IgnoreRhosts" value="yes" />
 </ocil>
 <rationale>
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
-<ident prodtype="rhel7" cce="27377-1" />
+<ident cce="27377-1" prodtype="rhel7" />
 <oval id="sshd_disable_rhosts" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040350" />
-<ref nist="AC-3,CM-6(a)" disa="366" cis="5.2.6" srg="SRG-OS-000480-GPOS-00227" cjis="5.5.6" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.6" cjis="5.5.6" cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-3,CM-6(a)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_disable_user_known_hosts" severity="medium">
@@ -588,18 +542,17 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>IgnoreUserKnownHosts yes</pre>
 </description>
 <ocil>
-<sshd-check-macro option="IgnoreUserKnownHosts" value="yes" default="no" />
+<sshd-check-macro default="no" option="IgnoreUserKnownHosts" value="yes" />
 </ocil>
 <rationale>
 Configuring this setting for the SSH daemon provides additional
 assurance that remove login via SSH will require a password, even
 in the event of misconfiguration elsewhere.
 </rationale>
-<ident prodtype="rhel7" cce="80372-6" />
+<ident cce="80372-6" prodtype="rhel7" />
 <oval id="sshd_disable_user_known_hosts" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040380" />
-<ref nist="CM-6(a)" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="CM-6(a)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_disable_rhosts_rsa" severity="medium">
@@ -617,7 +570,7 @@ To check which SSH protocol version is allowed, check version of
 <pre>$ rpm -qi openssh-server | grep Version</pre>
 Versions equal to or higher than 7.4 have deprecated the <tt>RhostsRSAAuthentication</tt> option.
 If version is lower than 7.4, run the following command to check configuration:
-<sshd-check-macro option="RhostsRSAAuthentication" value="no" default="yes" />
+<sshd-check-macro default="yes" option="RhostsRSAAuthentication" value="no" />
 </ocil>
 <rationale>
 Configuring this setting for the SSH daemon provides additional
@@ -628,11 +581,10 @@ in the event of misconfiguration elsewhere.
 the <tt>RhostsRSAAuthentication</tt> option has been deprecated, and the line
 <pre>RhostsRSAAuthentication no</pre> in <tt>/etc/ssh/sshd_config</tt> is not
 necessary.</warning>
-<ident prodtype="rhel7" cce="80373-4" />
+<ident cce="80373-4" prodtype="rhel7" />
 <oval id="sshd_disable_rhosts_rsa" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040330" />
-<ref nist="CM-6(a)" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="CM-6(a)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="disable_host_auth" severity="medium">
@@ -647,17 +599,16 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>HostbasedAuthentication no</pre>
 </description>
 <ocil>
-<sshd-check-macro option="HostbasedAuthentication" value="no" default="yes" />
+<sshd-check-macro default="yes" option="HostbasedAuthentication" value="no" />
 </ocil>
 <rationale>
 SSH trust relationships mean a compromise on one host
 can allow an attacker to move trivially to other hosts.
 </rationale>
-<ident prodtype="rhel7" cce="27413-4" />
+<ident cce="27413-4" prodtype="rhel7" />
 <oval id="disable_host_auth" value="sshd_required" />
 <ref prodtype="rhel7" stigid="010470" />
-<ref nist="AC-3,CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cis="5.2.7" cjis="5.5.6" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.7" cjis="5.5.6" cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-3,CM-6(b)" srg="SRG-OS-000480-GPOS-00229" />
 </Rule>
 
 <Rule id="sshd_enable_x11_forwarding" severity="high">
@@ -671,16 +622,16 @@ following line in <tt>/etc/ssh/sshd_config</tt>:
 <pre>X11Forwarding yes</pre>
 </description>
 <ocil>
-<sshd-check-macro option="X11Forwarding" value="yes" default="no" />
+<sshd-check-macro default="no" option="X11Forwarding" value="yes" />
 </ocil>
 <rationale>
 Open X displays allow an attacker to capture keystrokes and to execute commands
 remotely.
 </rationale>
-<ident prodtype="rhel7" cce="80226-4" />
+<ident cce="80226-4" prodtype="rhel7" />
 <oval id="sshd_enable_x11_forwarding" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040710" />
-<ref nist="CM-2(1)(b)" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.1.13" cis="5.2.4"/>
+<ref cis="5.2.4" cui="3.1.13" disa="366" nist="CM-2(1)(b)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_disable_root_login" severity="medium">
@@ -692,7 +643,7 @@ in <tt>/etc/ssh/sshd_config</tt>:
 <pre>PermitRootLogin no</pre>
 </description>
 <ocil>
-<sshd-check-macro option="PermitRootLogin" value="no" default="no" />
+<sshd-check-macro default="no" option="PermitRootLogin" value="no" />
 </ocil>
 <rationale>
 Even though the communications channel may be encrypted, an additional layer of
@@ -701,12 +652,10 @@ In addition, logging in with a user-specific account provides individual
 accountability of actions performed on the system and also helps to minimize
 direct attack attempts on root's password.
 </rationale>
-<ident prodtype="rhel7" cce="27445-6" />
+<ident cce="27445-6" prodtype="rhel7" />
 <oval id="sshd_disable_root_login" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040370" />
-<ref nist="AC-3,AC-6(2),IA-2(1),IA-2(5)" disa="366" srg="SRG-OS-000480-GPOS-00227"
-cis="5.2.8" cjis="5.5.6" cui="3.1.1, 3.1.5" 
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.8" cjis="5.5.6" cui="3.1.1, 3.1.5" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-3,AC-6(2),IA-2(1),IA-2(5)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Rule id="sshd_disable_empty_passwords" severity="high">
@@ -720,19 +669,17 @@ Any accounts with empty passwords should be disabled immediately, and PAM config
 should prevent users from being able to assign themselves empty passwords.
 </description>
 <ocil>
-<sshd-check-macro option="PermitEmptyPasswords" value="no" default="yes" />
+<sshd-check-macro default="yes" option="PermitEmptyPasswords" value="no" />
 </ocil>
 <rationale>
 Configuring this setting for the SSH daemon provides additional assurance that
 remote login via SSH will require a password, even in the event of 
 misconfiguration elsewhere.
 </rationale>
-<ident prodtype="rhel7" cce="27471-2" />
+<ident cce="27471-2" prodtype="rhel7" />
 <oval id="sshd_disable_empty_passwords" value="sshd_required" />
 <ref prodtype="rhel7" stigid="010300" />
-<ref nist="AC-3,AC-6,CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cjis="5.5.6"
-cui="3.1.1,3.1.5" cis="5.2.9" 
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.9" cjis="5.5.6" cui="3.1.1,3.1.5" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-3,AC-6,CM-6(b)" srg="SRG-OS-000480-GPOS-00229" />
 </Rule>
 
 <Rule id="sshd_enable_warning_banner" severity="medium">
@@ -745,7 +692,7 @@ Another section contains information on how to create an
 appropriate system-wide warning banner.
 </description>
 <ocil>
-<sshd-check-macro option="Banner" value="/etc/issue" default="no" />
+<sshd-check-macro default="no" option="Banner" value="/etc/issue" />
 </ocil>
 <rationale>
 The warning message reinforces policy awareness during the logon process and
@@ -753,14 +700,10 @@ facilitates possible legal action against attackers. Alternatively, systems
 whose ownership should not be obvious should ensure usage of a banner that does
 not provide easy attribution.
 </rationale>
-<ident prodtype="rhel7" cce="27314-4" />
+<ident cce="27314-4" prodtype="rhel7" />
 <oval id="sshd_enable_warning_banner" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040170" />
-<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)"
-disa="48,50,1384,1385,1386,1387,1388"
-srg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088"
-cis="5.2.16" cjis="5.5.6" cui="3.1.9"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.16" cjis="5.5.6" cui="3.1.9" disa="48,50,1384,1385,1386,1387,1388" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" srg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" />
 </Rule>
 
 <Rule id="sshd_do_not_permit_user_env" severity="medium">
@@ -780,12 +723,10 @@ If properly configured, output should be:
 SSH environment options potentially allow users to bypass
 access restriction in some configurations.
 </rationale>
-<ident prodtype="rhel7" cce="27363-1" />
+<ident cce="27363-1" prodtype="rhel7" />
 <oval id="sshd_do_not_permit_user_env" value="sshd_required" />
 <ref prodtype="rhel7" stigid="010460" />
-<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" 
-cis="5.2.10" cjis="5.5.6" cui="3.1.12"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref cis="5.2.10" cjis="5.5.6" cui="3.1.12" disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="CM-6(b)" srg="SRG-OS-000480-GPOS-00229" />
 </Rule>
 
 <Rule id="sshd_use_approved_ciphers" severity="medium">
@@ -825,13 +766,10 @@ FIPS 140-2 is the current standard for validating that mechanisms used to access
 utilize authentication that meets industry and government requirements. For government systems, this allows
 Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
 </rationale>
-<ident prodtype="rhel7" cce="27295-5" />
+<ident cce="27295-5" prodtype="rhel7" />
 <oval id="sshd_use_approved_ciphers" value="sshd_required" />
 <ref prodtype="rhel7" stigid="040110" />
-<ref nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" disa="68,366,803"
-srg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173"
-cis="5.2.10" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8"
-hipaa="164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)" />
+<ref cis="5.2.10" cjis="5.5.6" cui="3.1.13,3.13.11,3.13.8" disa="68,366,803" hipaa="164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)" nist="AC-3,AC-17(2),AU-10(5),CM-6(b),IA-5(1)(c),IA-7" srg="SRG-OS-000033-GPOS-00014,SRG-OS-000120-GPOS-00061,SRG-OS-000125-GPOS-00065,SRG-OS-000250-GPOS-00093,SRG-OS-000393-GPOS-00173" />
 </Rule>
 
 <Rule id="sshd_use_approved_macs" severity="medium">
@@ -839,7 +777,7 @@ hipaa="164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(
 <description>Limit the MACs to those hash algorithms which are FIPS-approved.
 The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use 
 of FIPS-approved MACs:
-<br /><br/>
+<br /><br />
 <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
 <br /><br />
 Only the following message authentication codes are FIPS 140-2 certified on RHEL 7:
@@ -860,20 +798,19 @@ MACs are in use, run the following command:
 The output should contain only those MACs which are FIPS-approved. Any use of other
 ciphers or algorithms will result in the module entering the non-FIPS mode of
 operation.
-<!-- encrypt-then-mac hash functions likely to be added to this list in the future -->
+
 </ocil>
 <rationale>
 DoD Information Systems are required to use FIPS-approved cryptographic hash
 functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 </rationale>
-<ident prodtype="rhel7" cce="27455-5" />
+<ident cce="27455-5" prodtype="rhel7" />
 <oval id="sshd_use_approved_macs" value="sshd_approved_macs" value2="sshd_required" />
 <ref prodtype="rhel7" stigid="040400" />
-<ref nist="AC-17(2),IA-7,SC-13" disa="1453" srg="SRG-OS-000250-GPOS-00093" cui="3.1.13,3.13.11,3.13.8" cis="5.2.12"
-hipaa="164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)" />
+<ref cis="5.2.12" cui="3.1.13,3.13.11,3.13.8" disa="1453" hipaa="164.308(b)(1),164.308(b)(2),164.312(e)(1),164.312(e)(2)(i),164.312(e)(2)(ii),164.314(b)(2)(i)" nist="AC-17(2),IA-7,SC-13" srg="SRG-OS-000250-GPOS-00093" />
 </Rule>
 
-<!-- similar to sshd_use_approved_ciphers, but without FIPS certification -->
+
 <Rule id="sshd_use_strong_ciphers" severity="medium">
 <title>Use Only Strong Ciphers</title>
 <description>Limit the ciphers to strong algorithms.
@@ -900,10 +837,10 @@ mode algorithms (as described in RFC4344) were designed that are not vulnerable 
 types of attacks and these algorithms are now recommended for standard use.
 </rationale>
 <oval id="sshd_use_strong_ciphers" />
-<ref prodtype="debian" cis="9.3.11" />
+<ref cis="9.3.11" prodtype="debian" />
 </Rule>
 
-<!-- similar to sshd_use_approved_macs, but without FIPS certification -->
+
 <Rule id="sshd_use_strong_macs" severity="medium">
 <title>Use Only Strong MACs</title>
 <description>Limit the MACs to strong hash algorithms.
@@ -944,8 +881,8 @@ Run the following command:
 <rationale>
 Restricting SSH access to only trusted network segments reduces exposure of the SSH
 server to attacks from unauthorized networks.</rationale>
-<!-- <ident prodtype="rhel7" cce="80227-2" /> -->
-<!-- <oval id="sshd_strengthen_firewall" /> -->
+
+
 </Group>
 
 </Group>
