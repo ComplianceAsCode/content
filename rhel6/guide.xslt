@@ -57,7 +57,7 @@
       <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/permissions.xml')" />
       <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/accounts.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/accounts/accounts.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
       <xsl:apply-templates select="document('xccdf/system/logging.xml')" />
       <xsl:apply-templates select="document('xccdf/system/auditing.xml')" />
