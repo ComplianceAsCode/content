@@ -55,7 +55,7 @@
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document('xccdf/system/entropy.xml')" />
       <xsl:apply-templates select="document('xccdf/system/software/software.xml')" />
-      <xsl:apply-templates select="document('xccdf/system/software/permissions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/permissions/permissions.xml')" />
       <xsl:apply-templates select="document('xccdf/system/selinux.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/accounts.xml')" />
       <xsl:apply-templates select="document('xccdf/system/network/network.xml')" />
