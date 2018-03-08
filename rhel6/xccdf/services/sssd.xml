@@ -1,0 +1,272 @@
+<Group id="sssd" prodtype="rhel6,rhel7">
+<title>System Security Services Daemon</title>
+<description>
+The System Security Services Daemon (SSSD) is a system daemon that provides access
+to different identity and authentication providers such as Red Hat's IdM, Microsoft's AD,
+openLDAP, MIT Kerberos, etc. It uses a common framework that can provide caching and offline
+support to systems utilizing SSSD. SSSD using caching to reduce load on authentication
+servers permit offline authentication as well as store extended user data.
+<br/><br/>
+For more information, see
+<os-type-macro type="rhel6"><b><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/SSSD-Introduction.html"/></b></os-type-macro>
+<os-type-macro type="rhel7"><b><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/SSSD.html"/></b></os-type-macro>
+</description>
+<platform idref="cpe:/a:machine" />
+
+<Rule id="package_sssd_installed" severity="medium" prodtype="rhel6,rhel7">
+<title prodtype="rhel6,rhel7">Install the SSSD Package</title>
+<description prodtype="rhel6,rhel7">
+The <tt>sssd</tt> package should be installed.
+<yum-macro install="true" package="sssd"/>
+</description>
+<ocil clause="the package is not installed" prodtype="rhel6,rhel7">
+<package-check-macro package="sssd" />
+</ocil>
+<rationale prodtype="rhel6,rhel7">
+</rationale>
+<ident prodtype="rhel7" cce="80362-7" />
+<ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
+<oval prodtype="rhel6,rhel7" id="package_sssd_installed" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="IA-5(10)" disa="TBD" srg="TBD" />
+<ref prodtype="rhel6" nist="IA-5(10)" disa="TBD" />
+</Rule>
+
+<Rule id="service_sssd_enabled" severity="medium" prodtype="rhel6,rhel7">
+<title prodtype="rhel6,rhel7">Enable the SSSD Service</title>
+<description prodtype="rhel6,rhel7">The SSSD service should be enabled.
+<systemd-service-macro enable="true" service="sssd" />
+</description>
+<ocil clause="the service is not enabled" prodtype="rhel6,rhel7">
+<systemd-check-macro enable="true" service="sssd" />
+</ocil>
+<rationale prodtype="rhel6,rhel7">
+</rationale>
+<ident prodtype="rhel7" cce="80363-5" />
+<ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
+<oval prodtype="rhel6,rhel7" id="service_sssd_enabled" />
+<ref prodtype="rhel7" stigid="TBD" />
+<ref nist="IA-5(10)" disa="TBD" srg="TBD" />
+<ref prodtype="rhel6" nist="IA-5(10)" disa="TBD" />
+</Rule>
+
+<Rule id="sssd_memcache_timeout" severity="medium" prodtype="rhel6,rhel7">
+<title prodtype="rhel6,rhel7">Configure SSSD's Memory Cache to Expire</title>
+<description prodtype="rhel6,rhel7">
+SSSD's memory cache should be configured to set to expire records after 1 day.
+To configure SSSD to expire memory cache, set <tt>memcache_timeout</tt> to
+<tt>86400</tt> under the <tt>[nss]</tt> section in <tt>/etc/sssd/sssd.conf</tt>.
+For example:
+<pre>[nss]
+memcache_timeout = 86400
+</pre>
+</description>
+<ocil clause="it does not exist or is not configured properly" prodtype="rhel6,rhel7">
+To verify that SSSD's in-memory cache expires after a day, run the following command:
+<pre>$ sudo grep memcache_timeout /etc/sssd/sssd.conf</pre>
+If configured properly, output should be <pre>memcache_timeout = 86400</pre>.
+</ocil>
+<rationale prodtype="rhel6,rhel7">
+If cached authentication information is out-of-date, the validity of the
+authentication information may be questionable.
+</rationale>
+<ident prodtype="rhel7" cce="80364-3" />
+<ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
+<oval prodtype="rhel6,rhel7" id="sssd_memcache_timeout" />
+<ref nist="IA-5(13)" disa="2007" srg="SRG-OS-000383-GPOS-00166" />
+<ref prodtype="rhel6" nist="IA-5(10)" disa="2007" />
+</Rule>
+
+<Rule id="sssd_offline_cred_expiration" severity="medium" prodtype="rhel6,rhel7">
+<title prodtype="rhel6,rhel7">Configure SSSD to Expire Offline Credentials</title>
+<description prodtype="rhel6,rhel7">
+SSSD should be configured to expire offline credentials after 1 day.
+To configure SSSD to expire offline credentials, set
+<tt>offline_credentials_expiration</tt> to <tt>1</tt> under the <tt>[pam]</tt>
+section in <tt>/etc/sssd/sssd.conf</tt>. For example:
+<pre>[pam]
+offline_credentials_expiration = 1
+</pre>
+</description>
+<ocil clause="it does not exist or is not configured properly" prodtype="rhel6,rhel7">
+To verify that SSSD expires offline credentials, run the following command:
+<pre>$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf</pre>
+If configured properly, output should be
+<pre>offline_credentials_expiration = 1</pre>
+</ocil>
+<rationale prodtype="rhel6,rhel7">
+If cached authentication information is out-of-date, the validity of the
+authentication information may be questionable.
+</rationale>
+<ident prodtype="rhel7" cce="80365-0" />
+<ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
+<oval prodtype="rhel6,rhel7" id="sssd_offline_cred_expiration" />
+<ref nist="IA-5(13)" disa="2007" srg="SRG-OS-000383-GPOS-00166" />
+<ref prodtype="rhel6" nist="IA-5(13)" disa="2007" />
+</Rule>
+
+<Rule id="sssd_ssh_known_hosts_timeout" severity="medium" prodtype="rhel6,rhel7">
+<title prodtype="rhel6,rhel7">Configure SSSD to Expire SSH Known Hosts</title>
+<description prodtype="rhel6,rhel7">
+SSSD should be configured to expire keys from known SSH hosts after 1 day.
+To configure SSSD to known SSH hosts, set <tt>ssh_known_hosts_timeout</tt>
+to <tt>86400</tt> under the <tt>[ssh]</tt> section in
+<tt>/etc/sssd/sssd.conf</tt>. For example:
+<pre>[ssh]
+ssh_known_hosts_timeout = 86400
+</pre>
+</description>
+<ocil clause="it does not exist or is not configured properly" prodtype="rhel6,rhel7">
+To verify that SSSD expires known SSH host keys, run the following command:
+<pre>$ sudo grep ssh_known_hosts_timeout /etc/sssd/sssd.conf</pre>
+If configured properly, output should be
+<pre>ssh_known_hosts_timeout = 86400</pre>
+</ocil>
+<rationale prodtype="rhel6,rhel7">
+If cached authentication information is out-of-date, the validity of the
+authentication information may be questionable.
+</rationale>
+<ident prodtype="rhel7" cce="80366-8" />
+<ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
+<oval prodtype="rhel6,rhel7" id="sssd_ssh_known_hosts_timeout" />
+<ref nist="IA-5(13)" disa="2007" srg="SRG-OS-000383-GPOS-00166" />
+</Rule>
+
+<Rule id="sssd_enable_pam_services" severity="medium" prodtype="rhel7">
+<title>Configure PAM in SSSD Services</title>
+<description>
+SSSD should be configured to run SSSD <tt>pam</tt> services.
+To configure SSSD to known SSH hosts, add <tt>pam</tt>
+to <tt>services</tt> under the <tt>[sssd]</tt> section in
+<tt>/etc/sssd/sssd.conf</tt>. For example:
+<pre>[sssd]
+services = sudo, autofs, pam
+</pre>
+</description>
+<ocil clause="it does not exist or 'pam' is not added to the 'services' option under the 'sssd' section">
+To verify that SSSD is configured for PAM services, run the following command:
+<pre>$ sudo grep services /etc/sssd/sssd.conf</pre>
+If configured properly, output should be similar to
+<pre>services = pam</pre>
+</ocil>
+<rationale>
+Using an authentication device, such as a CAC or token that is separate from
+the information system, ensures that even if the information system is
+compromised, that compromise will not affect credentials stored on the
+authentication device.
+</rationale>
+<ident prodtype="rhel7" cce="80437-7" />
+<oval id="sssd_enable_pam_services" />
+<ref prodtype="rhel7" stigid="041002" />
+<ref nist="IA-2(11)" disa="1948,1953,1954" srg="SRG-OS-000375-GPOS-00160,SRG-OS-000375-GPOS-00161,SRG-OS-000375-GPOS-00162" />
+</Rule>
+
+<Group id="sssd-ldap" prodtype="rhel7">
+<title>System Security Services Daemon (SSSD) - LDAP</title>
+<description>
+The System Security Services Daemon (SSSD) is a system daemon that provides access
+to different identity and authentication providers such as Red Hat's IdM, Microsoft's AD,
+openLDAP, MIT Kerberos, etc. It uses a common framework that can provide caching and offline
+support to systems utilizing SSSD. SSSD using caching to reduce load on authentication
+servers permit offline authentication as well as store extended user data.
+<br/><br/>
+SSSD can support many backends including LDAP. The <tt>sssd-ldap</tt> backend
+allows SSSD to fetch identity information from an LDAP server.
+</description>
+<platform idref="cpe:/a:machine" />
+
+<Rule id="sssd_ldap_start_tls" severity="medium" prodtype="rhel7">
+<title>Configure SSSD LDAP Backend to Use TLS For All Transactions</title>
+<description>
+This check verifies that RHEL7 implements cryptography
+to protect the integrity of remote LDAP authentication sessions.
+<br /><br />
+To determine if LDAP is being used for authentication, use the following
+command:
+<pre>$ sudo grep -i useldapauth /etc/sysconfig/authconfig</pre>
+<br /><br />
+If <tt>USELDAPAUTH=yes</tt>, then LDAP is being used. To check if LDAP is
+configured to use TLS, use the following command:
+<pre>$ sudo grep -i ldap_id_use_start_tls /etc/sssd/sssd.conf</pre>
+</description>
+<ocil clause="the 'ldap_id_use_start_tls' option is not set to 'True'">
+If the system is not using TLS, set the <tt>ldap_id_use_start_tls</tt> option
+in <tt>/etc/sssd/sssd.conf</tt> to <tt>True</tt>.
+</ocil>
+<rationale>
+Without cryptographic integrity protections, information can be
+altered by unauthorized users without detection. The ssl directive specifies
+whether to use TLS or not. If not specified it will default to no.
+It should be set to start_tls rather than doing LDAP over SSL.
+</rationale>
+<ref prodtype="rhel7" stigid="040180" />
+<ref nist="AC-17(2),CM-7" disa="1453" srg="SRG-OS-000250-GPOS-00093" />
+<ident prodtype="rhel7" cce="80546-5" />
+<oval id="sssd_ldap_start_tls" />
+</Rule>
+
+<Rule id="sssd_ldap_configure_tls_ca" severity="medium" prodtype="rhel7">
+<title>Configure SSSD LDAP Backend Client CA Certificate</title>
+<description>
+Configure SSSD to implement cryptography to protect the
+integrity of LDAP remote access sessions. By setting
+the <pre>ldap_tls_cacert</pre> option in <pre>/etc/sssd/sssd.conf</pre>
+to point to the path for the X.509 certificates used for peer authentication.
+<pre>ldap_tls_cacert /path/to/tls/ca.cert</pre>
+</description>
+<ocil clause="the TLS CA cert is not configured">
+To verify the operating system implements cryptography to protect the integrity of
+remote ldap access sessions, run the following command:
+<pre>$ sudo grep ldap_tls_cacert /etc/sssd/sssd.conf</pre>
+The output should return the following with a correctly configured CA cert path:
+<pre>ldap_tls_cacert /path/to/tls/ca.cert</pre>
+</ocil>
+<rationale>
+Without cryptographic integrity protections, information can be altered by
+unauthorized users without detection.
+<br/><br/>
+Cryptographic mechanisms used for
+protecting the integrity of information include, for example, signed hash
+functions using asymmetric cryptography enabling distribution of the public key
+to verify the hash information while maintaining the confidentiality of the key
+used to generate the hash.
+</rationale>
+<ident cce="80516-8"/>
+<oval id="sssd_ldap_configure_tls_ca"/>
+<ref disa="1453" nist="" srg="SRG-OS-000250-GPOS-00093" stigid="040200"/>
+</Rule>
+
+<Rule id="sssd_ldap_configure_tls_ca_dir" severity="medium" prodtype="rhel7">
+<title>Configure SSSD LDAP Backend Client CA Certificate Location</title>
+<description>
+Configure SSSD to implement cryptography to protect the
+integrity of LDAP remote access sessions. By setting
+the <pre>ldap_tls_cacertdir</pre> option in <pre>/etc/sssd/sssd.conf</pre>
+to point to the path for the X.509 certificates used for peer authentication.
+<pre>ldap_tls_cacertdir /path/to/tls/cacert</pre>
+</description>
+<ocil clause="the TLS CA cert is not configured">
+To verify the operating system implements cryptography to protect the integrity of
+remote ldap access sessions, run the following command:
+<pre>$ sudo grep ldap_tls_cacertdir /etc/sssd/sssd.conf</pre>
+The output should return the following with a correctly configured CA cert path:
+<pre>ldap_tls_cacertdir /path/to/tls/cacert</pre>
+</ocil>
+<rationale>
+Without cryptographic integrity protections, information can be altered by
+unauthorized users without detection.
+<br/><br/>
+Cryptographic mechanisms used for
+protecting the integrity of information include, for example, signed hash
+functions using asymmetric cryptography enabling distribution of the public key
+to verify the hash information while maintaining the confidentiality of the key
+used to generate the hash.
+</rationale>
+<ident cce="80515-0"/>
+<oval id="sssd_ldap_configure_tls_ca_dir"/>
+<ref disa="1453" nist="" srg="SRG-OS-000250-GPOS-00093" stigid="040190"/>
+</Rule>
+
+</Group>
+
+</Group>
