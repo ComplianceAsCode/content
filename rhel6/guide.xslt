@@ -77,7 +77,7 @@
   <xsl:template match="Group[@id='accounts']">
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
-      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions.xml')" />
+      <xsl:apply-templates select="document('xccdf/system/accounts/restrictions/restrictions.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/pam.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/session.xml')" />
       <xsl:apply-templates select="document('xccdf/system/accounts/physical.xml')" />
