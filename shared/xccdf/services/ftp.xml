@@ -30,12 +30,12 @@ of attack, and should be disabled if not needed.
 Furthermore, the FTP protocol is unencrypted and creates
 a risk of compromising sensitive information.
 </rationale>
-<ident prodtype="rhel7" cce="80244-7" />
+<ident cce="80244-7" prodtype="rhel7" />
 <oval id="service_vsftpd_disabled" />
-<ref nist="CM-7" disa="1436" cis="2.2.9" />
+<ref cis="2.2.9" disa="1436" nist="CM-7" />
 </Rule>
 
-<Rule id="package_vsftpd_removed" severity="high" prodtype="rhel7">
+<Rule id="package_vsftpd_removed" prodtype="rhel7" severity="high">
 <title>Uninstall vsftpd Package</title>
 <description>
 <yum-macro install="false" package="vsftpd" />
@@ -47,32 +47,32 @@ a risk of compromising sensitive information.
 Removing the vsftpd package decreases the risk of its
 accidental activation.
 </rationale>
-<ident prodtype="rhel7" cce="80245-4" />
+<ident cce="80245-4" prodtype="rhel7" />
 <oval id="package_vsftpd_removed" />
 <ref prodtype="rhel7" stigid="040690" />
-<ref nist="CM-6(b),CM-7" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="CM-6(b),CM-7" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-</Group> <!-- <Group id="disabling_vsftpd"> -->
+</Group> 
 
 <Group id="ftp_use_vsftpd">
 <title>Use vsftpd to Provide FTP Service if Necessary</title>
 <description>If your use-case requires FTP service, install and
 set-up vsftpd to provide it.</description>
 
-<Rule id="package_vsftpd_installed" prodtype="rhel7">
+<Rule id="package_vsftpd_installed" prodtype="rhel7,fedora">
 <title>Install vsftpd Package</title>
 <description>If this system must operate as an FTP server, install the <tt>vsftpd</tt> package via the standard channels.
 <pre>$ sudo yum install vsftpd</pre>
 </description>
 <rationale>After Red Hat Enterprise Linux 2.1, Red Hat switched from distributing wu-ftpd with Red Hat Enterprise Linux to distributing vsftpd. For security
 and for consistency with future Red Hat releases, the use of vsftpd is recommended.</rationale>
-<ident prodtype="rhel7" cce="80246-2" />
+<ident cce="80246-2" prodtype="rhel7" />
 <oval id="package_vsftpd_installed" />
 <ref nist="CM-7" />
 </Rule>
 
-</Group> <!-- <Group id="ftp_use_vsftpd"> -->
+</Group> 
 
 <Group id="ftp_configure_vsftpd">
 <title>Use vsftpd to Provide FTP Service if Necessary</title>
@@ -80,7 +80,7 @@ and for consistency with future Red Hat releases, the use of vsftpd is recommend
 <tt>/etc/vsftpd.conf</tt>, if that file exists, or
 <tt>/etc/vsftpd/vsftpd.conf</tt> if it does not. 
 </description>
-<Rule id="ftp_log_transactions" prodtype="rhel7">
+<Rule id="ftp_log_transactions" prodtype="rhel7,fedora">
 <title>Enable Logging of All FTP Transactions</title>
 <description>Add or correct the following configuration options within the <tt>vsftpd</tt>
 configuration file, located at <tt>/etc/vsftpd/vsftpd.conf</tt>:
@@ -90,9 +90,9 @@ log_ftp_protocol=YES</pre>
 </description>
 <ocil clause="xferlog_enable is missing, or is not set to yes">
 Find if logging is applied to the FTP daemon.
-<br/><br/>
+<br /><br />
 Procedures:
-<br/><br/>
+<br /><br />
 If vsftpd is started by xinetd the following command will indicate the xinetd.d startup file:
 <pre>$ grep vsftpd /etc/xinetd.d/*</pre>
 <pre>$ grep server_args <i>vsftpd xinetd.d startup file</i></pre>
@@ -104,22 +104,22 @@ If the <i>server_args</i> line is missing or does not include the vsftpd configu
 the FTP server are logged using the verbose vsftpd log
 format. The default vsftpd log file is <tt>/var/log/vsftpd.log</tt>.</rationale>
 <warning category="general">If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of downloads to <tt>/var/log/xferlog</tt> will not also occur. However, the information about what files were downloaded is included in the information logged to <tt>vsftpd.log</tt></warning>
-<ident prodtype="rhel7" cce="80247-0" />
+<ident cce="80247-0" prodtype="rhel7" />
 <oval id="ftp_log_transactions" />
-<!--<ref nist="CM-7" /> -->
+
 </Rule>
 
-<Rule id="ftp_present_banner" severity="medium" prodtype="rhel7">
+<Rule id="ftp_present_banner" prodtype="rhel7,fedora" severity="medium">
 <title>Create Warning Banners for All FTP Users</title>
 <description>Edit the vsftpd configuration file, which resides at <tt>/etc/vsftpd/vsftpd.conf</tt>
 by default. Add or correct the following configuration options:
 <pre>banner_file=/etc/issue</pre>
 </description>
 <rationale>This setting will cause the system greeting banner to be used for FTP connections as well.</rationale>
-<ident prodtype="rhel7" cce="80248-8" />
+<ident cce="80248-8" prodtype="rhel7" />
 <ref disa="48" />
 <oval id="ftp_present_banner" />
-<!--<ref nist="CM-7" /> -->
+
 <ocil clause="it does not">
 If FTP services are not installed, this is not applicable.
 <br /><br />
@@ -138,7 +138,7 @@ banner_file=/etc/issue</pre>
 do this entirely due to legacy applications, how to restrict insecure FTP login to only those users who have an
 identified need for this access.</description>
 
-<Rule id="ftp_restrict_to_anon" prodtype="rhel7">
+<Rule id="ftp_restrict_to_anon" prodtype="rhel7,fedora">
 <title>Restrict Access to Anonymous Users if Possible</title>
 <description>Is there a mission-critical reason for users to transfer files to/from their own accounts using FTP, rather than
 using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration file. Add or correct the following configuration option:
@@ -146,8 +146,8 @@ using a secure protocol like SCP/SFTP? If not, edit the vsftpd configuration fil
 If non-anonymous FTP logins are necessary, follow the guidance in the remainder of this section to secure
 these logins as much as possible.</description>
 <rationale>The use of non-anonymous FTP logins is strongly discouraged. Since SSH clients and servers are widely available, and since SSH provides support for a transfer mode which resembles FTP in user interface, there is no good reason to allow password-based FTP access. </rationale>
-<ident prodtype="rhel7" cce="80249-6" />
-<!--<oval id="ftp_restrict_to_anon" />-->
+<ident cce="80249-6" prodtype="rhel7" />
+
 <ref nist="CM-7,AC-3" />
 </Rule>
 
@@ -164,13 +164,13 @@ If anonymous access is also required, add the anonymous usernames to <tt>/etc/vs
 ftp</pre>
 </description>
 <rationale>Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via FTP. It was used to prevent system users such as the root user from logging in via the insecure FTP protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via FTP. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous FTP access can be limited to legacy users who have been explicitly identified.</rationale>
-<!--<oval id="ftp_limit_users" />-->
-<!--<ref nist="CM-7" /> -->
+
+
 </Group>
 
-</Group> <!-- <Group id="ftp_restrict_users"> -->
+</Group> 
 
-<Rule id="ftp_disable_uploads" prodtype="rhel7">
+<Rule id="ftp_disable_uploads" prodtype="rhel7,fedora">
 <title>Disable FTP Uploads if Possible</title>
 <description>Is there a mission-critical reason for users to upload files via FTP? If not,
 edit the vsftpd configuration file to add or correct the following configuration options:
@@ -181,20 +181,20 @@ as much as possible.</description>
 common to have a need to allow unauthenticated users to place files on the FTP server. If this must be done, it
 is necessary to ensure that files cannot be uploaded and downloaded from the same directory.
 </rationale>
-<ident prodtype="rhel7" cce="80250-4" />
-<!--<oval id="ftp_disable_uploads" />-->
-<!--<ref nist="CM-7" /> -->
+<ident cce="80250-4" prodtype="rhel7" />
+
+
 </Rule>
 
-<Rule id="ftp_home_partition" prodtype="rhel7">
+<Rule id="ftp_home_partition" prodtype="rhel7,fedora">
 <title>Place the FTP Home Directory on its Own Partition</title>
 <description>By default, the anonymous FTP root is the home directory of the FTP user account. The df command can
 be used to verify that this directory is on its own partition.</description>
 <rationale>If there is a mission-critical reason for anonymous users to upload files, precautions must be taken to prevent
 these users from filling a disk used by other services.</rationale>
-<!--<oval id="ftp_home_partition" />-->
-<!--<ref nist="CM-7" /> -->
-<ident prodtype="rhel7" cce="80251-2" />
+
+
+<ident cce="80251-2" prodtype="rhel7" />
 </Rule>
 
 <Group id="ftp_configure_firewall">
@@ -209,9 +209,9 @@ FTP is an older protocol which is not very compatible with firewalls. During the
 and server negotiate an arbitrary port to be used for data transfer. The <tt>ip_conntrack_ftp</tt>  module is used by
 firewalld to listen to that dialogue and allow connections to the data ports which FTP negotiates. This allows an
 FTP server to operate on a system which is running a firewall.</rationale>
-<!--<oval id="ftp_configure_firewall" />-->
-<!--<ref nist="CM-7" /> -->
+
+
 </Group>
 
-</Group> <!-- <Group id="ftp_configure_vsftpd"> -->
-</Group> <!-- <Group id="ftp"> -->
+</Group> 
+</Group>

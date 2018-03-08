@@ -10,7 +10,7 @@ the environment in which the system will be used. Snapshot-based approaches such
 as AIDE may induce considerable overhead in the presence of frequent software updates.
 </description>
 
-<Rule id="disable_prelink" prodtype="rhel7">
+<Rule id="disable_prelink" prodtype="rhel7,fedora">
 <title>Disable Prelinking</title>
 <description>
 The prelinking feature changes binaries in an attempt to decrease their startup
@@ -24,10 +24,9 @@ Next, run the following command to return binaries to a normal, non-prelinked st
 Because the prelinking feature changes binaries, it can interfere with the
 operation of certain software and/or modes such as AIDE, FIPS, etc.
 </rationale>
-<ident prodtype="rhel7" cce="27078-5" />
+<ident cce="27078-5" prodtype="rhel7" />
 <oval id="disable_prelink" />
-<ref nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" cjis="5.10.1.3"
-cis="1.5.4" cui="3.13.11"/>
+<ref cis="1.5.4" cjis="5.10.1.3" cui="3.13.11" nist="CM-6(d),CM-6(3),SC-28, SI-7" pcidss="Req-11.5" />
 </Rule>
 
 <Group id="software-integrity">
@@ -38,7 +37,7 @@ software and the RPM package management system provide
 mechanisms for verifying the integrity of installed software.
 AIDE uses snapshots of file metadata (such as hashes) and compares these
 to current system files in order to detect changes.
-<br/><br/>
+<br /><br />
 The RPM package management system can conduct integrity
 checks by comparing information in its metadata database with
 files installed on the system.
@@ -53,25 +52,24 @@ software update.  AIDE is highly configurable, with further configuration
 information located in <tt>/usr/share/doc/aide-<i>VERSION</i></tt>.
 </description>
 
-<Rule id="package_aide_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_aide_installed" prodtype="rhel7,fedora" severity="medium">
 <title>Install AIDE</title>
 <description>
 Install the AIDE package with the command:
 <pre>$ sudo yum install aide</pre>
 </description>
 <ocil clause="the package is not installed">
-<package-check-macro package="aide"/>
+<package-check-macro package="aide" />
 </ocil>
 <rationale>
 The AIDE package must be installed if it is to be available for integrity checking.
 </rationale>
-<ident prodtype="rhel7" cce="27096-7" />
+<ident cce="27096-7" prodtype="rhel7" />
 <oval id="package_aide_installed" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" disa=""
-pcidss="Req-11.5" cis="1.3.1" cjis="5.10.1.3" />
+<ref cis="1.3.1" cjis="5.10.1.3" disa="" nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" />
 </Rule>
 
-<Rule id="aide_build_database" severity="medium" prodtype="rhel7">
+<Rule id="aide_build_database" prodtype="rhel7,fedora" severity="medium">
 <title>Build and Test AIDE Database</title>
 <description>Run the following command to generate a new database:
 <pre>$ sudo /usr/sbin/aide --init</pre>
@@ -92,12 +90,12 @@ To find the location of the AIDE databse file, run the following command:
 For AIDE to be effective, an initial database of "known-good" information about files
 must be captured and it should be able to be verified against the installed files.
 </rationale>
-<ident prodtype="rhel7" cce="27220-3" />
+<ident cce="27220-3" prodtype="rhel7" />
 <oval id="aide_build_database" />
-<ref nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" cjis="5.10.1.3" />
+<ref cjis="5.10.1.3" nist="CM-3(d),CM-3(e),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" />
 </Rule>
 
-<Rule id="aide_periodic_cron_checking" severity="medium" prodtype="rhel7">
+<Rule id="aide_periodic_cron_checking" prodtype="rhel7,fedora" severity="medium">
 <title>Configure Periodic Execution of AIDE</title>
 <description>
 At a minimum, AIDE should be configured to run a weekly scan. At most, AIDE should be run daily.
@@ -116,12 +114,12 @@ The output should return some similiar to the following:
 <rationale>
 By default, AIDE does not install itself for periodic execution. Periodically
 running AIDE is necessary to reveal unexpected changes in installed files.
-<br/><br/>
+<br /><br />
 Unauthorized changes to the baseline configuration could make the system vulnerable
 to various attacks or allow unauthorized access to the operating system. Changes to
 operating system configurations can have unintended side effects, some of which may
 be relevant to security.
-<br/><br/>
+<br /><br />
 Detecting such changes and providing an automated response can help avoid unintended,
 negative consequences that could ultimately affect the security state of the operating
 system. The operating system's Information Management Officer (IMO)/Information System
@@ -129,15 +127,13 @@ Security Officer (ISSO) and System Administrators (SAs) must be notified via ema
 monitoring system trap when there is an unauthorized modification of a configuration item.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="26952-2" />
-<oval id="aide_periodic_cron_checking"/>
+<ident cce="26952-2" prodtype="rhel7" />
+<oval id="aide_periodic_cron_checking" />
 <ref prodtype="rhel7" stigid="020030" />
-<ref nist="CM-3(d),CM-3(e),CM-3(5),CM-6(d),CM-6(3),SC-28,SI-7"
-disa="1744" pcidss="Req-11.5" cis="1.3.2" srg="SRG-OS-000363-GPOS-00150"
-cjis="5.10.1.3" />
+<ref cis="1.3.2" cjis="5.10.1.3" disa="1744" nist="CM-3(d),CM-3(e),CM-3(5),CM-6(d),CM-6(3),SC-28,SI-7" pcidss="Req-11.5" srg="SRG-OS-000363-GPOS-00150" />
 </Rule>
 
-<Rule id="aide_scan_notification" severity="medium" prodtype="rhel7">
+<Rule id="aide_scan_notification" prodtype="rhel7" severity="medium">
 <title>Configure Notification of Post-AIDE Scan Details</title>
 <description>
 AIDE should notify appropriate personnel of the details of a scan after the scan has been run.
@@ -159,20 +155,20 @@ Unauthorized changes to the baseline configuration could make the system vulnera
 to various attacks or allow unauthorized access to the operating system. Changes to
 operating system configurations can have unintended side effects, some of which may
 be relevant to security.
-<br/><br/>
+<br /><br />
 Detecting such changes and providing an automated response can help avoid unintended,
 negative consequences that could ultimately affect the security state of the operating
 system. The operating system's Information Management Officer (IMO)/Information System
 Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
 monitoring system trap when there is an unauthorized modification of a configuration item.
 </rationale>
-<ident prodtype="rhel7" cce="80374-2" />
-<oval id="aide_scan_notification"/>
+<ident cce="80374-2" prodtype="rhel7" />
+<oval id="aide_scan_notification" />
 <ref prodtype="rhel7" stigid="020040" />
-<ref nist="CM-3(5)" disa="1744" srg="SRG-OS-000363-GPOS-00150" />
+<ref disa="1744" nist="CM-3(5)" srg="SRG-OS-000363-GPOS-00150" />
 </Rule>
 
-<Rule id="aide_verify_acls" severity="medium" prodtype="rhel7">
+<Rule id="aide_verify_acls" prodtype="rhel7" severity="medium">
 <title>Configure AIDE to Verify Access Control Lists (ACLs)</title>
 <description>
 By default, the <tt>acl</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
@@ -192,13 +188,13 @@ Verify that the <tt>acl</tt> option is added to the correct ruleset.
 ACLs can provide permissions beyond those permitted through the file mode and must be
 verified by the file integrity tools.
 </rationale>
-<ident prodtype="rhel7" cce="80375-9" />
-<oval id="aide_verify_acls"/>
+<ident cce="80375-9" prodtype="rhel7" />
+<oval id="aide_verify_acls" />
 <ref prodtype="rhel7" stigid="021600" />
-<ref nist="SI-7.1" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="SI-7.1" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="aide_verify_ext_attributes" severity="medium" prodtype="rhel7">
+<Rule id="aide_verify_ext_attributes" prodtype="rhel7" severity="medium">
 <title>Configure AIDE to Verify Extended Attributes</title>
 <description>
 By default, the <tt>xattrs</tt> option is added to the <tt>FIPSR</tt> ruleset in AIDE.
@@ -218,13 +214,13 @@ Verify that the <tt>xattrs</tt> option is added to the correct ruleset.
 Extended attributes in file systems are used to contain arbitrary data and file metadata
 with security implications.
 </rationale>
-<ident prodtype="rhel7" cce="80376-7" />
-<oval id="aide_verify_ext_attributes"/>
+<ident cce="80376-7" prodtype="rhel7" />
+<oval id="aide_verify_ext_attributes" />
 <ref prodtype="rhel7" stigid="021610" />
-<ref nist="SI-7.1" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="SI-7.1" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="aide_use_fips_hashes" severity="medium" prodtype="rhel7">
+<Rule id="aide_use_fips_hashes" prodtype="rhel7" severity="medium">
 <title>Configure AIDE to Use FIPS 140-2 for Validating Hashes</title>
 <description>
 By default, the <tt>sha512</tt> option is added to the <tt>NORMAL</tt> ruleset in AIDE.
@@ -244,10 +240,10 @@ Verify that the <tt>sha512</tt> option is added to the correct ruleset.
 File integrity tools use cryptographic hashes for verifying file contents and directories
 have not been altered. These hashes must be FIPS 140-2 approved cryptographic hashes.
 </rationale>
-<ident prodtype="rhel7" cce="80377-5" />
-<oval id="aide_use_fips_hashes"/>
+<ident cce="80377-5" prodtype="rhel7" />
+<oval id="aide_use_fips_hashes" />
 <ref prodtype="rhel7" stigid="021620" />
-<ref nist="SI-7(1)" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.13.11" />
+<ref cui="3.13.11" disa="366" nist="SI-7(1)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -265,7 +261,7 @@ modification of important files. To list which files on the system differ from w
 See the man page for <tt>rpm</tt> to see a complete explanation of each column.
 </description>
 
-<Rule id="rpm_verify_permissions" severity="high" prodtype="rhel7">
+<Rule id="rpm_verify_permissions" prodtype="rhel7,fedora" severity="high">
 <title>Verify and Correct File Permissions with RPM</title>
 <description>
 The RPM package management system can check file access permissions
@@ -300,16 +296,13 @@ RPM verify command may continue to fail even after file permissions have been
 correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
 Bugzilla #1275532.
 </warning>
-<ident prodtype="rhel7" cce="27209-6" />
+<ident cce="27209-6" prodtype="rhel7" />
 <oval id="rpm_verify_permissions" />
 <ref prodtype="rhel7" stigid="010010" />
-<ref nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" 
-cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" 
-srg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" cjis="5.10.4.1" cui="3.3.8,3.4.1" 
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" cjis="5.10.4.1" cui="3.3.8,3.4.1" disa="1494,1496" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" pcidss="Req-11.5" srg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" />
 </Rule>
 
-<Rule id="rpm_verify_ownership" severity="high" prodtype="rhel7">
+<Rule id="rpm_verify_ownership" prodtype="rhel7" severity="high">
 <title>Verify and Correct Ownership with RPM</title>
 <description>
 The RPM package management system can check file ownership
@@ -339,13 +332,13 @@ RPM verify command may continue to fail even after file permissions have been
 correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
 Bugzilla #1275532.
 </warning>
-<ident prodtype="rhel7" cce="80545-7" />
+<ident cce="80545-7" prodtype="rhel7" />
 <oval id="rpm_verify_ownership" />
 <ref prodtype="rhel7" stigid="TBD" />
-<ref nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" disa="1494,1496" pcidss="Req-11.5" cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" srg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" cjis="5.10.4.1" cui="3.3.8,3.4.1" />
+<ref cis="1.2.6,6.1.3,6.1.4,6.1.5,6.1.6,6.1.7,6.1.8,6.1.9,6.2.3" cjis="5.10.4.1" cui="3.3.8,3.4.1" disa="1494,1496" nist="AC-6,AU-9(1),AU-9(3),CM-6(d),CM-6(3)" pcidss="Req-11.5" srg="SRG-OS-000257-GPOS-00098,SRG-OS-000278-GPOS-00108" />
 </Rule>
 
-<Rule id="rpm_verify_hashes" severity="high" prodtype="rhel7">
+<Rule id="rpm_verify_hashes" prodtype="rhel7,fedora" severity="high">
 <title>Verify File Hashes with RPM</title>
 <description>Without cryptographic integrity protections, system
 executables and files can be altered by unauthorized users without
@@ -376,12 +369,10 @@ have file hashes different from what is expected by the RPM database.
 The hashes of important files like system executables should match the
 information given by the RPM database. Executables with erroneous hashes could
 be a sign of nefarious activity on the system.</rationale>
-<ident prodtype="rhel7" cce="27157-7" />
+<ident cce="27157-7" prodtype="rhel7" />
 <oval id="rpm_verify_hashes" />
 <ref prodtype="rhel7" stigid="010020" />
-<ref nist="CM-6(d),CM-6(3),SI-7(1)" disa="663" pcidss="Req-11.5" cis="1.2.6" srg="SRG-OS-000480-GPOS-00227" cjis="5.10.4.1" 
-cui="3.3.8,3.4.1"
-hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" />
+<ref cis="1.2.6" cjis="5.10.4.1" cui="3.3.8,3.4.1" disa="663" hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)" nist="CM-6(d),CM-6(3),SI-7(1)" pcidss="Req-11.5" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -397,7 +388,7 @@ security capabilities to those provided by the base platform.  Add-on
 software may not be appropriate for some specialized systems.
 </description>
 
-<Rule id="install_hids" severity="high" prodtype="rhel7">
+<Rule id="install_hids" prodtype="rhel7,fedora" severity="high">
 <title>Install Intrusion Detection Software</title>
 <description>
 The base Red Hat platform already includes a sophisticated auditing system that
@@ -418,37 +409,34 @@ Host-based intrusion detection tools provide a system-level defense when an
 intruder gains access to a system or network.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="26818-5" />
+<ident cce="26818-5" prodtype="rhel7" />
 <oval id="install_hids" />
-<ref nist="SC-7" disa="1263" pcidss="Req-11.4" />
+<ref disa="1263" nist="SC-7" pcidss="Req-11.4" />
 </Rule>
 
-<Rule id="install_antivirus" severity="high" prodtype="rhel7">
+<Rule id="install_antivirus" prodtype="rhel7,fedora" severity="high">
 <title>Install Virus Scanning Software</title>
 <description>
 Install virus scanning software, which uses signatures to search for the
 presence of viruses on the filesystem.
 Ensure virus definition files are no older than 7 days, or their last release.
-<!-- need info here on where DoD admins can go to get this -->
+
 Configure the virus scanning software to perform scans dynamically on all
 accessed files.  If this is not possible, configure the
 system to scan all altered files on the system on a daily
 basis. If the system processes inbound SMTP mail, configure the virus scanner
 to scan all received mail.
-<!-- what's the basis for the IAO language? would not failure of a check
-     imply a discussion, for every check in this document,
-     with the IAO (or SSO or ISSO or ISSM or whatever is the right acronym in your
-     particular neighborhood) should occur? -->
+
 </description>
 <ocil clause="virus scanning software does not run continuously, or at least daily, or has signatures that are out of date">
 Inspect the system for a cron job or system service which executes
 a virus scanning tool regularly.
-<br/>
-<!-- this should be handled as DoD-specific text in a future revision -->
+<br />
+
 To verify the McAfee VSEL system service is operational,
 run the following command:
 <pre>$ sudo /sbin/service nails status</pre>
-<br/>
+<br />
 To check on the age of uvscan virus definition files, run the following command:
 <pre>$ sudo cd /opt/NAI/LinuxShield/engine/dat
 $ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>
@@ -459,8 +447,8 @@ computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <oval id="install_antivirus" />
-<ident prodtype="rhel7" cce="27140-3" />
-<ref nist="SC-28, SI-3" disa="1239,1668"/>
+<ident cce="27140-3" prodtype="rhel7" />
+<ref disa="1239,1668" nist="SC-28, SI-3" />
 </Rule>
 
 <Group id="mcafee_security_software">
@@ -470,7 +458,7 @@ In DoD environments, McAfee Host-based Security System (HBSS) and
 VirusScan Enterprise for Linux (VSEL) is required to be installed on all systems.
 </description>
 
-<Rule id="install_mcafee_cma_rt" severity="medium" prodtype="rhel7">
+<Rule id="install_mcafee_cma_rt" prodtype="rhel7" severity="medium">
 <title>Install the McAfee Runtime Libraries and Linux Agent</title>
 <description>
 Install the McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma).
@@ -486,7 +474,7 @@ The McAfee Runtime Libraries (MFErt) and Linux Agent (MFEcma) are dependencies
 for VirusScan Enterprise for Linux (VSEL) and Host-based Security System (HBSS)
 to run.
 </rationale>
-<ident prodtype="rhel7" cce="80367-6" />
+<ident cce="80367-6" prodtype="rhel7" />
 <oval id="install_mcafee_cma_rt" />
 </Rule>
 
@@ -497,7 +485,7 @@ McAfee Host-based Security System (HBSS) is a suite of software applications
 used to monitor, detect, and defend computer networks and systems.
 </description>
 
-<Rule id="install_mcafee_hbss_hips" severity="medium" prodtype="rhel7">
+<Rule id="install_mcafee_hbss_hips" prodtype="rhel7" severity="medium">
 <title>Install the Host Intrusion Prevention System (HIPS) Module</title>
 <description>
 Install the McAfee Host Intrusion Prevention System (HIPS) Module if it is absolutely
@@ -518,12 +506,11 @@ Per DoD/DISA guidance, SELinux takes precedence over this module.</warning>
 <warning category="general">Due to McAfee HIPS being 3rd party software, automated
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_hbss_hips" />
-<ident prodtype="rhel7" cce="80368-4" />
-<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-srg="STG-OS-000480-GPOS-00227" />
+<ident cce="80368-4" prodtype="rhel7" />
+<ref disa="366,1263" nist="SC-7,SI-4(1).1" pcidss="Req-11.4" srg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="install_mcafee_hbss_accm" severity="medium" prodtype="rhel7">
+<Rule id="install_mcafee_hbss_accm" prodtype="rhel7" severity="medium">
 <title>Install the Asset Configuration Compliance Module (ACCM)</title>
 <description>
 Install the Asset Configuration Compliance Module (ACCM).
@@ -541,12 +528,11 @@ intrusion attempts.
 <warning category="general">Due to HBSS ACCM being 3rd party software, automated
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_hbss_accm" />
-<ident prodtype="rhel7" cce="80126-6" />
-<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-srg="STG-OS-000480-GPOS-00227" />
+<ident cce="80126-6" prodtype="rhel7" />
+<ref disa="366,1263" nist="SC-7,SI-4(1).1" pcidss="Req-11.4" srg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="install_mcafee_hbss_pa" severity="medium" prodtype="rhel7">
+<Rule id="install_mcafee_hbss_pa" prodtype="rhel7" severity="medium">
 <title>Install the Policy Auditor (PA) Module</title>
 <description>
 Install the Policy Auditor (PA) Module.
@@ -564,14 +550,13 @@ intrusion attempts.
 <oval id="install_mcafee_hbss_pa" />
 <warning category="general">Due to McAfee being 3rd party software, automated
 remediation is not available for this configuration check.</warning>
-<ident prodtype="rhel7" cce="80369-2" />
-<ref nist="SC-7,SI-4(1).1" disa="366,1263" pcidss="Req-11.4"
-srg="STG-OS-000480-GPOS-00227" />
+<ident cce="80369-2" prodtype="rhel7" />
+<ref disa="366,1263" nist="SC-7,SI-4(1).1" pcidss="Req-11.4" srg="STG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
 
-<Rule id="install_mcafee_antivirus" severity="high" prodtype="rhel7">
+<Rule id="install_mcafee_antivirus" prodtype="rhel7" severity="high">
 <title>Install McAfee Virus Scanning Software</title>
 <description>
 Install McAfee VirusScan Enterprise for Linux antivirus software
@@ -592,12 +577,12 @@ computer viruses, as well as to limit their spread to other systems.
 <warning category="general">Due to McAfee HIPS being 3rd party software, automated
 remediation is not available for this configuration check.</warning>
 <oval id="install_mcafee_antivirus" />
-<ident prodtype="rhel7" cce="80127-4" />
+<ident cce="80127-4" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="032000" />
-<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366,1239,1668" nist="SC-28,SI-3,SI-3(1)(ii)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="service_nails_enabled" severity="medium" prodtype="rhel7">
+<Rule id="service_nails_enabled" prodtype="rhel7" severity="medium">
 <title>Enable nails Service</title>
 <description>The <tt>nails</tt> service is used to run McAfee VirusScan Enterprise
 for Linux and McAfee Host-based Security System (HBSS) services.
@@ -610,12 +595,11 @@ computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <platform idref="cpe:/a:machine" />
 <oval id="service_nails_enabled" />
-<ident prodtype="rhel7" cce="80128-2" />
-<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668"
-srg="SRG-OS-000480-GPOS-00227" />
+<ident cce="80128-2" prodtype="rhel7" />
+<ref disa="366,1239,1668" nist="SC-28,SI-3,SI-3(1)(ii)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="mcafee_antivirus_definitions_updated" severity="medium" prodtype="rhel7">
+<Rule id="mcafee_antivirus_definitions_updated" prodtype="rhel7" severity="medium">
 <title>Virus Scanning Software Definitions Are Updated</title>
 <description>
 Ensure virus definition files are no older than 7 days or their last release.
@@ -630,10 +614,10 @@ Virus scanning software can be used to detect if a system has been compromised b
 computer viruses, as well as to limit their spread to other systems.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<!--oval id="mcafee_antivirus_definitions_updated" /-->
-<ident prodtype="rhel7" cce="80129-0" />
+
+<ident cce="80129-0" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="032010" />
-<ref nist="SC-28,SI-3,SI-3(1)(ii)" disa="366,1239,1668" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366,1239,1668" nist="SC-28,SI-3,SI-3(1)(ii)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -653,10 +637,10 @@ FIPS 140-2 is the current standard for validating that mechanisms used to access
 utilize authentication that meets industry and government requirements. For government systems, this allows
 Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
 <br /><br />
-See <b><weblink-macro link="http://csrc.nist.gov/publications/PubsFIPS.html"/></b> for more information.
+See <b><weblink-macro link="http://csrc.nist.gov/publications/PubsFIPS.html" /></b> for more information.
 </description>
 
-<Rule id="package_dracut-fips_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_dracut-fips_installed" prodtype="rhel7" severity="medium">
 <title>Install the dracut-fips Package</title>
 <description>
 To enable FIPS, the system requires that the <tt>dracut-fips</tt>
@@ -672,14 +656,12 @@ protect data. The operating system must implement cryptographic modules adhering
 standards approved by the federal government since this provides assurance they have been tested
 and validated.
 </rationale>
-<ident prodtype="rhel7" cce="80358-5" />
+<ident cce="80358-5" prodtype="rhel7" />
 <oval id="package_dracut-fips_installed" />
-<ref nist="AC-17(2)" disa="68,2450"
-srg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" cjis="5.10.1.2"
-cui="3.13.11,3.13.8" />
+<ref cjis="5.10.1.2" cui="3.13.11,3.13.8" disa="68,2450" nist="AC-17(2)" srg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
 </Rule>
 
-<Rule id="grub2_enable_fips_mode" severity="high" prodtype="rhel7">
+<Rule id="grub2_enable_fips_mode" prodtype="rhel7" severity="high">
 <title>Enable FIPS Mode in GRUB2</title>
 <description>
 To ensure FIPS mode is enabled, rebuild <tt>initramfs</tt> by running the following command:
@@ -716,12 +698,12 @@ Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and c
 projects such as CentOS, Scientific Linux, etc. do not necessarily meet FIPS certification and compliancy.
 Therefore, non-certified vendors and/or projects do not meet this requirement even if technically feasible.
 <br /><br />
-See <b><weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm"/></b> for a list of FIPS certified
+See <b><weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm" /></b> for a list of FIPS certified
 vendors.</warning>
-<ident prodtype="rhel7" cce="80359-3" />
+<ident cce="80359-3" prodtype="rhel7" />
 <oval id="grub2_enable_fips_mode" />
 <ref prodtype="rhel7" stigid="021350" />
-<ref nist="AC-17(2)" disa="68,2450" srg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" cjis="5.10.1.2" cui="3.13.8,3.13.11" />
+<ref cjis="5.10.1.2" cui="3.13.8,3.13.11" disa="68,2450" nist="AC-17(2)" srg="SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223" />
 </Rule>
 
 </Group>
@@ -737,7 +719,7 @@ known software vulnerabilities will be remediated, and proper guidance for
 protecting and securing the operating system will be given.
 </description>
 
-<Rule id="installed_OS_is_certified" severity="high" prodtype="rhel7">
+<Rule id="installed_OS_is_certified" prodtype="rhel7" severity="high">
 <title>The Installed Operating System Is Vendor Supported and Certified</title>
 <description>
 The installed operating system must be maintained and certified by a vendor.
@@ -758,10 +740,10 @@ security patches for the product as well as maintain government certification re
 With an unsupported release, it will not be possible to resolve security issue discovered in
 the system software as well as meet government certifications.
 </rationale>
-<ident prodtype="rhel7" cce="80349-4" />
+<ident cce="80349-4" prodtype="rhel7" />
 <oval id="installed_OS_is_certified" />
 <ref prodtype="rhel7" stigid="020250" />
-<ref nist="SI-2(c)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="SI-2(c)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>
 

@@ -4,25 +4,25 @@
 is provided in Red Hat Enterprise Linux 7 with Libreswan.
 </description>
 
-<Rule id="package_libreswan_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_libreswan_installed" prodtype="rhel7,fedora" severity="medium">
 <title>Install libreswan Package</title>
 <description>The Libreswan package provides an implementation of IPsec
 and IKE, which permits the creation of secure tunnels over
-untrusted networks. <yum-macro install="true" package="libreswan"/> 
+untrusted networks. <yum-macro install="true" package="libreswan" /> 
 </description>
-<ocil clause="the package is not installed" >
+<ocil clause="the package is not installed">
 <package-check-macro package="libreswan" />
 </ocil>
 <rationale>Providing the ability for remote users or systems
 to initiate a secure VPN connection protects information when it is
 transmitted over a wide area network.
 </rationale>
-<ident prodtype="rhel7" cce="80170-4" />
+<ident cce="80170-4" prodtype="rhel7" />
 <oval id="package_libreswan_installed" />
-<ref nist="AC-17, MA-4, SC-9" disa="1130,1131" pcidss="Req-4.1" />
+<ref disa="1130,1131" nist="AC-17, MA-4, SC-9" pcidss="Req-4.1" />
 </Rule>
 
-<Rule id="libreswan_approved_tunnels" severity="medium" prodtype="rhel7">
+<Rule id="libreswan_approved_tunnels" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Any Configured IPSec Tunnel Connections</title>
 <description>Libreswan provides an implementation of IPsec
 and IKE, which permits the creation of secure tunnels over
@@ -31,7 +31,7 @@ network requirements such as filtering. Verify that if any IPsec connection
 (<tt>conn</tt>) configured in <tt>/etc/ipsec.conf</tt> and <tt>/etc/ipsec.d</tt>
 exists is an approved organizational connection.
 </description>
-<ocil clause="the IPSec tunnels are not approved" >
+<ocil clause="the IPSec tunnels are not approved">
 To check for configured IPsec connections (<tt>conn</tt>), perform the following:
 <pre>grep -rni conn /etc/ipsec.conf /etc/ipsec.d/</pre>
 Verify any returned results for organizational approval.
@@ -39,12 +39,10 @@ Verify any returned results for organizational approval.
 <rationale>
 IP tunneling mechanisms can be used to bypass network filtering.
 </rationale>
-<ident prodtype="rhel7" cce="80171-2" />
-<!--oval id="libreswan_approved_tunnels" /-->
+<ident cce="80171-2" prodtype="rhel7" />
+
 <ref prodtype="rhel7" stigid="040820" />
-<ref nist="AC-4" disa="336" srg="SRG-OS-000480-GPOS-00227" 
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref disa="336" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-4" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
-

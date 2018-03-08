@@ -28,7 +28,7 @@ All of these daemons run with elevated privileges, and many listen for network
 connections. If they are not needed, they should be disabled to improve system
 security posture.</description>
 
-<Rule id="service_nfslock_disabled" prodtype="rhel7">
+<Rule id="service_nfslock_disabled" prodtype="rhel7,fedora">
 <title>Disable Network File System Lock Service (nfslock)</title>
 <description>The Network File System Lock (nfslock) service starts the required
 remote procedure call (RPC) processes which allow clients to lock files on the
@@ -36,11 +36,11 @@ server. If the local system is not configured to mount NFS filesystems then
 this service should be disabled.
 <systemd-service-macro enable="false" service="nfslock" />
 </description>
-<ident prodtype="rhel7" cce="80228-0" />
+<ident cce="80228-0" prodtype="rhel7" />
 <oval id="service_nfslock_disabled" />
 </Rule>
 
-<Rule id="service_rpcgssd_disabled" prodtype="rhel7">
+<Rule id="service_rpcgssd_disabled" prodtype="rhel7,fedora">
 <title>Disable Secure RPC Client Service (rpcgssd)</title>
 <description>
 The rpcgssd service manages RPCSEC GSS contexts required to secure protocols
@@ -49,7 +49,7 @@ client-side of RPCSEC GSS. If the system does not require secure RPC then this
 service should be disabled.
 <systemd-service-macro enable="false" service="rpcgssd" />
 </description>
-<ident prodtype="rhel7" cce="80229-8" />
+<ident cce="80229-8" prodtype="rhel7" />
 <oval id="service_rpcgssd_disabled" />
 </Rule>
 
@@ -64,24 +64,24 @@ with the requested service. If the system does not require RPC (such as for NFS
 servers) then this service should be disabled.
 <systemd-service-macro enable="false" service="rpcbind" />
 </description>
-<ident prodtype="rhel7" cce="80230-6" />
+<ident cce="80230-6" prodtype="rhel7" />
 <oval id="service_rpcbind_disabled" />
 <ref cis="2.2.7" />
 </Rule>
 
-<Rule id="service_rpcidmapd_disabled" prodtype="rhel7">
+<Rule id="service_rpcidmapd_disabled" prodtype="rhel7,fedora">
 <title>Disable RPC ID Mapping Service (rpcidmapd)</title>
 <description>The rpcidmapd service is used to map user names and groups to UID
 and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then
 this service should be disabled.
 <systemd-service-macro enable="false" service="rpcidmapd" />
 </description>
-<ident prodtype="rhel7" cce="80231-4" />
+<ident cce="80231-4" prodtype="rhel7" />
 <oval id="service_rpcidmapd_disabled" />
 </Rule>
-</Group> <!-- end disabling_nfs_services -->
+</Group> 
 
-</Group> <!-- end disabling_nfs -->
+</Group> 
 
 <Group id="nfs_configuring_all_machines">
 <title>Configure All Systems which Use NFS</title>
@@ -98,7 +98,7 @@ which act as NFS servers to also mount filesystems via NFS. At the least,
 crossed mounts (the situation in which each of two servers mounts a filesystem
 from the other) should never be used.
 </description>
-</Group> <!-- <Group id="nfs_client_or_server_not_both"> -->
+</Group> 
 
 
 <Group id="nfs_configure_fixed_ports">
@@ -123,7 +123,7 @@ daemons, which can and should be disabled in a pure NFSv4 environment. The
 exports, but is not involved in any over-the-wire operations.
 </description>
 
-<Rule id="nfs_fixed_lockd_tcp_port" prodtype="rhel7">
+<Rule id="nfs_fixed_lockd_tcp_port" prodtype="rhel7,fedora">
 <title>Configure <tt>lockd</tt> to use static TCP port</title>
 <description>Configure the <tt>lockd</tt> daemon to use a static TCP port as
 opposed to letting the RPC Bind service dynamically assign a port. Edit the
@@ -136,10 +136,10 @@ your network.
 Restrict service to always use a given port, so that firewalling can be done
 effectively.
 </rationale>
-<ident prodtype="rhel7" cce="80232-2" />
+<ident cce="80232-2" prodtype="rhel7" />
 </Rule>
 
-<Rule id="nfs_fixed_lockd_udp_port" prodtype="rhel7">
+<Rule id="nfs_fixed_lockd_udp_port" prodtype="rhel7,fedora">
 <title>Configure <tt>lockd</tt> to use static UDP port</title>
 <description>Configure the <tt>lockd</tt> daemon to use a static UDP port as
 opposed to letting the RPC Bind service dynamically assign a port. Edit the
@@ -152,10 +152,10 @@ your network.
 <rationale> Restricting services to always use a given port enables firewalling
 to be done more effectively.
 </rationale>
-<ident prodtype="rhel7" cce="80233-0" />
+<ident cce="80233-0" prodtype="rhel7" />
 </Rule>
 
-<Rule id="nfs_fixed_statd_port" prodtype="rhel7">
+<Rule id="nfs_fixed_statd_port" prodtype="rhel7,fedora">
 <title>Configure <tt>statd</tt> to use static port</title>
 <description>Configure the <tt>statd</tt> daemon to use a static port as
 opposed to letting the RPC Bind service dynamically assign a port. Edit the
@@ -166,10 +166,10 @@ Where <tt>statd-port</tt> is a port which is not used by any other service on yo
 <rationale> Restricting services to always use a given port enables firewalling
 to be done more effectively.
 </rationale>
-<ident prodtype="rhel7" cce="80234-8" />
+<ident cce="80234-8" prodtype="rhel7" />
 </Rule>
 
-<Rule id="nfs_fixed_mountd_port" prodtype="rhel7">
+<Rule id="nfs_fixed_mountd_port" prodtype="rhel7,fedora">
 <title>Configure <tt>mountd</tt> to use static port</title>
 <description>Configure the <tt>mountd</tt> daemon to use a static port as
 opposed to letting the RPC Bind service dynamically assign a port. Edit the
@@ -180,12 +180,12 @@ Where <tt>mountd-port</tt> is a port which is not used by any other service on y
 <rationale> Restricting services to always use a given port enables firewalling
 to be done more effectively.
 </rationale>
-<ident prodtype="rhel7" cce="80235-5" />
+<ident cce="80235-5" prodtype="rhel7" />
 </Rule>
 
-</Group> <!-- end nfs_configure_fixed_ports -->
+</Group> 
 
-</Group> <!-- <Group id="nfs_client_or_server_not_both"> -->
+</Group> 
 
 <Group id="nfs_configuring_clients">
 <title>Configure NFS Clients</title>
@@ -198,7 +198,7 @@ There is no need to run the NFS server daemons <tt>nfs</tt> and
 designated as NFS servers. Ensure that these daemons are turned off on
 clients.</description>
 
-<Rule id="nfs_no_anonymous" prodtype="rhel7">
+<Rule id="nfs_no_anonymous" prodtype="rhel7,fedora">
 <title>Specify UID and GID for Anonymous NFS Connections</title>
 <description>To specify the UID and GID for remote root users, edit the <tt>/etc/exports</tt> file and add the following for each export:
 <pre>
@@ -213,10 +213,10 @@ greater than UID_MAX and GID_MAX as defined in /etc/login.defs.
 </ocil>
 <rationale>Specifying the anonymous UID and GID ensures that the remote root user is mapped 
 to a local account which has no permissions on the system.</rationale>
-<ident prodtype="rhel7" cce="80236-3" />
+<ident cce="80236-3" prodtype="rhel7" />
 </Rule>
 
-<Rule id="service_nfs_disabled" prodtype="rhel7">
+<Rule id="service_nfs_disabled" prodtype="rhel7,fedora">
 <title>Disable Network File System (nfs)</title>
 <description>The Network File System (NFS) service allows remote hosts to mount
 and interact with shared filesystems on the local system. If the local system
@@ -227,12 +227,12 @@ is not designated as a NFS server then this service should be disabled.
 <systemd-check-macro enable="false" service="nfs" />
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
-<ident prodtype="rhel7" cce="80237-1" />
-<ref nist="AC-3" cis="2.2.7" />
+<ident cce="80237-1" prodtype="rhel7" />
+<ref cis="2.2.7" nist="AC-3" />
 <oval id="service_nfs_disabled" />
 </Rule>
 
-<Rule id="service_rpcsvcgssd_disabled" prodtype="rhel7">
+<Rule id="service_rpcsvcgssd_disabled" prodtype="rhel7,fedora">
 <title>Disable Secure RPC Server Service (rpcsvcgssd)</title>
 <description>The rpcsvcgssd service manages RPCSEC GSS contexts required to
 secure protocols that use RPC (most often Kerberos and NFS). The rpcsvcgssd
@@ -244,7 +244,7 @@ RPC then this service should be disabled.
 <systemd-check-macro enable="false" service="rpcsvcgssd" />
 </ocil>
 <rationale>Unnecessary services should be disabled to decrease the attack surface of the system.</rationale>
-<ident prodtype="rhel7" cce="80238-9" />
+<ident cce="80238-9" prodtype="rhel7" />
 <oval id="service_rpcsvcgssd_disabled" />
 </Rule>
 </Group>
@@ -264,7 +264,7 @@ be executed from remote servers is particularly risky, both for this reason and
 because it requires the clients to extend root-level trust to the NFS
 server.</description>
 
-<Rule id="mount_option_nodev_remote_filesystems" severity="medium" prodtype="rhel7">
+<Rule id="mount_option_nodev_remote_filesystems" prodtype="rhel7" severity="medium">
 <title>Mount Remote Filesystems with nodev</title>
 <description>
 <mount-desc-macro option="nodev" part="any NFS mounts" />
@@ -277,12 +277,12 @@ not implemented.
 </ocil>
 <rationale>Legitimate device files should only exist in the /dev directory. NFS mounts
 should not present device files to users.</rationale>
-<ident prodtype="rhel7" cce="80239-7" />
+<ident cce="80239-7" prodtype="rhel7" />
 <oval id="mount_option_nodev_remote_filesystems" />
 <ref nist="CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_nosuid_remote_filesystems" severity="medium" prodtype="rhel7">
+<Rule id="mount_option_nosuid_remote_filesystems" prodtype="rhel7" severity="medium">
 <title>Mount Remote Filesystems with nosuid</title>
 <description>
 <mount-desc-macro option="nosuid" part="any NFS mounts" />
@@ -295,13 +295,13 @@ not implemented.
 </ocil>
 <rationale>NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables
 should be installed to their default location on the local filesystem.</rationale>
-<ident prodtype="rhel7" cce="80240-5" />
+<ident cce="80240-5" prodtype="rhel7" />
 <oval id="mount_option_nosuid_remote_filesystems" />
 <ref prodtype="rhel7" stigid="021020" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="mount_option_noexec_remote_filesystems" severity="medium" prodtype="rhel7">
+<Rule id="mount_option_noexec_remote_filesystems" prodtype="rhel7" severity="medium">
 <title>Mount Remote Filesystems with noexec</title>
 <description>
 <mount-desc-macro option="noexec" part="any NFS mounts" />
@@ -316,13 +316,13 @@ not implemented.
 for mounting any file system not containing approved binary files as they may be incompatible. Executing
 files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized
 administrative access.</rationale>
-<ident prodtype="rhel7" cce="80436-9" />
+<ident cce="80436-9" prodtype="rhel7" />
 <oval id="mount_option_noexec_remote_filesystems" />
 <ref prodtype="rhel7" stigid="021021" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="mount_option_krb_sec_remote_filesystems" severity="medium" prodtype="rhel7">
+<Rule id="mount_option_krb_sec_remote_filesystems" prodtype="rhel7" severity="medium">
 <title>Mount Remote Filesystems with Kerberos Security</title>
 <description>
 <mount-desc-macro option="sec=krb5:krb5i:krb5p" part="any NFS mounts" />
@@ -339,10 +339,10 @@ requests from the remote user. The userid and groupid could mistakenly or malici
 incorrectly. The AUTH_GSS method of authentication uses certificates on the server and client
 systems to more securely authenticate the remote mount request.
 </rationale>
-<ident prodtype="rhel7" cce="27458-9" />
+<ident cce="27458-9" prodtype="rhel7" />
 <oval id="mount_option_krb_sec_remote_filesystems" />
 <ref prodtype="rhel7" stigid="040750" />
-<ref nist="AC-14(1)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="AC-14(1)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
@@ -367,7 +367,7 @@ The syntax of each line in <tt>/etc/exports</tt> is:
 where <tt>/DIR</tt> is a directory or filesystem to export, <tt>hostN</tt> is an IP address, netblock,
 hostname, domain, or netgroup to which to export, and <tt>optN</tt> is an option.
 </description>
-</Group> <!-- configure_exports_restrictively -->
+</Group> 
 
 <Group id="use_acl_enforce_auth_restrictions">
 <title>Use Access Lists to Enforce Authorization Restrictions</title>
@@ -385,7 +385,7 @@ Authorized hosts can be specified in several different formats:
 <li>IP subnets in the format <tt>address/netmask</tt> or <tt>address/CIDR</tt></li>
 </ul>
 </description>
-</Group> <!-- use_acl_enforce_auth_restrictions -->
+</Group> 
 
 <Group id="export_filesystems_read_only">
 <title>Export Filesystems Read-Only if Possible</title>
@@ -394,10 +394,10 @@ fashion, but there is no need for users to edit those files, exporting the files
 removes an attack vector against the server. The default filesystem export mode is <tt>ro</tt>,
 so do not specify <tt>rw</tt> without a good reason.
 </description>
-</Group> <!-- export_filesystems_read_only -->
+</Group> 
 
 
-<Rule id="use_root_squashing_all_exports" prodtype="rhel7">
+<Rule id="use_root_squashing_all_exports" prodtype="rhel7,fedora">
 <title>Use Root-Squashing on All Exports</title>
 <description>If a filesystem is exported using root squashing, requests from root on the client
 are considered to be unprivileged (mapped to a user such as nobody). This provides some mild
@@ -409,10 +409,10 @@ Ensure that no line in <tt>/etc/exports</tt> contains the option <tt>no_root_squ
 <rationale>If the NFS server allows root access to local file systems from remote hosts, this
 access could be used to compromise the system.
 </rationale>
-<ident prodtype="rhel7" cce="80241-3" />
+<ident cce="80241-3" prodtype="rhel7" />
 </Rule>
 
-<Rule id="restrict_nfs_clients_to_privileged_ports" prodtype="rhel7">
+<Rule id="restrict_nfs_clients_to_privileged_ports" prodtype="rhel7,fedora">
 <title>Restrict NFS Clients to Privileged Ports</title>
 <description>By default, the server NFS implementation requires that all client requests be made
 from ports less than 1024. If your organization has control over systems connected to its
@@ -425,11 +425,11 @@ To ensure that the default has not been changed, ensure no line in
 <rationale>Allowing client requests to be made from ports higher than 1024 could allow a unprivileged
 user to initiate an NFS connection. If the unprivileged user account has been compromised, an
 attacker could gain access to data on the NFS server.</rationale>
-<ident prodtype="rhel7" cce="80242-1" />
+<ident cce="80242-1" prodtype="rhel7" />
 <ref nist="AC-3" />
 </Rule>
 
-<Rule id="no_insecure_locks_exports" severity="medium" prodtype="rhel7">
+<Rule id="no_insecure_locks_exports" prodtype="rhel7,fedora" severity="medium">
 <title>Ensure Insecure File Locking is Not Allowed</title>
 <description>By default the NFS server requires secure file-lock requests,
 which require credentials from the client in order to lock a file. Most NFS
@@ -450,11 +450,11 @@ To verify insecure file locking has been disabled, run the following command:
 viewed or edited by an unauthorized user.
 </rationale>
 <oval id="no_insecure_locks_exports" />
-<ident prodtype="rhel7" cce="80243-9" />
+<ident cce="80243-9" prodtype="rhel7" />
 <ref disa="764" />
 </Rule>
 
-<Rule id="use_kerberos_security_all_exports" severity="medium" prodtype="rhel7">
+<Rule id="use_kerberos_security_all_exports" prodtype="rhel7" severity="medium">
 <title>Use Kerberos Security on All Exports</title>
 <description>
 Using Kerberos on all exported mounts prevents a malicious client or user from
@@ -473,12 +473,11 @@ requests from the remote user. The userid and groupid could mistakenly or malici
 incorrectly. The AUTH_GSS method of authentication uses certificates on the server and client
 systems to more securely authenticate the remote mount request.
 </rationale>
-<ident prodtype="rhel7" cce="27464-7" />
+<ident cce="27464-7" prodtype="rhel7" />
 <oval id="use_kerberos_security_all_exports" />
-<ref nist="AC-14(1)" disa="366" srg="SRG-OS-000480-GPOS-00227"
-hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" />
+<ref disa="366" hipaa="164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)" nist="AC-14(1)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-</Group> <!-- nfs_configuring_servers -->
+</Group> 
 
 </Group>

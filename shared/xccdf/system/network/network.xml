@@ -59,7 +59,7 @@ including its name and address and should not be used unless needed.
 <ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="network_disable_zeroconf" prodtype="rhel7">
+<Rule id="network_disable_zeroconf" prodtype="rhel7,fedora">
 <title>Disable Zeroconf Networking</title>
 <description>Zeroconf networking allows the system to assign itself an IP
 address and engage in IP communication without a statically-assigned address or
@@ -108,7 +108,7 @@ time synchronization, centralized authentication, and remote system logging.
 <ref nist="SC-22" disa="366" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="network_sniffer_disabled" severity="medium" prodtype="rhel7">
+<Rule id="network_sniffer_disabled" severity="medium" prodtype="rhel7,fedora">
 <title>Ensure System is Not Acting as a Network Sniffer</title>
 <description>The system should not be acting as a network sniffer, which can
 capture all traffic on the network to which it is connected. Run the following

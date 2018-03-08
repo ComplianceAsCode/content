@@ -23,7 +23,7 @@ support for wireless networking, but note that these methods do not
 prevent malicious software or careless users from re-activating the
 devices.</description>
 
-<Rule id="wireless_disable_in_bios" prodtype="rhel7">
+<Rule id="wireless_disable_in_bios" prodtype="rhel7,fedora">
 <title>Disable WiFi or Bluetooth in BIOS</title>
 <description>Some machines that include built-in wireless support offer the
 ability to disable the device through the BIOS. This is hardware-specific;
@@ -34,12 +34,12 @@ activation of the wireless interface, generally requiring administrators
 to reboot the system first.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27397-9" />
-<!--TODO:OCIL <oval id="wireless_disable_in_bios" />-->
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85" />
+<ident cce="27397-9" prodtype="rhel7" />
+
+<ref disa="85" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" />
 </Rule>
 
-<Rule id="wireless_disable_interfaces" prodtype="rhel7">
+<Rule id="wireless_disable_interfaces" prodtype="rhel7,fedora">
 <title>Deactivate Wireless Network Interfaces</title>
 <description>
 Deactivating wireless network interfaces should prevent
@@ -65,13 +65,12 @@ attacker to monitor and record network traffic. These malicious APs can also
 serve to create a man-in-the-middle attack or be used to create a denial of
 service to valid network resources.
 </rationale>
-<ident prodtype="rhel7" cce="27358-1" />
+<ident cce="27358-1" prodtype="rhel7" />
 <oval id="wireless_disable_interfaces" />
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,2418" cis="4.3.1"
-cui="3.1.16" srg="SRG-OS-000424-GPOS-00188" stigid="041010"/>
+<ref cis="4.3.1" cui="3.1.16" disa="85,2418" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" srg="SRG-OS-000424-GPOS-00188" stigid="041010" />
 </Rule>
 
-<Rule id="service_bluetooth_disabled" severity="medium" prodtype="rhel7">
+<Rule id="service_bluetooth_disabled" prodtype="rhel7,fedora" severity="medium">
 <title>Disable Bluetooth Service</title>
 <description>
 <systemd-service-macro enable="false" service="bluetooth" />
@@ -84,13 +83,12 @@ cui="3.1.16" srg="SRG-OS-000424-GPOS-00188" stigid="041010"/>
 connections to Bluetooth devices, which entails some security risk.
 Nevertheless, variation in this risk decision may be expected due to the
 utility of Bluetooth connectivity and its limited range.</rationale>
-<ident prodtype="rhel7" cce="27328-4" />
+<ident cce="27328-4" prodtype="rhel7" />
 <oval id="service_bluetooth_disabled" />
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551" 
-cui="3.1.16" />
+<ref cui="3.1.16" disa="85,1551" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" />
 </Rule>
 
-<Rule id="kernel_module_bluetooth_disabled" severity="medium" prodtype="rhel7">
+<Rule id="kernel_module_bluetooth_disabled" prodtype="rhel7,fedora" severity="medium">
 <title>Disable Bluetooth Kernel Modules</title>
 <description>The kernel's module loading system can be configured to prevent
 loading of the Bluetooth module. Add the following to
@@ -105,11 +103,10 @@ to prevent the loading of the Bluetooth module:
 from loading the kernel module provides an additional safeguard against its
 activation.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27327-6" />
+<ident cce="27327-6" prodtype="rhel7" />
 <oval id="kernel_module_bluetooth_disabled" />
-<ref nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" disa="85,1551"
-cjis="5.13.1.3" cui="3.1.16" />
+<ref cjis="5.13.1.3" cui="3.1.16" disa="85,1551" nist="AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7" />
 </Rule>
 
-</Group><!--<Group id="wireless_software">-->
-</Group><!--<Group id="network-wireless">-->
+</Group>
+</Group>

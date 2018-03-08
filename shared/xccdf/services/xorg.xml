@@ -13,7 +13,7 @@ on a dedicated server system, as it increases the system's attack surface and co
 system resources. Administrators of server systems should instead login via
 SSH or on the text console.</description>
 
-<Rule id="xwindows_runlevel_setting" severity="medium" prodtype="rhel7">
+<Rule id="xwindows_runlevel_setting" prodtype="rhel7,fedora" severity="medium">
 <title>Disable X Windows Startup By Setting Default Target</title>
 <description>Systems that do not require a graphical user interface should only boot by
 default into <tt>multi-user.target</tt> mode. This prevents accidental booting of the system
@@ -34,12 +34,12 @@ The output should show the following:
 must not be active to decrease the attack surface of the system. X windows has a
 long history of security vulnerabilities and should not be used unless approved
 and documented.</rationale>
-<ident prodtype="rhel7" cce="CCE-27285-6" />
+<ident cce="CCE-27285-6" prodtype="rhel7" />
 <oval id="xwindows_runlevel_setting" />
-<ref nist="AC-17(8).1(ii)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="AC-17(8).1(ii)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="package_xorg-x11-server-common_removed" severity="medium" prodtype="rhel7">
+<Rule id="package_xorg-x11-server-common_removed" prodtype="rhel7,fedora" severity="medium">
 <title>Remove the X Windows Package Group</title>
 <description>By removing the xorg-x11-server-common package, the system no longer has X Windows
 installed. If X Windows is not installed then the system cannot boot into graphical user mode.
@@ -57,13 +57,12 @@ The output should be:
 <rationale>Unnecessary service packages must not be installed to decrease the attack surface of the system. X windows has a long history of security
 vulnerabilities and should not be installed unless approved and documented.
 </rationale>
-<ident prodtype="rhel7" cce="CCE-27218-7" />
+<ident cce="CCE-27218-7" prodtype="rhel7" />
 <oval id="package_xorg-x11-server-common_removed" />
 <ref prodtype="rhel7" stigid="040730" />
-<ref nist="AC-17(8).1(ii)" disa="366" cis="2.2.2" srg="SRG-OS-000480-GPOS-00227" />
+<ref cis="2.2.2" disa="366" nist="AC-17(8).1(ii)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<!-- to add: guidance in /etc/gdm/custom.conf for xdmcp disable, tcplisten disable -->
-</Group>
-</Group>
 
+</Group>
+</Group>

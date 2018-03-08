@@ -11,8 +11,7 @@ correct configuration file permissions for interactive accounts,
 particularly those of privileged users such as root or system
 administrators.</description>
 
-<Value id="var_accounts_max_concurrent_login_sessions" type="number"
-operator="equals" interactive="0">
+<Value id="var_accounts_max_concurrent_login_sessions" interactive="0" operator="equals" type="number">
 <title>Maximum concurrent login sessions</title>
 <description>Maximum number of concurrent sessions by a user</description>
 <value selector="">1</value>
@@ -24,8 +23,7 @@ operator="equals" interactive="0">
 <value selector="20">20</value>
 </Value>
 
-<Value id="var_accounts_fail_delay" type="number"
-operator="equals" interactive="0">
+<Value id="var_accounts_fail_delay" interactive="0" operator="equals" type="number">
 <title>Maximum login attempts delay</title>
 <description>Maximum time in seconds between fail login attempts before re-prompting.</description>
 <value selector="">4</value>
@@ -36,7 +34,7 @@ operator="equals" interactive="0">
 <value selector="5">5</value>
 </Value>
 
-<Value id="var_accounts_tmout" type="number" operator="equals" interactive="0">
+<Value id="var_accounts_tmout" interactive="0" operator="equals" type="number">
 <title>Account Inactivity Timeout (minutes)</title>
 <description>In an interactive shell, the value is interpreted as the
 number of seconds to wait for input after issueing the primary prompt.
@@ -48,7 +46,7 @@ not arrive.</description>
 <value selector="15_min">900</value>
 </Value>
 
-<Rule id="accounts_have_homedir_login_defs" severity="medium" prodtype="rhel7">
+<Rule id="accounts_have_homedir_login_defs" prodtype="rhel7" severity="medium">
 <title>Ensure Home Directories are Created for New Users</title>
 <description>
 All local interactive user accounts, upon creation, should be assigned a home directory.
@@ -68,13 +66,13 @@ Check if the system is configured to create home directories for local interacti
 <pre>$ sudo grep create_home /etc/login.defs</pre>
 <br /><br />
 </ocil>
-<ident prodtype="rhel7" cce="80434-4" />
+<ident cce="80434-4" prodtype="rhel7" />
 <oval id="accounts_have_homedir_login_defs" />
 <ref prodtype="rhel7" stigid="020610" />
 <ref srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="accounts_tmout" severity="medium" prodtype="rhel7">
+<Rule id="accounts_tmout" prodtype="rhel7" severity="medium">
 <title>Set Interactive Session Timeout</title>
 <description>
 Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
@@ -95,13 +93,13 @@ on the system:
 The output should return the following:
 <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
 </ocil>
-<ident prodtype="rhel7" cce="27557-8" />
+<ident cce="27557-8" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="040160" />
-<ref nist="AC-12,SC-10" disa="1133,0361" srg="SRG-OS-000163-GPOS-00072" cui="3.1.11" />
+<ref cui="3.1.11" disa="1133,0361" nist="AC-12,SC-10" srg="SRG-OS-000163-GPOS-00072" />
 <oval id="accounts_tmout" value="var_accounts_tmout" />
 </Rule>
 
-<Rule id="accounts_max_concurrent_login_sessions" severity="low" prodtype="rhel7">
+<Rule id="accounts_max_concurrent_login_sessions" prodtype="rhel7,fedora" severity="low">
 <title>Limit the Number of Concurrent Login Sessions Allowed Per User</title>
 <description>
 Limiting the number of allowed users and sessions per user can limit risks related to Denial of
@@ -121,10 +119,10 @@ on the system:
 You should receive output similar to the following:
 <pre>*		hard	maxlogins	<sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 </ocil>
-<ident prodtype="rhel7" cce="27081-9" />
+<ident cce="27081-9" prodtype="rhel7" />
 <oval id="accounts_max_concurrent_login_sessions" value="var_accounts_max_concurrent_login_sessions" />
 <ref prodtype="rhel7" stigid="040000" />
-<ref nist="AC-10" disa="54" srg="SRG-OS-000027-GPOS-00008" cjis="5.5.2.2" />
+<ref cjis="5.5.2.2" disa="54" nist="AC-10" srg="SRG-OS-000027-GPOS-00008" />
 </Rule>
 
 <Rule id="accounts_logon_fail_delay" prodtype="rhel7">
@@ -146,10 +144,10 @@ fail_delay <sub idref="var_accounts_fail_delay" /></pre>
 Increasing the time between a failed authentication attempt and re-prompting to
 enter credentials helps to slow a single-threaded brute force attack.
 </rationale>
-<ident prodtype="rhel7" cce="80352-8" />
+<ident cce="80352-8" prodtype="rhel7" />
 <oval id="accounts_logon_fail_delay" value="var_accounts_fail_delay" />
 <ref prodtype="rhel7" stigid="010430" />
-<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00226" />
+<ref disa="366" nist="CM-6(b)" srg="SRG-OS-000480-GPOS-00226" />
 </Rule>
 
 <Group id="root_paths">
@@ -174,7 +172,7 @@ It is a good practice for administrators to always execute
 privileged commands by typing the full path to the
 command.</description>
 
-<Rule id="root_path_no_dot" prodtype="rhel7">
+<Rule id="root_path_no_dot" prodtype="rhel7,fedora">
 <title>Ensure that Root's Path Does Not Include Relative Paths or Null Directories</title>
 <description>
 Ensure that none of the directories in root's path is equal to a single
@@ -191,12 +189,12 @@ These empty elements have the same effect as a single <tt>.</tt> character.
 Including these entries increases the risk that root could
 execute code from an untrusted location.
 </rationale>
-<ident prodtype="rhel7" cce="80199-3" />
+<ident cce="80199-3" prodtype="rhel7" />
 <oval id="root_path_no_dot" />
-<ref nist="CM-6(b)" disa="366"/>
+<ref disa="366" nist="CM-6(b)" />
 </Rule>
 
-<Rule id="accounts_root_path_dirs_no_write" prodtype="rhel7">
+<Rule id="accounts_root_path_dirs_no_write" prodtype="rhel7,fedora">
 <title>Ensure that Root's Path Does Not Include World or Group-Writable Directories</title>
 <description>
 For each element in root's path, run:
@@ -214,13 +212,13 @@ Such entries increase the risk that root could
 execute code provided by unprivileged users,
 and potentially malicious code.
 </rationale>
-<ident prodtype="rhel7" cce="80200-9" />
+<ident cce="80200-9" prodtype="rhel7" />
 <oval id="accounts_root_path_dirs_no_write" />
-<ref nist="CM-6(b)" disa="366"/>
+<ref disa="366" nist="CM-6(b)" />
 </Rule>
 </Group>
 
-<Rule id="accounts_user_dot_no_world_writable_programs" severity="medium" prodtype="rhel7">
+<Rule id="accounts_user_dot_no_world_writable_programs" prodtype="rhel7" severity="medium">
 <title>User Initialization Files Must Not Run World-Writable Programs</title>
 <description>
 Set the mode on files being executed by the user initialization files with the
@@ -240,12 +238,12 @@ files or otherwise compromise the system at the user level. If the system is
 compromised at the user level, it is easier to elevate privileges to eventually
 compromise the system at the root and network level.
 </rationale>
-<ident cce="80523-4"/>
-<oval id="accounts_user_dot_no_world_writable_programs"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020730"/>
+<ident cce="80523-4" />
+<oval id="accounts_user_dot_no_world_writable_programs" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020730" />
 </Rule>
 
-<Rule id="accounts_user_home_paths_only" severity="medium" prodtype="rhel7">
+<Rule id="accounts_user_home_paths_only" prodtype="rhel7" severity="medium">
 <title>Ensure that Users Path Contains Only Local Directories</title>
 <description>
 Ensure that all interactive user initialization files executable search
@@ -270,12 +268,12 @@ this is interpreted as the current working directory. If deviations from the
 default system search path for the local interactive user are required, they
 must be documented with the Information System Security Officer (ISSO).
 </rationale>
-<ident cce="80524-2"/>
-<oval id="accounts_user_home_paths_only"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020720"/>
+<ident cce="80524-2" />
+<oval id="accounts_user_home_paths_only" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020720" />
 </Rule>
 
-<Rule id="file_permission_user_init_files" severity="medium" prodtype="rhel7">
+<Rule id="file_permission_user_init_files" prodtype="rhel7" severity="medium">
 <title>Ensure All User Initialization Files Have Mode 0740 Or Less Permissive</title>
 <description>
 Set the mode of the user initialization files to <tt>0740</tt> with the
@@ -293,12 +291,12 @@ Local initialization files are used to configure the user's shell environment
 upon logon. Malicious modification of these files could compromise accounts upon
 logon.
 </rationale>
-<ident cce="80525-9"/>
-<oval id="file_permission_user_init_files"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020710"/>
+<ident cce="80525-9" />
+<oval id="file_permission_user_init_files" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020710" />
 </Rule>
 
-<Rule id="accounts_user_dot_group_ownership" severity="medium" prodtype="rhel7">
+<Rule id="accounts_user_dot_group_ownership" prodtype="rhel7" severity="medium">
 <title>User Initialization Files Must Be Group-Owned By The Primary User</title>
 <description>
 Change the group owner of interactive users files to the group found
@@ -318,12 +316,12 @@ Local initialization files for interactive users are used to configure the
 user's shell environment upon logon. Malicious modification of these files could
 compromise accounts upon logon.
 </rationale>
-<ident cce="80526-7"/>
-<oval id="accounts_user_dot_group_ownership"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020700"/>
+<ident cce="80526-7" />
+<oval id="accounts_user_dot_group_ownership" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020700" />
 </Rule>
 
-<Rule id="accounts_user_dot_user_ownership" severity="medium" prodtype="rhel7">
+<Rule id="accounts_user_dot_user_ownership" prodtype="rhel7" severity="medium">
 <title>User Initialization Files Must Be Owned By the Primary User</title>
 <description>
 Set the owner of the user initialization files for interactive users to
@@ -341,12 +339,12 @@ Local initialization files are used to configure the user's shell environment
 upon logon. Malicious modification of these files could compromise accounts upon
 logon.
 </rationale>
-<ident cce="80527-5"/>
-<oval id="accounts_user_dot_user_ownership"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020690"/>
+<ident cce="80527-5" />
+<oval id="accounts_user_dot_user_ownership" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020690" />
 </Rule>
 
-<Rule id="accounts_user_interactive_home_directory_defined" severity="medium" prodtype="rhel7">
+<Rule id="accounts_user_interactive_home_directory_defined" prodtype="rhel7" severity="medium">
 <title>All Interactive Users Must Have A Home Directory Defined</title>
 <description>
 Assign home directories to all interactive users that currently do not
@@ -363,12 +361,12 @@ defined.
 If local interactive users are not assigned a valid home directory, there is no
 place for the storage and control of files they should own.
 </rationale>
-<ident cce="80528-3"/>
-<oval id="accounts_user_interactive_home_directory_defined"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020600"/>
+<ident cce="80528-3" />
+<oval id="accounts_user_interactive_home_directory_defined" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020600" />
 </Rule>
 
-<Rule id="accounts_user_interactive_home_directory_exists" severity="medium" prodtype="rhel7">
+<Rule id="accounts_user_interactive_home_directory_exists" prodtype="rhel7" severity="medium">
 <title>All Interactive Users Home Directories Must Exist</title>
 <description>
 Create home directories to all interactive users that currently do not
@@ -389,12 +387,12 @@ upon logon. This could create a Denial of Service because the user would not be
 able to access their logon configuration files, and it may give them visibility
 to system files they normally would not be able to access.
 </rationale>
-<ident cce="80529-1"/>
-<oval id="accounts_user_interactive_home_directory_exists"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020620"/>
+<ident cce="80529-1" />
+<oval id="accounts_user_interactive_home_directory_exists" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020620" />
 </Rule>
 
-<Rule id="file_permissions_home_directories" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_home_directories" prodtype="rhel7" severity="medium">
 <title>All Interactive User Home Directories Must Have mode 0750 Or Less Permissive</title>
 <description>
 Change the mode of interactive users home directories to <tt>0750</tt>. To
@@ -412,12 +410,12 @@ Inspect the output for any directories with incorrect permissions.
 Excessive permissions on local interactive user home directories may allow
 unauthorized access to user files by other users.
 </rationale>
-<ident cce="80530-9"/>
-<oval id="file_permissions_home_directories"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020630"/>
+<ident cce="80530-9" />
+<oval id="file_permissions_home_directories" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020630" />
 </Rule>
 
-<Rule id="file_ownership_home_directories" severity="medium" prodtype="rhel7">
+<Rule id="file_ownership_home_directories" prodtype="rhel7" severity="medium">
 <title>All Interactive User Home Directories Must Be Owned By The Primary User</title>
 <description>
 Change the owner of interactive users home directories to that correct
@@ -434,12 +432,12 @@ If a local interactive user does not own their home directory, unauthorized
 users could access or modify the user's files, and the users may not be able to
 access their own files.
 </rationale>
-<ident cce="80531-7"/>
-<oval id="file_ownership_home_directories"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020640"/>
+<ident cce="80531-7" />
+<oval id="file_ownership_home_directories" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020640" />
 </Rule>
 
-<Rule id="file_groupownership_home_directories" severity="medium" prodtype="rhel7">
+<Rule id="file_groupownership_home_directories" prodtype="rhel7" severity="medium">
 <title>All Interactive User Home Directories Must Be Group-Owned By The Primary User</title>
 <description>
 Change the group owner of interactive users home directory to the
@@ -458,12 +456,12 @@ not the same as the primary GID of the user, this would allow unauthorized
 access to the users files, and users that share the same group may not be
 able to access files that they legitimately should.
 </rationale>
-<ident cce="80532-5"/>
-<oval id="file_groupownership_home_directories"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020650"/>
+<ident cce="80532-5" />
+<oval id="file_groupownership_home_directories" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020650" />
 </Rule>
 
-<Rule id="accounts_users_home_files_ownership" severity="medium" prodtype="rhel7">
+<Rule id="accounts_users_home_files_ownership" prodtype="rhel7" severity="medium">
 <title>All User Files and Directories In The Home Directory Must Be Owned By The Primary User</title>
 <description>
 Change the owner of a interactive users files and directories to that
@@ -481,12 +479,12 @@ If local interactive users do not own the files in their directories,
 unauthorized users may be able to access them. Additionally, if files are not
 owned by the user, this could be an indication of system compromise.
 </rationale>
-<ident cce="80533-3"/>
-<oval id="accounts_users_home_files_ownership"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020660"/>
+<ident cce="80533-3" />
+<oval id="accounts_users_home_files_ownership" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020660" />
 </Rule>
 
-<Rule id="accounts_users_home_files_groupownership" severity="medium" prodtype="rhel7">
+<Rule id="accounts_users_home_files_groupownership" prodtype="rhel7" severity="medium">
 <title>All User Files and Directories In The Home Directory Must Be Group-Owned By The Primary User</title>
 <description>
 Change the group of a local interactive users files and directories to a
@@ -504,12 +502,12 @@ following command:
 If a local interactive users files are group-owned by a group of which the
 user is not a member, unintended users may be able to access them.
 </rationale>
-<ident cce="80534-1"/>
-<oval id="accounts_users_home_files_groupownership"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020670"/>
+<ident cce="80534-1" />
+<oval id="accounts_users_home_files_groupownership" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020670" />
 </Rule>
 
-<Rule id="accounts_users_home_files_permissions" severity="medium" prodtype="rhel7">
+<Rule id="accounts_users_home_files_permissions" prodtype="rhel7" severity="medium">
 <title>All User Files and Directories In The Home Directory Must Have Mode 0750 Or Less Permissive</title>
 <description>
 Set the mode on files and directories in the local interactive user home
@@ -526,12 +524,12 @@ run the following command:
 If a local interactive user files have excessive permissions, unintended users
 may be able to access or modify them.
 </rationale>
-<ident cce="80535-8"/>
-<oval id="accounts_users_home_files_permissions"/>
-<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020680"/>
+<ident cce="80535-8" />
+<oval id="accounts_users_home_files_permissions" />
+<ref disa="366" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="020680" />
 </Rule>
 
-<Rule id="file_permissions_home_dirs" prodtype="rhel7">
+<Rule id="file_permissions_home_dirs" prodtype="rhel7,fedora">
 <title>Ensure that User Home Directories are not Group-Writable or World-Readable</title>
 <description>For each human user of the system, view the
 permissions of the user's home directory:
@@ -560,9 +558,9 @@ to other users. If a subset of users need read access
 to one another's home directories, this can be provided using
 groups or ACLs.
 </rationale>
-<ident prodtype="rhel7" cce="80201-7" />
+<ident cce="80201-7" prodtype="rhel7" />
 <oval id="file_permissions_home_dirs" />
-<ref nist="AC-6(7)" disa="225"/>
+<ref disa="225" nist="AC-6(7)" />
 </Rule>
 
 <Group id="user_umask">
@@ -583,33 +581,13 @@ even be safe for users to select a <tt>umask</tt> of 007, making it very
 easy to intentionally share files with groups of which the user is
 a member.
 <br /><br />
-<!--In addition, it may be necessary to change root's <tt>umask</tt>
-temporarily in order to install software or files which must be
-readable by other users, or to change the default umasks of certain
-service accounts such as the FTP user. However, setting a
-restrictive default protects the files of users who have not taken
-steps to make their files more available, and preventing files from
-being inadvertently shared.-->
+
 </description>
 
-<!-- Define a new catch-all Rule?
-<li>View the additional configuration files <tt>/etc/csh.login</tt> and
-<tt>/etc/profile.d/*</tt>, and ensure that none of these files redefine the
-umask to a more permissive value unless there is a good reason for
-it.
-</li>
-<li>-->
 
-<!-- Define a new Rule to check root's umask?
-It seems unlikely to ever be misconfigured.
-Edit the root shell configuration files <tt>/root/.bashrc</tt>,
-<tt>/root/.bash profile</tt>, <tt>/root/.cshrc</tt>, and <tt>/root/.tcshrc</tt>. Add or
-correct the line:
-<pre>umask 077</pre>
-</li>
--->
-<Value id="var_accounts_user_umask" type="string"
-operator="equals" interactive="0">
+
+
+<Value id="var_accounts_user_umask" interactive="0" operator="equals" type="string">
 <title>Sensible umask</title>
 <description>Enter default user umask</description>
 <value selector="">027</value>
@@ -639,9 +617,9 @@ All output must show the value of <tt>umask</tt> set as shown below:
 umask <sub idref="var_accounts_user_umask" />
 umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
-<ident prodtype="rhel7" cce="80202-5" />
-<oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask"/>
-<ref nist="SA-8" disa="366" cis="5.4.4" />
+<ident cce="80202-5" prodtype="rhel7" />
+<oval id="accounts_umask_etc_bashrc" value="var_accounts_user_umask" />
+<ref cis="5.4.4" disa="366" nist="SA-8" />
 </Rule>
 
 <Rule id="accounts_umask_etc_csh_cshrc" prodtype="rhel7">
@@ -662,12 +640,12 @@ All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre># grep "umask" /etc/csh.cshrc
 umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
-<ident prodtype="rhel7" cce="80203-3" />
-<oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask"/>
-<ref nist="SA-8" disa="366"/>
+<ident cce="80203-3" prodtype="rhel7" />
+<oval id="accounts_umask_etc_csh_cshrc" value="var_accounts_user_umask" />
+<ref disa="366" nist="SA-8" />
 </Rule>
 
-<Rule id="accounts_umask_etc_profile" prodtype="rhel7">
+<Rule id="accounts_umask_etc_profile" prodtype="rhel7,fedora">
 <title>Ensure the Default Umask is Set Correctly in /etc/profile</title>
 <description>
 To ensure the default umask controlled by <tt>/etc/profile</tt> is set properly,
@@ -677,7 +655,7 @@ add or correct the <tt>umask</tt> setting in <tt>/etc/profile</tt> to read as fo
 <rationale>The umask value influences the permissions assigned to files when they are created.
 A misconfigured umask value could result in files with excessive permissions that can be read or
 written to by unauthorized users.</rationale>
-<ident prodtype="rhel7" cce="80204-1" />
+<ident cce="80204-1" prodtype="rhel7" />
 <ocil clause="the above command returns no output, or if the umask is configured incorrectly">
 Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/profile</tt> file by
 running the following command:
@@ -687,7 +665,7 @@ All output must show the value of <tt>umask</tt> set as shown in the below:
 umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
 <oval id="accounts_umask_etc_profile" value="var_accounts_user_umask" />
-<ref nist="SA-8" disa="366" cis="5.4.4" />
+<ref cis="5.4.4" disa="366" nist="SA-8" />
 </Rule>
 
 <Rule id="accounts_umask_etc_login_defs" prodtype="rhel7">
@@ -708,13 +686,13 @@ All output must show the value of <tt>umask</tt> set as shown in the below:
 <pre># grep -i "UMASK" /etc/login.defs
 umask <sub idref="var_accounts_user_umask" /></pre>
 </ocil>
-<ident prodtype="rhel7" cce="80205-8" />
+<ident cce="80205-8" prodtype="rhel7" />
 <oval id="accounts_umask_etc_login_defs" value="var_accounts_user_umask" />
 <ref prodtype="rhel7" stigid="020240" />
-<ref nist="CM-6(b),SA-8" disa="366" srg="SRG-OS-000480-GPOS-00228" />
+<ref disa="366" nist="CM-6(b),SA-8" srg="SRG-OS-000480-GPOS-00228" />
 </Rule>
 
-<Rule id="accounts_umask_interactive_users" severity="medium" prodtype="rhel7">
+<Rule id="accounts_umask_interactive_users" prodtype="rhel7" severity="medium">
 <title>Ensure the Default Umask is Set Correctly For Interactive Users</title>
 <description>
 Remove the <tt>UMASK</tt> environment variable from all interactive users initialization files.
@@ -733,9 +711,9 @@ access modes is typically ignored or required to be 0. This requirement
 applies to the globally configured system defaults and the local interactive
 user defaults for each account on the system.
 </rationale>
-<ident cce="80536-6"/>
+<ident cce="80536-6" />
 <oval id="accounts_umask_interactive_users" value="var_accounts_user_umask" />
-<ref disa="1814" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="021040"/>
+<ref disa="1814" nist="" srg="SRG-OS-000480-GPOS-00227" stigid="021040" />
 </Rule>
 
 </Group>

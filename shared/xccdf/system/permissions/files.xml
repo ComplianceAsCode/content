@@ -17,149 +17,149 @@ need read access to the <tt>passwd</tt> file in order to function properly, but
 read access to the <tt>shadow</tt> file allows malicious attacks against system
 passwords, and should never be enabled.</description>
 
-<Rule id="userowner_shadow_file" severity="medium" prodtype="rhel7">
+<Rule id="userowner_shadow_file" prodtype="rhel7,fedora" severity="medium">
 <title>Verify User Who Owns <tt>shadow</tt> File</title>
-<description><fileowner-desc-macro file="/etc/shadow" owner="root"/></description>
-<ocil><fileowner-check-macro file="/etc/shadow" owner="root"/></ocil>
+<description><fileowner-desc-macro file="/etc/shadow" owner="root" /></description>
+<ocil><fileowner-check-macro file="/etc/shadow" owner="root" /></ocil>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
 system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<ident prodtype="rhel7" cce="26795-5" />
+<ident cce="26795-5" prodtype="rhel7" />
 <oval id="userowner_shadow_file" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.3" />
+<ref cis="6.1.3" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="groupowner_shadow_file" severity="medium" prodtype="rhel7">
+<Rule id="groupowner_shadow_file" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Group Who Owns <tt>shadow</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/shadow" group="root"/></description>
-<ocil><filegroupowner-check-macro file="/etc/shadow" group="root"/></ocil>
+<description><filegroupowner-desc-macro file="/etc/shadow" group="root" /></description>
+<ocil><filegroupowner-check-macro file="/etc/shadow" group="root" /></ocil>
 <rationale>The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
 critical for system security.</rationale>
-<ident prodtype="rhel7" cce="27125-4" />
+<ident cce="27125-4" prodtype="rhel7" />
 <oval id="groupowner_shadow_file" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.3" />
+<ref cis="6.1.3" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_permissions_etc_shadow" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_etc_shadow" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Permissions on <tt>shadow</tt> File</title>
-<description><fileperms-desc-macro file="/etc/shadow" perms="0000"/></description>
-<ocil><fileperms-check-macro file="/etc/shadow" perms="----------"/></ocil>
+<description><fileperms-desc-macro file="/etc/shadow" perms="0000" /></description>
+<ocil><fileperms-check-macro file="/etc/shadow" perms="----------" /></ocil>
 <rationale>The <tt>/etc/shadow</tt> file contains the list of local
 system accounts and stores password hashes. Protection of this file is
 critical for system security. Failure to give ownership of this file
 to root provides the designated owner with access to sensitive information
 which could weaken the system security posture.</rationale>
-<ident prodtype="rhel7" cce="27100-7" />
+<ident cce="27100-7" prodtype="rhel7" />
 <oval id="file_permissions_etc_shadow" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.3" />
+<ref cis="6.1.3" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_owner_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_owner_etc_group" prodtype="rhel7,fedora" severity="medium">
 <title>Verify User Who Owns <tt>group</tt> File</title>
-<description><fileowner-desc-macro file="/etc/group" owner="root"/></description>
-<ocil><fileowner-check-macro file="/etc/group" owner="root"/></ocil>
+<description><fileowner-desc-macro file="/etc/group" owner="root" /></description>
+<ocil><fileowner-check-macro file="/etc/group" owner="root" /></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident prodtype="rhel7" cce="26933-2" />
+<ident cce="26933-2" prodtype="rhel7" />
 <oval id="file_owner_etc_group" />
-<ref nist="AC-6" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.4" />
+<ref cis="6.1.4" cjis="5.5.2.2" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_groupowner_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_groupowner_etc_group" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Group Who Owns <tt>group</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/group" group="root"/></description>
-<ocil><filegroupowner-check-macro file="/etc/group" group="root"/></ocil>
+<description><filegroupowner-desc-macro file="/etc/group" group="root" /></description>
+<ocil><filegroupowner-check-macro file="/etc/group" group="root" /></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident prodtype="rhel7" cce="27037-1" />
+<ident cce="27037-1" prodtype="rhel7" />
 <oval id="file_groupowner_etc_group" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.4" />
+<ref cis="6.1.4" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_permissions_etc_group" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_etc_group" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Permissions on <tt>group</tt> File</title>
-<description><fileperms-desc-macro file="/etc/group" perms="644"/></description>
-<ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--"/></ocil>
+<description><fileperms-desc-macro file="/etc/group" perms="644" /></description>
+<ocil><fileperms-check-macro file="/etc/group" perms="-rw-r--r--" /></ocil>
 <rationale>The <tt>/etc/group</tt> file contains information regarding groups that are configured
 on the system. Protection of this file is important for system security.</rationale>
-<ident prodtype="rhel7" cce="26949-8" />
+<ident cce="26949-8" prodtype="rhel7" />
 <oval id="file_permissions_etc_group" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.4" />
+<ref cis="6.1.4" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_owner_etc_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="file_owner_etc_gshadow" prodtype="rhel7,fedora" severity="medium">
 <title>Verify User Who Owns <tt>gshadow</tt> File</title>
-<description><fileowner-desc-macro file="/etc/gshadow" owner="root"/></description>
-<ocil><fileowner-check-macro file="/etc/gshadow" owner="root"/></ocil>
+<description><fileowner-desc-macro file="/etc/gshadow" owner="root" /></description>
+<ocil><fileowner-check-macro file="/etc/gshadow" owner="root" /></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident prodtype="rhel7" cce="27161-9" />
+<ident cce="27161-9" prodtype="rhel7" />
 <oval id="file_owner_etc_gshadow" />
-<ref nist="AC-6" disa="" cis="6.1.5" />
+<ref cis="6.1.5" disa="" nist="AC-6" />
 </Rule>
 
-<Rule id="file_groupowner_etc_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="file_groupowner_etc_gshadow" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Group Who Owns <tt>gshadow</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/gshadow" group="root"/></description>
-<ocil><filegroupowner-check-macro file="/etc/gshadow" group="root"/></ocil>
+<description><filegroupowner-desc-macro file="/etc/gshadow" group="root" /></description>
+<ocil><filegroupowner-check-macro file="/etc/gshadow" group="root" /></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident prodtype="rhel7" cce="26840-9" />
+<ident cce="26840-9" prodtype="rhel7" />
 <oval id="file_groupowner_etc_gshadow" />
-<ref nist="AC-6" disa="" cis="6.1.5" />
+<ref cis="6.1.5" disa="" nist="AC-6" />
 </Rule>
 
-<Rule id="file_permissions_etc_gshadow" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_etc_gshadow" prodtype="rhel7,fedora" severity="medium">
 <title>Verify Permissions on <tt>gshadow</tt> File</title>
-<description><fileperms-desc-macro file="/etc/gshadow" perms="0000"/></description>
-<ocil><fileperms-check-macro file="/etc/gshadow" perms="----------"/></ocil>
+<description><fileperms-desc-macro file="/etc/gshadow" perms="0000" /></description>
+<ocil><fileperms-check-macro file="/etc/gshadow" perms="----------" /></ocil>
 <rationale>The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
 is critical for system security.</rationale>
-<ident prodtype="rhel7" cce="27162-7" />
+<ident cce="27162-7" prodtype="rhel7" />
 <oval id="file_permissions_etc_gshadow" />
-<ref nist="AC-6" disa="" cis="6.1.5" />
+<ref cis="6.1.5" disa="" nist="AC-6" />
 </Rule>
 
-<Rule id="file_owner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
+<Rule id="file_owner_etc_passwd" prodtype="rhel7,opensuse,sle11,sle12,fedora" severity="medium">
 <title>Verify User Who Owns <tt>passwd</tt> File</title>
-<description><fileowner-desc-macro file="/etc/passwd" owner="root"/></description>
-<ocil><fileowner-check-macro file="/etc/passwd" owner="root"/></ocil>
+<description><fileowner-desc-macro file="/etc/passwd" owner="root" /></description>
+<ocil><fileowner-check-macro file="/etc/passwd" owner="root" /></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
-<ident prodtype="rhel7" cce="27138-7" />
+<ident cce="27138-7" prodtype="rhel7" />
 <oval id="file_owner_etc_passwd" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.2" />
+<ref cis="6.1.2" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_groupowner_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
+<Rule id="file_groupowner_etc_passwd" prodtype="rhel7,opensuse,sle11,sle12,fedora" severity="medium">
 <title>Verify Group Who Owns <tt>passwd</tt> File</title>
-<description><filegroupowner-desc-macro file="/etc/passwd" group="root"/></description>
-<ocil><filegroupowner-check-macro file="/etc/passwd" group="root"/></ocil>
+<description><filegroupowner-desc-macro file="/etc/passwd" group="root" /></description>
+<ocil><filegroupowner-check-macro file="/etc/passwd" group="root" /></ocil>
 <rationale>The <tt>/etc/passwd</tt> file contains information about the users that are configured on
 the system. Protection of this file is critical for system security.</rationale>
-<ident prodtype="rhel7" cce="26639-5" />
+<ident cce="26639-5" prodtype="rhel7" />
 <oval id="file_groupowner_etc_passwd" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.2" />
+<ref cis="6.1.2" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 
-<Rule id="file_permissions_etc_passwd" severity="medium" prodtype="rhel7,opensuse,sle11,sle12">
+<Rule id="file_permissions_etc_passwd" prodtype="rhel7,opensuse,sle11,sle12,fedora" severity="medium">
 <title>Verify Permissions on <tt>passwd</tt> File</title>
-<description><fileperms-desc-macro file="/etc/passwd" perms="0644"/></description>
-<ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--"/></ocil>
+<description><fileperms-desc-macro file="/etc/passwd" perms="0644" /></description>
+<ocil><fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--" /></ocil>
 <rationale>If the <tt>/etc/passwd</tt> file is writable by a group-owner or the
 world the risk of its compromise is increased. The file contains the list of
 accounts on the system and associated information, and protection of this file
 is critical for system security.</rationale>
-<ident prodtype="rhel7" cce="26887-0" />
+<ident cce="26887-0" prodtype="rhel7" />
 <oval id="file_permissions_etc_passwd" />
-<ref nist="AC-6" disa="" pcidss="Req-8.7.c" cjis="5.5.2.2" cis="6.1.2" />
+<ref cis="6.1.2" cjis="5.5.2.2" disa="" nist="AC-6" pcidss="Req-8.7.c" />
 </Rule>
 </Group>
 
 
-<!-- pull /var/log permissions out of rsyslog discussion section? -->
+
 
 <Group id="permissions_within_important_dirs">
 <title>Verify File Permissions Within Some Important Directories</title>
@@ -170,7 +170,7 @@ an argument exists to verify that files' permissions within these directories re
 configured correctly and restrictively.   
 </description>
 
-<Rule id="file_permissions_library_dirs" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_library_dirs" prodtype="rhel7,fedora" severity="medium">
 <title>Verify that Shared Library Files Have Restrictive Permissions</title>
 <description>System-wide shared library files, which are linked to executables
 during process load time or run time, are stored in the following directories
@@ -202,12 +202,12 @@ run the following command for each directory <i>DIR</i> which contains shared li
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Restrictive permissions are necessary to protect the integrity of the system.
 </rationale>
-<ident prodtype="rhel7" cce="26966-2" />
-<ref nist="AC-6" disa=""/>
+<ident cce="26966-2" prodtype="rhel7" />
+<ref disa="" nist="AC-6" />
 <oval id="file_permissions_library_dirs" />
 </Rule>
 
-<Rule id="file_ownership_library_dirs" severity="medium" prodtype="rhel7">
+<Rule id="file_ownership_library_dirs" prodtype="rhel7,fedora" severity="medium">
 <title>Verify that Shared Library Files Have Root Ownership</title>
 <description>System-wide shared library files, which are linked to executables
 during process load time or run time, are stored in the following directories
@@ -239,13 +239,13 @@ owned by root:
 space of processes (including privileged ones) or of the kernel itself at
 runtime. Proper ownership is necessary to protect the integrity of the system.
 </rationale>
-<ident prodtype="rhel7" cce="26648-6" />
-<ref nist="AC-6" disa=""/>
+<ident cce="26648-6" prodtype="rhel7" />
+<ref disa="" nist="AC-6" />
 <oval id="file_ownership_library_dirs" />
 </Rule>
 
 
-<Rule id="file_permissions_binary_dirs" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_binary_dirs" prodtype="rhel7,fedora" severity="medium">
 <title>Verify that System Executables Have Restrictive Permissions</title>
 <description>
 System executables are stored in the following directories by default:
@@ -279,12 +279,12 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure execution of these programs
 cannot be co-opted.
 </rationale>
-<ident prodtype="rhel7" cce="27075-1" />
-<ref nist="AC-6" disa=""/>
+<ident cce="27075-1" prodtype="rhel7" />
+<ref disa="" nist="AC-6" />
 <oval id="file_permissions_binary_dirs" />
 </Rule>
 
-<Rule id="file_ownership_binary_dirs" severity="medium" prodtype="rhel7">
+<Rule id="file_ownership_binary_dirs" prodtype="rhel7,fedora" severity="medium">
 <title>Verify that System Executables Have Root Ownership</title>
 <description>
 System executables are stored in the following directories by default:
@@ -318,14 +318,14 @@ run the following command for each directory <i>DIR</i> which contains system ex
 and restrictive permissions are necessary to ensure that their
 execution of these programs cannot be co-opted.
 </rationale>
-<ident prodtype="rhel7" cce="27119-7" />
+<ident cce="27119-7" prodtype="rhel7" />
 <oval id="file_ownership_binary_dirs" />
-<ref nist="AC-6" disa=""/>
+<ref disa="" nist="AC-6" />
 </Rule>
 
 </Group>
 
-<Rule id="dir_perms_world_writable_sticky_bits" prodtype="rhel7">
+<Rule id="dir_perms_world_writable_sticky_bits" prodtype="rhel7,fedora">
 <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
 <description>When the so-called 'sticky bit' is set on a directory,
 only the owner of a given file may remove that file from the
@@ -337,7 +337,7 @@ solution is to remove that permission rather than to set the sticky
 bit. However, if a directory is used by a particular application,
 consult that application's documentation instead of blindly
 changing modes.
-<br/>
+<br />
 To set the sticky bit on a world-writable directory <i>DIR</i>, run the
 following command:
 <pre>$ sudo chmod +t <i>DIR</i></pre>
@@ -348,18 +348,18 @@ To find world-writable directories that lack the sticky bit, run the following c
 </ocil>
 <rationale>
 Failing to set the sticky bit on public directories allows unauthorized users to delete files in the directory structure.
-<br/><br/>
+<br /><br />
 The only authorized public directories are those temporary directories supplied with the system, 
 or those designed to be temporary file repositories.  The setting is normally reserved for directories 
 used by the system, by users for temporary file storage (such as <tt>/tmp</tt>), and for directories 
 requiring global read/write access.
 </rationale>
-<ident prodtype="rhel7" cce="80130-8" />
+<ident cce="80130-8" prodtype="rhel7" />
 <oval id="dir_perms_world_writable_sticky_bits" />
-<ref nist="AC-6" cis="1.1.21" />
+<ref cis="1.1.21" nist="AC-6" />
 </Rule>
 
-<Rule id="file_permissions_unauthorized_world_writable" severity="medium" prodtype="rhel7,opensuse">
+<Rule id="file_permissions_unauthorized_world_writable" prodtype="rhel7,opensuse,fedora" severity="medium">
 <title>Ensure No World-Writable Files Exist</title>
 <description>It is generally a good idea to remove global (other) write
 access to a file when it is discovered. However, check with
@@ -378,12 +378,12 @@ user on the system. In almost all circumstances, files can be
 configured using a combination of user and group permissions to
 support whatever legitimate access is needed without the risk
 caused by world-writable files.</rationale>
-<ident prodtype="rhel7" cce="80131-6" />
-<ref nist="AC-6" cis="6.1.10" />
+<ident cce="80131-6" prodtype="rhel7" />
+<ref cis="6.1.10" nist="AC-6" />
 <oval id="file_permissions_unauthorized_world_writable" />
 </Rule>
 
-<Rule id="file_permissions_unauthorized_sgid" prodtype="rhel7">
+<Rule id="file_permissions_unauthorized_sgid" prodtype="rhel7,fedora">
 <title>Ensure All SGID Executables Are Authorized</title>
 <description>The SGID (set group id) bit should be set only on files that were
 installed via authorized means. A straightforward means of identifying
@@ -399,12 +399,12 @@ To find world-writable files, run the following command:
 the owner of the file. SGID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
-<ident prodtype="rhel7" cce="80132-4" />
+<ident cce="80132-4" prodtype="rhel7" />
 <oval id="file_permissions_unauthorized_sgid" />
-<ref nist="AC-6(1)" cis="6.1.14" />
+<ref cis="6.1.14" nist="AC-6(1)" />
 </Rule>
 
-<Rule id="file_permissions_unauthorized_suid" prodtype="rhel7">
+<Rule id="file_permissions_unauthorized_suid" prodtype="rhel7,fedora">
 <title>Ensure All SUID Executables Are Authorized</title>
 <description>The SUID (set user id) bit should be set only on files that were
 installed via authorized means. A straightforward means of identifying
@@ -420,12 +420,12 @@ To find world-writable files, run the following command:
 the owner of the file. SUID files of uncertain provenance could allow for
 unprivileged users to elevate privileges. The presence of these files should be
 strictly controlled on the system.</rationale>
-<ident prodtype="rhel7" cce="80133-2" />
+<ident cce="80133-2" prodtype="rhel7" />
 <oval id="file_permissions_unauthorized_suid" />
-<ref nist="AC-6(1)" cis="6.1.13" />
+<ref cis="6.1.13" nist="AC-6(1)" />
 </Rule>
 
-<Rule id="no_files_unowned_by_user" severity="medium" prodtype="rhel7">
+<Rule id="no_files_unowned_by_user" prodtype="rhel7,fedora" severity="medium">
 <title>Ensure All Files Are Owned by a User</title>
 <description>If any files are not owned by a user, then the
 cause of their lack of ownership should be investigated.
@@ -451,13 +451,13 @@ to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
-<ident prodtype="rhel7" cce="80134-0" />
+<ident cce="80134-0" prodtype="rhel7" />
 <oval id="no_files_unowned_by_user" />
 <ref prodtype="rhel7" stigid="020320" />
-<ref nist="AC-3(4),AC-6,CM-6(b)" disa="002165" srg="SRG-OS-000480-GPOS-00227" cis="6.1.11" />
+<ref cis="6.1.11" disa="002165" nist="AC-3(4),AC-6,CM-6(b)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="file_permissions_ungroupowned" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_ungroupowned" prodtype="rhel7,fedora" severity="medium">
 <title>Ensure All Files Are Owned by a Group</title>
 <description>If any files are not owned by a group, then the
 cause of their lack of group-ownership should be investigated.
@@ -482,13 +482,13 @@ to a deleted account. The files should be repaired so they
 will not cause problems when accounts are created in the future,
 and the cause should be discovered and addressed.
 </rationale>
-<ident prodtype="rhel7" cce="80135-7" />
+<ident cce="80135-7" prodtype="rhel7" />
 <oval id="file_permissions_ungroupowned" />
 <ref prodtype="rhel7" stigid="020330" />
-<ref nist="AC-3(4),AC-6,IA-2" disa="02165" srg="SRG-OS-000480-GPOS-00227" cis="6.1.12" />
+<ref cis="6.1.12" disa="02165" nist="AC-3(4),AC-6,IA-2" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="dir_perms_world_writable_system_owned" prodtype="rhel7">
+<Rule id="dir_perms_world_writable_system_owned" prodtype="rhel7,fedora">
 <title>Ensure All World-Writable Directories Are Owned by a System Account</title>
 <description>All directories in local partitions which are
 world-writable should be owned by root or another
@@ -509,9 +509,9 @@ undesirable because it allows the owner of that directory to remove
 or replace any files that may be placed in the directory by other
 users.
 </rationale>
-<ident prodtype="rhel7" cce="80136-5" />
+<ident cce="80136-5" prodtype="rhel7" />
 <oval id="dir_perms_world_writable_system_owned" />
 <ref prodtype="rhel7" stigid="021030" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 </Group>

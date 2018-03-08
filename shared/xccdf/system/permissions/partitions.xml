@@ -5,7 +5,7 @@ that limit what files on those partitions can do. These options
 are set in the <tt>/etc/fstab</tt> configuration file, and can be
 used to make certain types of malicious behavior more difficult.</description>
 
-<Value id="var_removable_partition" type="string" operator="equals" interactive="0">
+<Value id="var_removable_partition" interactive="0" operator="equals" type="string">
 <title>Removable Partition</title>
 <description>This value is used by the checks mount_option_nodev_removable_partitions, mount_option_nodev_removable_partitions,
 and mount_option_nodev_removable_partitions to ensure that the correct mount options are set on partitions mounted from
@@ -14,7 +14,7 @@ partitions that are required on the local system.</description>
 <value selector="dev_cdrom">/dev/cdrom</value>
 </Value>
 
-<Rule id="mount_option_nodev_nonroot_local_partitions" prodtype="rhel7">
+<Rule id="mount_option_nodev_nonroot_local_partitions" prodtype="rhel7,fedora">
 <title>Add nodev Option to Non-Root Local Partitions</title>
 <description>The <tt>nodev</tt> mount option prevents files from being
 interpreted as character or block devices. 
@@ -29,12 +29,12 @@ for device files is the <tt>/dev</tt> directory located on the root partition.
 The only exception to this is chroot jails, for which it is not advised
 to set <tt>nodev</tt> on these filesystems.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80145-6" />
+<ident cce="80145-6" prodtype="rhel7" />
 <oval id="mount_option_nodev_nonroot_local_partitions" />
-<ref nist="CM-7" cis="1.1.11" />
+<ref cis="1.1.11" nist="CM-7" />
 </Rule>
 
-<Rule id="mount_option_nodev_removable_partitions" prodtype="rhel7">
+<Rule id="mount_option_nodev_removable_partitions" prodtype="rhel7,fedora">
 <title>Add nodev Option to Removable Media Partitions</title>
 <description>The <tt>nodev</tt> mount option prevents files from being
 interpreted as character or block devices.
@@ -48,12 +48,12 @@ located on the root partition. An exception to this is chroot jails, and it is
 not advised to set <tt>nodev</tt> on partitions which contain their root
 filesystems.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80146-4" />
+<ident cce="80146-4" prodtype="rhel7" />
 <oval id="mount_option_nodev_removable_partitions" value="var_removable_partition" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.18"/>
+<ref cis="1.1.18" nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_noexec_removable_partitions" prodtype="rhel7">
+<Rule id="mount_option_noexec_removable_partitions" prodtype="rhel7,fedora">
 <title>Add noexec Option to Removable Media Partitions</title>
 <description>The <tt>noexec</tt> mount option prevents the direct
 execution of binaries on the mounted filesystem. 
@@ -71,13 +71,13 @@ To verify that binaries cannot be directly executed from removable media, run th
 The resulting output will show partitions which do not have the <tt>noexec</tt> flag. Verify all partitions
 in the output are not removable media.
 </ocil>
-<ident prodtype="rhel7" cce="80147-2" />
+<ident cce="80147-2" prodtype="rhel7" />
 <oval id="mount_option_noexec_removable_partitions" value="var_removable_partition" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" disa="87" cis="1.1.20" />
+<ref cis="1.1.20" disa="87" nist="AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" />
 </Rule>
 
-<!-- investigate: this is like obsoleted by gvfs/DeviceKit-based mounting now -->
-<Rule id="mount_option_nosuid_removable_partitions" prodtype="rhel7">
+
+<Rule id="mount_option_nosuid_removable_partitions" prodtype="rhel7,fedora">
 <title>Add nosuid Option to Removable Media Partitions</title>
 <description>The <tt>nosuid</tt> mount option prevents set-user-identifier (SUID)
 and set-group-identifier (SGID) permissions from taking effect. These permissions
@@ -90,14 +90,13 @@ files into the system via partitions mounted from removeable media.
 users to introduce SUID or SGID binaries from partitions mounted off of
 removable media would allow them to introduce their own highly-privileged programs.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80148-0" />
+<ident cce="80148-0" prodtype="rhel7" />
 <oval id="mount_option_nosuid_removable_partitions" value="var_removable_partition" />
 <ref prodtype="rhel7" stigid="021010" />
-<ref nist="AC-6,AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" cis="1.1.19" disa="366"
-srg="SRG-OS-000480-GPOS-00227" />
+<ref cis="1.1.19" disa="366" nist="AC-6,AC-19(a),AC-19(d),AC-19(e),CM-7,MP-2" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="mount_option_tmp_nodev" prodtype="rhel7">
+<Rule id="mount_option_tmp_nodev" prodtype="rhel7,fedora">
 <title>Add nodev Option to /tmp</title>
 <description>
 The <tt>nodev</tt> mount option can be used to prevent device files from
@@ -109,12 +108,12 @@ within temporary directories like <tt>/tmp</tt>.
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80149-8" />
+<ident cce="80149-8" prodtype="rhel7" />
 <oval id="mount_option_tmp_nodev" />
-<ref nist="CM-7,MP-2" cis="1.1.3" />
+<ref cis="1.1.3" nist="CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_tmp_noexec" prodtype="rhel7">
+<Rule id="mount_option_tmp_noexec" prodtype="rhel7,fedora">
 <title>Add noexec Option to /tmp</title>
 <description>The <tt>noexec</tt> mount option can be used to prevent binaries
 from being executed out of <tt>/tmp</tt>.
@@ -124,12 +123,12 @@ from being executed out of <tt>/tmp</tt>.
 such as <tt>/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80150-6" />
+<ident cce="80150-6" prodtype="rhel7" />
 <oval id="mount_option_tmp_noexec" />
-<ref nist="CM-7,MP-2" cis="1.1.5" />
+<ref cis="1.1.5" nist="CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_tmp_nosuid" prodtype="rhel7">
+<Rule id="mount_option_tmp_nosuid" prodtype="rhel7,fedora">
 <title>Add nosuid Option to /tmp</title>
 <description>The <tt>nosuid</tt> mount option can be used to prevent
 execution of setuid programs in <tt>/tmp</tt>. The SUID and SGID permissions
@@ -139,9 +138,9 @@ should not be required in these world-writable directories.
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80151-4" />
+<ident cce="80151-4" prodtype="rhel7" />
 <oval id="mount_option_tmp_nosuid" />
-<ref nist="CM-7,MP-2" cis="1.1.4" />
+<ref cis="1.1.4" nist="CM-7,MP-2" />
 </Rule>
 
 <Rule id="mount_option_home_nosuid" prodtype="rhel7">
@@ -154,10 +153,10 @@ should not be required in these user data directories.
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from user home directory partitions.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="81153-9" />
+<ident cce="81153-9" prodtype="rhel7" />
 <oval id="mount_option_home_nosuid" />
 <ref prodtype="rhel7" stigid="021000" />
-<ref nist="CM-7,MP-2" cis="1.1.3" />
+<ref cis="1.1.3" nist="CM-7,MP-2" />
 </Rule>
 
 <Rule id="mount_option_home_nodev" prodtype="rhel7">
@@ -172,12 +171,12 @@ jails built for system services.
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="mount_option_home_nodev" />
 <ref cis="1.1.14" />
 </Rule>
 
-<Rule id="mount_option_dev_shm_nodev" prodtype="rhel7">
+<Rule id="mount_option_dev_shm_nodev" prodtype="rhel7,fedora">
 <title>Add nodev Option to /dev/shm</title>
 <description>The <tt>nodev</tt> mount option can be used to prevent creation
 of device files in <tt>/dev/shm</tt>.
@@ -188,12 +187,12 @@ within temporary directories like <tt>/dev/shm</tt>.
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80152-2" />
+<ident cce="80152-2" prodtype="rhel7" />
 <oval id="mount_option_dev_shm_nodev" />
-<ref nist="CM-7,MP-2" cis="1.1.15" />
+<ref cis="1.1.15" nist="CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_dev_shm_noexec" prodtype="rhel7">
+<Rule id="mount_option_dev_shm_noexec" prodtype="rhel7,fedora">
 <title>Add noexec Option to /dev/shm</title>
 <description>The <tt>noexec</tt> mount option can be used to prevent binaries
 from being executed out of <tt>/dev/shm</tt>.
@@ -204,12 +203,12 @@ from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
 <rationale>Allowing users to execute binaries from world-writable directories
 such as <tt>/dev/shm</tt> can expose the system to potential compromise.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80153-0" />
+<ident cce="80153-0" prodtype="rhel7" />
 <oval id="mount_option_dev_shm_noexec" />
-<ref nist="CM-7,MP-2" cis="1.1.17" />
+<ref cis="1.1.17" nist="CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_dev_shm_nosuid" prodtype="rhel7">
+<Rule id="mount_option_dev_shm_nosuid" prodtype="rhel7,fedora">
 <title>Add nosuid Option to /dev/shm</title>
 <description>The <tt>nosuid</tt> mount option can be used to prevent execution
 of setuid programs in <tt>/dev/shm</tt>.  The SUID and SGID permissions should not
@@ -219,12 +218,12 @@ be required in these world-writable directories.
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80154-8" />
+<ident cce="80154-8" prodtype="rhel7" />
 <oval id="mount_option_dev_shm_nosuid" />
-<ref nist="CM-7,MP-2" cis="1.1.16" />
+<ref cis="1.1.16" nist="CM-7,MP-2" />
 </Rule>
 
-<Rule id="mount_option_var_tmp_bind" prodtype="rhel7">
+<Rule id="mount_option_var_tmp_bind" prodtype="rhel7,fedora">
 <title>Bind Mount /var/tmp To /tmp</title>
 <description>The <tt>/var/tmp</tt> directory is a world-writable directory.  
 Bind-mount it to <tt>/tmp</tt> in order to consolidate temporary storage into
@@ -237,9 +236,9 @@ See the <tt>mount(8)</tt> man page for further explanation of bind mounting.
 necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be bind mounted to
 <tt>/tmp</tt> and thus share the same protections.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80155-5" />
+<ident cce="80155-5" prodtype="rhel7" />
 <oval id="mount_option_var_tmp_bind" />
-<ref nist="CM-7" cis="1.1.6" />
+<ref cis="1.1.6" nist="CM-7" />
 </Rule>
 
 <Rule id="mount_option_var_tmp_nodev" prodtype="rhel7">
@@ -254,7 +253,7 @@ within temporary directories like <tt>/var/tmp</tt>.
 <rationale>The only legitimate location for device files is the <tt>/dev</tt> directory
 located on the root partition. The only exception to this is chroot jails.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="mount_option_var_tmp_nodev" />
 <ref cis="1.1.8" />
 </Rule>
@@ -269,7 +268,7 @@ from being executed out of <tt>/var/tmp</tt>.
 such as <tt>/var/tmp</tt> should never be necessary in normal operation and
 can expose the system to potential compromise.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="mount_option_var_tmp_noexec" />
 <ref cis="1.1.10" />
 </Rule>
@@ -284,7 +283,7 @@ should not be required in these world-writable directories.
 <rationale>The presence of SUID and SGID executables should be tightly controlled. Users
 should not be able to execute SUID or SGID binaries from temporary storage partitions.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="mount_option_var_tmp_nosuid" />
 <ref cis="1.1.9" />
 </Rule>

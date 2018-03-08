@@ -16,7 +16,7 @@ default settings for all newly-created accounts created with the system's
 normal command line utilities.
 </description>
 
-<Value id="var_account_disable_post_pw_expiration" type="number" >
+<Value id="var_account_disable_post_pw_expiration" type="number">
 <title>number of days after a password expires until the account is permanently disabled</title>
 <description>The number of days to wait after a password expires, until the account will be permanently disabled.</description>
 <warning category="general">This will only apply to newly created accounts</warning>
@@ -30,15 +30,15 @@ normal command line utilities.
 <value selector="180">180</value>
 </Value>
 
-<Rule id="account_disable_post_pw_expiration" severity="medium" prodtype="rhel7">
+<Rule id="account_disable_post_pw_expiration" prodtype="rhel7,fedora" severity="medium">
 <title>Set Account Expiration Following Inactivity</title>
 <description>To specify the number of days after a password expires (which
 signifies inactivity) until an account is permanently disabled, add or correct
 the following lines in <tt>/etc/default/useradd</tt>, substituting
 <tt><i>NUM_DAYS</i></tt> appropriately:
-<pre>INACTIVE=<i><sub idref="var_account_disable_post_pw_expiration"/></i></pre>
+<pre>INACTIVE=<i><sub idref="var_account_disable_post_pw_expiration" /></i></pre>
 A value of 35 is recommended; however, this profile expects that the value is set to
-<tt><sub idref="var_account_disable_post_pw_expiration"/></tt>.
+<tt><sub idref="var_account_disable_post_pw_expiration" /></tt>.
 If a password is currently on the
 verge of expiration, then 35 days remain until the account is automatically
 disabled. However, if the password will not expire for another 60 days, then 95
@@ -55,20 +55,19 @@ To verify the <tt>INACTIVE</tt> setting, run the following command:
 The output should indicate the <tt>INACTIVE</tt> configuration option is set
 to an appropriate integer as shown in the example below:
 <pre>$ grep "INACTIVE" /etc/default/useradd
-INACTIVE=<sub idref="var_account_disable_post_pw_expiration"/></pre></ocil>
+INACTIVE=<sub idref="var_account_disable_post_pw_expiration" /></pre></ocil>
 <rationale>
 Disabling inactive accounts ensures that accounts which may not
 have been responsibly removed are not available to attackers
 who may have compromised their credentials.
 </rationale>
-<ident prodtype="rhel7" cce="27355-7" />
-<oval id="account_disable_post_pw_expiration" value="var_account_disable_post_pw_expiration"/>
+<ident cce="27355-7" prodtype="rhel7" />
+<oval id="account_disable_post_pw_expiration" value="var_account_disable_post_pw_expiration" />
 <ref prodtype="rhel7" stigid="010310" />
-<ref nist="AC-2(2),AC-2(3),IA-4(e)" disa="795" srg="SRG-OS-000118-GPOS-00060"
-pcidss="Req-8.1.4" cui="3.5.6" cjis="5.6.2.1.1" />
+<ref cjis="5.6.2.1.1" cui="3.5.6" disa="795" nist="AC-2(2),AC-2(3),IA-4(e)" pcidss="Req-8.1.4" srg="SRG-OS-000118-GPOS-00060" />
 </Rule>
 
-<Rule id="account_unique_name" prodtype="rhel7">
+<Rule id="account_unique_name" prodtype="rhel7,fedora">
 <title>Ensure All Accounts on the System Have Unique Names</title>
 <description>
 Change usernames, or delete accounts, so each has a unique name.
@@ -81,12 +80,12 @@ If there are no duplicate names, no line will be returned.
 <rationale>
 Unique usernames allow for accountability on the system.
 </rationale>
-<ident prodtype="rhel7" cce="80208-2" />
+<ident cce="80208-2" prodtype="rhel7" />
 <oval id="account_unique_name" />
-<ref disa="770,804" pcidss="Req-8.1.1" cjis="5.5.2" />
+<ref cjis="5.5.2" disa="770,804" pcidss="Req-8.1.1" />
 </Rule>
 
-<Rule id="account_temp_expire_date" prodtype="rhel7">
+<Rule id="account_temp_expire_date" prodtype="rhel7,fedora">
 <title>Assign Expiration Date to Temporary Accounts</title>
 <description>
 Temporary accounts are established as part of normal account activation procedures
@@ -111,10 +110,10 @@ If temporary user accounts remain active when no longer needed or for
 an excessive period, these accounts may be used to gain unauthorized access.
 To mitigate this risk, automated termination of all temporary accounts
 must be set upon account creation.
-<br/>
+<br />
 </rationale>
-<ident prodtype="rhel7" cce="27498-5" />
-<ref nist="AC-2(2),AC-2(3)" disa="16,1682" srg="2" />
+<ident cce="27498-5" prodtype="rhel7" />
+<ref disa="16,1682" nist="AC-2(2),AC-2(3)" srg="2" />
 </Rule>
 
 </Group>

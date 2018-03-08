@@ -45,24 +45,24 @@ for systems which are normally kept permanently on. Systems which are required
 to use broadcast or multicast IP, or to perform authentication of packets with
 the <tt>Autokey</tt> protocol, should consider using <tt>ntpd</tt>.
 <br /><br />
-Refer to <weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html"/> for more detailed comparison of features of <tt>chronyd</tt>
+Refer to <weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" /> for more detailed comparison of features of <tt>chronyd</tt>
 and <tt>ntpd</tt> daemon features respectively, and for further guidance how to
 choose between the two NTP daemons.
 <br /><br />
-The upstream manual pages at <weblink-macro link="http://chrony.tuxfamily.org/manual.html"/> for
-<tt>chronyd</tt> and <weblink-macro link="http://www.ntp.org"/> for <tt>ntpd</tt> provide additional
+The upstream manual pages at <weblink-macro link="http://chrony.tuxfamily.org/manual.html" /> for
+<tt>chronyd</tt> and <weblink-macro link="http://www.ntp.org" /> for <tt>ntpd</tt> provide additional
 information on the capabilities and configuration of each of the NTP daemons.
 </description>
 <platform idref="cpe:/a:machine" />
 
-<Value id="var_multiple_time_servers" type="string" >
+<Value id="var_multiple_time_servers" type="string">
 <title>Vendor Approved Time Servers</title>
 <description>The list of vendor-approved time servers</description>
 <value selector="rhel">0.rhel.pool.ntp.org,1.rhel.pool.ntp.org,2.rhel.pool.ntp.org,3.rhel.pool.ntp.org</value>
 <value selector="fedora">0.fedora.pool.ntp.org,1.fedora.pool.ntp.org,2.fedora.pool.ntp.org,3.fedora.pool.ntp.org</value>
 </Value>
 
-<Value id="var_time_service_set_maxpoll" type="number" >
+<Value id="var_time_service_set_maxpoll" type="number">
 <title>Maximum NTP or Chrony Poll</title>
 <description>The maximum NTP or Chrony poll interval number in seconds specified as a power of two.</description>
 <value selector="">10</value>
@@ -70,7 +70,7 @@ information on the capabilities and configuration of each of the NTP daemons.
 <value selector="36_hours">17</value>
 </Value>
 
-<Rule id="service_chronyd_or_ntpd_enabled" severity="medium" prodtype="rhel7">
+<Rule id="service_chronyd_or_ntpd_enabled" prodtype="rhel7,fedora" severity="medium">
 <title>Enable the NTP Daemon</title>
 <description>
 <systemd-service-macro enable="true" service="chronyd" />
@@ -80,7 +80,7 @@ Note: The <tt>chronyd</tt> daemon is enabled by default.
 Note: The <tt>ntpd</tt> daemon is not enabled by default. Though as mentioned
 in the previous sections in certain environments the <tt>ntpd</tt> daemon might
 be preferred to be used rather than the <tt>chronyd</tt> one. Refer to:
-<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html"/>
+<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" />
 for guidance which NTP daemon to choose depending on the environment used.
 </description>
 <ocil>
@@ -98,19 +98,19 @@ maintaining accurate logs and auditing possible security breaches.
 The <tt>chronyd</tt> and <tt>ntpd</tt> NTP daemons offer all of the
 functionality of <tt>ntpdate</tt>, which is now deprecated. Additional
 information on this is available at
-<weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate"/></rationale>
-<ident prodtype="rhel7" cce="27444-9" />
+<weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate" /></rationale>
+<ident cce="27444-9" prodtype="rhel7" />
 <oval id="service_chronyd_or_ntpd_enabled" />
-<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4" cis="2.2.1.1" cui="3.3.7" />
+<ref cis="2.2.1.1" cui="3.3.7" disa="160" nist="AU-8(1)" pcidss="Req-10.4" />
 </Rule>
 
-<Rule id="chronyd_or_ntpd_specify_remote_server" severity="medium" prodtype="rhel7">
+<Rule id="chronyd_or_ntpd_specify_remote_server" prodtype="rhel7,fedora" severity="medium">
 <title>Specify a Remote NTP Server</title>
 <description>Depending on specific functional requirements of a concrete
 production environment, the Red Hat Enterprise Linux 7 Server system can be
 configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
 default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
-<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html"/>
+<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" />
 for more detailed comparison of the features of both of the choices, and for
 further guidance how to choose between the two NTP daemons.
 <br />
@@ -142,18 +142,18 @@ In the file, there should be a section similar to the following:
 <rationale>Synchronizing with an NTP server makes it possible to collate system
 logs from multiple sources or correlate computer events with real time events.
 </rationale>
-<ident prodtype="rhel7" cce="27278-1" />
+<ident cce="27278-1" prodtype="rhel7" />
 <oval id="chronyd_or_ntpd_specify_remote_server" />
-<ref nist="AU-8(1)" disa="160" pcidss="Req-10.4.1,Req-10.4.3" cis="3.6" cui="3.3.7" />
+<ref cis="3.6" cui="3.3.7" disa="160" nist="AU-8(1)" pcidss="Req-10.4.1,Req-10.4.3" />
 </Rule>
 
-<Rule id="chronyd_or_ntpd_specify_multiple_servers" prodtype="rhel7">
+<Rule id="chronyd_or_ntpd_specify_multiple_servers" prodtype="rhel7,fedora">
 <title>Specify Additional Remote NTP Servers</title>
 <description>Depending on specific functional requirements of a concrete
 production environment, the Red Hat Enterprise Linux 7 Server system can be
 configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
 default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
-<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html"/>
+<weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" />
 for more detailed comparison of the features of both of the choices, and for
 further guidance how to choose between the two NTP daemons.
 <br />
@@ -174,12 +174,12 @@ accurate time data, in the event that one of the specified servers becomes
 unavailable. This is typical for a system acting as an NTP server for
 other systems.
 </rationale>
-<ident prodtype="rhel7" cce="27012-4" />
-<oval id="chronyd_or_ntpd_specify_multiple_servers"/>
+<ident cce="27012-4" prodtype="rhel7" />
+<oval id="chronyd_or_ntpd_specify_multiple_servers" />
 <ref nist="AU-8(1)" pcidss="Req-10.4.3" />
 </Rule>
 
-<Rule id="chronyd_or_ntpd_set_maxpoll" prodtype="rhel7">
+<Rule id="chronyd_or_ntpd_set_maxpoll" prodtype="rhel7,fedora">
 <title>Configure Time Service Maxpoll Interval</title>
 <description>The <tt>maxpoll</tt> should be configured to
 <sub idref="var_time_service_set_maxpoll" /> in <tt>/etc/ntp.conf</tt> or
@@ -200,16 +200,13 @@ time a particular event occurred on a system is critical when conducting
 forensic analysis and investigating system events. Sources outside the
 configured acceptable allowance (drift) may be inaccurate.
 </rationale>
-<ident prodtype="rhel7" cce="80439-3" />
+<ident cce="80439-3" prodtype="rhel7" />
 <oval id="chronyd_or_ntpd_set_maxpoll" value="var_time_service_set_maxpoll" />
 <ref prodtype="rhel7" stigid="040500" />
-<ref nist="AU-8(1)(a)" disa="1891,2046" srg="SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144" />
+<ref disa="1891,2046" nist="AU-8(1)(a)" srg="SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144" />
 </Rule>
 
 
-<!-- future Rules (for later profiles/enhancements):
-ensuring use of the restrict keyword
-enabling cryptographic authentication (multiple options)
--->
+
 
 </Group>

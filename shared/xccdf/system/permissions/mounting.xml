@@ -15,7 +15,7 @@ If these filesystems are not required then they can be explicitly disabled
 in a configuratio file in  <tt>/etc/modprobe.d</tt>.
 </description>
 
-<Rule id="kernel_module_usb-storage_disabled" severity="medium" prodtype="rhel7">
+<Rule id="kernel_module_usb-storage_disabled" prodtype="rhel7,fedora" severity="medium">
 <title>Disable Modprobe Loading of USB Storage Driver</title>
 <description>
 To prevent USB storage devices from being used, configure the kernel module loading system
@@ -30,15 +30,13 @@ module, but will not prevent an administrator (or another program) from using th
 <rationale>USB storage devices such as thumb drives can be used to introduce
 malicious software.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27277-3" />
+<ident cce="27277-3" prodtype="rhel7" />
 <oval id="kernel_module_usb-storage_disabled" />
 <ref prodtype="rhel7" stigid="020100" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" 
-srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227" cui="3.1.21" 
-hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" />
+<ref cui="3.1.21" disa="366,778,1958" hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" nist="AC-19(a),AC-19(d),AC-19(e),IA-3" srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="bootloader_nousb_argument" prodtype="rhel7">
+<Rule id="bootloader_nousb_argument" prodtype="rhel7,fedora">
 <title>Disable Kernel Support for USB via Bootloader Configuration</title>
 <description>
 All USB support can be disabled by adding the <tt>nousb</tt>
@@ -53,13 +51,12 @@ protect against potentially malicious USB devices, although it is only practical
 in specialized systems.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="26548-8" />
+<ident cce="26548-8" prodtype="rhel7" />
 <oval id="bootloader_nousb_argument" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" 
-hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" />
+<ref disa="1250" hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" nist="AC-19(a),AC-19(d),AC-19(e)" />
 </Rule>
 
-<Rule id="bios_disable_usb_boot" prodtype="rhel7">
+<Rule id="bios_disable_usb_boot" prodtype="rhel7,fedora">
 <title>Disable Booting from USB Devices in Boot Firmware</title>
 <description>Configure the system boot firmware (historically called BIOS on PC
 systems) to disallow booting from USB drives.
@@ -68,11 +65,11 @@ systems) to disallow booting from USB drives.
 circumvent any security measures provided by the operating system. Attackers
 could mount partitions and modify the configuration of the OS.</rationale>
 <platform idref="cpe:/a:machine" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e)" disa="1250" />
-<ident prodtype="rhel7" cce="26960-5" />
+<ref disa="1250" nist="AC-19(a),AC-19(d),AC-19(e)" />
+<ident cce="26960-5" prodtype="rhel7" />
 </Rule>
 
-<Rule id="bios_assign_password" prodtype="rhel7">
+<Rule id="bios_assign_password" prodtype="rhel7,fedora">
 <title>Assign Password to Prevent Changes to Boot Firmware Configuration</title>
 <description>Assign a password to the system boot firmware (historically called BIOS on PC
 systems) to require a password for any configuration changes.
@@ -86,10 +83,10 @@ against the risk of administrative personnel being unable to conduct recovery op
 a timely fashion.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27194-0" />
+<ident cce="27194-0" prodtype="rhel7" />
 </Rule>
 
-<Rule id="service_autofs_disabled" severity="medium" prodtype="rhel7">
+<Rule id="service_autofs_disabled" prodtype="rhel7,fedora" severity="medium">
 <title>Disable the Automounter</title>
 <description>The <tt>autofs</tt> daemon mounts and unmounts filesystems, such as user
 home directories shared via NFS, on demand. In addition, autofs can be used to handle
@@ -110,16 +107,13 @@ statically control filesystem mounting through <tt>/etc/fstab</tt>.
 Additionally, automatically mounting filesystems permits easy introduction of
 unknown devices, thereby facilitating malicious activity.
 </rationale>
-<ident prodtype="rhel7" cce="27498-5" />
+<ident cce="27498-5" prodtype="rhel7" />
 <oval id="service_autofs_disabled" />
 <ref prodtype="rhel7" stigid="020110" />
-<ref nist="AC-19(a),AC-19(d),AC-19(e),IA-3" disa="366,778,1958" 
-srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227" cui="3.4.6" 
-cis="1.1.22"
-hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" />
+<ref cis="1.1.22" cui="3.4.6" disa="366,778,1958" hipaa="164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)" nist="AC-19(a),AC-19(d),AC-19(e),IA-3" srg="SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="kernel_module_cramfs_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_cramfs_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>cramfs</tt></title>
 <description>
 <module-disable-macro module="cramfs" />
@@ -128,12 +122,12 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80137-3" />
+<ident cce="80137-3" prodtype="rhel7" />
 <oval id="kernel_module_cramfs_disabled" />
-<ref nist="CM-7" cis="1.1.1.1" cui="3.4.6" />
+<ref cis="1.1.1.1" cui="3.4.6" nist="CM-7" />
 </Rule>
 
-<Rule id="kernel_module_freevxfs_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_freevxfs_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>freevxfs</tt></title>
 <description>
 <module-disable-macro module="freevxfs" />
@@ -142,12 +136,12 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80138-1" />
+<ident cce="80138-1" prodtype="rhel7" />
 <oval id="kernel_module_freevxfs_disabled" />
-<ref nist="CM-7" cis="1.1.1.2" cui="3.4.6" />
+<ref cis="1.1.1.2" cui="3.4.6" nist="CM-7" />
 </Rule>
 
-<Rule id="kernel_module_jffs2_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_jffs2_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>jffs2</tt></title>
 <description>
 <module-disable-macro module="jffs2" />
@@ -156,12 +150,12 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80139-9" />
+<ident cce="80139-9" prodtype="rhel7" />
 <oval id="kernel_module_jffs2_disabled" />
-<ref nist="CM-7" cis="1.1.1.3" cui="3.4.6" />
+<ref cis="1.1.1.3" cui="3.4.6" nist="CM-7" />
 </Rule>
 
-<Rule id="kernel_module_hfs_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_hfs_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>hfs</tt></title>
 <description>
 <module-disable-macro module="hfs" />
@@ -170,12 +164,12 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80140-7" />
+<ident cce="80140-7" prodtype="rhel7" />
 <oval id="kernel_module_hfs_disabled" />
-<ref nist="CM-7" cis="1.1.1.4" cui="3.4.6" />
+<ref cis="1.1.1.4" cui="3.4.6" nist="CM-7" />
 </Rule>
 
-<Rule id="kernel_module_hfsplus_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_hfsplus_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>hfsplus</tt></title>
 <description>
 <module-disable-macro module="hfsplus" />
@@ -184,12 +178,12 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80141-5" />
+<ident cce="80141-5" prodtype="rhel7" />
 <oval id="kernel_module_hfsplus_disabled" />
-<ref nist="CM-7" cis="1.1.1.5" cui="3.4.6" />
+<ref cis="1.1.1.5" cui="3.4.6" nist="CM-7" />
 </Rule>
 
-<Rule id="kernel_module_squashfs_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_squashfs_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>squashfs</tt></title>
 <description>
 <module-disable-macro module="squashfs" />
@@ -198,12 +192,12 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80142-3" />
+<ident cce="80142-3" prodtype="rhel7" />
 <oval id="kernel_module_squashfs_disabled" />
-<ref nist="CM-7" cis="1.1.1.6" cui="3.4.6" />
+<ref cis="1.1.1.6" cui="3.4.6" nist="CM-7" />
 </Rule>
 
-<Rule id="kernel_module_udf_disabled" prodtype="rhel7" severity="low">
+<Rule id="kernel_module_udf_disabled" prodtype="rhel7,fedora" severity="low">
 <title>Disable Mounting of <tt>udf</tt></title>
 <description>
 <module-disable-macro module="udf" />
@@ -212,9 +206,9 @@ This effectively prevents usage of this uncommon filesystem.
 <rationale>Linux kernel modules which implement filesystems that are not needed by the
 local system should be disabled.</rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80143-1" />
+<ident cce="80143-1" prodtype="rhel7" />
 <oval id="kernel_module_udf_disabled" />
-<ref nist="CM-7" cis="1.1.1.7" cui="3.4.6" />
+<ref cis="1.1.1.7" cui="3.4.6" nist="CM-7" />
 </Rule>
 
 </Group>

@@ -39,11 +39,10 @@ most users.</warning>
 files, destroying any manually made changes and replacing them with
 a series of system defaults. One reference to the configuration
 file syntax can be found at
-<weblink-macro link="http://www.linux-pam.org/Linux-PAM-html/sag-configuration-file.html"/>
+<weblink-macro link="http://www.linux-pam.org/Linux-PAM-html/sag-configuration-file.html" />
 .</warning>
 
-<Value id="var_password_pam_unix_remember" type="number"
-operator="equals" interactive="0">
+<Value id="var_password_pam_unix_remember" interactive="0" operator="equals" type="number">
 <title>remember</title>
 <description>The last n passwords for each user are saved in
 <tt>/etc/security/opasswd</tt> in order to force password change history and
@@ -57,7 +56,7 @@ frequently.</description>
 <value selector="24">24</value>
 </Value>
 
-<Rule id="display_login_attempts" severity="low" prodtype="rhel7">
+<Rule id="display_login_attempts" prodtype="rhel7,fedora" severity="low">
 <title>Set Last Logon/Access Notification</title>
 <description>To configure the system to notify users of last logon/access
 using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt> settings in
@@ -79,10 +78,10 @@ of unsuccessful attempts that were made to login to their account
 allows the user to determine if any unauthorized activity has occurred
 and gives them an opportunity to notify administrators.
 </rationale>
-<ident prodtype="rhel7" cce="27275-7" />
+<ident cce="27275-7" prodtype="rhel7" />
 <oval id="display_login_attempts" />
 <ref prodtype="rhel7" stigid="040530" />
-<ref nist="AC-9" disa="366" pcidss="Req-10.2.4" srg="SRG-OS-000480-GPOS-00227" cjis="5.5.2" />
+<ref cjis="5.5.2" disa="366" nist="AC-9" pcidss="Req-10.2.4" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 <Group id="password_quality">
@@ -133,7 +132,7 @@ your organization's security policy. Discussion of each parameter follows.
 requirements are not enforced for the root account for some
 reason.</warning>
 
-<Value id="var_password_pam_retry" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_retry" interactive="0" operator="equals" type="number">
 <title>retry</title>
 <description>Number of retry attempts before erroring out</description>
 <value selector="">3</value>
@@ -144,7 +143,7 @@ reason.</warning>
 <value selector="5">5</value>
 </Value>
 
-<Value id="var_password_pam_maxrepeat" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_maxrepeat" interactive="0" operator="equals" type="number">
 <title>maxrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password</description>
 <value selector="">3</value>
@@ -153,7 +152,7 @@ reason.</warning>
 <value selector="3">3</value>
 </Value>
 
-<Value id="var_password_pam_maxclassrepeat" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_maxclassrepeat" interactive="0" operator="equals" type="number">
 <title>maxclassrepeat</title>
 <description>Maximum Number of Consecutive Repeating Characters in a Password From the Same Character Class</description>
 <value selector="">4</value>
@@ -163,22 +162,22 @@ reason.</warning>
 <value selector="4">4</value>
 </Value>
 
-<Value id="var_password_pam_minlen" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minlen" interactive="0" operator="equals" type="number">
 <title>minlen</title>
 <description>Minimum number of characters in password</description>
 <value selector="">15</value>
 <value selector="6">6</value>
-<!-- NIST 800-53 requires 1 in a million using brute force which translates to six numbers -->
+
 <value selector="7">7</value>
 <value selector="8">8</value>
 <value selector="10">10</value>
 <value selector="12">12</value>
 <value selector="14">14</value>
-<!-- DoD STIG requires 15 -->
+
 <value selector="15">15</value>
 </Value>
 
-<Value id="var_password_pam_dcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_dcredit" interactive="0" operator="equals" type="number">
 <title>dcredit</title>
 <description>Minimum number of digits in password</description>
 <value selector="">-1</value>
@@ -187,7 +186,7 @@ reason.</warning>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_ocredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_ocredit" interactive="0" operator="equals" type="number">
 <title>ocredit</title>
 <description>Minimum number of other (special characters) in
 password</description>
@@ -197,7 +196,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_lcredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_lcredit" interactive="0" operator="equals" type="number">
 <title>lcredit</title>
 <description>Minimum number of lower case in password</description>
 <value selector="">-1</value>
@@ -206,7 +205,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_ucredit" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_ucredit" interactive="0" operator="equals" type="number">
 <title>ucredit</title>
 <description>Minimum number of upper case in password</description>
 <value selector="">-1</value>
@@ -215,7 +214,7 @@ password</description>
 <value selector="0">0</value>
 </Value>
 
-<Value id="var_password_pam_difok" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_difok" interactive="0" operator="equals" type="number">
 <title>difok</title>
 <description>Minimum number of characters not present in old
 password</description>
@@ -231,7 +230,7 @@ password</description>
 <value selector="15">15</value>
 </Value>
 
-<Value id="var_password_pam_minclass" type="number" operator="equals" interactive="0">
+<Value id="var_password_pam_minclass" interactive="0" operator="equals" type="number">
 <title>minclass</title>
 <description>Minimum number of categories of characters that must exist in a password</description>
 <value selector="">3</value>
@@ -241,7 +240,7 @@ password</description>
 <value selector="4">4</value>
 </Value>
 
-<Value id="var_accounts_passwords_pam_faillock_deny" type="number" operator="equals" interactive="0">
+<Value id="var_accounts_passwords_pam_faillock_deny" interactive="0" operator="equals" type="number">
 <title>fail_deny</title>
 <description>Number of failed login attempts before account lockout</description>
 <value selector="">3</value>
@@ -251,31 +250,31 @@ password</description>
 <value selector="10">10</value>
 </Value>
 
-<Value id="var_accounts_passwords_pam_faillock_unlock_time" type="string" operator="equals" interactive="0">
+<Value id="var_accounts_passwords_pam_faillock_unlock_time" interactive="0" operator="equals" type="string">
 <title>fail_unlock_time</title>
 <description>Seconds before automatic unlocking or permanently locking after excessive failed logins</description>
 <value selector="">never</value>
-<value selector="600">600</value> <!-- 10 minutes -->
-<value selector="900">900</value> <!-- 15 minutes -->
-<value selector="1800">1800</value> <!-- 30 minutes -->
-<value selector="3600">3600</value> <!-- 1 hour -->
-<value selector="86400">86400</value> <!-- 1 day -->
-<value selector="604800">604800</value> <!-- 7 days -->
-<value selector="never">never</value> <!-- Permanently locked -->
+<value selector="600">600</value> 
+<value selector="900">900</value> 
+<value selector="1800">1800</value> 
+<value selector="3600">3600</value> 
+<value selector="86400">86400</value> 
+<value selector="604800">604800</value> 
+<value selector="never">never</value> 
 </Value>
 
-<Value id="var_accounts_passwords_pam_faillock_fail_interval" type="number" operator="equals" interactive="0">
+<Value id="var_accounts_passwords_pam_faillock_fail_interval" interactive="0" operator="equals" type="number">
 <title>fail_interval</title>
 <description>Interval for counting failed login attempts before account lockout</description>
 <value selector="">900</value>
-<value selector="900">900</value> <!-- 15 minutes -->
-<value selector="1800">1800</value> <!-- 30 minutes -->
-<value selector="3600">3600</value> <!-- 1 hour -->
-<value selector="86400">86400</value> <!-- 1 day -->
-<value selector="100000000">100000000</value> <!-- 3.16 years -->
+<value selector="900">900</value> 
+<value selector="1800">1800</value> 
+<value selector="3600">3600</value> 
+<value selector="86400">86400</value> 
+<value selector="100000000">100000000</value> 
 </Value>
 
-<Rule id="accounts_password_pam_retry" prodtype="rhel7">
+<Rule id="accounts_password_pam_retry" prodtype="rhel7,fedora">
 <title>Set Password Retry Prompts Permitted Per-Session</title>
 <description>To configure the number of retry prompts that are permitted per-session:
 <br /><br />
@@ -297,13 +296,13 @@ requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
-<ident prodtype="rhel7" cce="27160-1" />
-<oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
+<ident cce="27160-1" prodtype="rhel7" />
+<oval id="accounts_password_pam_retry" value="var_password_pam_retry" />
 <ref prodtype="rhel7" stigid="010119" />
-<ref nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" srg="SRG-OS-000480-GPOS-00225" cjis="5.5.3" />
+<ref cis="6.3.2" cjis="5.5.3" disa="366" nist="CM-6(b),IA-5(c)" srg="SRG-OS-000480-GPOS-00225" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxrepeat" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_maxrepeat" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Maximum Consecutive Repeating Characters</title>
 <description>The pam_pwquality module's <tt>maxrepeat</tt> parameter controls requirements for
 consecutive repeating characters. When set to a positive number, it will reject passwords
@@ -328,13 +327,13 @@ password is compromised.
 <br /><br />
 Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.
 </rationale>
-<ident prodtype="rhel7" cce="27333-4" />
+<ident cce="27333-4" prodtype="rhel7" />
 <oval id="accounts_password_pam_maxrepeat" value="var_password_pam_maxrepeat" />
 <ref prodtype="rhel7" stigid="010180" />
-<ref nist="IA-5,IA-5(c)" disa="195" srg="SRG-OS-000072-GPOS-00040" />
+<ref disa="195" nist="IA-5,IA-5(c)" srg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
-<Rule id="accounts_password_pam_maxclassrepeat" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_maxclassrepeat" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password to Maximum of Consecutive Repeating Characters from Same Character Class</title>
 <description>The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
 consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
@@ -356,13 +355,13 @@ Password complexity is one factor of several that determines how long it takes t
 more complex a password, the greater the number of possible combinations that need to be tested before the
 password is compromised.
 </rationale>
-<ident prodtype="rhel7" cce="27512-3" />
+<ident cce="27512-3" prodtype="rhel7" />
 <oval id="accounts_password_pam_maxclassrepeat" value="var_password_pam_maxclassrepeat" />
 <ref prodtype="rhel7" stigid="010190" />
-<ref nist="IA-5,IA-5(c)" disa="195" srg="SRG-OS-000072-GPOS-00040" />
+<ref disa="195" nist="IA-5,IA-5(c)" srg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
-<Rule id="accounts_password_pam_dcredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_dcredit" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Strength Minimum Digit Characters</title>
 <description>The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
 usage of digits in a password. When set to a negative number, any password will be required to
@@ -381,20 +380,20 @@ Use of a complex password helps to increase the time and resources required
 to compromise the password. Password complexity, or strength, is a measure of
 the effectiveness of a password in resisting attempts at guessing and brute-force
 attacks. 
-<br/><br/>
+<br /><br />
 Password complexity is one factor of several that determines how long it takes
 to crack a password. The more complex the password, the greater the number of 
 possble combinations that need to be tested before the password is compromised.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident prodtype="rhel7" cce="27214-6" />
-<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
+<ident cce="27214-6" prodtype="rhel7" />
+<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit" />
 <ref prodtype="rhel7" stigid="010140" />
-<ref nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-00039" pcidss="Req-8.2.3" cis="6.3.2" />
+<ref cis="6.3.2" disa="194" nist="IA-5(1)(a),IA-5(b),IA-5(c),194" pcidss="Req-8.2.3" srg="SRG-OS-000071-GPOS-00039" />
 </Rule>
 
-<Rule id="accounts_password_pam_minlen" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_minlen" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Minimum Length</title>
 <description>The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
 minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
@@ -416,14 +415,13 @@ and how long it takes to crack a password. Use of more characters in a password
 helps to exponentially increase the time and/or resources required to 
 compromose the password.
 </rationale>
-<ident prodtype="rhel7" cce="27293-0" />
+<ident cce="27293-0" prodtype="rhel7" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
 <ref prodtype="rhel7" stigid="010280" />
-<ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046"
-pcidss="Req-8.2.3" cis="6.3.2" cjis="5.6.2.1.1" />
+<ref cis="6.3.2" cjis="5.6.2.1.1" disa="205" nist="IA-5(1)(a)" pcidss="Req-8.2.3" srg="SRG-OS-000078-GPOS-00046" />
 </Rule>
 
-<Rule id="accounts_password_pam_ucredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_ucredit" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Strength Minimum Uppercase Characters</title>
 <description>The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
 usage of uppercase letters in a password. When set to a negative number, any password will be required to
@@ -447,13 +445,13 @@ Password complexity is one factor of several that determines how long it takes t
 complex the password, the greater the number of possible combinations that need to be tested before
 the password is compromised.
 </rationale>
-<ident prodtype="rhel7" cce="27200-5" />
-<oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
+<ident cce="27200-5" prodtype="rhel7" />
+<oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit" />
 <ref prodtype="rhel7" stigid="010120" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" srg="SRG-OS-000069-GPOS-00037" pcidss="Req-8.2.3" cis="6.3.2" />
+<ref cis="6.3.2" disa="192" nist="IA-5(b),IA-5(c),IA-5(1)(a)" pcidss="Req-8.2.3" srg="SRG-OS-000069-GPOS-00037" />
 </Rule>
 
-<Rule id="accounts_password_pam_ocredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_ocredit" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Strength Minimum Special Characters</title>
 <description>The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
 usage of special (or "other") characters in a password. When set to a negative number, any password will be
@@ -480,13 +478,13 @@ possble combinations that need to be tested before the password is compromised.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident prodtype="rhel7" cce="27360-7" />
-<oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
+<ident cce="27360-7" prodtype="rhel7" />
+<oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit" />
 <ref prodtype="rhel7" stigid="010150" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" />
+<ref disa="1619" nist="IA-5(b),IA-5(c),IA-5(1)(a)" srg="SRG-OS-000266-GPOS-00101" />
 </Rule>
 
-<Rule id="accounts_password_pam_lcredit" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_lcredit" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Strength Minimum Lowercase Characters</title>
 <description>The pam_pwquality module's <tt>lcredit</tt> parameter controls requirements for
 usage of lowercase letters in a password. When set to a negative number, any password will be required to
@@ -512,13 +510,13 @@ possble combinations that need to be tested before the password is compromised.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident prodtype="rhel7" cce="27345-8" />
-<oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
+<ident cce="27345-8" prodtype="rhel7" />
+<oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit" />
 <ref prodtype="rhel7" stigid="010130" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-00038" pcidss="Req-8.2.3" />
+<ref disa="193" nist="IA-5(b),IA-5(c),IA-5(1)(a)" pcidss="Req-8.2.3" srg="SRG-OS-000070-GPOS-00038" />
 </Rule>
 
-<Rule id="accounts_password_pam_difok" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_difok" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Strength Minimum Different Characters</title>
 <description>The pam_pwquality module's <tt>difok</tt> parameter sets the number of characters
 in a password that must not be present in and old password during a password change. 
@@ -536,7 +534,7 @@ The <tt>difok</tt> parameter will indicate how many characters must differ.
 Use of a complex password helps to increase the time and resources 
 required to compromise the password. Password complexity, or strength, 
 is a measure of the effectiveness of a password in resisting attempts 
-at guessing and brute–force attacks.
+at guessing and brute&#8211;force attacks.
 <br /><br />
 Password complexity is one factor of several that determines how long 
 it takes to crack a password. The more complex the password, the 
@@ -547,14 +545,13 @@ Requiring a minimum number of different characters during password changes ensur
 newly changed passwords should not resemble previously compromised ones.
 Note that passwords which are changed on compromised systems will still be compromised, however.
 </rationale>
-<ident prodtype="rhel7" cce="26631-2" />
-<oval id="accounts_password_pam_difok" value="var_password_pam_difok"/>
+<ident cce="26631-2" prodtype="rhel7" />
+<oval id="accounts_password_pam_difok" value="var_password_pam_difok" />
 <ref prodtype="rhel7" stigid="010160" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(b)" disa="195" srg="SRG-OS-000072-GPOS-00040"
-cjis="5.6.2.1.1" />
+<ref cjis="5.6.2.1.1" disa="195" nist="IA-5(b),IA-5(c),IA-5(1)(b)" srg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 
-<Rule id="accounts_password_pam_minclass" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_minclass" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Strength Minimum Different Categories</title>
 <description>The pam_pwquality module's <tt>minclass</tt> parameter controls
 requirements for usage of different character classes, or types, of character
@@ -592,10 +589,10 @@ the password is compromised.
 Requiring a minimum number of character categories makes password guessing attacks more difficult 
 by ensuring a larger search space.
 </rationale>
-<ident prodtype="rhel7" cce="CCE-27115-5" />
-<oval id="accounts_password_pam_minclass" value="var_password_pam_minclass"/>
+<ident cce="CCE-27115-5" prodtype="rhel7" />
+<oval id="accounts_password_pam_minclass" value="var_password_pam_minclass" />
 <ref prodtype="rhel7" stigid="010170" />
-<ref nist="IA-5" disa="195" srg="SRG-OS-000072-GPOS-00040" />
+<ref disa="195" nist="IA-5" srg="SRG-OS-000072-GPOS-00040" />
 </Rule>
 </Group>
 </Group>
@@ -614,12 +611,9 @@ must weigh whether the risk of such a
 denial-of-service attack outweighs the benefits of thwarting
 password guessing attacks.</warning>
 
-<!-- This should probably be two rules:
-one to use pam_faillock,
-and a second to use unlock_time and set it to a Value
--->
 
-<Rule id="accounts_passwords_pam_faillock_deny" severity="medium" prodtype="rhel7">
+
+<Rule id="accounts_passwords_pam_faillock_deny" prodtype="rhel7,fedora" severity="medium">
 <title>Set Deny For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
@@ -644,13 +638,13 @@ The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident prodtype="rhel7" cce="27350-8" />
-<oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
+<ident cce="27350-8" prodtype="rhel7" />
+<oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny" />
 <ref prodtype="rhel7" stigid="010320" />
-<ref nist="AC-7(b)" disa="2238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" pcidss="Req-8.1.6" cis="5.3.2" cjis="5.5.3" cui="3.1.8" />
+<ref cis="5.3.2" cjis="5.5.3" cui="3.1.8" disa="2238" nist="AC-7(b)" pcidss="Req-8.1.6" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_faillock_unlock_time" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_unlock_time" prodtype="rhel7,fedora" severity="medium">
 <title>Set Lockout Time For Failed Password Attempts</title>
 <description>
 To configure the system to lock out accounts after a number of incorrect login
@@ -677,13 +671,13 @@ prevents direct password guessing attacks. Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident prodtype="rhel7" cce="26884-7" />
-<oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
+<ident cce="26884-7" prodtype="rhel7" />
+<oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time" />
 <ref prodtype="rhel7" stigid="010320" />
-<ref nist="AC-7(b)" disa="002238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" pcidss="Req-8.1.7" cis="5.3.2" cjis="5.5.3" cui="3.1.8" />
+<ref cis="5.3.2" cjis="5.5.3" cui="3.1.8" disa="002238" nist="AC-7(b)" pcidss="Req-8.1.7" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_faillock_deny_root" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_deny_root" prodtype="rhel7" severity="medium">
 <title>Configure the <tt>root</tt> Account for Failed Password Attempts</title>
 <description>
 To configure the system to lock out the <tt>root</tt> account after a number of incorrect login
@@ -707,13 +701,13 @@ The output should show <tt>even_deny_root</tt>.
 By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
 guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
 </rationale>
-<ident prodtype="rhel7" cce="80353-6" />
+<ident cce="80353-6" prodtype="rhel7" />
 <oval id="accounts_passwords_pam_faillock_deny_root" />
 <ref prodtype="rhel7" stigid="010330" />
-<ref nist="AC-7(b)" disa="2238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
+<ref disa="2238" nist="AC-7(b)" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
-<Rule id="accounts_passwords_pam_faillock_interval" severity="medium" prodtype="rhel7">
+<Rule id="accounts_passwords_pam_faillock_interval" prodtype="rhel7,fedora" severity="medium">
 <title>Set Interval For Counting Failed Password Attempts</title>
 <description>
 Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive 
@@ -742,13 +736,13 @@ By limiting the number of failed logon attempts the risk of unauthorized system
 access via user password guessing, otherwise known as brute-forcing, is reduced.
 Limits are imposed by locking the account.
 </rationale>
-<ident prodtype="rhel7" cce="27297-1" />
-<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
+<ident cce="27297-1" prodtype="rhel7" />
+<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval" />
 <ref prodtype="rhel7" stigid="010320" />
-<ref nist="AC-7(b)" disa="2238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
+<ref disa="2238" nist="AC-7(b)" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
-<Rule id="accounts_password_pam_unix_remember" severity="medium" prodtype="rhel7">
+<Rule id="accounts_password_pam_unix_remember" prodtype="rhel7,fedora" severity="medium">
 <title>Limit Password Reuse</title>
 <description>Do not allow users to reuse recent passwords. This can be
 accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
@@ -774,11 +768,10 @@ The output should show the following at the end of the line:
 <rationale>
 Preventing re-use of previous passwords helps ensure that a compromised password is not re-used by a user.
 </rationale>
-<ident prodtype="rhel7" cce="26923-3" />
+<ident cce="26923-3" prodtype="rhel7" />
 <oval id="accounts_password_pam_unix_remember" value="var_password_pam_unix_remember" />
 <ref prodtype="rhel7" stigid="010270" />
-<ref nist="IA-5(f),IA-5(1)(e)" disa="200" srg="SRG-OS-000077-GPOS-00045"
-pcidss="Req-8.2.5" cis="5.3.3" cjis="5.6.2.1.1" cui="3.5.8" />
+<ref cis="5.3.3" cjis="5.6.2.1.1" cui="3.5.8" disa="200" nist="IA-5(f),IA-5(1)(e)" pcidss="Req-8.2.5" srg="SRG-OS-000077-GPOS-00045" />
 </Rule>
 </Group>
 
@@ -788,7 +781,7 @@ pcidss="Req-8.2.5" cis="5.3.3" cjis="5.6.2.1.1" cui="3.5.8" />
 <tt>/etc/shadow</tt> is SHA-512. This can be configured in several
 locations.</description>
 
-<Rule id="set_password_hashing_algorithm_systemauth" severity="medium" prodtype="rhel7">
+<Rule id="set_password_hashing_algorithm_systemauth" prodtype="rhel7,fedora" severity="medium">
 <title>Set PAM's Password Hashing Algorithm</title>
 <description>
 The PAM system service can be configured to only store encrypted representations of passwords.
@@ -817,13 +810,13 @@ This setting ensures user and group account administration utilities are configu
 encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
-<ident prodtype="rhel7" cce="27104-9" />
+<ident cce="27104-9" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="010200" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" srg="SRG-OS-000073-GPOS-00041" pcidss="Req-8.2.1" cis="6.3.1" cjis="5.6.2.2" cui="3.13.11" />
+<ref cis="6.3.1" cjis="5.6.2.2" cui="3.13.11" disa="196" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" pcidss="Req-8.2.1" srg="SRG-OS-000073-GPOS-00041" />
 <oval id="set_password_hashing_algorithm_systemauth" />
 </Rule>
 
-<Rule id="set_password_hashing_algorithm_logindefs" severity="medium" prodtype="rhel7">
+<Rule id="set_password_hashing_algorithm_logindefs" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Hashing Algorithm in /etc/login.defs</title>
 <description>
 In <tt>/etc/login.defs</tt>, add or correct the following line to ensure
@@ -841,13 +834,13 @@ that are encrypted with a weak algorithm are no more protected than if they are 
 <br /><br />
 Using a stronger hashing algorithm makes password cracking attacks more difficult.
 </rationale>
-<ident prodtype="rhel7" cce="27124-7" />
+<ident cce="27124-7" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="010210" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" srg="SRG-OS-000073-GPOS-00041" pcidss="Req-8.2.1" cis="6.3.1" cjis="5.6.2.2" cui="3.13.11" />
+<ref cis="6.3.1" cjis="5.6.2.2" cui="3.13.11" disa="196" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" pcidss="Req-8.2.1" srg="SRG-OS-000073-GPOS-00041" />
 <oval id="set_password_hashing_algorithm_logindefs" />
 </Rule>
 
-<Rule id="set_password_hashing_algorithm_libuserconf" severity="medium" prodtype="rhel7">
+<Rule id="set_password_hashing_algorithm_libuserconf" prodtype="rhel7,fedora" severity="medium">
 <title>Set Password Hashing Algorithm in /etc/libuser.conf</title>
 <description>
 In <tt>/etc/libuser.conf</tt>, add or correct the following line in its
@@ -870,9 +863,9 @@ This setting ensures user and group account administration utilities are configu
 encrypted representations of passwords. Additionally, the <tt>crypt_style</tt> configuration option
 ensures the use of a strong hashing algorithm that makes password cracking attacks more difficult. 
 </rationale>
-<ident prodtype="rhel7" cce="27053-8" />
+<ident cce="27053-8" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="010220" />
-<ref nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" disa="196" srg="SRG-OS-000073-GPOS-00041" pcidss="Req-8.2.1" cjis="5.6.2.2" cui="3.13.11" />
+<ref cjis="5.6.2.2" cui="3.13.11" disa="196" nist="IA-5(b),IA-5(c),IA-5(1)(c),IA-7" pcidss="Req-8.2.1" srg="SRG-OS-000073-GPOS-00041" />
 <oval id="set_password_hashing_algorithm_libuserconf" />
 </Rule>
 </Group>

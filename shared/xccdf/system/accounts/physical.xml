@@ -22,52 +22,47 @@ with a password and ensure its configuration file's permissions
 are set properly.
 </description>
 
-<Rule id="file_user_owner_grub2_cfg" severity="medium" prodtype="rhel7">
+<Rule id="file_user_owner_grub2_cfg" prodtype="rhel7,fedora" severity="medium">
 <title>Verify /boot/grub2/grub.cfg User Ownership</title>
 <description>The file <tt>/boot/grub2/grub.cfg</tt> should
 be owned by the <tt>root</tt> user to prevent destruction
 or modification of the file.
-<fileowner-desc-macro file="/boot/grub2/grub.cfg" owner="root"/>
+<fileowner-desc-macro file="/boot/grub2/grub.cfg" owner="root" />
 </description>
-<ocil><fileowner-check-macro file="/boot/grub2/grub.cfg" owner="root"/></ocil>
+<ocil><fileowner-check-macro file="/boot/grub2/grub.cfg" owner="root" /></ocil>
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="26860-7" />
+<ident cce="26860-7" prodtype="rhel7" />
 <oval id="file_user_owner_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
-cui="3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)"
-/>
+<ref cis="1.4.1" cjis="5.5.2.2" cui="3.4.5" disa="225" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6(7)" pcidss="Req-7.1" />
 </Rule>
 
-<Rule id="file_group_owner_grub2_cfg" severity="medium" prodtype="rhel7">
+<Rule id="file_group_owner_grub2_cfg" prodtype="rhel7,fedora" severity="medium">
 <title>Verify /boot/grub2/grub.cfg Group Ownership</title>
 <description>The file <tt>/boot/grub2/grub.cfg</tt> should
 be group-owned by the <tt>root</tt> group to prevent
 destruction or modification of the file.
-<filegroupowner-desc-macro file="/boot/grub2/grub.cfg" group="root"/>
+<filegroupowner-desc-macro file="/boot/grub2/grub.cfg" group="root" />
 </description>
-<ocil><filegroupowner-check-macro file="/boot/grub2/grub.cfg" group="root"/></ocil>
+<ocil><filegroupowner-check-macro file="/boot/grub2/grub.cfg" group="root" /></ocil>
 <rationale>
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="26812-8" />
+<ident cce="26812-8" prodtype="rhel7" />
 <oval id="file_group_owner_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2" cui="3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)"
-/>
+<ref cis="1.4.1" cjis="5.5.2.2" cui="3.4.5" disa="225" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6(7)" pcidss="Req-7.1" />
 </Rule>
 
-<Rule id="file_permissions_grub2_cfg" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_grub2_cfg" prodtype="rhel7,fedora" severity="medium">
 <title>Verify /boot/grub2/grub.cfg Permissions</title>
 <description>File permissions for <tt>/boot/grub2/grub.cfg</tt> should be set to 600.
-<fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="600"/>
+<fileperms-desc-macro file="/boot/grub2/grub.cfg" perms="600" />
 </description>
-<ocil clause ="it does not">
+<ocil clause="it does not">
 To check the permissions of /boot/grub2/grub.cfg, run the command:
 <pre>$ sudo ls -lL /boot/grub2/grub.cfg</pre>
 If properly configured, the output should indicate the following
@@ -78,56 +73,52 @@ Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27054-6" />
+<ident cce="27054-6" prodtype="rhel7" />
 <oval id="file_permissions_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" cis="1.4.1" cui="3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)"
-/>
+<ref cis="1.4.1" cui="3.4.5" disa="225" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6(7)" />
 </Rule>
 
-<Rule id="file_user_owner_efi_grub2_cfg" severity="medium" prodtype="rhel7">
+<Rule id="file_user_owner_efi_grub2_cfg" prodtype="rhel7" severity="medium">
 <title>Verify /boot/efi/EFI/redhat/grub.cfg User Ownership</title>
 <description>The file <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should
 be owned by the <tt>root</tt> user to prevent destruction
 or modification of the file.
-<fileowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root"/>
+<fileowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root" />
 </description>
-<ocil><fileowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root"/></ocil>
+<ocil><fileowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" owner="root" /></ocil>
 <rationale>
 Only root should be able to modify important boot parameters.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="file_user_owner_efi_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
-cui="3.4.5" />
+<ref cis="1.4.1" cjis="5.5.2.2" cui="3.4.5" disa="225" nist="AC-6(7)" pcidss="Req-7.1" />
 </Rule>
 
-<Rule id="file_group_owner_efi_grub2_cfg" severity="medium" prodtype="rhel7">
+<Rule id="file_group_owner_efi_grub2_cfg" prodtype="rhel7" severity="medium">
 <title>Verify /boot/efi/EFI/redhat/grub.cfg Group Ownership</title>
 <description>The file <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should
 be group-owned by the <tt>root</tt> group to prevent
 destruction or modification of the file.
-<filegroupowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" group="root"/>
+<filegroupowner-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" group="root" />
 </description>
-<ocil><filegroupowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" group="root"/></ocil>
+<ocil><filegroupowner-check-macro file="/boot/efi/EFI/redhat/grub.cfg" group="root" /></ocil>
 <rationale>
 The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
 file should not have any access privileges anyway.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="file_group_owner_efi_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" pcidss="Req-7.1" cis="1.4.1" cjis="5.5.2.2"
-cui="3.4.5" />
+<ref cis="1.4.1" cjis="5.5.2.2" cui="3.4.5" disa="225" nist="AC-6(7)" pcidss="Req-7.1" />
 </Rule>
 
-<Rule id="file_permissions_efi_grub2_cfg" severity="medium" prodtype="rhel7">
+<Rule id="file_permissions_efi_grub2_cfg" prodtype="rhel7" severity="medium">
 <title>Verify /boot/efi/EFI/redhat/grub.cfg Permissions</title>
 <description>File permissions for <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should be set to 600.
-<fileperms-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" perms="700"/>
+<fileperms-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" perms="700" />
 </description>
-<ocil clause ="it does not">
+<ocil clause="it does not">
 To check the permissions of /boot/efi/EFI/redhat/grub.cfg, run the command:
 <pre>$ sudo ls -lL /boot/efi/EFI/redhat/grub.cfg</pre>
 If properly configured, the output should indicate the following
@@ -138,12 +129,12 @@ Proper permissions ensure that only the root user can modify important boot
 parameters.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="TBD" />
+<ident cce="TBD" prodtype="rhel7" />
 <oval id="file_permissions_efi_grub2_cfg" />
-<ref nist="AC-6(7)" disa="225" cis="1.4.1" cui="3.4.5" />
+<ref cis="1.4.1" cui="3.4.5" disa="225" nist="AC-6(7)" />
 </Rule>
 
-<Rule id="bootloader_password" severity="high" prodtype="rhel7">
+<Rule id="bootloader_password" prodtype="rhel7,fedora" severity="high">
 <title>Set Boot Loader Password</title>
 <description>The grub2 boot loader should have a superuser account and password
 protection enabled to protect boot-time settings.
@@ -194,7 +185,7 @@ important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode. For more information on how to configure
 the grub2 superuser account and password, please refer to
 <ul>
-<li><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html"/></li>.
+<li><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html" /></li>.
 </ul>
 </rationale>
 <warning category="general">
@@ -202,15 +193,13 @@ To prevent hard-coded passwords, automatic remediation of this control is not av
 must be automated as a component of machine provisioning, or followed manually as outlined above.
 </warning>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27309-4" />
+<ident cce="27309-4" prodtype="rhel7" />
 <oval id="bootloader_password" />
 <ref prodtype="rhel7" stigid="010480" />
-<ref nist="IA-2(1),IA-5(e),AC-3" disa="213" srg="SRG-OS-000080-GPOS-00048" 
-cis="1.4.2" cui="3.4.5" 
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cis="1.4.2" cui="3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="IA-2(1),IA-5(e),AC-3" srg="SRG-OS-000080-GPOS-00048" />
 </Rule>
 
-<Rule id="bootloader_uefi_password" severity="medium" prodtype="rhel7">
+<Rule id="bootloader_uefi_password" prodtype="rhel7,fedora" severity="medium">
 <title>Set the UEFI Boot Loader Password</title>
 <description>The grub2 boot loader should have a superuser account and password
 protection enabled to protect boot-time settings.
@@ -261,7 +250,7 @@ important bootloader settings. These include which kernel to use,
 and whether to enter single-user mode. For more information on how to configure
 the grub2 superuser account and password, please refer to
 <ul>
-<li><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html"/></li>.
+<li><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/sec-Protecting_GRUB_2_with_a_Password.html" /></li>.
 </ul>
 </rationale>
 <warning category="general">
@@ -269,14 +258,13 @@ To prevent hard-coded passwords, automatic remediation of this control is not av
 must be automated as a component of machine provisioning, or followed manually as outlined above.
 </warning>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80354-4" />
+<ident cce="80354-4" prodtype="rhel7" />
 <oval id="bootloader_uefi_password" />
 <ref prodtype="rhel7" stigid="010490" />
-<ref nist="AC-3" disa="213" srg="SRG-OS-000080-GPOS-00048" cui="3.4.5" cis="1.4.2"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cis="1.4.2" cui="3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-3" srg="SRG-OS-000080-GPOS-00048" />
 </Rule>
 
-<Rule id="bootloader_no_removeable_media" severity="medium" prodtype="rhel7">
+<Rule id="bootloader_no_removeable_media" prodtype="rhel7" severity="medium">
 <title>Boat Loader Is Not Installed On Removeable Media</title>
 <description>
 The system must not allow removable media to be used as the boot loader.
@@ -300,12 +288,12 @@ Malicious users with removable boot media can gain access to a system
 configured to use removable media as the boot loader.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident cce="80517-6"/>
-<oval id="bootloader_no_removeable_media"/>
-<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid="021700"/>
+<ident cce="80517-6" />
+<oval id="bootloader_no_removeable_media" />
+<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid="021700" />
 </Rule>
 
-<Rule id="bootloader_uefi_no_removeable_media" severity="medium" prodtype="rhel7">
+<Rule id="bootloader_uefi_no_removeable_media" prodtype="rhel7" severity="medium">
 <title>UEFI Boat Loader Is Not Installed On Removeable Media</title>
 <description>
 The system must not allow removable media to be used as the boot loader.
@@ -329,14 +317,14 @@ Malicious users with removable boot media can gain access to a system
 configured to use removable media as the boot loader.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident cce="80518-4"/>
-<oval id="bootloader_uefi_no_removeable_media"/>
-<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid=""/>
+<ident cce="80518-4" />
+<oval id="bootloader_uefi_no_removeable_media" />
+<ref disa="1814" nist="" srg="SRG-OS-000364-GPOS-00151" stigid="" />
 </Rule>
 
 </Group>
 
-<Rule id="require_singleuser_auth" severity="medium" prodtype="rhel7">
+<Rule id="require_singleuser_auth" prodtype="rhel7,fedora" severity="medium">
 <title>Require Authentication for Single User Mode</title>
 <description>Single-user mode is intended as a system recovery
 method, providing a single user root access to the system by
@@ -359,14 +347,12 @@ on the machine and gaining root access. Such accesses are further prevented
 by configuring the bootloader password.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27287-2" />
+<ident cce="27287-2" prodtype="rhel7" />
 <oval id="require_singleuser_auth" />
-<ref nist="IA-2(1),AC-3" disa="213" cui="3.1.1,3.4.5" cis="1.4.3" srg="SRG-OS-000080-GPOS-00048" 
-stigid="010481"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cis="1.4.3" cui="3.1.1,3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="IA-2(1),AC-3" srg="SRG-OS-000080-GPOS-00048" stigid="010481" />
 </Rule>
 
-<Rule id="service_debug-shell_disabled" severity="medium" prodtype="rhel7">
+<Rule id="service_debug-shell_disabled" prodtype="rhel7,fedora" severity="medium">
 <title>Disable debug-shell SystemD Service</title>
 <description>SystemD's <tt>debug-shell</tt> service is intended to
 diagnose SystemD related boot issues with various <tt>systemctl</tt>
@@ -387,14 +373,13 @@ on the machine through valid troubleshooting configurations and gaining root
 access when the system is rebooted.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80206-6" />
+<ident cce="80206-6" prodtype="rhel7" />
 <oval id="service_debug-shell_disabled" />
-<ref cui="3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
-<!--ref nist="IA-2(1),AC-3" disa="213" /-->
+<ref cui="3.4.5" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+
 </Rule>
 
-<Rule id="disable_ctrlaltdel_burstaction" severity="high" prodtype="rhel7">
+<Rule id="disable_ctrlaltdel_burstaction" prodtype="rhel7" severity="high">
 <title>Disable Ctrl-Alt-Del Burst Action</title>
 <description>
 By default, <tt>SystemD</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
@@ -404,8 +389,7 @@ To configure the system to ignore the <tt>CtrlAltDelBurstAction</tt>
 setting, add or modify the following to <tt>/etc/systemd/system.conf</tt>:
 <pre>CtrlAltDelBurstAction=none</pre>
 </description>
-<ocil clause="the system is configured to reboot when Ctrl-Alt-Del is pressed
-more than 7 times in 2 seconds.">
+<ocil clause="the system is configured to reboot when Ctrl-Alt-Del is pressed more than 7 times in 2 seconds.">
 To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
 enter the following command:
 <pre>$ sudo grep -i ctrlaltdelburstaction /etc/systemd/system.conf</pre>
@@ -425,13 +409,12 @@ if running in <tt>graphical.target</tt> mode (e.g. in GNOME, KDE, etc.)! The
 the non-graphical <tt>multi-user.target</tt> mode.
 </warning>
 <oval id="disable_ctrlaltdel_burstaction" />
-<ident prodtype="rhel7" cce="80449-2" />
+<ident cce="80449-2" prodtype="rhel7" />
 <ref prodtype="rhel7" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cui="3.4.5" disa="366" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="disable_ctrlaltdel_reboot" severity="high" prodtype="rhel7">
+<Rule id="disable_ctrlaltdel_reboot" prodtype="rhel7,fedora" severity="high">
 <title>Disable Ctrl-Alt-Del Reboot Activation</title>
 <description>
 By default, <tt>SystemD</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
@@ -467,13 +450,12 @@ if running in <tt>graphical.target</tt> mode (e.g. in GNOME, KDE, etc.)! The
 the non-graphical <tt>multi-user.target</tt> mode.
 </warning>
 <oval id="disable_ctrlaltdel_reboot" />
-<ident prodtype="rhel7" cce="27511-5" />
+<ident cce="27511-5" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="020230" />
-<ref nist="AC-6" disa="366" srg="SRG-OS-000480-GPOS-00227" cui="3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
+<ref cui="3.4.5" disa="366" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-6" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
-<Rule id="disable_interactive_boot" severity="medium" prodtype="rhel7">
+<Rule id="disable_interactive_boot" prodtype="rhel7,fedora" severity="medium">
 <title>Verify that Interactive Boot is Disabled</title>
 <description>
 Red Hat Enterprise Linux systems support an "interactive boot" option that can
@@ -507,10 +489,9 @@ file. To update the GRUB 2 configuration file manually, use the
 <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
 </ul>
 </warning>
-<ident prodtype="rhel7" cce="27335-9" />
+<ident cce="27335-9" prodtype="rhel7" />
 <oval id="disable_interactive_boot" />
-<ref nist="SC-2,AC-3" disa="213" cui="3.1.2,3.4.5"
-hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" /> 
+<ref cui="3.1.2,3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="SC-2,AC-3" /> 
 </Rule>
 
 <Group id="screen_locking">
@@ -531,7 +512,7 @@ A console screen locking mechanism is provided in the
 <tt>screen</tt> package, which is not installed by default.
 </description>
 
-<Rule id="package_screen_installed" severity="medium" prodtype="rhel7">
+<Rule id="package_screen_installed" prodtype="rhel7,fedora" severity="medium">
 <title>Install the screen Package</title>
 <description>
 To enable console screen locking, install the <tt>screen</tt> package:
@@ -554,10 +535,10 @@ session lock.
 The <tt>screen</tt> package allows for a session lock to be implemented and configured.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27351-6" />
+<ident cce="27351-6" prodtype="rhel7" />
 <oval id="package_screen_installed" />
 <ref prodtype="rhel7" stigid="010090" />
-<ref nist="AC-11(a)" disa="57" srg="SRG-OS-000029-GPOS-00010" cui="3.1.10" />
+<ref cui="3.1.10" disa="57" nist="AC-11(a)" srg="SRG-OS-000029-GPOS-00010" />
 </Rule>
 </Group>
 
@@ -570,7 +551,7 @@ In Red Hat Enterprise Linux servers and workstations, hardware token login
 is not enabled by default and must be enabled in the system settings.
 </description>
 
-<Rule id="install_smartcard_packages" severity="medium" prodtype="rhel7">
+<Rule id="install_smartcard_packages" prodtype="rhel7" severity="medium">
 <title>Install Smart Card Packages For Multifactor Authentication</title>
 <description>
 Configure the operating system to implement multifactor authentication by
@@ -587,7 +568,7 @@ Using an authentication device, such as a CAC or token that is separate from
 the information system, ensures that even if the information system is
 compromised, that compromise will not affect credentials stored on the
 authentication device.
-<br/><br/>
+<br /><br />
 Multifactor solutions that require devices separate from
 information systems gaining access include, for example, hardware tokens
 providing time-based or challenge-response authenticators and smart cards such
@@ -595,12 +576,12 @@ as the U.S. Government Personal Identity Verification card and the DoD Common
 Access Card.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident cce="80519-2"/>
-<oval id="install_smartcard_packages"/>
-<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041001"/>
+<ident cce="80519-2" />
+<oval id="install_smartcard_packages" />
+<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041001" />
 </Rule>
 
-<Rule id="smartcard_configure_cert_checking" severity="medium" prodtype="rhel7">
+<Rule id="smartcard_configure_cert_checking" prodtype="rhel7" severity="medium">
 <title>Configure Smart Card Certificate Status Checking</title>
 <description>
 Configure the operating system to do certificate status checking for PKI
@@ -622,7 +603,7 @@ Using an authentication device, such as a CAC or token that is separate from
 the information system, ensures that even if the information system is
 compromised, that compromise will not affect credentials stored on the
 authentication device.
-<br/><br/>
+<br /><br />
 Multifactor solutions that require devices separate from
 information systems gaining access include, for example, hardware tokens
 providing time-based or challenge-response authenticators and smart cards such
@@ -630,21 +611,21 @@ as the U.S. Government Personal Identity Verification card and the DoD Common
 Access Card.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident cce="80520-0"/>
-<oval id="smartcard_configure_cert_checking"/>
-<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041003"/>
+<ident cce="80520-0" />
+<oval id="smartcard_configure_cert_checking" />
+<ref disa="1954" nist="" srg="SRG-OS-000375-GPOS-00160" stigid="041003" />
 </Rule>
 
-<Rule id="smartcard_auth" severity="medium" prodtype="rhel7">
+<Rule id="smartcard_auth" prodtype="rhel7,fedora" severity="medium">
 <title>Enable Smart Card Login</title>
 <description>
 To enable smart card authentication, consult the documentation at:
 <ul>
-<li><b><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/smartcards.html#authconfig-smartcards"/></b></li>
+<li><b><weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/smartcards.html#authconfig-smartcards" /></b></li>
 </ul>
 For guidance on enabling SSH to authenticate against a Common Access Card (CAC), consult documentation at:
 <ul>
-<li><b><weblink-macro link="https://access.redhat.com/solutions/82273"/></b></li>
+<li><b><weblink-macro link="https://access.redhat.com/solutions/82273" /></b></li>
 </ul>
 </description>
 <ocil clause="non-exempt accounts are not using CAC authentication">
@@ -653,7 +634,7 @@ using CAC authentication.
 For DoD systems, the following systems and accounts are exempt from using
 smart card (CAC) authentication:
 <ul>
-<li>SIPRNET systems</li> <!-- also any other non-Internet systems? -->
+<li>SIPRNET systems</li> 
 <li>Standalone systems</li>
 <li>Application accounts</li>
 <li>Temporary employee accounts, such as students or interns, who cannot easily receive a CAC or PIV</li>
@@ -666,10 +647,10 @@ that provided by a username and password combination. Smart cards leverage PKI
 (public key infrastructure) in order to provide and verify credentials.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="80207-4" />
+<ident cce="80207-4" prodtype="rhel7" />
 <oval id="smartcard_auth" />
 <ref prodtype="rhel7" stigid="010500" />
-<ref nist="IA-2(2)" disa="765,766,767,768,771,772,884" pcidss="Req-8.3" srg="SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000109-GPOS-00056,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058" />
+<ref disa="765,766,767,768,771,772,884" nist="IA-2(2)" pcidss="Req-8.3" srg="SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000109-GPOS-00056,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058" />
 </Rule>
 
 </Group>
