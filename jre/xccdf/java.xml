@@ -90,6 +90,11 @@ To configure the Java mandatory deployment setting, add or modify
 <tt>deployment.system.config.mandatory</tt> to equal <tt>true</tt>
 in <tt>/etc/.java/deployment/deployment.config</tt>.
 </description>
+<warning category="general">This recommendation is opposite of what is in DISA
+STIG for JRE 7, where <tt>false</tt> is the expected value. That is less secure
+setting, though, and it is remedied in newer DISA STIG for JRE 8. See:
+<weblink-macro link="https://www.stigviewer.com/stig/java_runtime_environment_jre_version_8_unix/2017-04-05/finding/V-66909"/>
+</warning>
 <ocil clause="it is not configured">
 To verify that <tt>deployment.config</tt> is configured properly,
 run the following command:
