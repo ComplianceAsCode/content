@@ -14,35 +14,24 @@ AUTH_FILES[1]="/etc/pam.d/password-auth"
 # The placement of pam_faillock.so entries will not be changed
 # if they are already present
 
+
+# Invoke the function without args, so its body is substituded right here.
+set_faillock_option_to_value_in_pam_file
+
+
+function insert_lines_if_pam_faillock_so_not_present {
+	# insert pam_faillock.so preauth row with proper value of the 'deny' option before pam_unix.so
+	sed -i --follow-symlinks "/^auth.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent $_option=$_value" $_pamFile
+	# insert pam_faillock.so authfail row with proper value of the 'deny' option before pam_deny.so, after all modules which determine authentication outcome.
+	sed -i --follow-symlinks "/^auth.*pam_deny.so.*/i auth        [default=die] pam_faillock.so authfail $_option=$_value" $_pamFile
+}
+
+
+
 for pamFile in "${AUTH_FILES[@]}"
 do
-	
-	# pam_faillock.so already present?
-	if grep -q "^auth.*pam_faillock.so.*" $pamFile; then
-
-		# pam_faillock.so present, deny directive present?
-		if grep -q "^auth.*[default=die].*pam_faillock.so.*authfail.*deny=" $pamFile; then
-
-			# both pam_faillock.so & deny present, just correct deny directive value
-			sed -i --follow-symlinks "s/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\(deny *= *\).*/\1\2$var_accounts_passwords_pam_faillock_deny/" $pamFile
-			sed -i --follow-symlinks "s/\(^auth.*[default=die].*pam_faillock.so.*authfail.*\)\(deny *= *\).*/\1\2$var_accounts_passwords_pam_faillock_deny/" $pamFile
-
-		# pam_faillock.so present, but deny directive not yet
-		else
-
-			# append correct deny value to appropriate places
-			sed -i --follow-symlinks "/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ deny=$var_accounts_passwords_pam_faillock_deny/" $pamFile
-			sed -i --follow-symlinks "/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ deny=$var_accounts_passwords_pam_faillock_deny/" $pamFile
-		fi
-
-	# pam_faillock.so not present yet
-	else
-
-		# insert pam_faillock.so preauth row with proper value of the 'deny' option before pam_unix.so
-		sed -i --follow-symlinks "/^auth.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
-		# insert pam_faillock.so authfail row with proper value of the 'deny' option before pam_deny.so, after all modules which determine authentication outcome.
-		sed -i --follow-symlinks "/^auth.*pam_deny.so.*/i auth        [default=die] pam_faillock.so authfail deny=$var_accounts_passwords_pam_faillock_deny" $pamFile
-	fi
+	# 'true &&' has to be there due to build system limitation
+	true && set_faillock_option_to_value_in_pam_file "$pamFile" fail_interval "$var_accounts_passwords_pam_faillock_fail_interval" insert_lines_if_pam_faillock_so_not_present
 
 	# add pam_faillock.so into account phase
 	if ! grep -q "^account.*required.*pam_faillock.so" $pamFile; then
