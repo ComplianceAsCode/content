@@ -78,6 +78,15 @@ do
 	# presence of existing audit rule for new sbinary
 	local count_of_inspected_files=0
 
+	# Define expected rule form for this binary
+	expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=4294967295 -k privileged"
+
+	# If list of audit rules files to be inspected is empty, just add new rule and move on to next binary
+	if [[ ${#files_to_inspect[@]} -eq 0 ]]; then
+		echo "$expected_rule" >> "$output_audit_file"
+		continue
+	fi
+
 	# For each audit rules file from the list of files to be inspected
 	for afile in "${files_to_inspect[@]}"
 	do
@@ -95,9 +104,6 @@ do
 
 		# Increase the count of inspected files for this sbinary
 		count_of_inspected_files=$((count_of_inspected_files + 1))
-
-		# Define expected rule form for this binary
-		expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=4294967295 -k privileged"
 
 		# Require execute access type to be set for existing audit rule
 		exec_access='x'
@@ -155,6 +161,7 @@ do
 			# Current audit rules file's content doesn't contain expected rule for this
 			# SUID/SGID binary yet => append it
 			echo "$expected_rule" >> "$output_audit_file"
+			continue
 		fi
 
 	done
