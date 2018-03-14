@@ -2,24 +2,10 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_multiple_time_servers
 
-if ! `/usr/sbin/pidof ntpd`; then
-  if ! `grep -q ^server /etc/chrony.conf` ; then
-    if ! `grep -q '#[[:space:]]*server' /etc/chrony.conf` ; then
-      for i in `echo "$var_multiple_time_servers" | tr ',' '\n'` ; do
-        echo -ne "\nserver $i iburst" >> /etc/chrony.conf
-      done
-    else
-      sed -i 's/#[ ]*server/server/g' /etc/chrony.conf
-    fi
-  fi
-else
-  if ! `grep -q ^server /etc/ntp.conf` ; then
-    if ! `grep -q '#[[:space:]]*server' /etc/ntp.conf` ; then
-      for i in `echo "$var_multiple_time_servers" | tr ',' '\n'` ; do
-        echo -ne "\nserver $i iburst" >> /etc/ntp.conf
-      done
-    else
-      sed -i 's/#[ ]*server/server/g' /etc/ntp.conf
-    fi
-  fi
-fi
+# Invoke the function without args, so its body is substituded right here.
+rhel7_ensure_there_are_servers_in_ntp_compatible_config_file
+
+config_file="/etc/ntp.conf"
+/usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
+
+grep -q ^server "$config_file" || rhel7_ensure_there_are_servers_in_ntp_compatible_config_file "$config_file" "$var_multiple_time_servers"
