@@ -32,7 +32,7 @@ class AuditRulesUnsuccessfulFileModificationGenerator(FilesGenerator):
 
         elif target == "ansible":
             self.file_from_template(
-                "./template_ANSIBLE_audit_rules_privileged_commands",
+                "./template_ANSIBLE_audit_rules_unsuccessful_file_modification",
                 {
                     "%NAME%":	name
                 },

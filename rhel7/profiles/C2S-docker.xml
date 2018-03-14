@@ -1,0 +1,235 @@
+<Profile id="C2S-docker">
+<title override="true">C2S for Docker</title>
+<description override="true">This profile demonstrates compliance against the
+U.S. Government Commercial Cloud Services (C2S) baseline.
+
+This baseline was inspired by the Center for Internet Security
+(CIS) Docker Community Edition Benchmark, v1.1.0 - 07-06-2017.
+
+For the SCAP Security Guide project to remain in compliance with
+CIS' terms and conditions, specifically Restrictions(8), note
+there is no representation or claim that the C2S profile will
+ensure a system is in compliance or consistency with the CIS
+baseline.
+</description>
+
+<!--    1 Host Configuration  -->
+<!--    1.1 Ensure a separate partition for containers has been created (Scored)  -->
+
+<!--    1.2 Ensure the container host has been Hardened (Not Scored)  -->
+
+<!--    1.3 Ensure Docker is up to date (Not Scored)  -->
+<select idref="security_patches_up_to_date" selected="true" />
+
+<!--    1.4 Ensure only trusted users are allowed to control Docker daemon (Scored)  -->
+
+<!--    1.5 Ensure auditing is configured for the docker daemon (Scored)  -->
+
+<!--    1.6 Ensure auditing is configured for Docker files and directories - /var/lib/docker (Scored)  -->
+
+<!--    1.7 Ensure auditing is configured for Docker files and directories - /etc/docker (Scored)  -->
+
+<!--    1.8 Ensure auditing is configured for Docker files and directories - docker.service (Scored)  -->
+
+<!--    1.9 Ensure auditing is configured for Docker files and directories - docker.socket (Scored)  -->
+
+<!--    1.10 Ensure auditing is configured for Docker files and directories - /etc/default/docker (Scored)  -->
+
+<!--    1.11 Ensure auditing is configured for Docker files and directories - /etc/docker/daemon.json (Scored)  -->
+
+<!--    1.12 Ensure auditing is configured for Docker files and directories - /usr/bin/docker-containerd (Scored)  -->
+
+<!--    1.13 Ensure auditing is configured for Docker files and directories - /usr/bin/docker-runc (Scored)  -->
+
+<!--    2 Docker daemon configuration  -->
+<!--    2.1 Ensure network traffic is restricted between containers on the default bridge (Scored)  -->
+
+<!--    2.2 Ensure the logging level is set to 'info' (Scored)  -->
+
+<!--    2.3 Ensure Docker is allowed to make changes to iptables (Scored)  -->
+
+<!--    2.4 Ensure insecure registries are not used (Scored)  -->
+
+<!--    2.5 Ensure aufs storage driver is not used (Scored)  -->
+
+<!--    2.6 Ensure TLS authentication for Docker daemon is configured (Scored)  -->
+
+<!--    2.7 Ensure the default ulimit is configured appropriately (Not Scored)  -->
+
+<!--    2.8 Enable user namespace support (Scored)  -->
+
+<!--    2.9 Ensure the default cgroup usage has been confirmed (Scored)  -->
+
+<!--    2.10 Ensure base device size is not changed until needed (Scored)  -->
+
+<!--    2.11 Ensure that authorization for Docker client commands is enabled (Scored)  -->
+
+<!--    2.12 Ensure centralized and remote logging is configured (Scored)  -->
+
+<!--    2.13 Ensure operations on legacy registry (v1) are Disabled (Scored)  -->
+
+<!--    2.14 Ensure live restore is Enabled (Scored)  -->
+
+<!--    2.15 Ensure Userland Proxy is Disabled (Scored)  -->
+
+<!--    2.16 Ensure daemon-wide custom seccomp profile is applied, if needed (Not Scored) -->
+
+<!--    2.17 Ensure experimental features are avoided in production (Scored)  -->
+
+<!--    2.18 Ensure containers are restricted from acquiring new privileges (Scored)  -->
+
+<!--    3 Docker daemon configuration files  -->
+<!--    3.1 Ensure that docker.service file ownership is set to root:root (Scored)  -->
+
+<!--    3.2 Ensure that docker.service file permissions are set to 644 or more restrictive (Scored)  -->
+<!--    3.3 Ensure that docker.socket file ownership is set to root:root (Scored) -->
+
+<!--    3.4 Ensure that docker.socket file permissions are set to 644 or more restrictive (Scored)  -->
+
+<!--    3.5 Ensure that /etc/docker directory ownership is set to root:root (Scored)  -->
+
+<!--    3.6 Ensure that /etc/docker directory permissions are set to 755 or more restrictive (Scored)  -->
+
+<!--    3.7 Ensure that registry certificate file ownership is set to root:root (Scored)  -->
+
+<!--    3.8 Ensure that registry certificate file permissions are set to 444 or more restrictive (Scored)  -->
+
+<!--    3.9 Ensure that TLS CA certificate file ownership is set to root:root (Scored)  -->
+
+<!--    3.10 Ensure that TLS CA certificate file permissions are set to 444 or more restrictive (Scored)  -->
+
+<!--    3.11 Ensure that Docker server certificate file ownership is set to root:root (Scored) -->
+
+
+<!--    3.12 Ensure that Docker server certificate file permissions are set to 444 or more restrictive (Scored)  -->
+
+<!--    3.13 Ensure that Docker server certificate key file ownership is set to root:root Scored)  -->
+
+<!--    3.14 Ensure that Docker server certificate key file permissions are set to (Scored)  -->
+
+<!--    3.15 Ensure that Docker socket file ownership is set to root:docker (Scored)  -->
+
+<!--    3.16 Ensure that Docker socket file permissions are set to 660 or more restrictive (Scored)  -->
+
+<!--    3.17 Ensure that daemon.json file ownership is set to root:root (Scored)  -->
+
+<!--    3.18 Ensure that daemon.json file permissions are set to 644 or more restrictive (Scored)  -->
+
+<!--    3.19 Ensure that /etc/default/docker file ownership is set to root:root (Scored)  -->
+
+<!--    3.20 Ensure that /etc/default/docker file permissions are set to 644 or more restrictive (Scored)  -->
+
+<!--    4 Container Images and Build File  -->
+<!--    4.1 Ensure a user for the container has been created (Scored)  -->
+
+<!--    4.2 Ensure that containers use trusted base images (Not Scored)  -->
+
+<!--    4.3 Ensure unnecessary packages are not installed in the container (Not Scored) -->
+
+<!--    4.4 Ensure images are scanned and rebuilt to include security patches (Not Scored) -->
+
+<!--    4.5 Ensure Content trust for Docker is Enabled (Scored)  -->
+
+<!--    4.6 Ensure HEALTHCHECK instructions have been added to the container image (Scored)  -->
+
+<!--    4.7 Ensure update instructions are not use alone in the Dockerfile (Not Scored)  -->
+
+<!--    4.8 Ensure setuid and setgid permissions are removed in the images (Not Scored) -->
+
+<!--    4.9 Ensure COPY is used instead of ADD in Dockerfile (Not Scored)  -->
+
+<!--    4.10 Ensure secrets are not stored in Dockerfiles (Not Scored)  -->
+
+<!--    4.11 Ensure verified packages are only Installed (Not Scored) -->
+
+<!--    5 Container Runtime  -->
+<!--    5.1 Ensure AppArmor Profile is Enabled (Scored)  -->
+
+<!--    5.2 Ensure SELinux security options are set, if applicable (Scored) -->
+
+<!--    5.3 Ensure Linux Kernel Capabilities are restricted within containers (Scored)  -->
+
+<!--    5.4 Ensure privileged containers are not used (Scored)  -->
+
+<!--    5.5 Ensure sensitive host system directories are not mounted on containers (Scored)  -->
+
+<!--    5.6 Ensure ssh is not run within containers (Scored)  -->
+
+<!--    5.7 Ensure privileged ports are not mapped within containers (Scored)  -->
+
+<!--    5.8 Ensure only needed ports are open on the container (Scored)  -->
+
+<!--    5.9 Ensure the host's network namespace is not shared (Scored)  -->
+
+<!--    5.10 Ensure memory usage for container is limited (Scored)  -->
+
+<!--    5.11 Ensure CPU priority is set appropriately on the container (Scored) -->
+
+<!--    5.12 Ensure the container's root filesystem is mounted as read only (Scored)  -->
+
+<!--    5.13 Ensure incoming container traffic is binded to a specific host interface (Scored) -->
+
+<!--    5.14 Ensure 'on-failure' container restart policy is set to '5' (Scored)  -->
+
+<!--    5.15 Ensure the host's process namespace is not shared (Scored)  -->
+
+<!--    5.16 Ensure the host's IPC namespace is not shared (Scored)  -->
+
+<!--    5.17 Ensure host devices are not directly exposed to containers (Not Scored)  -->
+
+<!--    5.18 Ensure the default ulimit is overwritten at runtime, only if needed (Not Scored) -->
+
+<!--    5.19 Ensure mount propagation mode is not set to shared (Scored)  -->
+
+<!--    5.20 Ensure the host's UTS namespace is not shared (Scored)  -->
+
+<!--    5.21 Ensure the default seccomp profile is not Disabled (Scored)  -->
+
+<!--    5.22 Ensure docker exec commands are not used with privileged option (Scored) -->
+
+<!--    5.23 Ensure docker exec commands are not used with user option (Scored)  -->
+
+<!--    5.24 Ensure cgroup usage is confirmed (Scored)  -->
+
+<!--    5.25 Ensure the container is restricted from acquiring additional privileges (Scored) -->
+
+<!--    5.26 Ensure container health is checked at runtime (Scored)  -->
+
+<!--    5.27 Ensure docker commands always get the latest version of the image (Not Scored)  -->
+
+<!--    5.28 Ensure PIDs cgroup limit is used (Scored)  -->
+
+<!--    5.29 Ensure Docker's default bridge docker0 is not used (Not Scored)  -->
+
+<!--    5.30 Ensure the host's user namespaces is not shared (Scored)  -->
+
+<!--    5.31 Ensure the Docker socket is not mounted inside any containers (Scored)  -->
+
+<!--    6 Docker Security Operations  -->
+<!--    6.1 Ensure image sprawl is avoided (Not Scored)  -->
+
+<!--    6.2 Ensure container sprawl is avoided (Not Scored)  -->
+
+<!--    7 Docker Swarm Configuration -->
+<!--    7.1 Ensure swarm mode is not Enabled, if not needed (Scored)  -->
+
+<!--    7.2 Ensure the minimum number of manager nodes have been created in a swarm (Scored)  -->
+
+<!--    7.3 Ensure swarm services are binded to a specific host interface (Scored)  -->
+
+<!--    7.4 Ensure data exchanged between containers are encrypted on different nodes on the overlay network (Scored)  -->
+
+<!--    7.5 Ensure Docker's secret management commands are used for managing secrets in a Swarm cluster (Not Scored)  -->
+
+<!--    7.6 Ensure swarm manager is run in auto-lock mode (Scored)  -->
+
+<!--    7.7 Ensure swarm manager auto-lock key is rotated periodically (Not Scored)  -->
+
+<!--    7.8 Ensure node certificates are rotated as appropriate (Not Scored)  -->
+
+<!--    7.9 Ensure CA certificates are rotated as appropriate (Not Scored)  -->
+
+<!--    7.10 Ensure management plane traffic has been separated from data plane traffic (Not Scored)  -->
+
+
+</Profile>

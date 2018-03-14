@@ -5,11 +5,11 @@
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
-# Note: 32-bit kernel modules can't be loaded / unloaded on 64-bit kernel =>
-#       it's not required on a 64-bit system to check also for the presence
-#       of 32-bit's equivalent of the corresponding rule. Therefore for
-#       each system it's enought to check presence of system's native rule form.
-[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b64")
+# Note: 32-bit and 64-bit kernel syscall numbers not always line up =>
+#       it's required on a 64-bit system to check also for the presence
+#       of 32-bit's equivalent of the corresponding rule.
+#       (See `man 7 audit.rules` for details )
+[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
 for ARCH in "${RULE_ARCHS[@]}"
 do

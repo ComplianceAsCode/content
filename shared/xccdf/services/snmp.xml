@@ -26,12 +26,12 @@ activated but is not needed, the software should be disabled and removed.
 Running SNMP software provides a network-based avenue of attack, and
 should be disabled if not needed.
 </rationale>
-<ident prodtype="rhel7" cce="80274-4" />
+<ident cce="80274-4" prodtype="rhel7" />
 <oval id="service_snmpd_disabled" />
 <ref cis="2.2.14" />
 </Rule>
 
-<Rule id="package_net-snmp_removed" prodtype="rhel7">
+<Rule id="package_net-snmp_removed" prodtype="rhel7,fedora">
 <title>Uninstall <tt>net-snmp</tt> Package</title>
 <description>The <tt>net-snmp</tt> package provides the snmpd service.
 <yum-macro install="false" package="net-snmp" />
@@ -44,11 +44,11 @@ If there is no need to run SNMP server software,
 removing the package provides a safeguard against its
 activation.
 </rationale>
-<ident prodtype="rhel7" cce="80275-1" />
+<ident cce="80275-1" prodtype="rhel7" />
 <oval id="package_net-snmp_removed" />
 </Rule>
 
-</Group> <!-- <Group id="disabling_snmp_service"> -->
+</Group> 
 
 <Group id="snmp_configure_server">
 <title>Configure SNMP Server if Necessary</title>
@@ -68,7 +68,7 @@ stations</li>
 <li>ensure that any MIB files' permissions are also 640 or more restrictive</li></ul>
 </description>
 
-<Rule id="snmpd_use_newer_protocol" severity="medium" prodtype="rhel7">
+<Rule id="snmpd_use_newer_protocol" prodtype="rhel7,fedora" severity="medium">
 <title>Configure SNMP Service to Use Only SNMPv3 or Newer </title>
 <description>
 Edit <tt>/etc/snmp/snmpd.conf</tt>, removing any references to <tt>rocommunity</tt>, <tt>rwcommunity</tt>, or <tt>com2sec</tt>.
@@ -85,10 +85,10 @@ Earlier versions of SNMP are considered insecure, as they potentially allow
 unauthorized access to detailed system management information.
 </rationale>
 <oval id="snmpd_use_newer_protocol" />
-<ident prodtype="rhel7" cce="80276-9" />
+<ident cce="80276-9" prodtype="rhel7" />
 </Rule>
 
-<Rule id="snmpd_not_default_password" severity="high" prodtype="rhel7">
+<Rule id="snmpd_not_default_password" prodtype="rhel7,fedora" severity="high">
 <title>Ensure Default SNMP Password Is Not Used</title>
 <description>
 Edit <tt>/etc/snmp/snmpd.conf</tt>, remove or change the default community strings of
@@ -109,11 +109,11 @@ and use the information to potentially compromise the integrity of the system an
 network(s).
 </rationale>
 <oval id="snmpd_not_default_password" />
-<ident prodtype="rhel7" cce="27386-2" />
+<ident cce="27386-2" prodtype="rhel7" />
 <ref prodtype="rhel7" stigid="040800" />
-<ref nist="IA-5.1(ii)" disa="366" srg="SRG-OS-000480-GPOS-00227" />
+<ref disa="366" nist="IA-5.1(ii)" srg="SRG-OS-000480-GPOS-00227" />
 </Rule>
 
 </Group>
 
-</Group> <!-- <Group id="snmp"> -->
+</Group>

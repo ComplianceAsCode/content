@@ -22,6 +22,7 @@
       <xsl:apply-templates select="document('profiles/standard.xml')" />
       <xsl:apply-templates select="document('profiles/pci-dss.xml')" />
       <xsl:apply-templates select="document('profiles/C2S.xml')" />
+      <xsl:apply-templates select="document('profiles/C2S-docker.xml')" />
       <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
       <xsl:apply-templates select="document('profiles/common.xml')" />
       <xsl:apply-templates select="document('profiles/stig-rhel7-disa.xml')" />
@@ -39,7 +40,7 @@
       <xsl:apply-templates select="document('profiles/anssi_nt28_intermediary.xml')" />
       <xsl:apply-templates select="document('profiles/anssi_nt28_enhanced.xml')" />
       <xsl:apply-templates select="document('profiles/anssi_nt28_high.xml')" />
-      <xsl:apply-templates select="document('profiles/hippa.xml')" />
+      <xsl:apply-templates select="document('profiles/hipaa.xml')" />
 
 
       <!-- Adding 'conditional_clause' placeholder <xccdf:Value> here -->

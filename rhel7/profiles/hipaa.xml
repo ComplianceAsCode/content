@@ -1,0 +1,328 @@
+<Profile id="hipaa">
+<title override="true">Health Insurance Portability and Accountability Act (HIPAA)</title>
+<description override="true">
+The HIPAA Security Rule establishes U.S. national standards to protect individuals’
+electronic personal health information that is created, received, used, or
+maintained by a covered entity. The Security Rule requires appropriate
+administrative, physical and technical safeguards to ensure the
+confidentiality, integrity, and security of electronic protected health
+information.
+
+This profile configures Red Hat Enterprise Linux 7 to the HIPAA Security
+Rule identified for securing of electronic protected health information.
+</description>
+
+<!-- ASSET MANAGEMENT (ID.AM) -->
+<!-- ID.AM-1: Physical devices and systems within the organization are inventoried -->
+<!-- ID.AM-2: Software platforms and applications within the organization are inventoried -->
+<!-- ID.AM-3: Organizational communication and data flows are mapped -->
+<!-- ID.AM-4: External information systems are catalogued -->
+<!-- ID.AM-5: Resources (e.g., hardware, devices, data, and software) are prioritized based on
+              their classification, criticality, and business value -->
+<!-- ID.AM-6: Cybersecurity roles and responsibilities for the entire workforce and thirdparty
+              stakeholders (e.g., suppliers, customers, partners) are established -->
+
+<!-- RISK ASSESSMENT (ID.RA) -->
+<!-- ID.RA-1: Asset vulnerabilities are identified and documented -->
+<!-- ID.RA-2: Threat and vulnerability information is received from information sharing
+              forums and sources -->
+<!-- ID.RA-3: Threats, both internal and external, are identified and documented -->
+<!-- ID.RA-4: Potential business impacts and likelihoods are identified -->
+<!-- ID.RA-5: Threats, vulnerabilities, likelihoods, and impacts are used to determine risk -->
+<!-- ID.RA-6: Risk responses are identified and prioritized -->
+
+<!-- RISK MANAGEMENT STRATEGY (ID.RM) -->
+<!-- ID.RM-1: Risk management processes are established, managed, and agreed to by
+              organizational stakeholders -->
+<!-- ID.RM-2: Organizational risk tolerance is determined and clearly expressed -->
+<!-- ID.RM-3: The organization’s determination of risk tolerance is informed
+              by its role in critical infrastructure and sector specific risk
+              analysis -->
+
+<!-- ACCESS CONTROL (PR.AC) -->
+<!-- PR.AC-1: Identities and credentials are managed for authorized devices and users -->
+<!-- PR.AC-2: Physical access to assets is managed and protected -->
+<select idref="bootloader_password" selected="true" />
+<select idref="bootloader_uefi_password" selected="true" />
+<select idref="file_group_owner_grub2_cfg" selected="true" />
+<select idref="file_permissions_grub2_cfg" selected="true" />
+<select idref="file_user_owner_grub2_cfg" selected="true" />
+<select idref="disable_interactive_boot" selected="true" />
+<select idref="no_direct_root_logins" selected="true" />
+<select idref="no_empty_passwords" selected="true" />
+<select idref="require_singleuser_auth" selected="true" />
+<select idref="restrict_serial_port_logins" selected="true" />
+<select idref="securetty_root_login_console_only" selected="true" />
+<select idref="service_debug-shell_disabled" selected="true" />
+<select idref="disable_ctrlaltdel_reboot" selected="true" />
+<select idref="disable_ctrlaltdel_burstaction" selected="true" />
+
+<!-- PR.AC-3: Remote access is managed -->
+<select idref="dconf_gnome_remote_access_credential_prompt" selected="true" />
+<select idref="dconf_gnome_remote_access_encryption" selected="true" />
+<select idref="sshd_disable_empty_passwords" selected="true" />
+<select idref="sshd_disable_root_login" selected="true" />
+<select idref="libreswan_approved_tunnels" selected="true" />
+<select idref="no_rsh_trust_files" selected="true" />
+<select idref="package_rsh_removed" selected="true" />
+<select idref="package_rsh-server_removed" selected="true" />
+<select idref="package_talk_removed" selected="true" />
+<select idref="package_talk-server_removed" selected="true" />
+<select idref="package_telnet_removed" selected="true" />
+<select idref="package_telnet-server_removed" selected="true" />
+<select idref="package_xinetd_removed" selected="true" />
+<select idref="package_ypbind_removed" selected="true" />
+<select idref="package_ypserv_removed" selected="true" />
+<select idref="service_crond_enabled" selected="true" />
+<select idref="service_rexec_disabled" selected="true" />
+<select idref="service_rlogin_disabled" selected="true" />
+<select idref="service_rsh_disabled" selected="true" />
+<select idref="service_telnet_disabled" selected="true" />
+<select idref="service_xinetd_disabled" selected="true" />
+<select idref="service_ypbind_disabled" selected="true" />
+<select idref="service_zebra_disabled" selected="true" />
+<select idref="use_kerberos_security_all_exports" selected="true" />
+<select idref="disable_host_auth" selected="true" />
+<select idref="sshd_allow_only_protocol2" selected="true" />
+<select idref="sshd_disable_compression" selected="true" />
+<select idref="sshd_disable_gssapi_auth" selected="true" />
+<select idref="sshd_disable_kerb_auth" selected="true" />
+<select idref="sshd_disable_rhosts_rsa" selected="true" />
+<select idref="sshd_disable_rhosts" selected="true" />
+<select idref="sshd_disable_user_known_hosts" selected="true" />
+<select idref="sshd_do_not_permit_user_env" selected="true" />
+<select idref="sshd_enable_strictmodes" selected="true" />
+<select idref="sshd_enable_warning_banner" selected="true" />
+<select idref="sshd_set_keepalive" selected="true" />
+<select idref="sshd_use_priv_separation" selected="true" />
+
+<!-- PR.AC-4: Access permissions are managed, incorporating the principles of least
+              privilege and separation of duties -->
+<!-- PR.AC-5: Network integrity is protected, incorporating network segregation where appropriate -->
+
+
+<!-- AWARENESS AND TRAINING (PR.AT) -->
+<!-- PR.AT-1: All users are informed and trained -->
+<!-- PR.AT-2: Privileged users understand roles & responsibilities -->
+<!-- PR.AT-3: Third-party stakeholders (e.g., suppliers, customers, partners) understand
+              roles & responsibilities -->
+<!-- PR.AT-4: Senior executives understand roles & responsibilities -->
+<!-- PR.AT-5: Physical and information security personnel understand roles &
+              responsibilities -->
+
+<!-- DATA SECURITY (PR.DS) -->
+<!-- PR.DS-1: Data-at-rest is protected -->
+<select idref="encrypt_partitions" selected="true" />
+
+<!-- PR.DS-2: Data-intransit is protected -->
+<select idref="sshd_use_approved_ciphers" selected="true" />
+<select idref="sshd_use_approved_macs" selected="true" />
+
+<!-- PR.DS-3: Assets are formally managed throughout removal, transfers, and disposition -->
+<!-- PR.DS-4: Adequate capacity to ensure availability is maintained -->
+<!-- PR.DS-5: Protections against data leaks are implemented -->
+<refine-value idref="var_selinux_policy_name" selector="targeted" />
+<refine-value idref="var_selinux_state" selector="enforcing" />
+<select idref="enable_selinux_bootloader" selected="true" />
+<select idref="sebool_selinuxuser_execheap" selected="true" />
+<select idref="sebool_selinuxuser_execmod" selected="true" />
+<select idref="sebool_selinuxuser_execstack" selected="true" />
+<select idref="selinux_confinement_of_daemons" selected="true" />
+<select idref="selinux_policytype" selected="true" />
+<select idref="selinux_state" selected="true" />
+<select idref="service_kdump_disabled" selected="true" />
+<select idref="sysctl_fs_suid_dumpable" selected="true" />
+<select idref="sysctl_kernel_dmesg_restrict" selected="true" />
+<select idref="sysctl_kernel_exec_shield" selected="true" />
+<select idref="sysctl_kernel_randomize_va_space" selected="true" />
+
+<!-- PR.DS-6: Integrity checking mechanisms are used to verify software, firmware,
+              and information integrity -->
+<select idref="rpm_verify_hashes" selected="true" />
+<select idref="rpm_verify_permissions" selected="true" />
+<select idref="ensure_redhat_gpgkey_installed" selected="true" />
+<select idref="ensure_gpgcheck_globally_activated" selected="true" />
+<select idref="ensure_gpgcheck_never_disabled" selected="true" />
+<select idref="ensure_gpgcheck_repo_metadata" selected="true" />
+<select idref="ensure_gpgcheck_local_packages" selected="true" />
+
+<!-- PR.DS-7: The development and testing environment(s) are separate from the
+              production environment -->
+
+<!-- INFORMATION PROTECTION PROCESSES AND PROCEDURES (PR.IP) -->
+<!-- PR.IP-1: A baseline configuration of information technology/industrial control systems is
+              created and maintained -->
+<!-- PR.IP-2: A System Development Life Cycle to manage systems is implemented -->
+<!-- PR.IP-3: Configuration change control processes are in place -->
+<!-- PR.IP-4: Backups of information are conducted, maintained, and tested periodically -->
+<!-- PR.IP-5: Policy and regulations regarding the physical operating environment for
+              organizational assets are met -->
+<!-- PR.IP-6: Data is destroyed according to policy --> 
+<!-- PR.IP-7: Protection processes are continuously improved -->
+<!-- PR.IP-8: Effectiveness of protection technologies is shared with appropriate parties -->
+<!-- PR.IP-9: Response plans (Incident Response and Business Continuity) and recovery plans
+              (Incident Recovery and Disaster Recovery) are in place and managed -->
+<!-- PR.IP-10: Response and recovery plans are tested -->
+<!-- PR.IP-11: Cybersecurity is included in human resources practices (e.g., deprovisioning,
+               personnel screening) -->
+<!-- PR.IP-12: A vulnerability management plan is developed and implemented -->
+
+<!-- MAINTENANCE (PR.MA) -->
+<!-- PR.MA-1: Maintenance and repair of organizational assets is performed and logged in a timely
+              manner, with approved and controlled tools -->
+<!-- PR.MA-2: Remote maintenance of organizational assets is approved, logged, and performed in a
+              manner that prevents unauthorized access -->
+
+<!-- PROTECTIVE TECHNOLOGY (PR.PT) -->
+<!-- PR.PT-1: Audit/log records are determined, documented, implemented, and 
+              reviewed in accordance with policy -->
+<select idref="bootloader_audit_argument" selected="true" />
+<select idref="service_auditd_enabled" selected="true" />
+<select idref="audit_rules_privileged_commands_sudo" selected="true" />
+<select idref="audit_rules_privileged_commands_su" selected="true" />
+<select idref="audit_rules_immutable" selected="true" />
+
+<!-- PR.PT-2: Removable media is protected and its use restricted according to policy -->
+<select idref="bootloader_nousb_argument" selected="true" />
+<select idref="kernel_module_usb-storage_disabled" selected="true" />
+<select idref="service_autofs_disabled" selected="true" />
+
+<!-- PR.PT-3: Access to systems and assets is controlled, incorporating the
+              principle of least functionality -->
+<!-- PR.PT-4: Communications and control networks are protected -->
+
+<!-- ANOMALIES AND EVENTS (DE.AE) -->
+<!-- DE.AE-1: A baseline of network operations and expected data flows for users and
+              systems is established and managed -->
+<!-- DE.AE-2: Detected events are analyzed to understand attack targets and methods -->
+<!-- DE.AE-3: Event data are aggregated and correlated from multiple sources and sensors -->
+<select idref="auditd_audispd_syslog_plugin_activated" selected="true" />
+<select idref="rsyslog_remote_loghost" selected="true" />
+
+<!-- DE.AE-4: Impact of events is determined -->
+<!-- DE.AE-5: Incident alert thresholds are established -->
+
+<!-- SECURITY CONTINUOUS MONITORING (DE.CM) -->
+<!-- DE.CM-1: The network is monitored to detect potential cybersecurity events -->
+<!-- DE.CM-2: The physical environment is monitored to detect potential cybersecurity events -->
+<!-- DE.CM-3: Personnel activity is monitored to detect potential cybersecurity events -->
+<select idref="auditd_data_retention_flush" selected="true" />
+<select idref="audit_rules_dac_modification_chmod" selected="true" />
+<select idref="audit_rules_dac_modification_chown" selected="true" />
+<select idref="audit_rules_dac_modification_fchmodat" selected="true" />
+<select idref="audit_rules_dac_modification_fchmod" selected="true" />
+<select idref="audit_rules_dac_modification_fchownat" selected="true" />
+<select idref="audit_rules_dac_modification_fchown" selected="true" />
+<select idref="audit_rules_dac_modification_fremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_fsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_lchown" selected="true" />
+<select idref="audit_rules_dac_modification_lremovexattr" selected="true" />
+<select idref="audit_rules_dac_modification_lsetxattr" selected="true" />
+<select idref="audit_rules_dac_modification_removexattr" selected="true" />
+<select idref="audit_rules_dac_modification_setxattr" selected="true" />
+<select idref="audit_rules_execution_chcon" selected="true" />
+<select idref="audit_rules_execution_restorecon" selected="true" />
+<select idref="audit_rules_execution_semanage" selected="true" />
+<select idref="audit_rules_execution_setsebool" selected="true" />
+<select idref="audit_rules_file_deletion_events_renameat" selected="true" />
+<select idref="audit_rules_file_deletion_events_rename" selected="true" />
+<select idref="audit_rules_file_deletion_events_rmdir" selected="true" />
+<select idref="audit_rules_file_deletion_events_unlinkat" selected="true" />
+<select idref="audit_rules_file_deletion_events_unlink" selected="true" />
+<select idref="audit_rules_kernel_module_loading_delete" selected="true" />
+<select idref="audit_rules_kernel_module_loading_init" selected="true" />
+<select idref="audit_rules_kernel_module_loading_insmod" selected="true" />
+<select idref="audit_rules_kernel_module_loading_modprobe" selected="true" />
+<select idref="audit_rules_kernel_module_loading_rmmod" selected="true" />
+<select idref="audit_rules_login_events_faillock" selected="true" />
+<select idref="audit_rules_login_events_lastlog" selected="true" />
+<select idref="audit_rules_login_events_tallylog" selected="true" />
+<select idref="audit_rules_mac_modification" selected="true" />
+<select idref="audit_rules_media_export" selected="true" />
+<select idref="audit_rules_networkconfig_modification" selected="true" />
+<select idref="audit_rules_privileged_commands_chage" selected="true" />
+<select idref="audit_rules_privileged_commands_chsh" selected="true" />
+<select idref="audit_rules_privileged_commands_crontab" selected="true" />
+<select idref="audit_rules_privileged_commands_gpasswd" selected="true" />
+<select idref="audit_rules_privileged_commands_newgrp" selected="true" />
+<select idref="audit_rules_privileged_commands_pam_timestamp_check" selected="true" />
+<select idref="audit_rules_privileged_commands_passwd" selected="true" />
+<select idref="audit_rules_privileged_commands_postdrop" selected="true" />
+<select idref="audit_rules_privileged_commands_postqueue" selected="true" />
+<select idref="audit_rules_privileged_commands_ssh_keysign" selected="true" />
+<select idref="audit_rules_privileged_commands_sudoedit" selected="true" />
+<select idref="audit_rules_privileged_commands_umount" selected="true" />
+<select idref="audit_rules_privileged_commands_unix_chkpwd" selected="true" />
+<select idref="audit_rules_privileged_commands_userhelper" selected="true" />
+<select idref="audit_rules_session_events" selected="true" />
+<select idref="audit_rules_sysadmin_actions" selected="true" />
+<select idref="audit_rules_system_shutdown" selected="true" />
+<select idref="audit_rules_time_adjtimex" selected="true" />
+<select idref="audit_rules_time_clock_settime" selected="true" />
+<select idref="audit_rules_time_settimeofday" selected="true" />
+<select idref="audit_rules_time_stime" selected="true" />
+<select idref="audit_rules_time_watch_localtime" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_creat" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_ftruncate" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_openat" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_open_by_handle_at" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_open" selected="true" />
+<select idref="audit_rules_unsuccessful_file_modification_truncate" selected="true" />
+<select idref="audit_rules_usergroup_modification_group" selected="true" />
+<select idref="audit_rules_usergroup_modification_gshadow" selected="true" />
+<select idref="audit_rules_usergroup_modification_opasswd" selected="true" />
+<select idref="audit_rules_usergroup_modification_passwd" selected="true" />
+<select idref="audit_rules_usergroup_modification_shadow" selected="true" />
+<!-- DE.CM-4: Malicious code is detected --> 
+<!-- DE.CM-5: Unauthorized mobile code is detected -->
+<!-- DE.CM-6: External service provider activity is monitored to detect potential cybersecurity events -->
+<!-- DE.CM-7: Monitoring for unauthorized personnel, connections, devices, and software is performed --> 
+<!-- DE.CM-8: Vulnerability scans are performed -->
+
+<!-- DETECTION PROCESSES (DE.DP) -->
+<!-- DE.DP-1: Roles and responsibilities for detection are well defined to ensure accountability -->
+<!-- DE.DP-2: Detection activities comply with all applicable requirements -->
+<!-- DE.DP-3: Detection processes are tested --> 
+<!-- DE.DP-4: Event detection information is communicated to appropriate parties -->
+<!-- DE.DP-5: Detection processes are continuously improved -->
+
+<!-- RESPONSE PLANNING (RS.RP) -->
+<!-- RS.RP-1: Response plan is executed during or after an event --> 
+
+<!-- COMMUNICATIONS (RS.CO) -->
+<!-- RS.CO-1: Personnel know their roles and order of operations when a response is needed -->
+<!-- RS.CO-2: Events are reported consistent with established criteria -->
+<!-- RS.CO-3: Information is shared consistent with response plans -->
+<!-- RS.CO-4: Coordination with stakeholders occurs consistent with response plans --> 
+<!-- RS.CO-5: Voluntary information sharing occurs with external stakeholders to achieve broader
+              cybersecurity situational awareness -->
+
+<!-- ANALYSIS (RS.AN) -->
+<!-- RS.AN-1: Notifications from detection systems are investigated --> 
+<!-- RS.AN-2: The impact of the incident is understood -->
+<!-- RS.AN-3: Forensics are performed --> 
+<!-- RS.AN-4: Incidents are categorized consistent with response plans --> 
+
+<!-- MITIGATION (RS.MI) -->
+<!-- RS.MI-1: Incidents are contained -->
+<!-- RS.MI-2: Incidents are mitigated -->
+<!-- RS.MI-3: Newly identified vulnerabilities are mitigated or documented as accepted risks -->
+
+<!-- IMPROVEMENTS (RS.IM) -->
+<!-- RS.IM-1: Response plans incorporate lessons learned --> 
+<!-- RS.IM-2: Response strategies are updated --> 
+
+<!-- RECOVERY PLANNING (RC.RP) -->
+<!-- RC.RP-1: Recovery plan is executed during or after an event -->
+
+<!-- IMPROVEMENTS (RC.IM) -->
+<!-- RC.IM-1: Recovery plans incorporate lessons learned --> 
+<!-- RC.IM-2: Recovery strategies are updated --> 
+
+<!-- COMMUNICATIONS (RC.CO) -->
+<!-- RC.CO-1: Public relations are managed --> 
+<!-- RC.CO-2: Reputation after an event is repaired --> 
+<!-- RC.CO-3: Recovery activities are communicated to internal stakeholders and executive and
+              management teams -->
+
+</Profile>

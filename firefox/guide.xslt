@@ -31,7 +31,7 @@
 
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/remediation_functions.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/intro/shared_intro_app.xml'))" />
-      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/application/firefox.xml'))" />
+      <xsl:apply-templates select="document('xccdf/firefox.xml')" />
     </xsl:copy>
   </xsl:template>
   

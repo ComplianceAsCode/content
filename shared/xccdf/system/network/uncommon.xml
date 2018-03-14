@@ -12,7 +12,7 @@ in your network environment by ensuring they are not needed
 prior to disabling them.
 </warning>
 
-<Rule id="kernel_module_dccp_disabled" severity="medium" prodtype="rhel7">
+<Rule id="kernel_module_dccp_disabled" prodtype="rhel7,fedora" severity="medium">
 <title>Disable DCCP Support</title>
 <description>
 The Datagram Congestion Control Protocol (DCCP) is a
@@ -28,13 +28,12 @@ Disabling DCCP protects
 the system against exploitation of any flaws in its implementation.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="26828-4" />
+<ident cce="26828-4" prodtype="rhel7" />
 <oval id="kernel_module_dccp_disabled" />
-<ref nist="CM-7" disa="1958" cis="3.5.1" cjis="5.10.1"
-cui="3.4.6" stigid="020101"/>
+<ref cis="3.5.1" cjis="5.10.1" cui="3.4.6" disa="1958" nist="CM-7" stigid="020101" />
 </Rule>
 
-<Rule id="kernel_module_sctp_disabled" severity="medium" prodtype="rhel7">
+<Rule id="kernel_module_sctp_disabled" prodtype="rhel7" severity="medium">
 <title>Disable SCTP Support</title>
 <description>
 The Stream Control Transmission Protocol (SCTP) is a
@@ -51,10 +50,9 @@ Disabling SCTP protects
 the system against exploitation of any flaws in its implementation.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident prodtype="rhel7" cce="27106-4" />
+<ident cce="27106-4" prodtype="rhel7" />
 <oval id="kernel_module_sctp_disabled" />
-<ref nist="CM-7" disa="" cis="3.5.2" cjis="5.10.1" 
-cui="3.4.6" />
+<ref cis="3.5.2" cjis="5.10.1" cui="3.4.6" disa="" nist="CM-7" />
 </Rule>
 
 </Group>

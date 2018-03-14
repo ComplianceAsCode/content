@@ -110,7 +110,8 @@ endmacro()
 macro(ssg_build_shorthand_xml PRODUCT)
     file(GLOB OVERLAYS_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/overlays/*.xml")
     file(GLOB PROFILE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/profiles/*.xml")
-    file(GLOB XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/**/*.xml")
+    file(GLOB_RECURSE XCCDF_RULE_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/xccdf/*.xml")
+    file(GLOB_RECURSE SHARED_XCCDF_RULE_DEPS "${SSG_SHARED}/xccdf/*.xml")
 
     add_custom_command(
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
@@ -124,6 +125,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS ${OVERLAYS_DEPS}
         DEPENDS ${PROFILE_DEPS}
         DEPENDS ${XCCDF_RULE_DEPS}
+        DEPENDS ${SHARED_XCCDF_RULE_DEPS}
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
     add_custom_target(
@@ -428,6 +430,23 @@ macro(ssg_build_xccdf_final PRODUCT)
         NAME "verify-references-ssg-${PRODUCT}-xccdf.xml"
         COMMAND "${SSG_SHARED_UTILS}/verify-references.py" --rules-with-invalid-checks --ovaldefs-unused "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
     )
+    add_test(
+        NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles"
+        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"title\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+    )
+    add_test(
+        NAME "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions"
+        COMMAND "${XMLLINT_EXECUTABLE}" --xpath "//*[local-name()=\"Profile\"]/*[local-name()=\"description\"][not(@override=\"true\")]" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+    )
+    # Sets WILL_FAIL property for all '*-override-true-all-profile-*' tests to
+    # true as it is expected that XPath of a passing test will be empty (and
+    # non-zero exit code is returned in such case).
+    set_tests_properties(
+        "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-titles"
+        "verify-ssg-${PRODUCT}-xccdf.xml-override-true-all-profile-descriptions"
+        PROPERTIES
+        WILL_FAIL true
+    )
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
@@ -679,8 +698,10 @@ macro(ssg_build_product PRODUCT)
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
     install(
+        # The globbing expression below is made loose so that it can also match
+        # guides for PCIDSS centric benchmarks
         CODE "
-        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-guide-*.html\") \n
+        file(GLOB GUIDE_FILES \"${CMAKE_BINARY_DIR}/guides/ssg-${PRODUCT}-*.html\") \n
         if(NOT IS_ABSOLUTE ${SSG_GUIDE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_GUIDE_INSTALL_DIR}\"
                 TYPE FILE FILES \${GUIDE_FILES})

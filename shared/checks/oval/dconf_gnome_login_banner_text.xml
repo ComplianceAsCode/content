@@ -1,4 +1,4 @@
-<def-group> 
+<def-group oval_version="5.11"> 
   <definition class="compliance" id="dconf_gnome_login_banner_text" version="1">
     <metadata>
       <title>Enable GUI Warning Banner</title>
@@ -41,7 +41,7 @@
   version="1">
     <ind:path>/etc/dconf/db/gdm.d/</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^banner-message-text=string[\s']*([^']*)</ind:pattern>
+    <ind:pattern operation="pattern match">^banner-message-text=string[\s]*'*(.*?)'$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -49,6 +49,6 @@
     <ind:subexpression datatype="string" operation="pattern match" var_ref="login_banner_text" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="external variable for GDM login banner text"
-  datatype="string" id="login_banner_text" version="1" />
+  <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
+
 </def-group>
