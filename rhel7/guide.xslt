@@ -28,6 +28,7 @@
       <xsl:apply-templates select="document('profiles/stig-rhel7-disa.xml')" />
       <xsl:apply-templates select="document('profiles/stig-rhvh-upstream.xml')" />
       <xsl:apply-templates select="document('profiles/ospp-rhel7.xml')" />
+      <xsl:apply-templates select="document('profiles/ospp42-draft-rhel7.xml')" />
       <xsl:apply-templates select="document('profiles/cjis-rhel7-server.xml')" />
       <xsl:apply-templates select="document('profiles/docker-host.xml')" />
       <xsl:apply-templates select="document('profiles/nist-800-171-cui.xml')" />

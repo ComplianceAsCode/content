@@ -81,8 +81,8 @@ system security.
 <platform idref="cpe:/a:machine" />
 <ident cce="80104-3" prodtype="rhel7" />
 <oval id="gnome_gdm_disable_automatic_login" />
-<ref prodtype="rhel7" stigid="010440" />
-<ref cui="3.1.1" disa="366" nist="CM-6(b)" srg="SRG-OS-000480-GPOS-00229" />
+<ref prodtype="rhel7" stigid="010440" ospp="FIA_AFL.1" />
+<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cui="3.1.1" />
 </Rule>
 
 <Rule id="gnome_gdm_disable_guest_login" prodtype="rhel7,fedora" severity="high">
@@ -109,8 +109,8 @@ system security.
 <platform idref="cpe:/a:machine" />
 <ident cce="80105-0" prodtype="rhel7" />
 <oval id="gnome_gdm_disable_guest_login" />
-<ref prodtype="rhel7" stigid="010450" />
-<ref cui="3.1.1" disa="366" nist="CM-6(b)" srg="SRG-OS-000480-GPOS-00229" />
+<ref prodtype="rhel7" stigid="010450" ospp="FIA_AFL.1" />
+<ref nist="CM-6(b)" disa="366" srg="SRG-OS-000480-GPOS-00229" cui="3.1.1" />
 </Rule>
 
 <Rule id="dconf_gnome_disable_user_list" prodtype="rhel7,fedora" severity="medium">
@@ -255,6 +255,7 @@ draw additional attention to some types of password-guessing attacks.
 <platform idref="cpe:/a:machine" />
 <ident cce="80109-2" prodtype="rhel7" />
 <ref cui="3.1.8" />
+<ref prodtype="rhel7" ospp="FMT_MOF_EXT.1" />
 <oval id="dconf_gnome_login_retries" />
 </Rule>
 
@@ -338,8 +339,8 @@ a user's session has idled and take action to initiate a session lock.
 <platform idref="cpe:/a:machine" />
 <ident cce="80110-0" prodtype="rhel7" />
 <oval id="dconf_gnome_screensaver_idle_delay" value="inactivity_timeout_value" />
-<ref prodtype="rhel7" stigid="010070" />
-<ref cjis="5.5.5" cui="3.1.10" disa="57" nist="AC-11(a)" pcidss="Req-8.1.8" srg="SRG-OS-000029-GPOS-00010" />
+<ref prodtype="rhel7" stigid="010070" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-11(a)" disa="57" pcidss="Req-8.1.8" srg="SRG-OS-000029-GPOS-00010" cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_idle_activation_enabled" prodtype="rhel7,fedora" severity="medium">
@@ -380,8 +381,8 @@ controlled-access area.
 <platform idref="cpe:/a:machine" />
 <ident cce="80111-8" prodtype="rhel7" />
 <oval id="dconf_gnome_screensaver_idle_activation_enabled" />
-<ref prodtype="rhel7" stigid="010100" />
-<ref cjis="5.5.5" cui="3.1.10" disa="57" nist="AC-11(a)" pcidss="Req-8.1.8" srg="SRG-OS-000029-GPOS-00010" />
+<ref prodtype="rhel7" stigid="010100" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-11(a)" disa="57" srg="SRG-OS-000029-GPOS-00010" pcidss="Req-8.1.8" cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_lock_enabled" prodtype="rhel7,fedora" severity="medium">
@@ -414,8 +415,8 @@ of the information system but does not want to logout because of the temporary n
 <platform idref="cpe:/a:machine" />
 <ident cce="80112-6" prodtype="rhel7" />
 <oval id="dconf_gnome_screensaver_lock_enabled" />
-<ref prodtype="rhel7" stigid="010060" />
-<ref cjis="5.5.5" cui="3.1.10" disa="56" nist="AC-11(b)" pcidss="Req-8.1.8" srg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" />
+<ref prodtype="rhel7" stigid="010060" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-11(b)" disa="56" pcidss="Req-8.1.8" srg="SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011" cjis="5.5.5" cui="3.1.10" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_lock_delay" prodtype="rhel7" severity="medium">
@@ -449,7 +450,7 @@ of the information system but does not want to logout because of the temporary n
 <platform idref="cpe:/a:machine" />
 <ident cce="80370-0" prodtype="rhel7" />
 <oval id="dconf_gnome_screensaver_lock_delay" value="var_screensaver_lock_delay" />
-<ref prodtype="rhel7" stigid="010110" />
+<ref prodtype="rhel7" stigid="010110" ospp="FMT_MOF_EXT.1" />
 <ref cui="3.1.10" disa="56" nist="AC-11(a)" pcidss="Req-8.1.8" srg="OS-SRG-000029-GPOS-00010" />
 </Rule>
 
@@ -484,7 +485,8 @@ contents of the display from passersby.
 <platform idref="cpe:/a:machine" />
 <ident cce="80113-4" prodtype="rhel7" />
 <oval id="dconf_gnome_screensaver_mode_blank" />
-<ref cjis="5.5.5" cui="3.1.10" disa="60" nist="AC-11(b)" pcidss="Req-8.1.8" />
+<ref nist="AC-11(b)" disa="60" pcidss="Req-8.1.8" cjis="5.5.5" cui="3.1.10" />
+<ref prodtype="rhel7" ospp="FMT_MOF_EXT.1" />
 </Rule>
 
 <Rule id="dconf_gnome_screensaver_user_info" prodtype="rhel7,fedora">
@@ -517,7 +519,8 @@ Setting the splash screen to not reveal the logged in user's name
 conceals who has access to the system from passersby.
 </rationale>
 <platform idref="cpe:/a:machine" />
-<ident cce="80114-2" prodtype="rhel7" />
+<ident prodtype="rhel7" cce="80114-2" />
+<ref prodtype="rhel7" ospp="FMT_MOF_EXT.1" />
 <oval id="dconf_gnome_screensaver_user_info" />
 </Rule>
 
@@ -547,8 +550,8 @@ session lock. As such, users should not be allowed to change session settings.
 <platform idref="cpe:/a:machine" />
 <ident cce="80371-8" prodtype="rhel7" />
 <oval id="dconf_gnome_screensaver_user_locks" />
-<ref prodtype="rhel7" stigid="010081" />
-<ref cui="3.1.10" disa="57" nist="AC-11(a)" srg="SRG-OS-00029-GPOS-0010" />
+<ref prodtype="rhel7" stigid="010081" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-11(a)" disa="57" srg="SRG-OS-00029-GPOS-0010" cui="3.1.10"/>
 </Rule>
 
 <Rule id="dconf_gnome_session_idle_user_locks" prodtype="rhel7" severity="medium">
@@ -577,8 +580,8 @@ session lock. As such, users should not be allowed to change session settings.
 <platform idref="cpe:/a:machine" />
 <ident cce="80544-0" prodtype="rhel7" />
 <oval id="dconf_gnome_session_idle_user_locks" />
-<ref prodtype="rhel7" stigid="010082" />
-<ref cui="3.1.10" disa="57" nist="AC-11(a)" srg="SRG-OS-00029-GPOS-0010" />
+<ref prodtype="rhel7" stigid="010082" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-11(a)" disa="57" srg="SRG-OS-00029-GPOS-0010" cui="3.1.10"/>
 </Rule>
 
 </Group>
