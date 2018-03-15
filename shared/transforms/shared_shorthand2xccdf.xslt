@@ -472,6 +472,11 @@
           <xsl:if test="$refsource = 'anssi'">
             <xsl:value-of select="$anssiuri" />
           </xsl:if>
+
+          <xsl:if test="$refsource = 'ospp'">
+	          <xsl:value-of select="$osppuri" />
+          </xsl:if>
+        
           <xsl:if test="$refsource = 'hipaa'">
             <xsl:value-of select="$hipaauri" />
           </xsl:if>

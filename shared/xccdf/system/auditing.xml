@@ -575,9 +575,11 @@ records to a centralized server for management directly. It does, however,
 include a plug-in for audit event multiplexor (audispd) to pass audit records
 to the local syslog server</rationale>
 <platform idref="cpe:/a:machine" />
-<ref cjis="5.4.1.1" cui="3.3.1" disa="136" hipaa="164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)" nist="AU-1(b),AU-3(2),IR-5" pcidss="Req-10.5.3" />
-<oval id="auditd_audispd_syslog_plugin_activated" />
-<ident cce="27341-7" prodtype="rhel7" />
+<ref prodtype="rhel7" ospp="FAU_GEN.1.1.c" />
+<ident prodtype="rhel7" cce="27341-7" />
+<ref cjis="5.4.1.1" cui="3.3.1" disa="136" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)"
+nist="AU-1(b),AU-3(2),IR-5" pcidss="Req-10.5.3" />
 </Rule>
 
 <Rule id="auditd_audispd_network_failure_action" prodtype="rhel7" severity="medium">
@@ -960,7 +962,11 @@ to the system time should be audited.</rationale>
 </Rule>
 </Group>
 
-<Rule id="audit_rules_usergroup_modification" prodtype="rhel7,fedora">
+<!-- DEVELOPER NOTE: The audit_rules_usergroup_modification rule has been
+     		     depricated. Use audit_rules_usergroup_modification_* rules
+		     instead. The audit_rules_usergroup_modification rule may be
+		     removed in future SSG releases. -->
+<Rule id="audit_rules_usergroup_modification">
 <title>Record Events that Modify User/Group Information</title>
 <description>If the <tt>auditd</tt> daemon is configured to use the
 <tt>augenrules</tt> program to read audit rules during daemon startup (the
@@ -1032,8 +1038,11 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <platform idref="cpe:/a:machine" />
 <ident cce="80433-6" prodtype="rhel7" />
 <oval id="audit_rules_usergroup_modification_group" />
-<ref prodtype="rhel7" stigid="030871" />
-<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
+<ref prodtype="rhel7" stigid="030871" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
 </Rule>
 
 <Rule id="audit_rules_usergroup_modification_gshadow" prodtype="rhel7" severity="medium">
@@ -1068,8 +1077,11 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <platform idref="cpe:/a:machine" />
 <ident cce="80432-8" prodtype="rhel7" />
 <oval id="audit_rules_usergroup_modification_gshadow" />
-<ref prodtype="rhel7" stigid="030872" />
-<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
+<ref prodtype="rhel7" stigid="030872" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
 </Rule>
 
 <Rule id="audit_rules_usergroup_modification_shadow" prodtype="rhel7" severity="medium">
@@ -1104,8 +1116,11 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <platform idref="cpe:/a:machine" />
 <ident cce="80431-0" prodtype="rhel7" />
 <oval id="audit_rules_usergroup_modification_shadow" />
-<ref prodtype="rhel7" stigid="030873" />
-<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
+<ref prodtype="rhel7" stigid="030873" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
 </Rule>
 
 <Rule id="audit_rules_usergroup_modification_passwd" prodtype="rhel7" severity="medium">
@@ -1140,8 +1155,12 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <platform idref="cpe:/a:machine" />
 <ident cce="80435-1" prodtype="rhel7" />
 <oval id="audit_rules_usergroup_modification_passwd" />
-<ref prodtype="rhel7" stigid="030870" />
-<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000476-GPOS-00221" />
+<ref prodtype="rhel7" stigid="030870" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.2.5"
+srg="SRG-OS-000004-GPOS-00004,SRG-OS-000239-GPOS-00089,SRG-OS-000240-GPOS-00090,SRG-OS-000241-GPOS-00091,SRG-OS-000303-GPOS-00120,SRG-OS-000476-GPOS-00221" />
 </Rule>
 
 
@@ -1177,8 +1196,11 @@ users, groups, or modifications should be investigated for legitimacy.</rational
 <platform idref="cpe:/a:machine" />
 <ident cce="80430-2" prodtype="rhel7" />
 <oval id="audit_rules_usergroup_modification_opasswd" />
-<ref prodtype="rhel7" stigid="030874" />
-<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
+<ref prodtype="rhel7" stigid="030874" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.5" cjis="5.4.1.1" cui="3.1.7" disa="18,172,1403,2130"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-2(4),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.2.5" srg="SRG-OS-000004-GPOS-00004" />
 </Rule>
 
 <Rule id="audit_rules_networkconfig_modification" prodtype="rhel7,fedora">
@@ -1287,7 +1309,11 @@ MAC policy should be audited.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident cce="27168-4" prodtype="rhel7" />
 <oval id="audit_rules_mac_modification" />
-<ref cis="5.2.7" cjis="5.4.1.1" cui="3.1.8" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" />
+<ref prodtype="rhel7" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.7" cjis="5.4.1.1" cui="3.1.8"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" />
 </Rule>
 
 <Group id="audit_dac_actions">
@@ -1347,8 +1373,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27339-1" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_chmod" />
-<ref prodtype="rhel7" stigid="030410" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030410" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_chown" prodtype="rhel7,fedora">
@@ -1383,8 +1412,12 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27364-9" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_chown" />
-<ref prodtype="rhel7" stigid="030370" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
+<ref prodtype="rhel7" stigid="030370" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmod" prodtype="rhel7,fedora">
@@ -1419,8 +1452,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27393-8" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_fchmod" />
-<ref prodtype="rhel7" stigid="030420" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030420" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchmodat" prodtype="rhel7,fedora">
@@ -1455,8 +1491,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27388-8" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_fchmodat" />
-<ref prodtype="rhel7" stigid="030430" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030430" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchown" prodtype="rhel7,fedora">
@@ -1491,8 +1530,12 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27356-5" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_fchown" />
-<ref prodtype="rhel7" stigid="030380" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
+<ref prodtype="rhel7" stigid="030380" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fchownat" prodtype="rhel7,fedora">
@@ -1527,8 +1570,12 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27387-0" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_fchownat" />
-<ref prodtype="rhel7" stigid="030400" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
+<ref prodtype="rhel7" stigid="030400" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fremovexattr" prodtype="rhel7,fedora" severity="medium">
@@ -1568,8 +1615,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27353-2" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_fremovexattr" />
-<ref prodtype="rhel7" stigid="030480" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030480" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_fsetxattr" prodtype="rhel7,fedora">
@@ -1604,8 +1654,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27389-6" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_fsetxattr" />
-<ref prodtype="rhel7" stigid="030450" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030450" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lchown" prodtype="rhel7,fedora">
@@ -1640,8 +1693,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27083-5" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_lchown" />
-<ref prodtype="rhel7" stigid="030390" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
+<ref prodtype="rhel7" stigid="030390" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lremovexattr" prodtype="rhel7,fedora" severity="medium">
@@ -1681,8 +1737,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27410-0" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_lremovexattr" />
-<ref prodtype="rhel7" stigid="030490" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030490" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_lsetxattr" prodtype="rhel7,fedora">
@@ -1717,8 +1776,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27280-7" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_lsetxattr" />
-<ref prodtype="rhel7" stigid="030460" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
+<ref prodtype="rhel7" stigid="030460" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5"
+pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_removexattr" prodtype="rhel7,fedora" severity="medium">
@@ -1757,8 +1819,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27367-2" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_removexattr" />
-<ref prodtype="rhel7" stigid="030470" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030470" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 <Rule id="audit_rules_dac_modification_setxattr" prodtype="rhel7,fedora">
@@ -1793,8 +1858,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="27213-8" prodtype="rhel7" />
 <oval id="audit_rules_dac_modification_setxattr" />
-<ref prodtype="rhel7" stigid="030440" />
-<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
+<ref prodtype="rhel7" stigid="030440" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cjis="5.4.1.1" cui="3.1.7" disa="126,172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.5.5"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000392-GPOS-00172,SRG-OS-000458-GPOS-00203" />
 </Rule>
 
 </Group>
@@ -1821,7 +1889,10 @@ edits of files involved in storing logon events:
 <rationale>Manual editing of these files may indicate nefarious activity, such
 as an attacker attempting to remove evidence of an intrusion.</rationale>
 
-<Rule id="audit_rules_login_events" prodtype="rhel7,fedora" severity="medium">
+<!-- DEVELOPER NOTE: This rule may be depricated in future SSG releases.
+     		     Update rule selections to use audit_rules_login_events_*
+		     rules -->
+<Rule id="audit_rules_login_events" severity="medium">
 <title>Record Attempts to Alter Logon and Logout Events</title>
 <description>The audit system already collects login information for all users
 and root. If the <tt>auditd</tt> daemon is configured to use the
@@ -1872,8 +1943,11 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident cce="80382-5" prodtype="rhel7" />
 <oval id="audit_rules_login_events_tallylog" />
-<ref prodtype="rhel7" stigid="030600" />
-<ref cis="5.2.8" cui="3.1.7" disa="172,2884,126" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" />
+<ref prodtype="rhel7" stigid="030600" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.8" cui="3.1.7" disa="172,2884,126"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3"
+srg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" />
 </Rule>
 
 <Rule id="audit_rules_login_events_faillock" prodtype="rhel7" severity="medium">
@@ -1900,8 +1974,11 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident cce="80383-3" prodtype="rhel7" />
 <oval id="audit_rules_login_events_faillock" />
-<ref prodtype="rhel7" stigid="030610" />
-<ref cis="5.2.8" cui="3.1.7" disa="172,2884,126" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" />
+<ref prodtype="rhel7" stigid="030610" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.8" cui="3.1.7" disa="172,2884,126"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3"
+srg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" />
 </Rule>
 
 <Rule id="audit_rules_login_events_lastlog" prodtype="rhel7" severity="medium">
@@ -1928,8 +2005,11 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident cce="80384-1" prodtype="rhel7" />
 <oval id="audit_rules_login_events_lastlog" />
-<ref prodtype="rhel7" stigid="030620" />
-<ref cis="5.2.8" cui="3.1.7" disa="172,2884,126" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" />
+<ref prodtype="rhel7" stigid="030620" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.8" cui="3.1.7" disa="172,2884,126"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3"
+srg="SRG-OS-000392-GPOS-00172,SRG-OS-000470-GPOS-00214,SRG-OS-000473-GPOS-00218" />
 </Rule>
 
 </Group>
@@ -1958,7 +2038,10 @@ as an attacker attempting to remove evidence of an intrusion.</rationale>
 <platform idref="cpe:/a:machine" />
 <ident cce="27301-1" prodtype="rhel7" />
 <oval id="audit_rules_session_events" />
-<ref cis="5.2.9" cjis="5.4.1.1" cui="3.1.7" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" />
+<ref prodtype="rhel7" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.9" cjis="5.4.1.1" cui="3.1.7"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.3" />
 </Rule>
 
 <Group id="audit_unsuccessful_file_modification">
@@ -2053,8 +2136,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="80385-8" prodtype="rhel7" />
 <oval id="audit_rules_unsuccessful_file_modification_creat" />
-<ref prodtype="rhel7" stigid="030500" />
-<ref cis="5.2.10" cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030500" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification_open" prodtype="rhel7" severity="medium">
@@ -2093,8 +2179,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="80386-6" prodtype="rhel7" />
 <oval id="audit_rules_unsuccessful_file_modification_open" />
-<ref prodtype="rhel7" stigid="030510" />
-<ref cis="5.2.10" cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030510" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification_openat" prodtype="rhel7" severity="medium">
@@ -2133,8 +2222,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="80387-4" prodtype="rhel7" />
 <oval id="audit_rules_unsuccessful_file_modification_openat" />
-<ref prodtype="rhel7" stigid="030520" />
-<ref cis="5.2.10" cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030520" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification_open_by_handle_at" prodtype="rhel7" severity="medium">
@@ -2173,8 +2265,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="80388-2" prodtype="rhel7" />
 <oval id="audit_rules_unsuccessful_file_modification_open_by_handle_at" />
-<ref prodtype="rhel7" stigid="030530" />
-<ref cis="5.2.10" cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030530" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification_truncate" prodtype="rhel7" severity="medium">
@@ -2213,8 +2308,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="80389-0" prodtype="rhel7" />
 <oval id="audit_rules_unsuccessful_file_modification_truncate" />
-<ref prodtype="rhel7" stigid="030540" />
-<ref cis="5.2.10" cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030540" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_unsuccessful_file_modification_ftruncate" prodtype="rhel7" severity="medium">
@@ -2253,8 +2351,11 @@ calls with others as identifying earlier in this guide is more efficient.
 </warning>
 <ident cce="80390-8" prodtype="rhel7" />
 <oval id="audit_rules_unsuccessful_file_modification_ftruncate" />
-<ref prodtype="rhel7" stigid="030550" />
-<ref cis="5.2.10" cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1" srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030550" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.10" cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.4,Req-10.2.1"
+srg="SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 </Group>
@@ -2309,8 +2410,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80391-6" prodtype="rhel7" />
 <oval id="audit_rules_execution_semanage" />
-<ref prodtype="rhel7" stigid="030560" />
-<ref cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
+<ref prodtype="rhel7" stigid="030560" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
 </Rule>
 
 <Rule id="audit_rules_execution_setsebool" prodtype="rhel7" severity="medium">
@@ -2346,8 +2449,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80392-4" prodtype="rhel7" />
 <oval id="audit_rules_execution_setsebool" />
-<ref prodtype="rhel7" stigid="030570" />
-<ref cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
+<ref prodtype="rhel7" stigid="030570" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
 </Rule>
 
 <Rule id="audit_rules_execution_chcon" prodtype="rhel7" severity="medium">
@@ -2383,8 +2488,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80393-2" prodtype="rhel7" />
 <oval id="audit_rules_execution_chcon" />
-<ref prodtype="rhel7" stigid="030580" />
-<ref cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
+<ref prodtype="rhel7" stigid="030580" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
 </Rule>
 
 <Rule id="audit_rules_execution_restorecon" prodtype="rhel7" severity="medium">
@@ -2420,8 +2527,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80394-0" prodtype="rhel7" />
 <oval id="audit_rules_execution_restorecon" />
-<ref prodtype="rhel7" stigid="030590" />
-<ref cui="3.1.7" disa="172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
+<ref prodtype="rhel7" stigid="030590" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-12(c)" srg="SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209" />
 </Rule>
 
 </Group>
@@ -2443,7 +2552,10 @@ limited capability. As such, motivation exists to monitor these programs for
 unusual activity.
 </rationale>
 
-<Rule id="audit_rules_privileged_commands" prodtype="rhel7,fedora" severity="medium">
+<!-- DEVELOPER NOTE: audit_rules_privileged_commands may be depricated
+     		     in future SSG releases. Use audit_rules_privileged_commands_*
+		     instead! -->
+<Rule id="audit_rules_privileged_commands" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands</title>
 <description>At a minimum, the audit system should collect the execution of
 privileged commands for all users and root. To find the relevant setuid /
@@ -2526,8 +2638,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80395-7" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_passwd" />
-<ref prodtype="rhel7" stigid="030630" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030630" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_unix_chkpwd" prodtype="rhel7" severity="medium">
@@ -2563,8 +2677,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80396-5" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_unix_chkpwd" />
-<ref prodtype="rhel7" stigid="030640" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030640" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_gpasswd" prodtype="rhel7" severity="medium">
@@ -2600,8 +2716,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80397-3" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_gpasswd" />
-<ref prodtype="rhel7" stigid="030650" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030650" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_chage" prodtype="rhel7" severity="medium">
@@ -2674,8 +2792,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80399-9" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_userhelper" />
-<ref prodtype="rhel7" stigid="030670" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030670" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_su" prodtype="rhel7" severity="medium">
@@ -2711,8 +2831,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80400-5" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_su" />
-<ref prodtype="rhel7" stigid="030680" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030680" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_sudo" prodtype="rhel7" severity="medium">
@@ -2748,8 +2870,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80401-3" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_sudo" />
-<ref prodtype="rhel7" stigid="030690" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030690" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_sudoedit" prodtype="rhel7" severity="medium">
@@ -2785,8 +2909,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80402-1" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_sudoedit" />
-<ref prodtype="rhel7" stigid="030730" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030730" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_newgrp" prodtype="rhel7" severity="medium">
@@ -2822,8 +2948,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80403-9" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_newgrp" />
-<ref prodtype="rhel7" stigid="030710" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030710" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_chsh" prodtype="rhel7" severity="medium">
@@ -3007,8 +3135,10 @@ unusual activity.
 <platform idref="cpe:/a:machine" />
 <ident cce="80408-8" prodtype="rhel7" />
 <oval id="audit_rules_privileged_commands_ssh_keysign" />
-<ref prodtype="rhel7" stigid="030780" />
-<ref cui="3.1.7" disa="135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030780" ospp="FAU_GEN.1.1.c" />
+<ref cui="3.1.7" disa="135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" 
+nist="AU-3(1),AU-12(c)" srg="SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Rule id="audit_rules_privileged_commands_pt_chown" prodtype="rhel7" severity="medium">
@@ -3170,6 +3300,8 @@ appropriate for your system:
 <pre>-a always,exit -F arch=ARCH -S rmdir,unlink,unlinkat,rename,renameat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
 </description>
 
+<!-- DEVELOPERS NOTE: audit_rules_file_deletion_events will be depricated in future
+     		      SSG releases. Use audit_rules_file_deletion_events_* instead -->
 <Rule id="audit_rules_file_deletion_events" prodtype="rhel7,fedora" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects File Deletion Events by User</title>
 <description>At a minimum the audit system should collect file deletion events
@@ -3198,7 +3330,9 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <platform idref="cpe:/a:machine" />
 <ident cce="27206-2" prodtype="rhel7" />
 <oval id="audit_rules_file_deletion_events" />
-<ref cis="5.2.14" cjis="5.4.1.1" cui="3.1.7" disa="366,172,2884" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" />
+<ref prodtype="rhel7" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.14" cjis="5.4.1.1" cui="3.1.7" disa="366,172,2884"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_rmdir" prodtype="rhel7" severity="medium">
@@ -3225,8 +3359,11 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <platform idref="cpe:/a:machine" />
 <ident cce="80412-0" prodtype="rhel7" />
 <oval id="audit_rules_file_deletion_events_rmdir" />
-<ref prodtype="rhel7" stigid="030900" />
-<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030900" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" 
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" 
+srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_unlink" prodtype="rhel7" severity="medium">
@@ -3253,8 +3390,11 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <platform idref="cpe:/a:machine" />
 <ident cce="27206-2" prodtype="rhel7" />
 <oval id="audit_rules_file_deletion_events_unlink" />
-<ref prodtype="rhel7" stigid="030910" />
-<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030910" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7"
+srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_unlinkat" prodtype="rhel7" severity="medium">
@@ -3281,8 +3421,11 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <platform idref="cpe:/a:machine" />
 <ident cce="27206-2" prodtype="rhel7" />
 <oval id="audit_rules_file_deletion_events_unlinkat" />
-<ref prodtype="rhel7" stigid="030920" />
-<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030920" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7"
+srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_rename" prodtype="rhel7" severity="medium">
@@ -3309,8 +3452,11 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <platform idref="cpe:/a:machine" />
 <ident cce="27206-2" prodtype="rhel7" />
 <oval id="audit_rules_file_deletion_events_rename" />
-<ref prodtype="rhel7" stigid="030880" />
-<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030880" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" 
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" 
+srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 <Rule id="audit_rules_file_deletion_events_renameat" prodtype="rhel7" severity="medium">
@@ -3337,8 +3483,11 @@ malicious processes that attempt to delete log files to conceal their presence.<
 <platform idref="cpe:/a:machine" />
 <ident cce="80413-8" prodtype="rhel7" />
 <oval id="audit_rules_file_deletion_events_renameat" />
-<ref prodtype="rhel7" stigid="030890" />
-<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7" srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
+<ref prodtype="rhel7" stigid="030890" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.14" cui="3.1.7" disa="366,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" 
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)" pcidss="Req-10.2.7"
+srg="SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172" />
 </Rule>
 
 </Group>
@@ -3367,8 +3516,11 @@ of what was executed on the system, as well as, for accountability purposes.</ra
 <platform idref="cpe:/a:machine" />
 <ident cce="27461-3" prodtype="rhel7" />
 <oval id="audit_rules_sysadmin_actions" />
-<ref prodtype="rhel7" stigid="030700" />
-<ref cjis="5.4.1.1" cui="3.1.7" disa="126,130,135,172,2884" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),iAU-3(1),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.2,Req-10.2.5.b" srg="SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215" />
+<ref prodtype="rhel7" stigid="030700" ospp="FAU_GEN.1.1.c" />
+<ref cjis="5.4.1.1" cui="3.1.7" disa="126,130,135,172,2884"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-2(7)(b),AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),iAU-3(1),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.2,Req-10.2.5.b"
+srg="SRG-OS-000037-GPOS-00015,SRG-OS-000042-GPOS-00020,SRG-OS-000392-GPOS-00172,SRG-OS-000462-GPOS-00206,SRG-OS-000471-GPOS-00215" />
 </Rule>
 
 <Group id="audit_kernel_module_loading">
@@ -3390,6 +3542,8 @@ If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility
 add the lines to file <tt>/etc/audit/audit.rules</tt>.
 </description>
 
+<!-- DEVELOPERS NOTE: audit_rules_kernel_module_loading may be depricated in future
+     		      SSG releases. Use audit_rules_kernel_module_loading_* instead -->
 <Rule id="audit_rules_kernel_module_loading" prodtype="rhel7,fedora" severity="medium">
 <title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading</title>
 <description>To capture kernel module loading and unloading events, use following lines, setting ARCH to
@@ -3443,8 +3597,39 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <platform idref="cpe:/a:machine" />
 <ident cce="80414-6" prodtype="rhel7" />
 <oval id="audit_rules_kernel_module_loading_init" />
-<ref prodtype="rhel7" stigid="030820" />
-<ref cis="5.2.17" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
+<ref prodtype="rhel7" stigid="030820" ospp="FAU_GEN.1.1.c" />
+<ref nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" 
+disa="172" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" 
+pcidss="Req-10.2.7" cis="5.2.17" cui="3.1.7" />
+</Rule>
+
+<Rule id="audit_rules_kernel_module_loading_finit" severity="medium">
+<title>Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading - finit_module</title>
+<description>If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt> program
+to read audit rules during daemon startup (the default), add the following lines to a file
+with suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt> to capture kernel module
+loading and unloading events, setting ARCH to either b32 or b64 as appropriate for your system:
+<pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
+If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility to read audit
+rules during daemon startup, add the following lines to <tt>/etc/audit/audit.rules</tt> file
+in order to capture kernel module loading and unloading events, setting ARCH to either b32 or
+b64 as appropriate for your system:
+<pre>-a always,exit -F arch=<i>ARCH</i> -S finit_module -F key=modules</pre>
+</description>
+<ocil>
+<audit-syscall-check-macro syscall="finit_module" />
+</ocil>
+<rationale>The addition/removal of kernel modules can be used to alter the behavior of
+the kernel and potentially introduce malicious code into kernel space. It is important
+to have an audit trail of modules that have been introduced into the kernel.</rationale>
+<platform idref="cpe:/a:machine" />
+<ident prodtype="rhel7" cce="80547-3" />
+<oval id="audit_rules_kernel_module_loading_finit" />
+<ref prodtype="rhel7" ospp="FAU_GEN.1.1.c" stigid="030820" />
+<ref cis="5.2.17" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" 
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7"
+srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_delete" prodtype="rhel7" severity="medium">
@@ -3469,8 +3654,11 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <platform idref="cpe:/a:machine" />
 <ident cce="80415-3" prodtype="rhel7" />
 <oval id="audit_rules_kernel_module_loading_delete" />
-<ref prodtype="rhel7" stigid="030830" />
-<ref cis="5.2.17" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
+<ref prodtype="rhel7" stigid="030830" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.17" cui="3.1.7" disa="172" 
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7"
+srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_insmod" prodtype="rhel7" severity="medium">
@@ -3495,8 +3683,11 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <platform idref="cpe:/a:machine" />
 <ident cce="80446-8" prodtype="rhel7" />
 <oval id="audit_rules_kernel_module_loading_insmod" />
-<ref prodtype="rhel7" stigid="030840" />
-<ref cis="5.2.17" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
+<ref prodtype="rhel7" stigid="030840" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.17" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7"
+srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_rmmod" prodtype="rhel7" severity="medium">
@@ -3521,8 +3712,11 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <platform idref="cpe:/a:machine" />
 <ident cce="80416-1" prodtype="rhel7" />
 <oval id="audit_rules_kernel_module_loading_rmmod" />
-<ref prodtype="rhel7" stigid="030850" />
-<ref cis="5.2.17" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
+<ref prodtype="rhel7" stigid="030850" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.17" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7"
+srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
 </Rule>
 
 <Rule id="audit_rules_kernel_module_loading_modprobe" prodtype="rhel7" severity="medium">
@@ -3547,8 +3741,11 @@ to have an audit trail of modules that have been introduced into the kernel.</ra
 <platform idref="cpe:/a:machine" />
 <ident cce="80417-9" prodtype="rhel7" />
 <oval id="audit_rules_kernel_module_loading_modprobe" />
-<ref prodtype="rhel7" stigid="030860" />
-<ref cis="5.2.17" cui="3.1.7" disa="172" hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)" nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7" srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
+<ref prodtype="rhel7" stigid="030860" ospp="FAU_GEN.1.1.c" />
+<ref cis="5.2.17" cui="3.1.7" disa="172"
+hipaa="164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)"
+nist="AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5" pcidss="Req-10.2.7"
+srg="SRG-OS-000471-GPOS-00216,SRG-OS-000477-GPOS-00222" />
 </Rule>
 
 </Group>

@@ -73,8 +73,8 @@ authentication information may be questionable.
 <ident prodtype="rhel7" cce="80364-3" />
 <ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
 <oval prodtype="rhel6,rhel7" id="sssd_memcache_timeout" />
-<ref nist="IA-5(13)" disa="2007" srg="SRG-OS-000383-GPOS-00166" />
-<ref prodtype="rhel6" nist="IA-5(10)" disa="2007" />
+<ref nist="IA-5(10), IA-5(13)" disa="2007" srg="SRG-OS-000383-GPOS-00166" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" />
 </Rule>
 
 <Rule id="sssd_offline_cred_expiration" severity="medium" prodtype="rhel6,rhel7">
@@ -102,7 +102,7 @@ authentication information may be questionable.
 <ident prodtype="rhel6" cce="RHEL6-CCE-TBD" />
 <oval prodtype="rhel6,rhel7" id="sssd_offline_cred_expiration" />
 <ref nist="IA-5(13)" disa="2007" srg="SRG-OS-000383-GPOS-00166" />
-<ref prodtype="rhel6" nist="IA-5(13)" disa="2007" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1"  />
 </Rule>
 
 <Rule id="sssd_ssh_known_hosts_timeout" severity="medium" prodtype="rhel6,rhel7">
