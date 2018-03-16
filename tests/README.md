@@ -27,64 +27,65 @@ accessible via ssh on the libvirt domain and have Ansible installed on the host 
 
 *NOTE*: Create snapshot after all these steps, to manually revert in case the
 test suite breaks something and fails to revert. Do not use snapshot names
-starting with `ssg\_`
+starting with `ssg_`
 
-## Two modes of operation
-SSG Test Suite currently supports two ways of DataStream evaluation. Simpler
-one to use is `profile`, which scans and remedies target domain based on
-particular profile.
+## Executing the test suite
 
-Second, more complex, is `rule`, which runs set of validation scenarios
-for particular subset of rules. Each rule has its own scenarios, and each
-scenario is run separately to eliminate need for cleanup.
+### Common options
 
-## Running test suite in profile mode
-Example of evaluation of default profile (common):
+- `--hypervisor`: Typically, you will use the `qemu:///system` value.
+- `--domain`: `libvirt` domain, which is basically name of the virtual machine.
+- `--datastream`: Path to the datastream that you want to use for scanning.
+  It will be transferred to the scanned VM via SSH.
+- `--xccdf-id`: Also known as `Ref-ID`, it is the identifier of benchmark within the datastream.
+  It can be obtained by running `oscap info` over the datastream XML and searching for `Ref-ID` strings.
+- `--help`: This will get you the invocation help.
+
+### Profile-based testing
+In this operation mode, you specify the `profile` command and you supply the profile ID as a positional argument.
+The test suite then runs scans over the target domain and remediates it based on particular profile.
+
+An example invocation may look like this:
 
 ```
 ./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml --xccdf-id xccdf-id profile-id
 ```
 
-where the domain (in this case `ssg-test-suite-centos`), is name of the virtual machine,
-datastream is a datastream file in the local filesystem,
-the `xccdf-id` can be obtained by running `oscap info` over the datastream XML (look for `Ref-ID`),
-and
-profile-id is not matched by the suffix, so specify it literally (use `oscap info --profiles` to see available profiles).
+Note that the `profile-id` is not matched by the suffix (as opposed to how the `oscap` tool works), so specify it literally (use `oscap info --profiles` to see available profiles).
 
-For further options, see
+### Rule-based testing
+In this mode, you specify the `rule` command and you supply part of the rule title as a positional argument.
+Unlike the profile mode, here each rule from the matching rule set is addressed independently, one-by-one.
 
-```
-./test_suite.py profile --help
-```
+Rule-based testing enables to perform two kinds of tests:
 
+- Check tests: The system is set up into a compliant, or a non-compliant state.
 
-## Running test suite in rule mode
-Example of evaluation of rule ```rule_sysctl_net_ipv4_conf_default_secure_redirects```:
+  Typically, the compliant state is different from the default or post-remediation state.
+  The scanner is supposed to correctly identify the state of the system, so it is checked against false positives and false negatives.
+
+- Remediation tests: The system is set up into a non-compliant state, and remediation is performed.
+
+If you would like to evaluate the rule `rule_sysctl_net_ipv4_conf_default_secure_redirects`:
 
 ```
 ./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml ipv4_conf_default_secure_redirects
 ```
 
-Notice there is not full rule name used on the command line. Test suite runs
-every rule, which contains given substring in the name. So all that is needed
-is to use unique substring.
-Again, for further options, see
-
-```
-./test_suite.py rule --help
-```
+Notice there is not full rule name used on the command line.
+Test suite runs every rule, which contains given substring in the name.
+So all that is needed is to use unique substring.
 
 ## How rule validation scenarios work
-In directory ```data``` are directories mirroring ```group/group/.../rule```
+In directory `data` are directories mirroring `group/group/.../rule`
 structure of datastream. In reality, only name of the rule directory needs to be
 correct, group structure is currently not used.
 
-Scenarios are currently supported only in ```bash```. And type of scenario is
+Scenarios are currently supported only in `bash`. And type of scenario is
 defined by its file name.
 
 #### (something).pass.sh
-Success scenario - script is expected to prepare machine in such way for the
-rule to pass.
+Success scenario - script is expected to prepare machine in such way that the rule is expected to pass.
 
 #### (something).fail.sh
 Fail scenario - script is expected to break machine so the rule fails. Test Suite
@@ -98,8 +99,8 @@ be used as common libraries.
 ## Example of incorporating new test scenario
 Let's show how to add test scenario for Red Hat Bugzilla 1392679 (already included)
 
-Bugzilla is about ```sshd_config``` being not altered correctly. Thus:
-1. Create appropriate directory within ```data/``` directory tree (in this case
+Bugzilla is about `sshd_config` being not altered correctly. Thus:
+1. Create appropriate directory within `data/` directory tree (in this case
 ```data/group_services/group_ssh/group_ssh_server/rule_sshd_disable_kerb_auth```
 further referenced as *DIR*).
 1. put few fail scripts - for example removing the line, commenting it, etc. into *DIR*
