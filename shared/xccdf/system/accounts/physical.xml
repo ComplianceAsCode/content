@@ -195,7 +195,7 @@ must be automated as a component of machine provisioning, or followed manually a
 <platform idref="cpe:/a:machine" />
 <ident cce="27309-4" prodtype="rhel7" />
 <oval id="bootloader_password" />
-<ref prodtype="rhel7" stigid="010480" />
+<ref prodtype="rhel7" stigid="010480" ospp="FIA_AFL.1" />
 <ref cis="1.4.2" cui="3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="IA-2(1),IA-5(e),AC-3" srg="SRG-OS-000080-GPOS-00048" />
 </Rule>
 
@@ -260,7 +260,7 @@ must be automated as a component of machine provisioning, or followed manually a
 <platform idref="cpe:/a:machine" />
 <ident cce="80354-4" prodtype="rhel7" />
 <oval id="bootloader_uefi_password" />
-<ref prodtype="rhel7" stigid="010490" />
+<ref prodtype="rhel7" stigid="010490" ospp="FIA_AFL.1" />
 <ref cis="1.4.2" cui="3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="AC-3" srg="SRG-OS-000080-GPOS-00048" />
 </Rule>
 
@@ -349,6 +349,7 @@ by configuring the bootloader password.
 <platform idref="cpe:/a:machine" />
 <ident cce="27287-2" prodtype="rhel7" />
 <oval id="require_singleuser_auth" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" stigid="010481" />
 <ref cis="1.4.3" cui="3.1.1,3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="IA-2(1),AC-3" srg="SRG-OS-000080-GPOS-00048" stigid="010481" />
 </Rule>
 
@@ -375,6 +376,8 @@ access when the system is rebooted.
 <platform idref="cpe:/a:machine" />
 <ident cce="80206-6" prodtype="rhel7" />
 <oval id="service_debug-shell_disabled" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" />
+<!--ref nist="IA-2(1),AC-3" disa="213" /-->
 <ref cui="3.4.5" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" />
 
 </Rule>
@@ -491,6 +494,7 @@ file. To update the GRUB 2 configuration file manually, use the
 </warning>
 <ident cce="27335-9" prodtype="rhel7" />
 <oval id="disable_interactive_boot" />
+<ref prodtype="rhel7" ospp="FIA_AFL.1" /> 
 <ref cui="3.1.2,3.4.5" disa="213" hipaa="164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)" nist="SC-2,AC-3" /> 
 </Rule>
 
@@ -537,8 +541,8 @@ The <tt>screen</tt> package allows for a session lock to be implemented and conf
 <platform idref="cpe:/a:machine" />
 <ident cce="27351-6" prodtype="rhel7" />
 <oval id="package_screen_installed" />
-<ref prodtype="rhel7" stigid="010090" />
-<ref cui="3.1.10" disa="57" nist="AC-11(a)" srg="SRG-OS-000029-GPOS-00010" />
+<ref prodtype="rhel7" stigid="010090" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-11(a)" disa="57" srg="SRG-OS-000029-GPOS-00010" cui="3.1.10" />
 </Rule>
 </Group>
 

@@ -76,10 +76,12 @@ Executive Orders, directives, policies, regulations, standards, and guidance.
 System use notifications are required only for access via login interfaces with human users and
 are not required when such human interfaces do not exist.
 </rationale>
-<ident cce="27303-7" prodtype="rhel7" />
-<oval id="banner_etc_issue" value="login_banner_text" />
-<ref prodtype="rhel7" stigid="010050" />
-<ref cis="1.7.1.2" cui="3.1.9" disa="48" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" srg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007" />
+<ident prodtype="rhel7" cce="27303-7" />
+<oval id="banner_etc_issue" value="login_banner_text"/>
+<ref prodtype="rhel7" stigid="010050" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48"
+srg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007"
+cis="1.7.1.2" cui="3.1.9" />
 </Rule>
 
 <Group id="gui_login_banner">
@@ -128,8 +130,10 @@ with human users and are not required when such human interfaces do not exist.
 </rationale>
 <ident cce="26970-4" prodtype="rhel7" />
 <oval id="dconf_gnome_banner_enabled" />
-<ref prodtype="rhel7" stigid="010030" />
-<ref cis="1.7.2" cui="3.1.9" disa="48" nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" srg="OS-SRG-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" />
+<ref prodtype="rhel7" stigid="010030" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)" disa="48" 
+srg="OS-SRG-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" 
+cui="3.1.9" cis="1.7.2" />
 </Rule>
 
 <Rule id="dconf_gnome_login_banner_text" prodtype="rhel7,fedora" severity="medium">
@@ -164,10 +168,12 @@ If properly configured, the output should be <tt>/org/gnome/login-screen/banner-
 An appropriate warning message reinforces policy awareness during the logon
 process and facilitates possible legal action against attackers.
 </rationale>
-<ident cce="26892-0" prodtype="rhel7" />
-<oval id="dconf_gnome_login_banner_text" value="login_banner_text" />
-<ref prodtype="rhel7" stigid="010040" />
-<ref cis="1.7.2" cui="3.1.9" disa="48" nist="AC-8(a),AC-8(b),AC-8(c)" srg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" />
+<ident prodtype="rhel7" cce="26892-0" />
+<oval id="dconf_gnome_login_banner_text" value="login_banner_text"/>
+<ref prodtype="rhel7" stigid="010040" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-8(a),AC-8(b),AC-8(c)" disa="48" 
+srg="SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007,SRG-OS-000228-GPOS-00088" 
+cui="3.1.9" cis="1.7.2" />
 </Rule>
 
 </Group>

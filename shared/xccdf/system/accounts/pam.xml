@@ -296,10 +296,10 @@ requires some software, such as SSH, to re-connect. This can slow down and
 draw additional attention to some types of password-guessing attacks. Note that this
 is different from account lockout, which is provided by the pam_faillock module.
 </rationale>
-<ident cce="27160-1" prodtype="rhel7" />
-<oval id="accounts_password_pam_retry" value="var_password_pam_retry" />
-<ref prodtype="rhel7" stigid="010119" />
-<ref cis="6.3.2" cjis="5.5.3" disa="366" nist="CM-6(b),IA-5(c)" srg="SRG-OS-000480-GPOS-00225" />
+<ident prodtype="rhel7" cce="27160-1" />
+<oval id="accounts_password_pam_retry" value="var_password_pam_retry"/>
+<ref prodtype="rhel7" stigid="010119" ospp="FMT_MOF_EXT.1" />
+<ref nist="CM-6(b),IA-5(c)" disa="366" cis="6.3.2" srg="SRG-OS-000480-GPOS-00225" cjis="5.5.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_maxrepeat" prodtype="rhel7,fedora" severity="medium">
@@ -387,10 +387,11 @@ possble combinations that need to be tested before the password is compromised.
 Requiring digits makes password guessing attacks more difficult by ensuring a larger
 search space.
 </rationale>
-<ident cce="27214-6" prodtype="rhel7" />
-<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit" />
-<ref prodtype="rhel7" stigid="010140" />
-<ref cis="6.3.2" disa="194" nist="IA-5(1)(a),IA-5(b),IA-5(c),194" pcidss="Req-8.2.3" srg="SRG-OS-000071-GPOS-00039" />
+<ident prodtype="rhel7" cce="27214-6" />
+<oval id="accounts_password_pam_dcredit" value="var_password_pam_dcredit"/>
+<ref prodtype="rhel7" stigid="010140" ospp="FMT_MOF_EXT.1" />
+<ref nist="IA-5(1)(a),IA-5(b),IA-5(c),194" disa="194" srg="SRG-OS-000071-GPOS-00039" 
+pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
 <Rule id="accounts_password_pam_minlen" prodtype="rhel7,fedora" severity="medium">
@@ -417,8 +418,9 @@ compromose the password.
 </rationale>
 <ident cce="27293-0" prodtype="rhel7" />
 <oval id="accounts_password_pam_minlen" value="var_password_pam_minlen" />
-<ref prodtype="rhel7" stigid="010280" />
-<ref cis="6.3.2" cjis="5.6.2.1.1" disa="205" nist="IA-5(1)(a)" pcidss="Req-8.2.3" srg="SRG-OS-000078-GPOS-00046" />
+<ref prodtype="rhel7" stigid="010280" ospp="FMT_MOF_EXT.1" />
+<ref nist="IA-5(1)(a)" disa="205" srg="SRG-OS-000078-GPOS-00046"
+pcidss="Req-8.2.3" cis="6.3.2" cjis="5.6.2.1.1" />
 </Rule>
 
 <Rule id="accounts_password_pam_ucredit" prodtype="rhel7,fedora" severity="medium">
@@ -445,10 +447,11 @@ Password complexity is one factor of several that determines how long it takes t
 complex the password, the greater the number of possible combinations that need to be tested before
 the password is compromised.
 </rationale>
-<ident cce="27200-5" prodtype="rhel7" />
-<oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit" />
-<ref prodtype="rhel7" stigid="010120" />
-<ref cis="6.3.2" disa="192" nist="IA-5(b),IA-5(c),IA-5(1)(a)" pcidss="Req-8.2.3" srg="SRG-OS-000069-GPOS-00037" />
+<ident prodtype="rhel7" cce="27200-5" />
+<oval id="accounts_password_pam_ucredit" value="var_password_pam_ucredit"/>
+<ref prodtype="rhel7" stigid="010120" ospp="FMT_MOF_EXT.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="192" srg="SRG-OS-000069-GPOS-00037" 
+pcidss="Req-8.2.3" cis="6.3.2" />
 </Rule>
 
 <Rule id="accounts_password_pam_ocredit" prodtype="rhel7,fedora" severity="medium">
@@ -478,10 +481,10 @@ possble combinations that need to be tested before the password is compromised.
 Requiring a minimum number of special characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="27360-7" prodtype="rhel7" />
-<oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit" />
-<ref prodtype="rhel7" stigid="010150" />
-<ref disa="1619" nist="IA-5(b),IA-5(c),IA-5(1)(a)" srg="SRG-OS-000266-GPOS-00101" />
+<ident prodtype="rhel7" cce="27360-7" />
+<oval id="accounts_password_pam_ocredit" value="var_password_pam_ocredit"/>
+<ref prodtype="rhel7" stigid="010150" ospp="FMT_MOF_EXT.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="1619" srg="SRG-OS-000266-GPOS-00101" />
 </Rule>
 
 <Rule id="accounts_password_pam_lcredit" prodtype="rhel7,fedora" severity="medium">
@@ -510,10 +513,10 @@ possble combinations that need to be tested before the password is compromised.
 Requiring a minimum number of lowercase characters makes password guessing attacks
 more difficult by ensuring a larger search space.
 </rationale>
-<ident cce="27345-8" prodtype="rhel7" />
-<oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit" />
-<ref prodtype="rhel7" stigid="010130" />
-<ref disa="193" nist="IA-5(b),IA-5(c),IA-5(1)(a)" pcidss="Req-8.2.3" srg="SRG-OS-000070-GPOS-00038" />
+<ident prodtype="rhel7" cce="27345-8" />
+<oval id="accounts_password_pam_lcredit" value="var_password_pam_lcredit"/>
+<ref prodtype="rhel7" stigid="010130" ospp="FMT_MOF_EXT.1" />
+<ref nist="IA-5(b),IA-5(c),IA-5(1)(a)" disa="193" srg="SRG-OS-000070-GPOS-00038" pcidss="Req-8.2.3" />
 </Rule>
 
 <Rule id="accounts_password_pam_difok" prodtype="rhel7,fedora" severity="medium">
@@ -638,10 +641,11 @@ The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_
 Locking out user accounts after a number of incorrect attempts
 prevents direct password guessing attacks.
 </rationale>
-<ident cce="27350-8" prodtype="rhel7" />
-<oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny" />
-<ref prodtype="rhel7" stigid="010320" />
-<ref cis="5.3.2" cjis="5.5.3" cui="3.1.8" disa="2238" nist="AC-7(b)" pcidss="Req-8.1.6" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
+<ident prodtype="rhel7" cce="27350-8" />
+<oval id="accounts_passwords_pam_faillock_deny" value="var_accounts_passwords_pam_faillock_deny"/>
+<ref prodtype="rhel7" stigid="010320" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-7(b)" disa="2238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005"
+pcidss="Req-8.1.6" cis="5.3.2" cjis="5.5.3" cui="3.1.8" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_unlock_time" prodtype="rhel7,fedora" severity="medium">
@@ -671,10 +675,11 @@ prevents direct password guessing attacks. Ensuring that an administrator is
 involved in unlocking locked accounts draws appropriate attention to such
 situations.
 </rationale>
-<ident cce="26884-7" prodtype="rhel7" />
-<oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time" />
-<ref prodtype="rhel7" stigid="010320" />
-<ref cis="5.3.2" cjis="5.5.3" cui="3.1.8" disa="002238" nist="AC-7(b)" pcidss="Req-8.1.7" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
+<ident prodtype="rhel7" cce="26884-7" />
+<oval id="accounts_passwords_pam_faillock_unlock_time" value="var_accounts_passwords_pam_faillock_unlock_time"/>
+<ref prodtype="rhel7" stigid="010320" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-7(b)" disa="002238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" 
+pcidss="Req-8.1.7" cis="5.3.2" cjis="5.5.3" cui="3.1.8" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_deny_root" prodtype="rhel7" severity="medium">
@@ -701,10 +706,10 @@ The output should show <tt>even_deny_root</tt>.
 By limiting the number of failed logon attempts, the risk of unauthorized system access via user password
 guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.
 </rationale>
-<ident cce="80353-6" prodtype="rhel7" />
+<ident prodtype="rhel7" cce="80353-6" />
 <oval id="accounts_passwords_pam_faillock_deny_root" />
-<ref prodtype="rhel7" stigid="010330" />
-<ref disa="2238" nist="AC-7(b)" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
+<ref prodtype="rhel7" stigid="010330" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-7(b)" disa="2238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
 <Rule id="accounts_passwords_pam_faillock_interval" prodtype="rhel7,fedora" severity="medium">
@@ -736,10 +741,10 @@ By limiting the number of failed logon attempts the risk of unauthorized system
 access via user password guessing, otherwise known as brute-forcing, is reduced.
 Limits are imposed by locking the account.
 </rationale>
-<ident cce="27297-1" prodtype="rhel7" />
-<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval" />
-<ref prodtype="rhel7" stigid="010320" />
-<ref disa="2238" nist="AC-7(b)" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
+<ident prodtype="rhel7" cce="27297-1" />
+<oval id="accounts_passwords_pam_faillock_interval" value="var_accounts_passwords_pam_faillock_fail_interval"/>
+<ref prodtype="rhel7" stigid="010320" ospp="FMT_MOF_EXT.1" />
+<ref nist="AC-7(b)" disa="2238" srg="SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005" />
 </Rule>
 
 <Rule id="accounts_password_pam_unix_remember" prodtype="rhel7,fedora" severity="medium">
