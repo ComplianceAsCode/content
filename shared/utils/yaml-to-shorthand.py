@@ -411,8 +411,8 @@ class Rule(object):
         oval_ref = ET.SubElement(rule, "oval")
         oval_ref.set("id", self.id_)
 
-        if self.ocil:
-            ocil = add_sub_element(rule, 'ocil', self.ocil)
+        if self.ocil or self.ocil_clause:
+            ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
             if self.ocil_clause:
                 ocil.set("clause", self.ocil_clause)
 
