@@ -74,7 +74,7 @@ A value of 2 indicates that OpenSSH server package is required by the policy.<br
 <value selector="yes">2</value>
 </Value>
 
-<Rule id="package_openssh-server_installed" prodtype="rhel7" severity="medium">
+<Rule id="package_openssh-server_installed" prodtype="rhel7,ol7" severity="medium">
 <title>Install the OpenSSH Server Package</title>
 <description>
 The <tt>openssh-server</tt> package should be installed.
@@ -119,7 +119,7 @@ of interception and modification.
 <oval id="service_sshd_enabled" />
 </Rule>
 
-<Rule id="service_sshd_disabled" prodtype="rhel7">
+<Rule id="service_sshd_disabled" prodtype="rhel7,ol7">
 <title>Disable SSH Server If Possible (Unusual)</title>
 <description>The SSH server service, sshd, is commonly needed.
 However, if it can be disabled, do so.

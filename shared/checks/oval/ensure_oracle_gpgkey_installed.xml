@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="ensure_oracle_gpgkey_installed" version="1">
+    <metadata>
+      <title>Oracle Linux gpg-pubkey Package Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>The Oracle Linux key packages are required to be installed.</description>
+    </metadata>
+    <criteria comment="Vendor GPG keys" operator="OR">
+      <criteria comment="Oracle Vendor Keys" operator="AND">
+        <criteria comment="Oracle Installed" operator="OR">
+          <extend_definition comment="Oracle Linux 6 installed" definition_ref="installed_OS_is_ol6_family" />
+          <extend_definition comment="Oracle Linux 7 installed" definition_ref="installed_OS_is_ol7_family" />
+        </criteria>
+        <criterion comment="package gpg-pubkey-ec551f03-53619141 is installed"
+        test_ref="test_package_gpgkey-ec551f03-53619141_installed" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <!-- First define global "object_package_gpg-pubkey" to be shared (reused) across multiple tests -->
+  <linux:rpminfo_object id="object_package_gpg-pubkey" version="1">
+    <linux:name>gpg-pubkey</linux:name>
+  </linux:rpminfo_object>
+
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-ec551f03-53619141_installed" version="1"
+  comment="Oracle Linux key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-ec551f03-53619141" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-ec551f03-53619141" version="1">
+    <linux:release>53619141</linux:release>
+    <linux:version>ec551f03</linux:version>
+  </linux:rpminfo_state>
+
+</def-group>

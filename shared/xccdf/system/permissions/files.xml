@@ -325,7 +325,7 @@ execution of these programs cannot be co-opted.
 
 </Group>
 
-<Rule id="dir_perms_world_writable_sticky_bits" prodtype="rhel7,fedora">
+<Rule id="dir_perms_world_writable_sticky_bits" prodtype="rhel7,fedora,ol7">
 <title>Verify that All World-Writable Directories Have Sticky Bits Set</title>
 <description>When the so-called 'sticky bit' is set on a directory,
 only the owner of a given file may remove that file from the
@@ -359,7 +359,7 @@ requiring global read/write access.
 <ref cis="1.1.21" nist="AC-6" />
 </Rule>
 
-<Rule id="file_permissions_unauthorized_world_writable" prodtype="rhel7,opensuse,fedora" severity="medium">
+<Rule id="file_permissions_unauthorized_world_writable" prodtype="rhel7,opensuse,fedora,ol7" severity="medium">
 <title>Ensure No World-Writable Files Exist</title>
 <description>It is generally a good idea to remove global (other) write
 access to a file when it is discovered. However, check with
@@ -383,7 +383,7 @@ caused by world-writable files.</rationale>
 <oval id="file_permissions_unauthorized_world_writable" />
 </Rule>
 
-<Rule id="file_permissions_unauthorized_sgid" prodtype="rhel7,fedora">
+<Rule id="file_permissions_unauthorized_sgid" prodtype="rhel7,fedora,ol7">
 <title>Ensure All SGID Executables Are Authorized</title>
 <description>The SGID (set group id) bit should be set only on files that were
 installed via authorized means. A straightforward means of identifying
@@ -404,7 +404,7 @@ strictly controlled on the system.</rationale>
 <ref cis="6.1.14" nist="AC-6(1)" />
 </Rule>
 
-<Rule id="file_permissions_unauthorized_suid" prodtype="rhel7,fedora">
+<Rule id="file_permissions_unauthorized_suid" prodtype="rhel7,fedora,ol7">
 <title>Ensure All SUID Executables Are Authorized</title>
 <description>The SUID (set user id) bit should be set only on files that were
 installed via authorized means. A straightforward means of identifying
