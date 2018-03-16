@@ -741,6 +741,8 @@ When writing new bash remediations content, please follow the following guidelin
 * Beware of constructs such as `[ $x = 1 ] && echo "$x is one"` as they violate the previous point. `[ $x != 1 ] || echo "$x is one"` is OK.
 * Use the `die` function defined in `remediation_functions` to handle exceptions, such as `[ -f "$config_file" ] || die "Couldn't find the configuration file '$config_file'"`.
 * Run `shellcheck` over your remediation script. Make sure that you fix all warnings that are applicable. If you are not sure, mention those warnings in the pull request description.
+* Use POSIX syntax in regular expressions, so prefer `grep '^[[:space:]]*something'` over `grep '^\s*something'`.
+
 
 ==== Templating
 
