@@ -55,7 +55,7 @@
     <xsl:copy>
       <xsl:copy-of select="@*|node()" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/disk_partitioning.xml'))" />
-      <xsl:apply-templates select="document('xccdf/system/software/updating.xml')" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/updating.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/integrity.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/gnome.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/system/software/sudo.xml'))" />

@@ -9,6 +9,11 @@ Red Hat Enterprise Linux systems contain an installed software catalog called
 the RPM database, which records metadata of installed packages. Consistently using
 <tt>yum</tt> or the graphical <b>Software Update</b> for all software installation
 allows for insight into the current inventory of installed software on the system.
+<br /><br />
+Oracle Linux system contain an installed software catalog called
+the RPM database, which records metadata of installed packages. Consistently using
+<tt>yum</tt> or the graphical <b>Software Update</b> for all software installation
+allows for insight into the current inventory of installed software on the system.
 </description>
 
 <Rule id="ensure_redhat_gpgkey_installed" prodtype="rhel7" severity="high">
@@ -47,6 +52,37 @@ hipaa="164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)
 nist="CM-5(3),SI-7,MA-1(b)" pcidss="Req-6.2" srg="366" />
 </Rule>
 
+<Rule id="ensure_oracle_gpgkey_installed" severity="high" prodtype="ol7">
+<title>Ensure Oracle Linux GPG Key Installed</title>
+<description>
+To ensure the system can cryptographically verify base software
+packages come from Oracle (and to connect to the Unbreakable Linux Network to
+receive them), the Oracle GPG key must properly be installed.
+To install the Oracle GPG key, run:
+<pre>$ sudo uln_register</pre>
+If the system is not connected to the Internet,
+then install the Oracle GPG key from trusted media such as
+the Oracle installation CD-ROM or DVD. Assuming the disc is mounted
+in <tt>/media/cdrom</tt>, use the following command as the root user to import
+it into the keyring:
+<pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>
+</description>
+<ocil clause="the Oracle GPG Key is not installed">
+To ensure that the GPG key is installed, run:
+<pre>$ rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey</pre>
+The command should return the string below:
+<pre>gpg(Oracle OSS group (Open Source Software group) &lt;build@oss.oracle.com&gt;</pre>
+</ocil>
+<rationale>
+Changes to software components can have significant effects on the
+overall security of the operating system. This requirement ensures
+the software has not been tampered with and that it has been provided
+by a trusted vendor. The Oracle GPG key is necessary to
+cryptographically verify packages are from Oracle.
+</rationale>
+<oval id="ensure_oracle_gpgkey_installed" />
+<ref nist="CM-5(3),SI-7,MA-1(b)" disa="1749" ossrg="366" pcidss="Req-6.2" cis="1.2.2" />
+</Rule>
 
 <Rule id="ensure_gpgcheck_globally_activated" prodtype="rhel7,fedora,ol7" severity="high">
 <title>Ensure gpgcheck Enabled In Main Yum Configuration</title>
