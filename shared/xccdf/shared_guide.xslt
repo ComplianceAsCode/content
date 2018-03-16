@@ -96,6 +96,11 @@
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/smb.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/squid.xml'))" />
       <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/snmp.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/horizon.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/cinder.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/keystone.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/neutron.xml'))" />
+      <xsl:apply-templates select="document(concat($SHARED_RP, '/xccdf/services/openstack/nova.xml'))" />
     </xsl:copy>
   </xsl:template>
 
