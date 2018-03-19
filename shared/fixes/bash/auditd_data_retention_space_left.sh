@@ -3,7 +3,5 @@
 populate var_auditd_space_left
 
 grep -q "^space_left[[:space:]]*=.*$" /etc/audit/auditd.conf && \
-  sed -i "s/^space_left[[:space:]]*=.*$/space_left = $var_auditd_space_left/g" /etc/audit/auditd.conf
-if ! [ $? -eq 0 ]; then
-    echo "space_left = $var_auditd_space_left" >> /etc/audit/auditd.conf
-fi
+  sed -i "s/^space_left[[:space:]]*=.*$/space_left = $var_auditd_space_left/g" /etc/audit/auditd.conf || \
+  echo "space_left = $var_auditd_space_left" >> /etc/audit/auditd.conf
