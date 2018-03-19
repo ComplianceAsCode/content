@@ -10,6 +10,7 @@ from template_common import ActionType
 
 from create_accounts_password import AccountsPasswordGenerator
 from create_kernel_modules_disabled import KernelModulesDisabledGenerator
+from create_mounts import MountsGenerator
 from create_mount_options import MountOptionsGenerator
 from create_package_installed import PackageInstalledGenerator
 from create_package_removed import PackageRemovedGenerator
@@ -45,6 +46,7 @@ class Builder(object):
             "kernel_modules_disabled.csv":      KernelModulesDisabledGenerator(),
             "file_dir_permissions.csv":         PermissionGenerator(),
             "accounts_password.csv":            AccountsPasswordGenerator(),
+            "mounts.csv":                       MountsGenerator(),
             "mount_options.csv":                MountOptionsGenerator(),
             "selinux_booleans.csv":             SEBoolGenerator(),
             "audit_rules_dac_modification.csv": AuditRulesDacModificationGenerator(),
