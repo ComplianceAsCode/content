@@ -1,0 +1,53 @@
+<def-group>
+  <definition class="compliance" id="service_%SERVICENAME%_disabled" version="1">
+    <metadata>
+      <title>Service %SERVICENAME% Disabled</title>
+      <affected family="unix">
+        <platform>OpenSUSE</platform>
+      </affected>
+      <description>The %SERVICENAME% service should be disabled if possible.</description>
+    </metadata>
+    <criteria comment="package %PACKAGENAME% removed or service %SERVICENAME% is not configured to start" operator="OR">
+      <extend_definition comment="%PACKAGENAME% removed" definition_ref="package_%PACKAGENAME%_removed" />
+      <criteria operator="AND" comment="service %SERVICENAME% is not configured to start">
+        <criterion comment="%SERVICENAME% not wanted by multi-user.target" test_ref="test_%SERVICENAME%_not_wanted_by_multi_user_target" />
+        <criterion comment="%SERVICENAME% socket not wanted by multi-user.target" test_ref="test_%SERVICENAME%_socket_not_wanted_by_multi_user_target" />
+        <criterion comment="%SERVICENAME% is not running" test_ref="test_service_not_running_%SERVICENAME%" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_%SERVICENAME%_not_wanted_by_multi_user_target" version="1">
+    <linux:object object_ref="object_multi_user_target_for_%SERVICENAME%_disabled" />
+    <linux:state state_ref="state_systemd_%SERVICENAME%_off"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_%SERVICENAME%_disabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_%SERVICENAME%_off" comment="%SERVICENAME% service is not listed in the dependencies" version="1">
+    <linux:dependency entity_check="none satisfy">%SERVICENAME%.service</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitdependency_test check="all" check_existence="any_exist" comment="systemd test" id="test_%SERVICENAME%_socket_not_wanted_by_multi_user_target" version="1">
+    <linux:object object_ref="object_multi_user_target_for_%SERVICENAME%_socket_disabled" />
+    <linux:state state_ref="state_systemd_%SERVICENAME%_socket_off"/>
+  </linux:systemdunitdependency_test>
+  <linux:systemdunitdependency_object id="object_multi_user_target_for_%SERVICENAME%_socket_disabled" comment="list of dependencies of multi-user.target" version="1">
+    <linux:unit>multi-user.target</linux:unit>
+  </linux:systemdunitdependency_object>
+  <linux:systemdunitdependency_state id="state_systemd_%SERVICENAME%_socket_off" comment="%SERVICENAME% socket is not listed in the dependencies" version="1">
+    <linux:dependency entity_check="none satisfy">%SERVICENAME%.socket</linux:dependency>
+  </linux:systemdunitdependency_state>
+
+  <linux:systemdunitproperty_test id="test_service_not_running_%SERVICENAME%" check="all" check_existence="any_exist" comment="Test that the %SERVICENAME% service is not running" version="1">
+    <linux:object object_ref="obj_service_not_running_%SERVICENAME%"/>
+    <linux:state state_ref="state_service_not_running_%SERVICENAME%"/>
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_object id="obj_service_not_running_%SERVICENAME%" comment="Retrieve the ActiveState property of %SERVICENAME%" version="1">
+    <linux:unit operation="pattern match">%SERVICENAME%\.(service|socket)</linux:unit>
+    <linux:property>ActiveState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="state_service_not_running_%SERVICENAME%" version="1" comment="%SERVICENAME% is not running">
+      <linux:value>inactive</linux:value>
+  </linux:systemdunitproperty_state>
+</def-group>
