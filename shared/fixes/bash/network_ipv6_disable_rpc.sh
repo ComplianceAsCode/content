@@ -5,5 +5,5 @@
 
 for rpc_entry in "tcp6" "udp6"
 do
-	sed -i "/^$rpc_entry[[:space:]]\+tpi\_.*inet6.*/d" /etc/netconfig
+	sed -i "/^$rpc_entry[[:space:]]\+tpi_.*inet6.*/d" /etc/netconfig
 done
