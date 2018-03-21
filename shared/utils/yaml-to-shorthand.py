@@ -450,9 +450,11 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             elif extension == '.rule':
                 rules.append(dir_item_path)
             else:
-                print("Encountered file '%s' while recursing, extension '%s' "
-                      "is unknown. Skipping.."
-                      % (dir_item, extension))
+                sys.stderr.write(
+                    "Encountered file '%s' while recursing, extension '%s' "
+                    "is unknown. Skipping..\n"
+                    % (dir_item, extension)
+                )
 
     if group_file and benchmark_file:
         raise ValueError("A .benchmark file and a .group file were found in "

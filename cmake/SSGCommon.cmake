@@ -94,6 +94,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
+        DEPENDS ${SHORTHAND_INPUTS}
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
