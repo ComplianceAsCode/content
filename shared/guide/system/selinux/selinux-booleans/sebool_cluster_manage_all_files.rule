@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the cluster_manage_all_files SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>cluster_manage_all_files</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="cluster_manage_all_files" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'cluster_manage_all_files is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="cluster_manage_all_files" />'

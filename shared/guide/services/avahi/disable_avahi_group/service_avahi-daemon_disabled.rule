@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Avahi Server Software'
+
+description: '<systemd-service-macro enable="false" service="avahi-daemon" />'
+
+rationale: |-
+    Because the Avahi daemon service keeps an open network
+    port, it is subject to network attacks. Its functionality
+    is convenient but is only appropriate if the local network
+    can be trusted.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80338-7
+
+references:
+    cis: 2.2.3
+    disa: 366
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="avahi-daemon" />'

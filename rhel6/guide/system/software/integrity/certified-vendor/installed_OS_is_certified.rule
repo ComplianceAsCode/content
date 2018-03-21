@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'The Installed Operating System Is Vendor Supported and Certified'
+
+description: |-
+    The installed operating system must be maintained and certified by a vendor.
+    Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
+    Linux vendor, Red Hat, Inc. is responsible for providing security patches as well
+    as meeting and maintaining goverment certifications and standards.
+
+rationale: |-
+    An operating system is considered "supported" if the vendor continues to provide
+    security patches for the product as well as maintain government certification requirements.
+    With an unsupported release, it will not be possible to resolve security issue discovered in
+    the system software as well as meet government certifications.
+
+severity: high
+
+identifiers:
+    cce: RHEL6-CCE-TBD
+
+references:
+    disa: 366
+    nist: SI-2(c)
+
+ocil_clause: 'the installed operating system is not supported or certified'
+
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
+    <pre>$ grep -i "red hat" /etc/redhat-release</pre>
+    The output should contain something similar to:
+    <pre>Red Hat Enterprise Linux Server 6.3 (Santiago)</pre>

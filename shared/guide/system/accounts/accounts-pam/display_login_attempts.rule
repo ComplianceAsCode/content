@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set Last Logon/Access Notification'
+
+description: |-
+    To configure the system to notify users of last logon/access
+    using <tt>pam_lastlog</tt>, add or correct the <tt>pam_lastlog</tt> settings in
+    <tt>/etc/pam.d/postlogin</tt> to read as follows:
+    <pre>session     [success=1 default=ignore] pam_succeed_if.so service !~ gdm* service !~ su* quiet
+    session     [default=1]   pam_lastlog.so nowtmp showfailed
+    session     optional      pam_lastlog.so silent noupdate showfailed</pre>
+
+rationale: |-
+    Users need to be aware of activity that occurs regarding
+    their account. Providing users with information regarding the number
+    of unsuccessful attempts that were made to login to their account
+    allows the user to determine if any unauthorized activity has occurred
+    and gives them an opportunity to notify administrators.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 27275-7
+
+references:
+    cjis: 5.5.2
+    disa: 366
+    nist: AC-9
+    pcidss: Req-10.2.4
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040530"
+
+ocil_clause: 'that is not the case'
+
+ocil: |-
+    To ensure that last logon/access notification is configured correctly, run
+    the following command:
+    <pre>$ grep pam_lastlog.so /etc/pam.d/postlogin</pre>
+    The output should show output <tt>showfailed</tt>.

@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Disable GNOME Automounting'
+
+description: |-
+    The system's default desktop environment, GNOME, will mount
+    devices and removable media (such as DVDs, CDs and USB flash drives) whenever
+    they are inserted into the system. Disable automount and autorun within GNOME
+    by running the following:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/nautilus/preferences/media_automount false
+    $ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/nautilus/preferences/media_autorun_never true</pre>
+
+rationale: |-
+    Disabling automatic mounting in GNOME can prevent
+    the introduction of malware via removable media.
+    It will, however, also prevent desktop users from legitimate use
+    of removable media.
+
+severity: unknown
+
+identifiers:
+    cce: 27035-5
+
+references:
+    nist: AC-19(a),AC-19(d),AC-19(e)
+
+ocil_clause: 'GNOME automounting is not disabled'
+
+ocil: |-
+    These settings can be verified by running the following:
+    <pre>$ gconftool-2 -g /apps/nautilus/preferences/media_automount</pre>
+    The output should return <tt>false</tt>.
+    <pre>$ gconftool-2 -g /apps/nautilus/preferences/media_autorun_never</pre>
+    The output should return <tt>true</tt>.

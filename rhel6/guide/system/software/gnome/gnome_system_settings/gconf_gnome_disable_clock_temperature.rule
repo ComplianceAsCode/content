@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable the GNOME Clock Temperature Feature'
+
+description: |-
+    Run the following command to activate locking of the screensaver
+    in the GNOME desktop when it is activated:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/panel/applets/clock/prefs/show_temperature false</pre>
+
+rationale: |-
+    Disabling the temperature feature in the GNOME clock prevents the
+    system from connecting to the internet and diclosing the system
+    location when set by a user.
+
+severity: medium
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To check the status of the idle screen lock activation, run the following command:
+    <pre>$ gconftool-2 -g /apps/panel/applets/clock/prefs/show_temperature</pre>
+    If properly configured, the output should be <tt>false</tt>.

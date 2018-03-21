@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Manually Assign Global IPv6 Address'
+
+description: |-
+    To manually assign an IP address for an interface, edit the
+    file <tt>/etc/sysconfig/network-scripts/ifcfg-<i>interface</i></tt>. Add or correct the
+    following line (substituting the correct IPv6 address):
+    <pre>IPV6ADDR=2001:0DB8::ABCD/64</pre>
+    Manually assigning an IP address is preferable to accepting one from routers or
+    from the network otherwise. The example address here is an IPv6 address
+    reserved for documentation purposes, as defined by RFC3849.
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce: 27233-6
+
+references:
+    nist: CM-6(b)

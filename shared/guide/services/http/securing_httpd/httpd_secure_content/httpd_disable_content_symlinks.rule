@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Web Content Symbolic Links'
+
+description: |-
+    For each <tt>&lt;Directory&gt;</tt> instance, remove the following:
+    <pre>FollowSymLinks</pre>
+    If symbolic links are allowed, the following can be added for each
+    <tt>&lt;Directory&gt;</tt> instance:
+    <pre>Options SymLinksIfOwnerMatchDisable</pre>
+
+rationale: |-
+    A symbolic link allows a file or a directory to be referenced using a symbolic
+    name raising a potential hazard if symbolic linkage is made to a sensitive area.
+    When web scripts are executed and symbolic links are allowed, the web user could
+    be allowed to access locations on the web server that are outside the scope of
+    the web document root or home directory.
+
+severity: high
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG360
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Inspect each <tt>&lt;Directory&gt;</tt> instance and verify that either
+    <pre>FollowSymLinks</pre> does not exist, or
+    <pre>Options SymLinksIfOwnerMatchDisable</pre> is configured properly.

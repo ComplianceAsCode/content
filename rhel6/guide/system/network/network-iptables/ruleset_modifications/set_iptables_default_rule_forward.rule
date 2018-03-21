@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Set Default iptables Policy for Forwarded Packets'
+
+description: |-
+    To set the default policy to DROP (instead of ACCEPT) for
+    the built-in FORWARD chain which processes packets that will be forwarded from
+    one interface to another,
+    add or correct the following line in
+    <tt>/etc/sysconfig/iptables</tt>:
+    <pre>:FORWARD DROP [0:0]</pre>
+
+rationale: |-
+    In <tt>iptables</tt>, the default policy is applied only after all
+    the applicable rules in the table are examined for a match. Setting the
+    default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+    any packets which are not explicitly permitted should not be
+    accepted.
+
+severity: medium
+
+identifiers:
+    cce: 27186-6
+
+references:
+    disa: 1109
+    nist: CM-7
+    srg: SRG-OS-000147
+    stigid: RHEL-06-000320
+
+ocil_clause: 'the default policy for the FORWARD chain is not set to DROP'
+
+ocil: |-
+    Run the following command to ensure the default <tt>FORWARD</tt> policy is <tt>DROP</tt>:
+    <pre>grep ":FORWARD" /etc/sysconfig/iptables</pre>
+    The output should be similar to the following:
+    <pre>$ sudo grep ":FORWARD" /etc/sysconfig/iptables
+    :FORWARD DROP [0:0</pre>

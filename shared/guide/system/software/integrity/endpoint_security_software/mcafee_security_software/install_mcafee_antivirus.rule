@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install McAfee Virus Scanning Software'
+
+description: |-
+    Install McAfee VirusScan Enterprise for Linux antivirus software
+    which is provided for DoD systems and uses signatures to search for the
+    presence of viruses on the filesystem.
+
+rationale: |-
+    Virus scanning software can be used to detect if a system has been compromised by
+    computer viruses, as well as to limit their spread to other systems.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80127-4
+
+references:
+    disa: 366,1239,1668
+    nist: SC-28,SI-3,SI-3(1)(ii)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "032000"
+
+ocil_clause: 'virus scanning software is not installed or running'
+
+ocil: |-
+    To verify that McAfee VirusScan Enterprise for Linux is installed
+    and running, run the following command(s):
+    <pre>$ sudo systemctl status nails</pre>
+    <pre>$ rpm -q McAfeeVSEForLinux</pre>

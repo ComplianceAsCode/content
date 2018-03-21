@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable Core Dumps'
+
+description: |-
+    A core dump file is the memory image of an executable
+    program when it was terminated by the operating system due to
+    errant behavior. In most cases, only software developers
+    legitimately need to access these files. The core dump files may
+    also contain sensitive information, or unnecessarily occupy large
+    amounts of disk space.
+    <br /><br />
+    Once a hard limit is set in <tt>/etc/security/limits.conf</tt>, a
+    user cannot increase that limit within his or her own session. If access
+    to core dumps is required, consider restricting them to only
+    certain users or groups. See the <tt>limits.conf</tt> man page for more
+    information.
+    <br /><br />
+    The core dumps of setuid programs are further protected. The
+    <tt>sysctl</tt> variable <tt>fs.suid_dumpable</tt> controls whether
+    the kernel allows core dumps from these programs at all. The default
+    value of 0 is recommended.

@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Install libreswan Package'
+
+description: |-
+    The Libreswan package provides an implementation of IPsec
+    and IKE, which permits the creation of secure tunnels over
+    untrusted networks. <yum-macro install="true" package="libreswan" />
+
+rationale: |-
+    Providing the ability for remote users or systems
+    to initiate a secure VPN connection protects information when it is
+    transmitted over a wide area network.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80170-4
+
+references:
+    disa: 1130,1131
+    nist: 'AC-17, MA-4, SC-9'
+    pcidss: Req-4.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="libreswan" />'

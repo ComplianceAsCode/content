@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Enable rsyslog Service'
+
+description: |-
+    The <tt>rsyslog</tt> service provides syslog-style logging by default on Ubuntu 1404.
+    <chkconfig-service-macro enable="true" service="rsyslog" />
+
+rationale: |-
+    The <tt>rsyslog</tt> service must be running in order to provide
+    logging services, which are essential to system administration.
+
+severity: medium
+
+references:
+    anssi: NT28(R46),NT28(R5)
+    cis: 5.1.2
+    disa: 1311,1312,1557,1851
+    nist: AU-4(1),AU-12
+
+ocil: '<service-check-macro enable="true" service="rsyslog" />'

@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Use direct-lvm with the Device Mapper Storage Driver'
+
+description: |-
+    To use Docker in production with the device mapper storage driver, the Docker
+    daemon should be configured to use direct-lvm instead of loopback device as
+    a storage. For setting up the LVM and configuring Docker, see the
+    <weblink-macro link="https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/" text="Docker Device Mapper Storage Documentation" />.
+
+rationale: |-
+    For using Docker in production, the device mapper storage driver with loopback
+    devices is discouraged. The suggested way of configuring device mapper storage
+    driver is direct-lvm. Choosing the right storage driver and backing filesystem
+    is crucial to stability and performance.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 80441-9

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure auditd space_left on Low Disk Space'
+
+description: |-
+    The <tt>auditd</tt> service can be configured to take an action
+    when disk space is running low but prior to running out of space completely.
+    Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+    substituting <i>SIZE_in_MB</i> appropriately:
+    <pre>space_left = <i>SIZE_in_MB</i></pre>
+    Set this value to the appropriate size in Megabytes cause the system to
+    notify the user of an issue.
+
+rationale: |-
+    Notifying administrators of an impending disk space problem may allow them to
+    take corrective action prior to any disruption.
+
+severity: medium
+
+identifiers:
+    cce: 80537-4
+
+references:
+    disa: 1855
+    nist: AU-1(b),AU-4,AU-5(b),IR-5
+    pcidss: Req-10.7
+    srg: SRG-OS-000343-GPOS-00134
+    stigid: "030330"
+
+ocil_clause: 'the system is not configured a specfic size in MB to notify administrators of an issue'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured correctly:
+    <pre>space_left <i>SIZE_in_MB</i></pre>

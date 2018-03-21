@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure <tt>auditd</tt> Collects File Deletion Events by User - unlinkat'
+
+description: |-
+    At a minimum, the audit system should collect file deletion events
+    for all users and root. If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file, setting ARCH to either b32 or b64 as
+    appropriate for your system:
+    <pre>-a always,exit -F arch=ARCH -S unlinkat -F auid&gt;=1000 -F auid!=4294967295 -F key=delete</pre>
+
+rationale: |-
+    Auditing file deletions will create an audit trail for files that are removed
+    from the system. The audit trail could aid in system troubleshooting, as well as, detecting
+    malicious processes that attempt to delete log files to conceal their presence.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27206-2
+
+references:
+    cis: 5.2.14
+    cui: 3.1.7
+    disa: 366,172,2884
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    nist: AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5,MA-4(1)(a)
+    ospp@rhel7: FAU_GEN.1.1.c
+    pcidss: Req-10.2.7
+    srg: SRG-OS-000466-GPOS-00210,SRG-OS-000467-GPOS-00210,SRG-OS-000468-GPOS-00212,SRG-OS-000392-GPOS-00172
+    stigid@rhel7: "030920"
+
+ocil: '<audit-syscall-check-macro syscall="unlinkat" />'

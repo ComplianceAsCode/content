@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set the GNOME3 Login Number of Failures'
+
+description: "In the default graphical environment, the GNOME3 login \nscreen and be configured to restart the authentication process after \na configured number of attempts. This can be configured by setting\n<tt>allowed-failures</tt> to <tt>3</tt> or less.\n<br /><br />\nTo enable, add or edit <tt>allowed-failures</tt> to\n<tt>/etc/dconf/db/gdm.d/00-security-settings</tt>. For example:\n<pre>[org/gnome/login-screen]\nallowed-failures=3</pre>\nOnce the setting has been added, add a lock to\n<tt>/etc/dconf/db/gdm.d/locks/00-security-settings-lock</tt> to prevent user modification.\nFor example:\n<pre>/org/gnome/login-screen/allowed-failures</pre>\nAfter the settings have been set, run <tt>dconf update</tt>."
+
+rationale: |-
+    Setting the password retry prompts that are permitted on a per-session basis to a low value
+    requires some software, such as SSH, to re-connect. This can slow down and
+    draw additional attention to some types of password-guessing attacks.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80109-2
+
+references:
+    cui: 3.1.8
+    ospp@rhel7: FMT_MOF_EXT.1
+
+ocil_clause: 'allowed-failures is not equal to or less than the expected value'
+
+ocil: |-
+    To ensure the login screen resets after a specified number of failures,
+    run the following command:
+    <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/*</pre>
+    The output should be <tt>3</tt> or less.
+    To ensure that users cannot change or configure the resets after a specified
+    number of failures on the login screen, run the following:
+    <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/login-screen/allowed-failures</tt>

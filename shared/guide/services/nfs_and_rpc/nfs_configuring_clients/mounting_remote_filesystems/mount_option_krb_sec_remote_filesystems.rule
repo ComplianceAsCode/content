@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Mount Remote Filesystems with Kerberos Security'
+
+description: '<mount-desc-macro option="sec=krb5:krb5i:krb5p" part="any NFS mounts" />'
+
+rationale: |-
+    When an NFS server is configured to use AUTH_SYS a selected userid and groupid are used to handle
+    requests from the remote user. The userid and groupid could mistakenly or maliciously be set
+    incorrectly. The AUTH_GSS method of authentication uses certificates on the server and client
+    systems to more securely authenticate the remote mount request.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27458-9
+
+references:
+    disa: 366
+    nist: AC-14(1)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040750"
+
+ocil_clause: 'the setting is not configured, has the ''sys'' option added, or does not have all Kerberos options added'
+
+ocil: |-
+    To verify the <tt>sec</tt> option is configured for all NFS mounts, run the following command:
+    <pre>$ mount | grep "sec="</pre>
+    All NFS mounts should show the <tt>sec=krb5:krb5i:krb5p</tt> setting in parentheses.
+    This is not applicable if NFS is not implemented.

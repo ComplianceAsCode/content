@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Anonymous FTP Access'
+
+description: |-
+    If any directories that contain dynamic scripts can be accessed via FTP by
+    any group or user that does not require access, remove permissions to such
+    directories that allow anonymous access. Also, ensure that any such
+    access employs an encrypted connection.
+
+rationale: |-
+    The directories containing the CGI scripts, such as PERL, must not be
+    accessible to anonymous users via FTP. This applies to all directories that
+    contain scripts that can dynamically produce web pages in an interactive manner
+    (i.e., scripts based upon user-provided input). Such scripts contain information
+    that could be used to compromise a web service, access system resources, or
+    deface a web site.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG430
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Locate the directories containing the CGI scripts. These directories should be
+    language-specific (e.g., PERL, ASP, JS, JSP, etc.). Examine the file permissions
+    on the directories using the following command:
+    <pre>ls -l <i>directories</i></pre>
+    Anonymous FTP users must not have access to these directories.

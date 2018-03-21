@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable Screen Lock Activation After Idle Period'
+
+description: |-
+    Run the following command to activate locking of the screensaver
+    in the GNOME desktop when it is activated:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/gnome-screensaver/lock_enabled true</pre>
+
+rationale: |-
+    Enabling the activation of the screen lock after an idle period
+    ensures password entry will be required in order to
+    access the system, preventing access by passersby.
+
+severity: medium
+
+identifiers:
+    cce: 26235-2
+
+references:
+    disa: 57
+    nist: AC-11(a)
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000029
+    stigid: RHEL-06-000259
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To check the status of the idle screen lock activation, run the following command:
+    <pre>$ gconftool-2 -g /apps/gnome-screensaver/lock_enabled</pre>
+    If properly configured, the output should be <tt>true</tt>.

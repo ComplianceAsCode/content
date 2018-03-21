@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure the Default Bash Umask is Set Correctly'
+
+description: |-
+    To ensure the default umask for users of the Bash shell is set properly,
+    add or correct the <tt>umask</tt> setting in <tt>/etc/bashrc</tt> to read
+    as follows:
+    <pre>umask <sub idref="var_accounts_user_umask" /></pre>
+
+rationale: |-
+    The umask value influences the permissions assigned to files when they are created.
+    A misconfigured umask value could result in files with excessive permissions that can be read or
+    written to by unauthorized users.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80202-5
+
+references:
+    cis: 5.4.4
+    disa: 366
+    nist: SA-8
+
+ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
+
+ocil: |-
+    Verify the <tt>umask</tt> setting is configured correctly in the <tt>/etc/bashrc</tt> file by
+    running the following command:
+    <pre># grep "umask" /etc/bashrc</pre>
+    All output must show the value of <tt>umask</tt> set as shown below:
+    <pre># grep "umask" /etc/bashrc
+    umask <sub idref="var_accounts_user_umask" />
+    umask <sub idref="var_accounts_user_umask" /></pre>

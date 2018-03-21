@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Power Settings in GNOME3'
+
+description: |-
+    By default, <tt>GNOME</tt> enables a power profile designed for mobile devices
+    with battery usage. While useful for mobile devices, this setting should be disabled
+    for all other systems. To configure the system to disable the power setting, add or set
+    <tt>active</tt> to <tt>false</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/settings-daemon/plugins/power]
+    active=false
+    </pre>
+    Once the settings have been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/settings-daemon/plugins/power</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    Power settings should not be enabled on systems that are not mobile devices.
+    Enabling power settings on non-mobile devices could have unintended processing
+    consequences on standard systems.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80116-7
+
+ocil_clause: 'power settings are enabled and are not disabled'
+
+ocil: |-
+    To ensure that the GUI power settings are not active, run the following command:
+    <pre>$ gsettings get org.gnome.settings-daemon.plugins.power active</pre>
+    If properly configured, the output should be <tt>false</tt>.
+    To ensure that users cannot enable the power settings, run the following:
+    <pre>$ grep power /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be
+    <tt>/org/gnome/settings-daemon/plugins/power/active</tt>

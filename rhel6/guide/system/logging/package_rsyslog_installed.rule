@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Ensure rsyslog is Installed'
+
+description: "Rsyslog is installed by default. \n<yum-macro install=\"true\" package=\"rsyslog\" />"
+
+rationale: |-
+    The rsyslog package provides the rsyslog daemon, which provides
+    system logging services.
+
+severity: medium
+
+identifiers:
+    cce: 26809-4
+
+references:
+    disa: 1311,1312
+    nist: AU-9(2)
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="rsyslog" />'

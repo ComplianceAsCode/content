@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Assign Expiration Date to Temporary Accounts'
+
+description: "Temporary accounts are established as part of normal account activation procedures\nwhen there is a need for short-term accounts. In the event temporary \nor emergency accounts are required, configure the system to terminate \nthem after a documented time period. For every temporary and\nemergency account, run the following command to set an expiration date on it,\nsubstituting <tt><i>USER</i></tt> and <tt><i>YYYY-MM-DD</i></tt> appropriately:\n<pre>$ sudo chage -E <i>YYYY-MM-DD USER</i></pre>\n<tt><i>YYYY-MM-DD</i></tt> indicates the documented expiration date for the account.\nFor U.S. Government systems, the operating system must be configured to automatically terminate\nthese types of accounts after a period of 72 hours."
+
+rationale: |-
+    If temporary user accounts remain active when no longer needed or for
+    an excessive period, these accounts may be used to gain unauthorized access.
+    To mitigate this risk, automated termination of all temporary accounts
+    must be set upon account creation.
+    <br />
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27498-5
+
+references:
+    disa: 16,1682
+    nist: AC-2(2),AC-2(3)
+    srg: 2
+
+ocil_clause: 'any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame'
+
+ocil: |-
+    For every temporary and emergency account, run the following command
+    to obtain its account aging and expiration information:
+    <pre>$ sudo chage -l <i>USER</i></pre>
+    Verify each of these accounts has an expiration date set as documented.

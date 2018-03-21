@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure YUM Removes Previous Package Versions'
+
+description: |-
+    <tt>Yum</tt> should be configured to remove previous software components after
+    previous versions have been installed. To configure <tt>yum</tt> to remove the
+    previous software components after updating, set the <tt>clean_requirements_on_remove</tt>
+    to <tt>1</tt> in <tt>/etc/yum.conf</tt>.
+
+rationale: |-
+    Previous versions of software components that are not removed from the information
+    system after updates have been installed may be exploited by some adversaries.
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-80346-0
+
+references:
+    cui: 3.4.8
+    disa: 2617
+    nist: SI-2(6)
+    srg: SRG-OS-000437-GPOS-00194
+    stigid@rhel7: "020200"
+
+ocil_clause: 'clean_requirements_on_remove is not enabled or configured correctly'
+
+ocil: |-
+    To verify that <tt>clean_requirements_on_remove</tt> is configured properly, run the
+    following command:
+    <pre>$ grep clean_requirements_on_remove /etc/yum.conf</pre>
+    The output should return something similar to:
+    <pre>clean_requirements_on_remove=1</pre>

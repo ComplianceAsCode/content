@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the awstats_purge_apache_log_files SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>awstats_purge_apache_log_files</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="awstats_purge_apache_log_files" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80428-6
+
+references:
+    cui: 3.7.2
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'awstats_purge_apache_log_files is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="awstats_purge_apache_log_files" />'

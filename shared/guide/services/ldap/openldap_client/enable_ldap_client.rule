@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the LDAP Client For Use in Authconfig'
+
+description: |-
+    To determine if LDAP is being used for authentication, use the following
+    command:
+    <pre>$ sudo grep -i useldapauth /etc/sysconfig/authconfig</pre>
+    <br /><br />
+    If <tt>USELDAPAUTH=yes</tt>, then LDAP is being used. If not, set <tt>USELDAPAUTH</tt>
+    to <tt>yes</tt>.
+
+rationale: |-
+    Without cryptographic integrity protections, information can be
+    altered by unauthorized users without detection. The ssl directive specifies
+    whether to use TLS or not. If not specified it will default to no.
+    It should be set to start_tls rather than doing LDAP over SSL.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80448-4
+
+references:
+    disa: 1453
+    nist: AC-17(2),CM-7
+    srg: SRG-OS-000250-GPOS-00093
+
+ocil_clause: 'USELDAPAUTH=yes is not configured correctly in /etc/sysconfig/authconfig'
+
+ocil: |-
+    To determine if LDAP is being used for authentication, use the following
+    command:
+    <pre>$ sudo grep -i useldapauth /etc/sysconfig/authconfig</pre>
+    The output should return:
+    <pre>USELDAPAUTH=yes</pre>

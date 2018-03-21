@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable FIPS Mode in GRUB2'
+
+description: |-
+    To ensure FIPS mode is enabled, rebuild <tt>initramfs</tt> by running the following command:
+    <pre>dracut -f</pre>
+    After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
+    GRUB 2 command line for the Linux operating system in
+    <tt>/etc/default/grub</tt>, in the manner below:
+    <pre>GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 fips=1"</pre>
+    Finally, rebuild the <tt>grub.cfg</tt> file by using the
+    <pre>grub2-mkconfig -o</pre> command as follows:
+    <ul>
+    <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
+    <pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
+    <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
+    <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
+    </ul>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80359-3
+
+references:
+    cjis: 5.10.1.2
+    cui: 3.13.8,3.13.11
+    disa: 68,2450
+    nist: AC-17(2)
+    srg: SRG-OS-000033-GPOS-00014,SRG-OS-000396-GPOS-00176,SRG-OS-000478-GPOS-00223
+    stigid@rhel7: "021350"
+
+ocil_clause: 'FIPS is not configured or enabled in grub'
+
+ocil: |-
+    To verify that FIPS is enabled properly in grub, run the following command:
+    <pre>$ grep fips /etc/default/grub</pre>
+    The output should contain fips=1

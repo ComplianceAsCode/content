@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Enable Certificate Verification'
+
+description: "Firefox can be configured to prompt the user to choose a certificate\nto present to a website when asked. To enable certificate verification, \nset <tt>security.default_personal_cert</tt> to <tt>Ask Every Time</tt>."
+
+rationale: |-
+    Websites within DoD require user authentication for access which increases
+    security for DoD information. Access will be denied to the user if
+    certificate management is not configured.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ECSC-1
+    stigid: DTBF050
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that certificate verification is enabled, run the following command:
+    <pre>$ grep 'security.default_personal_cert' <i>FIREFOX_INSTALL_DIR</i>/*.cfg</pre>
+    The output should return:
+    <pre>lockPref("security.default_personal_cert", "Ask Every Time");</pre>

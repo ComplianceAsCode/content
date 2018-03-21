@@ -1,0 +1,56 @@
+documentation_complete: true
+
+title: 'Configure JBoss Application File Permissions'
+
+description: |-
+    Configure file permissions on the JBoss folder to protect from unauthorized
+    access.
+
+rationale: |-
+    The JBoss EAP Application Server is a Java-based AS. It is installed on the OS
+    file system and depends upon file system access controls to protect application
+    data at rest. The file permissions set on the JBoss EAP home folder must be
+    configured so as to limit access to only authorized people and processes. The
+    account used for operating the JBoss server and any designated administrative or
+    operational accounts are the only accounts that should have access.
+    <br /><br />
+    When data
+    is written to digital media such as hard drives, mobile computers,
+    external/removable hard drives, personal digital assistants, flash/thumb drives,
+    etc., there is risk of data loss and data compromise. Steps must be taken to
+    ensure data stored on the device is protected.
+
+severity: medium
+
+identifiers:
+    cce: 80484-9
+
+references:
+    disa: 1199
+    nist: ""
+    srg: SRG-APP-000231-AS-000133
+    stigid: JBOS-AS-000400
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    By default, JBoss installs its files into a folder called <tt>jboss-eap-6.3</tt>.
+    This folder by default is stored within the home folder of the JBoss user
+    account. The installation process, however, allows for the override of default
+    values to obtain folder and user account information from the system admin.
+    <br /><br />
+    Log
+    on with a user account with JBoss access and permissions.
+    <br /><br />
+    Navigate to the <tt>Jboss-eap-6.3</tt>
+    folder using the relevant OS commands for either a UNIX-
+    like OS or a Windows OS.
+    <br /><br />
+    Examine the permissions of the JBoss folder.
+    <br /><br />
+    Owner can be full access. Group can be full access.
+    All others must be restricted to
+    execute access or no permission.
+    <br /><br />
+    If the JBoss folder is world readable or world
+    writeable, this is a finding.

@@ -1,0 +1,54 @@
+documentation_complete: true
+
+title: 'Enable HTTPS for Management Sessions'
+
+description: |-
+    Follow the specific instructions in the Red Hat Security Guide for EAP version
+    6.3 to configure the management console for HTTPS.
+    <br /><br />
+    This involves the following steps.
+    1. Create a keystore in JKS format.
+    2. Ensure the management console binds to HTTPS.
+    3. Create a new Security Realm.
+    4. Configure Management Interface to use new security realm.
+    5. Configure the management console to use the keystore.
+    6. Restart the EAP server.
+
+rationale: |-
+    Types of management interfaces utilized by the JBoss EAP application server
+    include web-based HTTP interfaces as well as command line-based management
+    interfaces. In the event remote HTTP management is required, the access must be
+    via HTTPS.
+    <br /><br />
+    This requirement is in conjunction with the requirement to isolate
+    all management access to a restricted network.
+
+severity: medium
+
+identifiers:
+    cce: 80450-0
+
+references:
+    disa: 68
+    nist: ""
+    srg: SRG-APP-000014-AS-000009
+    stigid: JBOS-AS-000010
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss. Using the relevant OS commands and syntax, cd to the
+    <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder. Run the <pre>jboss-cli</pre> script. Connect to the server and authenticate.
+    <br /><br />
+    For a standalone configuration run the following command:
+    <pre>ls /core-service=management/management-interface=http-interface</pre>
+    <br /><br />
+    If <pre>"secure-socket-binding"=undefined</pre>, this is a finding.
+    <br /><br />
+    For a domain configuration run
+    the following command:
+    <pre>ls /host=master/core-service=management/management-interface=http-interface</pre>
+    <br /><br />
+    If <tt>secure-port</tt> is undefined, this is a finding.

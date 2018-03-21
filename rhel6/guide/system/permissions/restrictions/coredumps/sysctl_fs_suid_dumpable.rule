@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable Core Dumps for SUID programs'
+
+description: '<sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" />'
+
+rationale: |-
+    The core dump of a setuid program is more likely to contain
+    sensitive data, as the program itself runs with greater privileges than the
+    user who initiated execution of the program.  Disabling the ability for any
+    setuid program to write a core file decreases the risk of unauthorized access
+    of such data.
+
+severity: unknown
+
+identifiers:
+    cce: 27044-7
+
+references:
+    nist: SI-11
+
+ocil: '<sysctl-check-macro sysctl="fs.suid_dumpable" value="0" />'

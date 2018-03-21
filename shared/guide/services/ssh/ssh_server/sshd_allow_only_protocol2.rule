@@ -1,0 +1,41 @@
+documentation_complete: true
+
+title: 'Allow Only SSH Protocol 2'
+
+description: |-
+    Only SSH protocol version 2 connections should be
+    permitted. The default setting in
+    <tt>/etc/ssh/sshd_config</tt> is correct, and can be
+    verified by ensuring that the following
+    line appears:
+    <pre>Protocol 2</pre>
+
+rationale: |-
+    SSH protocol version 1 is an insecure implementation of the SSH protocol and
+    has many well-known vulnerability exploits. Exploits of the SSH daemon could provide
+    immediate root access to the system.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27320-1
+
+references:
+    cis: 5.2.2
+    cjis: 5.5.6
+    cui: 3.1.13,3.5.4
+    disa: 197,366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8).1(ii),IA-5(1)(c)
+    srg: SRG-OS-000074-GPOS-00042,SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040390"
+
+ocil_clause: 'it is commented out or is not set correctly to Protocol 2'
+
+ocil: |-
+    To check which SSH protocol version is allowed, check version of <tt>openssh-server</tt> with following command:
+    <pre>$ rpm -qi openssh-server | grep Version</pre>
+    Versions equal to or higher than 7.4 only allow Protocol 2.
+    If version is lower than 7.4, run the following command to check configuration:
+    <pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>Protocol 2</pre>

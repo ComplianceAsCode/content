@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Deny BOOTP Queries'
+
+description: |-
+    Unless your network needs to support older BOOTP clients, disable
+    support for the bootp protocol by adding or correcting the global option:
+    <pre>deny bootp;</pre>
+
+rationale: |-
+    The bootp option tells dhcpd to respond to BOOTP queries. If support
+    for this simpler protocol is not needed, it should be disabled to remove attack
+    vectors against the DHCP server.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80334-6
+
+references:
+    nist: CM-7

@@ -1,0 +1,49 @@
+documentation_complete: true
+
+title: 'Disable or Replace the JBoss Welcome Page'
+
+description: |-
+    Use the Management CLI script <pre>$JBOSS_HOME/bin/jboss-cli.sh</pre> to run the following
+    command. You may need to change the profile to modify a different managed domain
+    profile, or remove the <pre>/profile=default</pre> portion of the command for a
+    standalone server.
+    <br /><br />
+    <pre>/profile=default/subsystem=web/virtual-server=default-host:writeattribute(name=enable-welcome-root,value.)</pre>
+    <br /><br />
+    To configure
+    your web application to use the root context (/) as its URL address, modify the
+    applications jboss-web.xml, which is located in the applications <tt>META-INF/</tt> or
+    <tt>WEB-INF/</tt> directory. Replace its <tt>&lt;context-root&gt;</tt> directive with one that looks
+    like the following:
+    <br /><br />
+    <pre>
+    <jboss-web>
+        <context-root>/</context-root>
+    </jboss-web>
+    </pre>
+
+rationale: |-
+    The Welcome to JBoss web page provides a redirect to the JBoss admin console,
+    which, by default, runs on TCP 9990 as well as redirects to the Online User
+    Guide and Online User Groups hosted at locations on the Internet. The welcome
+    page is unnecessary and should be disabled or replaced with a valid web
+    page.
+
+severity: low
+
+identifiers:
+    cce: 80470-8
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000245
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Use a web browser and browse to <pre>HTTP://JBOSS SERVER IP ADDRESS:8080</pre>
+    <br /><br />
+    If the
+    JBoss Welcome page is displayed, this is a finding.

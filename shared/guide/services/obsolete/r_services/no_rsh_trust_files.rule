@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Remove Rsh Trust Files'
+
+description: |-
+    The files <tt>/etc/hosts.equiv</tt> and <tt>~/.rhosts</tt> (in
+    each user's home directory) list remote hosts and users that are trusted by the
+    local system when using the rshd daemon.
+    To remove these files, run the following command to delete them from any
+    location:
+    <pre>$ sudo rm /etc/hosts.equiv</pre>
+    <pre>$ rm ~/.rhosts</pre>
+
+rationale: |-
+    Trust files are convenient, but when
+    used in conjunction with the R-services, they can allow
+    unauthenticated access to a system.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27406-8
+
+references:
+    cis: 6.2.14
+    disa: 1436
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8),CM-7
+
+ocil_clause: 'these files exist'
+
+ocil: |-
+    The existence of the file <tt>/etc/hosts.equiv</tt> or a file named
+    <tt>.rhosts</tt> inside a user home directory indicates the presence
+    of an Rsh trust relationship.

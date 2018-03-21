@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Quota Netlink (quota_nld)'
+
+description: |-
+    The <tt>quota_nld</tt> service provides notifications to
+    users of disk space quota violations. It listens to the kernel via a netlink
+    socket for disk quota violations and notifies the appropriate user of the
+    violation using D-Bus or by sending a message to the terminal that the user has
+    last accessed.
+    <systemd-service-macro enable="false" service="quota_nld" />
+
+rationale: |-
+    If disk quotas are enforced on the local system, then the
+    <tt>quota_nld</tt> service likely provides useful functionality and should
+    remain enabled. However, if disk quotas are not used or user notification of
+    disk quota violation is not desired then there is no need to run this
+    service.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80267-8
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="quota_nld" />'

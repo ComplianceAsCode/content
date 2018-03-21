@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Configure Accepting IPv6 Redirects By Default'
+
+description: '<sysctl-desc-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />'
+
+rationale: 'An illicit ICMP redirect message could result in a man-in-the-middle attack.'
+
+severity: medium
+
+identifiers:
+    cce: RHEL6-CCE-TBD
+
+references:
+    cis: 4.4.1.2
+    disa: 1551
+    nist: CM-7
+
+ocil: '<sysctl-check-macro sysctl="net.ipv6.conf.all.accept_redirects" value="0" />'

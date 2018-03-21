@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Add nodev Option to /dev/shm'
+
+description: |-
+    The <tt>nodev</tt> mount option can be used to prevent creation of device files in <tt>/dev/shm</tt>.
+    Legitimate character and block devices should not exist within temporary directories like <tt>/dev/shm</tt>.
+    <mount-desc-macro option="nodev" part="/dev/shm" />
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory located on the root partition.
+    The only exception to this is chroot jails.
+
+severity: unknown
+
+references:
+    cis: 1.1.14
+    nist: 'CM-7, MP-2'

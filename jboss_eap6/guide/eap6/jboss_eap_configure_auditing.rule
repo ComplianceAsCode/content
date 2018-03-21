@@ -1,0 +1,59 @@
+documentation_complete: true
+
+title: 'Configure JBoss Auditing and Logging'
+
+description: |-
+    Launch the jboss-cli management interface.
+    Connect to the server by typing
+    <tt>connect</tt>, authenticate as a user in the Superuser role, and run the
+    following command:
+    <br /><br />
+    For a Managed Domain configuration:
+    <pre>host=master/server/<i>SERVERNAME</i>/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)</pre>
+    <br /><br />
+    For a Standalone
+    configuration:
+    <pre>/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)</pre>
+
+rationale: |-
+    Log records can be generated from various components within the JBoss
+    application server. The minimum list of logged events should be those
+    pertaining to access and authentication events to the management interface as
+    well as system startup and shutdown events.
+    <br /><br />
+    By default, JBoss does not log
+    management interface access but does provide a default file handler. This
+    handler needs to be enabled. Configuring this setting meets several STIG
+    auditing requirements.
+
+severity: medium
+
+identifiers:
+    cce: 80459-1
+
+references:
+    disa: 130,131,132,133,134,169,172,1464
+    nist: ""
+    srg: SRG-APP-000089-AS-000050,SRG-APP-000092-AS-000053,SRG-APP-000095-AS-000056,SRG-APP-000096-AS-000059,SRG-APP-000096-AS-000060,SRG-APP-000098-AS-000061,SRG-APP-000099-AS-000062,SRG-APP-000495-AS-000220,SRG-APP-000499-AS-000224,SRG-APP-000499-AS-000224,SRG-APP-000503-AS-000228,SRG-APP-000504-AS-000229,SRG-APP-000505-AS-000230,SRG-APP-000506-AS-000231,SRG-APP-000509-AS-000234
+    stigid: JBOS-AS-000080
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script to start the Command Line Interface (CLI).
+    Connect to the server and authenticate.
+    Run the command:
+    <br /><br />
+    For a Managed Domain
+    configuration:
+    <pre>ls host=master/server/<i>SERVERNAME</i>/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)</pre>
+    <br /><br />
+    For a Standalone configuration:
+    <pre>ls /core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)</pre>
+    <br /><br />
+    If <pre>"enabled" =.</pre>, this is
+    a finding.

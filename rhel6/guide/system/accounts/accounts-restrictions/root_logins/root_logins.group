@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Restrict Root Logins'
+
+description: |-
+    Direct root logins should be allowed only for emergency use.
+    In normal situations, the administrator should access the system
+    via a unique unprivileged account, and then use <tt>su</tt> or <tt>sudo</tt> to execute
+    privileged commands. Discouraging administrators from accessing the
+    root account directly ensures an audit trail in organizations with
+    multiple administrators. Locking down the channels through which
+    root can connect directly also reduces opportunities for
+    password-guessing against the root account. The <tt>login</tt> program
+    uses the file <tt>/etc/securetty</tt> to determine which interfaces
+    should allow root logins.
+
+    The virtual devices <tt>/dev/console</tt>
+    and <tt>/dev/tty*</tt> represent the system consoles (accessible via
+    the Ctrl-Alt-F1 through Ctrl-Alt-F6 keyboard sequences on a default
+    installation). The default securetty file also contains <tt>/dev/vc/*</tt>.
+    These are likely to be deprecated in most environments, but may be retained
+    for compatibility. Root should also be prohibited from connecting
+    via network protocols. Other sections of this document
+    include guidance describing how to prevent root from logging in via SSH.

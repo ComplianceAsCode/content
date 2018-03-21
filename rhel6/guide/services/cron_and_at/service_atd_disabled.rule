@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Disable At Service (atd)'
+
+description: |-
+    The <tt>at</tt> and <tt>batch</tt> commands can be used to
+    schedule tasks that are meant to be executed only once. This allows delayed
+    execution in a manner similar to cron, except that it is not
+    recurring. The daemon <tt>atd</tt> keeps track of tasks scheduled via
+    <tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.
+    <chkconfig-service-macro enable="false" service="atd" />
+
+rationale: |-
+    The <tt>atd</tt> service could be used by an unsophisticated insider to carry
+    out activities outside of a normal login session, which could complicate
+    accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
+    <tt>batch</tt> is not common.
+
+severity: unknown
+
+identifiers:
+    cce: 27249-2
+
+references:
+    disa: 381
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000262
+
+ocil: '<service-check-macro enable="false" service="atd" />'

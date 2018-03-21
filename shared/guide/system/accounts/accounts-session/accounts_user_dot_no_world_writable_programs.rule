@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'User Initialization Files Must Not Run World-Writable Programs'
+
+description: |-
+    Set the mode on files being executed by the user initialization files with the
+    following command:
+    <pre>$ sudo chmod 0755 <i>FILE</i></pre>
+
+rationale: |-
+    If user start-up files execute world-writable programs, especially in
+    unprotected directories, they could be maliciously modified to destroy user
+    files or otherwise compromise the system at the user level. If the system is
+    compromised at the user level, it is easier to elevate privileges to eventually
+    compromise the system at the root and network level.
+
+severity: medium
+
+identifiers:
+    cce: 80523-4
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "020730"
+
+ocil_clause: 'files are executing world-writable programs'
+
+ocil: |-
+    To verify that local initialization files do not execute world-writable programs,
+    execute the following command:
+    <pre>$ sudo find /home -perm -002 -type f -exec ls -ld {} -name ".[^.]*"\;</pre>
+    There should be no output.

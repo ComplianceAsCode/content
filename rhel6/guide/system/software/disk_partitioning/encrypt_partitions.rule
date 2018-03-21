@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Encrypt Partitions'
+
+description: "Red Hat Enterprise Linux 6 natively supports partition encryption through the\nLinux Unified Key Setup-on-disk-format (LUKS) technology. The easiest way to \nencrypt a partition is during installation time.\n<br /><br />\nFor manual installations, select the <tt>Encrypt</tt> checkbox during\npartition creation to encrypt the partition. When this\noption is selected the system will prompt for a passphrase to use in\ndecrypting the partition. The passphrase will subsequently need to be entered manually\nevery time the system boots.\n<br /><br />\nFor automated/unattended installations, it is possible to use Kickstart by adding\nthe <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be\nencrypted. For example, the following line would encrypt the root partition:\n<pre>part / --fstype=ext3 --size=100 --onpart=hda1 --encrypted --passphrase=<i>PASSPHRASE</i></pre>\nAny <i>PASSPHRASE</i> is stored in the Kickstart in plaintext, and the Kickstart\
+    \ must then be protected accordingly.\nOmitting the <tt>--passphrase=</tt> option from the partition definition will cause the\ninstaller to pause and interactively ask for the passphrase during installation.\n<br /><br />\nBy default, the <tt>Anaconda</tt> installer uses <tt>aes-xts-plain64</tt> cipher\nwith a minimum <tt>512</tt> bit key size which should be compatible with FIPS enabled.\n<br /><br />\nDetailed information on encrypting partitions using LUKS or LUKS ciphers can be found on\nthe Red Hat Documentation web site:<br />\n<weblink-macro link=\"https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Security_Guide/chap-Security_Guide-Encryption.html#sect-Security_Guide-LUKS_Disk_Encryption\" />"
+
+rationale: |-
+    The risk of a system's physical compromise, particularly mobile systems such as
+    laptops, places its data at risk of compromise.  Encrypting this data mitigates
+    the risk of its loss if the system is lost.
+
+severity: unknown
+
+identifiers:
+    cce: 27596-6
+
+references:
+    disa: 1019,1199,1200
+    nist: 'SC-13, SC-28'
+    srg: SRG-OS-000131,SRG-OS-000185,SRG-OS-000230
+    stigid: RHEL-06-000275
+
+ocil_clause: 'encryption must be used and is not employed'
+
+ocil: 'Determine if encryption must be used to protect data on the system.'

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable Apache Qpid (qpidd)'
+
+description: |-
+    The <tt>qpidd</tt> service provides high speed, secure,
+    guaranteed delivery services.  It is an implementation of the Advanced Message
+    Queuing Protocol.  By default the qpidd service will bind to port 5672 and
+    listen for connection attempts.
+    <chkconfig-service-macro enable="false" service="qpidd" />
+
+rationale: "The qpidd service is automatically installed when the \"base\" \npackage selection is selected during installation.  The qpidd service listens \nfor network connections, which increases the attack surface of the system.  If \nthe system is not intended to receive AMQP traffic, then the <tt>qpidd</tt> \nservice is not needed and should be disabled or removed."
+
+severity: unknown
+
+identifiers:
+    cce: 26928-2
+
+references:
+    disa: 382
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000267
+
+ocil: '<service-check-macro enable="false" service="qpidd" />'

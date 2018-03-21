@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Limit Users'' SSH Access'
+
+description: |-
+    By default, the SSH configuration allows any user with an account
+    to access the system. In order to specify the users that are allowed to login
+    via SSH and deny all other users, add or correct the following line in the
+    <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>DenyUsers USER1 USER2</pre>
+    Where <tt>USER1</tt> and <tt>USER2</tt> are valid user names.
+
+rationale: |-
+    Specifying which accounts are allowed SSH access into the system reduces the
+    possibility of unauthorized access to the system.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80219-9
+
+references:
+    cui: 3.1.12
+    nist: AC-3

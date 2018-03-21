@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify firewalld Enabled'
+
+description: '<systemd-service-macro enable="true" service="firewalld" />'
+
+rationale: |-
+    Access control methods provide the ability to enhance system security posture
+    by restricting services and known good IP addresses and address ranges. This
+    prevents connections from unknown hosts and protocols.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27361-5
+
+references:
+    cis: 4.7
+    cui: 3.1.3,3.4.7
+    disa: 366
+    nist: CM-6(b)
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040520"
+
+ocil: '<systemd-check-macro enable="true" service="firewalld" />'

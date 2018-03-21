@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the cron_userdomain_transition SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>cron_userdomain_transition</tt> is enabled.
+    This setting should be enabled as end user cron jobs run in their default
+    associated user domain(s) instead of the general cronjob domain.
+    <sebool-macro enable="true" sebool="cron_userdomain_transition" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'cron_userdomain_transition is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="cron_userdomain_transition" />'

@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure /var/tmp Located On Separate Partition'
+
+description: |-
+    The <tt>/var/tmp</tt> directory is a world-writable directory used
+    for temporary file storage. Ensure it has its own partition or
+    logical volume at installation time, or migrate it using LVM.
+
+rationale: |-
+    The <tt>/var/tmp</tt> partition is used as temporary storage by many programs.
+    Placing <tt>/var/tmp</tt> in its own partition enables the setting of more
+    restrictive mount options, which can help protect programs which use it.
+
+severity: low
+
+identifiers:
+    cce@rhel7: TBD
+
+references:
+    cis: 1.1.7
+
+ocil: '<partition-check-macro part="/var/tmp " />'

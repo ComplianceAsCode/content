@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Ensure gpgcheck Enabled For All Yum Package Repositories'
+
+description: |-
+    To ensure signature checking is not disabled for
+    any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
+    <pre>gpgcheck=0</pre>
+
+rationale: |-
+    Ensuring all packages' cryptographic signatures are valid prior to
+    installation ensures the authenticity of the software and
+    protects against malicious tampering.
+
+severity: low
+
+identifiers:
+    cce: 26647-8
+
+references:
+    disa: 352,663
+    nist: SI-7,MA-1(b)
+    pcidss: Req-6.2
+    srg: SRG-OS-000103
+    stigid: RHEL-06-000015
+
+ocil_clause: 'GPG checking is disabled'
+
+ocil: |-
+    To determine whether <tt>yum</tt> has been configured to disable
+    <tt>gpgcheck</tt> for any repos,  inspect all files in
+    <tt>/etc/yum.repos.d</tt> and ensure the following does not appear in any
+    sections:
+    <pre>gpgcheck=0</pre>
+    A value of <tt>0</tt> indicates that <tt>gpgcheck</tt> has been disabled for that repo.

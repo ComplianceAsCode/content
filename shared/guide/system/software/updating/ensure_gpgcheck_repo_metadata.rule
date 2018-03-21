@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure gpgcheck Enabled for Repository Metadata'
+
+description: "Verify the operating system prevents the installation of patches, service packs, device\ndrivers, or operating system components of local packages without verification of the \nrepository metadata.\n<br /><br />\nCheck that <tt>yum</tt> verifies the repository metadata prior to install with the\nfollowing command. This should be configured by setting <tt>repo_gpgcheck</tt> to <tt>1</tt>\nin <tt>/etc/yum.conf</tt>."
+
+rationale: "Changes to any software components can have significant effects to the overall security\nof the operating system. This requirement ensures the software has not been tampered and\nhas been provided by a trusted vendor.\n<br /><br />\nAccordingly, patches, service packs, device drivers, or operating system components must\nbe signed with a certificate recognized and approved by the organization.\n<br /><br />\nVerifying the authenticity of the software prior to installation validates the integrity\nof the patch or upgrade received from a vendor. This ensures the software has not been\ntampered with and that it has been provided by a trusted vendor. Self-signed certificates\nare disallowed by this requirement. The operating system should not have to verify the software\nagain.\n<br /><br />\nNOTE: For U.S. Military systems, this requirement does not mandate DoD certificates for\nthis purpose; however, the certificate used to verify the software must be from an \napproved Certificate\
+    \ Authority."
+
+severity: high
+
+identifiers:
+    cce@rhel7: CCE-80348-6
+
+references:
+    disa: 1749
+    hipaa: 164.308(a)(1)(ii)(D),164.312(b),164.312(c)(1),164.312(c)(2),164.312(e)(2)(i)
+    nist: CM-5(3)
+    srg: SRG-OS-000366-GPOS-00153
+    stigid@rhel7: "020070"
+
+ocil_clause: 'gpgcheck is not enabled or configured correctly to verify repository metadata'
+
+ocil: |-
+    To verify that <tt>repo_gpgcheck</tt> is configured properly, run the following
+    command:
+    <pre>$ grep repo_gpgcheck /etc/yum.conf</pre>
+    The output should return something similar to:
+    <pre>repo_gpgcheck=1</pre>

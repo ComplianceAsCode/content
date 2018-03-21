@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Bind Mount /var/tmp To /tmp'
+
+description: "The <tt>/var/tmp</tt> directory is a world-writable directory.  \nBind-mount it to <tt>/tmp</tt> in order to consolidate temporary storage into\none location protected by the same techniques as <tt>/tmp</tt>.  To do so, edit\n<tt>/etc/fstab</tt> and add the following line:\n<pre>/tmp     /var/tmp     none     rw,nodev,noexec,nosuid,bind     0 0</pre>\nSee the <tt>mount(8)</tt> man page for further explanation of bind mounting."
+
+rationale: |-
+    Having multiple locations for temporary storage is not required. Unless absolutely
+    necessary to meet requirements, the storage location <tt>/var/tmp</tt> should be bind mounted to
+    <tt>/tmp</tt> and thus share the same protections.
+
+severity: unknown
+
+identifiers:
+    cce: 26582-7
+
+references:
+    nist: CM-7

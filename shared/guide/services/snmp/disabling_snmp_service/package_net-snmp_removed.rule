@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Uninstall <tt>net-snmp</tt> Package'
+
+description: |-
+    The <tt>net-snmp</tt> package provides the snmpd service.
+    <yum-macro install="false" package="net-snmp" />
+
+rationale: |-
+    If there is no need to run SNMP server software,
+    removing the package provides a safeguard against its
+    activation.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80275-1
+
+ocil: '<package-check-macro package="net-snmp" />'

@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the fips_mode SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>fips_mode</tt> is enabled.
+    This allows all SELinux domains to execute in <tt>fips_mode</tt>.
+    If this setting is disabled, it should be enabled.
+    <sebool-macro enable="true" sebool="fips_mode" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80418-7
+
+references:
+    cui: 3.13.11
+    disa: TBD
+    nist: SC-13
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'fips_mode is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="fips_mode" />'

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'GNOME Desktop Screensaver Mandatory Use'
+
+description: |-
+    Run the following command to activate the screensaver
+    in the GNOME desktop after a period of inactivity:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/gnome-screensaver/idle_activation_enabled true</pre>
+
+rationale: |-
+    Enabling idle activation of the screensaver ensures the screensaver will
+    be activated after the idle delay.  Applications requiring continuous,
+    real-time screen display (such as network management products) require the
+    login session does not have administrator rights and the display station is located in a
+    controlled-access area.
+
+severity: medium
+
+identifiers:
+    cce: 26600-7
+
+references:
+    disa: 57
+    nist: AC-11(a)
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000029
+    stigid: RHEL-06-000258
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To check the screensaver mandatory use status, run the following command:
+    <pre>$ gconftool-2 -g /apps/gnome-screensaver/idle_activation_enabled</pre>
+    If properly configured, the output should be <tt>true</tt>.

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'All GIDs referenced in /etc/passwd must be defined in /etc/group'
+
+description: 'Add a group to the system for each GID referenced without a corresponding group.'
+
+rationale: |-
+    If a user is assigned the Group Identifier (GID) of a group not existing on the system, and a group
+    with the Gruop Identifier (GID) is subsequently created, the user may have unintended rights to
+    any files associated with the group.
+
+severity: low
+
+identifiers:
+    cce@rhel7: CCE-27503-2
+
+references:
+    cjis: 5.5.2
+    disa: 764
+    nist: IA-2
+    pcidss: Req-8.5.a
+    srg: SRG-OS-000104-GPOS-00051
+    stigid@rhel7: "020300"
+
+ocil_clause: 'GIFs referenced in /etc/passwd are returned as not defined in /etc/group'
+
+ocil: |-
+    To ensure all GIDs referenced in <tt>/etc/passwd</tt> are defined in <tt>/etc/group</tt>,
+    run the following command:
+    <pre>$ sudo pwck -qr</pre>
+    There should be no output.

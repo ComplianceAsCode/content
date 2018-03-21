@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable IRQ Balance (irqbalance)'
+
+description: |-
+    The <tt>irqbalance</tt> service optimizes the balance between
+    power savings and performance through distribution of hardware interrupts across
+    multiple processors.
+    <systemd-service-macro enable="true" service="irqbalance" />
+
+rationale: |-
+    In an environment with multiple processors (now common), the irqbalance service
+    provides potential speedups for handling interrupt requests.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80257-9
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="irqbalance" />'

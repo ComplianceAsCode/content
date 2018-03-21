@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure Notification of Post-AIDE Scan Details'
+
+description: |-
+    AIDE should notify appropriate personnel of the details of a scan after the scan has been run.
+    If AIDE has already been configured for periodic execution in <tt>/etc/crontab</tt>, append the
+    following line to the existing AIDE line:
+    <pre> | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
+    Otherwise, add the following line to <tt>/etc/crontab</tt>:
+    <pre>05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>
+    AIDE can be executed periodically through other means; this is merely one example.
+
+rationale: |-
+    Unauthorized changes to the baseline configuration could make the system vulnerable
+    to various attacks or allow unauthorized access to the operating system. Changes to
+    operating system configurations can have unintended side effects, some of which may
+    be relevant to security.
+    <br /><br />
+    Detecting such changes and providing an automated response can help avoid unintended,
+    negative consequences that could ultimately affect the security state of the operating
+    system. The operating system's Information Management Officer (IMO)/Information System
+    Security Officer (ISSO) and System Administrators (SAs) must be notified via email and/or
+    monitoring system trap when there is an unauthorized modification of a configuration item.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80374-2
+
+references:
+    disa: 1744
+    nist: CM-3(5)
+    srg: SRG-OS-000363-GPOS-00150
+    stigid@rhel7: "020040"
+
+ocil_clause: 'AIDE has not been configured or has not been configured to notify personnel of scan details'
+
+ocil: |-
+    To determine that periodic AIDE execution has been scheduled, run the following command:
+    <pre>$ grep aide /etc/crontab</pre>
+    The output should return something similar to the following:
+    <pre>05 4 * * * root /usr/sbin/aide --check | /bin/mail -s "$(hostname) - AIDE Integrity Check" root@localhost</pre>

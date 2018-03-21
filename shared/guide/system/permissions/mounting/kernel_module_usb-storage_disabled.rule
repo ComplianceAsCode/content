@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Modprobe Loading of USB Storage Driver'
+
+description: |-
+    To prevent USB storage devices from being used, configure the kernel module loading system
+    to prevent automatic loading of the USB storage driver.
+    <module-disable-macro module="usb-storage" />
+    This will prevent the <tt>modprobe</tt> program from loading the <tt>usb-storage</tt>
+    module, but will not prevent an administrator (or another program) from using the
+    <tt>insmod</tt> program to load the module manually.
+
+rationale: |-
+    USB storage devices such as thumb drives can be used to introduce
+    malicious software.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27277-3
+
+references:
+    cui: 3.1.21
+    disa: 366,778,1958
+    hipaa: 164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)
+    nist: AC-19(a),AC-19(d),AC-19(e),IA-3
+    srg: SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-0016,SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "020100"
+
+ocil: '<module-disable-check-macro module="usb-storage" />'

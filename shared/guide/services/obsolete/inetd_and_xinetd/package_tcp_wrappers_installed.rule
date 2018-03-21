@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install tcp_wrappers Package'
+
+description: |-
+    When network services are using the <tt>xinetd</tt> service, the
+    <tt>tcp_wrappers</tt> package should be installed.
+    <yum-macro install="true" package="tcp_wrappers" />
+
+rationale: |-
+    Access control methods provide the ability to enhance system security posture
+    by restricting services and known good IP addresses and address ranges. This
+    prevents connections from unknown hosts and protocols.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27361-5
+
+references:
+    cis: 3.4.1
+    disa: 366
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: TBD
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="tcp_wrappers" />'

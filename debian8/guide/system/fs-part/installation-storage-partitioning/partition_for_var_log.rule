@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Ensure /var/log Located On Separate Partition'
+
+description: |-
+    System logs are stored in the <tt>/var/log</tt> directory.
+    Ensure that it has its own partition or logical
+    volume at installation time, or migrate it using LVM.
+
+rationale: |-
+    Placing <tt>/var/log</tt> in its own partition
+    enables better separation between log files
+    and other files in <tt>/var/</tt>.
+
+severity: unknown
+
+references:
+    anssi: NT28(R12),NT28(R47)
+    disa: ""
+    nist: AU-9,SC-32
+
+ocil: '<partition-check-macro part="/var/log " />'

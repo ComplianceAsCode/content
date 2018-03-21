@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Remove SSH Server <tt>firewalld</tt> Firewall exception (Unusual)'
+
+description: |-
+    By default, inbound connections to SSH's port are allowed. If
+    the SSH server is not being used, this exception should be removed from the
+    firewall configuration.
+    <br /><br />
+    <firewalld-desc-macro allow="false" proto="tcp" service="ssh" />
+
+rationale: |-
+    If inbound SSH connections are not expected, disallowing access to the SSH port will
+    avoid possible exploitation of the port by an attacker.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80218-1
+
+references:
+    cui: 3.1.12

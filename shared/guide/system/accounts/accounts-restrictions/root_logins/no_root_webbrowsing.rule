@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Restrict Web Browser Use for Administrative Accounts'
+
+description: |-
+    Enforce policy requiring administrative accounts use web browsers only for
+    local service administration.
+
+rationale: |-
+    If a browser vulnerability is exploited while running with administrative privileges,
+    the entire system could be compromised. Specific exceptions for local service
+    administration should be documented in site-defined policy.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80209-0
+
+ocil_clause: 'this is not the case'
+
+ocil: |-
+    Check the <tt>root</tt> home directory for a <tt>.mozilla</tt> directory. If
+    one exists, ensure browsing is limited to local service administration.

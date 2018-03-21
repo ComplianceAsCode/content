@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading'
+
+description: |-
+    To capture kernel module loading and unloading events, use following lines, setting ARCH to
+    either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
+    <pre>
+    -w /usr/sbin/insmod -p x -k modules
+    -w /usr/sbin/rmmod -p x -k modules
+    -w /usr/sbin/modprobe -p x -k modules
+    -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
+    </pre>
+
+    Place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
+    to use the <tt>augenrules</tt> program (the default), add the lines to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt> utility,
+    add the lines to file <tt>/etc/audit/audit.rules</tt>.
+
+rationale: |-
+    The addition/removal of kernel modules can be used to alter the behavior of
+    the kernel and potentially introduce malicious code into kernel space. It is important
+    to have an audit trail of modules that have been introduced into the kernel.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27129-6
+
+references:
+    cis: 5.2.17
+    cjis: 5.4.1.1
+    cui: 3.1.7
+    disa: 172
+    nist: AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.7
+
+ocil: |-
+    <audit-syscall-check-macro syscall="init_module" />
+    <audit-syscall-check-macro syscall="delete_module" />

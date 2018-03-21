@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Install the screen Package'
+
+description: |-
+    To enable console screen locking, install the <tt>screen</tt> package:
+    <pre>$ sudo yum install screen</pre>
+    Instruct users to begin new terminal sessions with the following command:
+    <pre>$ screen</pre>
+    The console can now be locked with the following key combination:
+    <pre>ctrl+a x</pre>
+
+rationale: |-
+    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
+    physical vicinity of the information system but des not logout because of the temporary nature of the absence.
+    Rather than relying on the user to manually lock their operation system session prior to vacating the vicinity,
+    operating systems need to be able to identify when a user's session has idled and take action to initiate the
+    session lock.
+    <br /><br />
+    The <tt>screen</tt> package allows for a session lock to be implemented and configured.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27351-6
+
+references:
+    cui: 3.1.10
+    disa: 57
+    nist: AC-11(a)
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: SRG-OS-000029-GPOS-00010
+    stigid@rhel7: "010090"
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="screen" />'

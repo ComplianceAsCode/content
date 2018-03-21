@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Make the <tt>auditd</tt> Configuration Immutable'
+
+description: |-
+    Add the following to <tt>/etc/audit/audit.rules</tt> in order
+    to make the configuration immutable:
+    <pre>-e 2</pre>
+    With this setting, a reboot will be required to change any
+    audit rules.
+
+rationale: |-
+    Making the audit configuration immutable prevents accidental as
+    well as malicious modification of the audit rules, although it may be
+    problematic if legitimate changes are needed during system
+    operation
+
+severity: unknown
+
+identifiers:
+    cce: 26612-2
+
+references:
+    nist: AC-6,AU-1(b),AU-2(a),AU-2(c),AU-2(d),IR-5
+    pcidss: Req-10.5.2

@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Use Access Lists to Enforce Authorization Restrictions'
+
+description: |-
+    When configuring NFS exports, ensure that each export line in <tt>/etc/exports</tt> contains
+    a list of hosts which are allowed to access that export. If no hosts are specified on an export line,
+    then that export is available to any remote host which requests it. All lines of the exports file should
+    specify the hosts (or subnets, if needed) which are allowed to access the exported directory, so that
+    unknown or remote hosts will be denied.
+    <br /><br />
+    Authorized hosts can be specified in several different formats:
+    <ul>
+    <li>Name or alias that is recognized by the resolver</li>
+    <li>Fully qualified domain name</li>
+    <li>IP address</li>
+    <li>IP subnets in the format <tt>address/netmask</tt> or <tt>address/CIDR</tt></li>
+    </ul>

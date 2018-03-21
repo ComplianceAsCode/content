@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Disallow creating symlinks to a file you not own'
+
+description: '<sysctl-desc-macro sysctl="fs.protected_hardlinks" value="1" />'
+
+rationale: |-
+    Disallowing such hardlink mitigate vulnerabilities based on insecure file system
+    accessed by privilegied programs, avoiding an exploitation vector exploiting unsafe use of
+    <tt>open()</tt> or <tt>creat()</tt>.
+
+severity: unknown
+
+references:
+    anssi: NT28(R23)
+    cis: 1.6.1
+    nist: SI-11
+
+ocil: '<sysctl-check-macro sysctl="fs.protected_hardlinks" value="1" />'

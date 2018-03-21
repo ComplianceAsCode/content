@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Disable the CUPS Service'
+
+description: '<chkconfig-service-macro enable="false" service="cups" />'
+
+rationale: 'Turn off unneeded services to reduce attack surface.'
+
+severity: unknown
+
+identifiers:
+    cce: 26899-5
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="cups" />'

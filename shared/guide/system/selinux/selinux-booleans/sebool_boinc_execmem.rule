@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the boinc_execmem SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>boinc_execmem</tt> is enabled.
+    This setting should be disabled.
+    <sebool-macro enable="false" sebool="boinc_execmem" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80429-4
+
+references:
+    cui: 3.7.2
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'boinc_execmem is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="boinc_execmem" />'

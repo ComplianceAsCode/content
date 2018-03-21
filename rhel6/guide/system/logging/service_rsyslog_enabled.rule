@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Enable rsyslog Service'
+
+description: |-
+    The <tt>rsyslog</tt> service provides syslog-style logging by default on Red Hat Enterprise Linux 6.
+    <chkconfig-service-macro enable="true" service="rsyslog" />
+
+rationale: |-
+    The <tt>rsyslog</tt> service must be running in order to provide
+    logging services, which are essential to system administration.
+
+severity: medium
+
+identifiers:
+    cce: 26807-8
+
+references:
+    disa: 1557,1312,1311
+    nist: AU-12
+
+ocil: '<service-check-macro enable="true" service="rsyslog" />'

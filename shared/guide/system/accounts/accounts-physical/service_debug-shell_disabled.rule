@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable debug-shell SystemD Service'
+
+description: |-
+    SystemD's <tt>debug-shell</tt> service is intended to
+    diagnose SystemD related boot issues with various <tt>systemctl</tt>
+    commands. Once enabled and following a system reboot, the root shell
+    will be available on <tt>tty9</tt> which is access by pressing
+    <tt>CTRL-ALT-F9</tt>. The <tt>debug-shell</tt> service should only be used
+    for SystemD related issues and should otherwise be disabled.
+    <br /><br />
+    By default, the <tt>debug-shell</tt> SystemD service is disabled.
+    <systemd-service-macro enable="false" service="debug-shell" />
+
+rationale: |-
+    This prevents attackers with physical access from trivially bypassing security
+    on the machine through valid troubleshooting configurations and gaining root
+    access when the system is rebooted.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80206-6
+
+references:
+    cui: 3.4.5
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    ospp@rhel7: FIA_AFL.1
+
+ocil: '<systemd-check-macro enable="false" service="debug-shell" />'

@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Build and Test AIDE Database'
+
+description: |-
+    Run the following command to generate a new database:
+    <pre>$ sudo /usr/sbin/aide --init</pre>
+    By default, the database will be written to the file <tt>/var/lib/aide/aide.db.new.gz</tt>.
+    Storing the database, the configuration file <tt>/etc/aide.conf</tt>, and the binary
+    <tt>/usr/sbin/aide</tt> (or hashes of these files), in a secure location (such as on read-only media) provides additional assurance about their integrity.
+    The newly-generated database can be installed as follows:
+    <pre>$ sudo cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz</pre>
+    To initiate a manual check, run the following command:
+    <pre>$ sudo /usr/sbin/aide --check</pre>
+    If this check produces any unexpected output, investigate.
+
+rationale: |-
+    For AIDE to be effective, an initial database of "known-good" information about files
+    must be captured and it should be able to be verified against the installed files.
+
+severity: medium
+
+identifiers:
+    cce: 27135-3
+
+references:
+    disa: 374,416,1069,1263,1297,1589
+    nist: CM-3(d),CM-3(e),CM-6(d),SC-28,SI-7
+    pcidss: Req-11.5
+    srg: SRG-OS-000232
+    stigid: RHEL-06-000018
+
+ocil_clause: 'there is no database file'
+
+ocil: |-
+    To find the location of the AIDE databse file, run the following command:
+    <pre>$ sudo ls -l <i>DBDIR</i>/<i>database_file_name</i></pre>

@@ -1,0 +1,76 @@
+documentation_complete: true
+
+title: 'Roll Over and Transfer JBoss Logs'
+
+description: |-
+    Open the web-based management interface by opening a browser and pointing it to
+    <tt>HTTPS://<i>EAP_SERVER</i>:9990/</tt>
+    <br /><br />
+    Authenticate as a user with Admin rights.
+    Navigate
+    to the <tt>Configuration</tt> tab.
+    Expand <tt>+</tt> Subsystems.
+    Expand <tt>+</tt> Core.
+    Select
+    <tt>Logging</tt>.
+    Select the <tt>Handler</tt> tab.
+    Select <tt>Periodic</tt>.
+    <br /><br />
+    If a
+    periodic file handler does not exist, reference JBoss admin guide for
+    instructions on how to create a file handler that will rotate logs on a daily
+    basis.
+    Create scripts that package and off-load log data at least weekly.
+
+rationale: |-
+    Information stored in one location is vulnerable to accidental or incidental
+    deletion or alteration. Protecting log data is important during a forensic
+    investigation to ensure investigators can track and understand what may have
+    occurred. Off-loading should be set up as a scheduled task but can be
+    configured to be run manually, if other processes during the off-loading are
+    manual.
+    <br /><br />
+    Off-loading is a common process in information systems with limited log
+    storage capacity.
+
+severity: medium
+
+identifiers:
+    cce: 80498-9
+
+references:
+    disa: 1851
+    nist: ""
+    srg: SRG-APP-000515-AS-000203
+    stigid: JBOS-AS-000735
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    If the JBoss server is configured to use a Syslog Handler, this is not a
+    finding.
+    <br /><br />
+    Log on to the OS of the JBoss server with OS permissions that allow
+    access to JBoss.
+    Using the relevant OS commands and syntax, cd to the
+    <tt>&lt;JBOSS_HOME&gt;/bin/</tt> folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    <br /><br />
+    Determine if there is a periodic rotating file handler.
+    <br /><br />
+    For a
+    domain configuration run the following command; where <i>SERVERNAME</i> is a variable
+    for all of the servers in the domain. Usually <tt>server-one</tt>, <tt>server-two</tt>, etc.:
+    <br /><br />
+    <pre>ls /host=master/server=<i>SERVERNAME</i>/subsystem=logging/periodic-rotating-file-handler=</pre>
+    <br /><br />
+    For a standalone configuration run the command:
+    <pre>ls /subsystem=logging/periodic-rotating-file-handler=</pre>
+    <br /><br />
+    If the command does not return <tt>FILE</tt>, this is a finding.
+    <br /><br />
+    Review the
+    <tt>&lt;JBOSS_HOME&gt;/standalone/log</tt> folder for the existence of rotated logs, and ask
+    the admin to demonstrate how rotated logs are packaged and transferred to
+    another system on at least a weekly basis.

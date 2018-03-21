@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Cyrus SASL Authentication Daemon (saslauthd)'
+
+description: |-
+    The <tt>saslauthd</tt> service handles plaintext authentication requests on
+    behalf of the SASL library. The service isolates all code requiring superuser
+    privileges for SASL authentication into a single process, and can also be used
+    to provide proxy authentication services to clients that do not understand SASL
+    based authentication.
+    <systemd-service-macro enable="false" service="saslauthd" />
+
+rationale: |-
+    The <tt>saslauthd</tt> service provides essential functionality for
+    performing authentication in some directory environments, such as those which
+    use Kerberos and LDAP. For others, however, in which only local files may be
+    consulted, it is not necessary and should be disabled.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80271-0
+
+references:
+    nist: AC-17(8),CM-7
+
+ocil: '<systemd-check-macro enable="false" service="saslauthd" />'

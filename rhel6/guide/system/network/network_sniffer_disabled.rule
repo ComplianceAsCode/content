@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Ensure System is Not Acting as a Network Sniffer'
+
+description: |-
+    The system should not be acting as a network sniffer, which can
+    capture all traffic on the network to which it is connected. Run the following
+    to determine if any interface is running in promiscuous mode:
+    <pre>$ ip link | grep PROMISC</pre>
+
+rationale: |-
+    If any results are returned, then a sniffing process (such as tcpdump
+    or Wireshark) is likely to be using the interface and this should be
+    investigated.
+
+severity: unknown
+
+identifiers:
+    cce: 27152-8
+
+references:
+    nist: CM-7,MA-3

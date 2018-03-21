@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Ensure syslog-ng is Installed'
+
+description: "syslog-ng can be installed in replacement of rsyslog. \n<apt-get-macro install=\"true\" package=\"syslog-ng-core\" />"
+
+rationale: |-
+    The syslog-ng-core package provides the syslog-ng daemon, which provides
+    system logging services.
+
+severity: medium
+
+references:
+    anssi: NT28(R46),NT28(R5)
+    cis: 5.1.1
+    disa: 1311,1312
+    nist: AU-9(2)
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="syslog-ng-core" />'

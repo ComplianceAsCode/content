@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure SELinux support is enabled in Docker'
+
+description: |-
+    To enable the SELinux for the Docker service, the Docker service must be
+    configured to run the Docker daemon with <tt>--selinux-enabled</tt> option.
+    In <tt>/etc/sysconfig/docker</tt> configuration file, add or correct
+    the following line to enable SELinux support in the Docker daemon:
+    <pre>OPTIONS='--selinux-enabled'</pre>
+
+rationale: |-
+    If SELinux is not explicitely enabled in the Docker daemon configuration,
+    Docker does not use SELinux which means Docker runs unconfined,
+    and SELinux will not provide security separation for Docker container
+    processes. However enabling SELinux for the Docker service prevents
+    an attacker or rogue container from attacking other container processes
+    and content as well as prevents taking over the host operating system.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80442-7

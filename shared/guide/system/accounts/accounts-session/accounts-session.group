@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Secure Session Configuration Files for Login Accounts'
+
+description: |-
+    When a user logs into a Unix account, the system
+    configures the user's session by reading a number of files. Many of
+    these files are located in the user's home directory, and may have
+    weak permissions as a result of user error or misconfiguration. If
+    an attacker can modify or even read certain types of account
+    configuration information, they can often gain full access to the
+    affected user's account. Therefore, it is important to test and
+    correct configuration file permissions for interactive accounts,
+    particularly those of privileged users such as root or system
+    administrators.

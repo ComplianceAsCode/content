@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Enable ExecShield'
+
+description: '<sysctl-desc-macro sysctl="kernel.exec-shield" value="1" />'
+
+rationale: |-
+    ExecShield uses the segmentation feature on all x86 systems
+    to prevent execution in memory higher than a certain address. It
+    writes an address as a limit in the code segment descriptor, to
+    control where code can be executed, on a per-process basis. When
+    the kernel places a process's memory regions such as the stack and
+    heap higher than this address, the hardware prevents execution in that
+    address range.
+
+severity: medium
+
+identifiers:
+    cce: 27007-4
+
+references:
+    disa: 2530
+    nist: SC-39
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000079
+
+ocil: '<sysctl-check-macro sysctl="kernel.exec-shield" value="1" />'

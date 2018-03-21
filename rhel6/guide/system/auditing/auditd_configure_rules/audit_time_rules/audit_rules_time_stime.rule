@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Record Attempts to Alter Time Through stime'
+
+description: |-
+    Add the following line to <tt>/etc/audit/audit.rules</tt> for both
+    32-bit and 64-bit systems:
+    <pre># audit_time_rules
+    -a always,exit -F arch=b32 -S stime -k audit_time_rules</pre>
+    Since the 64-bit version of the "stime" system call is not defined in the audit
+    lookup table, the corresponding "-F arch=b64" form of this rule is not expected
+    to be defined on 64-bit systems (the aforementioned "-F arch=b32" stime rule
+    form itself is sufficient for both 32-bit and 64-bit systems). The -k option
+    allows for the specification of a key in string form that can be used for
+    better reporting capability through ausearch and aureport. Multiple system
+    calls can be defined on the same line to save space if desired, but is not
+    required. See an example of multiple combined syscalls:
+    <pre>-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k audit_time_rules</pre>
+
+rationale: |-
+    Arbitrary changes to the system time can be used to obfuscate
+    nefarious activities in log files, as well as to confuse network services that
+    are highly dependent upon an accurate system time (such as sshd). All changes
+    to the system time should be audited.
+
+severity: unknown
+
+identifiers:
+    cce: 27169-2
+
+references:
+    disa: 1487,169
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.4.2.b
+    srg: SRG-OS-000062
+    stigid: RHEL-06-000169
+
+ocil_clause: 'the system is not configured to audit time changes'
+
+ocil: |-
+    If the system is 64-bit only, this is not applicable.<br />
+    <audit-syscall-check-macro syscall="stime" />

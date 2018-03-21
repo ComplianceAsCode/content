@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Network Console (netconsole)'
+
+description: |-
+    The <tt>netconsole</tt> service is responsible for loading the
+    netconsole kernel module, which logs kernel printk messages over UDP to a
+    syslog server. This allows debugging of problems where disk logging fails and
+    serial consoles are impractical.
+    <systemd-service-macro enable="false" service="netconsole" />
+
+rationale: |-
+    The <tt>netconsole</tt> service is not necessary unless there is a need to debug
+    kernel panics, which is not common.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80261-1
+
+references:
+    disa: 381
+    nist: AC-17(8),CM-7
+
+ocil: '<systemd-check-macro enable="false" service="netconsole" />'

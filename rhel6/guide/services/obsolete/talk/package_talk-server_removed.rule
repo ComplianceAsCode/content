@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Uninstall talk-server Package'
+
+description: '<yum-macro install="false" package="talk-server" />'
+
+rationale: |-
+    The talk software presents a security risk as it uses unencrypted protocols
+    for communications. Removing the <tt>talk-server</tt> package decreases the
+    risk of the accidental (or intentional) activation of talk services.
+
+severity: medium
+
+identifiers:
+    cce: 27427-4
+
+ocil: '<package-check-macro package="talk-server" />'

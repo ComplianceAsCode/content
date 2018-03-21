@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable rlogin Service'
+
+description: |-
+    The <tt>rlogin</tt> service, which is available with
+    the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
+    as a systemd socket, should be disabled.
+    If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rlogin</tt>.
+    If using systemd, <systemd-socket-macro enable="false" socket="rlogin" />
+
+rationale: |-
+    The rlogin service uses unencrypted network communications, which
+    means that data from the login session, including passwords and
+    all other information transmitted during the session, can be
+    stolen by eavesdroppers on the network.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27336-7
+
+references:
+    cis: 2.2.17
+    cui: 3.1.13,3.4.7
+    disa: 1436
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8),CM-7,IA-5(1)(c)
+
+ocil: |-
+    <systemd-socket-check-macro enable="false" socket="rlogin" />
+    <xinetd-systemd-check-macro enable="false" service="rlogin" />

@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Verify iptables Enabled'
+
+description: '<chkconfig-service-macro enable="true" service="iptables" />'
+
+rationale: |-
+    The <tt>iptables</tt> service provides the system's host-based firewalling
+    capability for IPv4 and ICMP.
+
+severity: medium
+
+identifiers:
+    cce: 27018-1
+
+references:
+    disa: 32,66,1115,1118,1092,1117,1098,1100,1097,1414
+    nist: AC-4,CA-3(c),CM-7
+    srg: SRG-OS-000146,SRG-OS-000152,SRG-OS-000145
+    stigid: RHEL-06-000117
+
+ocil: '<service-check-macro enable="true" service="iptables" />'

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Disable SSH Root Login'
+
+description: |-
+    The root user should never be allowed to login to a
+    system directly over a network.
+    To disable root login via SSH, add or correct the following line
+    in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>PermitRootLogin no</pre>
+
+rationale: |-
+    Even though the communications channel may be encrypted, an additional layer of
+    security is gained by extending the policy of not logging directly on as root.
+    In addition, logging in with a user-specific account provides individual
+    accountability of actions performed on the system and also helps to minimize
+    direct attack attempts on root's password.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27445-6
+
+references:
+    cis: 5.2.8
+    cjis: 5.5.6
+    cui: '3.1.1, 3.1.5'
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-3,AC-6(2),IA-2(1),IA-2(5)
+    ospp@rhel7: FIA_AFL.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040370"
+
+ocil: '<sshd-check-macro default="no" option="PermitRootLogin" value="no" />'

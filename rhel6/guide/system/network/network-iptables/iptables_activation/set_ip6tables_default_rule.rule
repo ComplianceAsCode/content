@@ -1,0 +1,39 @@
+documentation_complete: true
+
+title: 'Set Default ip6tables Policy for Incoming Packets'
+
+description: |-
+    To set the default policy to DROP (instead of ACCEPT) for
+    the built-in INPUT chain which processes incoming packets,
+    add or correct the following line in
+    <tt>/etc/sysconfig/ip6tables</tt>:
+    <pre>:INPUT DROP [0:0]</pre>
+    If changes were required, reload the ip6tables rules:
+    <pre>$ sudo service ip6tables reload</pre>
+
+rationale: |-
+    In <tt>ip6tables</tt>, the default policy is applied only after all
+    the applicable rules in the table are examined for a match. Setting the
+    default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+    any packets which are not explicitly permitted should not be
+    accepted.
+
+severity: medium
+
+identifiers:
+    cce: 27317-7
+
+references:
+    disa: 66
+    nist: CM-7
+    srg: SRG-OS-000231
+    stigid: RHEL-06-000523
+
+ocil_clause: 'the default policy for the INPUT chain is not set to DROP'
+
+ocil: |-
+    If IPv6 is disabled, this is not applicable.
+    <br /><br />
+    Inspect the file <tt>/etc/sysconfig/ip6tables</tt> to determine
+    the default policy for the INPUT chain. It should be set to DROP:
+    <pre>$ sudo grep ":INPUT" /etc/sysconfig/ip6tables</pre>

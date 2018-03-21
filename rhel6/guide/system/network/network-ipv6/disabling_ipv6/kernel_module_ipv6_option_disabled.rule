@@ -1,0 +1,44 @@
+documentation_complete: true
+
+title: 'Disable IPv6 Networking Support Automatic Loading'
+
+description: |-
+    To prevent the IPv6 kernel module (<tt>ipv6</tt>) from binding to the
+    IPv6 networking stack, add the following line to
+    <tt>/etc/modprobe.d/disabled.conf</tt> (or another file in
+    <tt>/etc/modprobe.d</tt>):
+    <pre>options ipv6 disable=1</pre>
+    This permits the IPv6 module to be loaded (and thus satisfy other modules that
+    depend on it), while disabling support for the IPv6 protocol.
+
+rationale: |-
+    Any unnecessary network stacks - including IPv6 - should be disabled, to reduce
+    the vulnerability to exploitation.
+
+severity: medium
+
+identifiers:
+    cce: 27153-6
+
+references:
+    disa: 1551
+    nist: CM-7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000098
+
+ocil_clause: 'the ipv6 kernel module is not disabled'
+
+ocil: |-
+    If the system uses IPv6, this is not applicable.
+    <br /><br />
+    If the system is configured to disable the
+    <tt>ipv6</tt> kernel module, it will contain a line
+    of the form:
+    <pre>options ipv6 disable=1</pre>
+    Such lines may be inside any file in <tt>/etc/modprobe.d</tt> or the
+    deprecated<tt>/etc/modprobe.conf</tt>.  This permits insertion of the IPv6
+    kernel module (which other parts of the system expect to be present), but
+    otherwise keeps it inactive.  Run the following command to search for such
+    lines in all files in <tt>/etc/modprobe.d</tt> and the deprecated
+    <tt>/etc/modprobe.conf</tt>:
+    <pre xml:space="preserve">$ grep -r ipv6 /etc/modprobe.conf /etc/modprobe.d</pre>

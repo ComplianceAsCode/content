@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Ensure Logs Sent To Remote Host'
+
+description: "To configure rsyslog to send logs to a remote log server,\nopen <tt>/etc/rsyslog.conf</tt> and read and understand the last section of the file,\nwhich describes the multiple directives necessary to activate remote\nlogging.\nAlong with these other directives, the system can be configured\nto forward its logs to a particular log server by\nadding or correcting one of the following lines,\nsubstituting <tt><i>loghost.example.com</i></tt> appropriately.\nThe choice of protocol depends on the environment of the system; \nalthough TCP and RELP provide more reliable message delivery, \nthey may not be supported in all environments.\n<br />\nTo use UDP for log message delivery:\n<pre>*.* @<i>loghost.example.com</i></pre>\n<br />\nTo use TCP for log message delivery:\n<pre>*.* @@<i>loghost.example.com</i></pre>\n<br />\nTo use RELP for log message delivery:\n<pre>*.* :omrelp:<i>loghost.example.com</i></pre>"
+
+rationale: |-
+    A log server (loghost) receives syslog messages from one or more
+    systems. This data can be used as an additional log source in the event a
+    system is compromised and its local logs are suspect. Forwarding log messages
+    to a remote loghost also provides system administrators with a centralized
+    place to view the status of multiple hosts within the enterprise.
+
+severity: unknown
+
+identifiers:
+    cce: 26801-1
+
+references:
+    disa: '1348, 136'
+    nist: AU-3(2),AU-9
+    srg: SRG-OS-000215,SRG-OS-000043
+    stigid: RHEL-06-000136
+
+ocil_clause: 'none of these are present'
+
+ocil: |-
+    To ensure logs are sent to a remote host, examine the file
+    <tt>/etc/rsyslog.conf</tt>.
+    If using UDP, a line similar to the following should be present:
+    <pre> *.* @<i>loghost.example.com</i></pre>
+    If using TCP, a line similar to the following should be present:
+    <pre> *.* @@<i>loghost.example.com</i></pre>
+    If using RELP, a line similar to the following should be present:
+    <pre> *.* :omrelp:<i>loghost.example.com</i></pre>

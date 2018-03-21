@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ignore HTTPD .htaccess Files'
+
+description: |-
+    Set <tt>AllowOverride</tt> to <tt>none</tt> for each instant of
+    <tt>&lt;Directory&gt;</tt>.
+
+rationale: |-
+    CGI scripts represents one of the most common and exploitable means of
+    compromising a web server. By definition, CGI are executable by the operating
+    system of the host server. While access control is provided via the web service,
+    the execution of CGI programs is not otherwise limited unless the SA or Web
+    Manager takes specific measures. CGI programs can access and alter data files,
+    launch other programs and use the network. CGI programs can be written in any
+    available programming language. C, PERL, PHP, Javascript, VBScript and shell
+    (sh, ksh, bash) are popular choices.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG400
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To preclude access to the servers root directory, ensure the following
+    directive is in the <tt>httpd.conf</tt> file. This entry will also stop users
+    from setting up <tt>.htaccess</tt> files which can override security features
+    configured in <tt>/etc/httpd/conf/httpd.conf</tt>.
+    <pre>AllowOverride none</pre>

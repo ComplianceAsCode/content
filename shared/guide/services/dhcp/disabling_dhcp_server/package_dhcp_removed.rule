@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall DHCP Server Package'
+
+description: |-
+    If the system does not need to act as a DHCP server,
+    the dhcp package can be uninstalled.
+    <yum-macro install="false" package="dhcp" />
+
+rationale: |-
+    Removing the DHCP server ensures that it cannot be easily or
+    accidentally reactivated and disrupt network operation.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80331-2
+
+references:
+    disa: 366
+    nist: CM-7
+
+ocil: '<package-check-macro package="dhcp" />'

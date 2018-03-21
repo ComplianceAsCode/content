@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Remove Write Permissions From Filesystem Paths And Server Scripts'
+
+description: |-
+    Configure permissions for each instance of <tt>Alias</tt>,
+    <tt>ScriptAlias</tt>, and <tt>ScriptAliasMatch</tt> that exist.
+    <pre>$ sudo find <i>DIR</i> -type d -exec chmod 755 {} \;
+    $ sudo find <i>DIR</i> -type f -exec chmod 555 {} \;</pre>
+    Where <i>DIR</i> matches the paths from <tt>Alias</tt>,
+    <tt>ScriptAlias</tt>, and <tt>ScriptAliasMatch</tt>.
+
+rationale: |-
+    Excessive permissions for the anonymous web user account are one of the most
+    common faults contributing to the compromise of a web server. If this user is
+    able to upload and execute files on the web server, the organization or owner of
+    the server will no longer have control of the asset.
+
+severity: high
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG290
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Verify that the files and directories of each instance of <tt>Alias</tt>,
+    <tt>ScriptAlias</tt>, and <tt>ScriptAliasMatch</tt> that exist
+    have the correct file and directory permissions applied.

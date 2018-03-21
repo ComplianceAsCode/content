@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure Remote Administrative Access Is Encrypted'
+
+description: |-
+    Ensure that the SSH server service is enabled.
+    <systemd-service-macro enable="true" service="sshd" />
+
+rationale: |-
+    Logging into a web server remotely using an unencrypted protocol or service
+    when performing updates and maintenance is a major risk. Data, such as user
+    account, is transmitted in plaintext and can easily be compromised. When
+    performing remote administrative tasks, a protocol or service that encrypts the
+    communication channel must be used.
+    <br /><br />
+    An alternative to remote administration of
+    the web server is to perform web server administration locally at the console.
+    Local administration at the console implies physical access to the server.
+
+severity: high
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG230
+
+ocil: '<systemd-check-macro enable="true" service="sshd" />'

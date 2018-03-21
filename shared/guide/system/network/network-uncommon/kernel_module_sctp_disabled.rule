@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable SCTP Support'
+
+description: |-
+    The Stream Control Transmission Protocol (SCTP) is a
+    transport layer protocol, designed to support the idea of
+    message-oriented communication, with several streams of messages
+    within one connection.
+    <module-disable-macro module="sctp" />
+
+rationale: |-
+    Disabling SCTP protects
+    the system against exploitation of any flaws in its implementation.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27106-4
+
+references:
+    cis: 3.5.2
+    cjis: 5.10.1
+    cui: 3.4.6
+    disa: ""
+    nist: CM-7
+
+ocil: '<module-disable-check-macro module="sctp" />'

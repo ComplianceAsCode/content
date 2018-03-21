@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Disable <tt>snmpd</tt> Service'
+
+description: '<chkconfig-service-macro enable="false" service="snmpd" />'
+
+rationale: |-
+    Running SNMP software provides a network-based avenue of attack, and
+    should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce: 26906-8
+
+ocil: '<service-check-macro enable="false" service="snmpd" />'

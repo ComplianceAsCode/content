@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Software Integrity Checking'
+
+description: |-
+    Both the AIDE (Advanced Intrusion Detection Environment)
+    software and the RPM package management system provide
+    mechanisms for verifying the integrity of installed software.
+    AIDE uses snapshots of file metadata (such as hashes) and compares these
+    to current system files in order to detect changes.
+    The RPM package management system can conduct integrity
+    checks by comparing information in its metadata database with
+    files installed on the system.
+    <br /><br />
+    Integrity checking cannot <i>prevent</i> intrusions,
+    but can detect that they have occurred. Requirements
+    for software integrity checking may be highly dependent on
+    the environment in which the system will be used. Snapshot-based
+    approaches such as AIDE may induce considerable overhead
+    in the presence of frequent software updates.

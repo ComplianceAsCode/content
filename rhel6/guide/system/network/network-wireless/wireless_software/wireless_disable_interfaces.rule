@@ -1,0 +1,51 @@
+documentation_complete: true
+
+title: 'Deactivate Wireless Network Interfaces'
+
+description: |-
+    Deactivating wireless network interfaces should prevent
+    normal usage of the wireless capability.
+    <br /><br />
+    First, identify the interfaces available with the command:
+    <pre>$ ifconfig -a</pre>
+    Additionally, the following command may be used to
+    determine whether wireless support is included for a
+    particular interface, though this may not always be a clear
+    indicator:
+    <pre>$ iwconfig</pre>
+    After identifying any wireless interfaces (which may have
+    names like <tt>wlan0</tt>, <tt>ath0</tt>, <tt>wifi0</tt>, <tt>em1</tt> or
+    <tt>eth0</tt>), deactivate the interface with the command:
+    <pre>$ sudo ifdown <i>interface</i></pre>
+    These changes will only last until the next reboot. To
+    disable the interface for future boots, remove the appropriate
+    interface file from <tt>/etc/sysconfig/network-scripts</tt>:
+    <pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>
+
+rationale: |-
+    The use of wireless networking can introduce many different attack vectors into
+    the organization's network. Common attack vectors such as malicious
+    association and ad hoc networks will allow an attacker to spoof a wireless
+    access point (AP), allowing validated systems to connect to the malicious AP and
+    enabling the attacker to monitor and record network traffic. These malicious APs
+    can also serve to create a man-in-the-middle attack or be used to create a
+    denial of service to valid network resources.
+
+severity: medium
+
+identifiers:
+    cce: 27057-9
+
+references:
+    disa: 85,2418
+    nist: AC-18(a),AC-18(d),AC-18(3),CM-7
+    srg: ""
+    stigid: RHEL-06-000293
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that wireless interfaces have been disabled, run the following
+    command:
+    <pre>$ ifconfig -a</pre>
+    The output should not contain any wireless interface.

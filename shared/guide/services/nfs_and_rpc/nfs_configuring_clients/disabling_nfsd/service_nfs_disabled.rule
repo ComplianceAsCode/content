@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Network File System (nfs)'
+
+description: |-
+    The Network File System (NFS) service allows remote hosts to mount
+    and interact with shared filesystems on the local system. If the local system
+    is not designated as a NFS server then this service should be disabled.
+    <systemd-service-macro enable="false" service="nfs" />
+
+rationale: 'Unnecessary services should be disabled to decrease the attack surface of the system.'
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80237-1
+
+references:
+    cis: 2.2.7
+    nist: AC-3
+
+ocil_clause: 'it does not'
+
+ocil: '<systemd-check-macro enable="false" service="nfs" />'

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure System is Not Acting as a Network Sniffer'
+
+description: |-
+    The system should not be acting as a network sniffer, which can
+    capture all traffic on the network to which it is connected. Run the following
+    to determine if any interface is running in promiscuous mode:
+    <pre>$ ip link | grep PROMISC</pre>
+
+rationale: |-
+    Network interfaces in promiscuous mode allow for the capture of all network traffic
+    visible to the system. If unauthorized individuals can access these applications, it
+    may allow them to collect information such as logon IDs, passwords, and key exchanges
+    between systems.
+    <br /><br />
+    If the system is being used to perform a network troubleshooting function, the use of these
+    tools must be documented with the Information Systems Security Manager (ISSM) and restricted
+    to only authorized personnel.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80174-6
+
+references:
+    disa: 366
+    nist: CM-7,CM-7(2).1(i),,MA-3
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040670"
+
+ocil_clause: 'any network device is in promiscuous mode'
+
+ocil: |-
+    Promiscuous mode of an interface can be disabled with the following command:
+    <pre>$ sudo ip link set dev <tt>device_name</tt> promisc off</pre>

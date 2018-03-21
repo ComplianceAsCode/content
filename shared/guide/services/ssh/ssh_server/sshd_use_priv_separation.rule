@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Enable Use of Privilege Separation'
+
+description: |-
+    When enabled, SSH will create an unprivileged child process that
+    has the privilege of the authenticated user. To enable privilege separation in
+    SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>UsePrivilegeSeparation sandbox</pre>
+
+rationale: |-
+    SSH daemon privilege separation causes the SSH process to drop root privileges
+    when not needed which would decrease the impact of software vulnerabilities in
+    the unprivileged section.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80223-1
+
+references:
+    cui: 3.1.12
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040460"
+
+ocil_clause: 'it is commented out or is not enabled'
+
+ocil: |-
+    To check if UsePrivilegeSeparation is enabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>sandbox</pre>

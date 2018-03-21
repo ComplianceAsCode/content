@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall quagga Package'
+
+description: '<yum-macro install="false" package="quagga" />'
+
+rationale: |-
+    Routing software is typically used on routers to exchange network topology information
+    with other routers. If routing software is used when not required, system network
+    information may be unnecessarily transmitted across the network.
+    <br />
+    If there is no need to make the router software available,
+    removing it provides a safeguard against its activation.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27594-1
+
+references:
+    disa: 366
+    nist: SC-32
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: TBD
+
+ocil: '<package-check-macro package="quagga" />'

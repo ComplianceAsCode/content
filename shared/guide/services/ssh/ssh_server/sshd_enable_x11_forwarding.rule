@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Enable Encrypted X11 Forwarding'
+
+description: |-
+    By default, remote X11 connections are not encrypted when initiated
+    by users. SSH has the capability to encrypt remote X11 connections when SSH's
+    <tt>X11Forwarding</tt> option is enabled.
+    <br /><br />
+    To enable X11 Forwarding, add or correct the
+    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>X11Forwarding yes</pre>
+
+rationale: |-
+    Open X displays allow an attacker to capture keystrokes and to execute commands
+    remotely.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80226-4
+
+references:
+    cis: 5.2.4
+    cui: 3.1.13
+    disa: 366
+    nist: CM-2(1)(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040710"
+
+ocil: '<sshd-check-macro default="no" option="X11Forwarding" value="yes" />'

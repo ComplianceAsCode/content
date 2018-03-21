@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files'
+
+description: '<fileperms-desc-macro file="/etc/ssh/*_key" perms="0640" />'
+
+rationale: |-
+    If an unauthorized user obtains the private SSH host key file, the host could be
+    impersonated.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27485-2
+
+references:
+    cui: 3.1.13,3.13.10
+    disa: 366
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040420"
+
+ocil: '<fileperms-check-macro file="/etc/ssh/*_key" perms="-rw-r-----" />'

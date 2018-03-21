@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure auditd to use audispd''s syslog plugin'
+
+description: |-
+    To configure the <tt>auditd</tt> service to use the
+    <tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
+    the <tt>active</tt> line in <tt>/etc/audisp/plugins.d/syslog.conf</tt> to
+    <tt>yes</tt>. Restart the <tt>auditd</tt> service:
+    <pre>$ sudo service auditd restart</pre>
+
+rationale: |-
+    The auditd service does not include the ability to send audit
+    records to a centralized server for management directly. It does, however,
+    include a plug-in for audit event multiplexor (audispd) to pass audit records
+    to the local syslog server
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27341-7
+
+references:
+    cjis: 5.4.1.1
+    cui: 3.3.1
+    disa: 136
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)
+    nist: AU-1(b),AU-3(2),IR-5
+    ospp@rhel7: FAU_GEN.1.1.c
+    pcidss: Req-10.5.3
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify the audispd's syslog plugin is active, run the following command:
+    <pre>$ sudo grep active /etc/audisp/plugins.d/syslog.conf</pre>
+    If the plugin is active, the output will show <tt>yes</tt>.

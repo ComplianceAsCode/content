@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Disable Mounting of <tt>cramfs</tt>'
+
+description: |-
+    <module-disable-macro module="cramfs" />
+    This effectively prevents usage of this uncommon filesystem.
+
+rationale: |-
+    Linux kernel modules which implement filesystems that are not needed by the
+    local system should be disabled.
+
+severity: unknown
+
+identifiers:
+    cce: 26340-0
+
+references:
+    nist: CM-7

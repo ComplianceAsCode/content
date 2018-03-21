@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable log_config_module For HTTPD Logging'
+
+description: |-
+    The <tt>log_config_module</tt> should exist and be configured in
+    the <tt>/etc/httpd/conf/httpd.conf</tt> file by adding the following module to
+    configure logging:
+    <pre>log_config_module</pre>
+
+rationale: |-
+    A major tool in exploring the web site use, attempted use, unusual conditions,
+    and problems are reported in the access and error logs. In the event of a
+    security incident, these logs can provide the SA and the web manager with
+    valuable information. Without these log files, SAs and web managers are
+    seriously hindered in their efforts to respond appropriately to suspicious or
+    criminal actions targeted at the web site.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG240
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that the <tt>log_config_module</tt> exists in
+    <tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+    <pre>$ grep log_config_module /etc/httpd/conf/httpd.conf</pre>
+    The output should return:
+    <pre>&lt;IfModule log_config_module&gt;</pre>

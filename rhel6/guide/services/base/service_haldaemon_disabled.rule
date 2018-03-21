@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Disable Hardware Abstraction Layer Service (haldaemon)'
+
+description: "The Hardware Abstraction Layer Daemon (<tt>haldaemon</tt>) collects\nand maintains information about the system's hardware configuration. \nThis service is required on a workstation\nrunning a desktop environment, and may be necessary on any system which\ndeals with removable media or devices.\n<chkconfig-service-macro enable=\"false\" service=\"haldaemon\" />"
+
+rationale: |-
+    The haldaemon provides essential functionality on systems
+    that use removable media or devices, but can be disabled for systems
+    that do not require these.
+
+severity: unknown
+
+identifiers:
+    cce: 27086-8
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="haldaemon" />'

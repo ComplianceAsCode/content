@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'All Interactive User Home Directories Must Be Owned By The Primary User'
+
+description: |-
+    Change the owner of interactive users home directories to that correct
+    owner. To change the owner of a interactive users home directory, use
+    the following command:
+    <pre>$ sudo chown <i>USER</i> /home/<i>USER</i></pre>
+
+rationale: |-
+    If a local interactive user does not own their home directory, unauthorized
+    users could access or modify the user's files, and the users may not be able to
+    access their own files.
+
+severity: medium
+
+identifiers:
+    cce: 80531-7
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "020640"
+
+ocil_clause: 'the user ownership is incorrect'
+
+ocil: |-
+    To verify the home directory ownership, run the following command:
+    <pre>$ sudo ls -ld $(egrep ':[0-9]{4}' /etc/passwd | cut -d: -f6)</pre>

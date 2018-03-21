@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Configure SELinux Policy'
+
+description: |-
+    The SELinux <tt>targeted</tt> policy is appropriate for
+    general-purpose desktops and servers, as well as systems in many other roles.
+    To configure the system to use this policy, add or correct the following line
+    in <tt>/etc/selinux/config</tt>:
+    <pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>
+    Other policies, such as <tt>mls</tt>, provide additional security labeling
+    and greater confinement but are not compatible with many general-purpose
+    use cases.
+
+rationale: "Setting the SELinux policy to <tt>targeted</tt> or a more specialized policy\nensures the system will confine processes that are likely to be\ntargeted for exploitation, such as network or system services.\n\nNote: During the development or debugging of SELinux modules, it is common to \ntemporarily place non-production systems in <tt>permissive</tt> mode. In such \ntemporary cases, SELinux policies should be developed, and once work\nis completed, the system should be reconfigured to\n<tt><sub idref=\"var_selinux_policy_name\" /></tt>."
+
+severity: unknown
+
+identifiers:
+    cce: 26875-5
+
+references:
+    disa: 22,32
+    nist: AC-3,AC-3(3),AC-4,AC-6,AU-9
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000023
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+    <pre>SELINUXTYPE=<sub idref="var_selinux_policy_name" /></pre>

@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure Smart Card Certificate Status Checking'
+
+description: |-
+    Configure the operating system to do certificate status checking for PKI
+    authentication. Modify all of the <tt>cert_policy</tt> lines in
+    <tt>/etc/pam_pkcs11/pam_pkcs11.conf</tt> to include <tt>ocsp_on</tt> like so:
+    <pre>cert_policy = ca, ocsp_on, signature;</pre>
+
+rationale: |-
+    Using an authentication device, such as a CAC or token that is separate from
+    the information system, ensures that even if the information system is
+    compromised, that compromise will not affect credentials stored on the
+    authentication device.
+    <br /><br />
+    Multifactor solutions that require devices separate from
+    information systems gaining access include, for example, hardware tokens
+    providing time-based or challenge-response authenticators and smart cards such
+    as the U.S. Government Personal Identity Verification card and the DoD Common
+    Access Card.
+
+severity: medium
+
+identifiers:
+    cce: 80520-0
+
+references:
+    disa: 1954
+    nist: ""
+    srg: SRG-OS-000375-GPOS-00160
+    stigid: "041003"
+
+ocil_clause: 'ocsp_on is not configured'
+
+ocil: |-
+    To verify the operating system implements certificate status checking for PKI
+    authentication, run the following command:
+    <pre>$ sudo grep -i cert_policy /etc/pam_pkcs11/pam_pkcs11.conf</pre>
+    The output should return multiple lines similiar to the following:
+    <pre>cert_policy = ca, ocsp_on, signature;
+    cert_policy = ca, ocsp_on, signature;
+    cert_policy = ca, ocsp_on, signature;</pre>

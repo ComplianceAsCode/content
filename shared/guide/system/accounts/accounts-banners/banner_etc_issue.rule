@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Modify the System Login Banner'
+
+description: "To configure the system login banner edit <tt>/etc/issue</tt>. Replace \nthe default text with a message compliant with the local site policy \nor a legal disclaimer.\n\nThe DoD required text is either:\n<br /><br />\n<tt>You are accessing a U.S. Government (USG) Information System (IS) that is\nprovided for USG-authorized use only. By using this IS (which includes any\ndevice attached to this IS), you consent to the following conditions: \n<br />-The USG routinely intercepts and monitors communications on this IS for purposes\nincluding, but not limited to, penetration testing, COMSEC monitoring, network\noperations and defense, personnel misconduct (PM), law enforcement (LE), and\ncounterintelligence (CI) investigations. \n<br />-At any time, the USG may inspect and seize data stored on this IS. \n<br />-Communications using, or data stored on, this IS are not private, are subject \nto routine monitoring, interception, and search, and may be disclosed or used \nfor any USG-authorized\
+    \ purpose. \n<br />-This IS includes security measures (e.g., authentication and access controls) \nto protect USG interests -- not for your personal benefit or privacy. \n<br />-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative\nsearching or monitoring of the content of privileged communications, or work\nproduct, related to personal representation or services by attorneys,\npsychotherapists, or clergy, and their assistants. Such communications and work\nproduct are private and confidential. See User Agreement for details.</tt>\n<br /><br />\nOR:\n<br /><br />\n<tt>I've read &amp; consent to terms in IS user agreem't.</tt>"
+
+rationale: "Display of a standardized and approved use notification before granting access to the operating system\nensures privacy and security notification verbiage used is consistent with applicable federal laws,\nExecutive Orders, directives, policies, regulations, standards, and guidance. \n<br /><br />\nSystem use notifications are required only for access via login interfaces with human users and\nare not required when such human interfaces do not exist."
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27303-7
+
+references:
+    cis: 1.7.1.2
+    cui: 3.1.9
+    disa: 48
+    nist: AC-8(a),AC-8(b),AC-8(c)(1),AC-8(c)(2),AC-8(c)(3)
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: SRG-OS-000023-GPOS-00006,SRG-OS-000024-GPOS-00007
+    stigid@rhel7: "010050"
+
+ocil_clause: 'it does not display the required banner'
+
+ocil: |-
+    To check if the system login banner is compliant,
+    run the following command:
+    <pre>$ cat /etc/issue</pre>

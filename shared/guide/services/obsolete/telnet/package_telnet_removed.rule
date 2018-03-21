@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Remove telnet Clients'
+
+description: "The telnet client allows users to start connections to other \nsystems via the telnet protocol."
+
+rationale: |-
+    The <tt>telnet</tt> protocol is insecure and unencrypted. The use
+    of an unencrypted transmission medium could allow an unauthorized user
+    to steal credentials. The <tt>ssh</tt> package provides an
+    encrypted session and stronger security and is included in Red Hat
+    Enterprise Linux.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 27305-2
+
+references:
+    cis: 2.3.4
+    cui: 3.1.13
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    iso27001-2013: A.8.2.3,A.13.1.1,A.13.2.1,A.13.2.3,A.14.1.2,A.14.1.3
+
+ocil: '<yum-macro install="false" package="telnet" />'

@@ -1,0 +1,57 @@
+documentation_complete: true
+
+title: 'Network Time Protocol'
+
+description: |-
+    The Network Time Protocol is used to manage the system
+    clock over a network. Computer clocks are not very accurate, so
+    time will drift unpredictably on unmanaged systems. Central time
+    protocols can be used both to ensure that time is consistent among
+    a network of systems, and that their time is consistent with the
+    outside world.
+    <br /><br />
+    If every system on a network reliably reports the same time, then it is much
+    easier to correlate log messages in case of an attack. In addition, a number of
+    cryptographic protocols (such as Kerberos) use timestamps to prevent certain
+    types of attacks. If your network does not have synchronized time, these
+    protocols may be unreliable or even unusable.
+    <br /><br />
+    Depending on the specifics of the network, global time accuracy may be just as
+    important as local synchronization, or not very important at all. If your
+    network is connected to the Internet, using a public timeserver (or one
+    provided by your enterprise) provides globally accurate timestamps which may be
+    essential in investigating or responding to an attack which originated outside
+    of your network.
+    <br /><br />
+    A typical network setup involves a small number of internal systems operating
+    as NTP servers, and the remainder obtaining time information from those
+    internal servers.
+    <br /><br />
+    There is a choice between the daemons <tt>ntpd</tt> and <tt>chronyd</tt>, which
+    are available from the repositories in the <tt>ntp</tt> and <tt>chrony</tt>
+    packages respectively.
+    <br /><br />
+    The default <tt>chronyd</tt> daemon can work well when external time references
+    are only intermittently accesible, can perform well even when the network is
+    congested for longer periods of time, can usually synchronize the clock faster
+    and with better time accuracy, and quickly adapts to sudden changes in the rate
+    of the clock, for example, due to changes in the temperature of the crystal
+    oscillator. <tt>Chronyd</tt> should be considered for all systems which are
+    frequently suspended or otherwise intermittently disconnected and reconnected
+    to a network. Mobile and virtual systems for example.
+    <br /><br />
+    The <tt>ntpd</tt> NTP daemon fully supports NTP protocol version 4 (RFC 5905),
+    including broadcast, multicast, manycast clients and servers, and the orphan
+    mode. It also supports extra authentication schemes based on public-key
+    cryptography (RFC 5906). The NTP daemon (<tt>ntpd</tt>) should be considered
+    for systems which are normally kept permanently on. Systems which are required
+    to use broadcast or multicast IP, or to perform authentication of packets with
+    the <tt>Autokey</tt> protocol, should consider using <tt>ntpd</tt>.
+    <br /><br />
+    Refer to <weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" /> for more detailed comparison of features of <tt>chronyd</tt>
+    and <tt>ntpd</tt> daemon features respectively, and for further guidance how to
+    choose between the two NTP daemons.
+    <br /><br />
+    The upstream manual pages at <weblink-macro link="http://chrony.tuxfamily.org/manual.html" /> for
+    <tt>chronyd</tt> and <weblink-macro link="http://www.ntp.org" /> for <tt>ntpd</tt> provide additional
+    information on the capabilities and configuration of each of the NTP daemons.

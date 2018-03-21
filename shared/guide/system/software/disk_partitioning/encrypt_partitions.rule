@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Encrypt Partitions'
+
+description: "Red Hat Enterprise Linux 7 natively supports partition encryption through the\nLinux Unified Key Setup-on-disk-format (LUKS) technology. The easiest way to \nencrypt a partition is during installation time.\n<br /><br />\nFor manual installations, select the <tt>Encrypt</tt> checkbox during\npartition creation to encrypt the partition. When this\noption is selected the system will prompt for a passphrase to use in\ndecrypting the partition. The passphrase will subsequently need to be entered manually\nevery time the system boots.\n<br /><br />\nFor automated/unattended installations, it is possible to use Kickstart by adding\nthe <tt>--encrypted</tt> and <tt>--passphrase=</tt> options to the definition of each partition to be\nencrypted. For example, the following line would encrypt the root partition:\n<pre>part / --fstype=ext4 --size=100 --onpart=hda1 --encrypted --passphrase=<i>PASSPHRASE</i></pre>\nAny <i>PASSPHRASE</i> is stored in the Kickstart in plaintext, and the Kickstart\
+    \ must then be protected accordingly.\nOmitting the <tt>--passphrase=</tt> option from the partition definition will cause the\ninstaller to pause and interactively ask for the passphrase during installation.\n<br /><br />\nBy default, the <tt>Anaconda</tt> installer uses <tt>aes-xts-plain64</tt> cipher\nwith a minimum <tt>512</tt> bit key size which should be compatible with FIPS enabled.\n<br /><br />\nDetailed information on encrypting partitions using LUKS or LUKS ciphers can be found on\nthe Red Hat Documentation web site:<br />\n<weblink-macro link=\"https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html\" />"
+
+rationale: |-
+    The risk of a system's physical compromise, particularly mobile systems such as
+    laptops, places its data at risk of compromise.  Encrypting this data mitigates
+    the risk of its loss if the system is lost.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27128-8
+
+references:
+    cui: 3.13.16
+    disa: 1199,2476
+    hipaa: 164.308(a)(1)(ii)(D),164.308(b)(1),164.310(d),164.312(a)(1),164.312(a)(2)(iii),164.312(a)(2)(iv),164.312(b),164.312(c),164.314(b)(2)(i),164.312(d)
+    iso27001-2013: A.8.2.3
+    nist: SC-13,SC-28(1)
+    srg: SRG-OS-000405-GPOS-00184,SRG-OS-000185-GPOS-00079
+
+ocil_clause: 'partitions do not have a type of crypto_LUKS'
+
+ocil: |-
+    Check the system partitions to determine if they are encrypted with the following command:
+    <pre>blkid</pre>
+    <br /><br />
+    Output will be similar to:
+    <pre>/dev/sda1: UUID=" ab12c3de-4f56-789a-8f33-3850cc8ce3a2
+    " TYPE="crypto_LUKS"
+    /dev/sda2: UUID=" bc98d7ef-6g54-321h-1d24-9870de2ge1a2
+    " TYPE="crypto_LUKS"</pre>
+    <br /><br />
+    Pseudo-file systems, such as /proc, /sys, and tmpfs, are not required to use disk encryption and are not a finding.

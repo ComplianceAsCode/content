@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Ensure No Daemons are Unconfined by SELinux'
+
+description: |-
+    Daemons for which the SELinux policy does not contain rules will inherit the
+    context of the parent process. Because daemons are launched during
+    startup and descend from the <tt>init</tt> process, they inherit the <tt>initrc_t</tt> context.
+    <br />
+    <br />
+    To check for unconfined daemons, run the following command:
+    <pre>$ sudo ps -eZ | egrep "initrc" | egrep -vw "tr|ps|egrep|bash|awk" | tr ':' ' ' | awk '{ print $NF }'</pre>
+    It should produce no output in a well-configured system.
+
+rationale: |-
+    Daemons which run with the <tt>initrc_t</tt> context may cause AVC denials,
+    or allow privileges that the daemon does not require.
+
+severity: medium
+
+identifiers:
+    cce: 27111-4
+
+references:
+    nist: AC-6,AU-9,CM-7

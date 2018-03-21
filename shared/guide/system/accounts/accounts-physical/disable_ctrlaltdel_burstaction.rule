@@ -1,0 +1,40 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Ctrl-Alt-Del Burst Action'
+
+description: |-
+    By default, <tt>SystemD</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
+    key sequence is pressed Ctrl-Alt-Delete more than 7 times in 2 seconds.
+    <br /><br />
+    To configure the system to ignore the <tt>CtrlAltDelBurstAction</tt>
+    setting, add or modify the following to <tt>/etc/systemd/system.conf</tt>:
+    <pre>CtrlAltDelBurstAction=none</pre>
+
+rationale: |-
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+    can reboot the system. If accidentally pressed, as could happen in
+    the case of mixed OS environment, this can create the risk of short-term
+    loss of availability of systems due to unintentional reboot.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 80449-2
+
+references:
+    cui: 3.4.5
+    disa: 366
+    hipaa: 164.308(a)(1)(ii)(B),164.308(a)(7)(i),164.308(a)(7)(ii)(A),164.310(a)(1),164.310(a)(2)(i),164.310(a)(2)(ii),164.310(a)(2)(iii),164.310(b),164.310(c),164.310(d)(1),164.310(d)(2)(iii)
+    nist: AC-6
+    srg: SRG-OS-000480-GPOS-00227
+
+ocil_clause: 'the system is configured to reboot when Ctrl-Alt-Del is pressed more than 7 times in 2 seconds.'
+
+ocil: |-
+    To ensure the system is configured to ignore the Ctrl-Alt-Del setting,
+    enter the following command:
+    <pre>$ sudo grep -i ctrlaltdelburstaction /etc/systemd/system.conf</pre>
+    The output should return:
+    <pre>CtrlAltDelBurstAction=none</pre>

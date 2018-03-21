@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable HTTPD Error Logging'
+
+description: |-
+    <tt>ErrorLog</tt> should be enabled and set to the following in
+    <tt>/etc/httpd/conf/httpd.conf</tt>:
+    <pre>ErrorLog "logs/error_log"</pre>
+
+rationale: |-
+    The server error logs are invaluable because they can also be used to identify
+    potential problems and enable proactive remediation. Log data can reveal
+    anomalous behavior such as "not found" or "unauthorized" errors that may
+    be an evidence of attack attempts. Failure to enable error logging can
+    significantly reduce the ability of Web Administrators to detect or remediate
+    problems.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WA00605
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify if <tt>ErrorLog</tt> is configured correctly in
+    <tt>/etc/httpd/conf/httpd.conf</tt>, run the following command:
+    <pre>$ grep -i errorlog /etc/httpd/conf/httpd.conf</pre>
+    The output should return the following:
+    <pre>ErrorLog "logs/error_log"</pre>

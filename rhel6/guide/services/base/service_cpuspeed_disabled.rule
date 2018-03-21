@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable CPU Speed (cpuspeed)'
+
+description: |-
+    The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
+    the current processing load thereby conserving power and reducing heat.
+    <chkconfig-service-macro enable="false" service="cpuspeed" />
+
+rationale: |-
+    The <tt>cpuspeed</tt> service is only necessary if adjusting the CPU clock speed
+    provides benefit. Traditionally this has included laptops (to enhance battery life),
+    but may also apply to server or desktop environments where conserving power is
+    highly desirable or necessary.
+
+severity: unknown
+
+identifiers:
+    cce: 26973-8
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="cpuspeed" />'

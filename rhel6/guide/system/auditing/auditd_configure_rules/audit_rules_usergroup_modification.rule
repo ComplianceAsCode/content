@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Record Events that Modify User/Group Information'
+
+description: |-
+    Add the following to <tt>/etc/audit/audit.rules</tt>, in order
+    to capture events that modify account changes:
+    <pre># audit_rules_usergroup_modification
+    -w /etc/group -p wa -k audit_rules_usergroup_modification
+    -w /etc/passwd -p wa -k audit_rules_usergroup_modification
+    -w /etc/gshadow -p wa -k audit_rules_usergroup_modification
+    -w /etc/shadow -p wa -k audit_rules_usergroup_modification
+    -w /etc/security/opasswd -p wa -k audit_rules_usergroup_modification</pre>
+
+rationale: |-
+    In addition to auditing new user and group accounts, these watches
+    will alert the system administrator(s) to any modifications. Any
+    unexpected users, groups, or modifications should be investigated for
+    legitimacy.
+
+severity: unknown
+
+identifiers:
+    cce: 26664-3
+
+references:
+    disa: 18,1403,1404,1405,1684,1683,1685,1686
+    nist: AC-2(4),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.5
+    srg: SRG-OS-000004,SRG-OS-000239,SRG-OS-000240,SRG-OS-000241
+    stigid: RHEL-06-000174
+
+ocil_clause: 'the system is not configured to audit account changes'
+
+ocil: |-
+    To determine if the system is configured to audit account changes,
+    run the following command:
+    <pre>auditctl -l | egrep '(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/security/opasswd)'</pre>
+    If the system is configured to watch for account changes, lines should be returned for
+    each file specified (and with <tt>perm=wa</tt> for each).

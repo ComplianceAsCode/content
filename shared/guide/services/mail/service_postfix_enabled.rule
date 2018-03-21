@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable Postfix Service'
+
+description: |-
+    The Postfix mail transfer agent is used for local mail delivery
+    within the system. The default configuration only listens for connections to
+    the default SMTP port (port 25) on the loopback interface (127.0.0.1).  It is
+    recommended to leave this service enabled for local mail delivery.
+    <systemd-service-macro enable="true" service="postfix" />
+
+rationale: |-
+    Local mail delivery is essential to some system maintenance and
+    notification tasks.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80287-6
+
+ocil_clause: 'the system is not a cross domain solution and the service is not enabled'
+
+ocil: '<systemd-check-macro enable="true" service="postfix" />'

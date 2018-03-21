@@ -1,0 +1,41 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Each Web Content Directory Must Contain An index.html File'
+
+description: |-
+    Every <tt>DocumentRoot</tt> that is configured should have an
+    <tt>index.html</tt> file that exists. Add an <tt>index.html</tt> file to every
+    configured <tt>DocumentRoot</tt>.
+
+rationale: |-
+    The goal is to completely control the web users experience in navigating any
+    portion of the web document root directories. Ensuring all web content
+    directories have at least the equivalent of an index.html file is a significant
+    factor to accomplish this end. Also, enumeration techniques, such as URL
+    parameter manipulation, rely upon being able to obtain information about the web
+    server's directory structure by locating directories with default pages. This
+    practice helps ensure that the anonymous web user will not obtain directory
+    browsing information or an error message that reveals the server type and
+    version.
+
+severity: low
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG170
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that each web content directory has an <tt>index.html</tt> file,
+    run the following command:
+    <pre>$ sudo find `grep -i documentroot /etc/httpd/conf/httpd.conf | awk -F'"' '{print $2}'` -name index.html</pre>
+    The output should return an <tt>index.html</tt> file for every
+    <tt>DocumentRoot</tt> that is set.

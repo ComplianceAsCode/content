@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Set Password Minimum Age'
+
+description: |-
+    To specify password minimum age for new accounts,
+    edit the file <tt>/etc/login.defs</tt>
+    and add or correct the following line:
+    <pre>PASS_MIN_DAYS <i><sub idref="var_accounts_minimum_age_login_defs" /></i></pre>
+    A value of 1 day is considered sufficient for many
+    environments.
+    The DoD requirement is 1.
+
+rationale: |-
+    Setting the minimum password age protects against
+    users cycling back to a favorite password
+    after satisfying the password reuse requirement.
+
+severity: medium
+
+identifiers:
+    cce: 27013-2
+
+references:
+    disa: 198
+    nist: IA-5(f),IA-5(1)(d)
+    srg: SRG-OS-000075
+    stigid: RHEL-06-000051
+
+ocil_clause: 'it is not set to the required value'
+
+ocil: |-
+    To check the minimum password age, run the command:
+    <pre>$ grep PASS_MIN_DAYS /etc/login.defs</pre>
+    The DoD and FISMA requirement is 1.

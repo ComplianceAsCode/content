@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Disable Squid'
+
+description: '<chkconfig-service-macro enable="false" service="squid" />'
+
+rationale: |-
+    Running proxy server software provides a network-based avenue
+    of attack, and should be removed if not needed.
+
+severity: unknown
+
+identifiers:
+    cce: 27146-0
+
+ocil: '<service-check-macro enable="false" service="squid" />'

@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Enable the NTP Daemon'
+
+description: '<chkconfig-service-macro enable="true" service="ntpd" />'
+
+rationale: "Enabling the <tt>ntpd</tt> service ensures that the <tt>ntpd</tt>\nservice will be running and that the system will synchronize its time to\nany servers specified. This is important whether the system is configured to be\na client (and synchronize only its own clock) or it is also acting as an NTP\nserver to other systems.  Synchronizing time is essential for authentication\nservices such as Kerberos, but it is also important for maintaining accurate\nlogs and auditing possible security breaches.  \n<br /><br />\nThe NTP daemon offers all of the functionality of <tt>ntpdate</tt>, which is now \ndeprecated.  Additional information on this is available at \n<weblink-macro link=\"http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate\" />"
+
+severity: medium
+
+identifiers:
+    cce: 27093-4
+
+references:
+    disa: 160
+    nist: AU-8(1)
+    pcidss: Req-10.4
+    srg: SRG-OS-000056
+    stigid: RHEL-06-000247
+
+ocil: '<service-check-macro enable="true" service="ntpd" />'

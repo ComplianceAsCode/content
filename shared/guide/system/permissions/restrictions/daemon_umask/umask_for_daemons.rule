@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set Daemon Umask'
+
+description: |-
+    The file <tt>/etc/init.d/functions</tt> includes initialization
+    parameters for most or all daemons started at boot time.  The default umask of
+    022 prevents creation of group- or world-writable files.  To set the default
+    umask for daemons, edit the following line, inserting 022 or 027 for
+    <i>UMASK</i> appropriately:
+    <pre>umask <i><sub idref="var_umask_for_daemons" /></i></pre>
+    Setting the umask to too restrictive a setting can cause serious errors at
+    runtime.  Many daemons on the system already individually restrict themselves to
+    a umask of 077 in their own init scripts.
+
+rationale: |-
+    The umask influences the permissions assigned to files created by a
+    process at run time.  An unnecessarily permissive umask could result in files
+    being created with insecure permissions.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27068-6
+
+references:
+    nist: AC-6
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    To check the value of the <tt>umask</tt>, run the following command:
+    <pre>$ grep umask /etc/init.d/functions</pre>
+    The output should show either <tt>022</tt> or <tt>027</tt>.

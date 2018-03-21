@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable Transport Layer Security (TLS) Encryption'
+
+description: |-
+    Disable old SSL and TLS version and enable the latest TLS encryption by setting
+    the following in <tt>/etc/httpd/conf.modules.d/ssl.conf</tt>:
+    <pre>SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1</pre>
+    Make sure to also set <tt>SSLEngine</tt> to <tt>on</tt> in
+    <tt>/etc/httpd/conf.modules.d/ssl.conf</tt> like the following:
+    <pre>SSLEngine on</pre>
+
+rationale: |-
+    Transport Layer Security (TLS) encryption is a required security setting for a
+    private web server. Encryption of private information is essential to ensuring
+    data confidentiality. If private information is not encrypted, it can be
+    intercepted and easily read by an unauthorized party. A web server must
+    use a FIPS 140-2 approved TLS version, and all non-FIPS-approved SSL versions
+    must be disabled.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG340
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that TLS is configured properly in
+    <tt>/etc/httpd/conf.modules.d/ssl.conf</tt>, run the following command:
+    <pre>$ grep -i "sslengine\|sslprotocol" /etc/httpd/conf.d/ssl.conf</pre>
+    The output should return the following:
+    <pre>
+    SSLEngine on
+    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+    </pre>

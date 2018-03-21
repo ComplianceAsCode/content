@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Disable Software RAID Monitor (mdmonitor)'
+
+description: |-
+    The <tt>mdmonitor</tt> service is used for monitoring a software RAID array; hardware
+    RAID setups do not use this service.
+    <chkconfig-service-macro enable="false" service="mdmonitor" />
+
+rationale: |-
+    If software RAID monitoring is not required,
+    there is no need to run this service.
+
+severity: unknown
+
+identifiers:
+    cce: 27193-2
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="mdmonitor" />'

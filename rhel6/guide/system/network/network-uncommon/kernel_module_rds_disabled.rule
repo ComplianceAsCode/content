@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable RDS Support'
+
+description: |-
+    The Reliable Datagram Sockets (RDS) protocol is a transport
+    layer protocol designed to provide reliable high- bandwidth,
+    low-latency communications between nodes in a cluster.
+    <module-disable-macro module="rds" />
+
+rationale: |-
+    Disabling RDS protects
+    the system against exploitation of any flaws in its implementation.
+
+severity: unknown
+
+identifiers:
+    cce: 26239-4
+
+references:
+    disa: 382
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000126
+
+ocil: '<module-disable-check-macro module="rds" />'

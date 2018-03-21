@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set Password Maximum Age'
+
+description: "To specify password maximum age for new accounts,\nedit the file <tt>/etc/login.defs</tt>\nand add or correct the following line:\n<pre>PASS_MAX_DAYS <sub idref=\"var_accounts_maximum_age_login_defs\" /></pre>\nA value of 180 days is sufficient for many environments. \nThe DoD requirement is 60.\nThe profile requirement is <tt><sub idref=\"var_accounts_maximum_age_login_defs\" /></tt>."
+
+rationale: "Any password, no matter how complex, can eventually be cracked. Therefore, passwords\nneed to be changed periodically. If the operating system does not limit the lifetime\nof passwords and force users to change their passwords, there is the risk that the\noperating system passwords could be compromised. \n<br /><br />\nSetting the password maximum age ensures users are required to\nperiodically change their passwords. Requiring shorter password lifetimes\nincreases the risk of users writing down the password in a convenient\nlocation subject to physical compromise."
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27051-2
+
+references:
+    cis: 5.4.1.1
+    cjis: 5.6.2.1
+    cui: 3.5.6
+    disa: 199
+    nist: IA-5(f),IA-5(g),IA-5(1)(d)
+    pcidss: Req-8.2.4
+    srg: SRG-OS-000076-GPOS-00044
+    stigid@rhel7: "010250"
+
+ocil_clause: 'PASS_MAX_DAYS is not set equal to or greater than the required value'
+
+ocil: |-
+    To check the maximum password age, run the command:
+    <pre>$ grep PASS_MAX_DAYS /etc/login.defs</pre>
+    The DoD and FISMA requirement is 60.
+    A value of 180 days is sufficient for many environments.

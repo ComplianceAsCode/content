@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Verify User Who Owns <tt>gshadow</tt> File'
+
+description: '<fileowner-desc-macro file="/etc/gshadow" owner="root" />'
+
+rationale: |-
+    The <tt>/etc/gshadow</tt> file contains group password hashes.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+references:
+    disa: ""
+    nist: AC-6
+
+ocil: '<fileowner-check-macro file="/etc/gshadow" owner="root" />'

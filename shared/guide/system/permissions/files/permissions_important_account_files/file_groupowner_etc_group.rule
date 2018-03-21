@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify Group Who Owns <tt>group</tt> File'
+
+description: '<filegroupowner-desc-macro file="/etc/group" group="root" />'
+
+rationale: |-
+    The <tt>/etc/group</tt> file contains information regarding groups that are configured
+    on the system. Protection of this file is important for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27037-1
+
+references:
+    cis: 6.1.4
+    cjis: 5.5.2.2
+    disa: ""
+    nist: AC-6
+    pcidss: Req-8.7.c
+
+ocil: '<filegroupowner-check-macro file="/etc/group" group="root" />'

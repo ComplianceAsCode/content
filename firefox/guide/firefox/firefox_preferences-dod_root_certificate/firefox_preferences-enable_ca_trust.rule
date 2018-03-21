@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Enable Shared System Certificates'
+
+description: |-
+    The Shared System Certificates store makes NSS, GnuTLS, OpenSSL, and Java
+    share a default source for retrieving system certificate anchors and blacklist
+    information. Firefox has the capability of using this centralized store for its
+    CA certificates. If the Shared System Certificates store is disabled, it can
+    be enabled by running the following command:
+    <pre>$ sudo update-ca-trust enable</pre>
+
+rationale: |-
+    The DOD root certificate will ensure that the trust chain is
+    established for server certificates issued from the DOD CA.
+
+severity: medium
+
+identifiers:
+    cce: 27457-1
+
+references:
+    disa: 54
+    nist: AC-10
+
+ocil_clause: 'it is not enabled'
+
+ocil: |-
+    To verify that the central system cerificate authority store is enabled,
+    run the following command:
+    <pre>$ ls -l /etc/alternatives/libnssckbi.so.x86_64</pre>
+    The output should return something similar to:
+    <pre>lrwxrwxrwx. 1 root root 34 Apr 30 09:19 /etc/alternatives/libnssckbi.so.x86_64 -&gt; /usr/lib64/pkcs11/p11-kit-trust.so</pre>

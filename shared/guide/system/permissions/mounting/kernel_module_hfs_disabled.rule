@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Mounting of <tt>hfs</tt>'
+
+description: |-
+    <module-disable-macro module="hfs" />
+    This effectively prevents usage of this uncommon filesystem.
+
+rationale: |-
+    Linux kernel modules which implement filesystems that are not needed by the
+    local system should be disabled.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 80140-7
+
+references:
+    cis: 1.1.1.4
+    cui: 3.4.6
+    nist: CM-7

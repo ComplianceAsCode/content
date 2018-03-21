@@ -1,0 +1,57 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Map System Users To The Appropriate SELinux Role'
+
+description: |-
+    Configure the operating system to prevent non-privileged users from executing
+    privileged functions to include disabling, circumventing, or altering
+    implemented security safeguards/countermeasures. All administrators must be
+    mapped to the <tt>sysadm_u</tt> or <tt>staff_u</tt> users with the
+    appropriate domains (<tt>sysadm_t</tt> and <tt>staff_t</tt>).
+    <pre>$ sudo semanage login -m -s sysadm_u <i>USER</i></pre> or
+    <pre>$ sudo semanage login -m -s staff_u <i>USER</i></pre>
+    <br /><br />
+    All authorized non-administrative
+    users must be mapped to the <tt>user_u</tt> role or the appropriate domain
+    (user_t).
+    <pre>$ sudo semanage login -m -s user_u <i>USER</i></pre>
+
+rationale: |-
+    Preventing non-privileged users from executing privileged functions mitigates
+    the risk that unauthorized individuals or processes may gain unnecessary access
+    to information or privileges.
+    <br /><br />
+    Privileged functions include, for example,
+    establishing accounts, performing system integrity checks, or administering
+    cryptographic key management activities. Non-privileged users are individuals
+    who do not possess appropriate authorizations. Circumventing intrusion detection
+    and prevention mechanisms or malicious code protection mechanisms are examples
+    of privileged functions that require protection from non-privileged users.
+
+severity: medium
+
+identifiers:
+    cce: 80543-2
+
+references:
+    disa: 2235
+    nist: ""
+    srg: SRG-OS-000324-GPOS-00125
+    stigid: "020020"
+
+ocil_clause: 'non-admin users are not confined correctly'
+
+ocil: |-
+    To verify the operating system prevents non-privileged users from executing
+    privileged functions to include disabling, circumventing, or altering
+    implemented security safeguards/countermeasures, run the following
+    command:
+    <pre>$ sudo semanage login -l</pre>
+    All administrators must be mapped to the <tt>sysadm_u</tt> or <tt>staff_u</tt>
+    users with the appropriate domains (<tt>sysadm_t</tt> and <tt>staff_t</tt>).
+    <br /><br />
+    All authorized non-administrative
+    users must be mapped to the <tt>user_u</tt> role or the appropriate domain
+    (user_t).

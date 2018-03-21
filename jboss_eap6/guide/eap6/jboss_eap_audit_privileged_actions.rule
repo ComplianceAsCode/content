@@ -1,0 +1,51 @@
+documentation_complete: true
+
+title: 'Audit JBoss Privileged Actions'
+
+description: |-
+    Launch the jboss-cli management interface substituting standalone or domain for
+    <i>CONFIG</i> based upon the server installation.
+    <br /><br />
+    <pre>&lt;JBOSS_HOME&gt;/<i>CONFIG/</i>/bin/jboss-cli</pre>
+    <br /><br />
+    connect to the server and run the following command:
+    <br /><br />
+    <pre>/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)</pre>
+
+rationale: |-
+    In order to be able to provide a forensic history of activity, the application
+    server must ensure users who are granted a privileged role or those who utilize
+    a separate distinct account when accessing privileged functions or data have
+    their actions logged.
+    <br /><br />
+    If privileged activity is not logged, no forensic logs
+    can be used to establish accountability for privileged actions that occur on the
+    system.
+
+severity: medium
+
+identifiers:
+    cce: 80487-2
+
+references:
+    disa: 2234
+    nist: ""
+    srg: SRG-APP-000343-AS-000030
+    stigid: JBOS-AS-000480
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Run the command:
+    <br /><br />
+    <pre>/core-service=management/access=audit:read-resource(recursive=true)</pre>
+    <br /><br />
+    Under the <pre>"logger" =&gt; {audit-log}</pre> section of
+    the returned response:
+    If <pre>"enabled" =&gt;.</pre>, this is a finding

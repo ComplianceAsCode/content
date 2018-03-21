@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable ypbind Service'
+
+description: |-
+    The <tt>ypbind</tt> service, which allows the system to act as a client in
+    a NIS or NIS+ domain, should be disabled.
+    <systemd-service-macro enable="false" service="ypbind" />
+
+rationale: |-
+    Disabling the <tt>ypbind</tt> service ensures the system is not acting
+    as a client in a NIS or NIS+ domain. This service should be disabled
+    unless in use.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27385-4
+
+references:
+    disa: 305
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: AC-17(8),CM-7
+
+ocil: '<systemd-check-macro enable="false" service="ypbind" />'

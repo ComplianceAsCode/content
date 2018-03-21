@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the Docker service'
+
+description: |-
+    The docker service is commonly needed to
+      create containers.
+    <systemd-service-macro enable="true" service="docker" />
+
+rationale: |-
+    To be able to find any problems with misconfiguration of
+    the docker daemon and running containers, the docker service
+    has to be enabled.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80440-1
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+
+ocil: '<systemd-check-macro enable="true" service="docker" />'

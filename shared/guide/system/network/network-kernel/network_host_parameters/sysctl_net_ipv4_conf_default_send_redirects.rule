@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Kernel Parameter for Sending ICMP Redirects by Default'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />'
+
+rationale: |-
+    ICMP redirect messages are used by routers to inform hosts that a more
+    direct route exists for a particular destination. These messages contain information
+    from the system's route table possibly revealing portions of the network topology.
+    <br />
+    The ability to send ICMP redirects is only appropriate for systems acting as routers.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80156-3
+
+references:
+    cis: 3.1.2
+    cjis: 5.10.1.1
+    cui: 3.1.20
+    disa: 366
+    nist: AC-4,CM-7,SC-5,SC-7
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040650"
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />'

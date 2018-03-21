@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Enable FIPS Mode in GRUB'
+
+description: |-
+    To ensure FIPS mode is enabled, rebuild <tt>initramfs</tt> by running the following command:
+    <pre>dracut -f</pre>
+    After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
+    GRUB kernel line for the Linux operating system in
+    <tt>/etc/grub.conf</tt>, in the manner below:
+    <pre>kernel /vmlinuz-version ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet fips=1</pre>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: medium
+
+identifiers:
+    cce: RHEL6-CCE-TBD
+
+references:
+    disa: 68,2450
+    nist: AC-17(2)
+
+ocil_clause: 'FIPS is not configured or enabled in grub'
+
+ocil: |-
+    To verify that FIPS is enabled properly in grub, run the following command:
+    <pre>$ grep fips /etc/grub.conf</pre>
+    The output should contain fips=1

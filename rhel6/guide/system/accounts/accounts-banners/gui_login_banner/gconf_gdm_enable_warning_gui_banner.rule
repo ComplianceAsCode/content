@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Enable GUI Warning Banner'
+
+description: |-
+    To enable displaying a login warning banner in the GNOME
+    Display Manager's login screen, run the following command:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/gdm/simple-greeter/banner_message_enable true</pre>
+    To display a banner, this setting must be enabled and then
+    banner text must also be set.
+
+rationale: |-
+    An appropriate warning message reinforces policy awareness during the login
+    process and facilitates possible legal action against attackers.
+
+severity: medium
+
+identifiers:
+    cce: 27195-7
+
+references:
+    disa: 48,50
+    nist: AC-8(a),AC-8(b),AC-8(c)
+    srg: SRG-OS-000024
+    stigid: RHEL-06-000324
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To ensure a login warning banner is enabled, run the following:
+    <pre>$ gconftool-2 -g /apps/gdm/simple-greeter/banner_message_enable</pre>
+    Search for the <tt>banner_message_enable</tt> schema.
+    If properly configured, the <tt>default</tt> value should be <tt>true</tt>.

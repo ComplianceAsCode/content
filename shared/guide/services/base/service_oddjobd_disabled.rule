@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Odd Job Daemon (oddjobd)'
+
+description: |-
+    The <tt>oddjobd</tt> service exists to provide an interface and
+    access control mechanism through which
+    specified privileged tasks can run tasks for unprivileged client
+    applications. Communication with <tt>oddjobd</tt> through the system message bus.
+    <systemd-service-macro enable="false" service="oddjobd" />
+
+rationale: |-
+    The <tt>oddjobd</tt> service may provide necessary functionality in
+    some environments, and can be disabled if it is not needed. Execution of
+    tasks by privileged programs, on behalf of unprivileged ones, has traditionally
+    been a source of privilege escalation security issues.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80263-7
+
+references:
+    disa: 381
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="oddjobd" />'

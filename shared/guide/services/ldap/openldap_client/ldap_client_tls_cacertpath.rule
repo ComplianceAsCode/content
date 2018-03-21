@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure Certificate Directives for LDAP Use of TLS'
+
+description: "Ensure a copy of a trusted CA certificate has been placed in\nthe file <tt>/etc/pki/tls/CA/cacert.pem</tt>. Configure LDAP to enforce TLS \nuse and to trust certificates signed by that CA. First, edit the file \n<tt>/etc/nslcd.conf</tt>, and add or correct either of the following lines:\n<pre>tls_cacertdir /etc/pki/tls/CA</pre>\nor\n<pre>tls_cacertfile /etc/pki/tls/CA/cacert.pem</pre>\nThen review the LDAP server and ensure TLS has been configured."
+
+rationale: |-
+    The tls_cacertdir or tls_cacertfile directives are required when
+    tls_checkpeer is configured (which is the default for openldap versions 2.1 and
+    up). These directives define the path to the trust certificates signed by the
+    site CA.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80292-6
+
+references:
+    disa: 776,778,1453
+    nist: CM-7
+
+ocil_clause: 'there is no output, or the lines are commented out'
+
+ocil: |-
+    To ensure TLS is configured with trust certificates, run the following command:
+    <pre>$ grep cert /etc/nslcd.conf</pre>

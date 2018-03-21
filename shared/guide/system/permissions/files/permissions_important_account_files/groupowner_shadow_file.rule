@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify Group Who Owns <tt>shadow</tt> File'
+
+description: '<filegroupowner-desc-macro file="/etc/shadow" group="root" />'
+
+rationale: |-
+    The <tt>/etc/shadow</tt> file stores password hashes. Protection of this file is
+    critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27125-4
+
+references:
+    cis: 6.1.3
+    cjis: 5.5.2.2
+    disa: ""
+    nist: AC-6
+    pcidss: Req-8.7.c
+
+ocil: '<filegroupowner-check-macro file="/etc/shadow" group="root" />'

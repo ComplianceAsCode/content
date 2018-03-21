@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Enable the auditd service'
+
+description: 'The auditd service should be enabled.'
+
+rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.'
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    anssi: NT28(R50)
+    disa: 347,157,172,880,1353,1462,1487,1115,1454,067,158,831,1190,1312,1263,130,120,1589
+    nist: AC-17(1),AU-1(b),AU-10,AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10
+
+ocil: '<service-check-macro enable="true" service="auditd" />'

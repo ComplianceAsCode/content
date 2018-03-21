@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Restrict at and cron to Authorized Users if Necessary'
+
+description: |-
+    The <tt>/etc/cron.allow</tt> and <tt>/etc/at.allow</tt> files contain lists of
+    users who are allowed to use <tt>cron</tt> and at to delay execution of
+    processes. If these files exist and if the corresponding files
+    <tt>/etc/cron.deny</tt> and <tt>/etc/at.deny</tt> do not exist, then only users
+    listed in the relevant allow files can run the crontab and <tt>at</tt> commands
+    to submit jobs to be run at scheduled intervals. On many systems, only the
+    system administrator needs the ability to schedule jobs. Note that even if a
+    given user is not listed in <tt>cron.allow</tt>, cron jobs can still be run as
+    that user. The <tt>cron.allow</tt> file controls only administrative access
+    to the crontab command for scheduling and modifying cron jobs.
+    <br />
+    <br />
+    To restrict <tt>at</tt> and <tt>cron</tt> to only authorized users:
+    <ul>
+    <li>Remove the <tt>cron.deny</tt> file:<pre>$ sudo rm /etc/cron.deny</pre></li>
+    <li>Edit <tt>/etc/cron.allow</tt>, adding one line for each user allowed to use
+    the crontab command to create cron jobs.</li>
+    <li>Remove the <tt>at.deny</tt> file:<pre>$ sudo rm /etc/at.deny</pre></li>
+    <li>Edit <tt>/etc/at.allow</tt>, adding one line for each user allowed to use
+    the at command to create at jobs.</li>
+    </ul>

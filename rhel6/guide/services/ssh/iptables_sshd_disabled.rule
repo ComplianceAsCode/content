@@ -1,0 +1,12 @@
+documentation_complete: true
+
+title: 'Remove SSH Server <tt>iptables</tt> Firewall exception (Unusual)'
+
+description: "By default, inbound connections to SSH's port are allowed. If \nthe SSH server is not being used, this exception should be removed from the\nfirewall configuration.\n<br /><br />\nEdit the files <tt>/etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>\n(if IPv6 is in use). In each file, locate and delete the line:\n<pre>-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>\nThis is unusual, as SSH is a common method for encrypted and authenticated\nremote access."
+
+rationale: "If inbound SSH connections are not expected, disallowing access to the SSH port will \navoid possible exploitation of the port by an attacker."
+
+severity: unknown
+
+identifiers:
+    cce: 27060-3

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable Prelinking'
+
+description: |-
+    The prelinking feature changes binaries in an attempt to decrease their startup
+    time.  In order to disable it, change or add the following line inside the file
+    <tt>/etc/sysconfig/prelink</tt>:
+    <pre>PRELINKING=no</pre>
+    Next, run the following command to return binaries to a normal, non-prelinked state:
+    <pre>$ sudo /usr/sbin/prelink -ua</pre>
+
+rationale: |-
+    Because the prelinking feature changes binaries, it can interfere with the
+    operation of certain software and/or modes such as AIDE, FIPS, etc.
+
+severity: unknown
+
+identifiers:
+    cce: 27221-1
+
+references:
+    nist: 'CM-6(d),SC-28, SI-7'
+    pcidss: Req-11.5

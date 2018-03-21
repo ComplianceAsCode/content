@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure the gluster_export_all_rw SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>gluster_export_all_rw</tt> is enabled.
+    If <tt>GlusterFS</tt> is in use, this setting should be enabled. Otherwise,
+    disable it.
+    <sebool-macro enable="false" sebool="gluster_export_all_rw" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'gluster is in user or gluster_export_all_rw is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="gluster_export_all_rw" />'

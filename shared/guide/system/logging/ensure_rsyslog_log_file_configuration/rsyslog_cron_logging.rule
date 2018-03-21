@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure <tt>cron</tt> Is Logging To Rsyslog'
+
+description: |-
+    Cron logging must be implemented to spot intrusions or trace
+    cron job status. If <tt>cron</tt> is not logging to <tt>rsyslog</tt>, it
+    can be implemented by adding the following to the <i>RULES</i> section of
+    <tt>/etc/rsyslog.conf</tt>:
+    <pre>cron.*                                                  /var/log/cron</pre>
+
+rationale: |-
+    Cron logging can be used to trace the successful or unsuccessful execution
+    of cron jobs. It can also be used to spot intrusions into the use of the cron
+    facility by unauthorized and malicious users.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80380-9
+
+references:
+    disa: 366
+    nist: AU-2(d)
+    ospp@rhel7: FAU_GEN.1.1.c
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "021100"
+
+ocil_clause: 'cron is not logging to rsyslog'
+
+ocil: |-
+    To verify that <tt>cron</tt> is logging to <tt>rsyslog</tt>,
+    run the following command:
+    <pre>grep -rni "cron\.\*" /etc/rsyslog.*</pre>
+    The output should return some similar to:
+    <pre>cron.*                                                  /var/log/cron</pre>

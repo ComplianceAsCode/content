@@ -1,0 +1,48 @@
+documentation_complete: true
+
+title: 'Verify that Shared Library Files Have Restrictive Permissions'
+
+description: |-
+    System-wide shared library files, which are linked to executables
+    during process load time or run time, are stored in the following directories
+    by default:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    Kernel modules, which can be added to the kernel during runtime, are
+    stored in <tt>/lib/modules</tt>. All files in these directories
+    should not be group-writable or world-writable. If any file in these
+    directories is found to be group-writable or world-writable, correct
+    its permission with the following command:
+    <pre>$ sudo chmod go-w <i>FILE</i></pre>
+
+rationale: |-
+    Files from shared library directories are loaded into the address
+    space of processes (including privileged ones) or of the kernel itself at
+    runtime. Restrictive permissions are necessary to protect the integrity of the system.
+
+severity: medium
+
+identifiers:
+    cce: 27381-3
+
+references:
+    disa: 1499
+    nist: AC-6
+    srg: SRG-OS-000259
+    stigid: RHEL-06-000045
+
+ocil_clause: 'any of these files are group-writable or world-writable'
+
+ocil: |-
+    Shared libraries are stored in the following directories:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64
+    </pre>
+    To find shared libraries that are group-writable or world-writable,
+    run the following command for each directory <i>DIR</i> which contains shared libraries:
+    <pre>$ sudo find -L <i>DIR</i> -perm /022 -type f</pre>

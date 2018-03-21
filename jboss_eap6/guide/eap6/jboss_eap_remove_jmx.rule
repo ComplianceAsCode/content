@@ -1,0 +1,58 @@
+documentation_complete: true
+
+title: 'Remove the JMX Subsystem'
+
+description: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script to start the Command Line Interface (CLI).
+    Connect to the server and authenticate.
+    <br /><br />
+    For a Managed Domain configuration you
+    must check each profile name:
+    <br /><br />
+    For each PROFILE NAME, run the command:
+    <pre>/profile=<i>PROFILE NAME</i>/subsystem=jmx/remoting-connector=jmx:remove</pre>
+    For a Standalone configuration:
+    <pre>/subsystem=jmx/remoting-connector=jmx:remove</pre>
+
+rationale: |-
+    The JMX subsystem allows you to trigger JDK and application management
+    operations remotely. In a managed domain configuration, the JMX subsystem is
+    removed by default. For a standalone configuration, it is enabled by default and
+    must be removed.
+
+severity: medium
+
+identifiers:
+    cce: 80469-0
+
+references:
+    disa: 381
+    nist: ""
+    srg: SRG-APP-000141-AS-000095
+    stigid: JBOS-AS-000240
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script to start the Command Line Interface (CLI).
+    Connect to the server and authenticate.
+    <br /><br />
+    For a Managed Domain configuration, you
+    must check each profile name:
+    <br /><br />
+    For each <i>PROFILE NAME</i>, run the command:
+    <pre>ls /profile=<i>PROFILE NAME</i>/subsystem=jmx/remoting-connector</pre>
+    <br /><br />
+    For a Standalone
+    configuration:
+    <pre>ls /subsystem=jmx/remoting-connector</pre>
+    <br /><br />
+    If <tt>jmx</tt> is returned, this is a finding.

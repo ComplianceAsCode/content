@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Disable Ctrl-Alt-Del Reboot Key Sequence in GNOME'
+
+description: |-
+    By default, <tt>GNOME</tt> will reboot the system if the <tt>Ctrl-Alt-Del</tt>
+    key sequence is pressed.
+    <br />
+    To configure the system to ignore the <tt>Ctrl-Alt-Del</tt> key sequence from the
+    Graphical User Interface (GUI) instead of rebooting the system, run the following:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type string \
+      --set /apps/gnome_settings_daemon/keybindings/power ""</pre>
+
+rationale: |-
+    A locally logged-in user who presses Ctrl-Alt-Del, when at the console,
+    can reboot the system. If accidentally pressed, as could happen in
+    the case of mixed OS environment, this can create the risk of short-term
+    loss of availability of systems due to unintentional reboot.
+
+severity: high
+
+references:
+    disa: 366
+    nist: AC-6
+    stigid: ""
+
+ocil_clause: 'GNOME is configured to reboot when Ctrl-Alt-Del is pressed'
+
+ocil: |-
+    To ensure the system is configured to ignore the Ctrl-Alt-Del sequence,
+    run the following command:
+    <pre>$ gconftool-2 -g /apps/gnome_settings_daemon/keybindings/power</pre>
+    The output should return nothing.

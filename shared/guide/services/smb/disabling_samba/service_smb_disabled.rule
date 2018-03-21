@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Samba'
+
+description: '<systemd-service-macro enable="false" service="smb" />'
+
+rationale: |-
+    Running a Samba server provides a network-based avenue of attack, and
+    should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80277-7
+
+references:
+    cis: 2.2.12
+    disa: 1436
+
+ocil: '<systemd-check-macro enable="false" service="smb" />'

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Set Default iptables Policy for Incoming Packets'
+
+description: |-
+    To set the default policy to DROP (instead of ACCEPT) for
+    the built-in INPUT chain which processes incoming packets,
+    add or correct the following line in
+    <tt>/etc/sysconfig/iptables</tt>:
+    <pre>:INPUT DROP [0:0]</pre>
+
+rationale: |-
+    In <tt>iptables</tt> the default policy is applied only after all
+    the applicable rules in the table are examined for a match. Setting the
+    default policy to <tt>DROP</tt> implements proper design for a firewall, i.e.
+    any packets which are not explicitly permitted should not be
+    accepted.
+
+severity: medium
+
+identifiers:
+    cce: 26444-0
+
+references:
+    disa: 66,1109,1154,1414
+    nist: CM-7
+    srg: SRG-OS-000231
+    stigid: RHEL-06-000120
+
+ocil_clause: 'the default policy for the INPUT chain is not set to DROP'
+
+ocil: |-
+    Inspect the file <tt>/etc/sysconfig/iptables</tt> to determine
+    the default policy for the INPUT chain. It should be set to DROP:
+    <pre>$ sudo grep ":INPUT" /etc/sysconfig/iptables</pre>

@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Ensure /tmp Located On Separate Partition'
+
+description: |-
+    The <tt>/tmp</tt> directory is a world-writable directory used
+    for temporary file storage. Ensure it has its own partition or
+    logical volume at installation time, or migrate it using LVM (when non-ephemeral is needed) or use tmpfs if possible.
+
+rationale: |-
+    The <tt>/tmp</tt> partition is used as temporary storage by many programs.
+    Placing <tt>/tmp</tt> in its own partition enables the setting of more
+    restrictive mount options, which can help protect programs which use it.
+
+severity: unknown
+
+references:
+    anssi: NT28(R12)
+    nist: SC-32
+
+ocil: '<partition-check-macro part="/tmp " />'

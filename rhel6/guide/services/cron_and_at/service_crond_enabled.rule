@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Enable cron Service'
+
+description: |-
+    The <tt>crond</tt> service is used to execute commands at
+    preconfigured times. It is required by almost all systems to perform necessary
+    maintenance tasks, such as notifying root of system activity.
+    <chkconfig-service-macro enable="true" service="crond" />
+
+rationale: |-
+    Due to its usage for maintenance and security-supporting tasks,
+    enabling the cron daemon is essential.
+
+severity: medium
+
+identifiers:
+    cce: 27070-2
+
+references:
+    nist: CM-7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000224
+
+ocil: '<service-check-macro enable="true" service="crond" />'

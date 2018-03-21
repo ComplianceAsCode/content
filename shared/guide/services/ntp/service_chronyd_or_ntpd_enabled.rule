@@ -1,0 +1,46 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Enable the NTP Daemon'
+
+description: |-
+    <systemd-service-macro enable="true" service="chronyd" />
+    Note: The <tt>chronyd</tt> daemon is enabled by default.
+    <br /><br />
+    <systemd-service-macro enable="true" service="ntpd" />
+    Note: The <tt>ntpd</tt> daemon is not enabled by default. Though as mentioned
+    in the previous sections in certain environments the <tt>ntpd</tt> daemon might
+    be preferred to be used rather than the <tt>chronyd</tt> one. Refer to:
+    <weblink-macro link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html" />
+    for guidance which NTP daemon to choose depending on the environment used.
+
+rationale: |-
+    Enabling some of <tt>chronyd</tt> or <tt>ntpd</tt> services ensures
+    that the NTP daemon will be running and that the system will synchronize its
+    time to any servers specified. This is important whether the system is
+    configured to be a client (and synchronize only its own clock) or it is also
+    acting as an NTP server to other systems.  Synchronizing time is essential for
+    authentication services such as Kerberos, but it is also important for
+    maintaining accurate logs and auditing possible security breaches.
+    <br /><br />
+    The <tt>chronyd</tt> and <tt>ntpd</tt> NTP daemons offer all of the
+    functionality of <tt>ntpdate</tt>, which is now deprecated. Additional
+    information on this is available at
+    <weblink-macro link="http://support.ntp.org/bin/view/Dev/DeprecatingNtpdate" />
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27444-9
+
+references:
+    cis: 2.2.1.1
+    cui: 3.3.7
+    disa: 160
+    nist: AU-8(1)
+    pcidss: Req-10.4
+
+ocil: |-
+    <systemd-check-macro enable="true" service="chronyd" />
+      <systemd-check-macro enable="true" service="ntpd" />

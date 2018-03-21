@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Ensure that User Home Directories are not Group-Writable or World-Readable'
+
+description: |-
+    For each human user of the system, view the
+    permissions of the user's home directory:
+    <pre>$ sudo ls -ld /home/<i>USER</i></pre>
+    Ensure that the directory is not group-writable and that it
+    is not world-readable. If necessary, repair the permissions:
+    <pre>$ sudo chmod g-w /home/<i>USER</i>
+    $ sudo chmod o-rwx /home/<i>USER</i></pre>
+
+rationale: |-
+    User home directories contain many configuration files which
+    affect the behavior of a user's account. No user should ever have
+    write permission to another user's home directory. Group shared
+    directories can be configured in sub-directories or elsewhere in the
+    filesystem if they are needed. Typically, user home directories
+    should not be world-readable, as it would disclose file names
+    to other users. If a subset of users need read access
+    to one another's home directories, this can be provided using
+    groups or ACLs.
+
+severity: unknown
+
+identifiers:
+    cce: 26981-1
+
+references:
+    nist: AC-6(7)
+
+ocil_clause: 'the user home directory is group-writable or world-readable'
+
+ocil: |-
+    To ensure the user home directory is not group-writable or world-readable, run the following:
+    <pre>$ sudo ls -ld /home/<i>USER</i></pre>

@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Account Inactivity Timeout (minutes)'
+
+description: |-
+    In an interactive shell, the value is interpreted as the
+    number of seconds to wait for input after issueing the primary prompt.
+    Bash terminates after waiting for that number of seconds if input does
+    not arrive.
+
+type: number
+
+operator: equals
+
+interactive: false
+
+options:
+    10_min: 600
+    15_min: 900
+    5_min: 300
+    default: 600

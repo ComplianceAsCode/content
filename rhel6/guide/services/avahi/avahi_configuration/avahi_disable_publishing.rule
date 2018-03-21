@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Disable Avahi Publishing'
+
+description: |-
+    To prevent Avahi from publishing its records, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
+    and ensure the following line appears in the <tt>[publish]</tt> section:
+    <pre>disable-publishing=yes</pre>
+
+rationale: 'This helps ensure that no record will be published by Avahi.'
+
+severity: unknown
+
+identifiers:
+    cce: 27526-3
+
+references:
+    nist: CM-7

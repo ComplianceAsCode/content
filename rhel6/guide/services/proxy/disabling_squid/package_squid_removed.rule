@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: 'Uninstall squid Package'
+
+description: '<yum-macro install="false" package="squid" />'
+
+rationale: |-
+    If there is no need to make the proxy server software available,
+    removing it provides a safeguard against its activation.
+
+severity: unknown
+
+identifiers:
+    cce: 26977-9
+
+ocil: '<package-check-macro package="squid" />'

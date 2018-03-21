@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'Uninstall tftp-server Package'
+
+description: '<yum-macro install="false" package="tftp-server" />'
+
+rationale: |-
+    Removing the <tt>tftp-server</tt> package decreases the risk of the
+    accidental (or intentional) activation of tftp services.
+
+severity: medium
+
+identifiers:
+    cce: 26946-4
+
+references:
+    disa: 305
+    nist: CM-7
+    srg: SRG-OS-000095
+    stigid: RHEL-06-000222
+
+ocil: '<package-check-macro package="tftp-server" />'

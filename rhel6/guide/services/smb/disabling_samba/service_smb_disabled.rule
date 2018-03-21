@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Disable Samba'
+
+description: '<chkconfig-service-macro enable="false" service="smb" />'
+
+rationale: |-
+    Running a Samba server provides a network-based avenue of attack, and
+    should be disabled if not needed.
+
+severity: unknown
+
+identifiers:
+    cce: 27143-7
+
+references:
+    disa: 1436
+
+ocil: '<service-check-macro enable="false" service="smb" />'

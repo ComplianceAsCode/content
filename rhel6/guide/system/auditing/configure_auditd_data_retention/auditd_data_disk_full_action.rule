@@ -1,0 +1,40 @@
+documentation_complete: true
+
+title: 'Configure auditd Disk Full Action when Disk Space Is Full'
+
+description: |-
+    The <tt>auditd</tt> service can be configured to take an action
+    when disk space is running low but prior to running out of space completely.
+    Edit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line,
+    substituting <i>ACTION</i> appropriately:
+    <pre>disk_full_action = <i>ACTION</i></pre>
+    Set this value to <tt>single</tt> to cause the system to switch to single-user
+    mode for corrective action. Acceptable values also include <tt>syslog</tt>,
+    <tt>exec</tt>, <tt>single</tt>, and <tt>halt</tt>. For certain systems, the need for availability
+    outweighs the need to log all actions, and a different setting should be
+    determined. Details regarding all possible values for <i>ACTION</i> are described in the
+    <tt>auditd.conf</tt> man page.
+
+rationale: |-
+    Taking appropriate action in case of a filled audit storage volume will minimize
+    the possibility of losing audit records.
+
+severity: medium
+
+identifiers:
+    cce: 80500-2
+
+references:
+    disa: 140
+    nist: AU-1(b),AU-4,AU-5(b),IR-5
+    srg: SRG-OS-000047
+    stigid: RHEL-06-000510
+
+ocil_clause: 'the system is not configured to switch to single-user mode for corrective action'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine if the system is configured to either log to syslog,
+    switch to single-user mode, execute a script,
+    or halt when the disk is out of space:
+    <pre>disk_full_action single</pre>

@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora,ol7
+
+title: 'Ensure that Root''s Path Does Not Include Relative Paths or Null Directories'
+
+description: |-
+    Ensure that none of the directories in root's path is equal to a single
+    <tt>.</tt> character, or
+    that it contains any instances that lead to relative path traversal, such as
+    <tt>..</tt> or beginning a path without the slash (<tt>/</tt>) character.
+    Also ensure that there are no "empty" elements in the path, such as in these examples:
+    <pre>PATH=:/bin
+    PATH=/bin:
+    PATH=/bin::/sbin</pre>
+    These empty elements have the same effect as a single <tt>.</tt> character.
+
+rationale: |-
+    Including these entries increases the risk that root could
+    execute code from an untrusted location.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80199-3
+
+references:
+    disa: 366
+    nist: CM-6(b)

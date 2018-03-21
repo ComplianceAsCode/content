@@ -1,0 +1,49 @@
+documentation_complete: true
+
+title: 'Configure JBoss Auditor Role'
+
+description: |-
+    Obtain documented approvals from ISSM, and assign the appropriate personnel
+    into the <pre>Auditor</pre> role.
+
+rationale: |-
+    The JBoss server must be configured to select which personnel are assigned the
+    role of selecting which loggable events are to be logged.
+    In JBoss, the role
+    designated for selecting auditable events is the <tt>Auditor</tt> role.
+    The
+    personnel or roles that can select loggable events are only the ISSM (or
+    individuals or roles appointed by the ISSM).
+
+severity: medium
+
+identifiers:
+    cce: 80460-9
+
+references:
+    disa: 171
+    nist: ""
+    srg: SRG-APP-000090-AS-000051
+    stigid: JBOS-AS-000085
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script to start the Command Line Interface (CLI).
+    Connect to the server and authenticate.
+    Run the command:
+    <br /><br />
+    For a Managed Domain
+    configuration:
+    <pre>ls host=master/server/<i>SERVERNAME</i>/core-service=management/access=authorization/role-mapping=Auditor/include=</pre>
+    <br /><br />
+    For a Standalone configuration:
+    <pre>ls /core-service=management/access=authorization/role-mapping=Auditor/include=</pre>
+    <br /><br />
+    If
+    the list of users in the Auditors group is not approved by the ISSM, this is a
+    finding.

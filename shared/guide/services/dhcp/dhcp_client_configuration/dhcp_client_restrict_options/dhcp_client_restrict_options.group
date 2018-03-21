@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Minimize the DHCP-Configured Options'
+
+description: |-
+    Create the file <tt>/etc/dhcp/dhclient.conf</tt>, and add an
+    appropriate setting for each of the ten configuration settings which can be
+    obtained via DHCP. For each setting, do one of the following:
+    <br />
+    If the setting should <i>not</i> be configured remotely by the DHCP server,
+    select an appropriate static value, and add the line:
+    <pre>supersede <tt>setting value</tt>;</pre>
+    If the setting should be configured remotely by the DHCP server, add the lines:
+    <pre>request <tt>setting</tt>;
+    require <tt>setting</tt>;</pre>
+    For example, suppose the DHCP server should provide only the IP address itself
+    and the subnet mask. Then the entire file should look like:
+    <pre>supersede domain-name "example.com";
+    supersede domain-name-servers 192.168.1.2;
+    supersede nis-domain "";
+    supersede nis-servers "";
+    supersede ntp-servers "ntp.example.com ";
+    supersede routers 192.168.1.1;
+    supersede time-offset -18000;
+    request subnet-mask;
+    require subnet-mask;</pre>

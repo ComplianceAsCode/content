@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Disable SSH Support for User Known Hosts'
+
+description: |-
+    SSH can allow system users user host-based authentication to connect
+    to systems if a cache of the remote systems public keys are available.
+    This should be disabled.
+    <br /><br />
+    To ensure this behavior is disabled, add or correct the
+    following line in <tt>/etc/ssh/sshd_config</tt>:
+    <pre>IgnoreUserKnownHosts yes</pre>
+
+rationale: |-
+    Configuring this setting for the SSH daemon provides additional
+    assurance that remove login via SSH will require a password, even
+    in the event of misconfiguration elsewhere.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80372-6
+
+references:
+    cui: 3.1.12
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: CM-6(a)
+    ospp@rhel7: FIA_AFL.1
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040380"
+
+ocil: '<sshd-check-macro default="no" option="IgnoreUserKnownHosts" value="yes" />'

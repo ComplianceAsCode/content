@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Disable Kernel Parameter for IPv6 Forwarding'
+
+description: '<sysctl-desc-macro sysctl="net.ipv6.conf.all.forwarding" value="0" />'
+
+rationale: |-
+    IP forwarding permits the kernel to forward packets from one network
+    interface to another. The ability to forward packets between two networks is
+    only appropriate for systems acting as routers.
+
+severity: medium
+
+identifiers:
+    cce: RHEL6-CCE-TBD
+
+references:
+    cis: 4.1.1
+    disa: 366
+    nist: CM-7,SC-5
+
+ocil: |-
+    <sysctl-check-macro sysctl="net.ipv6.conf.all.forwarding" value="0" />
+    The ability to forward packets is only appropriate for routers.

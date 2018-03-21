@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Ensure All Logs are Rotated by <tt>logrotate</tt>'
+
+description: |-
+    Edit the file <tt>/etc/logrotate.d/rsyslog</tt>. Find the first
+    line, which should look like this (wrapped for clarity):
+    <pre>/var/log/messages /var/log/secure /var/log/maillog /var/log/spooler \
+      /var/log/boot.log /var/log/cron {</pre>
+    Edit this line so that it contains a one-space-separated
+    listing of each log file referenced in <tt>/etc/rsyslog.conf</tt>.
+    <br /><br />
+    All logs in use on a system must be rotated regularly, or the
+    log files will consume disk space over time, eventually interfering
+    with system operation. The file <tt>/etc/logrotate.d/syslog</tt> is the
+    configuration file used by the <tt>logrotate</tt> program to maintain all
+    log files written by <tt>syslog</tt>. By default, it rotates logs weekly and
+    stores four archival copies of each log. These settings can be
+    modified by editing <tt>/etc/logrotate.conf</tt>, but the defaults are
+    sufficient for purposes of this guide.
+    <br /><br />
+    Note that <tt>logrotate</tt> is run nightly by the cron job
+    <tt>/etc/cron.daily/logrotate</tt>. If particularly active logs need to be
+    rotated more often than once a day, some other mechanism must be
+    used.

@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable Avahi Publishing'
+
+description: |-
+    To prevent other mDNS stacks from running, edit <tt>/etc/avahi/avahi-daemon.conf</tt>
+    and ensure the following line appears in the <tt>[server]</tt> section:
+    <pre>disallow-other-stacks=yes</pre>
+
+rationale: |-
+    This helps ensure that only Avahi is responsible for mDNS traffic coming from
+    that port on the system.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80342-9
+
+references:
+    nist: CM-7

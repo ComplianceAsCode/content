@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure that System Accounts Do Not Run a Shell Upon Login'
+
+description: |-
+    Some accounts are not associated with a human user of the system, and exist to
+    perform some administrative function. Should an attacker be able to log into
+    these accounts, they should not be granted access to a shell.
+    <br /><br />
+    The login shell for each local account is stored in the last field of each line
+    in <tt>/etc/passwd</tt>. System accounts are those user accounts with a user ID
+    less than UID_MIN, where value of UID_MIN directive is set in
+    /etc/login.defs configuration file. In the default configuration UID_MIN is set
+    to 1000, thus system accounts are those user accounts with a user ID less than
+    1000. The user ID is stored in the third field. If any system account
+    <i>SYSACCT</i> (other than root) has a login shell, disable it with the
+    command: <pre>$ sudo usermod -s /sbin/nologin <i>SYSACCT</i></pre>
+
+rationale: |-
+    Ensuring shells are not given to system accounts upon login makes it more
+    difficult for attackers to make use of system accounts.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 26448-1
+
+references:
+    cis: 5.4.2
+    disa: ""
+    nist: AC-2
+
+ocil_clause: 'any system account (other than root) has a login shell'
+
+ocil: |-
+    To obtain a listing of all users, their UIDs, and their shells, run the
+    command: <pre>$ awk -F: '{print $1 ":" $3 ":" $7}' /etc/passwd</pre> Identify
+    the system accounts from this listing. These will primarily be the accounts
+    with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
+    directive is set in /etc/login.defs configuration file. In the default
+    configuration UID_MIN is set to 1000.

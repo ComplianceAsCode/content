@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Assign Expiration Date to Temporary Accounts'
+
+description: |-
+    In the event temporary or emergency accounts are required, configure the system
+    to terminate them after a documented time period. For every temporary and
+    emergency account, run the following command to set an expiration date on it,
+    substituting <tt><i>USER</i></tt> and <tt><i>YYYY-MM-DD</i></tt> appropriately:
+    <pre>$ sudo chage -E <i>YYYY-MM-DD USER</i></pre>
+    <tt><i>YYYY-MM-DD</i></tt> indicates the documented expiration date for the account.
+
+rationale: "When temporary and emergency accounts are created, there is a risk they may\nremain in place and active after the need for them no longer exists.  Account\nexpiration greatly reduces the risk of accounts being misused or hijacked. \n<br />"
+
+severity: unknown
+
+identifiers:
+    cce: 27474-6
+
+references:
+    disa: 16,1682
+    nist: AC-2(2),AC-2(3)
+    srg: SRG-OS-000121,SRG-OS-000123
+    stigid: RHEL-06-000297
+
+ocil_clause: 'any temporary or emergency accounts have no expiration date set or do not expire within a documented time frame'
+
+ocil: |-
+    For every temporary and emergency account, run the following command
+    to obtain its account aging and expiration information:
+    <pre>$ sudo chage -l <i>USER</i></pre>
+    Verify each of these accounts has an expiration date set as documented.

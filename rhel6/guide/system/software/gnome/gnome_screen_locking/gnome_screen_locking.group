@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Configure GNOME Screen Locking'
+
+description: |-
+    In the default GNOME desktop, the screen can be locked
+    by choosing <b>Lock Screen</b> from the <b>System</b> menu.
+    <br /><br />
+    The <tt>gconftool-2</tt> program can be used to enforce mandatory
+    screen locking settings for the default GNOME environment.
+    The
+    following sections detail commands to enforce idle activation of the screensaver,
+    screen locking, a blank-screen screensaver, and an idle
+    activation time.
+
+    <br /><br />
+    Because users should be trained to lock the screen when they
+    step away from the computer, the automatic locking feature is only
+    meant as a backup. The <b>Lock Screen</b> icon from the <b>System</b> menu can
+    also be dragged to the taskbar in order to facilitate even more
+    convenient screen-locking.
+    <br /><br />
+    The root account cannot be screen-locked, but this should
+    have no practical effect as the root account should <i>never</i> be used
+    to log into an X Windows environment, and should only be used to
+    for direct login via console in emergency circumstances.
+    <br /><br />
+    For more information about configuring GNOME screensaver, see
+    <b><weblink-macro link="http://live.gnome.org/GnomeScreensaver" /></b>. For more information about
+    enforcing preferences in the GNOME environment using the GConf
+    configuration system, see <b><weblink-macro link="http://projects.gnome.org/gconf" /></b> and
+    the man page <tt>gconftool-2(1)</tt>.

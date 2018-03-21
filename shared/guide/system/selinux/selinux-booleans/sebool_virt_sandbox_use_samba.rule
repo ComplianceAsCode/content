@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the virt_sandbox_use_samba SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>virt_sandbox_use_samba</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="virt_sandbox_use_samba" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'virt_sandbox_use_samba is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="virt_sandbox_use_samba" />'

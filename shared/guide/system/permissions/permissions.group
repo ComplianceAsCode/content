@@ -1,0 +1,5 @@
+documentation_complete: true
+
+title: 'File Permissions and Masks'
+
+description: "Traditional Unix security relies heavily on file and\ndirectory permissions to prevent unauthorized users from reading or\nmodifying files to which they should not have access. \n<br /><br />\nSeveral of the commands in this section search filesystems\nfor files or directories with certain characteristics, and are\nintended to be run on every local partition on a given system.\nWhen the variable <i>PART</i> appears in one of the commands below,\nit means that the command is intended to be run repeatedly, with the\nname of each local partition substituted for <i>PART</i> in turn.\n<br /><br />\nThe following command prints a list of all xfs partitions on the local\nsystem, which is the default filesystem for Red Hat Enterprise Linux\n7 installations:\n<pre>$ mount -t xfs | awk '{print $3}'</pre>\nFor any systems that use a different\nlocal filesystem type, modify this command as appropriate."

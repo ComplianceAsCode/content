@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: 'Enable Randomized Layout of Virtual Address Space'
+
+description: '<sysctl-desc-macro sysctl="kernel.randomize_va_space" value="2" />'
+
+rationale: "Address space layout randomization (ASLR) makes it more difficult\nfor an attacker to predict the location of attack code they have introduced\ninto a process's address space during an attempt at exploitation.  Additionally, ASLR \nmakes it more difficult for an attacker to know the location of existing code\nin order to re-purpose it using return oriented programming (ROP) techniques."
+
+severity: medium
+
+identifiers:
+    cce: 26999-3
+
+references:
+    nist: SC-30(2)
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000078
+
+ocil: '<sysctl-check-macro sysctl="kernel.randomize_va_space" value="2" />'

@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Implement Blank Screensaver'
+
+description: |-
+    Run the following command to set the screensaver mode
+    in the GNOME desktop to a blank screen:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type string \
+      --set /apps/gnome-screensaver/mode blank-only</pre>
+
+rationale: |-
+    Setting the screensaver mode to blank-only conceals the
+    contents of the display from passersby.
+
+severity: unknown
+
+identifiers:
+    cce: 26638-7
+
+references:
+    disa: 60
+    nist: AC-11(b)
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000031
+    stigid: RHEL-06-000260
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To ensure the screensaver is configured to be blank, run the following command:
+    <pre>$ gconftool-2 -g /apps/gnome-screensaver/mode</pre>
+    If properly configured, the output should be <tt>blank-only</tt>

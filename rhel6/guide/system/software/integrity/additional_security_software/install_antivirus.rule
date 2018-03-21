@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Install Virus Scanning Software'
+
+description: "Install virus scanning software, which uses signatures to search for the\npresence of viruses on the filesystem. \nThe McAfee VirusScan Enterprise for Linux virus scanning tool is provided for DoD systems.\nEnsure virus definition files are no older than 7 days, or their last release.\n\nConfigure the virus scanning software to perform scans dynamically on all\naccessed files.  If this is not possible, configure the\nsystem to scan all altered files on the system on a daily\nbasis. If the system processes inbound SMTP mail, configure the virus scanner\nto scan all received mail."
+
+rationale: |-
+    Virus scanning software can be used to detect if a system has been compromised by
+    computer viruses, as well as to limit their spread to other systems.
+
+severity: unknown
+
+identifiers:
+    cce: 27529-7
+
+references:
+    disa: 1239,1668
+    nist: 'SC-28, SI-3'
+    srg: SRG-OS-000270
+    stigid: RHEL-06-000284
+
+ocil_clause: 'virus scanning software does not run continuously, or at least daily, or has signatures that are out of date'
+
+ocil: |-
+    Inspect the system for a cron job or system service which executes
+    a virus scanning tool regularly.
+    <br />
+
+    To verify the McAfee VSEL system service is operational,
+    run the following command:
+    <pre>$ sudo /sbin/service nails status</pre>
+    <br />
+    To check on the age of uvscan virus definition files, run the following command:
+    <pre>$ sudo cd /opt/NAI/LinuxShield/engine/dat
+    $ sudo ls -la avvscan.dat avvnames.dat avvclean.dat</pre>

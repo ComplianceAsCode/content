@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Configure Kernel Parameter for Accepting Secure Redirects for All Interfaces'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />'
+
+rationale: |-
+    Accepting "secure" ICMP redirects (from those gateways listed as
+    default gateways) has few legitimate uses. It should be disabled unless it is
+    absolutely required.
+
+severity: medium
+
+identifiers:
+    cce: 26854-0
+
+references:
+    disa: 1503,1551
+    nist: AC-4,CM-7,SC-5
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000086
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.all.secure_redirects" value="0" />'

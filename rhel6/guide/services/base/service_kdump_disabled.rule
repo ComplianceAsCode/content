@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Disable KDump Kernel Crash Analyzer (kdump)'
+
+description: |-
+    The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
+    system call to boot a secondary kernel ("capture" kernel) following a system
+    crash, which can load information from the crashed kernel for analysis.
+    <chkconfig-service-macro enable="false" service="kdump" />
+
+rationale: |-
+    Unless the system is used for kernel development or testing, there
+    is little need to run the kdump service.
+
+severity: unknown
+
+identifiers:
+    cce: 26850-8
+
+references:
+    nist: CM-7
+
+ocil: '<service-check-macro enable="false" service="kdump" />'

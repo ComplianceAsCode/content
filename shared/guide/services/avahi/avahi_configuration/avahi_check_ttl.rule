@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Check Avahi Responses'' TTL Field'
+
+description: |-
+    To make Avahi ignore packets unless the TTL field is 255, edit
+    <tt>/etc/avahi/avahi-daemon.conf</tt> and ensure the following line
+    appears in the <tt>[server]</tt> section:
+    <pre>check-response-ttl=yes</pre>
+
+rationale: |-
+    This helps to ensure that only mDNS responses from the local network are
+    processed, because the TTL field in a packet is decremented from its initial
+    value of 255 whenever it is routed from one network to another. Although a
+    properly-configured router or firewall should not allow mDNS packets into
+    the local network at all, this option provides another check to ensure they
+    are not permitted.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80340-3
+
+references:
+    nist: CM-7

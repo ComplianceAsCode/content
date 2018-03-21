@@ -1,0 +1,14 @@
+documentation_complete: true
+
+title: 'Limit Users Allowed FTP Access if Necessary'
+
+description: |-
+    If there is a mission-critical reason for users to access their accounts via the insecure FTP protocol, limit the set of users who are allowed this access. Edit the vsftpd configuration file. Add or correct the following configuration options:
+    <pre>userlist_enable=YES
+    userlist_file=/etc/vsftp.ftpusers
+    userlist_deny=NO</pre>
+    Edit the file <tt>/etc/vsftp.ftpusers</tt>. For each user USERNAME who should be allowed to access the system via FTP, add a line containing that user's name:
+    <pre>USERNAME</pre>
+    If anonymous access is also required, add the anonymous usernames to <tt>/etc/vsftp.ftpusers</tt> as well.
+    <pre>anonymous
+    ftp</pre>

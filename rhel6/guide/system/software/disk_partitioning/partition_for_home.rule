@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Ensure /home Located On Separate Partition'
+
+description: |-
+    If user home directories will be stored locally, create a separate partition
+    for <tt>/home</tt> at installation time (or migrate it later using LVM). If
+    <tt>/home</tt> will be mounted from another system such as an NFS server, then
+    creating a separate partition is not necessary at installation time, and the
+    mountpoint can instead be configured later.
+
+rationale: |-
+    Ensuring that <tt>/home</tt> is mounted on its own partition enables the
+    setting of more restrictive mount options, and also helps ensure that
+    users cannot trivially fill partitions used for log or audit data storage.
+
+severity: unknown
+
+identifiers:
+    cce: 26557-9
+
+references:
+    disa: 1208
+    nist: SC-32
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000007
+
+ocil: '<partition-check-macro part="/home " />'

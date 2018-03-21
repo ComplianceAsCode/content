@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable SMART Disk Monitoring Service (smartd)'
+
+description: |-
+    SMART (Self-Monitoring, Analysis, and Reporting Technology) is a
+    feature of hard drives that allows them to detect symptoms of disk failure and
+    relay an appropriate warning.
+    <systemd-service-macro enable="false" service="smartd" />
+
+rationale: |-
+    SMART can help protect against denial of
+    service due to failing hardware. Nevertheless, if it is not needed or the
+    system's drives are not SMART-capable (such as solid state drives), it can be
+    disabled.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80272-8
+
+references:
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="smartd" />'

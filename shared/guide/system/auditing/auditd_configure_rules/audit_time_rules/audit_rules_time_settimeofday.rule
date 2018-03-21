@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Record attempts to alter time through settimeofday'
+
+description: |-
+    If the <tt>auditd</tt> daemon is configured to use the
+    <tt>augenrules</tt> program to read audit rules during daemon startup (the
+    default), add the following line to a file with suffix <tt>.rules</tt> in the
+    directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F arch=b32 -S settimeofday -F key=audit_time_rules</pre>
+    If the system is 64 bit then also add the following line:
+    <pre>-a always,exit -F arch=b64 -S settimeofday -F key=audit_time_rules</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following line to
+    <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-a always,exit -F arch=b32 -S settimeofday -F key=audit_time_rules</pre>
+    If the system is 64 bit then also add the following line:
+    <pre>-a always,exit -F arch=b64 -S settimeofday -F key=audit_time_rules</pre>
+    The -k option allows for the specification of a key in string form that can be
+    used for better reporting capability through ausearch and aureport. Multiple
+    system calls can be defined on the same line to save space if desired, but is
+    not required. See an example of multiple combined syscalls:
+    <pre>-a always,exit -F arch=b64 -S adjtimex,settimeofday -F key=audit_time_rules</pre>
+
+rationale: |-
+    Arbitrary changes to the system time can be used to obfuscate
+    nefarious activities in log files, as well as to confuse network services that
+    are highly dependent upon an accurate system time (such as sshd). All changes
+    to the system time should be audited.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27216-1
+
+references:
+    cis: 5.2.4
+    cjis: 5.4.1.1
+    cui: 3.1.7
+    disa: 1487,169
+    hipaa: 164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A),164.308(a)(5)(ii)(C),164.312(a)(2)(i),164.312(b),164.312(d),164.312(e)
+    nist: AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.4.2.b
+
+ocil_clause: 'the system is not configured to audit time changes'
+
+ocil: '<audit-syscall-check-macro syscall="settimeofday" />'

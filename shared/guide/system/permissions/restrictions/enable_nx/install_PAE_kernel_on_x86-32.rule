@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Install PAE Kernel on Supported 32-bit x86 Systems'
+
+description: |-
+    Systems that are using the 64-bit x86 kernel package
+    do not need to install the kernel-PAE package because the 64-bit
+    x86 kernel already includes this support. However, if the system is
+    32-bit and also supports the PAE and NX features as
+    determined in the previous section, the kernel-PAE package should
+    be installed to enable XD or NX support:
+    <pre>$ sudo yum install kernel-PAE</pre>
+    The installation process should also have configured the
+    bootloader to load the new kernel at boot. Verify this at reboot
+    and modify <tt>/etc/default/grub</tt> if necessary.
+
+rationale: |-
+    On 32-bit systems that support the XD or NX bit, the vendor-supplied
+    PAE kernel is required to enable either Execute Disable (XD) or No Execute (NX) support.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27116-3
+
+references:
+    cui: 3.1.7
+    nist: CM-6(b)

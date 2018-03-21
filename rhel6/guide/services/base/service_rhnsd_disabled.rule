@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Disable Red Hat Network Service (rhnsd)'
+
+description: |-
+    The Red Hat Network service automatically queries Red Hat Network
+    servers to determine whether there are any actions that should be executed,
+    such as package updates. This only occurs if the system was registered to an
+    RHN server or satellite and managed as such.
+    <chkconfig-service-macro enable="false" service="rhnsd" />
+
+rationale: |-
+    Although systems management and patching is extremely important to
+    system security, management by a system outside the enterprise enclave is not
+    desirable for some environments.  However, if the system is being managed by RHN or
+     RHN Satellite Server the <tt>rhnsd</tt> daemon can remain on.
+
+severity: unknown
+
+identifiers:
+    cce: 26846-6
+
+references:
+    disa: 382
+    nist: CM-7
+    srg: SRG-OS-000096
+    stigid: RHEL-06-000009
+
+ocil: '<service-check-macro enable="false" service="rhnsd" />'

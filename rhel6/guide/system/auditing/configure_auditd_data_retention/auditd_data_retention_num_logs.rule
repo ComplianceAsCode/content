@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Configure auditd Number of Logs Retained'
+
+description: "Determine how many log files\n<tt>auditd</tt> should retain when it rotates logs.\nEdit the file <tt>/etc/audit/auditd.conf</tt>. Add or modify the following\nline, substituting <i>NUMLOGS</i> with the correct value of <sub idref=\"var_auditd_num_logs\" />:\n<pre>num_logs = <i>NUMLOGS</i></pre>\nSet the value to 5 for general-purpose systems. \nNote that values less than 2 result in no log rotation."
+
+rationale: |-
+    The total storage for audit log files must be large enough to retain
+    log information over the period required. This is a function of the maximum log
+    file size and the number of logs retained.
+
+severity: medium
+
+identifiers:
+    cce: 27522-2
+
+references:
+    nist: AU-1(b),AU-11,IR-5
+    pcidss: Req-10.7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000159
+
+ocil_clause: 'the system log file retention has not been properly configured'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine how many logs the system is configured to retain after rotation:
+    <tt>$ sudo grep num_logs /etc/audit/auditd.conf</tt>
+    <pre>num_logs = 5</pre>

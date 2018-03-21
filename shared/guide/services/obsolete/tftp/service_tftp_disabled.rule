@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable tftp Service'
+
+description: |-
+    The <tt>tftp</tt> service should be disabled.
+    <systemd-service-macro enable="false" service="tftp" />
+
+rationale: |-
+    Disabling the <tt>tftp</tt> service ensures the system is not acting
+    as a TFTP server, which does not provide encryption or authentication.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80212-4
+
+references:
+    cis: 2.1.6
+    disa: 1436
+    nist: AC-17(8),CM-7
+
+ocil: '<systemd-check-macro enable="false" service="tftp" />'

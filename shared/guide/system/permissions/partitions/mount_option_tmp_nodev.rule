@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Add nodev Option to /tmp'
+
+description: "The <tt>nodev</tt> mount option can be used to prevent device files from\nbeing created in <tt>/tmp</tt>.\nLegitimate character and block devices should not exist\nwithin temporary directories like <tt>/tmp</tt>. \n<mount-desc-macro option=\"nodev\" part=\"/tmp\" />"
+
+rationale: |-
+    The only legitimate location for device files is the <tt>/dev</tt> directory
+    located on the root partition. The only exception to this is chroot jails.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80149-8
+
+references:
+    cis: 1.1.3
+    nist: CM-7,MP-2

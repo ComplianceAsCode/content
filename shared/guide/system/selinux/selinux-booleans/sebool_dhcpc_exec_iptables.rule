@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the dhcpc_exec_iptables SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>dhcpc_exec_iptables</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="dhcpc_exec_iptables" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'dhcpc_exec_iptables is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="dhcpc_exec_iptables" />'

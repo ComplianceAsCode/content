@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Enable the SELinux Context Restoration Service (restorecond)'
+
+description: |-
+    The <tt>restorecond</tt> service utilizes <tt>inotify</tt> to look
+    for the creation of new files listed in the
+    <tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
+    created, <tt>restorecond</tt> ensures the file receives the proper SELinux
+    security context.
+    <chkconfig-service-macro enable="true" service="restorecond" />
+
+rationale: |-
+    The <tt>restorecond</tt> service helps ensure that the default SELinux
+    file context is applied to files. This allows automatic correction
+    of file contexts created by some programs.
+
+severity: unknown
+
+identifiers:
+    cce: 26991-0
+
+references:
+    nist: AC-3,AC-3(3),AC-4,AC-6,AU-9

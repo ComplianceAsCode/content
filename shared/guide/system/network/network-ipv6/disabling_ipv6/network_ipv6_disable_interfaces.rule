@@ -1,0 +1,17 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Interface Usage of IPv6'
+
+description: |-
+    To disable interface usage of IPv6, add or correct the following lines in <tt>/etc/sysconfig/network</tt>:
+    <pre>NETWORKING_IPV6=no
+    IPV6INIT=no</pre>
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80176-1

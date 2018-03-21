@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Enable rsyslog to Accept Messages via TCP, if Acting As Log Server'
+
+description: |-
+    The <tt>rsyslog</tt> daemon should not accept remote messages
+    unless the system acts as a log server.
+    If the system needs to act as a central log server, add the following lines to
+    <tt>/etc/rsyslog.conf</tt> to enable reception of messages over TCP:
+    <pre>$ModLoad imtcp
+    $InputTCPServerRun 514</pre>
+
+rationale: |-
+    If the system needs to act as a log server, this ensures that it can receive
+    messages over a reliable TCP connection.
+
+severity: unknown
+
+identifiers:
+    cce: 27235-1
+
+references:
+    nist: AU-9

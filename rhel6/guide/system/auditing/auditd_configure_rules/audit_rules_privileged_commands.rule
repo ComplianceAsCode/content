@@ -1,0 +1,46 @@
+documentation_complete: true
+
+title: 'Ensure <tt>auditd</tt> Collects Information on the Use of Privileged Commands'
+
+description: |-
+    At a minimum the audit system should collect the
+    execution of privileged commands for all users and root.
+    To find the relevant setuid / setgid programs, run the following command
+    for each local partition <i>PART</i>:
+    <pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2&gt;/dev/null</pre>
+    Then, for each setuid / setgid program on the system, add a line of the
+    following form to <tt>/etc/audit/audit.rules</tt>, where
+    <i>SETUID_PROG_PATH</i> is the full path to each setuid / setgid program
+    in the list:
+    <pre>-a always,exit -F path=<i>SETUID_PROG_PATH</i> -F perm=x -F auid&gt;=500 -F auid!=4294967295 -k privileged</pre>
+
+rationale: |-
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: unknown
+
+identifiers:
+    cce: 26457-2
+
+references:
+    disa: 40
+    nist: AC-3(10)),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AC-6(9),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.2
+    srg: SRG-OS-000020
+    stigid: RHEL-06-000198
+
+ocil_clause: 'that is not the case'
+
+ocil: |-
+    To verify that auditing of privileged command use is configured, run the
+    following command for each local partition <i>PART</i> to find relevant
+    setuid / setgid programs:
+    <pre>$ sudo find <i>PART</i> -xdev -type f -perm -4000 -o -type f -perm -2000 2&gt;/dev/null</pre>
+    Run the following command to verify entries in the audit rules for all programs
+    found with the previous command:
+    <pre>$ sudo grep path /etc/audit/audit.rules</pre>
+    It should be the case that all relevant setuid / setgid programs have a line
+    in the audit rules.

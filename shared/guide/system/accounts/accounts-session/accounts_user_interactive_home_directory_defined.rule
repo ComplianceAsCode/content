@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'All Interactive Users Must Have A Home Directory Defined'
+
+description: |-
+    Assign home directories to all interactive users that currently do not
+    have a home directory assigned.
+
+rationale: |-
+    If local interactive users are not assigned a valid home directory, there is no
+    place for the storage and control of files they should own.
+
+severity: medium
+
+identifiers:
+    cce: 80528-3
+
+references:
+    disa: 366
+    nist: ""
+    srg: SRG-OS-000480-GPOS-00227
+    stigid: "020600"
+
+ocil_clause: 'users home directory is not defined'
+
+ocil: |-
+    To verify interactive users on the system have a home directory assigned,
+    run the following command:
+    <pre>$ sudo awk -F":" '{print $1 ":" $6}' /etc/passwd</pre>
+    Inspect the output and verify that all interactive users have a home directory
+    defined.

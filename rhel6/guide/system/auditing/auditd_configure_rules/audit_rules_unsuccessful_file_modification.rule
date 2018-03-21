@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)'
+
+description: |-
+    At a minimum the audit system should collect
+    unauthorized file accesses for all users and root. Add the following
+    to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
+    -a always,exit -F arch=b32 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+    If the system is 64 bit then also add the following:
+    <pre>
+    -a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EACCES -F auid&gt;=500 -F auid!=4294967295 -k access
+    -a always,exit -F arch=b64 -S creat -S open -S openat -S open_by_handle_at -S truncate -S ftruncate -F exit=-EPERM -F auid&gt;=500 -F auid!=4294967295 -k access</pre>
+
+rationale: |-
+    Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
+    these events could serve as evidence of potential system compromise.
+
+severity: unknown
+
+identifiers:
+    cce: 26712-0
+
+references:
+    disa: 126
+    nist: AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.4,Req-10.2.1
+    srg: SRG-OS-000064
+    stigid: RHEL-06-000197
+
+ocil_clause: '32-bit and 64-bit system calls to creat, open, openat, open_by_handle_at, truncate, and ftruncate are not audited during EACCES and EPERM'
+
+ocil: |-
+    To verify that the audit system collects unauthorized file accesses, run the following commands:
+    <pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
+    <pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>

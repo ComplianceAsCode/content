@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Disable the GNOME Login Restart and Shutdown Buttons'
+
+description: |-
+    In the default graphical environment, users logging
+    directly into the system are greeted with a login screen that allows
+    any user, known or unknown, the ability shutdown or restart
+    the system. This functionality should be disabled by running the following:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/gdm/simple-greeter/disable_restart_buttons true</pre>
+
+rationale: |-
+    A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons
+    are pressed at the login screen, this can create the risk of short-term loss of availability of systems
+    due to reboot.
+
+severity: high
+
+references:
+    disa: 366
+    nist: AC-6
+    stigid: ""
+
+ocil_clause: 'disable-restart-buttons has not been configured or is not disabled'
+
+ocil: |-
+    To ensure disable and restart on the login screen are disabled, run the following command:
+    <pre>$ gconftool-2 -g /apps/gdm/simple-greeter/disable_restart_buttons</pre>
+    The output should be <tt>true</tt>.

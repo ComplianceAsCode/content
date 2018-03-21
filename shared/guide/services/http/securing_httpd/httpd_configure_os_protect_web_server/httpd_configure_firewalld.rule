@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure <tt>firewalld</tt> to Allow Access to the Web Server'
+
+description: |-
+    By default, <tt>firewalld</tt>
+    blocks access to the ports used by the web server.
+    <firewalld-desc-macro allow="true" proto="tcp" service="http" />
+    <firewalld-desc-macro allow="true" proto="tcp" service="https" />
+
+rationale: |-
+    Failure to comply with DoD ports, protocols, and services (PPS) requirements
+    can result in compromise of enclave boundary protections and/or functionality
+    of the AIS.
+
+severity: low
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG610
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Review the web site to determine if HTTP and HTTPs are used in accordance with
+    well known ports (e.g., 80 and 443) or those ports and services as registered
+    and approved for use by the DoD PPSM.
+    <firewalld-desc-macro allow="true" proto="tcp" service="http" />
+    <firewalld-desc-macro allow="true" proto="tcp" service="https" />

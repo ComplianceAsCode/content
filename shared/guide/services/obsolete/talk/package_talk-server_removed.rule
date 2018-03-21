@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Uninstall talk-server Package'
+
+description: '<yum-macro install="false" package="talk-server" />'
+
+rationale: |-
+    The talk software presents a security risk as it uses unencrypted protocols
+    for communications. Removing the <tt>talk-server</tt> package decreases the
+    risk of the accidental (or intentional) activation of talk services.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27210-4
+
+references:
+    cis: 2.2.21
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+ocil: '<package-check-macro package="talk-server" />'

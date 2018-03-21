@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Restrict Information Published by Avahi'
+
+description: |-
+    If it is necessary to publish some information to the network, it should not be joined
+    by any extraneous information, or by information supplied by a non-trusted source
+    on the system.
+    Prevent user applications from using Avahi to publish services by adding or
+    correcting the following line in the <tt>[publish]</tt> section:
+    <pre>disable-user-service-publishing=yes</pre>
+    Implement as many of the following lines as possible, to restrict the information
+    published by Avahi.
+    <pre>publish-addresses=no
+    publish-hinfo=no
+    publish-workstation=no
+    publish-domain=no</pre>
+    Inspect the files in the directory <tt>/etc/avahi/services/</tt>. Unless there
+    is an operational need to publish information about each of these services,
+    delete the corresponding file.
+
+rationale: |-
+    These options prevent publishing attempts from succeeding,
+    and can be applied even if publishing is disabled entirely via
+    disable-publishing. Alternatively, these can be used to restrict
+    the types of published information in the event that some information
+    must be published.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80343-7
+
+references:
+    nist: CM-7

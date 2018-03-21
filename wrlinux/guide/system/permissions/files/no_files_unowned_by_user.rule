@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Ensure All Files Are Owned by a User'
+
+description: |-
+    If any files are not owned by a user, then the cause of their lack of ownership should be investigated.
+    Following this, the files should be deleted or assigned to an appropriate user.
+
+rationale: |-
+    Unowned files do not directly imply a security problem, but they are generally a sign that something is amiss.
+    They may be caused by an intruder, by incorrect software installation or draft software removal, or by failure to remove all files belonging to a deleted account.
+    The files should be repaired so they will not cause problems when accounts are created in the future, and the cause should be discovered and addressed.
+
+severity: medium
+
+ocil_clause: 'files exist that are not owned by a valid user'
+
+ocil: |-
+    The following command will discover and print any
+    files on local partitions which do not belong to a valid user.
+    <pre>$ sudo find / -xdev -fstype local -nouser</pre>
+    <br /><br />
+    Either remove all files and directories from the system that do not have a
+    valid user, or assign a valid user to all unowned files and directories on
+    the system with the <tt>chown</tt> command:
+    <pre>$ sudo chown <tt>user</tt> <tt>file</tt></pre>

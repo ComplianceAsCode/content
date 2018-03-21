@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Disable Bluetooth Kernel Modules'
+
+description: |-
+    The kernel's module loading system can be configured to prevent
+    loading of the Bluetooth module. Add the following to
+    the appropriate <tt>/etc/modprobe.d</tt> configuration file
+    to prevent the loading of the Bluetooth module:
+    <pre>install bluetooth /bin/true</pre>
+
+rationale: |-
+    If Bluetooth functionality must be disabled, preventing the kernel
+    from loading the kernel module provides an additional safeguard against its
+    activation.
+
+severity: medium
+
+identifiers:
+    cce: 26763-3
+
+references:
+    disa: 85,1551
+    nist: AC-18(a),AC-18(d),AC-18(3),CM-7
+    srg: SRG-OS-000034
+    stigid: RHEL-06-000315
+
+ocil: '<module-disable-check-macro module="bluetooth" />'

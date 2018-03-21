@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Ensure <tt>auditd</tt> Collects System Administrator Actions'
+
+description: |-
+    At a minimum the audit system should collect
+    administrator actions for all users and root. Add the following to
+    <tt>/etc/audit/audit.rules</tt>:
+    <pre>-w /etc/sudoers -p wa -k actions</pre>
+
+rationale: |-
+    The actions taken by system administrators should be audited to keep a record
+    of what was executed on the system, as well as, for accountability purposes.
+
+severity: unknown
+
+identifiers:
+    cce: 26662-7
+
+references:
+    disa: 126
+    nist: AC-2(7)(b),AC-3(10),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
+    pcidss: Req-10.2.2,Req-10.2.5.b
+    srg: SRG-OS-000064
+    stigid: RHEL-06-000201
+
+ocil_clause: 'there is not output'
+
+ocil: |-
+    To verify that auditing is configured for system administrator actions, run the following command:
+    <pre>$ sudo auditctl -l | grep "watch=/etc/sudoers"</pre>

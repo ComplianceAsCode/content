@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Configure auditd Max Log File Size'
+
+description: |-
+    Determine the amount of audit data (in megabytes)
+    which should be retained in each log file. Edit the file
+    <tt>/etc/audit/auditd.conf</tt>. Add or modify the following line, substituting
+    the correct value of <sub idref="var_auditd_max_log_file" /> for <i>STOREMB</i>:
+    <pre>max_log_file = <i>STOREMB</i></pre>
+    Set the value to <tt>6</tt> (MB) or higher for general-purpose systems.
+    Larger values, of course,
+    support retention of even more audit data.
+
+rationale: |-
+    The total storage for audit log files must be large enough to retain
+    log information over the period required. This is a function of the maximum
+    log file size and the number of logs retained.
+
+severity: medium
+
+identifiers:
+    cce: 27550-3
+
+references:
+    nist: AU-1(b),AU-11,IR-5
+    pcidss: Req-10.7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000160
+
+ocil_clause: 'the system audit data threshold has not been properly configured'
+
+ocil: |-
+    Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to
+    determine how much data the system will retain in each audit log file:
+    <tt>$ sudo grep max_log_file /etc/audit/auditd.conf</tt>
+    <pre>max_log_file = 6</pre>

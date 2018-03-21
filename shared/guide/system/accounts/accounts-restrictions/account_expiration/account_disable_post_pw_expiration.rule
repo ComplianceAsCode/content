@@ -1,0 +1,52 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Set Account Expiration Following Inactivity'
+
+description: |-
+    To specify the number of days after a password expires (which
+    signifies inactivity) until an account is permanently disabled, add or correct
+    the following lines in <tt>/etc/default/useradd</tt>, substituting
+    <tt><i>NUM_DAYS</i></tt> appropriately:
+    <pre>INACTIVE=<i><sub idref="var_account_disable_post_pw_expiration" /></i></pre>
+    A value of 35 is recommended; however, this profile expects that the value is set to
+    <tt><sub idref="var_account_disable_post_pw_expiration" /></tt>.
+    If a password is currently on the
+    verge of expiration, then 35 days remain until the account is automatically
+    disabled. However, if the password will not expire for another 60 days, then 95
+    days could elapse until the account would be automatically disabled. See the
+    <tt>useradd</tt> man page for more information.  Determining the inactivity
+    timeout must be done with careful consideration of the length of a "normal"
+    period of inactivity for users in the particular environment. Setting
+    the timeout too low incurs support costs and also has the potential to impact
+    availability of the system to legitimate users.
+
+rationale: |-
+    Disabling inactive accounts ensures that accounts which may not
+    have been responsibly removed are not available to attackers
+    who may have compromised their credentials.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27355-7
+
+references:
+    cjis: 5.6.2.1.1
+    cui: 3.5.6
+    disa: 795
+    nist: AC-2(2),AC-2(3),IA-4(e)
+    pcidss: Req-8.1.4
+    srg: SRG-OS-000118-GPOS-00060
+    stigid@rhel7: "010310"
+
+ocil_clause: 'the value of INACTIVE is greater than the expected value'
+
+ocil: |-
+    To verify the <tt>INACTIVE</tt> setting, run the following command:
+    <pre>$ grep "INACTIVE" /etc/default/useradd</pre>
+    The output should indicate the <tt>INACTIVE</tt> configuration option is set
+    to an appropriate integer as shown in the example below:
+    <pre>$ grep "INACTIVE" /etc/default/useradd
+    INACTIVE=<sub idref="var_account_disable_post_pw_expiration" /></pre>

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure SELinux Not Disabled in /etc/grub.conf'
+
+description: |-
+    SELinux can be disabled at boot time by an argument in
+    <tt>/etc/grub.conf</tt>.
+    Remove any instances of <tt>selinux=0</tt> from the kernel arguments in that
+    file to prevent SELinux from being disabled at boot.
+
+rationale: |-
+    Disabling a major host protection feature, such as SELinux, at boot time prevents
+    it from confining system services at boot time.  Further, it increases
+    the chances that it will remain off during system operation.
+
+severity: medium
+
+identifiers:
+    cce: 26956-3
+
+references:
+    disa: 22,32
+    nist: AC-3,AC-3(3),AC-6,AU-9
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000017
+
+ocil_clause: 'SELinux is disabled at boot time'
+
+ocil: |-
+    Inspect <tt>/etc/grub.conf</tt> for any instances of <tt>selinux=0</tt>
+    in the kernel boot arguments.  Presence of <tt>selinux=0</tt> indicates
+    that SELinux is disabled at boot time.

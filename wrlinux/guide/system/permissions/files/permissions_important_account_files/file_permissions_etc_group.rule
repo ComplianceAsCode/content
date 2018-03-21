@@ -1,0 +1,18 @@
+documentation_complete: true
+
+title: 'Verify Permissions on <tt>group</tt> File'
+
+description: '<fileperms-desc-macro file="/etc/group" perms="644" />'
+
+rationale: |-
+    The <tt>/etc/group</tt> file contains information regarding groups that are configured on the system.
+    Protection of this file is important for system security.
+
+severity: medium
+
+references:
+    disa: ""
+    nist: AC-6
+    pcidss: Req-8.7.c
+
+ocil: '<fileperms-check-macro file="/etc/group" perms="-rw-r--r--" />'

@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Configure Kernel Parameter to Log Martian Packets'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />'
+
+rationale: |-
+    The presence of "martian" packets (which have impossible addresses)
+    as well as spoofed packets, source-routed packets, and redirects could be a
+    sign of nefarious network activity. Logging these packets enables this activity
+    to be detected.
+
+severity: unknown
+
+identifiers:
+    cce: 27066-0
+
+references:
+    disa: 126
+    nist: AC-3(10),CM-7,SC-5(3)
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000088
+
+ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />'

@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Install Intrusion Detection Software'
+
+description: |-
+    The base Red Hat platform already includes a sophisticated auditing system that
+    can detect intruder activity, as well as SELinux, which provides host-based
+    intrusion prevention capabilities by confining privileged programs and user
+    sessions which may become compromised.
+
+rationale: |-
+    Host-based intrusion detection tools provide a system-level defense when an
+    intruder gains access to a system or network.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 26818-5
+
+references:
+    disa: 1263
+    nist: SC-7
+    pcidss: Req-11.4
+
+ocil_clause: 'no host-based intrusion detection tools are installed'
+
+ocil: |-
+    Inspect the system to determine if intrusion detection software has been installed.
+    Verify this intrusion detection software is active.

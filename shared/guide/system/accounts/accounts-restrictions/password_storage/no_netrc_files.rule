@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify No netrc Files Exist'
+
+description: |-
+    The <tt>.netrc</tt> files contain login information
+    used to auto-login into FTP servers and reside in the user's home
+    directory. These files may contain unencrypted passwords to
+    remote FTP servers making them susceptible to access by unauthorized
+    users and should not be used.  Any <tt>.netrc</tt> files should be removed.
+
+rationale: |-
+    Unencrypted passwords for remote FTP servers may be stored in <tt>.netrc</tt>
+    files. DoD policy requires passwords be encrypted in storage and not used
+    in access scripts.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80211-6
+
+references:
+    disa: 196
+    nist: IA-5(h),AC-3
+
+ocil_clause: 'any .netrc files exist'
+
+ocil: |-
+    To check the system for the existence of any <tt>.netrc</tt> files,
+    run the following command:
+    <pre>$ sudo find /home -xdev -name .netrc</pre>

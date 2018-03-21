@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Ensure All SUID Executables Are Authorized'
+
+description: |-
+    The SUID (set user id) bit should be set only on files that were
+    installed via authorized means. A straightforward means of identifying
+    unauthorized SGID files is determine if any were not installed as part of an
+    RPM package, which is cryptographically verified. Investigate the origin
+    of any unpackaged SUID files.
+
+rationale: |-
+    Executable files with the SUID permission run with the privileges of
+    the owner of the file. SUID files of uncertain provenance could allow for
+    unprivileged users to elevate privileges. The presence of these files should be
+    strictly controlled on the system.
+
+severity: unknown
+
+identifiers:
+    cce: 26497-8
+
+references:
+    nist: AC-6(1)
+
+ocil: |-
+    To find world-writable files, run the following command:
+    <pre>$ sudo find / -xdev -type f -perm -002</pre>

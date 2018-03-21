@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure GNOME3 DConf User Profile'
+
+description: "By default, DConf provides a standard user profile. This profile contains a list\nof DConf configuration databases. The user profile and database always take the\nhighest priority. As such the DConf User profile should always exist and be\nconfigured correctly. \n<br /><br />\nTo make sure that the user profile is configured correctly, the <tt>/etc/dconf/profile/user</tt> should be set as follows:\n<pre>user-db:user\nsystem-db:local\nsystem-db:site\nsystem-db:distro\n</pre>"
+
+rationale: |-
+    Failure to have a functional DConf profile prevents GNOME3 configuration settings
+    from being enforced for all users and allows various security risks.
+
+severity: high
+
+identifiers:
+    cce@rhel7: 27446-4
+
+ocil_clause: 'DConf User profile does not exist or is not configured correctly'
+
+ocil: |-
+    To verify that the DConf User profile is configured correctly, run the following
+    command:
+    <pre>$ cat /etc/dconf/profile/user</pre>
+    The output should show the following:
+    <pre>user-db:user
+    system-db:local
+    system-db:site
+    system-db:distro</pre>

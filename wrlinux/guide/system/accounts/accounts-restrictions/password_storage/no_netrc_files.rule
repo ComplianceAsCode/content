@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'netrc Files Do Not Exist'
+
+description: |-
+    The <tt>.netrc</tt> files contain login information used to auto-login into FTP servers and reside in the user's home directory.
+    These files may contain unencrypted passwords to remote FTP servers making them susceptible to access by unauthorized users and should not be used.
+    Any <tt>.netrc</tt> files should be removed.
+
+rationale: |-
+    Unencrypted passwords for remote FTP servers may be stored in <tt>.netrc</tt> files.
+    DoD policy requires passwords be encrypted in storage and not used in access scripts.
+
+severity: medium
+
+references:
+    disa: 196
+    nist: IA-5(h)
+
+ocil_clause: 'any .netrc files exist'
+
+ocil: |-
+    To check the system for the existence of any <tt>.netrc</tt> files, run the following command:
+
+    <pre># find `cut -d : -f 6 /etc/passwd` -xdev -name .netrc 2&gt;/dev/null</pre>

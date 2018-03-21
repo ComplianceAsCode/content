@@ -1,0 +1,56 @@
+documentation_complete: true
+
+title: 'Disable Automatic Deployment'
+
+description: |-
+    Determine the JBoss server configuration as being either standalone or domain.
+    Launch the relevant jboss-cli management interface substituting standalone or
+    domain for <i>CONFIG</i>
+    <br /><br />
+    <pre>&lt;JBOSS_HOME&gt;/<i>CONFIG</i>/bin/jboss-cli</pre>
+    <br /><br />
+    connect to the server and run the command:
+    <pre>/subsystem=deployment-scanner/scanner=default:write-attribute(name=scan-enabled,value.)</pre>
+
+rationale: |-
+    When dealing with access restrictions pertaining to change control, it should
+    be noted that any changes to the software and/or application server
+    configuration can potentially have significant effects on the overall security
+    of the system.
+    <br /><br />
+    Access restrictions for changes also include application
+    software libraries.
+    <br /><br />
+    If the application server provides automatic code
+    deployment capability, (where updates to applications hosted on the application
+    server are automatically performed, usually by the developers' IDE tool), it
+    must also provide a capability to restrict the use of automatic application
+    deployment. Automatic code deployments are allowable in a development
+    environment, but not in production.
+
+severity: medium
+
+identifiers:
+    cce: 80489-8
+
+references:
+    disa: 1813
+    nist: ""
+    srg: SRG-APP-000380-AS-000088
+    stigid: JBOS-AS-000545
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to the OS of the JBoss server with OS permissions that allow access to
+    JBoss.
+    Using the relevant OS commands and syntax, cd to the <tt>&lt;JBOSS_HOME&gt;/bin/</tt>
+    folder.
+    Run the <pre>jboss-cli</pre> script.
+    Connect to the server and authenticate.
+    Run
+    the command:
+    <br /><br />
+    <pre>ls /subsystem=deployment-scanner/scanner=default</pre>
+    <br /><br />
+    If <pre>"scan-enabled"=true</pre>, this is a finding.

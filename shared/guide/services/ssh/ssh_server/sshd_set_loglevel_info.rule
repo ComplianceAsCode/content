@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Set LogLevel to INFO'
+
+description: |-
+    The INFO parameter specifices that record login and logout activity will be logged.
+    To specify the log level in
+    SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>LogLevel INFO</pre>
+
+rationale: |-
+    SSH provides several logging levels with varying amounts of verbosity. <tt>DEBUG</tt> is specifically
+    not recommended other than strictly for debugging SSH communications since it provides
+    so much data that it is difficult to identify important security information. <tt>INFO</tt> level is the
+    basic level that only records login activity of SSH users. In many situations, such as Incident
+    Response, it is important to determine when a particular user was active on a system. The
+    logout record can eliminate those users who disconnected, which helps narrow the field.
+
+severity: low
+
+references:
+    cis@debian8: 9.3.2
+    cis@rhel7: 5.2.3
+
+ocil_clause: 'it is commented out or is not enabled'
+
+ocil: |-
+    To check if LogLevel is enabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>LogLevel INFO</pre>

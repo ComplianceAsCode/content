@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Configure auditd max_log_file_action Upon Reaching Maximum Log Size'
+
+description: |-
+    The default action to take when the logs reach their maximum size
+    is to rotate the log files, discarding the oldest one. To configure the action taken
+    by <tt>auditd</tt>, add or correct the line in <tt>/etc/audit/auditd.conf</tt>:
+    <pre>max_log_file_action = <i>ACTION</i></pre>
+    Possible values for <i>ACTION</i> are described in the <tt>auditd.conf</tt> man
+    page. These include:
+    <ul>
+    <li><tt>ignore</tt></li>
+    <li><tt>syslog</tt></li>
+    <li><tt>suspend</tt></li>
+    <li><tt>rotate</tt></li>
+    <li><tt>keep_logs</tt></li>
+    </ul>
+    Set the <tt><i>ACTION</i></tt> to <tt>rotate</tt> to ensure log rotation
+    occurs.  This is the default.  The setting is case-insensitive.
+
+rationale: |-
+    Automatically rotating logs (by setting this to <tt>rotate</tt>)
+    minimizes the chances of the system unexpectedly running out of disk space by
+    being overwhelmed with log data. However, for systems that must never discard
+    log data, or which use external processes to transfer it and reclaim space,
+    <tt>keep_logs</tt> can be employed.
+
+severity: medium
+
+identifiers:
+    cce: 27237-7
+
+references:
+    nist: AU-1(b),AU-4,AU-11,IR-5
+    pcidss: Req-10.7
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000161
+
+ocil_clause: 'the system has not been properly configured to rotate audit logs'
+
+ocil: "Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to\ndetermine if the system is configured to rotate logs when they reach their\nmaximum size: \n<tt>$ sudo grep max_log_file_action /etc/audit/auditd.conf</tt>\n<pre>max_log_file_action <tt>rotate</tt></pre>"

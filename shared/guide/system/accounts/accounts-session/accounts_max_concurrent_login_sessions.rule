@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Limit the Number of Concurrent Login Sessions Allowed Per User'
+
+description: |-
+    Limiting the number of allowed users and sessions per user can limit risks related to Denial of
+    Service attacks. This addresses concurrent sessions for a single account and does not address
+    concurrent sessions by a single user via multiple accounts. To set the number of concurrent
+    sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
+    <pre>* hard maxlogins <sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
+
+rationale: |-
+    Limiting simultaneous user logins can insulate the system from denial of service
+    problems caused by excessive logins. Automated login processes operating improperly or
+    maliciously may result in an exceptional number of simultaneous login sessions.
+
+severity: low
+
+identifiers:
+    cce@rhel7: 27081-9
+
+references:
+    cjis: 5.5.2.2
+    disa: 54
+    nist: AC-10
+    srg: SRG-OS-000027-GPOS-00008
+    stigid@rhel7: "040000"
+
+ocil_clause: 'maxlogins is not equal to or less than the expected value'
+
+ocil: "Run the following command to ensure the <tt>maxlogins</tt> value is configured for all users\non the system:\n<pre># grep \"maxlogins\" /etc/security/limits.conf</pre>\nYou should receive output similar to the following:\n<pre>*\t\thard\tmaxlogins\t<sub idref=\"var_accounts_max_concurrent_login_sessions\" /></pre>"

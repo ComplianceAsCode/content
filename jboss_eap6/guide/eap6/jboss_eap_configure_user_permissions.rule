@@ -1,0 +1,51 @@
+documentation_complete: true
+
+title: 'Configure mgmt-users.properties File Permissions'
+
+description: "Configure the file permissions to allow access to authorized users only.\nOwner can be full access. Group can be full access. \nAll others must have execute\npermissions only."
+
+rationale: |-
+    The mgmt-users.properties file contains the password hashes of all users who
+    are in a management role and must be protected. Application servers have the
+    ability to specify that the hosted applications utilize shared libraries. The
+    application server must have a capability to divide roles based upon duties
+    wherein one project user (such as a developer) cannot modify the shared library
+    code of another project user. The application server must also be able to
+    specify that non-privileged users cannot modify any shared library code at
+    all.
+
+severity: medium
+
+identifiers:
+    cce: 80464-1
+
+references:
+    disa: 1499
+    nist: ""
+    srg: SRG-APP-000133-AS-000092
+    stigid: JBOS-AS-000210
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    The mgmt-users.properties files are located in the standalone or domain
+    configuration folder.
+    <br /><br />
+    <pre>
+    &lt;JBOSS_HOME&gt;/domain/configuration/mgmt-users.properties.
+    &lt;JBOSS_HOME&gt;/standalone/configuration/mgmt-users.properties.
+    </pre>
+    <br /><br />
+    Identify users who
+    have access to the files using relevant OS commands.
+    <br /><br />
+    Obtain documentation from
+    system admin identifying authorized users.
+    <br /><br />
+    Owner can be full access. Group can be full access.
+    All others must have execute permissions only.
+    <br /><br />
+    If the file
+    permissions are not configured so as to restrict access to only authorized
+    users, or if documentation that identifies authorized users is missing, this is
+    a finding.

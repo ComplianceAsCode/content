@@ -1,0 +1,50 @@
+documentation_complete: true
+
+title: 'Use DoD Approved Certificates'
+
+description: |-
+    Configure the application server to use DoD- or CNSS-approved Class 3 or Class
+    4 PKI certificates.
+
+rationale: |-
+    Class 3 PKI certificates are used for servers and software signing rather than
+    for identifying individuals. Class 4 certificates are used for business-to-
+    business transactions. Utilizing unapproved certificates not issued or approved
+    by DoD or CNS creates an integrity risk. The application server must utilize
+    approved DoD or CNS Class 3 or Class 4 certificates for software signing and
+    business-to-business transactions.
+
+severity: medium
+
+identifiers:
+    cce: 80497-1
+
+references:
+    disa: 2450
+    nist: ""
+    srg: SRG-APP-000514-AS-000137
+    stigid: JBOS-AS-000730
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Interview the administrator to determine if JBoss is using certificates for
+    PKI. If JBoss is not performing any PKI functions, this finding is NA.
+    <br /><br />
+    The CA
+    certs are usually stored in a file called cacerts located in the directory
+    <tt>$JAVA_HOME/lib/security</tt>. If the file is not in this location, use a search
+    command to locate the file, or ask the administrator where the certificate store
+    is located.
+    <br /><br />
+    Open a dos shell or terminal window and change to the location of
+    the certificate store. To view the certificates within the certificate store,
+    run the command (in this example, the keystore file is cacerts.):
+    <pre>keytool -list -v -keystore ./cacerts</pre>
+    <br /><br />
+    Locate the <pre>OU</pre> field for each certificate
+    within the keystore. The field should contain either <pre>DoD</pre> or
+    <pre>CNSS</pre> as the Organizational Unit (OU).
+    <br /><br />
+    If the OU does not show that
+    the certificates are DoD or CNSS supplied, this is a finding.

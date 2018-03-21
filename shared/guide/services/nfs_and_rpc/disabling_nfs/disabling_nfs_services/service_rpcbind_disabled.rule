@@ -1,0 +1,17 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable rpcbind Service'
+
+description: "The rpcbind utility maps RPC services to the ports on which they listen. RPC\nprocesses notify rpcbind when they start, registering the ports they are\nlistening on and the RPC program numbers they expect to serve. The rpcbind\nservice redirects the client to the proper port number so it can communicate \nwith the requested service. If the system does not require RPC (such as for NFS\nservers) then this service should be disabled.\n<systemd-service-macro enable=\"false\" service=\"rpcbind\" />"
+
+rationale: ""
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80230-6
+
+references:
+    cis: 2.2.7

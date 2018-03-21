@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Verify /boot/grub/grub.conf Permissions'
+
+description: |-
+    File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
+    is the default.
+    <fileperms-desc-macro file="/boot/grub/grub.conf" perms="600" />
+
+rationale: |-
+    Proper permissions ensure that only the root user can modify important boot
+    parameters.
+
+severity: medium
+
+identifiers:
+    cce: 26949-8
+
+references:
+    disa: 225
+    nist: AC-6(7)
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000067
+
+ocil_clause: 'it does not'
+
+ocil: "To check the permissions of /etc/grub.conf, run the command:\n<pre>$ sudo ls -lL /etc/grub.conf</pre>\nIf properly configured, the output should indicate the following \npermissions: <tt>-rw-------</tt>"

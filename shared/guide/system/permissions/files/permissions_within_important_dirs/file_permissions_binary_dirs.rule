@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Verify that System Executables Have Restrictive Permissions'
+
+description: |-
+    System executables are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/libexec
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin</pre>
+    All files in these directories should not be group-writable or world-writable.
+    If any file <i>FILE</i> in these directories is found
+    to be group-writable or world-writable, correct its permission with the
+    following command:
+    <pre>$ sudo chmod go-w <i>FILE</i></pre>
+
+rationale: |-
+    System binaries are executed by privileged users, as well as system services,
+    and restrictive permissions are necessary to ensure execution of these programs
+    cannot be co-opted.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27075-1
+
+references:
+    disa: ""
+    nist: AC-6
+
+ocil_clause: 'any system executables are found to be group or world writable'
+
+ocil: |-
+    System executables are stored in the following directories by default:
+    <pre>/bin
+    /sbin
+    /usr/bin
+    /usr/libexec
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/sbin</pre>
+    To find system executables that are group-writable or world-writable,
+    run the following command for each directory <i>DIR</i> which contains system executables:
+    <pre>$ sudo find -L <i>DIR</i> -perm /022 -type f</pre>

@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable Kernel Parameter for IP Forwarding'
+
+description: '<sysctl-desc-macro sysctl="net.ipv4.ip_forward" value="0" />'
+
+rationale: |-
+    Routing protocol daemons are typically used on routers to exchange
+    network topology information with other routers. If this capability is used when
+    not required, system network information may be unnecessarily transmitted across
+    the network.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80157-1
+
+references:
+    cis: 3.1.1
+    cui: 3.1.20
+    disa: 366
+    nist: CM-7,SC-5,SC-32
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040740"
+
+ocil: |-
+    <sysctl-check-macro sysctl="net.ipv4.ip_forward" value="0" />
+    The ability to forward packets is only appropriate for routers.

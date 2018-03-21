@@ -1,0 +1,52 @@
+documentation_complete: true
+
+title: 'Disable Network Access to the Admin Console'
+
+description: |-
+    Run the <pre>&lt;JBOSS_HOME&gt;/bin/jboss-clii</pre> command line interface utility.
+    Connect to
+    the JBoss server and run the following command.
+    <pre>/core-service=management/management-interface=httpinterface/:write-attribute(name=console-enabled,value.)</pre>
+    <br /><br />
+    Successful command execution returns
+    <pre>{"outcome" =&gt; success"}</pre>,
+    and future attempts to access the management console via web
+    browser at <tt><i>SERVERNAME</i>:9990</tt> will result in no access to the admin console.
+
+rationale: |-
+    When configuring JBoss application servers into a domain configuration, HTTP
+    management capabilities are not required on domain member servers as management
+    is done via the server that has been designated as the domain controller.
+    Leaving HTTP management capabilities enabled on domain member servers increases
+    the attack surfaces; therefore, management services on domain member servers
+    must be disabled and management services performed via the domain
+    controller.
+
+severity: medium
+
+identifiers:
+    cce: 80486-4
+
+references:
+    disa: 2322
+    nist: ""
+    srg: SRG-APP-000316-AS-000199
+    stigid: JBOS-AS-000470
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Log on to each of the JBoss domain member servers.
+    <br /><br />
+    Note: Sites that manage
+    systems using the JBoss Operations Network client require HTTP interface access.
+    It is acceptable that the management console alone be disabled rather than
+    disabling the entire interface itself.
+    <br /><br />
+    Run the <pre>&lt;JBOSS_HOME&gt;/bin/jboss-cli</pre>
+    command line interface utility and connect to the JBoss server.
+    Run the
+    following command:
+    <pre>ls /core-service=management/management-interface=httpinterface/</pre>
+    <br /><br />
+    If <pre>console-enabled=true</pre>, this is a finding.

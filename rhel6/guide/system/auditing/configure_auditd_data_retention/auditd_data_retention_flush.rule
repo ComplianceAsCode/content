@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Configure auditd flush priority'
+
+description: "The <tt>auditd</tt> service can be configured to \nsynchronously write audit event data to disk. Add or correct the following \nline in <tt>/etc/audit/auditd.conf</tt> to ensure that audit event data is \nfully synchronized with the log files on the disk:\n<pre>flush = <sub idref=\"var_auditd_flush\" /></pre>"
+
+rationale: "Audit data should be synchronously written to disk to ensure \nlog integrity. These parameters assure that all audit event data is fully \nsynchronized with the log files on the disk."
+
+severity: unknown
+
+references:
+    disa: 1576
+    nist: AU-9,AU-12(1)
+
+ocil_clause: 'auditd is not configured to synchronously write audit  event data to disk'
+
+ocil: "Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to\ndetermine if the system is configured to synchronize audit event data \nwith the log files on the disk:\n<tt>$ sudo grep flush /etc/audit/auditd.conf</tt>\n<pre>flush = DATA</pre>\nAcceptable values are <tt>DATA</tt>, and <tt>SYNC</tt>. The setting is \ncase-insensitive."

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the polipo_use_cifs SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>polipo_use_cifs</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="polipo_use_cifs" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'polipo_use_cifs is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="polipo_use_cifs" />'

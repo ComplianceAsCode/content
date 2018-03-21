@@ -1,0 +1,43 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure All Files Are Owned by a Group'
+
+description: |-
+    If any files are not owned by a group, then the
+    cause of their lack of group-ownership should be investigated.
+    Following this, the files should be deleted or assigned to an
+    appropriate group.
+
+rationale: |-
+    Unowned files do not directly imply a security problem, but they are generally
+    a sign that something is amiss. They may
+    be caused by an intruder, by incorrect software installation or
+    draft software removal, or by failure to remove all files belonging
+    to a deleted account. The files should be repaired so they
+    will not cause problems when accounts are created in the future,
+    and the cause should be discovered and addressed.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80135-7
+
+references:
+    cis: 6.1.12
+    disa: "02165"
+    nist: AC-3(4),AC-6,IA-2
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "020330"
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will discover and print any
+    files on local partitions which do not belong to a valid group.
+    <pre>$ sudo find / -xdev -fstype local -nogroup</pre>
+    <br />
+    Either remove all files and directories from the system that do not have a valid group,
+    or assign a valid group with the chgrp command:
+    <pre>$ sudo chgrp <i>group</i> <i>file</i></pre>

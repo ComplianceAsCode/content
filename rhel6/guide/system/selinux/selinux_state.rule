@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure SELinux State is Enforcing'
+
+description: |-
+    The SELinux state should be set to <tt><sub idref="var_selinux_state" /></tt> at
+    system boot time.  In the file <tt>/etc/selinux/config</tt>, add or correct the
+    following line to configure the system to boot into enforcing mode:
+    <pre>SELINUX=<sub idref="var_selinux_state" /></pre>
+
+rationale: |-
+    Setting the SELinux state to enforcing ensures SELinux is able to confine
+    potentially compromised processes to the security policy, which is designed to
+    prevent them from causing damage to the system or further elevating their
+    privileges.
+
+severity: medium
+
+identifiers:
+    cce: 26969-6
+
+references:
+    disa: 22,32,26
+    nist: AC-3,AC-3(3),AC-4,AC-6,AU-9
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000020
+
+ocil_clause: 'SELINUX is not set to enforcing'
+
+ocil: |-
+    Check the file <tt>/etc/selinux/config</tt> and ensure the following line appears:
+    <pre>SELINUX=<sub idref="var_selinux_state" /></pre>

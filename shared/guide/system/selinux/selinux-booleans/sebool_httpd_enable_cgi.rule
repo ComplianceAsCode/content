@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Configure the httpd_enable_cgi SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>httpd_enable_cgi</tt> is enabled.
+    This setting should be disabled unless <tt>httpd</tt> is used with <tt>CGI</tt>
+    scripting.
+    <sebool-macro enable="false" sebool="httpd_enable_cgi" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'CGI is used with HTTPD or httpd_enable_cgi is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="httpd_enable_cgi" />'

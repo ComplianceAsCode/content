@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'The robots.txt Files Must Not Exist'
+
+description: |-
+    Remove any <tt>robots.txt</tt> files that may exist with any web content.
+    Other methods must be employed if there is information on the web site that
+    needs protection from search engines and public view. Inspect all instances of
+    <tt>DocumentRoot</tt> and <tt>Alias</tt> and remove any <tt>robots.txt</tt> file.
+    <pre>$ sudo rm -f path/to/robots.txt</pre>
+
+rationale: |-
+    Search engines are constantly at work on the Internet. Search engines are
+    augmented by agents, often referred to as spiders or bots, which endeavor to
+    capture and catalog web-site content. In turn, these search engines make the
+    content they obtain and catalog available to any public web user.
+    <br /><br />
+    To request
+    that a well behaved search engine not crawl and catalog a site, the web site may
+    contain a file called robots.txt. This file contains directories and files that
+    the web server SA desires not be crawled or cataloged, but this file can also be
+    used, by an attacker or poorly coded search engine, as a directory and file
+    index to a site. This information may be used to reduce an attacker's time
+    searching and traversing the web site to find files that might be relevant. If
+    information on the web site needs to be protected from search engines and public
+    view, other methods must be used.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG310
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    Inspect all instances of <tt>DocumentRoot</tt> and <tt>Alias</tt>. No
+    <tt>robots.txt</tt> file should exist.

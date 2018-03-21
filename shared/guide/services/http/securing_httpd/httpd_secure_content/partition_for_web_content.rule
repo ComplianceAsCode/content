@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Ensure Web Content Located on Separate partition'
+
+description: |-
+    The <tt>DocumentRoot</tt> directory is used for storing web content and data.
+    Ensure that the <tt>DocumentRoot</tt> directory exists on a separate logical
+    volume at installation time, or migrate it using LVM.
+
+rationale: |-
+    Application partitioning enables an additional security measure by securing
+    user traffic under one security context, while managing system and application
+    files under another. Web content is can be to an anonymous web user. For such
+    an account to have access to system files of any type is a major security risk
+    that is avoidable and desirable. Failure to partition the system files from the
+    web site documents increases risk of attack via directory traversal, or impede
+    web site availability due to drive space exhaustion.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: WG205
+
+ocil_clause: 'it is not'
+
+ocil: |-
+    To verify that each web content directory exists on separate partitions,
+    run the following command:
+    <pre>$ grep `grep -i documentroot /etc/httpd/conf/httpd.conf | awk -F'"' '{print $2}'` /etc/fstab</pre>
+    Each of the corresponding <tt>DocumentRoot</tt> entries should have a
+    corresponding entry in <tt>/etc/fstab</tt>.

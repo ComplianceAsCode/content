@@ -1,0 +1,33 @@
+documentation_complete: true
+
+title: 'Restrict Serial Port Root Logins'
+
+description: |-
+    To restrict root logins on serial ports,
+    ensure lines of this form do not appear in <tt>/etc/securetty</tt>:
+    <pre>ttyS0
+    ttyS1</pre>
+
+rationale: |-
+    Preventing direct root login to serial port interfaces
+    helps ensure accountability for actions taken on the systems
+    using the root account.
+
+severity: unknown
+
+identifiers:
+    cce: 27047-0
+
+references:
+    disa: 770
+    nist: AC-6(2)
+    srg: SRG-OS-000109
+    stigid: RHEL-06-000028
+
+ocil_clause: 'root login over serial ports is permitted'
+
+ocil: |-
+    To check for serial port entries which permit root login,
+    run the following command:
+    <pre>$ sudo grep ^ttyS/[0-9] /etc/securetty</pre>
+    If any output is returned, then root login over serial ports is permitted.

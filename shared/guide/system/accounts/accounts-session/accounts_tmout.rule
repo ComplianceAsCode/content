@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Set Interactive Session Timeout'
+
+description: |-
+    Setting the <tt>TMOUT</tt> option in <tt>/etc/profile</tt> ensures that
+    all user sessions will terminate based on inactivity. The <tt>TMOUT</tt>
+    setting in <tt>/etc/profile</tt> should read as follows:
+    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+
+rationale: |-
+    Terminating an idle session within a short time period reduces
+    the window of opportunity for unauthorized personnel to take control of a
+    management session enabled on the console or console port that has been
+    left unattended.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27557-8
+
+references:
+    cui: 3.1.11
+    disa: 1133,0361
+    nist: AC-12,SC-10
+    ospp@rhel7: FMT_MOF_EXT.1
+    srg: SRG-OS-000163-GPOS-00072
+    stigid@rhel7: "040160"
+
+ocil_clause: 'value of TMOUT is not less than or equal to expected setting'
+
+ocil: |-
+    Run the following command to ensure the <tt>TMOUT</tt> value is configured for all users
+    on the system:
+    <pre>$ sudo grep TMOUT /etc/profile</pre>
+    The output should return the following:
+    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>

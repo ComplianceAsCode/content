@@ -1,0 +1,38 @@
+documentation_complete: true
+
+title: 'Disable Compression Or Set Compression to <tt>delayed</tt>'
+
+description: |-
+    Compression is useful for slow network connections over long
+    distances but can cause performance issues on local LANs. If use of compression
+    is required, it should be enabled only after a user has authenticated; otherwise
+    , it should be disabled. To disable compression or delay compression until after
+    a user has successfully authenticated, add or correct the following line in the
+    <tt>/etc/ssh/sshd_config</tt> file:
+    <pre>Compression no</pre> or <pre>Compression delayed</pre>
+
+rationale: |-
+    If compression is allowed in an SSH connection prior to authentication,
+    vulnerabilities in the compression software could result in compromise of the
+    system from an unauthenticated connection, potentially wih root privileges.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80224-9
+
+references:
+    cui: 3.1.12
+    disa: 366
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "040470"
+
+ocil_clause: 'it is commented out, or is not set to no or delayed'
+
+ocil: |-
+    To check if compression is enabled or set correctly, run the
+    following command:
+    <pre>$ sudo grep Compression /etc/ssh/sshd_config</pre>
+    If configured properly, output should be <pre>no</pre> or <pre>delayed</pre>.

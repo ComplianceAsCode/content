@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Remove NIS Client'
+
+description: |-
+    The Network Information Service (NIS), formerly known as Yellow Pages,
+    is a client-server directory service protocol used to distribute system configuration
+    files. The NIS client (<tt>ypbind</tt>) was used to bind a system to an NIS server
+    and receive the distributed configuration files.
+
+rationale: "The NIS service is inherently an insecure system that has been vulnerable\nto DOS attacks, buffer overflows and has poor authentication for querying NIS maps.\nNIS generally has been replaced by such protocols as Lightweight Directory Access \nProtocol (LDAP). It is recommended that the service be removed."
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 27396-1
+
+references:
+    cis: 2.3.1
+    hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
+
+ocil: '<yum-macro install="false" package="ypbind" />'

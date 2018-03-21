@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel7,opensuse,sle11,sle12,fedora
+
+title: 'Verify User Who Owns <tt>passwd</tt> File'
+
+description: '<fileowner-desc-macro file="/etc/passwd" owner="root" />'
+
+rationale: |-
+    The <tt>/etc/passwd</tt> file contains information about the users that are configured on
+    the system. Protection of this file is critical for system security.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 27138-7
+
+references:
+    cis: 6.1.2
+    cjis: 5.5.2.2
+    disa: ""
+    nist: AC-6
+    pcidss: Req-8.7.c
+
+ocil: '<fileowner-check-macro file="/etc/passwd" owner="root" />'

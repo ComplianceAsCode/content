@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Disable At Service (atd)'
+
+description: |-
+    The <tt>at</tt> and <tt>batch</tt> commands can be used to
+    schedule tasks that are meant to be executed only once. This allows delayed
+    execution in a manner similar to cron, except that it is not
+    recurring. The daemon <tt>atd</tt> keeps track of tasks scheduled via
+    <tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.
+    <systemd-service-macro enable="false" service="atd" />
+
+rationale: |-
+    The <tt>atd</tt> service could be used by an unsophisticated insider to carry
+    out activities outside of a normal login session, which could complicate
+    accountability. Furthermore, the need to schedule tasks with <tt>at</tt> or
+    <tt>batch</tt> is not common.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 80345-2
+
+references:
+    disa: 381
+    nist: CM-7
+
+ocil: '<systemd-check-macro enable="false" service="atd" />'

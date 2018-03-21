@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Disable the authlogin_nsswitch_use_ldap SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>authlogin_nsswitch_use_ldap</tt> is disabled.
+    If this setting is enabled, it should be disabled.
+    <sebool-macro enable="false" sebool="authlogin_nsswitch_use_ldap" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80425-2
+
+references:
+    cui: 3.7.2
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'authlogin_nsswitch_use_ldap is not disabled'
+
+ocil: '<sebool-check-macro enable="false" sebool="authlogin_nsswitch_use_ldap" />'

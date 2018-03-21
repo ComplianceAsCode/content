@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Enable the mount_anyfile SELinux Boolean'
+
+description: |-
+    By default, the SELinux boolean <tt>mount_anyfile</tt> is enabled.
+    If this setting is disabled, it should be enabled to allow any file
+    or directory to be mounted.
+    <sebool-macro enable="true" sebool="mount_anyfile" />
+
+rationale: ""
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: TBD
+    nist: TBD
+    srg: TBD
+    stigid@rhel7: TBD
+
+ocil_clause: 'mount_anyfile is not enabled'
+
+ocil: '<sebool-check-macro enable="true" sebool="mount_anyfile" />'

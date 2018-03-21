@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Verify /etc/grub.conf User Ownership'
+
+description: "The file <tt>/etc/grub.conf</tt> should \nbe owned by the <tt>root</tt> user to prevent destruction \nor modification of the file.\n<fileowner-desc-macro file=\"/etc/grub.conf\" owner=\"root\" />"
+
+rationale: 'Only root should be able to modify important boot parameters.'
+
+severity: medium
+
+identifiers:
+    cce: 26995-1
+
+references:
+    disa: 225
+    nist: AC-6(7)
+    pcidss: Req-7.1
+    srg: SRG-OS-999999
+    stigid: RHEL-06-000065
+
+ocil: '<fileowner-check-macro file="/etc/grub.conf" owner="root" />'

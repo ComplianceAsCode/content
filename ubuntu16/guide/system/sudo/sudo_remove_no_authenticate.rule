@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Ensure Users Re-Authenticate for Privilege Escalation - sudo !authenticate'
+
+description: |-
+    The sudo <tt>!authenticate</tt> option, when specified, allows a user to execute commands using
+    sudo without having to authenticate. This should be disabled by making sure that the
+    <tt>!authenticate</tt> option does not exist in <tt>/etc/sudoers</tt> configuration file or
+    any sudo configuration snippets in <tt>/etc/sudoers.d/</tt>.
+
+rationale: |-
+    Without re-authentication, users may access resources or perform tasks for which they
+    do not have authorization.
+    <br /><br />
+    When operating systems provide the capability to escalate a functional capability, it
+    is critical that the user re-authenticate.
+
+severity: medium
+
+references:
+    anssi: NT28(R5)
+    disa: 2038
+    nist: IA-11
+    srg: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157,SRG-OS-000373-GPOS-00158
+
+ocil_clause: "!authenticate is enabled in sudo"
+
+ocil: |-
+    To determine if <tt>!authenticate</tt> has not been configured for sudo, run the following command:
+    <pre>$ sudo grep -r \!authenticate /etc/sudoers /etc/sudoers.d/</pre>
+    The command should return no output.
