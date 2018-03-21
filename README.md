@@ -110,7 +110,5 @@ https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/
 
 The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentOS.
 
-The former repository isimluk/OpenSCAP will not be maintained anymore. Sorry for inconvenience.
-
 #### Health Checks
 * Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
