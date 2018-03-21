@@ -83,30 +83,6 @@ macro(ssg_build_bash_remediation_functions)
     )
 endmacro()
 
-macro(ssg_build_guide_xml PRODUCT)
-    if(SSG_SVG_IN_XCCDF_ENABLED)
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
-            COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_CURRENT_BINARY_DIR}/guide.xml" "${SSG_SHARED_TRANSFORMS}/includelogo.xslt" "${SSG_SHARED}/xccdf/shared_guide.xml"
-            MAIN_DEPENDENCY "${SSG_SHARED}/xccdf/shared_guide.xml"
-            DEPENDS "${SSG_SHARED_TRANSFORMS}/includelogo.xslt"
-            COMMENT "[${PRODUCT}-content] generating guide.xml (SVG logo enabled)"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
-            COMMAND "${CMAKE_COMMAND}" -E copy "${SSG_SHARED}/xccdf/shared_guide.xml" "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
-            MAIN_DEPENDENCY "${SSG_SHARED}/xccdf/shared_guide.xml"
-            COMMENT "[${PRODUCT}-content] generating guide.xml (SVG logo disabled)"
-        )
-    endif()
-
-    add_custom_target(
-        generate-internal-${PRODUCT}-guide.xml
-        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/guide.xml"
-    )
-endmacro()
-
 macro(ssg_build_shorthand_xml PRODUCT)
     execute_process(
         COMMAND "${SSG_SHARED_UTILS}/yaml-to-shorthand.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
@@ -616,7 +592,6 @@ endmacro()
 macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
 
-    ssg_build_guide_xml(${PRODUCT})
     ssg_build_shorthand_xml(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
