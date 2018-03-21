@@ -752,92 +752,70 @@ In order to use this mechanism, you have to:
 1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
 Use variables where appropriate. Variables must be surrounded by the symbol % and be uppercase, like `%NAME%` or `%PATH_TO_FILE%`.
 
-This is an example of an OVAL template file called _template_OVAL_mount_options_
+This is an example of an OVAL template file called _template_OVAL_package_installed_
 
 [source,xml]
 ----
 <def-group>
-  <definition class="compliance" id="mount_option%POINTID%_%MOUNTOPTION%" version="1">
+  <definition class="compliance" id="package_%PKGNAME%_installed"
+  version="1">
     <metadata>
-      <title>Add %MOUNTOPTION% Option to %MOUNTPOINT%</title>
+      <title>Package %PKGNAME% Installed</title>
       <affected family="unix">
-        <platform>multi_platform_all</platform>
+        <platform>Red Hat Enterprise Linux 7</platform>
       </affected>
-      <description>%MOUNTPOINT% should be mounted with mount option %MOUNTOPTION%.</description>
+      <description>The RPM package %PKGNAME% should be installed.</description>
     </metadata>
     <criteria>
-      <criterion comment="%MOUNTOPTION% on %MOUNTPOINT%" test_ref="test%POINTID%_partition_%MOUNTOPTION%" />
+      <criterion comment="package %PKGNAME% is installed"
+      test_ref="test_package_%PKGNAME%_installed" />
     </criteria>
   </definition>
-
-  <linux:partition_test check="all" check_existence="all_exist"
-  id="test%POINTID%_partition_%MOUNTOPTION%" version="1" comment="%MOUNTOPTION% on %MOUNTPOINT%">
-    <linux:object object_ref="object%POINTID%_partition_%MOUNTOPTION%" />
-    <linux:state state_ref="state%POINTID%_partition_%MOUNTOPTION%" />
-  </linux:partition_test>
-  <linux:partition_object id="object%POINTID%_partition_%MOUNTOPTION%" version="1">
-    <linux:mount_point>%MOUNTPOINT%</linux:mount_point>
-  </linux:partition_object>
-  <linux:partition_state id="state%POINTID%_partition_%MOUNTOPTION%" version="1">
-    <linux:mount_options datatype="string" entity_check="at least one" operation="equals">%MOUNTOPTION%</linux:mount_options>
-  </linux:partition_state>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_%PKGNAME%_installed" version="1"
+  comment="package %PKGNAME% is installed">
+    <linux:object object_ref="obj_package_%PKGNAME%_installed" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_%PKGNAME%_installed" version="1">
+    <linux:name>%PKGNAME%</linux:name>
+  </linux:rpminfo_object>
 </def-group>
 ----
 
-And here is the Ansible template file called template_ANSIBLE_mount_options:
+And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
 [source,yml]
 ----
 # platform = multi_platform_all
 # reboot = false
-# strategy = configure
+# strategy = enable
 # complexity = low
-# disruption = high
-- name: "get back device associated to mountpoint"
-  shell: mount | grep ' %MOUNTPOINT% ' |cut -d ' ' -f 1
-  register: device_name
-  check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-
-- name: "get back device previous mount option"
-  shell: mount | grep ' %MOUNTPOINT% ' | sed -re 's:.*\((.*)\):\1:'
-  register: device_cur_mountoption
-  check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-
-- name: "get back device fstype"
-  shell: mount | grep ' %MOUNTPOINT% ' | cut -d ' ' -f 5
-  register: device_fstype
-  check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-
-- name: "Ensure permission %MOUNTOPTION% are set on %MOUNTPOINT%"
-  mount:
-    path: "%MOUNTPOINT%"
-    src: "{{device_name.stdout}}"
-    opts: "{{device_cur_mountoption.stdout}},%MOUNTOPTION%"
-    state: "mounted"
-    fstype: "{{device_fstype.stdout}}"
+# disruption = low
+- name: Ensure %PKGNAME% is installed
+  package:
+    name="{{item}}"
+    state=present
+  with_items:
+    - %PKGNAME%
   tags:
     @ANSIBLE_TAGS@
 ----
 
 2) Create a csv (comma-separated-values) file in the _/template/csv_ directory with the same name of the template followed by the extension _.csv_. It should contain all the instances you want to generate from the template, one per line. Use the line to supply values to the variables.
 
-This is the file mount_options.csv
+This is the file packages_installed.csv
 
 [source,csv]
 ----
-/dev/shm,nodev
-/dev/shm,noexec
-/dev/shm,nosuid
-/home,nosuid
-/tmp,nodev
-/tmp,noexec
-/tmp,nosuid
+aide
+audit
+chrony
+cronie
+dconf
+firewalld
+esc
+irqbalance
+#kernel-PAE
 ----
 
 3) Create a python file containing the generator class. The name of the file should start with _create__ and then be followed by the template name and the extension _.py_. The generator class name should also be the template name, in Camel case, followed by _Generator_.
@@ -846,60 +824,60 @@ You have to define the function _generate(self, target, argv)_, where the second
 
 Inside the _generate_ function, you must call the other function _file_from_template_ passing as parameter one of the template files you've created, the variables you've defined and their values,  and the name of the output file, that should be named in the same manner as if it was created manually.
 
-This is the file with the generator class for the mount_options template, it's called create_mount_options.py:
+This is the file with the generator class for the installed package template, it's called create_package_installed.py:
 
 [source,python]
 ----
 #
-# create_mount_options.py
-#        generate template-based checks for partition mount rights
-
-import re
+# create_package_installed.py
+#   automatically generate checks for installed packages
+#
 
 from template_common import FilesGenerator, UnknownTargetError
 
 
-class MountOptionsGenerator(FilesGenerator):
-    def generate(self, target, path_info):
-        mount_point, mount_option = path_info
-        point_id = re.sub('[-\./]', '_', mount_point)
-        if mount_point:
-            if target == "ansible":
-                self.file_from_template(
-                    "./template_ANSIBLE_mount_options",
-                    {
-                        "%MOUNTPOINT%":  mount_point,
-                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
-                    },
-                    "./ansible/mount_option{0}.yml", point_id + '_' + mount_option
-                )
+class PackageInstalledGenerator(FilesGenerator):
+    def generate(self, target, package_info):
+        pkgname = package_info[0]
+        if not pkgname:
+            raise RuntimeError(
+                "ERROR: input violation: the package name must be defined")
 
-            elif target == "anaconda":
-                self.file_from_template(
-                    "./template_ANACONDA_mount_options",
-                    {
-                        "%MOUNTPOINT%":  mount_point,
-                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
-                    },
-                    "./anaconda/mount_option{0}.anaconda", point_id + '_' + mount_option
-                )
+        if target == "oval":
+            self.file_from_template(
+                "./template_OVAL_package_installed",
+                {"%PKGNAME%": pkgname},
+                "./oval/package_{0}_installed.xml", pkgname
+            )
 
-            elif target == "oval":
-                self.file_from_template(
-                    "./template_OVAL_mount_options",
-                    {
-                        "%MOUNTPOINT%":  mount_point,
-                        "%MOUNTOPTION%": mount_option,
-                        "%POINTID%":     point_id,
-                    },
-                    "./oval/mount_option{0}.xml", point_id + "_" + mount_option
-                )
-            else:
-                raise UnknownTargetError(target)
+        elif target == "bash":
+            self.file_from_template(
+                "./template_BASH_package_installed",
+                {"%PKGNAME%": pkgname},
+                "./bash/package_{0}_installed.sh", pkgname
+            )
 
-    def csv_format(self):
-        return("CSV should contains lines of the format: "
-               "mount_point,mount_option,[mount_option]+")
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_package_installed",
+                {"%PKGNAME%": pkgname},
+                "./ansible/package_{0}_installed.yml", pkgname
+            )
+
+        elif target == "anaconda":
+            self.file_from_template(
+                "./template_ANACONDA_package_installed",
+                {"%PKGNAME%": pkgname},
+                "./anaconda/package_{0}_installed.anaconda", pkgname
+            )
+
+        elif target == "puppet":
+            self.file_from_template(
+                "./template_PUPPET_package_installed",
+                {"%PKGNAME%": pkgname},
+                "./puppet/package_{0}_installed.pp", pkgname
+            )
+
 ----
 
 4) Finally, you have to ensure the SSG knows your template. To do that, you have to edit the file _shared/utils/generate-from-template.py_ and include the generator class you've just created and declare which csv file to use along with it.
@@ -912,14 +890,14 @@ This is an example of a patch to add a new template into the templating system:
  from create_sysctl            import SysctlGenerator
  from create_services_disabled import ServiceDisabledGenerator
  from create_services_enabled  import ServiceEnabledGenerator
-+from create_mount_options     import MountOptionsGenerator
++from create_package_installed import PackageInstalledGenerator
 
 @@ -43,6 +44,7 @@ def __init__(self):
              "sysctl_values.csv":       SysctlGenerator(),
              "services_disabled.csv":   ServiceDisabledGenerator(),
              "services_disabled.csv":   ServiceDisabledGenerator(),
              "services_enabled.csv":    ServiceEnabledGenerator(),
-+            "mount_options.csv":       MountOptionsGenerator(),
++            "packages_installed.csv":  PackageInstalledGenerator(),
          }
          self.supported_ovals = ["oval_5.10"]
 ----

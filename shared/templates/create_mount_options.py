@@ -1,6 +1,7 @@
 #
-# create_mount_options.py
-#        generate template-based checks for partition mount rights
+# create_mounts.py
+#        generate template-based checks for partitions and partition
+#        mount rights
 
 import re
 
