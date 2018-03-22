@@ -21,7 +21,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="Banner for FTP Users" id="object_test_ftp_present_banner" version="1">
     <ind:filepath>/etc/vsftpd/vsftpd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*banner_file[\s]*=[\s]*/etc/issue*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*banner_file=/etc/issue[\s]*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
