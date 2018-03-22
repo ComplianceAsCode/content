@@ -34,7 +34,7 @@ function replace_or_append {
 
   [ -n "$format" ] || format="$default_format"
   # Check sanity of the input
-  [ $# -ge "3" ] || die "Usage: replace_or_append <config_file_location> <key_to_search> <new_value> [<CCE number or literal '@CCENUM@' if unknown>] [printf-like format, default is '$default_format']"
+  [ $# -ge "3" ] || { echo "Usage: replace_or_append <config_file_location> <key_to_search> <new_value> [<CCE number or literal '@CCENUM@' if unknown>] [printf-like format, default is '$default_format']" >&2; exit 1; }
 
   # Test if the config_file is a symbolic link. If so, use --follow-symlinks with sed.
   # Otherwise, regular sed command will do.
