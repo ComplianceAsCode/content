@@ -47,7 +47,7 @@
     <linux:unit operation="pattern match">%DAEMONNAME%\.(service|socket)</linux:unit>
     <linux:property>ActiveState</linux:property>
   </linux:systemdunitproperty_object>
-  <linux:systemdunitproperty_state id="state_service_not_running_%SERVICENAME%" version="1" comment="%SERVICENAME% is not running">
-      <linux:value>inactive</linux:value>
+  <linux:systemdunitproperty_state id="state_service_not_running_%SERVICENAME%" version="1" comment="%SERVICENAME% is not running, either because nobody tried, service has been stopped, or because it terminated unexpectedly">
+      <linux:value operation="pattern match">(inactive|failed)</linux:value>
   </linux:systemdunitproperty_state>
 </def-group>
