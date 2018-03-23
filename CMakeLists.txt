@@ -120,6 +120,7 @@ message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
 message(STATUS " ")
 
 message(STATUS "Tools:")
+message(STATUS "python: ${PYTHON_EXECUTABLE} (version: ${PYTHON_VERSION_STRING})")
 message(STATUS "oscap: ${OPENSCAP_OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message(STATUS "xsltproc: ${XSLTPROC_EXECUTABLE}")
 message(STATUS "xmllint: ${XMLLINT_EXECUTABLE}")
