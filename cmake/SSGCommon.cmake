@@ -592,6 +592,16 @@ macro(ssg_make_stats_for_product PRODUCT)
 endmacro()
 
 macro(ssg_build_product PRODUCT)
+    # Enforce folder naming rules, we require SSG contributors to use
+    # scap-security-guide/${PRODUCT}/ for all products. This makes it easier
+    # to find relevant source-code and build just the relevant product.
+    get_filename_component(EXPECTED_CMAKELISTS "${CMAKE_SOURCE_DIR}/${PRODUCT}/CMakeLists.txt" ABSOLUTE)
+    get_filename_component(ACTUAL_CMAKELISTS "${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt" ABSOLUTE)
+
+    if (NOT "${ACTUAL_CMAKELISTS}" STREQUAL "${EXPECTED_CMAKELISTS}")
+        message(FATAL_ERROR "Expected ${PRODUCT}'s CMakeLists.txt to be at ${EXPECTED_CMAKELISTS}. Instead it's at ${ACTUAL_CMAKELISTS}. Please move it to the correct location.")
+    endif()
+
     add_custom_target(${PRODUCT}-content)
 
     ssg_build_shorthand_xml(${PRODUCT})
