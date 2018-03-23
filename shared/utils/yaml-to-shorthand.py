@@ -188,7 +188,12 @@ class Benchmark(object):
                 continue
 
             basename, ext = os.path.splitext(os.path.basename(dir_item_path))
-            if ext != '.yml':
+            if ext != '.profile':
+                sys.stderr.write(
+                    "Encountered file '%s' while looking for profiles, "
+                    "extension '%s' is unknown. Skipping..\n"
+                    % (dir_item, ext)
+                )
                 continue
 
             self.profiles.append(Profile.from_yaml(dir_item_path))
