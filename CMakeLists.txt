@@ -68,6 +68,8 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     )
 endif()
 
+find_package(PythonInterp 2 REQUIRED)
+
 find_package(OpenSCAP REQUIRED)
 
 if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
@@ -76,7 +78,7 @@ if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11
 endif()
 
 execute_process(
-    COMMAND "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
+    COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
     RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
 )
 # OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
