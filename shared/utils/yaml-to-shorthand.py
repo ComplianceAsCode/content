@@ -188,7 +188,7 @@ class Benchmark(object):
                 continue
 
             basename, ext = os.path.splitext(os.path.basename(dir_item_path))
-            if ext != '.yml':
+            if ext != '.profile':
                 continue
 
             self.profiles.append(Profile.from_yaml(dir_item_path))
