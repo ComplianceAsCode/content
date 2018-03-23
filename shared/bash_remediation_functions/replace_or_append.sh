@@ -1,12 +1,14 @@
 # Function to replace configuration setting in config file or add the configuration setting if
 # it does not exist.
 #
-# Expects four arguments:
+# Expects arguments:
 #
 # config_file:		Configuration file that will be modified
 # key:			Configuration option to change
 # value:		Value of the configuration option to change
 # cce:			The CCE identifier or '@CCENUM@' if no CCE identifier exists
+# format:		The printf-like format string that will be given stripped key and value as arguments,
+#			so e.g. '%s=%s' will result in key=value subsitution (i.e. without spaces around =)
 #
 # Optional arugments:
 #
@@ -25,13 +27,17 @@
 #     replace_or_append '/etc/sysconfig/selinux' '^SELINUX=' $var_selinux_state '@CCENUM@' '%s=%s'
 #
 function replace_or_append {
-  local default_format='%s = %s'
+  local default_format='%s = %s' case_insensitive_mode=yes sed_case_insensitive_option='' grep_case_insensitive_option=''
   local config_file=$1
   local key=$2
   local value=$3
   local cce=$4
   local format=$5
 
+  if [ "$case_insensitive_mode" = yes ]; then
+    sed_case_insensitive_option="i"
+    grep_case_insensitive_option="-i"
+  fi
   [ -n "$format" ] || format="$default_format"
   # Check sanity of the input
   [ $# -ge "3" ] || { echo "Usage: replace_or_append <config_file_location> <key_to_search> <new_value> [<CCE number or literal '@CCENUM@' if unknown>] [printf-like format, default is '$default_format']" >&2; exit 1; }
@@ -55,11 +61,14 @@ function replace_or_append {
   # adding any search characters to the config file.
   stripped_key=$(sed 's/[\^=\$,;+]*//g' <<< "$key")
 
+  # shellcheck disable=SC2059
   printf -v formatted_output "$format" "$stripped_key" "$value"
 
   # If the key exists, change it. Otherwise, add it to the config_file.
-  if grep -qi "$key" "$config_file"; then
-    "${sed_command[@]}" "s/$key.*/$formatted_output/g" "$config_file"
+  # We search for the key string followed by a word boundary (matched by \>),
+  # so if we search for 'setting', 'setting2' won't match.
+  if grep -q $grep_case_insensitive_option "${key}\\>" "$config_file"; then
+    "${sed_command[@]}" "s/${key}\\>.*/$formatted_output/g$sed_case_insensitive_option" "$config_file"
   else
     # \n is precaution for case where file ends without trailing newline
     printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "$config_file" >> "$config_file"
