@@ -65,8 +65,10 @@ function replace_or_append {
   printf -v formatted_output "$format" "$stripped_key" "$value"
 
   # If the key exists, change it. Otherwise, add it to the config_file.
-  if grep -q $grep_case_insensitive_option "${key}" "$config_file"; then
-    "${sed_command[@]}" "s/${key}.*/$formatted_output/g$sed_case_insensitive_option" "$config_file"
+  # We search for the key string followed by a word boundary (matched by \>),
+  # so if we search for 'setting', 'setting2' won't match.
+  if grep -q $grep_case_insensitive_option "${key}\\>" "$config_file"; then
+    "${sed_command[@]}" "s/${key}\\>.*/$formatted_output/g$sed_case_insensitive_option" "$config_file"
   else
     # \n is precaution for case where file ends without trailing newline
     printf '\n# Per %s: Set %s in %s\n' "$cce" "$formatted_output" "$config_file" >> "$config_file"
