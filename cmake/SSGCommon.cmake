@@ -97,6 +97,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         DEPENDS ${SHORTHAND_INPUTS}
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        DEPENDS "${SSG_SHARED_UTILS}/yaml-to-shorthand.py"
         COMMENT "[${PRODUCT}-content] generating shorthand.xml"
     )
     add_custom_target(
