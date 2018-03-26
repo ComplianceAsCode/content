@@ -84,7 +84,7 @@ class FilesGenerator(object):
         with open(template_filename, "r") as template_file:
             filestring = template_file.read()
 
-        for key, value in constants_dict.iteritems():
+        for key, value in constants_dict.items():
             if not key.startswith("%") or not key.endswith("%"):
                 raise RuntimeError(
                     "Refuse to replace '%s' because it doesn't start and end "
