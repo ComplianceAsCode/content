@@ -227,7 +227,7 @@ def main():
                 if args.extension == "yml" and \
                    args.template == "urn:xccdf:fix:script:ansible":
                     role_src = add_minimum_ansible_version(role_src)
-                with open(role_path, "w") as f:
+                with open(role_path, "wb") as f:
                     f.write(role_src.encode("utf-8"))
 
                 queue.task_done()

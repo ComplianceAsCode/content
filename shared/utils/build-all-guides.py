@@ -216,7 +216,7 @@ def main():
                 guide_html = generate_guide_for_input_content(
                     input_path, benchmark_id, profile_id
                 )
-                with open(guide_path, "w") as f:
+                with open(guide_path, "wb") as f:
                     f.write(guide_html.encode("utf-8"))
 
                 queue.task_done()
@@ -329,7 +329,7 @@ def main():
     elif args.cmd == "list_outputs":
         print(index_path)
     elif args.cmd == "build":
-        with open(index_path, "w") as f:
+        with open(index_path, "wb") as f:
             f.write(index_source.encode("utf-8"))
 
 if __name__ == "__main__":
