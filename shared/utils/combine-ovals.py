@@ -1,10 +1,8 @@
 #!/usr/bin/env python2
 
-import datetime
 import os
 import os.path
 import errno
-import platform
 import re
 import sys
 from copy import deepcopy
