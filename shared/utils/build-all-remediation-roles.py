@@ -16,7 +16,10 @@ import os.path
 import argparse
 
 import threading
-import Queue
+try:
+    import queue as Queue
+except ImportError:
+    import Queue
 import sys
 import multiprocessing
 
