@@ -267,7 +267,7 @@ def main():
             "<html lang=\"en\">\n",
             "\t<head>\n",
             "\t\t<meta charset=\"utf-8\">\n",
-            "\t\t<title>%s</title>\n" % (benchmarks.itervalues().next()),
+            "\t\t<title>%s</title>\n" % (list(benchmarks.values())[0]),
             "\t\t<script>\n",
             "\t\t\tfunction change_profile(option_element)\n",
             "\t\t\t{\n",
