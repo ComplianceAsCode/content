@@ -5,9 +5,6 @@
 
 populate var_removable_partition
 
-NEW_OPT="noexec"
+ensure_mount_option_in_fstab "$var_removable_partition" noexec
 
-if [ $(grep "$var_removable_partition" /etc/fstab | grep -c "$NEW_OPT" ) -eq 0 ]; then
-  MNT_OPTS=$(grep "$var_removable_partition" /etc/fstab | awk '{print $4}')
-  sed -i "s|\($var_removable_partition.*${MNT_OPTS}\)|\1,${NEW_OPT}|" /etc/fstab
-fi
+mount -o remount "$var_removable_partition"
