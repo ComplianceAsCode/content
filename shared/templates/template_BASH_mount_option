@@ -1,0 +1,8 @@
+# platform = Red Hat Enterprise Linux 7
+# reboot = false
+
+. /usr/share/scap-security-guide/remediation_functions
+
+ensure_mount_option_in_fstab %MOUNTPOINT% %MOUNTOPTION%
+
+mount -o remount %MOUNTPOINT%

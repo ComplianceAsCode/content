@@ -33,6 +33,16 @@ class MountOptionsGenerator(FilesGenerator):
                     "./anaconda/mount_option{0}.anaconda", point_id + '_' + mount_option
                 )
 
+            elif target == "bash":
+                self.file_from_template(
+                    "./template_BASH_mount_options",
+                    {
+                        "%MOUNTPOINT%":  mount_point,
+                        "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
+                    },
+                    "./bash/mount_option{0}.sh", point_id + '_' + mount_option
+                )
+
             elif target == "oval":
                 self.file_from_template(
                     "./template_OVAL_mount_options",
