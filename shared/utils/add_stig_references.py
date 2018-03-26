@@ -7,7 +7,6 @@ try:
 except ImportError:
     import cElementTree as etree
 
-import re
 import sys
 import argparse
 
@@ -35,7 +34,7 @@ stig_references_beginning = 'http://iase.disa.mil/stigs/'
 try:
     reference_root = etree.parse(reference)
 except IOError as exception:
-    print 'INFO: DISA STIG Reference file not found for this platform'
+    print("INFO: DISA STIG Reference file not found for this platform")
     sys.exit(0)
 
 reference_rules = reference_root.findall('.//{%s}Rule' % xccdf_namespace)

@@ -74,9 +74,9 @@ def collect_nodes(tree, reflist):
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide an OVAL file that contains inventory definitions."
-        print ("This script extracts these definitions and writes them" +
-               " to STDOUT.")
+        print("Provide an OVAL file that contains inventory definitions.")
+        print("This script extracts these definitions and writes them "
+              "to STDOUT.")
         sys.exit(1)
 
     product = sys.argv[1]
