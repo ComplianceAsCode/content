@@ -137,7 +137,7 @@ def main():
     # TODO: [:1] is here because oscap generate fix can't handle multiple
     # benchmarks. This needs to be removed once
     # https://github.com/OpenSCAP/openscap/issues/722 is fixed
-    for benchmark_id in benchmarks.keys()[:1]:
+    for benchmark_id in list(benchmarks.keys())[:1]:
         profiles = xccdf_utils.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
