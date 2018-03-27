@@ -16,6 +16,9 @@ class MountOptionTarget(object):
     def process(self, mount_point, mount_option, point_id, template_file):
         raise NotImplementedError("You are supposed to use a derived class.")
 
+    def process_with_variable(self, mount_point, mount_option, point_id, template_file):
+        raise NotImplementedError("You are supposed to use a derived class.")
+
 
 class RemediationTarget(MountOptionTarget):
     def process(self, mount_point, mount_option, point_id, template_file, stem=""):
@@ -31,11 +34,24 @@ class RemediationTarget(MountOptionTarget):
             stem
         )
 
+    def process_with_variable(self, mount_point, mount_option, point_id, template_file):
+        # e.g. var_removable_partition -> removable_partitions
+        point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
+        template_file = "{0}_var".format(template_file)
+        stem = "_{0}_{1}".format(mount_option, point_id)
+        return self.process(mount_point, mount_option, point_id, template_file, stem)
+
 
 class OvalTarget(MountOptionTarget):
     def __init__(self, generator):
         super(OvalTarget, self).__init__(
             generator, "./oval/mount_option{0}.xml")
+
+    def process_with_variable(self, mount_point, mount_option, point_id, template_file):
+        point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
+        template_file = "{0}_{1}".format(template_file, point_id)
+        stem = "_{0}_{1}".format(mount_option, point_id)
+        return self.process(mount_point, mount_option, point_id, template_file, stem)
 
     def process(self, mount_point, mount_option, point_id, template_file, stem=""):
         if len(stem) == 0:
@@ -78,12 +94,10 @@ class MountOptionsGenerator(FilesGenerator):
             template_file = "./template_{0}_mount_option".format(uppercase_target_name)
             stem = ""
             if mount_point.startswith("var_"):
-                # var_removable_partition -> removable_partitions
-                point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
-                template_file = "{0}_var".format(template_file)
-                stem = "_{0}_{1}".format(mount_option, point_id)
-
-            processing_entity.process(mount_point, mount_option, point_id, template_file, stem)
+                processing_entity.process_with_variable(
+                    mount_point, mount_option, point_id, template_file)
+            else:
+                processing_entity.process(mount_point, mount_option, point_id, template_file, stem)
 
     def csv_format(self):
         return("CSV should contains lines of the format: "
