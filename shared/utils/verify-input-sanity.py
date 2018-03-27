@@ -7,6 +7,9 @@
 #
 
 # the python modules that we need
+
+from __future__ import print_function
+
 import os
 import sys
 import lxml.etree as ET

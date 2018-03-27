@@ -13,6 +13,9 @@ build datastreams from them!
 
 Author: Martin Preisler <mpreisle@redhat.com>
 """
+
+from __future__ import print_function
+
 import os
 import sys
 

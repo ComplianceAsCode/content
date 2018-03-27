@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+from __future__ import print_function
+
 """
 Takes given XCCDF or DataStream and adds RHEL derivative operating system(s) CPE name next
 to RHEL CPE names. Can automatically recognize RHEL6, 7, etc. CPEs and adds the derivitive OS ones

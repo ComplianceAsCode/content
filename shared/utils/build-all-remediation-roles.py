@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+from __future__ import print_function
+
 """
 Takes given XCCDF or DataStream and for every profile in it it generates one
 ansible and bash remediation roles.
