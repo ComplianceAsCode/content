@@ -47,20 +47,24 @@ else
 fi
 
 # If chkconfig_util is not empty, use chkconfig/service commands.
-if ! [ "x$chkconfig_util" = x ] ; then
+if [ "x$chkconfig_util" != x ] ; then
   $service_util $service $service_operation
   $chkconfig_util --level 0123456 $service $chkconfig_state
 else
   $service_util $service_operation $service
   $service_util $service_state $service
+  # The service may not be running because it has been started and failed,
+  # so let's reset the state so OVAL checks pass.
+  # Service should be 'inactive', not 'failed' after reboot though.
+  $service_util reset-failed $service
 fi
 
 # Test if local variable xinetd is empty using non-bashism.
 # If empty, then xinetd is not being used.
-if ! [ "x$xinetd" = x ] ; then
+if [ "x$xinetd" != x ] ; then
   grep -qi disable /etc/xinetd.d/$xinetd && \
 
-  if ! [ "$service_operation" != 'disable' ] ; then
+  if [ "$service_operation" = 'disable' ] ; then
     sed -i "s/disable.*/disable         = no/gI" /etc/xinetd.d/$xinetd
   else
     sed -i "s/disable.*/disable         = yes/gI" /etc/xinetd.d/$xinetd
