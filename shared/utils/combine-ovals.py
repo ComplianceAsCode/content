@@ -1,14 +1,13 @@
 #!/usr/bin/env python2
 
-import datetime
 import os
 import os.path
 import errno
-import platform
 import re
 import sys
 from copy import deepcopy
 import argparse
+import codecs
 
 
 try:
@@ -252,13 +251,13 @@ def check_oval_version_from_oval(xml_content, oval_version):
     oval_file_tree = ElementTree.fromstring(ssgcommon.oval_header + xml_content + footer)
     for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
         file_oval_version = defgroup.get("oval_version")
-  
+
     if file_oval_version is None:
         # oval_version does not exist in <def-group/>
         # which means the OVAL is supported for any version.
         # By default, that version is 5.10
         file_oval_version = "5.10"
- 
+
     if tuple(oval_version.split(".")) >= tuple(file_oval_version.split(".")):
         return True
 
@@ -279,7 +278,8 @@ def checks(product, oval_version, oval_dirs):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
-                    with open(os.path.join(oval_dir, filename), 'r') as xml_file:
+                    with codecs.open(os.path.join(oval_dir, filename), "r",
+                                     encoding="utf-8") as xml_file:
                         xml_content = xml_file.read()
                         if not check_is_applicable_for_product(xml_content, product):
                             continue
@@ -312,7 +312,7 @@ def main():
                    help="Location of the oval.config file.")
     p.add_argument("--oval_version", required=True,
                    help="OVAL version to use. Example: 5.11, 5.10, ...")
-    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
                    help="Directory(ies) from which we will collect "
                    "OVAL definitions to combine. Order matters, latter "

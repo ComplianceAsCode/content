@@ -4,6 +4,7 @@ import sys
 import os
 import os.path
 import argparse
+import codecs
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -13,15 +14,15 @@ except ImportError:
 
 def preprocess_source(filepath):
     raw = ""
-    with open(filepath, "r") as f:
+    with codecs.open(filepath, "r", encoding="utf-8") as f:
         raw = f.read()
 
     source = ""
     for line in raw.splitlines(True):
         if line.startswith("source ") and line.endswith(".sh\n"):
             included_file = line.strip()[7:]  # skip "source "
-            with open(os.path.join(
-                os.path.dirname(filepath), included_file), "r"
+            with codecs.open(os.path.join(
+                os.path.dirname(filepath), included_file), "r", encoding="utf-8"
             ) as f:
                 source += f.read()
                 source += "\n"
@@ -34,7 +35,7 @@ def preprocess_source(filepath):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--input_dir", required=True)
-    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("--output", type=argparse.FileType("wb"), required=True)
 
     args, unknown = p.parse_known_args()
     if unknown:

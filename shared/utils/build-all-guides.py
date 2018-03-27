@@ -16,7 +16,10 @@ except ImportError:
 import os.path
 import argparse
 import threading
-import Queue
+try:
+    import queue as Queue
+except ImportError:
+    import Queue
 import sys
 import multiprocessing
 
@@ -213,7 +216,7 @@ def main():
                 guide_html = generate_guide_for_input_content(
                     input_path, benchmark_id, profile_id
                 )
-                with open(guide_path, "w") as f:
+                with open(guide_path, "wb") as f:
                     f.write(guide_html.encode("utf-8"))
 
                 queue.task_done()
@@ -257,14 +260,14 @@ def main():
                 index_select_options += "\n".join(index_options[benchmark_id])
                 index_select_options += "</optgroup>\n"
         else:
-            index_select_options += "\n".join(index_options.values()[0])
+            index_select_options += "\n".join(list(index_options.values())[0])
 
         index_source = "".join([
             "<!DOCTYPE html>\n",
             "<html lang=\"en\">\n",
             "\t<head>\n",
             "\t\t<meta charset=\"utf-8\">\n",
-            "\t\t<title>%s</title>\n" % (benchmarks.itervalues().next()),
+            "\t\t<title>%s</title>\n" % (list(benchmarks.values())[0]),
             "\t\t<script>\n",
             "\t\t\tfunction change_profile(option_element)\n",
             "\t\t\t{\n",
@@ -326,7 +329,7 @@ def main():
     elif args.cmd == "list_outputs":
         print(index_path)
     elif args.cmd == "build":
-        with open(index_path, "w") as f:
+        with open(index_path, "wb") as f:
             f.write(index_source.encode("utf-8"))
 
 if __name__ == "__main__":

@@ -38,7 +38,11 @@ def add_sub_element(parent, tag, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
+    try:
+        ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
+    except NameError:
+        ustr = str("<{0}>{1}</{0}>").format(tag, data)
+
     element = ET.fromstring(ustr.encode("utf-8"))
     parent.append(element)
     return element

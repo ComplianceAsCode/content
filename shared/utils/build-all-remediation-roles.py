@@ -16,7 +16,10 @@ import os.path
 import argparse
 
 import threading
-import Queue
+try:
+    import queue as Queue
+except ImportError:
+    import Queue
 import sys
 import multiprocessing
 
@@ -134,7 +137,7 @@ def main():
     # TODO: [:1] is here because oscap generate fix can't handle multiple
     # benchmarks. This needs to be removed once
     # https://github.com/OpenSCAP/openscap/issues/722 is fixed
-    for benchmark_id in benchmarks.keys()[:1]:
+    for benchmark_id in list(benchmarks.keys())[:1]:
         profiles = xccdf_utils.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
@@ -224,7 +227,7 @@ def main():
                 if args.extension == "yml" and \
                    args.template == "urn:xccdf:fix:script:ansible":
                     role_src = add_minimum_ansible_version(role_src)
-                with open(role_path, "w") as f:
+                with open(role_path, "wb") as f:
                     f.write(role_src.encode("utf-8"))
 
                 queue.task_done()

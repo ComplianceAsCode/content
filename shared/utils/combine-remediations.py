@@ -6,6 +6,7 @@ import os.path
 import re
 import errno
 import argparse
+import codecs
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -78,7 +79,7 @@ def get_available_remediation_functions(build_dir):
         sys.exit(1)
 
     remediation_functions = []
-    with open(xmlfilepath, "r") as xmlfile:
+    with codecs.open(xmlfilepath, "r", encoding="utf-8") as xmlfile:
         filestring = xmlfile.read()
         # This regex looks implementation dependent but we can rely on
         # ElementTree sorting XML attrs alphabetically. Hidden is guaranteed
@@ -402,7 +403,7 @@ def main():
     p.add_argument("--build_dir", required=True,
                    help="where is the cmake build directory. pass value of "
                    "$CMAKE_BINARY_DIR.")
-    p.add_argument("--output", type=argparse.FileType('w'), required=True)
+    p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
                    help="directory(ies) from which we will collect "
                    "remediations to combine.")
@@ -435,7 +436,8 @@ def main():
 
                 mod_file = []
                 config = {}
-                with open(os.path.join(fixdir, filename), 'r') as fix_file:
+                with codecs.open(os.path.join(fixdir, filename), "r",
+                                 encoding="utf-8") as fix_file:
                     # Assignment automatically escapes shell characters for XML
                     for line in fix_file.readlines():
                         if line.startswith('#'):
