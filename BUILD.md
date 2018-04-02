@@ -4,7 +4,7 @@
 
 1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils`, and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
 
- `# yum -y install cmake openscap-utils git`
+ `# yum -y install cmake openscap-utils git PyYAML`
 
  On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `xsltproc`, and their dependencies are installed as well as `git`.
 
