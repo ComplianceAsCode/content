@@ -50,3 +50,6 @@ ocil: |-
     To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
     <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
+
+oval_variables:
+    - inactivity_timeout_value

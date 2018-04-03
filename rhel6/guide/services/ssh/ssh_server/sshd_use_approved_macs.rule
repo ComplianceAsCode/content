@@ -27,3 +27,6 @@ ocil: |-
     <pre>$ sudo grep -i macs /etc/ssh/sshd_config</pre>
     The output should contain only those MACs which are FIPS-approved, namely,
     hmac-sha2-512, hmac-sha2-256, and hmac-sha1 hash functions.
+
+oval_variables:
+    - sshd_required

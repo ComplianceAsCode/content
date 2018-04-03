@@ -15,3 +15,6 @@ references:
 ocil_clause: 'auditd is not configured to synchronously write audit  event data to disk'
 
 ocil: "Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to\ndetermine if the system is configured to synchronize audit event data \nwith the log files on the disk:\n<tt>$ sudo grep flush /etc/audit/auditd.conf</tt>\n<pre>flush = DATA</pre>\nAcceptable values are <tt>DATA</tt>, and <tt>SYNC</tt>. The setting is \ncase-insensitive."
+
+oval_variables:
+    - var_auditd_flush
