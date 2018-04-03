@@ -6,6 +6,8 @@ import re
 import sys
 import os
 
+import argparse as ap
+
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
@@ -39,6 +41,19 @@ xccdf_ns = ssgcommon.XCCDF11_NS
 cce_uri = ssgcommon.cce_uri
 
 
+OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS = {
+    'int': 'number',
+    'float': 'number',
+    'boolean': 'boolean',
+    'string': 'string',
+    'evr_string': 'string',
+    'version': 'string',
+    'ios_version': 'string',
+    'fileset_revision': 'string',
+    'binary': 'string'
+}
+
+
 def parse_xml_file(xmlfile):
     with open(xmlfile, 'r') as xml_file:
         filestring = xml_file.read()
@@ -63,6 +78,15 @@ def get_checkfiles(checks, checksystem):
     return checkfiles
 
 
+def _find_identcce(rule):
+    identcce = None
+    for ident in rule.findall("./{%s}ident" % xccdf_ns):
+        if ident.get("system") == cce_uri:
+            identcce = ident
+            break
+    return identcce
+
+
 def create_xccdf_id_to_cce_id_mapping(xccdftree):
     #
     # Create dictionary having form of
@@ -77,12 +101,7 @@ def create_xccdf_id_to_cce_id_mapping(xccdftree):
     for rule in xccdfrules:
         xccdfid = rule.get("id")
         if xccdfid is not None:
-            identcce = None
-            for ident in rule.findall("./{%s}ident" % xccdf_ns):
-                if ident.get("system") != cce_uri:
-                    continue
-                identcce = ident
-                break
+            identcce = _find_identcce(rule)
 
             if identcce is not None:
                 cceid = identcce.text
@@ -102,10 +121,6 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
     #
     # where "CCE-ID" is the CCE identifier for that particular rule
     # retrieved from the XCCDF file
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1230
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1229
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1228
 
     ovalrules = ovaltree.findall(".//{%s}definition" % oval_ns)
     for rule in ovalrules:
@@ -113,34 +128,34 @@ def add_cce_id_refs_to_oval_checks(ovaltree, idmappingdict):
         ovaldesc = rule.find(".//{%s}description" % oval_ns)
         # Assign <reference> CCE elements only to those OVAL checks whose
         # XCCDF rule ID has <ident> CCE set
-        if ovalid is not None and \
-           ovaldesc is not None and \
-           ovalid in idmappingdict:
-            xccdfcceid = idmappingdict[ovalid]
-            # IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
-            # where each X is a digit, and the final X is a check-digit)
-            if re.search(r'CCE-\d{4,5}-\d', xccdfcceid) is not None:
-                # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
-                # after <description> element of specific OVAL check
-                ccerefelem = ElementTree.Element(
-                    'reference', ref_id="%s" % xccdfcceid, source="CCE")
-                ovaldesc.addnext(ccerefelem)
-                # Sanity check if appending succeeded
-                if ccerefelem.getprevious() is not ovaldesc:
-                    sys.stderr.write("ERROR: Failed to add CCE ID to %s. "
-                                     "Exiting" % (ovalid))
-                    sys.exit(1)
+        if (ovalid is None
+                or ovaldesc is None
+                or ovalid not in idmappingdict):
+            continue
+
+        xccdfcceid = idmappingdict[ovalid]
+        # IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
+        # where each X is a digit, and the final X is a check-digit)
+        if re.search(r'CCE-\d{4,5}-\d', xccdfcceid) is not None:
+            # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
+            # after <description> element of specific OVAL check
+            ccerefelem = ElementTree.Element(
+                'reference', ref_id="%s" % xccdfcceid, source="CCE")
+            ovaldesc.addnext(ccerefelem)
+            # Sanity check if appending succeeded
+            if ccerefelem.getprevious() is not ovaldesc:
+                sys.stderr.write("ERROR: Failed to add CCE ID to %s. "
+                                 "Exiting" % (ovalid))
+                sys.exit(1)
 
 
-def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovaltree, indexed_oval_defs):
+def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
+        xccdftree, ovaltree, indexed_oval_defs):
     # Ensure all OVAL checks referenced by XCCDF are implemented in OVAL file
     # Drop the reference from XCCDF to OVAL definition if:
     # * Particular OVAL definition isn't present in OVAL file,
     # * That OVAL definition doesn't constitute a remote OVAL
     #   (@href of <check-content-ref> doesn't start with 'http'
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
 
     for rule in xccdftree.findall(".//{%s}Rule" % xccdf_ns):
         xccdfid = rule.get("id")
@@ -191,6 +206,7 @@ def ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(xccdftree, ovalt
                          % xccdfid)
         rule.remove(check)
 
+
 def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
     # Incomplete OVAL checks are as useful as non existing checks
     # Here we check if all extend_definition refs from a definition exists in local OVAL file
@@ -211,10 +227,10 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
             if referreddefinition is None:
                 # There is no oval satisfying the extend_definition referal
                 incomplete = True
-                sys.stderr.write("WARNING: OVAL definition '%s' extends non-existing '%s', "
-                        "removing it from OVAL definitions.\n"
-                        % (definition.get("id"), extdefinitionref))
-            
+                print("WARNING: OVAL definition '{0}' extends non-existing '{1}', "
+                      "removing it from OVAL definitions."
+                      .format(definition.get("id"), extdefinitionref),
+                      file=sys.stderr)
         if incomplete:
             defstoremove.append(definition)
 
@@ -234,25 +250,12 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
         # rather than 'datatype' attribute of the corresponding OVAL variable since there might be additional
         # OVAL variables, derived from the affected OVAL variable, and in that case we would need to fix the
         # 'datatype' attribute in each of them.
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1089
 
 
         # Define the <xccdf:Value> 'type' to OVAL variable 'datatype' export matching constraints mapping
         # as specified in Table 16 of XCCDF v1.2 standard:
         # http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
         #
-        oval_to_xccdf_datatype_constraints = {
-            'int' : 'number',
-            'float' : 'number',
-            'boolean' : 'boolean',
-            'string' : 'string',
-            'evr_string' : 'string',
-            'version' : 'string',
-            'ios_version' : 'string',
-            'fileset_revision' : 'string',
-            'binary' :  'string'
-        }
-
         indexed_xccdf_values = {}
         for xccdf_value in xccdftree.findall(".//{%s}Value" % (xccdf_ns)):
             xccdf_id = xccdf_value.get("id")
@@ -261,48 +264,52 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
 
         # Loop through all <external_variables> in the OVAL document
         ovalextvars = ovaltree.findall(".//{%s}external_variable" % oval_ns)
-        if ovalextvars is not None:
-            for ovalextvar in ovalextvars:
-                # Verify the found external variable has both 'id' and 'datatype' set
-                if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
-                    sys.stderr.write("ERROR: Invalid OVAL <external_variable> "
-                                     "found. Exiting\n")
-                    sys.exit(1)
-                # Obtain the 'id' and 'datatype attribute values
-                if 'id' in ovalextvar.attrib and 'datatype' in ovalextvar.attrib:
-                    ovalvarid = ovalextvar.get('id')
-                    ovalvartype = ovalextvar.get('datatype')
+        if ovalextvars is None:
+            return
 
-                # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
-                xccdfvar = indexed_xccdf_values.get(ovalvarid)
+        for ovalextvar in ovalextvars:
+            # Verify the found external variable has both 'id' and 'datatype' set
+            if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
+                sys.stderr.write("ERROR: Invalid OVAL <external_variable> "
+                                 "found. Exiting\n")
+                sys.exit(1)
+            # Obtain the 'id' and 'datatype attribute values
+            if 'id' in ovalextvar.attrib and 'datatype' in ovalextvar.attrib:
+                ovalvarid = ovalextvar.get('id')
+                ovalvartype = ovalextvar.get('datatype')
 
-                if xccdfvar is not None:
-                    # Verify the found value has 'type' attribute set
-                    if 'type' not in xccdfvar.attrib:
-                        sys.stderr.write("ERROR: Invalid XCCDF variable found. "
-                                         "Exiting\n")
-                        sys.exit(1)
-                    else:
-                        xccdfvartype = xccdfvar.get('type')
-                        # This is the required XCCDF 'type' for <xccdf:Value> derived
-                        # from OVAL variable 'datatype' and mapping above
-                        reqxccdftype = oval_to_xccdf_datatype_constraints[ovalvartype]
-                        # Compare the actual value of 'type' of <xccdf:Value> with the requirement
-                        if xccdfvartype != reqxccdftype:
-                            # If discrepancy is found, issue a warning
-                            sys.stderr.write(
-                                "Warning: XCCDF 'type' of \"%s\" value does "
-                                "not meet the XCCDF value 'type' to OVAL "
-                                "variable 'datatype' export matching "
-                                "constraint! Got: \"%s\", Expected: \"%s\". "
-                                "Resetting it! Set 'type' of \"%s\" "
-                                "<xccdf:value> to '%s' directly in the XCCDF "
-                                "content to dismiss this warning!" %
-                                (ovalvarid, xccdfvartype, reqxccdftype,
-                                 ovalvarid, reqxccdftype)
-                            )
-                            # And reset the 'type' attribute of such a <xccdf:Value> to the required type
-                            xccdfvar.attrib['type'] = reqxccdftype
+            # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
+            xccdfvar = indexed_xccdf_values.get(ovalvarid)
+
+            if xccdfvar is None:
+                return
+
+            # Verify the found value has 'type' attribute set
+            if 'type' not in xccdfvar.attrib:
+                sys.stderr.write("ERROR: Invalid XCCDF variable found. "
+                                 "Exiting\n")
+                sys.exit(1)
+            else:
+                xccdfvartype = xccdfvar.get('type')
+                # This is the required XCCDF 'type' for <xccdf:Value> derived
+                # from OVAL variable 'datatype' and mapping above
+                reqxccdftype = OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS[ovalvartype]
+                # Compare the actual value of 'type' of <xccdf:Value> with the requirement
+                if xccdfvartype != reqxccdftype:
+                    # If discrepancy is found, issue a warning
+                    sys.stderr.write(
+                        "Warning: XCCDF 'type' of \"%s\" value does "
+                        "not meet the XCCDF value 'type' to OVAL "
+                        "variable 'datatype' export matching "
+                        "constraint! Got: \"%s\", Expected: \"%s\". "
+                        "Resetting it! Set 'type' of \"%s\" "
+                        "<xccdf:value> to '%s' directly in the XCCDF "
+                        "content to dismiss this warning!" %
+                        (ovalvarid, xccdfvartype, reqxccdftype,
+                         ovalvarid, reqxccdftype)
+                    )
+                    # And reset the 'type' attribute of such a <xccdf:Value> to the required type
+                    xccdfvar.attrib['type'] = reqxccdftype
 
 
 def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
@@ -317,19 +324,10 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
     #
     # If this is the case for specific SSG product, drop such CCE identifiers from the XCCDF
     # since they are in invalid format!
-    #
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1230
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1229
-    # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1228
 
     xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
     for rule in xccdfrules:
-        identcce = None
-        for ident in rule.findall("./{%s}ident" % xccdf_ns):
-            if ident.get("system") != cce_uri:
-                continue
-            identcce = ident
-            break
+        identcce = _find_identcce(rule)
 
         if identcce is not None:
             cceid = identcce.text
@@ -337,6 +335,15 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
             if re.search(r'CCE-\d{4,5}-\d', cceid) is None:
                 # Drop such <xccdf:ident> CCE element from the XCCDF in that case
                 identcce.getparent().remove(identcce)
+
+
+def create_parser():
+    parser = ap.ArgumentParser(
+        description="This script finds check-content files (currently, "
+        "OVAL and OCIL) referenced from XCCDF and synchronizes all IDs.")
+    parser.add_argument("xccdf_file")
+    parser.add_argument("id_name", help="ID naming scheme")
+    return parser
 
 
 def main():
@@ -347,8 +354,10 @@ def main():
                          "synchronizes all IDs.\n")
         sys.exit(1)
 
-    xccdffile = sys.argv[1]
-    idname = sys.argv[2]
+    parser = create_parser()
+    args = parser.parse_args()
+    xccdffile = args.xccdf_file
+    idname = args.id_name
 
     # Step over xccdf file, and find referenced check files
     xccdftree = parse_xml_file(xccdffile)
@@ -361,30 +370,35 @@ def main():
         allrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
         for rule in allrules:
             xccdf_rule = rule.get("id")
-            if xccdf_rule is not None:
-                checks = rule.find("./{%s}check" % xccdf_ns)
-                if checks is not None:
-                    for check in checks:
-                        check_name = check.get("name")
-                        # Verify match of XCCDF vs OVAL / OCIL IDs for
-                        # * the case of OVAL <check>
-                        # * the case of OCIL <check>
-                        if (not xccdf_rule == check_name and check_name is not None \
-                            and not xccdf_rule + '_ocil' == check_name \
-                            and not xccdf_rule == 'sample_rule'):
-                            sys.stderr.write("The OVAL / OCIL ID does not "
-                                             "match the XCCDF Rule ID!\n")
-                            if '_ocil' in check_name:
-                                sys.stderr.write("  OCIL ID:       \'%s\'\n"
-                                                 % (check_name))
-                            else:
-                                sys.stderr.write("  OVAL ID:       \'%s\'\n"
-                                                 % (check_name))
-                            sys.stderr.write("  XCCDF Rule ID: \'%s\'\n"
-                                             % (xccdf_rule))
-                            sys.stderr.write("Both OVAL/OCIL and XCCDF Rule "
-                                             "IDs must match!" % (xccdf_rule))
-                            sys.exit(1)
+            if xccdf_rule is None:
+                continue
+
+            checks = rule.find("./{%s}check" % xccdf_ns)
+            if checks is None:
+                continue
+
+            for check in checks:
+                check_name = check.get("name")
+                # Verify match of XCCDF vs OVAL / OCIL IDs for
+                # * the case of OVAL <check>
+                # * the case of OCIL <check>
+                if (xccdf_rule != check_name
+                        and check_name is not None
+                        and xccdf_rule + '_ocil' != check_name
+                        and xccdf_rule != 'sample_rule'):
+                    sys.stderr.write("The OVAL / OCIL ID does not "
+                                     "match the XCCDF Rule ID!\n")
+                    if '_ocil' in check_name:
+                        sys.stderr.write("  OCIL ID:       \'%s\'\n"
+                                         % (check_name))
+                    else:
+                        sys.stderr.write("  OVAL ID:       \'%s\'\n"
+                                         % (check_name))
+                    sys.stderr.write("  XCCDF Rule ID: \'%s\'\n"
+                                     % (xccdf_rule))
+                    sys.stderr.write("Both OVAL/OCIL and XCCDF Rule "
+                                     "IDs must match!" % (xccdf_rule))
+                    sys.exit(1)
 
     checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
     ovalfiles = get_checkfiles(checks, oval_cs)
@@ -415,22 +429,14 @@ def main():
         # checks having CCE ID already assigned in XCCDF for particular rule.
         # But add the <reference> only in the case CCE is in valid form!
         # Exit with failure if the assignment wasn't successful
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1230
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1229
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1228
         add_cce_id_refs_to_oval_checks(ovaltree, xccdf_to_cce_id_mapping)
 
         # Verify all by XCCDF referenced (local) OVAL checks are defined in OVAL file
         # If not drop the <check-content> OVAL checksystem reference from XCCDF
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1092
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1095
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1098
         ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
             xccdftree, ovaltree, indexed_oval_defs)
 
         # Verify the XCCDF to OVAL datatype export matching constraints
-        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1089
         check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree)
 
         # Verify if CCE identifiers present in the XCCDF follow the required form
@@ -490,6 +496,7 @@ def main():
     newxccdffile = xccdffile.replace("unlinked", "linked")
     ElementTree.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
