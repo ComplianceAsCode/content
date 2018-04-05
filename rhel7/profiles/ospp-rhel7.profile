@@ -1,20 +1,35 @@
 documentation_complete: true
 
-title: 'United States Government Configuration Baseline (USGCB / STIG) - DRAFT'
+title: 'United States Government Configuration Baseline'
 
-description: "This profile is developed in partnership with the \nU.S. National Institute of Standards and Technology (NIST),\
-    \ U.S. Department of \nDefense, the National Security Agency, and Red Hat. The USGCB is intended\nto be the core set of\
-    \ security related configuration settings by which all\nfederal agencies should comply.\n\nThis baseline implements configuration\
-    \ requirements from the following documents:\n\n- Committee on National Security Systems Instruction No. 1253 (CNSSI 1253)\n\
-    - NIST Controlled Unclassified Information (NIST 800-171)\n- NIST 800-53 control selections for MODERATE impact systems\
-    \ (NIST 800-53)\n- U.S. Government Configuration Baseline (USGCB)\n- NIAP Protection Profile for General Purpose Operating\
-    \ Systems v4.0 (OSPP v4.0)\n- DISA Operating System Security Requirements Guide (OS SRG)\n\nFor any differing configuration\
-    \ requirements, e.g. password lengths, the stricter\nsecurity setting was chosen. Security Requirement Traceability Guides\
-    \ (RTMs) and\nsample System Security Configuration Guides are provided via the \nscap-security-guide-docs package.\n\n\
-    This profile reflects U.S. Government consensus content and is developed through\nthe OpenSCAP/SCAP Security Guide initiative,\
-    \ championed by the National\nSecurity Agency. Except for differences in formatting to accommodate\npublishing processes,\
-    \ this profile mirrors OpenSCAP/SCAP Security Guide\ncontent as minor divergences, such as bugfixes, work through\nthe\
-    \ consensus process."
+description: "This compliance profile reflects the core set of security \n
+    \ related configuration settings for deployment of Red Hat Enterprise \n
+    \ Linux 7.x into U.S. Defense, Intelligence, and Civilian agencies. \n
+    \ Development partners and sponsors include the U.S. National Institute \n
+    \ of Standards and Technology (NIST), U.S. Department of Defense, \n
+    \ the National Security Agency, and Red Hat.  \n
+    \ \n
+    \ This baseline implements configuration requirements from the following \n
+    \ sources: \n
+    \ \n
+    \ - Committee on National Security Systems Instruction No. 1253 (CNSSI 1253) \n
+    \ - NIST Controlled Unclassified Information (NIST 800-171) \n
+    \ - NIST 800-53 control selections for MODERATE impact systems (NIST 800-53) \n
+    \ - U.S. Government Configuration Baseline (USGCB) \n
+    \ - NIAP Protection Profile for General Purpose Operating Systems v4.0 (OSPP v4.0) \n
+    \ - DISA Operating System Security Requirements Guide (OS SRG) \n
+    \ \n
+    \ For any differing configuration requirements, e.g. password lengths, the stricter \n
+    \ security setting was chosen. Security Requirement Traceability Guides (RTMs) and \n
+    \ sample System Security Configuration Guides are provided via the \n
+    \ scap-security-guide-docs package. \n
+    \ \n
+    \ This profile reflects U.S. Government consensus content and is developed through \n
+    \ the OpenSCAP/SCAP Security Guide initiative, championed by the National \n
+    \ Security Agency. Except for differences in formatting to accommodate \n
+    \ publishing processes, this profile mirrors OpenSCAP/SCAP Security Guide \n
+    \ content as minor divergences, such as bugfixes, work through the \n 
+    \ consensus and release processes."
 
 selections:
     - installed_OS_is_certified
