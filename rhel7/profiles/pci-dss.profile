@@ -2,7 +2,8 @@ documentation_complete: true
 
 title: 'PCI-DSS v3 Control Baseline for Red Hat Enterprise Linux 7'
 
-description: 'This is a *draft* profile for PCI-DSS v3.'
+description: 'Ensures PCI-DSS v3 related security configuration settings \n
+     are applied.'
 
 selections:
     - var_password_pam_unix_remember=4
