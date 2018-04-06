@@ -71,7 +71,7 @@ class FileLinker(object):
         if len(fnames) > 1:
             msg = ("referencing more than one file per check system "
                    "is not yet supported by this script.")
-            raise RuntimeError(msg)
+            raise ssgcommon.SSGError(msg)
         return fnames.pop() if fnames else None
 
     def save_linked_tree(self):
@@ -105,7 +105,7 @@ class FileLinker(object):
             checkexport.set("export-name", newexportname)
 
 
-class OvalFileLinker(FileLinker):
+class OVALFileLinker(FileLinker):
     CHECK_SYSTEM = oval_cs
     CHECK_NAMESPACE = oval_ns
 
@@ -120,8 +120,8 @@ class OvalFileLinker(FileLinker):
             # Verify if CCE identifiers present in the XCCDF follow the required form
             # (either CCE-XXXX-X, or CCE-XXXXX-X). Drop from XCCDF those who don't follow it
             verify_correct_form_of_referenced_cce_identifiers(self.xccdftree)
-        except Exception as exc:
-            raise RuntimeError(
+        except ssgcommon.SSGError as exc:
+            raise ssgcommon.SSGError(
                 "Error processing {0}: {1}"
                 .format(self.fname, str(exc)))
         self.tree = self.translator.translate(self.tree, store_defname=True)
@@ -164,7 +164,7 @@ class OvalFileLinker(FileLinker):
 
             ovaldesc = rule.find(".//{%s}description" % self.CHECK_NAMESPACE)
             assert ovaldesc is not None, \
-                "Oval rule '{0}' doesn't have a description, which is mandatory".format(ovalid)
+                "OVAL rule '{0}' doesn't have a description, which is mandatory".format(ovalid)
 
             if ovalid not in idmappingdict:
                 print("OVAL ID '{0}' has not XCCDF rule ID <ident> CCE set"
@@ -172,9 +172,9 @@ class OvalFileLinker(FileLinker):
                 continue
 
             xccdfcceid = idmappingdict[ovalid]
-            if not cce_is_valid(xccdfcceid):
+            if not ssgcommon.cce_is_valid(xccdfcceid):
                 msg = "The CCE ID {0} is not in valid form.".format(xccdfcceid)
-                raise RuntimeError(msg)
+                raise ssgcommon.SSGError(msg)
 
             # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
             # after <description> element of specific OVAL check
@@ -184,7 +184,7 @@ class OvalFileLinker(FileLinker):
             # Sanity check if appending succeeded
             if ccerefelem.getprevious() is not ovaldesc:
                 msg = "Failed to add CCE ID to {0}.".format(ovalid)
-                raise RuntimeError(msg)
+                raise ssgcommon.SSGError(msg)
 
     def _ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
             self, indexed_oval_defs):
@@ -218,7 +218,7 @@ class OvalFileLinker(FileLinker):
                 rule.remove(check)
 
 
-class OcilFileLinker(FileLinker):
+class OCILFileLinker(FileLinker):
     CHECK_SYSTEM = ssgcommon.ocil_cs
     CHECK_NAMESPACE = ssgcommon.ocil_namespace
 
@@ -266,7 +266,7 @@ def create_xccdf_id_to_cce_id_mapping(xccdftree):
     return xccdftocce_idmapping
 
 
-def definition_extends_nonexisting_checks(definition, indexed_oval_defs):
+def get_nonexisting_check_definition_extends(definition, indexed_oval_defs):
     # TODO: handle multiple levels of referrals.
     # OVAL checks that go beyond one level of extend_definition won't be properly identified
     for extdefinition in definition.findall(".//{%s}extend_definition" % oval_ns):
@@ -278,12 +278,8 @@ def definition_extends_nonexisting_checks(definition, indexed_oval_defs):
 
         if referreddefinition is None:
             # There is no oval satisfying the extend_definition referal
-            print("WARNING: OVAL definition '{0}' extends non-existing '{1}', "
-                  "removing it from OVAL definitions."
-                  .format(definition.get("id"), extdefinitionref),
-                  file=sys.stderr)
-            return True
-    return False
+            return extdefinitionref
+    return None
 
 
 def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
@@ -292,7 +288,12 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
     definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
     defstoremove = set()
     for definition in definitions:
-        if definition_extends_nonexisting_checks(definition, indexed_oval_defs):
+        nonexisting_ref = get_nonexisting_check_definition_extends(definition, indexed_oval_defs)
+        if nonexisting_ref is not None:
+            print("WARNING: OVAL definition '{0}' extends non-existing '{1}', "
+                  "removing it from OVAL definitions."
+                  .format(definition.get("id"), nonexisting_ref),
+                  file=sys.stderr)
             defstoremove.add(definition)
 
     for definition in defstoremove:
@@ -300,24 +301,28 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
 
 
 def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, ovaltree):
-    # Verify if <xccdf:Value> 'type' to corresponding OVAL variable 'datatype' export matching constraint:
-    #
-    # http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
-    #
-    # is met. Also correct the 'type' attribute of those <xccdf:Value> elements where necessary in
-    # order the produced content to meet this constraint.
-    #
-    # To correct the constraint we use simpler approach - prefer to fix 'type' attribute of <xccdf:Value>
-    # rather than 'datatype' attribute of the corresponding OVAL variable since there might be additional
-    # OVAL variables, derived from the affected OVAL variable, and in that case we would need to fix the
-    # 'datatype' attribute in each of them.
+    """
+    Verify if <xccdf:Value> 'type' to corresponding OVAL variable
+    'datatype' export matching constraint:
 
+    http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
 
-    # Define the <xccdf:Value> 'type' to OVAL variable 'datatype' export matching constraints mapping
-    # as specified in Table 16 of XCCDF v1.2 standard:
-    # http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
-    #
-    indexed_xccdf_values = ssgcommon.map_elements_to_their_ids(xccdftree, ".//{%s}Value" % (xccdf_ns))
+    is met. Also correct the 'type' attribute of those <xccdf:Value> elements where necessary
+    in order the produced content to meet this constraint.
+
+    To correct the constraint we use simpler approach - prefer to fix
+    'type' attribute of <xccdf:Value> rather than 'datatype' attribute
+    of the corresponding OVAL variable since there might be additional
+    OVAL variables, derived from the affected OVAL variable, and in that
+    case we would need to fix the 'datatype' attribute in each of them.
+
+    Define the <xccdf:Value> 'type' to OVAL variable 'datatype' export matching
+    constraints mapping as specified in Table 16 of XCCDF v1.2 standard:
+
+    http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
+    """
+    indexed_xccdf_values = ssgcommon.map_elements_to_their_ids(
+        xccdftree, ".//{%s}Value" % (xccdf_ns))
 
     # Loop through all <external_variables> in the OVAL document
     ovalextvars = ovaltree.findall(".//{%s}external_variable" % oval_ns)
@@ -327,12 +332,11 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
     for ovalextvar in ovalextvars:
         # Verify the found external variable has both 'id' and 'datatype' set
         if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
-            msg = "Invalid OVAL <external_variable> found."
-            raise RuntimeError(msg)
-        # Obtain the 'id' and 'datatype attribute values
-        if 'id' in ovalextvar.attrib and 'datatype' in ovalextvar.attrib:
-            ovalvarid = ovalextvar.get('id')
-            ovalvartype = ovalextvar.get('datatype')
+            msg = "Invalid OVAL <external_variable> found - either without 'id' or 'datatype'."
+            raise ssgcommon.SSGError(msg)
+
+        ovalvarid = ovalextvar.get('id')
+        ovalvartype = ovalextvar.get('datatype')
 
         # Locate the corresponding <xccdf:Value> with the same ID in the XCCDF
         xccdfvar = indexed_xccdf_values.get(ovalvarid)
@@ -340,12 +344,14 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
         if xccdfvar is None:
             return
 
-        # Verify the found value has 'type' attribute set
-        if 'type' not in xccdfvar.attrib:
-            msg = "Invalid XCCDF variable found."
-            raise RuntimeError(msg)
-
         xccdfvartype = xccdfvar.get('type')
+        # Verify the found value has 'type' attribute set
+        if xccdfvartype is None:
+            msg = (
+                "Invalid XCCDF variable '{0}': Missing the 'type' attribute."
+                .format(xccdfvar.attrib("id")))
+            raise ssgcommon.SSGError(msg)
+
         # This is the required XCCDF 'type' for <xccdf:Value> derived
         # from OVAL variable 'datatype' and mapping above
         reqxccdftype = OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS[ovalvartype]
@@ -368,18 +374,13 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
 
 
 def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
-    # Correct CCE identifiers have the form of
-    # * either CCE-XXXX-X,
-    # * or CCE-XXXXX-X
-    # where each X is a digit, and the final X is a check-digit
-    # based on http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html Requirement A17
-    #
-    # But in SSG benchmarks the CCEs till unassigned have the form of e.g. "RHEL7-CCE-TBD"
-    # (or any other format possibly not matching the above two requirements)
-    #
-    # If this is the case for specific SSG product, drop such CCE identifiers from the XCCDF
-    # since they are in invalid format!
+    """
+    In SSG benchmarks, the CCEs till unassigned have the form of e.g. "RHEL7-CCE-TBD"
+    (or any other format possibly not matching the above two requirements)
 
+    If this is the case for specific SSG product, drop such CCE identifiers from the XCCDF
+    since they are in invalid format!
+    """
     xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
     for rule in xccdfrules:
         identcce = _find_identcce(rule)
@@ -389,7 +390,7 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
         cceid = identcce.text
         if not ssgcommon.cce_is_valid(cceid):
             msg = "The CCE ID {0} is not in valid form.".format(cceid)
-            raise RuntimeError(msg)
+            raise ssgcommon.SSGError(msg)
 
 
 def create_parser():
@@ -418,7 +419,7 @@ def assert_that_check_ids_match_rule_id(checks, xccdf_rule):
                 id_name = "OVAL ID"
             msg_lines.append(" {0:>14}: {1}".format(id_name, check_name))
             msg_lines.append(" {0:>14}: {1}".format("XCCDF Rule ID", xccdf_rule))
-            raise RuntimeError("\n".join(msg_lines))
+            raise ssgcommon.SSGError("\n".join(msg_lines))
 
 
 def check_that_oval_and_rule_id_match(xccdftree):
@@ -448,12 +449,12 @@ def main():
 
     translator = idtranslate.IDTranslator(idname)
 
-    oval_linker = OvalFileLinker(translator, xccdftree, checks)
+    oval_linker = OVALFileLinker(translator, xccdftree, checks)
     oval_linker.link()
     oval_linker.save_linked_tree()
     oval_linker.link_xccdf()
 
-    ocil_linker = OcilFileLinker(translator, xccdftree, checks)
+    ocil_linker = OCILFileLinker(translator, xccdftree, checks)
     ocil_linker.link()
     ocil_linker.save_linked_tree()
     ocil_linker.link_xccdf()
@@ -466,6 +467,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except RuntimeError as exc:
-        print(str(exc), file=sys.stderr)
-        sys.exit(1)
+    except ssgcommon.SSGError as exc:
+        raise

@@ -11,19 +11,6 @@ except ImportError:
 
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
-oval_header = """
-<oval_definitions
-    xmlns="http://oval.mitre.org/XMLSchema/oval-definitions-5"
-    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
-    xmlns:ind="http://oval.mitre.org/XMLSchema/oval-definitions-5#independent"
-    xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-    xmlns:linux="http://oval.mitre.org/XMLSchema/oval-definitions-5#linux"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5 oval-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#independent independent-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#unix unix-definitions-schema.xsd
-        http://oval.mitre.org/XMLSchema/oval-definitions-5#linux linux-definitions-schema.xsd">"""
 
 datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
 ocil_namespace = "http://scap.nist.gov/schema/ocil/2.0"
@@ -53,13 +40,33 @@ min_ansible_version = "2.3"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
 
+oval_header = (
+    """
+<oval_definitions
+    xmlns="{0}"
+    xmlns:oval="http://oval.mitre.org/XMLSchema/oval-common-5"
+    xmlns:ind="{0}#independent"
+    xmlns:unix="{0}#unix"
+    xmlns:linux="{0}#linux"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://oval.mitre.org/XMLSchema/oval-common-5 oval-common-schema.xsd
+        {0} oval-definitions-schema.xsd
+        {0}#independent independent-definitions-schema.xsd
+        {0}#unix unix-definitions-schema.xsd
+        {0}#linux linux-definitions-schema.xsd">"""
+    .format(oval_namespace))
+
 
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 
+class SSGError(RuntimeError):
+    pass
+
+
 def oval_generated_header(product_name, schema_version, ssg_version):
     return xml_version + oval_header + \
-    """
+        """
     <generator>
         <oval:product_name>%s from SCAP Security Guide</oval:product_name>
         <oval:product_version>ssg: %s, python: %s</oval:product_version>
@@ -124,7 +131,7 @@ def check_content_href_is_remote(check_content_ref):
     hrefattr = check_content_ref.get("href")
     if hrefattr is None:
         # @href attribute of <check-content-ref> is required by XCCDF standard
-        msg = "Invalid OVAL <check-content-ref> detected!"
+        msg = "Invalid OVAL <check-content-ref> detected - missing the 'href' attribute!"
         raise RuntimeError(msg)
 
     return hrefattr.startswith("http://") or hrefattr.startswith("https://")
@@ -144,6 +151,9 @@ def cce_is_valid(cceid):
     """
     IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
     where each X is a digit, and the final X is a check-digit)
+    based on Requirement A17:
+
+    http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html
     """
     match = re.search(r'CCE-\d{4,5}-\d', cceid)
     return match is not None
