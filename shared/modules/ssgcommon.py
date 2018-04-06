@@ -1,6 +1,13 @@
 import datetime
 import platform
 import subprocess
+import re
+
+
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
@@ -86,3 +93,74 @@ def subprocess_check_output(*popenargs, **kwargs):
 if hasattr(subprocess, "check_output"):
     # if available we just use the real function
     subprocess_check_output = subprocess.check_output
+
+
+def get_check_content_ref_if_exists_and_not_remote(check):
+    """
+    Given an OVAL check element, examine the ``xccdf_ns:check-content-ref``
+
+    If it exists and it isn't remote, pass it as the return value.
+    Otherwise, return None.
+
+    ..see-also:: check_content_href_is_remote
+    """
+    checkcontentref = check.find("./{%s}check-content-ref" % XCCDF11_NS)
+    if checkcontentref is None:
+        return None
+    if check_content_href_is_remote(checkcontentref):
+        return None
+    else:
+        return checkcontentref
+
+
+def check_content_href_is_remote(check_content_ref):
+    """
+    Given an OVAL check-content-ref element, examine the 'href' attribute.
+
+    If it starts with 'http://' or 'https://', return True, otherwise return False.
+
+    Raises RuntimeError if the ``href`` element doesn't exist.
+    """
+    hrefattr = check_content_ref.get("href")
+    if hrefattr is None:
+        # @href attribute of <check-content-ref> is required by XCCDF standard
+        msg = "Invalid OVAL <check-content-ref> detected!"
+        raise RuntimeError(msg)
+
+    return hrefattr.startswith("http://") or hrefattr.startswith("https://")
+
+
+def parse_xml_file(filename):
+    """
+    Given a filename, return the corresponding ElementTree
+    """
+    with open(filename, 'r') as xml_file:
+        filestring = xml_file.read()
+        tree = ElementTree.fromstring(filestring)
+    return tree
+
+
+def cce_is_valid(cceid):
+    """
+    IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
+    where each X is a digit, and the final X is a check-digit)
+    """
+    match = re.search(r'CCE-\d{4,5}-\d', cceid)
+    return match is not None
+
+
+def map_elements_to_their_ids(tree, xpath_expr):
+    """
+    Given an ElementTree and an XPath expression,
+    iterate through matching elements and create 1:1 id->element mapping.
+
+    Raises AssertionError if a matching element doesn't have the ``id`` attribute.
+
+    Returns mapping as a dictionary
+    """
+    aggregated = {}
+    for element in tree.findall(xpath_expr):
+        element_id = element.get("id")
+        assert element_id is not None
+        aggregated[element_id] = element
+    return aggregated
