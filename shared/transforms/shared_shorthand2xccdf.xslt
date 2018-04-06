@@ -68,117 +68,27 @@
               <xsl:value-of select="$defaultseverity" />
             </xsl:attribute>
           </xsl:if>
-          <xsl:choose>
-            <xsl:when test="contains(title/@prodtype, $prod_type)">
-              <xsl:apply-templates select="title[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="title/@prodtype = 'all'">
-              <xsl:apply-templates select="title[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="title[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(description/@prodtype, $prod_type)">
-              <xsl:apply-templates select="description[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="description/@prodtype = 'all'">
-              <xsl:apply-templates select="description[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="description[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(warning/@prodtype, $prod_type)">
-              <xsl:apply-templates select="warning[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="warning/@prodtype = 'all'">
-              <xsl:apply-templates select="warning[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="warning[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(ref/@prodtype, $prod_type)">
-              <xsl:apply-templates select="ref[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="ref/@prodtype = 'all'">
-              <xsl:apply-templates select="ref[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="ref[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(rationale/@prodtype, $prod_type)">
-              <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="rationale/@prodtype = 'all'">
-              <xsl:apply-templates select="rationale[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="rationale[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(requires/@prodtype, $prod_type)">
-              <xsl:apply-templates select="requires[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="requires/@prodtype = 'all'">
-              <xsl:apply-templates select="requires[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="requires[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(conflicts/@prodtype, $prod_type)">
-              <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="conflicts/@prodtype = 'all'">
-              <xsl:apply-templates select="conflicts[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="conflicts[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(platform/@prodtype, $prod_type)">
-              <xsl:apply-templates select="platform[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="platform/@prodtype = 'all'">
-              <xsl:apply-templates select="platform[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="platform[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(ident/@prodtype, $prod_type)">
-              <xsl:apply-templates select="ident[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="ident/@prodtype = 'all'">
-              <xsl:apply-templates select="ident[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="ident[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:apply-templates select="title[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="title[not(@prodtype)]"/>
+          <xsl:apply-templates select="description[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="description[not(@prodtype)]"/>
+          <xsl:apply-templates select="warning[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="warning[not(@prodtype)]"/>
+          <xsl:apply-templates select="ref[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="ref[not(@prodtype)]"/>
+          <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="rationale[not(@prodtype)]"/>
+          <xsl:apply-templates select="requires[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="requires[not(@prodtype)]"/>
+          <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="conflicts[not(@prodtype)]"/>
+          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="platform[not(@prodtype)]"/>
+          <xsl:apply-templates select="ident[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="ident[not(@prodtype)]"/>
           <!-- order oval (shorthand tag) first, to indicate to tools to prefer its automated checks -->
-          <xsl:choose>
-            <xsl:when test="contains(oval/@prodtype, $prod_type)">
-              <xsl:apply-templates select="oval[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="oval/@prodtype = 'all'">
-              <xsl:apply-templates select="oval[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="oval[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:apply-templates select="oval[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="oval[not(@prodtype)]"/>
           <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::ident|self::oval|self::prodtype)]"/>
         </Rule>
       </xsl:when>
@@ -217,94 +127,22 @@
       <xsl:when test="contains(@prodtype, $prod_type) or @prodtype = 'all'">
         <Group>
           <xsl:apply-templates select="@*" />
-          <xsl:choose>
-            <xsl:when test="contains(title/@prodtype, $prod_type)">
-              <xsl:apply-templates select="title[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="title/@prodtype = 'all'">
-              <xsl:apply-templates select="title[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="title[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-           <xsl:choose>
-            <xsl:when test="contains(description/@prodtype, $prod_type)">
-              <xsl:apply-templates select="description[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="description/@prodtype = 'all'">
-              <xsl:apply-templates select="description[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="description[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-           <xsl:choose>
-            <xsl:when test="contains(warning/@prodtype, $prod_type)">
-              <xsl:apply-templates select="warning[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="warning/@prodtype = 'all'">
-              <xsl:apply-templates select="warning[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="warning[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-           <xsl:choose>
-            <xsl:when test="contains(ref/@prodtype, $prod_type)">
-              <xsl:apply-templates select="ref[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="ref/@prodtype = 'all'">
-              <xsl:apply-templates select="ref[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="ref[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(rationale/@prodtype, $prod_type)">
-              <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="rationale/@prodtype = 'all'">
-              <xsl:apply-templates select="rationale[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="rationale[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(requires/@prodtype, $prod_type)">
-              <xsl:apply-templates select="requires[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="requires/@prodtype = 'all'">
-              <xsl:apply-templates select="requires[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="requires[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(conflicts/@prodtype, $prod_type)">
-              <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="conflicts/@prodtype = 'all'">
-              <xsl:apply-templates select="conflicts[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="conflicts[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
-          <xsl:choose>
-            <xsl:when test="contains(platform/@prodtype, $prod_type)">
-              <xsl:apply-templates select="platform[contains(@prodtype, $prod_type)]"/>
-            </xsl:when>
-            <xsl:when test="platform/@prodtype = 'all'">
-              <xsl:apply-templates select="platform[@prodtype = 'all']"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:apply-templates select="platform[not(@prodtype)]"/>
-            </xsl:otherwise>
-          </xsl:choose>
+          <xsl:apply-templates select="title[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="title[not(@prodtype)]"/>
+          <xsl:apply-templates select="description[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="description[not(@prodtype)]"/>
+          <xsl:apply-templates select="warning[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="warning[not(@prodtype)]"/>
+          <xsl:apply-templates select="ref[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="ref[not(@prodtype)]"/>
+          <xsl:apply-templates select="rationale[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="rationale[not(@prodtype)]"/>
+          <xsl:apply-templates select="requires[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="requires[not(@prodtype)]"/>
+          <xsl:apply-templates select="conflicts[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="conflicts[not(@prodtype)]"/>
+          <xsl:apply-templates select="platform[contains(@prodtype, $prod_type)]"/>
+          <xsl:apply-templates select="platform[not(@prodtype)]"/>
           <xsl:apply-templates select="node()[not(self::title|self::description|self::warning|self::ref|self::rationale|self::requires|self::conflicts|self::platform|self::prodtype)]"/>
         </Group>
       </xsl:when>
