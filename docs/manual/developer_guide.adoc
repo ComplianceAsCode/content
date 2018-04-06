@@ -917,3 +917,13 @@ Check out the various `ctest` options to perform specific testing, you can rerun
 Tests are added using the add_test cmake call. Each test should finish with a 0 exit-code in case everything went well and a non-zero if something failed. Output (both stdout and stderr) are collected by ctest and stored in logs or displayed. Make sure you never hard-code a path to any tool when doing testing (or anything really) in the cmake code. Always use configuration to find all the paths and then use the respective variable.
 
 See some of the existing testing code in `cmake/SSGCommon.cmake`.
+
+=== Contribution to infrastructure code
+
+The SSG build and templating system is mostly written in Python.
+
+==== Python
+
+* The common pattern is to dynamically add the `shared/modules` to the import path. The `ssgcommon` module has many useful utility functions and predefined constants. See scripts at `shared/utils` as an example of this practice.
+* Follow the link:https://www.python.org/dev/peps/pep-0008/[PEP8 standard].
+* Try to keep most of your lines length under 80 characters. Although the 99 character limit is within link:https://www.python.org/dev/peps/pep-0008/#maximum-line-length[PEP8 requirements], there is no reason for most lines to be that long.
