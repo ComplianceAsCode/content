@@ -167,7 +167,7 @@ ensure a system is in compliance or consistency with the CIS
 baseline.
 .RE
 
-.I cjis-rhel7-server
+.I cjis-server
 .RS
 The Criminal Justice Information Services Security Policy is a *draft* profile for CJIS v5.4. The scope of this profile is to configure Red Hat Enteprise Linux 7 against the U. S. Department of Justice, FBI CJIS Security Policy.
 .RE
@@ -186,7 +186,7 @@ This discussion is currently being held on open-scap-list@redhat.com and
 scap-security-guide@lists.fedorahosted.org.
 .RE
 
-.I ospp-rhel7
+.I ospp
 .RS
 This profile is developed in partnership with the
 U.S. National Institute of Science and Technology (NIST), U.S. Department of
@@ -213,7 +213,7 @@ The Standard System Security Profile contains rules to ensure standard security 
 Regardless of your system's workload all of these checks should pass.
 .RE
 
-.I stig-rhel7-disa
+.I disa-stig
 .RS
 The DISA STIG for Red Hat Enterprise Linux 7 Server V1R1.
 
@@ -275,9 +275,9 @@ Regardless of your system's workload all of these checks should pass.
 
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the
-ospp-rhel7 profile:
+ospp profile:
 
-oscap xccdf eval --profile ospp-rhel7 \
+oscap xccdf eval --profile ospp \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
 --oval-results \
