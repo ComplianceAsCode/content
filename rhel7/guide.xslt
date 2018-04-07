@@ -25,11 +25,11 @@
       <xsl:apply-templates select="document('profiles/C2S-docker.xml')" />
       <xsl:apply-templates select="document('profiles/rht-ccp.xml')" />
       <xsl:apply-templates select="document('profiles/common.xml')" />
-      <xsl:apply-templates select="document('profiles/stig-rhel7-disa.xml')" />
+      <xsl:apply-templates select="document('profiles/disa-stig.xml')" />
       <xsl:apply-templates select="document('profiles/stig-rhvh-upstream.xml')" />
-      <xsl:apply-templates select="document('profiles/ospp-rhel7.xml')" />
-      <xsl:apply-templates select="document('profiles/ospp42-draft-rhel7.xml')" />
-      <xsl:apply-templates select="document('profiles/cjis-rhel7-server.xml')" />
+      <xsl:apply-templates select="document('profiles/ospp.xml')" />
+      <xsl:apply-templates select="document('profiles/ospp42-draft.xml')" />
+      <xsl:apply-templates select="document('profiles/cjis-server.xml')" />
       <xsl:apply-templates select="document('profiles/docker-host.xml')" />
       <xsl:apply-templates select="document('profiles/nist-800-171-cui.xml')" />
       <xsl:apply-templates select="document('profiles/stig-ansible-tower-upstream.xml')" />
