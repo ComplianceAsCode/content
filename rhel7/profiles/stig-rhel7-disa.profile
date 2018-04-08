@@ -28,7 +28,7 @@ selections:
     - var_password_pam_dcredit=1
     - var_password_pam_minclass=4
     - var_accounts_minimum_age_login_defs=1
-    - var_password_pam_maxrepeat=2
+    - var_password_pam_maxrepeat=3
     - var_accounts_maximum_age_login_defs=60
     - var_account_disable_post_pw_expiration=0
     - var_removable_partition=dev_cdrom
@@ -180,7 +180,6 @@ selections:
     - audit_rules_execution_semanage
     - audit_rules_execution_setsebool
     - audit_rules_execution_chcon
-    - audit_rules_execution_restorecon
     - audit_rules_login_events_tallylog
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
