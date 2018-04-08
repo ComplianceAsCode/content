@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: 'STIG for Red Hat Virtualization Hypervisor'
 

@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: 'DISA STIG for Apache HTTP on Red Hat Enterprise Linux 7'
 
