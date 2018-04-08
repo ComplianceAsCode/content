@@ -47,14 +47,14 @@
   version="1" comment="kernel module usb-storage disabled">
     <ind:path>/etc/modprobe.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+usb-storage\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*(install\s+usb-storage\s+(/bin/false|/bin/true))|(blacklist\s+usb-storage)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="obj_kernmod_usb-storage_modprobeconf"
   version="1" comment="Check deprecated /etc/modprobe.conf for disablement of usb-storage">
     <ind:filepath>/etc/modprobe.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*install\s+usb-storage\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*(install\s+usb-storage\s+(/bin/false|/bin/true))|(blacklist\s+usb-storage)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -62,7 +62,7 @@
   version="1" comment="kernel module usb-storage disabled in /etc/modules-load.d">
     <ind:path>/etc/modules-load.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+usb-storage\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*(install\s+usb-storage\s+(/bin/false|/bin/true))|(blacklist\s+usb-storage)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -70,7 +70,7 @@
   version="1" comment="kernel module usb-storage disabled in /run/modules-load.d">
     <ind:path>/run/modules-load.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+usb-storage\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*(install\s+usb-storage\s+(/bin/false|/bin/true))|(blacklist\s+usb-storage)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -78,7 +78,7 @@
   version="1" comment="kernel module usb-storage disabled in /usr/lib/modules-load.d">
     <ind:path>/usr/lib/modules-load.d</ind:path>
     <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
-    <ind:pattern operation="pattern match">^\s*install\s+usb-storage\s+(/bin/false|/bin/true)$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*(install\s+usb-storage\s+(/bin/false|/bin/true))|(blacklist\s+usb-storage)\s*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
