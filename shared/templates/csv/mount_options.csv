@@ -4,6 +4,6 @@
 #     variable name (i.e. name beginning with var_, without the leading
 #     '$' to reference a variable, e.g. var_removable_partition,nodev)
 
-var_removable_partition,nodev
-var_removable_partition,nosuid
-var_removable_partition,noexec
+var_removable_partition,nodev,create_fstab_entry_if_needed
+var_removable_partition,nosuid,create_fstab_entry_if_needed
+var_removable_partition,noexec,create_fstab_entry_if_needed

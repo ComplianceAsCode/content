@@ -3,7 +3,12 @@
 
 . /usr/share/scap-security-guide/remediation_functions
 
-assert_mount_point_in_fstab %MOUNTPOINT% || exit 1
+include_mount_options_functions
+
+# test "$mount_has_to_exist" = 'yes'
+test "%MOUNT_HAS_TO_EXIST%" = 'yes' && assert_mount_point_in_fstab %MOUNTPOINT% \
+	|| { echo "Not remediating, because there is no record of %MOUNTPOINT% in /etc/fstab" >&2; exit 1; }
+
 ensure_mount_option_in_fstab %MOUNTPOINT% %MOUNTOPTION%
 
 mount -o remount %MOUNTPOINT%

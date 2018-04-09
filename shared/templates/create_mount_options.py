@@ -13,33 +13,39 @@ class MountOptionTarget(object):
         self.output_format_string = output_format_string
         self.generator = generator
 
-    def process(self, mount_point, mount_option, point_id, template_file):
+    def process(self, mount_point, mount_option, point_id, assert_mount_exists, template_file):
         raise NotImplementedError("You are supposed to use a derived class.")
 
-    def process_with_variable(self, mount_point, mount_option, point_id, template_file):
+    def process_with_variable(
+            self, mount_point, mount_option, point_id, assert_mount_exists, template_file):
         raise NotImplementedError("You are supposed to use a derived class.")
 
 
 class RemediationTarget(MountOptionTarget):
-    def process(self, mount_point, mount_option, point_id, template_file, stem=""):
+    def process(self, mount_point, mount_option, point_id, assert_mount_exists,
+                template_file, stem=""):
         if len(stem) == 0:
             stem = point_id + '_' + mount_option
+        mount_has_to_exist = "yes" if assert_mount_exists else "no"
         self.generator.file_from_template(
             template_file,
             {
-                "%MOUNTPOINT%":  mount_point,
+                "%MOUNT_HAS_TO_EXIST%": mount_has_to_exist,
+                "%MOUNTPOINT%": mount_point,
                 "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
             },
             self.output_format_string,
             stem
         )
 
-    def process_with_variable(self, mount_point, mount_option, point_id, template_file):
+    def process_with_variable(self, mount_point, mount_option, point_id, assert_mount_exists,
+                              template_file):
         # e.g. var_removable_partition -> removable_partitions
         point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
         template_file = "{0}_var".format(template_file)
         stem = "_{0}_{1}".format(mount_option, point_id)
-        return self.process(mount_point, mount_option, point_id, template_file, stem)
+        return self.process(mount_point, mount_option, point_id,
+                            assert_mount_exists, template_file, stem)
 
 
 class OvalTarget(MountOptionTarget):
@@ -47,13 +53,15 @@ class OvalTarget(MountOptionTarget):
         super(OvalTarget, self).__init__(
             generator, "./oval/mount_option{0}.xml")
 
-    def process_with_variable(self, mount_point, mount_option, point_id, template_file):
+    def process_with_variable(
+            self, mount_point, mount_option, point_id, assert_mount_exists, template_file):
         point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
         template_file = "{0}_{1}".format(template_file, point_id)
         stem = "_{0}_{1}".format(mount_option, point_id)
         return self.process(mount_point, mount_option, point_id, template_file, stem)
 
-    def process(self, mount_point, mount_option, point_id, template_file, stem=""):
+    def process(self, mount_point, mount_option, point_id, assert_mount_exists,
+                template_file, stem=""):
         if len(stem) == 0:
             stem = point_id + '_' + mount_option
         self.generator.file_from_template(
@@ -81,7 +89,12 @@ class MountOptionsGenerator(FilesGenerator):
         super(MountOptionsGenerator, self).__init__()
 
     def generate(self, target, path_info):
-        mount_point, mount_option = path_info
+        mount_point, mount_option = path_info[:2]
+        mount_has_to_exist = True
+        if len(path_info) > 2:
+            assert len(path_info) == 3
+            assert path_info[-1] == "create_fstab_entry_if_needed"
+            mount_has_to_exist = False
         if mount_point:
 
             processing_entity = self.targets.get(target)
@@ -92,13 +105,14 @@ class MountOptionsGenerator(FilesGenerator):
 
             uppercase_target_name = target.upper()
             template_file = "./template_{0}_mount_option".format(uppercase_target_name)
-            stem = ""
+
             if mount_point.startswith("var_"):
                 processing_entity.process_with_variable(
-                    mount_point, mount_option, point_id, template_file)
+                    mount_point, mount_option, point_id, mount_has_to_exist, template_file)
             else:
-                processing_entity.process(mount_point, mount_option, point_id, template_file, stem)
+                processing_entity.process(
+                    mount_point, mount_option, point_id, mount_has_to_exist, template_file)
 
     def csv_format(self):
         return("CSV should contains lines of the format: "
-               "mount_point,mount_option,[mount_option]+")
+               "<mount_point>,<mount_option>[,create_fstab_entry_if_needed])")

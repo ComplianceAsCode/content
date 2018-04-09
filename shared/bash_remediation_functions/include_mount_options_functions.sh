@@ -1,3 +1,7 @@
+function include_mount_options_functions {
+	:
+}
+
 # $1: mount point
 # $2: new mount point option
 function ensure_mount_option_in_fstab {
@@ -23,6 +27,7 @@ function assert_mount_point_in_fstab {
 		|| { echo "The mount point '$1' is not even in /etc/fstab, so we can't set up mount options" >&2; return 1; }
 }
 
+# $1: mount point
 function remove_defaults_from_fstab_if_overriden {
 	local _mount_point_match_regexp
 	_mount_point_match_regexp="$(get_mount_point_regexp "$1")"
