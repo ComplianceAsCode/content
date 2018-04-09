@@ -1,0 +1,21 @@
+/**
+ * Section (objects/_section.scss)
+ */
+
+/* ----- General ----- */
+.section {
+	padding: 3.75rem 0 (3.75rem - 1.25rem) 0;
+
+	@media (min-width: $screen-sm-min) {
+		padding: 6.25rem 0 (6.25rem - 1.25rem) 0;
+	}
+}
+
+/* ----- Variations ----- */
+.section--darker-theme-color-bg {
+	background-color: darken($color-theme-blue, 3%);
+}
+
+.section--grey {
+	background-color: $color-section-grey;
+}

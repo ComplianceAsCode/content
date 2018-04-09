@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0">
+<title>Configuration</title>
+
+	<meta name="description" content="Doks have a lot personalisation options. Here you can go through every single one available and set it properly.">
+
+
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,700,700i|Noto+Sans:400,400i,700,700i|Source+Code+Pro&amp;subset=latin-ext">
+<link rel="stylesheet" href="../doks-theme/assets/css/style.css">
+
+	</head>
+	<body class="" data-spy="scroll" data-target=".js-scrollspy">
+
+
+
+	<header class="site-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+
+						<a href="../index.html" class="site-header__logo">Doks</a>
+
+
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</header><!-- /.site-header -->
+
+
+		<div class="hero-subheader">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-7">
+						<div class="align-container" data-mh>
+							<div class="align-inner">
+
+									<h1 class="hero-subheader__title">Configuration</h1>
+
+
+									<p class="hero-subheader__desc">Doks have a lot personalisation options. Here you can go through every single one available and set it properly.</p>
+
+
+
+										<a href="../getting-started/index.html" class="btn btn--dark btn--rounded btn--w-icon btn--w-icon-left">
+											<i class="icon icon--arrow-left"></i>
+											Getting Started
+										</a>
+
+
+										<a href="../manage-content/index.html" class="btn btn--dark btn--rounded btn--w-icon">
+											<i class="icon icon--arrow-right"></i>
+											Manage Content
+										</a>
+
+
+							</div><!-- /.align-inner -->
+						</div><!-- /.align-container -->
+					</div><!-- /.col -->
+
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</div><!-- /.hero-subheader -->
+		<div class="section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-7">
+						<div class="content">
+							<h2 id="introduction">Introduction</h2>
+<p><code class="highlighter-rouge">_config.yml</code> stores configuration data. Many of these options can be specified from the command line executable but it’s easier to specify them here so you don’t have to remember them.</p>
+
+<div class="callout callout--warning">
+    <p><strong>Please stop and re-run <code>jekyll serve</code> command after you change configuration file!</strong> Master configuration file contains global configurations and variable definitions that are read once at execution time. Changes made to <code>config.yml</code> during automatic regeneration are not loaded until the next execution.</p>
+</div>
+
+<h2 id="relative-urls">Relative URLs</h2>
+<p>If you’re deploying to server where your site is not going to be in <code class="highlighter-rouge">root</code> directory, you should setup <code class="highlighter-rouge">baseurl</code> variable.</p>
+
+<p>For example, if your site is going to be stored on URL that looks like this <code class="highlighter-rouge">http://example.com/project</code>, you’ll have to update your <code class="highlighter-rouge">baseurl</code> variable and it should look like this:</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">baseurl</span><span class="pi">:</span> <span class="s">/project</span>
+</code></pre></div></div>
+
+<div class="callout callout--warning">
+    <p><strong>Build site with environment variable!</strong> When you run <code>jekyll serve</code>, your <code>baseurl</code> variable shouldn’t render at all in any pages.</p>
+    <p>We’ll set Jekyll to only render <code>baseurl</code> variable when its environment is set to production.</p>
+    <p>So then, how do you get the <code>baseurl</code> variable to only show up on a production environment? When building your Jekyll project with jekyll build, you’ll want to prefix it with <code>JEKYLL_ENV=production</code> so the complete command looks like this one: <code>JEKYLL_ENV=production jekyll build</code></p>
+</div>
+
+<h2 id="color-themes">Color themes</h2>
+<p>Doks supports few color themes:</p>
+<ul>
+  <li>blue (default)</li>
+  <li>green</li>
+  <li>purple</li>
+  <li>red</li>
+  <li>yellow</li>
+</ul>
+
+<p>You can update your <code class="highlighter-rouge">color_theme</code> variable in <code class="highlighter-rouge">_config.yml</code> to see changes.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">color_theme</span><span class="pi">:</span> <span class="s">green</span>
+</code></pre></div></div>
+
+<h2 id="header">Header</h2>
+<h3 id="logo-with-text">Logo with text</h3>
+<p>If you need logo as text, update <code class="highlighter-rouge">text</code> variable and leave <code class="highlighter-rouge">image</code> empty.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">header</span><span class="pi">:</span>
+        <span class="na">logo</span><span class="pi">:</span>
+            <span class="na">text</span><span class="pi">:</span> <span class="s">Project name</span>
+            <span class="na">image</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h3 id="logo-with-image">Logo with image</h3>
+<p>If you need logo as image, update <code class="highlighter-rouge">image</code> variable and set it to <code class="highlighter-rouge">true</code> and leave <code class="highlighter-rouge">text</code> empty.</p>
+
+<p>To set your custom logo image just upload it in place of <code class="highlighter-rouge">logo.png</code> here<br />
+<code class="highlighter-rouge">/doks-theme/assets/images/layout/logo.png</code>.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">header</span><span class="pi">:</span>
+        <span class="na">logo</span><span class="pi">:</span>
+            <span class="na">text</span><span class="pi">:</span>
+            <span class="na">image</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<div class="callout callout--info">
+    <p><strong>Recommended logo image size.</strong> Recommended logo image size is 400px x 178px. With this size you are sure you'll have retina ready logo image.</p>
+</div>
+
+<h3 id="navigation">Navigation</h3>
+<p>To add new items in main navigation you have to setup <code class="highlighter-rouge">nav</code> variable in <code class="highlighter-rouge">_config.yml</code>. Add as many items as you need.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">header</span><span class="pi">:</span>
+        <span class="na">nav</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">item_name</span><span class="pi">:</span> <span class="s">Item 1</span>
+              <span class="na">item_url</span><span class="pi">:</span> <span class="s">/example-url-1</span>
+            <span class="pi">-</span> <span class="na">item_name</span><span class="pi">:</span> <span class="s">Item 2</span>
+              <span class="na">item_url</span><span class="pi">:</span> <span class="s">/example-url-2</span>
+</code></pre></div></div>
+
+<h2 id="footer">Footer</h2>
+<h3 id="logo-with-text-1">Logo with text</h3>
+<p>If you need logo as text, update <code class="highlighter-rouge">text</code> variable and leave <code class="highlighter-rouge">image</code> empty.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">footer</span><span class="pi">:</span>
+        <span class="na">content</span><span class="pi">:</span>
+            <span class="na">logo</span><span class="pi">:</span>
+                <span class="na">text</span><span class="pi">:</span> <span class="s">Project name</span>
+                <span class="na">image</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<h3 id="logo-with-image-1">Logo with image</h3>
+<p>If you need logo as image, update <code class="highlighter-rouge">image</code> variable and set it to <code class="highlighter-rouge">true</code> and leave <code class="highlighter-rouge">text</code> empty.</p>
+
+<p>To set your custom logo image just upload it in place of <code class="highlighter-rouge">logo-footer.png</code> here <code class="highlighter-rouge">/doks-theme/assets/images/layout/logo-footer.png</code>.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">footer</span><span class="pi">:</span>
+        <span class="na">content</span><span class="pi">:</span>
+            <span class="na">logo</span><span class="pi">:</span>
+                <span class="na">text</span><span class="pi">:</span>
+                <span class="na">image</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<div class="callout callout--info">
+    <p><strong>Recommended logo image size.</strong> Recommended logo image size is 400px x 178px. With this size you are sure you'll have retina ready logo image.</p>
+</div>
+
+<h3 id="copyright">Copyright</h3>
+<p>If you need to setup new footer copyright text, update <code class="highlighter-rouge">copyright</code> variable in your <code class="highlighter-rouge">_config.yml</code> file.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">footer</span><span class="pi">:</span>
+        <span class="na">content</span><span class="pi">:</span>
+            <span class="na">copyright</span><span class="pi">:</span> <span class="s">Copyright &amp;copy; 2017. - Project name &lt;br&gt;All rights reserved.</span>
+</code></pre></div></div>
+
+<h3 id="social-list">Social list</h3>
+<p>To properly setup social list update <code class="highlighter-rouge">social_list</code> variable in <code class="highlighter-rouge">_config.yml</code>. Add as many items as you need.</p>
+
+<p>At the bottom of the “Getting Started” section you can find list of icons you can use in this list. Update <code class="highlighter-rouge">network_name</code> variable to add proper icon.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">footer</span><span class="pi">:</span>
+        <span class="na">social_list</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">network_name</span><span class="pi">:</span> <span class="s">facebook</span>
+              <span class="na">profile_url</span><span class="pi">:</span> <span class="s">http://example.com</span>
+            <span class="pi">-</span> <span class="na">network_name</span><span class="pi">:</span> <span class="s">twitter</span>
+              <span class="na">profile_url</span><span class="pi">:</span> <span class="s">http://example.com</span>
+            <span class="pi">-</span> <span class="na">network_name</span><span class="pi">:</span> <span class="s">instagram</span>
+              <span class="na">profile_url</span><span class="pi">:</span> <span class="s">http://example.com</span>
+            <span class="pi">-</span> <span class="na">network_name</span><span class="pi">:</span> <span class="s">youtube</span>
+              <span class="na">profile_url</span><span class="pi">:</span> <span class="s">http://example.com</span>
+</code></pre></div></div>
+
+<h2 id="google-analytics">Google Analytics</h2>
+<p>To activate Google Analytics you have to update <code class="highlighter-rouge">_config.yml</code> with GA tracking code. You can do that with <code class="highlighter-rouge">tracking_code</code> variable.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">google_analytics</span><span class="pi">:</span>
+        <span class="na">tracking_code</span><span class="pi">:</span> <span class="s">UA-XXXXXX-X</span>
+</code></pre></div></div>
+
+<div class="callout callout--warning">
+    <p><strong>Build site with environment variable!</strong> When you run <code>jekyll serve</code>, your Google Analytics tracking code shouldn’t render at all in any pages.</p><p>The reason for this is if you visit your Google Analytics account, you’ll see a bunch of visits from <code>localhost:4000</code> or <code>127.0.0.1:4000</code> depending on the type of operating system you’re developing your Jekyll project.</p>
+    <p>This can potentially muddy up your analytics, so to mitigate this problem, we’ll set Jekyll to only render Google Analytics when its environment is set to production.</p>
+    <p>So then, how do you get the analytics to only show up on a production environment? When building your Jekyll project with jekyll build, you’ll want to prefix it with <code>JEKYLL_ENV=production</code> so the complete command looks like this one: <code>JEKYLL_ENV=production jekyll build</code></p>
+</div>
+
+<h2 id="disqus-comments">Disqus comments</h2>
+<p>To activate Disqus commenting system you have to update <code class="highlighter-rouge">_config.yml</code> with Disqus forum shortname. You can do that with <code class="highlighter-rouge">disqus_forum_shortname</code> variable.</p>
+
+<p>Comments are available only on <code class="highlighter-rouge">default</code> page layout and you have to enable them on new pages with <code class="highlighter-rouge">comments: true</code> variable.</p>
+
+<div class="example"></div>
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">doks</span><span class="pi">:</span>
+    <span class="na">comments</span><span class="pi">:</span>
+        <span class="na">disqus_forum_shortname</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<div class="callout callout--warning">
+    <p><strong>Build site with environment variable!</strong> When you run <code>jekyll serve</code>, your Disqus commenting system shouldn’t render at all in any pages.</p>
+    <p>We’ll set Jekyll to only render Disqus commenting system when its environment is set to production.</p>
+    <p>So then, how do you get the Disqus commenting system to only show up on a production environment? When building your Jekyll project with jekyll build, you’ll want to prefix it with <code>JEKYLL_ENV=production</code> so the complete command looks like this one: <code>JEKYLL_ENV=production jekyll build</code></p>
+</div>
+
+<h2 id="favicon">Favicon</h2>
+<p>To change favicon just replace <code class="highlighter-rouge">/favicon.ico</code> with your new icon. Make sure it is in <code class="highlighter-rouge">.ico</code> format. Dimensions should be 16px x 16px.</p>
+
+<div class="callout callout--info">
+    <p><strong>Favicon <code>.psd</code> file included!</strong> We've included <code>.psd</code> file with pre-made favicon in <code>/designs</code> folder of your theme.</p>
+</div>
+
+						</div><!-- /.content -->
+					</div><!-- /.col -->
+					<div class="col-md-4 col-md-offset-1">
+						<div class="sections-list-wrapper">
+							<div class="sections-list js-sections js-affix js-scrollspy hidden-xs hidden-sm"></div><!-- /.sections-list -->
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</div><!-- /.section -->
+
+		<div class="js-footer-area">
+
+				<nav class="page-nav">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12">
+
+									<a href="../getting-started/index.html" class="page-nav__item page-nav__item--prev">
+										<i class="icon icon--arrow-left"></i>
+										Getting Started
+									</a><!-- /.page-nav__item -->
+
+
+									<a href="../manage-content/index.html" class="page-nav__item page-nav__item--next">
+										Manage Content
+										<i class="icon icon--arrow-right"></i>
+									</a><!-- /.page-nav__item -->
+
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.container -->
+				</nav><!-- /.page-nav -->
+
+
+				<div class="micro-nav">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<a href="../index.html" class="micro-nav__back">
+					<i class="icon icon--arrow-left"></i>
+					Back to homepage
+				</a><!-- /.micro-nav__back -->
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container -->
+</div><!-- /.micro-nav -->
+
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+
+						<a href="../index.html" class="site-footer__logo">Doks</a>
+
+
+						<hr>
+						<p class="site-footer__copyright">Copyright &copy; 2017. - Themejack <br>All rights reserved.</p>
+
+				</div><!-- /.col -->
+
+					<div class="col-sm-6 align-right">
+						<ul class="social-list">
+
+								<li>
+									<a href="https://twitter.com/themejack" target="_blank" class="social-list__item social-list__item--twitter">
+										<i class="icon icon--twitter"></i>
+									</a>
+								</li>
+
+								<li>
+									<a href="https://github.com/themejack" target="_blank" class="social-list__item social-list__item--github">
+										<i class="icon icon--github"></i>
+									</a>
+								</li>
+
+						</ul><!-- /.social-list -->
+					</div><!-- /.col -->
+
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</footer><!-- /.site-footer -->
+
+
+<script src="../doks-theme/assets/js/vendor/jquery.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/vendor/bootstrap/affix.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/vendor/matchHeight.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/scripts.min.js"></script>
+
+
+
+
+		</div><!-- /.js-footer-area -->
+	</body>
+</html>
