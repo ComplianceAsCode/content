@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Record Any Attempts to Run <tt>setfiles</tt>'
+
+description: |-
+    At a minimum, the audit system should collect any execution attempt
+    of the <tt>setfiles</tt> command for all users and root. If the <tt>auditd</tt>
+    daemon is configured to use the <tt>augenrules</tt> program to read audit rules
+    during daemon startup (the default), add the following lines to a file with suffix
+    <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add the following lines to
+    <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have compromised system accounts,
+    is a serious and ongoing concern and can have significant adverse impacts on organizations.
+    Auditing the use of privileged functions is one way to detect such misuse and identify
+    the risk from insider and advanced persistent threast.
+    <br /><br />
+    Privileged programs are subject to escalation-of-privilege attacks,
+    which attempt to subvert their normal role of providing some necessary but
+    limited capability. As such, motivation exists to monitor these programs for
+    unusual activity.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: RHEL7-CCE-TBD
+
+references:
+    disa: 172,2884
+    srg: SRG-OS-000392-GPOS-00172,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209
+    stigid@rhel7: "030590"
+
+ocil: |-
+    To verify that execution of the command is being audited, run the following command:
+    <pre>$ sudo grep "path=/usr/sbin/setfiles" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+    The output should return something similar to:
+    <pre>-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>

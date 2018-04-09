@@ -180,6 +180,7 @@ selections:
     - audit_rules_execution_semanage
     - audit_rules_execution_setsebool
     - audit_rules_execution_chcon
+    - audit_rules_execution_setfiles
     - audit_rules_login_events_tallylog
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
@@ -201,7 +202,9 @@ selections:
     - audit_rules_privileged_commands_ssh_keysign
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_kernel_module_loading_create
     - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_insmod
     - audit_rules_kernel_module_loading_rmmod
