@@ -217,6 +217,8 @@ selections:
     - audit_rules_file_deletion_events_unlinkat
     - rsyslog_remote_loghost
     - rsyslog_nolisten
+    - install_mcafee_antivirus
+    - mcafee_antivirus_definitions_updated
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
     - sshd_use_approved_ciphers
