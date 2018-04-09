@@ -11,7 +11,8 @@ description: |-
     To implement a weekly execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
     <pre>05 4 * * 0 root /usr/sbin/aide --check</pre>
     AIDE can be executed periodically through other means; this is merely one example.
-    The usage of cron's <tt>@daily</tt> and <tt>@weekly</tt> time codes is acceptable..
+    The usage of cron's special time codes, such as  <tt>@daily</tt> and
+    <tt>@weekly</tt> is acceptable.
 
 rationale: |-
     By default, AIDE does not install itself for periodic execution. Periodically
