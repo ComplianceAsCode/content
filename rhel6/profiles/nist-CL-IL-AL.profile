@@ -6,7 +6,7 @@ description: "This profile follows the Committee on National \nSecurity Systems 
     \ and \nControl Selection for National Security Systems\" on security controls to meet\nlow confidentiality, low integrity,\
     \ and low assurance.\""
 
-extends: common
+extends: standard
 
 selections:
     - var_account_disable_post_pw_expiration=40

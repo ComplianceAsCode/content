@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Standard System Security Profile'
+title: 'Standard System Security Profile for Oracle Linux 7'
 
 description: |-
     This profile contains rules to ensure standard security baseline
