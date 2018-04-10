@@ -1,0 +1,49 @@
+---
+documentation_complete: true
+title: Ensure that No Dangerous Directories Exist in Root's Path
+primary_id: root_path_no_dot
+check_type: compliance
+family: unix
+version: 1
+platforms:
+  - Red Hat Enterprise Linux 7
+  - multi_platform_fedora
+
+description: |
+  The environment variable PATH should be set correctly for the root user.
+
+operation:
+  - and: begins_colon_period, begins_doublecolon
+
+test:
+  - id: begins_colon_period
+  - type: environmentvariable
+  - comment:
+  - check: none satisfy
+
+  state:
+    - comment:
+    - regex: ^[:\.]
+    - operation: match
+
+object:
+    - type: environmentvariable
+    - id: root_path_no_dot
+    - map_to: begins_colon_period, begins_doublecolon
+    - comment:
+    - pid: nil
+      type: int
+    - name: PATH
+
+test:
+  - id: begins_doublecolon
+  - type: environmentvariable
+  - comment:
+  - check: none satisfy
+
+  state:
+    - type: environmentvariable
+    - comment:
+    - regex: ::
+    - operation: match
+
