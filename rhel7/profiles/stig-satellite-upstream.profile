@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: 'Upstream DISA STIG for Red Hat Satellite'
 
