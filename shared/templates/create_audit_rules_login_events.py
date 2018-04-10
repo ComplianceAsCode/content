@@ -20,7 +20,7 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
                 "./template_OVAL_audit_rules_login_events",
                 {
                     "%NAME%":	name,
-                    "%PATH%":	path.replace("/", "\\/")
+                    "%PATH%":	re.sub('/$', '/?', path).replace("/", "\\/")
                 },
                 "./oval/audit_rules_login_events_{0}.xml", name
             )
