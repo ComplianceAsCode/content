@@ -12,7 +12,7 @@ description: |-
     Server,  RHV-H, RHEL for HPC, RHEL Workstation, and Red Hat
     Storage deployments.
 
-extends: common
+extends: standard
 
 selections:
     - encrypt_partitions

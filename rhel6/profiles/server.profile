@@ -6,7 +6,7 @@ description: |-
     This profile is for Red Hat Enterprise Linux 6
     acting as a server.
 
-extends: common
+extends: standard
 
 selections:
     - wireless_disable_interfaces

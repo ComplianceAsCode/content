@@ -4,7 +4,7 @@ title: 'Desktop Baseline'
 
 description: "This profile is for a desktop installation of \nRed Hat Enterprise Linux 6."
 
-extends: common
+extends: standard
 
 selections:
     - gconf_gdm_enable_warning_gui_banner
