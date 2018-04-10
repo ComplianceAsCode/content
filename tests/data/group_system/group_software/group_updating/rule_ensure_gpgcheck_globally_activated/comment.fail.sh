@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
+# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 if grep -q "^gpgcheck" /etc/yum.conf; then
 	sed -i "s/^gpgcheck.*/# gpgcheck=1/" /etc/yum.conf

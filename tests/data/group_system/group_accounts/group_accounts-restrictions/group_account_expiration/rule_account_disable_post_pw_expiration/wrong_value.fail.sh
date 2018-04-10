@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
+# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 if grep -q "^INACTIVE" /etc/default/useradd; then
 	sed -i "s/^INACTIVE.*/INACTIVE=90/" /etc/default/useradd

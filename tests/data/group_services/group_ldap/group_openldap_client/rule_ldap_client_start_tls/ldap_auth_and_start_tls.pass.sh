@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
+# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 AUTHCONFIG_REGEX="^[[:space:]]*USELDAPAUTH=yes[[:space:]]*$"
 grep -q "$AUTHCONFIG_REGEX" /etc/sysconfig/authconfig && \
