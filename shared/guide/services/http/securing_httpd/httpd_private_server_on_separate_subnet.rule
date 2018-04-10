@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'A private web server must be located on a separate controlled access subnet'
+
+description: |-
+    Private web servers, which host sites that serve controlled access data,
+    must be protected from outside threats in addition to insider threats.
+
+    Isolate the private web server from the public DMZ and separate it from the
+    internal general population LAN.
+
+rationale: |-
+    Insider threat may be accidental or intentional but, in either case, can
+    cause a disruption in service of the web server. To protect the private
+    web server from these threats, it must be located on a separate controlled
+    access subnet and must not be part of the public DMZ that houses the public
+    web servers. it also cannot be located inside the enclave as part of the
+    local general population LAN.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: "WA070"
+
+ocil_clause: 'the private web server is not on a separate controlled access subnet'
+
+ocil: |-
+    Verify the site's network diagram and visually check the web server, to
+    ensure that the private web server is located on a separate controlled
+    access subnet and is not part of the public DMZ that houses the public
+    web servers.
+
+    In addition, the private web server needs to be isolated via a controlled
+    access mechanism from the local general population lan.

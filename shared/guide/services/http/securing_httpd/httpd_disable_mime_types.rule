@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'MIME types for csh or sh shell programs must be disabled'
+
+description: |-
+    Users must not be allowed to access the shell programs. 
+
+rationale: |-
+    Shell programs might execute shell escapes and could then perform
+    unauthorized activities that could damage the security posture of the web
+    server. A shell is a program that serves as the basic interface between the
+    user and the operating system. In this regard, there are shells that are
+    security risks in the context of a web server and shells that are
+    unauthorized.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: "WG370"
+
+ocil_clause: 'either of these exist and they configure csh, or any other shell as a viewer for documents'
+
+ocil: |-
+    Enter the following commands:
+
+    <pre><tt>grep Action /etc/httpd/conf/httpd.conf</tt>
+    <tt>grep AddHandler /etc/httpd/conf/httpd.conf</tt></pre>
