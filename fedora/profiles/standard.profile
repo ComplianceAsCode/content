@@ -13,7 +13,6 @@ selections:
     - ensure_gpgcheck_never_disabled
     - rpm_verify_permissions
     - rpm_verify_hashes
-    - no_empty_passwords
     - accounts_root_path_dirs_no_write
     - file_permissions_library_dirs
     - file_ownership_library_dirs
@@ -37,7 +36,6 @@ selections:
     - var_accounts_password_warn_age_login_defs=7
     - accounts_password_warn_age_login_defs
     - account_unique_name
-    - accounts_root_path_dirs_no_write
     - service_firewalld_enabled
     - set_firewalld_default_zone
     - bootloader_audit_argument
