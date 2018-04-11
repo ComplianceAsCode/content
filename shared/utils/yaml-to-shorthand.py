@@ -16,7 +16,17 @@ except ImportError:
     import cElementTree as ET
 
 
+def bool_constructor(self, node):
+    value = self.construct_yaml_bool(node)
+    if value == False:
+        return 'false'
+    else:
+        return 'true'
+
 def open_yaml(yaml_file):
+    # Don't follow python bool case
+    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+
     with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = yaml.load(stream)
         if "documentation_complete" in yaml_contents and \
