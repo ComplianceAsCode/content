@@ -20,7 +20,7 @@ def open_yaml(yaml_file):
     with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = yaml.load(stream)
         if "documentation_complete" in yaml_contents and \
-                yaml_contents["documentation_complete"] == "false":
+                yaml_contents["documentation_complete"] is False:
             return None
 
         return yaml_contents
@@ -242,7 +242,8 @@ class Benchmark(object):
         version.text = self.version
 
         for profile in self.profiles:
-            root.append(profile.to_xml_element())
+            if profile is not None:
+                root.append(profile.to_xml_element())
 
         for v in self.values.values():
             root.append(v.to_xml_element())
