@@ -36,3 +36,14 @@ function remove_defaults_from_fstab_if_overriden {
 		sed -i "s|\(${_mount_point_match_regexp}.*\)defaults,|\1|" /etc/fstab
 	fi
 }
+
+# $1: mount point
+function ensure_partition_is_mounted {
+	local _mount_point="$1"
+	mkdir -p "$_mount_point" || return 1
+	if mountpoint -q "$_mount_point"; then
+		mount -o remount --target "$_mount_point"
+	else
+		mount --target "$_mount_point"
+	fi
+}

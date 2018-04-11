@@ -12,6 +12,6 @@ include_mount_options_functions
 test "%MOUNT_HAS_TO_EXIST%" = 'yes' && assert_mount_point_in_fstab %MOUNTPOINT% \
 	|| { echo "Not remediating, because there is no record of %MOUNTPOINT% in /etc/fstab" >&2; exit 1; }
 
-ensure_mount_option_in_fstab "$%MOUNTPOINT%" %MOUNTOPTION%
+ensure_mount_option_in_fstab "$%MOUNTPOINT%" "%MOUNTOPTION%"
 
-mount -o remount "$%MOUNTPOINT%"
+ensure_partition_is_mounted "%MOUNTPOINT%"
