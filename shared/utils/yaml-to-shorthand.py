@@ -258,7 +258,8 @@ class Benchmark(object):
         version.text = self.version
 
         for profile in self.profiles:
-            root.append(profile.to_xml_element())
+            if profile is not None:
+                root.append(profile.to_xml_element())
 
         for v in self.values.values():
             root.append(v.to_xml_element())
