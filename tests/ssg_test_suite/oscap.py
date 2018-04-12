@@ -259,7 +259,7 @@ class GenericRunner(object):
         self.results_path = ''
         self.stage = 'undefined'
 
-        self.clean_files = True
+        self.clean_files = False
         self._filenames_to_clean_afterwards = set()
 
         self.command_base = []
