@@ -5,7 +5,12 @@ prodtype: ol7
 title: 'Package uuidd Installed'
 
 description: |-
-    The package <tt>uuidd</tt> is not installed on Oracle Linux 7 by default. 
+   The package <tt>uuidd</tt> is not installed on normal Linux distribution
+    by default. Aapplications might require this package to avoid database
+    inconsistences caused by duplicated UUIDs. Especially in banking services
+    with SAP where massive UUIDs are created in a short time period, it is
+    important to install the package <tt>uuidd</tt>. More information can be
+    found in SAP note 1391070.
     Using the following command to install and/or update the package:
     <pre>$ sudo yum install uuidd</pre>
 
@@ -14,7 +19,7 @@ rationale: |-
     used to generate unique identifiers even at very high rates on 
     SMP systems.
 
-severity: high
+severity: medium
 
 references:
 
