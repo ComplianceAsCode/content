@@ -10,18 +10,24 @@ import datetime
 import codecs
 import sys
 
+
 try:
     from xml.etree import cElementTree as ET
 except ImportError:
     import cElementTree as ET
 
 
+def construct_yaml_bool(self, node):
+    value = self.construct_scalar(node)
+
+    return value
+
+
 def bool_constructor(self, node):
-    value = self.construct_yaml_bool(node)
-    if value == False:
-        return 'false'
-    else:
-        return 'true'
+    value = construct_yaml_bool(self, node)
+
+    return value
+
 
 def open_yaml(yaml_file):
     # Don't follow python bool case
