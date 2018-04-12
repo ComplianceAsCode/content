@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Package uuidd Installed'
+
+description: |-
+    The package <tt>uuidd</tt> is not installed on Oracle Linux 7 by default. 
+    Using the following command to install and/or update the package:
+    <pre>$ sudo yum install uuidd</pre>
+
+rationale: |-
+    The <tt>uuidd</tt> package contains a userspace daemon (uuidd) which is 
+    used to generate unique identifiers even at very high rates on 
+    SMP systems.
+
+severity: high
+
+references:
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="uuidd" />'
