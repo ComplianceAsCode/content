@@ -52,9 +52,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
             valid_profiles += [ds_profile]
             continue
         for sel_profile in selected_profiles:
-            # this means substring - we expect selected profile might be
-            # just a shorter version of proper datastream profile id
-            if sel_profile in ds_profile:
+            if ds_profile.endswith(sel_profile):
                 valid_profiles += [ds_profile]
     if not valid_profiles:
         logging.error('No profile matched with "{0}"'
