@@ -3,7 +3,7 @@ function set_faillock_option_to_value_in_pam_file {
 	[ $# -gt 1 ] || return 0
 	[ $# -ge 3 ] || die "$0 requires exactly zero, three, or four arguments"
 	[ $# -le 4 ] || die "$0 requires exactly zero, three, or four arguments"
-	local _pamfile="$1" _option="$2" _value="$3" _insert_lines_callback="$4"
+	local _pamFile="$1" _option="$2" _value="$3" _insert_lines_callback="$4"
 	# pam_faillock.so already present?
 	if grep -q "^auth.*pam_faillock.so.*" "$_pamFile"; then
 
