@@ -87,6 +87,9 @@ do
 		continue
 	fi
 
+	# Replace possible slash '/' character in sbinary definition so we could use it in sed expressions below
+	sbinary_esc=${sbinary//$'/'/$'\/'}
+
 	# For each audit rules file from the list of files to be inspected
 	for afile in "${files_to_inspect[@]}"
 	do
@@ -97,7 +100,7 @@ do
 		# * existing rule contains all arguments from expected rule form (though can contain
 		#   them in arbitrary order)
 	
-		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary}"'/!d' \
+		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'/!d' \
 				-e '/-F path=[^[:space:]]\+/!d'   -e '/-F perm=.*/!d'                 \
 				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=4294967295/!d'        \
 				-e '/-k privileged/!d' "$afile")
