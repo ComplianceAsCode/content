@@ -17,16 +17,8 @@ except ImportError:
     import cElementTree as ET
 
 
-def construct_yaml_bool(self, node):
-    value = self.construct_scalar(node)
-
-    return value
-
-
 def bool_constructor(self, node):
-    value = construct_yaml_bool(self, node)
-
-    return value
+    return self.construct_scalar(node)
 
 
 def open_yaml(yaml_file):
