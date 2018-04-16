@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_ol
 # reboot = false
 # strategy = restrict
 # complexity = high
@@ -22,7 +22,7 @@ do
 done
 
 # Remove duplicate mention of same RPM in $SETPERMS_RPM_LIST (if any)
-SETPERMS_RPM_LIST=( $(echo "${SETPERMS_RPM_LIST[@]}" | sort -n | uniq) )
+SETPERMS_RPM_LIST=( $(echo "${SETPERMS_RPM_LIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )
 
 # For each of the RPM packages left in the list -- reset its permissions to the
 # correct values
