@@ -12,13 +12,13 @@ REFERENCE_TO_GROUP = dict(
 )
 
 
-CONTAINER_GROUPS = {
+CONTAINER_GROUPS = set((
     "definitions",
     "objects",
     "states",
     "tests",
     "variables",
-}
+))
 
 
 class ElementFinder(object):
@@ -60,7 +60,10 @@ class ElementFinder(object):
 
 
 def sort_by_id(elements):
-    return {el.attrib["id"]: el for el in elements}
+    ret = dict()
+    for el in elements:
+        ret[el.attrib["id"]] = el
+    return ret
 
 
 def search_dict_for_items_that_end_with(dic, what_to_look_for):
@@ -114,9 +117,10 @@ def get_resolved_definitions(oval_groups):
 
 
 def check_sanity(oval_groups, resolved_defns):
-    all_external_variables = {
-        var_id for var_id, var_el in oval_groups["variables"].items()
-        if var_el.tag.endswith("external_variable")}
+    all_external_variables = set()
+    for var_id, var_el in oval_groups["variables"].items():
+        if var_el.tag.endswith("external_variable"):
+            all_external_variables.add(var_id)
 
     all_caught_variables = set()
     for var in resolved_defns.values():
