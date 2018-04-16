@@ -31,7 +31,7 @@ function insert_lines_if_pam_faillock_so_not_present {
 for pamFile in "${AUTH_FILES[@]}"
 do
 	# 'true &&' has to be there due to build system limitation
-	true && set_faillock_option_to_value_in_pam_file "$pamFile" fail_interval "$var_accounts_passwords_pam_faillock_fail_interval" insert_lines_if_pam_faillock_so_not_present
+	true && set_faillock_option_to_value_in_pam_file "$pamFile" deny "$var_accounts_passwords_pam_faillock_deny" insert_lines_if_pam_faillock_so_not_present
 
 	# add pam_faillock.so into account phase
 	if ! grep -q "^account.*required.*pam_faillock.so" $pamFile; then
