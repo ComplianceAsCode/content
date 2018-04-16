@@ -8,8 +8,6 @@ description: |-
     Item I-8 and section 4.1.2.2. Regardless of your system's workload
     all of these checks should pass.
     
-extends: standard
-
 selections:
     - package_uuidd_installed
     - file_permissions_etc_shadow
