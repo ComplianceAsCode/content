@@ -181,7 +181,7 @@ This discussion is currently being held on open-scap-list@redhat.com and
 scap-security-guide@lists.fedorahosted.org.
 .RE
 
-.I ospp-rhel7
+.I ospp
 .RS
 This profile is developed in partnership with the
 U.S. National Institute of Science and Technology (NIST), U.S. Department of
@@ -270,9 +270,9 @@ Regardless of your system's workload all of these checks should pass.
 
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the
-ospp-rhel7 profile:
+ospp profile:
 
-oscap xccdf eval --profile ospp-rhel7 \
+oscap xccdf eval --profile ospp \
 --results /tmp/`hostname`-ssg-results.xml \
 --report /tmp/`hostname`-ssg-results.html \
 --oval-results \

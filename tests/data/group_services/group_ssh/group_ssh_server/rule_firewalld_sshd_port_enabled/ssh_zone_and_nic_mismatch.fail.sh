@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # remediation = none
-# profiles = xccdf_org.ssgproject.content_profile_ospp-rhel7
+# profiles = xccdf_org.ssgproject.content_profile_ospp
 
 # ensure firewalld installed
 yum install -y firewalld

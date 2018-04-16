@@ -20,3 +20,5 @@ selections:
     - dir_perms_world_writable_sticky_bits
     - root_path_no_dot
     - accounts_password_all_shadowed
+    - mount_option_dev_shm_nodev
+    - mount_option_dev_shm_nosuid
