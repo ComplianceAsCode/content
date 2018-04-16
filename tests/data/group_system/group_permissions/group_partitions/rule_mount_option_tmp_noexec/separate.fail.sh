@@ -5,6 +5,6 @@
 
 create_partition
 
-make_fstab_given_partition_line /var/tmp nodev
+make_fstab_correct_partition_line /tmp
 
-mount_partition /var/tmp
+# fstab is correct, but we are not mounted.
