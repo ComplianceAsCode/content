@@ -7,8 +7,8 @@ description: |-
     in compliance with SAP note 2069760 and SAP Security Baseline v1.9
     Item I-8 and section 4.1.2.2. Regardless of your system's workload
     all of these checks should pass.
-    Please note the list is yet to be completed.
-    Please take the Standard System Security Profile check as well.
+    
+extends: standard
 
 selections:
     - package_uuidd_installed
