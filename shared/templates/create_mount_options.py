@@ -8,71 +8,112 @@ import re
 from template_common import FilesGenerator, UnknownTargetError
 
 
+OUTPUTS_FORMAT_STRINGS = dict(
+    bash="./bash/mount_option_{0}.sh",
+    ansible="./ansible/mount_option_{0}.yml",
+    anaconda="./anaconda/mount_option_{0}.anaconda",
+    oval="./oval/mount_option_{0}.xml",
+)
+
+
+class Skipped(Exception):
+    pass
+
+
 class MountOptionTarget(object):
-    def __init__(self, generator, output_format_string):
-        self.output_format_string = output_format_string
+    TEMPLATE_FILE_BASE = None
+    OUTPUT_FORMAT_STRING = None
+
+    def __init__(self, generator, target):
+        self.OUTPUT_FORMAT_STRING = OUTPUTS_FORMAT_STRINGS[target]
         self.generator = generator
+        self.TEMPLATE_FILE_BASE = self.TEMPLATE_FILE_BASE.format(target=target.upper())
+        self.template_file = self.TEMPLATE_FILE_BASE
 
-    def process(self, mount_point, mount_option, point_id, assert_mount_exists, template_file):
+        self._mount_point = ""
+        self._mount_option = ""
+        self._point_id = ""
+        self._output_id_template = "{point_id}_{mount_option}"
+        self._assert_mount_exists = True
+        self._output_fname = None
+
+    def process(self, mount_point, mount_option, assert_mount_exists):
+        point_id = re.sub('[-\./]', '_', mount_point).lstrip("_")
+
+        try:
+            self._set_correct_values(mount_point, mount_option, point_id)
+        except Skipped:
+            return
+
+        self._output_fname = self.OUTPUT_FORMAT_STRING.format(
+            self._output_id_template.format(
+                point_id=self._point_id, mount_option=self._mount_option)
+        )
+        self._assert_mount_exists = assert_mount_exists
+        self._process()
+
+    def _process(self):
         raise NotImplementedError("You are supposed to use a derived class.")
 
-    def process_with_variable(
-            self, mount_point, mount_option, point_id, assert_mount_exists, template_file):
-        raise NotImplementedError("You are supposed to use a derived class.")
+    def _set_correct_values(self, mount_point, mount_option, point_id):
+        self._mount_point = mount_point
+        self._point_id = point_id
+        self._mount_option = mount_option
 
 
 class RemediationTarget(MountOptionTarget):
-    def process(self, mount_point, mount_option, point_id, assert_mount_exists,
-                template_file, stem=""):
-        if len(stem) == 0:
-            stem = point_id + '_' + mount_option
-        mount_has_to_exist = "yes" if assert_mount_exists else "no"
+    TEMPLATE_FILE_BASE = "./template_{target}_mount_option"
+
+    def _process(self):
+        mount_has_to_exist = "yes" if self._assert_mount_exists else "no"
         self.generator.file_from_template(
-            template_file,
+            self.template_file,
             {
                 "%MOUNT_HAS_TO_EXIST%": mount_has_to_exist,
-                "%MOUNTPOINT%": mount_point,
-                "%MOUNTOPTION%": re.sub(' ', ',', mount_option),
+                "%MOUNTPOINT%": self._mount_point,
+                "%MOUNTOPTION%": re.sub(' ', ',', self._mount_option),
             },
-            self.output_format_string,
-            stem
+            self._output_fname,
+            ""
         )
 
-    def process_with_variable(self, mount_point, mount_option, point_id, assert_mount_exists,
-                              template_file):
-        # e.g. var_removable_partition -> removable_partitions
-        point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
-        template_file = "{0}_var".format(template_file)
-        stem = "_{0}_{1}".format(mount_option, point_id)
-        return self.process(mount_point, mount_option, point_id,
-                            assert_mount_exists, template_file, stem)
+    def _set_correct_values(self, mount_point, mount_option, point_id):
+        super(RemediationTarget, self)._set_correct_values(mount_point, mount_option, point_id)
+        if mount_point.startswith("var_"):
+            self._point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
+            self.template_file = "{0}_var".format(self.TEMPLATE_FILE_BASE)
+            self._output_id_template = "{mount_option}_{point_id}"
+        elif not mount_point.startswith("/"):  # no path, but not a variable either
+            raise Skipped("No template available yet")
 
 
 class OvalTarget(MountOptionTarget):
+    TEMPLATE_FILE_BASE = "./template_OVAL_mount_option"
+
     def __init__(self, generator):
         super(OvalTarget, self).__init__(
-            generator, "./oval/mount_option{0}.xml")
+            generator, "oval")
 
-    def process_with_variable(
-            self, mount_point, mount_option, point_id, assert_mount_exists, template_file):
-        point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
-        template_file = "{0}_{1}".format(template_file, point_id)
-        stem = "_{0}_{1}".format(mount_option, point_id)
-        return self.process(mount_point, mount_option, point_id, template_file, stem)
+    def _set_correct_values(self, mount_point, mount_option, point_id):
+        super(OvalTarget, self)._set_correct_values(mount_point, mount_option, point_id)
+        if mount_point.startswith("var_"):
+            self._point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
+            self.template_file = "{0}_{1}".format(self.TEMPLATE_FILE_BASE, self._point_id)
+            self._output_id_template = "{mount_option}_{point_id}"
+        elif not mount_point.startswith("/"):  # no path, but not a variable either
+            point_id = re.sub(r"^(.*)", r"\1s", mount_point)
+            self.template_file = "{0}_{1}".format(self.TEMPLATE_FILE_BASE, self._point_id)
 
-    def process(self, mount_point, mount_option, point_id, assert_mount_exists,
-                template_file, stem=""):
-        if len(stem) == 0:
-            stem = point_id + '_' + mount_option
+    def _process(self):
         self.generator.file_from_template(
-            template_file,
+            self.template_file,
             {
-                "%MOUNTPOINT%":  mount_point,
-                "%MOUNTOPTION%": mount_option,
-                "%POINTID%":     point_id,
+                "%MOUNTPOINT%":  self._mount_point,
+                "%MOUNTOPTION%": self._mount_option,
+                "%POINTID%":     self._point_id,
             },
-            self.output_format_string,
-            stem
+            self._output_fname,
+            ""
         )
 
 
@@ -80,11 +121,11 @@ class MountOptionsGenerator(FilesGenerator):
     def __init__(self):
         self.targets = {}
         self.targets["bash"] = RemediationTarget(
-            self, "./bash/mount_option{0}.sh")
+            self, "bash")
         self.targets["ansible"] = RemediationTarget(
-            self, "./ansible/mount_option{0}.yml")
+            self, "ansible")
         self.targets["anaconda"] = RemediationTarget(
-            self, "./anaconda/mount_option{0}.anaconda")
+            self, "anaconda")
         self.targets["oval"] = OvalTarget(self)
         super(MountOptionsGenerator, self).__init__()
 
@@ -95,23 +136,14 @@ class MountOptionsGenerator(FilesGenerator):
             assert len(path_info) == 3
             assert path_info[-1] == "create_fstab_entry_if_needed"
             mount_has_to_exist = False
-        if mount_point:
 
-            processing_entity = self.targets.get(target)
-            if processing_entity is None:
-                raise UnknownTargetError(target)
+        assert mount_point
 
-            point_id = re.sub('[-\./]', '_', mount_point)
+        processing_entity = self.targets.get(target)
+        if processing_entity is None:
+            raise UnknownTargetError(target)
 
-            uppercase_target_name = target.upper()
-            template_file = "./template_{0}_mount_option".format(uppercase_target_name)
-
-            if mount_point.startswith("var_"):
-                processing_entity.process_with_variable(
-                    mount_point, mount_option, point_id, mount_has_to_exist, template_file)
-            else:
-                processing_entity.process(
-                    mount_point, mount_option, point_id, mount_has_to_exist, template_file)
+        processing_entity.process(mount_point, mount_option, mount_has_to_exist)
 
     def csv_format(self):
         return("CSV should contains lines of the format: "
