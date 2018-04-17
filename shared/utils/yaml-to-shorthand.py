@@ -19,8 +19,8 @@ except ImportError:
 def open_yaml(yaml_file):
     with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = yaml.load(stream)
-        if "documentation_complete" in yaml_contents and \
-                yaml_contents["documentation_complete"] == "false":
+        if ("documentation_complete" in yaml_contents
+                and yaml_contents["documentation_complete"] == "false"):
             return None
 
         return yaml_contents
@@ -370,6 +370,7 @@ class Rule(object):
         rule.identifiers = yaml_contents.get("identifiers", [])
         rule.ocil_clause = yaml_contents.get("ocil_clause")
         rule.ocil = yaml_contents.get("ocil")
+        rule.oval_variables = set(yaml_contents.get("oval_variables") or [])
         return rule
 
     def to_xml_element(self):
@@ -421,6 +422,14 @@ class Rule(object):
         #       Therefore let's just add an OVAL ref of that ID.
         oval_ref = ET.SubElement(rule, "oval")
         oval_ref.set("id", self.id_)
+
+        oval_vars_count = len(self.oval_variables)
+        if oval_vars_count > 0:
+            if oval_vars_count > 1:
+                print("There are {0} OVAL variables, we use only the first one."
+                      .format(oval_vars_count))
+            oval_variable = self.oval_variables.pop()
+            oval_ref.set("value", oval_variable)
 
         if self.ocil or self.ocil_clause:
             ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")

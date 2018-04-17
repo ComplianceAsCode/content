@@ -40,3 +40,6 @@ references:
 ocil_clause: 'the system has not been properly configured to rotate audit logs'
 
 ocil: "Inspect <tt>/etc/audit/auditd.conf</tt> and locate the following line to\ndetermine if the system is configured to rotate logs when they reach their\nmaximum size: \n<tt>$ sudo grep max_log_file_action /etc/audit/auditd.conf</tt>\n<pre>max_log_file_action <tt>rotate</tt></pre>"
+
+oval_variables:
+    - var_auditd_max_log_file_action
