@@ -51,7 +51,7 @@ An example invocation may look like this:
 ./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml --xccdf-id xccdf-id profile-id
 ```
 
-Note that the `profile-id` is not matched by the suffix (as opposed to how the `oscap` tool works), so specify it literally (use `oscap info --profiles` to see available profiles).
+`profile-id` is matched by the suffix so it is the same as the `oscap` tool works (you can use `oscap info --profiles` to see available profiles).
 
 ### Rule-based testing
 In this mode, you specify the `rule` command and you supply part of the rule title as a positional argument.
