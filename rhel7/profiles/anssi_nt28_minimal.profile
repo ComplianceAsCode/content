@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: '[DRAFT] ANSSI DAT-NT28 (minimal)'
 

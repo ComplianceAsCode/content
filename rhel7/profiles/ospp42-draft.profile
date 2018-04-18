@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
 

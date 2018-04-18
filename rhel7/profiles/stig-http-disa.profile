@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: '[DRAFT] DISA STIG for Apache HTTP on Red Hat Enterprise Linux 7'
 
@@ -33,3 +33,10 @@ selections:
     - httpd_remove_robots_file
     - httpd_disable_content_symlinks
     - httpd_limit_java_files
+    - httpd_disable_mime_types
+    - httpd_entrust_passwords
+    - httpd_nipr_accredited_dmz
+    - httpd_no_compilers_in_prod
+    - httpd_private_server_on_separate_subnet
+    - httpd_public_resources_not_shared
+    - httpd_remove_backups

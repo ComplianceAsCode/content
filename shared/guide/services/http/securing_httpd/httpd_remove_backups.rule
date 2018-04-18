@@ -1,0 +1,63 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Backup interactive scripts on the production web server are prohibited'
+
+description: |-
+    Copies of backup files will not execute on the server, but they can be
+    read by the anonymous user if special precautions are not taken.
+
+rationale: |-
+    Such backup copies contain the same sensitive information as the actual
+    scripts being executed and, as such, are useful to malicious users.
+    Techniques and systems exist today that search web servers for such files
+    and are able to exploit the information contained in them.
+
+    Backup copies of files are automatically created by some text editors such
+    such as emacs and VIM. Editors may write a backup file with an extension
+    ~ added to the name of the original file. The edit plus editor will 
+    create a .bak file. Of course, this would imply the presence and use of
+    development tools on the web server, which is a finding under WG130. Having
+    backup scripts on the web server provides one more opportunity for
+    malicious persons to view these scripts and use the information found in
+    them.
+
+severity: medium
+
+identifiers:
+    cce: ""
+
+references:
+    disa: ""
+    nist: ""
+    srg: ""
+    stigid: "WG420"
+
+ocil_clause: |-
+    If fileos with these extensions have no relationship with web activity,
+    such as backup batch file for operating system utility, and they are
+    not accessible by the web application, this is not a finding.
+
+    If files with these extensions are found in either the document
+    directory or the home directory of the web server, this is
+    a finding.
+
+    If files with these extensions are stored in a repository (not in the
+    document root) as backups for the web server
+
+ocil: |-
+    Ensure that CGI backup scripts are not left on the production web server.
+    This check is limited to CGI/interactive content and not static HTML.
+
+    Search for backup copies of CGI scripts on the web server or ask the Web
+    Administrator if they keep backup copies of CGI scripts on the web server.
+
+    Common backup file extensions are: *.bak, *.old, *.temp, *.tmp, *.backup,
+    *.??0. This would also apply to .jsp files.
+
+    On Red Hat Enterprise Linux, run the following commands to find backup
+    scripts:
+    <pre><tt>find / name "*.bak" -print</tt>
+    <tt>find / name "*.*" -print</tt>
+    <tt>find / name "*.old" -print</tt></pre>

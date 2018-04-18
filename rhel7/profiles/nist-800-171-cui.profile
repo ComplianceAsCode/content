@@ -10,7 +10,7 @@ description: "From NIST 800-171, Section 2.2:\nSecurity requirements for protect
     in NIST Special Publication 800-53.\n\nThis profile configures Red Hat Enterprise Linux 7 to the NIST Special\nPublication\
     \ 800-53 controls identified for securing Controlled Unclassified\nInformation (CUI)."
 
-extends: ospp-rhel7
+extends: ospp
 
 selections:
     - inactivity_timeout_value=10_minutes

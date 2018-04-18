@@ -5,7 +5,7 @@ endif()
 
 set(PRODUCT "rhel7")
 set(DISA_SRG_VERSION "v1r4")
-set(DISA_STIG_VERSION "v1r1")
+set(DISA_STIG_VERSION "v1r4")
 set(DISA_SRG_TYPE "os")
 
 ssg_build_product(${PRODUCT})

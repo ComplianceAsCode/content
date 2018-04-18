@@ -1,8 +1,11 @@
 documentation_complete: true
 
-title: 'Common Profile for General-Purpose Debian Systems'
+title: 'Standard System Security Profile for Ubuntu 16'
 
-description: 'This profile contains items common to general-purpose Debian 8 installations.'
+description: |-
+    This profile contains rules to ensure standard security baseline
+    of an Ubuntu 16 system. Regardless of your system's workload
+    all of these checks should pass.
 
 selections:
     - partition_for_tmp
@@ -21,7 +24,7 @@ selections:
     - package_ntpdate_removed
     - service_auditd_enabled
     - service_cron_enabled
-    - service_ntp_enabled
+    - service_ntpd_enabled
     - service_rsyslog_enabled
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
@@ -34,7 +37,7 @@ selections:
     - rsyslog_files_permissions
     - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
-    - file_permissions_systemmap
+    - file_permissions_boot_system_map
     - file_permissions_etc_shadow
     - file_permissions_etc_gshadow
     - file_permissions_etc_passwd

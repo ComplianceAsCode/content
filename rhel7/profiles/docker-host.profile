@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: '[DRAFT] Standard Docker Host Security Profile'
 

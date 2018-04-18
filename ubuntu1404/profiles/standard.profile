@@ -1,8 +1,11 @@
 documentation_complete: true
 
-title: 'Common Profile for General-Purpose Ubuntu Systems'
+title: 'Standard System Security Profile for Ubuntu 14'
 
-description: 'This profile contains items common to general-purpose Ubuntu 1404 installations.'
+description: |-
+    This profile contains rules to ensure standard security baseline
+    of a Ubuntu 14 system. Regardless of your system's workload
+    all of these checks should pass.
 
 selections:
     - partition_for_tmp

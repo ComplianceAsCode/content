@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Package uuidd Installed'
+
+description: |-
+    The package <tt>uuidd</tt> is not installed on normal Linux distribution
+    by default. Applications require this package to avoid database
+    inconsistences caused by duplicated UUIDs. Especially in banking services
+    with SAP where massive UUIDs are created in a short time period, it is
+    important to install the package <tt>uuidd</tt>. More information can be
+    found in SAP note 1391070.
+    Using the following command to install and/or update the package:
+    <pre>$ sudo yum install uuidd</pre>
+
+rationale: |-
+    The <tt>uuidd</tt> package contains a userspace daemon (uuidd) which is 
+    used to generate unique identifiers even at very high rates on 
+    SMP systems.
+
+severity: medium
+
+references:
+
+ocil_clause: 'the package is not installed'
+
+ocil: '<package-check-macro package="uuidd" />'

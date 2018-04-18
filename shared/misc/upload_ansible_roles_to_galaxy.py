@@ -204,7 +204,7 @@ def main():
         "rhel7-role-C2S",
         "rhel7-role-hipaa",
         "rhel7-role-nist-800-171-cui",
-        "rhel7-role-ospp-rhel7",
+        "rhel7-role-ospp",
         "rhel7-role-pci-dss",
         "rhel7-role-rht-ccp",
         "rhel7-role-stig-rhel7-disa"

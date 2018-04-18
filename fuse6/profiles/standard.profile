@@ -1,8 +1,11 @@
 documentation_complete: true
 
-title: 'Common Profile for General-Purpose JBoss Systems'
+title: 'Standard System Security Profile for JBoss'
 
-description: 'This profile contains items common to general-purpose JBoss Fuse installations.'
+description: |-
+    This profile contains rules to ensure standard security baseline
+    of JBoss Fuse. Regardless of your system's workload
+    all of these checks should pass.
 
 selections:
     - jboss_activemq-default_users_removed
