@@ -689,6 +689,8 @@ Remediations also carry metadata that should be present at the beginning of the 
 
 ==== Ansible
 
+IMPORTANT: The minimum version of Ansible must be at least version 2.3
+
 Ansible remediations are stored as yml files in directory _/template/static/ansible_ under the targeted platform. They are meant to be executed by Ansible itself when requested by openscap, so they are
 written using link:ttp://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
 
