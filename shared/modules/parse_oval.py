@@ -25,16 +25,18 @@ class ElementFinder(object):
     def __init__(self, oval_groups):
         self.oval_groups = oval_groups
         self.target = None
+        self.attrib = None
         self.result = set()
 
-    def find_element(self, start_element, target_element_name):
+    def find_element(self, start_element, target_element_name, sought_attrib):
         self.target = target_element_name
+        self.attrib = sought_attrib
         self.result = set()
         self._recurse(start_element)
 
     def _recurse(self, element):
         if element.tag.endswith(self.target):
-            self.result.add(element.attrib["id"])
+            self.result.add(element.attrib[self.attrib])
             return
 
         self._examine_element(element)
@@ -83,7 +85,13 @@ def search_element_for_reference_attributes(element):
 
 def resolve_definition(oval_groups, defn):
     finder = ElementFinder(oval_groups)
-    finder.find_element(defn, "external_variable")
+    finder.find_element(defn, "external_variable", "id")
+    return finder.result
+
+
+def find_extending_defs(oval_groups, defn):
+    finder = ElementFinder(oval_groups)
+    finder.find_element(defn, "extend_definition", "definition_ref")
     return finder.result
 
 
