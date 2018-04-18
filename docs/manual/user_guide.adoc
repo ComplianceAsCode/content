@@ -251,6 +251,8 @@ XML Results
 |===
 
 === Remediation
+
+==== Bash Scripts
 SCAP Security Guide embeds bash remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations.
 OpenSCAP, the CLI delivered with Fedora and Red Hat Enterprise Linux systems, contains the ability to transform XML results into an executable script. The syntax to generate a remediation script is:
 
@@ -312,6 +314,13 @@ fi
 ----
 
 This output could be redirected to a bash script, or built into your RHEL6 provisioning process (e.g. the %post section of a kickstart).
+
+#### Ansible Playbooks
+
+SCAP Security Guide embeds ansible remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations. When using OpenSCAP with
+Ansible, it is advisable to use the playbooks from https://github.com/Ansible-Security-Compliance. These playbooks are generated from the SCAP Security Guide project and are also available on Ansible Galaxy.
+
+IMPORTANT: The minimum version of Ansible must be at least version 2.3
 
 ## Deprecated Content
 
