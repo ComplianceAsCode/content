@@ -15,24 +15,23 @@ function dconf_settings {
 		exit 1
 	fi
 
-	SETTINGSFILES=()
-
 	# Check for setting in any of the DConf db directories
-	SETTINGSFILES+=$(grep -r "\[${_path}]" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1)
+	SETTINGSFILES=($(grep -r "\[${_path}]" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1))
+	DCONFFILE="/etc/dconf/db/${_db}/${_settingFile}"
 	# Replace possible slash '/' character so we could use it in sed expressions below
 	_path_esc=${_path//$'/'/$'\/'}
 
-	if [ -z "${SETTINGSFILES}" ]
+	if [[ -z "${SETTINGSFILES[@]}" ]]
 	then
-		echo "" >> "/etc/dconf/db/${_db}/${_settingFile}"
-		echo "[${_path}]" >> "/etc/dconf/db/${_db}/${_settingFile}"
-		echo "${_key}=${_value}" >> "/etc/dconf/db/${_db}/${_settingFile}"
+		[ ! -z ${DCONFFILE} ] || $(echo "" >> ${DCONFFILE})
+		echo "[${_path}]" >> ${DCONFFILE}
+		echo "${_key}=${_value}" >> ${DCONFFILE}
 	else
-		if $(grep -q "${_key}" ${SETTINGSFILES})
+		if grep -q "${_key}" ${SETTINGSFILES[@]}
 		then
-			sed -i "s/${_key}=.*/${_key}=${_value}/g" ${SETTINGSFILES}
+			sed -i "s/${_key}=.*/${_key}=${_value}/g" ${SETTINGSFILES[@]}
 		else
-			sed -i "/\[${_path_esc}]/ a\\${_key}=${_value}" ${SETTINGSFILES}
+			sed -i "/\[${_path_esc}]/ a\\${_key}=${_value}" ${SETTINGSFILES[@]}
 		fi
 	fi
 }
