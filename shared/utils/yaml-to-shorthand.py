@@ -10,13 +10,21 @@ import datetime
 import codecs
 import sys
 
+
 try:
     from xml.etree import cElementTree as ET
 except ImportError:
     import cElementTree as ET
 
 
+def bool_constructor(self, node):
+    return self.construct_scalar(node)
+
+
 def open_yaml(yaml_file):
+    # Don't follow python bool case
+    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+
     with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = yaml.load(stream)
         if "documentation_complete" in yaml_contents and \
@@ -242,7 +250,8 @@ class Benchmark(object):
         version.text = self.version
 
         for profile in self.profiles:
-            root.append(profile.to_xml_element())
+            if profile is not None:
+                root.append(profile.to_xml_element())
 
         for v in self.values.values():
             root.append(v.to_xml_element())
