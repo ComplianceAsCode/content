@@ -2,10 +2,10 @@
 
 from __future__ import print_function
 
+import argparse
 import sys
 import os
 
-import argparse
 
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
@@ -201,6 +201,19 @@ class OVALFileLinker(FileLinker):
                 msg = "Failed to add CCE ID to {0}.".format(ovalid)
                 raise ssgcommon.SSGError(msg)
 
+    def get_nested_definitions(self, oval_def_id):
+        processed_def_ids = set()
+        queue = set([oval_def_id])
+        while queue:
+            def_id = queue.pop()
+            processed_def_ids.add(def_id)
+            definition_tree = self.oval_groups["definitions"].get(def_id)
+            extensions = parse_oval.find_extending_defs(self.oval_groups, definition_tree)
+            if not extensions:
+                continue
+            queue |= extensions - processed_def_ids
+        return processed_def_ids
+
     def add_missing_check_exports(self, check, checkcontentref):
         check_name = checkcontentref.get("name")
         if check_name is None:
@@ -208,8 +221,11 @@ class OVALFileLinker(FileLinker):
         oval_def = self.oval_groups["definitions"].get(check_name)
         if oval_def is None:
             return
-        referenced_variables = parse_oval.resolve_definition(self.oval_groups, oval_def)
-        for varname in referenced_variables:
+        all_vars = set()
+        for def_id in self.get_nested_definitions(check_name):
+            extended_def = self.oval_groups["definitions"].get(def_id)
+            all_vars |= parse_oval.resolve_definition(self.oval_groups, extended_def)
+        for varname in all_vars:
             export = ET.Element("{%s}check-export" % xccdf_ns)
             export.attrib["export-name"] = varname
             export.attrib["value-id"] = varname
