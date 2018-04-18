@@ -90,7 +90,7 @@ remote machine but the SSG content doesn't need to be.
 
 ## Deprecated Content
 
-For a list of deprecated content, review the [Deprecated Content Table](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc#Deprecated-Content)
+For a list of deprecated content, review the [Deprecated Content Table](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc#deprecated-content)
 in the User Guide.
 
 ## Support
