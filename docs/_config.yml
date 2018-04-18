@@ -1,0 +1,45 @@
+# Theme settings
+doks:
+    baseurl:
+    color_theme: # Available themes: blue (default), green, purple, red and yellow
+    header:
+        logo:
+            text: SCAP Security Guide Documentation 
+            image:
+        nav:
+            - item_name: Item 1
+              item_url: '#'
+            - item_name: Item 2
+              item_url: '#'
+            - item_name: Item 3
+              item_url: '#'
+    footer:
+        content:
+            logo:
+                text: SCAP Security Guide Documentation
+                image:
+            copyright:  No copyright
+        social_list:
+            - network_name: facebook
+              profile_url: '#'
+            - network_name: twitter
+              profile_url: '#'
+            - network_name: instagram
+              profile_url: '#'
+            - network_name: youtube
+              profile_url: '#'
+    google_analytics:
+        tracking_code: # Add your Google Analytics tracking code to activate Google Analytics
+    comments:
+        disqus_forum_shortname: # Add your disqus forum shortname to activate comments
+
+# SASS settings
+sass:
+    sass_dir: ./doks-theme/_sass
+    style: :compressed
+
+# Jekyll settings
+layouts_dir: ./doks-theme/_layouts
+includes_dir: ./doks-theme/_includes
+exclude: [ 'README.md', 'CHANGELOG.md' ]
+permalink: /:title/

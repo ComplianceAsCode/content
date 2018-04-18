@@ -1,0 +1,39 @@
+{% if site.doks.header.nav %}
+	<div class="offcanvas visible-xs">
+		<ul class="offcanvas__nav">
+			{% for item in site.doks.header.nav %}
+				<li><a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}{{ item.item_url }}">{{ item.item_name }}</a></li>
+			{% endfor %}
+		</ul><!-- /.offcanvas__nav -->
+	</div><!-- /.offcanvas -->
+{% endif %}
+
+{% if site.doks.header.logo.text or site.doks.header.logo.image or site.doks.header.nav %}
+	<header class="site-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					{% if site.doks.header.logo.text %}
+						<a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/" class="site-header__logo">{{ site.doks.header.logo.text }}</a>
+					{% elsif site.doks.header.logo.image %}
+						<a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/" class="site-header__logo">
+							<img src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/images/layout/logo.png">
+						</a><!-- /.site-header__logo -->
+					{% endif %}
+					{% if site.doks.header.nav %}
+						<ul class="site-header__nav hidden-xs">
+							{% for item in site.doks.header.nav %}
+								<li><a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}{{ item.item_url }}">{{ item.item_name }}</a></li>
+							{% endfor %}
+						</ul><!-- /.site-header__nav -->
+						<button class="offcanvas-toggle visible-xs">
+							<span></span>
+							<span></span>
+							<span></span>
+						</button><!-- /.offcanvas-toggle -->
+					{% endif %}
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</header><!-- /.site-header -->
+{% endif %}

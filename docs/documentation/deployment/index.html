@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0">
+<title>Deployment</title>
+
+	<meta name="description" content="Doks is always ready to deploy! You can host your Doks site on private web hosting, GitHub Pages or GitLab Pages. Choose the most suitable solution and deploy!">
+
+
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,700,700i|Noto+Sans:400,400i,700,700i|Source+Code+Pro&amp;subset=latin-ext">
+<link rel="stylesheet" href="../doks-theme/assets/css/style.css">
+
+	</head>
+	<body class="" data-spy="scroll" data-target=".js-scrollspy">
+
+
+
+	<header class="site-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+
+						<a href="../index.html" class="site-header__logo">Doks</a>
+
+
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</header><!-- /.site-header -->
+
+
+		<div class="hero-subheader">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-7">
+						<div class="align-container" data-mh>
+							<div class="align-inner">
+
+									<h1 class="hero-subheader__title">Deployment</h1>
+
+
+									<p class="hero-subheader__desc">Doks is always ready to deploy! You can host your Doks site on private web hosting, GitHub Pages or GitLab Pages. Choose the most suitable solution and deploy!</p>
+
+
+
+										<a href="../manage-content/index.html" class="btn btn--dark btn--rounded btn--w-icon btn--w-icon-left">
+											<i class="icon icon--arrow-left"></i>
+											Manage Content
+										</a>
+
+
+										<a href="../theme-updates/index.html" class="btn btn--dark btn--rounded btn--w-icon">
+											<i class="icon icon--arrow-right"></i>
+											Theme Updates
+										</a>
+
+
+							</div><!-- /.align-inner -->
+						</div><!-- /.align-container -->
+					</div><!-- /.col -->
+
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</div><!-- /.hero-subheader -->
+		<div class="section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-7">
+						<div class="content">
+							<h2 id="web-hosting-providers-ftp">Web hosting providers (FTP)</h2>
+<p>To upload a Jekyll site to a web host using FTP, simply run the <code class="highlighter-rouge">JEKYLL_ENV=production jekyll build</code> command and copy the generated <code class="highlighter-rouge">_site</code> folder to the root folder of your hosting account.</p>
+
+<h2 id="github-pages">GitHub Pages</h2>
+<div class="callout callout--info">
+    <p><strong>What are GitHub Pages?</strong> <a href="https://pages.github.com/" target="blank">GitHub Pages</a> are public web pages for users, organisations, and repositories, that are freely hosted on GitHub’s <code>github.io</code> domain or on a custom domain name of your choice.</p>
+</div>
+<div class="callout callout--info">
+    <p><strong>Full GitHub Pages deployment guide.</strong> We recommend you to read full GitHub Pages deployment guide <a href="http://jekyllrb.com/docs/github-pages/" target="blank">here</a>.</p>
+</div>
+<div class="callout callout--warning">
+    <p><strong>Set relative URLs properly!</strong> Please take a look at Relative URLs part of "Configuration" section before you deploy your site.</p>
+</div>
+<div class="callout callout--warning">
+    <p><strong>Build site with environment variable!</strong> Please build your site with proper environment variable before you deploy. Your build command should look like this <code>JEKYLL_ENV=production jekyll build</code>.</p>
+</div>
+
+<h3 id="user-and-organisation-pages">User and Organisation Pages</h3>
+<p>User and organisation pages live in a special GitHub repository dedicated to only the GitHub Pages files. This repository must be named after the account name. For example, <a href="https://github.com/mojombo/mojombo.github.io">@mojombo’s user page repository</a> has the name <code class="highlighter-rouge">mojombo.github.io</code>.</p>
+
+<p>Content from the <code class="highlighter-rouge">master</code> branch of your repository will be used to build and publish the GitHub Pages site, so make sure your <code class="highlighter-rouge">_site</code> directory content is stored there.</p>
+
+<h3 id="project-pages">Project Pages</h3>
+<p>Unlike user and organisation pages, project pages are kept in the same repository as the project they are for, except that the website content is stored in a specially named <code class="highlighter-rouge">gh-pages</code> branch or in a <code class="highlighter-rouge">/docs</code> folder on the <code class="highlighter-rouge">master</code> branch.</p>
+
+<p>Content from the <code class="highlighter-rouge">gh-pages</code> branch or <code class="highlighter-rouge">/docs</code> folder on your <code class="highlighter-rouge">master</code> branch of your repository will be used to build and publish the GitHub Pages site, so make sure your <code class="highlighter-rouge">_site</code> directory content is stored there.</p>
+
+<p>Output will become available under a subpath of your user pages subdomain, such as <code class="highlighter-rouge">username.github.io/project</code> (unless a custom domain is specified).</p>
+
+<h2 id="gitlab-pages">GitLab Pages</h2>
+<div class="callout callout--info">
+    <p><strong>What are GitLab Pages?</strong> With <a href="https://about.gitlab.com/features/pages/" target="blank">GitLab Pages</a> you can create static websites for your GitLab projects, groups, or user accounts. Connect as many customs domains as you like and bring your own TLS certificate to secure them.</p>
+</div>
+<div class="callout callout--info">
+    <p><strong>Full GitLab Pages deployment guide.</strong> We recommend you to read full GitLab Pages deployment guide <a href="https://docs.gitlab.com/ee/user/project/pages/" target="blank">here</a>.</p>
+</div>
+<div class="callout callout--warning">
+    <p><strong>Set relative URLs properly!</strong> Please take a look at Relative URLs part of "Configuration" section before you deploy your site.</p>
+</div>
+<div class="callout callout--warning">
+    <p><strong>Build site with environment variable!</strong> Please build your site with proper environment variable before you deploy. Your build command should look like this <code>JEKYLL_ENV=production jekyll build</code>.</p>
+</div>
+
+<h3 id="user-and-organisation-pages-1">User and Organisation Pages</h3>
+<p>User and organisation pages live in a special GitLab repository dedicated to only the GitLab Pages files. This repository must be named after the account name.</p>
+
+<p>For example, if you create a project called <code class="highlighter-rouge">john.gitlab.io</code> under your username, <code class="highlighter-rouge">john</code>, your project URL will be <code class="highlighter-rouge">https://gitlab.com/john/john.gitlab.io</code>. Once you enable GitLab Pages for your project, your website will be published under <code class="highlighter-rouge">https://john.gitlab.io</code>.</p>
+
+<p>Content from the <code class="highlighter-rouge">gl-pages</code> branch of your repository will be used to build and publish the GitLab Pages site, so make sure your <code class="highlighter-rouge">_site</code> directory content is stored there.</p>
+
+<h3 id="project-pages-1">Project Pages</h3>
+<p>Unlike user and organisation pages, project pages are kept in the same repository as the project they are for, except that the website content is stored in a specially named <code class="highlighter-rouge">gl-pages</code> branch.</p>
+
+<p>Content from the <code class="highlighter-rouge">gl-pages</code> branch of your repository will be used to build and publish the GitLab Pages site, so make sure your <code class="highlighter-rouge">_site</code> directory content is stored there.</p>
+
+<p>Output will become available under a subpath of your user pages subdomain, such as <code class="highlighter-rouge">username.gitlab.io/project</code> (unless a custom domain is specified).</p>
+
+						</div><!-- /.content -->
+					</div><!-- /.col -->
+					<div class="col-md-4 col-md-offset-1">
+						<div class="sections-list-wrapper">
+							<div class="sections-list js-sections js-affix js-scrollspy hidden-xs hidden-sm"></div><!-- /.sections-list -->
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</div><!-- /.section -->
+
+		<div class="js-footer-area">
+
+				<nav class="page-nav">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12">
+
+									<a href="../manage-content/index.html" class="page-nav__item page-nav__item--prev">
+										<i class="icon icon--arrow-left"></i>
+										Manage Content
+									</a><!-- /.page-nav__item -->
+
+
+									<a href="../theme-updates/index.html" class="page-nav__item page-nav__item--next">
+										Theme Updates
+										<i class="icon icon--arrow-right"></i>
+									</a><!-- /.page-nav__item -->
+
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.container -->
+				</nav><!-- /.page-nav -->
+
+
+				<div class="micro-nav">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<a href="../index.html" class="micro-nav__back">
+					<i class="icon icon--arrow-left"></i>
+					Back to homepage
+				</a><!-- /.micro-nav__back -->
+			</div><!-- /.col -->
+		</div><!-- /.row -->
+	</div><!-- /.container -->
+</div><!-- /.micro-nav -->
+
+
+
+	<footer class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+
+						<a href="../index.html" class="site-footer__logo">Doks</a>
+
+
+						<hr>
+						<p class="site-footer__copyright">Copyright &copy; 2017. - Themejack <br>All rights reserved.</p>
+
+				</div><!-- /.col -->
+
+					<div class="col-sm-6 align-right">
+						<ul class="social-list">
+
+								<li>
+									<a href="https://twitter.com/themejack" target="_blank" class="social-list__item social-list__item--twitter">
+										<i class="icon icon--twitter"></i>
+									</a>
+								</li>
+
+								<li>
+									<a href="https://github.com/themejack" target="_blank" class="social-list__item social-list__item--github">
+										<i class="icon icon--github"></i>
+									</a>
+								</li>
+
+						</ul><!-- /.social-list -->
+					</div><!-- /.col -->
+
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</footer><!-- /.site-footer -->
+
+
+<script src="../doks-theme/assets/js/vendor/jquery.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/vendor/bootstrap/affix.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/vendor/matchHeight.min.js"></script>
+<script type="text/javascript" src="../doks-theme/assets/js/scripts.min.js"></script>
+
+
+
+
+		</div><!-- /.js-footer-area -->
+	</body>
+</html>
