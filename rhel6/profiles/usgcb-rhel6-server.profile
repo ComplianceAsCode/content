@@ -149,7 +149,6 @@ selections:
     - sysctl_net_ipv4_conf_default_rp_filter
     - wireless_disable_in_bios
     - service_bluetooth_disabled
-    - kernel_module_ipv6_option_disabled
     - network_ipv6_disable_rpc
     - sysctl_net_ipv6_conf_default_accept_ra_value=disabled
     - sysctl_net_ipv6_conf_default_accept_ra
