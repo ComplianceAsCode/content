@@ -1,6 +1,6 @@
 documentation_complete: false
 
-title: 'Upstream DISA STIG for Red Hat Ansible Tower'
+title: '[DRAFT] DISA STIG for Red Hat Ansible Tower'
 
 description: |-
     This is a *draft* profile for STIG. This profile is being

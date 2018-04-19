@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <!-- This transform assembles all fragments into one "shorthand" XCCDF document
-     Accepts the following parameters:
+          Accepts the following parameters:
 
      * SHARED_RP    (required)  Holds the resolved ABSOLUTE path
                     to the SSG's "shared/" directory.
