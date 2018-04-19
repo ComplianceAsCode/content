@@ -2,6 +2,8 @@ import datetime
 import platform
 import subprocess
 import re
+import yaml
+import codecs
 
 
 try:
@@ -174,3 +176,27 @@ def map_elements_to_their_ids(tree, xpath_expr):
         assert element_id is not None
         aggregated[element_id] = element
     return aggregated
+
+
+def open_yaml(yaml_file):
+    def bool_constructor(self, node):
+        return self.construct_scalar(node)
+
+    # Don't follow python bool case
+    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+
+    with codecs.open(yaml_file, "r", "utf8") as stream:
+        yaml_contents = yaml.load(stream)
+        if "documentation_complete" in yaml_contents and \
+                yaml_contents["documentation_complete"] == "false":
+            return None
+
+        return yaml_contents
+
+
+def required_yaml_key(yaml_contents, key):
+    if key in yaml_contents:
+        return yaml_contents[key]
+
+    raise ValueError("%s is required but was not found in:\n%s" %
+                     (key, repr(yaml_contents)))

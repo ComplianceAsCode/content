@@ -3,11 +3,9 @@
 from __future__ import print_function
 
 import argparse
-import yaml
 import os
 import os.path
 import datetime
-import codecs
 import sys
 
 
@@ -16,30 +14,11 @@ try:
 except ImportError:
     import cElementTree as ET
 
-
-def bool_constructor(self, node):
-    return self.construct_scalar(node)
-
-
-def open_yaml(yaml_file):
-    # Don't follow python bool case
-    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
-
-    with codecs.open(yaml_file, "r", "utf8") as stream:
-        yaml_contents = yaml.load(stream)
-        if "documentation_complete" in yaml_contents and \
-                yaml_contents["documentation_complete"] == "false":
-            return None
-
-        return yaml_contents
-
-
-def required_yaml_key(yaml_contents, key):
-    if key in yaml_contents:
-        return yaml_contents[key]
-
-    raise ValueError("%s is required but was not found in:\n%s" %
-                     (key, repr(yaml_contents)))
+# Put shared python modules in path
+sys.path.insert(0, os.path.join(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
+        "modules"))
+from ssgcommon import open_yaml, required_yaml_key
 
 
 def add_sub_element(parent, tag, data):
