@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="compliance" id="package_%PKGNAME%_required_version_installed"
+  version="1">
+    <metadata>
+      <title>Package %PKGNAME% Required Version Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>The RPM package %PKGNAME% should be installed with required version.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package %PKGNAME% is installed with required version"
+      test_ref="test_package_%PKGNAME%_version" />
+    </criteria>
+  </definition>
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="test_package_%PKGNAME%_version" version="1"
+  comment="package %PKGNAME% is installed with required version">
+    <linux:object object_ref="obj_package_%PKGNAME%_version" />
+    <linux:state state_ref="state_package_%PKGNAME%_version" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_package_%PKGNAME%_version" version="1">
+    <linux:name>%PKGNAME%</linux:name>
+  </linux:rpminfo_object>
+  <linux:rpminfo_state id="state_package_%PKGNAME%_version" version="1">
+    <linux:evr datatype="evr_string" operation="greater than or equal">%EPOCH%:%VERSION%-%RELEASE%</linux:evr>
+  </linux:rpminfo_state>
+</def-group>
