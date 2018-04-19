@@ -6,15 +6,10 @@
 #     '$' to reference a variable, e.g. var_removable_partition,nodev)
 #  If the remediation can create (i.e. not just modify) an /etc/fstab line,
 #  add the 'create_fstab_entry_if_needed' literal string as the third argument.
-/dev/shm,nodev
-/dev/shm,noexec
-/dev/shm,nosuid
-/home,nosuid
-/home,nodev
-/tmp,nodev
-/tmp,noexec
-/tmp,nosuid
-/var/tmp,nodev
-/var/tmp,noexec
-/var/tmp,nosuid
-/var/tmp,bind
+
+var_removable_partition,nodev,create_fstab_entry_if_needed
+var_removable_partition,nosuid,create_fstab_entry_if_needed
+var_removable_partition,noexec,create_fstab_entry_if_needed
+remote_filesystems,nodev,create_fstab_entry_if_needed
+remote_filesystems,nosuid,create_fstab_entry_if_needed
+remote_filesystems,noexec,create_fstab_entry_if_needed

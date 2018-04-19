@@ -29,6 +29,7 @@ class TemplateNotFoundError(RuntimeError):
             % (template, ", ".join(paths))
         )
 
+
 TARGET_REGEX = re.compile(r"#\s*only-for:([\s\w,]*)")
 
 

@@ -1,0 +1,17 @@
+# platform = multi_platform_all
+# reboot = false
+
+# Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
+
+populate %MOUNTPOINT%
+
+include_mount_options_functions
+
+# test "$mount_has_to_exist" = 'yes'
+test "%MOUNT_HAS_TO_EXIST%" = 'yes' && assert_mount_point_in_fstab "$%MOUNTPOINT%" \
+	|| { echo "Not remediating, because there is no record of $%MOUNTPOINT% in /etc/fstab" >&2; exit 1; }
+
+ensure_mount_option_in_fstab "$%MOUNTPOINT%" "%MOUNTOPTION%"
+
+ensure_partition_is_mounted "$%MOUNTPOINT%"

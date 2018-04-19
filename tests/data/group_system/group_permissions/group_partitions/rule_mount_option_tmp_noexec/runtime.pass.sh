@@ -2,4 +2,9 @@
 # profiles = xccdf_org.ssgproject.content_profile_C2S
 
 . partition.sh
-mount -B /tmp /var/tmp
+
+create_partition
+
+make_fstab_correct_partition_line /tmp
+
+mount_partition /tmp
