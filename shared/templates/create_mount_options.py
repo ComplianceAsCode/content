@@ -3,7 +3,10 @@
 #        generate template-based checks for partitions and partition
 #        mount rights
 
+from __future__ import print_function
+
 import re
+import sys
 
 from template_common import FilesGenerator, UnknownTargetError
 
@@ -41,8 +44,10 @@ class MountOptionTarget(object):
         point_id = re.sub('[-\./]', '_', mount_point).lstrip("_")
 
         try:
-            self._set_correct_values(mount_point, mount_option, point_id)
-        except Skipped:
+            self._translate_input_values(mount_point, mount_option, point_id)
+        except Skipped as exc:
+            # This would spam the user too many times during build.
+            # print("Note: {0} - {1}".format(mount_point, str(exc)), file=sys.stderr)
             return
 
         self._output_fname = self.OUTPUT_FORMAT_STRING.format(
@@ -55,7 +60,7 @@ class MountOptionTarget(object):
     def _process(self):
         raise NotImplementedError("You are supposed to use a derived class.")
 
-    def _set_correct_values(self, mount_point, mount_option, point_id):
+    def _translate_input_values(self, mount_point, mount_option, point_id):
         self._mount_point = mount_point
         self._point_id = point_id
         self._mount_option = mount_option
@@ -77,14 +82,17 @@ class RemediationTarget(MountOptionTarget):
             ""
         )
 
-    def _set_correct_values(self, mount_point, mount_option, point_id):
-        super(RemediationTarget, self)._set_correct_values(mount_point, mount_option, point_id)
+    def _translate_input_values(self, mount_point, mount_option, point_id):
+        super(RemediationTarget, self)._translate_input_values(mount_point, mount_option, point_id)
         if mount_point.startswith("var_"):
             self._point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
             self.template_file = "{0}_var".format(self.TEMPLATE_FILE_BASE)
             self._output_id_template = "{mount_option}_{point_id}"
         elif not mount_point.startswith("/"):  # no path, but not a variable either
-            raise Skipped("No template available yet")
+            raise Skipped(
+                "Remediations are available only for for literal mount points, "
+                "or by mount points defined by variables, thus beginning with 'var_'."
+            )
 
 
 class OvalTarget(MountOptionTarget):
@@ -94,8 +102,8 @@ class OvalTarget(MountOptionTarget):
         super(OvalTarget, self).__init__(
             generator, "oval")
 
-    def _set_correct_values(self, mount_point, mount_option, point_id):
-        super(OvalTarget, self)._set_correct_values(mount_point, mount_option, point_id)
+    def _translate_input_values(self, mount_point, mount_option, point_id):
+        super(OvalTarget, self)._translate_input_values(mount_point, mount_option, point_id)
         if mount_point.startswith("var_"):
             self._point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
             self.template_file = "{0}_{1}".format(self.TEMPLATE_FILE_BASE, self._point_id)
