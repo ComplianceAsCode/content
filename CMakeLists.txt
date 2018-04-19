@@ -5,6 +5,8 @@ set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 # This is set to silence GNUInstallDirs warning about no language being used with cmake
 set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
+include(FindPythonModule)
+
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
 set(SSG_TABLE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/tables")
@@ -69,6 +71,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 endif()
 
 find_package(PythonInterp 2 REQUIRED)
+find_python_module(yaml REQUIRED)
 
 find_package(OpenSCAP REQUIRED)
 
@@ -121,6 +124,7 @@ message(STATUS " ")
 
 message(STATUS "Tools:")
 message(STATUS "python: ${PYTHON_EXECUTABLE} (version: ${PYTHON_VERSION_STRING})")
+message(STATUS "python yaml module: ${PY_YAML}")
 message(STATUS "oscap: ${OPENSCAP_OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message(STATUS "xsltproc: ${XSLTPROC_EXECUTABLE}")
 message(STATUS "xmllint: ${XMLLINT_EXECUTABLE}")
