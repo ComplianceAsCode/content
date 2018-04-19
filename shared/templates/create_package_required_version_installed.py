@@ -26,7 +26,7 @@ class PackageRequiredVersionInstalledGenerator (PackageInstalledGenerator):
                     "%PKGNAME%": pkgname,
                     "%EPOCH%":   epoch,
                     "%VERSION%": version,
-                    "%RELEASE%": release 
+                    "%RELEASE%": release
                 },
                 "./oval/package_{0}_required_version_installed.xml", pkgname
             )
@@ -62,8 +62,6 @@ class PackageRequiredVersionInstalledGenerator (PackageInstalledGenerator):
         else:
             raise UnknownTargetError(target)
 
-
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "PACKAGE_NAME,EPOCH,VERSION,RELEASE")
-
