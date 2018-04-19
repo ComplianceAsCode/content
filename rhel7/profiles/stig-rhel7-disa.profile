@@ -2,10 +2,17 @@ documentation_complete: true
 
 title: 'DISA STIG for Red Hat Enterprise Linux 7'
 
-description: "This profile contains configuration checks that align to the \nDISA STIG for Red Hat Enterprise Linux V1R4.\n\
-    \nIn addition to being applicable to RHEL7, DISA recognizes this \nconfiguration baseline as applicable to the operating\
-    \ system\ntier of Red Hat technologies that are based off RHEL7, such as RHEL\nServer,  RHV-H, RHEL for HPC, RHEL Workstation,\
-    \ and Red Hat \nStorage deployments."
+description: "This profile contains configuration checks that align to the \n
+    \ DISA STIG for Red Hat Enterprise Linux V1R4. \n
+    \ \n
+    \ In addition to being applicable to RHEL7, DISA recognizes this \n
+    \ configuration baseline as applicable to the operating system tier of \n
+    \ Red Hat technologies that are based off RHEL7, such as: \n
+    \ - Red Hat Enterprise Linux Server \n
+    \ - Red Hat Enterprise Linux Workstation and Desktop \n
+    \ - Red Hat Virtualization Hypervisor (RHV-H) \n
+    \ - Red Hat Enterprise Linux for HPC \n
+    \ - Red Hat Storage"
 
 selections:
     - login_banner_text=dod_banners
