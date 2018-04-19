@@ -15,6 +15,7 @@ from create_kernel_modules_disabled import KernelModulesDisabledGenerator
 from create_mounts import MountsGenerator
 from create_mount_options import MountOptionsGenerator
 from create_package_installed import PackageInstalledGenerator
+from create_package_required_version_installed import PackageRequiredVersionInstalledGenerator
 from create_package_removed import PackageRemovedGenerator
 from create_permission import PermissionGenerator
 from create_selinux_booleans import SEBoolGenerator
@@ -44,6 +45,7 @@ class Builder(object):
             "services_disabled.csv":            ServiceDisabledGenerator(),
             "services_enabled.csv":             ServiceEnabledGenerator(),
             "packages_installed.csv":           PackageInstalledGenerator(),
+            "packages_required_version_installed.csv":  PackageRequiredVersionInstalledGenerator(),
             "packages_removed.csv":             PackageRemovedGenerator(),
             "kernel_modules_disabled.csv":      KernelModulesDisabledGenerator(),
             "file_dir_permissions.csv":         PermissionGenerator(),
