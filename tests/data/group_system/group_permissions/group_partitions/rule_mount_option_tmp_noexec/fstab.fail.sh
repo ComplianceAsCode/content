@@ -7,6 +7,4 @@ create_partition
 
 make_fstab_given_partition_line /tmp nodev
 
-cat /etc/fstab
-
 mount_partition /tmp
