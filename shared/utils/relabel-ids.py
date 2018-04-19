@@ -14,6 +14,11 @@ sys.path.insert(0, os.path.join(
 import idtranslate_module as idtranslate
 import ssgcommon
 
+ET = ssgcommon.ElementTree
+
+
+import parse_oval
+
 # This script requires two arguments: an "unlinked" XCCDF file and an ID name
 # scheme. This script is designed to convert and synchronize check IDs
 # referenced from the XCCDF document for the supported checksystems, which are
@@ -82,11 +87,16 @@ class FileLinker(object):
     def _get_checkid_string(self):
         raise NotImplementedError()
 
+    def add_missing_check_exports(self, check, checkcontentref):
+        pass
+
     def link_xccdf(self):
         for check in self.checks_related_to_us:
             checkcontentref = ssgcommon.get_check_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is None:
                 continue
+
+            self.add_missing_check_exports(check, checkcontentref)
 
             checkexports = check.findall("./{%s}check-export" % xccdf_ns)
 
@@ -109,10 +119,15 @@ class OVALFileLinker(FileLinker):
     CHECK_SYSTEM = oval_cs
     CHECK_NAMESPACE = oval_ns
 
+    def __init__(self, translator, xccdftree, checks):
+        super(OVALFileLinker, self).__init__(translator, xccdftree, checks)
+        self.oval_groups = None
+
     def _get_checkid_string(self):
         return "{%s}definition" % self.CHECK_NAMESPACE
 
     def link(self):
+        self.oval_groups = parse_oval.get_container_oval_groups(self.fname)
         self.tree = ssgcommon.parse_xml_file(self.fname)
         try:
             self._link_oval_tree()
@@ -185,6 +200,20 @@ class OVALFileLinker(FileLinker):
             if ccerefelem.getprevious() is not ovaldesc:
                 msg = "Failed to add CCE ID to {0}.".format(ovalid)
                 raise ssgcommon.SSGError(msg)
+
+    def add_missing_check_exports(self, check, checkcontentref):
+        check_name = checkcontentref.get("name")
+        if check_name is None:
+            return
+        oval_def = self.oval_groups["definitions"].get(check_name)
+        if oval_def is None:
+            return
+        referenced_variables = parse_oval.resolve_definition(self.oval_groups, oval_def)
+        for varname in referenced_variables:
+            export = ET.Element("{%s}check-export" % xccdf_ns)
+            export.attrib["export-name"] = varname
+            export.attrib["value-id"] = varname
+            check.insert(0, export)
 
     def _ensure_by_xccdf_referenced_oval_def_is_defined_in_oval_file(
             self, indexed_oval_defs):
