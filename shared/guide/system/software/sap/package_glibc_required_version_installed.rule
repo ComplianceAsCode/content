@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Package glibc Required Version Installed'
+
+description: |-
+    The package <tt>glibc</tt> is installed on Linux by default, but the
+    original <tt>glibc</tt> version might not be sufficient for applications.
+    Higher version of <tt>glibc</tt> built is required.
+    Using the following command to install and/or update the package:
+    <pre>$ sudo yum install glibc</pre>
+
+rationale: |-
+    The <tt>glibc</tt> package contains standard C and math libraries used by
+    multiple programs on Linux.
+
+severity: medium
+
+references:
+
+ocil_clause: 'the minimum required package version is not installed'
+
+ocil: '<package-check-macro package="glibc" />'
