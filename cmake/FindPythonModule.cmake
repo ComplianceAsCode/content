@@ -5,7 +5,7 @@ function(find_python_module module)
 	string(TOUPPER ${module} module_upper)
 	if(NOT PY_${module_upper})
 		if(ARGC GREATER 1 AND ARGV1 STREQUAL "REQUIRED")
-			set(${module}_FIND_REQUIRED TRUE)
+			set(PY_${module}_FIND_REQUIRED TRUE)
 		endif()
 		# A module's location is usually a directory, but for binary modules
 		# it's a .so file.
