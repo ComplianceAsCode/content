@@ -3,8 +3,8 @@
 #   automatically generate checks for installed packages
 #
 
+import re
 from template_common import FilesGenerator, UnknownTargetError
-
 
 class PackageInstalledGenerator(FilesGenerator):
     def generate(self, target, package_info):
@@ -14,11 +14,27 @@ class PackageInstalledGenerator(FilesGenerator):
                 "ERROR: input violation: the package name must be defined")
 
         if target == "oval":
-            self.file_from_template(
-                "./template_OVAL_package_installed",
-                {"%PKGNAME%": pkgname},
-                "./oval/package_{0}_installed.xml", pkgname
-            )
+            if len(package_info) == 1:
+                self.file_from_template(
+                    "./template_OVAL_package_installed",
+                    {"%PKGNAME%": pkgname},
+                    "./oval/package_{0}_installed.xml", pkgname
+                )
+            else :
+                evr = package_info[1]
+                if evr and not re.match(r'\d:\d[\w+.]{0,}-\d[\w+.]{0,}', evr, 0):
+                    raise RuntimeError(
+                        "ERROR: input violation: evr should be in epoch:version-release format",
+                        "current package is ", pkgname, " current evr is ", evr)
+
+                self.file_from_template(
+                    "./template_OVAL_package_installed.evr",
+                    {
+                        "%PKGNAME%": pkgname,
+                        "%EVR%": evr
+                    },
+                    "./oval/package_{0}_installed.xml", pkgname
+                )
 
         elif target == "bash":
             self.file_from_template(
@@ -53,4 +69,4 @@ class PackageInstalledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PACKAGE_NAME")
+               "PACKAGE_NAME", "EVR_STRING")
