@@ -6,6 +6,7 @@
 import re
 from template_common import FilesGenerator, UnknownTargetError
 
+
 class PackageInstalledGenerator(FilesGenerator):
     def generate(self, target, package_info):
         pkgname = package_info[0]
@@ -20,7 +21,7 @@ class PackageInstalledGenerator(FilesGenerator):
                     {"%PKGNAME%": pkgname},
                     "./oval/package_{0}_installed.xml", pkgname
                 )
-            else :
+            else:
                 evr = package_info[1]
                 if evr and not re.match(r'\d:\d[\w+.]{0,}-\d[\w+.]{0,}', evr, 0):
                     raise RuntimeError(
