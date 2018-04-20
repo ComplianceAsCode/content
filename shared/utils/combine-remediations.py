@@ -7,6 +7,7 @@ import re
 import errno
 import argparse
 import codecs
+import jinja2
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -394,6 +395,32 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         sys.exit(1)
 
 
+def process_fix_with_jinja(filepath, remediation_type, product_yaml):
+    # TODO: Choose something better
+    block_start_string = "{{%"
+    block_end_string = "%}}"
+    variable_start_string = "{{{"
+    variable_end_string = "}}}"
+    comment_start_string = "{{#"
+    comment_end_string = "#}}"
+
+    with codecs.open(filepath, "r", encoding="utf-8") as fix_file:
+            source = fix_file.read()
+            template = jinja2.Template(
+                source,
+                block_start_string=block_start_string,
+                block_end_string=block_end_string,
+                variable_start_string=variable_start_string,
+                variable_end_string=variable_end_string,
+                comment_start_string=comment_start_string,
+                comment_end_string=comment_end_string
+            )
+            generated_fix = template.render(product_yaml)
+            fix_file_lines = generated_fix.splitlines()
+
+    return fix_file_lines
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument(
@@ -442,25 +469,31 @@ def main():
 
                 mod_file = []
                 config = {}
-                with codecs.open(os.path.join(fixdir, filename), "r",
-                                 encoding="utf-8") as fix_file:
-                    # Assignment automatically escapes shell characters for XML
-                    for line in fix_file.readlines():
-                        if line.startswith('#'):
-                            try:
-                                (key, value) = line.strip('#').split('=')
-                                if key.strip() in ['complexity', 'disruption',
-                                                   'platform', 'reboot',
-                                                   'strategy']:
-                                    config[key.strip()] = value.strip()
-                                else:
-                                    if not line.startswith(FILE_GENERATED):
-                                        mod_file.append(line)
-                            except ValueError:
+
+                fix_file_lines = process_fix_with_jinja(
+                    os.path.join(fixdir, filename),
+                    args.remediation_type,
+                    product_yaml
+                )
+
+                # Assignment automatically escapes shell characters for XML
+                for line in fix_file_lines:
+                    line += "\n"
+                    if line.startswith('#'):
+                        try:
+                            (key, value) = line.strip('#').split('=')
+                            if key.strip() in ['complexity', 'disruption',
+                                                'platform', 'reboot',
+                                                'strategy']:
+                                config[key.strip()] = value.strip()
+                            else:
                                 if not line.startswith(FILE_GENERATED):
                                     mod_file.append(line)
-                        else:
-                            mod_file.append(line)
+                        except ValueError:
+                            if not line.startswith(FILE_GENERATED):
+                                mod_file.append(line)
+                    else:
+                        mod_file.append(line)
 
                 complexity = None
                 disruption = None
