@@ -10,8 +10,8 @@ toc::[]
 
 The SCAP Security Guide (SSG) project delivers security guidance, baselines and
 associated validation mechanisms utilizing the Security Content Automation
-Protocol (SCAP). SSG currently provides content for Red Hat Enterprise Linux 6
-(RHEL6) and JBoss Enterprise Application Server 5 (JBoss EAP5).
+Protocol (SCAP). SSG provides content for Red Hat Enterprise Linux and JBoss
+Enterprise Application Server (JBoss EAP).
 In addition to hardening advice, SSG links back to compliance requirements in
 order to eease deployment activities, such as certification and accreditation.
 These include requirements in the U.S. Government (Federal, Defense, and
@@ -43,11 +43,11 @@ image::logos-400x400-disa-300x300.jpg[align="left"]
 The http://www.disa.mil/About/Our-Organization-Structure/OD-Field-Office/Field-Security-Operations[U.S. Defense Information Systems Agency, Field Security Operations]
 (DISA FSO) authors hardening guidance known as Security Technical
 Implementation Guides (http://iase.disa.mil/stigs/index.html[STIGs]). These
-documents, used throughout the U.S. Military to harden systems, establish
+documents, used throughout the U.S. military to harden systems, establish
 formal security compliance baselines. The SCAP Security Guide project serves as
 the usptream development source for http://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx[Red Hat STIG content]
 and helps DISA FSO move towards their business objective of utilizing
-SCAP-based formats to automate security compliance across U.S. Military
+SCAP-based formats to automate security compliance across U.S. military
 organizations.
 
 image::logos-400x400-nist-300x300.jpg[align="left"]
@@ -78,83 +78,7 @@ $ sudo yum -y install scap-security-guide
 $ sudo dnf -y install scap-security-guide
 ------------
 
-Depending on your existing system configuration, package dependencies such as openscap-utils will also be installed. The YUM transaction will have installed the following files:
-
------------
-$ rpm -ql scap-security-guide
-/usr/share/doc/scap-security-guide-0.1
-/usr/share/doc/scap-security-guide-0.1/JBossEAP5_Guide.html
-/usr/share/doc/scap-security-guide-0.1/LICENSE
-/usr/share/doc/scap-security-guide-0.1/rhel6-guide.html
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-cces.html
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-nistrefs-common.html
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-nistrefs.html
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-srgmap-flat.html
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-srgmap-flat.xhtml
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-srgmap.html
-/usr/share/doc/scap-security-guide-0.1/table-rhel6-stig.html
-/usr/share/man/en/man8/scap-security-guide.8.gz
-/usr/share/xml/scap
-/usr/share/xml/scap/ssg
-/usr/share/xml/scap/ssg/content
-/usr/share/xml/scap/ssg/content/eap5-cpe-dictionary.xml
-/usr/share/xml/scap/ssg/content/eap5-cpe-oval.xml
-/usr/share/xml/scap/ssg/content/eap5-ocil.xml
-/usr/share/xml/scap/ssg/content/eap5-oval.xml
-/usr/share/xml/scap/ssg/content/eap5-xccdf.xml
-/usr/share/xml/scap/ssg/content/ssg-rhel6-cpe-dictionary.xml
-/usr/share/xml/scap/ssg/content/ssg-rhel6-cpe-oval.xml
-/usr/share/xml/scap/ssg/content/ssg-rhel6-oval.xml
-/usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
------------
-
-== Source Code
-
-1. On Red Hat Enterprise Linux and Fedora make sure the packages 'openscap-utils' and 'python-lxml' and their dependencies are installed. As the project contains OVAL 5.8 content we require version 0.8 or later of openscap-utils (available in Red Hat Enterprise Linux 6.2+). Additionally, if not present, git must be installed.
-+
-----
-    $ sudo yum install git openscap-utils python-lxml
-----
-+
-2. Download our source code:
-+
-----
-    $ git clone git://git.fedorahosted.org/git/scap-security-guide.git
-----
-+
-3. 'make' the SSG
-+
-----
-    $ cd scap-security-guide
-    $ make
-    $ cd output
-----
-
-Discover the following:
-
-* A pretty prose guide in RHEL6/output/rhel6-guide.html containing practical, actionable information for administrators
-* A concise spreadsheet representation (potentially useful as the bases for an SRTM document) in RHEL6/output/rhel6-table-nistrefs-server.html
-* Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:
-** RHEL6/output/rhel6-xccdf-scap-security-guide.xml
-** RHEL6/output/rhel6-oval-scap-security-guide.xml
-** JBossEAP5/eap5-xccdf.xml
-
 == Running a Scan
-
-
-=== Available Profiles
-SCAP Security Guide content is broken into groupings of security settings that correlate to a known policy. These groupings are named XCCDF Profiles, which not only reflect a grouping of security controls, but also any variable tailoring (e.g. password length customization). Available profiles are:
-
-IMPORTANT: The SCAP Security Guide serves as the upstream development community for many government baselines. Due to upstream/downstream development relationships, SSG content will likely be ahead of officially released government baselines. If you require scrict conformance against published baselines, always refer to the issuers website for current content.
-
-    * *stig-rhel6-server* +
-    The Security Technical Implimentation Guides (STIGs) and the NSA SNAC Guides are the configuration standards for U.S. Department of Defense Information Assurance and Information Assurance-Enabled devices/systems. Since 1998, DISA Field Security Operations (DISA FSO) has played a critical role enhancing the security posture of DoD's security systems by providing the Security Technical Implimentation Guides. This profile was created as a collaboration effort between the National Security Agency, DISA FSO, and Red Hat, to form an upstream development community around the Red Hat Enterprise Linux 6 STIG.
-
-    * *usgcb-rhel6-server* +
-    The purpose of the United States Government Configuration Baseline (USGCB) initiative is to create security configuration baselines for Information Technology products widely deployed across federal agencies. The USGCB baseline evolved from the Federal Desktop Core Configuration mandate. The USGCH is a Federal government-wide initiative that provides guidance to agencies on what should be done to improve and maintain an effective configuration settings focusing primarily on security.
-
-    * *rht-ccp* +
-    The Red Hat Certified Cloud Provider (CCP) program ensures that public cloud providers meet "testing and certification requirements to demonstrate that they can deliver a safe, scalable, supported and consistent environment for enterprise cloud deployments. The Red Hat Certified Cloud Provider program provides customers, ISVs, and partners with the confidence that Red Hat product experts have validated the solution so that implimentations begin with a solid foundation" In order to establish an automated security testing process, Red Hat is exploring the use of SCAP profiles to evaluate Red Hat Enterprise Linux baselines/AMIs before public cloud providers release them to their customer sets. This does not reflect a statement of direction for Red Hat, but rather transparency as Red Hat evaluates best practices to evaluate the security posture of public cloud images.
 
 === Command Line Interface (CLI)
 This document outlines the usage of OpenSCAP, a command-line utility packaged within Fedora and Red Hat Enterprise Linux which allows users to load, scan, validate, edit, and export SCAP documents. Additional details regarding OpenSCAP can be found on the project homepage located at http://open-scap.org/.
