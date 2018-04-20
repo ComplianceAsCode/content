@@ -9,7 +9,7 @@ description: |-
     all of these checks should pass.
     
 selections:
-    - package_glibc_required_version_installed
+    - package_glibc_installed
     - package_uuidd_installed
     - file_permissions_etc_shadow
     - service_rlogin_disabled
