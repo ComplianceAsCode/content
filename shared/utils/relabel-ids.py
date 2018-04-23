@@ -187,19 +187,17 @@ class OVALFileLinker(FileLinker):
                 continue
 
             xccdfcceid = idmappingdict[ovalid]
-            if not ssgcommon.cce_is_valid(xccdfcceid):
-                msg = "The CCE ID {0} is not in valid form.".format(xccdfcceid)
-                raise ssgcommon.SSGError(msg)
-
-            # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
-            # after <description> element of specific OVAL check
-            ccerefelem = ssgcommon.ElementTree.Element(
-                'reference', ref_id=xccdfcceid, source="CCE")
-            ovaldesc.addnext(ccerefelem)
-            # Sanity check if appending succeeded
-            if ccerefelem.getprevious() is not ovaldesc:
-                msg = "Failed to add CCE ID to {0}.".format(ovalid)
-                raise ssgcommon.SSGError(msg)
+            if ssgcommon.cce_is_valid(xccdfcceid):
+                # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
+                # after <description> element of specific OVAL check
+                ccerefelem = ssgcommon.ElementTree.Element(
+                    'reference', ref_id=xccdfcceid, source="CCE")
+                metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
+                metadata.append(ccerefelem)
+                # Sanity check if appending succeeded
+                if ccerefelem is not metadata.find(".//reference[@ref_id='%s']" % xccdfcceid):
+                    msg = "Failed to add CCE ID to {0}.".format(ovalid)
+                    raise ssgcommon.SSGError(msg)
 
     def get_nested_definitions(self, oval_def_id):
         processed_def_ids = set()
@@ -429,13 +427,10 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
     xccdfrules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
     for rule in xccdfrules:
         identcce = _find_identcce(rule)
-        if identcce is None:
-            continue
-
-        cceid = identcce.text
-        if not ssgcommon.cce_is_valid(cceid):
-            msg = "The CCE ID {0} is not in valid form.".format(cceid)
-            raise ssgcommon.SSGError(msg)
+        if identcce is not None:
+            cceid = identcce.text
+            if not ssgcommon.cce_is_valid(cceid):
+                rule.remove(identcce)
 
 
 def create_parser():
