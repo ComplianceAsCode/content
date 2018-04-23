@@ -72,6 +72,7 @@ endif()
 
 find_package(PythonInterp 2 REQUIRED)
 find_python_module(yaml REQUIRED)
+find_python_module(jinja2 REQUIRED)
 
 find_package(OpenSCAP REQUIRED)
 
@@ -125,6 +126,7 @@ message(STATUS " ")
 message(STATUS "Tools:")
 message(STATUS "python: ${PYTHON_EXECUTABLE} (version: ${PYTHON_VERSION_STRING})")
 message(STATUS "python yaml module: ${PY_YAML}")
+message(STATUS "python jinja2 module: ${PY_JINJA2}")
 message(STATUS "oscap: ${OPENSCAP_OSCAP_EXECUTABLE} (version: ${OSCAP_VERSION})")
 message(STATUS "xsltproc: ${XSLTPROC_EXECUTABLE}")
 message(STATUS "xmllint: ${XMLLINT_EXECUTABLE}")
