@@ -35,7 +35,7 @@ class PackageInstalledGenerator(FilesGenerator):
                 )
             else:
                 self.file_from_template(
-                    "./template_OVAL_package_installed.evr",
+                    "./template_OVAL_package_installed_evr",
                     {
                         "%PKGNAME%": pkgname,
                         "%EVR%": evr
