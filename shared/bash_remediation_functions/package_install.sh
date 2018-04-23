@@ -18,9 +18,13 @@ then
 fi
 
 if which dnf ; then
+  if ! /bin/rpm -q --quiet $package; then
     dnf install -y "$package"
+  fi
 elif which yum ; then
+  if ! /bin/rpm -q --quiet $package; then
     yum install -y "$package"
+  fi
 elif which apt-get ; then
     apt-get install -y "$package"
 else
