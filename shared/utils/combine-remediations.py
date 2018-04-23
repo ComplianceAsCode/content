@@ -7,7 +7,6 @@ import re
 import errno
 import argparse
 import codecs
-import jinja2
 
 try:
     from xml.etree import cElementTree as ElementTree
@@ -19,7 +18,7 @@ sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 from map_product_module import map_product, parse_product_name, multi_product_list
-from ssgcommon import open_yaml, required_yaml_key
+from ssgcommon import open_yaml, required_yaml_key, process_file_with_jinja
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -395,32 +394,6 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         sys.exit(1)
 
 
-def process_fix_with_jinja(filepath, remediation_type, product_yaml):
-    # TODO: Choose something better
-    block_start_string = "{{%"
-    block_end_string = "%}}"
-    variable_start_string = "{{{"
-    variable_end_string = "}}}"
-    comment_start_string = "{{#"
-    comment_end_string = "#}}"
-
-    with codecs.open(filepath, "r", encoding="utf-8") as fix_file:
-            source = fix_file.read()
-            template = jinja2.Template(
-                source,
-                block_start_string=block_start_string,
-                block_end_string=block_end_string,
-                variable_start_string=variable_start_string,
-                variable_end_string=variable_end_string,
-                comment_start_string=comment_start_string,
-                comment_end_string=comment_end_string
-            )
-            generated_fix = template.render(product_yaml)
-            fix_file_lines = generated_fix.splitlines()
-
-    return fix_file_lines
-
-
 def main():
     p = argparse.ArgumentParser()
     p.add_argument(
@@ -470,11 +443,10 @@ def main():
                 mod_file = []
                 config = {}
 
-                fix_file_lines = process_fix_with_jinja(
+                fix_file_lines = process_file_with_jinja(
                     os.path.join(fixdir, filename),
-                    args.remediation_type,
                     product_yaml
-                )
+                ).splitlines()
 
                 # Assignment automatically escapes shell characters for XML
                 for line in fix_file_lines:
