@@ -15,7 +15,7 @@ if rpm -q prelink 2>&1 > /dev/null; then
 	prelink -u -a
 fi
 
-package_command install dracut-fips
+package_install dracut-fips
 
 dracut -f
 

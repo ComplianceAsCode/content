@@ -6,7 +6,7 @@
 
 . /usr/share/scap-security-guide/remediation_functions
 
-package_command install firewalld
+package_install firewalld
 
 populate firewalld_sshd_zone
 
