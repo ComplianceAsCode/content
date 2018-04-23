@@ -195,7 +195,13 @@ class OVALFileLinker(FileLinker):
                 metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
                 metadata.append(ccerefelem)
                 # Sanity check if appending succeeded
-                if ccerefelem is not metadata.find(".//reference[@ref_id='%s']" % xccdfcceid):
+                for ref in metadata.findall(".//reference"):
+                    if ref.attrib.get("ref_id") == xccdfcceid:
+                        cce_ref = ref
+                    else:
+                        cce_ref = None
+ 
+                if ccerefelem is not cce_ref:
                     msg = "Failed to add CCE ID to {0}.".format(ovalid)
                     raise ssgcommon.SSGError(msg)
 
