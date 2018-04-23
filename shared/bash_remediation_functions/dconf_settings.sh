@@ -27,7 +27,7 @@ function dconf_settings {
 	else
 		if grep -q "${_key}" ${SETTINGSFILES[@]}
 		then
-			sed -i "s/${_key}=.*/${_key}=${_value}/g" ${SETTINGSFILES[@]}
+			sed -i "s/${_key}\s*=\s*.*/${_key}=${_value}/g" ${SETTINGSFILES[@]}
 		else
 			sed -i "\|\[${_path}]|a\\${_key}=${_value}" ${SETTINGSFILES[@]}
 		fi

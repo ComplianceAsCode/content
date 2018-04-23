@@ -11,12 +11,12 @@ function dconf_lock {
 	if [ $# -ne "4" ]
 	then
 		echo "Usage: dconf_lock 'dconf_path' 'dconf_setting' 'dconf_db' 'dconf_lockfile'"
-	  	echo "Aborting."
+		echo "Aborting."
 		exit 1
 	fi
 
 	# Check for setting in any of the DConf db directories
-	LOCKFILES=($(grep -r "^/${_key}/${_setting}$" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1))
+	LOCKFILES=$(grep -r "^/${_key}/${_setting}$" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1)
 
 	if [[ -z "${LOCKFILES}" ]]
 	then
