@@ -14,7 +14,7 @@ local package=$2
 # Check sanity of the input
 if [ $# -ne "2" ]
 then
-  echo "Usage: package_command 'install/uninstall' 'rpm_package_name"
+  echo "Usage: package_command 'install/uninstall' 'rpm_package_name'"
   echo "Aborting."
   exit 1
 fi

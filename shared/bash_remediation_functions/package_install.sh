@@ -1,4 +1,4 @@
-# Function to install  packages on RHEL, Fedora, Debian, and possibly other systems.
+# Function to install packages on RHEL, Fedora, Debian, and possibly other systems.
 #
 # Example Call(s):
 #
@@ -7,26 +7,26 @@
 function package_install {
 
 # Load function arguments into local variables
-local package=$1
+local package="$1"
 
 # Check sanity of the input
 if [ $# -ne "1" ]
 then
-  echo "Usage: package_install 'package_name"
+  echo "Usage: package_install 'package_name'"
   echo "Aborting."
   exit 1
 fi
 
 if which dnf ; then
-  if ! /bin/rpm -q --quiet $package; then
+  if ! rpm -q --quiet "$package"; then
     dnf install -y "$package"
   fi
 elif which yum ; then
-  if ! /bin/rpm -q --quiet $package; then
+  if ! rpm -q --quiet "$package"; then
     yum install -y "$package"
   fi
 elif which apt-get ; then
-    apt-get install -y "$package"
+  apt-get install -y "$package"
 else
   echo "Failed to detect available packaging system, tried dnf, yum and apt-get!"
   echo "Aborting."
