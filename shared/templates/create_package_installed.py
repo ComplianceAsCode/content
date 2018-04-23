@@ -15,19 +15,25 @@ class PackageInstalledGenerator(FilesGenerator):
                 "ERROR: input violation: the package name must be defined")
 
         if target == "oval":
-            if len(package_info) == 1:
+            nrparameter = 2               # expect two parameters: pkgname,evr
+            if len(package_info) == 1:    # if there is only pkgname
+                nrparameter = 1
+            else:
+                evr = package_info[1]
+                if not evr:               # if the input is "pkgname," as in ubuntu
+                    nrparameter = 1
+                elif not re.match(r'\d:\d[\w+.]{0,}-\d[\w+.]{0,}', evr, 0):
+                    raise RuntimeError(
+                        "ERROR: input violation: evr should be in epoch:version-release format",
+                        "current package is", pkgname, "current evr is", evr)
+
+            if nrparameter == 1:
                 self.file_from_template(
                     "./template_OVAL_package_installed",
                     {"%PKGNAME%": pkgname},
                     "./oval/package_{0}_installed.xml", pkgname
                 )
             else:
-                evr = package_info[1]
-                if evr and not re.match(r'\d:\d[\w+.]{0,}-\d[\w+.]{0,}', evr, 0):
-                    raise RuntimeError(
-                        "ERROR: input violation: evr should be in epoch:version-release format",
-                        "current package is ", pkgname, " current evr is ", evr)
-
                 self.file_from_template(
                     "./template_OVAL_package_installed.evr",
                     {
@@ -70,4 +76,4 @@ class PackageInstalledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PACKAGE_NAME", "EVR_STRING")
+               "PACKAGE_NAME[,EVR_STRING]")
