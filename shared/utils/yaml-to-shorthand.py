@@ -550,10 +550,6 @@ def main():
         print(args.output)
         sys.exit(0)
 
-    # TODO: Remove this once all products are ported over
-    if not os.path.isfile(args.product_yaml):
-        sys.exit(0)
-
     product_yaml = open_yaml(args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = required_yaml_key(product_yaml, "benchmark_root")
