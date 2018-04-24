@@ -213,14 +213,14 @@ def process_file_with_jinja(filepath, product_yaml):
     comment_end_string = "#}}"
 
     with codecs.open(filepath, "r", encoding="utf-8") as fix_file:
-            source = fix_file.read()
-            template = jinja2.Template(
-                source,
-                block_start_string=block_start_string,
-                block_end_string=block_end_string,
-                variable_start_string=variable_start_string,
-                variable_end_string=variable_end_string,
-                comment_start_string=comment_start_string,
-                comment_end_string=comment_end_string
-            )
-            return template.render(product_yaml)
+        source = fix_file.read()
+        template = jinja2.Template(
+            source,
+            block_start_string=block_start_string,
+            block_end_string=block_end_string,
+            variable_start_string=variable_start_string,
+            variable_end_string=variable_end_string,
+            comment_start_string=comment_start_string,
+            comment_end_string=comment_end_string
+        )
+        return template.render(product_yaml)
