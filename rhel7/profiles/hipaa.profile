@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: True
 
 title: 'Health Insurance Portability and Accountability Act (HIPAA)'
 
@@ -94,7 +94,6 @@ selections:
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_su
     - audit_rules_immutable
-    - bootloader_nousb_argument
     - kernel_module_usb-storage_disabled
     - service_autofs_disabled
     - auditd_audispd_syslog_plugin_activated
