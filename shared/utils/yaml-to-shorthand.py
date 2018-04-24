@@ -430,8 +430,7 @@ class Rule(object):
             check = ET.SubElement(rule, 'check')
             check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
             external_content = ET.SubElement(check, "check-content-ref")
-            if self.external_oval:
-                external_content.set("href", self.external_oval)
+            external_content.set("href", self.external_oval)
         else:
             # TODO: This is pretty much a hack, oval ID will be the same as rule ID
             #       and we don't want the developers to have to keep them in sync.
