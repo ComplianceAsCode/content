@@ -205,7 +205,6 @@ selections:
     - wireless_disable_interfaces
     - kernel_module_bluetooth_disabled
     - service_bluetooth_disabled
-    - bootloader_nousb_argument
     - kernel_module_usb-storage_disabled
     - service_autofs_disabled
     - disable_ctrlaltdel_reboot
