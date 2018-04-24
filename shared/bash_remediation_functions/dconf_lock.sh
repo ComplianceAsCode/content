@@ -17,6 +17,12 @@ function dconf_lock {
 
 	# Check for setting in any of the DConf db directories
 	LOCKFILES=$(grep -r "^/${_key}/${_setting}$" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1)
+	LOCKSFOLDER="/etc/dconf/db/${_db}/locks"
+
+	if [ ! -d ${LOCKSFOLDER} ]
+	then
+		mkdir -p ${LOCKSFOLDER}
+	fi
 
 	if [[ -z "${LOCKFILES}" ]]
 	then

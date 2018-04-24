@@ -18,6 +18,12 @@ function dconf_settings {
 	# Check for setting in any of the DConf db directories
 	SETTINGSFILES=($(grep -r "\[${_path}]" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1))
 	DCONFFILE="/etc/dconf/db/${_db}/${_settingFile}"
+	DBDIR="/etc/dconf/db/${_db}"
+
+	if [ ! -d ${DBDIR} ]
+	then
+		mkdir -p ${DBDIR}
+	fi
 
 	if [[ -z "${SETTINGSFILES[@]}" ]]
 	then
