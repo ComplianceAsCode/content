@@ -174,7 +174,7 @@ class Benchmark(object):
         benchmark.version = str(required_yaml_key(yaml_contents, "version"))
         return benchmark
 
-    def add_profiles_from_dir(self, action, dir_):
+    def add_profiles_from_dir(self, action, dir_, product_yaml):
         for dir_item in os.listdir(dir_):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
@@ -189,7 +189,7 @@ class Benchmark(object):
                 )
                 continue
 
-            self.profiles.append(Profile.from_yaml(dir_item_path))
+            self.profiles.append(Profile.from_yaml(dir_item_path, product_yaml))
             if action == "list-inputs":
                 print(dir_item_path)
 
@@ -473,7 +473,7 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             benchmark_file, 'product-name', product_yaml
         )
         if profiles_dir:
-            group.add_profiles_from_dir(action, profiles_dir)
+            group.add_profiles_from_dir(action, profiles_dir, product_yaml)
         group.add_bash_remediation_fns_from_file(action, bash_remediation_fns)
         if action == "list-inputs":
             print(benchmark_file)
