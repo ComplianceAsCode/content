@@ -3,7 +3,7 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-PATTERN="-a always,exit -F path=%PATH%.*"
+PATTERN="-a always,exit -F path=%PATH%\\s*.*"
 GROUP="privileged"
 FULL_RULE="-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged"
 # Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
