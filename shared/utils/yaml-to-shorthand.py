@@ -45,8 +45,8 @@ class Profile(object):
         self.id_ = id_
 
     @staticmethod
-    def from_yaml(yaml_file):
-        yaml_contents = open_yaml(yaml_file)
+    def from_yaml(yaml_file, product_yaml=None):
+        yaml_contents = open_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -98,8 +98,8 @@ class Value(object):
         self.id_ = id_
 
     @staticmethod
-    def from_yaml(yaml_file):
-        yaml_contents = open_yaml(yaml_file)
+    def from_yaml(yaml_file, product_yaml=None):
+        yaml_contents = open_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -153,8 +153,8 @@ class Benchmark(object):
         self.add_value(conditional_clause)
 
     @staticmethod
-    def from_yaml(yaml_file, id_):
-        yaml_contents = open_yaml(yaml_file)
+    def from_yaml(yaml_file, id_, product_yaml=None):
+        yaml_contents = open_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -283,8 +283,8 @@ class Group(object):
         self.rules = {}
 
     @staticmethod
-    def from_yaml(yaml_file):
-        yaml_contents = open_yaml(yaml_file)
+    def from_yaml(yaml_file, product_yaml=None):
+        yaml_contents = open_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -342,8 +342,8 @@ class Rule(object):
         self.id_ = id_
 
     @staticmethod
-    def from_yaml(yaml_file):
-        yaml_contents = open_yaml(yaml_file)
+    def from_yaml(yaml_file, product_yaml=None):
+        yaml_contents = open_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -431,7 +431,7 @@ class Rule(object):
 
 
 def add_from_directory(action, parent_group, guide_directory, profiles_dir,
-                       bash_remediation_fns, output_file):
+                       bash_remediation_fns, output_file, product_yaml):
     benchmark_file = None
     group_file = None
     rules = []
@@ -469,7 +469,9 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
     # we treat benchmark as a special form of group in the following code
     group = None
     if benchmark_file:
-        group = Benchmark.from_yaml(benchmark_file, 'product-name')
+        group = Benchmark.from_yaml(
+            benchmark_file, 'product-name', product_yaml
+        )
         if profiles_dir:
             group.add_profiles_from_dir(action, profiles_dir)
         group.add_bash_remediation_fns_from_file(action, bash_remediation_fns)
@@ -477,7 +479,7 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             print(benchmark_file)
 
     if group_file:
-        group = Group.from_yaml(group_file)
+        group = Group.from_yaml(group_file, product_yaml)
         if action == "list-inputs":
             print(group_file)
 
@@ -486,18 +488,19 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             if action == "list-inputs":
                 print(value_yaml)
             else:
-                value = Value.from_yaml(value_yaml)
+                value = Value.from_yaml(value_yaml, product_yaml)
                 group.add_value(value)
 
         for subdir in subdirectories:
             add_from_directory(action, group, subdir, profiles_dir,
-                               bash_remediation_fns, output_file)
+                               bash_remediation_fns, output_file,
+                               product_yaml)
 
         for rule_yaml in rules:
             if action == "list-inputs":
                 print(rule_yaml)
             else:
-                rule = Rule.from_yaml(rule_yaml)
+                rule = Rule.from_yaml(rule_yaml, product_yaml)
                 group.add_rule(rule)
 
         if parent_group:
@@ -548,7 +551,7 @@ def main():
         profiles_root = os.path.join(base_dir, profiles_root)
 
     add_from_directory(args.action, None, benchmark_root, profiles_root,
-                       args.bash_remediation_fns, args.output)
+                       args.bash_remediation_fns, args.output, product_yaml)
 
 
 if __name__ == "__main__":
