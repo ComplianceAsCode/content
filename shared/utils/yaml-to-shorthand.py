@@ -379,6 +379,7 @@ class Rule(object):
         rule.identifiers = yaml_contents.get("identifiers", [])
         rule.ocil_clause = yaml_contents.get("ocil_clause")
         rule.ocil = yaml_contents.get("ocil")
+        rule.external_oval = yaml_contents.get("oval_external_content")
         return rule
 
     def to_xml_element(self):
@@ -425,11 +426,17 @@ class Rule(object):
             if main_ref.attrib:
                 rule.append(main_ref)
 
-        # TODO: This is pretty much a hack, oval ID will be the same as rule ID
-        #       and we don't want the developers to have to keep them in sync.
-        #       Therefore let's just add an OVAL ref of that ID.
-        oval_ref = ET.SubElement(rule, "oval")
-        oval_ref.set("id", self.id_)
+        if self.external_oval:
+            check = ET.SubElement(rule, 'check')
+            check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
+            external_content = ET.SubElement(check, "check-content-ref")
+            external_content.set("href", self.external_oval)
+        else:
+            # TODO: This is pretty much a hack, oval ID will be the same as rule ID
+            #       and we don't want the developers to have to keep them in sync.
+            #       Therefore let's just add an OVAL ref of that ID.
+            oval_ref = ET.SubElement(rule, "oval")
+            oval_ref.set("id", self.id_)
 
         if self.ocil or self.ocil_clause:
             ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
