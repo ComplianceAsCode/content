@@ -59,10 +59,12 @@ selections:
     - dconf_gnome_login_banner_text
     - banner_etc_issue
     - dconf_gnome_screensaver_lock_enabled
+    - dconf_gnome_screensaver_lock_locked
     - dconf_gnome_enable_smartcard_auth
     - dconf_gnome_screensaver_idle_delay
     - package_screen_installed
     - dconf_gnome_screensaver_idle_activation_enabled
+    - dconf_gnome_screensaver_idle_activation_locked
     - dconf_gnome_screensaver_lock_delay
     - accounts_password_pam_ucredit
     - accounts_password_pam_lcredit
