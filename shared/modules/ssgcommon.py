@@ -203,6 +203,11 @@ get_jinja_environment.env = None
 
 
 def process_file_with_jinja(filepath, product_yaml):
+    # This is a bit silly, jinja2 insists on relative template paths so we have
+    # to convert the absolute path we have to a path relative to the root
+    # SSG_DIRECTORY
+    #
+    # TODO: Create a new jinja2 loader that takes absolute paths
     relpath = os.path.relpath(filepath, SSG_DIRECTORY)
     template = get_jinja_environment().get_template(relpath)
     return template.render(product_yaml)
