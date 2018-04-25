@@ -5,11 +5,19 @@ prodtype: rhel6,rhel7,ubuntu1404,ubuntu1604,ol7
 title: 'Ensure Software Patches Installed'
 
 description: |-
+{{% if product in ["rhel6", "rhel7"] %}}
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
     or a yum server, run the following command to install updates:
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
+{{% elif product == "ol7" %}}
+    If the system is joined to the ULN
+    or a yum server, run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+    can be manually downloaded from the ULN and installed using <tt>rpm</tt>.
+{{% endif %}}
     <br /><br />
     NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
     dictates.
