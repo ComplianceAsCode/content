@@ -15,19 +15,15 @@ class PackageInstalledGenerator(FilesGenerator):
                 "ERROR: input violation: the package name must be defined")
 
         if target == "oval":
-            nrparameter = 2               # expect two parameters: pkgname,evr
-            if len(package_info) == 1:    # if there is only pkgname
-                nrparameter = 1
-            else:
+            # If the input is "pkgname,evr", verify if the evr string is in correct format
+            if len(package_info) > 1:
                 evr = package_info[1]
-                if not evr:               # if the input is "pkgname," as in ubuntu
-                    nrparameter = 1
-                elif not re.match(r'\d:\d[\w+.]{0,}-\d[\w+.]{0,}', evr, 0):
+                if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
                     raise RuntimeError(
                         "ERROR: input violation: evr should be in epoch:version-release format",
                         "current package is", pkgname, "current evr is", evr)
 
-            if nrparameter == 1:
+            if len(package_info) == 1 or not evr:    # if there is only pkgname or the input is "pkgname,"
                 self.file_from_template(
                     "./template_OVAL_package_installed",
                     {"%PKGNAME%": pkgname},
