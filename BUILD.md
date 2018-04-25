@@ -4,17 +4,20 @@
 
 1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils`, and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
 
- `# yum -y install cmake openscap-utils git PyYAML`
+ `# yum -y install cmake openscap-utils git PyYAML python-ninja2`
 
- On Ubuntu make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `xsltproc`, and their dependencies are installed as well as `git`.
+ On Ubuntu, make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `xsltproc`, and their dependencies are installed as well as `git`.
 
- `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils xsltproc git`
+ `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils xsltproc git python-ninja2`
+
+ On Fedora, install the python2-ninja package
+ `# dnf -y install python2-ninja2`
 
  Optional: Install the ShellCheck package.
 
  `# dnf -y install ShellCheck`
 
- Optional: If you want to use the Ninja build system install the ninja-build package
+ Optional: If you want to use the Ninja build system, install the ninja-build package
 
  `# dnf -y install ninja-build`
 
