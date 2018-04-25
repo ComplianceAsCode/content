@@ -196,10 +196,7 @@ class OVALFileLinker(FileLinker):
                 metadata.append(ccerefelem)
                 # Sanity check if appending succeeded
                 for ref in metadata.findall(".//reference"):
-                    if ref.attrib.get("ref_id") == xccdfcceid:
-                        cce_ref = ref
-                    else:
-                        cce_ref = None
+                    cce_ref = ref if ref.attrib.get("ref_id") == xccdfcceid else None
  
                 if ccerefelem is not cce_ref:
                     msg = "Failed to add CCE ID to {0}.".format(ovalid)
