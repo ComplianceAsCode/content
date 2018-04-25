@@ -5,6 +5,7 @@ import re
 import yaml
 import codecs
 import jinja2
+import os.path
 
 
 try:
@@ -12,6 +13,9 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
+SSG_DIRECTORY = os.path.abspath(
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+)
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
@@ -179,27 +183,29 @@ def map_elements_to_their_ids(tree, xpath_expr):
     return aggregated
 
 
-def process_file_with_jinja(filepath, product_yaml):
-    # TODO: Choose something better
-    block_start_string = "{{%"
-    block_end_string = "%}}"
-    variable_start_string = "{{{"
-    variable_end_string = "}}}"
-    comment_start_string = "{{#"
-    comment_end_string = "#}}"
-
-    with codecs.open(filepath, "r", encoding="utf-8") as fix_file:
-        source = fix_file.read()
-        template = jinja2.Template(
-            source,
-            block_start_string=block_start_string,
-            block_end_string=block_end_string,
-            variable_start_string=variable_start_string,
-            variable_end_string=variable_end_string,
-            comment_start_string=comment_start_string,
-            comment_end_string=comment_end_string
+def get_jinja_environment():
+    if get_jinja_environment.env is None:
+        # TODO: Choose better syntax?
+        get_jinja_environment.env = jinja2.Environment(
+            block_start_string="{{%",
+            block_end_string="%}}",
+            variable_start_string="{{{",
+            variable_end_string="}}}",
+            comment_start_string="{{#",
+            comment_end_string="#}}",
+            loader=jinja2.FileSystemLoader(SSG_DIRECTORY)
         )
-        return template.render(product_yaml)
+
+    return get_jinja_environment.env
+
+
+get_jinja_environment.env = None
+
+
+def process_file_with_jinja(filepath, product_yaml):
+    relpath = os.path.relpath(filepath, SSG_DIRECTORY)
+    template = get_jinja_environment().get_template(relpath)
+    return template.render(product_yaml)
 
 
 def open_yaml(yaml_file, product_yaml=None):
