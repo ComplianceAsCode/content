@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Ensure Users Cannot Change GNOME3 Screensaver Idle Activation'
+
+description: |-
+    If not already configured, ensure that users cannot change GNOME3 screensaver lock settings
+    by adding <pre>/org/gnome/desktop/screensaver/idle-activation-enabled</pre>
+    to <tt>/etc/dconf/db/local.d/00-security-settings</tt>.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/idle-activation-enabled</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
+
+rationale: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
+    of the information system but does not want to logout because of the temporary nature of the absense.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80564-8
+
+references:
+    cjis: 5.5.5
+    cui: 3.1.10
+    disa: 57
+    nist: AC-11(a)
+    ospp@rhel7: FMT_MOF_EXT.1
+    pcidss: Req-8.1.8
+    srg: SRG-OS-000029-GPOS-00010
+    stigid@rhel7: "010101"
+
+ocil_clause: 'idle_activation_enabled is not locked'
+
+ocil: |-
+    To ensure that users cannot disable the screensaver idle inactivity setting, run the following:
+    <pre>$ grep idle-activation-enabled /etc/dconf/db/local.d/locks/*</pre>
+    If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/idle-activation-enabled</tt>
