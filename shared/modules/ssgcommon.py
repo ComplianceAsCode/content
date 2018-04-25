@@ -2,6 +2,10 @@ import datetime
 import platform
 import subprocess
 import re
+import yaml
+import codecs
+import jinja2
+import os.path
 
 
 try:
@@ -174,3 +178,99 @@ def map_elements_to_their_ids(tree, xpath_expr):
         assert element_id is not None
         aggregated[element_id] = element
     return aggregated
+
+
+class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
+    """Loads templates from the file system. This loader insists on absolute
+    paths and fails if a relative path is provided.
+
+    >>> loader = AbsolutePathFileSystemLoader()
+
+    Per default the template encoding is ``'utf-8'`` which can be changed
+    by setting the `encoding` parameter to something else.
+    """
+
+    def __init__(self, encoding='utf-8'):
+        self.encoding = encoding
+
+    def get_source(self, environment, template):
+        if not os.path.isabs(template):
+            raise jinja2.TemplateNotFound(template)
+
+        f = jinja2.utils.open_if_exists(template)
+        if f is None:
+            raise jinja2.TemplateNotFound(template)
+        try:
+            contents = f.read().decode(self.encoding)
+        finally:
+            f.close()
+
+        mtime = os.path.getmtime(template)
+
+        def uptodate():
+            try:
+                return os.path.getmtime(template) == mtime
+            except OSError:
+                return False
+        return contents, template, uptodate
+
+
+def get_jinja_environment():
+    if get_jinja_environment.env is None:
+        # TODO: Choose better syntax?
+        get_jinja_environment.env = jinja2.Environment(
+            block_start_string="{{%",
+            block_end_string="%}}",
+            variable_start_string="{{{",
+            variable_end_string="}}}",
+            comment_start_string="{{#",
+            comment_end_string="#}}",
+            loader=AbsolutePathFileSystemLoader()
+        )
+
+    return get_jinja_environment.env
+
+
+get_jinja_environment.env = None
+
+
+def process_file_with_jinja(filepath, product_yaml):
+    template = get_jinja_environment().get_template(filepath)
+    return template.render(product_yaml)
+
+
+def open_yaml(yaml_file, product_yaml=None):
+    """Open given file and parse it as YAML.
+    if product_yaml is also given this function will process the yaml with
+    jinja2, using product_yaml as input.
+    """
+
+    def bool_constructor(self, node):
+        return self.construct_scalar(node)
+
+    # Don't follow python bool case
+    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+
+    yaml_contents = None
+
+    if product_yaml is None:
+        with codecs.open(yaml_file, "r", "utf8") as stream:
+            yaml_contents = yaml.load(stream)
+    else:
+        yaml_contents = yaml.load(
+            process_file_with_jinja(yaml_file, product_yaml)
+        )
+
+    if "documentation_complete" in yaml_contents and \
+            yaml_contents["documentation_complete"] == "false":
+        return None
+
+    return yaml_contents
+
+
+def required_yaml_key(yaml_contents, key):
+    if key in yaml_contents:
+        return yaml_contents[key]
+
+    raise ValueError("%s is required but was not found in:\n%s" %
+                     (key, repr(yaml_contents)))

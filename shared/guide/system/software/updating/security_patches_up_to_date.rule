@@ -1,15 +1,23 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7,ubuntu1404,ubuntu1604,ol7
 
 title: 'Ensure Software Patches Installed'
 
 description: |-
+{{% if product in ["rhel6", "rhel7"] %}}
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
     or a yum server, run the following command to install updates:
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
+{{% elif product == "ol7" %}}
+    If the system is joined to the ULN
+    or a yum server, run the following command to install updates:
+    <pre>$ sudo yum update</pre>
+    If the system is not configured to use one of these sources, updates (in the form of RPM packages)
+    can be manually downloaded from the ULN and installed using <tt>rpm</tt>.
+{{% endif %}}
     <br /><br />
     NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
     dictates.
@@ -36,20 +44,46 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "020260"
 
-oval_external_content: https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2
+{{# Make sure all the external OVAL content links are secured via TLS! #}}
+
+{{% if product == "rhel6" %}}
+oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL6.xml.bz2"
+{{% elif product == "rhel7" %}}
+oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2"
+{{% elif product == "ubuntu1404" %}}
+oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.trusty.cve.oval.xml"
+{{% elif product == "ubuntu1604" %}}
+oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.xenial.cve.oval.xml"
+{{% elif product == "ol7" %}}
+oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
+{{% else %}}
+{{# The rule will be "notchecked" #}}
+{{% endif %}}
 
 ocil_clause: 'updates are not installed'
 
+{{# TODO: What about non-rpm systems? #}}
 ocil: |-
+{{% if product in ["rhel6", "rhel7"] %}}
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
     a yum server which provides updates, invoking the following command will
     indicate if updates are available:
     <pre>$ sudo yum check-update</pre>
+{{% elif product == "ol7" %}}
+    If the system is joined to the ULN or a yum server which provides updates,
+    invoking the following command will indicate if updates are available:
+{{% endif %}}
     <br /><br />
     If the system is not configured to update from one of these sources,
     run the following command to list when each package was last updated:
     <pre>$ rpm -qa -last</pre>
     <br /><br />
+{{% if product in ["rhel6", "rhel7"] %}}
     Compare this to Red Hat Security Advisories (RHSA) listed at
     <weblink-macro link="https://access.redhat.com/security/updates/active/" />
     to determine if the system is missing applicable updates.
+{{% elif product == "ol7" %}}
+    Compare this to Oracle Linux Security Advisories (ELSA) listed at
+    <weblink-macro link="https://linux.oracle.com/pls/apex/f?p=105:21:::NO:RP::"/>
+    to determine if the system is missing applicable updates.
+{{% endif %}}

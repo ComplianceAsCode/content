@@ -262,7 +262,7 @@ def check_oval_version_from_oval(xml_content, oval_version):
         return True
 
 
-def checks(product, oval_version, oval_dirs):
+def checks(product_yaml, oval_version, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
        oval_dirs: list of directory with oval files (later has higher priority)
@@ -278,18 +278,21 @@ def checks(product, oval_version, oval_dirs):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
-                    with codecs.open(os.path.join(oval_dir, filename), "r",
-                                     encoding="utf-8") as xml_file:
-                        xml_content = xml_file.read()
-                        if not check_is_applicable_for_product(xml_content, product):
-                            continue
-                        if check_is_loaded(already_loaded, filename, oval_version):
-                            continue
-                        if not check_oval_version_from_oval(xml_content, oval_version):
-                            continue
-                        body.append(xml_content)
-                        included_checks_count += 1
-                        already_loaded[filename] = oval_version
+                    xml_content = ssgcommon.process_file_with_jinja(
+                        os.path.join(oval_dir, filename), product_yaml
+                    )
+                    if not check_is_applicable_for_product(
+                        xml_content,
+                        ssgcommon.required_yaml_key(product_yaml, "product")
+                    ):
+                        continue
+                    if check_is_loaded(already_loaded, filename, oval_version):
+                        continue
+                    if not check_oval_version_from_oval(xml_content, oval_version):
+                        continue
+                    body.append(xml_content)
+                    included_checks_count += 1
+                    already_loaded[filename] = oval_version
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
@@ -306,8 +309,11 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--ssg_version", default="unknown",
                    help="SSG version for reporting purposes. example: 0.1.34")
-    p.add_argument("--product", required=True,
-                   help="which product are we building for? example: rhel7")
+    p.add_argument(
+        "--product-yaml", required=True, dest="product_yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+    )
     p.add_argument("--oval_config", required=True,
                    help="Location of the oval.config file.")
     p.add_argument("--oval_version", required=True,
@@ -325,16 +331,20 @@ def main():
         )
         sys.exit(1)
 
+    product_yaml = ssgcommon.open_yaml(args.product_yaml)
+
     if os.path.isfile(args.oval_config):
-        multi_platform = \
-            parse_conf_file(args.oval_config, args.product)
+        multi_platform = parse_conf_file(
+            args.oval_config,
+            ssgcommon.required_yaml_key(product_yaml, "product")
+        )
         header = ssgcommon.oval_generated_header("combine-ovals.py", args.oval_version, args.ssg_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))
         sys.exit(1)
 
-    body = checks(args.product, args.oval_version, args.ovaldirs)
+    body = checks(product_yaml, args.oval_version, args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately
