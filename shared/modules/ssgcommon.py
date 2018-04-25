@@ -13,9 +13,6 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-SSG_DIRECTORY = os.path.abspath(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-)
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
@@ -183,6 +180,41 @@ def map_elements_to_their_ids(tree, xpath_expr):
     return aggregated
 
 
+class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
+    """Loads templates from the file system. This loader insists on absolute
+    paths and fails if a relative path is provided.
+
+    >>> loader = AbsolutePathFileSystemLoader()
+
+    Per default the template encoding is ``'utf-8'`` which can be changed
+    by setting the `encoding` parameter to something else.
+    """
+
+    def __init__(self, encoding='utf-8'):
+        self.encoding = encoding
+
+    def get_source(self, environment, template):
+        if not os.path.isabs(template):
+            raise jinja2.TemplateNotFound(template)
+
+        f = jinja2.utils.open_if_exists(template)
+        if f is None:
+            raise jinja2.TemplateNotFound(template)
+        try:
+            contents = f.read().decode(self.encoding)
+        finally:
+            f.close()
+
+        mtime = os.path.getmtime(template)
+
+        def uptodate():
+            try:
+                return os.path.getmtime(template) == mtime
+            except OSError:
+                return False
+        return contents, template, uptodate
+
+
 def get_jinja_environment():
     if get_jinja_environment.env is None:
         # TODO: Choose better syntax?
@@ -193,7 +225,7 @@ def get_jinja_environment():
             variable_end_string="}}}",
             comment_start_string="{{#",
             comment_end_string="#}}",
-            loader=jinja2.FileSystemLoader(SSG_DIRECTORY)
+            loader=AbsolutePathFileSystemLoader()
         )
 
     return get_jinja_environment.env
@@ -203,13 +235,7 @@ get_jinja_environment.env = None
 
 
 def process_file_with_jinja(filepath, product_yaml):
-    # This is a bit silly, jinja2 insists on relative template paths so we have
-    # to convert the absolute path we have to a path relative to the root
-    # SSG_DIRECTORY
-    #
-    # TODO: Create a new jinja2 loader that takes absolute paths
-    relpath = os.path.relpath(filepath, SSG_DIRECTORY)
-    template = get_jinja_environment().get_template(relpath)
+    template = get_jinja_environment().get_template(filepath)
     return template.render(product_yaml)
 
 
