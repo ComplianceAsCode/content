@@ -4,8 +4,8 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "eap6")
-set(DISA_SRG_VERSION "v2r1")
-set(DISA_STIG_VERSION "v1r2")
+set(DISA_SRG_VERSION "v[0-9]*r[0-9]*")
+set(DISA_STIG_VERSION "v[0-9]*r[0-9]*")
 set(DISA_SRG_TYPE "application")
 
 ssg_build_product(${PRODUCT})

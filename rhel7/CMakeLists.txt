@@ -4,8 +4,8 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "rhel7")
-set(DISA_SRG_VERSION "v1r4")
-set(DISA_STIG_VERSION "v1r4")
+set(DISA_SRG_VERSION "v[0-9]*r[0-9]*")
+set(DISA_STIG_VERSION "v[0-9]*r[0-9]*")
 set(DISA_SRG_TYPE "os")
 
 ssg_build_product(${PRODUCT})
