@@ -20,10 +20,7 @@ function dconf_settings {
 	DCONFFILE="/etc/dconf/db/${_db}/${_settingFile}"
 	DBDIR="/etc/dconf/db/${_db}"
 
-	if [ ! -d ${DBDIR} ]
-	then
-		mkdir -p ${DBDIR}
-	fi
+	mkdir -p "${DBDIR}"
 
 	if [[ -z "${SETTINGSFILES[@]}" ]]
 	then
