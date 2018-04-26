@@ -1,9 +1,12 @@
 documentation_complete: false
 
-title: 'Standard Docker Host Security Profile'
+title: '[DRAFT] Standard Docker Host Security Profile'
 
-description: "This profile contains rules to ensure standard security baseline\nof Red Hat Enterprise Linux 7 system running\
-    \ the docker daemon. This discussion\nis currently being held on open-scap-list@redhat.com and \nscap-security-guide@lists.fedorahosted.org."
+description: "This profile contains rules to ensure standard security \n
+    \ baseline of Red Hat Enterprise Linux 7 system running the docker \n
+    \ \n
+    \ This discussion is currently being held on open-scap-list@redhat.com \n
+    \ and scap-security-guide@lists.fedorahosted.org."
 
 selections:
     - service_docker_enabled

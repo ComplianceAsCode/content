@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 from map_product_module import map_product, parse_product_name, multi_product_list
+from ssgcommon import open_yaml, required_yaml_key, process_file_with_jinja
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -395,8 +396,11 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--product", required=True,
-                   help="which product are we building for? example: rhel7")
+    p.add_argument(
+        "--product-yaml", required=True, dest="product_yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+    )
     p.add_argument("--remediation_type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
@@ -414,6 +418,8 @@ def main():
             "Unknown positional arguments " + ",".join(unknown) + ".\n"
         )
         sys.exit(1)
+
+    product_yaml = open_yaml(args.product_yaml)
 
     fixcontent = ElementTree.Element(
         "fix-content", system="urn:xccdf:fix:script:sh",
@@ -436,25 +442,30 @@ def main():
 
                 mod_file = []
                 config = {}
-                with codecs.open(os.path.join(fixdir, filename), "r",
-                                 encoding="utf-8") as fix_file:
-                    # Assignment automatically escapes shell characters for XML
-                    for line in fix_file.readlines():
-                        if line.startswith('#'):
-                            try:
-                                (key, value) = line.strip('#').split('=')
-                                if key.strip() in ['complexity', 'disruption',
-                                                   'platform', 'reboot',
-                                                   'strategy']:
-                                    config[key.strip()] = value.strip()
-                                else:
-                                    if not line.startswith(FILE_GENERATED):
-                                        mod_file.append(line)
-                            except ValueError:
+
+                fix_file_lines = process_file_with_jinja(
+                    os.path.join(fixdir, filename),
+                    product_yaml
+                ).splitlines()
+
+                # Assignment automatically escapes shell characters for XML
+                for line in fix_file_lines:
+                    line += "\n"
+                    if line.startswith('#'):
+                        try:
+                            (key, value) = line.strip('#').split('=')
+                            if key.strip() in ['complexity', 'disruption',
+                                                'platform', 'reboot',
+                                                'strategy']:
+                                config[key.strip()] = value.strip()
+                            else:
                                 if not line.startswith(FILE_GENERATED):
                                     mod_file.append(line)
-                        else:
-                            mod_file.append(line)
+                        except ValueError:
+                            if not line.startswith(FILE_GENERATED):
+                                mod_file.append(line)
+                    else:
+                        mod_file.append(line)
 
                 complexity = None
                 disruption = None
@@ -475,7 +486,7 @@ def main():
 
                 if script_platform:
                     product_name, result = fix_is_applicable_for_product(
-                        script_platform, args.product)
+                        script_platform, required_yaml_key(product_yaml, "product"))
                     if result:
                         if fixname in fixes:
                             fix = fixes[fixname]
