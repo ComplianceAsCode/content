@@ -15,6 +15,7 @@ class PackageInstalledGenerator(FilesGenerator):
                 "ERROR: input violation: the package name must be defined")
 
         if target == "oval":
+            evr = ""
             # If the input is "pkgname,evr", verify if the evr string is in correct format
             if len(package_info) > 1:
                 evr = package_info[1]
@@ -22,8 +23,6 @@ class PackageInstalledGenerator(FilesGenerator):
                     raise RuntimeError(
                         "ERROR: input violation: evr should be in epoch:version-release format",
                         "current package is", pkgname, "current evr is", evr)
-            else:
-                evr = ""
 
             self.file_from_template(
                 "./template_OVAL_package_installed_evr",
