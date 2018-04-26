@@ -4,8 +4,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "ocp3")
-#set(DISA_SRG_VERSION "v[0-9]*r[0-9]*")
-#set(DISA_STIG_VERSION "v[0-9]*r[0-9]*")
 #set(DISA_SRG_TYPE "os")
 
 #ssg_build_product(${PRODUCT})
@@ -22,7 +20,7 @@ set(PRODUCT "ocp3")
 
 #ssg_build_html_cce_table(${PRODUCT})
 
-#ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_TYPE} ${DISA_SRG_VERSION})
+#ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_TYPE})
 
-#ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-disa" ${DISA_STIG_VERSION})
+#ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-disa")
 

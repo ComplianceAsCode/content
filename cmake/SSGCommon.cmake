@@ -922,8 +922,8 @@ macro(ssg_build_html_cce_table PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
-    FILE(GLOB DISA_SRG_REF "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-${DISA_SRG_VERSION}.xml")
+macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE)
+    file(GLOB DISA_SRG_REF "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-v[0-9]*r[0-9]*.xml")
     # we have to encode spaces in paths before passing them as stringparams to xsltproc
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
@@ -964,8 +964,8 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
-    FILE(GLOB DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml")
+macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
+    file(GLOB DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-manual.xml")
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
