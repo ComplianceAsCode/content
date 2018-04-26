@@ -22,22 +22,17 @@ class PackageInstalledGenerator(FilesGenerator):
                     raise RuntimeError(
                         "ERROR: input violation: evr should be in epoch:version-release format",
                         "current package is", pkgname, "current evr is", evr)
-
-            if len(package_info) == 1 or not evr:    # if there is only pkgname or the input is "pkgname,"
-                self.file_from_template(
-                    "./template_OVAL_package_installed",
-                    {"%PKGNAME%": pkgname},
-                    "./oval/package_{0}_installed.xml", pkgname
-                )
             else:
-                self.file_from_template(
-                    "./template_OVAL_package_installed_evr",
-                    {
-                        "%PKGNAME%": pkgname,
-                        "%EVR%": evr
-                    },
-                    "./oval/package_{0}_installed.xml", pkgname
-                )
+                evr = ""
+
+            self.file_from_template(
+                "./template_OVAL_package_installed_evr",
+                {
+                    "%PKGNAME%": pkgname,
+                    "%EVR%": evr
+                },
+                "./oval/package_{0}_installed.xml", pkgname
+            )
 
         elif target == "bash":
             self.file_from_template(
