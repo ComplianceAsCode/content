@@ -25,7 +25,7 @@ class PackageInstalledGenerator(FilesGenerator):
                         "current package is", pkgname, "current evr is", evr)
 
             self.file_from_template(
-                "./template_OVAL_package_installed_evr",
+                "./template_OVAL_package_installed",
                 {
                     "%PKGNAME%": pkgname,
                     "%EVR%": evr
