@@ -257,7 +257,7 @@ def open_yaml(yaml_file, product_yaml=None):
         with codecs.open(yaml_file, "r", "utf8") as stream:
             yaml_contents = yaml.safe_load(stream)
     else:
-        yaml_contents = yaml.load(
+        yaml_contents = yaml.safe_load(
             process_file_with_jinja(yaml_file, product_yaml)
         )
 
