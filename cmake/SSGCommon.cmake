@@ -922,17 +922,18 @@ macro(ssg_build_html_cce_table PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
+macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE)
+    file(GLOB DISA_SRG_REF "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-v[0-9]*r[0-9]*.xml")
     # we have to encode spaces in paths before passing them as stringparams to xsltproc
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         # We need to use xccdf-linked.xml because ssg-${PRODUCT}-xccdf.xml has the srg_support Group removed
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-${DISA_SRG_VERSION}.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-${DISA_SRG_VERSION}.xml"
+        DEPENDS "${DISA_SRG_REF}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=no)"
     )
@@ -940,10 +941,10 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         # We need to use xccdf-linked.xml because ssg-${PRODUCT}-xccdf.xml has the srg_support Group removed
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-${DISA_SRG_VERSION}.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DEPENDS "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-${DISA_SRG_VERSION}.xml"
+        DEPENDS "${DISA_SRG_REF}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML SRG map table (flat=yes)"
     )
@@ -963,12 +964,13 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE DISA_SRG_VERSION)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE DISA_STIG_VERSION)
+macro(ssg_build_html_stig_tables PRODUCT STIG_PROFILE)
+    file(GLOB DISA_STIG_REF "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-v[0-9]*r[0-9]*-xccdf-manual.xml")
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
-        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
-        DEPENDS "${SSG_SHARED_REFS}/disa-stig-${PRODUCT}-${DISA_STIG_VERSION}-xccdf-manual.xml"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-stig-manual.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt" "${DISA_STIG_REF}"
+        DEPENDS "${DISA_STIG_REF}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/transforms/xccdf2table-stig.xslt"
         COMMENT "[${PRODUCT}-tables] generating HTML MANUAL STIG table"
     )
