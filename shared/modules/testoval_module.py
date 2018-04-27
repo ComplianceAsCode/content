@@ -20,11 +20,11 @@ ovalns = ssgcommon.oval_namespace
 try:
     from openscap import oscap_get_version
     if oscap_get_version() < 1.2:
-        oval_version = 5.10
+        oval_version = "5.10"
     else:
-        oval_version = 5.11
+        oval_version = "5.11"
 except ImportError:
-    oval_version = 5.10
+    oval_version = "5.10"
 
 # globals, to make recursion easier in case we encounter extend_definition
 definitions = ET.Element("definitions")
