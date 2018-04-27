@@ -65,7 +65,12 @@ def print_shadows(resource, language, product):
 
 
 def main():
-    p = argparse.ArgumentParser()
+    p = argparse.ArgumentParser(
+        description="Looks through both source files and built files of the "
+        "product and finds shadowed files. Outputs them in the format of "
+        "shadowing. For example if D ends up being used and C, B and A are "
+        "shadowed it will output A <- B <- C <- D."
+    )
     p.add_argument("--product", default="rhel7",
                    help="Which product we should examine for shadowed checks "
                    "and fixes.")
