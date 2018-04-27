@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'Standard System Security Profile for OpenSUSE'
+title: 'Standard System Security Profile for openSUSE'
 
 description: |-
     This profile contains rules to ensure standard security baseline
-    of an OpenSUSE system. Regardless of your system's workload
+    of an openSUSE system. Regardless of your system's workload
     all of these checks should pass.
 
 selections:

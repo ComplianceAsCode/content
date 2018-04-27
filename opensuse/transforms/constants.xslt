@@ -2,11 +2,11 @@
 
 <xsl:include href="../../shared/transforms/shared_constants.xslt"/>
 
-<xsl:variable name="product_long_name">OpenSUSE</xsl:variable>
-<xsl:variable name="product_short_name">OpenSUSE</xsl:variable>
+<xsl:variable name="product_long_name">openSUSE</xsl:variable>
+<xsl:variable name="product_short_name">openSUSE</xsl:variable>
 <xsl:variable name="product_stig_id_name">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">OPENSUSE</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:novell:leap:42.0,cpe:/o:novell:leap:42.1</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/o:opensuse:leap:42.1,cpe:/o:opensuse:leap:42.2,cpe:/o:opensuse:leap:42.3</xsl:variable>
 <xsl:variable name="prod_type">opensuse</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
