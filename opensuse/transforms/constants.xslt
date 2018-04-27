@@ -6,7 +6,7 @@
 <xsl:variable name="product_short_name">OpenSUSE</xsl:variable>
 <xsl:variable name="product_stig_id_name">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">OPENSUSE</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:novell:leap:42.0,cpe:/o:novell:leap:42.1</xsl:variable>
+<xsl:variable name="platform_cpes">cpe:/o:novell:leap:42.1</xsl:variable>
 <xsl:variable name="prod_type">opensuse</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
