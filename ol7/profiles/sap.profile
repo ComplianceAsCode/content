@@ -1,4 +1,4 @@
-documentation_complete: false
+documentation_complete: true
 
 title: 'Security Profile of Oracle Linux 7 for SAP'
 
@@ -9,6 +9,7 @@ description: |-
     all of these checks should pass.
     
 selections:
+    - package_glibc_installed
     - package_uuidd_installed
     - file_permissions_etc_shadow
     - service_rlogin_disabled
