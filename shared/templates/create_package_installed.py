@@ -3,6 +3,7 @@
 #   automatically generate checks for installed packages
 #
 
+import re
 from template_common import FilesGenerator, UnknownTargetError
 
 
@@ -14,9 +15,21 @@ class PackageInstalledGenerator(FilesGenerator):
                 "ERROR: input violation: the package name must be defined")
 
         if target == "oval":
+            evr = ""
+            # If the input is "pkgname,evr", verify if the evr string is in correct format
+            if len(package_info) > 1:
+                evr = package_info[1]
+                if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
+                    raise RuntimeError(
+                        "ERROR: input violation: evr should be in epoch:version-release format",
+                        "current package is", pkgname, "current evr is", evr)
+
             self.file_from_template(
                 "./template_OVAL_package_installed",
-                {"%PKGNAME%": pkgname},
+                {
+                    "%PKGNAME%": pkgname,
+                    "%EVR%": evr
+                },
                 "./oval/package_{0}_installed.xml", pkgname
             )
 
@@ -53,4 +66,4 @@ class PackageInstalledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PACKAGE_NAME")
+               "PACKAGE_NAME[,EVR_STRING]")
