@@ -35,9 +35,17 @@
   id="test_package_%PKGNAME%_installed" version="1"
   comment="package %PKGNAME% is installed">
     <linux:object object_ref="obj_package_%PKGNAME%_installed" />
+    {{% if "%EVR%" %}}
+      <linux:state state_ref="ste_package_%PKGNAME%_installed" />
+    {{% endif %}}
   </linux:dpkginfo_test>
   <linux:dpkginfo_object id="obj_package_%PKGNAME%_installed" version="1">
     <linux:name>%PKGNAME%</linux:name>
   </linux:dpkginfo_object>
+  {{% if "%EVR%" %}}
+    <linux:dpkginfo_state id="ste_package_%PKGNAME%_installed" version="1">
+      <linux:evr datatype="evr_string" operation="greater than or equal">%EVR%</linux:evr>
+    </linux:dpkginfo_state>
+  {{% endif %}}
 {{% endif %}}
 </def-group>
