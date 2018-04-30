@@ -1,6 +1,6 @@
 # platform = multi_platform_rhel
 . /usr/share/scap-security-guide/remediation_functions
 
-package_command install esc
-package_command install pam_pkcs11
-package_command install authconfig-gtk
+package_install esc
+package_install pam_pkcs11
+package_install authconfig-gtk
