@@ -1,6 +1,8 @@
 # platform = Red Hat Enterprise Linux 7
 . /usr/share/scap-security-guide/remediation_functions
 
+include_dconf_settings
+
 dconf_settings 'org/gnome/desktop/media-handling' 'automount' 'false' 'local.d' '00-security-settings'
 dconf_settings 'org/gnome/desktop/media-handling' 'automount-open' 'false' 'local.d' '00-security-settings'
 dconf_settings 'org/gnome/desktop/media-handling' 'autorun-never' 'true' 'local.d' '00-security-settings'
