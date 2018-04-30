@@ -195,6 +195,7 @@ class OVALFileLinker(FileLinker):
                 metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
                 metadata.append(ccerefelem)
                 # Sanity check if appending succeeded
+                cce_ref = ""
                 for ref in metadata.findall(".//reference"):
                     cce_ref = ref if ref.attrib.get("ref_id") == xccdfcceid else None
  
@@ -433,7 +434,8 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
         if identcce is not None:
             cceid = identcce.text
             if not ssgcommon.cce_is_valid(cceid):
-                print("Warning: CCE '{0}' is invalid for rule '{1}'. Removing CCE...".format(cceid, rule.get("id")))
+                print("Warning: CCE '{0}' is invalid for rule '{1}'. Removing CCE..."
+                      .format(cceid, rule.get("id"), file=sys.stderr))
                 rule.remove(identcce)
 
 
