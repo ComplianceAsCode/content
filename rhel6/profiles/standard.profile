@@ -93,7 +93,6 @@ selections:
     - sysctl_net_ipv4_tcp_syncookies
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_conf_default_rp_filter
-    - kernel_module_ipv6_option_disabled
     - sysctl_net_ipv6_conf_default_accept_redirects
     - service_ip6tables_enabled
     - service_iptables_enabled
