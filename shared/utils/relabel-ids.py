@@ -195,7 +195,7 @@ class OVALFileLinker(FileLinker):
                 metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
                 metadata.append(ccerefelem)
                 # Sanity check if appending succeeded
-                cce_ref = ""
+                cce_ref = None
                 for ref in metadata.findall(".//reference"):
                     cce_ref = ref if ref.attrib.get("ref_id") == xccdfcceid else None
  
