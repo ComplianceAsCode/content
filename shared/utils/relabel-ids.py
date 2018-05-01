@@ -148,7 +148,7 @@ class OVALFileLinker(FileLinker):
             self.tree, ".//{0}".format(self._get_checkid_string()))
 
         drop_oval_checks_extending_non_existing_checks(
-            self.tree, indexed_oval_defs)
+            self.tree, self.oval_groups, indexed_oval_defs)
 
         self._add_cce_id_refs_to_oval_checks(xccdf_to_cce_id_mapping)
 
@@ -327,7 +327,7 @@ def get_nonexisting_check_definition_extends(definition, indexed_oval_defs):
     return None
 
 
-def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
+def drop_oval_checks_extending_non_existing_checks(ovaltree, oval_groups, indexed_oval_defs):
     # Incomplete OVAL checks are as useful as non existing checks
     # Here we check if all extend_definition refs from a definition exists in local OVAL file
     definitions = ovaltree.find(".//{%s}definitions" % oval_ns)
@@ -342,6 +342,8 @@ def drop_oval_checks_extending_non_existing_checks(ovaltree, indexed_oval_defs):
             defstoremove.add(definition)
 
     for definition in defstoremove:
+        del oval_groups["definitions"][definition.get("id")]
+        del indexed_oval_defs[definition.get("id")]
         definitions.remove(definition)
 
 
