@@ -227,6 +227,7 @@ class Benchmark(object):
                 add_sub_element(root, "platform", cpe)
         version = ET.SubElement(root, 'version')
         version.text = self.version
+        ET.SubElement(root, "metadata")
 
         for profile in self.profiles:
             if profile is not None:
