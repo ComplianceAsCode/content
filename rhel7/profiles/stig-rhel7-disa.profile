@@ -238,7 +238,7 @@ selections:
     - sssd_ldap_configure_tls_ca
     - sysctl_kernel_randomize_va_space
     - package_openssh-server_installed
-    - sshd_required=yes
+    - sshd_required=True
     - service_sshd_enabled
     - sshd_set_idle_timeout
     - sshd_disable_rhosts_rsa
