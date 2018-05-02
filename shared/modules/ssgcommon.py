@@ -8,6 +8,14 @@ import jinja2
 import os.path
 
 
+def bool_constructor(self, node):
+    return self.construct_scalar(node)
+
+
+# Don't follow python bool case
+yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+
+
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
@@ -244,12 +252,6 @@ def open_yaml(yaml_file, product_yaml=None):
     if product_yaml is also given this function will process the yaml with
     jinja2, using product_yaml as input.
     """
-
-    def bool_constructor(self, node):
-        return self.construct_scalar(node)
-
-    # Don't follow python bool case
-    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
 
     yaml_contents = None
 
