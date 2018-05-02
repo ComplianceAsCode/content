@@ -194,14 +194,6 @@ class OVALFileLinker(FileLinker):
                     'reference', ref_id=xccdfcceid, source="CCE")
                 metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
                 metadata.append(ccerefelem)
-                # Sanity check if appending succeeded
-                cce_ref = None
-                for ref in metadata.findall(".//reference"):
-                    cce_ref = ref if ref.attrib.get("ref_id") == xccdfcceid else None
- 
-                if ccerefelem is not cce_ref:
-                    msg = "Failed to add CCE ID to {0}.".format(ovalid)
-                    raise ssgcommon.SSGError(msg)
 
     def get_nested_definitions(self, oval_def_id):
         processed_def_ids = set()
