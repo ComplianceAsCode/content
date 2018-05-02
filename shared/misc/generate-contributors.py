@@ -16,6 +16,8 @@ email_mappings = {
     # Dave / David Smith
     "dsmith@secure-innovations.net": "dsmith@eclipse.ncsc.mil",
     "dsmith@fornax.eclipse.ncsc.mil": "dsmith@eclipse.ncsc.mil",
+    # Firas AlShafei
+    "firas.alshafei@gmail.com": "firas.alshafei@us.abb.com",
     # Frank Caviggia
     "fcaviggia@users.noreply.github.com": "fcaviggi@ra.iad.redhat.com",
     # Greg Elin
@@ -59,6 +61,7 @@ email_mappings = {
 name_mappings = {
     "Gabe": "Gabe Alford",
     "Olivier": "Olivier Bonhomme",
+    "OnceUponALoop": "Firas AlShafei",
 }
 
 
