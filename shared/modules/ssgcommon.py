@@ -249,7 +249,7 @@ def open_yaml(yaml_file, product_yaml=None):
         return self.construct_scalar(node)
 
     # Don't follow python bool case
-    yaml.Loader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+    yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
 
     yaml_contents = None
 
