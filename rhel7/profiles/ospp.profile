@@ -224,7 +224,7 @@ selections:
     - service_rexec_disabled
     - service_rlogin_disabled
     - service_rsh_disabled
-    - sshd_required=yes
+    - sshd_required=True
     - service_sshd_enabled
     - service_telnet_disabled
     - service_xinetd_disabled
