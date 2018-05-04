@@ -1,6 +1,6 @@
 documentation_complete: false
 
-title: '[DRAFT] Protection Profile for General Purpose Operating Systems'
+title: 'DRAFT - Protection Profile for General Purpose Operating Systems'
 
 description: "This profile reflects mandatory configuration controls identified\nin the NIAP Configuration Annex to the Protection\
     \ Profile for General Purpose Operating\nSystems (Protection Profile Version 4.2 draft). \n\nThis Annex is consistent\

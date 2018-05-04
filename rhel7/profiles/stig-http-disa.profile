@@ -1,6 +1,6 @@
 documentation_complete: false
 
-title: '[DRAFT] DISA STIG for Apache HTTP on Red Hat Enterprise Linux 7'
+title: 'DRAFT - DISA STIG for Apache HTTP on Red Hat Enterprise Linux 7'
 
 description: |-
     This profile contains configuration checks that align to the

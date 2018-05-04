@@ -1,6 +1,6 @@
 documentation_complete: false
 
-title: '[DRAFT] DISA STIG for Red Hat IdM'
+title: 'DRAFT - DISA STIG for Red Hat IdM'
 
 description: |-
     This is a *draft* profile for STIG. This profile is being
