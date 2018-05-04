@@ -1,6 +1,6 @@
 documentation_complete: false
 
-title: '[DRAFT] Standard Docker Host Security Profile'
+title: 'DRAFT - Standard Docker Host Security Profile'
 
 description: "This profile contains rules to ensure standard security \n
     \ baseline of Red Hat Enterprise Linux 7 system running the docker \n

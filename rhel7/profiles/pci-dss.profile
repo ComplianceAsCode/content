@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: '[DRAFT] PCI-DSS v3 Control Baseline for Red Hat Enterprise Linux 7'
+title: 'PCI-DSS v3 Control Baseline for Red Hat Enterprise Linux 7'
 
 description: 'Ensures PCI-DSS v3 related security configuration settings \n
     \ are applied.'
