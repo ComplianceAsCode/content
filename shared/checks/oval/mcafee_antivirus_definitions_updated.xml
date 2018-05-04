@@ -1,7 +1,7 @@
 <def-group oval_version="5.10">
   <definition class="compliance" id="mcafee_antivirus_definitions_updated" version="1">
     <metadata>
-      <title>Confirm Existence and Permissions of System Log Files</title>
+      <title>McAfee AntiVirus Definitions Updated</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
@@ -26,24 +26,21 @@
   </local_variable>
 
   <ind:variable_test check="all" check_existence="all_exist" id="test_mcafee_antivirus_definitions_updated" version="1" comment="McAfee AntiVirus definitions have been updated">
-    <ind:object object_ref="object_mcafee_antivirus_definitions_updated" />
-    <ind:state state_ref="state_mcafee_antivirus_definitions_updated" />
+    <ind:object object_ref="object_mcafee_definitions_modified_time" />
+    <ind:state state_ref="state_mcafee_definitions_max_age" />
   </ind:variable_test>
 
   <ind:variable_object comment="McAfee AntiVirus definitions age"
-id="object_mcafee_antivirus_definitions_updated" version="1">
+id="object_mcafee_definitions_modified_time" version="1">
      <ind:var_ref var_check="all">variable_mcafee_dat_files_mtime</ind:var_ref>
    </ind:variable_object>
 
-  <ind:variable_state id="state_mcafee_antivirus_definitions_updated" version="1">
-    <!-- 1 day: 86400 -->
-    <!-- 1 week: 604800 -->
-    <!-- 30 days: 2592000 -->
+  <ind:variable_state id="state_mcafee_definitions_max_age" version="1">
     <ind:value datatype="int" operation="less than or equal" var_check="all"
     var_ref="var_mcafee_antivirus_definition_expire" />
   </ind:variable_state>
 
-  <external_variable comment="timeout value" datatype="int"
+  <external_variable comment="defintions age" datatype="int"
   id="var_mcafee_antivirus_definition_expire" version="1" />
 
 </def-group>
