@@ -5,7 +5,7 @@ ENV OSCAP_DIR scap-security-guide
 ENV BUILD_JOBS 4
 
 RUN yum -y upgrade && \
-    yum -y install make cmake openscap-utils && \
+    yum -y install cmake make openscap-utils python-jinja2 PyYAML && \
     mkdir -p /home/$OSCAP_USERNAME && \
     yum clean all && \
     rm -rf /usr/share/doc /usr/share/doc-base \
