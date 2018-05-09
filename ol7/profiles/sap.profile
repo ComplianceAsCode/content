@@ -15,3 +15,5 @@ selections:
     - service_rlogin_disabled
     - service_rsh_disabled
     - no_rsh_trust_files
+    - package_ypbind_removed
+    - package_ypserv_removed
