@@ -29,13 +29,15 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040330"
 
-ocil: |-
+ocil: |
     To check which SSH protocol version is allowed, check version of
     <tt>openssh-server</tt> with following command:
     <pre>$ rpm -qi openssh-server | grep Version</pre>
     Versions equal to or higher than 7.4 have deprecated the <tt>RhostsRSAAuthentication</tt> option.
     If version is lower than 7.4, run the following command to check configuration:
-    <sshd-check-macro default="yes" option="RhostsRSAAuthentication" value="no" />
+    {{{ sshd_check(default="yes", option="RhostsRSAAuthentication", value="no") }}}
+
+{{{ sshd_check_ocil_clause_entry() }}}
 
 warnings:
     - general: |-

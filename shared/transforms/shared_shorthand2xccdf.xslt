@@ -403,7 +403,6 @@
               <xsl:if test="package-check-macro">the package is installed</xsl:if>
               <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
               <xsl:if test="audit-syscall-check-macro">no line is returned</xsl:if>
-              <xsl:if test="sshd-check-macro">the required value is not set</xsl:if>
             </xsl:attribute>
 
             <!-- add clause if explicitly specified (and also override any above) -->
@@ -976,21 +975,6 @@ If the system is configured to audit this activity, it will return a line.
         <xhtml:code><xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="sshd-check-macro">
-  <!-- could also do this with sshd -T to test live configuration -->
-    To determine how the SSH daemon's
-    <xhtml:code><xsl:value-of select="@option"/></xhtml:code>
-    option is set, run the following command:
-    <xhtml:pre xml:space="preserve">$ sudo grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
-    <xsl:if test="@default='yes'">
-      If no line, a commented line, or a line indicating the value
-      <xhtml:code><xsl:value-of select="@value"/></xhtml:code> is returned, then the required value is set.
-    </xsl:if>
-    <xsl:if test="@default='no' or @default=''">
-      If a line indicating <xsl:value-of select="@value"/> is returned, then the required value is set.
-    </xsl:if>
   </xsl:template>
 
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
