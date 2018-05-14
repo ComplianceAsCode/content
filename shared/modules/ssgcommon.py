@@ -22,6 +22,8 @@ except ImportError:
     import cElementTree as ElementTree
 
 
+JINJA_MACROS_DEFINITIONS = os.path.join(os.path.dirname(__file__), "macros.jinja")
+
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
 datastream_namespace = "http://scap.nist.gov/schema/scap/source/1.2"
@@ -241,31 +243,77 @@ def get_jinja_environment():
 get_jinja_environment.env = None
 
 
-def process_file_with_jinja(filepath, product_yaml):
+def process_file_with_jinja(filepath, substitutions_dict):
     template = get_jinja_environment().get_template(filepath)
-    return template.render(product_yaml)
+    return template.render(substitutions_dict)
 
 
-def open_yaml(yaml_file, product_yaml=None):
-    """Open given file and parse it as YAML.
-    if product_yaml is also given this function will process the yaml with
-    jinja2, using product_yaml as input.
+def _open_yaml(stream):
     """
+    Open given file-like object and parse it as YAML
+    Return None if it contains "documentation_complete" key set to "false".
+    """
+    yaml_contents = yaml.safe_load(stream)
 
-    yaml_contents = None
-
-    if product_yaml is None:
-        with codecs.open(yaml_file, "r", "utf8") as stream:
-            yaml_contents = yaml.safe_load(stream)
-    else:
-        yaml_contents = yaml.safe_load(
-            process_file_with_jinja(yaml_file, product_yaml)
-        )
-
-    if "documentation_complete" in yaml_contents and \
-            yaml_contents["documentation_complete"] == "false":
+    if yaml_contents.get("documentation_complete") == "false":
         return None
 
+    return yaml_contents
+
+
+def open_and_expand_yaml(yaml_file, substitutions_dict=None):
+    """
+    Process the file as a template, using substitutions_dict to perform expansion.
+    Then, process the expansion result as a YAML content.
+
+    See also: _open_yaml
+    """
+    if substitutions_dict is None:
+        substitutions_dict = dict()
+
+    expanded_template = process_file_with_jinja(yaml_file, substitutions_dict)
+    yaml_contents = _open_yaml(expanded_template)
+    return yaml_contents
+
+
+def _extract_substitutions_dict_from_template(filename):
+    template = get_jinja_environment().get_template(filename)
+    all_symbols = template.make_module().__dict__
+    symbols_to_export = dict()
+    for name, symbol in all_symbols.items():
+        if name.startswith("_"):
+            continue
+        symbols_to_export[name] = symbol
+    return symbols_to_export
+
+
+def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
+    """
+    Do the same as open_and_expand_yaml, but load definitions of macros
+    so they can be expanded in the template.
+    """
+    if substitutions_dict is None:
+        substitutions_dict = dict()
+
+    try:
+        macro_definitions = _extract_substitutions_dict_from_template(JINJA_MACROS_DEFINITIONS)
+    except Exception as exc:
+        msg = ("Error extracting macro definitions from {0}: {1}"
+               .format(JINJA_MACROS_DEFINITIONS, str(exc)))
+        raise RuntimeError(msg)
+    substitutions_dict.update(macro_definitions)
+    return open_and_expand_yaml(yaml_file, substitutions_dict)
+
+
+def open_yaml(yaml_file):
+    """
+    Open given file-like object and parse it as YAML
+    without performing any kind of template processing
+
+    See also: _open_yaml
+    """
+    with codecs.open(yaml_file, "r", "utf8") as stream:
+        yaml_contents = _open_yaml(stream)
     return yaml_contents
 
 
