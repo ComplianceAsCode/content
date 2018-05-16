@@ -394,7 +394,6 @@
               <!-- add clauses if specific macros are found within -->
               <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
               <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-              <xsl:if test="partition-check-macro">no line is returned</xsl:if>
               <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
               <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
               <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
@@ -664,15 +663,6 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>   
-
-  <xsl:template match="partition-check-macro">
-    Run the following command to determine if <xhtml:code><xsl:value-of select="@part"/></xhtml:code>
-    is on its own partition or logical volume:
-
-  <xhtml:pre>$ mount | grep "on <xsl:value-of select="@part"/>"</xhtml:pre>
-  If <xhtml:code><xsl:value-of select="@part"/></xhtml:code> has its own partition or volume group, a line
-  will be returned.
-  </xsl:template>
 
   <xsl:template match="sebool-macro">
     <xsl:choose>

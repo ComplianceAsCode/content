@@ -38,7 +38,7 @@ ocil: |
 	traffic_action="to block",
 	how_to_do="Remove the following line, ensuring that it does not appear the INPUT chain:",
 	proto=proto,
-	port=port,
+	port=port
 ) }}}
 {{%- endmacro %}}
 
@@ -48,6 +48,22 @@ ocil: |
 	traffic_action="to allow",
 	how_to_do="Add the following line, ensuring that it appears before the final LOG and DROP lines for the INPUT chain:",
 	proto=proto,
-	port=port,
+	port=port
 ) }}}
+{{%- endmacro %}}
+
+
+{{% macro partition_check(part) -%}}
+    Run the following command to determine if <code>{{{ part }}}</code>
+    is on its own partition or logical volume:
+    <pre>$ mount | grep "on {{{ part }}}"</pre>
+    If <code>{{{ part }}}</code> has its own partition or volume group, a line will be returned.
+{{%- endmacro %}}
+
+
+{{% macro partition_check_complete_ocil_entry(part) -%}}
+ocil: |
+    {{{ partition_check(part) }}}
+
+ocil_clause: "no line is returned"
 {{%- endmacro %}}
