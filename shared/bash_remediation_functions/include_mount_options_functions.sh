@@ -31,7 +31,7 @@ function assert_mount_point_in_fstab {
 function remove_defaults_from_fstab_if_overriden {
 	local _mount_point_match_regexp
 	_mount_point_match_regexp="$(get_mount_point_regexp "$1")"
-	if [ $(grep "$_mount_point_match_regexp" /etc/fstab | grep -q "defaults,") -gt 0 ]
+	if $(grep "$_mount_point_match_regexp" /etc/fstab | grep -q "defaults,")
 	then
 		sed -i "s|\(${_mount_point_match_regexp}.*\)defaults,|\1|" /etc/fstab
 	fi
