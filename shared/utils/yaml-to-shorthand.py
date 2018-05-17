@@ -21,11 +21,10 @@ sys.path.insert(0, os.path.join(
 from ssgcommon import open_yaml, required_yaml_key
 
 
-def add_warning(element, warnings):
-    if warnings:
-        for i, warning_list in enumerate(warning for warning in warnings):
-            warning = add_sub_element(element, "warning", warning_list.values()[0])
-            warning.set("category", warning_list.keys()[0])
+def add_warnings(element, warnings):
+    for warning_list in warnings:
+        warning = add_sub_element(element, "warning", warning_list.values()[0])
+        warning.set("category", warning_list.keys()[0])
 
     return element
 
@@ -118,7 +117,7 @@ class Value(object):
         value.description = required_yaml_key(yaml_contents, "description")
         value.type = required_yaml_key(yaml_contents, "type")
         value.options = required_yaml_key(yaml_contents, "options")
-        value.warning = yaml_contents.get("warnings", [])
+        value.warnings = yaml_contents.get("warnings", [])
 
         return value
 
@@ -130,8 +129,8 @@ class Value(object):
         title.text = self.title
         add_sub_element(value, 'description', self.description)
 
-        if self.id_ is not "conditional_clause":
-            value = add_warning(value, self.warning)
+        if self.id_ != "conditional_clause":
+            add_warnings(value, self.warnings)
 
         for selector, option in self.options.items():
             # do not confuse Value with big V with value with small v
@@ -310,7 +309,7 @@ class Group(object):
         group.prodtype = yaml_contents.get("prodtype", "all")
         group.title = required_yaml_key(yaml_contents, "title")
         group.description = required_yaml_key(yaml_contents, "description")
-        group.warning = yaml_contents.get("warnings", [])
+        group.warnings = yaml_contents.get("warnings", [])
 
         return group
 
@@ -323,8 +322,8 @@ class Group(object):
         title.text = self.title
         add_sub_element(group, 'description', self.description)
 
-        if self.id_ is not "conditional_clause":
-            group = add_warning(group, self.warning)
+        if self.id_ != "conditional_clause":
+            add_warnings(group, self.warnings)
 
         for v in self.values.values():
             group.append(v.to_xml_element())
@@ -383,7 +382,7 @@ class Rule(object):
         rule.ocil_clause = yaml_contents.get("ocil_clause")
         rule.ocil = yaml_contents.get("ocil")
         rule.external_oval = yaml_contents.get("oval_external_content")
-        rule.warning = yaml_contents.get("warnings", [])
+        rule.warnings = yaml_contents.get("warnings", [])
 
         return rule
 
@@ -448,7 +447,7 @@ class Rule(object):
             if self.ocil_clause:
                 ocil.set("clause", self.ocil_clause)
 
-        rule = add_warning(rule, self.warning)
+        add_warnings(rule, self.warnings)
 
         return rule
 
