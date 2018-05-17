@@ -38,6 +38,17 @@ def add_sub_element(parent, tag, data):
 
 
 def add_warning_elements(element, warnings):
+    # The use of [{dict}, {dict}] in warnings is to handle the following
+    # scenario where multiple warnings have the same category which is
+    # valid in SCAP and our content:
+    #
+    # warnings:
+    #     - general: Some general warning
+    #     - general: Some other general warning
+    #     - general: |-
+    #         Some really long multiline general warning
+    #
+    # Each of the {dict} should have only one key/value pair.
     for warning_dict in warnings:
         warning = add_sub_element(element, "warning", warning_dict.values()[0])
         warning.set("category", warning_dict.keys()[0])
