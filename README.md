@@ -1,5 +1,7 @@
 ## Welcome!
 
+[![landscape.io Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
+
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 The purpose of this project is to create *security policy content* for various
@@ -177,9 +179,6 @@ The COPR repository is located on:
 https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/
 
 The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentOS.
-
-#### Health Checks
-* Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
 
 ## Further reading:
 
