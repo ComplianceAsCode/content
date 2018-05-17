@@ -21,14 +21,6 @@ sys.path.insert(0, os.path.join(
 from ssgcommon import open_yaml, required_yaml_key
 
 
-def add_warnings(element, warnings):
-    for warning_dict in warnings:
-        warning = add_sub_element(element, "warning", warning_dict.values()[0])
-        warning.set("category", warning_dict.keys()[0])
-
-    return element
-
-
 def add_sub_element(parent, tag, data):
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
@@ -42,6 +34,14 @@ def add_sub_element(parent, tag, data):
 
     element = ET.fromstring(ustr.encode("utf-8"))
     parent.append(element)
+    return element
+
+
+def add_warning_elements(element, warnings):
+    for warning_dict in warnings:
+        warning = add_sub_element(element, "warning", warning_dict.values()[0])
+        warning.set("category", warning_dict.keys()[0])
+
     return element
 
 
@@ -130,7 +130,7 @@ class Value(object):
         add_sub_element(value, 'description', self.description)
 
         if self.id_ != "conditional_clause":
-            add_warnings(value, self.warnings)
+            add_warning_elements(value, self.warnings)
 
         for selector, option in self.options.items():
             # do not confuse Value with big V with value with small v
@@ -323,7 +323,7 @@ class Group(object):
         add_sub_element(group, 'description', self.description)
 
         if self.id_ != "conditional_clause":
-            add_warnings(group, self.warnings)
+            add_warning_elements(group, self.warnings)
 
         for v in self.values.values():
             group.append(v.to_xml_element())
@@ -447,7 +447,7 @@ class Rule(object):
             if self.ocil_clause:
                 ocil.set("clause", self.ocil_clause)
 
-        add_warnings(rule, self.warnings)
+        add_warning_elements(rule, self.warnings)
 
         return rule
 
