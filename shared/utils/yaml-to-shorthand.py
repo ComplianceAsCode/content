@@ -132,9 +132,7 @@ class Value(object):
         title = ET.SubElement(value, 'title')
         title.text = self.title
         add_sub_element(value, 'description', self.description)
-
-        if self.id_ != "conditional_clause":
-            add_warning_elements(value, self.warnings)
+        add_warning_elements(value, self.warnings)
 
         for selector, option in self.options.items():
             # do not confuse Value with big V with value with small v
@@ -168,6 +166,7 @@ class Benchmark(object):
         conditional_clause.description = conditional_clause.title
         conditional_clause.type = "string"
         conditional_clause.options = {"": "This is a placeholder"}
+        conditional_clause.warnings = []
 
         self.add_value(conditional_clause)
 
@@ -329,9 +328,7 @@ class Group(object):
         title = ET.SubElement(group, 'title')
         title.text = self.title
         add_sub_element(group, 'description', self.description)
-
-        if self.id_ != "conditional_clause":
-            add_warning_elements(group, self.warnings)
+        add_warning_elements(group, self.warnings)
 
         for v in self.values.values():
             group.append(v.to_xml_element())
