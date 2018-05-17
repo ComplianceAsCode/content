@@ -21,6 +21,15 @@ sys.path.insert(0, os.path.join(
 from ssgcommon import open_yaml, required_yaml_key
 
 
+def add_warning(element, warnings):
+    if warnings:
+        for i, warning_list in enumerate(warning for warning in warnings):
+            warning = add_sub_element(element, "warning", warning_list.values()[0])
+            warning.set("category", warning_list.keys()[0])
+
+    return element
+
+
 def add_sub_element(parent, tag, data):
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
@@ -109,6 +118,8 @@ class Value(object):
         value.description = required_yaml_key(yaml_contents, "description")
         value.type = required_yaml_key(yaml_contents, "type")
         value.options = required_yaml_key(yaml_contents, "options")
+        value.warning = yaml_contents.get("warnings", [])
+
         return value
 
     def to_xml_element(self):
@@ -118,12 +129,17 @@ class Value(object):
         title = ET.SubElement(value, 'title')
         title.text = self.title
         add_sub_element(value, 'description', self.description)
+
+        if self.id_ is not "conditional_clause":
+            value = add_warning(value, self.warning)
+
         for selector, option in self.options.items():
             # do not confuse Value with big V with value with small v
             # value is child element of Value
             value_small = ET.SubElement(value, 'value')
             value_small.set('selector', str(selector))
             value_small.text = str(option)
+
         return value
 
     def to_file(self, file_name):
@@ -294,6 +310,8 @@ class Group(object):
         group.prodtype = yaml_contents.get("prodtype", "all")
         group.title = required_yaml_key(yaml_contents, "title")
         group.description = required_yaml_key(yaml_contents, "description")
+        group.warning = yaml_contents.get("warnings", [])
+
         return group
 
     def to_xml_element(self):
@@ -304,12 +322,17 @@ class Group(object):
         title = ET.SubElement(group, 'title')
         title.text = self.title
         add_sub_element(group, 'description', self.description)
+
+        if self.id_ is not "conditional_clause":
+            group = add_warning(group, self.warning)
+
         for v in self.values.values():
             group.append(v.to_xml_element())
         for g in self.groups.values():
             group.append(g.to_xml_element())
         for r in self.rules.values():
             group.append(r.to_xml_element())
+
         return group
 
     def to_file(self, file_name):
@@ -360,6 +383,8 @@ class Rule(object):
         rule.ocil_clause = yaml_contents.get("ocil_clause")
         rule.ocil = yaml_contents.get("ocil")
         rule.external_oval = yaml_contents.get("oval_external_content")
+        rule.warning = yaml_contents.get("warnings", [])
+
         return rule
 
     def to_xml_element(self):
@@ -422,6 +447,8 @@ class Rule(object):
             ocil = add_sub_element(rule, 'ocil', self.ocil if self.ocil else "")
             if self.ocil_clause:
                 ocil.set("clause", self.ocil_clause)
+
+        rule = add_warning(rule, self.warning)
 
         return rule
 
