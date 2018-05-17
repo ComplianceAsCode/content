@@ -121,7 +121,7 @@ remote machine but the SSG content doesn't need to be.
 ```
 
 ### Ansible
-. To see a list of available playbooks, run:
+To see a list of available playbooks, run:
 ```
 # ls /usr/share/scap-security-guide/ansible/
 ...
