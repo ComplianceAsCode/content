@@ -1,20 +1,43 @@
 ## Welcome!
-The purpose of this project is to create *SCAP content* for various
-platforms -- Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7,
-Fedora, and others.  *"SCAP content"* refers to documents  in the *XCCDF*,
-*OVAL* and *Source DataStream* formats.  These documents can be presented
+The purpose of this project is to create *security policy content* for various
+platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, and others.
+Our aim is to make it as easy as possible to write new and maintain existing
+security content in all the commonly used formats.
+
+### We build security content in various formats
+
+*"SCAP content"* refers to documents  in the *XCCDF*, *OVAL* and
+*Source DataStream* formats.  These documents can be presented
 in different forms and by different organizations to meet their security
-automation and technical implementation needs.
+automation and technical implementation needs.  For general use we
+recommend *Source DataStreams* because they contain all the data you
+need to evaluate and put machines into compliance. The datastreams are
+part of our release ZIP archives.
+
+*"Ansible content"* refers to Ansible playbooks generated from security
+profiles.  These can be used both in check-mode to evaluate compliance,
+as well as run-mode to put machines into compliance.  We publish these
+on *Ansible Galaxy* as well as in release ZIP archives.
+
+*"Bash fix files"* refers to *Bash* scripts generate from security
+profiles.  These are meant to be run on machines to put them into
+compliance.  We recommend using other formats but understand that for
+some deployment scenarios bash is the only option.
+
+### Why?
 
 This project is an attempt to allow multiple organizations to
-efficiently develop such content by avoiding redundancy, which is
-possible by taking advantage of features of the *SCAP standards*. First,
-*SCAP content* is easily transformed programmatically.  XCCDF also supports
-selection of subsets of content through a "profile" and granular adjustment
-of settings through a "refine-value."
+efficiently develop security content by avoiding redundancy, which is
+possible by taking advantage of the powerful build system of this project.
+The build system combines the easy-to-edit YAML rule files with OVAL checks,
+Ansible task snippets, Bash fixes and other files. Templating is provided
+at every step to avoid boilerplate. Security identifiers (CCE, NIST ID, STIG, ...)
+appear in all of our output formats but are all sourced from the YAML rule files.
 
-The goal of this project to enable the creation of multiple security
-baselines from a single set of high-quality SCAP content.
+We understand that depending on your organization's needs you may need
+to use a specific security content format. We let you choose.
+
+### Further reading
 
 The SSG homepage is https://www.open-scap.org/security-policies/scap-security-guide/
 
@@ -23,24 +46,25 @@ The SSG homepage is https://www.open-scap.org/security-policies/scap-security-gu
 
 ## Installation
 The preferred method of installation is via the package manager of your
-distribution. On RHEL and Fedora you can use:
+distribution. On *Red Hat Enterprise Linux* and *Fedora* you can use:
 `yum install scap-security-guide`.
 
 On Debian (sid), you can use:
 `apt install ssg-debian` for Debian guides.
 `apt install ssg-debderived` for Debian-based distributions (e.g. Ubuntu) guides.
 `apt install ssg-nondebian` for other distributions guides (RHEL, Fedora, etc.).
-`apt install ssg-applications` for application-oriented guides (Firefox,JBoss, etc.).
+`apt install ssg-applications` for application-oriented guides (Firefox, JBoss, etc.).
 
 If SCAP Security Guide is not packaged in your distribution or if the
 version that is packaged is too old, you need to build the content yourself
 and install it via `make install`. Please see the [BUILD.md](BUILD.md)
-document for more info.
+document for more info. We also recommend opening an issue on that distributions
+bug tracker to voice interest.
 
 Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
 
 ## Build from the source
-Please see the [BUILD.md](BUILD.md) document for build instructions.
+Please see the [BUILD.md](BUILD.md) document for detailed build instructions.
 
 ## Usage
 We assume you have installed SCAP Security Guide system-wide into a
