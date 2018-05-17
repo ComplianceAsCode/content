@@ -1,6 +1,6 @@
 ## Welcome!
 
-[![Nightly ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/) [![landscape.io Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
+[![Nightly ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/) [![Link-checker Status](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/) [![landscape.io Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
 
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
