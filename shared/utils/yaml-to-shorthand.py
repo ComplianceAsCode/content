@@ -119,6 +119,10 @@ class Value(object):
         value.options = required_yaml_key(yaml_contents, "options")
         value.warnings = yaml_contents.get("warnings", [])
 
+        for warning_list in value.warnings:
+            if len(warning_list) != 1:
+                raise ValueError("Only one key/value pair should exist for each dictionary")
+
         return value
 
     def to_xml_element(self):
@@ -311,6 +315,10 @@ class Group(object):
         group.description = required_yaml_key(yaml_contents, "description")
         group.warnings = yaml_contents.get("warnings", [])
 
+        for warning_list in group.warnings:
+            if len(warning_list) != 1:
+                raise ValueError("Only one key/value pair should exist for each dictionary")
+
         return group
 
     def to_xml_element(self):
@@ -383,6 +391,10 @@ class Rule(object):
         rule.ocil = yaml_contents.get("ocil")
         rule.external_oval = yaml_contents.get("oval_external_content")
         rule.warnings = yaml_contents.get("warnings", [])
+
+        for warning_list in rule.warnings:
+            if len(warning_list) != 1:
+                raise ValueError("Only one key/value pair should exist for each dictionary")
 
         return rule
 
