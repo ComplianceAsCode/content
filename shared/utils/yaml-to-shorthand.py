@@ -22,9 +22,9 @@ from ssgcommon import open_yaml, required_yaml_key
 
 
 def add_warnings(element, warnings):
-    for warning_list in warnings:
-        warning = add_sub_element(element, "warning", warning_list.values()[0])
-        warning.set("category", warning_list.keys()[0])
+    for warning_dict in warnings:
+        warning = add_sub_element(element, "warning", warning_dict.values()[0])
+        warning.set("category", warning_dict.keys()[0])
 
     return element
 
