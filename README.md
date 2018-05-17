@@ -49,13 +49,6 @@ We use platform checks to detect whether we should or should not evaluate some
 of the rules. For example: separate partition checks make perfect sense on bare-metal
 machines but go against recommended practices on containers.
 
-### Further reading
-
-The SSG homepage is https://www.open-scap.org/security-policies/scap-security-guide/
-
- * User Manual: [SSG User Manual](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc)
- * Developer Guide: [SSG Developer Guide](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/developer_guide.adoc)
-
 ## Installation
 The preferred method of installation is via the package manager of your
 distribution. On *Red Hat Enterprise Linux* and *Fedora* you can use:
@@ -184,3 +177,10 @@ The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentO
 
 #### Health Checks
 * Python Code via landscape.io: [![Code Health](https://landscape.io/github/OpenSCAP/scap-security-guide/master/landscape.png)](https://landscape.io/github/OpenSCAP/scap-security-guide/master)
+
+## Further reading:
+
+The SSG homepage is https://www.open-scap.org/security-policies/scap-security-guide/
+
+ * User Manual: [SSG User Manual](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc)
+ * Developer Guide: [SSG Developer Guide](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/developer_guide.adoc)
