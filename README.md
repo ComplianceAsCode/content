@@ -77,7 +77,7 @@ go through a few of them here.
 The `oscap` tool is a low-level command line interface that comes from
 the OpenSCAP project. It can be used to scan the local machine.
 ```
-# oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+# oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
 After evaluation, the `arf.xml` file will contain all results in a reusable
 *Result DataStream* format, `report.html` will contain a human readable
