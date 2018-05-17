@@ -44,6 +44,37 @@ appear in all of our output formats but are all sourced from the YAML rule files
 We understand that depending on your organization's needs you may need
 to use a specific security content format. We let you choose.
 
+---
+Our OpenControl-inspired YAML rule format. Write once to build security content
+in XCCDF, Ansible and others.
+
+```
+prodtype: rhel7
+
+title: 'Configure The Number of Allowed Simultaneous Requests'
+
+description: |-
+    The <tt>MaxKeepAliveRequests</tt> directive should be set and configured to
+    <sub idref="var_max_keepalive_requests" /> or greater by setting the following
+    in <tt>/etc/httpd/conf/httpd.conf</tt>:
+    <pre>MaxKeepAliveRequests <sub idref="var_max_keepalive_requests" /></pre>
+
+rationale: |-
+    Resource exhaustion can occur when an unlimited number of concurrent requests
+    are allowed on a web site, facilitating a denial of service attack. Mitigating
+    this kind of attack will include limiting the number of concurrent HTTP/HTTPS
+    requests per IP address and may include, where feasible, limiting parameter
+    values associated with keepalive, (i.e., a parameter used to limit the amount of
+    time a connection may be inactive).
+
+severity: medium
+
+identifiers:
+    cce: "80551-5"
+```
+
+---
+
 ### Scan targets
 
 Our security content can be used to scan bare-metal machines, virtual machines,
