@@ -39,6 +39,16 @@ appear in all of our output formats but are all sourced from the YAML rule files
 We understand that depending on your organization's needs you may need
 to use a specific security content format. We let you choose.
 
+### Scan targets
+
+Our security content can be used to scan bare-metal machines, virtual machines,
+virtual machine images (qcow2 and others), containers (including Docker) and
+container images.
+
+We use platform checks to detect whether we should or should not evaluate some
+of the rules. For example: separate partition checks make perfect sense on bare-metal
+machines but go against recommended practices on containers.
+
 ### Further reading
 
 The SSG homepage is https://www.open-scap.org/security-policies/scap-security-guide/
