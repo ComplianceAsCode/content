@@ -42,8 +42,6 @@ def add_warning_elements(element, warnings):
         warning = add_sub_element(element, "warning", warning_dict.values()[0])
         warning.set("category", warning_dict.keys()[0])
 
-    return element
-
 
 class Profile(object):
     """Represents XCCDF profile
