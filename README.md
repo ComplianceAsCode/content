@@ -182,5 +182,5 @@ The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentO
 
 The SSG homepage is https://www.open-scap.org/security-policies/scap-security-guide/
 
- * User Manual: [SSG User Manual](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc)
- * Developer Guide: [SSG Developer Guide](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/developer_guide.adoc)
+ * [SSG User Manual](docs/manual/user_guide.adoc)
+ * [SSG Developer Guide](docs/manual/developer_guide.adoc)
