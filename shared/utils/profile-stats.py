@@ -32,7 +32,7 @@ bash_rem_system = ssgcommon.bash_system
 ansible_rem_system = ssgcommon.ansible_system
 puppet_rem_system = ssgcommon.puppet_system
 anaconda_rem_system = ssgcommon.anaconda_system
-cce_system = ssgcommon.cce_system
+cce_uri = ssgcommon.cce_uri
 ssg_version_uri = ssgcommon.ssg_version_uri
 stig_ns = ssgcommon.stig_ns
 console_width = 80
@@ -152,7 +152,7 @@ class XCCDFBenchmark(object):
                 anaconda_fix = rule.find("./{%s}fix[@system=\"%s\"]" %
                                          (xccdf_ns, anaconda_rem_system))
                 cce = rule.find("./{%s}ident[@system=\"%s\"]" %
-                                (xccdf_ns, cce_system))
+                                (xccdf_ns, cce_uri))
                 stig_id = rule.find("./{%s}reference[@href=\"%s\"]" %
                                     (xccdf_ns, stig_ns))
 
