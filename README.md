@@ -6,7 +6,7 @@ security content in all the commonly used formats.
 
 ### We build security content in various formats
 
-![NIST logo](docs/readme_images/nist_logo.svg "NIST logo") \ \ ![Ansible logo](docs/readme_images/ansible_logo.svg "Ansible logo") \ \ ![Bash logo](docs/readme_images/bash_logo.png "Bash logo")
+![NIST logo](docs/readme_images/nist_logo.svg "NIST logo") &nbsp; &nbsp; ![Ansible logo](docs/readme_images/ansible_logo.svg "Ansible logo") &nbsp; &nbsp; ![Bash logo](docs/readme_images/bash_logo.png "Bash logo")
 
 *"SCAP content"* refers to documents  in the *XCCDF*, *OVAL* and
 *Source DataStream* formats.  These documents can be presented
