@@ -1,134 +1,219 @@
 # Building SCAP Security Guide
+:toc:
+:toc-placement: preamble
+:numbered:
+
+toc::[]
 
 ## From source
 
-1. On Red Hat Enterprise Linux and Fedora make sure the packages `cmake`, `openscap-utils`, and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils` (available in Red Hat Enterprise Linux) as well as `git`.
+### Installing build dependencies
 
- `# yum -y install cmake openscap-utils git PyYAML python-jinja2`
+On *Red Hat Enterprise Linux* make sure the packages `cmake`, `openscap-utils`, `PyYAML`, `python-jinja2` and their dependencies are installed. We require version `1.0.8` or later of `openscap-utils`.
+```
+# yum install cmake openscap-utils PyYAML python-jinja2
+```
 
- On Ubuntu, make sure the packages `expat`, `libopenscap8`, `libxml2-utils`, `xsltproc`, and their dependencies are installed as well as `git`.
+On Fedora the package list is almost the same except for `python2-jinja2`:
 
- `$ sudo apt -y install cmake expat libopenscap8 libxml2-utils xsltproc git python-jinja2`
+```
+# dnf install cmake openscap-utils PyYAML python2-jinja2
+```
 
- On Fedora, install the python2-jinja2 package
- `# dnf -y install python2-jinja2`
+On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`, `libxml2-utils`, `xsltproc`, `python-jinja2` and their dependencies are installed.
+```
+$ apt-get install cmake libopenscap8 libxml2-utils xsltproc python-jinja2
+```
 
- Optional: Install the ShellCheck package.
+(optional) Install git if you want to clone the github repository to get the source code:
+```
+# yum install git
+```
 
- `# dnf -y install ShellCheck`
+(optional) Install the ShellCheck package to perform fix script static analysis:
+```
+# yum install ShellCheck
+```
 
- Optional: If you want to use the Ninja build system, install the ninja-build package
+(optional) Install the `ninja` build system if you want to use it instead of `make` for faster builds:
 
- `# dnf -y install ninja-build`
+```
+# yum install ninja-build
+```
 
-2. Download the source code
+### Downloading the source code
 
- `$ git clone https://github.com/OpenSCAP/scap-security-guide.git`
+Download and extract a tarball from the [https://github.com/OpenSCAP/scap-security-guide/releases](list of releases):
+```
+# change X.Y.Z for desired version
+wget https://github.com/OpenSCAP/scap-security-guide/releases/download/vX.Y.Z/scap-security-guide-X.Y.Z.tar.bz2
+tar -xvjf ./scap-security-guide-X.Y.Z.tar.bz2
+cd ./scap-security-guide-X.Y.Z/
+```
 
-3. Build the source code
-  * To build all the content:
+Or clone the github repository:
+```
+git clone https://github.com/OpenSCAP/scap-security-guide.git
+cd scap-security-guide/
+# (optional) select release version - change X.Y.Z for desired version
+git checkout vX.Y.Z
+# (optional) select latest development version
+git checkout master
+```
 
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake ../`
-    `$ make -j4`
+### Building
+To build all the security content:
 
-  * To build everything only for one specific product:
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake ../
+$ make -j4
+```
 
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake ../`
-    `$ make -j4 rhel7`
+(optional) To build everything only for one specific product - for example all security content only for *Red Hat Enterprise Linux 7*:
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake ../
+$ make -j4 rhel7
+```
 
-  * Other targets only for one specific product:
+(optional) To build only specific content for one specific product:
 
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake ../`
-    `$ make -j4 rhel7-content  # SCAP XML files for RHEL7`
-    `$ make -j4 rhel7-guides  # HTML guides for RHEL7`
-    `$ make -j4 rhel7-tables  # HTML tables for RHEL7`
-    `$ make -j4 rhel7-roles  # remediation roles for RHEL7`
-    `$ make -j4 rhel7  # everything above for RHEL7`
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake ../
+$ make -j4 rhel7-content  # SCAP XML files for RHEL7
+$ make -j4 rhel7-guides  # HTML guides for RHEL7
+$ make -j4 rhel7-tables  # HTML tables for RHEL7
+$ make -j4 rhel7-roles  # remediation roles for RHEL7
+$ make -j4 rhel7  # everything above for RHEL7
+```
 
-  * Configure options before building
+(optional) Configure options before building using a GUI tool:
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake-gui ../
+$ make -j4
+```
 
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake-gui ../`
-    `$ make -j4`
+(optional) Use the `ninja` build system (requires the `ninja-build` package):
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake -G Ninja ../
+$ ninja-build  # depending on the distribution just "ninja" may also work
+```
 
-  * Using the ninja-build system (requires ninja-build on the system)
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake -G Ninja ../`
-    `$ ninja-build`
+### Build outputs
 
-  When the build has completed, the output will be in the build folder.
-  That can be any folder you choose but if you followed the examples above
-  it will be the `scap-security-guide/build` folder.
+When the build has completed, the output will be in the build folder.
+That can be any folder you choose but if you followed the examples above
+it will be the `scap-security-guide/build` folder.
 
-  The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
-  `ssg-rhel7-ds.xml` is the Red Hat Enterprise Linux 7 source datastream.
+The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
+`ssg-rhel7-ds.xml` is the *Red Hat Enterprise Linux 7* **source datastream**.
+We recommend using **source datastream** if you have a choice but the build
+system also generates separate XCCDF, OVAL, OCIL and CPE files:
+```
+$ ls -1 ssg-rhel7-*.xml
+ssg-rhel7-cpe-dictionary.xml
+ssg-rhel7-cpe-oval.xml
+ssg-rhel7-ds.xml
+ssg-rhel7-ocil.xml
+ssg-rhel7-oval.xml
+ssg-rhel7-pcidss-xccdf-1.2.xml
+ssg-rhel7-xccdf-1.2.xml
+ssg-rhel7-xccdf.xml
+```
+These can be ingested by any SCAP-compatible scanning tool, to enable automated
+checking.
 
-  The human readable HTML guide index files will be called
-  `ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
+The human readable HTML guide index files will be called
+`ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
+This file will let the user browse all profiles available for that product.
+The prose guide HTML contains practical, actionable information for auditors
+and administrators.
 
-4. Discover the following:
- * A pretty prose guide **in ssg-rhel7-guide-index.html** containing practical, actionable information for administrators
- * A concise spreadsheet representation (potentially useful as the basis for an SRTM document) in **table-rhel7-nistrefs-stig-rhel7-disa.html**
- * Files that can be ingested by SCAP-compatible scanning tools, to enable automated checking:
-    * **ssg-rhel7-xccdf.xml**
-    * **ssg-rhel7-oval.xml**
-    * **ssg-rhel7-ds.xml**
+Spreadsheet HTML tables - potentially useful as the basis for an *SRTM document*:
+```
+$ ls -1 tables/table-rhel7-*.html
+...
+tables/table-rhel7-nistrefs-ospp-rhel7.html
+tables/table-rhel7-nistrefs-stig-rhel7-disa.html
+tables/table-rhel7-pcidssrefs.html
+tables/table-rhel7-srgmap-flat.html
+tables/table-rhel7-srgmap.html
+tables/table-rhel7-stig.html
+...
+```
 
-5. Install
-  * Custom location
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake ../`
-    `$ make -j4`
-    `$ make DESTDIR=/opt/absolute/path/to/ssg/ install`
+### Installation
 
-  * System-wide installation
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake ../`
-    `$ make -j4`
-    `$ make install`
+System-wide installation:
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake ../
+$ make -j4
+$ sudo make install
+```
 
-  * System-wide installation using ninja
-    `$ cd scap-security-guide/`
-    `$ cd build/`
-    `$ cmake -G Ninja ../`
-    `$ ninja-build`
-    `$ ninja-build install`
+(optional) Custom install location:
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake ../
+$ make -j4
+$ sudo make DESTDIR=/opt/absolute/path/to/ssg/ install
+```
 
-### Building tarball, package and archive zipfile
+(optional) System-wide installation using ninja:
+```
+$ cd scap-security-guide/
+$ cd build/
+$ cmake -G Ninja ../
+$ ninja-build
+$ ninja-build install
+```
 
-1. To build a tarball with all the source code.
+### (optional) Building a tarball
 
-  `make package_source`
+To build a tarball with all the source code:
+```
+$ cd build/
+$ make package_source
+```
 
-2. To build a package with testing purposes.
+### (optional) Building a package
+To build a package for testing purposes:
 
-  * Disable any product you would not like to bundle in the package. For example:
+```
+cd build/
+# disable any product you would not like to bundle in the package. For example:
+cmake -DSSG_PRODUCT_JBOSS_EAP5:BOOL=OFF../
+# build the package.
+make package
+```
 
-    `cmake -DSSG_PRODUCT_JBOSS_EAP5:BOOL=OFF../`
+Currently, RPM and DEB packages are supported by this mechanism. We recommend only using
+it for testing. Please follow downstream workflows for production packages.
 
-  * Build the package.
+### (optional) Building a ZIP file
 
-    `make package`
+To build a zip file with all generated source data streams and kickstarts:
+```
+cd build/
+make zipfile
+```
 
-  Currently, RPM and DEB packages are built.
-
-3. To build a zip file with all generated source data streams and kickstarts.
-
-  `make zipfile`
-
-## Using Docker
+## Using containers
 
 Use the [Dockerfile](Dockerfile) present in the top directory and build the image.
+This will take care of the build environment and all necessary setup.
 
 `$ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .`
 
