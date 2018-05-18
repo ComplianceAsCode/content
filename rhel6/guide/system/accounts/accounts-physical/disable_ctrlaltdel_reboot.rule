@@ -37,4 +37,16 @@ references:
 
 ocil_clause: 'the system is configured to run the shutdown command'
 
-ocil: "To ensure the system is configured to log a message instead of rebooting the system when \nCtrl-Alt-Del is pressed, ensure the following line is in <tt>/etc/init/control-alt-delete.conf</tt>:\n<pre>exec /usr/bin/logger -p security.info \"Control-Alt-Delete pressed\"</pre>"
+ocil: |-
+    To ensure the system is configured to log a message instead of rebooting the
+    system when Ctrl-Alt-Del is pressed, ensure the following line is in
+    <tt>/etc/init/control-alt-delete.conf</tt>:
+    <pre>exec /usr/bin/logger -p security.info \"Control-Alt-Delete pressed\"</pre>
+
+warnings
+    - functionality: |-
+        Disabling the <tt>Ctrl-Alt-Del</tt> key sequence
+        in <tt>/etc/init/control-alt-delete.conf</tt> DOES NOT disable the <tt>Ctrl-Alt-Del</tt>
+        key sequence if running in <tt>runlevel 6</tt> (e.g. in GNOME, KDE, etc.)! The
+        <tt>Ctrl-Alt-Del</tt> key sequence will only be disabled if running in
+        the non-graphical <tt>runlevel 3</tt>.

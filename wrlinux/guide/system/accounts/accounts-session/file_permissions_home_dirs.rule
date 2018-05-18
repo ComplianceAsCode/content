@@ -28,3 +28,9 @@ ocil_clause: 'the user home directory is group-writable or world-readable'
 ocil: |-
     To ensure the user home directory is not group-writable or world-readable, run the following:
     <pre>$ sudo ls -ld /home/<i>USER</i></pre>
+
+warnings:
+    - functionality: |-
+        This action may involve modifying user home directories.
+        Notify your user community, and solicit input if appropriate,
+        before making this type of change.

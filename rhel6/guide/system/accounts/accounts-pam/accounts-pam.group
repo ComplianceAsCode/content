@@ -32,3 +32,16 @@ description: |-
     measures. Modifying this file is a good way to make far-reaching
     authentication changes, for instance when implementing a
     centralized authentication service.
+
+warnings
+    - functionality: |-
+        Be careful when making changes to PAM's configuration files.
+        The syntax for these files is complex, and modifications can
+        have unexpected consequences. The default configurations shipped
+        with applications should be sufficient for most users.
+    - functionality: |- 
+        Running <tt>authconfig</tt> or <tt>system-config-authentication</tt>
+        will re-write the PAM configuration files, destroying any manually
+        made changes and replacing them with a series of system defaults.
+        One reference to the configuration file syntax can be found at
+        <weblink-macro link="http://www.kernel.org/pub/linux/libs/pam/Linux-PAM-html/sag-configuration-file.html"/>.

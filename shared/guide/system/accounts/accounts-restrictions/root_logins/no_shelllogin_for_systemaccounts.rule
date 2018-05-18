@@ -41,3 +41,8 @@ ocil: |-
     with UID numbers less than UID_MIN, other than root. Value of the UID_MIN
     directive is set in /etc/login.defs configuration file. In the default
     configuration UID_MIN is set to 1000.
+
+warnings:
+    - functionality: |-
+        Do not perform the steps in this section on the root account. Doing so might
+        cause the system to become inaccessible.

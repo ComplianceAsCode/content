@@ -36,3 +36,10 @@ ocil: |-
     This will indicate the vsftpd config file used when starting through xinetd.
     If the <i>server_args</i> line is missing or does not include the vsftpd configuration file, then the default config file (/etc/vsftpd/vsftpd.conf) is used.
     <pre>$ sudo grep xferlog_enable <i>vsftpd config file</i></pre>
+
+warnings:
+    - general: |-
+        If verbose logging to <tt>vsftpd.log</tt> is done, sparse logging of
+        downloads to <tt>/var/log/xferlog</tt> will not also occur. However,
+        the information about what files were downloaded is included in the
+        information logged to <tt>vsftpd.log</tt>.

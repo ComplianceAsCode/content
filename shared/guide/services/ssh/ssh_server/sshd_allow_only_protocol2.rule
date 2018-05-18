@@ -39,3 +39,9 @@ ocil: |-
     If version is lower than 7.4, run the following command to check configuration:
     <pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>Protocol 2</pre>
+
+warnings:
+    - general: |-
+        As of <tt>openssh-server</tt> version <tt>7.4</tt> and above, the only protocol
+        supported is version 2, and line <pre>Protocol 2</pre> in
+        <tt>/etc/ssh/sshd_config</tt> is not necessary.

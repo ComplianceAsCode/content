@@ -25,3 +25,9 @@ identifiers:
 
 references:
     nist: CM-6(b)
+
+warnings:
+    - hardware: |-
+        The kernel-PAE package should not be
+        installed on older systems that do not support the XD or NX bit, as
+        8this may prevent them from booting.8

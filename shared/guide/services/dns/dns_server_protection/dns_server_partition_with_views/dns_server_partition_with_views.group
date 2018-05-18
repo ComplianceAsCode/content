@@ -30,3 +30,11 @@ description: |-
         ...
       };
     };</pre>
+
+warnings:
+    general: |-
+    As shown in the example, database files which are
+    required for recursion, such as the root hints file, must be available to any
+    clients which are allowed to make recursive queries. Under typical
+    circumstances, this includes only the internal clients which are allowed to use
+    this server as a general-purpose nameserver.

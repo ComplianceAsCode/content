@@ -30,3 +30,11 @@ ocil_clause: 'the HBSS HIPS module is not installed'
 ocil: |-
     To verify that McAfee HIPS is installed, run the following command(s):
     <pre>$ rpm -q MFEhiplsm</pre>
+
+warnings:
+    - functionality: |-
+        Installing and enabling this module conflicts with SELinux.
+        Per DoD/DISA guidance, SELinux takes precedence over this module.
+    - general: |-
+        Due to McAfee HIPS being 3rd party software, automated
+        remediation is not available for this configuration check.

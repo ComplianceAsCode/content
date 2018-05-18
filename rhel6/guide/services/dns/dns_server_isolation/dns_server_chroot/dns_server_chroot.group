@@ -19,3 +19,11 @@ description: |-
     <pre>$ sudo cp -r /path/to/DIRNAME /var/named/chroot/DIRNAME</pre>
     Add or correct the following line within <tt>/etc/sysconfig/named</tt>:
     <pre>ROOTDIR=/var/named/chroot</pre>
+
+warnings:
+    - general: |-
+        If you are running BIND in a chroot jail, then you
+        should use the jailed <tt>named.conf</tt> as the primary nameserver
+        configuration file. That is, when this guide recommends editing
+        <tt>/etc/named.conf</tt>, you should instead edit
+        <tt>/var/named/chroot/etc/named.conf</tt>.

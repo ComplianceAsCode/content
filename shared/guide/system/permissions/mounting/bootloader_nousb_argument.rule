@@ -9,9 +9,6 @@ description: |-
     argument to the kernel's boot loader configuration. To do so,
     append "nousb" to the kernel line in <tt>/etc/default/grub</tt> as shown:
     <pre>kernel /vmlinuz-<i>VERSION</i> ro vga=ext root=/dev/VolGroup00/LogVol00 rhgb quiet nousb</pre>
-    <i><b>WARNING:</b> Disabling all kernel support for USB will cause problems for
-    systems with USB-based keyboards, mice, or printers. This configuration is
-    infeasible for systems which require USB devices, which is common.</i>
 
 rationale: |-
     Disabling the USB subsystem within the Linux kernel at system boot will
@@ -27,3 +24,9 @@ references:
     disa: 1250
     hipaa: 164.308(a)(3)(i),164.308(a)(3)(ii)(A),164.310(d)(1),164.310(d)(2),164.312(a)(1),164.312(a)(2)(iv),164.312(b)
     nist: AC-19(a),AC-19(d),AC-19(e)
+
+warnings:
+    - functionality: |-
+        Disabling all kernel support for USB will cause problems for systems
+        with USB-based keyboards, mice, or printers. This configuration is
+        infeasible for systems which require USB devices, which is common.

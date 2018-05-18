@@ -44,3 +44,11 @@ ocil: |-
     <pre>$ sudo ln -sf /dev/null /etc/systemd/system/ctrl-alt-del.target</pre>
     or
     <pre>$ sudo systemctl mask ctrl-alt-del.target</pre>
+
+warnings
+    - functionality: |-
+        Disabling the <tt>Ctrl-Alt-Del</tt> key sequence
+        in <tt>/etc/init/control-alt-delete.conf</tt> DOES NOT disable the <tt>Ctrl-Alt-Del</tt>
+        key sequence if running in <tt>runlevel 6</tt> (e.g. in GNOME, KDE, etc.)! The
+        <tt>Ctrl-Alt-Del</tt> key sequence will only be disabled if running in
+        the non-graphical <tt>runlevel 3</tt>.

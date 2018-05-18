@@ -45,3 +45,17 @@ ocil: |-
     To verify that FIPS is enabled properly in grub, run the following command:
     <pre>$ grep fips /etc/default/grub</pre>
     The output should contain fips=1
+
+warnings:
+    - functionality: |-
+        Running <pre>dracut -f</pre> will overwrite the existing initramfs file.
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        The ability to enable FIPS does not denote FIPS compliancy or certification.
+        Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant. Community
+        projects such as CentOS, Scientific Linux, etc. do not necessarily meet FIPS certification and compliancy.
+        Therefore, non-certified vendors and/or projects do not meet this requirement even if technically feasible.
+        <br /><br />
+        See <b><weblink-macro link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm"/></b>
+        for a list of FIPS certified vendors.
