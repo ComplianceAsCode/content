@@ -50,8 +50,8 @@ def add_warning_elements(element, warnings):
     #
     # Each of the {dict} should have only one key/value pair.
     for warning_dict in warnings:
-        warning = add_sub_element(element, "warning", warning_dict.values()[0])
-        warning.set("category", warning_dict.keys()[0])
+        warning = add_sub_element(element, "warning", list(warning_dict.values())[0])
+        warning.set("category", list(warning_dict.keys())[0])
 
 
 class Profile(object):
