@@ -58,3 +58,11 @@ identifiers:
 
 references:
     nist: CM-7
+
+warnings:
+    - general: |-
+        The purpose of the dnssec-keygen command is to
+        create the shared secret string base64-key-string. Once this secret has been
+        obtained and inserted into named.conf on the primary and secondary servers, the
+        key files Kdns.example.com .+NNN +MMMMM .key and Kdns.example.com .+NNN +MMMMM
+        .private are no longer needed, and may safely be deleted.

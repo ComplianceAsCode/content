@@ -13,3 +13,11 @@ description: |-
     message_size_limit = 10485760
     smtpd_recipient_limit = 100</pre>
     The values here are examples.
+
+warnings:
+    - general: |-
+        Note: The values given here are examples, and may
+        need to be modified for any particular site. By default, the Postfix anvil
+        process gathers mail receipt statistics. To get information about about what
+        connection rates are typical at your site, look in <tt>/var/log/maillog</tt>
+        for lines with the daemon name postfix/anvil.

@@ -24,3 +24,9 @@ ocil: |-
     The output should show file(s) ending in <tt>.json</tt> extension.
     For example:
     <pre>chrome-stig-policy.json</pre>
+
+warnings:
+    - general: |-
+        If the <tt>.json</tt> file in
+        <tt>/etc/chromium/policies/managed</tt> is not formatted correctly,
+        no policies will be configured or set correctly.

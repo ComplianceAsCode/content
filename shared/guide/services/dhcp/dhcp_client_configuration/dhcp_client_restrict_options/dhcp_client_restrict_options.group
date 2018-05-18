@@ -24,3 +24,12 @@ description: |-
     supersede time-offset -18000;
     request subnet-mask;
     require subnet-mask;</pre>
+
+warnings:
+    - general: |-
+        In this example, the options nis-servers and
+        nis-domain are set to empty strings, on the assumption that the deprecated NIS
+        protocol is not in use. It is necessary to supersede settings for unused
+        services so that they cannot be set by a hostile DHCP server. If an option is
+        set to an empty string, dhclient will typically not attempt to configure the
+        service.

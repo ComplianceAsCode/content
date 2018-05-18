@@ -49,3 +49,10 @@ ocil: |-
     The following command will list which files on the system have permissions different from what
     is expected by the RPM database:
     <pre>$ rpm -Va | grep '^.M'</pre>
+
+warnings:
+    - general: |-
+        <b>Note: Due to a bug in the <tt>gdm</tt> package,
+        the RPM verify command may continue to fail even after file permissions have
+        been correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
+        Bugzilla #1277603.</b>
