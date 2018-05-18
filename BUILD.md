@@ -1,9 +1,4 @@
 # Building SCAP Security Guide
-:toc:
-:toc-placement: preamble
-:numbered:
-
-toc::[]
 
 ## From source
 
