@@ -207,19 +207,27 @@ make zipfile
 
 ## Using containers
 
+### Build the docker container image
+
 Use the [Dockerfile](Dockerfile) present in the top directory and build the image.
 This will take care of the build environment and all necessary setup.
+```
+$ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
+```
 
-`$ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .`
+### Build SSG using the container image
 
 To build all the content, run a container without any flags.
+```
+$ docker run --cap-drop=all --name scap-security-guide oscap:latest
+```
 
-`$ docker run --cap-drop=all --name scap-security-guide oscap:latest`
-
-To build content only for a specific distribution, add the relevant name as a flag:
-
-`$ docker run --cap-drop=all --name scap-security-guide oscap:latest firefox`
+(optional) To build content only for a specific distribution, add the relevant name as a flag:
+```
+$ docker run --cap-drop=all --name scap-security-guide oscap:latest firefox
+```
 
 Using `docker cp` to copy all the generated content to the your host:
-
-`$ docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build`
+```
+$ docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build
+```
