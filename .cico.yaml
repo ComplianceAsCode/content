@@ -78,5 +78,5 @@
             git_username: openscap
             git_repo: scap-security-guide
             ci_project: '{name}'
-            ci_cmd: "yum -y install install cmake openscap-utils git PyYAML python-jinja2 && cd build && cmake ../ && make -j4 validate"
+            ci_cmd: "yum -y install install cmake openscap-utils git PyYAML python-jinja2 && cd build && cmake ../ && make -j4 && ctest -j4"
             timeout: '20m'
