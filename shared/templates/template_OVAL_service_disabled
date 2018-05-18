@@ -1,0 +1,137 @@
+<def-group>
+  {{% if product == "ubuntu1404" %}}
+
+  <definition class="compliance" id="service_%SERVICENAME%_disabled"
+  version="1">
+    <metadata>
+      <title>Service %SERVICENAME% Disabled</title>
+      <affected family="unix">
+        <platform>Ubuntu 1404</platform>
+      </affected>
+      <description>The %SERVICENAME% service should be disabled if possible.</description>
+    </metadata>
+   <criteria comment="package %PACKAGENAME% removed or service %SERVICENAME% is not configured to start" operator="OR">
+    <extend_definition comment="%PACKAGENAME% removed" definition_ref="package_%PACKAGENAME%_removed" />
+
+    <!-- OVAL <runlevel_test> is not implemented in OpenSCAP when compiled on Ubuntusystems yet:
+         https://github.com/OpenSCAP/openscap/blob/maint-1.2/src/OVAL/probes/unix/runlevel.c#L210
+
+         (attempt to use it will result into 'error' result), therefore we verify that there
+         DOES NOT exist some "S\d{2}ssh" service record in all of "/etc/rc*.d/" subfolders -->
+    <criterion comment="%SERVICENAME% disabled in /etc/rc*.d" test_ref="test_%SERVICENAME%_disabled" />
+
+    </criteria>
+  </definition>
+
+  <!-- Verify there DOES NOT exist some 'S\d{2}ssh' service record in some of '/etc/rc*.d/' subfolders -->
+  <unix:file_test id="test_%SERVICENAME%_disabled" check="all" check_existence="none_exist"
+   comment="%SERVICENAME% disabled in /etc/rc*.d" version="1" >
+   <unix:object object_ref="object_%DAEMONNAME%_etc_rcd" />
+  </unix:file_test>
+
+  <unix:file_object id="object_%DAEMONNAME%_etc_rcd" comment="/etc/rc*.d/S\d{2}%DAEMONNAME%" version="1">
+    <unix:path operation="pattern match">^/etc/rc[0-6S]\.d$</unix:path>
+    <unix:filename operation="pattern match">^S\d{2}%DAEMONNAME%$</unix:filename>
+  </unix:file_object>
+
+  {{% else %}}
+
+  <definition class="compliance" id="service_%SERVICENAME%_disabled"
+  version="1">
+    <metadata>
+      <title>Service %SERVICENAME% Disabled</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The %SERVICENAME% service should be disabled if possible.</description>
+    </metadata>
+   <criteria comment="package %PACKAGENAME% removed or service %SERVICENAME% is not configured to start" operator="OR">
+    <extend_definition comment="%PACKAGENAME% removed" definition_ref="package_%PACKAGENAME%_removed" />
+    <criteria operator="AND" comment="service %SERVICENAME% is not configured to start">
+      <criterion comment="%SERVICENAME% runlevel 0" test_ref="test_runlevel0_%SERVICENAME%_off" />
+      <criterion comment="%SERVICENAME% runlevel 1" test_ref="test_runlevel1_%SERVICENAME%_off" />
+      <criterion comment="%SERVICENAME% runlevel 2" test_ref="test_runlevel2_%SERVICENAME%_off" />
+      <criterion comment="%SERVICENAME% runlevel 3" test_ref="test_runlevel3_%SERVICENAME%_off" />
+      <criterion comment="%SERVICENAME% runlevel 4" test_ref="test_runlevel4_%SERVICENAME%_off" />
+      <criterion comment="%SERVICENAME% runlevel 5" test_ref="test_runlevel5_%SERVICENAME%_off" />
+      <criterion comment="%SERVICENAME% runlevel 6" test_ref="test_runlevel6_%SERVICENAME%_off" />
+    </criteria>
+    </criteria>
+  </definition>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel0_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel0_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel1_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel1_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel2_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel2_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel3_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel3_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel4_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel4_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel5_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel5_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_test check="all" check_existence="any_exist"
+  comment="Runlevel test" id="test_runlevel6_%SERVICENAME%_off"
+  version="2">
+    <unix:object object_ref="obj_runlevel6_%SERVICENAME%_off" />
+    <unix:state state_ref="state_service_%SERVICENAME%_off" />
+  </unix:runlevel_test>
+  <unix:runlevel_object id="obj_runlevel0_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">0</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel1_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">1</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel2_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">2</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel3_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">3</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel4_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">4</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel5_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">5</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_object id="obj_runlevel6_%SERVICENAME%_off" version="1">
+    <unix:service_name>%SERVICENAME%</unix:service_name>
+    <unix:runlevel operation="equals">6</unix:runlevel>
+  </unix:runlevel_object>
+  <unix:runlevel_state comment="not configured to start" id="state_service_%SERVICENAME%_off" version="1">
+    <unix:start datatype="boolean">false</unix:start>
+    <unix:kill datatype="boolean">true</unix:kill>
+  </unix:runlevel_state>
+
+  {{% endif %}}
+</def-group>
