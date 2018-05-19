@@ -70,7 +70,7 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     )
 endif()
 
-find_package(PythonInterp 2 REQUIRED)
+find_package(PythonInterp REQUIRED)
 find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
 
