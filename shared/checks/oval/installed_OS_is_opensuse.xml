@@ -1,14 +1,10 @@
 <def-group>
-  <definition class="inventory"
-  id="installed_OS_is_opensuse" version="1">
+  <definition class="inventory" id="installed_OS_is_opensuse" version="1">
     <metadata>
       <title>openSUSE</title>
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <reference ref_id="cpe:/o:opensuse:leap:42.1" source="CPE" />
-      <reference ref_id="cpe:/o:opensuse:leap:42.2" source="CPE" />
-      <reference ref_id="cpe:/o:opensuse:leap:42.3" source="CPE" />
       <description>The operating system installed on the system is openSUSE.</description>
     </metadata>
     <criteria operator="AND">
@@ -22,7 +18,7 @@
     <linux:state state_ref="state_opensuse_installed" />
   </linux:rpminfo_test>
   <linux:rpminfo_state id="state_opensuse_installed" version="1">
-    <linux:version operation="pattern match">^42.*$</linux:version>
+    <linux:name operation="pattern match">openSUSE-release</linux:name>
   </linux:rpminfo_state>
   <linux:rpminfo_object id="obj_opensuse_installed" version="1">
     <linux:name>openSUSE-release</linux:name>
