@@ -38,7 +38,7 @@ $ apt-get install cmake libopenscap8 libxml2-utils xsltproc python-jinja2
 
 ### Downloading the source code
 
-Download and extract a tarball from the [https://github.com/OpenSCAP/scap-security-guide/releases](list of releases):
+Download and extract a tarball from the [list of releases](https://github.com/OpenSCAP/scap-security-guide/releases):
 ```
 # change X.Y.Z for desired version
 wget https://github.com/OpenSCAP/scap-security-guide/releases/download/vX.Y.Z/scap-security-guide-X.Y.Z.tar.bz2
