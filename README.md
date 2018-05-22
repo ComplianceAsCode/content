@@ -75,6 +75,8 @@ identifiers:
 
 ---
 
+![Build system schema](docs/readme_images/build_schema.svg "Build system schema")
+
 ### Scan targets
 
 Our security content can be used to scan bare-metal machines, virtual machines,
