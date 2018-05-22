@@ -45,8 +45,8 @@ We understand that depending on your organization's needs you may need
 to use a specific security content format. We let you choose.
 
 ---
-Our OpenControl-inspired YAML rule format. Write once to build security content
-in XCCDF, Ansible and others.
+We use an OpenControl-inspired YAML rule format for input. Write once and
+generate security content in XCCDF, Ansible and others.
 
 ```
 prodtype: rhel7
