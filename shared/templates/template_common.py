@@ -57,6 +57,12 @@ class FilesGenerator(object):
                 return template_filename
             paths.append(os.path.dirname(template_filename))
 
+            shared_template = os.path.join(self.shared_dir, "templates",
+                                           "oval_5.11_templates", filename)
+            if os.path.isfile(shared_template):
+                return shared_template
+            paths.append(os.path.dirname(shared_template))
+
         shared_template = os.path.join(self.shared_dir, "templates", filename)
         if os.path.isfile(shared_template):
             return shared_template
