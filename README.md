@@ -88,6 +88,8 @@ machines but go against recommended practices on containers.
 
 ## Installation
 
+### From packages
+
 The preferred method of installation is via the package manager of your
 distribution. On *Red Hat Enterprise Linux* and *Fedora* you can use:
 `yum install scap-security-guide`.
@@ -98,6 +100,23 @@ On Debian (sid), you can use:
 `apt install ssg-nondebian` for other distributions guides (RHEL, Fedora, etc.).
 `apt install ssg-applications` for application-oriented guides (Firefox, JBoss, etc.).
 
+### From release ZIP files
+
+Download pre-built SSG zip archive from
+[the release page](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
+Each zip file is an archive with ready-made SCAP source datastreams.
+
+### From COPR
+
+We maintain a COPR repository that provides unofficial builds of latest versions
+of openscap, scap-security-guide, scap-workbench and openscap-daemon.
+The packages are suitable for use on Red Hat Enterprise Linux 6 and 7 and CentOS 6 and 7.
+
+See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
+detailed instructions.
+
+### From source
+
 If SCAP Security Guide is not packaged in your distribution or if the
 version that is packaged is too old, you need to build the content yourself
 and install it via `make install`. Please see the [BUILD.md](BUILD.md)
@@ -105,10 +124,6 @@ document for more info. We also recommend opening an issue on that distributions
 bug tracker to voice interest.
 
 Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
-
-## Build from the source
-
-Please see the [BUILD.md](BUILD.md) document for detailed build instructions.
 
 ## Usage
 
@@ -216,18 +231,6 @@ The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/lis
 If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat.com/mailman/listinfo/open-scap-list](https://www.redhat.com/mailman/listinfo/open-scap-list)
 
 You can also join the `#openscap` IRC channel on `chat.freenode.net`.
-
-## COPR Repo
-
-We have created a new COPR repository that provides unofficial builds of latest
-versions of openscap, scap-security-guide, scap-workbench and openscap-daemon
-packages. The packages are suitable for use on Red Hat Enterprise Linux 6 and 7
-and CentOS 6 and 7.
-
-The COPR repository is located on:
-[https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/](https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/)
-
-The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentOS.
 
 ## Further reading
 
