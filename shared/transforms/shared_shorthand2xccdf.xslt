@@ -401,7 +401,6 @@
               <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
               <xsl:if test="package-check-macro">the package is installed</xsl:if>
               <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
-              <xsl:if test="audit-syscall-check-macro">no line is returned</xsl:if>
             </xsl:attribute>
 
             <!-- add clause if explicitly specified (and also override any above) -->
@@ -854,14 +853,6 @@ These lines instruct the module loading system to run another program (such as
 Run the following command to search for such lines in all files in <xhtml:code>/etc/modprobe.d</xhtml:code>
 and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 <xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
-  </xsl:template>
-
-  <xsl:template match="audit-syscall-check-macro">
-To determine if the system is configured to audit calls to
-the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
-system call, run the following command:
-<xhtml:pre xml:space="preserve">$ sudo grep "<xsl:value-of select="@syscall"/>" /etc/audit/audit.rules</xhtml:pre>
-If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
 <xsl:template match="auditctl-syscall-check-macro">

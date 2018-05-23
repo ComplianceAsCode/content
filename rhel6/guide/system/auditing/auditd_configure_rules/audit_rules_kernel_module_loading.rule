@@ -28,5 +28,7 @@ references:
     stigid: RHEL-06-000202
 
 ocil: |-
-    <audit-syscall-check-macro syscall="init_module" />
-    <audit-syscall-check-macro syscall="delete_module" />
+    {{{ audit_syscall_check(syscall="init_module") }}}
+    {{{ audit_syscall_check(syscall="delete_module") }}}
+
+{{{ audit_syscall_check_ocil_clause_entry() }}}

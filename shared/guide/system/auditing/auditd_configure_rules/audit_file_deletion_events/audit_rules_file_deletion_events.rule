@@ -38,8 +38,10 @@ references:
     pcidss: Req-10.2.7
 
 ocil: |-
-    <audit-syscall-check-macro syscall="rmdir" />
-    <audit-syscall-check-macro syscall="unlink" />
-    <audit-syscall-check-macro syscall="unlinkat" />
-    <audit-syscall-check-macro syscall="rename" />
-    <audit-syscall-check-macro syscall="renameat" />
+    {{{ audit_syscall_check(syscall="rmdir") }}}
+    {{{ audit_syscall_check(syscall="unlink") }}}
+    {{{ audit_syscall_check(syscall="unlinkat") }}}
+    {{{ audit_syscall_check(syscall="rename") }}}
+    {{{ audit_syscall_check(syscall="renameat") }}}
+
+{{{ audit_syscall_check_ocil_clause_entry() }}}
