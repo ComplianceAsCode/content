@@ -119,7 +119,7 @@ be used as common libraries.
 ## Example of incorporating new test scenario
 
 Let's show how to add test scenario for
-[https://bugzilla.redhat.com/show_bug.cgi?id=1392679](Red Hat Bugzilla 1392679)
+[Red Hat Bugzilla 1392679](https://bugzilla.redhat.com/show_bug.cgi?id=1392679)
 (already included).
 
 Bugzilla is about `sshd_config` being not altered correctly. Thus:
