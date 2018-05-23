@@ -1,0 +1,90 @@
+{{% macro sshd_check_ocil_clause_entry() -%}}
+ocil_clause: "the required value is not set"
+{{%- endmacro %}}
+
+
+{{# Example usage: sshd_check(default="no", option="Banner", value="/etc/issue") #}}
+{{% macro sshd_check(default, option, value) -%}}
+    To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
+    <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
+    {{% if default == "yes" -%}}
+    If no line, a commented line, or a line indicating the value <tt>{{{ value }}}</tt> is returned, then the required value is set.
+    {{%- else %}}
+    If a line indicating <tt>{{{ value }}}</tt> is returned, then the required value is set.
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{% macro sshd_check_complete_ocil_entry(default, option, value) -%}}
+ocil: |
+    {{{ sshd_check(default, option, value) }}}
+
+{{{ sshd_check_ocil_clause_entry() }}}
+{{%- endmacro %}}
+
+
+{{% macro iptables_desc(traffic_action, how_to_do, proto, port) -%}}
+    To configure <tt>iptables</tt> {{{ traffic_action }}} port {{{ port }}} traffic, one must edit
+    <tt>/etc/sysconfig/iptables</tt> and
+    <tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use).
+    {{{ how_to_do }}}
+    <pre>-A INPUT -m state --state NEW -p {{{ proto }}} --dport {{{ port }}} -j ACCEPT</pre>
+{{%- endmacro %}}
+
+
+{{# Example usage: iptables_describe_block(proto="tcp", port=80) #}}
+{{% macro iptables_describe_block(proto, port) -%}}
+{{{ iptables_desc(
+	traffic_action="to block",
+	how_to_do="Remove the following line, ensuring that it does not appear the INPUT chain:",
+	proto=proto,
+	port=port
+) }}}
+{{%- endmacro %}}
+
+
+{{% macro iptables_describe_allow(proto, port) -%}}
+{{{ iptables_desc(
+	traffic_action="to allow",
+	how_to_do="Add the following line, ensuring that it appears before the final LOG and DROP lines for the INPUT chain:",
+	proto=proto,
+	port=port
+) }}}
+{{%- endmacro %}}
+
+
+{{% macro partition_check(part) -%}}
+    Run the following command to determine if <code>{{{ part }}}</code>
+    is on its own partition or logical volume:
+    <pre>$ mount | grep "on {{{ part }}}"</pre>
+    If <code>{{{ part }}}</code> has its own partition or volume group, a line will be returned.
+{{%- endmacro %}}
+
+
+{{% macro partition_check_complete_ocil_entry(part) -%}}
+ocil: |
+    {{{ partition_check(part) }}}
+
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{% macro audit_syscall_check(syscall) -%}}
+    To determine if the system is configured to audit calls to the
+    <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit/audit.rules</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+
+{{% macro audit_syscall_check_ocil_clause_entry() -%}}
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{% macro audit_syscall_check_complete_ocil_entry(syscall) -%}}
+ocil: |
+    {{{ audit_syscall_check(syscall) }}}
+
+{{{ audit_syscall_check_ocil_clause_entry() }}}
+{{%- endmacro %}}

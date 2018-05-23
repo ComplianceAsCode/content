@@ -2,4 +2,8 @@ documentation_complete: true
 
 title: 'Allow IMAP Clients to Access the Server'
 
-description: "The default iptables configuration does not allow inbound \naccess to any services. This modification will allow remote hosts to \ninitiate connections to the IMAP daemon, while keeping all other ports \non the server in their default protected state. \n<iptables-desc-macro port=\"143\" proto=\"tcp\" />"
+description: |-
+    The default iptables configuration does not allow inbound access to any services.
+    This modification will allow remote hosts to initiate connections to the IMAP daemon,
+    while keeping all other ports on the server in their default protected state.
+    {{{ iptables_describe_allow(proto="tcp", port=143) }}}

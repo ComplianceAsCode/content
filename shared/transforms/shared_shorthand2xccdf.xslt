@@ -394,7 +394,6 @@
               <!-- add clauses if specific macros are found within -->
               <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
               <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-              <xsl:if test="partition-check-macro">no line is returned</xsl:if>
               <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
               <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
               <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
@@ -402,8 +401,6 @@
               <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
               <xsl:if test="package-check-macro">the package is installed</xsl:if>
               <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
-              <xsl:if test="audit-syscall-check-macro">no line is returned</xsl:if>
-              <xsl:if test="sshd-check-macro">the required value is not set</xsl:if>
             </xsl:attribute>
 
             <!-- add clause if explicitly specified (and also override any above) -->
@@ -666,15 +663,6 @@
     </xsl:choose>
   </xsl:template>   
 
-  <xsl:template match="partition-check-macro">
-    Run the following command to determine if <xhtml:code><xsl:value-of select="@part"/></xhtml:code>
-    is on its own partition or logical volume:
-
-  <xhtml:pre>$ mount | grep "on <xsl:value-of select="@part"/>"</xhtml:pre>
-  If <xhtml:code><xsl:value-of select="@part"/></xhtml:code> has its own partition or volume group, a line
-  will be returned.
-  </xsl:template>
-
   <xsl:template match="sebool-macro">
     <xsl:choose>
       <xsl:when test="@enable = 'false'">
@@ -867,52 +855,12 @@ and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
 <xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
   </xsl:template>
 
-  <xsl:template match="audit-syscall-check-macro">
-To determine if the system is configured to audit calls to
-the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
-system call, run the following command:
-<xhtml:pre xml:space="preserve">$ sudo grep "<xsl:value-of select="@syscall"/>" /etc/audit/audit.rules</xhtml:pre>
-If the system is configured to audit this activity, it will return a line.
-  </xsl:template>
-
 <xsl:template match="auditctl-syscall-check-macro">
 To determine if the system is configured to audit calls to
 the <xhtml:code><xsl:value-of select="@syscall"/></xhtml:code>
 system call, run the following command:
 <xhtml:pre xml:space="preserve">$ sudo auditctl -l | grep syscall | grep <xsl:value-of select="@syscall"/></xhtml:pre>
 If the system is configured to audit this activity, it will return a line.
-  </xsl:template>
-
-  <!--Example usage: <iptables-desc-macro allow="true" net="false" proto="tcp"
-       port="80" />  -->
-    <!-- allow (boolean): optional attribute which defaults to true, or to
-         allow this traffic through -->
-    <!-- net (boolean): optional attribute which determines if -s netwk/mask
-         is put in.  By defaults this is false -->
-    <!-- proto (string): protocol in question, typically tcp or udp -->
-    <!-- port (integer): port in question -->
-  <xsl:template match="iptables-desc-macro">
-    <xsl:choose>
-      <xsl:when test="@allow = 'false'">
-      <!-- allow: optional attribute which defaults to true, or to allow this traffic through -->
-        To configure <xhtml:code>iptables</xhtml:code> to not allow port
-        <xsl:value-of select="@port"/> traffic one must edit
-        <xhtml:code>/etc/sysconfig/iptables</xhtml:code> and
-        <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
-        Remove the following line, ensuring that it does not appear in the INPUT
-        chain:
-        <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        To configure <xhtml:code>iptables</xhtml:code> to allow port
-        <xsl:value-of select="@port"/> traffic one must edit
-        <xhtml:code>/etc/sysconfig/iptables</xhtml:code> and
-        <xhtml:code>/etc/sysconfig/ip6tables</xhtml:code> (if IPv6 is in use).
-        Add the following line, ensuring that it appears before the final LOG
-        and DROP lines for the INPUT chain:
-        <xhtml:pre xml:space="preserve">-A INPUT <xsl:if test="@net = 'true'">-s netwk/mask </xsl:if>-m state --state NEW -p <xsl:value-of select="@proto"/> --dport <xsl:value-of select="@port"/> -j ACCEPT</xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <!--Example usage: <firewalld-desc-macro allow="true" service="ssh" proto="tcp"
@@ -976,21 +924,6 @@ If the system is configured to audit this activity, it will return a line.
         <xhtml:code><xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="sshd-check-macro">
-  <!-- could also do this with sshd -T to test live configuration -->
-    To determine how the SSH daemon's
-    <xhtml:code><xsl:value-of select="@option"/></xhtml:code>
-    option is set, run the following command:
-    <xhtml:pre xml:space="preserve">$ sudo grep -i <xsl:value-of select="@option"/> /etc/ssh/sshd_config</xhtml:pre>
-    <xsl:if test="@default='yes'">
-      If no line, a commented line, or a line indicating the value
-      <xhtml:code><xsl:value-of select="@value"/></xhtml:code> is returned, then the required value is set.
-    </xsl:if>
-    <xsl:if test="@default='no' or @default=''">
-      If a line indicating <xsl:value-of select="@value"/> is returned, then the required value is set.
-    </xsl:if>
   </xsl:template>
 
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->

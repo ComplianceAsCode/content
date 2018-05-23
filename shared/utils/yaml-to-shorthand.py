@@ -18,7 +18,8 @@ except ImportError:
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
-from ssgcommon import open_yaml, required_yaml_key
+from ssgcommon import required_yaml_key
+import ssgcommon
 
 
 def add_sub_element(parent, tag, data):
@@ -32,7 +33,13 @@ def add_sub_element(parent, tag, data):
     except NameError:
         ustr = str("<{0}>{1}</{0}>").format(tag, data)
 
-    element = ET.fromstring(ustr.encode("utf-8"))
+    try:
+        element = ET.fromstring(ustr.encode("utf-8"))
+    except Exception:
+        msg = ("Error adding subelement to an element '{0}' from string: '{1}'"
+               .format(parent.tag, ustr))
+        raise RuntimeError(msg)
+
     parent.append(element)
     return element
 
@@ -63,7 +70,7 @@ class Profile(object):
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = open_yaml(yaml_file, product_yaml)
+        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -116,7 +123,7 @@ class Value(object):
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = open_yaml(yaml_file, product_yaml)
+        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -181,7 +188,7 @@ class Benchmark(object):
 
     @staticmethod
     def from_yaml(yaml_file, id_, product_yaml=None):
-        yaml_contents = open_yaml(yaml_file, product_yaml)
+        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -312,7 +319,7 @@ class Group(object):
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = open_yaml(yaml_file, product_yaml)
+        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -380,7 +387,7 @@ class Rule(object):
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = open_yaml(yaml_file, product_yaml)
+        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -584,7 +591,7 @@ def main():
         print(args.output)
         sys.exit(0)
 
-    product_yaml = open_yaml(args.product_yaml)
+    product_yaml = ssgcommon.open_yaml(args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = required_yaml_key(product_yaml, "benchmark_root")
     profiles_root = required_yaml_key(product_yaml, "profiles_root")
