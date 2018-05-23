@@ -209,12 +209,6 @@ is a snippet of the instructions:
 ...
 ```
 
-## Deprecated Content
-
-For a list of deprecated content, review the [Deprecated Content Table](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc#deprecated-content)
-in the User Guide. If you need to you can still use this content by using an
-older release of this project.
-
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
