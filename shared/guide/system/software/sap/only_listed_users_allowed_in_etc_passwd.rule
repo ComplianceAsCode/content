@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Only Explicitly Listed Users are allowed in /etc/passwd'
+
+description: |-
+    Enterprise Application tends to use the server or virtual machine exclusively. 
+    Besides the default operating system users, there should be no local users other
+    than the explictly listed users by the application that exists on the operating system.
+    The user list can be customized in the refine value variable
+    <tt>var_allowed_users_in_etc_passwd</tt>. OVAL reqular expression is used for the user list
+    <weblink-macro link="http://oval.mitre.org/language/about/re_support_5.6.html" />.
+    If the test fails, take a look at the file <tt>/etc/passwd</tt>, then use the following
+    command to delete the unexpected users: 
+    <pre>$sudo userdel unexpected_user </pre>
+
+rationale: |-
+    Each user account on local operating system increases the vulnerability of the system.
+    In <tt>/etc/passwd</tt>, there should be only users that are absolutely necessary for the
+    operating system and the installed applications.
+
+severity: medium
+
+references:
+
+ocil_clause: 'unexpected local users occurred' 
+
+ocil: |-
+    Take a look at <tt>/etc/passwd</tt> to see the local users on the operating system. Use the
+    following command to delete the unexpected users.
+    <pre>$sudo userdel unexpected_user </pre>
