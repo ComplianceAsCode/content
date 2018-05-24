@@ -836,13 +836,6 @@
     <xhtml:pre>$ rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
-
-  <xsl:template match="module-disable-macro">
-To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
-kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>:
-<xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</xhtml:pre>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

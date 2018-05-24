@@ -166,3 +166,10 @@ ocil: |-
 
 ocil_clause: "no line is returned"
 {{%- endmacro %}}
+
+
+{{%- macro describe_module_disable(module) %}}
+    To configure the system to prevent the <code>{{{ module }}}</code>
+    kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+    <pre>install {{{ module }}} /bin/true</pre>
+{{%- endmacro %}}
