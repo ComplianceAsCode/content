@@ -400,7 +400,6 @@
               <xsl:if test="systemd-socket-disable-check-macro">the socket is running</xsl:if>
               <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
               <xsl:if test="package-check-macro">the package is installed</xsl:if>
-              <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
             </xsl:attribute>
 
             <!-- add clause if explicitly specified (and also override any above) -->
@@ -842,17 +841,6 @@
 To configure the system to prevent the <xhtml:code><xsl:value-of select="@module"/></xhtml:code>
 kernel module from being loaded, add the following line to a file in the directory <xhtml:code>/etc/modprobe.d</xhtml:code>:
 <xhtml:pre xml:space="preserve">install <xsl:value-of select="@module"/> /bin/true</xhtml:pre>
-  </xsl:template>
-
-  <xsl:template match="module-disable-check-macro">
-If the system is configured to prevent the loading of the
-<xhtml:code><xsl:value-of select="@module"/></xhtml:code> kernel module,
-it will contain lines inside any file in <xhtml:code>/etc/modprobe.d</xhtml:code> or the deprecated<xhtml:code>/etc/modprobe.conf</xhtml:code>.
-These lines instruct the module loading system to run another program (such as
-<xhtml:code>/bin/true</xhtml:code>) upon a module <xhtml:code>install</xhtml:code> event.
-Run the following command to search for such lines in all files in <xhtml:code>/etc/modprobe.d</xhtml:code>
-and the deprecated <xhtml:code>/etc/modprobe.conf</xhtml:code>:
-<xhtml:pre xml:space="preserve">$ grep -r <xsl:value-of select="@module"/> /etc/modprobe.conf /etc/modprobe.d</xhtml:pre>
   </xsl:template>
 
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
