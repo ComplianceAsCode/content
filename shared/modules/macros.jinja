@@ -142,3 +142,10 @@ ocil: |
     <code>firewall-cmd --permanent --add-service={{{ service }}}</code>
     {{% endif %}}
 {{%- endmacro %}}
+
+
+{{%- macro ocil_auditctl_syscall(syscall) %}}
+    To determine if the system is configured to audit calls to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo auditctl -l | grep syscall | grep {{{ syscall }}}</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
