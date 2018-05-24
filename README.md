@@ -129,8 +129,6 @@ and install it via `make install`. Please see the [BUILD.md](BUILD.md)
 document for more info. We also recommend opening an issue on that distributions
 bug tracker to voice interest.
 
-Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
-
 ## Usage
 
 We assume you have installed SCAP Security Guide system-wide into a
