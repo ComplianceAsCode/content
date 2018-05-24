@@ -8,13 +8,13 @@ On *Red Hat Enterprise Linux* make sure the packages `cmake`, `openscap-utils`,
 `PyYAML`, `python-jinja2` and their dependencies are installed. We require
 version `1.0.8` or later of `openscap-utils`.
 
-```
+```bash
 yum install cmake openscap-utils PyYAML python-jinja2
 ```
 
 On Fedora the package list is almost the same except for `python2-jinja2`:
 
-```
+```bash
 dnf install cmake openscap-utils PyYAML python2-jinja2
 ```
 
@@ -22,27 +22,27 @@ On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
 `libxml2-utils`, `xsltproc`, `python-jinja2` and their dependencies are
 installed.
 
-```
+```bash
 apt-get install cmake libopenscap8 libxml2-utils xsltproc python-jinja2
 ```
 
 (optional) Install git if you want to clone the GitHub repository to get the
 source code:
 
-```
+```bash
 yum install git
 ```
 
 (optional) Install the ShellCheck package to perform fix script static analysis:
 
-```
+```bash
 yum install ShellCheck
 ```
 
 (optional) Install the `ninja` build system if you want to use it instead of
 `make` for faster builds:
 
-```
+```bash
 yum install ninja-build
 ```
 
@@ -50,7 +50,7 @@ yum install ninja-build
 
 Download and extract a tarball from the [list of releases](https://github.com/OpenSCAP/scap-security-guide/releases):
 
-```
+```bash
 # change X.Y.Z for desired version
 ssg_version="X.Y.Z"
 wget https://github.com/OpenSCAP/scap-security-guide/releases/download/v$ssg_version/scap-security-guide-$ssg_version.tar.bz2
@@ -60,7 +60,7 @@ cd ./scap-security-guide-$ssg_version/
 
 Or clone the GitHub repository:
 
-```
+```bash
 git clone https://github.com/OpenSCAP/scap-security-guide.git
 cd scap-security-guide/
 # (optional) select release version - change X.Y.Z for desired version
@@ -73,7 +73,7 @@ git checkout master
 
 To build all the security content:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake ../
@@ -83,7 +83,7 @@ make -j4
 (optional) To build everything only for one specific product - for example all
 security content only for *Red Hat Enterprise Linux 7*:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake ../
@@ -92,7 +92,7 @@ make -j4 rhel7
 
 (optional) To build only specific content for one specific product:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake ../
@@ -105,7 +105,7 @@ make -j4 rhel7  # everything above for RHEL7
 
 (optional) Configure options before building using a GUI tool:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake-gui ../
@@ -114,7 +114,7 @@ make -j4
 
 (optional) Use the `ninja` build system (requires the `ninja-build` package):
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake -G Ninja ../
@@ -132,7 +132,7 @@ The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
 We recommend using **source datastream** if you have a choice but the build
 system also generates separate XCCDF, OVAL, OCIL and CPE files:
 
-```
+```bash
 $ ls -1 ssg-rhel7-*.xml
 ssg-rhel7-cpe-dictionary.xml
 ssg-rhel7-cpe-oval.xml
@@ -156,7 +156,7 @@ and administrators.
 Spreadsheet HTML tables - potentially useful as the basis for an
 *SRTM document*:
 
-```
+```bash
 $ ls -1 tables/table-rhel7-*.html
 ...
 tables/table-rhel7-nistrefs-ospp-rhel7.html
@@ -172,7 +172,7 @@ tables/table-rhel7-stig.html
 
 System-wide installation:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake ../
@@ -182,7 +182,7 @@ sudo make install
 
 (optional) Custom install location:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake ../
@@ -192,7 +192,7 @@ sudo make DESTDIR=/opt/absolute/path/to/ssg/ install
 
 (optional) System-wide installation using ninja:
 
-```
+```bash
 cd scap-security-guide/
 cd build/
 cmake -G Ninja ../
@@ -204,7 +204,7 @@ ninja-build install
 
 To build a tarball with all the source code:
 
-```
+```bash
 cd build/
 make package_source
 ```
@@ -213,7 +213,7 @@ make package_source
 
 To build a package for testing purposes:
 
-```
+```bash
 cd build/
 # disable any product you would not like to bundle in the package. For example:
 cmake -DSSG_PRODUCT_JBOSS_EAP5:BOOL=OFF../
@@ -229,7 +229,7 @@ packages.
 
 To build a zip file with all generated source data streams and kickstarts:
 
-```
+```bash
 cd build/
 make zipfile
 ```
@@ -242,7 +242,7 @@ Use the [Dockerfile](Dockerfile) present in the top directory and build the
 image.
 This will take care of the build environment and all necessary setup.
 
-```
+```bash
 docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
 ```
 
@@ -250,19 +250,19 @@ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --t
 
 To build all the content, run a container without any flags.
 
-```
+```bash
 docker run --cap-drop=all --name scap-security-guide oscap:latest
 ```
 
 (optional) To build content only for a specific distribution, add the relevant
 name as a flag:
 
-```
+```bash
 docker run --cap-drop=all --name scap-security-guide oscap:latest firefox
 ```
 
 Using `docker cp` to copy all the generated content to the your host:
 
-```
+```bash
 docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build
 ```

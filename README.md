@@ -49,7 +49,7 @@ to use a specific security content format. We let you choose.
 We use an OpenControl-inspired YAML rule format for input. Write once and
 generate security content in XCCDF, Ansible and others.
 
-```
+```YAML
 prodtype: rhel7
 
 title: 'Configure The Number of Allowed Simultaneous Requests'
@@ -88,27 +88,46 @@ machines but go against recommended practices on containers.
 
 ## Installation
 
+### From packages
+
 The preferred method of installation is via the package manager of your
 distribution. On *Red Hat Enterprise Linux* and *Fedora* you can use:
-`yum install scap-security-guide`.
+
+```bash
+yum install scap-security-guide
+```
 
 On Debian (sid), you can use:
-`apt install ssg-debian` for Debian guides.
-`apt install ssg-debderived` for Debian-based distributions (e.g. Ubuntu) guides.
-`apt install ssg-nondebian` for other distributions guides (RHEL, Fedora, etc.).
-`apt install ssg-applications` for application-oriented guides (Firefox, JBoss, etc.).
+
+```bash
+apt install ssg-debian  # for Debian guides
+apt install ssg-debderived  # for Debian-based distributions (e.g. Ubuntu) guides
+apt install ssg-nondebian  # for other distributions guides (RHEL, Fedora, etc.)
+apt install ssg-applications  # for application-oriented guides (Firefox, JBoss, etc.)
+```
+
+### From release ZIP files
+
+Download pre-built SSG zip archive from
+[the release page](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
+Each zip file is an archive with ready-made SCAP source datastreams.
+
+### From COPR
+
+We maintain a COPR repository that provides unofficial builds of latest versions
+of openscap, scap-security-guide, scap-workbench and openscap-daemon.
+The packages are suitable for use on Red Hat Enterprise Linux 6 and 7 and CentOS 6 and 7.
+
+See https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/ for
+detailed instructions.
+
+### From source
 
 If SCAP Security Guide is not packaged in your distribution or if the
 version that is packaged is too old, you need to build the content yourself
 and install it via `make install`. Please see the [BUILD.md](BUILD.md)
 document for more info. We also recommend opening an issue on that distributions
 bug tracker to voice interest.
-
-Or you can download pre-built SSG zip archive from [latest release](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
-
-## Build from the source
-
-Please see the [BUILD.md](BUILD.md) document for detailed build instructions.
 
 ## Usage
 
@@ -123,8 +142,8 @@ go through a few of them here.
 The `oscap` tool is a low-level command line interface that comes from
 the OpenSCAP project. It can be used to scan the local machine.
 
-```
-# oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+```bash
+oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_rht-ccp --results-arf arf.xml --report report.html --oval-results /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
 
 After evaluation, the `arf.xml` file will contain all results in a reusable
@@ -134,8 +153,8 @@ report that can be opened in a browser.
 Replace the profile with other profile of your choice, you can display
 all possible choices using:
 
-```
-# oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+```bash
+oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 ```
 
 Please see the [OpenSCAP User Manual](https://static.open-scap.org/openscap-1.2/oscap_user_manual.html)
@@ -161,15 +180,15 @@ The following command evaluates machine with IP `192.168.1.123` with content
 stored on local machine. Keep in mind that `oscap` has to be installed on the
 remote machine but the SSG content doesn't need to be.
 
-```
-# oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
+```bash
+oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.content_profile_usgcb-rhel6-server --results-arf arf.xml --report report.html /usr/share/xml/scap/ssg/content/ssg-rhel6-ds.xml
 ```
 
 ### Ansible
 
 To see a list of available playbooks, run:
 
-```
+```bash
 # ls /usr/share/scap-security-guide/ansible/
 ...
 ssg-rhel6-role-standard.yml
@@ -188,14 +207,14 @@ These roles are generated from *SCAP* profiles available for the products.
 To apply the playbook on your local machine run:
 (*THIS WILL CHANGE CONFIGURATION OF THE MACHINE!*)
 
-```
-# ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/ssg-rhel7-role-rht-ccp.yml
+```bash
+ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/ssg-rhel7-role-rht-ccp.yml
 ```
 
 Each of the Ansible playbooks contain instructions on how to deploy them. Here
 is a snippet of the instructions:
 
-```
+```YAML
 ...
 # This file was generated by OpenSCAP 1.2.16 using:
 #   $ oscap xccdf generate fix --profile rht-ccp --template urn:xccdf:fix:script:ansible sds.xml
@@ -209,12 +228,6 @@ is a snippet of the instructions:
 ...
 ```
 
-## Deprecated Content
-
-For a list of deprecated content, review the [Deprecated Content Table](https://github.com/OpenSCAP/scap-security-guide/blob/master/docs/manual/user_guide.adoc#deprecated-content)
-in the User Guide. If you need to you can still use this content by using an
-older release of this project.
-
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
@@ -222,18 +235,6 @@ The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/lis
 If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat.com/mailman/listinfo/open-scap-list](https://www.redhat.com/mailman/listinfo/open-scap-list)
 
 You can also join the `#openscap` IRC channel on `chat.freenode.net`.
-
-## COPR Repo
-
-We have created a new COPR repository that provides unofficial builds of latest
-versions of openscap, scap-security-guide, scap-workbench and openscap-daemon
-packages. The packages are suitable for use on Red Hat Enterprise Linux 6 and 7
-and CentOS 6 and 7.
-
-The COPR repository is located on:
-[https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/](https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/)
-
-The repo enables you to test the latest greatest OpenSCAP bits on RHEL and CentOS.
 
 ## Further reading
 
