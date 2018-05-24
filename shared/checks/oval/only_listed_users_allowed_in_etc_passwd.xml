@@ -1,0 +1,43 @@
+<def-group>
+  <definition class="compliance" id="only_listed_users_allowed_in_etc_passwd" version="1">
+    <metadata>
+      <title>Only Listed Local Users Exist on Operating System</title>
+      <affected family="unix">
+        <platform>Oracle Linux 7</platform>
+      </affected>
+      <description>Besides the default operating system users, there should be no other users
+      except the users in the given list that exist locally on the operating system.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_only_listed_users_allowed_in_etc_passwd"
+      comment="only default os users and extrally listed users are allowed in /etc/passwd" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_only_listed_users_allowed_in_etc_passwd" version="1"
+  check_existence="any_exist" check="all" comment="query /etc/passwd">
+    <ind:object object_ref="object_only_listed_users_allowed_in_etc_passwd" />
+    <ind:state state_ref="state_only_listed_users_allowed_in_etc_passwd" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_only_listed_users_allowed_in_etc_passwd" version="1">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    <ind:pattern>^([a-zA-Z0-9_.-]+?):</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+    <filter action="exclude">state_default_os_user</filter>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_default_os_user" version="1"
+  comment="The user root is always allowed as default opering system user" >
+    <ind:subexpression operation="pattern match">^root$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_state id="state_only_listed_users_allowed_in_etc_passwd" version="1"
+  comment="extrally listed usernames required by the installed applications" >
+    <ind:subexpression operation="pattern match"
+    var_ref="var_allowed_users_in_etc_passwd"></ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <external_variable id="var_allowed_users_in_etc_passwd" version="1" datatype="string" 
+  comment="explicitly allowed os users on operating system"/>
+</def-group>
