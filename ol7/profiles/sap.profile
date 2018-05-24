@@ -15,3 +15,5 @@ selections:
     - no_rsh_trust_files
     - package_ypbind_removed
     - package_ypserv_removed
+    - var_allowed_users_in_etc_passwd=ol7forsap
+    - only_listed_users_allowed_in_etc_passwd
