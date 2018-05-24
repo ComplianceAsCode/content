@@ -7,4 +7,4 @@ description: |-
     access to any services. This modification will allow remote hosts to
     initiate connections to the IMAP daemon, while keeping all other ports
     on the server in their default protected state.
-    <firewalld-desc-macro port="143" proto="tcp" />
+    {{{ describe_firewalld_allow(port="143", proto="tcp") }}}

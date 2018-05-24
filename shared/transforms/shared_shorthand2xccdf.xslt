@@ -863,37 +863,6 @@ system call, run the following command:
 If the system is configured to audit this activity, it will return a line.
   </xsl:template>
 
-  <!--Example usage: <firewalld-desc-macro allow="true" service="ssh" proto="tcp"
-       port="80" />  -->
-    <!-- allow (boolean): optional attribute which defaults to true, or to
-         allow this traffic through -->
-    <!-- service (string): type of service e.g. ssh, ftp, etc. -->
-    <!-- proto (string): protocol in question, typically tcp or udp -->
-    <!-- port (integer): port in question -->
-  <xsl:template match="firewalld-desc-macro">
-    <xsl:choose>
-      <xsl:when test="@allow = 'false'">
-      <!-- allow: optional attribute which defaults to true, or to allow this traffic through -->
-        To configure <xhtml:code>firewalld</xhtml:code> to not allow access, run the following command(s):
-        <xsl:if test="@port">
-          <xhtml:code>firewall-cmd --permanent --remove-port=<xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code>
-        </xsl:if>
-        <xsl:if test="@service">
-          <xhtml:code><xsl:if test="@service = 'true'">firewall-cmd --permanent --remove-service=<xsl:value-of select="@service"/></xsl:if></xhtml:code>
-        </xsl:if>
-      </xsl:when>
-      <xsl:otherwise>
-        To configure <xhtml:code>firewalld</xhtml:code> to allow access, run the following command(s):
-        <xsl:if test="@port">
-          <xhtml:code>firewall-cmd --permanent --add-port=<xsl:value-of select="@port"/>/<xsl:value-of select="@proto"/></xhtml:code> and
-        </xsl:if>
-        <xsl:if test="@service">
-          <xhtml:code>firewall-cmd --permanent --add-service=<xsl:value-of select="@service"/></xhtml:code>
-        </xsl:if>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

@@ -9,7 +9,7 @@ description: |-
     the SSH server is being used but denied by the firewall, this exception should
     be added to the firewall configuration.
     <br /><br />
-    <firewalld-desc-macro allow="true" proto="tcp" service="ssh" />
+    {{{ describe_firewalld_allow(proto="tcp", service="ssh") }}}
 
 rationale: |-
     If inbound SSH connections are expected, adding a firewall rule exception

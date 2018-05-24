@@ -90,7 +90,7 @@ ocil: |
 {{%- endmacro %}}
 
 
-{{%- macro _firewalld_check(access_action, port, protot, service) %}}
+{{%- macro _firewalld_check(access_action, port, proto, service) %}}
     To determine if <code>firewalld</code> is configured to {{{ access_action }}} to <code>{{{ service }}}</code>
     on port <code>{{{ port }}}/{{{ proto }}}</code>, run the following command(s):
     {{% if port %}}
@@ -119,4 +119,26 @@ ocil: |
 {{%- macro ocil_firewalld_prevent_access(port, proto, service) %}}
 {{{ _firewalld_check("prevent access", port, proto, service) }}}
     If <code>firewalld</code> is configured to prevent access, no output will be returned.
+{{%- endmacro %}}
+
+
+{{%- macro describe_firewalld_prevent(port, proto, service) %}}
+    To configure <code>firewalld</code> to prevent access, run the following command(s):
+    {{% if port %}}
+    <code>firewall-cmd --permanent --remove-port={{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+    {{% if service %}}
+    <code>firewall-cmd --permanent --remove-service={{{ service }}}</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro describe_firewalld_allow(port, proto, service) %}}
+    To configure <code>firewalld</code> to allow access, run the following command(s):
+    {{% if port %}}
+    <code>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+    {{% if service %}}
+    <code>firewall-cmd --permanent --add-service={{{ service }}}</code>
+    {{% endif %}}
 {{%- endmacro %}}
