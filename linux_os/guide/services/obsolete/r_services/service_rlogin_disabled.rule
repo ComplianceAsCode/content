@@ -29,6 +29,4 @@ references:
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
     nist: AC-17(8),CM-7,IA-5(1)(c)
 
-ocil: |-
-    <systemd-socket-check-macro enable="false" socket="rlogin" />
-    <xinetd-systemd-check-macro enable="false" service="rlogin" />
+{{{ socket_and_service_disabled_check_with_systemd_complete_ocil_entry("rlogin") }}}

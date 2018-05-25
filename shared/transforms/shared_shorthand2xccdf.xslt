@@ -780,24 +780,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="systemd-socket-check-macro">
-    <xsl:choose>
-      <xsl:when test="@enable = 'false'">
-        To check that the <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket is disabled in system boot configuration with systemd, run the following command:
-        <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@socket"/></xhtml:code></xhtml:pre>
-        Output should indicate the <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket has either not been installed,
-        or has been disabled at all runlevels, as shown in the example below:
-        <xhtml:pre>$ systemctl is-enabled <xhtml:code><xsl:value-of select="@socket"/></xhtml:code><xhtml:br/>disabled</xhtml:pre>
-
-        Run the following command to verify <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> is not active (i.e. not running) through current runtime configuration:
-        <xhtml:pre>$ systemctl is-active <xsl:value-of select="@socket"/></xhtml:pre>
-
-        If the socket is not running the command will return the following output:
-        <xhtml:pre>inactive</xhtml:pre>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template match="xinetd-service-check-macro">
     <xsl:choose>
       <xsl:when test="@enable = 'false'">
@@ -806,27 +788,6 @@
         Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
         <xhtml:pre>$ sudo chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="xinetd-systemd-check-macro">
-    <xsl:choose>
-      <xsl:when test="@enable = 'false'">
-        To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration with xinetd, run the following command:
-        <xhtml:pre>$ chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-        Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
-        <xhtml:pre>$ chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-
-                  Note: This output shows SysV services only and does not include native
-                  systemd services. SysV configuration data might be overridden by native
-                  systemd configuration.
-
-                  If you want to list systemd services use 'systemctl list-unit-files'.
-                  To see services enabled on particular target use
-                  'systemctl list-dependencies [target]'.
-
-                  <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
