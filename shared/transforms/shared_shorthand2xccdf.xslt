@@ -396,8 +396,6 @@
               <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
               <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
               <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
-              <xsl:if test="xinetd-service-disable-check-macro">the service is running</xsl:if>
-              <xsl:if test="systemd-socket-disable-check-macro">the socket is running</xsl:if>
               <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
               <xsl:if test="package-check-macro">the package is installed</xsl:if>
             </xsl:attribute>
