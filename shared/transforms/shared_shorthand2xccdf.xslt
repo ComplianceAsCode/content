@@ -397,7 +397,7 @@
               <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
               <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
               <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
-              <xsl:if test="package-check-macro">the package is installed</xsl:if>
+              <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
             </xsl:attribute>
 
             <!-- add clause if explicitly specified (and also override any above) -->
@@ -788,11 +788,6 @@
 <xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
       </xsl:when>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="package-check-macro">
-    Run the following command to determine if the <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package is installed:
-    <xhtml:pre>$ rpm -q <xsl:value-of select="@package"/></xhtml:pre>
   </xsl:template>
 
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->

@@ -216,3 +216,17 @@ ocil: |-
 
 ocil_clause: "service and/or socket are running"
 {{%- endmacro %}}
+
+
+{{%- macro rpm_package_check(package) %}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ rpm -q {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro rpm_package_check_complete_ocil_entry(package) %}}
+ocil: |-
+    {{{ rpm_package_check(package) }}}
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}

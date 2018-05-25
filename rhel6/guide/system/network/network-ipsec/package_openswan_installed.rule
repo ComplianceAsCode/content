@@ -29,7 +29,7 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: |-
-    <package-check-macro package="openswan" />
-    <package-check-macro package="libreswan" />
+    {{{ rpm_package_check(package="openswan") }}}
+    {{{ rpm_package_check(package="libreswan") }}}
     <br /><br />
     If the system does not communicate over untrusted networks, this is not applicable.
