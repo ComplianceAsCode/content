@@ -10,7 +10,7 @@
     </metadata>
     <criteria>
       <criterion test_ref="test_only_listed_users_allowed_in_etc_passwd"
-      comment="only default os users and extrally listed users are allowed in /etc/passwd" />
+      comment="only root user and explicitly listed users are allowed in /etc/passwd" />
     </criteria>
   </definition>
 
@@ -33,7 +33,7 @@
   </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_state id="state_only_listed_users_allowed_in_etc_passwd" version="1"
-  comment="extrally listed usernames required by the installed applications" >
+  comment="explicitly listed usernames required by the installed software groups and applications" >
     <ind:subexpression operation="pattern match"
     var_ref="var_allowed_users_in_etc_passwd"></ind:subexpression>
   </ind:textfilecontent54_state>
