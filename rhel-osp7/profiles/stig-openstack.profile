@@ -21,12 +21,20 @@ selections:
     - cinder_glance_tls
     - cinder_nas_secure_file_permissions
     - cinder_osapi_max_request_body
+    #
+    # Keystone Rules
+    #
     - keystone_file_ownership
     - keystone_file_perms
     - keystone_use_ssl
     - keystone_algorithm_hashing
     - keystone_max_request_body_size
     - keystone_disable_admin_token
+    - keystone_lockout_failure_attempts
+    - var_keystone_lockout_failure_attempts=3
+    #
+    # Neutron Rules
+    #
     - neutron_file_ownership
     - neutron_file_perms
     - neutron_use_keystone
