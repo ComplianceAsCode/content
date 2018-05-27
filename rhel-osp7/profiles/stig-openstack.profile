@@ -24,6 +24,10 @@ selections:
     #
     # Keystone Rules
     #
+    - var_keystone_lockout_failure_attempts=3
+    - var_keystone_lockout_duration=15_minutes
+    - var_keystone_disable_user_account_days_inactive=90
+
     - keystone_file_ownership
     - keystone_file_perms
     - keystone_use_ssl
@@ -31,7 +35,8 @@ selections:
     - keystone_max_request_body_size
     - keystone_disable_admin_token
     - keystone_lockout_failure_attempts
-    - var_keystone_lockout_failure_attempts=3
+    - keystone_lockout_duration
+    - keystone_disable_user_account_days
     #
     # Neutron Rules
     #
