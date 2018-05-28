@@ -3,12 +3,13 @@
     <metadata>
       <title>Kernel "%SYSCTLVAR%" Parameter Configuration Check</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 6</platform>
+        <platform>multi_platform_all</platform>
       </affected>
       <description>The kernel "%SYSCTLVAR%" parameter should be set to "%SYSCTLVAL%" in the system configuration.</description>
     </metadata>
-    <criteria operator="OR">
 
+{{% if product == "rhel6" %}}
+    <criteria operator="OR">
       <!-- RHEL-6 sysctl behavior observations:
            * sysctl honours last occurrence of particular directive,
            * apply_sysctl() routine called by /etc/rc.d/rc.sysinit script from initscripts RPM package
@@ -37,8 +38,18 @@
         <criterion comment="Kernel static parameter %SYSCTLVAR% not present in some /etc/sysctl.d/* file" test_ref="test_static_sysctld_%SYSCTLID%_not_used" />
       </criteria>
     </criteria>
+{{% else %}}
+    <criteria operator="OR">
+      <criterion comment="kernel static parameter %SYSCTLVAR% set to %SYSCTLVAL% in /etc/sysctl.conf" test_ref="test_static_sysctl_%SYSCTLID%" />
+      <!-- see sysctl.d(5) -->
+      <criterion comment="kernel static parameter %SYSCTLVAR% set to %SYSCTLVAL% in /etc/sysctl.d/*.conf" test_ref="test_static_etc_sysctld_%SYSCTLID%" />
+      <criterion comment="kernel static parameter %SYSCTLVAR% set to %SYSCTLVAL% in /run/sysctl.d/*.conf" test_ref="test_static_run_sysctld_%SYSCTLID%" />
+      <criterion comment="kernel static parameter %SYSCTLVAR% set to %SYSCTLVAL% in /usr/lib/sysctl.d/*.conf" test_ref="test_static_usr_lib_sysctld_%SYSCTLID%" />
+    </criteria>
+{{% endif %}}
   </definition>
 
+{{% if product == "rhel6" %}}
   <!-- Check the /etc/sysctl.d/* configuration -->
   <!-- Return PASS only in case there's only one /etc/sysctl.d/* file containing %SYSCTLVAR% set to %SYSCTLVAL%
        (otherwise we aren't able to reliably decide if the configuration is safe) -->
@@ -89,4 +100,49 @@
     <ind:object object_ref="object_static_sysctld_%SYSCTLID%" />
   </ind:textfilecontent54_test>
 
+{{% else %}}
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="%SYSCTLVAR% static configuration" id="test_static_sysctl_%SYSCTLID%" version="1">
+    <ind:object object_ref="object_static_sysctl_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="%SYSCTLVAR% static configuration in /etc/sysctl.d/*.conf" id="test_static_etc_sysctld_%SYSCTLID%" version="1">
+    <ind:object object_ref="object_static_etc_sysctld_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="%SYSCTLVAR% static configuration in /etc/sysctl.d/*.conf" id="test_static_run_sysctld_%SYSCTLID%" version="1">
+    <ind:object object_ref="object_static_run_sysctld_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" comment="%SYSCTLVAR% static configuration in /etc/sysctl.d/*.conf" id="test_static_usr_lib_sysctld_%SYSCTLID%" version="1">
+    <ind:object object_ref="object_static_usr_lib_sysctld_%SYSCTLID%" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_static_sysctl_%SYSCTLID%" version="1">
+    <ind:filepath>/etc/sysctl.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*%SYSCTLVAR%[\s]*=[\s]*%SYSCTLVAL%[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_etc_sysctld_%SYSCTLID%" version="1">
+    <ind:path>/etc/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*%SYSCTLVAR%[\s]*=[\s]*%SYSCTLVAL%[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_run_sysctld_%SYSCTLID%" version="1">
+    <ind:path>/run/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*%SYSCTLVAR%[\s]*=[\s]*%SYSCTLVAL%[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_static_usr_lib_sysctld_%SYSCTLID%" version="1">
+    <ind:path>/usr/lib/sysctl.d</ind:path>
+    <ind:filename operation="pattern match">^.*\.conf$</ind:filename>
+    <ind:pattern operation="pattern match">^[\s]*%SYSCTLVAR%[\s]*=[\s]*%SYSCTLVAL%[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% endif %}}
 </def-group>
