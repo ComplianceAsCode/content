@@ -10,7 +10,7 @@ description: |-
     socket for disk quota violations and notifies the appropriate user of the
     violation using D-Bus or by sending a message to the terminal that the user has
     last accessed.
-    <systemd-service-macro enable="false" service="quota_nld" />
+    {{{ systemd_service_disable(service="quota_nld") }}}
 
 rationale: |-
     If disk quotas are enforced on the local system, then the

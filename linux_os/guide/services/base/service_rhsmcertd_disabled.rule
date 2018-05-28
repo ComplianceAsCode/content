@@ -8,7 +8,7 @@ description: |-
     The Red Hat Subscription Manager (rhsmcertd) periodically checks for
     changes in the entitlement certificates for a registered system and updates it
     accordingly.
-    <systemd-service-macro enable="false" service="rhsmcertd" />
+    {{{ systemd_service_disable(service="rhsmcertd") }}}
 
 rationale: |-
     The <tt>rhsmcertd</tt> service can provide administrators with some

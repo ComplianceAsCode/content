@@ -7,7 +7,7 @@ title: 'Enable nails Service'
 description: |-
     The <tt>nails</tt> service is used to run McAfee VirusScan Enterprise
     for Linux and McAfee Host-based Security System (HBSS) services.
-    <systemd-service-macro enable="true" service="nails" />
+    {{{ systemd_service_enable(service="nails") }}}
 
 rationale: |-
     Virus scanning software can be used to detect if a system has been compromised by

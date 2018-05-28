@@ -7,7 +7,7 @@ title: 'Disable Software RAID Monitor (mdmonitor)'
 description: |-
     The <tt>mdmonitor</tt> service is used for monitoring a software RAID array; hardware
     RAID setups do not use this service.
-    <systemd-service-macro enable="false" service="mdmonitor" />
+    {{{ systemd_service_disable(service="mdmonitor") }}}
 
 rationale: |-
     If software RAID monitoring is not required,

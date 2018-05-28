@@ -8,7 +8,7 @@ description: |-
     The <tt>sysstat</tt> service resets various I/O and CPU
     performance statistics to zero in order to begin counting from a fresh state
     at boot time.
-    <systemd-service-macro enable="false" service="sysstat" />
+    {{{ systemd_service_disable(service="sysstat") }}}
 
 rationale: |-
     By default the <tt>sysstat</tt> service merely runs a program at

@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable httpd Service'
 
-description: '<systemd-service-macro enable="false" service="httpd" />'
+description: '{{{ systemd_service_disable(service="httpd") }}}'
 
 rationale: |-
     Running web server software provides a network-based avenue

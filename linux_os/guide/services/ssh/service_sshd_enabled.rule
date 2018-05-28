@@ -6,7 +6,7 @@ title: 'Enable the OpenSSH Service'
 
 description: |-
     The SSH server service, sshd, is commonly needed.
-    <systemd-service-macro enable="true" service="sshd" />
+    {{{ systemd_service_enable(service="sshd") }}}
 
 rationale: |-
     Without protection of the transmitted information, confidentiality, and

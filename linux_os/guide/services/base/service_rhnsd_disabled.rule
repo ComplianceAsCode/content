@@ -9,7 +9,7 @@ description: |-
     servers to determine whether there are any actions that should be executed,
     such as package updates. This only occurs if the system was registered to an
     RHN server or satellite and managed as such.
-    <systemd-service-macro enable="false" service="rhnsd" />
+    {{{ systemd_service_disable(service="rhnsd") }}}
 
 rationale: |-
     Although systems management and patching is extremely important to

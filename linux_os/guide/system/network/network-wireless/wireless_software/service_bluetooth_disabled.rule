@@ -5,7 +5,7 @@ prodtype: rhel7,fedora
 title: 'Disable Bluetooth Service'
 
 description: |-
-    <systemd-service-macro enable="false" service="bluetooth" />
+    {{{ systemd_service_disable(service="bluetooth") }}}
     <pre>$ sudo service bluetooth stop</pre>
 
 rationale: |-

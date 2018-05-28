@@ -8,7 +8,7 @@ description: |-
     Control groups allow an administrator to allocate system resources (such as CPU,
     memory, network bandwidth, etc) among a defined group (or groups) of processes executing on
     a system. The <tt>cgconfig</tt> daemon starts at boot and establishes the predefined control groups.
-    <systemd-service-macro enable="false" service="cgconfig" />
+    {{{ systemd_service_disable(service="cgconfig") }}}
 
 rationale: |-
     Unless control groups are used to manage system resources, running the cgconfig

@@ -6,7 +6,7 @@ title: 'Disable tftp Service'
 
 description: |-
     The <tt>tftp</tt> service should be disabled.
-    <systemd-service-macro enable="false" service="tftp" />
+    {{{ systemd_service_disable(service="tftp") }}}
 
 rationale: |-
     Disabling the <tt>tftp</tt> service ensures the system is not acting

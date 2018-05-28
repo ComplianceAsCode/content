@@ -8,7 +8,7 @@ description: |-
     The rpcidmapd service is used to map user names and groups to UID
     and GID numbers on NFSv4 mounts. If NFS is not in use on the local system then
     this service should be disabled.
-    <systemd-service-macro enable="false" service="rpcidmapd" />
+    {{{ systemd_service_disable(service="rpcidmapd") }}}
 
 rationale: ""
 

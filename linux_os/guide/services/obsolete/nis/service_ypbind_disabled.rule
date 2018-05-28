@@ -7,7 +7,7 @@ title: 'Disable ypbind Service'
 description: |-
     The <tt>ypbind</tt> service, which allows the system to act as a client in
     a NIS or NIS+ domain, should be disabled.
-    <systemd-service-macro enable="false" service="ypbind" />
+    {{{ systemd_service_disable(service="ypbind") }}}
 
 rationale: |-
     Disabling the <tt>ypbind</tt> service ensures the system is not acting

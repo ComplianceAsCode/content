@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable DNS Server'
 
-description: '<systemd-service-macro enable="false" service="named" />'
+description: '{{{ systemd_service_disable(service="named") }}}'
 
 rationale: |-
     All network services involve some risk of compromise due to

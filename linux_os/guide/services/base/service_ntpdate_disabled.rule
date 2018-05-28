@@ -10,7 +10,7 @@ description: |-
     <tt>/etc/ntp/step-tickers</tt> or <tt>/etc/ntp.conf</tt>
     and then sets the local hardware clock to the newly synchronized
     system time.
-    <systemd-service-macro enable="false" service="ntpdate" />
+    {{{ systemd_service_disable(service="ntpdate") }}}
 
 rationale: |-
     The <tt>ntpdate</tt> service may only be suitable for systems which

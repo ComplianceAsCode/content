@@ -8,7 +8,7 @@ description: |-
     The Network File System (NFS) service allows remote hosts to mount
     and interact with shared filesystems on the local system. If the local system
     is not designated as a NFS server then this service should be disabled.
-    <systemd-service-macro enable="false" service="nfs" />
+    {{{ systemd_service_disable(service="nfs") }}}
 
 rationale: 'Unnecessary services should be disabled to decrease the attack surface of the system.'
 

@@ -13,7 +13,7 @@ description: |-
     for SystemD related issues and should otherwise be disabled.
     <br /><br />
     By default, the <tt>debug-shell</tt> SystemD service is disabled.
-    <systemd-service-macro enable="false" service="debug-shell" />
+    {{{ systemd_service_disable(service="debug-shell") }}}
 
 rationale: |-
     This prevents attackers with physical access from trivially bypassing security

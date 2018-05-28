@@ -6,7 +6,7 @@ title: 'Enable rsyslog Service'
 
 description: |-
     The <tt>rsyslog</tt> service provides syslog-style logging by default on Red Hat Enterprise Linux 7.
-    <systemd-service-macro enable="true" service="rsyslog" />
+    {{{ systemd_service_enable(service="rsyslog") }}}
 
 rationale: |-
     The <tt>rsyslog</tt> service must be running in order to provide

@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable Samba'
 
-description: '<systemd-service-macro enable="false" service="smb" />'
+description: '{{{ systemd_service_disable(service="smb") }}}'
 
 rationale: |-
     Running a Samba server provides a network-based avenue of attack, and

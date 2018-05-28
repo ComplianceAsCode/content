@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable Avahi Server Software'
 
-description: '<systemd-service-macro enable="false" service="avahi-daemon" />'
+description: '{{{ systemd_service_disable(service="avahi-daemon") }}}'
 
 rationale: |-
     Because the Avahi daemon service keeps an open network

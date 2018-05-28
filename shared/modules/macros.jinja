@@ -297,3 +297,15 @@ ocil_clause: "the package is installed"
     The <code>{{{ socket }}}</code> socket can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ socket }}}.socket</pre>
 {{%- endmacro %}}
+
+
+{{%- macro systemd_service_disable(service) %}}
+    The <code>{{{ service }}}</code> service can be disabled with the following command:
+    <pre>$ sudo systemctl disable {{{ service }}}.service</pre>
+{{%- endmacro %}}
+
+
+{{%- macro systemd_service_enable(service) %}}
+    The <code>{{{ service }}}</code> service can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ service }}}.service</pre>
+{{%- endmacro %}}

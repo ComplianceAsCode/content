@@ -6,7 +6,7 @@ title: 'Ensure Remote Administrative Access Is Encrypted'
 
 description: |-
     Ensure that the SSH server service is enabled.
-    <systemd-service-macro enable="true" service="sshd" />
+    {{{ systemd_service_enable(service="sshd") }}}
 
 rationale: |-
     Logging into a web server remotely using an unencrypted protocol or service

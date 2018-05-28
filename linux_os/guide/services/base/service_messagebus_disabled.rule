@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable D-Bus IPC Service (messagebus)'
 
-description: "D-Bus provides an IPC mechanism used by \na growing list of programs, such as those used for Gnome, Bluetooth, and Avahi.\nDue to these dependencies, disabling D-Bus may not be practical for\nmany systems.\n<systemd-service-macro enable=\"false\" service=\"messagebus\" />"
+description: "D-Bus provides an IPC mechanism used by \na growing list of programs, such as those used for Gnome, Bluetooth, and Avahi.\nDue to these dependencies, disabling D-Bus may not be practical for\nmany systems.\n{{{ systemd_service_disable(service="messagebus") }}}"
 
 rationale: |-
     If no services which require D-Bus are needed, then it

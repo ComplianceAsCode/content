@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable xinetd Service'
 
-description: '<systemd-service-macro enable="false" service="xinetd" />'
+description: '{{{ systemd_service_disable(service="xinetd") }}}'
 
 rationale: |-
     The xinetd service provides a dedicated listener service for some programs,

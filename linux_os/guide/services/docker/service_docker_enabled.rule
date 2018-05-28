@@ -7,7 +7,7 @@ title: 'Enable the Docker service'
 description: |-
     The docker service is commonly needed to
       create containers.
-    <systemd-service-macro enable="true" service="docker" />
+    {{{ systemd_service_enable(service="docker") }}}
 
 rationale: |-
     To be able to find any problems with misconfiguration of

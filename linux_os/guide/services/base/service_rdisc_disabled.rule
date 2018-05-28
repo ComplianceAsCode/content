@@ -9,7 +9,7 @@ description: |-
     Internet Router Discovery Protocol (IRDP), which allows discovery of routers on
     the local subnet. If a router is discovered then the local routing table is
     updated with a corresponding default route. By default this daemon is disabled.
-    <systemd-service-macro enable="false" service="rdisc" />
+    {{{ systemd_service_disable(service="rdisc") }}}
 
 rationale: |-
     General-purpose systems typically have their network and routing

@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable <tt>snmpd</tt> Service'
 
-description: '<systemd-service-macro enable="false" service="snmpd" />'
+description: '{{{ systemd_service_disable(service="snmpd") }}}'
 
 rationale: |-
     Running SNMP software provides a network-based avenue of attack, and
