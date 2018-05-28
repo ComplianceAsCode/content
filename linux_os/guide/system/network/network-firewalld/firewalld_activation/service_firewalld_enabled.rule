@@ -25,4 +25,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040520"
 
-ocil: '<systemd-check-macro enable="true" service="firewalld" />'
+ocil: '{{{ systemd_service_enabled(service="firewalld") }}}'

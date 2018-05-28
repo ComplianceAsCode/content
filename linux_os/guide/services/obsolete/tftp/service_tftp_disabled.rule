@@ -22,4 +22,4 @@ references:
     disa: 1436
     nist: AC-17(8),CM-7
 
-ocil: '<systemd-check-macro enable="false" service="tftp" />'
+ocil: '{{{ systemd_service_disabled(service="tftp") }}}'

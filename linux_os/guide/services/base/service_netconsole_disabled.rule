@@ -24,4 +24,4 @@ references:
     disa: 381
     nist: AC-17(8),CM-7
 
-ocil: '<systemd-check-macro enable="false" service="netconsole" />'
+ocil: '{{{ systemd_service_disabled(service="netconsole") }}}'

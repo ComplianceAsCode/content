@@ -26,4 +26,4 @@ references:
 
 ocil_clause: 'the service is not enabled'
 
-ocil: '<systemd-check-macro enable="true" service="sssd" />'
+ocil: '{{{ systemd_service_enabled(service="sssd") }}}'

@@ -23,4 +23,4 @@ references:
 
 ocil_clause: 'it does not'
 
-ocil: '<systemd-check-macro enable="false" service="nfs" />'
+ocil: '{{{ systemd_service_disabled(service="nfs") }}}'

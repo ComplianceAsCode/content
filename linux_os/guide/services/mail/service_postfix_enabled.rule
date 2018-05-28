@@ -22,4 +22,4 @@ identifiers:
 
 ocil_clause: 'the system is not a cross domain solution and the service is not enabled'
 
-ocil: '<systemd-check-macro enable="true" service="postfix" />'
+ocil: '{{{ systemd_service_enabled(service="postfix") }}}'

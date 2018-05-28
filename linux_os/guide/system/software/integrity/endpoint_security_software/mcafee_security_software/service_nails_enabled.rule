@@ -23,4 +23,4 @@ references:
     nist: SC-28,SI-3,SI-3(1)(ii)
     srg: SRG-OS-000480-GPOS-00227
 
-ocil: '<systemd-check-macro enable="true" service="nails" />'
+ocil: '{{{ systemd_service_enabled(service="nails") }}}'

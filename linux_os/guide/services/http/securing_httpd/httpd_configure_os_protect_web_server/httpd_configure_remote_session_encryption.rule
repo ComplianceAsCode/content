@@ -30,4 +30,4 @@ references:
     srg: ""
     stigid: WG230
 
-ocil: '<systemd-check-macro enable="true" service="sshd" />'
+ocil: '{{{ systemd_service_enabled(service="sshd") }}}'

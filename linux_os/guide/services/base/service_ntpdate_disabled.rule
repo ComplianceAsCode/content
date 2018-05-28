@@ -27,4 +27,4 @@ references:
     disa: 382
     nist: AC-17(8),CM-7
 
-ocil: '<systemd-check-macro enable="false" service="ntpdate" />'
+ocil: '{{{ systemd_service_disabled(service="ntpdate") }}}'

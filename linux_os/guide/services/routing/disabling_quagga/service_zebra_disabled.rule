@@ -23,4 +23,4 @@ references:
     nist: SC-32
     srg: SRG-OS-000480-GPOS-00227
 
-ocil: '<systemd-check-macro enable="false" service="zebra" />'
+ocil: '{{{ systemd_service_disabled(service="zebra") }}}'

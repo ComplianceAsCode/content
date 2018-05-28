@@ -27,4 +27,4 @@ references:
     disa: 381
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="atd" />'
+ocil: '{{{ systemd_service_disabled(service="atd") }}}'

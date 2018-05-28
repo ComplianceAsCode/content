@@ -22,4 +22,4 @@ references:
     disa: 366
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="avahi-daemon" />'
+ocil: '{{{ systemd_service_disabled(service="avahi-daemon") }}}'

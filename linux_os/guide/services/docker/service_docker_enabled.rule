@@ -24,4 +24,4 @@ references:
     nist: ""
     srg: ""
 
-ocil: '<systemd-check-macro enable="true" service="docker" />'
+ocil: '{{{ systemd_service_enabled(service="docker") }}}'

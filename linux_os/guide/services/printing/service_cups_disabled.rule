@@ -17,4 +17,4 @@ references:
     cis: 2.2.4
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="cups" />'
+ocil: '{{{ systemd_service_disabled(service="cups") }}}'

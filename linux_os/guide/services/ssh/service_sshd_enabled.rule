@@ -31,4 +31,4 @@ references:
     srg: SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190
     stigid@rhel7: "040310"
 
-ocil: '<systemd-check-macro enable="true" service="sshd" />'
+ocil: '{{{ systemd_service_enabled(service="sshd") }}}'

@@ -18,4 +18,4 @@ identifiers:
 references:
     cis: 2.2.14
 
-ocil: '<systemd-check-macro enable="false" service="snmpd" />'
+ocil: '{{{ systemd_service_disabled(service="snmpd") }}}'

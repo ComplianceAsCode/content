@@ -19,4 +19,4 @@ references:
     cis: 2.2.12
     disa: 1436
 
-ocil: '<systemd-check-macro enable="false" service="smb" />'
+ocil: '{{{ systemd_service_disabled(service="smb") }}}'

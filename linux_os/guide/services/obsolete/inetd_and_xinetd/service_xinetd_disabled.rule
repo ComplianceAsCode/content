@@ -27,4 +27,4 @@ references:
 ocil: |-
     If network services are using the xinetd service, this is not applicable.
     <br /><br />
-    <systemd-check-macro enable="false" service="xinetd" />
+    {{{ systemd_service_disabled(service="xinetd") }}}

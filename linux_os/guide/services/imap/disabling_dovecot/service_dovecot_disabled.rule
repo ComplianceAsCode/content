@@ -18,4 +18,4 @@ identifiers:
 references:
     cis: 2.2.11
 
-ocil: '<systemd-check-macro enable="false" service="dovecot" />'
+ocil: '{{{ systemd_service_disabled(service="dovecot") }}}'

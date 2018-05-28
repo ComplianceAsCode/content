@@ -24,4 +24,4 @@ references:
     disa: 85,1551
     nist: AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7
 
-ocil: '<systemd-check-macro enable="false" service="bluetooth" />'
+ocil: '{{{ systemd_service_disabled(service="bluetooth") }}}'

@@ -24,4 +24,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "021300"
 
-ocil: '<systemd-check-macro enable="false" service="kdump" />'
+ocil: '{{{ systemd_service_disabled(service="kdump") }}}'

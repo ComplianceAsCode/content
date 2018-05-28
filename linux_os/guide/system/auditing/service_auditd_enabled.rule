@@ -36,4 +36,4 @@ references:
     srg: SRG-OS-000038-GPOS-00016,SRG-OS-000039-GPOS-00017,SRG-OS-000042-GPOS-00021,SRG-OS-000254-GPOS-00095,SRG-OS-000255-GPOS-00096
     stigid@rhel7: "030000"
 
-ocil: '<systemd-check-macro enable="true" service="auditd" />'
+ocil: '{{{ systemd_service_enabled(service="auditd") }}}'

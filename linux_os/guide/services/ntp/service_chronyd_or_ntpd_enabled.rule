@@ -42,5 +42,5 @@ references:
     pcidss: Req-10.4
 
 ocil: |-
-    <systemd-check-macro enable="true" service="chronyd" />
-      <systemd-check-macro enable="true" service="ntpd" />
+    systemd_service_enabled(service="chronyd")
+    systemd_service_enabled(service="ntpd")

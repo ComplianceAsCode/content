@@ -19,4 +19,4 @@ references:
     cis: 2.2.10
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="httpd" />'
+ocil: '{{{ systemd_service_disabled(service="httpd") }}}'

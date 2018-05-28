@@ -18,4 +18,4 @@ severity: unknown
 identifiers:
     cce@rhel7: 80238-9
 
-ocil: '<systemd-check-macro enable="false" service="rpcsvcgssd" />'
+ocil: '{{{ systemd_service_disabled(service="rpcsvcgssd") }}}'
