@@ -716,19 +716,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="systemd-socket-macro">
-    <xsl:choose>
-      <xsl:when test="@enable = 'false'">
-        The <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket can be disabled with the following command:
-        <xhtml:pre>$ sudo systemctl disable <xsl:value-of select="@socket"/>.socket</xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        The <xhtml:code><xsl:value-of select="@socket"/></xhtml:code> socket can be enabled with the following command:
-        <xhtml:pre>$ sudo systemctl enable <xsl:value-of select="@socket"/>.socket</xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

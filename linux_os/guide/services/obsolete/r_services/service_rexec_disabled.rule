@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable rexec Service'
 
-description: "The <tt>rexec</tt> service, which is available with\nthe <tt>rsh-server</tt> package and runs as a service through xinetd or separately\nas a systemd socket, should be disabled.\nIf using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rexec</tt>. \nIf using systemd, <systemd-socket-macro enable=\"false\" socket=\"rexec\" />"
+description: "The <tt>rexec</tt> service, which is available with\nthe <tt>rsh-server</tt> package and runs as a service through xinetd or separately\nas a systemd socket, should be disabled.\nIf using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rexec</tt>. \nIf using systemd, {{{ systemd_socket_disabled(socket="rexec") }}}"
 
 rationale: |-
     The rexec service uses unencrypted network communications, which

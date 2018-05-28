@@ -9,7 +9,7 @@ description: |-
     the <tt>rsh-server</tt> package and runs as a service through xinetd or separately
     as a systemd socket, should be disabled.
     If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rlogin</tt>.
-    If using systemd, <systemd-socket-macro enable="false" socket="rlogin" />
+    If using systemd, {{{ systemd_socket_disabled(socket="rlogin") }}}
 
 rationale: |-
     The rlogin service uses unencrypted network communications, which
