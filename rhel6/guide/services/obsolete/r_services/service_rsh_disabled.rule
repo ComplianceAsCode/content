@@ -6,7 +6,7 @@ description: |-
     The <tt>rsh</tt> service, which is available with
     the <tt>rsh-server</tt> package and runs as a service through xinetd,
     should be disabled.
-    <chkconfig-service-macro enable="false" service="rsh" />
+    {{{ sysv_service_disable(service="rsh") }}}
 
 rationale: |-
     The rsh service uses unencrypted network communications, which

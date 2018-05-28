@@ -7,7 +7,7 @@ description: |-
     guaranteed delivery services.  It is an implementation of the Advanced Message
     Queuing Protocol.  By default the qpidd service will bind to port 5672 and
     listen for connection attempts.
-    <chkconfig-service-macro enable="false" service="qpidd" />
+    {{{ sysv_service_disable(service="qpidd") }}}
 
 rationale: "The qpidd service is automatically installed when the \"base\" \npackage selection is selected during installation.  The qpidd service listens \nfor network connections, which increases the attack surface of the system.  If \nthe system is not intended to receive AMQP traffic, then the <tt>qpidd</tt> \nservice is not needed and should be disabled or removed."
 

@@ -8,7 +8,7 @@ description: |-
     privileges for SASL authentication into a single process, and can also be used
     to provide proxy authentication services to clients that do not understand SASL
     based authentication.
-    <chkconfig-service-macro enable="false" service="saslauthd" />
+    {{{ sysv_service_disable(service="saslauthd") }}}
 
 rationale: |-
     The <tt>saslauthd</tt> service provides essential functionality for

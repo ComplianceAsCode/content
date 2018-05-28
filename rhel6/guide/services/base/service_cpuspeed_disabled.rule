@@ -5,7 +5,7 @@ title: 'Disable CPU Speed (cpuspeed)'
 description: |-
     The <tt>cpuspeed</tt> service can adjust the clock speed of supported CPUs based upon
     the current processing load thereby conserving power and reducing heat.
-    <chkconfig-service-macro enable="false" service="cpuspeed" />
+    {{{ sysv_service_disable(service="cpuspeed") }}}
 
 rationale: |-
     The <tt>cpuspeed</tt> service is only necessary if adjusting the CPU clock speed

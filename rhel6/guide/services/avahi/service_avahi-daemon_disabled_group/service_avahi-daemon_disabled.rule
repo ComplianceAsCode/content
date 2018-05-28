@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Avahi Server Software'
 
-description: '<chkconfig-service-macro enable="false" service="avahi-daemon" />'
+description: '{{{ sysv_service_disable(service="avahi-daemon") }}}'
 
 rationale: |-
     Because the Avahi daemon service keeps an open network

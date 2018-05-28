@@ -6,7 +6,7 @@ description: |-
     The <tt>portreserve</tt> service is a TCP port reservation utility that can
     be used to prevent portmap from binding to well known TCP ports that are
     required for other services.
-    <chkconfig-service-macro enable="false" service="portreserve" />
+    {{{ sysv_service_disable(service="portreserve") }}}
 
 rationale: |-
     The <tt>portreserve</tt> service provides helpful functionality by

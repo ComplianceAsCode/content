@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable DNS Server'
 
-description: '<chkconfig-service-macro enable="false" service="named" />'
+description: '{{{ sysv_service_disable(service="named") }}}'
 
 rationale: |-
     All network services involve some risk of compromise due to

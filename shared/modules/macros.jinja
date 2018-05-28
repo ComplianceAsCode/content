@@ -309,3 +309,15 @@ ocil_clause: "the package is installed"
     The <code>{{{ service }}}</code> service can be enabled with the following command:
     <pre>$ sudo systemctl enable {{{ service }}}.service</pre>
 {{%- endmacro %}}
+
+
+{{%- macro sysv_service_disable(service) %}}
+    The <code>{{{ service }}}</code> service can be disabled with the following command:
+    <pre>$ sudo chkconfig {{{ service }}} off</pre>
+{{%- endmacro %}}
+
+
+{{%- macro sysv_service_enable(service) %}}
+    The <code>{{{ service }}}</code> service can be enabled with the following command:
+    <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
+{{%- endmacro %}}

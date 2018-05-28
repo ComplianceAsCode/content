@@ -5,7 +5,7 @@ title: 'Disable ypbind Service'
 description: |-
     The <tt>ypbind</tt> service, which allows the system to act as a client in
     a NIS or NIS+ domain, should be disabled.
-    <chkconfig-service-macro enable="false" service="ypbind" />
+    {{{ sysv_service_disable(service="ypbind") }}}
 
 rationale: |-
     Disabling the <tt>ypbind</tt> service ensures the system is not acting

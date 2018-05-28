@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Squid'
 
-description: '<chkconfig-service-macro enable="false" service="squid" />'
+description: '{{{ sysv_service_disable(service="squid") }}}'
 
 rationale: |-
     Running proxy server software provides a network-based avenue

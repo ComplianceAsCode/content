@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify ip6tables Enabled if Using IPv6'
 
-description: '<chkconfig-service-macro enable="true" service="ip6tables" />'
+description: '{{{ sysv_service_enable(service="ip6tables") }}}'
 
 rationale: |-
     The <tt>ip6tables</tt> service provides the system's host-based firewalling

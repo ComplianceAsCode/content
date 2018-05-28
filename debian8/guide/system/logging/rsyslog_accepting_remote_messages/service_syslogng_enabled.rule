@@ -4,7 +4,7 @@ title: 'Enable syslog-ng Service'
 
 description: |-
     The <tt>syslog-ng</tt> service (in replacement of rsyslog) provides syslog-style logging by default on Debian 8.
-    <chkconfig-service-macro enable="true" service="syslog-ng" />
+    {{{ sysv_service_enable(service="syslog-ng") }}}
 
 rationale: |-
     The <tt>syslog-ng</tt> service must be running in order to provide

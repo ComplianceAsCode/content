@@ -4,7 +4,7 @@ title: 'Disable SSH Server if possible (unusual cases)'
 
 description: |-
     Most of the time, the SSH server is needed. However, it can be disabled, do so.
-    <chkconfig-service-macro enable="false" service="ssh" />
+    {{{ sysv_service_disable(service="ssh") }}}
     This is unusual, as SSH is a common method for encrypted and authenticated
     remote access.
 

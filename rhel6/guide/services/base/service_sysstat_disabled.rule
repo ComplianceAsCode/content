@@ -6,7 +6,7 @@ description: |-
     The <tt>sysstat</tt> service resets various I/O and CPU
     performance statistics to zero in order to begin counting from a fresh state
     at boot time.
-    <chkconfig-service-macro enable="false" service="sysstat" />
+    {{{ sysv_service_disable(service="sysstat") }}}
 
 rationale: |-
     By default the <tt>sysstat</tt> service merely runs a program at

@@ -6,7 +6,7 @@ description: |-
     The <tt>crond</tt> service is used to execute commands at
     preconfigured times. It is required by almost all systems to perform necessary
     maintenance tasks, such as notifying root of system activity.
-    <chkconfig-service-macro enable="true" service="crond" />
+    {{{ sysv_service_enable(service="crond") }}}
 
 rationale: |-
     Due to its usage for maintenance and security-supporting tasks,

@@ -7,7 +7,7 @@ description: |-
     remote procedure call (RPC) processes which allow clients to lock files on the
     server. If the local system is not configured to mount NFS filesystems then
     this service should be disabled.
-    <chkconfig-service-macro enable="false" service="nfslock" />
+    {{{ sysv_service_disable(service="nfslock") }}}
 
 rationale: ""
 

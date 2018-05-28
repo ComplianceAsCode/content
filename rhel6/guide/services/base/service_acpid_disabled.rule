@@ -6,7 +6,7 @@ description: |-
     The Advanced Configuration and Power Interface Daemon (<tt>acpid</tt>)
     dispatches ACPI events (such as power/reset button depressed) to userspace
     programs.
-    <chkconfig-service-macro enable="false" service="acpid" />
+    {{{ sysv_service_disable(service="acpid") }}}
 
 rationale: |-
     ACPI support is highly desirable for systems in some network roles,

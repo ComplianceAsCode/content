@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable <tt>snmpd</tt> Service'
 
-description: '<chkconfig-service-macro enable="false" service="snmpd" />'
+description: '{{{ sysv_service_disable(service="snmpd") }}}'
 
 rationale: |-
     Running SNMP software provides a network-based avenue of attack, and

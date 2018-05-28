@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable telnet Service'
 
-description: '<chkconfig-service-macro enable="false" service="telnet" />'
+description: '{{{ sysv_service_disable(service="telnet") }}}'
 
 rationale: |-
     The telnet protocol uses unencrypted network communication, which

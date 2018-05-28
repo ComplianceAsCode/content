@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Samba'
 
-description: '<chkconfig-service-macro enable="false" service="smb" />'
+description: '{{{ sysv_service_disable(service="smb") }}}'
 
 rationale: |-
     Running a Samba server provides a network-based avenue of attack, and

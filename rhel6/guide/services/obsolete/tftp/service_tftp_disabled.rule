@@ -4,7 +4,7 @@ title: 'Disable tftp Service'
 
 description: |-
     The <tt>tftp</tt> service should be disabled.
-    <chkconfig-service-macro enable="false" service="tftp" />
+    {{{ sysv_service_disable(service="tftp") }}}
 
 rationale: |-
     Disabling the <tt>tftp</tt> service ensures the system is not acting

@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable the CUPS Service'
 
-description: '<chkconfig-service-macro enable="false" service="cups" />'
+description: '{{{ sysv_service_disable(service="cups") }}}'
 
 rationale: 'Turn off unneeded services to reduce attack surface.'
 

@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable vsftpd Service'
 
-description: '<chkconfig-service-macro enable="false" service="vsftpd" />'
+description: '{{{ sysv_service_disable(service="vsftpd") }}}'
 
 rationale: |-
     Running FTP server software provides a network-based avenue
