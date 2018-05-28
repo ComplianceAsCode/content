@@ -26,4 +26,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000268
 
-ocil: '<service-check-macro enable="false" service="rdisc" />'
+ocil: '{{{ sysv_service_disabled(service="rdisc") }}}'

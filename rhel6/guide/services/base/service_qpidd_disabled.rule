@@ -22,4 +22,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000267
 
-ocil: '<service-check-macro enable="false" service="qpidd" />'
+ocil: '{{{ sysv_service_disabled(service="qpidd") }}}'

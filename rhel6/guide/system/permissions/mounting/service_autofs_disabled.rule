@@ -26,4 +26,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000526
 
-ocil: '<service-check-macro enable="false" service="autofs" />'
+ocil: '{{{ sysv_service_disabled(service="autofs") }}}'

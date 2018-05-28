@@ -18,4 +18,4 @@ references:
     srg: SRG-OS-000056
     stigid: RHEL-06-000247
 
-ocil: '<service-check-macro enable="true" service="ntpd" />'
+ocil: '{{{ sysv_service_enabled(service="ntpd") }}}'

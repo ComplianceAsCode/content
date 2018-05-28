@@ -21,4 +21,4 @@ references:
     disa: 366
     nist: CM-7
 
-ocil: '<service-check-macro enable="false" service="dhcpd" />'
+ocil: '{{{ sysv_service_disabled(service="dhcpd") }}}'

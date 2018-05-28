@@ -22,4 +22,4 @@ references:
     srg: SRG-OS-000255,SRG-OS-000032,SRG-OS-000037
     stigid: RHEL-06-000145
 
-ocil: '<service-check-macro enable="true" service="auditd" />'
+ocil: '{{{ sysv_service_enabled(service="auditd") }}}'

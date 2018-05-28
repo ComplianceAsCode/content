@@ -22,4 +22,4 @@ references:
 ocil: |-
     If IPv6 is disabled, this is not applicable.
     <br /><br />
-    <service-check-macro enable="true" service="ip6tables" />
+    {{{ sysv_service_enabled(service="ip6tables") }}}

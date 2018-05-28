@@ -26,4 +26,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000266
 
-ocil: '<service-check-macro enable="false" service="oddjobd" />'
+ocil: '{{{ sysv_service_disabled(service="oddjobd") }}}'

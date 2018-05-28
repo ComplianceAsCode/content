@@ -24,4 +24,4 @@ references:
 
 ocil_clause: 'the system is not a cross domain solution and the service is not enabled'
 
-ocil: '<service-check-macro enable="true" service="postfix" />'
+ocil: '{{{ sysv_service_enabled(service="postfix") }}}'

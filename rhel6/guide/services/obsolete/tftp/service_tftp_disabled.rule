@@ -21,4 +21,4 @@ references:
     srg: SRG-OS-000248
     stigid: RHEL-06-000223
 
-ocil: '<service-check-macro enable="false" service="tftp" />'
+ocil: '{{{ sysv_service_disabled(service="tftp") }}}'

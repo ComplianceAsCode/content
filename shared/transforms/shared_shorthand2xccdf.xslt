@@ -729,31 +729,6 @@
     </xsl:choose>
   </xsl:template>
   
-  <xsl:template match="service-check-macro">
-    <xsl:choose>
-      <xsl:when test="@enable = 'false'">
-        To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
-        <xhtml:pre>$ sudo chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-        Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed,
-        or has been disabled at all runlevels, as shown in the example below:
-        <xhtml:pre>$ sudo chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</xhtml:pre>
-
-        Run the following command to verify <xhtml:code><xsl:value-of select="@service"/></xhtml:code> is disabled through current runtime configuration:
-        <xhtml:pre>$ sudo service <xsl:value-of select="@service"/> status</xhtml:pre>
-
-        If the service is disabled the command will return the following output:
-        <xhtml:pre><xsl:value-of select="@service"/> is stopped</xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        Run the following command to determine the current status of the
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code> service:
-        <xhtml:pre>$ sudo service <xsl:value-of select="@service"/> status</xhtml:pre>
-        If the service is enabled, it should return the following: <xhtml:pre><xsl:value-of select="@service"/> is running...</xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>	
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

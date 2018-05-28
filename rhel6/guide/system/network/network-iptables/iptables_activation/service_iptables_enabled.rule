@@ -19,4 +19,4 @@ references:
     srg: SRG-OS-000146,SRG-OS-000152,SRG-OS-000145
     stigid: RHEL-06-000117
 
-ocil: '<service-check-macro enable="true" service="iptables" />'
+ocil: '{{{ sysv_service_enabled(service="iptables") }}}'

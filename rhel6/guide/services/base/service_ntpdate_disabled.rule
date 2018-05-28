@@ -27,4 +27,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000265
 
-ocil: '<service-check-macro enable="false" service="ntpdate" />'
+ocil: '{{{ sysv_service_disabled(service="ntpdate") }}}'
