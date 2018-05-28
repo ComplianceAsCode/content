@@ -45,6 +45,8 @@ sourced from the YAML rule files.
 We understand that depending on your organization's needs you may need
 to use a specific security content format. We let you choose.
 
+![Build system schema](docs/readme_images/build_schema.svg "Build system schema")
+
 ---
 We use an OpenControl-inspired YAML rule format for input. Write once and
 generate security content in XCCDF, Ansible and others.
