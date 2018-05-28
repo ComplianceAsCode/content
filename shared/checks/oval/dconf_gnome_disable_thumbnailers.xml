@@ -13,6 +13,7 @@
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
+      <extend_definition comment="gnome-desktop3 installed" definition_ref="package_gnome-desktop3_installed" negate="true" />
       <criteria comment="Disable Gnome3 Thumbnailers and prevent user from enabling" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
         <criterion comment="Disable thumbnailers in GNOME3" test_ref="test_gnome_disable_thumbnailers" />
