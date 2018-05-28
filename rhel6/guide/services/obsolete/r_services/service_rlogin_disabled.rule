@@ -25,4 +25,4 @@ references:
     srg: SRG-OS-000248
     stigid: RHEL-06-000218
 
-ocil: '<xinetd-service-check-macro enable="false" service="rlogin" />'
+ocil: '{{{ ocil_xinetd_service_disabled(service="rlogin") }}}'

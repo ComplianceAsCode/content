@@ -25,4 +25,4 @@ references:
     srg: SRG-OS-000033
     stigid: RHEL-06-000214
 
-ocil: '<xinetd-service-check-macro enable="false" service="rsh" />'
+ocil: '{{{ ocil_xinetd_service_disabled(service="rsh") }}}'

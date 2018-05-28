@@ -778,18 +778,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="xinetd-service-check-macro">
-    <xsl:choose>
-      <xsl:when test="@enable = 'false'">
-        To check that the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service is disabled in system boot configuration, run the following command:
-        <xhtml:pre>$ sudo chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list</xhtml:pre>
-        Output should indicate the <xhtml:code><xsl:value-of select="@service"/></xhtml:code> service has either not been installed, or has been disabled, as shown in the example below:
-        <xhtml:pre>$ sudo chkconfig <xhtml:code><xsl:value-of select="@service"/></xhtml:code> --list
-<xhtml:code><xsl:value-of select="@service"/></xhtml:code>       off</xhtml:pre>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 
