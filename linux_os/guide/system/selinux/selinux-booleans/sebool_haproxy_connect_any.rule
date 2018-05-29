@@ -7,7 +7,7 @@ title: 'Disable the haproxy_connect_any SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>haproxy_connect_any</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="haproxy_connect_any" />
+    {{{ describe_sebool_disable(sebool="haproxy_connect_any") }}}
 
 rationale: ""
 

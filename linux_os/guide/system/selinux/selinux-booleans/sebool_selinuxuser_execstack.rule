@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>selinuxuser_execstack</tt> is enabled.
     This setting should be disabled as unconfined executables should not be able
     to make their stack executable.
-    <sebool-macro enable="false" sebool="selinuxuser_execstack" />
+    {{{ describe_sebool_disable(sebool="selinuxuser_execstack") }}}
 
 rationale: ""
 

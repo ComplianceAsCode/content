@@ -7,7 +7,7 @@ title: 'Disable the httpd_mod_auth_ntlm_winbind SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>httpd_mod_auth_ntlm_winbind</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="httpd_mod_auth_ntlm_winbind" />
+    {{{ describe_sebool_disable(sebool="httpd_mod_auth_ntlm_winbind") }}}
 
 rationale: ""
 

@@ -7,7 +7,7 @@ title: 'Disable the httpd_dontaudit_search_dirs SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>httpd_dontaudit_search_dirs</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="httpd_dontaudit_search_dirs" />
+    {{{ describe_sebool_disable(sebool="httpd_dontaudit_search_dirs") }}}
 
 rationale: ""
 

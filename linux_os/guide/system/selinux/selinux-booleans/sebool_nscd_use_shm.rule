@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>nscd_use_shm</tt> is enabled.
     If this setting is disabled, it should be enabled to allow <tt>nscd</tt>
     to use shared memory.
-    <sebool-macro enable="true" sebool="nscd_use_shm" />
+    {{{ describe_sebool_enable(sebool="nscd_use_shm") }}}
 
 rationale: ""
 

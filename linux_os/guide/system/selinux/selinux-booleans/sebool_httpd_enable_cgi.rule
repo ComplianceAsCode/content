@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>httpd_enable_cgi</tt> is enabled.
     This setting should be disabled unless <tt>httpd</tt> is used with <tt>CGI</tt>
     scripting.
-    <sebool-macro enable="false" sebool="httpd_enable_cgi" />
+    {{{ describe_sebool_disable(sebool="httpd_enable_cgi") }}}
 
 rationale: ""
 

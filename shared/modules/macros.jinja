@@ -323,7 +323,7 @@ ocil_clause: "the package is installed"
 {{%- endmacro %}}
 
 
-{{%- macro sebool_check_disabled(sebool) %}}
+{{%- macro describe_sebool_check_disabled(sebool) %}}
     Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is disabled:
     <pre>$ getsebool {{{ sebool }}}</pre>
     If properly configured, the output should show the following:
@@ -333,13 +333,13 @@ ocil_clause: "the package is installed"
 
 {{%- macro complete_ocil_entry_sebool_disabled(sebool) %}}
 ocil: |-
-    {{{ sebool_check_disabled(sebool) }}}
+    {{{ describe_sebool_check_disabled(sebool) }}}
 
 ocil_clause: "{{{ sebool }}} is not disabled"
 {{%- endmacro %}}
 
 
-{{%- macro sebool_check_enabled(sebool) %}}
+{{%- macro describe_sebool_check_enabled(sebool) %}}
     Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is enabled:
     <pre>$ getsebool {{{ sebool }}}</pre>
     If properly configured, the output should show the following:
@@ -349,7 +349,19 @@ ocil_clause: "{{{ sebool }}} is not disabled"
 
 {{%- macro complete_ocil_entry_sebool_enabled(sebool) %}}
 ocil: |-
-    {{{ sebool_check_enabled(sebool) }}}
+    {{{ describe_sebool_check_enabled(sebool) }}}
 
 ocil_clause: "{{{ sebool }}} is not enabled"
+{{%- endmacro %}}
+
+
+{{%- macro describe_sebool_disable(sebool) %}}
+    To disable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} off</pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_sebool_enable(sebool) %}}
+    To enable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} on</pre>
 {{%- endmacro %}}

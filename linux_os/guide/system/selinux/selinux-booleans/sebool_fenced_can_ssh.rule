@@ -7,7 +7,7 @@ title: 'Disable the fenced_can_ssh SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>fenced_can_ssh</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="fenced_can_ssh" />
+    {{{ describe_sebool_disable(sebool="fenced_can_ssh") }}}
 
 rationale: ""
 

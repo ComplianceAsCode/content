@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>login_console_enabled</tt> is enabled.
     If this setting is disabled, it should be enabled as it allows login from
     <tt>/dev/console</tt> to a console session.
-    <sebool-macro enable="true" sebool="login_console_enabled" />
+    {{{ describe_sebool_enable(sebool="login_console_enabled") }}}
 
 rationale: ""
 

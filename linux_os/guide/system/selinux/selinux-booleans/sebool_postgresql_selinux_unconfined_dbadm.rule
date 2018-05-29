@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>postgresql_selinux_unconfined_dbadm</tt> is enabled.
     If this setting is disabled, it should be enabled as it allows Database Administrators to
     execute Data Manipulation Language (DML) statements.
-    <sebool-macro enable="true" sebool="postgresql_selinux_unconfined_dbadm" />
+    {{{ describe_sebool_enable(sebool="postgresql_selinux_unconfined_dbadm") }}}
 
 rationale: ""
 

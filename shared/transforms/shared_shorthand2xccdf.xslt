@@ -660,19 +660,6 @@
     </xsl:choose>
   </xsl:template>   
 
-  <xsl:template match="sebool-macro">
-    <xsl:choose>
-      <xsl:when test="@enable = 'false'">
-        To disable the <xhtml:code><xsl:value-of select="@sebool"/></xhtml:code> SELinux boolean, run the following command:
-        <xhtml:pre>$ sudo setsebool -P <xsl:value-of select="@sebool"/> off</xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        To enable the <xhtml:code><xsl:value-of select="@sebool"/></xhtml:code> SELinux boolean, run the following command:
-        <xhtml:pre>$ sudo setsebool -P <xsl:value-of select="@sebool"/> on</xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

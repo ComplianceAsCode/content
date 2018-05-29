@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>squid_connect_any</tt> is enabled.
     This setting should be disabled as squid should only connect on specified
     ports.
-    <sebool-macro enable="false" sebool="squid_connect_any" />
+    {{{ describe_sebool_disable(sebool="squid_connect_any") }}}
 
 rationale: ""
 

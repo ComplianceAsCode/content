@@ -7,7 +7,7 @@ title: 'Disable the squid_use_tproxy SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>squid_use_tproxy</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="squid_use_tproxy" />
+    {{{ describe_sebool_disable(sebool="squid_use_tproxy") }}}
 
 rationale: ""
 

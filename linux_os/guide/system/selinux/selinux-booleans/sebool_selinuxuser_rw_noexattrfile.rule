@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>selinuxuser_rw_noexattrfile</tt> is enabled.
     This setting should be disabled as users should not be able to read/write files
     on filesystems that do not have extended attributes e.g. FAT, CDROM, FLOPPY, etc.
-    <sebool-macro enable="false" sebool="selinuxuser_rw_noexattrfile" />
+    {{{ describe_sebool_disable(sebool="selinuxuser_rw_noexattrfile") }}}
 
 rationale: ""
 

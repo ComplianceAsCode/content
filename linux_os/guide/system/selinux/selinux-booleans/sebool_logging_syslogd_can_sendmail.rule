@@ -7,7 +7,7 @@ title: 'Disable the logging_syslogd_can_sendmail SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>logging_syslogd_can_sendmail</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="logging_syslogd_can_sendmail" />
+    {{{ describe_sebool_disable(sebool="logging_syslogd_can_sendmail") }}}
 
 rationale: ""
 

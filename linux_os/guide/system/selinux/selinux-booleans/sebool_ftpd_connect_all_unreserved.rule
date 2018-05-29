@@ -7,7 +7,7 @@ title: 'Disable the ftpd_connect_all_unreserved SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>ftpd_connect_all_unreserved</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="ftpd_connect_all_unreserved" />
+    {{{ describe_sebool_disable(sebool="ftpd_connect_all_unreserved") }}}
 
 rationale: ""
 

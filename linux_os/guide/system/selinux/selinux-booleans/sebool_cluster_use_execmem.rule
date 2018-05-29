@@ -7,7 +7,7 @@ title: 'Disable the cluster_use_execmem SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>cluster_use_execmem</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="cluster_use_execmem" />
+    {{{ describe_sebool_disable(sebool="cluster_use_execmem") }}}
 
 rationale: ""
 

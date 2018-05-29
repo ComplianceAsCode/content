@@ -7,7 +7,7 @@ title: 'Disable the sftpd_write_ssh_home SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>sftpd_write_ssh_home</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="sftpd_write_ssh_home" />
+    {{{ describe_sebool_disable(sebool="sftpd_write_ssh_home") }}}
 
 rationale: ""
 

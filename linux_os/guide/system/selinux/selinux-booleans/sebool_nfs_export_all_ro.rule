@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>nfs_export_all_ro</tt> is enabled.
     If this setting is disabled, it should be enabled as it allows NFS to
     export read-only mounts.
-    <sebool-macro enable="true" sebool="nfs_export_all_ro" />
+    {{{ describe_sebool_enable(sebool="nfs_export_all_ro") }}}
 
 rationale: ""
 

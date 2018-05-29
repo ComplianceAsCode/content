@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>cron_userdomain_transition</tt> is enabled.
     This setting should be enabled as end user cron jobs run in their default
     associated user domain(s) instead of the general cronjob domain.
-    <sebool-macro enable="true" sebool="cron_userdomain_transition" />
+    {{{ describe_sebool_enable(sebool="cron_userdomain_transition") }}}
 
 rationale: ""
 

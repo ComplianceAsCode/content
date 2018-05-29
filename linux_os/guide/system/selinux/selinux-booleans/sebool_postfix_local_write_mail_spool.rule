@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>postfix_local_write_mail_spool</tt> is enabled.
     If this setting is disabled, it should be enabled as it allows Postfix to write
     to the mail spool directories.
-    <sebool-macro enable="true" sebool="postfix_local_write_mail_spool" />
+    {{{ describe_sebool_enable(sebool="postfix_local_write_mail_spool") }}}
 
 rationale: ""
 
