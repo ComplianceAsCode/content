@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Uninstall talk-server Package'
 
-description: '<yum-macro install="false" package="talk-server" />'
+description: '{{{ yum_remove(package="talk-server") }}}'
 
 rationale: |-
     The talk software presents a security risk as it uses unencrypted protocols

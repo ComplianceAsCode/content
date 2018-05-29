@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Remove telnet Clients'
 
-description: "The telnet client allows users to start connections to other \nsystems via the telnet protocol."
+description: 'The telnet client allows users to start connections to other \nsystems via the telnet protocol.'
 
 rationale: |-
     The <tt>telnet</tt> protocol is insecure and unencrypted. The use
@@ -16,4 +16,4 @@ severity: low
 identifiers:
     cce: 27428-2
 
-ocil: '<yum-macro install="false" package="telnet" />'
+ocil: '{{{ yum_remove(package="telnet") }}}'

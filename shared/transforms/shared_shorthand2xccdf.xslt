@@ -621,45 +621,6 @@
     <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
   </xsl:template>
 
-  <xsl:template match="yum-macro">
-    <xsl:choose>
-      <xsl:when test="@install = 'false'">
-        The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
-        <xhtml:pre>$ sudo yum erase <xsl:value-of select="@package"/></xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
-        <xhtml:pre>$ sudo yum install <xsl:value-of select="@package"/></xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="dnf-macro">
-    <xsl:choose>
-      <xsl:when test="@install = 'false'">
-        The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
-        <xhtml:pre>$ sudo dnf erase <xsl:value-of select="@package"/></xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
-        <xhtml:pre>$ sudo dnf install <xsl:value-of select="@package"/></xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  
-  <xsl:template match="apt-get-macro">
-    <xsl:choose>
-      <xsl:when test="@install = 'false'">
-        The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be removed with the following command:
-        <xhtml:pre># apt-get remove <xsl:value-of select="@package"/></xhtml:pre>
-      </xsl:when>
-      <xsl:otherwise>
-        The <xhtml:code><xsl:value-of select="@package"/></xhtml:code> package can be installed with the following command:
-        <xhtml:pre># apt-get install <xsl:value-of select="@package"/></xhtml:pre>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>   
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

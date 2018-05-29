@@ -9,7 +9,7 @@ description: |-
     Internet talk protocol, which allows the user to chat with other users on
     different systems. Talk is a communication program which copies lines from one
     terminal to the terminal of another user.
-    <yum-macro install="false" package="talk" />
+    {{{ yum_remove(package="talk") }}}
 
 rationale: |-
     The talk software presents a security risk as it uses unencrypted protocols

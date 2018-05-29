@@ -6,7 +6,7 @@ title: 'Uninstall <tt>net-snmp</tt> Package'
 
 description: |-
     The <tt>net-snmp</tt> package provides the snmpd service.
-    <yum-macro install="false" package="net-snmp" />
+    {{{ yum_remove(package="net-snmp") }}}
 
 rationale: |-
     If there is no need to run SNMP server software,

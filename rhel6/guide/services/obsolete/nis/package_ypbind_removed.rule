@@ -15,4 +15,4 @@ severity: unknown
 identifiers:
     cce: 27372-2
 
-ocil: '<yum-macro install="false" package="ypbind" />'
+ocil: '{{{ yum_remove(package="ypbind") }}}'

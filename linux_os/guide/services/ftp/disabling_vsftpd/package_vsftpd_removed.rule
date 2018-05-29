@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Uninstall vsftpd Package'
 
-description: '<yum-macro install="false" package="vsftpd" />'
+description: '{{{ yum_remove(package="vsftpd") }}}'
 
 rationale: |-
     Removing the vsftpd package decreases the risk of its

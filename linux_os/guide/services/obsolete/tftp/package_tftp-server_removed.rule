@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Uninstall tftp-server Package'
 
-description: '<yum-macro install="false" package="tftp-server" />'
+description: '{{{ yum_remove(package="tftp-server") }}}'
 
 rationale: "Removing the <tt>tftp-server</tt> package decreases the risk of the\naccidental (or intentional) activation of tftp services.\n<br /><br />\nIf TFTP is required for operational support (such as transmission of router configurations),\nits use must be documented with the Information Systems Securty Manager (ISSM), restricted to \nonly authorized personnel, and have access control rules established."
 

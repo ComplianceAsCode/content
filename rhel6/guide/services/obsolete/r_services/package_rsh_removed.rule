@@ -19,4 +19,4 @@ severity: unknown
 identifiers:
     cce: 27359-9
 
-ocil: '<yum-macro install="false" package="rsh" />'
+ocil: '{{{ yum_remove(package="rsh") }}}'

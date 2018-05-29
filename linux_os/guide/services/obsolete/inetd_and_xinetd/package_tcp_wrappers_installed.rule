@@ -7,7 +7,7 @@ title: 'Install tcp_wrappers Package'
 description: |-
     When network services are using the <tt>xinetd</tt> service, the
     <tt>tcp_wrappers</tt> package should be installed.
-    <yum-macro install="true" package="tcp_wrappers" />
+    {{{ yum_install(package="tcp_wrappers") }}}
 
 rationale: |-
     Access control methods provide the ability to enhance system security posture

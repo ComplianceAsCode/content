@@ -7,7 +7,7 @@ title: 'Uninstall Sendmail Package'
 description: |-
     Sendmail is not the default mail transfer agent and is
     not installed by default.
-    <yum-macro install="false" package="sendmail" />
+    {{{ yum_remove(package="sendmail") }}}
 
 rationale: |-
     The sendmail software was not developed with security in mind and

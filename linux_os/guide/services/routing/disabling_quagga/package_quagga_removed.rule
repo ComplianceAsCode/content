@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Uninstall quagga Package'
 
-description: '<yum-macro install="false" package="quagga" />'
+description: '{{{ yum_remove(package="quagga") }}}'
 
 rationale: |-
     Routing software is typically used on routers to exchange network topology information

@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Uninstall tftp-server Package'
 
-description: '<yum-macro install="false" package="tftp-server" />'
+description: '{{{ yum_remove(package="tftp-server") }}}'
 
 rationale: |-
     Removing the <tt>tftp-server</tt> package decreases the risk of the

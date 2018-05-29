@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Ensure rsyslog is Installed'
 
-description: "Rsyslog is installed by default. \n<yum-macro install=\"true\" package=\"rsyslog\" />"
+description: 'Rsyslog is installed by default. \n{{{ yum_install(package="rsyslog") }}}'
 
 rationale: |-
     The rsyslog package provides the rsyslog daemon, which provides

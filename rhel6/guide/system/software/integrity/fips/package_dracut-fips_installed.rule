@@ -5,7 +5,7 @@ title: 'Install the dracut-fips Package'
 description: |-
     To enable FIPS, the system requires that the <tt>dracut-fips</tt>
     package be installed.
-    <yum-macro install="true" package="dracut-fips" />
+    {{{ yum_install(package="dracut-fips") }}}
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
