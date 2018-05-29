@@ -14,4 +14,4 @@ severity: medium
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ rpm_package_check(package="firewalld") }}}'
+ocil: '{{{ package_check(package="firewalld", pkg_system=pkg_system) }}}'

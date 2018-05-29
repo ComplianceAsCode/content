@@ -4,6 +4,6 @@ benchmark_root: "./guide"
 
 profiles_root: "./profiles"
 
-pkg_system: "rpm"
+{{{ declare_pkg_system_and_manager(pkg_manager="yum") }}}
 
 init_system: "upstart"

@@ -4,6 +4,6 @@ benchmark_root: "../linux_os/guide"
 
 profiles_root: "./profiles"
 
-pkg_system: "rpm"
-
 init_system: "systemd"
+
+{{{ declare_pkg_system_and_manager(pkg_manager="yum") }}}

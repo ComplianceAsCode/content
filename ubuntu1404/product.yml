@@ -4,6 +4,6 @@ benchmark_root: "./guide"
 
 profiles_root: "./profiles"
 
-pkg_system: "dpkg"
+{{{ declare_pkg_system_and_manager(pkg_manager="apt-get") }}}
 
 init_system: "systemd"

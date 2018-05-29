@@ -4,6 +4,6 @@ benchmark_root: "../linux_os/guide"
 
 profiles_root: "./profiles"
 
-pkg_system: "rpm"
+{{{ declare_pkg_system_and_manager(pkg_manager="zypper") }}}
 
 init_system: "systemd"

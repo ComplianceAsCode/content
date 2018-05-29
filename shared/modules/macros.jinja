@@ -217,15 +217,21 @@ ocil_clause: "service and/or socket are running"
 {{%- endmacro %}}
 
 
-{{%- macro rpm_package_check(package) %}}
+{{%- macro rpm_package_check(package, pkg_system) %}}
     Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
     <pre>$ rpm -q {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro rpm_package_check_complete_ocil_entry(package) %}}
+{{%- macro dpkg_package_check(package, pkg_system) %}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ dpkg -l  {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro package_check_complete_ocil_entry(package, pkg_system) %}}
 ocil: |-
-    {{{ rpm_package_check(package) }}}
+    {{{ package_check(package, pkg_system) }}}
 
 ocil_clause: "the package is installed"
 {{%- endmacro %}}
@@ -400,4 +406,76 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- macro yum_remove(package) %}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>$ sudo yum erase {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro zypper_install(package) %}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>$ sudo zypper install {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro zypper_remove(package) %}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>$ sudo zypper remove {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro package_check(package, pkg_system) %}}
+{{%   if pkg_system == "rpm" %}}
+    {{{ rpm_package_check(package) }}}
+{{% elif pkg_system == "dpkg" %}}
+    {{{ dpkg_package_check(package) }}}
+{{% else %}}
+    pkg_system = {{{ pkg_system }}}
+    {{{ error("The value of argument 'pkg_system' is not supported.") }}}
+{{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro package_install(package, pkg_manager) %}}
+{{%   if pkg_manager == "yum" %}}
+    {{{ yum_install(package) }}}
+{{% elif pkg_manager == "apt-get" %}}
+    {{{ apt_get_install(package) }}}
+{{% elif pkg_manager == "dnf" %}}
+    {{{ dnf_install(package) }}}
+{{% elif pkg_manager == "zypper" %}}
+    {{{ zypper_install(package) }}}
+{{% else %}}
+    {{{ error("The value of argument 'pkg_manager' is not supported.") }}}
+{{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro package_remove(package, pkg_manager) %}}
+{{%   if pkg_manager == "yum" %}}
+    {{{ yum_remove(package) }}}
+{{% elif pkg_manager == "apt-get" %}}
+    {{{ apt_get_remove(package) }}}
+{{% elif pkg_manager == "dnf" %}}
+    {{{ dnf_remove(package) }}}
+{{% elif pkg_manager == "zypper" %}}
+    {{{ zypper_remove(package) }}}
+{{% else %}}
+    {{{ error("The value of argument 'pkg_manager' is not supported.") }}}
+{{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro declare_pkg_system_and_manager(pkg_manager) %}}
+pkg_manager: "{{{ pkg_manager }}}"
+
+pkg_system:
+{{%-   if pkg_manager == "yum" %}}
+    rpm
+{{% elif pkg_manager == "apt-get" %}}
+    dpkg
+{{% elif pkg_manager == "dnf" %}}
+    rpm
+{{% elif pkg_manager == "zypper" %}}
+    rpm
+{{% else %}}
+    {{{ error("The value of argument 'pkg_manager' is not supported.") }}}
+{{%- endif %}}
 {{%- endmacro %}}

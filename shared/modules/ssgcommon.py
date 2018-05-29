@@ -276,8 +276,8 @@ def open_and_expand_yaml(yaml_file, substitutions_dict=None):
     return yaml_contents
 
 
-def _extract_substitutions_dict_from_template(filename):
-    template = get_jinja_environment().get_template(filename)
+def _extract_substitutions_dict_from_template(filename, template_globals=None):
+    template = get_jinja_environment().get_template(filename, template_globals)
     all_symbols = template.make_module().__dict__
     symbols_to_export = dict()
     for name, symbol in all_symbols.items():
@@ -296,7 +296,7 @@ def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
         substitutions_dict = dict()
 
     try:
-        macro_definitions = _extract_substitutions_dict_from_template(JINJA_MACROS_DEFINITIONS)
+        macro_definitions = _extract_substitutions_dict_from_template(JINJA_MACROS_DEFINITIONS, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions from {0}: {1}"
                .format(JINJA_MACROS_DEFINITIONS, str(exc)))

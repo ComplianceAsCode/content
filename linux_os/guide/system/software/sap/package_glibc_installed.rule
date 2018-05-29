@@ -23,4 +23,4 @@ references:
 
 ocil_clause: 'the minimum required <tt>glibc</tt> version is not installed'
 
-ocil: '{{{ rpm_package_check(package="glibc") }}}'
+ocil: '{{{ package_check(package="glibc", pkg_system=pkg_system) }}}'

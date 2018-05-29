@@ -5,7 +5,7 @@ title: 'Install the dracut-fips Package'
 description: |-
     To enable FIPS, the system requires that the <tt>dracut-fips</tt>
     package be installed.
-    {{{ yum_install(package="dracut-fips") }}}
+    {{{ package_install(package="dracut-fips", pkg_manager=pkg_manager) }}}
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
@@ -24,4 +24,4 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ rpm_package_check(package="dracut-fips") }}}'
+ocil: '{{{ package_check(package="dracut-fips", pkg_system=pkg_system) }}}'

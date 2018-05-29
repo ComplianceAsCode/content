@@ -6,7 +6,7 @@ title: 'Install the Samba Common Package'
 
 description: |-
     The <tt>samba-common</tt> package should be installed.
-    {{{ yum_install(package="samba-common") }}}
+    {{{ package_install(package="samba-common", pkg_manager=pkg_manager) }}}
 
 rationale: 'If the samba-common package is not installed, samba cannot be configured.'
 
@@ -17,4 +17,4 @@ identifiers:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ rpm_package_check(package="samba-common") }}}'
+ocil: '{{{ package_check(package="samba-common", pkg_system=pkg_system) }}}'

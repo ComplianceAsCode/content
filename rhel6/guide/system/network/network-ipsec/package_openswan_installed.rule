@@ -6,8 +6,8 @@ description: |-
     The openswan and libreswan packages provide an implementation of
     IPsec and IKE, which permits the creation of secure tunnels over untrusted
     networks.
-    {{{ yum_install(package="openswan") }}}
-    {{{ yum_install(package="libreswan") }}}
+    {{{ package_install(package="openswan", pkg_manager=pkg_manager) }}}
+    {{{ package_install(package="libreswan", pkg_manager=pkg_manager) }}}
 
 rationale: |-
     Providing the ability for remote users or systems
@@ -29,7 +29,7 @@ references:
 ocil_clause: 'the package is not installed'
 
 ocil: |-
-    {{{ rpm_package_check(package="openswan") }}}
-    {{{ rpm_package_check(package="libreswan") }}}
+    {{{ package_check(package="openswan", pkg_system=pkg_system) }}}
+    {{{ package_check(package="libreswan", pkg_system=pkg_system) }}}
     <br /><br />
     If the system does not communicate over untrusted networks, this is not applicable.
