@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'C2S for Red Hat Enterprise OpenShift Container Platform 3 Master Node'
+title: 'C2S for Master Node'
 
 description: |-
     This profile demonstrates compliance against the
@@ -15,6 +15,6 @@ description: |-
     ensure a system is in compliance or consistency with the CIS
     baseline.
 
-extends: C2S-ocp-node
+extends: C2S-node
 
 selections: []
