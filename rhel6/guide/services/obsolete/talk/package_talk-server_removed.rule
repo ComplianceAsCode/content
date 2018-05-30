@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Uninstall talk-server Package'
 
-description: '{{{ yum_remove(package="talk-server") }}}'
+description: '{{{ describe_package_remove(package="talk-server") }}}'
 
 rationale: |-
     The talk software presents a security risk as it uses unencrypted protocols
@@ -14,4 +14,4 @@ severity: medium
 identifiers:
     cce: 27427-4
 
-{{{ package_check_complete_ocil_entry(package="talk-server", pkg_system=pkg_system) }}}
+{{{ complete_ocil_entry_package(package="talk-server") }}}

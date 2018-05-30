@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
         "modules"))
 from map_product_module import map_product, parse_product_name, multi_product_list
-from ssgcommon import open_and_macro_expand_yaml, required_yaml_key, process_file_with_jinja
+from ssgcommon import open_product_yaml, required_yaml_key, process_file_with_jinja
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -433,7 +433,7 @@ def main():
         )
         sys.exit(1)
 
-    product_yaml = open_and_macro_expand_yaml(args.product_yaml)
+    product_yaml = open_product_yaml(args.product_yaml)
 
     fixcontent = ElementTree.Element(
         "fix-content", system="urn:xccdf:fix:script:sh",

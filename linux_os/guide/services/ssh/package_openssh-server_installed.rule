@@ -6,7 +6,7 @@ title: 'Install the OpenSSH Server Package'
 
 description: |-
     The <tt>openssh-server</tt> package should be installed.
-    {{{ package_install(package="openssh-server", pkg_manager=pkg_manager) }}}
+    {{{ describe_package_install(package="openssh-server") }}}
 
 rationale: |-
     Without protection of the transmitted information, confidentiality, and
@@ -26,4 +26,4 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ package_check(package="openssh-server", pkg_system=pkg_system) }}}'
+ocil: '{{{ ocil_package(package="openssh-server") }}}'

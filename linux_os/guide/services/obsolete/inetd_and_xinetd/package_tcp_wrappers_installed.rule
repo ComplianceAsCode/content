@@ -7,7 +7,7 @@ title: 'Install tcp_wrappers Package'
 description: |-
     When network services are using the <tt>xinetd</tt> service, the
     <tt>tcp_wrappers</tt> package should be installed.
-    {{{ package_install(package="tcp_wrappers", pkg_manager=pkg_manager) }}}
+    {{{ describe_package_install(package="tcp_wrappers") }}}
 
 rationale: |-
     Access control methods provide the ability to enhance system security posture
@@ -28,4 +28,4 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ package_check(package="tcp_wrappers", pkg_system=pkg_system) }}}'
+ocil: '{{{ ocil_package(package="tcp_wrappers") }}}'

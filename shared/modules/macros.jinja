@@ -217,21 +217,36 @@ ocil_clause: "service and/or socket are running"
 {{%- endmacro %}}
 
 
-{{%- macro rpm_package_check(package, pkg_system) %}}
+{{%- macro upstart_check_socket_and_service_disabled_complete_ocil_entry(name) %}}
+ocil:
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{%- macro rpm_ocil_package(package) %}}
     Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
     <pre>$ rpm -q {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro dpkg_package_check(package, pkg_system) %}}
+{{%- macro dpkg_ocil_package(package) %}}
     Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
     <pre>$ dpkg -l  {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro package_check_complete_ocil_entry(package, pkg_system) %}}
+{{%- macro rpm_complete_ocil_entry_package(package) %}}
 ocil: |-
-    {{{ package_check(package, pkg_system) }}}
+    rpm_ocil_package(package)
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{%- macro dpkg_complete_ocil_entry_package(package) %}}
+ocil: |-
+    dpkg_ocil_package(package)
 
 ocil_clause: "the package is installed"
 {{%- endmacro %}}
@@ -373,109 +388,49 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
-{{%- macro apt_get_install(package) %}}
+{{%- macro apt_get_describe_package_install(package) %}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
     <pre>$ apt-get install {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro apt_get_remove(package) %}}
+{{%- macro apt_get_describe_package_remove(package) %}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>$ apt-get remove {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro dnf_install(package) %}}
+{{%- macro dnf_describe_package_install(package) %}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
     <pre>$ sudo dnf install {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro dnf_remove(package) %}}
+{{%- macro dnf_describe_package_remove(package) %}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>$ sudo dnf erase {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro yum_install(package) %}}
+{{%- macro yum_describe_package_install(package) %}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
     <pre>$ sudo yum install {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro yum_remove(package) %}}
+{{%- macro yum_describe_package_remove(package) %}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>$ sudo yum erase {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro zypper_install(package) %}}
+{{%- macro zypper_describe_package_install(package) %}}
     The <code>{{{ package }}}</code> package can be installed with the following command:
     <pre>$ sudo zypper install {{{ package }}}</pre>
 {{%- endmacro %}}
 
 
-{{%- macro zypper_remove(package) %}}
+{{%- macro zypper_describe_package_remove(package) %}}
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>$ sudo zypper remove {{{ package }}}</pre>
-{{%- endmacro %}}
-
-
-{{%- macro package_check(package, pkg_system) %}}
-{{%   if pkg_system == "rpm" %}}
-    {{{ rpm_package_check(package) }}}
-{{% elif pkg_system == "dpkg" %}}
-    {{{ dpkg_package_check(package) }}}
-{{% else %}}
-    pkg_system = {{{ pkg_system }}}
-    {{{ error("The value of argument 'pkg_system' is not supported.") }}}
-{{% endif %}}
-{{%- endmacro %}}
-
-
-{{%- macro package_install(package, pkg_manager) %}}
-{{%   if pkg_manager == "yum" %}}
-    {{{ yum_install(package) }}}
-{{% elif pkg_manager == "apt-get" %}}
-    {{{ apt_get_install(package) }}}
-{{% elif pkg_manager == "dnf" %}}
-    {{{ dnf_install(package) }}}
-{{% elif pkg_manager == "zypper" %}}
-    {{{ zypper_install(package) }}}
-{{% else %}}
-    {{{ error("The value of argument 'pkg_manager' is not supported.") }}}
-{{% endif %}}
-{{%- endmacro %}}
-
-
-{{%- macro package_remove(package, pkg_manager) %}}
-{{%   if pkg_manager == "yum" %}}
-    {{{ yum_remove(package) }}}
-{{% elif pkg_manager == "apt-get" %}}
-    {{{ apt_get_remove(package) }}}
-{{% elif pkg_manager == "dnf" %}}
-    {{{ dnf_remove(package) }}}
-{{% elif pkg_manager == "zypper" %}}
-    {{{ zypper_remove(package) }}}
-{{% else %}}
-    {{{ error("The value of argument 'pkg_manager' is not supported.") }}}
-{{% endif %}}
-{{%- endmacro %}}
-
-
-{{%- macro declare_pkg_system_and_manager(pkg_manager) %}}
-pkg_manager: "{{{ pkg_manager }}}"
-
-pkg_system:
-{{%-   if pkg_manager == "yum" %}}
-    rpm
-{{% elif pkg_manager == "apt-get" %}}
-    dpkg
-{{% elif pkg_manager == "dnf" %}}
-    rpm
-{{% elif pkg_manager == "zypper" %}}
-    rpm
-{{% else %}}
-    {{{ error("The value of argument 'pkg_manager' is not supported.") }}}
-{{%- endif %}}
 {{%- endmacro %}}

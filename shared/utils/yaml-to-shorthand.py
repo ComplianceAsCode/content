@@ -592,7 +592,7 @@ def main():
         sys.exit(0)
 
     # product_yaml = ssgcommon.open_yaml(args.product_yaml)
-    product_yaml = ssgcommon.open_and_macro_expand_yaml(args.product_yaml)
+    product_yaml = ssgcommon.open_product_yaml(args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = required_yaml_key(product_yaml, "benchmark_root")
     profiles_root = required_yaml_key(product_yaml, "profiles_root")

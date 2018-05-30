@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Uninstall squid Package'
 
-description: '{{{ yum_remove(package="squid") }}}'
+description: '{{{ describe_package_remove(package="squid") }}}'
 
 rationale: |-
     If there is no need to make the proxy server software available,
@@ -13,4 +13,4 @@ severity: unknown
 identifiers:
     cce: 26977-9
 
-{{{ package_check_complete_ocil_entry(package="squid", pkg_system=pkg_system) }}}
+{{{ complete_ocil_entry_package(package="squid") }}}

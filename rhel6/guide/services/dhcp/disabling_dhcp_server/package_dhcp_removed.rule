@@ -5,7 +5,7 @@ title: 'Uninstall DHCP Server Package'
 description: |-
     If the system does not need to act as a DHCP server,
     the dhcp package can be uninstalled.
-    {{{ yum_remove(package="dhcp") }}}
+    {{{ describe_package_remove(package="dhcp") }}}
 
 rationale: |-
     Removing the DHCP server ensures that it cannot be easily or
@@ -20,4 +20,4 @@ references:
     disa: 366
     nist: CM-7
 
-{{{ package_check_complete_ocil_entry(package="dhcp", pkg_system=pkg_system) }}}
+{{{ complete_ocil_entry_package(package="dhcp") }}}

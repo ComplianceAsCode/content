@@ -6,7 +6,7 @@ title: 'Install the Samba Common Package'
 
 description: |-
     The <tt>samba-common</tt> package should be installed.
-    {{{ package_install(package="samba-common", pkg_manager=pkg_manager) }}}
+    {{{ describe_package_install(package="samba-common") }}}
 
 rationale: 'If the samba-common package is not installed, samba cannot be configured.'
 
@@ -17,4 +17,4 @@ identifiers:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ package_check(package="samba-common", pkg_system=pkg_system) }}}'
+ocil: '{{{ ocil_package(package="samba-common") }}}'

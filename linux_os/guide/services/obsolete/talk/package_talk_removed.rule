@@ -9,7 +9,7 @@ description: |-
     Internet talk protocol, which allows the user to chat with other users on
     different systems. Talk is a communication program which copies lines from one
     terminal to the terminal of another user.
-    {{{ yum_remove(package="talk") }}}
+    {{{ describe_package_remove(package="talk") }}}
 
 rationale: |-
     The talk software presents a security risk as it uses unencrypted protocols
@@ -25,4 +25,4 @@ references:
     cis: 2.3.3
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
 
-{{{ package_check_complete_ocil_entry(package="talk", pkg_system=pkg_system) }}}
+{{{ complete_ocil_entry_package(package="talk") }}}

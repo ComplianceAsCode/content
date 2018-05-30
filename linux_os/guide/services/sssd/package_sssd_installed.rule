@@ -6,7 +6,7 @@ title: 'Install the SSSD Package'
 
 description: |-
     The <tt>sssd</tt> package should be installed.
-    {{{ package_install(package="sssd", pkg_manager=pkg_manager) }}}
+    {{{ describe_package_install(package="sssd") }}}
 
 rationale: ""
 
@@ -26,4 +26,4 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ package_check(package="sssd", pkg_system=pkg_system) }}}'
+ocil: '{{{ ocil_package(package="sssd") }}}'

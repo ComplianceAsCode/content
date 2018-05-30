@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Ensure rsyslog is Installed'
 
-description: 'Rsyslog is installed by default. \n{{{ package_install(package="rsyslog", pkg_manager=pkg_manager) }}}'
+description: 'Rsyslog is installed by default. \n{{{ describe_package_install(package="rsyslog") }}}'
 
 rationale: |-
     The rsyslog package provides the rsyslog daemon, which provides
@@ -19,4 +19,4 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '{{{ package_check(package="rsyslog", pkg_system=pkg_system) }}}'
+ocil: '{{{ ocil_package(package="rsyslog") }}}'

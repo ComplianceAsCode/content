@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Uninstall quagga Package'
 
-description: '{{{ yum_remove(package="quagga") }}}'
+description: '{{{ describe_package_remove(package="quagga") }}}'
 
 rationale: |-
     Routing software is typically used on routers to exchange network topology information
@@ -25,4 +25,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: TBD
 
-{{{ package_check_complete_ocil_entry(package="quagga", pkg_system=pkg_system) }}}
+{{{ complete_ocil_entry_package(package="quagga") }}}
