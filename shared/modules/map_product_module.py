@@ -14,9 +14,10 @@ OPENSUSE = 'openSUSE'
 SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 OL = 'Oracle Linux'
+OCP = 'Red Hat OpenShift Container Platform'
 
 multi_product_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
-                      "wrlinux", "opensuse", "sle", "ol"]
+                      "wrlinux", "opensuse", "sle", "ol", "ocp"]
 
 PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
 
@@ -74,7 +75,8 @@ def map_product(version):
         return WRLINUX
     if version.startswith("ol"):
         return OL
-
+    if version.startswith("ocp"):
+        return OCP
 
     raise RuntimeError("Can't map version '%s' to any known product!"
                        % (version))

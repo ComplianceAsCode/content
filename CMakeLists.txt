@@ -211,6 +211,8 @@ if (SSG_PRODUCT_JRE)
     add_subdirectory("jre")
 endif()
 if (SSG_PRODUCT_OCP3)
+    # FIXME: disabled because it has no rules in it,
+    #        please uncomment when any rule is added
     #add_subdirectory("ocp3")
 endif()
 if (SSG_PRODUCT_OPENSUSE)

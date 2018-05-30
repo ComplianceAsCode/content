@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'C2S for Red Hat Enterprise OpenShift Container Platform 3 Node'
+title: 'C2S for Node'
 
 description: |-
     This profile demonstrates compliance against the

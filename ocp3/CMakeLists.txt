@@ -4,23 +4,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
 endif()
 
 set(PRODUCT "ocp3")
-#set(DISA_SRG_TYPE "os")
+set(DISA_SRG_TYPE "os")
 
-#ssg_build_product(${PRODUCT})
-
-#ssg_build_html_table_by_ref(${PRODUCT} "nist")
-#ssg_build_html_table_by_ref(${PRODUCT} "cis")
-#ssg_build_html_table_by_ref(${PRODUCT} "cui")
-#ssg_build_html_table_by_ref(${PRODUCT} "pcidss")
-
-#ssg_build_html_nistrefs_table(${PRODUCT} "common")
-#ssg_build_html_nistrefs_table(${PRODUCT} "ospp-${PRODUCT}")
-#ssg_build_html_nistrefs_table(${PRODUCT} "C2S")
-#ssg_build_html_nistrefs_table(${PRODUCT} "stig-${PRODUCT}-disa")
-
-#ssg_build_html_cce_table(${PRODUCT})
-
-#ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_TYPE})
-
-#ssg_build_html_stig_tables(${PRODUCT} "stig-${PRODUCT}-disa")
-
+ssg_build_product(${PRODUCT})
