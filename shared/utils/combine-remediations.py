@@ -95,24 +95,28 @@ def get_available_remediation_functions(build_dir):
 
 def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
     if remediation_type == 'anaconda':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="anaconda",
-                                system="urn:redhat:anaconda:pre",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="anaconda",
+            system="urn:redhat:anaconda:pre",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    if remediation_type == 'ansible':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="ansible",
-                                system="urn:xccdf:fix:script:ansible",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+    elif remediation_type == 'ansible':
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="ansible",
+            system="urn:xccdf:fix:script:ansible",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     elif remediation_type == 'bash':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="bash",
-                                system="urn:xccdf:fix:script:sh",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="bash",
+            system="urn:xccdf:fix:script:sh",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     elif remediation_type == 'puppet':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="puppet",
-                                system="urn:xccdf:fix:script:puppet",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="puppet",
+            system="urn:xccdf:fix:script:puppet",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
