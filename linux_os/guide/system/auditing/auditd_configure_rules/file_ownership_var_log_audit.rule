@@ -6,8 +6,8 @@ title: 'System Audit Logs Must Be Owned By Root'
 
 description: |-
     All audit logs must be owned by root user and group. By default, the path for audit log is <pre>/var/log/audit/</pre>.
-    <fileowner-desc-macro file="/var/log/audit" owner="root" />
-    <fileowner-desc-macro file="/var/log/audit/*" owner="root" />
+    {{{ describe_file_owner(file="/var/log/audit", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/audit/*", owner="root") }}}
 
 rationale: |-
     Unauthorized disclosure of audit records can reveal system and configuration data to
@@ -27,5 +27,5 @@ references:
     srg: SRG-OS-000058-GPOS-00028
 
 ocil: |-
-    <fileowner-desc-macro file="/var/log/audit" owner="root" />
-    <fileowner-desc-macro file="/var/log/audit/*" owner="root" />
+    {{{ describe_file_owner(file="/var/log/audit", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/audit/*", owner="root") }}}

@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns <tt>shadow</tt> File'
 
-description: '<fileowner-desc-macro file="/etc/shadow" owner="root" />'
+description: '{{{ describe_file_owner(file="/etc/shadow", owner="root") }}}'
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -23,4 +23,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000033
 
-ocil: '<fileowner-check-macro file="/etc/shadow" owner="root" />'
+ocil: '{{{ check_file_owner(file="/etc/shadow", owner="root") }}}'

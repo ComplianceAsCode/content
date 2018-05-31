@@ -7,8 +7,8 @@ title: 'HTTPD Log Files Must Be Owned By Root'
 description: |-
     All <tt>httpd</tt> logs must be owned by root user and group. By default,
     the path for httpd logs is <tt>/var/log/httpd/</tt>
-    <fileowner-desc-macro file="/var/log/httpd" owner="root" />
-    <fileowner-desc-macro file="/var/log/httpd/*" owner="root" />
+    {{{ describe_file_owner(file="/var/log/httpd", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/httpd/*", owner="root") }}}
 
 rationale: |-
     A major tool in exploring the web site use, attempted use, unusual conditions,
@@ -29,5 +29,5 @@ references:
     stigid: WG255
 
 ocil: |-
-    <fileowner-desc-macro file="/var/log/httpd" owner="root" />
-    <fileowner-desc-macro file="/var/log/httpd/*" owner="root" />
+    {{{ describe_file_owner(file="/var/log/httpd", owner="root") }}}
+    {{{ describe_file_owner(file="/var/log/httpd/*", owner="root") }}}

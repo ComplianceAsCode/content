@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on <tt>passwd</tt> File'
 
-description: '<fileperms-desc-macro file="/etc/passwd" perms="0644" />'
+description: '{{{ describe_file_permissions(file="/etc/passwd", perms="0644") }}}'
 
 rationale: |-
     If the <tt>/etc/passwd</tt> file is writable by a group-owner or the world the risk of its compromise is increased.
@@ -15,4 +15,4 @@ references:
     nist: AC-6
     pcidss: Req-8.7.c
 
-ocil: '<fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--" />'
+ocil: '{{{ check_file_permissions(file="/etc/passwd", perms="-rw-r--r--") }}}'

@@ -578,49 +578,6 @@
 	</xsl:if>
   </xsl:template>
 
-  <xsl:template match="fileperms-desc-macro">
-    To properly set the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chmod <xsl:value-of select="@perms"/><xsl:text> </xsl:text><xsl:value-of select="@file"/></xhtml:pre>
-  </xsl:template>
-
-  <xsl:template match="fileowner-desc-macro">
-    To properly set the owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chown <xsl:value-of select="@owner"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
-  </xsl:template>
-
-  <xsl:template match="filegroupowner-desc-macro">
-    To properly set the group owner of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre xml:space="preserve">$ sudo chgrp <xsl:value-of select="@group"/><xsl:text> </xsl:text><xsl:value-of select="@file"/> </xhtml:pre>
-  </xsl:template>
-
-  <xsl:template match="fileperms-check-macro">
-    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following permissions:
-    <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
-  </xsl:template>
-
-  <xsl:template match="fileowner-check-macro">
-    To check the ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -lL <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following owner:
-    <xhtml:code><xsl:value-of select="@owner"/></xhtml:code>
-  </xsl:template>
-
-  <xsl:template match="filegroupowner-check-macro">
-    To check the group ownership of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -lL <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following group-owner.
-    <xhtml:code><xsl:value-of select="@group"/></xhtml:code>
-  </xsl:template>
-
-  <xsl:template match="fileperms-check-macro">
-    To check the permissions of <xhtml:code><xsl:value-of select="@file"/></xhtml:code>, run the command:
-    <xhtml:pre>$ ls -l <xsl:value-of select="@file"/></xhtml:pre>
-    If properly configured, the output should indicate the following permissions:
-    <xhtml:code><xsl:value-of select="@perms"/></xhtml:code>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

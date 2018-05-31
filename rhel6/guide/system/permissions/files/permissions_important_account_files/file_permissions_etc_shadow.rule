@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on <tt>shadow</tt> File'
 
-description: '<fileperms-desc-macro file="/etc/shadow" perms="0000" />'
+description: '{{{ describe_file_permissions(file="/etc/shadow", perms="0000") }}}'
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -23,4 +23,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000035
 
-ocil: '<fileperms-check-macro file="/etc/shadow" perms="----------" />'
+ocil: '{{{ check_file_permissions(file="/etc/shadow", perms="----------") }}}'

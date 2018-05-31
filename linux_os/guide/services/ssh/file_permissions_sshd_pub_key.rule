@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on SSH Server Public <tt>*.pub</tt> Key Files'
 
-description: '<fileperms-desc-macro file="/etc/ssh/*.pub" perms="0644" />'
+description: '{{{ describe_file_permissions(file="/etc/ssh/*.pub", perms="0644") }}}'
 
 rationale: |-
     If a public host key file is modified by an unauthorized user, the SSH service
@@ -20,4 +20,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040410"
 
-ocil: '<fileperms-check-macro file="/etc/ssh/*.pub" perms="-rw-r--r--" />'
+ocil: '{{{ check_file_permissions(file="/etc/ssh/*.pub", perms="-rw-r--r--") }}}'

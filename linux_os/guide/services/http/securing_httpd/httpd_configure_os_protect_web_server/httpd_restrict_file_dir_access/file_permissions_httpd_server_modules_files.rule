@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Set Permissions on All Configuration Files Inside <tt>/etc/httpd/conf.modules.d/</tt>'
 
-description: '<fileperms-desc-macro file="/etc/http/conf.modules.d/*" perms="0640" />'
+description: '{{{ describe_file_permissions(file="/etc/http/conf.modules.d/*", perms="0640") }}}'
 
 rationale: |-
     Access to the web server's configuration files may allow an unauthorized user or attacker
@@ -18,4 +18,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '<fileperms-check-macro file="/etc/http/conf.modules.d/*" perms="-rw-r-----" />'
+ocil: '{{{ check_file_permissions(file="/etc/http/conf.modules.d/*", perms="-rw-r-----") }}}'

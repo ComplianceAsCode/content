@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on <tt>gshadow</tt> File'
 
-description: '<fileperms-desc-macro file="/etc/gshadow" perms="0000" />'
+description: '{{{ describe_file_permissions(file="/etc/gshadow", perms="0000") }}}'
 
 rationale: |-
     The <tt>/etc/gshadow</tt> file contains group password hashes.
@@ -14,4 +14,4 @@ references:
     disa: ""
     nist: AC-6
 
-ocil: '<fileperms-check-macro file="/etc/gshadow" perms="----------" />'
+ocil: '{{{ check_file_permissions(file="/etc/gshadow", perms="----------") }}}'

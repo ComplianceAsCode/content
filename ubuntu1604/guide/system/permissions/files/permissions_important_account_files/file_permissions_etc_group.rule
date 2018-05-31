@@ -3,9 +3,9 @@ documentation_complete: true
 title: 'Verify Permissions and ownership on <tt>group</tt> File'
 
 description: |-
-    <fileperms-desc-macro file="/etc/passwd" perms="0644" />
-      <fileowner-desc-macro file="/etc/passwd" owner="root" />
-      <filegroupowner-desc-macro file="/etc/passwd" group="root" />
+    {{{ describe_file_permissions(file="/etc/passwd", perms="0644") }}}
+      {{{ describe_file_owner(file="/etc/passwd", owner="root") }}}
+      {{{ describe_file_group_owner(file="/etc/passwd", group="root") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains information about the groups that are configured on
@@ -18,6 +18,6 @@ references:
     nist: AC-6
 
 ocil: |-
-    <fileperms-check-macro file="/etc/passwd" perms="-rw-r--r--" />
-      <fileowner-check-macro file="/etc/passwd" owner="root" />
-      <filegroupowner-check-macro file="/etc/passwd" group="root" />
+    {{{ check_file_permissions(file="/etc/passwd", perms="-rw-r--r--") }}}
+      {{{ check_file_owner(file="/etc/passwd", owner="root") }}}
+      {{{ check_file_group_owner(file="/etc/passwd", group="root") }}}

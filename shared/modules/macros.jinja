@@ -442,3 +442,53 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     The <code>{{{ package }}}</code> package can be removed with the following command:
     <pre>$ sudo zypper remove {{{ package }}}</pre>
 {{%- endmacro %}}
+
+
+{{%- macro describe_file_permissions(file, perms) %}}
+    To properly set the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chmod {{{ perms }}} {{{ file }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_file_owner(file, owner) %}}
+    To properly set the owner of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chown {{{ owner }}} {{{ file }}} </pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_file_group_owner(file, group) %}}
+    To properly set the group owner of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chgrp {{{ group }}} {{{ file }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_permissions(file, perms) %}}
+    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_owner(file, owner) %}}
+    To check the ownership of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following owner:
+    <code>{{{ owner }}}</code>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_group_owner(file, group) %}}
+    To check the group ownership of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following group-owner.
+    <code>{{{ group }}}</code>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_permissions(file, perms) %}}
+    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
