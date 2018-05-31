@@ -6,7 +6,7 @@ description: |-
     The <tt>rlogin</tt> service, which is available with
     the <tt>rsh-server</tt> package and runs as a service through xinetd,
     should be disabled.
-    {{{ sysv_service_disable(service="rlogin") }}}
+    {{{ describe_service_disable(service="rlogin") }}}
 
 rationale: |-
     The rlogin service uses unencrypted network communications, which

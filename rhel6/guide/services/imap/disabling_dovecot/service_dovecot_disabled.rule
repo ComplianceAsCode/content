@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Dovecot Service'
 
-description: '{{{ sysv_service_disable(service="dovecot") }}}'
+description: '{{{ describe_service_disable(service="dovecot") }}}'
 
 rationale: |-
     Running an IMAP or POP3 server provides a network-based
@@ -13,4 +13,4 @@ severity: unknown
 identifiers:
     cce: 26922-5
 
-ocil: '{{{ sysv_service_disabled(service="dovecot") }}}'
+ocil: '{{{ ocil_service_disabled(service="dovecot") }}}'

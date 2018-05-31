@@ -8,7 +8,7 @@ description: |-
     of plugins, abrtd can email crash reports to system administrators, log crash
     reports to files, or forward crash reports to a centralized issue tracking
     system such as RHTSupport.
-    {{{ sysv_service_disable(service="abrtd") }}}
+    {{{ describe_service_disable(service="abrtd") }}}
 
 rationale: |-
     Mishandling crash data could expose sensitive information about
@@ -26,4 +26,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000261
 
-ocil: '{{{ sysv_service_disabled(service="abrtd") }}}'
+ocil: '{{{ ocil_service_disabled(service="abrtd") }}}'

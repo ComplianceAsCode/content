@@ -5,7 +5,7 @@ title: 'Disable DHCP Service'
 description: |-
     The <tt>dhcpd</tt> service should be disabled on
     any system that does not need to act as a DHCP server.
-    {{{ sysv_service_disable(service="dhcpd") }}}
+    {{{ describe_service_disable(service="dhcpd") }}}
 
 rationale: |-
     Unmanaged or unintentionally activated DHCP servers may provide faulty information
@@ -21,4 +21,4 @@ references:
     disa: 366
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="dhcpd") }}}'
+ocil: '{{{ ocil_service_disabled(service="dhcpd") }}}'

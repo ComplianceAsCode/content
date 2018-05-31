@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Samba'
 
-description: '{{{ sysv_service_disable(service="smb") }}}'
+description: '{{{ describe_service_disable(service="smb") }}}'
 
 rationale: |-
     Running a Samba server provides a network-based avenue of attack, and
@@ -16,4 +16,4 @@ identifiers:
 references:
     disa: 1436
 
-ocil: '{{{ sysv_service_disabled(service="smb") }}}'
+ocil: '{{{ ocil_service_disabled(service="smb") }}}'

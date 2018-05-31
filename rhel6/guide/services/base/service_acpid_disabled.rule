@@ -6,7 +6,7 @@ description: |-
     The Advanced Configuration and Power Interface Daemon (<tt>acpid</tt>)
     dispatches ACPI events (such as power/reset button depressed) to userspace
     programs.
-    {{{ sysv_service_disable(service="acpid") }}}
+    {{{ describe_service_disable(service="acpid") }}}
 
 rationale: |-
     ACPI support is highly desirable for systems in some network roles,
@@ -22,4 +22,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="acpid") }}}'
+ocil: '{{{ ocil_service_disabled(service="acpid") }}}'

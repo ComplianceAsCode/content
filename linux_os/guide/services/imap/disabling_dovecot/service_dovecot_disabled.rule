@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable Dovecot Service'
 
-description: '{{{ systemd_service_disable(service="dovecot") }}}'
+description: '{{{ describe_service_disable(service="dovecot") }}}'
 
 rationale: |-
     Running an IMAP or POP3 server provides a network-based
@@ -18,4 +18,4 @@ identifiers:
 references:
     cis: 2.2.11
 
-ocil: '{{{ systemd_service_disabled(service="dovecot") }}}'
+ocil: '{{{ ocil_service_disabled(service="dovecot") }}}'

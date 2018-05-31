@@ -6,7 +6,7 @@ description: |-
     The <tt>portreserve</tt> service is a TCP port reservation utility that can
     be used to prevent portmap from binding to well known TCP ports that are
     required for other services.
-    {{{ sysv_service_disable(service="portreserve") }}}
+    {{{ describe_service_disable(service="portreserve") }}}
 
 rationale: |-
     The <tt>portreserve</tt> service provides helpful functionality by
@@ -21,4 +21,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="portreserve") }}}'
+ocil: '{{{ ocil_service_disabled(service="portreserve") }}}'

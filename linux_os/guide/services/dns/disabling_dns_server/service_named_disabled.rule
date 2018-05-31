@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable DNS Server'
 
-description: '{{{ systemd_service_disable(service="named") }}}'
+description: '{{{ describe_service_disable(service="named") }}}'
 
 rationale: |-
     All network services involve some risk of compromise due to
@@ -20,4 +20,4 @@ references:
     disa: 366
     nist: CM-7
 
-ocil: '{{{ systemd_service_disabled(service="named") }}}'
+ocil: '{{{ ocil_service_disabled(service="named") }}}'

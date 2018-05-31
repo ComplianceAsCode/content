@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Squid'
 
-description: '{{{ sysv_service_disable(service="squid") }}}'
+description: '{{{ describe_service_disable(service="squid") }}}'
 
 rationale: |-
     Running proxy server software provides a network-based avenue
@@ -13,4 +13,4 @@ severity: unknown
 identifiers:
     cce: 27146-0
 
-ocil: '{{{ sysv_service_disabled(service="squid") }}}'
+ocil: '{{{ ocil_service_disabled(service="squid") }}}'

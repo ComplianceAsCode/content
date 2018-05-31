@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable the CUPS Service'
 
-description: '{{{ systemd_service_disable(service="cups") }}}'
+description: '{{{ describe_service_disable(service="cups") }}}'
 
 rationale: 'Turn off unneeded services to reduce attack surface.'
 
@@ -17,4 +17,4 @@ references:
     cis: 2.2.4
     nist: CM-7
 
-ocil: '{{{ systemd_service_disabled(service="cups") }}}'
+ocil: '{{{ ocil_service_disabled(service="cups") }}}'

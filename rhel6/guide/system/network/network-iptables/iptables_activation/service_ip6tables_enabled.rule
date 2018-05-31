@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify ip6tables Enabled if Using IPv6'
 
-description: '{{{ sysv_service_enable(service="ip6tables") }}}'
+description: '{{{ describe_service_enable(service="ip6tables") }}}'
 
 rationale: |-
     The <tt>ip6tables</tt> service provides the system's host-based firewalling
@@ -22,4 +22,4 @@ references:
 ocil: |-
     If IPv6 is disabled, this is not applicable.
     <br /><br />
-    {{{ sysv_service_enabled(service="ip6tables") }}}
+    {{{ ocil_service_enabled(service="ip6tables") }}}

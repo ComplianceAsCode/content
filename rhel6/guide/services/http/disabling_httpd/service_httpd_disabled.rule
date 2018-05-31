@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable httpd Service'
 
-description: '{{{ sysv_service_disable(service="httpd") }}}'
+description: '{{{ describe_service_disable(service="httpd") }}}'
 
 rationale: |-
     Running web server software provides a network-based avenue
@@ -16,4 +16,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="httpd") }}}'
+ocil: '{{{ ocil_service_disabled(service="httpd") }}}'

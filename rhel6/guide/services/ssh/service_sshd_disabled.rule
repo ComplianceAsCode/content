@@ -5,7 +5,7 @@ title: 'Disable SSH Server If Possible (Unusual)'
 description: |-
     The SSH server service, sshd, is commonly needed.
     However, if it can be disabled, do so.
-    {{{ sysv_service_disable(service="sshd") }}}
+    {{{ describe_service_disable(service="sshd") }}}
     This is unusual, as SSH is a common method for encrypted and authenticated
     remote access.
 

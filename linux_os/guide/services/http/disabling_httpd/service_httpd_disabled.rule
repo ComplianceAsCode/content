@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable httpd Service'
 
-description: '{{{ systemd_service_disable(service="httpd") }}}'
+description: '{{{ describe_service_disable(service="httpd") }}}'
 
 rationale: |-
     Running web server software provides a network-based avenue
@@ -19,4 +19,4 @@ references:
     cis: 2.2.10
     nist: CM-7
 
-ocil: '{{{ systemd_service_disabled(service="httpd") }}}'
+ocil: '{{{ ocil_service_disabled(service="httpd") }}}'

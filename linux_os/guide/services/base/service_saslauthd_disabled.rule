@@ -10,7 +10,7 @@ description: |-
     privileges for SASL authentication into a single process, and can also be used
     to provide proxy authentication services to clients that do not understand SASL
     based authentication.
-    {{{ systemd_service_disable(service="saslauthd") }}}
+    {{{ describe_service_disable(service="saslauthd") }}}
 
 rationale: |-
     The <tt>saslauthd</tt> service provides essential functionality for
@@ -26,4 +26,4 @@ identifiers:
 references:
     nist: AC-17(8),CM-7
 
-ocil: '{{{ systemd_service_disabled(service="saslauthd") }}}'
+ocil: '{{{ ocil_service_disabled(service="saslauthd") }}}'

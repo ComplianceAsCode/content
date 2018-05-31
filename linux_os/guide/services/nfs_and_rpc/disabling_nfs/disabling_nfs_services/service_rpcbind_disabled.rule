@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable rpcbind Service'
 
-description: "The rpcbind utility maps RPC services to the ports on which they listen. RPC\nprocesses notify rpcbind when they start, registering the ports they are\nlistening on and the RPC program numbers they expect to serve. The rpcbind\nservice redirects the client to the proper port number so it can communicate \nwith the requested service. If the system does not require RPC (such as for NFS\nservers) then this service should be disabled.\n{{{ systemd_service_disable(service="rpcbind") }}}"
+description: "The rpcbind utility maps RPC services to the ports on which they listen. RPC\nprocesses notify rpcbind when they start, registering the ports they are\nlistening on and the RPC program numbers they expect to serve. The rpcbind\nservice redirects the client to the proper port number so it can communicate \nwith the requested service. If the system does not require RPC (such as for NFS\nservers) then this service should be disabled.\n{{{ describe_service_disable(service="rpcbind") }}}"
 
 rationale: ""
 

@@ -5,10 +5,10 @@ prodtype: rhel7,fedora
 title: 'Enable the NTP Daemon'
 
 description: |-
-    {{{ systemd_service_enabled(service="chronyd") }}}
+    {{{ ocil_service_enabled(service="chronyd") }}}
     Note: The <tt>chronyd</tt> daemon is enabled by default.
     <br /><br />
-    {{{ systemd_service_enabled(service="ntpd") }}}
+    {{{ ocil_service_enabled(service="ntpd") }}}
     Note: The <tt>ntpd</tt> daemon is not enabled by default. Though as mentioned
     in the previous sections in certain environments the <tt>ntpd</tt> daemon might
     be preferred to be used rather than the <tt>chronyd</tt> one. Refer to:
@@ -42,5 +42,5 @@ references:
     pcidss: Req-10.4
 
 ocil: |-
-    {{{ systemd_service_enabled(service="chronyd") }}}
-    {{{ systemd_service_enabled(service="ntpd") }}}
+    {{{ ocil_service_enabled(service="chronyd") }}}
+    {{{ ocil_service_enabled(service="ntpd") }}}

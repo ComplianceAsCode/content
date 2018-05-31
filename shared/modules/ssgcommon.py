@@ -328,6 +328,16 @@ def _identify_special_macro_mapping(existing_properties):
         _save_rename(result, "ocil_package", pkg_system)
         _save_rename(result, "complete_ocil_entry_package", pkg_system)
 
+    init_system = existing_properties.get("init_system")
+    if init_system is not None:
+        _save_rename(result, "describe_service_enable", init_system)
+        _save_rename(result, "describe_service_disable", init_system)
+        _save_rename(result, "ocil_service_enabled", init_system)
+        _save_rename(result, "ocil_service_disabled", init_system)
+        _save_rename(result, "describe_socket_enable", init_system)
+        _save_rename(result, "describe_socket_disable", init_system)
+        _save_rename(result, "complete_ocil_entry_socket_and_service_disabled", init_system)
+
     return result
 
 

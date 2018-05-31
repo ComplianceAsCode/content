@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify iptables Enabled'
 
-description: '{{{ sysv_service_enable(service="iptables") }}}'
+description: '{{{ describe_service_enable(service="iptables") }}}'
 
 rationale: |-
     The <tt>iptables</tt> service provides the system's host-based firewalling
@@ -19,4 +19,4 @@ references:
     srg: SRG-OS-000146,SRG-OS-000152,SRG-OS-000145
     stigid: RHEL-06-000117
 
-ocil: '{{{ sysv_service_enabled(service="iptables") }}}'
+ocil: '{{{ ocil_service_enabled(service="iptables") }}}'

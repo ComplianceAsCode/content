@@ -5,7 +5,7 @@ title: 'Disable Software RAID Monitor (mdmonitor)'
 description: |-
     The <tt>mdmonitor</tt> service is used for monitoring a software RAID array; hardware
     RAID setups do not use this service.
-    {{{ sysv_service_disable(service="mdmonitor") }}}
+    {{{ describe_service_disable(service="mdmonitor") }}}
 
 rationale: |-
     If software RAID monitoring is not required,
@@ -19,4 +19,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="mdmonitor") }}}'
+ocil: '{{{ ocil_service_disabled(service="mdmonitor") }}}'

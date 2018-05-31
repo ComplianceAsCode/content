@@ -6,7 +6,7 @@ title: 'Enable the SSSD Service'
 
 description: |-
     The SSSD service should be enabled.
-    {{{ systemd_service_enable(service="sssd") }}}
+    {{{ describe_service_enable(service="sssd") }}}
 
 rationale: ""
 
@@ -26,4 +26,4 @@ references:
 
 ocil_clause: 'the service is not enabled'
 
-ocil: '{{{ systemd_service_enabled(service="sssd") }}}'
+ocil: '{{{ ocil_service_enabled(service="sssd") }}}'

@@ -13,7 +13,7 @@ description: |-
     possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
     rather than relying on the automounter.
     <br /><br />
-    {{{ systemd_service_disable(service="autofs") }}}
+    {{{ describe_service_disable(service="autofs") }}}
 
 rationale: |-
     Disabling the automounter permits the administrator to
@@ -36,4 +36,4 @@ references:
     srg: SRG-OS-000114-GPOS-00059,SRG-OS-000378-GPOS-00163,SRG-OS-000480-GPOS-00227
     stigid@rhel7: "020110"
 
-ocil: '{{{ systemd_service_disabled(service="autofs") }}}'
+ocil: '{{{ ocil_service_disabled(service="autofs") }}}'

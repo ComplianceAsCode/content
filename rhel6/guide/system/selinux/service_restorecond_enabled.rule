@@ -8,7 +8,7 @@ description: |-
     <tt>/etc/selinux/restorecond.conf</tt> configuration file. When a file is
     created, <tt>restorecond</tt> ensures the file receives the proper SELinux
     security context.
-    {{{ sysv_service_enable(service="restorecond") }}}
+    {{{ describe_service_enable(service="restorecond") }}}
 
 rationale: |-
     The <tt>restorecond</tt> service helps ensure that the default SELinux

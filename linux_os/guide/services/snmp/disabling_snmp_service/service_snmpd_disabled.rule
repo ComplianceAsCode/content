@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable <tt>snmpd</tt> Service'
 
-description: '{{{ systemd_service_disable(service="snmpd") }}}'
+description: '{{{ describe_service_disable(service="snmpd") }}}'
 
 rationale: |-
     Running SNMP software provides a network-based avenue of attack, and
@@ -18,4 +18,4 @@ identifiers:
 references:
     cis: 2.2.14
 
-ocil: '{{{ systemd_service_disabled(service="snmpd") }}}'
+ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'

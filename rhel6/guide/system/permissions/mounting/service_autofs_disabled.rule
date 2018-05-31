@@ -11,7 +11,7 @@ description: |-
     possible to configure filesystem mounts statically by editing <tt>/etc/fstab</tt>
     rather than relying on the automounter.
     <br /><br />
-    {{{ sysv_service_disable(service="autofs") }}}
+    {{{ describe_service_disable(service="autofs") }}}
 
 rationale: "Disabling the automounter permits the administrator to \nstatically control filesystem mounting through <tt>/etc/fstab</tt>."
 
@@ -26,4 +26,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000526
 
-ocil: '{{{ sysv_service_disabled(service="autofs") }}}'
+ocil: '{{{ ocil_service_disabled(service="autofs") }}}'

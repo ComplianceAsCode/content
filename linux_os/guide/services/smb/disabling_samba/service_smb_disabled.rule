@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable Samba'
 
-description: '{{{ systemd_service_disable(service="smb") }}}'
+description: '{{{ describe_service_disable(service="smb") }}}'
 
 rationale: |-
     Running a Samba server provides a network-based avenue of attack, and
@@ -19,4 +19,4 @@ references:
     cis: 2.2.12
     disa: 1436
 
-ocil: '{{{ systemd_service_disabled(service="smb") }}}'
+ocil: '{{{ ocil_service_disabled(service="smb") }}}'

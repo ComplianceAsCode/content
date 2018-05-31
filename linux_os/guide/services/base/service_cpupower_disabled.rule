@@ -7,7 +7,7 @@ title: 'Disable CPU Speed (cpupower)'
 description: |-
     The <tt>cpupower</tt> service can adjust the clock speed of supported CPUs based upon
     the current processing load thereby conserving power and reducing heat.
-    {{{ systemd_service_disable(service="cpupower") }}}
+    {{{ describe_service_disable(service="cpupower") }}}
 
 rationale: |-
     The <tt>cpupower</tt> service is only necessary if adjusting the CPU clock speed
@@ -23,4 +23,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ systemd_service_disabled(service="cpupower") }}}'
+ocil: '{{{ ocil_service_disabled(service="cpupower") }}}'

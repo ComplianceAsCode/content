@@ -9,7 +9,7 @@ description: |-
     netconsole kernel module, which logs kernel printk messages over UDP to a
     syslog server. This allows debugging of problems where disk logging fails and
     serial consoles are impractical.
-    {{{ systemd_service_disable(service="netconsole") }}}
+    {{{ describe_service_disable(service="netconsole") }}}
 
 rationale: |-
     The <tt>netconsole</tt> service is not necessary unless there is a need to debug
@@ -24,4 +24,4 @@ references:
     disa: 381
     nist: AC-17(8),CM-7
 
-ocil: '{{{ systemd_service_disabled(service="netconsole") }}}'
+ocil: '{{{ ocil_service_disabled(service="netconsole") }}}'

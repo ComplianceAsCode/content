@@ -8,7 +8,7 @@ description: |-
     The <tt>auditd</tt> service is an essential userspace component of
     the Linux Auditing System, as it is responsible for writing audit records to
     disk.
-    {{{ systemd_service_enable(service="auditd") }}}
+    {{{ describe_service_enable(service="auditd") }}}
 
 rationale: |-
     Without establishing what type of events occurred, it would be difficult
@@ -36,4 +36,4 @@ references:
     srg: SRG-OS-000038-GPOS-00016,SRG-OS-000039-GPOS-00017,SRG-OS-000042-GPOS-00021,SRG-OS-000254-GPOS-00095,SRG-OS-000255-GPOS-00096
     stigid@rhel7: "030000"
 
-ocil: '{{{ systemd_service_enabled(service="auditd") }}}'
+ocil: '{{{ ocil_service_enabled(service="auditd") }}}'

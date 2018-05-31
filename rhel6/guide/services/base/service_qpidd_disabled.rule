@@ -7,7 +7,7 @@ description: |-
     guaranteed delivery services.  It is an implementation of the Advanced Message
     Queuing Protocol.  By default the qpidd service will bind to port 5672 and
     listen for connection attempts.
-    {{{ sysv_service_disable(service="qpidd") }}}
+    {{{ describe_service_disable(service="qpidd") }}}
 
 rationale: "The qpidd service is automatically installed when the \"base\" \npackage selection is selected during installation.  The qpidd service listens \nfor network connections, which increases the attack surface of the system.  If \nthe system is not intended to receive AMQP traffic, then the <tt>qpidd</tt> \nservice is not needed and should be disabled or removed."
 
@@ -22,4 +22,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000267
 
-ocil: '{{{ sysv_service_disabled(service="qpidd") }}}'
+ocil: '{{{ ocil_service_disabled(service="qpidd") }}}'

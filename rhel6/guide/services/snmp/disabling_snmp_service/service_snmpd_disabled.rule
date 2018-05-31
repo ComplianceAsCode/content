@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable <tt>snmpd</tt> Service'
 
-description: '{{{ sysv_service_disable(service="snmpd") }}}'
+description: '{{{ describe_service_disable(service="snmpd") }}}'
 
 rationale: |-
     Running SNMP software provides a network-based avenue of attack, and
@@ -13,4 +13,4 @@ severity: unknown
 identifiers:
     cce: 26906-8
 
-ocil: '{{{ sysv_service_disabled(service="snmpd") }}}'
+ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'

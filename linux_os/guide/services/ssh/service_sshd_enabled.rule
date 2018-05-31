@@ -6,7 +6,7 @@ title: 'Enable the OpenSSH Service'
 
 description: |-
     The SSH server service, sshd, is commonly needed.
-    {{{ systemd_service_enable(service="sshd") }}}
+    {{{ describe_service_enable(service="sshd") }}}
 
 rationale: |-
     Without protection of the transmitted information, confidentiality, and
@@ -31,4 +31,4 @@ references:
     srg: SRG-OS-000423-GPOS-00187,SRG-OS-000423-GPOS-00188,SRG-OS-000423-GPOS-00189,SRG-OS000423-GPOS-00190
     stigid@rhel7: "040310"
 
-ocil: '{{{ systemd_service_enabled(service="sshd") }}}'
+ocil: '{{{ ocil_service_enabled(service="sshd") }}}'

@@ -6,7 +6,7 @@ description: |-
     The <tt>kdump</tt> service provides a kernel crash dump analyzer. It uses the <tt>kexec</tt>
     system call to boot a secondary kernel ("capture" kernel) following a system
     crash, which can load information from the crashed kernel for analysis.
-    {{{ sysv_service_disable(service="kdump") }}}
+    {{{ describe_service_disable(service="kdump") }}}
 
 rationale: |-
     Unless the system is used for kernel development or testing, there
@@ -20,4 +20,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="kdump") }}}'
+ocil: '{{{ ocil_service_disabled(service="kdump") }}}'

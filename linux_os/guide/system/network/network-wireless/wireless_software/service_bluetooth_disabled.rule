@@ -5,7 +5,7 @@ prodtype: rhel7,fedora
 title: 'Disable Bluetooth Service'
 
 description: |-
-    {{{ systemd_service_disable(service="bluetooth") }}}
+    {{{ describe_service_disable(service="bluetooth") }}}
     <pre>$ sudo service bluetooth stop</pre>
 
 rationale: |-
@@ -24,4 +24,4 @@ references:
     disa: 85,1551
     nist: AC-17(8),AC-18(a),AC-18(d),AC-18(3),CM-7
 
-ocil: '{{{ systemd_service_disabled(service="bluetooth") }}}'
+ocil: '{{{ ocil_service_disabled(service="bluetooth") }}}'

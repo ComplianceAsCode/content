@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable the CUPS Service'
 
-description: '{{{ sysv_service_disable(service="cups") }}}'
+description: '{{{ describe_service_disable(service="cups") }}}'
 
 rationale: 'Turn off unneeded services to reduce attack surface.'
 
@@ -14,4 +14,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '{{{ sysv_service_disabled(service="cups") }}}'
+ocil: '{{{ ocil_service_disabled(service="cups") }}}'

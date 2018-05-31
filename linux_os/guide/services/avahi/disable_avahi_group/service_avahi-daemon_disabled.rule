@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable Avahi Server Software'
 
-description: '{{{ systemd_service_disable(service="avahi-daemon") }}}'
+description: '{{{ describe_service_disable(service="avahi-daemon") }}}'
 
 rationale: |-
     Because the Avahi daemon service keeps an open network
@@ -22,4 +22,4 @@ references:
     disa: 366
     nist: CM-7
 
-ocil: '{{{ systemd_service_disabled(service="avahi-daemon") }}}'
+ocil: '{{{ ocil_service_disabled(service="avahi-daemon") }}}'
