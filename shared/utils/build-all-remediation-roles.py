@@ -62,7 +62,7 @@ def add_minimum_ansible_version(ansible_src):
    pre_tasks:
      - name: %s
        assert:
-         that: "ansible_version.full | version_compare('%s', '>=')"
+         that: "ansible_version.full is version_compare('%s', '>=')"
          msg: >
            "You must update Ansible to at least version %s to use this role."
           """ % (ssgcommon.ansible_version_requirement_pre_task_name,
