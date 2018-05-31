@@ -245,9 +245,20 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
     elif remediation_type == "anaconda":
         pattern = r'\(anaconda-populate\s*(\S+)\)'
-        parts = re.split(pattern, fix.text)
-        fix.text = parts[0]
 
+        # we will get list what looks like
+        # [text, varname, text, varname, ..., text]
+        parts = re.split(pattern, fix.text)
+
+        fix.text = parts[0]  # add first "text"
+        for index in range(1, len(parts), 2):
+            varname = parts[index]
+            text_between_vars = parts[index + 1]
+
+            # we cannot combine elements and text easily
+            # so text is in ".tail" of element
+            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
+            xccdfvarsub.tail = text_between_vars
         return
 
     elif remediation_type == "bash":
