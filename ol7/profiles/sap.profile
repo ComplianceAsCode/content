@@ -15,5 +15,5 @@ selections:
     - no_rsh_trust_files
     - package_ypbind_removed
     - package_ypserv_removed
-    - var_accounts_authorized_local_users=ol7forsap
+    - var_accounts_authorized_local_users_regex=ol7forsap
     - accounts_authorized_local_users
