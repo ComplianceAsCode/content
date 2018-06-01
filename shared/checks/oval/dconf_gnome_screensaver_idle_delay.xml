@@ -66,7 +66,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_screensaver_idle_delay_setting" version="1">
-    <ind:subexpression datatype="int" operation="equals" var_check="all" var_ref="inactivity_timeout_value" />
+    <ind:subexpression datatype="int" operation="less than or equal" var_check="all" var_ref="inactivity_timeout_value" />
   </ind:textfilecontent54_state>
 
   <external_variable comment="inactivity timeout variable" datatype="int"
