@@ -10,6 +10,7 @@ description: |-
 selections:
     - ensure_oracle_gpgkey_installed
     - ensure_gpgcheck_globally_activated
+    - security_patches_up_to_date
     - rpm_verify_permissions
     - rpm_verify_hashes
     - no_empty_passwords
