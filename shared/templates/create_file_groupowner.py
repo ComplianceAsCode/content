@@ -26,13 +26,13 @@ class FileGroupOwnerGenerator(FilesGenerator):
         if len(args) > 2 and args[2]:
             pathregex = args[2]
         else:
-            pathregex = '^' + path + '$' 
+            pathregex = '^' + path + '$'
 
         # The fourth column is optional. It is used to indicate if the given path is a
         # directory or a file. The default value is file.
-        if len(args) > 3 and args[3]=="directory":
+        if len(args) > 3 and args[3] == "directory":
             dftype = "directory"
-        else :
+        else:
             dftype = "file"
 
         if target == "oval":
