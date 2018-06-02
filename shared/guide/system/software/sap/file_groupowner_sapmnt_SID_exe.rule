@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Groupowner of Directory /sapmnt/SID/exe'
+
+description: |-
+    It is recommended the directory <tt>/sapmnt/SID/exe</tt> should be owned by
+    group <tt>sapsys</tt>.
+    <tt>SID</tt> is SAP System ID which is always three alphanumeric characters in
+    uppercase beginning with an alphabetic character.
+    To set correct group ownership, use the following command: 
+    <pre>$sudo chgrp sapsys /sapmnt/SID/exe </pre>
+    Replace the <tt>SID</tt> with the real value.
+
+rationale: |-
+
+severity: medium
+
+references:
+
+ocil_clause: 'unexpected group ownership of directory /sapmnt/SID/exe' 
+
+ocil: |-
+    Use the following commands to set correct group ownership:
+    <pre>$sudo chgrp sapsys /sapmnt/SID/exe </pre>
+    Replace the SID with the real value.

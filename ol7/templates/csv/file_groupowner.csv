@@ -1,0 +1,12 @@
+# Directory or file groupownership
+# The format is: 
+#
+# path,group[,[pathregex],[directory|file]]
+# 
+# The first column is the full path (include file name if the type is file).
+# The second column is the group name the directory or file should belong to.
+# The third column is optional, it's the regular expression of the path as defined in
+# http://oval.mitre.org/language/about/re_support_5.6.html.
+# The fourth column indicates if the type is directory or file. Default is file.
+#
+/sapmnt/SID/exe,sapsys,^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe$,directory
