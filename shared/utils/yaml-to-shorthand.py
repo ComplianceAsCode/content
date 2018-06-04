@@ -129,6 +129,7 @@ class Value(object):
     def __init__(self, id_):
         self.id_ = id_
         self.operator = "equals"
+        self.interactive = False
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
@@ -156,6 +157,9 @@ class Value(object):
                 % (value.operator, yaml_file, ", ".join(possible_operators))
             )
 
+        value.interactive = \
+            yaml_contents.pop("interactive", "false").lower() == "true"
+
         value.options = required_yaml_key(yaml_contents, "options")
         del yaml_contents["options"]
         value.warnings = yaml_contents.pop("warnings", [])
@@ -177,6 +181,8 @@ class Value(object):
         value.set('type', self.type)
         if self.operator != "equals":  # equals is the default
             value.set('operator', self.operator)
+        if self.interactive:  # False is the default
+            value.set('interactive', 'true')
         title = ET.SubElement(value, 'title')
         title.text = self.title
         add_sub_element(value, 'description', self.description)
