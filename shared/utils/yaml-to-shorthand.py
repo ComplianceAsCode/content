@@ -432,21 +432,29 @@ class Rule(object):
 
         rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
         rule = Rule(rule_id)
-        rule.prodtype = yaml_contents.get("prodtype", "all")
+        rule.prodtype = yaml_contents.pop("prodtype", "all")
         rule.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         rule.description = required_yaml_key(yaml_contents, "description")
+        del yaml_contents["description"]
         rule.rationale = required_yaml_key(yaml_contents, "rationale")
+        del yaml_contents["rationale"]
         rule.severity = required_yaml_key(yaml_contents, "severity")
-        rule.references = yaml_contents.get("references", [])
-        rule.identifiers = yaml_contents.get("identifiers", [])
-        rule.ocil_clause = yaml_contents.get("ocil_clause")
-        rule.ocil = yaml_contents.get("ocil")
-        rule.external_oval = yaml_contents.get("oval_external_content")
-        rule.warnings = yaml_contents.get("warnings", [])
+        del yaml_contents["severity"]
+        rule.references = yaml_contents.pop("references", [])
+        rule.identifiers = yaml_contents.pop("identifiers", [])
+        rule.ocil_clause = yaml_contents.pop("ocil_clause", None)
+        rule.ocil = yaml_contents.pop("ocil", None)
+        rule.external_oval = yaml_contents.pop("oval_external_content", None)
+        rule.warnings = yaml_contents.pop("warnings", [])
 
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
 
         return rule
 
