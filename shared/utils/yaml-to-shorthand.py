@@ -211,18 +211,34 @@ class Benchmark(object):
 
         benchmark = Benchmark(id_)
         benchmark.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         benchmark.status = required_yaml_key(yaml_contents, "status")
+        del yaml_contents["status"]
         benchmark.description = required_yaml_key(yaml_contents, "description")
+        del yaml_contents["description"]
         notice_contents = required_yaml_key(yaml_contents, "notice")
         benchmark.notice_id = required_yaml_key(notice_contents, "id")
+        del notice_contents["id"]
         benchmark.notice_description = required_yaml_key(notice_contents,
                                                          "description")
+        del notice_contents["description"]
+        if not notice_contents:
+            del yaml_contents["notice"]
+
         benchmark.front_matter = required_yaml_key(yaml_contents,
                                                    "front-matter")
+        del yaml_contents["front-matter"]
         benchmark.rear_matter = required_yaml_key(yaml_contents,
                                                   "rear-matter")
-        benchmark.cpes = yaml_contents.get("cpes", [])
+        del yaml_contents["rear-matter"]
+        benchmark.cpes = yaml_contents.pop("cpes", [])
         benchmark.version = str(required_yaml_key(yaml_contents, "version"))
+        del yaml_contents["version"]
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
+
         return benchmark
 
     def add_profiles_from_dir(self, action, dir_, product_yaml):
