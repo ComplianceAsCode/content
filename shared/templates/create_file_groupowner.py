@@ -13,7 +13,7 @@ class FileGroupOwnerGenerator(FilesGenerator):
         name = re.sub('[-\./]', '_', path)
         group = args[1]
 
-       # Third column is the optional alternative name, it overwrites the convention
+        # Third column is the optional alternative name, it overwrites the convention
         if len(args) > 2 and args[2]:
             name = '_' + args[2]
 
