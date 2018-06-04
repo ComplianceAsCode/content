@@ -168,6 +168,19 @@ tables/table-rhel7-stig.html
 ...
 ```
 
+### Testing
+
+To ensure validity of built artifacts prior to installation, we recommend
+running our test suite against the build output. This is done with ctest:
+
+```bash
+cd scap-security-guide/
+cd build/
+cmake ../
+make -j4
+ctest -j4
+```
+
 ### Installation
 
 System-wide installation:
