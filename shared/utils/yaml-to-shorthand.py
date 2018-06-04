@@ -128,6 +128,7 @@ class Value(object):
 
     def __init__(self, id_):
         self.id_ = id_
+        self.operator = "equals"
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
@@ -174,6 +175,8 @@ class Value(object):
         value = ET.Element('Value')
         value.set('id', self.id_)
         value.set('type', self.type)
+        if self.operator != "equals":  # equals is the default
+            value.set('operator', self.operator)
         title = ET.SubElement(value, 'title')
         title.text = self.title
         add_sub_element(value, 'description', self.description)
