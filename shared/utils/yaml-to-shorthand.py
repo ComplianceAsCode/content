@@ -128,8 +128,13 @@ class Value(object):
 
     def __init__(self, id_):
         self.id_ = id_
+        self.title = ""
+        self.description = ""
+        self.type_ = "string"
         self.operator = "equals"
         self.interactive = False
+        self.options = {}
+        self.warnings = []
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
@@ -219,7 +224,6 @@ class Benchmark(object):
         conditional_clause.description = conditional_clause.title
         conditional_clause.type_ = "string"
         conditional_clause.options = {"": "This is a placeholder"}
-        conditional_clause.warnings = []
 
         self.add_value(conditional_clause)
 
