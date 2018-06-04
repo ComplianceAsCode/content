@@ -95,24 +95,28 @@ def get_available_remediation_functions(build_dir):
 
 def get_fixgroup_for_remediation_type(fixcontent, remediation_type):
     if remediation_type == 'anaconda':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="anaconda",
-                                system="urn:redhat:anaconda:pre",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="anaconda",
+            system="urn:redhat:anaconda:pre",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
-    if remediation_type == 'ansible':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="ansible",
-                                system="urn:xccdf:fix:script:ansible",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+    elif remediation_type == 'ansible':
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="ansible",
+            system="urn:xccdf:fix:script:ansible",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     elif remediation_type == 'bash':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="bash",
-                                system="urn:xccdf:fix:script:sh",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="bash",
+            system="urn:xccdf:fix:script:sh",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     elif remediation_type == 'puppet':
-        return ElementTree.SubElement(fixcontent, "fix-group", id="puppet",
-                                system="urn:xccdf:fix:script:puppet",
-                                xmlns="http://checklists.nist.gov/xccdf/1.1")
+        return ElementTree.SubElement(
+            fixcontent, "fix-group", id="puppet",
+            system="urn:xccdf:fix:script:puppet",
+            xmlns="http://checklists.nist.gov/xccdf/1.1")
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
@@ -245,9 +249,20 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
 
     elif remediation_type == "anaconda":
         pattern = r'\(anaconda-populate\s*(\S+)\)'
-        parts = re.split(pattern, fix.text)
-        fix.text = parts[0]
 
+        # we will get list what looks like
+        # [text, varname, text, varname, ..., text]
+        parts = re.split(pattern, fix.text)
+
+        fix.text = parts[0]  # add first "text"
+        for index in range(1, len(parts), 2):
+            varname = parts[index]
+            text_between_vars = parts[index + 1]
+
+            # we cannot combine elements and text easily
+            # so text is in ".tail" of element
+            xccdfvarsub = ElementTree.SubElement(fix, "sub", idref=varname)
+            xccdfvarsub.tail = text_between_vars
         return
 
     elif remediation_type == "bash":
@@ -274,10 +289,10 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
             except ValueError:
                 sys.stderr.write("Processing fix.text for: %s rule\n"
-                                    % fix.get('rule'))
+                                 % fix.get('rule'))
                 sys.stderr.write("Unable to extract part of the fix.text "
-                                    "after inclusion of remediation functions."
-                                    " Aborting..\n")
+                                 "after inclusion of remediation functions."
+                                 " Aborting..\n")
                 sys.exit(1)
             # If the 'tail' is not empty, make it new fix.text.
             # Otherwise use ''
@@ -288,8 +303,8 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             # successfully 'fixparts' has to contain even count of elements)
             if len(fixparts) % 2 != 0:
                 sys.stderr.write("Error performing XCCDF expansion on "
-                                    "remediation script: %s\n"
-                                    % fix.get("rule"))
+                                 "remediation script: %s\n"
+                                 % fix.get("rule"))
                 sys.stderr.write("Invalid count of elements. Exiting!\n")
                 sys.exit(1)
             # Process remaining 'fixparts' elements in pairs
@@ -334,12 +349,11 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                     else:
                         # Extract remediation function name
                         funcname = re.search('\n\s*(\S+)(| .*)\n',
-                                                fixparts[idx],
-                                                re.DOTALL).group(1)
+                                             fixparts[idx],
+                                             re.DOTALL).group(1)
                         # Define new XCCDF <sub> element for the function
-                        xccdffuncsub = ElementTree.Element("sub",
-                                                        idref='function_%s' % \
-                                                        funcname)
+                        xccdffuncsub = ElementTree.Element(
+                            "sub", idref='function_%s' % funcname)
                         # Append original function call into tail of the
                         # subelement
                         xccdffuncsub.tail = fixparts[idx]
@@ -455,8 +469,8 @@ def main():
                         try:
                             (key, value) = line.strip('#').split('=')
                             if key.strip() in ['complexity', 'disruption',
-                                                'platform', 'reboot',
-                                                'strategy']:
+                                               'platform', 'reboot',
+                                               'strategy']:
                                 config[key.strip()] = value.strip()
                             else:
                                 if not line.startswith(FILE_GENERATED):
@@ -516,8 +530,8 @@ def main():
                         )
                 else:
                     sys.stderr.write("Skipping '%s' remediation script. "
-                                        "The platform identifier in the "
-                                        "script is missing!\n" % (filename))
+                                     "The platform identifier in the "
+                                     "script is missing!\n" % (filename))
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
@@ -532,6 +546,7 @@ def main():
     tree.write(args.output)
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
