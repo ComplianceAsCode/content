@@ -202,6 +202,10 @@ class OVALFileLinker(FileLinker):
             def_id = queue.pop()
             processed_def_ids.add(def_id)
             definition_tree = self.oval_groups["definitions"].get(def_id)
+            if definition_tree is None:
+                print("WARNING: Definition '%s' was not found, can't figure "
+                      "out what depends on it." % (def_id), file=sys.stderr)
+                continue
             extensions = parse_oval.find_extending_defs(self.oval_groups, definition_tree)
             if not extensions:
                 continue
@@ -218,6 +222,10 @@ class OVALFileLinker(FileLinker):
         all_vars = set()
         for def_id in self.get_nested_definitions(check_name):
             extended_def = self.oval_groups["definitions"].get(def_id)
+            if extended_def is None:
+                print("WARNING: Definition '%s' was not found, can't figure "
+                      "out which variables it needs." % (def_id), file=sys.stderr)
+                continue
             all_vars |= parse_oval.resolve_definition(self.oval_groups, extended_def)
         for varname in all_vars:
             export = ET.Element("{%s}check-export" % xccdf_ns)
