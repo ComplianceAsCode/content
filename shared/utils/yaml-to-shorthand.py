@@ -383,6 +383,10 @@ class Group(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.prodtype = "all"
+        self.title = ""
+        self.description = ""
+        self.warnings = []
         self.values = {}
         self.groups = {}
         self.rules = {}
