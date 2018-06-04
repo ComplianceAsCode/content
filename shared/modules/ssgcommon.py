@@ -255,7 +255,7 @@ def _open_yaml(stream):
     """
     yaml_contents = yaml.safe_load(stream)
 
-    if yaml_contents.get("documentation_complete") == "false":
+    if yaml_contents.pop("documentation_complete", "true") == "false":
         return None
 
     return yaml_contents

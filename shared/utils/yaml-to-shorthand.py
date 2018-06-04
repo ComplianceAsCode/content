@@ -78,9 +78,17 @@ class Profile(object):
 
         profile = Profile(basename)
         profile.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         profile.description = required_yaml_key(yaml_contents, "description")
-        profile.extends = yaml_contents.get("extends", None)
+        del yaml_contents["description"]
+        profile.extends = yaml_contents.pop("extends", None)
         profile.selections = required_yaml_key(yaml_contents, "selections")
+        del yaml_contents["selections"]
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
+
         return profile
 
     def to_xml_element(self):
