@@ -9,9 +9,7 @@ import datetime
 import collections
 
 
-MANUAL_EDIT_WARNING = \
-"""
-This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
+MANUAL_EDIT_WARNING = """This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
 Last Modified: %s
 """ % (os.path.basename(__file__), datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
 
@@ -68,22 +66,21 @@ name_mappings = {
 }
 
 
-def _get_contributions_by_email(output):
+def _get_contributions_by_canonical_email(output):
     contributions_by_email = collections.defaultdict(list)
     for line in output.split("\n"):
-        match = re.match(r"[\s]*([0-9]+)[\s+](.+)[\s]+\<(.+)\>", line)
+        match = re.match(r"[\s]*([0-9]+)\s+(.+)\s+\<(.+)\>", line)
         if match is None:
             continue
 
-        commits, name, email = match.groups()
+        commits_count, author_name, email = match.groups()
 
-        if email in email_mappings:
-            email = email_mappings[email]
+        canonical_email = email_mappings.get(email, email)
 
-        if email == "":
+        if canonical_email == "":
             continue  # ignored
 
-        contributions_by_email[email].append((int(commits), name))
+        contributions_by_email[canonical_email].append((int(commits_count), author_name))
     return contributions_by_email
 
 
@@ -94,23 +91,21 @@ def _get_name_used_most_in_contributions(contribution_sets):
 
 def _get_contributor_email_mapping(contributions_by_email):
     contributors = {}
-    # We will use the most used full name
     for email in contributions_by_email:
         name_used_most = _get_name_used_most_in_contributions(contributions_by_email[email])
-        if name_used_most in name_mappings:
-            name_used_most = name_mappings[name_used_most]
+        canonical_name_used_most = name_mappings.get(name_used_most, name_used_most)
 
-        contributors[name_used_most] = email
+        contributors[canonical_name_used_most] = email
     return contributors
 
 
 def _names_sorted_by_last_name(names):
-    return sorted(names, key=lambda x: x.split(" ")[-1].upper())
+    return sorted(names, key=lambda x: tuple(n.upper() for n in x.split(" "))[::-1])
 
 
 def main():
     output = subprocess.check_output(["git", "shortlog", "-se"]).decode("utf-8")
-    contributions_by_email = _get_contributions_by_email(output)
+    contributions_by_email = _get_contributions_by_canonical_email(output)
     contributors = _get_contributor_email_mapping(contributions_by_email)
 
     contributors_md = "<!---%s--->\n\n" % MANUAL_EDIT_WARNING

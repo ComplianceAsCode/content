@@ -178,6 +178,9 @@ enable_testing()
 
 include(SSGCommon)
 
+ssg_python_unit_tests("misc")
+ssg_python_unit_tests("utils")
+
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
 
