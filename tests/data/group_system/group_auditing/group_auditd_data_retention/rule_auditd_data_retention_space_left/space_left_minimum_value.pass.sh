@@ -6,7 +6,7 @@ yum install -y audit
 
 SPACE_LEFT_REGEX="^space_left[[:space:]]*=.*$"
 if grep -q "$SPACE_LEFT_REGEX" /etc/audit/auditd.conf; then
-        sed -i "s/$SPACE_LEFT_REGEX/space_left = 15/" /etc/audit/auditd.conf
+        sed -i "s/$SPACE_LEFT_REGEX/space_left = 100/" /etc/audit/auditd.conf
 else
-        echo "space_left = 15" >> /etc/audit/auditd.conf
+        echo "space_left = 100" >> /etc/audit/auditd.conf
 fi
