@@ -464,6 +464,17 @@ class Rule(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.prodtype = "all"
+        self.title = ""
+        self.description = ""
+        self.rationale = ""
+        self.severity = "unknown"
+        self.references = []
+        self.identifiers = []
+        self.ocil_clause = None
+        self.ocil = None
+        self.external_oval = None
+        self.warnings = []
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
