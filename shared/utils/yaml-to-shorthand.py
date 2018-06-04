@@ -358,14 +358,20 @@ class Group(object):
 
         group_id, _ = os.path.splitext(os.path.basename(yaml_file))
         group = Group(group_id)
-        group.prodtype = yaml_contents.get("prodtype", "all")
+        group.prodtype = yaml_contents.pop("prodtype", "all")
         group.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         group.description = required_yaml_key(yaml_contents, "description")
-        group.warnings = yaml_contents.get("warnings", [])
+        del yaml_contents["description"]
+        group.warnings = yaml_contents.pop("warnings", [])
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
 
         return group
 
