@@ -143,6 +143,18 @@ class Value(object):
         del yaml_contents["description"]
         value.type = required_yaml_key(yaml_contents, "type")
         del yaml_contents["type"]
+        value.operator = yaml_contents.pop("operator", "equals")
+        possible_operators = ["equals", "not equal", "greater than",
+                              "less than", "greater than or equal",
+                              "less than or equal", "pattern match"]
+
+        if value.operator not in possible_operators:
+            raise ValueError(
+                "Found an invalid operator value '%s' in '%s'. "
+                "Expected one of: %s"
+                % (value.operator, yaml_file, ", ".join(possible_operators))
+            )
+
         value.options = required_yaml_key(yaml_contents, "options")
         del yaml_contents["options"]
         value.warnings = yaml_contents.pop("warnings", [])
