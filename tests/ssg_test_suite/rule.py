@@ -16,7 +16,7 @@ import ssg_test_suite.virt
 from ssg_test_suite import xml_operations
 from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite.log import LogHelper
-from data import iterate_over_rules
+import data
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -60,27 +60,44 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     return valid_profiles
 
 
-def _send_scripts(rule_dir, domain_ip, *scripts_list):
-    """Upload scripts to VM."""
-    # scripts_list is list of absolute paths
-    remote_dir = './'
+def _send_scripts(domain_ip):
+    remote_dir = './ssgts'
+    archive_file = data.create_tarball('.')
+    remote_archive_file = os.path.join(remote_dir, archive_file)
     machine = "root@{0}".format(domain_ip)
-    logging.debug("Uploading scripts {0}".format(scripts_list))
-    rule_name = os.path.basename(rule_dir)
-    log_file_name = os.path.join(LogHelper.LOG_DIR, rule_name + ".upload.log")
+    logging.debug("Uploading scripts.")
+    log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
-    command = "scp {0} {1}:{2}".format(' '.join(scripts_list),
-                                       machine,
-                                       remote_dir)
+    command = "ssh {0} mkdir -p {1}".format(machine, remote_dir)
+    with open(log_file_name, 'a') as log_file:
+        try:
+            subprocess.check_call(shlex.split(command),
+                                  stdout=log_file,
+                                  stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            logging.error("Cannot create directoru {0}.".format(remote_dir))
+            return False
+
+    command = "scp {0} {1}:{2}".format(archive_file, machine, remote_dir)
     with open(log_file_name, 'a') as log_file:
         subprocess.check_call(shlex.split(command),
                               stdout=log_file,
                               stderr=subprocess.STDOUT)
 
+    command = "ssh {0} tar xf {1} -C {2}".format(machine, remote_archive_file, remote_dir)
+    with open(log_file_name, 'a') as log_file:
+        try:
+            subprocess.check_call(shlex.split(command),
+                                  stdout=log_file,
+                                  stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            logging.error("Cannot extract data tarball {0}.".format(remote_archive_file))
+            return False
+    return remote_dir
+
 
 def _apply_script(rule_dir, domain_ip, script):
     """Run particular test script on VM and log it's output."""
-    script_remote_path = os.path.join('./', script)
     machine = "root@{0}".format(domain_ip)
     logging.debug("Applying script {0}".format(script))
     rule_name = os.path.basename(rule_dir)
@@ -90,7 +107,7 @@ def _apply_script(rule_dir, domain_ip, script):
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
-    command = "ssh {0} bash -x {1}".format(machine, script_remote_path)
+    command = "ssh {0} cd {1}; bash -x {2}".format(machine, rule_dir, script)
     with open(log_file_name, 'a') as log_file:
         try:
             subprocess.check_call(shlex.split(command),
@@ -134,7 +151,12 @@ def perform_rule_check(options):
     ssg_test_suite.virt.start_domain(dom)
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
     scanned_something = False
-    for rule_dir, rule, scripts in iterate_over_rules():
+
+    remote_dir = _send_scripts(domain_ip)
+    if not remote_dir:
+        return
+
+    for rule_dir, rule, scripts in data.iterate_over_rules():
         if 'ALL' in options.target:
             # we want to have them all
             pass
@@ -151,14 +173,10 @@ def perform_rule_check(options):
         logging.debug("Testing rule directory {0}".format(rule_dir))
         # get list of helper scripts (non-standard name)
         # and scenario scripts
-        helpers = []
         scenarios = []
         for script in scripts:
             script_context = _get_script_context(script)
-            if script_context is None:
-                logging.debug('Registering helper script {0}'.format(script))
-                helpers += [script]
-            else:
+            if script_context is not None:
                 scenarios += [script]
 
         for script in scenarios:
@@ -166,12 +184,10 @@ def perform_rule_check(options):
             logging.debug(('Using test script {0} '
                            'with context {1}').format(script, script_context))
             snapshot_stack.create('script')
-            # copy all helper scripts, so scenario script can use them
-            script_path = os.path.join(rule_dir, script)
-            helper_paths = map(lambda x: os.path.join(rule_dir, x), helpers)
-            _send_scripts(rule_dir, domain_ip, script_path, *helper_paths)
+            script_path = os.path.join(data.DATA_DIR, rule_dir, script)
+            remote_rule_dir = os.path.join(remote_dir, rule_dir)
 
-            if not _apply_script(rule_dir, domain_ip, script):
+            if not _apply_script(remote_rule_dir, domain_ip, script):
                 logging.error("Environment failed to prepare, skipping test")
                 snapshot_stack.revert()
                 continue
