@@ -168,10 +168,9 @@ class Value(object):
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
 
-        # FIXME: uncomment once unparsed data in Values are cleared up
-        #if yaml_contents:
-        #    raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
-        #                       % (yaml_file, yaml_contents))
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
 
         return value
 
