@@ -138,14 +138,23 @@ class Value(object):
         value_id, _ = os.path.splitext(os.path.basename(yaml_file))
         value = Value(value_id)
         value.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         value.description = required_yaml_key(yaml_contents, "description")
+        del yaml_contents["description"]
         value.type = required_yaml_key(yaml_contents, "type")
+        del yaml_contents["type"]
         value.options = required_yaml_key(yaml_contents, "options")
-        value.warnings = yaml_contents.get("warnings", [])
+        del yaml_contents["options"]
+        value.warnings = yaml_contents.pop("warnings", [])
 
         for warning_list in value.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        # FIXME: uncomment once unparsed data in Values are cleared up
+        #if yaml_contents:
+        #    raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+        #                       % (yaml_file, yaml_contents))
 
         return value
 
