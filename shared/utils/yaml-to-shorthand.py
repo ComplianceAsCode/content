@@ -143,7 +143,7 @@ class Value(object):
         del yaml_contents["title"]
         value.description = required_yaml_key(yaml_contents, "description")
         del yaml_contents["description"]
-        value.type = required_yaml_key(yaml_contents, "type")
+        value.type_ = required_yaml_key(yaml_contents, "type")
         del yaml_contents["type"]
         value.operator = yaml_contents.pop("operator", "equals")
         possible_operators = ["equals", "not equal", "greater than",
@@ -177,7 +177,7 @@ class Value(object):
     def to_xml_element(self):
         value = ET.Element('Value')
         value.set('id', self.id_)
-        value.set('type', self.type)
+        value.set('type', self.type_)
         if self.operator != "equals":  # equals is the default
             value.set('operator', self.operator)
         if self.interactive:  # False is the default
@@ -217,7 +217,7 @@ class Benchmark(object):
         conditional_clause = Value("conditional_clause")
         conditional_clause.title = "A conditional clause for check statements."
         conditional_clause.description = conditional_clause.title
-        conditional_clause.type = "string"
+        conditional_clause.type_ = "string"
         conditional_clause.options = {"": "This is a placeholder"}
         conditional_clause.warnings = []
 
