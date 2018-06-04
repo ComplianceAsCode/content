@@ -78,9 +78,17 @@ class Profile(object):
 
         profile = Profile(basename)
         profile.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         profile.description = required_yaml_key(yaml_contents, "description")
-        profile.extends = yaml_contents.get("extends", None)
+        del yaml_contents["description"]
+        profile.extends = yaml_contents.pop("extends", None)
         profile.selections = required_yaml_key(yaml_contents, "selections")
+        del yaml_contents["selections"]
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
+
         return profile
 
     def to_xml_element(self):
@@ -120,6 +128,8 @@ class Value(object):
 
     def __init__(self, id_):
         self.id_ = id_
+        self.operator = "equals"
+        self.interactive = False
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
@@ -130,14 +140,37 @@ class Value(object):
         value_id, _ = os.path.splitext(os.path.basename(yaml_file))
         value = Value(value_id)
         value.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         value.description = required_yaml_key(yaml_contents, "description")
+        del yaml_contents["description"]
         value.type = required_yaml_key(yaml_contents, "type")
+        del yaml_contents["type"]
+        value.operator = yaml_contents.pop("operator", "equals")
+        possible_operators = ["equals", "not equal", "greater than",
+                              "less than", "greater than or equal",
+                              "less than or equal", "pattern match"]
+
+        if value.operator not in possible_operators:
+            raise ValueError(
+                "Found an invalid operator value '%s' in '%s'. "
+                "Expected one of: %s"
+                % (value.operator, yaml_file, ", ".join(possible_operators))
+            )
+
+        value.interactive = \
+            yaml_contents.pop("interactive", "false").lower() == "true"
+
         value.options = required_yaml_key(yaml_contents, "options")
-        value.warnings = yaml_contents.get("warnings", [])
+        del yaml_contents["options"]
+        value.warnings = yaml_contents.pop("warnings", [])
 
         for warning_list in value.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
 
         return value
 
@@ -145,6 +178,10 @@ class Value(object):
         value = ET.Element('Value')
         value.set('id', self.id_)
         value.set('type', self.type)
+        if self.operator != "equals":  # equals is the default
+            value.set('operator', self.operator)
+        if self.interactive:  # False is the default
+            value.set('interactive', 'true')
         title = ET.SubElement(value, 'title')
         title.text = self.title
         add_sub_element(value, 'description', self.description)
@@ -194,18 +231,34 @@ class Benchmark(object):
 
         benchmark = Benchmark(id_)
         benchmark.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         benchmark.status = required_yaml_key(yaml_contents, "status")
+        del yaml_contents["status"]
         benchmark.description = required_yaml_key(yaml_contents, "description")
+        del yaml_contents["description"]
         notice_contents = required_yaml_key(yaml_contents, "notice")
         benchmark.notice_id = required_yaml_key(notice_contents, "id")
+        del notice_contents["id"]
         benchmark.notice_description = required_yaml_key(notice_contents,
                                                          "description")
+        del notice_contents["description"]
+        if not notice_contents:
+            del yaml_contents["notice"]
+
         benchmark.front_matter = required_yaml_key(yaml_contents,
                                                    "front-matter")
+        del yaml_contents["front-matter"]
         benchmark.rear_matter = required_yaml_key(yaml_contents,
                                                   "rear-matter")
-        benchmark.cpes = yaml_contents.get("cpes", [])
+        del yaml_contents["rear-matter"]
+        benchmark.cpes = yaml_contents.pop("cpes", [])
         benchmark.version = str(required_yaml_key(yaml_contents, "version"))
+        del yaml_contents["version"]
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
+
         return benchmark
 
     def add_profiles_from_dir(self, action, dir_, product_yaml):
@@ -325,14 +378,20 @@ class Group(object):
 
         group_id, _ = os.path.splitext(os.path.basename(yaml_file))
         group = Group(group_id)
-        group.prodtype = yaml_contents.get("prodtype", "all")
+        group.prodtype = yaml_contents.pop("prodtype", "all")
         group.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         group.description = required_yaml_key(yaml_contents, "description")
-        group.warnings = yaml_contents.get("warnings", [])
+        del yaml_contents["description"]
+        group.warnings = yaml_contents.pop("warnings", [])
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
 
         return group
 
@@ -393,21 +452,29 @@ class Rule(object):
 
         rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
         rule = Rule(rule_id)
-        rule.prodtype = yaml_contents.get("prodtype", "all")
+        rule.prodtype = yaml_contents.pop("prodtype", "all")
         rule.title = required_yaml_key(yaml_contents, "title")
+        del yaml_contents["title"]
         rule.description = required_yaml_key(yaml_contents, "description")
+        del yaml_contents["description"]
         rule.rationale = required_yaml_key(yaml_contents, "rationale")
+        del yaml_contents["rationale"]
         rule.severity = required_yaml_key(yaml_contents, "severity")
-        rule.references = yaml_contents.get("references", [])
-        rule.identifiers = yaml_contents.get("identifiers", [])
-        rule.ocil_clause = yaml_contents.get("ocil_clause")
-        rule.ocil = yaml_contents.get("ocil")
-        rule.external_oval = yaml_contents.get("oval_external_content")
-        rule.warnings = yaml_contents.get("warnings", [])
+        del yaml_contents["severity"]
+        rule.references = yaml_contents.pop("references", [])
+        rule.identifiers = yaml_contents.pop("identifiers", [])
+        rule.ocil_clause = yaml_contents.pop("ocil_clause", None)
+        rule.ocil = yaml_contents.pop("ocil", None)
+        rule.external_oval = yaml_contents.pop("oval_external_content", None)
+        rule.warnings = yaml_contents.pop("warnings", [])
 
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
                 raise ValueError("Only one key/value pair should exist for each dictionary")
+
+        if yaml_contents:
+            raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
+                               % (yaml_file, yaml_contents))
 
         return rule
 
