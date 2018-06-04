@@ -67,6 +67,10 @@ class Profile(object):
 
     def __init__(self, id_):
         self.id_ = id_
+        self.title = ""
+        self.description = ""
+        self.extends = None
+        self.selections = []
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
