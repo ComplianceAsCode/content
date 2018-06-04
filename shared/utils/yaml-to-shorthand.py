@@ -216,6 +216,15 @@ class Benchmark(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.title = ""
+        self.status = ""
+        self.description = ""
+        self.notice_id = ""
+        self.notice_description = ""
+        self.front_matter = ""
+        self.rear_matter = ""
+        self.cpes = []
+        self.version = "0.1"
         self.profiles = []
         self.values = {}
         self.bash_remediation_fns_group = None
