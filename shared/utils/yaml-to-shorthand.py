@@ -67,6 +67,10 @@ class Profile(object):
 
     def __init__(self, id_):
         self.id_ = id_
+        self.title = ""
+        self.description = ""
+        self.extends = None
+        self.selections = []
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
@@ -128,8 +132,13 @@ class Value(object):
 
     def __init__(self, id_):
         self.id_ = id_
+        self.title = ""
+        self.description = ""
+        self.type_ = "string"
         self.operator = "equals"
         self.interactive = False
+        self.options = {}
+        self.warnings = []
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
@@ -143,7 +152,7 @@ class Value(object):
         del yaml_contents["title"]
         value.description = required_yaml_key(yaml_contents, "description")
         del yaml_contents["description"]
-        value.type = required_yaml_key(yaml_contents, "type")
+        value.type_ = required_yaml_key(yaml_contents, "type")
         del yaml_contents["type"]
         value.operator = yaml_contents.pop("operator", "equals")
         possible_operators = ["equals", "not equal", "greater than",
@@ -177,7 +186,7 @@ class Value(object):
     def to_xml_element(self):
         value = ET.Element('Value')
         value.set('id', self.id_)
-        value.set('type', self.type)
+        value.set('type', self.type_)
         if self.operator != "equals":  # equals is the default
             value.set('operator', self.operator)
         if self.interactive:  # False is the default
@@ -207,6 +216,15 @@ class Benchmark(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.title = ""
+        self.status = ""
+        self.description = ""
+        self.notice_id = ""
+        self.notice_description = ""
+        self.front_matter = ""
+        self.rear_matter = ""
+        self.cpes = []
+        self.version = "0.1"
         self.profiles = []
         self.values = {}
         self.bash_remediation_fns_group = None
@@ -217,9 +235,8 @@ class Benchmark(object):
         conditional_clause = Value("conditional_clause")
         conditional_clause.title = "A conditional clause for check statements."
         conditional_clause.description = conditional_clause.title
-        conditional_clause.type = "string"
+        conditional_clause.type_ = "string"
         conditional_clause.options = {"": "This is a placeholder"}
-        conditional_clause.warnings = []
 
         self.add_value(conditional_clause)
 
@@ -366,6 +383,10 @@ class Group(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.prodtype = "all"
+        self.title = ""
+        self.description = ""
+        self.warnings = []
         self.values = {}
         self.groups = {}
         self.rules = {}
@@ -443,6 +464,17 @@ class Rule(object):
     """
     def __init__(self, id_):
         self.id_ = id_
+        self.prodtype = "all"
+        self.title = ""
+        self.description = ""
+        self.rationale = ""
+        self.severity = "unknown"
+        self.references = []
+        self.identifiers = []
+        self.ocil_clause = None
+        self.ocil = None
+        self.external_oval = None
+        self.warnings = []
 
     @staticmethod
     def from_yaml(yaml_file, product_yaml=None):
