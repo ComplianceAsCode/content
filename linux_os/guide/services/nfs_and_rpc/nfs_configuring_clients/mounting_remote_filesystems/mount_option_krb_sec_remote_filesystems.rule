@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Mount Remote Filesystems with Kerberos Security'
 
-description: '<mount-desc-macro option="sec=krb5:krb5i:krb5p" part="any NFS mounts" />'
+description: '{{{ describe_mount(option="sec=krb5:krb5i:krb5p", part="any NFS mounts") }}}'
 
 rationale: |-
     When an NFS server is configured to use AUTH_SYS a selected userid and groupid are used to handle

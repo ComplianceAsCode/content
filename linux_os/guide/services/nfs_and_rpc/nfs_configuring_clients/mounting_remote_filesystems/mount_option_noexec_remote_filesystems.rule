@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Mount Remote Filesystems with noexec'
 
-description: '<mount-desc-macro option="noexec" part="any NFS mounts" />'
+description: '{{{ describe_mount(option="noexec", part="any NFS mounts") }}}'
 
 rationale: |-
     The noexec mount option causes the system not to execute binary files. This option must be used

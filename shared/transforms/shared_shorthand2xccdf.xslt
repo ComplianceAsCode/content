@@ -567,17 +567,6 @@
     <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    -->
   </xsl:template>
 
-  <xsl:template match="mount-desc-macro">
-	Add the <xhtml:code><xsl:value-of select="@option"/></xhtml:code> option to the fourth column of
-	<xhtml:code>/etc/fstab</xhtml:code> for the line which controls mounting of
-	<xsl:if test="starts-with(@part,'/')">
-		<xhtml:code><xsl:value-of select="@part"/></xhtml:code>.
-	</xsl:if>
-	<xsl:if test="not(starts-with(@part,'/'))">
-		<xsl:value-of select="@part"/>.
-	</xsl:if>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 
