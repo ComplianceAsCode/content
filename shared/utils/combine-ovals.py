@@ -307,8 +307,6 @@ def checks(env_yaml, oval_version, oval_dirs):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--ssg_version", default="unknown",
-                   help="SSG version for reporting purposes. example: 0.1.34")
     p.add_argument(
         "--build-config-yaml", required=True, dest="build_config_yaml",
         help="YAML file with information about the build configuration. "
@@ -345,7 +343,7 @@ def main():
         header = ssgcommon.oval_generated_header(
             "combine-ovals.py",
             ssgcommon.required_yaml_key(env_yaml, "target_oval_version_str"),
-            args.ssg_version)
+            ssgcommon.required_yaml_key(env_yaml, "ssg_version"))
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))

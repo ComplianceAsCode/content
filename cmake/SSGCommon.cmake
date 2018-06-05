@@ -298,7 +298,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
         # We have to remove all old shared checks in case the user removed something from the CSV files
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
         COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/combine-ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS ${OVAL_CHECKS_DEPENDS}
         DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
