@@ -40,7 +40,7 @@ references:
     pcidss: Req-10.2.7
 
 ocil: |-
-    {{{ audit_syscall_check(syscall="init_module") }}}
-    {{{ audit_syscall_check(syscall="delete_module") }}}
+    {{{ ocil_audit_syscall(syscall="init_module") }}}
+    {{{ ocil_audit_syscall(syscall="delete_module") }}}
 
-{{{ audit_syscall_check_ocil_clause_entry() }}}
+{{{ ocil_clause_entry_audit_syscall() }}}
