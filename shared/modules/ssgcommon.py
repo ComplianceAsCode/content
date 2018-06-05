@@ -374,8 +374,9 @@ def open_yaml(yaml_file):
     return yaml_contents
 
 
-def open_product_yaml(yaml_file):
-    contents = open_yaml(yaml_file)
+def open_environment_yamls(build_config_yaml, product_yaml):
+    contents = open_yaml(build_config_yaml)
+    contents.update(open_yaml(product_yaml))
     contents.update(get_implied_properties(contents))
     return contents
 

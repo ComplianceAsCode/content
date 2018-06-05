@@ -122,6 +122,7 @@ find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
 find_program(GREP_EXECUTABLE NAMES grep)
 
 configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config")
+configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml")
 
 message(STATUS "CMake:")
 message(STATUS "generator: ${CMAKE_GENERATOR}")

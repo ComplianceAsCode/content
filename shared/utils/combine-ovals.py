@@ -262,7 +262,7 @@ def check_oval_version_from_oval(xml_content, oval_version):
         return True
 
 
-def checks(product_yaml, oval_version, oval_dirs):
+def checks(env_yaml, oval_version, oval_dirs):
     """Concatenate all XML files in the oval directory, to create the document
        body
        oval_dirs: list of directory with oval files (later has higher priority)
@@ -279,11 +279,11 @@ def checks(product_yaml, oval_version, oval_dirs):
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
                     xml_content = ssgcommon.process_file_with_jinja(
-                        os.path.join(oval_dir, filename), product_yaml
+                        os.path.join(oval_dir, filename), env_yaml
                     )
                     if not check_is_applicable_for_product(
                         xml_content,
-                        ssgcommon.required_yaml_key(product_yaml, "product")
+                        ssgcommon.required_yaml_key(env_yaml, "product")
                     ):
                         continue
                     if check_is_loaded(already_loaded, filename, oval_version):
@@ -310,14 +310,17 @@ def main():
     p.add_argument("--ssg_version", default="unknown",
                    help="SSG version for reporting purposes. example: 0.1.34")
     p.add_argument(
+        "--build-config-yaml", required=True, dest="build_config_yaml",
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml"
+    )
+    p.add_argument(
         "--product-yaml", required=True, dest="product_yaml",
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
     p.add_argument("--oval_config", required=True,
                    help="Location of the oval.config file.")
-    p.add_argument("--oval_version", required=True,
-                   help="OVAL version to use. Example: 5.11, 5.10, ...")
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
                    help="Directory(ies) from which we will collect "
@@ -331,20 +334,27 @@ def main():
         )
         sys.exit(1)
 
-    product_yaml = ssgcommon.open_product_yaml(args.product_yaml)
+    env_yaml = ssgcommon.open_environment_yamls(
+        args.build_config_yaml, args.product_yaml)
 
     if os.path.isfile(args.oval_config):
         multi_platform = parse_conf_file(
             args.oval_config,
-            ssgcommon.required_yaml_key(product_yaml, "product")
+            ssgcommon.required_yaml_key(env_yaml, "product")
         )
-        header = ssgcommon.oval_generated_header("combine-ovals.py", args.oval_version, args.ssg_version)
+        header = ssgcommon.oval_generated_header(
+            "combine-ovals.py",
+            ssgcommon.required_yaml_key(env_yaml, "target_oval_version_str"),
+            args.ssg_version)
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))
         sys.exit(1)
 
-    body = checks(product_yaml, args.oval_version, args.ovaldirs)
+    body = checks(
+        env_yaml,
+        ssgcommon.required_yaml_key(env_yaml, "target_oval_version_str"),
+        args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements
     # appropriately

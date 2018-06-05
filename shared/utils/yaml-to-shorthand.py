@@ -73,8 +73,8 @@ class Profile(object):
         self.selections = []
 
     @staticmethod
-    def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, product_yaml)
+    def from_yaml(yaml_file, env_yaml=None):
+        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -141,8 +141,8 @@ class Value(object):
         self.warnings = []
 
     @staticmethod
-    def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, product_yaml)
+    def from_yaml(yaml_file, env_yaml=None):
+        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -241,8 +241,8 @@ class Benchmark(object):
         self.add_value(conditional_clause)
 
     @staticmethod
-    def from_yaml(yaml_file, id_, product_yaml=None):
-        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, product_yaml)
+    def from_yaml(yaml_file, id_, env_yaml=None):
+        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -278,7 +278,7 @@ class Benchmark(object):
 
         return benchmark
 
-    def add_profiles_from_dir(self, action, dir_, product_yaml):
+    def add_profiles_from_dir(self, action, dir_, env_yaml):
         for dir_item in os.listdir(dir_):
             dir_item_path = os.path.join(dir_, dir_item)
             if not os.path.isfile(dir_item_path):
@@ -293,7 +293,7 @@ class Benchmark(object):
                 )
                 continue
 
-            self.profiles.append(Profile.from_yaml(dir_item_path, product_yaml))
+            self.profiles.append(Profile.from_yaml(dir_item_path, env_yaml))
             if action == "list-inputs":
                 print(dir_item_path)
 
@@ -392,8 +392,8 @@ class Group(object):
         self.rules = {}
 
     @staticmethod
-    def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    def from_yaml(yaml_file, env_yaml=None):
+        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -477,8 +477,8 @@ class Rule(object):
         self.warnings = []
 
     @staticmethod
-    def from_yaml(yaml_file, product_yaml=None):
-        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    def from_yaml(yaml_file, env_yaml=None):
+        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -582,7 +582,7 @@ class Rule(object):
 
 
 def add_from_directory(action, parent_group, guide_directory, profiles_dir,
-                       bash_remediation_fns, output_file, product_yaml):
+                       bash_remediation_fns, output_file, env_yaml):
     benchmark_file = None
     group_file = None
     rules = []
@@ -621,16 +621,16 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
     group = None
     if benchmark_file:
         group = Benchmark.from_yaml(
-            benchmark_file, 'product-name', product_yaml
+            benchmark_file, 'product-name', env_yaml
         )
         if profiles_dir:
-            group.add_profiles_from_dir(action, profiles_dir, product_yaml)
+            group.add_profiles_from_dir(action, profiles_dir, env_yaml)
         group.add_bash_remediation_fns_from_file(action, bash_remediation_fns)
         if action == "list-inputs":
             print(benchmark_file)
 
     if group_file:
-        group = Group.from_yaml(group_file, product_yaml)
+        group = Group.from_yaml(group_file, env_yaml)
         if action == "list-inputs":
             print(group_file)
 
@@ -639,19 +639,19 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             if action == "list-inputs":
                 print(value_yaml)
             else:
-                value = Value.from_yaml(value_yaml, product_yaml)
+                value = Value.from_yaml(value_yaml, env_yaml)
                 group.add_value(value)
 
         for subdir in subdirectories:
             add_from_directory(action, group, subdir, profiles_dir,
                                bash_remediation_fns, output_file,
-                               product_yaml)
+                               env_yaml)
 
         for rule_yaml in rules:
             if action == "list-inputs":
                 print(rule_yaml)
             else:
-                rule = Rule.from_yaml(rule_yaml, product_yaml)
+                rule = Rule.from_yaml(rule_yaml, env_yaml)
                 group.add_rule(rule)
 
         if parent_group:
@@ -667,6 +667,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="Converts SCAP Security Guide YAML benchmark data "
         "(benchmark, rules, groups) to XCCDF Shorthand Format"
+    )
+    parser.add_argument(
+        "--build-config-yaml", required=True, dest="build_config_yaml",
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml"
     )
     parser.add_argument(
         "--product-yaml", required=True, dest="product_yaml",
@@ -690,20 +695,20 @@ def main():
         print(args.output)
         sys.exit(0)
 
-    # product_yaml = ssgcommon.open_yaml(args.product_yaml)
-    product_yaml = ssgcommon.open_product_yaml(args.product_yaml)
+    env_yaml = ssgcommon.open_environment_yamls(
+        args.build_config_yaml, args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
-    benchmark_root = required_yaml_key(product_yaml, "benchmark_root")
-    profiles_root = required_yaml_key(product_yaml, "profiles_root")
+    benchmark_root = required_yaml_key(env_yaml, "benchmark_root")
+    profiles_root = required_yaml_key(env_yaml, "profiles_root")
     # we have to "absolutize" the paths the right way, relative to the
-    # product yaml path
+    # product_yaml path
     if not os.path.isabs(benchmark_root):
         benchmark_root = os.path.join(base_dir, benchmark_root)
     if not os.path.isabs(profiles_root):
         profiles_root = os.path.join(base_dir, profiles_root)
 
     add_from_directory(args.action, None, benchmark_root, profiles_root,
-                       args.bash_remediation_fns, args.output, product_yaml)
+                       args.bash_remediation_fns, args.output, env_yaml)
 
 
 if __name__ == "__main__":
