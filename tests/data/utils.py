@@ -29,7 +29,7 @@ def _exclude_utils(file_name):
         return True
     if file_name.endswith('swp'):
         return True
-    False
+    return False
 
 
 def create_tarball(tar_dir):

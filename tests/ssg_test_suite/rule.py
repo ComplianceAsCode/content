@@ -75,17 +75,15 @@ def _send_scripts(domain_ip):
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            logging.error("Cannot create directoru {0}.".format(remote_dir))
+            logging.error("Cannot create directory {0}.".format(remote_dir))
             return False
 
-    command = "scp {0} {1}:{2}".format(archive_file, machine, remote_dir)
-    with open(log_file_name, 'a') as log_file:
+        command = "scp {0} {1}:{2}".format(archive_file, machine, remote_dir)
         subprocess.check_call(shlex.split(command),
                               stdout=log_file,
                               stderr=subprocess.STDOUT)
 
-    command = "ssh {0} tar xf {1} -C {2}".format(machine, remote_archive_file, remote_dir)
-    with open(log_file_name, 'a') as log_file:
+        command = "ssh {0} tar xf {1} -C {2}".format(machine, remote_archive_file, remote_dir)
         try:
             subprocess.check_call(shlex.split(command),
                                   stdout=log_file,
@@ -107,8 +105,7 @@ def _apply_script(rule_dir, domain_ip, script):
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
-    command = "ssh {0} cd {1}; bash -x {2}".format(machine, rule_dir, script)
-    with open(log_file_name, 'a') as log_file:
+        command = "ssh {0} cd {1}; bash -x {2}".format(machine, rule_dir, script)
         try:
             subprocess.check_call(shlex.split(command),
                                   stdout=log_file,
@@ -127,6 +124,31 @@ def _get_script_context(script):
     if result is None:
         return None
     return result.group(1)
+
+
+def _matches_target(rule_dir, targets):
+    if 'ALL' in targets:
+        # we want to have them all
+        return True
+    else:
+        for target in targets:
+            if target in rule_dir:
+                return True
+        return False
+
+
+def _get_scenarios(rule_dir, scripts):
+    """ Returns only valid scenario files, rest is ignored (is not meant
+    to be executed directly.
+    """
+
+    scenarios = []
+    for script in scripts:
+        script_context = _get_script_context(script)
+        if script_context is not None:
+            script_params = _parse_parameters(os.path.join(rule_dir, script))
+            scenarios += [(script, script_context, script_params)]
+    return scenarios
 
 
 def perform_rule_check(options):
@@ -157,42 +179,24 @@ def perform_rule_check(options):
         return
 
     for rule_dir, rule, scripts in data.iterate_over_rules():
-        if 'ALL' in options.target:
-            # we want to have them all
-            pass
-        else:
-            perform = False
-            for target in options.target:
-                if target in rule_dir:
-                    perform = True
-                    break
-            if not perform:
-                continue
+        remote_rule_dir = os.path.join(remote_dir, rule_dir)
+        local_rule_dir = os.path.join(data.DATA_DIR, rule_dir)
+        if not _matches_target(rule_dir, options.target):
+            continue
         logging.info(rule)
         scanned_something = True
         logging.debug("Testing rule directory {0}".format(rule_dir))
-        # get list of helper scripts (non-standard name)
-        # and scenario scripts
-        scenarios = []
-        for script in scripts:
-            script_context = _get_script_context(script)
-            if script_context is not None:
-                scenarios += [script]
 
-        for script in scenarios:
-            script_context = _get_script_context(script)
+        for script, script_context, script_params in _get_scenarios(local_rule_dir, scripts):
             logging.debug(('Using test script {0} '
                            'with context {1}').format(script, script_context))
             snapshot_stack.create('script')
-            script_path = os.path.join(data.DATA_DIR, rule_dir, script)
-            remote_rule_dir = os.path.join(remote_dir, rule_dir)
+            has_worked = False
 
             if not _apply_script(remote_rule_dir, domain_ip, script):
                 logging.error("Environment failed to prepare, skipping test")
                 snapshot_stack.revert()
                 continue
-            script_params = _parse_parameters(script_path)
-            has_worked = False
             profiles = get_viable_profiles(script_params['profiles'],
                                            options.datastream,
                                            options.benchmark_id)
