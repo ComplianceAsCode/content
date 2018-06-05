@@ -8,7 +8,7 @@ description: |-
     The SETroubleshoot service notifies desktop users of SELinux
     denials. The service provides information around configuration errors,
     unauthorized intrusions, and other potential errors.
-    <yum-macro install="false" package="setroubleshoot" />
+    {{{ describe_package_remove(package="setroubleshoot") }}}
 
 rationale: |-
     The SETroubleshoot service is an unnecessary daemon to

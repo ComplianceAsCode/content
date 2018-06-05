@@ -7,7 +7,7 @@ title: 'Disable the irc_use_any_tcp_ports SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>irc_use_any_tcp_ports</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="irc_use_any_tcp_ports" />
+    {{{ describe_sebool_disable(sebool="irc_use_any_tcp_ports") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'irc_use_any_tcp_ports is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="irc_use_any_tcp_ports" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="irc_use_any_tcp_ports") }}}

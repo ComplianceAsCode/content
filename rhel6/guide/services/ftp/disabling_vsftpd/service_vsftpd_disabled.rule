@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable vsftpd Service'
 
-description: '<chkconfig-service-macro enable="false" service="vsftpd" />'
+description: '{{{ describe_service_disable(service="vsftpd") }}}'
 
 rationale: |-
     Running FTP server software provides a network-based avenue
@@ -19,4 +19,4 @@ references:
     disa: 1436
     nist: CM-7
 
-ocil: '<service-check-macro enable="false" service="vsftpd" />'
+ocil: '{{{ ocil_service_disabled(service="vsftpd") }}}'

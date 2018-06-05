@@ -10,7 +10,7 @@ description: |-
     execution in a manner similar to cron, except that it is not
     recurring. The daemon <tt>atd</tt> keeps track of tasks scheduled via
     <tt>at</tt> and <tt>batch</tt>, and executes them at the specified time.
-    <systemd-service-macro enable="false" service="atd" />
+    {{{ describe_service_disable(service="atd") }}}
 
 rationale: |-
     The <tt>atd</tt> service could be used by an unsophisticated insider to carry
@@ -27,4 +27,4 @@ references:
     disa: 381
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="atd" />'
+ocil: '{{{ ocil_service_disabled(service="atd") }}}'

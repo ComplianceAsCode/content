@@ -7,7 +7,7 @@ title: 'Disable the xserver_clients_write_xshm SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>xserver_clients_write_xshm</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="xserver_clients_write_xshm" />
+    {{{ describe_sebool_disable(sebool="xserver_clients_write_xshm") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'xserver_clients_write_xshm is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="xserver_clients_write_xshm" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="xserver_clients_write_xshm") }}}

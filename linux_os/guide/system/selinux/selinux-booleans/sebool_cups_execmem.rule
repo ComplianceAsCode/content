@@ -7,7 +7,7 @@ title: 'Disable the cups_execmem SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>cups_execmem</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="cups_execmem" />
+    {{{ describe_sebool_disable(sebool="cups_execmem") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'cups_execmem is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="cups_execmem" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="cups_execmem") }}}

@@ -7,7 +7,7 @@ title: 'Enable the httpd_graceful_shutdown SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>httpd_graceful_shutdown</tt> is enabled.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="httpd_graceful_shutdown" />
+    {{{ describe_sebool_enable(sebool="httpd_graceful_shutdown") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'httpd_graceful_shutdown is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="httpd_graceful_shutdown" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="httpd_graceful_shutdown") }}}

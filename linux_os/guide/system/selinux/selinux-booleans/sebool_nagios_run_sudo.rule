@@ -7,7 +7,7 @@ title: 'Disable the nagios_run_sudo SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>nagios_run_sudo</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="nagios_run_sudo" />
+    {{{ describe_sebool_disable(sebool="nagios_run_sudo") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'nagios_run_sudo is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="nagios_run_sudo" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="nagios_run_sudo") }}}

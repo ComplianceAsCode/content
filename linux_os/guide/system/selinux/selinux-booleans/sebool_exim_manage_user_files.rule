@@ -7,7 +7,7 @@ title: 'Disable the exim_manage_user_files SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>exim_manage_user_files</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="exim_manage_user_files" />
+    {{{ describe_sebool_disable(sebool="exim_manage_user_files") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'exim_manage_user_files is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="exim_manage_user_files" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="exim_manage_user_files") }}}

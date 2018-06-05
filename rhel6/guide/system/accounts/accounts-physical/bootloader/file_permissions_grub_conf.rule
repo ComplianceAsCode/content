@@ -5,7 +5,7 @@ title: 'Verify /boot/grub/grub.conf Permissions'
 description: |-
     File permissions for <tt>/boot/grub/grub.conf</tt> should be set to 600, which
     is the default.
-    <fileperms-desc-macro file="/boot/grub/grub.conf" perms="600" />
+    {{{ describe_file_permissions(file="/boot/grub/grub.conf", perms="600") }}}
 
 rationale: |-
     Proper permissions ensure that only the root user can modify important boot

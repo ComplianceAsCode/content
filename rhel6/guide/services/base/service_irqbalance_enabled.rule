@@ -6,7 +6,7 @@ description: |-
     The <tt>irqbalance</tt> service optimizes the balance between
     power savings and performance through distribution of hardware interrupts across
     multiple processors.
-    <chkconfig-service-macro enable="true" service="irqbalance" />
+    {{{ describe_service_enable(service="irqbalance") }}}
 
 rationale: |-
     In an environment with multiple processors (now common), the irqbalance service
@@ -20,4 +20,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '<service-check-macro enable="false" service="irqbalance" />'
+ocil: '{{{ ocil_service_disabled(service="irqbalance") }}}'

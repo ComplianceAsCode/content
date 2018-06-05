@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Disable Squid'
 
-description: '<systemd-service-macro enable="false" service="squid" />'
+description: '{{{ describe_service_disable(service="squid") }}}'
 
 rationale: |-
     Running proxy server software provides a network-based avenue
@@ -18,4 +18,4 @@ identifiers:
 references:
     cis: 2.2.13
 
-ocil: '<systemd-check-macro enable="false" service="squid" />'
+ocil: '{{{ ocil_service_disabled(service="squid") }}}'

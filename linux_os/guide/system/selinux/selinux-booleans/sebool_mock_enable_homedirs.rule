@@ -7,7 +7,7 @@ title: 'Disable the mock_enable_homedirs SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>mock_enable_homedirs</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="mock_enable_homedirs" />
+    {{{ describe_sebool_disable(sebool="mock_enable_homedirs") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'mock_enable_homedirs is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="mock_enable_homedirs" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="mock_enable_homedirs") }}}

@@ -7,7 +7,7 @@ title: 'Disable the global_ssp SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>global_ssp</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="global_ssp" />
+    {{{ describe_sebool_disable(sebool="global_ssp") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'global_ssp is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="global_ssp" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="global_ssp") }}}

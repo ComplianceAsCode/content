@@ -7,7 +7,7 @@ title: 'Enable the logadm_exec_content SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>logadm_exec_content</tt> is enabled.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="logadm_exec_content" />
+    {{{ describe_sebool_enable(sebool="logadm_exec_content") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'logadm_exec_content is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="logadm_exec_content" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="logadm_exec_content") }}}

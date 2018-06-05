@@ -7,7 +7,7 @@ title: 'Disable the dhcpd_use_ldap SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>dhcpd_use_ldap</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="dhcpd_use_ldap" />
+    {{{ describe_sebool_disable(sebool="dhcpd_use_ldap") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'dhcpd_use_ldap is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="dhcpd_use_ldap" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="dhcpd_use_ldap") }}}

@@ -7,7 +7,7 @@ title: 'Disable the xdm_write_home SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>xdm_write_home</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="xdm_write_home" />
+    {{{ describe_sebool_disable(sebool="xdm_write_home") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'xdm_write_home is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="xdm_write_home" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="xdm_write_home") }}}

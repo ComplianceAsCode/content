@@ -4,7 +4,7 @@ prodtype: rhel7,fedora,ol7
 
 title: 'Verify Permissions on <tt>shadow</tt> File'
 
-description: '<fileperms-desc-macro file="/etc/shadow" perms="0000" />'
+description: '{{{ describe_file_permissions(file="/etc/shadow", perms="0000") }}}'
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -25,4 +25,4 @@ references:
     nist: AC-6
     pcidss: Req-8.7.c
 
-ocil: '<fileperms-check-macro file="/etc/shadow" perms="----------" />'
+ocil: '{{{ check_file_permissions(file="/etc/shadow", perms="----------") }}}'

@@ -1,10 +1,10 @@
-{{% macro sshd_check_ocil_clause_entry() -%}}
+{{% macro ocil_clause_entry_sshd_option() -%}}
 ocil_clause: "the required value is not set"
 {{%- endmacro %}}
 
 
-{{# Example usage: sshd_check(default="no", option="Banner", value="/etc/issue") #}}
-{{% macro sshd_check(default, option, value) -%}}
+{{# Example usage: ocil_sshd_option(default="no", option="Banner", value="/etc/issue") #}}
+{{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
     {{% if default == "yes" -%}}
@@ -15,11 +15,11 @@ ocil_clause: "the required value is not set"
 {{%- endmacro %}}
 
 
-{{% macro sshd_check_complete_ocil_entry(default, option, value) -%}}
+{{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
 ocil: |
-    {{{ sshd_check(default, option, value) }}}
+    {{{ ocil_sshd_option(default, option, value) }}}
 
-{{{ sshd_check_ocil_clause_entry() }}}
+{{{ ocil_clause_entry_sshd_option() }}}
 {{%- endmacro %}}
 
 
@@ -61,7 +61,7 @@ ocil: |
 {{%- endmacro %}}
 
 
-{{% macro partition_check_complete_ocil_entry(part) -%}}
+{{% macro complete_ocil_entry_separate_partition(part) -%}}
 ocil: |
     {{{ partition_check(part) }}}
 
@@ -69,7 +69,7 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
-{{% macro audit_syscall_check(syscall) -%}}
+{{% macro ocil_audit_syscall(syscall) -%}}
     To determine if the system is configured to audit calls to the
     <code>{{{ syscall }}}</code> system call, run the following command:
     <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit/audit.rules</pre>
@@ -77,14 +77,418 @@ ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
-{{% macro audit_syscall_check_ocil_clause_entry() -%}}
+{{% macro ocil_clause_entry_audit_syscall() -%}}
 ocil_clause: "no line is returned"
 {{%- endmacro %}}
 
 
-{{% macro audit_syscall_check_complete_ocil_entry(syscall) -%}}
+{{% macro complete_ocil_entry_audit_syscall(syscall) -%}}
 ocil: |
-    {{{ audit_syscall_check(syscall) }}}
+    {{{ ocil_audit_syscall(syscall) }}}
 
-{{{ audit_syscall_check_ocil_clause_entry() }}}
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+
+{{%- macro _firewalld_check(access_action, port, proto, service) %}}
+    To determine if <code>firewalld</code> is configured to {{{ access_action }}} to <code>{{{ service }}}</code>
+    on port <code>{{{ port }}}/{{{ proto }}}</code>, run the following command(s):
+    {{% if port %}}
+        <code>firewall-cmd --list-ports</code>
+    {{% endif %}}
+    {{% if service %}}
+        <code>firewall-cmd --list-services</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro ocil_firewalld_allow_access(port, proto, service) %}}
+{{{ _firewalld_check("allow access", port, proto, service) }}}
+    If <code>firewalld</code> is configured to allow access through the firewall, something similar to the following will be output:
+    {{% if service %}}
+    If it is a service:
+    <code>{{{ service }}}</code>
+    {{% endif %}}
+    {{% if port %}}
+    If it is a port:
+    <code>{{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro ocil_firewalld_prevent_access(port, proto, service) %}}
+{{{ _firewalld_check("prevent access", port, proto, service) }}}
+    If <code>firewalld</code> is configured to prevent access, no output will be returned.
+{{%- endmacro %}}
+
+
+{{%- macro describe_firewalld_prevent(port, proto, service) %}}
+    To configure <code>firewalld</code> to prevent access, run the following command(s):
+    {{% if port %}}
+    <code>firewall-cmd --permanent --remove-port={{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+    {{% if service %}}
+    <code>firewall-cmd --permanent --remove-service={{{ service }}}</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro describe_firewalld_allow(port, proto, service) %}}
+    To configure <code>firewalld</code> to allow access, run the following command(s):
+    {{% if port %}}
+    <code>firewall-cmd --permanent --add-port={{{ port }}}/{{{ proto }}}</code>
+    {{% endif %}}
+    {{% if service %}}
+    <code>firewall-cmd --permanent --add-service={{{ service }}}</code>
+    {{% endif %}}
+{{%- endmacro %}}
+
+
+{{%- macro ocil_auditctl_syscall(syscall) %}}
+    To determine if the system is configured to audit calls to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo auditctl -l | grep syscall | grep {{{ syscall }}}</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+
+{{%- macro ocil_module_disable(module) %}}
+    If the system is configured to prevent the loading of the <code>{{{ module }}}</code> kernel module,
+    it will contain lines inside any file in <code>/etc/modprobe.d</code> or the deprecated<code>/etc/modprobe.conf</code>.
+    These lines instruct the module loading system to run another program (such as <code>/bin/true</code>) upon a module <code>install</code> event.
+    Run the following command to search for such lines in all files in <code>/etc/modprobe.d</code> and the deprecated <code>/etc/modprobe.conf</code>:
+    <pre>$ grep -r {{{ module }}} /etc/modprobe.conf /etc/modprobe.d</pre>
+{{%- endmacro %}}
+
+
+{{%- macro complete_ocil_entry_module_disable(module) %}}
+ocil: |-
+    {{{ ocil_module_disable(module) }}}
+
+ocil_clause: "no line is returned"
+{{%- endmacro %}}
+
+
+{{%- macro describe_module_disable(module) %}}
+    To configure the system to prevent the <code>{{{ module }}}</code>
+    kernel module from being loaded, add the following line to a file in the directory <code>/etc/modprobe.d</code>:
+    <pre>install {{{ module }}} /bin/true</pre>
+{{%- endmacro %}}
+
+
+{{%- macro xinetd_disabled_check_with_systemd(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration with xinetd, run the following command:
+    <pre>$ chkconfig <code>{{{ service }}}</code> --list</pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed, or has been disabled, as shown in the example below:
+    <pre>$ chkconfig <code>{{{ service }}}</code> --list
+
+    Note: This output shows SysV services only and does not include native
+    systemd services. SysV configuration data might be overridden by native
+    systemd configuration.
+
+    If you want to list systemd services use 'systemctl list-unit-files'.
+    To see services enabled on particular target use
+    'systemctl list-dependencies [target]'.
+
+    <code>{{{ service }}}</code>       off</pre>
+{{%- endmacro %}}
+
+
+{{%- macro socket_disabled_check_with_systemd(socket) %}}
+    To check that the <code>{{{ socket }}}</code> socket is disabled in system boot configuration with systemd, run the following command:
+    <pre>$ systemctl is-enabled <code>{{{ socket }}}</code></pre>
+    Output should indicate the <code>{{{ socket }}}</code> socket has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ systemctl is-enabled <code>{{{ socket }}}</code><br/>disabled</pre>
+
+    Run the following command to verify <code>{{{ socket }}}</code> is not active (i.e. not running) through current runtime configuration:
+    <pre>systemctl is-active {{{ socket }}}</pre>
+
+    If the socket is not running the command will return the following output:
+    <pre>inactive</pre>
+{{%- endmacro %}}
+
+
+{{%- macro systemd_complete_ocil_entry_socket_and_service_disabled(name) %}}
+ocil: |-
+    {{{ xinetd_disabled_check_with_systemd(name) }}}
+    {{{ socket_disabled_check_with_systemd(name) }}}
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{%- macro upstart_complete_ocil_entry_socket_and_service_disabled(name) %}}
+ocil:
+
+ocil_clause: "service and/or socket are running"
+{{%- endmacro %}}
+
+
+{{%- macro rpm_ocil_package(package) %}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ rpm -q {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro dpkg_ocil_package(package) %}}
+    Run the following command to determine if the <code>{{{ package }}}</code> package is installed:
+    <pre>$ dpkg -l  {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro rpm_complete_ocil_entry_package(package) %}}
+ocil: |-
+    rpm_ocil_package(package)
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{%- macro dpkg_complete_ocil_entry_package(package) %}}
+ocil: |-
+    dpkg_ocil_package(package)
+
+ocil_clause: "the package is installed"
+{{%- endmacro %}}
+
+
+{{%- macro ocil_xinetd_service_disabled(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
+    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed, or has been disabled, as shown in the example below:
+    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list
+    <code>{{{ service }}}</code>       off</pre>
+{{%- endmacro %}}
+
+
+{{%- macro systemd_ocil_service_disabled(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
+    <pre>$ systemctl is-enabled <code>{{{ service }}}</code></pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ systemctl is-enabled <code>{{{ service }}}</code><br/>disabled</pre>
+
+    Run the following command to verify <code>{{{ service }}}</code> is not active (i.e. not running) through current runtime configuration:
+    <pre>$ systemctl is-active {{{ service }}}</pre>
+
+    If the service is not running the command will return the following output:
+    <pre>inactive</pre>
+{{%- endmacro %}}
+
+
+{{%- macro systemd_ocil_service_enabled(service) %}}
+    Run the following command to determine the current status of the
+    <code>{{{ service }}}</code> service:
+    <pre>$ systemctl is-active {{{ service }}}</pre>
+    If the service is running, it should return the following: <pre>active</pre>
+{{%- endmacro %}}
+
+
+{{%- macro upstart_ocil_service_disabled(service) %}}
+    To check that the <code>{{{ service }}}</code> service is disabled in system boot configuration, run the following command:
+    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list</pre>
+    Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
+    or has been disabled at all runlevels, as shown in the example below:
+    <pre>$ sudo chkconfig <code>{{{ service }}}</code> --list
+    <code>{{{ service }}}</code>       0:off   1:off   2:off   3:off   4:off   5:off   6:off</pre>
+
+    Run the following command to verify <code>{{{ service }}}</code> is disabled through current runtime configuration:
+    <pre>$ sudo service {{{ service }}} status</pre>
+
+    If the service is disabled the command will return the following output:
+    <pre>{{{ service }}} is stopped</pre>
+{{%- endmacro %}}
+
+
+{{%- macro upstart_ocil_service_enabled(service) %}}
+    Run the following command to determine the current status of the
+    <code>{{{ service }}}</code> service:
+    <pre>$ sudo service {{{ service }}} status</pre>
+    If the service is enabled, it should return the following: <pre>{{{ service }}} is running...</pre>
+{{%- endmacro %}}
+
+
+{{%- macro systemd_describe_socket_disable(socket) %}}
+    The <code>{{{ socket }}}</code> socket can be disabled with the following command:
+    <pre>$ sudo systemctl disable {{{ socket }}}.socket</pre>
+{{%- endmacro %}}
+
+
+{{%- macro upstart_describe_socket_disable(socket) %}}
+{{%- endmacro %}}
+
+
+{{%- macro systemd_describe_socket_enable(socket) %}}
+    The <code>{{{ socket }}}</code> socket can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ socket }}}.socket</pre>
+{{%- endmacro %}}
+
+
+{{%- macro upstart_describe_socket_enable(socket) %}}
+{{%- endmacro %}}
+
+
+{{%- macro systemd_describe_service_disable(service) %}}
+    The <code>{{{ service }}}</code> service can be disabled with the following command:
+    <pre>$ sudo systemctl disable {{{ service }}}.service</pre>
+{{%- endmacro %}}
+
+
+{{%- macro systemd_describe_service_enable(service) %}}
+    The <code>{{{ service }}}</code> service can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ service }}}.service</pre>
+{{%- endmacro %}}
+
+
+{{%- macro upstart_describe_service_disable(service) %}}
+    The <code>{{{ service }}}</code> service can be disabled with the following command:
+    <pre>$ sudo chkconfig {{{ service }}} off</pre>
+{{%- endmacro %}}
+
+
+{{%- macro upstart_describe_service_enable(service) %}}
+    The <code>{{{ service }}}</code> service can be enabled with the following command:
+    <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_sebool_check_disabled(sebool) %}}
+    Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is disabled:
+    <pre>$ getsebool {{{ sebool }}}</pre>
+    If properly configured, the output should show the following:
+    <code>{{{ sebool }}} --> off</code>
+{{%- endmacro %}}
+
+
+{{%- macro complete_ocil_entry_sebool_disabled(sebool) %}}
+ocil: |-
+    {{{ describe_sebool_check_disabled(sebool) }}}
+
+ocil_clause: "{{{ sebool }}} is not disabled"
+{{%- endmacro %}}
+
+
+{{%- macro describe_sebool_check_enabled(sebool) %}}
+    Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is enabled:
+    <pre>$ getsebool {{{ sebool }}}</pre>
+    If properly configured, the output should show the following:
+    <code>{{{ sebool }}} --> on</code>
+{{%- endmacro %}}
+
+
+{{%- macro complete_ocil_entry_sebool_enabled(sebool) %}}
+ocil: |-
+    {{{ describe_sebool_check_enabled(sebool) }}}
+
+ocil_clause: "{{{ sebool }}} is not enabled"
+{{%- endmacro %}}
+
+
+{{%- macro describe_sebool_disable(sebool) %}}
+    To disable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} off</pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_sebool_enable(sebool) %}}
+    To enable the <code>{{{ sebool }}}</code> SELinux boolean, run the following command:
+    <pre>$ sudo setsebool -P {{{ sebool }}} on</pre>
+{{%- endmacro %}}
+
+
+{{%- macro apt_get_describe_package_install(package) %}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>$ apt-get install {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro apt_get_describe_package_remove(package) %}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>$ apt-get remove {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro dnf_describe_package_install(package) %}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>$ sudo dnf install {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro dnf_describe_package_remove(package) %}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>$ sudo dnf erase {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro yum_describe_package_install(package) %}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>$ sudo yum install {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro yum_describe_package_remove(package) %}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>$ sudo yum erase {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro zypper_describe_package_install(package) %}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>$ sudo zypper install {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro zypper_describe_package_remove(package) %}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>$ sudo zypper remove {{{ package }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_file_permissions(file, perms) %}}
+    To properly set the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chmod {{{ perms }}} {{{ file }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_file_owner(file, owner) %}}
+    To properly set the owner of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chown {{{ owner }}} {{{ file }}} </pre>
+{{%- endmacro %}}
+
+
+{{%- macro describe_file_group_owner(file, group) %}}
+    To properly set the group owner of <code>{{{ file }}}</code>, run the command:
+    <pre>$ sudo chgrp {{{ group }}} {{{ file }}}</pre>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_permissions(file, perms) %}}
+    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_owner(file, owner) %}}
+    To check the ownership of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following owner:
+    <code>{{{ owner }}}</code>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_group_owner(file, group) %}}
+    To check the group ownership of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -lL {{{ file }}}</pre>
+    If properly configured, the output should indicate the following group-owner.
+    <code>{{{ group }}}</code>
+{{%- endmacro %}}
+
+
+{{%- macro check_file_permissions(file, perms) %}}
+    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
 {{%- endmacro %}}

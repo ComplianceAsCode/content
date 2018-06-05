@@ -7,7 +7,7 @@ title: 'Enable the unconfined_mozilla_plugin_transition SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>unconfined_mozilla_plugin_transition</tt> is enabled.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="unconfined_mozilla_plugin_transition" />
+    {{{ describe_sebool_enable(sebool="unconfined_mozilla_plugin_transition") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'unconfined_mozilla_plugin_transition is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="unconfined_mozilla_plugin_transition" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="unconfined_mozilla_plugin_transition") }}}

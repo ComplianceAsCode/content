@@ -7,7 +7,7 @@ title: 'Disable the virt_use_fusefs SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>virt_use_fusefs</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="virt_use_fusefs" />
+    {{{ describe_sebool_disable(sebool="virt_use_fusefs") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'virt_use_fusefs is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="virt_use_fusefs" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="virt_use_fusefs") }}}

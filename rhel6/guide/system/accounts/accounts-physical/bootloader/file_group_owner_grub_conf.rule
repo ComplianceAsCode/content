@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify /etc/grub.conf Group Ownership'
 
-description: "The file <tt>/etc/grub.conf</tt> should \nbe group-owned by the <tt>root</tt> group to prevent \ndestruction or modification of the file.\n<filegroupowner-desc-macro file=\"/etc/grub.conf\" group=\"root\" />"
+description: "The file <tt>/etc/grub.conf</tt> should \nbe group-owned by the <tt>root</tt> group to prevent \ndestruction or modification of the file.\n{{{ describe_file_group_owner(file="/etc/grub.conf", group="root") }}}"
 
 rationale: |-
     The <tt>root</tt> group is a highly-privileged group. Furthermore, the group-owner of this
@@ -20,4 +20,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000066
 
-ocil: '<filegroupowner-check-macro file="/etc/grub.conf" group="root" />'
+ocil: '{{{ check_file_group_owner(file="/etc/grub.conf", group="root") }}}'

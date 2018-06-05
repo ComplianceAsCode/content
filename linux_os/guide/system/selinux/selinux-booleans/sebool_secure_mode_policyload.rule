@@ -7,7 +7,7 @@ title: 'Disable the secure_mode_policyload SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>secure_mode_policyload</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="secure_mode_policyload" />
+    {{{ describe_sebool_disable(sebool="secure_mode_policyload") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'secure_mode_policyload is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="secure_mode_policyload" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="secure_mode_policyload") }}}

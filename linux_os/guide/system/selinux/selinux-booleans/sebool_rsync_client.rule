@@ -7,7 +7,7 @@ title: 'Disable the rsync_client SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>rsync_client</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="rsync_client" />
+    {{{ describe_sebool_disable(sebool="rsync_client") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'rsync_client is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="rsync_client" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="rsync_client") }}}

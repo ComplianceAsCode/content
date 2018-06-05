@@ -7,7 +7,7 @@ title: 'Disable the named_write_master_zones SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>named_write_master_zones</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="named_write_master_zones" />
+    {{{ describe_sebool_disable(sebool="named_write_master_zones") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'named_write_master_zones is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="named_write_master_zones" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="named_write_master_zones") }}}

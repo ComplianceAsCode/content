@@ -6,7 +6,7 @@ title: 'Verify /boot/efi/EFI/redhat/grub.cfg Permissions'
 
 description: |-
     File permissions for <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should be set to 600.
-    <fileperms-desc-macro file="/boot/efi/EFI/redhat/grub.cfg" perms="700" />
+    {{{ describe_file_permissions(file="/boot/efi/EFI/redhat/grub.cfg", perms="700") }}}
 
 rationale: |-
     Proper permissions ensure that only the root user can modify important boot

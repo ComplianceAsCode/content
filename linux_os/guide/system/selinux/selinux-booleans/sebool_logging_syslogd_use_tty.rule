@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>logging_syslogd_use_tty</tt> is enabled.
     If this setting is disabled, it should be enabled as it allows <tt>syslog</tt>
     the ability to read/write to terminal.
-    <sebool-macro enable="true" sebool="logging_syslogd_use_tty" />
+    {{{ describe_sebool_enable(sebool="logging_syslogd_use_tty") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'logging_syslogd_use_tty is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="logging_syslogd_use_tty" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="logging_syslogd_use_tty") }}}

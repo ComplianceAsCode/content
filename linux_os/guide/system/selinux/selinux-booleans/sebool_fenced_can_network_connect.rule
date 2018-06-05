@@ -7,7 +7,7 @@ title: 'Disable the fenced_can_network_connect SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>fenced_can_network_connect</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="fenced_can_network_connect" />
+    {{{ describe_sebool_disable(sebool="fenced_can_network_connect") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'fenced_can_network_connect is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="fenced_can_network_connect" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="fenced_can_network_connect") }}}

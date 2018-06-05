@@ -8,7 +8,7 @@ description: |-
     filesystem types are not in use, the script can be disabled, protecting the
     system somewhat against accidental or malicious changes to <tt>/etc/fstab</tt>
     and against flaws in the netfs script itself.
-    <chkconfig-service-macro enable="false" service="netfs" />
+    {{{ describe_service_disable(service="netfs") }}}
 
 rationale: ""
 

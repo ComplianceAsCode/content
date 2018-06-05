@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Verify Permissions on <tt>group</tt> File'
 
-description: '<fileperms-desc-macro file="/etc/group" perms="644" />'
+description: '{{{ describe_file_permissions(file="/etc/group", perms="644") }}}'
 
 rationale: |-
     The <tt>/etc/group</tt> file contains information regarding groups that are configured
@@ -22,4 +22,4 @@ references:
     nist: AC-6
     pcidss: Req-8.7.c
 
-ocil: '<fileperms-check-macro file="/etc/group" perms="-rw-r--r--" />'
+ocil: '{{{ check_file_permissions(file="/etc/group", perms="-rw-r--r--") }}}'

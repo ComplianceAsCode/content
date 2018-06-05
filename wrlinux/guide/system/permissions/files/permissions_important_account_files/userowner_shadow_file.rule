@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify User Who Owns <tt>shadow</tt> File'
 
-description: '<fileowner-desc-macro file="/etc/shadow" owner="root" />'
+description: '{{{ describe_file_owner(file="/etc/shadow", owner="root") }}}'
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local system accounts and stores password hashes.
@@ -16,4 +16,4 @@ references:
     nist: AC-6
     pcidss: Req-8.7.c
 
-ocil: '<fileowner-check-macro file="/etc/shadow" owner="root" />'
+ocil: '{{{ check_file_owner(file="/etc/shadow", owner="root") }}}'

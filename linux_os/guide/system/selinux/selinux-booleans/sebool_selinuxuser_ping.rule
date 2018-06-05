@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>selinuxuser_ping</tt> is enabled.
     If this setting is disabled, it should be enabled as it allows confined users
     to use ping and traceroute which is helpful for network troubleshooting.
-    <sebool-macro enable="true" sebool="selinuxuser_ping" />
+    {{{ describe_sebool_enable(sebool="selinuxuser_ping") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'selinuxuser_ping is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="selinuxuser_ping" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="selinuxuser_ping") }}}

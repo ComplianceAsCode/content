@@ -7,7 +7,7 @@ title: 'Disable the ksmtuned_use_cifs SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>ksmtuned_use_cifs</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="ksmtuned_use_cifs" />
+    {{{ describe_sebool_disable(sebool="ksmtuned_use_cifs") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'ksmtuned_use_cifs is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="ksmtuned_use_cifs" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="ksmtuned_use_cifs") }}}

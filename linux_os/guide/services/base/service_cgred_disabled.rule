@@ -7,7 +7,7 @@ title: 'Disable Control Group Rules Engine (cgred)'
 description: |-
     The <tt>cgred</tt> service moves tasks into control groups according to
     parameters set in the <tt>/etc/cgrules.conf</tt> configuration file.
-    <systemd-service-macro enable="false" service="cgred" />
+    {{{ describe_service_disable(service="cgred") }}}
 
 rationale: |-
     Unless control groups are used to manage system resources, running the cgred service
@@ -21,4 +21,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="cgred" />'
+ocil: '{{{ ocil_service_disabled(service="cgred") }}}'

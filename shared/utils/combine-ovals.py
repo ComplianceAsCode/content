@@ -331,7 +331,7 @@ def main():
         )
         sys.exit(1)
 
-    product_yaml = ssgcommon.open_yaml(args.product_yaml)
+    product_yaml = ssgcommon.open_product_yaml(args.product_yaml)
 
     if os.path.isfile(args.oval_config):
         multi_platform = parse_conf_file(

@@ -38,10 +38,10 @@ references:
     pcidss: Req-10.2.7
 
 ocil: |-
-    {{{ audit_syscall_check(syscall="rmdir") }}}
-    {{{ audit_syscall_check(syscall="unlink") }}}
-    {{{ audit_syscall_check(syscall="unlinkat") }}}
-    {{{ audit_syscall_check(syscall="rename") }}}
-    {{{ audit_syscall_check(syscall="renameat") }}}
+    {{{ ocil_audit_syscall(syscall="rmdir") }}}
+    {{{ ocil_audit_syscall(syscall="unlink") }}}
+    {{{ ocil_audit_syscall(syscall="unlinkat") }}}
+    {{{ ocil_audit_syscall(syscall="rename") }}}
+    {{{ ocil_audit_syscall(syscall="renameat") }}}
 
-{{{ audit_syscall_check_ocil_clause_entry() }}}
+{{{ ocil_clause_entry_audit_syscall() }}}

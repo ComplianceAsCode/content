@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Permissions on SSH Server Private <tt>*_key</tt> Key Files'
 
-description: '<fileperms-desc-macro file="/etc/ssh/*_key" perms="0640" />'
+description: '{{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0640") }}}'
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
@@ -20,4 +20,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040420"
 
-ocil: '<fileperms-check-macro file="/etc/ssh/*_key" perms="-rw-r-----" />'
+ocil: '{{{ check_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'

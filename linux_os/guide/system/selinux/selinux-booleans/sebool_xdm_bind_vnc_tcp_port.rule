@@ -7,7 +7,7 @@ title: 'Disable the xdm_bind_vnc_tcp_port SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>xdm_bind_vnc_tcp_port</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="xdm_bind_vnc_tcp_port" />
+    {{{ describe_sebool_disable(sebool="xdm_bind_vnc_tcp_port") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'xdm_bind_vnc_tcp_port is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="xdm_bind_vnc_tcp_port" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="xdm_bind_vnc_tcp_port") }}}

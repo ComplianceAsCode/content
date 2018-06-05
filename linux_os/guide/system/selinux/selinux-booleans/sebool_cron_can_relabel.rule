@@ -7,7 +7,7 @@ title: 'Disable the cron_can_relabel SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>cron_can_relabel</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="cron_can_relabel" />
+    {{{ describe_sebool_disable(sebool="cron_can_relabel") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'cron_can_relabel is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="cron_can_relabel" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="cron_can_relabel") }}}

@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>gluster_export_all_rw</tt> is enabled.
     If <tt>GlusterFS</tt> is in use, this setting should be enabled. Otherwise,
     disable it.
-    <sebool-macro enable="false" sebool="gluster_export_all_rw" />
+    {{{ describe_sebool_disable(sebool="gluster_export_all_rw") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'gluster is in user or gluster_export_all_rw is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="gluster_export_all_rw" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="gluster_export_all_rw") }}}

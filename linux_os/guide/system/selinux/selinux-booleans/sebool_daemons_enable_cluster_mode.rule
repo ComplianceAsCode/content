@@ -7,7 +7,7 @@ title: 'Disable the daemons_enable_cluster_mode SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>daemons_enable_cluster_mode</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="daemons_enable_cluster_mode" />
+    {{{ describe_sebool_disable(sebool="daemons_enable_cluster_mode") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'daemons_enable_cluster_mode is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="daemons_enable_cluster_mode" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="daemons_enable_cluster_mode") }}}

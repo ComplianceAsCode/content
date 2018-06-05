@@ -7,7 +7,7 @@ title: 'Disable the zabbix_can_network SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>zabbix_can_network</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="zabbix_can_network" />
+    {{{ describe_sebool_disable(sebool="zabbix_can_network") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'zabbix_can_network is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="zabbix_can_network" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="zabbix_can_network") }}}

@@ -7,7 +7,7 @@ title: 'Disable the abrt_handle_event SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>abrt_handle_event</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="abrt_handle_event" />
+    {{{ describe_sebool_disable(sebool="abrt_handle_event") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'abrt_handle_event is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="abrt_handle_event" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="abrt_handle_event") }}}

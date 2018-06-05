@@ -6,7 +6,7 @@ title: 'Verify Group Who Owns <tt>/etc/cron.allow</tt> file'
 
 description: |-
     If <tt>/etc/cron.allow</tt> exists, it must be group-owned by <tt>root</tt>.
-    <filegroupowner-desc-macro file="/etc/cron.allow" group="root" />
+    {{{ describe_file_group_owner(file="/etc/cron.allow", group="root") }}}
 
 rationale: |-
     If the owner of the cron.allow file is not set to root, the possibility exists for an
@@ -23,4 +23,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "021120"
 
-ocil: '<filegroupowner-check-macro file="/etc/cron.allow" group="root" />'
+ocil: '{{{ check_file_group_owner(file="/etc/cron.allow", group="root") }}}'

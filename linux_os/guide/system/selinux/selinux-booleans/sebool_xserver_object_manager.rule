@@ -7,7 +7,7 @@ title: 'Disable the xserver_object_manager SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>xserver_object_manager</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="xserver_object_manager" />
+    {{{ describe_sebool_disable(sebool="xserver_object_manager") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'xserver_object_manager is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="xserver_object_manager" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="xserver_object_manager") }}}

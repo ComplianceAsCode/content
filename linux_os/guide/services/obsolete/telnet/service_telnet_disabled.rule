@@ -27,7 +27,7 @@ description: |-
     If the <tt>/etc/xinetd.d/telnet</tt> file does not exist, make sure that
     the activation of the <tt>telnet</tt> service on system boot is disabled
     via the following command:
-    <systemd-socket-macro enable="false" socket="rexec" />
+    {{{ describe_socket_disable(socket="rexec") }}}
 
 rationale: |-
     The telnet protocol uses unencrypted network communication, which
@@ -48,6 +48,4 @@ references:
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
     nist: AC-17(8),CM-7,IA-5(1)(c)
 
-ocil: |-
-    <systemd-socket-check-macro enable="false" socket="telnet" />
-    <xinetd-systemd-check-macro enable="false" service="telnet" />
+{{{ complete_ocil_entry_socket_and_service_disabled("telnet") }}}

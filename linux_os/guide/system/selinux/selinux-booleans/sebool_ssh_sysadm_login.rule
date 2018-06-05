@@ -7,7 +7,7 @@ title: 'Disable the ssh_sysadm_login SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>ssh_sysadm_login</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="ssh_sysadm_login" />
+    {{{ describe_sebool_disable(sebool="ssh_sysadm_login") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'ssh_sysadm_login is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="ssh_sysadm_login" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="ssh_sysadm_login") }}}

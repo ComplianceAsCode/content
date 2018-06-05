@@ -6,7 +6,7 @@ title: 'Disable tftp Service'
 
 description: |-
     The <tt>tftp</tt> service should be disabled.
-    <systemd-service-macro enable="false" service="tftp" />
+    {{{ describe_service_disable(service="tftp") }}}
 
 rationale: |-
     Disabling the <tt>tftp</tt> service ensures the system is not acting
@@ -22,4 +22,4 @@ references:
     disa: 1436
     nist: AC-17(8),CM-7
 
-ocil: '<systemd-check-macro enable="false" service="tftp" />'
+ocil: '{{{ ocil_service_disabled(service="tftp") }}}'

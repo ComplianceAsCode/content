@@ -7,7 +7,7 @@ title: 'Disable the ftpd_use_fusefs SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>ftpd_use_fusefs</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="ftpd_use_fusefs" />
+    {{{ describe_sebool_disable(sebool="ftpd_use_fusefs") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'ftpd_use_fusefs is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="ftpd_use_fusefs" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="ftpd_use_fusefs") }}}

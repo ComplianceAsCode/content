@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable telnet Service'
 
-description: '<chkconfig-service-macro enable="false" service="telnet" />'
+description: '{{{ describe_service_disable(service="telnet") }}}'
 
 rationale: |-
     The telnet protocol uses unencrypted network communication, which
@@ -22,4 +22,4 @@ references:
     srg: SRG-OS-000129
     stigid: RHEL-06-000211
 
-ocil: '<xinetd-service-check-macro enable="false" service="telnet" />'
+ocil: '{{{ ocil_xinetd_service_disabled(service="telnet") }}}'

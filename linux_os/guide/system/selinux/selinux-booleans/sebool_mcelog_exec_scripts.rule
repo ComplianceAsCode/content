@@ -7,7 +7,7 @@ title: 'Enable the mcelog_exec_scripts SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>mcelog_exec_scripts</tt> is enabled.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="mcelog_exec_scripts" />
+    {{{ describe_sebool_enable(sebool="mcelog_exec_scripts") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'mcelog_exec_scripts is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="mcelog_exec_scripts" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="mcelog_exec_scripts") }}}

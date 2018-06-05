@@ -4,7 +4,7 @@ title: 'Enable rsyslog Service'
 
 description: |-
     The <tt>rsyslog</tt> service provides syslog-style logging by default on Ubuntu 1604.
-    <chkconfig-service-macro enable="true" service="rsyslog" />
+    {{{ describe_service_enable(service="rsyslog") }}}
 
 rationale: |-
     The <tt>rsyslog</tt> service must be running in order to provide
@@ -18,4 +18,4 @@ references:
     disa: 1311,1312,1557,1851
     nist: AU-4(1),AU-12
 
-ocil: '<service-check-macro enable="true" service="rsyslog" />'
+ocil: '{{{ ocil_service_enabled(service="rsyslog") }}}'

@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns <tt>gshadow</tt> File'
 
-description: '<filegroupowner-desc-macro file="/etc/gshadow" group="root" />'
+description: '{{{ describe_file_group_owner(file="/etc/gshadow", group="root") }}}'
 
 rationale: |-
     The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
@@ -19,4 +19,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000037
 
-ocil: '<filegroupowner-check-macro file="/etc/gshadow" group="root" />'
+ocil: '{{{ check_file_group_owner(file="/etc/gshadow", group="root") }}}'

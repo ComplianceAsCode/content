@@ -7,7 +7,7 @@ title: 'Disable the samba_export_all_rw SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>samba_export_all_rw</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="samba_export_all_rw" />
+    {{{ describe_sebool_disable(sebool="samba_export_all_rw") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'samba_export_all_rw is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="samba_export_all_rw" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="samba_export_all_rw") }}}

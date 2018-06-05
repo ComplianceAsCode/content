@@ -7,7 +7,7 @@ title: 'Disable the httpd_can_connect_ftp SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>httpd_can_connect_ftp</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="httpd_can_connect_ftp" />
+    {{{ describe_sebool_disable(sebool="httpd_can_connect_ftp") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'httpd_can_connect_ftp is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="httpd_can_connect_ftp" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_can_connect_ftp") }}}

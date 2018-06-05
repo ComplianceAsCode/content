@@ -7,7 +7,7 @@ title: 'Disable the selinuxuser_mysql_connect_enabled SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>selinuxuser_mysql_connect_enabled</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="selinuxuser_mysql_connect_enabled" />
+    {{{ describe_sebool_disable(sebool="selinuxuser_mysql_connect_enabled") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'selinuxuser_mysql_connect_enabled is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="selinuxuser_mysql_connect_enabled" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="selinuxuser_mysql_connect_enabled") }}}

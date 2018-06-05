@@ -7,7 +7,7 @@ title: 'Enable the domain_fd_use SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>domain_fd_use</tt> is enabled.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="domain_fd_use" />
+    {{{ describe_sebool_enable(sebool="domain_fd_use") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'domain_fd_use is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="domain_fd_use" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="domain_fd_use") }}}

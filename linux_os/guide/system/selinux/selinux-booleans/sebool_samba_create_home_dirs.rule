@@ -7,7 +7,7 @@ title: 'Disable the samba_create_home_dirs SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>samba_create_home_dirs</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="samba_create_home_dirs" />
+    {{{ describe_sebool_disable(sebool="samba_create_home_dirs") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'samba_create_home_dirs is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="samba_create_home_dirs" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="samba_create_home_dirs") }}}

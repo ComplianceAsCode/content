@@ -9,7 +9,7 @@ description: |-
     This setting allows <tt>gssd</tt> processes to access Kerberos to read
     TGTs in the temp directory. If this setting is disabled, it should
     be enabled.
-    <sebool-macro enable="true" sebool="gssd_read_tmp" />
+    {{{ describe_sebool_enable(sebool="gssd_read_tmp") }}}
 
 rationale: ""
 
@@ -24,6 +24,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'gssd_read_tmp is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="gssd_read_tmp" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="gssd_read_tmp") }}}

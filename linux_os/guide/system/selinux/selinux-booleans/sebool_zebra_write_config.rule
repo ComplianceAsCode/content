@@ -7,7 +7,7 @@ title: 'Disable the zebra_write_config SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>zebra_write_config</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="zebra_write_config" />
+    {{{ describe_sebool_disable(sebool="zebra_write_config") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'zebra_write_config is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="zebra_write_config" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="zebra_write_config") }}}

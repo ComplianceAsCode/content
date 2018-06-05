@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>fips_mode</tt> is enabled.
     This allows all SELinux domains to execute in <tt>fips_mode</tt>.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="fips_mode" />
+    {{{ describe_sebool_enable(sebool="fips_mode") }}}
 
 rationale: ""
 
@@ -24,6 +24,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'fips_mode is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="fips_mode" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="fips_mode") }}}

@@ -6,7 +6,7 @@ description: |-
     The <tt>rsh</tt> service, which is available with
     the <tt>rsh-server</tt> package and runs as a service through xinetd,
     should be disabled.
-    <chkconfig-service-macro enable="false" service="rsh" />
+    {{{ describe_service_disable(service="rsh") }}}
 
 rationale: |-
     The rsh service uses unencrypted network communications, which
@@ -25,4 +25,4 @@ references:
     srg: SRG-OS-000033
     stigid: RHEL-06-000214
 
-ocil: '<xinetd-service-check-macro enable="false" service="rsh" />'
+ocil: '{{{ ocil_xinetd_service_disabled(service="rsh") }}}'

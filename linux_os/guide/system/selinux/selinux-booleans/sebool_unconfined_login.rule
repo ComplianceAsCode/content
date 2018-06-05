@@ -7,7 +7,7 @@ title: 'Enable the unconfined_login SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>unconfined_login</tt> is enabled.
     If this setting is disabled, it should be enabled.
-    <sebool-macro enable="true" sebool="unconfined_login" />
+    {{{ describe_sebool_enable(sebool="unconfined_login") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'unconfined_login is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="unconfined_login" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="unconfined_login") }}}

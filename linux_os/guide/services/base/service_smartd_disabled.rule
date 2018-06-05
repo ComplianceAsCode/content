@@ -8,7 +8,7 @@ description: |-
     SMART (Self-Monitoring, Analysis, and Reporting Technology) is a
     feature of hard drives that allows them to detect symptoms of disk failure and
     relay an appropriate warning.
-    <systemd-service-macro enable="false" service="smartd" />
+    {{{ describe_service_disable(service="smartd") }}}
 
 rationale: |-
     SMART can help protect against denial of
@@ -24,4 +24,4 @@ identifiers:
 references:
     nist: CM-7
 
-ocil: '<systemd-check-macro enable="false" service="smartd" />'
+ocil: '{{{ ocil_service_disabled(service="smartd") }}}'

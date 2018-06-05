@@ -587,8 +587,18 @@ Available CCEs that can be assigned to new rules are listed in the `shared/refer
 * `ref`: If the rule is part of a standard, it is referenced using the `ref` element. One rule can have multiple `ref` elements.
 
 Some of existing rule definitions contain elements that use macros.
-You can find definitions of those macros in one of the files in the `shared/transforms` directory.
-For example, the `ocil` element of `partition_for_tmp` uses the `partition-check-macro`, which is defined in `shared/transforms/shared_shorthand2xccdf.xslt`.
+There are two implementations of macros:
+* link:http://jinja.pocoo.org/docs/2.10/[Jinja macros], that are defined in `shared/modules/macros.jinja`, and
+* legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
+
+For example, the `ocil` element of `service_ntpd_enabled` uses the `ocil_service_enabled` jinja macro.
+Due to the need of supporting Ansible output, which also uses jinja, we had to modify control sequences, so macro operations require one more curly brace.
+For example, invocation of the partition macro looks like `{{{ complete_ocil_entry_separate_partition(part="/tmp") }}}` - there are three opening and closing curly braces instead of the two that are documented in the Jinja guide.
+
+The macros that are likely to be used in descriptions begin by `describe_`, whereas macros likely to be used in OCIL entries begin with `ocil_`.
+Sometimes, a rule requires `ocil` and `ocil_clause` to be specified, and they depend on each other.
+Macros that begin with `complete_ocil_entry_` were designed for exactly this purpose, as they make sure that OCIL and OCIL clauses are defined and consistent.
+
 
 Rules are unselected by default - even if the scanner reads rule definitions, they are effectively ignored during the scan or remediation.
 A rule may be selected by any number of profiles, so when the scanner is scanning using a profile the rule is included in, the rule is taken into account.

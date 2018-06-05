@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>xguest_use_bluetooth</tt> is enabled.
     This setting should be disabled as guests users should not be able to access
     or use bluetooth.
-    <sebool-macro enable="false" sebool="xguest_use_bluetooth" />
+    {{{ describe_sebool_disable(sebool="xguest_use_bluetooth") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'xguest_use_bluetooth is not enabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="xguest_use_bluetooth" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="xguest_use_bluetooth") }}}

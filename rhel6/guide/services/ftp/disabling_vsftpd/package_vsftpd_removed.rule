@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Uninstall vsftpd Package'
 
-description: '<yum-macro install="false" package="vsftpd" />'
+description: '{{{ describe_package_remove(package="vsftpd") }}}'
 
 rationale: |-
     Removing the vsftpd package decreases the risk of its
@@ -17,4 +17,4 @@ references:
     disa: 1436
     nist: CM-7
 
-ocil: '<package-check-macro package="vsftpd" />'
+{{{ complete_ocil_entry_package(package="vsftpd") }}}

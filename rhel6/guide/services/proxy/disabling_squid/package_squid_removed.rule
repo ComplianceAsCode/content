@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Uninstall squid Package'
 
-description: '<yum-macro install="false" package="squid" />'
+description: '{{{ describe_package_remove(package="squid") }}}'
 
 rationale: |-
     If there is no need to make the proxy server software available,
@@ -13,4 +13,4 @@ severity: unknown
 identifiers:
     cce: 26977-9
 
-ocil: '<package-check-macro package="squid" />'
+{{{ complete_ocil_entry_package(package="squid") }}}

@@ -7,7 +7,7 @@ title: 'Disable the postgresql_can_rsync SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>postgresql_can_rsync</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="postgresql_can_rsync" />
+    {{{ describe_sebool_disable(sebool="postgresql_can_rsync") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'postgresql_can_rsync is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="postgresql_can_rsync" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="postgresql_can_rsync") }}}

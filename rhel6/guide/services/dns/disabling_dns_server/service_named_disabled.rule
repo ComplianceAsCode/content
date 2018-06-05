@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable DNS Server'
 
-description: '<chkconfig-service-macro enable="false" service="named" />'
+description: '{{{ describe_service_disable(service="named") }}}'
 
 rationale: |-
     All network services involve some risk of compromise due to
@@ -17,4 +17,4 @@ references:
     disa: 366
     nist: CM-7
 
-ocil: '<service-check-macro enable="false" service="named" />'
+ocil: '{{{ ocil_service_disabled(service="named") }}}'

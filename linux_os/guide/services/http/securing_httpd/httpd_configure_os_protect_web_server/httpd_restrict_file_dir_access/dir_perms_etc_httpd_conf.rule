@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Set Permissions on the <tt>/etc/httpd/conf/</tt> Directory'
 
-description: '<fileperms-desc-macro file="/etc/http/conf" perms="0750" />'
+description: '{{{ describe_file_permissions(file="/etc/http/conf", perms="0750") }}}'
 
 rationale: |-
     Access to the web server's configuration files may allow an unauthorized user or attacker
@@ -15,4 +15,4 @@ severity: unknown
 identifiers:
     cce@rhel7: 80323-9
 
-ocil: '<fileperms-check-macro file="/etc/http/conf" perms="-rwxr-x---" />'
+ocil: '{{{ check_file_permissions(file="/etc/http/conf", perms="-rwxr-x---") }}}'

@@ -4,7 +4,7 @@ title: 'Disable tftp Service'
 
 description: |-
     The <tt>tftp</tt> service should be disabled.
-    <chkconfig-service-macro enable="false" service="tftp" />
+    {{{ describe_service_disable(service="tftp") }}}
 
 rationale: |-
     Disabling the <tt>tftp</tt> service ensures the system is not acting
@@ -21,4 +21,4 @@ references:
     srg: SRG-OS-000248
     stigid: RHEL-06-000223
 
-ocil: '<service-check-macro enable="false" service="tftp" />'
+ocil: '{{{ ocil_service_disabled(service="tftp") }}}'

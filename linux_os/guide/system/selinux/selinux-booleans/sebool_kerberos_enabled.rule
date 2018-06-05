@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>kerberos_enabled</tt> is enabled.
     If this setting is disabled, it should be enabled to allow confined
     applications to run with Kerberos.
-    <sebool-macro enable="true" sebool="kerberos_enabled" />
+    {{{ describe_sebool_enable(sebool="kerberos_enabled") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'kerberos_enabled is not enabled'
-
-ocil: '<sebool-check-macro enable="true" sebool="kerberos_enabled" />'
+{{{ complete_ocil_entry_sebool_enabled(sebool="kerberos_enabled") }}}

@@ -73,6 +73,14 @@ oval_header = (
 timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
 
 
+PKG_MANAGER_TO_SYSTEM = {
+    "yum": "rpm",
+    "zypper": "rpm",
+    "dnf": "rpm",
+    "apt_get": "dpkg",
+}
+
+
 class SSGError(RuntimeError):
     pass
 
@@ -287,6 +295,52 @@ def _extract_substitutions_dict_from_template(filename):
     return symbols_to_export
 
 
+def rename_items(original_dict, renames):
+    renamed_macros = dict()
+    for rename_from, rename_to in renames.items():
+        if rename_from in original_dict:
+            renamed_macros[rename_to] = original_dict[rename_from]
+    return renamed_macros
+
+
+def get_implied_properties(existing_properties):
+    result = dict()
+    if ("pkg_manager" in existing_properties
+            and "pkg_system" not in existing_properties):
+        result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[existing_properties["pkg_manager"]]
+    return result
+
+
+def _save_rename(result, stem, prefix):
+    result["{0}_{1}".format(prefix, stem)] = stem
+
+
+def _identify_special_macro_mapping(existing_properties):
+    result = dict()
+
+    pkg_manager = existing_properties.get("pkg_manager")
+    if pkg_manager is not None:
+        _save_rename(result, "describe_package_install", pkg_manager)
+        _save_rename(result, "describe_package_remove", pkg_manager)
+
+    pkg_system = existing_properties.get("pkg_system")
+    if pkg_system is not None:
+        _save_rename(result, "ocil_package", pkg_system)
+        _save_rename(result, "complete_ocil_entry_package", pkg_system)
+
+    init_system = existing_properties.get("init_system")
+    if init_system is not None:
+        _save_rename(result, "describe_service_enable", init_system)
+        _save_rename(result, "describe_service_disable", init_system)
+        _save_rename(result, "ocil_service_enabled", init_system)
+        _save_rename(result, "ocil_service_disabled", init_system)
+        _save_rename(result, "describe_socket_enable", init_system)
+        _save_rename(result, "describe_socket_disable", init_system)
+        _save_rename(result, "complete_ocil_entry_socket_and_service_disabled", init_system)
+
+    return result
+
+
 def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
     """
     Do the same as open_and_expand_yaml, but load definitions of macros
@@ -301,7 +355,10 @@ def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
         msg = ("Error extracting macro definitions from {0}: {1}"
                .format(JINJA_MACROS_DEFINITIONS, str(exc)))
         raise RuntimeError(msg)
+    mapping = _identify_special_macro_mapping(substitutions_dict)
+    special_macros = rename_items(macro_definitions, mapping)
     substitutions_dict.update(macro_definitions)
+    substitutions_dict.update(special_macros)
     return open_and_expand_yaml(yaml_file, substitutions_dict)
 
 
@@ -315,6 +372,12 @@ def open_yaml(yaml_file):
     with codecs.open(yaml_file, "r", "utf8") as stream:
         yaml_contents = _open_yaml(stream)
     return yaml_contents
+
+
+def open_product_yaml(yaml_file):
+    contents = open_yaml(yaml_file)
+    contents.update(get_implied_properties(contents))
+    return contents
 
 
 def required_yaml_key(yaml_contents, key):

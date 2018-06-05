@@ -8,7 +8,7 @@ description: |-
     The <tt>mcstransd</tt> daemon provides category label information
     to client processes requesting information. The label translations are defined
     in <tt>/etc/selinux/targeted/setrans.conf</tt>.
-    <yum-macro install="false" package="mcstrans" />
+    {{{ describe_package_remove(package="mcstrans") }}}
 
 rationale: |-
     Since this service is not used very often, disable it to reduce the

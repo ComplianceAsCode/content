@@ -7,7 +7,7 @@ title: 'Disable the antivirus_use_jit SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>antivirus_use_jit</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="antivirus_use_jit" />
+    {{{ describe_sebool_disable(sebool="antivirus_use_jit") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'antivirus_use_jit is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="antivirus_use_jit" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="antivirus_use_jit") }}}

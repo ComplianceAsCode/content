@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Uninstall vsftpd Package'
 
-description: '<yum-macro install="false" package="vsftpd" />'
+description: '{{{ describe_package_remove(package="vsftpd") }}}'
 
 rationale: |-
     Removing the vsftpd package decreases the risk of its
@@ -21,4 +21,4 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040690"
 
-ocil: '<package-check-macro package="vsftpd" />'
+{{{ complete_ocil_entry_package(package="vsftpd") }}}

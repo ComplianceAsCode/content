@@ -7,7 +7,7 @@ title: 'Disable the mmap_low_allowed SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>mmap_low_allowed</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="mmap_low_allowed" />
+    {{{ describe_sebool_disable(sebool="mmap_low_allowed") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'mmap_low_allowed is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="mmap_low_allowed" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="mmap_low_allowed") }}}

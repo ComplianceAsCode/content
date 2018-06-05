@@ -7,7 +7,7 @@ title: 'Disable the httpd_use_openstack SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>httpd_use_openstack</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="httpd_use_openstack" />
+    {{{ describe_sebool_disable(sebool="httpd_use_openstack") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'httpd_use_openstack is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="httpd_use_openstack" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_use_openstack") }}}

@@ -6,7 +6,7 @@ title: 'Install the SSSD Package'
 
 description: |-
     The <tt>sssd</tt> package should be installed.
-    <yum-macro install="true" package="sssd" />
+    {{{ describe_package_install(package="sssd") }}}
 
 rationale: ""
 
@@ -26,4 +26,4 @@ references:
 
 ocil_clause: 'the package is not installed'
 
-ocil: '<package-check-macro package="sssd" />'
+ocil: '{{{ ocil_package(package="sssd") }}}'

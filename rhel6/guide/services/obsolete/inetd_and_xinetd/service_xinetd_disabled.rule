@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable xinetd Service'
 
-description: '<chkconfig-service-macro enable="false" service="xinetd" />'
+description: '{{{ describe_service_disable(service="xinetd") }}}'
 
 rationale: |-
     The xinetd service provides a dedicated listener service for some programs,
@@ -24,4 +24,4 @@ references:
 ocil: |-
     If network services are using the xinetd service, this is not applicable.
     <br /><br />
-    <service-check-macro enable="false" service="xinetd" />
+    {{{ ocil_service_disabled(service="xinetd") }}}

@@ -8,7 +8,7 @@ description: |-
     By default, the SELinux boolean <tt>httpd_builtin_scripting</tt> is enabled.
     This setting should be disabled if <tt>httpd</tt> is not running <tt>php</tt>
     or some similary scripting language.
-    <sebool-macro enable="false" sebool="httpd_builtin_scripting" />
+    {{{ describe_sebool_disable(sebool="httpd_builtin_scripting") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'httpd_builtin_scripting is not enabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="httpd_builtin_scripting" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="httpd_builtin_scripting") }}}

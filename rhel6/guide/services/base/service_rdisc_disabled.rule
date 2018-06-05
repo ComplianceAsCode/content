@@ -7,7 +7,7 @@ description: |-
     Internet Router Discovery Protocol (IRDP), which allows discovery of routers on
     the local subnet. If a router is discovered then the local routing table is
     updated with a corresponding default route. By default this daemon is disabled.
-    <chkconfig-service-macro enable="false" service="rdisc" />
+    {{{ describe_service_disable(service="rdisc") }}}
 
 rationale: |-
     General-purpose systems typically have their network and routing
@@ -26,4 +26,4 @@ references:
     srg: SRG-OS-000096
     stigid: RHEL-06-000268
 
-ocil: '<service-check-macro enable="false" service="rdisc" />'
+ocil: '{{{ ocil_service_disabled(service="rdisc") }}}'

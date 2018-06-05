@@ -3,9 +3,9 @@ documentation_complete: true
 title: 'Verify Permissions and ownership on <tt>shadow</tt> File'
 
 description: |-
-    <fileperms-desc-macro file="/etc/shadow" perms="0640" />
-      <fileowner-desc-macro file="/etc/shadow" owner="root" />
-      <filegroupowner-desc-macro file="/etc/shadow" group="shadow" />
+    {{{ describe_file_permissions(file="/etc/shadow", perms="0640") }}}
+      {{{ describe_file_owner(file="/etc/shadow", owner="root") }}}
+      {{{ describe_file_group_owner(file="/etc/shadow", group="shadow") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -23,6 +23,6 @@ references:
     pcidss: Req-8.7.c
 
 ocil: |-
-    <fileperms-check-macro file="/etc/shadow" perms="-rw-r-----" />
-      <fileowner-check-macro file="/etc/shadow" owner="root" />
-      <filegroupowner-check-macro file="/etc/shadow" group="shadow" />
+    {{{ check_file_permissions(file="/etc/shadow", perms="-rw-r-----") }}}
+      {{{ check_file_owner(file="/etc/shadow", owner="root") }}}
+      {{{ check_file_group_owner(file="/etc/shadow", group="shadow") }}}

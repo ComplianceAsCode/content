@@ -7,7 +7,7 @@ title: 'Disable the mcelog_foreground SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>mcelog_foreground</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="mcelog_foreground" />
+    {{{ describe_sebool_disable(sebool="mcelog_foreground") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'mcelog_foreground is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="mcelog_foreground" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="mcelog_foreground") }}}

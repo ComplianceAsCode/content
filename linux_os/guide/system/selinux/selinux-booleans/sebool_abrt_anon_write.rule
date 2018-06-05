@@ -7,7 +7,7 @@ title: 'Disable the abrt_anon_write SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>abrt_anon_write</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="abrt_anon_write" />
+    {{{ describe_sebool_disable(sebool="abrt_anon_write") }}}
 
 rationale: ""
 
@@ -23,6 +23,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'abrt_anon_write is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="abrt_anon_write" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="abrt_anon_write") }}}

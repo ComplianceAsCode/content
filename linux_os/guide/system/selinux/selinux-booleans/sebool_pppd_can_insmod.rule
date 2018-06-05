@@ -7,7 +7,7 @@ title: 'Disable the pppd_can_insmod SELinux Boolean'
 description: |-
     By default, the SELinux boolean <tt>pppd_can_insmod</tt> is disabled.
     If this setting is enabled, it should be disabled.
-    <sebool-macro enable="false" sebool="pppd_can_insmod" />
+    {{{ describe_sebool_disable(sebool="pppd_can_insmod") }}}
 
 rationale: ""
 
@@ -22,6 +22,4 @@ references:
     srg: TBD
     stigid@rhel7: TBD
 
-ocil_clause: 'pppd_can_insmod is not disabled'
-
-ocil: '<sebool-check-macro enable="false" sebool="pppd_can_insmod" />'
+{{{ complete_ocil_entry_sebool_disabled(sebool="pppd_can_insmod") }}}

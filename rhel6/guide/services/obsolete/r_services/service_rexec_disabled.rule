@@ -6,7 +6,7 @@ description: |-
     The <tt>rexec</tt> service, which is available with
     the <tt>rsh-server</tt> package and runs as a service through xinetd,
     should be disabled.
-    <chkconfig-service-macro enable="false" service="rexec" />
+    {{{ describe_service_disable(service="rexec") }}}
 
 rationale: |-
     The rexec service uses unencrypted network communications, which
@@ -25,4 +25,4 @@ references:
     srg: SRG-OS-000033
     stigid: RHEL-06-000216
 
-ocil: '<xinetd-service-check-macro enable="false" service="rexec" />'
+ocil: '{{{ ocil_xinetd_service_disabled(service="rexec") }}}'
