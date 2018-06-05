@@ -21,7 +21,10 @@ set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}"
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
-option(SSG_OVAL_511_ENABLED "If enabled, OVAL 5.11 and OVAL 5.10 checks will be used in the final content. Otherwise only 5.10 checks will be used." TRUE)
+set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
+set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
+set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
+
 option(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED "If enabled, schematron validation will be performed as part of the ctest tests. Schematron takes a lot of time to complete but can find more issues than just plain XSD validation." TRUE)
 option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck validation of bash fixes will be performed as part of the ctest tests. Shellcheck tests don't pass right now, this option is discouraged until that's fixed." FALSE)
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
@@ -76,9 +79,8 @@ find_python_module(jinja2 REQUIRED)
 
 find_package(OpenSCAP REQUIRED)
 
-if (SSG_OVAL_511_ENABLED AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
-    set(SSG_OVAL_511_ENABLED OFF CACHE BOOL "OVAL 5.11 disabled because your version of OpenSCAP doesn't support it" FORCE)
-    message(WARNING "Your version of OpenSCAP does not support OVAL 5.11, disabling OVAL 5.11 for the SSG build.")
+if (SSG_TARGET_OVAL_MAJOR_VERSION EQUAL "5" AND SSG_TARGET_OVAL_VERSION_MINOR EQUAL "11" AND NOT "${OSCAP_V_OUTPUT}" MATCHES "OVAL Version: 5.11")
+    message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please switch the OVAL target version to 5.10 or lower. $ cmake -DSSG_TARGET_OVAL_MINOR_VERSION=10 ../")
 endif()
 
 execute_process(
@@ -139,7 +141,7 @@ message(STATUS " ")
 
 message(STATUS "Build options:")
 message(STATUS "SSG vendor string: ${SSG_VENDOR}")
-message(STATUS "OVAL 5.11: ${SSG_OVAL_511_ENABLED}")
+message(STATUS "Target OVAL version: ${SSG_TARGET_OVAL_VERSION}")
 message(STATUS "OVAL schematron validation: ${SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED}")
 message(STATUS "shellcheck bash fixes validation: ${SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED}")
 message(STATUS "SVG logo in XCCDFs: ${SSG_SVG_IN_XCCDF_ENABLED}")
@@ -181,12 +183,12 @@ ssg_build_bash_remediation_functions()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
-if(SSG_OVAL_511_ENABLED)
+if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
     ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}")
 else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-oval-5.10")
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
+    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-${SSG_TARGET_OVAL_VERSION}")
 endif()
 
 if (SSG_PRODUCT_CHROMIUM)

@@ -50,13 +50,6 @@
 #
 # Good luck hacking the SCAP Security Guide build system!
 
-# OSCAP_OVAL_VERSION is passed into generate-from-templates.py and it specifies
-# the highest OVAL version we can use.
-if(SSG_OVAL_511_ENABLED)
-    set(OSCAP_OVAL_VERSION "5.11")
-else()
-    set(OSCAP_OVAL_VERSION "5.10")
-endif()
 
 if(SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED)
     set(OSCAP_OVAL_SCHEMATRON_OPTION "--schematron")
@@ -164,22 +157,22 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes")
 
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-inputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-inputs
         OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_DEPENDS "${LANGUAGE_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-outputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} list-outputs
         OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_OUTPUTS "${LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} list-inputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} list-inputs
         OUTPUT_VARIABLE SHARED_LANGUAGE_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" SHARED_LANGUAGE_REMEDIATIONS_DEPENDS "${SHARED_LANGUAGE_REMEDIATIONS_DEPENDS_STR}")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} list-outputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} list-outputs
         OUTPUT_VARIABLE SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS "${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
@@ -192,10 +185,10 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGE)
         OUTPUT ${SHARED_LANGUAGE_REMEDIATIONS_OUTPUTS}
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}"
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} build
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_REMEDIATIONS_DIR}" --language ${LANGUAGE} build
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}"
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}/shared" --language ${LANGUAGE} build
         COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/combine-remediations.py" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
@@ -268,22 +261,22 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     message(STATUS "Scanning for dependencies of ${PRODUCT} checks (OVAL)...")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval list-inputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval list-inputs
         OUTPUT_VARIABLE OVAL_CHECKS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" OVAL_CHECKS_DEPENDS "${OVAL_CHECKS_DEPENDS_STR}")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval list-outputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval list-outputs
         OUTPUT_VARIABLE OVAL_CHECKS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" OVAL_CHECKS_OUTPUTS "${OVAL_CHECKS_OUTPUTS_STR}")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval list-inputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval list-inputs
         OUTPUT_VARIABLE SHARED_OVAL_CHECKS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" SHARED_OVAL_CHECKS_DEPENDS "${SHARED_OVAL_CHECKS_DEPENDS_STR}")
     execute_process(
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval list-outputs
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval list-outputs
         OUTPUT_VARIABLE SHARED_OVAL_CHECKS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" SHARED_OVAL_CHECKS_OUTPUTS "${SHARED_OVAL_CHECKS_OUTPUTS_STR}")
@@ -301,11 +294,11 @@ macro(ssg_build_oval_unlinked PRODUCT)
         OUTPUT ${SHARED_OVAL_CHECKS_OUTPUTS}
         # We have to remove all old checks in case the user removed something from the CSV files
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" --output "${BUILD_CHECKS_DIR}" --language oval build
         # We have to remove all old shared checks in case the user removed something from the CSV files
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${OSCAP_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
-        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "${OSCAP_OVAL_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/generate-from-templates.py" --shared "${SSG_SHARED}" --oval_version "${SSG_TARGET_OVAL_VERSION}" --input "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}/shared" --language oval build
+        COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/combine-ovals.py" --ssg_version "${SSG_VERSION}" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --oval_config "${CMAKE_BINARY_DIR}/oval.config" --oval_version "${SSG_TARGET_OVAL_VERSION}" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS ${OVAL_CHECKS_DEPENDS}
         DEPENDS ${SHARED_OVAL_CHECKS_DEPENDS}
