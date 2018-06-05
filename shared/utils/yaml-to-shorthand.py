@@ -469,7 +469,7 @@ class Rule(object):
         self.description = ""
         self.rationale = ""
         self.severity = "unknown"
-        self.references = []
+        self.references = {}
         self.identifiers = []
         self.ocil_clause = None
         self.ocil = None
@@ -493,7 +493,7 @@ class Rule(object):
         del yaml_contents["rationale"]
         rule.severity = required_yaml_key(yaml_contents, "severity")
         del yaml_contents["severity"]
-        rule.references = yaml_contents.pop("references", [])
+        rule.references = yaml_contents.pop("references", {})
         rule.identifiers = yaml_contents.pop("identifiers", [])
         rule.ocil_clause = yaml_contents.pop("ocil_clause", None)
         rule.ocil = yaml_contents.pop("ocil", None)
