@@ -1,10 +1,10 @@
-{{% macro sshd_check_ocil_clause_entry() -%}}
+{{% macro ocil_clause_entry_sshd_option() -%}}
 ocil_clause: "the required value is not set"
 {{%- endmacro %}}
 
 
-{{# Example usage: sshd_check(default="no", option="Banner", value="/etc/issue") #}}
-{{% macro sshd_check(default, option, value) -%}}
+{{# Example usage: ocil_sshd_option(default="no", option="Banner", value="/etc/issue") #}}
+{{% macro ocil_sshd_option(default, option, value) -%}}
     To determine how the SSH daemon's <tt>{{{ option }}}</tt> option is set, run the following command:
     <pre>$ sudo grep -i {{{ option }}} /etc/ssh/sshd_config</pre>
     {{% if default == "yes" -%}}
@@ -15,11 +15,11 @@ ocil_clause: "the required value is not set"
 {{%- endmacro %}}
 
 
-{{% macro sshd_check_complete_ocil_entry(default, option, value) -%}}
+{{% macro complete_ocil_entry_sshd_option(default, option, value) -%}}
 ocil: |
-    {{{ sshd_check(default, option, value) }}}
+    {{{ ocil_sshd_option(default, option, value) }}}
 
-{{{ sshd_check_ocil_clause_entry() }}}
+{{{ ocil_clause_entry_sshd_option() }}}
 {{%- endmacro %}}
 
 
