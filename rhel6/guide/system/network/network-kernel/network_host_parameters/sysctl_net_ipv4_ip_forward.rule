@@ -21,5 +21,5 @@ references:
     stigid: RHEL-06-000082
 
 ocil: |-
-    <sysctl-check-macro sysctl="net.ipv4.ip_forward" value="0" />
+    {{{ ocil_sysctl_option_value(sysctl="net.ipv4.ip_forward", value="0") }}}
     The ability to forward packets is only appropriate for routers.

@@ -503,3 +503,21 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     {{%- endif %}}
 {{%- endmacro %}}
 
+
+{{% macro ocil_sysctl_option_value(sysctl, value) -%}}
+    The status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
+    by running the following command:
+    <pre>$ sysctl {{{ sysctl }}}</pre>
+    The output of the command should indicate a value of <code>{{{ value }}}</code>.
+    If this value is not the default value, investigate how it could have been
+    adjusted at runtime, and verify it is not set improperly in <tt>/etc/sysctl.conf</tt>.
+{{%- endmacro %}}
+
+
+{{% macro complete_ocil_entry_sysctl_option_value(sysctl, value) -%}}
+ocil: |
+    {{{ ocil_sysctl_option_value(sysctl, value) }}}
+
+ocil_clause: "the correct value is not returned"
+{{%- endmacro %}}
+
