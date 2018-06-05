@@ -62,46 +62,25 @@ class Builder(object):
             "file_owner.csv":                   FileOwnerGenerator(),
             "file_permissions.csv":             FilePermissionsGenerator(),
         }
-        self.supported_ovals = ["oval_5.10"]
         self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
         utils_dir = os.path.dirname(os.path.realpath(__file__))
         root_dir = os.path.join(utils_dir, "..", "..")
         self.shared_templates_dir = \
             os.path.join(root_dir, "shared", "templates")
 
-        self.current_oval = "oval_5.10"
-
     def set_langs(self, langs):
         self.langs = langs
 
     def set_input_dir(self, input_dir):
         self.input_dir = input_dir
-        self.templates_dirs = {
-            "oval_5.10": self.input_dir,
-            "oval_5.11": os.path.join(self.input_dir, "oval_5.11_templates")
-        }
-
-        self.csv_dirs = {
-            "oval_5.10": os.path.join(self.input_dir, "csv"),
-            "oval_5.11": os.path.join(self.input_dir, "csv", "oval_5.11"),
-        }
-
-    def _set_current_oval(self, oval):
-        self.current_oval = oval
-
-    def _get_template_dir(self):
-        return self.templates_dirs[self.current_oval]
-
-    def _get_csv_dir(self):
-        return self.csv_dirs[self.current_oval]
+        self.template_dir = input_dir
+        self.csv_dir = os.path.join(input_dir, "csv")
 
     def _get_csv_list(self):
-        dir_ = self._get_csv_dir()
-
         csvs = []
 
         try:
-            files = os.listdir(dir_)
+            files = os.listdir(self.csv_dir)
         except OSError:
             return []
 
@@ -111,7 +90,7 @@ class Builder(object):
                 continue
 
             # skip empty files
-            filepath = os.path.join(dir_, file_)
+            filepath = os.path.join(self.csv_dir, file_)
             if os.stat(filepath).st_size == 0:
                 continue
 
@@ -139,26 +118,18 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
-        # Build scripts for multiple OVAL versions.
-        # At first for the oldest OVAL, then newer and newer
-        # this will allow to override older implementation
-        # with a never one.
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
+        for csv_filename in self._get_csv_list():
+            generator = self._get_generator_for_csv(csv_filename)
+            csv_filepath = os.path.join(self.csv_dir, csv_filename)
 
-            csv_dir = self._get_csv_dir()
-            for csv_filename in self._get_csv_list():
-                generator = self._get_generator_for_csv(csv_filename)
-                csv_filepath = os.path.join(csv_dir, csv_filename)
+            generator.reset()
+            generator.output_dir = self.output_dir
+            generator.action = ActionType.BUILD
+            generator.product_input_dir = self.template_dir
+            generator.shared_dir = self.ssg_shared
 
-                generator.reset()
-                generator.output_dir = self.output_dir
-                generator.action = ActionType.BUILD
-                generator.product_input_dir = self._get_template_dir()
-                generator.shared_dir = self.ssg_shared
-
-                for lang in self.langs:
-                    generator.csv_map(csv_filepath, language=lang)
+            for lang in self.langs:
+                generator.csv_map(csv_filepath, language=lang)
 
     def get_file_list(self, action):
         assert(action in [ActionType.INPUT, ActionType.OUTPUT])
@@ -167,27 +138,23 @@ class Builder(object):
         if action == ActionType.INPUT:
             pass
 
-        for oval in self.supported_ovals:
-            self._set_current_oval(oval)
+        for csv in self._get_csv_list():
+            csv_filepath = os.path.join(self.csv_dir, csv)
+            generator = self._get_generator_for_csv(csv)
 
-            csv_dir = self._get_csv_dir()
-            for csv in self._get_csv_list():
-                csv_filepath = os.path.join(csv_dir, csv)
-                generator = self._get_generator_for_csv(csv)
+            if action == ActionType.INPUT:
+                list_.append(csv_filepath)
 
-                if action == ActionType.INPUT:
-                    list_.append(csv_filepath)
+            generator.reset()
+            generator.output_dir = self.output_dir
+            generator.action = action
+            generator.product_input_dir = self.template_dir
+            generator.shared_dir = self.ssg_shared
 
-                generator.reset()
-                generator.output_dir = self.output_dir
-                generator.action = action
-                generator.product_input_dir = self._get_template_dir()
-                generator.shared_dir = self.ssg_shared
+            for lang in self.langs:
+                generator.csv_map(csv_filepath, language=lang)
 
-                for lang in self.langs:
-                    generator.csv_map(csv_filepath, language=lang)
-
-                list_.extend(generator.files)
+            list_.extend(generator.files)
 
         return self._deduplicate(list_)
 
@@ -223,8 +190,6 @@ if __name__ == "__main__":
                    help="output directory")
     p.add_argument("-s", "--shared", metavar="PATH", required=True,
                    help="Full absolute path to SSG shared directory")
-    p.add_argument('--oval_version', action="store", default="5.10",
-                   help="oval version")
 
     args, unknown = p.parse_known_args()
     if unknown:
@@ -240,16 +205,6 @@ if __name__ == "__main__":
     builder.set_input_dir(args.input)
     builder.output_dir = args.output
     builder.ssg_shared = args.shared
-
-    if args.oval_version == "5.10":
-        builder.supported_ovals = ["oval_5.10"]
-
-    elif args.oval_version == "5.11":
-        builder.supported_ovals = ["oval_5.10", "oval_5.11"]
-
-    else:
-        sys.stderr.write("Unknown oval version")
-        sys.exit(1)
 
     func = getattr(builder, args.cmd)
     func()
