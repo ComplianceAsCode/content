@@ -1,0 +1,47 @@
+<def-group>
+  <definition class="compliance" id="file_permissions%PATHID%" version="1">
+    <metadata>
+      <title>Permissions of %DFTYPE% %PATH%</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>%DFTYPE% %PATH% should has permissions %PERMISSIONS%.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_permissions%PATHID%_is_%PERMISSIONS%" />
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_file_permissions%PATHID%_is_%PERMISSIONS%" version="1"
+  check_existence="any_exist" check="all" comment="%DFTYPE% %PATH% has permissions
+  %PERMISSIONS%">
+    <unix:object object_ref="object_file_permissions%PATHID%" />
+    <unix:state state_ref="state_file_permissions%PATHID%" />
+  </unix:file_test>
+
+  <unix:file_object id="object_file_permissions%PATHID%" version="1"
+  comment="%DFTYPE% %PATH%">
+    {{% if "%DFTYPE%" == "directory" %}}
+      <unix:path operation="pattern match">%PATHREGEX%</unix:path>
+      <unix:filename xsi:nil="true"/>
+    {{% else %}}
+      <unix:filepath operation="pattern match">%PATHREGEX%</unix:filepath>
+    {{% endif %}}
+  </unix:file_object>
+
+  <unix:file_state id="state_file_permissions%PATHID%" version="1"
+  comment="permissions 755">
+    <unix:suid datatype="boolean">%SUID%</unix:suid>
+    <unix:sgid datatype="boolean">%SGID%</unix:sgid>
+    <unix:sticky datatype="boolean">%STICKY%</unix:sticky>
+    <unix:uread datatype="boolean">%UREAD%</unix:uread>
+    <unix:uwrite datatype="boolean">%UWRITE%</unix:uwrite>
+    <unix:uexec datatype="boolean">%UEXEC%</unix:uexec>
+    <unix:gread datatype="boolean">%GREAD%</unix:gread>
+    <unix:gwrite datatype="boolean">%GWRITE%</unix:gwrite>
+    <unix:gexec datatype="boolean">%GEXEC%</unix:gexec>
+    <unix:oread datatype="boolean">%OREAD%</unix:oread>
+    <unix:owrite datatype="boolean">%OWRITE%</unix:owrite>
+    <unix:oexec datatype="boolean">%OEXEC%</unix:oexec>
+  </unix:file_state>
+</def-group>
