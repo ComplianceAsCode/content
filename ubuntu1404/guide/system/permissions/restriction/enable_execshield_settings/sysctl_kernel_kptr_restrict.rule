@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Restrict exposed kernel pointers addresses access'
 
-description: '<sysctl-desc-macro sysctl="kernel.kptr_restrict" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}'
 
 rationale: |-
     Exposing kernel pointers (through procfs or <tt>seq_printf()</tt>) exposes

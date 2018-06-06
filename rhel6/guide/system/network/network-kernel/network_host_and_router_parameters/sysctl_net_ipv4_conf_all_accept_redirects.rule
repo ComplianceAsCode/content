@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Configure Kernel Parameter for Accepting ICMP Redirects for All Interfaces'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.all.accept_redirects" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.accept_redirects", value="0") }}}'
 
 rationale: |-
     Accepting ICMP redirects has few legitimate

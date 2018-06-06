@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Disable Core Dumps for SUID programs'
 
-description: '<sysctl-desc-macro sysctl="fs.suid_dumpable" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="fs.suid_dumpable", value="0") }}}'
 
 rationale: |-
     The core dump of a setuid program is more likely to contain

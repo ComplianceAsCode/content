@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Configure Kernel Parameter for Accepting Source-Routed Packets By Default'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_source_route" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.accept_source_route", value="0") }}}'
 
 rationale: |-
     Accepting source-routed packets in the IPv4 protocol has few legitimate

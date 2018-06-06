@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Disable Kernel Parameter for Sending ICMP Redirects by Default'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.send_redirects" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.send_redirects", value="0") }}}'
 
 rationale: |-
     Sending ICMP redirects permits the system to instruct other systems

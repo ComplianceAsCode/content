@@ -521,3 +521,13 @@ ocil: |
 ocil_clause: "the correct value is not returned"
 {{%- endmacro %}}
 
+
+{{% macro describe_sysctl_option_value(sysctl, value) -%}}
+    To set the runtime status of the <code>{{{ sysctl }}}</code> kernel parameter,
+    run the following command:
+    <pre>$ sudo sysctl -w {{{ sysctl }}}={{{ value }}}</pre>
+
+    If this is not the system default value, add the following line to <tt>/etc/sysctl.conf</tt>:
+    <pre>{{{ sysctl }}} = {{{ value }}}</pre>
+{{%- endmacro %}}
+

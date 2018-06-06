@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Configure Accepting IPv6 Router Advertisements'
 
-description: '<sysctl-desc-macro sysctl="net.ipv6.conf.default.accept_ra" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra", value="0") }}}'
 
 rationale: 'An illicit router advertisement message could result in a man-in-the-middle attack.'
 
