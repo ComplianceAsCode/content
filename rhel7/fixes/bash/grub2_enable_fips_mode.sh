@@ -3,17 +3,7 @@
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions
 
-# if prelink package is installed disable it, else ignore
-if rpm -q prelink 2>&1 > /dev/null; then
-	if grep -q '^PRELINKING=' /etc/sysconfig/prelink ; then
-		sed -i 's/^PRELINKING=.*/# Set PRELINKING to "no" per security requirements\nPRELINKING=no/' /etc/sysconfig/prelink
-	else
-        	echo -e "\n# Set PRELINKING to 'no' per security requirements" >> /etc/sysconfig/prelink
-        	echo "PRELINKING=no" >> /etc/sysconfig/prelink
-	fi
-
-	prelink -u -a
-fi
+disable_prelink
 
 package_install dracut-fips
 
