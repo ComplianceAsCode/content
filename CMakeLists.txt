@@ -83,8 +83,8 @@ if (SSG_TARGET_OVAL_MAJOR_VERSION EQUAL "5" AND SSG_TARGET_OVAL_VERSION_MINOR EQ
     message(FATAL_ERROR "Your version of OpenSCAP does not support OVAL 5.11, please switch the OVAL target version to 5.10 or lower. $ cmake -DSSG_TARGET_OVAL_MINOR_VERSION=10 ../")
 endif()
 
-if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11" AND NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    message(WARNING "You are targetting OVAL version ${TARGET_OVAL_VERSION}. In SSG we support/test 5.11 and 5.10 only!")
+if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
+    message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
 endif()
 
 execute_process(
