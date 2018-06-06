@@ -531,3 +531,12 @@ ocil_clause: "the correct value is not returned"
     <pre>{{{ sysctl }}} = {{{ value }}}</pre>
 {{%- endmacro %}}
 
+
+{{% macro weblink(link, text=none) -%}}
+    {{% if text is not none -%}}
+        <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ text }}}</a>
+    {{%- else %}}
+        <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ link }}}</a>
+    {{%- endif %}}
+{{%- endmacro %}}
+

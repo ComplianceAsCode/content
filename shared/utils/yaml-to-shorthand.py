@@ -241,8 +241,8 @@ class Benchmark(object):
         self.add_value(conditional_clause)
 
     @staticmethod
-    def from_yaml(yaml_file, id_, env_yaml=None):
-        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, env_yaml)
+    def from_yaml(yaml_file, id_, product_yaml=None):
+        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 

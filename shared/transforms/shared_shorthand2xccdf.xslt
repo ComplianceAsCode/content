@@ -525,17 +525,6 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="weblink-macro">
-    <xsl:choose>
-      <xsl:when test="@text">
-        <a xmlns="http://www.w3.org/1999/xhtml"><xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute><xsl:value-of select="@text"/></a>
-      </xsl:when>
-      <xsl:otherwise>
-        <a xmlns="http://www.w3.org/1999/xhtml"><xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute><xsl:value-of select="@link"/></a>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 

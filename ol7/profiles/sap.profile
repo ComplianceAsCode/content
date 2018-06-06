@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Security Profile of Oracle Linux 7 for SAP'
 
 description: |-
-    This profile contains rules for Oracle Linux 7 Operating System in compliance with SAP note 2069760 <weblink-macro link="https://launchpad.support.sap.com/#/notes/2069760" /> and SAP Security Baseline Template version 1.9 Item I-8 and section 4.1.2.2. <weblink-macro link="https://support.sap.com/content/dam/support/en_us/library/ssp/offerings-and-programs/support-services/sap-security-optimization-services-portfolio/Security_Baseline_Template.zip" />
+    This profile contains rules for Oracle Linux 7 Operating System in compliance with SAP note 2069760 {{{ weblink(link="https://support.sap.com/content/dam/support/en_us/library/ssp/offerings-and-programs/support-services/sap-security-optimization-services-portfolio/Security_Baseline_Template.zip") }}}
     Regardless of your system's workload all of these checks should pass.
     
 selections:
