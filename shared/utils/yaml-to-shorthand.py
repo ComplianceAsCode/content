@@ -470,7 +470,7 @@ class Rule(object):
         self.rationale = ""
         self.severity = "unknown"
         self.references = {}
-        self.identifiers = []
+        self.identifiers = {}
         self.ocil_clause = None
         self.ocil = None
         self.external_oval = None
@@ -494,7 +494,7 @@ class Rule(object):
         rule.severity = required_yaml_key(yaml_contents, "severity")
         del yaml_contents["severity"]
         rule.references = yaml_contents.pop("references", {})
-        rule.identifiers = yaml_contents.pop("identifiers", [])
+        rule.identifiers = yaml_contents.pop("identifiers", {})
         rule.ocil_clause = yaml_contents.pop("ocil_clause", None)
         rule.ocil = yaml_contents.pop("ocil", None)
         rule.external_oval = yaml_contents.pop("oval_external_content", None)
@@ -508,7 +508,21 @@ class Rule(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
+        rule.validate_identifiers(yaml_file)
         return rule
+
+    def validate_identifiers(self, yaml_file):
+        # Validate all identifiers are non-empty:
+        for ident_type, ident_val in self.identifiers.items():
+            if ident_val.strip() == "":
+                raise ValueError("Identifiers must not be empty: %s in file %s"
+                    % (ident_type, yaml_file))
+
+        # Validate that cce is valid
+        if 'cce' in self.identifiers:
+            if not ssgcommon.cce_is_valid("CCE-" + self.identifiers['cce']):
+                raise ValueError("CCE Identifiers must be valid: %s in file %s"
+                    % (self.identifiers['cce'], yaml_file))
 
     def to_xml_element(self):
         rule = ET.Element('Rule')
