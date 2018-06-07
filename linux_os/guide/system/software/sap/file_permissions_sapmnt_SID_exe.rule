@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Permissions of Directory /sapmnt/SID/exe is 755'
+
+description: |-
+    It is recommended to apply permissions <tt>755</tt> to directory
+    <tt>/sapmnt/SID/exe</tt>. 
+    <tt>SID</tt> is SAP System ID which is always three alphanumeric characters in upper case
+    beginning with an alphabetic character.
+    Use the following commands to set correct permissions (works for multiple SIDs): 
+    <pre>$sudo find /sapmnt -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe$' -exec chmod 755 {} \;</pre>
+
+rationale: |-
+
+severity: medium
+
+references:
+
+ocil_clause: 'unexpected permissions of directory /sapmnt/SID/exe' 
+
+ocil: |-
+    Use the following commands to set correct permissions:
+    <pre>$sudo find /sapmnt -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe$' -exec chmod 755 {} \;</pre>
