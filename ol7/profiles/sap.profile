@@ -17,4 +17,5 @@ selections:
     - package_ypserv_removed
     - var_accounts_authorized_local_users_regex=ol7forsap
     - accounts_authorized_local_users
+    - file_permissions_sapmnt_SID_exe
     - file_groupowner_sapmnt_SID_exe
