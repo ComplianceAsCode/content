@@ -1,0 +1,59 @@
+<def-group>
+  <definition class="compliance" id="file_owner%PATHID%" version="1">
+    <metadata>
+      <title>Owner of %DFTYPE% %PATH%</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>%DFTYPE% %PATH% should be owned by user %USER%. This means
+      the user_id of %DFTYPE% %PATH% should be the same as uid of %USER% 
+      from /etc/passwd.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_owner%PATHID%_is_%USER%" />
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_file_owner%PATHID%_is_%USER%" version="1"
+  check_existence="any_exist" check="all"
+  comment="user_id of %DFTYPE% %PATH% equals uid of %USER% from /etc/passwd">
+    <unix:object object_ref="object_file_owner%PATHID%_is_%USER%" />
+    <unix:state state_ref="state_file_owner%PATHID%_is_%USER%" />
+  </unix:file_test>
+
+  <unix:file_object id="object_file_owner%PATHID%_is_%USER%" version="1"
+  comment="%DFTYPE% %PATH%">
+    {{% if "%DFTYPE%" == "directory" %}}
+      <unix:path operation="pattern match">%PATHREGEX%</unix:path>
+      <unix:filename xsi:nil="true"/>
+    {{% else %}}
+      <unix:filepath operation="pattern match">%PATHREGEX%</unix:filepath>
+    {{% endif %}}
+  </unix:file_object>
+
+  <!-- limitation: the test works fine when there is one user matches the pattern 
+       on the os/vm, but cannot deal with multiple pattern users on one os/vm. -->
+  <!-- for example, if there are two sidadm users: linadm and qo1adm, the test will
+       fail regardless whom the directoires /sapmnt/SID/exe belongs to. -->
+  <unix:file_state id="state_file_owner%PATHID%_is_%USER%" version="1"
+  comment="user_id of %PATH% is %USER%">
+    <unix:user_id datatype="int" var_ref="var_user_id_%USER%"/>
+  </unix:file_state>
+
+  <ind:textfilecontent54_object id="object_uid_of_%USER%" version="1"
+  comment="get uid of %USER% from /etc/passwd, take sidadm differently as other users. 
+  filter out the sapadm user which is owner of SAP HostAgent.">
+    <ind:filepath>/etc/passwd</ind:filepath>
+    {{% if "%USER%" == "sidadm" %}}
+      <ind:pattern operation="pattern match">^(?!sap)[a-z][a-z0-9][a-z0-9]adm:x:([\d]+):</ind:pattern>
+    {{% else %}}
+      <ind:pattern operation="pattern match">^%USER%:x([\d]+):</ind:pattern>
+    {{% endif %}}
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_user_id_%USER%" version="1" datatype="int"
+  comment="uid of %USER% in /etc/passwd">
+    <object_component object_ref="object_uid_of_%USER%" item_field="subexpression" />
+  </local_variable>
+</def-group>

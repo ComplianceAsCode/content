@@ -1,0 +1,15 @@
+# Directory or file ownership
+# The format is: 
+#
+# PATH,USER[,[ALT_NAME],[directory|file],[PATHREGEX]]
+# 
+# The first column is the full path (include file name if the type is file).
+# The second column is the user the directory or file should belong to.
+# The third column is optional alternative name, it overwrites the convention. 
+# The fourth column is optional, it indicates if the type is directory or file.
+# Default is file.
+# The fifth column is optional, it's the regular expression of the path as defined
+# for OVAL in http://oval.mitre.org/language/about/re_support_5.6.html.
+# Remediation files will only be generated from template if the fifth column does not
+# exist or is empty. Please write individual remediations when using regex.
+#

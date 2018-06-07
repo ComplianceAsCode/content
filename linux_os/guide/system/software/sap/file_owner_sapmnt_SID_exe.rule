@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Owner of Directory /sapmnt/SID/exe is sidadm'
+
+description: |-
+    The directory <tt>/sapmnt/SID/exe</tt> should be owned by <tt>sidadm</tt>.
+    <tt>SID</tt> is SAP System ID which is always three alphanumeric characters
+    beginning with an alphabetic character. <tt>SID</tt> is in uppercase while the
+    user <tt>sidadm</tt> in lowercase.
+    <tt>Limitation:</tt> with the current version, this OVAL test can only verify
+    the ownership of <tt>/sapmnt/SID/exe</tt> when one SID exists on each OS/VM.
+    If there are multiple <tt>sidadm</tt> users on one OS/VM, the test will fail
+    regardless the directories <tt>/sapmnt/SID/exe</tt> belongs to whom.
+    Nevertheless, you may always use the following bash commands to set correct ownership,
+    the commands can deal with multiple SIDs on each OS/VM: 
+    <pre>$sudo for i in $(find /sapmnt -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe$');do SID=${i:8:3};sidadm=$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')adm;uid=$(id -u $sidadm);chown $sidadm $i;done </pre>
+
+rationale: |-
+
+severity: medium
+
+references:
+
+ocil_clause: 'unexpected access privileges of directory /sapmnt/SID/exe' 
+
+ocil: |-
+    Use the following commands to set correct ownership:
+    <pre>$sudo for i in $(find /sapmnt -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe$');do SID=${i:8:3};sidadm=$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')adm;uid=$(id -u $sidadm);chown $sidadm $i;done </pre>
