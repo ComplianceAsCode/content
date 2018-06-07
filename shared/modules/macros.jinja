@@ -483,11 +483,3 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     If properly configured, the output should indicate the following group-owner.
     <code>{{{ group }}}</code>
 {{%- endmacro %}}
-
-
-{{%- macro ocil_file_permissions(file, perms) %}}
-    To check the permissions of <code>{{{ file }}}</code>, run the command:
-    <pre>$ ls -l {{{ file }}}</pre>
-    If properly configured, the output should indicate the following permissions:
-    <code>{{{ perms }}}</code>
-{{%- endmacro %}}
