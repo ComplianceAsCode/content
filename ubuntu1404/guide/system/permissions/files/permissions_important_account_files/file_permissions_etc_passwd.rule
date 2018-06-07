@@ -4,8 +4,8 @@ title: 'Verify Permissions and ownership on <tt>passwd</tt> File'
 
 description: |-
     {{{ describe_file_permissions(file="/etc/passwd", perms="0644") }}}
-      {{{ describe_file_owner(file="/etc/passwd", owner="root") }}}
-      {{{ describe_file_group_owner(file="/etc/passwd", group="root") }}}
+    {{{ describe_file_owner(file="/etc/passwd", owner="root") }}}
+    {{{ describe_file_group_owner(file="/etc/passwd", group="root") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains information about the users that are configured on
@@ -18,6 +18,6 @@ references:
     nist: AC-6
 
 ocil: |-
-    {{{ check_file_permissions(file="/etc/passwd", perms="-rw-r--r--") }}}
-      {{{ check_file_owner(file="/etc/passwd", owner="root") }}}
-      {{{ check_file_group_owner(file="/etc/passwd", group="root") }}}
+    {{{ ocil_file_permissions(file="/etc/passwd", perms="-rw-r--r--") }}}
+    {{{ ocil_file_owner(file="/etc/passwd", owner="root") }}}
+    {{{ ocil_file_group_owner(file="/etc/passwd", group="root") }}}

@@ -4,8 +4,8 @@ title: 'Verify Permissions and ownership on <tt>gshadow</tt> File'
 
 description: |-
     {{{ describe_file_permissions(file="/etc/gshadow", perms="0640") }}}
-      {{{ describe_file_owner(file="/etc/gshadow", owner="root") }}}
-      {{{ describe_file_group_owner(file="/etc/gshadow", group="shadow") }}}
+    {{{ describe_file_owner(file="/etc/gshadow", owner="root") }}}
+    {{{ describe_file_group_owner(file="/etc/gshadow", group="shadow") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains group password hashes. Protection of this file
@@ -19,6 +19,6 @@ references:
     nist: AC-6
 
 ocil: |-
-    {{{ check_file_permissions(file="/etc/gshadow", perms="-rw-r-----") }}}
-      {{{ check_file_owner(file="/etc/gshadow", owner="root") }}}
-      {{{ check_file_group_owner(file="/etc/gshadow", group="shadow") }}}
+    {{{ ocil_file_permissions(file="/etc/gshadow", perms="-rw-r-----") }}}
+    {{{ ocil_file_owner(file="/etc/gshadow", owner="root") }}}
+    {{{ ocil_file_group_owner(file="/etc/gshadow", group="shadow") }}}

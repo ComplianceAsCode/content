@@ -4,8 +4,8 @@ title: 'Verify Permissions and ownership on <tt>shadow</tt> File'
 
 description: |-
     {{{ describe_file_permissions(file="/etc/shadow", perms="0640") }}}
-      {{{ describe_file_owner(file="/etc/shadow", owner="root") }}}
-      {{{ describe_file_group_owner(file="/etc/shadow", group="shadow") }}}
+    {{{ describe_file_owner(file="/etc/shadow", owner="root") }}}
+    {{{ describe_file_group_owner(file="/etc/shadow", group="shadow") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -23,6 +23,6 @@ references:
     pcidss: Req-8.7.c
 
 ocil: |-
-    {{{ check_file_permissions(file="/etc/shadow", perms="-rw-r-----") }}}
-      {{{ check_file_owner(file="/etc/shadow", owner="root") }}}
-      {{{ check_file_group_owner(file="/etc/shadow", group="shadow") }}}
+    {{{ ocil_file_permissions(file="/etc/shadow", perms="-rw-r-----") }}}
+    {{{ ocil_file_owner(file="/etc/shadow", owner="root") }}}
+    {{{ ocil_file_group_owner(file="/etc/shadow", group="shadow") }}}
