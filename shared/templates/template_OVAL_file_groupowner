@@ -1,0 +1,48 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner%PATHID%" version="1">
+    <metadata>
+      <title>Group Owner of %DFTYPE% %PATH%</title>
+      <affected family="unix">
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>%DFTYPE% %PATH% should be owned by group %GROUP%</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_file_groupowner%PATHID%_is_%GROUP%" />
+    </criteria>
+  </definition>
+
+  <unix:file_test id="test_file_groupowner%PATHID%_is_%GROUP%" version="1"
+  check_existence="any_exist" check="all"
+  comment="%DFTYPE% %PATH% is owned by group %GROUP%">
+    <unix:object object_ref="object_file_groupowner%PATHID%" />
+    <unix:state state_ref="state_file_groupowner%PATHID%" />
+  </unix:file_test>
+
+  <unix:file_object id="object_file_groupowner%PATHID%" version="1"
+  comment="%DFTYPE% %PATH%">
+    {{% if "%DFTYPE%" == "directory" %}}
+      <unix:path operation="pattern match">%PATHREGEX%</unix:path>
+      <unix:filename xsi:nil="true"/>
+    {{% else %}}
+      <unix:filepath operation="pattern match">%PATHREGEX%</unix:filepath>
+    {{% endif %}}
+  </unix:file_object>
+
+  <unix:file_state id="state_file_groupowner%PATHID%" version="1"
+  comment="group owner is %GROUP%">
+    <unix:group_id datatype="int" var_ref="var_group_id_%GROUP%"/>
+  </unix:file_state>
+
+  <ind:textfilecontent54_object id="object_group_id_%GROUP%" version="1"
+  comment="get group id of %GROUP% from file /etc/group">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^%GROUP%:x:([\d]+):</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <local_variable id="var_group_id_%GROUP%" version="1" datatype="int" 
+  comment="put group id of %GROUP% into a variable">
+    <object_component object_ref="object_group_id_%GROUP%" item_field="subexpression"/>
+  </local_variable>
+</def-group>
