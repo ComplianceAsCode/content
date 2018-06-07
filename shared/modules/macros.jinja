@@ -23,7 +23,7 @@ ocil: |
 {{%- endmacro %}}
 
 
-{{% macro iptables_desc(traffic_action, how_to_do, proto, port) -%}}
+{{% macro _iptables_desc(traffic_action, how_to_do, proto, port) -%}}
     To configure <tt>iptables</tt> {{{ traffic_action }}} port {{{ port }}} traffic, one must edit
     <tt>/etc/sysconfig/iptables</tt> and
     <tt>/etc/sysconfig/ip6tables</tt> (if IPv6 is in use).
@@ -32,9 +32,8 @@ ocil: |
 {{%- endmacro %}}
 
 
-{{# Example usage: iptables_describe_block(proto="tcp", port=80) #}}
-{{% macro iptables_describe_block(proto, port) -%}}
-{{{ iptables_desc(
+{{% macro describe_iptables_block(proto, port) -%}}
+{{{ _iptables_desc(
 	traffic_action="to block",
 	how_to_do="Remove the following line, ensuring that it does not appear the INPUT chain:",
 	proto=proto,
@@ -43,8 +42,8 @@ ocil: |
 {{%- endmacro %}}
 
 
-{{% macro iptables_describe_allow(proto, port) -%}}
-{{{ iptables_desc(
+{{% macro describe_iptables_allow(proto, port) -%}}
+{{{ _iptables_desc(
 	traffic_action="to allow",
 	how_to_do="Add the following line, ensuring that it appears before the final LOG and DROP lines for the INPUT chain:",
 	proto=proto,
