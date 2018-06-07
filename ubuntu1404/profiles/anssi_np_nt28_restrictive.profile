@@ -15,4 +15,4 @@ selections:
     - package_auditd_installed
     - package_cron_installed
     - service_auditd_enabled
-    - service_ntpd_enabled
+    - service_ntp_enabled
