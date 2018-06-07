@@ -43,7 +43,7 @@ class FilePermissionsGenerator(FilesGenerator):
             pathregex = '^' + path + '$'
             rem_from_template = True
 
-        # decode the permissions of octal format: nnn or nnnn 
+        # decode the permissions of octal format: nnn or nnnn
         if len(mode) == 4:                         # calculate the suid, sgid and sticky bit
             perm = int(mode[0])                    # from the first digit
             suid = str(perm / 2 / 2 % 2)
@@ -58,11 +58,8 @@ class FilePermissionsGenerator(FilesGenerator):
         if len(mode) != 3:
             raise RuntimeError(
                 "ERROR: input violation: the mode must be in format nnn or nnnn")
-            
-        if target == "oval":
-            #raise RuntimeError(
-            #    "INFO: sbits are", suid, sgid, sticky )
 
+        if target == "oval":
             self.file_from_template(
                 "./template_OVAL_file_permissions",
                 {
