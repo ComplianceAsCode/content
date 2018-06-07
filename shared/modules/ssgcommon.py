@@ -2,10 +2,15 @@ import datetime
 import platform
 import subprocess
 import re
-import yaml
 import codecs
 import jinja2
 import os.path
+import yaml
+
+try:
+    from yaml import CSafeLoader as yaml_SafeLoader
+except ImportError:
+    from yaml import SafeLoader as yaml_SafeLoader
 
 
 def bool_constructor(self, node):
@@ -13,7 +18,7 @@ def bool_constructor(self, node):
 
 
 # Don't follow python bool case
-yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
 
 
 try:
@@ -261,7 +266,7 @@ def _open_yaml(stream):
     Open given file-like object and parse it as YAML
     Return None if it contains "documentation_complete" key set to "false".
     """
-    yaml_contents = yaml.safe_load(stream)
+    yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
 
     if yaml_contents.pop("documentation_complete", "true") == "false":
         return None
