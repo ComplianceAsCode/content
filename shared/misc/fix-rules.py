@@ -2,6 +2,7 @@
 
 import sys
 import os
+import jinja2
 
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
@@ -13,7 +14,7 @@ import ssgcommon
 
 def has_empty_identifier(yaml_file, product_yaml=None):
     rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
-    if 'identifier' in rule and rule['identifier'] is None:
+    if 'identifiers' in rule and rule['identifiers'] is None:
         return True
 
     if 'identifiers' in rule and rule['identifiers'] is not None:
@@ -35,11 +36,25 @@ def has_empty_references(yaml_file, product_yaml=None):
     return False
 
 
+def has_prefix_cce(yaml_file, product_yaml=None):
+    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    if 'identifiers' in rule and rule['identifiers'] is not None:
+        for i_type, i_value in rule['identifiers'].items():
+            if i_type[0:3] == 'cce':
+                has_prefix = i_value[0:3].upper() == 'CCE'
+                remainder_valid = ssgcommon.cce_is_valid("CCE-" + i_value[3:])
+                remainder_valid |= ssgcommon.cce_is_valid("CCE-" + i_value[4:])
+                return has_prefix and remainder_valid
+    return False
+
+
 def has_invalid_cce(yaml_file, product_yaml=None):
     rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
-    if 'identifiers' in rule and 'cce' in rule['identifiers']:
-        if not ssgcommon.cce_is_valid("CCE-" + rule['identifiers']['cce']):
-            return True
+    if 'identifiers' in rule and rule['identifiers'] is not None:
+        for i_type, i_value in rule['identifiers'].items():
+            if i_type[0:3] == 'cce':
+                if not ssgcommon.cce_is_valid("CCE-" + i_value):
+                    return True
     return False
 
 
@@ -109,7 +124,9 @@ def find_rules(directory, func):
             try:
                 if func(path, product_yaml):
                     results.append((path, product_yaml_path))
-            except:
+            except jinja2.exceptions.UndefinedError:
+                print("Failed to parse file %s (with product.yaml: %s). Skipping"
+                      % (path, product_yaml_path))
                 pass
 
     return results
@@ -178,7 +195,7 @@ def remove_section_keys(file_contents, yaml_contents, section, removed_keys):
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
         raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-            % (path, sec_ranges))
+                           % (path, sec_ranges))
 
     begin, end = sec_ranges[0]
     r_lines = set()
@@ -203,7 +220,7 @@ def remove_section_keys(file_contents, yaml_contents, section, removed_keys):
 
 
 def rewrite_value_int_str(line):
-    # Rewrites a key to explicitly be a string. Assumes it starts
+    # Rewrites a key's value to explicitly be a string. Assumes it starts
     # as an integer. Takes a line.
     key_end = line.index(':')
     key = line[0:key_end]
@@ -212,7 +229,20 @@ def rewrite_value_int_str(line):
     return key + ": " + str_value
 
 
-def rewrite_section_value_int_str(file_contents, yaml_contents, section, int_keys):
+def rewrite_value_remove_prefix(line):
+    # Rewrites a key's value to remove a "CCE" prefix.
+    key_end = line.index(':')
+    key = line[0:key_end]
+    value = line[key_end+1:].strip()
+    new_value = value
+    if ssgcommon.cce_is_valid("CCE-" + value[3:]):
+        new_value = value[3:]
+    elif ssgcommon.cce_is_valid("CCE-" + value[4:]):
+        new_value = value[4:]
+    return key + ": " + new_value
+
+
+def rewrite_section_value(file_contents, yaml_contents, section, keys, transform):
     # For a given section, rewrite the keys in int_keys to be strings. Refuses to
     # operate if the given section appears more than once in the file. Assumes all
     # instances of key are an integer; all will get updated.
@@ -221,7 +251,7 @@ def rewrite_section_value_int_str(file_contents, yaml_contents, section, int_key
     sec_ranges = find_section_lines(file_contents, section)
     if len(sec_ranges) != 1:
         raise RuntimeError("Refusing to fix file: %s -- could not find one section: %d"
-            % (path, sec_ranges))
+                           % (path, sec_ranges))
 
     begin, end = sec_ranges[0]
     r_lines = set()
@@ -231,15 +261,20 @@ def rewrite_section_value_int_str(file_contents, yaml_contents, section, int_key
         line = file_contents[line_num].strip()
         len_line = len(line)
 
-        for key in int_keys:
+        for key in keys:
             k_l = len(key)+1
             k_i = key + ":"
 
             if len_line >= k_l and line[0:k_l] == k_i:
-                new_contents[line_num] = rewrite_value_int_str(file_contents[line_num])
+                new_contents[line_num] = transform(file_contents[line_num])
                 break
 
     return new_contents
+
+
+def rewrite_section_value_int_str(file_contents, yaml_contents, section, int_keys):
+    return rewrite_section_value(file_contents, yaml_contents, section, int_keys,
+                                 rewrite_value_int_str)
 
 
 def fix_empty_identifier(file_contents, yaml_contents):
@@ -265,6 +300,38 @@ def fix_empty_reference(file_contents, yaml_contents):
                 empty_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, empty_identifiers)
+
+
+def fix_prefix_cce(file_contents, yaml_contents):
+    section = 'identifiers'
+
+    prefixed_identifiers = []
+
+    if yaml_contents[section] is not None:
+        for i_type, i_value in yaml_contents[section].items():
+            if i_type[0:3] == 'cce':
+                has_prefix = i_value[0:3].upper() == 'CCE'
+                remainder_valid = ssgcommon.cce_is_valid("CCE-" + i_value[3:])
+                remainder_valid |= ssgcommon.cce_is_valid("CCE-" + i_value[4:])
+                if has_prefix and remainder_valid:
+                    prefixed_identifiers.append(i_type)
+
+    return rewrite_section_value(file_contents, yaml_contents, section, prefixed_identifiers,
+                                 rewrite_value_remove_prefix)
+
+
+def fix_invalid_cce(file_contents, yaml_contents):
+    section = 'identifiers'
+
+    invalid_identifiers = []
+
+    if yaml_contents[section] is not None:
+        for i_type, i_value in yaml_contents[section].items():
+            if i_type[0:3] == 'cce':
+                if not ssgcommon.cce_is_valid("CCE-" + i_value):
+                    invalid_identifiers.append(i_type)
+
+    return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
 
 
 def fix_int_identifier(file_contents, yaml_contents):
@@ -346,13 +413,36 @@ def fix_empty_references(directory):
         fix_file(rule_path, product_yaml, fix_empty_reference)
 
 
+def find_prefix_cce(directory):
+    results = find_rules(directory, has_prefix_cce)
+    print("Number of rules with prefixed CCEs: %d" % len(results))
+
+    for result in results:
+        rule_path = result[0]
+        rule_path = result[0]
+        product_yaml_path = result[1]
+
+        product_yaml = None
+        if product_yaml_path is not None:
+            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+
+        fix_file(rule_path, product_yaml, fix_prefix_cce)
+
+
 def find_invalid_cce(directory):
     results = find_rules(directory, has_invalid_cce)
     print("Number of rules with invalid CCEs: %d" % len(results))
 
     for result in results:
         rule_path = result[0]
-        print(rule_path)
+        rule_path = result[0]
+        product_yaml_path = result[1]
+
+        product_yaml = None
+        if product_yaml_path is not None:
+            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+
+        fix_file(rule_path, product_yaml, fix_invalid_cce)
 
 
 def find_int_identifiers(directory):
@@ -388,6 +478,8 @@ def find_int_references(directory):
 def __main__():
     if sys.argv[1] == 'empty_identifiers':
         fix_empty_identifiers(sys.argv[2])
+    elif sys.argv[1] == 'prefixed_identifiers':
+        find_prefix_cce(sys.argv[2])
     elif sys.argv[1] == 'invalid_identifiers':
         find_invalid_cce(sys.argv[2])
     elif sys.argv[1] == 'int_identifiers':
@@ -400,6 +492,7 @@ def __main__():
         print("Usage: %s mode /full/path/to/src/directory" % sys.argv[0])
         print("Modes:")
         print("\tempty_identifiers - check and fix rules with empty identifiers")
+        print("\tprefixed_identifiers - check and fix rules with prefixed (CCE-) identifiers")
         print("\tinvalid_identifiers - check and fix rules with invalid identifiers")
         print("\tint_identifiers - check and fix rules with pseudo-integer identifiers")
         print("\tempty_references - check and fix rules with empty references")

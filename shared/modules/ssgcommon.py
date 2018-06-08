@@ -181,7 +181,7 @@ def cce_is_valid(cceid):
 
     http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html
     """
-    match = re.search(r'CCE-\d{4,5}-\d', cceid)
+    match = re.match(r'^CCE-\d{4,5}-\d$', cceid)
     return match is not None
 
 

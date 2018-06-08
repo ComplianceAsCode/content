@@ -522,16 +522,14 @@ class Rule(object):
         for ident_type, ident_val in self.identifiers.items():
             if not type(ident_type) == str or not type(ident_val) == str:
                 raise ValueError("Identifiers and values must be strings: %s in file %s"
-                    % (ident_type, yaml_file))
+                                 % (ident_type, yaml_file))
             if ident_val.strip() == "":
                 raise ValueError("Identifiers must not be empty: %s in file %s"
-                    % (ident_type, yaml_file))
-
-        # Validate that cce is valid
-        if 'cce' in self.identifiers:
-            if not ssgcommon.cce_is_valid("CCE-" + self.identifiers['cce']):
-                raise ValueError("CCE Identifiers must be valid: %s in file %s"
-                    % (self.identifiers['cce'], yaml_file))
+                                 % (ident_type, yaml_file))
+            if ident_type[0:3] == 'cce':
+                if not ssgcommon.cce_is_valid("CCE-" + ident_val):
+                    raise ValueError("CCE Identifiers must be valid: value %s for cce %s"
+                                     " in file %s" % (ident_val, ident_type, yaml_file))
 
     def validate_references(self, yaml_file):
         if self.references is None:
@@ -540,10 +538,10 @@ class Rule(object):
         for ref_type, ref_val in self.references.items():
             if not type(ref_type) == str or not type(ref_val) == str:
                 raise ValueError("References and values must be strings: %s in file %s"
-                    % (ref_type, yaml_file))
+                                 % (ref_type, yaml_file))
             if ref_val.strip() == "":
                 raise ValueError("References must not be empty: %s in file %s"
-                    % (ref_type, yaml_file))
+                                 % (ref_type, yaml_file))
 
     def to_xml_element(self):
         rule = ET.Element('Rule')
