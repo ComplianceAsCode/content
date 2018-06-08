@@ -30,7 +30,7 @@ option(SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED "If enabled, shellcheck vali
 option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used to validate URLs in all the HTML guides and tables." TRUE)
 option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
-set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where should the jinja2 cached bytecode be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds if necessary.")
+set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
 option(SSG_PRODUCT_CHROMIUM "If enabled, the Chromium SCAP content will be built" TRUE)
 option(SSG_PRODUCT_DEBIAN8 "If enabled, the Debian8 SCAP content will be built" TRUE)
