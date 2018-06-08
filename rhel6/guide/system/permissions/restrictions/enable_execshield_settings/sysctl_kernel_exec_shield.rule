@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Enable ExecShield'
 
-description: '<sysctl-desc-macro sysctl="kernel.exec-shield" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.exec-shield", value="1") }}}'
 
 rationale: |-
     ExecShield uses the segmentation feature on all x86 systems
@@ -24,4 +24,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000079
 
-ocil: '<sysctl-check-macro sysctl="kernel.exec-shield" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.exec-shield", value="1") }}}

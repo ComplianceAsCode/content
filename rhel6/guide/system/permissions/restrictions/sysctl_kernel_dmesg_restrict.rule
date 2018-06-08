@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Restrict Access to Kernel Message Buffer'
 
-description: '<sysctl-desc-macro sysctl="kernel.dmesg_restrict" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}'
 
 rationale: "Unprivileged access to the kernel syslog can expose sensitive kernel \naddress information."
 
@@ -11,4 +11,4 @@ severity: unknown
 identifiers:
     cce: 27366-4
 
-ocil: '<sysctl-check-macro sysctl="kernel.dmesg_restrict" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.dmesg_restrict", value="1") }}}

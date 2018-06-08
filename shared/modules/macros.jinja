@@ -483,3 +483,60 @@ ocil_clause: "{{{ sebool }}} is not enabled"
     If properly configured, the output should indicate the following group-owner.
     <code>{{{ group }}}</code>
 {{%- endmacro %}}
+
+
+{{%- macro check_file_permissions(file, perms) %}}
+    To check the permissions of <code>{{{ file }}}</code>, run the command:
+    <pre>$ ls -l {{{ file }}}</pre>
+    If properly configured, the output should indicate the following permissions:
+    <code>{{{ perms }}}</code>
+{{%- endmacro %}}
+
+
+{{% macro describe_mount(option, part) -%}}
+    Add the <code>{{{ option }}}</code> option to the fourth column of
+    <tt>/etc/fstab</tt> for the line which controls mounting of
+    {{% if part.startswith('/') -%}}
+        <code>{{{ part }}}</code>.
+    {{%- else %}}
+        {{{ part }}}.
+    {{%- endif %}}
+{{%- endmacro %}}
+
+
+{{% macro ocil_sysctl_option_value(sysctl, value) -%}}
+    The status of the <code>{{{ sysctl }}}</code> kernel parameter can be queried
+    by running the following command:
+    <pre>$ sysctl {{{ sysctl }}}</pre>
+    The output of the command should indicate a value of <code>{{{ value }}}</code>.
+    If this value is not the default value, investigate how it could have been
+    adjusted at runtime, and verify it is not set improperly in <tt>/etc/sysctl.conf</tt>.
+{{%- endmacro %}}
+
+
+{{% macro complete_ocil_entry_sysctl_option_value(sysctl, value) -%}}
+ocil: |
+    {{{ ocil_sysctl_option_value(sysctl, value) }}}
+
+ocil_clause: "the correct value is not returned"
+{{%- endmacro %}}
+
+
+{{% macro describe_sysctl_option_value(sysctl, value) -%}}
+    To set the runtime status of the <code>{{{ sysctl }}}</code> kernel parameter,
+    run the following command:
+    <pre>$ sudo sysctl -w {{{ sysctl }}}={{{ value }}}</pre>
+
+    If this is not the system default value, add the following line to <tt>/etc/sysctl.conf</tt>:
+    <pre>{{{ sysctl }}} = {{{ value }}}</pre>
+{{%- endmacro %}}
+
+
+{{% macro weblink(link, text=none) -%}}
+    {{% if text is not none -%}}
+        <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ text }}}</a>
+    {{%- else %}}
+        <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ link }}}</a>
+    {{%- endif %}}
+{{%- endmacro %}}
+

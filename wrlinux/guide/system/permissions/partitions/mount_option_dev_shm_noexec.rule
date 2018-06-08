@@ -5,7 +5,7 @@ title: 'Add noexec Option to /dev/shm'
 description: |-
     The <tt>noexec</tt> mount option can be used to prevent binaries from being executed out of <tt>/dev/shm</tt>.
     It can be dangerous to allow the execution of binaries from world-writable temporary storage directories such as <tt>/dev/shm</tt>.
-    <mount-desc-macro option="noexec" part="/dev/shm" />
+    {{{ describe_mount(option="noexec", part="/dev/shm") }}}
 
 rationale: 'Allowing users to execute binaries from world-writable directories such as <tt>/dev/shm</tt> can expose the system to potential compromise.'
 

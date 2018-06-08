@@ -392,7 +392,6 @@
 
             <xsl:attribute name="export-name">
               <!-- add clauses if specific macros are found within -->
-              <xsl:if test="sysctl-check-macro">the correct value is not returned</xsl:if>
               <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
               <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
               <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
@@ -524,58 +523,6 @@
         <xsl:apply-templates select="node()|text()"/>
       </xsl:when>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="weblink-macro">
-    <xsl:choose>
-      <xsl:when test="@text">
-        <a xmlns="http://www.w3.org/1999/xhtml"><xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute><xsl:value-of select="@text"/></a>
-      </xsl:when>
-      <xsl:otherwise>
-        <a xmlns="http://www.w3.org/1999/xhtml"><xsl:attribute name="href"><xsl:value-of select="@link"/></xsl:attribute><xsl:value-of select="@link"/></a>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="sysctl-desc-macro">
-    To set the runtime status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
-    run the following command:
-    <xhtml:pre xml:space="preserve">$ sudo sysctl -w <xsl:value-of select="@sysctl"/>=<xsl:value-of select="@value"/></xhtml:pre>
-
-	<!-- The following text could also be included conditionally, if the defaultness of the sysctl were indicated. -->
-    If this is not the system's default value, add the following line to <xhtml:code>/etc/sysctl.conf</xhtml:code>:
-    <xhtml:pre xml:space="preserve"><xsl:value-of select="@sysctl"/> = <xsl:value-of select="@value"/></xhtml:pre>
-  </xsl:template>
-
-  <xsl:template match="sysctl-check-macro">
-    The status of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter can be queried
-    by running the following command:
-    <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>
-    The output of the command should indicate a value of <xhtml:code><xsl:value-of select="@value"/></xhtml:code>.
-    If this value is not the default value, investigate how it could have been
-    adjusted at runtime, and verify it is not set improperly in
-    <xhtml:code>/etc/sysctl.conf</xhtml:code>.
-    <!--
-	The following text could be conditionally added, for any cases where the default sysctl value
-	is not the required one. We could indicate this with an additional attribute
-	in the macro.  (Adding default values to sysctl.conf just increases C&A cost with no benefit; it makes default
-	systems fail compliance checks when they shouldn't.)
-
-    <xhtml:br />
-    To verify persistent configuration of the <xhtml:code><xsl:value-of select="@sysctl"/></xhtml:code> kernel parameter,
-    verify that the following line is present in <xhtml:code>/etc/sysctl.conf</xhtml:code>:
-    <xhtml:pre xml:space="preserve">$ sysctl <xsl:value-of select="@sysctl"/></xhtml:pre>    -->
-  </xsl:template>
-
-  <xsl:template match="mount-desc-macro">
-	Add the <xhtml:code><xsl:value-of select="@option"/></xhtml:code> option to the fourth column of
-	<xhtml:code>/etc/fstab</xhtml:code> for the line which controls mounting of
-	<xsl:if test="starts-with(@part,'/')">
-		<xhtml:code><xsl:value-of select="@part"/></xhtml:code>.
-	</xsl:if>
-	<xsl:if test="not(starts-with(@part,'/'))">
-		<xsl:value-of select="@part"/>.
-	</xsl:if>
   </xsl:template>
 
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->

@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Add nodev Option to Non-Root Local Partitions'
 
-description: "The <tt>nodev</tt> mount option prevents files from being\ninterpreted as character or block devices. \nLegitimate character and block devices should exist only in\nthe <tt>/dev</tt> directory on the root partition or within chroot\njails built for system services.\n<mount-desc-macro option=\"nodev\" part=\"any non-root local partitions\" />"
+description: "The <tt>nodev</tt> mount option prevents files from being\ninterpreted as character or block devices. \nLegitimate character and block devices should exist only in\nthe <tt>/dev</tt> directory on the root partition or within chroot\njails built for system services.\n{{{ describe_mount(option="nodev", part="any non-root local partitions") }}}"
 
 rationale: |-
     The <tt>nodev</tt> mount option prevents files from being

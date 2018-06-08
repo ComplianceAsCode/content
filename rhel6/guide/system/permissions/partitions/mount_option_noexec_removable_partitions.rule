@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Add noexec Option to Removable Media Partitions'
 
-description: "The <tt>noexec</tt> mount option prevents the direct\nexecution of binaries on the mounted filesystem. \nPreventing the direct execution of binaries from removable media (such as a USB\nkey) provides a defense against malicious software that may be present on such\nuntrusted media.\n<mount-desc-macro option=\"noexec\" part=\"any removable media partitions\" />"
+description: "The <tt>noexec</tt> mount option prevents the direct\nexecution of binaries on the mounted filesystem. \nPreventing the direct execution of binaries from removable media (such as a USB\nkey) provides a defense against malicious software that may be present on such\nuntrusted media.\n{{{ describe_mount(option="noexec", part="any removable media partitions") }}}"
 
 rationale: |-
     Allowing users to execute binaries from removable media such as USB keys exposes

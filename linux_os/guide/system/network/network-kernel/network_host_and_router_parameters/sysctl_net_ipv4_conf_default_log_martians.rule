@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Configure Kernel Parameter to Log Martian Packets By Default'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.log_martians" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.log_martians", value="1") }}}'
 
 rationale: |-
     The presence of "martian" packets (which have impossible addresses)
@@ -23,4 +23,4 @@ references:
     disa: "126"
     nist: AC-17(7),CM-7,SC-5(3)
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.log_martians" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.log_martians", value="1") }}}

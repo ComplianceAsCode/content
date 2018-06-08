@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Configure Kernel Parameter to Use Reverse Path Filtering by Default'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.rp_filter", value="1") }}}'
 
 rationale: |-
     Enabling reverse path filtering drops packets with source addresses
@@ -21,4 +21,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000097
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.rp_filter" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.rp_filter", value="1") }}}

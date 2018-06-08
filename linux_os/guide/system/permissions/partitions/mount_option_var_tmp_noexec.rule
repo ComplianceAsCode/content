@@ -7,7 +7,7 @@ title: 'Add noexec Option to /var/tmp'
 description: |-
     The <tt>noexec</tt> mount option can be used to prevent binaries
     from being executed out of <tt>/var/tmp</tt>.
-    <mount-desc-macro option="noexec" part="/var/tmp" />
+    {{{ describe_mount(option="noexec", part="/var/tmp") }}}
 
 rationale: |-
     Allowing users to execute binaries from world-writable directories

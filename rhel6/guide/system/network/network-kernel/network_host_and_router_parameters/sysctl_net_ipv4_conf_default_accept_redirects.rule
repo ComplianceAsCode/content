@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Configure Kernel Parameter for Accepting ICMP Redirects By Default'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.accept_redirects", value="0") }}}'
 
 rationale: |-
     This feature of the IPv4 protocol has few legitimate
@@ -19,4 +19,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000091
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.accept_redirects" value="0" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.accept_redirects", value="0") }}}

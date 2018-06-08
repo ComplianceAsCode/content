@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Configure Kernel Parameter to Ignore Bogus ICMP Error Responses'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.icmp_ignore_bogus_error_responses" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.icmp_ignore_bogus_error_responses", value="1") }}}'
 
 rationale: |-
     Ignoring bogus ICMP error responses reduces
@@ -20,4 +20,4 @@ references:
     cui: 3.1.20
     nist: CM-7,SC-5
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.icmp_ignore_bogus_error_responses" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.icmp_ignore_bogus_error_responses", value="1") }}}

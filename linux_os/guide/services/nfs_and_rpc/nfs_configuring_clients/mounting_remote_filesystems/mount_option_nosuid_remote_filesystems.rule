@@ -4,7 +4,7 @@ prodtype: rhel7
 
 title: 'Mount Remote Filesystems with nosuid'
 
-description: '<mount-desc-macro option="nosuid" part="any NFS mounts" />'
+description: '{{{ describe_mount(option="nosuid", part="any NFS mounts") }}}'
 
 rationale: |-
     NFS mounts should not present suid binaries to users. Only vendor-supplied suid executables

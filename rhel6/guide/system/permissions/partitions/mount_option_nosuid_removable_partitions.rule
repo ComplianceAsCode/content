@@ -8,7 +8,7 @@ description: |-
     allow users to execute binaries with the same permissions as the owner and group
     of the file respectively. Users should not be allowed to introduce SUID and SGID
     files into the system via partitions mounted from removeable media.
-    <mount-desc-macro option="nosuid" part="any removable media partitions" />
+    {{{ describe_mount(option="nosuid", part="any removable media partitions") }}}
 
 rationale: |-
     The presence of SUID and SGID executables should be tightly controlled. Allowing

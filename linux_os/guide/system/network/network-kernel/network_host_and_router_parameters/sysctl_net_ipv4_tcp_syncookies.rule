@@ -4,7 +4,7 @@ prodtype: rhel7,fedora
 
 title: 'Configure Kernel Parameter to Use TCP Syncookies'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.tcp_syncookies" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.tcp_syncookies", value="1") }}}'
 
 rationale: |-
     A TCP SYN flood attack can cause a denial of service by filling a
@@ -27,4 +27,4 @@ references:
     nist: AC-4,SC-5(1)(2),SC-5(2),SC-5(3)
     srg: SRG-OS-000480-GPOS-00227
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.tcp_syncookies" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.tcp_syncookies", value="1") }}}

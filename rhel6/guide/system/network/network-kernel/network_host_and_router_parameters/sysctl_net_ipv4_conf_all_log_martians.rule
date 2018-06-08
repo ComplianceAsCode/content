@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Configure Kernel Parameter to Log Martian Packets'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.log_martians", value="1") }}}'
 
 rationale: |-
     The presence of "martian" packets (which have impossible addresses)
@@ -21,4 +21,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000088
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.all.log_martians" value="1" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.log_martians", value="1") }}}

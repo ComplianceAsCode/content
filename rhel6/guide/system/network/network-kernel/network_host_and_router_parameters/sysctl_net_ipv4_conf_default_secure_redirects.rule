@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Configure Kernel Parameter for Accepting Secure Redirects By Default'
 
-description: '<sysctl-desc-macro sysctl="net.ipv4.conf.default.secure_redirects" value="0" />'
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.default.secure_redirects", value="0") }}}'
 
 rationale: |-
     Accepting "secure" ICMP redirects (from those gateways listed as
@@ -20,4 +20,4 @@ references:
     srg: SRG-OS-999999
     stigid: RHEL-06-000090
 
-ocil: '<sysctl-check-macro sysctl="net.ipv4.conf.default.secure_redirects" value="0" />'
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.secure_redirects", value="0") }}}
