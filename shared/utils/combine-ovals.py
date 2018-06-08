@@ -92,7 +92,7 @@ def add_platforms(xml_tree, multi_platform):
 
         for plat_elem in affected:
             try:
-                if plat_elem.text == 'multi_platform_oval':
+                if plat_elem.text == 'multi_platform_all':
                     for platforms in multi_platform[plat_elem.text]:
                         for plat in multi_platform[platforms]:
                             platform = ElementTree.Element(
