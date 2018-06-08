@@ -16,10 +16,11 @@ class ActionType:
 
 
 class UnknownTargetError(ValueError):
-    def __init__(self, msg):
+    def __init__(self, lang):
         super(UnknownTargetError, self).__init__(
-            "Unknown target language: \"{0}\"".format(msg)
+            "Unknown target language: \"{0}\"".format(lang)
         )
+        self.lang = lang
 
 
 class TemplateNotFoundError(RuntimeError):
@@ -206,7 +207,12 @@ class FilesGenerator(object):
 
             except UnknownTargetError as e:
                 if self.action == ActionType.BUILD:
-                    sys.stderr.write(str(e) + "\n")
+                    # If lang is one of these it just means that the template
+                    # doesn't implement that language. It doesn't mean that the
+                    # target is invalid.
+                    if e.lang not in ["oval", "ansible", "bash", "puppet",
+                                      "anaconda"]:
+                        sys.stderr.write(str(e) + "\n")
 
     @abstractmethod
     def csv_format(self):
