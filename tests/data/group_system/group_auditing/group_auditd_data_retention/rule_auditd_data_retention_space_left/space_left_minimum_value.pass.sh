@@ -3,4 +3,4 @@
 # remediation = bash
 
 . ../set_parameters_value.sh
-set_parameters_value /etc/audit/auditd.conf "space_left" "15"
+set_parameters_value /etc/audit/auditd.conf "space_left" "100"
