@@ -6,9 +6,10 @@ import os.path
 import codecs
 import datetime
 
-MANUAL_EDIT_WARNING = \
-"""
-This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
+import collections
+
+
+MANUAL_EDIT_WARNING = """This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!
 Last Modified: %s
 """ % (os.path.basename(__file__), datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
 
@@ -65,45 +66,57 @@ name_mappings = {
 }
 
 
-def main():
-    emails = {}
-    output = subprocess.check_output(["git", "shortlog", "-se"]).decode("utf-8")
+def _get_contributions_by_canonical_email(output):
+    contributions_by_email = collections.defaultdict(list)
     for line in output.split("\n"):
-        match = re.match(r"[\s]*([0-9]+)[\s+](.+)[\s]+\<(.+)\>", line)
+        match = re.match(r"[\s]*([0-9]+)\s+(.+)\s+\<(.+)\>", line)
         if match is None:
             continue
 
-        commits, name, email = match.groups()
+        commits_count, author_name, email = match.groups()
 
-        if email in email_mappings:
-            email = email_mappings[email]
+        canonical_email = email_mappings.get(email, email)
 
-        if email == "":
+        if canonical_email == "":
             continue  # ignored
 
-        if email not in emails:
-            emails[email] = []
+        contributions_by_email[canonical_email].append((int(commits_count), author_name))
+    return contributions_by_email
 
-        emails[email].append((int(commits), name))
 
+def _get_name_used_most_in_contributions(contribution_sets):
+    _, name_used_most = sorted(contribution_sets, reverse=True)[0]
+    return name_used_most
+
+
+def _get_contributor_email_mapping(contributions_by_email):
     contributors = {}
-    # We will use the most used full name
-    for email in emails:
-        _, name = sorted(emails[email], reverse=True)[0]
-        if name in name_mappings:
-            name = name_mappings[name]
+    for email in contributions_by_email:
+        name_used_most = _get_name_used_most_in_contributions(contributions_by_email[email])
+        canonical_name_used_most = name_mappings.get(name_used_most, name_used_most)
 
-        contributors[name] = email
+        contributors[canonical_name_used_most] = email
+    return contributors
+
+
+def _names_sorted_by_last_name(names):
+    return sorted(names, key=lambda x: tuple(n.upper() for n in x.split(" "))[::-1])
+
+
+def main():
+    output = subprocess.check_output(["git", "shortlog", "-se"]).decode("utf-8")
+    contributions_by_email = _get_contributions_by_canonical_email(output)
+    contributors = _get_contributor_email_mapping(contributions_by_email)
 
     contributors_md = "<!---%s--->\n\n" % MANUAL_EDIT_WARNING
     contributors_md += \
         "The following people have contributed to the SCAP Security Guide project\n"
     contributors_md += "(listed in alphabetical order):\n\n"
-    
-    contributors_xml = "<!--%s-->\n\n" % MANUAL_EDIT_WARNING 
+
+    contributors_xml = "<!--%s-->\n\n" % MANUAL_EDIT_WARNING
     contributors_xml += "<text>\n"
 
-    for name in sorted(contributors.keys(), key=lambda x: x.split(" ")[-1].upper()):
+    for name in _names_sorted_by_last_name(list(contributors.keys())):
         email = contributors[name]
         contributors_md += "* %s <%s>\n" % (name, email)
         contributors_xml += "<contributor>%s &lt;%s&gt;</contributor>\n" % (name, email)
@@ -114,11 +127,13 @@ def main():
     with codecs.open(os.path.join(root_dir, "Contributors.md"),
                      mode="w", encoding="utf-8") as f:
         f.write(contributors_md)
+
     with codecs.open(os.path.join(root_dir, "Contributors.xml"),
                      mode="w", encoding="utf-8") as f:
         f.write(contributors_xml)
 
     print("Don't forget to commit Contributors.md and Contributors.xml!")
+
 
 if __name__ == "__main__":
     main()

@@ -76,6 +76,11 @@ endif()
 find_package(PythonInterp REQUIRED)
 find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
+find_python_module(pytest)
+find_python_module(pytest_cov)
+
+include(CMakeDependentOption)
+cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)
 
 find_package(OpenSCAP REQUIRED)
 
@@ -177,6 +182,11 @@ message(STATUS " ")
 enable_testing()
 
 include(SSGCommon)
+
+if (PY_PYTEST)
+ssg_python_unit_tests("misc")
+ssg_python_unit_tests("utils")
+endif()
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
