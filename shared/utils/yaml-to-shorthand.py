@@ -200,7 +200,9 @@ class Value(object):
             # do not confuse Value with big V with value with small v
             # value is child element of Value
             value_small = ET.SubElement(value, 'value')
-            value_small.set('selector', str(selector))
+            # by XCCDF spec, default value is value without selector
+            if selector != "default":
+                value_small.set('selector', str(selector))
             value_small.text = str(option)
 
         return value
