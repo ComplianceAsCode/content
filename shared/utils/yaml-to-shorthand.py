@@ -509,11 +509,18 @@ class Rule(object):
                                % (yaml_file, yaml_contents))
 
         rule.validate_identifiers(yaml_file)
+        rule.validate_references(yaml_file)
         return rule
 
     def validate_identifiers(self, yaml_file):
+        if self.identifiers is None:
+            raise ValueError("Empty identifier section in file %s" % yaml_file)
+
         # Validate all identifiers are non-empty:
         for ident_type, ident_val in self.identifiers.items():
+            if not type(ident_type) == str or not type(ident_val) == str:
+                raise ValueError("Identifiers and values must be strings: %s in file %s"
+                    % (ident_type, yaml_file))
             if ident_val.strip() == "":
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                     % (ident_type, yaml_file))
@@ -523,6 +530,18 @@ class Rule(object):
             if not ssgcommon.cce_is_valid("CCE-" + self.identifiers['cce']):
                 raise ValueError("CCE Identifiers must be valid: %s in file %s"
                     % (self.identifiers['cce'], yaml_file))
+
+    def validate_references(self, yaml_file):
+        if self.references is None:
+            raise ValueError("Empty references section in file %s" % yaml_file)
+
+        for ref_type, ref_val in self.references.items():
+            if not type(ref_type) == str or not type(ref_val) == str:
+                raise ValueError("References and values must be strings: %s in file %s"
+                    % (ref_type, yaml_file))
+            if ref_val.strip() == "":
+                raise ValueError("References must not be empty: %s in file %s"
+                    % (ref_type, yaml_file))
 
     def to_xml_element(self):
         rule = ET.Element('Rule')
@@ -534,39 +553,37 @@ class Rule(object):
         add_sub_element(rule, 'description', self.description)
         add_sub_element(rule, 'rationale', self.rationale)
 
-        if self.identifiers:
-            main_ident = ET.Element('ident')
-            for ident_type, ident_val in self.identifiers.items():
-                if '@' in ident_type:
-                    # the ident is applicable only on some product
-                    # format : 'policy@product', eg. 'stigid@product'
-                    # for them, we create a separate <ref> element
-                    policy, product = ident_type.split('@')
-                    ident = ET.SubElement(rule, 'ident')
-                    ident.set(policy, str(ident_val))
-                    ident.set('prodtype', product)
-                else:
-                    main_ident.set(ident_type, str(ident_val))
+        main_ident = ET.Element('ident')
+        for ident_type, ident_val in self.identifiers.items():
+            if '@' in ident_type:
+                # the ident is applicable only on some product
+                # format : 'policy@product', eg. 'stigid@product'
+                # for them, we create a separate <ref> element
+                policy, product = ident_type.split('@')
+                ident = ET.SubElement(rule, 'ident')
+                ident.set(policy, ident_val)
+                ident.set('prodtype', product)
+            else:
+                main_ident.set(ident_type, ident_val)
 
-            if main_ident.attrib:
-                rule.append(main_ident)
+        if main_ident.attrib:
+            rule.append(main_ident)
 
-        if self.references:
-            main_ref = ET.Element('ref')
-            for ref_type, ref_val in self.references.items():
-                if '@' in ref_type:
-                    # the reference is applicable only on some product
-                    # format : 'policy@product', eg. 'stigid@product'
-                    # for them, we create a separate <ref> element
-                    policy, product = ref_type.split('@')
-                    ref = ET.SubElement(rule, 'ref')
-                    ref.set(policy, str(ref_val))
-                    ref.set('prodtype', product)
-                else:
-                    main_ref.set(ref_type, str(ref_val))
+        main_ref = ET.Element('ref')
+        for ref_type, ref_val in self.references.items():
+            if '@' in ref_type:
+                # the reference is applicable only on some product
+                # format : 'policy@product', eg. 'stigid@product'
+                # for them, we create a separate <ref> element
+                policy, product = ref_type.split('@')
+                ref = ET.SubElement(rule, 'ref')
+                ref.set(policy, ref_val)
+                ref.set('prodtype', product)
+            else:
+                main_ref.set(ref_type, ref_val)
 
-            if main_ref.attrib:
-                rule.append(main_ref)
+        if main_ref.attrib:
+            rule.append(main_ref)
 
         if self.external_oval:
             check = ET.SubElement(rule, 'check')
