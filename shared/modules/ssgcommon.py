@@ -240,9 +240,9 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
 def get_jinja_environment(substitutions_dict):
     if get_jinja_environment.env is None:
         bytecode_cache = None
-        if "jinja2_cache_dir" in substitutions_dict:
+        if required_yaml_key(substitutions_dict, "jinja2_cache_enabled") == "true":
             bytecode_cache = jinja2.FileSystemBytecodeCache(
-                substitutions_dict["jinja2_cache_dir"]
+                required_yaml_key(substitutions_dict, "jinja2_cache_dir")
             )
 
         # TODO: Choose better syntax?
