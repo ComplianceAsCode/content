@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: ol7
+
+title: 'Only sidadm and orasid/oracle User Accounts Exist on Operating System'
+
+description: |-
+    SAP tends to use the server or virtual machine exclusively. There should be only
+    SAP system users <tt>sidadm</tt> and <tt>orasid</tt> that exist on the operating
+    system (or virtual machine). If SAP Host Agent is installed, the user <tt>sapadm</tt>
+    must exist too. With Oracle Database using <tt>oracle</tt> user, the user <tt>oracle</tt>
+    should exist as well. 
+    While <tt>SID</tt> is the SAP System ID, which is always three alphanumeric characters
+    in upper case, beginning with an alphabetic character, the user names <tt>sidadm</tt> 
+    and <tt>orasid</tt> are in lower case.
+    Besides the above SAP users that are automatically detected, other operating system
+    users can be customized in the refine value variable
+    <tt>var_accounts_authorized_local_users_regex</tt>.
+    OVAL regular expression is used for the user list.
+    <tt>Limitation: Currently this OVAL test only works when there is exactly one SAP
+    system on each operating system (or virtual machine). </tt> The SAP system users
+    <tt>sidadm</tt>, <tt>orasid</tt>, <tt>sapadm</tt> and <tt>oracle</tt> can be automatically
+    detected. If there is no or multiple SAP systems installed on the operating system
+    (or virtual machine), the test will fail. In this case, please use the general purpose
+    test <tt>accounts_authorized_local_users</tt> and customize the refine value variable
+    <tt>var_accounts_authorized_local_users_regex</tt> by adding all the authorized
+    user names to the list.
+    Test result of both <tt>false</tt> or <tt>error</tt> means mismatch of user names and
+    SAP system. Nevertheless, the bash remediation commands can always be used to delete
+    unexpected users on the operating system. It works in all cases zero, one and multiple
+    SAP systems on the operating system (or virtual machine).
+
+rationale: |-
+    Accounts providing no operational purpose provide additional opportunities for
+    system compromise. Unnecessary accounts include user accounts for individuals not
+    requiring access to the system and application accounts for applications not installed
+    on the system.
+
+severity: medium
+
+ocil_clause: 'there are unauthorized local user accounts on the system'
+
+ocil: |-
+    To verify that there are no unauthorized local user accounts, run the following command:
+    <pre>$ less /etc/passwd </pre>
+    Inspect the results, and if unauthorized local user accounts exist, remove them by
+    running the following command:
+    <pre>$ sudo userdel <i>unauthorized_user</i></pre>
+
