@@ -110,6 +110,7 @@ def main():
     # force another oscap resolve to fix namespace prefixes
     root_element.set("resolved", "0")
 
+    affected_profiles = []
     group_elements = root_element.findall(".//{%s}Group" % (XCCDF11_NS))
 
     for profile_element in root_element.findall("./{%s}Profile" % (XCCDF11_NS)):
@@ -145,7 +146,9 @@ def main():
                 new_select.set("selected", "false")
                 new_select.tail = "\n"
 
-        print("Unselected empty groups in '%s'." % (profile_element.get("id")))
+        affected_profiles.append(profile_element.get("id"))
+
+    print("Unselected empty groups in %s." % (", ".join(affected_profiles)))
 
     input_tree.write(options.output)
 
