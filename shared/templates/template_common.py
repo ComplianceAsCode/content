@@ -31,6 +31,7 @@ class TemplateNotFoundError(RuntimeError):
         )
 
 
+TEMPLATED_LANGUAGES = ["bash", "ansible", "oval", "anaconda", "puppet"]
 TARGET_REGEX = re.compile(r"#\s*only-for:([\s\w,]*)")
 
 
@@ -210,8 +211,7 @@ class FilesGenerator(object):
                     # If lang is one of these it just means that the template
                     # doesn't implement that language. It doesn't mean that the
                     # target is invalid.
-                    if e.lang not in ["oval", "ansible", "bash", "puppet",
-                                      "anaconda"]:
+                    if e.lang not in TEMPLATED_LANGUAGES:
                         sys.stderr.write(str(e) + "\n")
 
     @abstractmethod
