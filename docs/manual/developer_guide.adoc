@@ -472,7 +472,7 @@ generated XCCDF file (e.g. `ssg-rhel7-xccdf.xml`)
 
 Example using `create-stig-overlay.py`:
 ----
-$ shared/utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel7-xccdf.xml -o rhel7/overlays/stig_overlay.xml
+$ utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel7-xccdf.xml -o rhel7/overlays/stig_overlay.xml
 ----
 
 ==== Updating stig_overlay.xml
@@ -487,27 +487,27 @@ here as well.
 
 === Testing OVAL Content
 
-Located in `shared/utils` directory, the `testoval.py` script allows easy testing of oval
+Located in `utils` directory, the `testoval.py` script allows easy testing of oval
 definitions. It wraps the definition and makes up an oval file ready for
 scanning, very useful for testing new OVAL content or modifying existing ones.
 
 Example usage:
 
 ----
-$ ./shared/utils/testoval.py install_hid.xml
+$ ./utils/testoval.py install_hid.xml
 ----
 
 Create or add an alias to the script so that you don't have to type out the full path
 everytime that you would like to use the `testoval.py` script.
 
 ----
-$ alias testoval='/home/_username_/scap-security-guide/shared/utils/testoval.py'
+$ alias testoval='/home/_username_/scap-security-guide/utils/testoval.py'
 ----
 
 An alternative is adding the directory where `testoval.py` resides to your PATH.
 
 ----
-$ export PATH=$PATH:/home/_username_/scap-security-guide/shared/utils/
+$ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 ----
 
 == Contributing with XCCDFs, OVALs and remediations
@@ -893,7 +893,7 @@ class PackageInstalledGenerator(FilesGenerator):
 
 ----
 
-4) Finally, you have to ensure the SSG knows your template. To do that, you have to edit the file _shared/utils/generate-from-template.py_ and include the generator class you've just created and declare which csv file to use along with it.
+4) Finally, you have to ensure the SSG knows your template. To do that, you have to edit the file _build-scripts/generate-from-template.py_ and include the generator class you've just created and declare which csv file to use along with it.
 
 This is an example of a patch to add a new template into the templating system:
 
@@ -937,6 +937,6 @@ The SSG build and templating system is mostly written in Python.
 
 ==== Python
 
-* The common pattern is to dynamically add the `shared/modules` to the import path. The `ssgcommon` module has many useful utility functions and predefined constants. See scripts at `shared/utils` as an example of this practice.
+* The common pattern is to dynamically add the `shared/modules` to the import path. The `ssgcommon` module has many useful utility functions and predefined constants. See scripts at `./build-scripts` as an example of this practice.
 * Follow the link:https://www.python.org/dev/peps/pep-0008/[PEP8 standard].
 * Try to keep most of your lines length under 80 characters. Although the 99 character limit is within link:https://www.python.org/dev/peps/pep-0008/#maximum-line-length[PEP8 requirements], there is no reason for most lines to be that long.
