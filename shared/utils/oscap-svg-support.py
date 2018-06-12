@@ -2,14 +2,7 @@
 
 import tempfile
 import sys
-import os.path
-
-
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "modules"))
-import ssgcommon
+import subprocess
 
 
 svg_benchmark = """<?xml version="1.0"?>
@@ -43,7 +36,7 @@ def main():
     xccdf.write(svg_benchmark.encode("utf-8"))
     xccdf.flush()
 
-    out = ssgcommon.subprocess_check_output(
+    out = subprocess.check_output(
         [oscap_executable, "xccdf", "generate", "guide", xccdf.name]
     ).decode("utf-8")
 

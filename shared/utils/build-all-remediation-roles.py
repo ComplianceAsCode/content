@@ -23,6 +23,7 @@ try:
 except ImportError:
     import Queue
 import sys
+import subprocess
 import multiprocessing
 
 
@@ -54,7 +55,7 @@ def generate_role_for_input_content(input_content, benchmark_id, profile_id,
     args.extend(["--template", template])
     args.append(input_content)
 
-    return ssgcommon.subprocess_check_output(args).decode("utf-8")
+    return subprocess.check_output(args).decode("utf-8")
 
 
 def add_minimum_ansible_version(ansible_src):
