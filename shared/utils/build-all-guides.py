@@ -18,6 +18,7 @@ except ImportError:
 import os.path
 import argparse
 import threading
+import subprocess
 try:
     import queue as Queue
 except ImportError:
@@ -49,7 +50,7 @@ def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
         args.extend(["--profile", profile_id])
     args.append(input_content)
 
-    return ssgcommon.subprocess_check_output(args).decode("utf-8")
+    return subprocess.check_output(args).decode("utf-8")
 
 
 def get_cpu_count():
