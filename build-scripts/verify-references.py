@@ -39,16 +39,12 @@ Usage:
   ./verify-references.py -h
 """
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
 
-xccdf_ns = ssgcommon.XCCDF11_NS
-oval_ns = ssgcommon.oval_namespace
-ocil_cs = ssgcommon.ocil_cs
+xccdf_ns = ssg.constants.XCCDF11_NS
+oval_ns = ssg.constants.oval_namespace
+ocil_cs = ssg.constants.ocil_cs
 
 # we use these strings to look for references within the XCCDF rules
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"

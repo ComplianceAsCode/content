@@ -26,12 +26,8 @@ import sys
 import multiprocessing
 
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
 import xccdf_utils
-import ssgcommon
+import ssg
 
 OSCAP_PATH = "oscap"
 
@@ -54,7 +50,7 @@ def generate_role_for_input_content(input_content, benchmark_id, profile_id,
     args.extend(["--template", template])
     args.append(input_content)
 
-    return ssgcommon.subprocess_check_output(args).decode("utf-8")
+    return ssg.shims.subprocess_check_output(args).decode("utf-8")
 
 
 def add_minimum_ansible_version(ansible_src):
@@ -65,8 +61,8 @@ def add_minimum_ansible_version(ansible_src):
          that: "ansible_version.full is version_compare('%s', '>=')"
          msg: >
            "You must update Ansible to at least version %s to use this role."
-          """ % (ssgcommon.ansible_version_requirement_pre_task_name,
-                 ssgcommon.min_ansible_version, ssgcommon.min_ansible_version))
+          """ % (ssg.constants.ansible_version_requirement_pre_task_name,
+                 ssg.constants.min_ansible_version, ssg.constants.min_ansible_version))
 
     return ansible_src.replace(" - hosts: all", pre_task, 1)
 

@@ -13,12 +13,9 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
 from map_product_module import map_product, parse_product_name, multi_product_list
-from ssgcommon import open_environment_yamls, required_yaml_key, process_file_with_jinja
+from ssg._yaml import open_environment_yamls
+from ssg._jinja import process_file_with_jinja
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -506,7 +503,7 @@ def main():
 
                 if script_platform:
                     product_name, result = fix_is_applicable_for_product(
-                        script_platform, required_yaml_key(env_yaml, "product"))
+                        script_platform, ssg.utils.required_key(env_yaml, "product"))
                     if result:
                         if fixname in fixes:
                             fix = fixes[fixname]

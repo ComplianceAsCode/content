@@ -13,11 +13,7 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
 
 script_desc = \
@@ -26,15 +22,15 @@ script_desc = \
     "check implemented, how many have a remediation available, ..."
 
 
-xccdf_ns = ssgcommon.XCCDF11_NS
-oval_ns = ssgcommon.oval_namespace
-bash_rem_system = ssgcommon.bash_system
-ansible_rem_system = ssgcommon.ansible_system
-puppet_rem_system = ssgcommon.puppet_system
-anaconda_rem_system = ssgcommon.anaconda_system
-cce_uri = ssgcommon.cce_uri
-ssg_version_uri = ssgcommon.ssg_version_uri
-stig_ns = ssgcommon.stig_ns
+xccdf_ns = ssg.constants.XCCDF11_NS
+oval_ns = ssg.constants.oval_namespace
+bash_rem_system = ssg.constants.bash_system
+ansible_rem_system = ssg.constants.ansible_system
+puppet_rem_system = ssg.constants.puppet_system
+anaconda_rem_system = ssg.constants.anaconda_system
+cce_uri = ssg.constants.cce_uri
+ssg_version_uri = ssg.constants.ssg_version_uri
+stig_ns = ssg.constants.stig_ns
 console_width = 80
 
 

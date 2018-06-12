@@ -7,14 +7,10 @@ import sys
 import os
 
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
 import idtranslate_module as idtranslate
-import ssgcommon
+import ssg
 
-ET = ssgcommon.ElementTree
+ET = ssg.xml.ElementTree
 
 
 import parse_oval
@@ -26,10 +22,10 @@ import parse_oval
 # meaningless numbers.
 
 
-oval_ns = ssgcommon.oval_namespace
-oval_cs = ssgcommon.oval_namespace
-xccdf_ns = ssgcommon.XCCDF11_NS
-cce_uri = ssgcommon.cce_uri
+oval_ns = ssg.constants.oval_namespace
+oval_cs = ssg.constants.oval_namespace
+xccdf_ns = ssg.constants.XCCDF11_NS
+cce_uri = ssg.constants.cce_uri
 
 
 OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS = {
@@ -66,7 +62,7 @@ class FileLinker(object):
             # Include the file in the particular check system only if it's NOT
             # a remotely located file (to allow OVAL checks to reference http://
             # and https:// formatted URLs)
-            checkcontentref = ssgcommon.get_check_content_ref_if_exists_and_not_remote(check)
+            checkcontentref = ssg.checks.get_check_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is not None:
                 checkfiles.add(checkcontentref.get("href"))
         return checkfiles
@@ -76,13 +72,13 @@ class FileLinker(object):
         if len(fnames) > 1:
             msg = ("referencing more than one file per check system "
                    "is not yet supported by this script.")
-            raise ssgcommon.SSGError(msg)
+            raise ssg.utils.SSGError(msg)
         return fnames.pop() if fnames else None
 
     def save_linked_tree(self):
         assert self.tree is not None, \
             "There is no tree to save, you have probably skipped the linking phase"
-        ssgcommon.ElementTree.ElementTree(self.tree).write(self.linked_fname)
+        ET.ElementTree(self.tree).write(self.linked_fname)
 
     def _get_checkid_string(self):
         raise NotImplementedError()
@@ -92,7 +88,7 @@ class FileLinker(object):
 
     def link_xccdf(self):
         for check in self.checks_related_to_us:
-            checkcontentref = ssgcommon.get_check_content_ref_if_exists_and_not_remote(check)
+            checkcontentref = ssg.checks.get_check_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is None:
                 continue
 
@@ -128,15 +124,15 @@ class OVALFileLinker(FileLinker):
 
     def link(self):
         self.oval_groups = parse_oval.get_container_oval_groups(self.fname)
-        self.tree = ssgcommon.parse_xml_file(self.fname)
+        self.tree = ssg.xml.parse_xml_file(self.fname)
         try:
             self._link_oval_tree()
 
             # Verify if CCE identifiers present in the XCCDF follow the required form
             # (either CCE-XXXX-X, or CCE-XXXXX-X). Drop from XCCDF those who don't follow it
             verify_correct_form_of_referenced_cce_identifiers(self.xccdftree)
-        except ssgcommon.SSGError as exc:
-            raise ssgcommon.SSGError(
+        except ssg.utils.SSGError as exc:
+            raise ssg.utils.SSGError(
                 "Error processing {0}: {1}"
                 .format(self.fname, str(exc)))
         self.tree = self.translator.translate(self.tree, store_defname=True)
@@ -144,7 +140,7 @@ class OVALFileLinker(FileLinker):
     def _link_oval_tree(self):
         xccdf_to_cce_id_mapping = create_xccdf_id_to_cce_id_mapping(self.xccdftree)
 
-        indexed_oval_defs = ssgcommon.map_elements_to_their_ids(
+        indexed_oval_defs = ssg.xml.map_elements_to_their_ids(
             self.tree, ".//{0}".format(self._get_checkid_string()))
 
         drop_oval_checks_extending_non_existing_checks(
@@ -187,11 +183,11 @@ class OVALFileLinker(FileLinker):
                 continue
 
             xccdfcceid = idmappingdict[ovalid]
-            if ssgcommon.cce_is_valid(xccdfcceid):
+            if ssg.checks.cce_is_valid(xccdfcceid):
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
-                ccerefelem = ssgcommon.ElementTree.Element(
-                    'reference', ref_id=xccdfcceid, source="CCE")
+                ccerefelem = ET.Element('reference', ref_id=xccdfcceid,
+                    source="CCE")
                 metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
                 metadata.append(ccerefelem)
 
@@ -252,7 +248,7 @@ class OVALFileLinker(FileLinker):
                 if check.get("system") != oval_cs:
                     continue
 
-                if ssgcommon.get_check_content_ref_if_exists_and_not_remote(check) is None:
+                if ssg.checks.get_check_content_ref_if_exists_and_not_remote(check) is None:
                     continue
 
                 # For local OVAL drop the reference to OVAL definition from XCCDF document
@@ -266,14 +262,14 @@ class OVALFileLinker(FileLinker):
 
 
 class OCILFileLinker(FileLinker):
-    CHECK_SYSTEM = ssgcommon.ocil_cs
-    CHECK_NAMESPACE = ssgcommon.ocil_namespace
+    CHECK_SYSTEM = ssg.constants.ocil_cs
+    CHECK_NAMESPACE = ssg.constants.ocil_namespace
 
     def _get_checkid_string(self):
         return "{%s}questionnaire" % self.CHECK_NAMESPACE
 
     def link(self):
-        self.tree = ssgcommon.parse_xml_file(self.fname)
+        self.tree = ssg.xml.parse_xml_file(self.fname)
         self.tree = self.translator.translate(self.tree, store_defname=True)
 
 
@@ -370,7 +366,7 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
 
     http://csrc.nist.gov/publications/nistpubs/800-126-rev2/SP800-126r2.pdf#page=30&zoom=auto,69,313
     """
-    indexed_xccdf_values = ssgcommon.map_elements_to_their_ids(
+    indexed_xccdf_values = ssg.xml.map_elements_to_their_ids(
         xccdftree, ".//{%s}Value" % (xccdf_ns))
 
     # Loop through all <external_variables> in the OVAL document
@@ -382,7 +378,7 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
         # Verify the found external variable has both 'id' and 'datatype' set
         if 'id' not in ovalextvar.attrib or 'datatype' not in ovalextvar.attrib:
             msg = "Invalid OVAL <external_variable> found - either without 'id' or 'datatype'."
-            raise ssgcommon.SSGError(msg)
+            raise ssg.utils.SSGError(msg)
 
         ovalvarid = ovalextvar.get('id')
         ovalvartype = ovalextvar.get('datatype')
@@ -399,7 +395,7 @@ def check_and_correct_xccdf_to_oval_data_export_matching_constraints(xccdftree, 
             msg = (
                 "Invalid XCCDF variable '{0}': Missing the 'type' attribute."
                 .format(xccdfvar.attrib("id")))
-            raise ssgcommon.SSGError(msg)
+            raise ssg.utils.SSGError(msg)
 
         # This is the required XCCDF 'type' for <xccdf:Value> derived
         # from OVAL variable 'datatype' and mapping above
@@ -435,7 +431,7 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
         identcce = _find_identcce(rule)
         if identcce is not None:
             cceid = identcce.text
-            if not ssgcommon.cce_is_valid(cceid):
+            if not ssg.checks.cce_is_valid(cceid):
                 print("Warning: CCE '{0}' is invalid for rule '{1}'. Removing CCE..."
                       .format(cceid, rule.get("id"), file=sys.stderr))
                 rule.remove(identcce)
@@ -467,7 +463,7 @@ def assert_that_check_ids_match_rule_id(checks, xccdf_rule):
                 id_name = "OVAL ID"
             msg_lines.append(" {0:>14}: {1}".format(id_name, check_name))
             msg_lines.append(" {0:>14}: {1}".format("XCCDF Rule ID", xccdf_rule))
-            raise ssgcommon.SSGError("\n".join(msg_lines))
+            raise ssg.utils.SSGError("\n".join(msg_lines))
 
 
 def check_that_oval_and_rule_id_match(xccdftree):
@@ -488,7 +484,7 @@ def main():
     idname = args.id_name
 
     # Step over xccdf file, and find referenced check files
-    xccdftree = ssgcommon.parse_xml_file(xccdffile)
+    xccdftree = ssg.xml.parse_xml_file(xccdffile)
 
     if 'unlinked-ocilref' not in xccdffile:
         check_that_oval_and_rule_id_match(xccdftree)
@@ -508,12 +504,12 @@ def main():
     ocil_linker.link_xccdf()
 
     newxccdffile = xccdffile.replace("unlinked", "linked")
-    ssgcommon.ElementTree.ElementTree(xccdftree).write(newxccdffile)
+    ET.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
 
 
 if __name__ == "__main__":
     try:
         main()
-    except ssgcommon.SSGError as exc:
+    except ssg.utils.SSGError as exc:
         raise

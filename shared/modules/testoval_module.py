@@ -4,18 +4,18 @@ import re
 import argparse
 import tempfile
 import subprocess
-import ssgcommon
+import ssg
 import lxml.etree as ET
 from ConfigParser import SafeConfigParser
 
 import idtranslate_module as idtranslate
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
-timestamp = ssgcommon.timestamp
+timestamp = ssg.constants.timestamp
 
 
-footer = ssgcommon.oval_footer
-ovalns = ssgcommon.oval_namespace
+footer = ssg.constants.oval_footer
+ovalns = ssg.constants.oval_namespace
 
 try:
     from openscap import oscap_get_version
@@ -163,7 +163,7 @@ def main():
     oval_version = args.oval_version
 
     testfile = args.xmlfile
-    header = ssgcommon.oval_generated_header("testoval.py", oval_version, "0.0.1")
+    header = ssg.xml.oval_generated_header("testoval.py", oval_version, "0.0.1")
     testfile = find_testfile(testfile)
     body = read_ovaldefgroup_file(testfile)
     defname = add_oval_elements(body, header)

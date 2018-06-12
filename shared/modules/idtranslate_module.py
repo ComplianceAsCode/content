@@ -3,10 +3,10 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-import ssgcommon
+import ssg
 
-oval_ns = ssgcommon.oval_namespace
-ocil_ns = ssgcommon.ocil_namespace
+oval_ns = ssg.constants.oval_namespace
+ocil_ns = ssg.constants.ocil_namespace
 
 ovaltag_to_abbrev = {
     'definition': 'def',

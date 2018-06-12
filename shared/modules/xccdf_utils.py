@@ -6,10 +6,10 @@ Author: Martin Preisler <mpreisle@redhat.com>
 """
 
 import re
-import ssgcommon
+import ssg
 
-XCCDF11_NS = ssgcommon.XCCDF11_NS
-XCCDF12_NS = ssgcommon.XCCDF12_NS
+XCCDF11_NS = ssg.constants.XCCDF11_NS
+XCCDF12_NS = ssg.constants.XCCDF12_NS
 
 # if a profile ID ends with a string listed here we skip it
 PROFILE_ID_BLACKLIST = ["test", "index", "default"]

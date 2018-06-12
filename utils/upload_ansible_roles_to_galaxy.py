@@ -20,11 +20,7 @@ except ImportError:
     sys.exit(1)
 
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
 GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"

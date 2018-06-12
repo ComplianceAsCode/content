@@ -25,12 +25,8 @@ except ImportError:
 import sys
 import multiprocessing
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
 import xccdf_utils
-import ssgcommon
+import ssg
 
 
 OSCAP_PATH = "oscap"
@@ -49,7 +45,7 @@ def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
         args.extend(["--profile", profile_id])
     args.append(input_content)
 
-    return ssgcommon.subprocess_check_output(args).decode("utf-8")
+    return ssg.shims.subprocess_check_output(args).decode("utf-8")
 
 
 def get_cpu_count():
@@ -164,10 +160,10 @@ def main():
 
         profile_id_for_path = "default" if not profile_id else profile_id
         benchmark_id_for_path = benchmark_id
-        if benchmark_id_for_path.startswith(ssgcommon.OSCAP_DS_STRING):
+        if benchmark_id_for_path.startswith(ssg.constants.OSCAP_DS_STRING):
             benchmark_id_for_path = \
                 benchmark_id_for_path[
-                    len(ssgcommon.OSCAP_DS_STRING):
+                    len(ssg.constants.OSCAP_DS_STRING):
                 ]
 
         if len(benchmarks) == 1 or \

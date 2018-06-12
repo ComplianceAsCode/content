@@ -12,11 +12,7 @@ except ImportError:
 import sys
 import argparse
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
 parser = argparse.ArgumentParser(
     description='Add STIG references to XCCDF files.')
@@ -29,7 +25,7 @@ args = parser.parse_args()
 reference = args.reference
 destination = args.destination
 
-xccdf_namespace = ssgcommon.XCCDF11_NS
+xccdf_namespace = ssg.constants.XCCDF11_NS
 stig_href = 'http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx'
 stig_references_beginning = 'http://iase.disa.mil/stigs/'
 

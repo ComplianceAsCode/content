@@ -26,15 +26,11 @@ except ImportError:
 
 from optparse import OptionParser
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
 OSCAP_PATH = "oscap"
 
-XCCDF11_NS = ssgcommon.XCCDF11_NS
+XCCDF11_NS = ssg.constants.XCCDF11_NS
 TRUE_STRINGS = ["true", "1", "True", "TRUE"]
 
 

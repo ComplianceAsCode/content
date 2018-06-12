@@ -4,12 +4,7 @@ import sys
 import os
 import jinja2
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-from ssgcommon import required_yaml_key
-import ssgcommon
+import ssg
 
 
 def has_empty_identifier(yaml_file, product_yaml=None):
