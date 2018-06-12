@@ -8,7 +8,7 @@ import argparse
 
 templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 sys.path.append(templates_dir)
-from template_common import ActionType
+from template_common import ActionType, TEMPLATED_LANGUAGES
 
 from create_accounts_password import AccountsPasswordGenerator
 from create_kernel_modules_disabled import KernelModulesDisabledGenerator
@@ -62,7 +62,7 @@ class Builder(object):
             "file_owner.csv":                   FileOwnerGenerator(),
             "file_permissions.csv":             FilePermissionsGenerator(),
         }
-        self.langs = ["bash", "ansible", "oval", "anaconda", "puppet"]
+        self.langs = TEMPLATED_LANGUAGES
         utils_dir = os.path.dirname(os.path.realpath(__file__))
         root_dir = os.path.join(utils_dir, "..", "..")
         self.shared_templates_dir = \
