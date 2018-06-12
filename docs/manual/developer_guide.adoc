@@ -260,10 +260,11 @@ For example:
 
 [source,bash]
 ----
-$ ls scap-security-guide/
-
+$ ls -1 scap-security-guide
 build
+build_config.yml.in
 BUILD.md
+build-scripts
 chromium
 cmake
 CMakeLists.txt
@@ -273,24 +274,28 @@ debian8
 DISCLAIMER
 Dockerfile
 docs
+eap6
 fedora
 firefox
-jboss_eap6
-jboss_fuse6
+fuse6
 jre
 LICENSE
+linux_os
+ocp3
+ol7
 opensuse
 oval.config.in
 README.md
 rhel6
 rhel7
-rhosp7
+rhel-osp7
 shared
 sle11
 sle12
 tests
-ubuntu14
-ubuntu16
+ubuntu1404
+ubuntu1604
+utils
 wrlinux
 ----
 
@@ -301,6 +306,9 @@ wrlinux
 
 |```build```
 | Can be used to build the content using CMake.
+
+|```build-scripts```
+| Scripts used by the build system.
 
 |```cmake```
 | Contains the CMake build configuration files.
@@ -314,6 +322,9 @@ multiple products.
 
 |```tests```
 | Contains the test suite for content validation and testing.
+
+|```utils```
+| Miscellaneous scripts used for development but not used by the build system.
 |===
 
 The remaining directories such as `fedora`, `rhel7`, etc. are product
@@ -522,6 +533,7 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 [%hardbreaks]
 *scap-security-guide/*
 ├── _build_
+├── _build-scripts_
 ├── chromium
 ├── debian8
 ├── _docs_
@@ -539,11 +551,12 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 ├── sle12
 ├── ubuntu14
 ├── ubuntu16
+├── _utils_
 ├── wrlinux
 ====
 
 Except for _build_ and _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
-The shared directory contains checks and remediations that can be used by more than one platform. It also contains some utilities, that will be covered later.
+The shared directory contains checks and remediations that can be used by more than one platform.
 
 === Contributing
 
