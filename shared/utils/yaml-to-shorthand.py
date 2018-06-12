@@ -226,6 +226,7 @@ class Benchmark(object):
         self.front_matter = ""
         self.rear_matter = ""
         self.cpes = []
+        self.platform_cpes = []
         self.version = "0.1"
         self.profiles = []
         self.values = {}
@@ -278,6 +279,8 @@ class Benchmark(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
+        benchmark.platform_cpes = product_yaml.get("platform_cpes", [])
+
         return benchmark
 
     def add_profiles_from_dir(self, action, dir_, env_yaml):
@@ -326,10 +329,16 @@ class Benchmark(object):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
-        for cpe in self.cpes:
-            if "platform-cpes-macro" in cpe:
-                ET.SubElement(root, "platform-cpes-macro")
-            else:
+        if not self.cpes:
+            assert self.platform_cpes, (
+                "There were no CPEs in the benchmark file, so there should be platform CPEs "
+                "known from the product yaml file, which is also not the case."
+            )
+            for idref in self.platform_cpes:
+                plat = ET.SubElement(root, "platform")
+                plat.set("idref", idref)
+        else:
+            for cpe in self.cpes:
                 add_sub_element(root, "platform", cpe)
         version = ET.SubElement(root, 'version')
         version.text = self.version

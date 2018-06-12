@@ -9,7 +9,6 @@
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">RHEL-7-OSP</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:redhat:enterprise_linux:7,cpe:/o:redhat:enterprise_linux:7::client,cpe:/o:redhat:enterprise_linux:7::computenode</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="os-stigid-concat" />
 

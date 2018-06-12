@@ -9,7 +9,6 @@
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">Jboss-Fuse-6</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/a:redhat:jboss_fuse:6.0,cpe:/a:redhat:jboss_fuse:6.1.0,cpe:/a:redhat:jboss_fuse_service_works:6.0</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-appserver-uri"/>
 <xsl:variable name="os-stigid-concat" />
 

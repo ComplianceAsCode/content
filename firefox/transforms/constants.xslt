@@ -9,7 +9,6 @@
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">FIREFOX</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/a:mozilla:firefox</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-browers-uri"/>
 <xsl:variable name="os-stigid-concat" />
 

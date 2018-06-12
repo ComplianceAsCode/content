@@ -6,7 +6,6 @@
 <xsl:variable name="product_short_name">Debian 8</xsl:variable>
 <xsl:variable name="product_stig_id_name">DEBIAN_8_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">DEBIAN-8</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:debianproject:debian:8</xsl:variable>
 <xsl:variable name="prod_type">debian</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for Debian Linux v1.0 -->
