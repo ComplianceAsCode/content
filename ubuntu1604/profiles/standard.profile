@@ -24,7 +24,7 @@ selections:
     - package_ntpdate_removed
     - service_auditd_enabled
     - service_cron_enabled
-    - service_ntpd_enabled
+    - service_ntp_enabled
     - service_rsyslog_enabled
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
@@ -37,7 +37,7 @@ selections:
     - rsyslog_files_permissions
     - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
-    - file_permissions_boot_system_map
+    - file_permissions_systemmap
     - file_permissions_etc_shadow
     - file_permissions_etc_gshadow
     - file_permissions_etc_passwd

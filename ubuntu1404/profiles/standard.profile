@@ -24,7 +24,7 @@ selections:
     - package_ntpdate_removed
     - service_auditd_enabled
     - service_cron_enabled
-    - service_ntpd_enabled
+    - service_ntp_enabled
     - service_rsyslog_enabled
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout

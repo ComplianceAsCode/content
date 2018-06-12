@@ -26,7 +26,7 @@ selections:
     - rsyslog_files_permissions
     - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
-    - file_permissions_boot_system_map
+    - file_permissions_systemmap
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_fs_suid_dumpable
