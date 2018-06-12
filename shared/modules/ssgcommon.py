@@ -237,8 +237,14 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         return contents, template, uptodate
 
 
-def get_jinja_environment():
+def get_jinja_environment(substitutions_dict):
     if get_jinja_environment.env is None:
+        bytecode_cache = None
+        if required_yaml_key(substitutions_dict, "jinja2_cache_enabled") == "true":
+            bytecode_cache = jinja2.FileSystemBytecodeCache(
+                required_yaml_key(substitutions_dict, "jinja2_cache_dir")
+            )
+
         # TODO: Choose better syntax?
         get_jinja_environment.env = jinja2.Environment(
             block_start_string="{{%",
@@ -247,7 +253,8 @@ def get_jinja_environment():
             variable_end_string="}}}",
             comment_start_string="{{#",
             comment_end_string="#}}",
-            loader=AbsolutePathFileSystemLoader()
+            loader=AbsolutePathFileSystemLoader(),
+            bytecode_cache=bytecode_cache
         )
 
     return get_jinja_environment.env
@@ -257,7 +264,7 @@ get_jinja_environment.env = None
 
 
 def process_file_with_jinja(filepath, substitutions_dict):
-    template = get_jinja_environment().get_template(filepath)
+    template = get_jinja_environment(substitutions_dict).get_template(filepath)
     return template.render(substitutions_dict)
 
 
@@ -289,8 +296,8 @@ def open_and_expand_yaml(yaml_file, substitutions_dict=None):
     return yaml_contents
 
 
-def _extract_substitutions_dict_from_template(filename):
-    template = get_jinja_environment().get_template(filename)
+def _extract_substitutions_dict_from_template(filename, substitutions_dict):
+    template = get_jinja_environment(substitutions_dict).get_template(filename)
     all_symbols = template.make_module().__dict__
     symbols_to_export = dict()
     for name, symbol in all_symbols.items():
@@ -355,7 +362,8 @@ def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
         substitutions_dict = dict()
 
     try:
-        macro_definitions = _extract_substitutions_dict_from_template(JINJA_MACROS_DEFINITIONS)
+        macro_definitions = _extract_substitutions_dict_from_template(
+            JINJA_MACROS_DEFINITIONS, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions from {0}: {1}"
                .format(JINJA_MACROS_DEFINITIONS, str(exc)))
