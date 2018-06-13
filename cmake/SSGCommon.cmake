@@ -219,22 +219,6 @@ if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE AND "
     endif()
 endmacro()
 
-
-if (ENABLE_PYTHON_COVERAGE)
-    set(PYTEST_COVERAGE_OPTIONS --cov-append --cov-report=xml --cov "${CMAKE_SOURCE_DIR}/shared/")
-endif()
-
-macro(ssg_python_unit_tests PYTHON_COMPONENT)
-add_test(
-    NAME "python-unit-${PYTHON_COMPONENT}"
-    COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT}"
-)
-set_tests_properties ("python-unit-${PYTHON_COMPONENT}" PROPERTIES ENVIRONMENT
-    "PYTHONPATH=${CMAKE_SOURCE_DIR}/${PYTHON_COMPONENT}"
-)
-endmacro()
-
-
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet and anaconda)...")
     _ssg_build_remediations_for_language(${PRODUCT} "bash")

@@ -201,10 +201,7 @@ enable_testing()
 
 include(SSGCommon)
 
-if (PY_PYTEST)
-ssg_python_unit_tests("build-scripts")
-ssg_python_unit_tests("utils")
-endif()
+add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
