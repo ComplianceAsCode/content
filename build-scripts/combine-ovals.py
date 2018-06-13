@@ -7,7 +7,6 @@ import re
 import sys
 from copy import deepcopy
 import argparse
-import codecs
 import collections
 
 
