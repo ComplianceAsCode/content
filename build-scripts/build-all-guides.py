@@ -25,7 +25,6 @@ except ImportError:
 import sys
 import multiprocessing
 
-import xccdf_utils
 import ssg
 
 
@@ -100,7 +99,7 @@ def main():
         path_base = path_base[:-6]
 
     input_tree = ElementTree.parse(input_path)
-    benchmarks = xccdf_utils.get_benchmark_ids_titles_for_input(input_tree)
+    benchmarks = ssg.xccdf.get_benchmark_ids_titles_for_input(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
             "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "
@@ -110,7 +109,7 @@ def main():
 
     benchmark_profile_pairs = []
     for benchmark_id in benchmarks.keys():
-        profiles = xccdf_utils.get_profile_choices_for_input(
+        profiles = ssg.xccdf.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
         # add the default profile
@@ -150,7 +149,7 @@ def main():
                        x[0], x[1], x[2]
                    )):
         skip = False
-        for blacklisted_id in xccdf_utils.PROFILE_ID_BLACKLIST:
+        for blacklisted_id in ssg.xccdf.PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
                 skip = True
                 break
@@ -173,12 +172,12 @@ def main():
             guide_filename = \
                 "%s-guide-%s.html" % \
                 (path_base,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path))
+                 ssg.xccdf.get_profile_short_id(profile_id_for_path))
         else:
             guide_filename = \
                 "%s-%s-guide-%s.html" % \
                 (path_base, benchmark_id_for_path,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path))
+                 ssg.xccdf.get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(output_dir, guide_filename)
 
         if args.cmd == "list_inputs":

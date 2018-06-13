@@ -25,8 +25,6 @@ except ImportError:
 import sys
 import multiprocessing
 
-
-import xccdf_utils
 import ssg
 
 OSCAP_PATH = "oscap"
@@ -123,7 +121,7 @@ def main():
         path_base = path_base[:-6]
 
     input_tree = ElementTree.parse(input_path)
-    benchmarks = xccdf_utils.get_benchmark_ids_titles_for_input(input_tree)
+    benchmarks = ssg.xccdf.get_benchmark_ids_titles_for_input(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
             "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "
@@ -136,7 +134,7 @@ def main():
     # benchmarks. This needs to be removed once
     # https://github.com/OpenSCAP/openscap/issues/722 is fixed
     for benchmark_id in list(benchmarks.keys())[:1]:
-        profiles = xccdf_utils.get_profile_choices_for_input(
+        profiles = ssg.xccdf.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
 
@@ -170,7 +168,7 @@ def main():
 
     for benchmark_id, profile_id, profile_title in benchmark_profile_pairs:
         skip = False
-        for blacklisted_id in xccdf_utils.PROFILE_ID_BLACKLIST:
+        for blacklisted_id in ssg.xccdf.PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
                 skip = True
                 break
@@ -195,13 +193,13 @@ def main():
             role_filename = \
                 "%s-role-%s.%s" % \
                 (path_base,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path),
+                 ssg.xccdf.get_profile_short_id(profile_id_for_path),
                  args.extension)
         else:
             role_filename = \
                 "%s-%s-role-%s.%s" % \
                 (path_base, benchmark_id_for_path,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path),
+                 ssg.xccdf.get_profile_short_id(profile_id_for_path),
                  args.extension)
         role_path = os.path.join(output_dir, role_filename)
 
