@@ -6,7 +6,7 @@ import os
 import sys
 import argparse
 
-templates_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
+templates_dir = os.path.join(os.path.dirname(__file__), "..", "shared", "templates")
 sys.path.append(templates_dir)
 from template_common import ActionType, TEMPLATED_LANGUAGES
 

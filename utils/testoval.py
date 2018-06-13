@@ -5,7 +5,7 @@ import os
 
 # always use shared/testoval_module.py version
 script_directory = os.path.dirname(os.path.realpath(__file__))
-SHARED_MODULE_PATH = os.path.join(script_directory, "..", "modules")
+SHARED_MODULE_PATH = os.path.join(script_directory, "..", "shared", "modules")
 
 sys.path.insert(0, SHARED_MODULE_PATH)
 import testoval_module

@@ -29,7 +29,7 @@ from optparse import OptionParser
 # Put shared python modules in path
 sys.path.insert(0, os.path.join(
         os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "modules"))
+        "shared", "modules"))
 import ssgcommon
 
 OSCAP_PATH = "oscap"

@@ -57,7 +57,7 @@ option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux de
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")
 set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
-set(SSG_SHARED_UTILS "${SSG_SHARED}/utils")
+set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
 
 message(STATUS "SCAP Security Guide ${SSG_VERSION}")
 message(STATUS "(see ${CMAKE_SOURCE_DIR}/BUILD.md for build instructions)")
@@ -95,7 +95,7 @@ if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VER
 endif()
 
 execute_process(
-    COMMAND "${PYTHON_EXECUTABLE}" "${SSG_SHARED_UTILS}/oscap-svg-support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
+    COMMAND "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/oscap-svg-support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
     RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
 )
 # OSCAP_SVG_SUPPORT_RESULT == 0 means SVG is supported
