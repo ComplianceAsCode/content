@@ -6,7 +6,6 @@
 <xsl:variable name="product_short_name">RHEL 7</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHEL_7_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">RHEL-7</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:redhat:enterprise_linux:7,cpe:/o:redhat:enterprise_linux:7::client,cpe:/o:redhat:enterprise_linux:7::computenode</xsl:variable>
 <xsl:variable name="prod_type">rhel7</xsl:variable>
 
 

@@ -6,7 +6,6 @@
 <xsl:variable name="product_short_name">Ubuntu 1404</xsl:variable>
 <xsl:variable name="product_stig_id_name">UBUNTU_TRUSTY_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">UBUNTU-TRUSTY</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/o:canonical:ubuntu_linux:14.04</xsl:variable>
 <xsl:variable name="prod_type">ubuntu</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for Ubuntu Linux v1.0 -->

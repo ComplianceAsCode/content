@@ -9,7 +9,6 @@
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">CHROMIUM</xsl:variable>
-<xsl:variable name="platform_cpes">cpe:/a:google:chromium-browser</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-apps-browers-uri"/>
 <xsl:variable name="os-stigid-concat">DISA FSO </xsl:variable>
 

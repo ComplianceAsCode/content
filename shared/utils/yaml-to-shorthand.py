@@ -270,13 +270,14 @@ class Benchmark(object):
         benchmark.rear_matter = required_yaml_key(yaml_contents,
                                                   "rear-matter")
         del yaml_contents["rear-matter"]
-        benchmark.cpes = yaml_contents.pop("cpes", [])
         benchmark.version = str(required_yaml_key(yaml_contents, "version"))
         del yaml_contents["version"]
 
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
+
+        benchmark.cpes = product_yaml.get("cpes", [])
 
         return benchmark
 
@@ -326,11 +327,11 @@ class Benchmark(object):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
-        for cpe in self.cpes:
-            if "platform-cpes-macro" in cpe:
-                ET.SubElement(root, "platform-cpes-macro")
-            else:
-                add_sub_element(root, "platform", cpe)
+
+        for idref in self.cpes:
+            plat = ET.SubElement(root, "platform")
+            plat.set("idref", idref)
+
         version = ET.SubElement(root, 'version')
         version.text = self.version
         ET.SubElement(root, "metadata")
