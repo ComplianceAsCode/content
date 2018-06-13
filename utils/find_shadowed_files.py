@@ -5,9 +5,7 @@ import argparse
 import sys
 
 
-SSG_DIR = os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))
-)
+SSG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def safe_listdir(path):
