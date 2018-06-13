@@ -77,7 +77,8 @@ def search_dict_for_items_that_end_with(dic, what_to_look_for):
 
 def search_element_for_reference_attributes(element):
     for ref_attribute_name in REFERENCE_TO_GROUP:
-        occurence = search_dict_for_items_that_end_with(element.attrib, ref_attribute_name)
+        occurence = search_dict_for_items_that_end_with(
+            element.attrib, ref_attribute_name)
         if occurence is not None:
             return ref_attribute_name, occurence
     return None
@@ -137,7 +138,8 @@ def check_sanity(oval_groups, resolved_defns):
     skipped_variables = all_external_variables.difference(all_caught_variables)
     if skipped_variables:
         print("These variables managed to slip past:", skipped_variables)
-        strange_variables = all_caught_variables.difference(all_external_variables)
+        strange_variables = all_caught_variables.difference(
+            all_external_variables)
         assert not strange_variables, \
             ("There were unexpected caught variables: {}"
              .format(str(strange_variables)))

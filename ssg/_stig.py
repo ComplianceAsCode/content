@@ -2,7 +2,8 @@
 
 import sys
 import csv
-import lxml.etree as ET
+
+from ssg._xml import ElementTree as ET
 
 # This script creates a CSV file from an XCCDF file formatted in the
 # structure of a STIG.  This should enable its ingestion into VMS,
@@ -32,7 +33,7 @@ def node_to_text(node):
 
 def main():
     if len(sys.argv) < 2:
-        print "Provide an XCCDF file to convert into a CSV file."
+        print("Provide an XCCDF file to convert into a CSV file.")
         sys.exit(1)
 
     xccdffile = sys.argv[1]
@@ -41,15 +42,17 @@ def main():
     rulewriter = csv.writer(sys.stdout, quoting=csv.QUOTE_ALL)
 
     for rule in rules:
+        args = (xccdf_ns, disa_cciuri)
         cci_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
-                                                     % (xccdf_ns, disa_cciuri))]
+                                                     % args)]
         srg_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
-                                                     % (xccdf_ns, disa_srguri))]
+                                                     % args)]
         title = rule.find("{%s}title" % xccdf_ns).text
         description = node_to_text(rule.find("{%s}description" % xccdf_ns))
         fixtext = node_to_text(rule.find("{%s}fixtext" % xccdf_ns))
         checktext = node_to_text(rule.find(".//{%s}check-content" % xccdf_ns))
-        row = [reflist(cci_refs), reflist(srg_refs), title, description, fixtext, checktext]
+        row = [reflist(cci_refs), reflist(srg_refs), title,
+               description, fixtext, checktext]
         rulewriter.writerow(row)
 
     sys.exit(0)

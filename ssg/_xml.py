@@ -9,6 +9,7 @@ except ImportError as e:
     print(e)
     import cElementTree as ElementTree
 
+
 def oval_generated_header(product_name, schema_version, ssg_version):
     return xml_version + oval_header + \
         """
@@ -19,6 +20,7 @@ def oval_generated_header(product_name, schema_version, ssg_version):
         <oval:timestamp>%s</oval:timestamp>
     </generator>""" % (product_name, ssg_version, platform.python_version(),
                        schema_version, timestamp)
+
 
 def parse_xml_file(filename):
     """
@@ -35,7 +37,8 @@ def map_elements_to_their_ids(tree, xpath_expr):
     Given an ElementTree and an XPath expression,
     iterate through matching elements and create 1:1 id->element mapping.
 
-    Raises AssertionError if a matching element doesn't have the ``id`` attribute.
+    Raises AssertionError if a matching element doesn't have the ``id``
+    attribute.
 
     Returns mapping as a dictionary
     """

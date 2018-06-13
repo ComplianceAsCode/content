@@ -10,11 +10,14 @@ try:
 except ImportError:
     from yaml import SafeLoader as yaml_SafeLoader
 
+
 def bool_constructor(self, node):
     return self.construct_scalar(node)
 
+
 # Don't follow python bool case
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+
 
 def _save_rename(result, stem, prefix):
     result["{0}_{1}".format(prefix, stem)] = stem
@@ -54,15 +57,16 @@ def _identify_special_macro_mapping(existing_properties):
         _save_rename(result, "ocil_service_disabled", init_system)
         _save_rename(result, "describe_socket_enable", init_system)
         _save_rename(result, "describe_socket_disable", init_system)
-        _save_rename(result, "complete_ocil_entry_socket_and_service_disabled", init_system)
+        _save_rename(result, "complete_ocil_entry_socket_and_service_disabled",
+                     init_system)
 
     return result
 
 
 def open_and_expand_yaml(yaml_file, substitutions_dict=None):
     """
-    Process the file as a template, using substitutions_dict to perform expansion.
-    Then, process the expansion result as a YAML content.
+    Process the file as a template, using substitutions_dict to perform
+    expansion. Then, process the expansion result as a YAML content.
 
     See also: _open_yaml
     """
@@ -76,9 +80,10 @@ def open_and_expand_yaml(yaml_file, substitutions_dict=None):
 
 def get_implied_properties(existing_properties):
     result = dict()
-    if ("pkg_manager" in existing_properties
-            and "pkg_system" not in existing_properties):
-        result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[existing_properties["pkg_manager"]]
+    if ("pkg_manager" in existing_properties and
+            "pkg_system" not in existing_properties):
+        pkg_manager = existing_properties["pkg_manager"]
+        result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
     return result
 
 
@@ -91,7 +96,8 @@ def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
         substitutions_dict = dict()
 
     try:
-        macro_definitions = _extract_substitutions_dict_from_template(JINJA_MACROS_DEFINITIONS)
+        macro_definitions = _extract_substitutions_dict_from_template(
+            JINJA_MACROS_DEFINITIONS)
     except Exception as exc:
         msg = ("Error extracting macro definitions from {0}: {1}"
                .format(JINJA_MACROS_DEFINITIONS, str(exc)))

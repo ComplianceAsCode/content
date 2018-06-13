@@ -3,6 +3,7 @@ import os.path
 
 from ssg._utils import required_key
 
+
 class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
     """Loads templates from the file system. This loader insists on absolute
     paths and fails if a relative path is provided.
@@ -68,6 +69,7 @@ def process_file_with_jinja(filepath, substitutions_dict):
     template = get_jinja_environment(substitutions_dict).get_template(filepath)
     return template.render(substitutions_dict)
 
+
 def _extract_substitutions_dict_from_template(filename):
     template = get_jinja_environment(substitutions_dict).get_template(filename)
     all_symbols = template.make_module().__dict__
@@ -77,6 +79,7 @@ def _extract_substitutions_dict_from_template(filename):
             continue
         symbols_to_export[name] = symbol
     return symbols_to_export
+
 
 def rename_items(original_dict, renames):
     renamed_macros = dict()

@@ -2,6 +2,7 @@ import re
 
 from ssg._constants import *
 
+
 def get_check_content_ref_if_exists_and_not_remote(check):
     """
     Given an OVAL check element, examine the ``xccdf_ns:check-content-ref``

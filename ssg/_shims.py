@@ -1,5 +1,6 @@
 import subprocess
 
+
 def subprocess_check_output(*popenargs, **kwargs):
     # Backport of subprocess.check_output taken from
     # https://gist.github.com/edufelipe/1027906
