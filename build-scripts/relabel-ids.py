@@ -13,8 +13,6 @@ import ssg
 ET = ssg.xml.ElementTree
 
 
-import parse_oval
-
 # This script requires two arguments: an "unlinked" XCCDF file and an ID name
 # scheme. This script is designed to convert and synchronize check IDs
 # referenced from the XCCDF document for the supported checksystems, which are
@@ -123,7 +121,7 @@ class OVALFileLinker(FileLinker):
         return "{%s}definition" % self.CHECK_NAMESPACE
 
     def link(self):
-        self.oval_groups = parse_oval.get_container_oval_groups(self.fname)
+        self.oval_groups = ssg.parse_oval.get_container_oval_groups(self.fname)
         self.tree = ssg.xml.parse_xml_file(self.fname)
         try:
             self._link_oval_tree()
@@ -202,7 +200,7 @@ class OVALFileLinker(FileLinker):
                 print("WARNING: Definition '%s' was not found, can't figure "
                       "out what depends on it." % (def_id), file=sys.stderr)
                 continue
-            extensions = parse_oval.find_extending_defs(self.oval_groups, definition_tree)
+            extensions = ssg.parse_oval.find_extending_defs(self.oval_groups, definition_tree)
             if not extensions:
                 continue
             queue |= extensions - processed_def_ids
@@ -222,7 +220,7 @@ class OVALFileLinker(FileLinker):
                 print("WARNING: Definition '%s' was not found, can't figure "
                       "out which variables it needs." % (def_id), file=sys.stderr)
                 continue
-            all_vars |= parse_oval.resolve_definition(self.oval_groups, extended_def)
+            all_vars |= ssg.parse_oval.resolve_definition(self.oval_groups, extended_def)
         for varname in all_vars:
             export = ET.Element("{%s}check-export" % xccdf_ns)
             export.attrib["export-name"] = varname

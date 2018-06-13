@@ -1,7 +1,7 @@
 
 from __future__ import print_function
 
-import xml.etree.ElementTree as ET
+from ssg._xml import ElementTree as ET
 
 
 REFERENCE_TO_GROUP = dict(
