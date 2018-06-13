@@ -22,7 +22,7 @@ def oval_generated_header(product_name, schema_version, ssg_version):
                        schema_version, timestamp)
 
 
-def parse_xml_file(filename):
+def parse_file(filename):
     """
     Given a filename, return the corresponding ElementTree
     """

@@ -64,7 +64,7 @@ class Profile(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssg.yaml.open_and_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -132,7 +132,7 @@ class Value(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssg.yaml.open_and_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -234,7 +234,7 @@ class Benchmark(object):
 
     @staticmethod
     def from_yaml(yaml_file, id_, product_yaml=None):
-        yaml_contents = ssg.yaml.open_and_macro_expand_yaml(yaml_file, product_yaml)
+        yaml_contents = ssg.yaml.open_and_macro_expand(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
@@ -386,7 +386,7 @@ class Group(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssg.yaml.open_and_macro_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -471,7 +471,7 @@ class Rule(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssg.yaml.open_and_macro_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
@@ -518,7 +518,7 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not ssg.checks.cce_is_valid("CCE-" + ident_val):
+                if not ssg.checks.is_cce_valid("CCE-" + ident_val):
                     raise ValueError("CCE Identifiers must be valid: value %s for cce %s"
                                      " in file %s" % (ident_val, ident_type, yaml_file))
 
@@ -717,7 +717,7 @@ def main():
         print(args.output)
         sys.exit(0)
 
-    env_yaml = ssg.yaml.open_environment_yamls(
+    env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")

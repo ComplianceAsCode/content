@@ -13,9 +13,7 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-from ssg._products import map_product, parse_product_name, multi_product_list
-from ssg._yaml import open_environment_yamls
-from ssg._jinja import process_file_with_jinja
+import ssg
 
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -26,7 +24,7 @@ def fix_is_applicable_for_product(platform, product):
     determine if this remediation script is applicable for this product.
     Return 'True' if so, 'False' otherwise"""
 
-    product, product_version = parse_product_name(product)
+    product, product_version = ssg.products.parse_name(product)
 
     # Define general platforms
     multi_platforms = ['multi_platform_all',
@@ -36,15 +34,15 @@ def fix_is_applicable_for_product(platform, product):
     # 'multi_platform_' + product
     result = False
     for mp in multi_platforms:
-        if mp in platform and product in multi_product_list:
+        if mp in platform and product in ssg.products.multi_list:
             result = True
 
     product_name = ""
     # Get official name for product
     if product_version is not None:
-        product_name = map_product(product) + ' ' + product_version
+        product_name = ssg.products.map_name(product) + ' ' + product_version
     else:
-        product_name = map_product(product)
+        product_name = ssg.products.map_name(product)
 
     # Test if this is for the concrete product version
     for pf in platform.split(','):
@@ -435,7 +433,7 @@ def main():
         )
         sys.exit(1)
 
-    env_yaml = open_environment_yamls(
+    env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
 
     fixcontent = ElementTree.Element(
@@ -460,7 +458,7 @@ def main():
                 mod_file = []
                 config = {}
 
-                fix_file_lines = process_file_with_jinja(
+                fix_file_lines = ssg.jinja.process_file(
                     os.path.join(fixdir, filename),
                     env_yaml
                 ).splitlines()

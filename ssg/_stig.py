@@ -4,29 +4,21 @@ import sys
 import csv
 
 from ssg._xml import ElementTree as ET
+from ssg._xml import parse_file as parse_xml_file
+from ssg._constants import XCCDF11_NS as xccdf_ns
+from ssg._constants import *
 
 # This script creates a CSV file from an XCCDF file formatted in the
 # structure of a STIG.  This should enable its ingestion into VMS,
 # as well as its comparison with VMS output.
 
-xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
-disa_cciuri = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"
-disa_srguri = "http://iase.disa.mil/stigs/srgs/Pages/index.aspx"
 
-
-def parse_xml_file(xmlfile):
-    with open(xmlfile, 'r') as xml_file:
-        filestring = xml_file.read()
-        tree = ET.fromstring(filestring)
-    return tree
-
-
-def reflist(refs):
+def _reflist(refs):
     refstring = ', '.join(refs)
     return refstring
 
 
-def node_to_text(node):
+def _node_to_text(node):
     textslist = node.xpath(".//text()")
     return ''.join(textslist)
 
@@ -48,10 +40,10 @@ def main():
         srg_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
                                                      % args)]
         title = rule.find("{%s}title" % xccdf_ns).text
-        description = node_to_text(rule.find("{%s}description" % xccdf_ns))
-        fixtext = node_to_text(rule.find("{%s}fixtext" % xccdf_ns))
-        checktext = node_to_text(rule.find(".//{%s}check-content" % xccdf_ns))
-        row = [reflist(cci_refs), reflist(srg_refs), title,
+        description = _node_to_text(rule.find("{%s}description" % xccdf_ns))
+        fixtext = _node_to_text(rule.find("{%s}fixtext" % xccdf_ns))
+        checktext = _node_to_text(rule.find(".//{%s}check-content" % xccdf_ns))
+        row = [_reflist(cci_refs), _reflist(srg_refs), title,
                description, fixtext, checktext]
         rulewriter.writerow(row)
 

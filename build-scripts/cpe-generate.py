@@ -19,13 +19,6 @@ xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
 
 
-def parse_xml_file(xmlfile):
-    with open(xmlfile, 'r') as xml_file:
-        filestring = xml_file.read()
-        tree = ElementTree.fromstring(filestring)
-    return tree
-
-
 def extract_subelement(objects, sub_elem_type):
     for obj in objects:
         for subelement in obj.getiterator():
@@ -80,7 +73,7 @@ def main():
     cpedictfile = sys.argv[5]
 
     # parse oval file
-    ovaltree = parse_xml_file(ovalfile)
+    ovaltree = ssg.xml.parse_file(ovalfile)
 
     # extract inventory definitions
     # making (dubious) assumption that all inventory defs are CPE
@@ -145,7 +138,7 @@ def main():
     ElementTree.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
-    cpedicttree = parse_xml_file(cpedictfile)
+    cpedicttree = ssg.xml.parse_file(cpedictfile)
     newcpedictfile = idname + "-" + os.path.basename(cpedictfile)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
         checkhref = check.get("href")

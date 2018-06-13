@@ -59,7 +59,7 @@ class FileLinker(object):
             # Include the file in the particular check system only if it's NOT
             # a remotely located file (to allow OVAL checks to reference http://
             # and https:// formatted URLs)
-            checkcontentref = ssg.checks.get_check_content_ref_if_exists_and_not_remote(check)
+            checkcontentref = ssg.checks.get_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is not None:
                 checkfiles.add(checkcontentref.get("href"))
         return checkfiles
@@ -85,7 +85,7 @@ class FileLinker(object):
 
     def link_xccdf(self):
         for check in self.checks_related_to_us:
-            checkcontentref = ssg.checks.get_check_content_ref_if_exists_and_not_remote(check)
+            checkcontentref = ssg.checks.get_content_ref_if_exists_and_not_remote(check)
             if checkcontentref is None:
                 continue
 
@@ -120,8 +120,8 @@ class OVALFileLinker(FileLinker):
         return "{%s}definition" % self.CHECK_NAMESPACE
 
     def link(self):
-        self.oval_groups = ssg.parse_oval.get_container_oval_groups(self.fname)
-        self.tree = ssg.xml.parse_xml_file(self.fname)
+        self.oval_groups = ssg.parse_oval.get_container_groups(self.fname)
+        self.tree = ssg.xml.parse_file(self.fname)
         try:
             self._link_oval_tree()
 
@@ -180,7 +180,7 @@ class OVALFileLinker(FileLinker):
                 continue
 
             xccdfcceid = idmappingdict[ovalid]
-            if ssg.checks.cce_is_valid(xccdfcceid):
+            if ssg.checks.is_cce_valid(xccdfcceid):
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
                 ccerefelem = ET.Element('reference', ref_id=xccdfcceid,
@@ -245,7 +245,7 @@ class OVALFileLinker(FileLinker):
                 if check.get("system") != oval_cs:
                     continue
 
-                if ssg.checks.get_check_content_ref_if_exists_and_not_remote(check) is None:
+                if ssg.checks.get_content_ref_if_exists_and_not_remote(check) is None:
                     continue
 
                 # For local OVAL drop the reference to OVAL definition from XCCDF document
@@ -266,7 +266,7 @@ class OCILFileLinker(FileLinker):
         return "{%s}questionnaire" % self.CHECK_NAMESPACE
 
     def link(self):
-        self.tree = ssg.xml.parse_xml_file(self.fname)
+        self.tree = ssg.xml.parse_file(self.fname)
         self.tree = self.translator.translate(self.tree, store_defname=True)
 
 
@@ -428,7 +428,7 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
         identcce = _find_identcce(rule)
         if identcce is not None:
             cceid = identcce.text
-            if not ssg.checks.cce_is_valid(cceid):
+            if not ssg.checks.is_cce_valid(cceid):
                 print("Warning: CCE '{0}' is invalid for rule '{1}'. Removing CCE..."
                       .format(cceid, rule.get("id"), file=sys.stderr))
                 rule.remove(identcce)
@@ -481,7 +481,7 @@ def main():
     idname = args.id_name
 
     # Step over xccdf file, and find referenced check files
-    xccdftree = ssg.xml.parse_xml_file(xccdffile)
+    xccdftree = ssg.xml.parse_file(xccdffile)
 
     if 'unlinked-ocilref' not in xccdffile:
         check_that_oval_and_rule_id_match(xccdftree)

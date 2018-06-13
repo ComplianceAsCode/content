@@ -2,6 +2,7 @@ import codecs
 import yaml
 
 from ssg._jinja import _extract_substitutions_dict_from_template
+from ssg._jinja import _rename_items
 from ssg._jinja import *
 from ssg._constants import *
 
@@ -11,12 +12,12 @@ except ImportError:
     from yaml import SafeLoader as yaml_SafeLoader
 
 
-def bool_constructor(self, node):
+def _bool_constructor(self, node):
     return self.construct_scalar(node)
 
 
 # Don't follow python bool case
-yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', bool_constructor)
+yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
 
 
 def _save_rename(result, stem, prefix):
@@ -63,7 +64,16 @@ def _identify_special_macro_mapping(existing_properties):
     return result
 
 
-def open_and_expand_yaml(yaml_file, substitutions_dict=None):
+def _get_implied_properties(existing_properties):
+    result = dict()
+    if ("pkg_manager" in existing_properties and
+            "pkg_system" not in existing_properties):
+        pkg_manager = existing_properties["pkg_manager"]
+        result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
+    return result
+
+
+def open_and_expand(yaml_file, substitutions_dict=None):
     """
     Process the file as a template, using substitutions_dict to perform
     expansion. Then, process the expansion result as a YAML content.
@@ -73,23 +83,14 @@ def open_and_expand_yaml(yaml_file, substitutions_dict=None):
     if substitutions_dict is None:
         substitutions_dict = dict()
 
-    expanded_template = process_file_with_jinja(yaml_file, substitutions_dict)
+    expanded_template = process_file(yaml_file, substitutions_dict)
     yaml_contents = _open_yaml(expanded_template)
     return yaml_contents
 
 
-def get_implied_properties(existing_properties):
-    result = dict()
-    if ("pkg_manager" in existing_properties and
-            "pkg_system" not in existing_properties):
-        pkg_manager = existing_properties["pkg_manager"]
-        result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
-    return result
-
-
-def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
+def open_and_macro_expand(yaml_file, substitutions_dict=None):
     """
-    Do the same as open_and_expand_yaml, but load definitions of macros
+    Do the same as open_and_expand, but load definitions of macros
     so they can be expanded in the template.
     """
     if substitutions_dict is None:
@@ -97,19 +98,19 @@ def open_and_macro_expand_yaml(yaml_file, substitutions_dict=None):
 
     try:
         macro_definitions = _extract_substitutions_dict_from_template(
-            JINJA_MACROS_DEFINITIONS)
+            JINJA_MACROS_DEFINITIONS, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions from {0}: {1}"
                .format(JINJA_MACROS_DEFINITIONS, str(exc)))
         raise RuntimeError(msg)
     mapping = _identify_special_macro_mapping(substitutions_dict)
-    special_macros = rename_items(macro_definitions, mapping)
+    special_macros = _rename_items(macro_definitions, mapping)
     substitutions_dict.update(macro_definitions)
     substitutions_dict.update(special_macros)
-    return open_and_expand_yaml(yaml_file, substitutions_dict)
+    return open_and_expand(yaml_file, substitutions_dict)
 
 
-def open_yaml(yaml_file):
+def open_raw(yaml_file):
     """
     Open given file-like object and parse it as YAML
     without performing any kind of template processing
@@ -121,8 +122,8 @@ def open_yaml(yaml_file):
     return yaml_contents
 
 
-def open_environment_yamls(build_config_yaml, product_yaml):
-    contents = open_yaml(build_config_yaml)
-    contents.update(open_yaml(product_yaml))
-    contents.update(get_implied_properties(contents))
+def open_environment(build_config_yaml, product_yaml):
+    contents = open_raw(build_config_yaml)
+    contents.update(open_raw(product_yaml))
+    contents.update(_get_implied_properties(contents))
     return contents

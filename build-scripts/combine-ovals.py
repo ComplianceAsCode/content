@@ -21,7 +21,6 @@ except ImportError:
     # for python2
     from ConfigParser import SafeConfigParser
 
-from ssg._products import map_product, parse_product_name, multi_product_list
 import ssg
 
 oval_ns = ssg.constants.oval_namespace
@@ -46,7 +45,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     OVAL check is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
 
-    product, product_version = parse_product_name(product)
+    product, product_version = ssg.products.parse_name(product)
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
@@ -55,7 +54,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in oval_check_def and product in multi_product_list:
+        if mp in oval_check_def and product in ssg.products.multi_list:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'
@@ -66,7 +65,7 @@ def check_is_applicable_for_product(oval_check_def, product):
 
     for afftype in affected_type_elements:
         # Get official name for product (prefixed with content of afftype)
-        product_name = afftype + map_product(product)
+        product_name = afftype + ssg.products.map_name(product)
         # Append the product version to the official name
         if product_version is not None:
             product_name += ' ' + product_version
@@ -93,12 +92,12 @@ def add_platforms(xml_tree, multi_platform):
                         for plat in multi_platform[platforms]:
                             platform = ElementTree.Element(
                                 "{%s}platform" % oval_ns)
-                            platform.text = map_product(platforms) + ' ' + plat
+                            platform.text = ssg.products.map_name(platforms) + ' ' + plat
                             affected.insert(1, platform)
                 else:
                     for platforms in multi_platform[plat_elem.text]:
                         platform = ElementTree.Element("{%s}platform" % oval_ns)
-                        platform.text = map_product(plat_elem.text) + ' ' + platforms
+                        platform.text = ssg.products.map_name(plat_elem.text) + ' ' + platforms
                         affected.insert(0, platform)
             except KeyError:
                 pass
@@ -278,7 +277,7 @@ def checks(env_yaml, oval_version, oval_dirs):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
-                    xml_content = ssg.jinja.process_file_with_jinja(
+                    xml_content = ssg.jinja.process_file(
                         os.path.join(oval_dir, filename), env_yaml
                     )
                     if not check_is_applicable_for_product(
@@ -332,7 +331,7 @@ def main():
         )
         sys.exit(1)
 
-    env_yaml = ssg.yaml.open_environment_yamls(
+    env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
 
     if os.path.isfile(args.oval_config):

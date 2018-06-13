@@ -39,8 +39,8 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         return contents, template, uptodate
 
 
-def get_jinja_environment(substitutions_dict):
-    if get_jinja_environment.env is None:
+def _get_jinja_environment(substitutions_dict):
+    if _get_jinja_environment.env is None:
         bytecode_cache = None
         if required_key(substitutions_dict, "jinja2_cache_enabled") == "true":
             bytecode_cache = jinja2.FileSystemBytecodeCache(
@@ -48,7 +48,7 @@ def get_jinja_environment(substitutions_dict):
             )
 
         # TODO: Choose better syntax?
-        get_jinja_environment.env = jinja2.Environment(
+        _get_jinja_environment.env = jinja2.Environment(
             block_start_string="{{%",
             block_end_string="%}}",
             variable_start_string="{{{",
@@ -59,19 +59,14 @@ def get_jinja_environment(substitutions_dict):
             bytecode_cache=bytecode_cache
         )
 
-    return get_jinja_environment.env
+    return _get_jinja_environment.env
 
 
-get_jinja_environment.env = None
+_get_jinja_environment.env = None
 
 
-def process_file_with_jinja(filepath, substitutions_dict):
-    template = get_jinja_environment(substitutions_dict).get_template(filepath)
-    return template.render(substitutions_dict)
-
-
-def _extract_substitutions_dict_from_template(filename):
-    template = get_jinja_environment(substitutions_dict).get_template(filename)
+def _extract_substitutions_dict_from_template(filename, substitutions_dict):
+    template = _get_jinja_environment(substitutions_dict).get_template(filename)
     all_symbols = template.make_module().__dict__
     symbols_to_export = dict()
     for name, symbol in all_symbols.items():
@@ -81,9 +76,14 @@ def _extract_substitutions_dict_from_template(filename):
     return symbols_to_export
 
 
-def rename_items(original_dict, renames):
+def _rename_items(original_dict, renames):
     renamed_macros = dict()
     for rename_from, rename_to in renames.items():
         if rename_from in original_dict:
             renamed_macros[rename_to] = original_dict[rename_from]
     return renamed_macros
+
+
+def process_file(filepath, substitutions_dict):
+    template = _get_jinja_environment(substitutions_dict).get_template(filepath)
+    return template.render(substitutions_dict)

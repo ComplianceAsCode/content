@@ -3,25 +3,25 @@ import re
 from ssg._constants import *
 
 
-def get_check_content_ref_if_exists_and_not_remote(check):
+def get_content_ref_if_exists_and_not_remote(check):
     """
     Given an OVAL check element, examine the ``xccdf_ns:check-content-ref``
 
     If it exists and it isn't remote, pass it as the return value.
     Otherwise, return None.
 
-    ..see-also:: check_content_href_is_remote
+    ..see-also:: is_content_href_remote
     """
     checkcontentref = check.find("./{%s}check-content-ref" % XCCDF11_NS)
     if checkcontentref is None:
         return None
-    if check_content_href_is_remote(checkcontentref):
+    if is_content_href_remote(checkcontentref):
         return None
     else:
         return checkcontentref
 
 
-def check_content_href_is_remote(check_content_ref):
+def is_content_href_remote(check_content_ref):
     """
     Given an OVAL check-content-ref element, examine the 'href' attribute.
 
@@ -40,7 +40,7 @@ def check_content_href_is_remote(check_content_ref):
     return hrefattr.startswith("http://") or hrefattr.startswith("https://")
 
 
-def cce_is_valid(cceid):
+def is_cce_valid(cceid):
     """
     IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
     where each X is a digit, and the final X is a check-digit)
