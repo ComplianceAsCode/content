@@ -21,7 +21,7 @@ except ImportError:
     # for python2
     from ConfigParser import SafeConfigParser
 
-from map_product_module import map_product, parse_product_name, multi_product_list
+from ssg._products import map_product, parse_product_name, multi_product_list
 import ssg
 
 oval_ns = ssg.constants.oval_namespace

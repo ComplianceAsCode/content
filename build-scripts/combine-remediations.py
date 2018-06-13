@@ -13,7 +13,7 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-from map_product_module import map_product, parse_product_name, multi_product_list
+from ssg._products import map_product, parse_product_name, multi_product_list
 from ssg._yaml import open_environment_yamls
 from ssg._jinja import process_file_with_jinja
 
