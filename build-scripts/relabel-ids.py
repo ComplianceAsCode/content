@@ -7,7 +7,6 @@ import sys
 import os
 
 
-import idtranslate_module as idtranslate
 import ssg
 
 ET = ssg.xml.ElementTree
@@ -489,7 +488,7 @@ def main():
 
     checks = xccdftree.findall(".//{%s}check" % xccdf_ns)
 
-    translator = idtranslate.IDTranslator(idname)
+    translator = ssg.id_translate.IDTranslator(idname)
 
     oval_linker = OVALFileLinker(translator, xccdftree, checks)
     oval_linker.link()

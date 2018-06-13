@@ -1,12 +1,6 @@
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
-import ssg
-
-oval_ns = ssg.constants.oval_namespace
-ocil_ns = ssg.constants.ocil_namespace
+from ssg._xml import ElementTree
+from ssg._constants import oval_namespace as oval_ns
+from ssg._constants import ocil_namespace as ocil_ns
 
 ovaltag_to_abbrev = {
     'definition': 'def',

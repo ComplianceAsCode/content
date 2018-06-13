@@ -4,11 +4,12 @@ import re
 import argparse
 import tempfile
 import subprocess
+
 import ssg
-import lxml.etree as ET
+
 from ConfigParser import SafeConfigParser
 
-import idtranslate_module as idtranslate
+ET = ssg.xml.ElementTree
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
 timestamp = ssg.constants.timestamp

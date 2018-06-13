@@ -5,17 +5,9 @@ from __future__ import print_function
 import fnmatch
 import sys
 import os
+import ssg
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import idtranslate_module as idtranslate
+ElementTree = ssg.xml.ElementTree
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
@@ -145,7 +137,7 @@ def main():
             ovaltree.remove(variables)
 
     # turn IDs into meaningless numbers
-    translator = idtranslate.IDTranslator(idname)
+    translator = ssg.id_translate.IDTranslator(idname)
     ovaltree = translator.translate(ovaltree)
 
     newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)

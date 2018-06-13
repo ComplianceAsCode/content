@@ -1,5 +1,6 @@
 import ssg._checks as checks
 import ssg._constants as constants
+import ssg._id_translate as id_translate
 import ssg._jinja as jinja
 import ssg._parse_oval as parse_oval
 import ssg._utils as utils
