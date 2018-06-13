@@ -225,8 +225,8 @@ class Benchmark(object):
         self.notice_description = ""
         self.front_matter = ""
         self.rear_matter = ""
-        self.cpes = []
-        self.platform_cpes = []
+        self.cpes_from_benchmark_yaml = []
+        self.cpes_from_product_yaml = []
         self.version = "0.1"
         self.profiles = []
         self.values = {}
@@ -271,7 +271,7 @@ class Benchmark(object):
         benchmark.rear_matter = required_yaml_key(yaml_contents,
                                                   "rear-matter")
         del yaml_contents["rear-matter"]
-        benchmark.cpes = yaml_contents.pop("cpes", [])
+        benchmark.cpes_from_benchmark_yaml = yaml_contents.pop("cpes", [])
         benchmark.version = str(required_yaml_key(yaml_contents, "version"))
         del yaml_contents["version"]
 
@@ -279,7 +279,7 @@ class Benchmark(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
-        benchmark.platform_cpes = product_yaml.get("platform_cpes", [])
+        benchmark.cpes_from_product_yaml = product_yaml.get("cpes", [])
 
         return benchmark
 
@@ -329,16 +329,16 @@ class Benchmark(object):
         notice.set('id', self.notice_id)
         add_sub_element(root, "front-matter", self.front_matter)
         add_sub_element(root, "rear-matter", self.rear_matter)
-        if not self.cpes:
-            assert self.platform_cpes, (
+        if not self.cpes_from_benchmark_yaml:
+            assert self.cpes_from_product_yaml, (
                 "There were no CPEs in the benchmark file, so there should be platform CPEs "
                 "known from the product yaml file, which is also not the case."
             )
-            for idref in self.platform_cpes:
+            for idref in self.cpes_from_product_yaml:
                 plat = ET.SubElement(root, "platform")
                 plat.set("idref", idref)
         else:
-            for cpe in self.cpes:
+            for cpe in self.cpes_from_benchmark_yaml:
                 add_sub_element(root, "platform", cpe)
         version = ET.SubElement(root, 'version')
         version.text = self.version
