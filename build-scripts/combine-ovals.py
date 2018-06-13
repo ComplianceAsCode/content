@@ -54,7 +54,7 @@ def check_is_applicable_for_product(oval_check_def, product):
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
-                       '<platform>multi_platform_' + product ]
+                       '<platform>multi_platform_' + product]
 
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
@@ -135,18 +135,24 @@ def oval_entities_are_identical(firstelem, secondelem):
     # attributes since they don't change the semantics of an element
     for copy in [firstcopy, secondcopy]:
         for key in copy.keys():
-            if key in ["comment", "version", "state_operator", \
+            if key in ["comment", "version", "state_operator",
                        "deprecated"]:
                 del copy.attrib[key]
 
     # Compare the equality of the copies
-    if firstcopy.tag != secondcopy.tag: return False
-    if firstcopy.text != secondcopy.text: return False
-    if firstcopy.tail != secondcopy.tail: return False
-    if firstcopy.attrib != secondcopy.attrib: return False
-    if len(firstcopy) != len(secondcopy): return False
-    return all(oval_entities_are_identical( \
-        fchild, schild) for fchild,schild in zip(firstcopy,secondcopy))
+    if firstcopy.tag != secondcopy.tag:
+        return False
+    if firstcopy.text != secondcopy.text:
+        return False
+    if firstcopy.tail != secondcopy.tail:
+        return False
+    if firstcopy.attrib != secondcopy.attrib:
+        return False
+    if len(firstcopy) != len(secondcopy):
+        return False
+
+    return all(oval_entities_are_identical(
+        fchild, schild) for fchild, schild in zip(firstcopy, secondcopy))
 
 
 def oval_entity_is_extvar(elem):
@@ -391,6 +397,7 @@ def main():
     ElementTree.ElementTree(root).write(args.output)
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
