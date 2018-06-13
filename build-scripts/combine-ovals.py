@@ -8,6 +8,7 @@ import sys
 from copy import deepcopy
 import argparse
 import codecs
+import collections
 
 
 try:
@@ -157,17 +158,15 @@ def oval_entity_is_extvar(elem):
     return elem.tag == '{%s}external_variable' % oval_ns
 
 
-element_child_cache = {}
+element_child_cache = collections.defaultdict(dict)
 
 
 def append(element, newchild):
     """Append new child ONLY if it's not a duplicate"""
 
-    if element not in element_child_cache:
-        element_child_cache[element] = dict()
+    global element_child_cache
 
     newid = newchild.get("id")
-
     existing = element_child_cache[element].get(newid, None)
 
     if existing is not None:
