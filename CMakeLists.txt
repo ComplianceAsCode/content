@@ -202,7 +202,7 @@ enable_testing()
 include(SSGCommon)
 
 if (PY_PYTEST)
-ssg_python_unit_tests("misc")
+ssg_python_unit_tests("build-scripts")
 ssg_python_unit_tests("utils")
 endif()
 
