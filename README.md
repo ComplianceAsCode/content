@@ -1,6 +1,11 @@
 # Welcome!
 
-[![Nightly ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/) [![Nightly 5.10 ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-oval510-zip/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-oval510-zip/) [![Link-checker Status](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/) [![CentOS CI Status](https://ci.centos.org/job/openscap-scap-security-guide/badge/icon)](https://ci.centos.org/job/openscap-scap-security-guide/) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OpenSCAP/scap-security-guide/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OpenSCAP/scap-security-guide/?branch=master)
+[![Release](https://img.shields.io/github/release/openscap/scap-security-guide.svg)](https://github.com/openscap/scap-security-guide/releases/latest)
+[![Nightly ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-zip/)
+[![Nightly 5.10 ZIP Status](https://jenkins.open-scap.org/job/scap-security-guide-nightly-oval510-zip/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-nightly-oval510-zip/)
+[![Link-checker Status](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/badge/icon)](https://jenkins.open-scap.org/job/scap-security-guide-linkcheck/)
+[![CentOS CI Status](https://ci.centos.org/job/openscap-scap-security-guide/badge/icon)](https://ci.centos.org/job/openscap-scap-security-guide/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OpenSCAP/scap-security-guide/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/OpenSCAP/scap-security-guide/?branch=master)
 
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
