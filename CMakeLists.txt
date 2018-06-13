@@ -159,6 +159,7 @@ message(STATUS "sed: ${SED_EXECUTABLE}")
 message(STATUS "shellcheck (optional): ${SHELLCHECK_EXECUTABLE}")
 message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
 message(STATUS "grep (optional): ${GREP_EXECUTABLE}")
+message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
