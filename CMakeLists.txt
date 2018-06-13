@@ -159,6 +159,7 @@ message(STATUS "sed: ${SED_EXECUTABLE}")
 message(STATUS "shellcheck (optional): ${SHELLCHECK_EXECUTABLE}")
 message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
 message(STATUS "grep (optional): ${GREP_EXECUTABLE}")
+message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -201,10 +202,7 @@ enable_testing()
 
 include(SSGCommon)
 
-if (PY_PYTEST)
-ssg_python_unit_tests("misc")
-ssg_python_unit_tests("utils")
-endif()
+add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
