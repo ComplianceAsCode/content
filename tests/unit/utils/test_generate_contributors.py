@@ -1,6 +1,8 @@
 import pytest
 
-import generate_contributors
+from ssg._contributors import _get_contributions_by_canonical_email
+from ssg._contributors import _get_contributor_email_mapping
+from ssg._contributors import _names_sorted_by_last_name
 
 
 INPUT = """
@@ -17,12 +19,12 @@ INPUT = """
 
 @pytest.fixture()
 def emails():
-    return generate_contributors._get_contributions_by_canonical_email(INPUT)
+    return _get_contributions_by_canonical_email(INPUT)
 
 
 @pytest.fixture()
 def authors(emails):
-    return generate_contributors._get_contributor_email_mapping(emails)
+    return _get_contributor_email_mapping(emails)
 
 
 def test_contributions_aggregation(emails):
@@ -38,7 +40,7 @@ def test_contributors_aggregation(authors):
 
 def test_name_sorting(authors):
     authors_names = list(authors.keys())
-    sorted_names = generate_contributors._names_sorted_by_last_name(authors_names)
+    sorted_names = _names_sorted_by_last_name(authors_names)
     assert sorted_names[0] == "Deric Crago aaa"
     assert sorted_names[1] == "Deric Crago abc"
     assert sorted_names[2] == "Aeric Drago abc"

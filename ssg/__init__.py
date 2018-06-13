@@ -1,5 +1,6 @@
 import ssg._checks as checks
 import ssg._constants as constants
+import ssg._contributors as contributors
 import ssg._id_translate as id_translate
 import ssg._jinja as jinja
 import ssg._products as products
