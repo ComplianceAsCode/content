@@ -456,11 +456,6 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- The next set of templates expand convenience macros for XCCDF prose -->
-  <xsl:template match="product-name-macro">
-    <xsl:value-of select="$product_long_name"/>
-  </xsl:template>
-
   <xsl:template match="product-short-name-macro">
     <xsl:value-of select="$product_short_name"/>
   </xsl:template>
