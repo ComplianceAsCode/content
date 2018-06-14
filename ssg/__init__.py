@@ -1,6 +1,7 @@
 import ssg._ansible as ansible
 import ssg._build_derivatives as build_derivatives
 import ssg._build_guides as build_guides
+import ssg._build_renumber as build_renumber
 import ssg._build_roles as build_roles
 import ssg._build_stig as build_stig
 import ssg._checks as checks

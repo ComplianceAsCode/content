@@ -147,3 +147,15 @@ SL_NOTICE = \
     "https://fedorahosted.org/mailman/listinfo/scap-security-guide</a>" \
     ".</p>" \
     "</div>"
+
+OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS = {
+    'int': 'number',
+    'float': 'number',
+    'boolean': 'boolean',
+    'string': 'string',
+    'evr_string': 'string',
+    'version': 'string',
+    'ios_version': 'string',
+    'fileset_revision': 'string',
+    'binary': 'string'
+}
