@@ -177,7 +177,8 @@ def main():
     ovaldef_ids = [ovaldef.get("id") for ovaldef in ovaldefs]
 
     oval_extenddefs = ovaltree.findall(".//{%s}extend_definition" % oval_ns)
-    ovaldef_ids_extended = [oval_extenddef.get("definition_ref") for oval_extenddef in oval_extenddefs]
+    ovaldef_ids_extended = [oval_extenddef.get("definition_ref")
+                            for oval_extenddef in oval_extenddefs]
     ovaldef_ids_extended = list(set(ovaldef_ids_extended))
 
     check_content_refs = xccdftree.findall(".//{%s}check-content-ref"
@@ -242,12 +243,12 @@ def main():
                 # in a list
                 ref_href_list = [ref.get("href") for ref in refs]
                 # print warning if rule does not have a NIST reference
-                if (not nist_ref_href in ref_href_list) and options.rules_without_nistrefs:
+                if (nist_ref_href not in ref_href_list) and options.rules_without_nistrefs:
                     print("ERROR: No valid NIST reference in XCCDF Rule: " +
                           rule.get("id"))
                     sys.exit(1)
                 # print warning if rule does not have a DISA reference
-                if (not disa_ref_href in ref_href_list) and options.rules_without_disarefs:
+                if (disa_ref_href not in ref_href_list) and options.rules_without_disarefs:
                     print("ERROR: No valid DISA CCI reference in XCCDF Rule: " +
                           rule.get("id"))
                     sys.exit(1)
@@ -265,13 +266,13 @@ def main():
             if options.nistrefs_not_in_profile:
                 if (nist_ref_href in ref_href_list) and (rule.get("id") not in profile_ruleids):
                     print("ERROR: XCCDF Rule found with NIST reference outside Profile %s: "
-                           % options.profile_name + rule.get("id"))
+                          % options.profile_name + rule.get("id"))
                     sys.exit(1)
             # print warning if Rule is outside Profile and has a DISA reference
             if options.disarefs_not_in_profile:
                 if (disa_ref_href in ref_href_list) and (rule.get("id") not in profile_ruleids):
                     print("ERROR: XCCDF Rule found with DISA CCI reference outside Profile %s: "
-                           % options.profile_name + rule.get("id"))
+                          % options.profile_name + rule.get("id"))
                     sys.exit(1)
 
     if options.ovaldefs_unused or options.all_checks:
@@ -294,7 +295,7 @@ def main():
                 print("WARNING: OVAL Check is not referenced by XCCDF: %s"
                       % (oval_id))
                 # Do not treat this as error but only as a warning
-                #exit_value = 1
+                # exit_value = 1
 
 
 if __name__ == "__main__":
