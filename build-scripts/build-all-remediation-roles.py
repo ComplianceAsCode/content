@@ -9,72 +9,16 @@ ansible and bash remediation roles.
 Author: Martin Preisler <mpreisle@redhat.com>
 """
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 import os.path
 import argparse
 
 import threading
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
 import sys
-import multiprocessing
 
 import ssg
+ElementTree = ssg.xml.ElementTree
 
-OSCAP_PATH = "oscap"
-
-
-def generate_role_for_input_content(input_content, benchmark_id, profile_id,
-                                    template):
-    """Returns remediation role for given input_content and profile_id
-    combination. This function assumes only one Benchmark exists
-    in given input_content!
-    """
-
-    args = [OSCAP_PATH, "xccdf", "generate", "fix"]
-    # avoid validating the input over and over again for every profile
-    args.append("--skip-valid")
-    if benchmark_id != "":
-        args.extend(["--benchmark-id", benchmark_id])
-    if profile_id != "":
-        args.extend(["--profile", profile_id])
-
-    args.extend(["--template", template])
-    args.append(input_content)
-
-    return ssg.shims.subprocess_check_output(args).decode("utf-8")
-
-
-def add_minimum_ansible_version(ansible_src):
-    pre_task = (""" - hosts: all
-   pre_tasks:
-     - name: %s
-       assert:
-         that: "ansible_version.full is version_compare('%s', '>=')"
-         msg: >
-           "You must update Ansible to at least version %s to use this role."
-          """ % (ssg.constants.ansible_version_requirement_pre_task_name,
-                 ssg.constants.min_ansible_version, ssg.constants.min_ansible_version))
-
-    return ansible_src.replace(" - hosts: all", pre_task, 1)
-
-
-def get_cpu_count():
-    try:
-        return max(1, multiprocessing.cpu_count())
-
-    except NotImplementedError:
-        # 2 CPUs is the most probable
-        return 2
-
-
-def main():
+def parse_args():
     p = argparse.ArgumentParser()
 
     sp = p.add_subparsers(help="actions")
@@ -89,7 +33,7 @@ def main():
     output_sp.set_defaults(cmd="list_outputs")
 
     p.add_argument("-j", "--jobs", type=int, action="store",
-                   default=get_cpu_count(),
+                   default=ssg.utils.get_cpu_count(),
                    help="how many jobs should be processed in parallel")
 
     p.add_argument("-t", "--template", action="store", required=True,
@@ -108,17 +52,20 @@ def main():
         )
         sys.exit(1)
 
-    input_path = os.path.abspath(args.input)
+    return args
+
+
+def main():
+    args = parse_args()
+
+    input_path, input_basename, path_base, output_dir = \
+        ssg.build_guides.get_path_args(args)
+    extension = args.extension
+    template = args.template
+
     if args.cmd == "list_inputs":
         print(input_path)
-    output_dir = os.path.abspath(args.output)
-    input_basename = os.path.basename(input_path)
-    path_base, _ = os.path.splitext(input_basename)
-    # avoid -ds and -xccdf suffices in guide filenames
-    if path_base.endswith("-ds"):
-        path_base = path_base[:-3]
-    elif path_base.endswith("-xccdf"):
-        path_base = path_base[:-6]
+        sys.exit(0)
 
     input_tree = ElementTree.parse(input_path)
     benchmarks = ssg.xccdf.get_benchmark_ids_titles_for_input(input_tree)
@@ -129,132 +76,32 @@ def main():
             (input_path)
         )
 
-    benchmark_profile_pairs = []
-    # TODO: [:1] is here because oscap generate fix can't handle multiple
-    # benchmarks. This needs to be removed once
-    # https://github.com/OpenSCAP/openscap/issues/722 is fixed
-    for benchmark_id in list(benchmarks.keys())[:1]:
-        profiles = ssg.xccdf.get_profile_choices_for_input(
-            input_tree, benchmark_id, None
-        )
+    benchmark_profile_pairs = ssg.build_guides.get_benchmark_profile_pairs(
+        input_tree, benchmarks)
 
-        if not profiles:
-            raise RuntimeError(
-                "No profiles were found in '%s' in xccdf:Benchmark of id='%s'."
-                % (input_path, benchmark_id)
-            )
+    if args.cmd == "list_outputs":
+        role_paths = ssg.build_roles.get_output_paths(benchmarks, benchmark_profile_pairs,
+                                                      path_base, extension, output_dir)
 
-        for profile_id in profiles.keys():
-            benchmark_profile_pairs.append(
-                (benchmark_id, profile_id, profiles[profile_id])
-            )
-
-    def benchmark_profile_pair_sort_key(
-        benchmark_id, profile_id, profile_title
-    ):
-        # The "base" benchmarks come first
-        if benchmark_id.endswith("_RHEL-7") or \
-                benchmark_id.endswith("_RHEL-6") or \
-                benchmark_id.endswith("_RHEL-5"):
-            benchmark_id = "AAA" + benchmark_id
-
-        # The default profile comes last
-        if profile_id == "":
-            profile_title = "zzz(default)"
-
-        return (benchmark_id, profile_title)
-
-    queue = Queue.Queue()
-
-    for benchmark_id, profile_id, profile_title in benchmark_profile_pairs:
-        skip = False
-        for blacklisted_id in ssg.xccdf.PROFILE_ID_BLACKLIST:
-            if profile_id.endswith(blacklisted_id):
-                skip = True
-                break
-
-        if skip:
-            continue
-
-        profile_id_for_path = "default" if not profile_id else profile_id
-        benchmark_id_for_path = benchmark_id
-        if benchmark_id_for_path.startswith(
-            "xccdf_org.ssgproject.content_benchmark_"
-        ):
-            benchmark_id_for_path = \
-                benchmark_id_for_path[
-                    len("xccdf_org.ssgproject.content_benchmark_"):
-                ]
-
-        if len(benchmarks) == 1 or \
-                len(benchmark_id_for_path) == len("RHEL-X"):
-            # treat the base RHEL benchmark as a special case to preserve
-            # old guide paths and old URLs that people may be relying on
-            role_filename = \
-                "%s-role-%s.%s" % \
-                (path_base,
-                 ssg.xccdf.get_profile_short_id(profile_id_for_path),
-                 args.extension)
-        else:
-            role_filename = \
-                "%s-%s-role-%s.%s" % \
-                (path_base, benchmark_id_for_path,
-                 ssg.xccdf.get_profile_short_id(profile_id_for_path),
-                 args.extension)
-        role_path = os.path.join(output_dir, role_filename)
-
-        if args.cmd == "list_inputs":
-            pass  # noop
-        elif args.cmd == "list_outputs":
+        for role_path in role_paths:
             print(role_path)
-        elif args.cmd == "build":
-            queue.put((benchmark_id, profile_id, profile_title, role_path))
 
-    def builder():
-        while True:
-            try:
-                benchmark_id, profile_id, profile_title, role_path = \
-                    queue.get(False)
+        sys.exit(0)
 
-                role_src = generate_role_for_input_content(
-                    input_path, benchmark_id, profile_id, args.template
-                )
+    queue = ssg.build_roles.fill_queue(benchmarks, benchmark_profile_pairs, input_path,
+                                       path_base, extension, output_dir, template)
 
-                if args.extension == "yml" and \
-                   args.template == "urn:xccdf:fix:script:ansible":
-                    role_src = add_minimum_ansible_version(role_src)
-                with open(role_path, "wb") as f:
-                    f.write(role_src.encode("utf-8"))
+    workers = []
+    for worker_id in range(args.jobs):
+        worker = threading.Thread(
+            name="Role generate worker #%i" % (worker_id),
+            target=lambda queue=queue: ssg.build_roles.builder(queue)
+        )
+        workers.append(worker)
+        worker.daemon = True
+        worker.start()
 
-                queue.task_done()
-
-                print(
-                    "Generated '%s' for profile ID '%s' in benchmark '%s', template=%s." %
-                    (role_path, profile_id, benchmark_id, args.template)
-                )
-
-            except Queue.Empty:
-                break
-
-            except Exception as e:
-                sys.stderr.write(
-                    "Fatal error encountered when generating role '%s'. "
-                    "Error details:\n%s\n\n" % (role_path, e)
-                )
-                queue.task_done()
-
-    if args.cmd == "build":
-        workers = []
-        for worker_id in range(args.jobs):
-            worker = threading.Thread(
-                name="Role generate worker #%i" % (worker_id),
-                target=builder
-            )
-            workers.append(worker)
-            worker.daemon = True
-            worker.start()
-
-        queue.join()
+    queue.join()
 
 
 if __name__ == "__main__":
