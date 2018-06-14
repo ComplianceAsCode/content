@@ -1,3 +1,4 @@
+import ssg._build_stig as build_stig
 import ssg._checks as checks
 import ssg._constants as constants
 import ssg._contributors as contributors

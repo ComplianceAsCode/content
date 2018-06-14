@@ -20,6 +20,7 @@ puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
 stig_ns = "http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx"
+stig_refs = 'http://iase.disa.mil/stigs/'
 disa_cciuri = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"
 disa_srguri = "http://iase.disa.mil/stigs/srgs/Pages/index.aspx"
 ssg_version_uri = \
