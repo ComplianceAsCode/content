@@ -8,36 +8,40 @@ default_os_user="root"
 # add users sidamd, orasid, sapadm and oracle if needed
 userlist="root"
 
-# if /sapmnt/SID exists, add sidadm to the userlist
-sapmntSIDlist=$(find /sapmnt -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]$')
-for i in $sapmntSIDlist ; do
-	SID=${i:8:3}
-	userlist="$userlist|$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')adm"
-done
+# if /sapmnt is a directory or a symbolic link to a directory,
+# then try to add SAP system users to the userlist
+if [ -d "/sapmnt" ] ; then 
+	# if /sapmnt/SID exists, add sidadm to the userlist
+	sapmntSIDlist=$(find /sapmnt/ -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]$')
+	for i in $sapmntSIDlist ; do
+		SID=${i:8:3}
+		userlist="$userlist|$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')adm"
+	done
 
-# if /sapmnt/SID/exe/brspace or /sapmnt/SID/exe/<codepage>/<platform>/brspace exists,
-# add orasid to the list
-brspacelist=$(find /sapmnt -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/brspace$' \
-	-o -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/uc/[a-z0-9_]+/brspace$' \
-	-o -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/nuc/[a-z0-9_]+/brspace$')
-for i in $brspacelist ; do
-        SID=${i:8:3}
-        userlist="$userlist|ora$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')"
-done
+	# try to get brspace from directories /sapmnt/SID/exe (SAP binaries of old structure)
+	# and /sapmnt/SID/exe/<codepage>/<platform> (SAP binaries of new structure)
+	brspacelist=$(find /sapmnt/ -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/brspace$' \
+ 		-o -regex '^/sapmnt/[A-Z][A-Z0-9][A-Z0-9]/exe/\(\|n\)uc/[a-z0-9_]+/brspace$')
 
-# if owner of any /sapmnt/SID/exe/brspace or /sapmnt/SID/exe/<type>/<platform>/brspace 
-# file is oracle, add oracle to the list
-oracle=false
-for i in $brspacelist ; do
-        if [ $(ls -ld $i | awk '{print $3}') = "oracle" ]; then
-                oracle=true
-        fi
-done
-if test "$oracle" = true ; then
-        userlist="$userlist|oracle"
+	# if brspace exist in any of the above directory of a SID, add orasid to the userlist 
+	for i in $brspacelist ; do
+        	SID=${i:8:3}
+        	userlist="$userlist|ora$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')"
+	done
+
+	# if owner of any brspace file is oracle, add oracle to the userlist
+	oracle=false
+	for i in $brspacelist ; do
+        	if [ $(ls -ld $i | awk '{print $3}') = "oracle" ]; then
+                	oracle=true
+        	fi
+	done
+	if test "$oracle" = true ; then
+        	userlist="$userlist|oracle"
+	fi
 fi
 
-# if /usr/sap/hostctrl exists, add sapadm to the list
+# if /usr/sap/hostctrl is a directory or a symbolic linkd to a directory, add sapadm to the list
 if [ -d /usr/sap/hostctrl ] ; then
 	userlist="$userlist|sapadm"
 fi
