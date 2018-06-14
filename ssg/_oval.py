@@ -5,18 +5,17 @@ import argparse
 import tempfile
 import subprocess
 
-import ssg
-
 from ConfigParser import SafeConfigParser
 
-ET = ssg.xml.ElementTree
+from ssg._constants import oval_footer as footer
+from ssg._constants import oval_namespace as ovalns
+from ssg._constants import timestamp
+from ssg._xml import ElementTree as ET
+from ssg._xml import oval_generated_header
+
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
-timestamp = ssg.constants.timestamp
 
-
-footer = ssg.constants.oval_footer
-ovalns = ssg.constants.oval_namespace
 
 try:
     from openscap import oscap_get_version
@@ -64,7 +63,8 @@ def add_oval_elements(body, header):
             defname = childnode.get("id")
             # extend_definition is a special case:  must include a whole other
             # definition
-            for defchild in childnode.findall(".//{%s}extend_definition" % ovalns):
+            for defchild in childnode.findall(".//{%s}extend_definition"
+                                              % ovalns):
                 defid = defchild.get("definition_ref")
                 extend_ref = find_testfile(defid+".xml")
                 includedbody = read_ovaldefgroup_file(extend_ref)
@@ -88,14 +88,14 @@ def replace_external_vars(tree):
     # external_variable is a special case: we turn it into a local_variable so
     # we can test
     for node in tree.findall(".//{%s}external_variable" % ovalns):
-        print ("External_variable with id : " + node.get("id"))
+        print("External_variable with id : " + node.get("id"))
         extvar_id = node.get("id")
         # for envkey, envval in os.environ.iteritems():
         #     print envkey + " = " + envval
         # sys.exit()
         if extvar_id not in os.environ.keys():
-            print ("External_variable specified, but no value provided via " \
-                   "environment variable")
+            print("External_variable specified, but no value provided via "
+                  "environment variable")
             sys.exit(2)
         # replace tag name: external -> local
         node.tag = "{%s}local_variable" % ovalns
@@ -120,7 +120,8 @@ def find_testfile(testfile):
                 break
 
     if not os.path.isfile(testfile):
-        print ("ERROR: %s does not exist! Please specify a valid OVAL file.") % testfile
+        print("ERROR: %s does not exist! Please specify a valid OVAL file."
+              % testfile)
         sys.exit(1)
 
     return testfile
@@ -164,7 +165,7 @@ def main():
     oval_version = args.oval_version
 
     testfile = args.xmlfile
-    header = ssg.xml.oval_generated_header("testoval.py", oval_version, "0.0.1")
+    header = oval_generated_header("testoval.py", oval_version, "0.0.1")
     testfile = find_testfile(testfile)
     body = read_ovaldefgroup_file(testfile)
     defname = add_oval_elements(body, header)
@@ -182,9 +183,9 @@ def main():
     os.write(ovalfile, ET.tostring(ovaltree))
     os.close(ovalfile)
     if not silent_mode:
-        print ("Evaluating with OVAL tempfile: " + fname)
-        print ("OVAL Schema Version: %s" % oval_version)
-        print ("Writing results to: " + fname + "-results")
+        print("Evaluating with OVAL tempfile: " + fname)
+        print("OVAL Schema Version: %s" % oval_version)
+        print("Writing results to: " + fname + "-results")
     cmd = "oscap oval eval --results " + fname + "-results " + fname
     oscap_child = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     cmd_out = oscap_child.communicate()[0]
@@ -192,7 +193,7 @@ def main():
         print cmd_out
     if oscap_child.returncode != 0:
         if not silent_mode:
-            print ("Error launching 'oscap' command: \n\t" + cmd)
+            print("Error launching 'oscap' command: \n\t" + cmd)
         sys.exit(2)
     if 'false' in cmd_out:
         # at least one from the evaluated OVAL definitions evaluated to

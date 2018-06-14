@@ -8,9 +8,9 @@ include(GNUInstallDirs)
 include(FindPythonModule)
 
 if ( "$ENV{PYTHONPATH}" STREQUAL "" )
-    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:${PROJECT_SOURCE_DIR}/shared:${PROJECT_SOURCE_DIR}/shared/modules")
+    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}")
 else()
-    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:${PROJECT_SOURCE_DIR}/shared:${PROJECT_SOURCE_DIR}/shared/modules:$ENV{PYTHONPATH}")
+    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}")
 endif()
 
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
