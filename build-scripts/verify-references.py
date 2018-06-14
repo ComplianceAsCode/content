@@ -54,9 +54,6 @@ ocil_cs = ssgcommon.ocil_cs
 nist_ref_href = "http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r4.pdf"
 disa_ref_href = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"
 
-# default exit value - success
-exit_value = 0
-
 
 def parse_options():
     usage = "usage: %prog [options] xccdf_file"
@@ -100,7 +97,6 @@ def parse_options():
 
 
 def get_ovalfiles(checks):
-    global exit_value
     # Iterate over all checks, grab the OVAL files referenced within
     ovalfiles = set()
     for check in checks:
@@ -116,7 +112,7 @@ def get_ovalfiles(checks):
         elif check.get("system") != ocil_cs:
             print("ERROR: Non-OVAL checking system found: %s"
                   % (check.get("system")))
-            exit_value = 1
+            sys.exit(1)
     return ovalfiles
 
 
@@ -141,7 +137,6 @@ def get_profileruleids(xccdftree, profile_name):
 
 
 def main():
-    global exit_value
     (options, args) = parse_options()
     xccdffilename = args[0]
 
@@ -217,7 +212,7 @@ def main():
                 ]
                 print("ERROR: Invalid OVAL definition referenced by XCCDF Rule: %s"
                       % (rule.get("id")))
-                exit_value = 1
+                sys.exit(1)
 
     if options.rules_without_checks or options.all_checks:
         for rule in rules:
@@ -225,14 +220,14 @@ def main():
             if check is None:
                 print("ERROR: No reference to OVAL definition in XCCDF Rule: %s"
                       % (rule.get("id")))
-                exit_value = 1
+                sys.exit(1)
 
     if options.rules_without_severity or options.all_checks:
         for rule in rules:
             if rule.get("severity") is None:
                 print("ERROR: No severity assigned to XCCDF Rule: %s"
                       % (rule.get("id")))
-                exit_value = 1
+                sys.exit(1)
 
     if options.rules_without_nistrefs or options.rules_without_disarefs or options.all_checks:
         for rule in rules:
@@ -241,7 +236,7 @@ def main():
             if refs is None:
                 print("ERROR: No reference assigned to XCCDF Rule: %s"
                       % (rule.get("id")))
-                exit_value = 1
+                sys.exit(1)
             else:
                 # loop through the Rule's references and put their hrefs
                 # in a list
@@ -250,12 +245,12 @@ def main():
                 if (not nist_ref_href in ref_href_list) and options.rules_without_nistrefs:
                     print("ERROR: No valid NIST reference in XCCDF Rule: " +
                           rule.get("id"))
-                    exit_value = 1
+                    sys.exit(1)
                 # print warning if rule does not have a DISA reference
                 if (not disa_ref_href in ref_href_list) and options.rules_without_disarefs:
                     print("ERROR: No valid DISA CCI reference in XCCDF Rule: " +
                           rule.get("id"))
-                    exit_value = 1
+                    sys.exit(1)
 
     if options.disarefs_not_in_profile or options.nistrefs_not_in_profile:
         if options.profile_name is None:
@@ -271,13 +266,13 @@ def main():
                 if (nist_ref_href in ref_href_list) and (rule.get("id") not in profile_ruleids):
                     print("ERROR: XCCDF Rule found with NIST reference outside Profile %s: "
                            % options.profile_name + rule.get("id"))
-                    exit_value = 1
+                    sys.exit(1)
             # print warning if Rule is outside Profile and has a DISA reference
             if options.disarefs_not_in_profile:
                 if (disa_ref_href in ref_href_list) and (rule.get("id") not in profile_ruleids):
                     print("ERROR: XCCDF Rule found with DISA CCI reference outside Profile %s: "
                            % options.profile_name + rule.get("id"))
-                    exit_value = 1
+                    sys.exit(1)
 
     if options.ovaldefs_unused or options.all_checks:
         # create a list of all of the OVAL compliance check ids that are
@@ -301,7 +296,6 @@ def main():
                 # Do not treat this as error but only as a warning
                 #exit_value = 1
 
-    sys.exit(exit_value)
 
 if __name__ == "__main__":
     main()
