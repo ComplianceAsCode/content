@@ -201,7 +201,7 @@
       <description>The %SERVICENAME% service should be disabled if possible.</description>
     </metadata>
     <criteria comment="package %PACKAGENAME% removed or service %SERVICENAME% is not configured to start" operator="OR">
-      <extend_definition comment="%PACKAGENAME% removed" definition_ref="package_%PACKAGERNAME%_removed" />
+      <extend_definition comment="%PACKAGENAME% removed" definition_ref="package_%PACKAGENAME%_removed" />
       <criterion comment="%SERVICENAME% disabled in multi-user.target" test_ref="test_%SERVICENAME%_disabled_multi_user_target" />
     </criteria>
   </definition>
