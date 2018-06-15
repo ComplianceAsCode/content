@@ -2,6 +2,8 @@
 
 {{% if init_system == "systemd" and target_oval_version >= [5, 11] %}}
 
+  {{# we are using systemd and our target OVAL version does support the systemd related tests #}}
+
   <definition class="compliance" id="service_%SERVICENAME%_disabled" version="1">
     <metadata>
       <title>Service %SERVICENAME% Disabled</title>
@@ -92,6 +94,8 @@
   </unix:file_object>
 
   {{% elif init_system != "systemd" %}}
+
+  {{# we are not using systemd, it doesn't matter if we can or cannot use OVAL 5.11, let us just use the runlevel test #}}
 
   <definition class="compliance" id="service_%SERVICENAME%_disabled"
   version="1">
@@ -191,6 +195,8 @@
   </unix:runlevel_state>
 
   {{% else %}}
+
+  {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
 
   <definition class="compliance" id="service_sshd_disabled" version="2">
     <metadata>
