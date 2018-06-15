@@ -1,7 +1,6 @@
 import collections
 import datetime
 import re
-import subprocess
 import os.path
 
 from ssg._shims import subprocess_check_output
