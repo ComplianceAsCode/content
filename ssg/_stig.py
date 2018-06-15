@@ -3,10 +3,9 @@
 import sys
 import csv
 
-from ssg._xml import ElementTree as ET
 from ssg._xml import parse_file as parse_xml_file
 from ssg._constants import XCCDF11_NS as xccdf_ns
-from ssg._constants import *
+from ssg._constants import disa_cciuri
 
 # This script creates a CSV file from an XCCDF file formatted in the
 # structure of a STIG.  This should enable its ingestion into VMS,
@@ -48,6 +47,7 @@ def main():
         rulewriter.writerow(row)
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
