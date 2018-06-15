@@ -43,8 +43,7 @@ def _split_namespace(tag):
     if tag[0] == "{":
         namespace, name = tag[1:].split("}", 1)
         return namespace.split("#")[0], name
-    else:
-        return (None, tag)
+    return (None, tag)
 
 
 def _namespace_to_prefix(tag):
