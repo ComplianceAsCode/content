@@ -6,6 +6,7 @@ import fnmatch
 import sys
 import os
 import ssg
+import argparse
 
 ElementTree = ssg.xml.ElementTree
 
@@ -59,21 +60,26 @@ def collect_nodes(tree, reflist):
     return elementlist
 
 
-def main():
-    if len(sys.argv) < 2:
-        print("Provide an OVAL file that contains inventory definitions.")
-        print("This script extracts these definitions and writes them "
-              "to STDOUT.")
-        sys.exit(1)
+def parse_args():
+    p = argparse.ArgumentParser(description="This script takes as input an "
+        "OVAL file and a CPE dictionary file and extracts any inventory "
+        "definitions and the tests, states objects and variables it "
+        "references, and then write them into a standalone OVAL CPE file, "
+        "along with a synchronized CPE dictionary file.")
+    p.add_argument("product", help="Name of the product")
+    p.add_argument("idname", help="Identifier prefix")
+    p.add_argument("cpeoutdir", help="Artifact output directory")
+    p.add_argument("ovalfile", help="OVAL file to process")
+    p.add_argument("cpedictfile", help="CPE dictionary file to process")
 
-    product = sys.argv[1]
-    idname = sys.argv[2]
-    cpeoutdir = sys.argv[3]
-    ovalfile = sys.argv[4]
-    cpedictfile = sys.argv[5]
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
 
     # parse oval file
-    ovaltree = ssg.xml.parse_file(ovalfile)
+    ovaltree = ssg.xml.parse_file(args.ovalfile)
 
     # extract inventory definitions
     # making (dubious) assumption that all inventory defs are CPE
@@ -130,16 +136,16 @@ def main():
             ovaltree.remove(variables)
 
     # turn IDs into meaningless numbers
-    translator = ssg.id_translate.IDTranslator(idname)
+    translator = ssg.id_translate.IDTranslator(args.idname)
     ovaltree = translator.translate(ovaltree)
 
-    newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)
+    newovalfile = args.idname + "-" + args.product + "-" + os.path.basename(args.ovalfile)
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
-    ElementTree.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
+    ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
-    cpedicttree = ssg.xml.parse_file(cpedictfile)
-    newcpedictfile = idname + "-" + os.path.basename(cpedictfile)
+    cpedicttree = ssg.xml.parse_file(args.cpedictfile)
+    newcpedictfile = args.idname + "-" + os.path.basename(args.cpedictfile)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
         checkhref = check.get("href")
         # If CPE OVAL references another OVAL file
@@ -195,14 +201,14 @@ def main():
         if check.text not in inventory_defs_id_attrs:
             error_msg = "\n\tError: Can't locate \"%s\" definition in \"%s\". \
             \n\tEnsure <platform> element is configured properly for \"%s\".  \
-            \n\tExiting..\n" % (check.text, ovalfile, check.text)
+            \n\tExiting..\n" % (check.text, args.ovalfile, check.text)
             sys.stderr.write(error_msg)
             # sys.exit(1)
 
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
-    ElementTree.ElementTree(cpedicttree).write(cpeoutdir + '/' + newcpedictfile)
+    ElementTree.ElementTree(cpedicttree).write(args.cpeoutdir + '/' + newcpedictfile)
 
     sys.exit(0)
 
