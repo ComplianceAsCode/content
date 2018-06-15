@@ -16,3 +16,10 @@ if (PY_PYTEST)
     ssg_python_unit_tests("build-scripts")
     ssg_python_unit_tests("utils")
 endif()
+
+if (ANSIBLE_PLAYBOOK_EXECUTABLE)
+    add_test(
+        NAME "ansible-role-syntax-check"
+        COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_syntax_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles"
+    )
+endif()
