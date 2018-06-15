@@ -1,0 +1,299 @@
+import os
+import os.path
+import errno
+import re
+import sys
+from copy import deepcopy
+import argparse
+import collections
+
+try:
+    from configparser import SafeConfigParser
+except ImportError:
+    # for python2
+    from ConfigParser import SafeConfigParser
+
+from ssg._constants import oval_namespace as oval_ns
+from ssg._constants import oval_footer as footer
+from ssg._constants import oval_header
+from ssg._products import parse_name, multi_list, map_name
+from ssg._jinja import process_file
+from ssg._utils import required_key
+from ssg._xml import ElementTree
+
+
+def parse_conf_file(conf_file, product):
+    parser = SafeConfigParser()
+    parser.read(conf_file)
+    multi_platform = {}
+
+    for section in parser.sections():
+        for name, setting in parser.items(section):
+            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
+            multi_platform[name] = [item for item in setting.split(",")]
+
+    return multi_platform
+
+
+def _check_is_applicable_for_product(oval_check_def, product):
+    """Based on the <platform> specifier of the OVAL check determine if this
+    OVAL check is applicable for this product. Return 'True' if so, 'False'
+    otherwise"""
+
+    product, product_version = parse_name(product)
+
+    # Define general platforms
+    multi_platforms = ['<platform>multi_platform_all',
+                       '<platform>multi_platform_' + product]
+
+    # First test if OVAL check isn't for 'multi_platform_all' or
+    # 'multi_platform_' + product
+    for mp in multi_platforms:
+        if mp in oval_check_def and product in multi_list:
+            return True
+
+    # Current SSG checks aren't unified which element of '<platform>'
+    # and '<product>' to use as OVAL AffectedType metadata element,
+    # e.g. Chromium content uses both of them across the various checks
+    # Thus for now check both of them when checking concrete platform / product
+    affected_type_elements = ['<platform>', '<product>']
+
+    for afftype in affected_type_elements:
+        # Get official name for product (prefixed with content of afftype)
+        product_name = afftype + map_name(product)
+        # Append the product version to the official name
+        if product_version is not None:
+            product_name += ' ' + product_version
+
+        # Test if this OVAL check is for the concrete product version
+        if product_name in oval_check_def:
+            return True
+
+    # OVAL check isn't neither a multi platform one, nor isn't applicable
+    # for this product => return False to indicate that
+
+    return False
+
+
+def add_platforms(xml_tree, multi_platform):
+    for affected in xml_tree.findall(".//{%s}affected" % oval_ns):
+        if affected.get("family") != "unix":
+            continue
+
+        for plat_elem in affected:
+            try:
+                if plat_elem.text == 'multi_platform_all':
+                    for platforms in multi_platform[plat_elem.text]:
+                        for plat in multi_platform[platforms]:
+                            platform = ElementTree.Element(
+                                "{%s}platform" % oval_ns)
+                            platform.text = map_name(platforms) + ' ' + plat
+                            affected.insert(1, platform)
+                else:
+                    for platforms in multi_platform[plat_elem.text]:
+                        platform = ElementTree.Element("{%s}platform" % oval_ns)
+                        platform.text = map_name(plat_elem.text) + ' ' + platforms
+                        affected.insert(0, platform)
+            except KeyError:
+                pass
+
+            # Remove multi_platform element
+            if re.findall('multi_platform', plat_elem.text):
+                affected.remove(plat_elem)
+
+    return xml_tree
+
+
+def oval_entities_are_identical(firstelem, secondelem):
+    """Check if OVAL entities represented by XML elements are identical
+       Return: True if identical, False otherwise
+       Based on: http://stackoverflow.com/a/24349916"""
+
+    # Per https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234541909
+    # and https://github.com/OpenSCAP/scap-security-guide/pull/1343#issuecomment-234545296
+    # ignore the differences in 'comment', 'version', 'state_operator', and
+    # 'deprecated' attributes. Also ignore different nsmap, since all these
+    # don't affect the semantics of the OVAL entities
+
+    # Operate on copies of the elements (since we will modify
+    # some attributes). Deepcopy will also reset the namespace map
+    # on copied elements for us
+    firstcopy = deepcopy(firstelem)
+    secondcopy = deepcopy(secondelem)
+
+    # Ignore 'comment', 'version', 'state_operator', and 'deprecated'
+    # attributes since they don't change the semantics of an element
+    for copy in [firstcopy, secondcopy]:
+        for key in copy.keys():
+            if key in ["comment", "version", "state_operator",
+                       "deprecated"]:
+                del copy.attrib[key]
+
+    # Compare the equality of the copies
+    if firstcopy.tag != secondcopy.tag:
+        return False
+    if firstcopy.text != secondcopy.text:
+        return False
+    if firstcopy.tail != secondcopy.tail:
+        return False
+    if firstcopy.attrib != secondcopy.attrib:
+        return False
+    if len(firstcopy) != len(secondcopy):
+        return False
+
+    return all(oval_entities_are_identical(
+        fchild, schild) for fchild, schild in zip(firstcopy, secondcopy))
+
+
+def oval_entity_is_extvar(elem):
+    """Check if OVAL entity represented by XML element is OVAL
+       <external_variable> element
+       Return: True if <external_variable>, False otherwise"""
+
+    return elem.tag == '{%s}external_variable' % oval_ns
+
+
+element_child_cache = collections.defaultdict(dict)
+
+
+def append(element, newchild):
+    """Append new child ONLY if it's not a duplicate"""
+
+    global element_child_cache
+
+    newid = newchild.get("id")
+    existing = element_child_cache[element].get(newid, None)
+
+    if existing is not None:
+        # ID is identical and OVAL entities are identical
+        if oval_entities_are_identical(existing, newchild):
+            # Moreover the entity is OVAL <external_variable>
+            if oval_entity_is_extvar(newchild):
+                # If OVAL entity is identical to some already included
+                # in the benchmark and represents an OVAL <external_variable>
+                # it's safe to ignore this ID (since external variables are
+                # in multiple checks just to notify 'testoval.py' helper to
+                # substitute the ID with <local_variable> entity when testing
+                # the OVAL for the rule)
+                pass
+            # Some other OVAL entity
+            else:
+                # If OVAL entity is identical, but not external_variable, the
+                # implementation should be rewritten each entity to be present
+                # just once
+                sys.stderr.write("ERROR: OVAL ID '%s' is used multiple times "
+                                 "and should represent the same elements.\n"
+                                 % (newid))
+                sys.stderr.write("Rewrite the OVAL checks. Place the identical "
+                                 "IDs into their own definition and extend "
+                                 "this definition by it.\n")
+                sys.exit(1)
+        # ID is identical, but OVAL entities are semantically difference =>
+        # report and error and exit with failure
+        # Fixes: https://github.com/OpenSCAP/scap-security-guide/issues/1275
+        else:
+            if not oval_entity_is_extvar(existing) and \
+              not oval_entity_is_extvar(newchild):
+                # This is an error scenario - since by skipping second
+                # implementation and using the first one for both references,
+                # we might evaluate wrong requirement for the second entity
+                # => report an error and exit with failure in that case
+                # See
+                #   https://github.com/OpenSCAP/scap-security-guide/issues/1275
+                # for a reproducer and what could happen in this case
+                sys.stderr.write("ERROR: it's not possible to use the " +
+                                 "same ID: %s " % newid + "for two " +
+                                 "semantically different OVAL entities:\n")
+                sys.stderr.write("First entity  %s\n" % ElementTree.tostring(existing))
+                sys.stderr.write("Second entity %s\n" % ElementTree.tostring(newchild))
+                sys.stderr.write("Use different ID for the second entity!!!\n")
+                sys.exit(1)
+    else:
+        element.append(newchild)
+        element_child_cache[element][newid] = newchild
+
+
+def check_oval_version(oval_version):
+    """Not necessary, but should help with typos"""
+
+    supported_versions = ["5.10", "5.11"]
+    if oval_version not in supported_versions:
+        supported_versions_str = ", ".join(supported_versions)
+        sys.stderr.write(
+            "Suspicious oval version \"%s\", one of {%s} is "
+            "expected.\n" % (oval_version, supported_versions_str))
+        sys.exit(1)
+
+
+def _check_is_loaded(loaded_dict, filename, version):
+    if filename in loaded_dict:
+        if loaded_dict[filename] >= version:
+            return True
+
+        # Should rather fail, than override something unwanted
+        sys.stderr.write(
+            "You cannot override generic OVAL file in version '%s' "
+            "by more specific one in older version '%s'" %
+            (version, loaded_dict[filename])
+        )
+        sys.exit(1)
+
+    return False
+
+
+def _check_oval_version_from_oval(xml_content, oval_version):
+    oval_file_tree = ElementTree.fromstring(oval_header + xml_content + footer)
+    for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
+        file_oval_version = defgroup.get("oval_version")
+
+    if file_oval_version is None:
+        # oval_version does not exist in <def-group/>
+        # which means the OVAL is supported for any version.
+        # By default, that version is 5.10
+        file_oval_version = "5.10"
+
+    if tuple(oval_version.split(".")) >= tuple(file_oval_version.split(".")):
+        return True
+
+
+def checks(env_yaml, oval_version, oval_dirs):
+    """Concatenate all XML files in the oval directory, to create the document
+       body
+       oval_dirs: list of directory with oval files (later has higher priority)
+       Return: The document body"""
+
+    body = []
+    included_checks_count = 0
+    reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
+    already_loaded = dict()  # filename -> oval_version
+
+    for oval_dir in reversed_dirs:
+        try:
+            # sort the files to make output deterministic
+            for filename in sorted(os.listdir(oval_dir)):
+                if filename.endswith(".xml"):
+                    xml_content = process_file(
+                        os.path.join(oval_dir, filename), env_yaml
+                    )
+                    if not _check_is_applicable_for_product(
+                        xml_content,
+                        required_key(env_yaml, "product")
+                    ):
+                        continue
+                    if _check_is_loaded(already_loaded, filename, oval_version):
+                        continue
+                    if not _check_oval_version_from_oval(xml_content, oval_version):
+                        continue
+                    body.append(xml_content)
+                    included_checks_count += 1
+                    already_loaded[filename] = oval_version
+        except OSError as e:
+            if e.errno != errno.ENOENT:
+                raise
+            else:
+                sys.stderr.write("Not merging OVAL content from the "
+                                 "'%s' directory as the directory does not "
+                                 "exist\n" % (oval_dir))
+    sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
+
+    return "".join(body)
