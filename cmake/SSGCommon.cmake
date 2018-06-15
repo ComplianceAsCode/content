@@ -225,6 +225,13 @@ macro(ssg_build_remediations PRODUCT)
     _ssg_build_remediations_for_language(${PRODUCT} "ansible")
     _ssg_build_remediations_for_language(${PRODUCT} "puppet")
     _ssg_build_remediations_for_language(${PRODUCT} "anaconda")
+
+    if (ANSIBLE_PLAYBOOK_EXECUTABLE)
+        add_test(
+            NAME "ansible-role-syntax-check-${PRODUCT}"
+            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_syntax_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles" "${PRODUCT}"
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_xccdf_with_remediations PRODUCT)
