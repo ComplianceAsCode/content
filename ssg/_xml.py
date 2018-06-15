@@ -1,6 +1,6 @@
 import platform
 
-from ssg._constants import *
+from ssg._constants import xml_version, oval_header, timestamp
 
 
 try:
