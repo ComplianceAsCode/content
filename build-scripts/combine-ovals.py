@@ -21,15 +21,10 @@ except ImportError:
     # for python2
     from ConfigParser import SafeConfigParser
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-from map_product_module import map_product, parse_product_name, multi_product_list
-import ssgcommon
+import ssg
 
-oval_ns = ssgcommon.oval_namespace
-footer = ssgcommon.oval_footer
+oval_ns = ssg.constants.oval_namespace
+footer = ssg.constants.oval_footer
 
 
 def parse_conf_file(conf_file, product):
@@ -50,7 +45,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     OVAL check is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
 
-    product, product_version = parse_product_name(product)
+    product, product_version = ssg.products.parse_name(product)
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
@@ -59,7 +54,7 @@ def check_is_applicable_for_product(oval_check_def, product):
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for mp in multi_platforms:
-        if mp in oval_check_def and product in multi_product_list:
+        if mp in oval_check_def and product in ssg.products.multi_list:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'
@@ -70,7 +65,7 @@ def check_is_applicable_for_product(oval_check_def, product):
 
     for afftype in affected_type_elements:
         # Get official name for product (prefixed with content of afftype)
-        product_name = afftype + map_product(product)
+        product_name = afftype + ssg.products.map_name(product)
         # Append the product version to the official name
         if product_version is not None:
             product_name += ' ' + product_version
@@ -97,12 +92,12 @@ def add_platforms(xml_tree, multi_platform):
                         for plat in multi_platform[platforms]:
                             platform = ElementTree.Element(
                                 "{%s}platform" % oval_ns)
-                            platform.text = map_product(platforms) + ' ' + plat
+                            platform.text = ssg.products.map_name(platforms) + ' ' + plat
                             affected.insert(1, platform)
                 else:
                     for platforms in multi_platform[plat_elem.text]:
                         platform = ElementTree.Element("{%s}platform" % oval_ns)
-                        platform.text = map_product(plat_elem.text) + ' ' + platforms
+                        platform.text = ssg.products.map_name(plat_elem.text) + ' ' + platforms
                         affected.insert(0, platform)
             except KeyError:
                 pass
@@ -252,7 +247,7 @@ def check_is_loaded(loaded_dict, filename, version):
 
 
 def check_oval_version_from_oval(xml_content, oval_version):
-    oval_file_tree = ElementTree.fromstring(ssgcommon.oval_header + xml_content + footer)
+    oval_file_tree = ElementTree.fromstring(ssg.constants.oval_header + xml_content + footer)
     for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
         file_oval_version = defgroup.get("oval_version")
 
@@ -282,12 +277,12 @@ def checks(env_yaml, oval_version, oval_dirs):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
-                    xml_content = ssgcommon.process_file_with_jinja(
+                    xml_content = ssg.jinja.process_file(
                         os.path.join(oval_dir, filename), env_yaml
                     )
                     if not check_is_applicable_for_product(
                         xml_content,
-                        ssgcommon.required_yaml_key(env_yaml, "product")
+                        ssg.utils.required_key(env_yaml, "product")
                     ):
                         continue
                     if check_is_loaded(already_loaded, filename, oval_version):
@@ -336,18 +331,18 @@ def main():
         )
         sys.exit(1)
 
-    env_yaml = ssgcommon.open_environment_yamls(
+    env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
 
     if os.path.isfile(args.oval_config):
         multi_platform = parse_conf_file(
             args.oval_config,
-            ssgcommon.required_yaml_key(env_yaml, "product")
+            ssg.utils.required_key(env_yaml, "product")
         )
-        header = ssgcommon.oval_generated_header(
+        header = ssg.xml.oval_generated_header(
             "combine-ovals.py",
-            ssgcommon.required_yaml_key(env_yaml, "target_oval_version_str"),
-            ssgcommon.required_yaml_key(env_yaml, "ssg_version"))
+            ssg.utils.required_key(env_yaml, "target_oval_version_str"),
+            ssg.utils.required_key(env_yaml, "ssg_version"))
     else:
         sys.stderr.write("The directory specified does not contain the %s "
                          "file!\n" % (args.oval_config))
@@ -355,7 +350,7 @@ def main():
 
     body = checks(
         env_yaml,
-        ssgcommon.required_yaml_key(env_yaml, "target_oval_version_str"),
+        ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         args.ovaldirs)
 
     # parse new file(string) as an ElementTree, so we can reorder elements

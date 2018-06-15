@@ -8,7 +8,7 @@ macro(ssg_python_unit_tests PYTHON_COMPONENT)
         COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT}"
     )
     set_tests_properties ("python-unit-${PYTHON_COMPONENT}" PROPERTIES ENVIRONMENT
-        "PYTHONPATH=${CMAKE_SOURCE_DIR}/${PYTHON_COMPONENT}"
+        "PYTHONPATH=${CMAKE_SOURCE_DIR}/${PYTHON_COMPONENT}:$ENV{PYTHONPATH}"
     )
 endmacro()
 

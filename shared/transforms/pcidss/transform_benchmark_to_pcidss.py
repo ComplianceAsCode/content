@@ -26,21 +26,16 @@ import sys
 import os
 import copy
 
+import ssg
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "../modules"))
-import ssgcommon
-
-XCCDF_NAMESPACE = ssgcommon.XCCDF12_NS
+XCCDF_NAMESPACE = ssg.constants.XCCDF12_NS
 FILENAME = "PCI_DSS_v3.pdf"
 REMOTE_URL = "https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-1.pdf"
 
 
 def construct_xccdf_group(id_, desc, children, rules, rule_usage_map):
     ret = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-    ret.set("id", ssgcommon.OSCAP_GROUP_PCIDSS + "-%s" % (id_))
+    ret.set("id", ssg.constants.OSCAP_GROUP_PCIDSS + "-%s" % (id_))
     ret.set("selected", "true")
     title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
     title.text = id_
@@ -133,7 +128,7 @@ def main():
 
     if len(values) > 0:
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-        group.set("id", ssgcommon.OSCAP_GROUP_VAL)
+        group.set("id", ssg.constants.OSCAP_GROUP_VAL)
         group.set("selected", "true")
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Values"
@@ -171,7 +166,7 @@ def main():
         )
 
         group = ElementTree.Element("{%s}Group" % (XCCDF_NAMESPACE))
-        group.set("id", ssgcommon.OSCAP_GROUP_NON_PCI)
+        group.set("id", ssg.constants.OSCAP_GROUP_NON_PCI)
         group.set("selected", "true")
         title = ElementTree.Element("{%s}title" % (XCCDF_NAMESPACE))
         title.text = "Non PCI-DSS"
@@ -211,7 +206,7 @@ def main():
 
         # filter out old group selectors from the PCI-DSS profile
         for select in profile.findall("./{%s}select" % (XCCDF_NAMESPACE)):
-            if select.get("idref").startswith(ssgcommon.OSCAP_GROUP):
+            if select.get("idref").startswith(ssg.constants.OSCAP_GROUP):
                 # we will remove all group selectors, all PCI-DSS groups are
                 # selected by default so we don't need any in the final
                 # PCI-DSS Benchmark

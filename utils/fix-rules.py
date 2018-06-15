@@ -4,16 +4,11 @@ import sys
 import os
 import jinja2
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-from ssgcommon import required_yaml_key
-import ssgcommon
+import ssg
 
 
 def has_empty_identifier(yaml_file, product_yaml=None):
-    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    rule = ssgcommon.open_and_macro_expand(yaml_file, product_yaml)
     if 'identifiers' in rule and rule['identifiers'] is None:
         return True
 
@@ -25,7 +20,7 @@ def has_empty_identifier(yaml_file, product_yaml=None):
 
 
 def has_empty_references(yaml_file, product_yaml=None):
-    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    rule = ssgcommon.open_and_macro_expand(yaml_file, product_yaml)
     if 'references' in rule and rule['references'] is None:
         return True
 
@@ -37,29 +32,29 @@ def has_empty_references(yaml_file, product_yaml=None):
 
 
 def has_prefix_cce(yaml_file, product_yaml=None):
-    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    rule = ssgcommon.open_and_macro_expand(yaml_file, product_yaml)
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = ssgcommon.cce_is_valid("CCE-" + i_value[3:])
-                remainder_valid |= ssgcommon.cce_is_valid("CCE-" + i_value[4:])
+                remainder_valid = ssgcommon.is_cce_valid("CCE-" + i_value[3:])
+                remainder_valid |= ssgcommon.is_cce_valid("CCE-" + i_value[4:])
                 return has_prefix and remainder_valid
     return False
 
 
 def has_invalid_cce(yaml_file, product_yaml=None):
-    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    rule = ssgcommon.open_and_macro_expand(yaml_file, product_yaml)
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
-                if not ssgcommon.cce_is_valid("CCE-" + i_value):
+                if not ssgcommon.is_cce_valid("CCE-" + i_value):
                     return True
     return False
 
 
 def has_int_identifier(yaml_file, product_yaml=None):
-    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    rule = ssgcommon.open_and_macro_expand(yaml_file, product_yaml)
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for _, value in rule['identifiers'].items():
             if type(value) != str:
@@ -68,7 +63,7 @@ def has_int_identifier(yaml_file, product_yaml=None):
 
 
 def has_int_reference(yaml_file, product_yaml=None):
-    rule = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+    rule = ssgcommon.open_and_macro_expand(yaml_file, product_yaml)
     if 'references' in rule and rule['references'] is not None:
         for _, value in rule['references'].items():
             if type(value) != str:
@@ -101,7 +96,7 @@ def find_rules(directory, func):
 
         if "product.yml" in files:
             product_yaml_path = os.path.join(root, "product.yml")
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
             product_yamls[root] = product_yaml
             product_yaml_paths[root] = product_yaml_path
             for d in dirs:
@@ -235,9 +230,9 @@ def rewrite_value_remove_prefix(line):
     key = line[0:key_end]
     value = line[key_end+1:].strip()
     new_value = value
-    if ssgcommon.cce_is_valid("CCE-" + value[3:]):
+    if ssgcommon.is_cce_valid("CCE-" + value[3:]):
         new_value = value[3:]
-    elif ssgcommon.cce_is_valid("CCE-" + value[4:]):
+    elif ssgcommon.is_cce_valid("CCE-" + value[4:]):
         new_value = value[4:]
     return key + ": " + new_value
 
@@ -311,8 +306,8 @@ def fix_prefix_cce(file_contents, yaml_contents):
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = ssgcommon.cce_is_valid("CCE-" + i_value[3:])
-                remainder_valid |= ssgcommon.cce_is_valid("CCE-" + i_value[4:])
+                remainder_valid = ssgcommon.is_cce_valid("CCE-" + i_value[3:])
+                remainder_valid |= ssgcommon.is_cce_valid("CCE-" + i_value[4:])
                 if has_prefix and remainder_valid:
                     prefixed_identifiers.append(i_type)
 
@@ -328,7 +323,7 @@ def fix_invalid_cce(file_contents, yaml_contents):
     if yaml_contents[section] is not None:
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
-                if not ssgcommon.cce_is_valid("CCE-" + i_value):
+                if not ssgcommon.is_cce_valid("CCE-" + i_value):
                     invalid_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
@@ -361,7 +356,7 @@ def fix_file(path, product_yaml, func):
     if file_contents[-1] == '':
         file_contents = file_contents[:-1]
 
-    yaml_contents = ssgcommon.open_and_macro_expand_yaml(path, product_yaml)
+    yaml_contents = ssgcommon.open_and_macro_expand(path, product_yaml)
 
     print("====BEGIN BEFORE====")
     print_file(file_contents)
@@ -393,7 +388,7 @@ def fix_empty_identifiers(directory):
 
         product_yaml = None
         if product_yaml_path is not None:
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         fix_file(rule_path, product_yaml, fix_empty_identifier)
 
@@ -408,7 +403,7 @@ def fix_empty_references(directory):
 
         product_yaml = None
         if product_yaml_path is not None:
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         fix_file(rule_path, product_yaml, fix_empty_reference)
 
@@ -424,7 +419,7 @@ def find_prefix_cce(directory):
 
         product_yaml = None
         if product_yaml_path is not None:
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         fix_file(rule_path, product_yaml, fix_prefix_cce)
 
@@ -440,7 +435,7 @@ def find_invalid_cce(directory):
 
         product_yaml = None
         if product_yaml_path is not None:
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         fix_file(rule_path, product_yaml, fix_invalid_cce)
 
@@ -455,7 +450,7 @@ def find_int_identifiers(directory):
 
         product_yaml = None
         if product_yaml_path is not None:
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         fix_file(rule_path, product_yaml, fix_int_identifier)
 
@@ -470,7 +465,7 @@ def find_int_references(directory):
 
         product_yaml = None
         if product_yaml_path is not None:
-            product_yaml = ssgcommon.open_yaml(product_yaml_path)
+            product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         fix_file(rule_path, product_yaml, fix_int_reference)
 

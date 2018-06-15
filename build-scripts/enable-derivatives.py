@@ -23,14 +23,10 @@ import sys
 import re
 from optparse import OptionParser
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
-XCCDF11_NS = ssgcommon.XCCDF11_NS
-XCCDF12_NS = ssgcommon.XCCDF12_NS
+XCCDF11_NS = ssg.constants.XCCDF11_NS
+XCCDF12_NS = ssg.constants.XCCDF12_NS
 
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",

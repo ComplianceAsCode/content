@@ -7,6 +7,12 @@ set(CMAKE_INSTALL_LIBDIR "/nowhere")
 include(GNUInstallDirs)
 include(FindPythonModule)
 
+if ( "$ENV{PYTHONPATH}" STREQUAL "" )
+    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}")
+else()
+    set(ENV{PYTHONPATH} "${PROJECT_SOURCE_DIR}:$ENV{PYTHONPATH}")
+endif()
+
 set(SSG_CONTENT_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/xml/scap/ssg/content")
 set(SSG_GUIDE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/guides")
 set(SSG_TABLE_INSTALL_DIR "${CMAKE_INSTALL_DOCDIR}/tables")

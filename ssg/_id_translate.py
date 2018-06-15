@@ -1,12 +1,6 @@
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
-import ssgcommon
-
-oval_ns = ssgcommon.oval_namespace
-ocil_ns = ssgcommon.ocil_namespace
+from ssg._xml import ElementTree
+from ssg._constants import oval_namespace as oval_ns
+from ssg._constants import ocil_namespace as ocil_ns
 
 ovaltag_to_abbrev = {
     'definition': 'def',
@@ -42,7 +36,7 @@ ocilrefchild_to_tag = {
 }
 
 
-def split_namespace(tag):
+def _split_namespace(tag):
     """returns a tuple of (namespace,name) removing any fragment id
     from namespace"""
 
@@ -53,8 +47,8 @@ def split_namespace(tag):
         return (None, tag)
 
 
-def namespace_to_prefix(tag):
-    namespace, _ = split_namespace(tag)
+def _namespace_to_prefix(tag):
+    namespace, _ = _split_namespace(tag)
     if namespace == ocil_ns:
         return "ocil"
     if namespace == oval_ns:
@@ -65,8 +59,8 @@ def namespace_to_prefix(tag):
     )
 
 
-def tagname_to_abbrev(tag):
-    namespace, tag = split_namespace(tag)
+def _tagname_to_abbrev(tag):
+    namespace, tag = _split_namespace(tag)
     if tag == "extend_definition":
         return tag
     # grab the last part of the tag name to determine its type
@@ -91,9 +85,9 @@ class IDTranslator(object):
 
     def generate_id(self, tagname, name):
         return "%s:%s-%s:%s:1" % (
-            namespace_to_prefix(tagname),
+            _namespace_to_prefix(tagname),
             self.content_id, name,
-            tagname_to_abbrev(tagname)
+            _tagname_to_abbrev(tagname)
         )
 
     def translate(self, tree, store_defname=False):

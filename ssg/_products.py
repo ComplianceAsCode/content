@@ -16,13 +16,13 @@ WRLINUX = 'Wind River Linux'
 OL = 'Oracle Linux'
 OCP = 'Red Hat OpenShift Container Platform'
 
-multi_product_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
-                      "wrlinux", "opensuse", "sle", "ol", "ocp"]
+multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
+              "wrlinux", "opensuse", "sle", "ol", "ocp"]
 
 PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
 
 
-def parse_product_name(product):
+def parse_name(product):
     product_version = None
     match = PRODUCT_NAME_PARSER.match(product)
 
@@ -36,18 +36,18 @@ def parse_product_name(product):
     return product, product_version
 
 
-def map_product(version):
+def map_name(version):
     """Maps SSG Makefile internal product name to official product name"""
 
     if version.startswith("multi_platform_"):
         trimmed_version = version[len("multi_platform_"):]
-        if trimmed_version not in multi_product_list:
+        if trimmed_version not in multi_list:
             raise RuntimeError(
                 "%s is an invalid product version. If it's multi_platform the "
                 "suffix has to be from (%s)."
-                % (version, ", ".join(multi_product_list))
+                % (version, ", ".join(multi_list))
             )
-        return map_product(trimmed_version)
+        return map_name(trimmed_version)
 
     if version.startswith("chromium"):
         return CHROMIUM

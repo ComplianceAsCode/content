@@ -5,17 +5,9 @@ from __future__ import print_function
 import fnmatch
 import sys
 import os
+import ssg
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import idtranslate_module as idtranslate
+ElementTree = ssg.xml.ElementTree
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
@@ -25,13 +17,6 @@ import idtranslate_module as idtranslate
 oval_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5"
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
-
-
-def parse_xml_file(xmlfile):
-    with open(xmlfile, 'r') as xml_file:
-        filestring = xml_file.read()
-        tree = ElementTree.fromstring(filestring)
-    return tree
 
 
 def extract_subelement(objects, sub_elem_type):
@@ -88,7 +73,7 @@ def main():
     cpedictfile = sys.argv[5]
 
     # parse oval file
-    ovaltree = parse_xml_file(ovalfile)
+    ovaltree = ssg.xml.parse_file(ovalfile)
 
     # extract inventory definitions
     # making (dubious) assumption that all inventory defs are CPE
@@ -145,7 +130,7 @@ def main():
             ovaltree.remove(variables)
 
     # turn IDs into meaningless numbers
-    translator = idtranslate.IDTranslator(idname)
+    translator = ssg.id_translate.IDTranslator(idname)
     ovaltree = translator.translate(ovaltree)
 
     newovalfile = idname + "-" + product + "-" + os.path.basename(ovalfile)
@@ -153,7 +138,7 @@ def main():
     ElementTree.ElementTree(ovaltree).write(cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
-    cpedicttree = parse_xml_file(cpedictfile)
+    cpedicttree = ssg.xml.parse_file(cpedictfile)
     newcpedictfile = idname + "-" + os.path.basename(cpedictfile)
     for check in cpedicttree.findall(".//{%s}check" % cpe_ns):
         checkhref = check.get("href")

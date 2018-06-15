@@ -8,18 +8,8 @@ import os.path
 import datetime
 import sys
 
-
-try:
-    from xml.etree import cElementTree as ET
-except ImportError:
-    import cElementTree as ET
-
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-from ssgcommon import required_yaml_key
-import ssgcommon
+import ssg
+ET = ssg.xml.ElementTree
 
 
 def add_sub_element(parent, tag, data):
@@ -74,19 +64,19 @@ class Profile(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
         basename, _ = os.path.splitext(os.path.basename(yaml_file))
 
         profile = Profile(basename)
-        profile.title = required_yaml_key(yaml_contents, "title")
+        profile.title = ssg.utils.required_key(yaml_contents, "title")
         del yaml_contents["title"]
-        profile.description = required_yaml_key(yaml_contents, "description")
+        profile.description = ssg.utils.required_key(yaml_contents, "description")
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
-        profile.selections = required_yaml_key(yaml_contents, "selections")
+        profile.selections = ssg.utils.required_key(yaml_contents, "selections")
         del yaml_contents["selections"]
 
         if yaml_contents:
@@ -142,17 +132,17 @@ class Value(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssgcommon.open_and_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
         value_id, _ = os.path.splitext(os.path.basename(yaml_file))
         value = Value(value_id)
-        value.title = required_yaml_key(yaml_contents, "title")
+        value.title = ssg.utils.required_key(yaml_contents, "title")
         del yaml_contents["title"]
-        value.description = required_yaml_key(yaml_contents, "description")
+        value.description = ssg.utils.required_key(yaml_contents, "description")
         del yaml_contents["description"]
-        value.type_ = required_yaml_key(yaml_contents, "type")
+        value.type_ = ssg.utils.required_key(yaml_contents, "type")
         del yaml_contents["type"]
         value.operator = yaml_contents.pop("operator", "equals")
         possible_operators = ["equals", "not equal", "greater than",
@@ -169,7 +159,7 @@ class Value(object):
         value.interactive = \
             yaml_contents.pop("interactive", "false").lower() == "true"
 
-        value.options = required_yaml_key(yaml_contents, "options")
+        value.options = ssg.utils.required_key(yaml_contents, "options")
         del yaml_contents["options"]
         value.warnings = yaml_contents.pop("warnings", [])
 
@@ -244,33 +234,33 @@ class Benchmark(object):
 
     @staticmethod
     def from_yaml(yaml_file, id_, product_yaml=None):
-        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, product_yaml)
+        yaml_contents = ssg.yaml.open_and_macro_expand(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
         benchmark = Benchmark(id_)
-        benchmark.title = required_yaml_key(yaml_contents, "title")
+        benchmark.title = ssg.utils.required_key(yaml_contents, "title")
         del yaml_contents["title"]
-        benchmark.status = required_yaml_key(yaml_contents, "status")
+        benchmark.status = ssg.utils.required_key(yaml_contents, "status")
         del yaml_contents["status"]
-        benchmark.description = required_yaml_key(yaml_contents, "description")
+        benchmark.description = ssg.utils.required_key(yaml_contents, "description")
         del yaml_contents["description"]
-        notice_contents = required_yaml_key(yaml_contents, "notice")
-        benchmark.notice_id = required_yaml_key(notice_contents, "id")
+        notice_contents = ssg.utils.required_key(yaml_contents, "notice")
+        benchmark.notice_id = ssg.utils.required_key(notice_contents, "id")
         del notice_contents["id"]
-        benchmark.notice_description = required_yaml_key(notice_contents,
+        benchmark.notice_description = ssg.utils.required_key(notice_contents,
                                                          "description")
         del notice_contents["description"]
         if not notice_contents:
             del yaml_contents["notice"]
 
-        benchmark.front_matter = required_yaml_key(yaml_contents,
+        benchmark.front_matter = ssg.utils.required_key(yaml_contents,
                                                    "front-matter")
         del yaml_contents["front-matter"]
-        benchmark.rear_matter = required_yaml_key(yaml_contents,
+        benchmark.rear_matter = ssg.utils.required_key(yaml_contents,
                                                   "rear-matter")
         del yaml_contents["rear-matter"]
-        benchmark.version = str(required_yaml_key(yaml_contents, "version"))
+        benchmark.version = str(ssg.utils.required_key(yaml_contents, "version"))
         del yaml_contents["version"]
 
         if yaml_contents:
@@ -396,16 +386,16 @@ class Group(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
         group_id, _ = os.path.splitext(os.path.basename(yaml_file))
         group = Group(group_id)
         group.prodtype = yaml_contents.pop("prodtype", "all")
-        group.title = required_yaml_key(yaml_contents, "title")
+        group.title = ssg.utils.required_key(yaml_contents, "title")
         del yaml_contents["title"]
-        group.description = required_yaml_key(yaml_contents, "description")
+        group.description = ssg.utils.required_key(yaml_contents, "description")
         del yaml_contents["description"]
         group.warnings = yaml_contents.pop("warnings", [])
 
@@ -481,20 +471,20 @@ class Rule(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
-        yaml_contents = ssgcommon.open_and_macro_expand_yaml(yaml_file, env_yaml)
+        yaml_contents = ssg.yaml.open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
         rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
         rule = Rule(rule_id)
         rule.prodtype = yaml_contents.pop("prodtype", "all")
-        rule.title = required_yaml_key(yaml_contents, "title")
+        rule.title = ssg.utils.required_key(yaml_contents, "title")
         del yaml_contents["title"]
-        rule.description = required_yaml_key(yaml_contents, "description")
+        rule.description = ssg.utils.required_key(yaml_contents, "description")
         del yaml_contents["description"]
-        rule.rationale = required_yaml_key(yaml_contents, "rationale")
+        rule.rationale = ssg.utils.required_key(yaml_contents, "rationale")
         del yaml_contents["rationale"]
-        rule.severity = required_yaml_key(yaml_contents, "severity")
+        rule.severity = ssg.utils.required_key(yaml_contents, "severity")
         del yaml_contents["severity"]
         rule.references = yaml_contents.pop("references", {})
         rule.identifiers = yaml_contents.pop("identifiers", {})
@@ -528,7 +518,7 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not ssgcommon.cce_is_valid("CCE-" + ident_val):
+                if not ssg.checks.is_cce_valid("CCE-" + ident_val):
                     raise ValueError("CCE Identifiers must be valid: value %s for cce %s"
                                      " in file %s" % (ident_val, ident_type, yaml_file))
 
@@ -727,11 +717,11 @@ def main():
         print(args.output)
         sys.exit(0)
 
-    env_yaml = ssgcommon.open_environment_yamls(
+    env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
-    benchmark_root = required_yaml_key(env_yaml, "benchmark_root")
-    profiles_root = required_yaml_key(env_yaml, "profiles_root")
+    benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
+    profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
     # we have to "absolutize" the paths the right way, relative to the
     # product_yaml path
     if not os.path.isabs(benchmark_root):

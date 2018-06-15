@@ -25,12 +25,7 @@ except ImportError:
 import sys
 import multiprocessing
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import xccdf_utils
-import ssgcommon
+import ssg
 
 
 OSCAP_PATH = "oscap"
@@ -49,7 +44,7 @@ def generate_guide_for_input_content(input_content, benchmark_id, profile_id):
         args.extend(["--profile", profile_id])
     args.append(input_content)
 
-    return ssgcommon.subprocess_check_output(args).decode("utf-8")
+    return ssg.shims.subprocess_check_output(args).decode("utf-8")
 
 
 def get_cpu_count():
@@ -104,7 +99,7 @@ def main():
         path_base = path_base[:-6]
 
     input_tree = ElementTree.parse(input_path)
-    benchmarks = xccdf_utils.get_benchmark_ids_titles_for_input(input_tree)
+    benchmarks = ssg.xccdf.get_benchmark_ids_titles_for_input(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
             "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "
@@ -114,7 +109,7 @@ def main():
 
     benchmark_profile_pairs = []
     for benchmark_id in benchmarks.keys():
-        profiles = xccdf_utils.get_profile_choices_for_input(
+        profiles = ssg.xccdf.get_profile_choices_for_input(
             input_tree, benchmark_id, None
         )
         # add the default profile
@@ -154,7 +149,7 @@ def main():
                        x[0], x[1], x[2]
                    )):
         skip = False
-        for blacklisted_id in xccdf_utils.PROFILE_ID_BLACKLIST:
+        for blacklisted_id in ssg.xccdf.PROFILE_ID_BLACKLIST:
             if profile_id.endswith(blacklisted_id):
                 skip = True
                 break
@@ -164,10 +159,10 @@ def main():
 
         profile_id_for_path = "default" if not profile_id else profile_id
         benchmark_id_for_path = benchmark_id
-        if benchmark_id_for_path.startswith(ssgcommon.OSCAP_DS_STRING):
+        if benchmark_id_for_path.startswith(ssg.constants.OSCAP_DS_STRING):
             benchmark_id_for_path = \
                 benchmark_id_for_path[
-                    len(ssgcommon.OSCAP_DS_STRING):
+                    len(ssg.constants.OSCAP_DS_STRING):
                 ]
 
         if len(benchmarks) == 1 or \
@@ -177,12 +172,12 @@ def main():
             guide_filename = \
                 "%s-guide-%s.html" % \
                 (path_base,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path))
+                 ssg.xccdf.get_profile_short_id(profile_id_for_path))
         else:
             guide_filename = \
                 "%s-%s-guide-%s.html" % \
                 (path_base, benchmark_id_for_path,
-                 xccdf_utils.get_profile_short_id(profile_id_for_path))
+                 ssg.xccdf.get_profile_short_id(profile_id_for_path))
         guide_path = os.path.join(output_dir, guide_filename)
 
         if args.cmd == "list_inputs":

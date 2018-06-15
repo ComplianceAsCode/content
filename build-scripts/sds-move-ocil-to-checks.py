@@ -46,15 +46,11 @@ try:
 except ImportError:
     import cElementTree as ElementTree
 
-# Put shared python modules in path
-sys.path.insert(0, os.path.join(
-        os.path.dirname(os.path.dirname(os.path.realpath(__file__))),
-        "shared", "modules"))
-import ssgcommon
+import ssg
 
 xlink_ns = "http://www.w3.org/1999/xlink"
-datastream_ns = ssgcommon.datastream_namespace
-ocil_ns = ssgcommon.ocil_namespace
+datastream_ns = ssg.constants.datastream_namespace
+ocil_ns = ssg.constants.ocil_namespace
 
 
 def move_ocil_ref_from_ds_extended_components_to_ds_checks(datastreamtree, ocilcomp):
