@@ -132,14 +132,30 @@ def read_ovaldefgroup_file(testfile):
     return body
 
 
+def get_openscap_supported_oval_version():
+    try:
+        from openscap import oscap_get_version
+        if [int(x) for x in str(oscap_get_version()).split(".")] >= [1, 2, 0]:
+            return "5.11"
+    except ImportError:
+        pass
+
+    return "5.10"
+
+
 def parse_options():
     usage = "usage: %(prog)s [options] definition_file.xml"
     parser = argparse.ArgumentParser(usage=usage)
     # only some options are on by default
 
-    parser.add_argument("--oval_version", required=True,
+    oscap_oval_version = get_openscap_supported_oval_version()
+
+    parser.add_argument("--oval_version",
+                        default=oscap_oval_version,
                         dest="oval_version", action="store",
-                        help="OVAL version to use. Example: 5.11, 5.10, ...")
+                        help="OVAL version to use. Example: 5.11, 5.10, ... "
+                             "If not supplied the highest version supported by "
+                             "openscap will be used: %s" % (oscap_oval_version))
     parser.add_argument("-q", "--quiet", "--silent", default=False,
                         action="store_true", dest="silent_mode",
                         help="Don't show any output when testing OVAL files")
