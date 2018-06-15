@@ -3,8 +3,8 @@ import yaml
 
 from ssg._jinja import _extract_substitutions_dict_from_template
 from ssg._jinja import _rename_items
-from ssg._jinja import *
-from ssg._constants import *
+from ssg._jinja import process_file
+from ssg._constants import PKG_MANAGER_TO_SYSTEM, JINJA_MACROS_DEFINITIONS
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
