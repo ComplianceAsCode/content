@@ -1,6 +1,6 @@
 import re
 
-from ssg._constants import *
+from ssg._constants import XCCDF11_NS
 
 
 def get_content_ref_if_exists_and_not_remote(check):
@@ -17,8 +17,7 @@ def get_content_ref_if_exists_and_not_remote(check):
         return None
     if is_content_href_remote(checkcontentref):
         return None
-    else:
-        return checkcontentref
+    return checkcontentref
 
 
 def is_content_href_remote(check_content_ref):
