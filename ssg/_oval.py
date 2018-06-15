@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 import os
 import re
@@ -5,26 +7,15 @@ import argparse
 import tempfile
 import subprocess
 
-from ConfigParser import SafeConfigParser
-
 from ssg._constants import oval_footer as footer
 from ssg._constants import oval_namespace as ovalns
-from ssg._constants import timestamp
+from ssg._constants import OSCAP_OVAL_VERSION
 from ssg._xml import ElementTree as ET
 from ssg._xml import oval_generated_header
-
+from ssg._id_translate import IDTranslator
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
 
-
-try:
-    from openscap import oscap_get_version
-    if oscap_get_version() < 1.2:
-        oval_version = "5.10"
-    else:
-        oval_version = "5.11"
-except ImportError:
-    oval_version = "5.10"
 
 # globals, to make recursion easier in case we encounter extend_definition
 definitions = ET.Element("definitions")
@@ -32,10 +23,12 @@ tests = ET.Element("tests")
 objects = ET.Element("objects")
 states = ET.Element("states")
 variables = ET.Element("variables")
+silent_mode = False
 
 
 # append new child ONLY if it's not a duplicate
 def append(element, newchild):
+    global silent_mode
     newid = newchild.get("id")
     existing = element.find(".//*[@id='" + newid + "']")
     if existing is not None:
@@ -47,11 +40,17 @@ def append(element, newchild):
         element.append(newchild)
 
 
-def add_oval_elements(body, header):
+def _add_elements(body, header):
     """Add oval elements to the global Elements defined above"""
+    global definitions
+    global tests
+    global objects
+    global states
+    global variables
 
     tree = ET.fromstring(header + body + footer)
     tree = replace_external_vars(tree)
+    defname = None
     # parse new file(string) as an etree, so we can arrange elements
     # appropriately
     for childnode in tree.findall("./{%s}def-group/*" % ovalns):
@@ -69,7 +68,7 @@ def add_oval_elements(body, header):
                 extend_ref = find_testfile(defid+".xml")
                 includedbody = read_ovaldefgroup_file(extend_ref)
                 # recursively add the elements in the other file
-                add_oval_elements(includedbody, header)
+                _add_elements(includedbody, header)
         if childnode.tag.endswith("_test"):
             append(tests, childnode)
         if childnode.tag.endswith("_object"):
@@ -95,7 +94,7 @@ def replace_external_vars(tree):
         # sys.exit()
         if extvar_id not in os.environ.keys():
             print("External_variable specified, but no value provided via "
-                  "environment variable")
+                  "environment variable", file=sys.stderr)
             sys.exit(2)
         # replace tag name: external -> local
         node.tag = "{%s}local_variable" % ovalns
@@ -110,7 +109,7 @@ def replace_external_vars(tree):
 def find_testfile(testfile):
     """Find OVAL files in CWD or shared/oval"""
     for path in ['.', SHARED_OVAL]:
-        for root, folder, files in os.walk(path):
+        for root, _, _ in os.walk(path):
             searchfile = root + '/' + testfile
             if not os.path.isfile(searchfile):
                 searchfile = ""
@@ -121,7 +120,7 @@ def find_testfile(testfile):
 
     if not os.path.isfile(testfile):
         print("ERROR: %s does not exist! Please specify a valid OVAL file."
-              % testfile)
+              % testfile, file=sys.stderr)
         sys.exit(1)
 
     return testfile
@@ -136,10 +135,10 @@ def read_ovaldefgroup_file(testfile):
 
 def parse_options():
     usage = "usage: %(prog)s [options] definition_file.xml"
-    parser = argparse.ArgumentParser(usage=usage, version="%(prog)s ")
+    parser = argparse.ArgumentParser(usage=usage)
     # only some options are on by default
 
-    parser.add_argument("--oval_version", default=oval_version,
+    parser.add_argument("--oval_version", default=OSCAP_OVAL_VERSION,
                         dest="oval_version", action="store",
                         help="OVAL version to use. Example: 5.11, 5.10, ... \
                         [Default: %(default)s]")
@@ -168,16 +167,21 @@ def main():
     header = oval_generated_header("testoval.py", oval_version, "0.0.1")
     testfile = find_testfile(testfile)
     body = read_ovaldefgroup_file(testfile)
-    defname = add_oval_elements(body, header)
+    defname = _add_elements(body, header)
+    if defname is None:
+        print("Error while evaluating oval: defname not set; missing "
+              "definitions section?")
+        sys.exit(1)
+
     ovaltree = ET.fromstring(header + footer)
 
     # append each major element type, if it has subelements
     for element in [definitions, tests, objects, states, variables]:
-        if element.getchildren():
+        if list(element) > 0:
             ovaltree.append(element)
     # re-map all the element ids from meaningful names to meaningless
     # numbers
-    testtranslator = idtranslate.IDTranslator("scap-security-guide.testing")
+    testtranslator = IDTranslator("scap-security-guide.testing")
     ovaltree = testtranslator.translate(ovaltree)
     (ovalfile, fname) = tempfile.mkstemp(prefix=defname, suffix=".xml")
     os.write(ovalfile, ET.tostring(ovaltree))
@@ -190,7 +194,7 @@ def main():
     oscap_child = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     cmd_out = oscap_child.communicate()[0]
     if not silent_mode:
-        print cmd_out
+        print(cmd_out)
     if oscap_child.returncode != 0:
         if not silent_mode:
             print("Error launching 'oscap' command: \n\t" + cmd)

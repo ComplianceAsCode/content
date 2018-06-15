@@ -1,4 +1,3 @@
-
 from __future__ import print_function
 
 from ssg._xml import ElementTree as ET
