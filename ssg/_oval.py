@@ -9,7 +9,6 @@ import subprocess
 
 from ssg._constants import oval_footer as footer
 from ssg._constants import oval_namespace as ovalns
-from ssg._constants import OSCAP_OVAL_VERSION
 from ssg._xml import ElementTree as ET
 from ssg._xml import oval_generated_header
 from ssg._id_translate import IDTranslator
@@ -138,10 +137,9 @@ def parse_options():
     parser = argparse.ArgumentParser(usage=usage)
     # only some options are on by default
 
-    parser.add_argument("--oval_version", default=OSCAP_OVAL_VERSION,
+    parser.add_argument("--oval_version", required=True,
                         dest="oval_version", action="store",
-                        help="OVAL version to use. Example: 5.11, 5.10, ... \
-                        [Default: %(default)s]")
+                        help="OVAL version to use. Example: 5.11, 5.10, ...")
     parser.add_argument("-q", "--quiet", "--silent", default=False,
                         action="store_true", dest="silent_mode",
                         help="Don't show any output when testing OVAL files")
