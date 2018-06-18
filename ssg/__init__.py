@@ -3,6 +3,7 @@ import ssg._build_cpe as build_cpe
 import ssg._build_derivatives as build_derivatives
 import ssg._build_guides as build_guides
 import ssg._build_ovals as build_ovals
+import ssg._build_profile as build_profile
 import ssg._build_remediations as build_remediations
 import ssg._build_renumber as build_renumber
 import ssg._build_roles as build_roles
