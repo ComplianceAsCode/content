@@ -1,15 +1,6 @@
 import datetime
 import os.path
 
-try:
-    from openscap import oscap_get_version
-    if oscap_get_version() < 1.2:
-        OSCAP_OVAL_VERSION = "5.10"
-    else:
-        OSCAP_OVAL_VERSION = "5.11"
-except ImportError:
-    OSCAP_OVAL_VERSION = "5.10"
-
 
 JINJA_MACROS_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros.jinja")
