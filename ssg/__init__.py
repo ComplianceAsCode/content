@@ -1,4 +1,5 @@
 import ssg._ansible as ansible
+import ssg._build_cpe as build_cpe
 import ssg._build_derivatives as build_derivatives
 import ssg._build_guides as build_guides
 import ssg._build_ovals as build_ovals
