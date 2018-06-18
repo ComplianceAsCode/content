@@ -1,8 +1,7 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_common
+# profiles = xccdf_org.ssgproject.content_profile_nist-800-171-cui
 # remediation = bash
 
-yum install -y audispd-plugins
-
-. ../delete_parameter.sh
+. ../../auditd_utils.sh
+prepare_auditd_test_enviroment
 delete_parameter /etc/audisp/plugins.d/syslog.conf "active"

@@ -1,8 +1,6 @@
 #!/bin/bash
-# profiles = profile_not_found
-# remediation = bash
+# profiles = xccdf_org.ssgproject.content_profile_stig-rhel7-disa
 
-yum install -y audispd-plugins
-
-. ../delete_parameter.sh
+. ../../auditd_utils.sh
+prepare_auditd_test_enviroment
 delete_parameter /etc/audisp/audisp-remote.conf "enable_krb5"

@@ -1,4 +1,6 @@
 #!/bin/bash
+# Contains utilities for tests scripts
+
 
 function set_parameters_value {
         if [ -z "$1" ]; then
@@ -14,12 +16,30 @@ function set_parameters_value {
 
         local FILE=$1 PARAMETER=$2 VALUE=$3
 
-        yum install -y audit
-
         REGEX="^$PARAMETER[[:space:]]*=.*$"
         if grep -q "$REGEX" "$FILE"; then
                 sed -i "s~$REGEX~$PARAMETER = $VALUE~" "$FILE"
         else
                 echo "$PARAMETER = $VALUE" >> "$FILE"
         fi
+}
+
+function delete_parameter {
+        if [ -z "$1" ]; then
+                echo "Specify file name"
+                exit 1
+        elif [ -z "$2" ]; then
+                echo "Specify parameters name"
+                exit 1
+        fi
+
+        local FILE=$1 PARAMETER=$2
+
+        sed -i "/^$PARAMETER[[:space:]]*=/d" "$FILE"
+}
+
+function get_packages {
+        PACKAGES="$@"
+
+        yum install -y $PACKAGES
 }
