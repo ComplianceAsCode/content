@@ -16,3 +16,8 @@ if (PY_PYTEST)
     ssg_python_unit_tests("build-scripts")
     ssg_python_unit_tests("utils")
 endif()
+
+add_test(
+    NAME "max-path-len"
+    COMMAND "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/ensure_paths_are_short.py"
+)
