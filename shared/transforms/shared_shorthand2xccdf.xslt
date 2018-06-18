@@ -456,14 +456,6 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="product-short-name-macro">
-    <xsl:value-of select="$product_short_name"/>
-  </xsl:template>
-
-  <xsl:template match="product-stig-id-macro">
-    <xsl:value-of select="$product_stig_id_name"/>
-  </xsl:template>
-
   <xsl:template match="Benchmark/@id">
     <xsl:attribute name="id">
       <xsl:value-of select="$product_guide_id_name"/>
