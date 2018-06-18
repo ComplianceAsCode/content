@@ -19,7 +19,7 @@ description: |-
     OVAL regular expression is used for the user list.
     <br /> <br />
     Test result of both <tt>fail</tt> or <tt>error</tt> means mismatch of user names and
-    SAP system.<tt>*</tt> The bash remediation commands can be used to delete unexpected users on
+    SAP system. The bash remediation commands can be used to delete unexpected users on
     the operating system. 
 
 rationale: |-
@@ -42,14 +42,14 @@ ocil: |-
 warnings:
     - general: |-
         Currently this rule only works with following limitations:
-        <br /> <br />
+        <br />
         1. <tt>SAP system mount directory</tt> is <tt>/sapmnt</tt> (mounted or local file system
         or a symbolic link to the target directory);
-        <br /> <br />
+        <br />
         2. there is maximum one SAP System on each operating system or virtual machine (maximum
         one SID in /sapmnt and /usr/sap).
-        <br /> <br />
-        In this case, the SAP system users <tt>sidadm</tt>, <tt>orasid</tt>, <tt>sapadm</tt>
+        <br />
+        With the above limitations, the SAP system users <tt>sidadm</tt>, <tt>orasid</tt>, <tt>sapadm</tt>
         and <tt>oracle</tt> can be automatically detected. 
         <br /> <br />
         For other cases, please use the general purpose rule <tt>accounts_authorized_local_users</tt>

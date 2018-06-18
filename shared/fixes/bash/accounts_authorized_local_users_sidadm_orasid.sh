@@ -13,7 +13,7 @@ sapmnt_SID_stem="/sapmnt/[A-Z][A-Z0-9][A-Z0-9]"
 # then try to add SAP system users to the userlist
 if [ -d "/sapmnt" ] ; then 
 	# if /sapmnt/SID exists, add sidadm to the userlist
-	path_sapmnt_SID_list=$(find /sapmnt/ -regex "$sapmnt_SID_stem")
+	path_sapmnt_SID_list=$(find /sapmnt/ -regex "^$sapmnt_SID_stem$")
 	for i in $path_sapmnt_SID_list ; do
 		SID=${i:8:3}
 		userlist="$userlist|$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')adm"
@@ -21,7 +21,7 @@ if [ -d "/sapmnt" ] ; then
 
 	# try to get brspace from directories /sapmnt/SID/exe (SAP binaries of old structure)
 	# and /sapmnt/SID/exe/<codepage>/<platform> (SAP binaries of new structure)
-	path_to_brspace_list=$(find /sapmnt/ -regex "$sapmnt_SID_stem/exe/\(\|\(\|n\)uc/[a-z0-9_]+/\)brspace")
+	path_to_brspace_list=$(find /sapmnt/ -regex "^$sapmnt_SID_stem/exe/\(\|\(\|n\)uc/[a-z0-9_]+/\)brspace$")
 
 	# if brspace exist in any of the above directory of a SID, add orasid to the userlist 
 	for i in $path_to_brspace_list ; do
