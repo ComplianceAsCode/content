@@ -14,6 +14,8 @@ class ServiceEnabledGenerator(FilesGenerator):
         try:
             # get the items out of the list
             servicename, packagename, daemonname = serviceinfo
+            if not packagename:
+                packagename = servicename
         except ValueError as e:
             print("\tEntry: %s\n" % serviceinfo)
             print("\tError unpacking servicename, packagename, and daemonname: " + str(e))
@@ -23,31 +25,15 @@ class ServiceEnabledGenerator(FilesGenerator):
             daemonname = servicename
 
         if target == "oval":
-            if packagename:
-                self.file_from_template(
-                    "./template_OVAL_service_enabled",
-                    {
-                        "%SERVICENAME%": servicename,
-                        "%PACKAGENAME%": packagename,
-                        "%DAEMONNAME%": daemonname
-                    },
-                    "./oval/service_{0}_enabled.xml", servicename
-                )
-            else:
-                self.file_from_template(
-                    "./template_OVAL_service_enabled",
-                    {
-                        "%SERVICENAME%": servicename,
-                        "%DAEMONNAME%": daemonname
-                    },
-                    regex_replace=[
-                        ("\n\s*<criteria.*>\n\s*<extend_definition.*/>", ""),
-                        ("\s*</criteria>\n\s*</criteria>", "\n    </criteria>")
-                    ],
-                    filename_format="./oval/service_{0}_enabled.xml",
-                    filename_value=servicename
-                )
-
+            self.file_from_template(
+                "./template_OVAL_service_enabled",
+                {
+                    "%SERVICENAME%": servicename,
+                    "%PACKAGENAME%": packagename,
+                    "%DAEMONNAME%": daemonname
+                },
+                "./oval/service_{0}_enabled.xml", servicename
+            )
         elif target == "bash":
             self.file_from_template(
                 "./template_BASH_service_enabled",
