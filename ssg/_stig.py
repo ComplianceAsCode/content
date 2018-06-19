@@ -1,11 +1,8 @@
-#!/usr/bin/env python2
-
 import sys
 import csv
 
 from ssg._xml import parse_file as parse_xml_file
-from ssg._constants import XCCDF11_NS as xccdf_ns
-from ssg._constants import disa_cciuri
+from ssg._constants import disa_cciuri, XCCDF11_NS, stig_ns, stig_refs
 
 # This script creates a CSV file from an XCCDF file formatted in the
 # structure of a STIG.  This should enable its ingestion into VMS,
@@ -29,19 +26,19 @@ def main():
 
     xccdffile = sys.argv[1]
     xccdftree = parse_xml_file(xccdffile)
-    rules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
+    rules = xccdftree.findall(".//{%s}Rule" % XCCDF11_NS)
     rulewriter = csv.writer(sys.stdout, quoting=csv.QUOTE_ALL)
 
     for rule in rules:
-        args = (xccdf_ns, disa_cciuri)
+        args = (XCCDF11_NS, disa_cciuri)
         cci_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
                                                      % args)]
         srg_refs = [ref.text for ref in rule.findall("{%s}ident[@system='%s']"
                                                      % args)]
-        title = rule.find("{%s}title" % xccdf_ns).text
-        description = _node_to_text(rule.find("{%s}description" % xccdf_ns))
-        fixtext = _node_to_text(rule.find("{%s}fixtext" % xccdf_ns))
-        checktext = _node_to_text(rule.find(".//{%s}check-content" % xccdf_ns))
+        title = rule.find("{%s}title" % XCCDF11_NS).text
+        description = _node_to_text(rule.find("{%s}description" % XCCDF11_NS))
+        fixtext = _node_to_text(rule.find("{%s}fixtext" % XCCDF11_NS))
+        checktext = _node_to_text(rule.find(".//{%s}check-content" % XCCDF11_NS))
         row = [_reflist(cci_refs), _reflist(srg_refs), title,
                description, fixtext, checktext]
         rulewriter.writerow(row)
