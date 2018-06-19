@@ -198,7 +198,7 @@
 
   {{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
 
-  <definition class="compliance" id="service_sshd_disabled" version="2">
+  <definition class="compliance" id="service_%SERVICENAME%_disabled" version="2">
     <metadata>
       <title>Service %SERVICENAME% Disabled</title>
       <affected family="unix">
