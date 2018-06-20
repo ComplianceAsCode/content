@@ -8,6 +8,7 @@ Shows OVAL objects used by XCCDF rules.
 Author: Jan Cerny <jcerny@redhat.com>
 '''
 
+import argparse
 import xml.etree.ElementTree as ET
 import sys
 import os.path
@@ -15,20 +16,11 @@ import os.path
 oval_files = dict()
 xccdf_dir = None
 
-help_text = '''Shows OVAL objects used by XCCDF rules.
-Usage: ./count_oval_objects.py xccdf_file.xml'''
 
-def get_args():
-    ''' Parses program arguments. '''
-    if len(sys.argv) == 2:
-        if sys.argv[1] == "--help" or sys.argv[1] == "-h":
-            print(help_text)
-            exit(0)
-        else:
-            return sys.argv[1]
-    else:
-        sys.stderr.write("Bad argument. For more information, try --help.\n")
-        exit(-1)
+def parse_args():
+    parser = argparse.ArgumentParser(description="Show OVAL objects used by XCCDF rules.")
+    parser.add_argument("xccdf_file", help="Path to the XCCDF file to parse")
+    return parser.parse_args()
 
 
 def load_xml(file_name):
@@ -103,7 +95,8 @@ def main():
     stats = {}
     global xccdf_dir
 
-    xccdf_file_name = get_args()
+    args = parse_args()
+    xccdf_file_name = args.xccdf_file
     xccdf_root = load_xml(xccdf_file_name)
     xccdf_dir = os.path.dirname(xccdf_file_name)
 

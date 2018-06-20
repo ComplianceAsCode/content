@@ -62,7 +62,7 @@ def print_shadows(resource, language, product):
             print(msg)
 
 
-def main():
+def parse_args():
     p = argparse.ArgumentParser(
         description="Looks through both source files and built files of the "
         "product and finds shadowed files. Outputs them in the format of "
@@ -73,12 +73,11 @@ def main():
                    help="Which product we should examine for shadowed checks "
                    "and fixes.")
 
-    args, unknown = p.parse_known_args()
-    if unknown:
-        sys.stderr.write(
-            "Unknown positional arguments " + ",".join(unknown) + ".\n"
-        )
-        sys.exit(1)
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
 
     check_languages = ["oval"]
     fix_languages = ["bash", "ansible", "anaconda", "puppet"]

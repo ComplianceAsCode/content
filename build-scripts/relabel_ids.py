@@ -25,16 +25,13 @@ def parse_args():
     parser.add_argument("xccdf_file")
     parser.add_argument("id_name", help="ID naming scheme")
 
-    args = parser.parse_args()
-
-    xccdf_file = args.xccdf_file
-    id_name = args.id_name
-
-    return xccdf_file, id_name
+    return parser.parse_args()
 
 
 def main():
-    xccdffile, idname = parse_args()
+    args = parse_args()
+    xccdffile = args.xccdf_file
+    idname = args.id_name
 
     # Step over xccdf file, and find referenced check files
     xccdftree = ssg.xml.parse_file(xccdffile)

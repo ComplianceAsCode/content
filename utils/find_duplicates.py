@@ -6,8 +6,7 @@ import sys
 import os
 import re
 import glob
-
-
+import argparse
 
 
 def recursive_globi(mask):
@@ -35,10 +34,7 @@ def recursive_globi(mask):
                 yield full_path
 
 
-
-
 class DuplicatesFinder(object):
-
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask):
         self._root_dir = root_dir
         self._specific_dirs_mask = os.path.join(root_dir, specific_dirs_mask)
@@ -46,10 +42,8 @@ class DuplicatesFinder(object):
         self._clear_normalized()
         self._shared_files_mask = shared_files_mask
 
-
     def _clear_normalized(self):
         self._normalized = {}
-
 
     def _get_normalized(self, file_path):
         """
@@ -66,7 +60,6 @@ class DuplicatesFinder(object):
             self._normalized[file_path] = normalized
             return normalized
 
-
     def _compare_files(self, shared_filename, specific_filename):
         if not os.path.isfile(specific_filename):
             return False
@@ -76,10 +69,8 @@ class DuplicatesFinder(object):
 
         return shared_normalized == specific_normalized
 
-
     def _print_match(self, first_filename, second_filename):
         print("Duplicate found! {}\t=>\t{}".format(first_filename, second_filename))
-
 
     def search(self):
         """
@@ -109,24 +100,18 @@ class DuplicatesFinder(object):
 
         return found
 
-
     def _specific_dirs(self):
         for static_path in recursive_globi(self._specific_dirs_mask):
             if not static_path.startswith(self._shared_dir):
                 yield static_path
 
-
     def _normalize_content(self, content):
         return content
 
 
-
-
 class BashDuplicatesFinder(DuplicatesFinder):
-
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.sh"):
         DuplicatesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
-
 
     def _normalize_content(self, content):
         # remove comments
@@ -139,18 +124,15 @@ class BashDuplicatesFinder(DuplicatesFinder):
         return content
 
 
-
 class OvalDuplicatesFinder(DuplicatesFinder):
-
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.xml"):
         DuplicatesFinder.__init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask)
-
 
     def _normalize_content(self, content):
         # remove comments
         # naive implementation (todo)
-        content = re.sub(r"^\s*#.*", "", content) # bash style comments - due to #platform
-        content = re.sub('<!--.*?-->', "", content, flags=re.DOTALL) # xml comments
+        content = re.sub(r"^\s*#.*", "", content)  # bash style comments - due to #platform
+        content = re.sub('<!--.*?-->', "", content, flags=re.DOTALL)  # xml comments
 
         # remove empty lines
         content = "\n".join([s for s in content.split("\n") if s])
@@ -158,15 +140,18 @@ class OvalDuplicatesFinder(DuplicatesFinder):
         return content
 
 
-def main():
-    '''
-    main function
-    '''
-    if len(sys.argv) < 2:
-        print("Usage : ./find_duplicates root_ssg_directory")
-        sys.exit(1)
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("root_ssg_directory", help="Path to root of ssg git repository")
+    return parser.parse_args()
 
-    root_dir = sys.argv[1]
+
+def main():
+    """
+    main function
+    """
+    args = parse_args()
+    root_dir = args.root_ssg_directory
     without_duplicates = True
 
     # Static bash scripts

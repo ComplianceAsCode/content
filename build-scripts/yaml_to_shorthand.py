@@ -35,18 +35,16 @@ def parse_args():
     parser.add_argument("action",
                         choices=["build", "list-inputs", "list-outputs"],
                         help="Which action to perform.")
-    args = parser.parse_args()
-
-    # save a whole bunch of time
-    if args.action == "list-outputs":
-        print(args.output)
-        sys.exit(0)
-
-    return args
+    return parser.parse_args()
 
 
 def main():
     args = parse_args()
+
+    if args.action == "list-outputs":
+        print(args.output)
+        sys.exit(0)
+
 
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)

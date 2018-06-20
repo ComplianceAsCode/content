@@ -32,14 +32,7 @@ def parse_args():
     p.add_argument("-s", "--shared", metavar="PATH", required=True,
                    help="Full absolute path to SSG shared directory")
 
-    args, unknown = p.parse_known_args()
-    if unknown:
-        sys.stderr.write(
-            "Unknown positional arguments " + ",".join(unknown) + ".\n"
-        )
-        sys.exit(1)
-
-    return args
+    return p.parse_args()
 
 
 if __name__ == "__main__":
