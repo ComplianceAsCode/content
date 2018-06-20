@@ -65,12 +65,7 @@ def parse_args():
                         choices=["plain", "json", "csv"],
                         help="Which format to use for output.")
 
-    args, unknown = parser.parse_known_args()
-    if unknown:
-        sys.stderr.write(
-            "Unknown positional arguments " + ",".join(unknown) + ".\n"
-        )
-        sys.exit(1)
+    args = parser.parse_args()
 
     if args.all:
         args.implemented = True
