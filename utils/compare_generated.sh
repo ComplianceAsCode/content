@@ -2,7 +2,7 @@
 if [ "$#" -lt 2 ];
 then
 	echo "Usage:"
-	echo -e "\t$0 <original repo> <updated repo> <fixes/oval> [meld]"
+	echo -e "\t$0 <original repo> <updated repo> <fixes/ovals> [meld]"
 	echo ""
 	echo -e "\tBoth repositories have to be already compiled! (make)"
 	echo -e "\tCompare <fix> elements from original DS with fixes in updated DSs"
@@ -16,7 +16,7 @@ target="$3"
 meld="$4"
 
 # Params check
-[ "$target" != "oval" ] && [ "$target" != "remediations" ] && {
+[ "$target" != "ovals" ] && [ "$target" != "fixes" ] && {
 	echo "Unknown target '$target'" >&1
 	exit 1
 }
@@ -31,11 +31,11 @@ meld="$4"
 function extractContent() {
 	local filename="$1"
 
-	if [ "$target" == "oval" ];
+	if [ "$target" == "ovals" ];
 	then
-		xsltproc $(dirname "$0")/../transforms/xccdf-get-only-ovals-sorted.xslt "$filename"
+		xsltproc $(dirname "$0")/../shared/transforms/xccdf-get-only-ovals-sorted.xslt "$filename"
 	else
-		xsltproc $(dirname "$0")/../transforms/xccdf-get-only-remediations-sorted.xslt "$filename"
+		xsltproc $(dirname "$0")/../shared/transforms/xccdf-get-only-remediations-sorted.xslt "$filename"
 	fi | \
 		xmllint --c14n11 /dev/stdin | \
 		xmllint -format /dev/stdin | \
