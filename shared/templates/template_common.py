@@ -72,10 +72,9 @@ class FilesGenerator(object):
 
         raise TemplateNotFoundError(filename, paths)
 
-    def load_modified(self, filename, constants_dict, regex_replace=[]):
+    def load_modified(self, filename, constants_dict):
         """
-        Load file and replace constants according to constants_dict and
-        regex_replace
+        Load file and replace constants according to constants_dict
 
         constants_dict: dict of constants - replace ( key -> value)
         regex_dict: dict of regex substitutions - sub ( key -> value)
@@ -116,9 +115,6 @@ class FilesGenerator(object):
                     "with the trimmed key highlighted:\n%s"
                     % (trimmed_key, self.__class__, highlighted_filestring))
 
-        for pattern, replacement in regex_replace:
-            filestring = re.sub(pattern, replacement, filestring)
-
         return filestring
 
     def save_modified(self, filename_format, filename_value, string):
@@ -141,15 +137,14 @@ class FilesGenerator(object):
             f.write(string)
 
     def file_from_template(self, template_filename, constants,
-                           filename_format, filename_value, regex_replace=[]):
+                           filename_format, filename_value):
         """
         Load template, fill constant and create new file
-        @param regex_replace: array of tuples (pattern, replacement)
         """
 
         try:
             filled_template = \
-                self.load_modified(template_filename, constants, regex_replace)
+                self.load_modified(template_filename, constants)
 
             self.save_modified(filename_format, filename_value, filled_template)
 
