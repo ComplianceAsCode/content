@@ -16,13 +16,12 @@ import os.path
 oval_files = dict()
 xccdf_dir = None
 
-help_text = '''Shows OVAL objects used by XCCDF rules.
-Usage: ./count_oval_objects.py xccdf_file.xml'''
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Show OVAL objects used by XCCDF rules.")
     parser.add_argument("xccdf_file", help="Path to the XCCDF file to parse")
     return parser.parse_args()
+
 
 def load_xml(file_name):
     ''' Loads XML files to memory and parses it into element tree '''
