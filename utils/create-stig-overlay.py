@@ -4,9 +4,11 @@ from __future__ import print_function
 
 import re
 import sys
-import optparse
+import argparse
 import os
-import lxml.etree as ET
+import ssg
+
+ET = ssg.xml.ElementTree
 
 
 owner = "disastig"
@@ -123,37 +125,29 @@ def new_stig_overlay(xccdftree, ssgtree, outfile,
     print("\nGenerated the new STIG overlay file: %s" % outfile)
 
 
-def parse_options():
-    usage = "usage: %prog [options]"
-    parser = optparse.OptionParser(usage=usage, version="%prog ")
-    # only some options are on by default
-    parser.add_option("--ssg-xccdf", default=False,
-                      action="store", dest="ssg_xccdf_filename",
-                      help="A SSG generated XCCDF file. \
-                            For example: ssg-rhel6-xccdf.xml")
-    parser.add_option("--disa-xccdf", default=False,
-                      action="store", dest="disa_xccdf_filename",
-                      help="A DISA generated XCCDF Manual checks file. \
-                            For example: disa-stig-rhel6-v1r12-xccdf-manual.xml")
-    parser.add_option("-o", "--output", default=outfile,
-                      action="store", dest="output_file",
-                      help="STIG overlay XML content file \
-                           [default: %default]")
-    (options, args) = parser.parse_args()
-
-    if not options.disa_xccdf_filename:
-        parser.print_help()
-        sys.exit(1)
-
-    return (options, args)
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--disa-xccdf", default=False, required=True,
+                        action="store", dest="disa_xccdf_filename",
+                        help="A DISA generated XCCDF Manual checks file. \
+                              For example: disa-stig-rhel6-v1r12-xccdf-manual.xml")
+    parser.add_argument("--ssg-xccdf", default=None,
+                        action="store", dest="ssg_xccdf_filename",
+                        help="A SSG generated XCCDF file. \
+                              For example: ssg-rhel6-xccdf.xml")
+    parser.add_argument("-o", "--output", default=outfile,
+                        action="store", dest="output_file",
+                        help="STIG overlay XML content file \
+                             [default: %default]")
+    return parser.parse_args()
 
 
 def main():
-    (options, args) = parse_options()
+    args = parse_args()
 
-    disa_xccdftree = ET.parse(options.disa_xccdf_filename)
+    disa_xccdftree = ET.parse(args.disa_xccdf_filename)
 
-    if not options.ssg_xccdf_filename:
+    if not args.ssg_xccdf_filename:
         print("WARNING: You are generating a STIG overlay XML file without mapping it "
               "to existing SSG content.")
         prompt = yes_no_prompt()
@@ -161,7 +155,7 @@ def main():
             sys.exit(0)
         ssg_xccdftree = False
     else:
-        ssg_xccdftree = ET.parse(options.ssg_xccdf_filename)
+        ssg_xccdftree = ET.parse(args.ssg_xccdf_filename)
         ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
         if ssg != "SCAP Security Guide Project":
             sys.exit("%s is not a valid SSG generated XCCDF file." % ssg_xccdf_filename)
@@ -170,7 +164,7 @@ def main():
     if disa != "STIG.DOD.MIL":
         sys.exit("%s is not a valid DISA generated manual XCCDF file." % disa_xccdf_filename)
 
-    new_stig_overlay(disa_xccdftree, ssg_xccdftree, options.output_file)
+    new_stig_overlay(disa_xccdftree, ssg_xccdftree, args.output_file)
 
 
 if __name__ == "__main__":
