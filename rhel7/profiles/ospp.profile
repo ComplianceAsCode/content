@@ -365,7 +365,6 @@ selections:
     - var_accounts_tmout=10_min
     - var_password_pam_difok=8
     - var_password_pam_maxclassrepeat=4
-    - var_password_pam_maxrepeat=2
     - var_password_pam_minclass=4
     - var_password_pam_unix_remember=5
     - account_disable_post_pw_expiration
@@ -374,7 +373,6 @@ selections:
     - accounts_minimum_age_login_defs
     - accounts_password_pam_difok
     - accounts_password_pam_maxclassrepeat
-    - accounts_password_pam_maxrepeat
     - accounts_password_pam_minclass
     - accounts_password_pam_unix_remember
     - accounts_password_warn_age_login_defs
