@@ -6,7 +6,6 @@ description: 'This is a *draft* profile for STIG. This profile is being develope
     a STIG in coordination with DISA FSO.'
 
 selections:
-    - var_jboss_profile=default
     - jboss_eap_configure_secure_management_access
     - jboss_eap_configure_https
     - jboss_eap_configure_host_access_restrictions
