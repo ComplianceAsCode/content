@@ -33,9 +33,9 @@ function extractContent() {
 
 	if [ "$target" == "oval" ];
 	then
-		xsltproc $(dirname "$0")/../transforms/xccdf-get-only-ovals-sorted.xslt "$filename"
+		xsltproc $(dirname "$0")/../shared/transforms/xccdf-get-only-ovals-sorted.xslt "$filename"
 	else
-		xsltproc $(dirname "$0")/../transforms/xccdf-get-only-remediations-sorted.xslt "$filename"
+		xsltproc $(dirname "$0")/../shared/transforms/xccdf-get-only-remediations-sorted.xslt "$filename"
 	fi | \
 		xmllint --c14n11 /dev/stdin | \
 		xmllint -format /dev/stdin | \
