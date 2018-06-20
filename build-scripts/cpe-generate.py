@@ -20,46 +20,6 @@ xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 cpe_ns = "http://cpe.mitre.org/dictionary/2.0"
 
 
-def extract_subelement(objects, sub_elem_type):
-    for obj in objects:
-        for subelement in obj.getiterator():
-            if subelement.get(sub_elem_type):
-                sub_element = subelement.get(sub_elem_type)
-                return sub_element
-
-
-def extract_env_obj(objects, local_var):
-    for obj in objects:
-        env_id = extract_subelement(local_var, 'object_ref')
-        if env_id == obj.get('id'):
-            return obj
-
-
-def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
-    reflist = []
-    elementlist = []
-    iter = tree_with_refs.getiterator()
-    for element in iter:
-        value = element.get(attrname)
-        if value is not None:
-            reflist.append(value)
-
-    iter = tree_with_ids.getiterator()
-    for element in iter:
-        if element.get("id") in reflist:
-            elementlist.append(element)
-    return elementlist
-
-
-def collect_nodes(tree, reflist):
-    elementlist = []
-    iter = tree.getiterator()
-    for element in iter:
-        if element.get("id") in reflist:
-            elementlist.append(element)
-    return elementlist
-
-
 def parse_args():
     p = argparse.ArgumentParser(description="This script takes as input an "
         "OVAL file and a CPE dictionary file and extracts any inventory "
@@ -100,28 +60,28 @@ def main():
         [inventory_def.get("id") for inventory_def in inventory_defs]
 
     tests = ovaltree.find("./{%s}tests" % oval_ns)
-    cpe_tests = extract_referred_nodes(defs, tests, "test_ref")
+    cpe_tests = ssg.build_cpe.extract_referred_nodes(defs, tests, "test_ref")
     tests.clear()
     [tests.append(cpe_test) for cpe_test in cpe_tests]
 
     states = ovaltree.find("./{%s}states" % oval_ns)
-    cpe_states = extract_referred_nodes(tests, states, "state_ref")
+    cpe_states = ssg.build_cpe.extract_referred_nodes(tests, states, "state_ref")
     states.clear()
     [states.append(cpe_state) for cpe_state in cpe_states]
 
     objects = ovaltree.find("./{%s}objects" % oval_ns)
-    cpe_objects = extract_referred_nodes(tests, objects, "object_ref")
-    env_objects = extract_referred_nodes(objects, objects, "id")
+    cpe_objects = ssg.build_cpe.extract_referred_nodes(tests, objects, "object_ref")
+    env_objects = ssg.build_cpe.extract_referred_nodes(objects, objects, "id")
     objects.clear()
     [objects.append(cpe_object) for cpe_object in cpe_objects]
 
     # if any subelements in an object contain var_ref, return it here
-    local_var_ref = extract_subelement(objects, 'var_ref')
+    local_var_ref = ssg.build_cpe.extract_subelement(objects, 'var_ref')
 
     variables = ovaltree.find("./{%s}variables" % oval_ns)
     if variables is not None:
-        cpe_variables = extract_referred_nodes(tests, variables, "var_ref")
-        local_variables = extract_referred_nodes(variables, variables, "id")
+        cpe_variables = ssg.build_cpe.extract_referred_nodes(tests, variables, "var_ref")
+        local_variables = ssg.build_cpe.extract_referred_nodes(variables, variables, "id")
         if cpe_variables:
             variables.clear()
             [variables.append(cpe_variable) for cpe_variable in cpe_variables]
@@ -130,7 +90,7 @@ def main():
                 if local_var.get('id') == local_var_ref:
                     variables.clear()
                     variables.append(local_var)
-                    env_obj = extract_env_obj(env_objects, local_var)
+                    env_obj = ssg.build_cpe.extract_env_obj(env_objects, local_var)
                     objects.append(env_obj)
         else:
             ovaltree.remove(variables)
