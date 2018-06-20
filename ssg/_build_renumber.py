@@ -146,14 +146,12 @@ class OVALFileLinker(FileLinker):
             assert ovalid is not None, \
                 "An OVAL rule doesn't have an ID"
 
+            if ovalid not in idmappingdict:
+                continue
+
             ovaldesc = rule.find(".//{%s}description" % self.CHECK_NAMESPACE)
             assert ovaldesc is not None, \
                 "OVAL rule '{0}' doesn't have a description, which is mandatory".format(ovalid)
-
-            if ovalid not in idmappingdict:
-                print("OVAL ID '{0}' has not XCCDF rule ID <ident> CCE set".format(ovalid),
-                      file=sys.stderr)
-                continue
 
             xccdfcceid = idmappingdict[ovalid]
             if is_cce_valid(xccdfcceid):
