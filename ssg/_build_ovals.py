@@ -245,7 +245,7 @@ def _check_oval_version_from_oval(xml_content, oval_version):
     try:
         argument = oval_header + xml_content + oval_footer
         oval_file_tree = ElementTree.fromstring(argument)
-    except ElementTree.ParseError, p:
+    except ElementTree.ParseError as p:
         line, column = p.position
         lines = argument.splitlines()
         before = '\n'.join(lines[:line])
