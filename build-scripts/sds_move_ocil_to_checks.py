@@ -34,7 +34,7 @@
 # This is a temporary workaround for bug [1], fixing the issues [3] and [4].
 #
 # Example run:
-#   $ ./sds-move-ocil-to-checks.py ssg-rhel6-ds.xml new-ds.xml
+#   $ ./sds_move_ocil_to_checks.py ssg-rhel6-ds.xml new-ds.xml
 
 from __future__ import print_function
 
