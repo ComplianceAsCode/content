@@ -45,6 +45,15 @@
 					<xsl:with-param name="type">ANSIBLE</xsl:with-param>
 				</xsl:call-template>
 			</xsl:for-each>
+
+			<xsl:for-each select="//xccdf:fix[@system='urn:redhat:anaconda:pre']">
+				<xsl:sort select="../@id" data-type="text" order="ascending" />
+				<xsl:call-template name="fix-template">
+					<xsl:with-param name="fix"><xsl:value-of select="." /></xsl:with-param>
+					<xsl:with-param name="id"><xsl:value-of select="../@id" /></xsl:with-param>
+					<xsl:with-param name="type">ANACONDA</xsl:with-param>
+				</xsl:call-template>
+			</xsl:for-each>
 		</benchmark>
 	</xsl:template>
 
