@@ -186,7 +186,7 @@ def update_repository(repository, local_file_path):
         )
 
 
-def main():
+def parse_args():
     parser = argparse.ArgumentParser(
         description='Updates SSG Galaxy Ansible Roles')
     parser.add_argument(
@@ -194,7 +194,11 @@ def main():
         help="Path to directory containing the ssg generated roles. Most "
         "likely this is going to be scap-security-guide/build/roles",
         dest="build_roles_dir")
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
 
     role_whitelist = set([
         "rhel7-role-C2S",
