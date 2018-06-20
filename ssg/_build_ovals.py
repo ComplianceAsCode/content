@@ -14,7 +14,7 @@ except ImportError:
     from ConfigParser import SafeConfigParser
 
 from ssg._constants import oval_namespace as oval_ns
-from ssg._constants import oval_footer as footer
+from ssg._constants import oval_footer
 from ssg._constants import oval_header
 from ssg._products import parse_name, multi_list, map_name
 from ssg._jinja import process_file
@@ -242,7 +242,18 @@ def _check_is_loaded(loaded_dict, filename, version):
 
 
 def _check_oval_version_from_oval(xml_content, oval_version):
-    oval_file_tree = ElementTree.fromstring(oval_header + xml_content + footer)
+    try:
+        argument = oval_header + xml_content + oval_footer
+        oval_file_tree = ElementTree.fromstring(argument)
+    except ElementTree.ParseError, p:
+        line, column = p.position
+        lines = argument.splitlines()
+        before = '\n'.join(lines[:line])
+        column_pointer = ' ' * (column - 1) + '^'
+        sys.stderr.write(
+            "%s\n%s\nError when parsing OVAL file.\n" %
+            (before, column_pointer))
+        sys.exit(1)
     for defgroup in oval_file_tree.findall("./{%s}def-group" % oval_ns):
         file_oval_version = defgroup.get("oval_version")
 
