@@ -62,7 +62,7 @@ def main():
             ssg.utils.required_key(env_yaml, "product")
         )
         header = ssg.xml.oval_generated_header(
-            "combine-ovals.py",
+            "combine_ovals.py",
             ssg.utils.required_key(env_yaml, "target_oval_version_str"),
             ssg.utils.required_key(env_yaml, "ssg_version"))
     else:

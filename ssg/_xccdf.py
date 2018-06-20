@@ -1,6 +1,6 @@
 """
-A couple generic XCCDF utilities used by build-all-guides.py and
-build-all-remediation-roles.py
+A couple generic XCCDF utilities used by build_all_guides.py and
+build_all_remediation_roles.py
 
 Author: Martin Preisler <mpreisle@redhat.com>
 """

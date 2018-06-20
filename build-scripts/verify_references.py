@@ -32,11 +32,11 @@ Usage:
   src/output so if you are currently in the transforms directory:
 
   cd ../output
-  ../transforms/verify-references.py --all-checks ./rhel7-xccdf.xml
+  ../transforms/verify_references.py --all-checks ./rhel7-xccdf.xml
 
   You may find this informative as well:
 
-  ./verify-references.py -h
+  ./verify_references.py -h
 """
 
 import ssg

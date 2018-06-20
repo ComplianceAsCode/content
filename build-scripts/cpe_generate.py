@@ -114,7 +114,7 @@ def main():
             # somewhere in the (sub)directory tree below CWD. In correct
             # scenario is should be located:
             # * either in input/oval/*.xml
-            # * or copied by former run of "combine-ovals.py" script from
+            # * or copied by former run of "combine_ovals.py" script from
             #   shared/ directory into build/ subdirectory
             refovalfilename = check.text
             refovalfilefound = False
