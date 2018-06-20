@@ -44,14 +44,7 @@ def parse_args():
                    help="directory(ies) from which we will collect "
                    "remediations to combine.")
 
-    args, unknown = p.parse_known_args()
-    if unknown:
-        sys.stderr.write(
-            "Unknown positional arguments " + ",".join(unknown) + ".\n"
-        )
-        sys.exit(1)
-
-    return args
+    return p.parse_args()
 
 
 def main():
