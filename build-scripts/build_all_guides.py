@@ -41,14 +41,7 @@ def parse_args():
     p.add_argument("-o", "--output", action="store", required=True,
                    help="output directory")
 
-    args, unknown = p.parse_known_args()
-    if unknown:
-        sys.stderr.write(
-            "Unknown positional arguments " + ",".join(unknown) + ".\n"
-        )
-        sys.exit(1)
-
-    return args
+    return p.parse_args()
 
 
 def main():
