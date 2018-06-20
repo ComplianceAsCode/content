@@ -6,8 +6,7 @@ import sys
 import os
 import re
 import glob
-
-
+import argparse
 
 
 def recursive_globi(mask):
@@ -35,10 +34,7 @@ def recursive_globi(mask):
                 yield full_path
 
 
-
-
 class DuplicatesFinder(object):
-
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask):
         self._root_dir = root_dir
         self._specific_dirs_mask = os.path.join(root_dir, specific_dirs_mask)
@@ -120,8 +116,6 @@ class DuplicatesFinder(object):
         return content
 
 
-
-
 class BashDuplicatesFinder(DuplicatesFinder):
 
     def __init__(self, root_dir, specific_dirs_mask, shared_dir, shared_files_mask="*.sh"):
@@ -137,7 +131,6 @@ class BashDuplicatesFinder(DuplicatesFinder):
         content = "\n".join([s for s in content.split("\n") if s])
 
         return content
-
 
 
 class OvalDuplicatesFinder(DuplicatesFinder):
@@ -158,15 +151,18 @@ class OvalDuplicatesFinder(DuplicatesFinder):
         return content
 
 
-def main():
-    '''
-    main function
-    '''
-    if len(sys.argv) < 2:
-        print("Usage : ./find_duplicates root_ssg_directory")
-        sys.exit(1)
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("root_ssg_directory", help="Path to root of ssg git repository")
+    return parser.parse_args()
 
-    root_dir = sys.argv[1]
+
+def main():
+    """
+    main function
+    """
+    args = parse_args()
+    root_dir = args.root_ssg_directory
     without_duplicates = True
 
     # Static bash scripts
