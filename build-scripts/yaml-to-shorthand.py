@@ -390,7 +390,7 @@ class Group(object):
         if yaml_contents is None:
             return None
 
-        group_id, _ = os.path.splitext(os.path.basename(yaml_file))
+        group_id = os.path.basename(os.path.dirname(yaml_file))
         group = Group(group_id)
         group.prodtype = yaml_contents.pop("prodtype", "all")
         group.title = ssg.utils.required_key(yaml_contents, "title")
@@ -618,11 +618,11 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             name, extension = os.path.splitext(dir_item)
             if extension == '.var':
                 values.append(dir_item_path)
-            elif extension == '.benchmark':
+            elif dir_item == "benchmark.yml":
                 if benchmark_file:
                     raise ValueError("Multiple benchmarks in one directory")
                 benchmark_file = dir_item_path
-            elif extension == '.group':
+            elif dir_item == "group.yml":
                 if group_file:
                     raise ValueError("Multiple groups in one directory")
                 group_file = dir_item_path
