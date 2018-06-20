@@ -4,6 +4,7 @@ import os.path
 import codecs
 import ssg
 
+
 def main():
     contributors_md, contributors_xml = ssg.contributors.generate()
 
