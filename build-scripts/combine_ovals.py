@@ -70,7 +70,7 @@ def main():
     # appropriately
     corrected_tree = ssg.xml.ElementTree.fromstring(
         ("%s%s%s" % (header, body, footer)).encode("utf-8"))
-    tree = ssg.build_ovals.add_platforms(corrected_tree, multi_platform)
+    tree = ssg.build_ovals.remove_affected_platforms(corrected_tree)
     definitions = ssg.xml.ElementTree.Element("{%s}definitions" % oval_ns)
     tests = ssg.xml.ElementTree.Element("{%s}tests" % oval_ns)
     objects = ssg.xml.ElementTree.Element("{%s}objects" % oval_ns)

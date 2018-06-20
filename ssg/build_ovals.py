@@ -77,31 +77,19 @@ def _check_is_applicable_for_product(oval_check_def, product):
     return False
 
 
-def add_platforms(xml_tree, multi_platform):
-    for affected in xml_tree.findall(".//{%s}affected" % oval_ns):
-        if affected.get("family") != "unix":
-            continue
+def remove_affected_platforms(xml_tree):
+    """Depending on your use-case of OVAL you may not need the <affected>
+    element. Such use-cases including using OVAL as a check engine for XCCDF
+    benchmarks. Since the XCCDF Benchmarks use cpe:platform with CPE IDs,
+    the affected element in OVAL definitions is redundant and just bloats the
+    files. This function removes all affected element from given OVAL tree.
+    """
 
-        for plat_elem in affected:
-            try:
-                if plat_elem.text == 'multi_platform_all':
-                    for platforms in multi_platform[plat_elem.text]:
-                        for plat in multi_platform[platforms]:
-                            platform = ElementTree.Element(
-                                "{%s}platform" % oval_ns)
-                            platform.text = map_name(platforms) + ' ' + plat
-                            affected.insert(1, platform)
-                else:
-                    for platforms in multi_platform[plat_elem.text]:
-                        platform = ElementTree.Element("{%s}platform" % oval_ns)
-                        platform.text = map_name(plat_elem.text) + ' ' + platforms
-                        affected.insert(0, platform)
-            except KeyError:
-                pass
-
-            # Remove multi_platform element
-            if re.findall('multi_platform', plat_elem.text):
-                affected.remove(plat_elem)
+    definitions = xml_tree.findall(".//{%s}definition" % (oval_ns))
+    for definition in definitions:
+        for metadata in definition.findall("./{%s}metadata" % (oval_ns)):
+            for affected in metadata.findall("./{%s}affected" % (oval_ns)):
+                metadata.remove(affected)
 
     return xml_tree
 
