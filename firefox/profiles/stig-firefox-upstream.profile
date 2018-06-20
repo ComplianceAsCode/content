@@ -18,7 +18,6 @@ description: |-
 
 selections:
     - var_default_home_page=about_blank
-    - var_required_file_types=default
     - firefox_preferences-dod_root_certificate_installed
     - firefox_preferences-enable_ca_trust
     - firefox_preferences-addons_plugin_updates

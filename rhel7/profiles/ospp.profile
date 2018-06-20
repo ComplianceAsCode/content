@@ -72,7 +72,6 @@ selections:
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_interval
     - accounts_passwords_pam_faillock_unlock_time
-    - sshd_listening_port=default
     - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
     - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
