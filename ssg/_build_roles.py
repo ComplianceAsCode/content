@@ -117,4 +117,6 @@ def builder(queue):
                 "Error details:\n%s\n\n" % (role_path, e)
             )
             queue.task_done()
-            sys.exit(1)
+            with queue.mutex:
+                queue.queue.clear()
+            raise e

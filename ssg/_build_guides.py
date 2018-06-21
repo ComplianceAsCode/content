@@ -71,6 +71,9 @@ def builder(queue):
                 "Error details:\n%s\n\n" % (guide_path, e)
             )
             queue.task_done()
+            with queue.mutex:
+                queue.queue.clear()
+            raise e
 
 
 def _benchmark_profile_pair_sort_key(benchmark_id, profile_id, profile_title):

@@ -90,7 +90,8 @@ def main():
         worker.daemon = True
         worker.start()
 
-    queue.join()
+    for worker in workers:
+        worker.join()
 
     index_source = ssg.build_guides.build_index(benchmarks, input_basename,
                                                 index_links, index_options,

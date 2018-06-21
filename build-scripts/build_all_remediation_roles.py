@@ -94,7 +94,8 @@ def main():
         worker.daemon = True
         worker.start()
 
-    queue.join()
+    for worker in workers:
+        worker.join()
 
 
 if __name__ == "__main__":
