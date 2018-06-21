@@ -42,7 +42,10 @@ do
 	then
 		continue
 	fi
+
+	{{% if product == "rhel6" %}}
 	# Per https://access.redhat.com/solutions/66805 '/var/log/boot.log' log file needs special care => perform it
+	# This has been fixed in RHEL7, the workaround is only necessary for RHEL6
 	if [ "$PATH" == "/var/log/boot.log" ]
 	then
 		# Ensure permissions of /var/log/boot.log are configured to be updated in /etc/rc.local
@@ -57,6 +60,8 @@ do
 			/bin/chmod u+x /etc/rc.d/rc.local
 		fi
 	fi
+	{{% endif %}}
+
 	# Also for each log file check if its permissions differ from 600. If so, correct them
 	if [ "$(/usr/bin/stat -c %a "$PATH")" -ne 600 ]
 	then
