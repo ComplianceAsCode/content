@@ -1,3 +1,5 @@
+import os
+import re
 import multiprocessing
 
 
@@ -40,3 +42,28 @@ def yes_no_prompt():
             return True
         elif data in ("n", "no"):
             return False
+
+
+def recursive_globi(mask):
+    """
+    Simple replacement of glob.globi(mask, recursive=true)
+    Reason: Older Python versions support
+    """
+
+    parts = mask.split("**/")
+
+    if not len(parts) == 2:
+        raise NotImplementedError
+
+    search_root = parts[0]
+
+    # instead of '*' use regex '.*'
+    path_mask = parts[1].replace("*", ".*")
+    re_path_mask = re.compile(path_mask + "$")
+
+    for root, dirnames, filenames in os.walk(search_root):
+        paths = filenames + dirnames
+        for path in paths:
+            full_path = os.path.join(root, path)
+            if re_path_mask.search(full_path):
+                yield full_path
