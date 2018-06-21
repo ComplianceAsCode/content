@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = multi_platform_rhel, multi_platform_fedora
 
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
@@ -11,8 +11,15 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
 	PATTERN="-a always,exit -F arch=$ARCH -S %ATTR%.*"
 	GROUP="perm_mod"
+{{% if product != "rhel6" %}}
 	FULL_RULE="-a always,exit -F arch=$ARCH -S %ATTR% -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
+{{% else %}}
+	FULL_RULE="-a always,exit -F arch=$ARCH -S %ATTR% -F auid>=500 -F auid!=4294967295 -k perm_mod"
+{{% endif %}}
+
+{{% if product != "rhel6" %}}
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
-	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+{{% endif %}}
+	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 done
