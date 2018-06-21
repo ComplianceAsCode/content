@@ -18,6 +18,7 @@ import sys
 import ssg
 ElementTree = ssg.xml.ElementTree
 
+
 def parse_args():
     p = argparse.ArgumentParser()
 
@@ -94,7 +95,8 @@ def main():
         worker.daemon = True
         worker.start()
 
-    queue.join()
+    for worker in workers:
+        worker.join()
 
 
 if __name__ == "__main__":

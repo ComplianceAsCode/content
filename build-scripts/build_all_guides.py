@@ -69,7 +69,8 @@ def main():
 
     if args.cmd == "list_outputs":
         guide_paths = ssg.build_guides.get_output_guide_paths(benchmarks,
-            benchmark_profile_pairs, path_base, output_dir)
+                                                              benchmark_profile_pairs,
+                                                              path_base, output_dir)
 
         for guide_path in guide_paths:
             print(guide_path)
@@ -90,7 +91,8 @@ def main():
         worker.daemon = True
         worker.start()
 
-    queue.join()
+    for worker in workers:
+        worker.join()
 
     index_source = ssg.build_guides.build_index(benchmarks, input_basename,
                                                 index_links, index_options,

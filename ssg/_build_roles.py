@@ -102,19 +102,14 @@ def builder(queue):
                 f.write(role_src.encode("utf-8"))
 
             queue.task_done()
-
-            print(
-                "Generated '%s' for profile ID '%s' in benchmark '%s', template=%s." %
-                (role_path, profile_id, benchmark_id, template)
-            )
-
         except Queue.Empty:
             break
-
         except Exception as e:
             sys.stderr.write(
                 "Fatal error encountered when generating role '%s'. "
                 "Error details:\n%s\n\n" % (role_path, e)
             )
             queue.task_done()
-            sys.exit(1)
+            with queue.mutex:
+                queue.queue.clear()
+            raise e
