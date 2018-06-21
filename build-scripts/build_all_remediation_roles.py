@@ -18,6 +18,7 @@ import sys
 import ssg
 ElementTree = ssg.xml.ElementTree
 
+
 def parse_args():
     p = argparse.ArgumentParser()
 

@@ -69,7 +69,8 @@ def main():
 
     if args.cmd == "list_outputs":
         guide_paths = ssg.build_guides.get_output_guide_paths(benchmarks,
-            benchmark_profile_pairs, path_base, output_dir)
+                                                              benchmark_profile_pairs,
+                                                              path_base, output_dir)
 
         for guide_path in guide_paths:
             print(guide_path)
