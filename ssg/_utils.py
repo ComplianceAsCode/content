@@ -20,3 +20,23 @@ def get_cpu_count():
     except NotImplementedError:
         # 2 CPUs is the most probable
         return 2
+
+
+def yes_no_prompt():
+    prompt = "Would you like to proceed? (Y/N): "
+
+    input_func = input
+    try:
+        if raw_input:
+            input_func = raw_input
+    except NameError:
+        # Known exception on Python 3
+        pass
+
+    while True:
+        data = input_func(prompt).lower()
+
+        if data in ("yes", "y"):
+            return True
+        elif data in ("n", "no"):
+            return False

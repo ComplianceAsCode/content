@@ -20,6 +20,9 @@ puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
 stig_ns = "http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx"
+all_stig_ns = ["http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx",
+               "http://iase.disa.mil/stigs/os/general/Pages/index.aspx",
+               "http://iase.disa.mil/stigs/app-security/app-servers/Pages/index.aspx"]
 stig_refs = 'http://iase.disa.mil/stigs/'
 disa_cciuri = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"
 disa_srguri = "http://iase.disa.mil/stigs/srgs/Pages/index.aspx"
@@ -37,6 +40,8 @@ XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 min_ansible_version = "2.3"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
+dc_ns = "http://purl.org/dc/elements/1.1/"
+stig_owner = "disastig"
 
 oval_header = (
     """
