@@ -226,7 +226,9 @@ macro(ssg_build_remediations PRODUCT)
     _ssg_build_remediations_for_language(${PRODUCT} "puppet")
     _ssg_build_remediations_for_language(${PRODUCT} "anaconda")
 
-    if (ANSIBLE_PLAYBOOK_EXECUTABLE)
+    # only enable the ansible syntax checks if we are using openscap 1.2.17 or higher
+    # older openscap causes syntax errors, see https://github.com/OpenSCAP/openscap/pull/977
+    if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
         add_test(
             NAME "ansible-role-syntax-check-${PRODUCT}"
             COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_syntax_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles" "${PRODUCT}"
