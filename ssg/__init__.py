@@ -23,6 +23,7 @@ import ssg._utils as utils
 import ssg._utils_count as utils_count
 import ssg._utils_duplicates as utils_duplicates
 import ssg._utils_overlay as utils_overlay
+import ssg._utils_shadowed as utils_shadowed
 import ssg._xccdf as xccdf
 import ssg._xml as xml
 import ssg._yaml as yaml
