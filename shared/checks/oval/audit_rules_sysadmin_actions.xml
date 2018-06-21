@@ -3,11 +3,20 @@
     <metadata>
       <title>Audit System Administrator Actions</title>
       <affected family="unix">
+{{% if product == "rhel6" %}}
+        <platform>Red Hat Enterprise Linux 6</platform>
+{{% else %}}
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>multi_platform_fedora</platform>
+{{% endif %}}
       </affected>
       <description>Audit actions taken by system administrators on the system.</description>
     </metadata>
+{{% if product == "rhel6" %}}
+    <criteria>
+      <criterion comment="audit sudoers" test_ref="test_audit_rules_sysadmin_actions_sudoers_auditctl" />
+    </criteria>
+{{% else %}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
@@ -18,8 +27,10 @@
         <criterion comment="audit auditctl sudoers" test_ref="test_audit_rules_sysadmin_actions_sudoers_auditctl" />
       </criteria>
     </criteria>
+{{% endif %}}
   </definition>
 
+{{% if product != "rhel6" %}}
   <ind:textfilecontent54_test check="all" comment="audit augenrules sudoers" id="test_audit_rules_sysadmin_actions_sudoers_augenrules" version="1">
     <ind:object object_ref="object_audit_rules_sysadmin_actions_sudoers_augenrules" />
   </ind:textfilecontent54_test>
@@ -28,6 +39,7 @@
     <ind:pattern operation="pattern match">^\-w[\s]+/etc/sudoers[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+{{% endif %}}
 
   <ind:textfilecontent54_test check="all" comment="audit auditctl sudoers" id="test_audit_rules_sysadmin_actions_sudoers_auditctl" version="1">
     <ind:object object_ref="object_audit_rules_sysadmin_actions_sudoers_auditctl" />
