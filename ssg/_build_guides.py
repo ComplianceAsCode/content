@@ -56,15 +56,8 @@ def builder(queue):
                 f.write(guide_html.encode("utf-8"))
 
             queue.task_done()
-
-            print(
-                "Generated '%s' for profile ID '%s' in benchmark '%s'." %
-                (guide_path, profile_id, benchmark_id)
-            )
-
         except Queue.Empty:
             break
-
         except Exception as e:
             sys.stderr.write(
                 "Fatal error encountered when generating guide '%s'. "
