@@ -42,7 +42,8 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
 def _get_jinja_environment(substitutions_dict):
     if _get_jinja_environment.env is None:
         bytecode_cache = None
-        if required_key(substitutions_dict, "jinja2_cache_enabled") == "true":
+
+        if "jinja2_cache_enabled" in substitutions_dict and substitutions_dict["jinja2_cache_enabled"] == "true":
             bytecode_cache = jinja2.FileSystemBytecodeCache(
                 required_key(substitutions_dict, "jinja2_cache_dir")
             )
