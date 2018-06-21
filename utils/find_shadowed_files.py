@@ -2,10 +2,11 @@
 
 import os
 import argparse
-import sys
+
+import pathlib
 
 
-SSG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SSG_DIR = pathlib.PurePath(__file__).parents[1]
 
 
 def safe_listdir(path):
@@ -18,17 +19,17 @@ def safe_listdir(path):
 def print_shadows(resource, language, product):
     source_paths = [
         # shared templated checks
-        os.path.join("build", product, resource, "shared", language),
+        pathlib.Path("build") / product / resource / "shared" / language,
         # shared checks
-        os.path.join("shared", resource, language),
+        pathlib.Path("shared") / resource / language,
         # product templated checks
-        os.path.join("build", product, resource, language),
+        pathlib.Path("build") / product / resource / language,
         # product checks
-        os.path.join(product, resource, language),
+        pathlib.Path(product) / resource / language,
     ]
 
     source_files = [
-        set(safe_listdir(os.path.join(SSG_DIR, path))) for path in source_paths
+        set(safe_listdir(SSG_DIR / path)) for path in source_paths
     ]
 
     all_source_files = set.union(*source_files)
@@ -50,14 +51,10 @@ def print_shadows(resource, language, product):
             j += 1
 
         if shadows:
-            msg = os.path.relpath(
-                os.path.join(source_paths[i], source_file), SSG_DIR
-            )
+            msg = str((source_paths[i] / source_file).relative_to(SSG_DIR))
 
             for shadow in shadows:
-                msg += " <- " + os.path.relpath(
-                    os.path.join(source_paths[shadow], source_file), SSG_DIR
-                )
+                msg += " <- " + str((source_paths[shadow] / source_file).relative_to(SSG_DIR))
 
             print(msg)
 
