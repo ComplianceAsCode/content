@@ -21,7 +21,7 @@ def add_sub_element(parent, tag, data):
     # TODO: Remove this function after we move to Markdown everywhere in SSG
     try:
         ustr = str("<{0}>{1}</{0}>").format(tag, data)
-    except NameError:
+    except UnicodeEncodeError:
         ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
 
     try:
