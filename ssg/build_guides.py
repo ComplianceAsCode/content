@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+
 import sys
 
-from ssg._shims import subprocess_check_output, Queue
-from ssg._xccdf import *
-from ssg._constants import *
+from .shims import subprocess_check_output, Queue
+from .xccdf import *
+from .constants import *
 
 
 def get_path_args(args):

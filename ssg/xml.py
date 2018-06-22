@@ -1,6 +1,8 @@
+from __future__ import absolute_import
+
 import platform
 
-from ssg._constants import xml_version, oval_header, timestamp
+from .constants import xml_version, oval_header, timestamp
 
 
 try:

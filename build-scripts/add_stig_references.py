@@ -3,7 +3,7 @@
 from __future__ import print_function
 
 import argparse
-import ssg
+import ssg.build_stig
 
 
 def parse_args():

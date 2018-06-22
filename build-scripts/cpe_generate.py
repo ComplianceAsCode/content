@@ -8,7 +8,9 @@ import os
 import ssg
 import argparse
 
-ElementTree = ssg.xml.ElementTree
+import ssg.build_cpe
+import ssg.id_translate
+import ssg.xml
 
 # This script requires two arguments: an OVAL file and a CPE dictionary file.
 # It is designed to extract any inventory definitions and the tests, states,
@@ -101,7 +103,7 @@ def main():
 
     newovalfile = args.idname + "-" + args.product + "-" + os.path.basename(args.ovalfile)
     newovalfile = newovalfile.replace("oval-unlinked", "cpe-oval")
-    ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
+    ssg.xml.ElementTree.ElementTree(ovaltree).write(args.cpeoutdir + "/" + newovalfile)
 
     # replace and sync IDs, href filenames in input cpe dictionary file
     cpedicttree = ssg.xml.parse_file(args.cpedictfile)
@@ -168,7 +170,7 @@ def main():
         # Referenced OVAL checks passed both of the above sanity tests
         check.text = translator.generate_id("{" + oval_ns + "}definition", check.text)
 
-    ElementTree.ElementTree(cpedicttree).write(args.cpeoutdir + '/' + newcpedictfile)
+    ssg.xml.ElementTree.ElementTree(cpedicttree).write(args.cpeoutdir + '/' + newcpedictfile)
 
     sys.exit(0)
 

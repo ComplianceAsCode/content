@@ -8,10 +8,12 @@ import errno
 import argparse
 import codecs
 
-import ssg
+import ssg.build_remediations as remediation
+import ssg.jinja
+import ssg.yaml
+import ssg.utils
+import ssg.xml
 
-ElementTree = ssg.xml.ElementTree
-remediation = ssg.build_remediations
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
 
@@ -48,7 +50,7 @@ def main():
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
 
-    fixcontent = ElementTree.Element(
+    fixcontent = ssg.xml.ElementTree.Element(
         "fix-content", system="urn:xccdf:fix:script:sh",
         xmlns="http://checklists.nist.gov/xccdf/1.1")
     fixgroup = remediation.get_fixgroup_for_type(fixcontent,
@@ -120,7 +122,7 @@ def main():
                             for child in list(fix):
                                 fix.remove(child)
                         else:
-                            fix = ElementTree.SubElement(fixgroup, "fix")
+                            fix = ssg.xml.ElementTree.SubElement(fixgroup, "fix")
                             fix.set("rule", fixname)
                             if complexity is not None:
                                 fix.set("complexity", complexity)
@@ -147,7 +149,7 @@ def main():
                                      "script is missing!\n" % (filename))
     sys.stderr.write("Merged %d %s remediations.\n"
                      % (included_fixes_count, args.remediation_type))
-    tree = ElementTree.ElementTree(fixcontent)
+    tree = ssg.xml.ElementTree.ElementTree(fixcontent)
     tree.write(args.output)
 
     sys.exit(0)

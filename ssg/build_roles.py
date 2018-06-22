@@ -1,10 +1,12 @@
+from __future__ import absolute_import
+
 import sys
 
-from ssg._ansible import add_minimum_version
-from ssg._shims import subprocess_check_output, Queue
-from ssg._build_guides import _is_blacklisted_profile
-from ssg._xccdf import *
-from ssg._constants import *
+from .ansible import add_minimum_version
+from .shims import subprocess_check_output, Queue
+from .build_guides import _is_blacklisted_profile
+from .xccdf import *
+from .constants import *
 
 
 def generate_for_input_content(input_content, benchmark_id, profile_id,

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 def extract_subelement(objects, sub_elem_type):
     for obj in objects:
         for subelement in obj.getiterator():

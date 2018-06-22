@@ -1,8 +1,8 @@
 import pytest
 
-from ssg._contributors import _get_contributions_by_canonical_email
-from ssg._contributors import _get_contributor_email_mapping
-from ssg._contributors import _names_sorted_by_last_name
+from ssg.contributors import _get_contributions_by_canonical_email
+from ssg.contributors import _get_contributor_email_mapping
+from ssg.contributors import _names_sorted_by_last_name
 
 
 INPUT = """

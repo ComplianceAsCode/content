@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import sys
 import os
 import os.path
@@ -6,8 +8,8 @@ import errno
 import argparse
 import codecs
 
-from ssg._xml import ElementTree
-from ssg._products import parse_name, multi_list, map_name
+from .xml import ElementTree
+from .products import parse_name, multi_list, map_name
 
 
 def fix_is_applicable_for_product(platform, product):

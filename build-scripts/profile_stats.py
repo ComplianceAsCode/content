@@ -8,8 +8,8 @@ import os
 import os.path
 import sys
 
-import ssg
-ElementTree = ssg.xml.ElementTree
+import ssg.build_profile
+import ssg.xml
 
 
 def parse_args():

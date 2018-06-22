@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from __future__ import print_function
 
 import os
@@ -5,11 +6,11 @@ import os.path
 import datetime
 import sys
 
-from ssg._checks import is_cce_valid
-from ssg._yaml import open_and_expand, open_and_macro_expand
-from ssg._utils import required_key
+from .checks import is_cce_valid
+from .yaml import open_and_expand, open_and_macro_expand
+from .utils import required_key
 
-from ssg._xml import ElementTree as ET
+from .xml import ElementTree as ET
 
 
 def add_sub_element(parent, tag, data):

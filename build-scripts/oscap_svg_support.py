@@ -4,7 +4,7 @@ import tempfile
 import sys
 import os.path
 
-import ssg
+import ssg.shims
 
 
 svg_benchmark = """<?xml version="1.0"?>

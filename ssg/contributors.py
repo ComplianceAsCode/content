@@ -1,9 +1,11 @@
+from __future__ import absolute_import
+
 import collections
 import datetime
 import re
 import os.path
 
-from ssg._shims import subprocess_check_output
+from .shims import subprocess_check_output
 
 
 MANUAL_EDIT_WARNING = """This file is generated using the %s script. DO NOT MANUALLY EDIT!!!!

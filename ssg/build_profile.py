@@ -1,17 +1,18 @@
+from __future__ import absolute_import
 from __future__ import print_function
 
 import sys
 
-from ssg._xml import ElementTree
-from ssg._constants import XCCDF11_NS as xccdf_ns
-from ssg._constants import oval_namespace as oval_ns
-from ssg._constants import bash_system as bash_rem_system
-from ssg._constants import ansible_system as ansible_rem_system
-from ssg._constants import puppet_system as puppet_rem_system
-from ssg._constants import anaconda_system as anaconda_rem_system
-from ssg._constants import cce_uri
-from ssg._constants import ssg_version_uri
-from ssg._constants import stig_ns
+from .xml import ElementTree
+from .constants import XCCDF11_NS as xccdf_ns
+from .constants import oval_namespace as oval_ns
+from .constants import bash_system as bash_rem_system
+from .constants import ansible_system as ansible_rem_system
+from .constants import puppet_system as puppet_rem_system
+from .constants import anaconda_system as anaconda_rem_system
+from .constants import cce_uri
+from .constants import ssg_version_uri
+from .constants import stig_ns
 console_width = 80
 
 

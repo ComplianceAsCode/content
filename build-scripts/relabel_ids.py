@@ -6,9 +6,10 @@ import argparse
 import sys
 import os
 
-import ssg
-
-ET = ssg.xml.ElementTree
+import ssg.build_renumber
+import ssg.constants
+import ssg.id_translate
+import ssg.xml
 
 
 # This script requires two arguments: an "unlinked" XCCDF file and an ID name
@@ -56,7 +57,7 @@ def main():
     ocil_linker.link_xccdf()
 
     newxccdffile = xccdffile.replace("unlinked", "linked")
-    ET.ElementTree(xccdftree).write(newxccdffile)
+    ssg.xml.ElementTree.ElementTree(xccdftree).write(newxccdffile)
     sys.exit(0)
 
 

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import os
 import os.path
 import errno
@@ -13,13 +15,13 @@ except ImportError:
     # for python2
     from ConfigParser import SafeConfigParser
 
-from ssg._constants import oval_namespace as oval_ns
-from ssg._constants import oval_footer
-from ssg._constants import oval_header
-from ssg._products import parse_name, multi_list, map_name
-from ssg._jinja import process_file
-from ssg._utils import required_key
-from ssg._xml import ElementTree
+from .constants import oval_namespace as oval_ns
+from .constants import oval_footer
+from .constants import oval_header
+from .products import parse_name, multi_list, map_name
+from .jinja import process_file
+from .utils import required_key
+from .xml import ElementTree
 
 
 def parse_conf_file(conf_file, product):

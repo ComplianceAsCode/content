@@ -17,14 +17,15 @@ import os
 import sys
 from optparse import OptionParser
 
-import ssg
-ElementTree = ssg.xml.ElementTree
+import ssg.constants
+import ssg.build_derivatives
+import ssg.xml
 
 XCCDF11_NS = ssg.constants.XCCDF11_NS
 XCCDF12_NS = ssg.constants.XCCDF12_NS
 
-CENTOS_NOTICE_ELEMENT = ElementTree.fromstring(ssg.constants.CENTOS_NOTICE)
-SL_NOTICE_ELEMENT = ElementTree.fromstring(ssg.constants.SL_NOTICE)
+CENTOS_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.CENTOS_NOTICE)
+SL_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.SL_NOTICE)
 
 CENTOS_WARNING = 'centos_warning'
 SL_WARNING = 'sl_warning'
@@ -72,7 +73,7 @@ def main():
         notice = SL_NOTICE_ELEMENT
         warning = SL_WARNING
 
-    tree = ElementTree.ElementTree()
+    tree = ssg.xml.ElementTree.ElementTree()
     tree.parse(options.input_content)
 
     root = tree.getroot()

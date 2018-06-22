@@ -21,9 +21,8 @@ import sys
 
 from optparse import OptionParser
 
-import ssg
-
-ElementTree = ssg.xml.ElementTree
+import ssg.constants
+import ssg.xml
 
 OSCAP_PATH = "oscap"
 
@@ -87,7 +86,7 @@ def main():
         parser.print_help()
         raise RuntimeError("Please specify output with --output.")
 
-    input_tree = ElementTree.parse(options.input_content)
+    input_tree = ssg.xml.ElementTree.parse(options.input_content)
     root_element = input_tree.getroot()
     if root_element.tag != "{%s}Benchmark" % (XCCDF11_NS):
         raise RuntimeError(
@@ -127,7 +126,7 @@ def main():
 
                 if new_select is None:
                     new_select = \
-                        ElementTree.Element("{%s}select" % (XCCDF11_NS))
+                        ssg.xml.ElementTree.Element("{%s}select" % (XCCDF11_NS))
                     index = 0
                     if len(existing_selects) > 0:
                         prev_element = existing_selects[-1]

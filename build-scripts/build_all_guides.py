@@ -15,8 +15,10 @@ import argparse
 import threading
 import sys
 
-import ssg
-ElementTree = ssg.xml.ElementTree
+import ssg.build_guides
+import ssg.xccdf
+import ssg.utils
+import ssg.xml
 
 
 def parse_args():
@@ -55,7 +57,7 @@ def main():
         print(input_path)
         sys.exit(0)
 
-    input_tree = ElementTree.parse(input_path)
+    input_tree = ssg.xml.ElementTree.parse(input_path)
     benchmarks = ssg.xccdf.get_benchmark_ids_titles_for_input(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
