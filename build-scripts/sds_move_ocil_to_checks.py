@@ -41,12 +41,8 @@ from __future__ import print_function
 import sys
 import os
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
-import ssg
+import ssg.constants
+import ssg.xml
 
 xlink_ns = "http://www.w3.org/1999/xlink"
 datastream_ns = ssg.constants.datastream_namespace
@@ -119,9 +115,9 @@ def move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree,
         sys.exit(1)
 
     # Decode possible HTML entities present in OCIL component
-    extnohtmlents = ElementTree.tostring(extendedcomp, method='html')
+    extnohtmlents = ssg.xml.ElementTree.tostring(extendedcomp, method='html')
     # Create new element tree from decoded HTML
-    extcomptree = ElementTree.fromstring(extnohtmlents)
+    extcomptree = ssg.xml.ElementTree.fromstring(extnohtmlents)
     # Locate the OCIL subcomponent within that element tree
     ocilcomp = extcomptree.find(".//{%s}ocil" % ocil_ns)
 
@@ -130,7 +126,7 @@ def move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree,
     # * future OCIL <ds:component> timestamp --> timestamp
     # * future OCIL <ds:component> content   --> ocilcomp
     # to be ables to create new <ds:component> for OCIL content
-    ocildscomp = ElementTree.Element('{' + datastream_ns + '}component',
+    ocildscomp = ssg.xml.ElementTree.Element('{' + datastream_ns + '}component',
                             attrib = { 'id' : ocildscompid, 'timestamp' : timestamp },
                             nsmap = {'ds' : datastream_ns})
     # Insert the OCIL content into newly created <ds:component>
@@ -170,7 +166,7 @@ def main():
     # Output datastream file
     outdatastreamfile = sys.argv[2]
     # Datastream element tree
-    datastreamtree = ElementTree.parse(indatastreamfile)
+    datastreamtree = ssg.xml.ElementTree.parse(indatastreamfile)
 
     # Locate <ds:extended-components> element in datastream
     extendedcomps = datastreamtree.getroot().find("./{%s}extended-components" % datastream_ns)
@@ -202,7 +198,7 @@ def main():
     # skip the serialization
     if extendedcomps is not None or outdatastreamfile != indatastreamfile:
         # Write the updated benchmark into output datastream file
-        ElementTree.ElementTree(datastreamtree).write(outdatastreamfile)
+        ssg.xml.ElementTree.ElementTree(datastreamtree).write(outdatastreamfile)
     sys.exit(0)
 
 

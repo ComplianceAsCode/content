@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from __future__ import print_function
 
 import sys
@@ -7,11 +8,11 @@ import argparse
 import tempfile
 import subprocess
 
-from ssg._constants import oval_footer as footer
-from ssg._constants import oval_namespace as ovalns
-from ssg._xml import ElementTree as ET
-from ssg._xml import oval_generated_header
-from ssg._id_translate import IDTranslator
+from .constants import oval_footer as footer
+from .constants import oval_namespace as ovalns
+from .xml import ElementTree as ET
+from .xml import oval_generated_header
+from .id_translate import IDTranslator
 
 SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
 

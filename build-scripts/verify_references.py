@@ -6,11 +6,6 @@ import sys
 import optparse
 import os.path
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 """
 This script can verify consistency of references (linkage) between XCCDF and
 OVAL, and also search based on other criteria such as existence of policy
@@ -39,8 +34,8 @@ Usage:
   ./verify_references.py -h
 """
 
-import ssg
-
+import ssg.constants
+import ssg.xml
 
 xccdf_ns = ssg.constants.XCCDF11_NS
 oval_ns = ssg.constants.oval_namespace
@@ -142,7 +137,7 @@ def main():
     xccdffilename = args[0]
 
     # extract all of the rules within the xccdf
-    xccdftree = ElementTree.parse(xccdffilename)
+    xccdftree = ssg.xml.ElementTree.parse(xccdffilename)
     rules = xccdftree.findall(".//{%s}Rule" % xccdf_ns)
 
     # if a profile was specified, get rid of any Rules that aren't in it
@@ -165,7 +160,7 @@ def main():
 
     # find important elements within the XCCDF and the OVAL
     ovalfile = os.path.join(os.path.dirname(xccdffilename), ovalfiles.pop())
-    ovaltree = ElementTree.parse(ovalfile)
+    ovaltree = ssg.xml.ElementTree.parse(ovalfile)
     # collect all compliance checks (not inventory checks, which are
     # needed by CPE)
     ovaldefs = []

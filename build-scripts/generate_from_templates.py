@@ -5,7 +5,8 @@ from __future__ import print_function
 import os
 import sys
 import argparse
-import ssg
+
+import ssg.build_templates
 
 
 def parse_args():

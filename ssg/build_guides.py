@@ -1,12 +1,10 @@
-import sys
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
+from __future__ import absolute_import
 
-from ssg._shims import subprocess_check_output
-from ssg._xccdf import *
-from ssg._constants import *
+import sys
+
+from .shims import subprocess_check_output, Queue
+from .xccdf import *
+from .constants import *
 
 
 def get_path_args(args):

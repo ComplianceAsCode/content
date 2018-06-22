@@ -1,6 +1,8 @@
+from __future__ import absolute_import
+
 import re
 
-from ssg._constants import XCCDF11_NS
+from .constants import XCCDF11_NS
 
 
 def get_content_ref_if_exists_and_not_remote(check):

@@ -1,15 +1,16 @@
+from __future__ import absolute_import
 from __future__ import print_function
 import sys
 
 
-from ssg._constants import *
-from ssg._parse_oval import *
-from ssg._xml import *
+from .constants import *
+from .parse_oval import *
+from .xml import *
 
 
-from ssg._checks import get_content_ref_if_exists_and_not_remote, is_cce_valid
-from ssg._utils import SSGError
-from ssg._xml import ElementTree as ET
+from .checks import get_content_ref_if_exists_and_not_remote, is_cce_valid
+from .utils import SSGError
+from .xml import ElementTree as ET
 oval_ns = oval_namespace
 oval_cs = oval_namespace
 

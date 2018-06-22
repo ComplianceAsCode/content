@@ -6,10 +6,7 @@ import os.path
 import argparse
 import codecs
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
+import ssg.xml
 
 
 def preprocess_source(filepath):
@@ -44,11 +41,11 @@ def main():
         )
         sys.exit(1)
 
-    root = ElementTree.Element("Group")
+    root = ssg.xml.ElementTree.Element("Group")
     root.set("id", "remediation_functions")
-    title = ElementTree.SubElement(root, "title")
+    title = ssg.xml.ElementTree.SubElement(root, "title")
     title.text = "Remediation functions used by the SCAP Security Guide Project"
-    description = ElementTree.SubElement(root, "description")
+    description = ssg.xml.ElementTree.SubElement(root, "description")
     description.text = "XCCDF form of the various remediation functions as " \
         "used by remediation scripts from the SCAP Security Guide Project."
 
@@ -64,7 +61,7 @@ def main():
 
         source = preprocess_source(os.path.join(args.input_dir, file_))
 
-        value_element = ElementTree.SubElement(root, "Value")
+        value_element = ssg.xml.ElementTree.SubElement(root, "Value")
         value_element.set("id", "function_%s" % (filename))
         value_element.set("type", "string")
         value_element.set("operator", "equals")
@@ -72,18 +69,18 @@ def main():
         value_element.set("hidden", "true")
         value_element.set("prohibitChanges", "true")
 
-        title = ElementTree.SubElement(value_element, "title")
+        title = ssg.xml.ElementTree.SubElement(value_element, "title")
         title.text = "Remediation function %s" % (filename)
 
-        desc = ElementTree.SubElement(value_element, "description")
+        desc = ssg.xml.ElementTree.SubElement(value_element, "description")
         desc.text = "Shared bash remediation function. Not intended to be " \
             "changed by tailoring."
 
-        inner_value = ElementTree.SubElement(value_element, "value")
+        inner_value = ssg.xml.ElementTree.SubElement(value_element, "value")
         inner_value.set("selector", "")
         inner_value.text = source
 
-    tree = ElementTree.ElementTree(root)
+    tree = ssg.xml.ElementTree.ElementTree(root)
     tree.write(args.output)
 
 

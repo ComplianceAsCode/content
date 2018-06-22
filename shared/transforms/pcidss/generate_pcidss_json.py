@@ -21,10 +21,11 @@
 
 import subprocess
 import logging
-from xml.etree import cElementTree as ElementTree
 import re
 import json
 import codecs
+
+import ssg.xml
 
 
 FILENAME = "PCI_DSS_v3-1.pdf"
@@ -165,7 +166,7 @@ def main():
         shell=False
     )
 
-    tree = ElementTree.fromstring(xml_string)
+    tree = ssg.xml.ElementTree.fromstring(xml_string)
     id_map = {}
 
     for page in tree.findall("./page"):

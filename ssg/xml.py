@@ -1,12 +1,13 @@
+from __future__ import absolute_import
+
 import platform
 
-from ssg._constants import xml_version, oval_header, timestamp
+from .constants import xml_version, oval_header, timestamp
 
 
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError as e:
-    print(e)
     import cElementTree as ElementTree
 
 
@@ -24,12 +25,9 @@ def oval_generated_header(product_name, schema_version, ssg_version):
 
 def parse_file(filename):
     """
-    Given a filename, return the corresponding ElementTree
+    Given a filename, return the root of the ElementTree
     """
-    with open(filename, 'r') as xml_file:
-        filestring = xml_file.read()
-        tree = ElementTree.fromstring(filestring)
-    return tree
+    return ElementTree.parse(filename).getroot()
 
 
 def map_elements_to_their_ids(tree, xpath_expr):

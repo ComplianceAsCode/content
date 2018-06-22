@@ -1,5 +1,7 @@
+from __future__ import absolute_import
+
 import re
-from ssg._xml import ElementTree
+from .xml import ElementTree
 
 
 def add_cpes(elem, namespace, mapping):

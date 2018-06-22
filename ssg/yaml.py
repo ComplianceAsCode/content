@@ -3,10 +3,10 @@ from __future__ import absolute_import
 import codecs
 import yaml
 
-from ssg._jinja import _extract_substitutions_dict_from_template
-from ssg._jinja import _rename_items
-from ssg._jinja import process_file
-from ssg._constants import PKG_MANAGER_TO_SYSTEM, JINJA_MACROS_DEFINITIONS
+from .jinja import _extract_substitutions_dict_from_template
+from .jinja import _rename_items
+from .jinja import process_file
+from .constants import PKG_MANAGER_TO_SYSTEM, JINJA_MACROS_DEFINITIONS
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader

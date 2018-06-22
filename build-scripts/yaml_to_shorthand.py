@@ -7,7 +7,9 @@ import os
 import os.path
 import sys
 
-import ssg
+import ssg.build_yaml
+import ssg.utils
+import ssg.yaml
 
 
 def parse_args():

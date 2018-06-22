@@ -1,7 +1,9 @@
+from __future__ import absolute_import
+
 import jinja2
 import os.path
 
-from ssg._utils import required_key
+from .utils import required_key
 
 
 class AbsolutePathFileSystemLoader(jinja2.BaseLoader):

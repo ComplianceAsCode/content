@@ -1,4 +1,11 @@
+from __future__ import absolute_import
+
 import subprocess
+
+try:
+    import queue as Queue
+except ImportError:
+    import Queue
 
 
 def subprocess_check_output(*popenargs, **kwargs):
@@ -21,6 +28,14 @@ def subprocess_check_output(*popenargs, **kwargs):
         raise error
     return output
 
+
 if hasattr(subprocess, "check_output"):
     # if available we just use the real function
     subprocess_check_output = subprocess.check_output
+
+
+def input_func(prompt=None):
+    try:
+        return str(raw_input(prompt))
+    except:
+        return input(prompt)

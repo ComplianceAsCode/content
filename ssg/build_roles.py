@@ -1,14 +1,12 @@
-import sys
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
+from __future__ import absolute_import
 
-from ssg._ansible import add_minimum_version
-from ssg._shims import subprocess_check_output
-from ssg._build_guides import _is_blacklisted_profile
-from ssg._xccdf import *
-from ssg._constants import *
+import sys
+
+from .ansible import add_minimum_version
+from .shims import subprocess_check_output, Queue
+from .build_guides import _is_blacklisted_profile
+from .xccdf import *
+from .constants import *
 
 
 def generate_for_input_content(input_content, benchmark_id, profile_id,

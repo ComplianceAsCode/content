@@ -1,4 +1,6 @@
-from ssg._constants import *
+from __future__ import absolute_import
+
+from .constants import *
 
 
 def add_minimum_version(ansible_src):

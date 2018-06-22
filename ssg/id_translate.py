@@ -1,6 +1,8 @@
-from ssg._xml import ElementTree
-from ssg._constants import oval_namespace as oval_ns
-from ssg._constants import ocil_namespace as ocil_ns
+from __future__ import absolute_import
+
+from .xml import ElementTree
+from .constants import oval_namespace as oval_ns
+from .constants import ocil_namespace as ocil_ns
 
 ovaltag_to_abbrev = {
     'definition': 'def',

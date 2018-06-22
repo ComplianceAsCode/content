@@ -9,13 +9,11 @@ from copy import deepcopy
 import argparse
 import collections
 
-
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
-import ssg
+import ssg.build_ovals
+import ssg.constants
+import ssg.utils
+import ssg.xml
+import ssg.yaml
 
 
 def parse_args():
@@ -68,19 +66,19 @@ def main():
         ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         args.ovaldirs)
 
-    # parse new file(string) as an ElementTree, so we can reorder elements
+    # parse new file(string) as an ssg.xml.ElementTree, so we can reorder elements
     # appropriately
-    corrected_tree = ElementTree.fromstring(
+    corrected_tree = ssg.xml.ElementTree.fromstring(
         ("%s%s%s" % (header, body, footer)).encode("utf-8"))
     tree = ssg.build_ovals.add_platforms(corrected_tree, multi_platform)
-    definitions = ElementTree.Element("{%s}definitions" % oval_ns)
-    tests = ElementTree.Element("{%s}tests" % oval_ns)
-    objects = ElementTree.Element("{%s}objects" % oval_ns)
-    states = ElementTree.Element("{%s}states" % oval_ns)
-    variables = ElementTree.Element("{%s}variables" % oval_ns)
+    definitions = ssg.xml.ElementTree.Element("{%s}definitions" % oval_ns)
+    tests = ssg.xml.ElementTree.Element("{%s}tests" % oval_ns)
+    objects = ssg.xml.ElementTree.Element("{%s}objects" % oval_ns)
+    states = ssg.xml.ElementTree.Element("{%s}states" % oval_ns)
+    variables = ssg.xml.ElementTree.Element("{%s}variables" % oval_ns)
 
     for childnode in tree.findall("./{%s}def-group/*" % oval_ns):
-        if childnode.tag is ElementTree.Comment:
+        if childnode.tag is ssg.xml.ElementTree.Comment:
             continue
         elif childnode.tag.endswith("definition"):
             ssg.build_ovals.append(definitions, childnode)
@@ -96,7 +94,7 @@ def main():
             sys.stderr.write("Warning: Unknown element '%s'\n"
                              % (childnode.tag))
 
-    root = ElementTree.fromstring(("%s%s" % (header, footer)).encode("utf-8"))
+    root = ssg.xml.ElementTree.fromstring(("%s%s" % (header, footer)).encode("utf-8"))
     root.append(definitions)
     root.append(tests)
     root.append(objects)
@@ -104,7 +102,7 @@ def main():
     if list(variables):
         root.append(variables)
 
-    ElementTree.ElementTree(root).write(args.output)
+    ssg.xml.ElementTree.ElementTree(root).write(args.output)
 
     sys.exit(0)
 

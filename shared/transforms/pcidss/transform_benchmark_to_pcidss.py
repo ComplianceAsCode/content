@@ -26,7 +26,7 @@ import sys
 import os
 import copy
 
-import ssg
+import ssg.constants
 
 XCCDF_NAMESPACE = ssg.constants.XCCDF12_NS
 FILENAME = "PCI_DSS_v3.pdf"

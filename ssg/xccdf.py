@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 """
 A couple generic XCCDF utilities used by build_all_guides.py and
 build_all_remediation_roles.py
@@ -7,7 +9,7 @@ Author: Martin Preisler <mpreisle@redhat.com>
 
 import re
 
-from ssg._constants import XCCDF11_NS, XCCDF12_NS
+from .constants import XCCDF11_NS, XCCDF12_NS
 
 # if a profile ID ends with a string listed here we skip it
 PROFILE_ID_BLACKLIST = ["test", "index", "default"]
