@@ -7,18 +7,6 @@
       </affected>
       <description>The changing of file permissions and attributes should be audited.</description>
     </metadata>
-
-{{% if product == "rhel6" %}}
-    <!-- x32 system calls are monitored and ... -->
-    <criteria operator="AND">
-      <criterion comment="dac modification %ATTR% x32" test_ref="test_audit_rules_dac_modification_%ATTR%_x32" />
-      <!-- system is not x64 or x64 system calls are monitored  -->
-      <criteria operator="OR">
-        <extend_definition comment="x64?" definition_ref="system_info_architecture_64bit" negate="true" />
-        <criterion comment="dac modification %ATTR% x64" test_ref="test_audit_rules_dac_modification_%ATTR%_x64" />
-      </criteria>
-    </criteria>
-{{% else %}}
     <criteria operator="OR">
 
       <!-- Test the augenrules case -->
@@ -44,63 +32,22 @@
           <criterion comment="audit auditctl 64-bit %ATTR%" test_ref="test_64bit_ardm_%ATTR%_auditctl" />
         </criteria>
       </criteria>
+
     </criteria>
-{{% endif %}}
   </definition>
 
 {{% if product == "rhel6" %}}
-  <ind:textfilecontent54_test check="all" comment="dac modification %ATTR% x32" id="test_audit_rules_dac_modification_%ATTR%_x32" version="1">
-    <ind:object object_ref="object_audit_rules_dac_modification_%ATTR%_x32" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_%ATTR%_x32" version="1">
-    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <!-- What's going on here?
-         Ensure we have both exit and always in the action list
-         Syscall numbers between x64/x32 dont always line up so split them by
-           arch.  Remember that we can still have x32 libs on x64
-         Watch for the %ATTR% syscall.
-         Assume user id's start above 500 and watch for %ATTR%s by them
-         Watch for %ATTR%s by users without a set loginuid (4294967295/-1)
-         Ensure that a key is defined for it but we aren't especially concerned
-           with what it is
-         Some regex foo to account for various ways this could be defined.
-
-         A typical pattern would be:
-         -a always,exit -F arch=b32 -S %ATTR% -F auid>=500 -F auid!=4294967295 -k perms
-    -->
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*-S[\s]+%ATTR%[\s]+)(?:.*-F\s+auid>=500[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*-k[\s]+[\S]+[\s]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_test check="all" comment="dac modification %ATTR% x64" id="test_audit_rules_dac_modification_%ATTR%_x64" version="1">
-    <ind:object object_ref="object_audit_rules_dac_modification_%ATTR%_x64" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_audit_rules_dac_modification_%ATTR%_x64" version="1">
-    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <!-- What's going on here?
-         Ensure we have both exit and always in the action list
-         Syscall numbers between x64/x32 dont always line up so split them by
-           arch. Remember that we can still have x32 libs on x64
-         Watch for the %ATTR% syscall.
-         Assume user id's start above 500 and watch for %ATTR%s by them
-         Watch for %ATTR%s by users without a set loginuid (4294967295/-1)
-         Ensure that a key is defined for it but we aren't especially concerned
-           with what it is
-         Some regex foo to account for various ways this could be defined.
-
-         A typical pattern would be:
-         -a always,exit -F arch=b64 -S %ATTR% -F auid>=500 -F auid!=4294967295 -k perms
-    -->
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*-S[\s]+%ATTR%[\s]+)(?:.*-F\s+auid>=500[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*-k[\s]+[\S]+[\s]*$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
+  {{% set AUID = 500 %}}
 {{% else %}}
+  {{% set AUID = 1000 %}}
+{{% endif %}}
+
   <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit %ATTR%" id="test_32bit_ardm_%ATTR%_augenrules" version="1">
     <ind:object object_ref="object_32bit_ardm_%ATTR%_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_%ATTR%_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -109,7 +56,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_%ATTR%_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -118,7 +65,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_ardm_%ATTR%_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -127,9 +74,8 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_ardm_%ATTR%_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%ATTR%[\s]+|([\s]+|[,])%ATTR%([\s]+|[,])))(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-{{% endif %}}
 
 </def-group>
