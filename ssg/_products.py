@@ -15,6 +15,7 @@ SUSE = 'SUSE Linux Enterprise'
 WRLINUX = 'Wind River Linux'
 OL = 'Oracle Linux'
 OCP = 'Red Hat OpenShift Container Platform'
+OSP = 'Red Hat OpenStack Platform'
 
 multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp"]
@@ -57,6 +58,8 @@ def map_name(version):
         return FIREFOX
     if version.startswith("jre"):
         return JRE
+    if version.startswith("rhel-osp"):
+        return OSP
     if version.startswith("rhel"):
         return RHEL
     if version.startswith("debian"):
