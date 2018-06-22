@@ -19,9 +19,9 @@ def add_sub_element(parent, tag, data):
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
     try:
-        ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
-    except NameError:
         ustr = str("<{0}>{1}</{0}>").format(tag, data)
+    except NameError:
+        ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))

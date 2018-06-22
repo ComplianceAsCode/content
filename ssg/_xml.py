@@ -6,7 +6,6 @@ from ssg._constants import xml_version, oval_header, timestamp
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError as e:
-    print(e)
     import cElementTree as ElementTree
 
 

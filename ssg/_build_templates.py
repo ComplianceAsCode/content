@@ -77,10 +77,10 @@ class Builder(object):
     def _get_csv_list(self):
         csvs = []
 
-        try:
-            files = os.listdir(self.csv_dir)
-        except OSError:
+        if not os.path.isdir(self.csv_dir):
             return []
+
+        files = os.listdir(self.csv_dir)
 
         for file_ in files:
             # skip non csv files

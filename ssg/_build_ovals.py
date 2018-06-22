@@ -279,7 +279,7 @@ def checks(env_yaml, oval_version, oval_dirs):
     already_loaded = dict()  # filename -> oval_version
 
     for oval_dir in reversed_dirs:
-        try:
+        if os.path.isdir(oval_dir):
             # sort the files to make output deterministic
             for filename in sorted(os.listdir(oval_dir)):
                 if filename.endswith(".xml"):
@@ -298,13 +298,6 @@ def checks(env_yaml, oval_version, oval_dirs):
                     body.append(xml_content)
                     included_checks_count += 1
                     already_loaded[filename] = oval_version
-        except OSError as e:
-            if e.errno != errno.ENOENT:
-                raise
-            else:
-                sys.stderr.write("Not merging OVAL content from the "
-                                 "'%s' directory as the directory does not "
-                                 "exist\n" % (oval_dir))
     sys.stderr.write("Merged %d OVAL checks.\n" % (included_checks_count))
 
     return "".join(body)
