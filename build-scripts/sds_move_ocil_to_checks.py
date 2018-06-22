@@ -41,12 +41,9 @@ from __future__ import print_function
 import sys
 import os
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 import ssg
+
+ElementTree = ssg.xml.ElementTree
 
 xlink_ns = "http://www.w3.org/1999/xlink"
 datastream_ns = ssg.constants.datastream_namespace

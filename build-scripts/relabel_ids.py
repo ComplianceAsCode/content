@@ -61,7 +61,4 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except ssg.utils.SSGError as exc:
-        raise
+    main()

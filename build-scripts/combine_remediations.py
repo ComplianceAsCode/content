@@ -8,14 +8,9 @@ import errno
 import argparse
 import codecs
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 import ssg
 
-
+ElementTree = ssg.xml.ElementTree
 remediation = ssg.build_remediations
 
 FILE_GENERATED = '# THIS FILE IS GENERATED'
@@ -64,7 +59,7 @@ def main():
 
     included_fixes_count = 0
     for fixdir in args.fixdirs:
-        try:
+        if os.path.isdir(fixdir):
             for filename in os.listdir(fixdir):
                 if not remediation.is_supported_filename(args.remediation_type, filename):
                     continue
@@ -150,14 +145,6 @@ def main():
                     sys.stderr.write("Skipping '%s' remediation script. "
                                      "The platform identifier in the "
                                      "script is missing!\n" % (filename))
-        except OSError as e:
-            if e.errno != errno.ENOENT:
-                raise
-            else:
-                sys.stderr.write("Not merging remediation scripts from the "
-                                 "'%s' directory as the directory does not "
-                                 "exist.\n" % (fixdir))
-
     sys.stderr.write("Merged %d %s remediations.\n"
                      % (included_fixes_count, args.remediation_type))
     tree = ElementTree.ElementTree(fixcontent)

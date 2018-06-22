@@ -19,14 +19,11 @@ from __future__ import print_function
 import os
 import sys
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 from optparse import OptionParser
 
 import ssg
+
+ElementTree = ssg.xml.ElementTree
 
 OSCAP_PATH = "oscap"
 

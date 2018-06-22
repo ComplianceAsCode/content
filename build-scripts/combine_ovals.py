@@ -9,13 +9,9 @@ from copy import deepcopy
 import argparse
 import collections
 
-
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 import ssg
+
+ElementTree = ssg.xml.ElementTree
 
 
 def parse_args():

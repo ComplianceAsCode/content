@@ -6,11 +6,6 @@ import sys
 import optparse
 import os.path
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
-
 """
 This script can verify consistency of references (linkage) between XCCDF and
 OVAL, and also search based on other criteria such as existence of policy
@@ -41,6 +36,8 @@ Usage:
 
 import ssg
 
+
+ElementTree = ssg.xml.ElementTree
 
 xccdf_ns = ssg.constants.XCCDF11_NS
 oval_ns = ssg.constants.oval_namespace
