@@ -22,29 +22,34 @@ def parse_args():
     output_sp = sp.add_parser('list-outputs', help="Generate output list")
     output_sp.set_defaults(cmd="list_outputs")
 
-    p.add_argument('--language', metavar="LANG", default=None,
-                   help="Scripts of which language should we generate? "
-                   "Default: all.")
-    p.add_argument("-i", "--input", action="store", required=True,
-                   help="input directory")
-    p.add_argument("-o", "--output", action="store", required=True,
-                   help="output directory")
-    p.add_argument("-s", "--shared", metavar="PATH", required=True,
+    p.add_argument('--languages', metavar="LANGS", required=True, type=str,
+                   nargs='+', help="List of languages to generate")
+    p.add_argument("--input", required=True, type=str, nargs='+',
+                   help="List of input directories")
+    p.add_argument("--output", required=True, type=str, nargs='+',
+                   help="List of output directories")
+    p.add_argument("--shared", metavar="PATH", required=True,
                    help="Full absolute path to SSG shared directory")
 
-    return p.parse_args()
+    args = p.parse_args()
+    if len(args.input) != len(args.output):
+        print("Error: number of inputs and number of outputs must match!",
+              file=sys.stderr)
+        sys.exit(1)
+
+    return args
 
 
 if __name__ == "__main__":
     args = parse_args()
 
-    builder = ssg.build_templates.Builder()
-    if args.language is not None:
-        builder.set_langs([args.language])
+    for index in range(0, len(args.input)):
+        builder = ssg.build_templates.Builder()
+        builder.set_langs(args.languages)
 
-    builder.set_input_dir(args.input)
-    builder.output_dir = args.output
-    builder.ssg_shared = args.shared
+        builder.set_input_dir(args.input[index])
+        builder.output_dir = args.output[index]
+        builder.ssg_shared = args.shared
 
-    func = getattr(builder, args.cmd)
-    func()
+        func = getattr(builder, args.cmd)
+        func()
