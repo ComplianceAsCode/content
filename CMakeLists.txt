@@ -81,7 +81,10 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     )
 endif()
 
+
+set(Python_ADDITIONAL_VERSIONS 3 2)
 find_package(PythonInterp REQUIRED)
+
 find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
 find_python_module(pytest)
