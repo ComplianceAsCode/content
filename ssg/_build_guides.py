@@ -1,10 +1,6 @@
 import sys
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
 
-from ssg._shims import subprocess_check_output
+from ssg._shims import subprocess_check_output, Queue
 from ssg._xccdf import *
 from ssg._constants import *
 

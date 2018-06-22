@@ -1,11 +1,7 @@
 import sys
-try:
-    import queue as Queue
-except ImportError:
-    import Queue
 
 from ssg._ansible import add_minimum_version
-from ssg._shims import subprocess_check_output
+from ssg._shims import subprocess_check_output, Queue
 from ssg._build_guides import _is_blacklisted_profile
 from ssg._xccdf import *
 from ssg._constants import *
