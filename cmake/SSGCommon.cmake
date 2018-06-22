@@ -197,19 +197,6 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
           DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
       )
     endforeach()
-
-if (SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED AND SHELLCHECK_EXECUTABLE AND "${LANGUAGE}" STREQUAL "bash")
-        file(GLOB BASH_REMEDIATION_FUNCTIONS "${CMAKE_SOURCE_DIR}/shared/bash_remediation_functions/*.sh")
-
-        add_test(
-            NAME "shellcheck-${PRODUCT}-bash-fixes"
-            # format gcc so that people using IDEs can click on errors to get to the problematic lines
-            # SC1071: ShellCheck only supports sh/bash/ksh scripts
-            # SC1091: Not following: /usr/share/scap-security-guide/remediation_functions
-            # TODO: Stop ignoring the exit code as we fix the bash issues
-            COMMAND "${SHELLCHECK_EXECUTABLE}" --format gcc --shell bash --exclude SC1071,SC1091 ${BASH_REMEDIATION_FUNCTIONS} ${LANGUAGE_REMEDIATIONS_DEPENDS} ${EXTRA_LANGUAGE_DEPENDS} ${EXTRA_SHARED_LANGUAGE_DEPENDS}
-        )
-    endif()
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
