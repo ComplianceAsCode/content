@@ -3,6 +3,12 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
+{{% if product == "rhel6" %}}
+  {{% set AUID = 500 %}}
+{{% else %}}
+  {{% set AUID = 1000 %}}
+{{% endif %}}
+
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
 [ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
@@ -11,16 +17,9 @@ for ARCH in "${RULE_ARCHS[@]}"
 do
 	PATTERN="-a always,exit -F arch=$ARCH -S %ATTR%.*"
 	GROUP="perm_mod"
-{{% if product != "rhel6" %}}
-  {{% set AUID = 1000 %}}
-{{% else %}}
-  {{% set AUID = 500 %}}
-{{% endif %}}
 	FULL_RULE="-a always,exit -F arch=$ARCH -S %ATTR% -F auid>={{{ AUID }}} -F auid!=4294967295 -F key=perm_mod"
 
-{{% if product != "rhel6" %}}
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-{{% endif %}}
 	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
 done
