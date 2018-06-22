@@ -10,18 +10,21 @@ userlist="root"
 sapmnt_SID_stem="/sapmnt/[A-Z][A-Z0-9][A-Z0-9]"
 oracle_SID_stem="/oracle/[A-Z][A-Z0-9][A-Z0-9]"
 
-# if owner of any directory or file in the given list is the user oracle, return 1.
-# otherwise return 0. 
-# Usage: is_owner_oracle "${list[@]}"
-function is_owner_oracle {
+# if owner of any directory or file in the given list is the user oracle,
+# add the user oracle to the variable userlist. 
+# Usage: verify_oracle_user_to_userlist "${array[@]}"
+# Note: this function might modify the value of the global variable userlist
+function verify_oracle_user_to_userlist {
 	local path_list=("$@")
-	local is_oracle=0
+	local is_oracle=no
 	for path in $path_list ; do
 		if [ $(ls -ld $path | awk '{print $3}') = "oracle" ]; then
-			is_oracle=1
+			is_oracle=yes
 		fi
 	done
-	echo "$is_oracle"
+	if test "$is_oracle" = yes ; then
+		userlist="$userlist|oracle" ;
+	fi
 } 
 
 # if /sapmnt is a directory or a symbolic link to a directory,
@@ -45,14 +48,14 @@ if [ -d "/sapmnt" ] ; then
 	done
 
 	# if owner of any brspace file is oracle, add oracle to the userlist
-	if test "$(is_owner_oracle "${path_to_brspace_list[@]}")" = 1 ; then userlist="$userlist|oracle" ; fi
+	verify_oracle_user_to_userlist "${path_to_brspace_list[@]}"
 fi
 
 # if owner of any /oracle/SID directory is oracle, add oracle to the userlist
 # the user oracle could be added twice in the userlist, but it is harmlos to the final result
 if [ -d "/oracle" ] ; then
 	path_oracle_SID_list=$(find /oracle/ -regex "^$oracle_SID_stem$")
-	if test "$(is_owner_oracle "${path_oracle_SID_list[@]}")" = 1 ; then userlist="$userlist|oracle" ; fi
+	verify_oracle_user_to_userlist "${path_oracle_SID_list[@]}"
 fi
 
 # if /usr/sap/hostctrl is a directory or a symbolic link to a directory, add sapadm to the list
