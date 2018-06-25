@@ -1,13 +1,13 @@
-FROM centos:7
+FROM fedora:28
 
 ENV OSCAP_USERNAME oscap
 ENV OSCAP_DIR scap-security-guide
 ENV BUILD_JOBS 4
 
-RUN yum -y upgrade && \
-    yum -y install cmake make openscap-utils python-jinja2 PyYAML && \
+RUN dnf -y upgrade && \
+    dnf -y install cmake ninja-build openscap-utils python3-jinja2 python3-PyYAML && \
     mkdir -p /home/$OSCAP_USERNAME && \
-    yum clean all && \
+    dnf clean all && \
     rm -rf /usr/share/doc /usr/share/doc-base \
         /usr/share/man /usr/share/locale /usr/share/zoneinfo
 
@@ -20,6 +20,6 @@ RUN rm -rf $OSCAP_DIR/build/*
 
 WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
 
-RUN cmake ..
+RUN cmake -G Ninja ..
 
-CMD /usr/bin/make -j $BUILD_JOBS
+CMD ninja -j $BUILD_JOBS
