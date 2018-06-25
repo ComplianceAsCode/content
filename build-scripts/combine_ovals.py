@@ -59,8 +59,7 @@ def main():
     # appropriately
     corrected_tree = ssg.xml.ElementTree.fromstring(
         ("%s%s%s" % (header, body, footer)).encode("utf-8"))
-    tree = ssg.build_ovals.finalize_affected_platforms(
-        corrected_tree, ssg.utils.required_key(env_yaml, "full_name"))
+    tree = ssg.build_ovals.finalize_affected_platforms(corrected_tree, env_yaml)
     definitions = ssg.xml.ElementTree.Element("{%s}definitions" % oval_ns)
     tests = ssg.xml.ElementTree.Element("{%s}tests" % oval_ns)
     objects = ssg.xml.ElementTree.Element("{%s}objects" % oval_ns)

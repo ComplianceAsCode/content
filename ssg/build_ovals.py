@@ -77,7 +77,7 @@ def _check_is_applicable_for_product(oval_check_def, product):
     return False
 
 
-def finalize_affected_platforms(xml_tree, product_name):
+def finalize_affected_platforms(xml_tree, env_yaml):
     """Depending on your use-case of OVAL you may not need the <affected>
     element. Such use-cases including using OVAL as a check engine for XCCDF
     benchmarks. Since the XCCDF Benchmarks use cpe:platform with CPE IDs,
@@ -90,10 +90,12 @@ def finalize_affected_platforms(xml_tree, product_name):
     for affected in xml_tree.findall(".//{%s}affected" % (oval_ns)):
         for platform in affected.findall("./{%s}platform" % (oval_ns)):
             affected.remove(platform)
+        for product in affected.findall("./{%s}product" % (oval_ns)):
+            affected.remove(product)
 
-        final_platform = ElementTree.SubElement(
-            affected, "{%s}platform" % (oval_ns))
-        final_platform.text = product_name
+        final = ElementTree.SubElement(
+            affected, "{%s}%s" % (oval_ns, required_key(env_yaml, "type")))
+        final.text = required_key(env_yaml, "full_name")
 
     return xml_tree
 
