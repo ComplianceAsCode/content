@@ -39,3 +39,10 @@ def input_func(prompt=None):
         return str(raw_input(prompt))
     except:
         return input(prompt)
+
+
+unicode_func = str
+try:
+    unicode_func = unicode
+except NameError:
+    pass
