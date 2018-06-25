@@ -148,7 +148,6 @@ find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
 find_program(GREP_EXECUTABLE NAMES grep)
 find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 
-configure_file("${CMAKE_SOURCE_DIR}/oval.config.in" "${CMAKE_BINARY_DIR}/oval.config" @ONLY)
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
 message(STATUS "CMake:")

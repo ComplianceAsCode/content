@@ -28,8 +28,6 @@ def parse_args():
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
-    p.add_argument("--oval_config", required=True,
-                   help="Location of the oval.config file.")
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
                    help="Directory(ies) from which we will collect "
@@ -47,19 +45,10 @@ def main():
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
 
-    if os.path.isfile(args.oval_config):
-        multi_platform = ssg.build_ovals.parse_conf_file(
-            args.oval_config,
-            ssg.utils.required_key(env_yaml, "product")
-        )
-        header = ssg.xml.oval_generated_header(
-            "combine_ovals.py",
-            ssg.utils.required_key(env_yaml, "target_oval_version_str"),
-            ssg.utils.required_key(env_yaml, "ssg_version"))
-    else:
-        sys.stderr.write("The directory specified does not contain the %s "
-                         "file!\n" % (args.oval_config))
-        sys.exit(1)
+    header = ssg.xml.oval_generated_header(
+        "combine_ovals.py",
+        ssg.utils.required_key(env_yaml, "target_oval_version_str"),
+        ssg.utils.required_key(env_yaml, "ssg_version"))
 
     body = ssg.build_ovals.checks(
         env_yaml,
@@ -70,7 +59,7 @@ def main():
     # appropriately
     corrected_tree = ssg.xml.ElementTree.fromstring(
         ("%s%s%s" % (header, body, footer)).encode("utf-8"))
-    tree = ssg.build_ovals.add_platforms(corrected_tree, multi_platform)
+    tree = ssg.build_ovals.finalize_affected_platforms(corrected_tree, env_yaml)
     definitions = ssg.xml.ElementTree.Element("{%s}definitions" % oval_ns)
     tests = ssg.xml.ElementTree.Element("{%s}tests" % oval_ns)
     objects = ssg.xml.ElementTree.Element("{%s}objects" % oval_ns)
