@@ -77,19 +77,23 @@ def _check_is_applicable_for_product(oval_check_def, product):
     return False
 
 
-def remove_affected_platforms(xml_tree):
+def finalize_affected_platforms(xml_tree, product_name):
     """Depending on your use-case of OVAL you may not need the <affected>
     element. Such use-cases including using OVAL as a check engine for XCCDF
     benchmarks. Since the XCCDF Benchmarks use cpe:platform with CPE IDs,
     the affected element in OVAL definitions is redundant and just bloats the
-    files. This function removes all affected element from given OVAL tree.
+    files. This function removes all *irrelevant* affected platform elements
+    from given OVAL tree. It then adds one platform of the product we are
+    building.
     """
 
-    definitions = xml_tree.findall(".//{%s}definition" % (oval_ns))
-    for definition in definitions:
-        for metadata in definition.findall("./{%s}metadata" % (oval_ns)):
-            for affected in metadata.findall("./{%s}affected" % (oval_ns)):
-                metadata.remove(affected)
+    for affected in xml_tree.findall(".//{%s}affected" % (oval_ns)):
+        for platform in affected.findall("./{%s}platform" % (oval_ns)):
+            affected.remove(platform)
+
+        final_platform = ElementTree.SubElement(
+            affected, "{%s}platform" % (oval_ns))
+        final_platform.text = product_name
 
     return xml_tree
 
