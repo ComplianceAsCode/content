@@ -67,7 +67,7 @@ function replace_or_append {
   # If the key exists, change it. Otherwise, add it to the config_file.
   # We search for the key string followed by a word boundary (matched by \>),
   # so if we search for 'setting', 'setting2' won't match.
-  if grep -q $grep_case_insensitive_option "${key}\\>" "$config_file"; then
+  if LC_ALL=C grep -q -m 1 $grep_case_insensitive_option -e "${key}\\>" "$config_file"; then
     "${sed_command[@]}" "s/${key}\\>.*/$formatted_output/g$sed_case_insensitive_option" "$config_file"
   else
     # \n is precaution for case where file ends without trailing newline
