@@ -1,6 +1,8 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_fedora
 
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-replace_or_append '/etc/ssh/sshd_config' '^MACs' 'hmac-sha2-512,hmac-sha2-256,hmac-sha1' '@CCENUM@' '%s %s'
+populate sshd_approved_macs
+
+replace_or_append '/etc/ssh/sshd_config' '^MACs' "$sshd_approved_macs" '@CCENUM@' '%s %s'
