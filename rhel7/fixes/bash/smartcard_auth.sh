@@ -6,7 +6,7 @@ package_install esc
 package_install pam_pkcs11
 
 # Enable pcscd.socket systemd activation socket
-service_command enable pcscd.socket
+systemctl enable pcscd.socket
 
 # Configure the expected /etc/pam.d/system-auth{,-ac} settings directly
 #
