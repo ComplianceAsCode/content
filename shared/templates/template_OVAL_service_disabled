@@ -224,7 +224,7 @@
   <unix:file_object comment="look for %SERVICENAME%.service in /etc/systemd/system/multi-user.target.wants"
    id="object_%SERVICENAME%_disabled_multi_user_target" version="1">
     <unix:filepath>/etc/systemd/system/multi-user.target.wants/%SERVICENAME%.service</unix:filepath>
-    <filter action="include">service_%SERVICENAME%_state_symlink</filter>
+    <filter action="include">unit_%SERVICENAME%_state_symlink</filter>
   </unix:file_object>
 
   <unix:file_test check="all" check_existence="none_exist"
@@ -236,10 +236,10 @@
   <unix:file_object comment="look for %SERVICENAME%.socket in /etc/systemd/system/sockets.target.wants"
    id="object_%SERVICENAME%_socket_disabled_sockets_target" version="1">
     <unix:filepath>/etc/systemd/system/sockets.target.wants/%SERVICENAME%.socket</unix:filepath>
-    <filter action="include">service_%SERVICENAME%_state_symlink</filter>
+    <filter action="include">unit_%SERVICENAME%_state_symlink</filter>
   </unix:file_object>
 
-  <unix:file_state id="service_%SERVICENAME%_state_symlink" version="1">
+  <unix:file_state id="unit_%SERVICENAME%_state_symlink" version="1">
     <unix:type operation="equals">symbolic link</unix:type>
   </unix:file_state>
 
