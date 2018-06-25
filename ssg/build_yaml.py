@@ -11,6 +11,7 @@ from .yaml import open_and_expand, open_and_macro_expand
 from .utils import required_key
 
 from .xml import ElementTree as ET
+from .shims import unicode_func
 
 
 def add_sub_element(parent, tag, data):
@@ -19,10 +20,7 @@ def add_sub_element(parent, tag, data):
     # and therefore it does not add child elements
     # we need to do a hack instead
     # TODO: Remove this function after we move to Markdown everywhere in SSG
-    try:
-        ustr = str("<{0}>{1}</{0}>").format(tag, data)
-    except NameError:
-        ustr = unicode("<{0}>{1}</{0}>").format(tag, data)
+    ustr = unicode_func("<{0}>{1}</{0}>").format(tag, data)
 
     try:
         element = ET.fromstring(ustr.encode("utf-8"))
