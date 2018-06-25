@@ -20,6 +20,4 @@ RUN rm -rf $OSCAP_DIR/build/*
 
 WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
 
-RUN cmake -G Ninja ..
-
-CMD ninja -j $BUILD_JOBS
+CMD cmake -G Ninja .. && ninja -j $BUILD_JOBS && ctest -j $BUILD_JOBS
