@@ -3,7 +3,6 @@ from __future__ import print_function
 
 import os
 import sys
-import argparse
 
 templates_dir = os.path.join(os.path.dirname(__file__), "..", "shared", "templates")
 sys.path.append(templates_dir)

@@ -3,21 +3,23 @@ from __future__ import absolute_import
 import re
 
 # SSG Makefile to official product name mapping
-CHROMIUM = 'Google Chromium Browser'
-FEDORA = 'Fedora'
-FIREFOX = 'Mozilla Firefox'
-JRE = 'Java Runtime Environment'
-RHEL = 'Red Hat Enterprise Linux'
-DEBIAN = 'Debian'
-UBUNTU = 'Ubuntu'
-EAP = 'JBoss Enterprise Application Platform'
-FUSE = 'JBoss Fuse'
-OPENSUSE = 'openSUSE'
-SUSE = 'SUSE Linux Enterprise'
-WRLINUX = 'Wind River Linux'
-OL = 'Oracle Linux'
-OCP = 'Red Hat OpenShift Container Platform'
-OSP = 'Red Hat OpenStack Platform'
+_version_name_map = {
+    'chromium': 'Google Chromium Browser',
+    'fedora': 'Fedora',
+    'firefox': 'Mozilla Firefox',
+    'jre': 'Java Runtime Environment',
+    'rhel-osp': 'Red Hat OpenStack Platform',
+    'rhel': 'Red Hat Enterprise Linux',
+    'debian': 'Debian',
+    'ubuntu': 'Ubuntu',
+    'eap': 'JBoss Enterprise Application Platform',
+    'fuse': 'JBoss Fuse',
+    'opensuse': 'openSUSE',
+    'sle': 'SUSE Linux Enterprise',
+    'wrlinux': 'Wind River Linux',
+    'ol': 'Oracle Linux',
+    'ocp': 'Red Hat OpenShift Container Platform',
+}
 
 multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp"]
@@ -52,36 +54,11 @@ def map_name(version):
             )
         return map_name(trimmed_version)
 
-    if version.startswith("chromium"):
-        return CHROMIUM
-    if version.startswith("fedora"):
-        return FEDORA
-    if version.startswith("firefox"):
-        return FIREFOX
-    if version.startswith("jre"):
-        return JRE
-    if version.startswith("rhel-osp"):
-        return OSP
-    if version.startswith("rhel"):
-        return RHEL
-    if version.startswith("debian"):
-        return DEBIAN
-    if version.startswith("ubuntu"):
-        return UBUNTU
-    if version.startswith("eap"):
-        return EAP
-    if version.startswith("fuse"):
-        return FUSE
-    if version.startswith("opensuse"):
-        return OPENSUSE
-    if version.startswith("sle"):
-        return SUSE
-    if version.startswith("wrlinux"):
-        return WRLINUX
-    if version.startswith("ol"):
-        return OL
-    if version.startswith("ocp"):
-        return OCP
+    # By sorting in reversed order, keys which are a longer version of other keys are
+    # visited first (e.g., rhel-osp vs. rhel)
+    for key in sorted(_version_name_map, reverse=True):
+        if version.startswith(key):
+            return _version_name_map[key]
 
     raise RuntimeError("Can't map version '%s' to any known product!"
                        % (version))

@@ -3,9 +3,10 @@ from __future__ import print_function
 import sys
 
 
-from .constants import *
-from .parse_oval import *
-from .xml import *
+from .constants import oval_namespace, XCCDF11_NS, cce_uri, ocil_cs, ocil_namespace
+from .constants import OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS
+from .parse_oval import resolve_definition, find_extending_defs, get_container_groups
+from .xml import parse_file, map_elements_to_their_ids
 
 
 from .checks import get_content_ref_if_exists_and_not_remote, is_cce_valid

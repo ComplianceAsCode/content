@@ -1,10 +1,12 @@
 from __future__ import absolute_import
 
+import os
 import sys
 
 from .shims import subprocess_check_output, Queue
-from .xccdf import *
-from .constants import *
+from .xccdf import get_profile_choices_for_input, get_profile_short_id
+from .xccdf import PROFILE_ID_BLACKLIST
+from .constants import OSCAP_DS_STRING, OSCAP_PATH
 
 
 def get_path_args(args):
@@ -43,28 +45,28 @@ def generate_for_input_content(input_content, benchmark_id, profile_id):
 def builder(queue):
     while True:
         try:
-            benchmark_id, profile_id, profile_title, input_path, guide_path = \
+            benchmark_id, profile_id, input_path, guide_path = \
                 queue.get(False)
 
             guide_html = generate_for_input_content(
                 input_path, benchmark_id, profile_id
             )
 
-            with open(guide_path, "wb") as f:
-                f.write(guide_html.encode("utf-8"))
+            with open(guide_path, "wb") as file:
+                file.write(guide_html.encode("utf-8"))
 
             queue.task_done()
         except Queue.Empty:
             break
-        except Exception as e:
+        except Exception as error:
             sys.stderr.write(
                 "Fatal error encountered when generating guide '%s'. "
-                "Error details:\n%s\n\n" % (guide_path, e)
+                "Error details:\n%s\n\n" % (guide_path, error)
             )
             queue.task_done()
             with queue.mutex:
                 queue.queue.clear()
-            raise e
+            raise error
 
 
 def _benchmark_profile_pair_sort_key(benchmark_id, profile_id, profile_title):
@@ -91,7 +93,7 @@ def get_benchmark_profile_pairs(input_tree, benchmarks):
         # add the default profile
         profiles[""] = "(default)"
 
-        for profile_id in profiles.keys():
+        for profile_id in profiles:
             pair = (benchmark_id, profile_id, profiles[profile_id])
             benchmark_profile_pairs.append(pair)
 
@@ -118,17 +120,17 @@ def _get_guide_filename(path_base, profile_id, benchmark_id, benchmarks):
         # old guide paths and old URLs that people may be relying on
         return "%s-guide-%s.html" % (path_base,
                                      get_profile_short_id(profile_id_for_path))
-    else:
-        return "%s-%s-guide-%s.html" % \
-            (path_base, benchmark_id_for_path,
-             get_profile_short_id(profile_id_for_path))
+
+    return "%s-%s-guide-%s.html" % \
+        (path_base, benchmark_id_for_path,
+         get_profile_short_id(profile_id_for_path))
 
 
 def get_output_guide_paths(benchmarks, benchmark_profile_pairs, path_base,
                            output_dir):
     guide_paths = []
 
-    for benchmark_id, profile_id, profile_title in benchmark_profile_pairs:
+    for benchmark_id, profile_id, _ in benchmark_profile_pairs:
         if _is_blacklisted_profile(profile_id):
             continue
 
@@ -174,8 +176,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
         if index_initial_src is None:
             index_initial_src = guide_filename
 
-        queue.put((benchmark_id, profile_id, profile_title, input_path,
-                   guide_path))
+        queue.put((benchmark_id, profile_id, input_path, guide_path))
 
     return index_links, index_options, index_initial_src, queue
 

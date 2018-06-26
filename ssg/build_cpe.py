@@ -1,3 +1,7 @@
+"""
+Common functions for building CPEs
+"""
+
 from __future__ import absolute_import
 
 def extract_subelement(objects, sub_elem_type):
@@ -18,14 +22,14 @@ def extract_env_obj(objects, local_var):
 def extract_referred_nodes(tree_with_refs, tree_with_ids, attrname):
     reflist = []
     elementlist = []
-    iter = tree_with_refs.getiterator()
-    for element in iter:
+
+    for element in tree_with_refs.getiterator():
         value = element.get(attrname)
         if value is not None:
             reflist.append(value)
 
-    iter = tree_with_ids.getiterator()
-    for element in iter:
+    for element in tree_with_ids.getiterator():
         if element.get("id") in reflist:
             elementlist.append(element)
+
     return elementlist

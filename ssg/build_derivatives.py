@@ -1,3 +1,7 @@
+"""
+Common functions for enabling derivative products
+"""
+
 from __future__ import absolute_import
 
 import re
@@ -43,7 +47,7 @@ def add_notice(benchmark, namespace, notice, warning):
     index = -1
     prev_element = None
     existing_notices = list(benchmark.findall("./{%s}notice" % (namespace)))
-    if len(existing_notices) > 0:
+    if existing_notices:
         prev_element = existing_notices[0]
         # insert before the first notice
         index = list(benchmark).index(prev_element)
@@ -72,6 +76,10 @@ def add_notice(benchmark, namespace, notice, warning):
 
 
 def remove_idents(tree_root, namespace, prod="RHEL"):
+    """
+    Remove product identifiers from rules in XML tree
+    """
+
     ident_exp = '.*' + prod + '-*'
     ref_exp = prod + '-*'
     for rule in tree_root.findall(".//{%s}Rule" % (namespace)):
@@ -88,6 +96,9 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
 
 
 def scrape_benchmarks(root, namespace, dest):
+    """
+    Add all benchmark elements in root to dest list
+    """
     dest.extend([
         (namespace, elem)
         for elem in list(root.findall(".//{%s}Benchmark" % (namespace)))

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import sys
 
 from .xml import ElementTree as ET
-from .constants import disa_cciuri, XCCDF11_NS, stig_ns, stig_refs
+from .constants import XCCDF11_NS, stig_ns, stig_refs
 
 def add_references(reference, destination):
     try:

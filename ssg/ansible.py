@@ -1,9 +1,16 @@
+"""
+Common ansible functions for SSG
+"""
+
 from __future__ import absolute_import
 
-from .constants import *
-
+from .constants import ansible_version_requirement_pre_task_name
+from .constants import min_ansible_version
 
 def add_minimum_version(ansible_src):
+    """
+    Adds minimum ansible version to an Ansible script
+    """
     pre_task = (""" - hosts: all
    pre_tasks:
      - name: %s

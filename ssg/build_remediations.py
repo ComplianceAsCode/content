@@ -4,8 +4,6 @@ import sys
 import os
 import os.path
 import re
-import errno
-import argparse
 import codecs
 
 from .xml import ElementTree
