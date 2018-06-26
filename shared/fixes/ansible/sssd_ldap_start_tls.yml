@@ -1,0 +1,38 @@
+# platform = multi_platform_rhel, multi_platform_fedora
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+
+- name: "Set LDAP to be used for authentication"
+  lineinfile:
+    path: /etc/sysconfig/authconfig
+    regexp: '^USELDAPAUTH='
+    line: 'USELDAPAUTH=yes'
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Test for domain group"
+  shell: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  register: test_grep_domain
+  ignore_errors: yes
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Add default domain group and use STARTTLS (if no domain there)"
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    line: "[domain/default]\nldap_id_use_start_tls = True\n"
+  when: test_grep_domain.stdout == ""
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "Configure LDAP to use STARTTLS"
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    regexp: '^\s*ldap_id_use_start_tls'
+    insertafter: '\s*\[domain\/[^]]*]'
+    line: 'ldap_id_use_start_tls = True'
+  tags:
+    @ANSIBLE_TAGS@
