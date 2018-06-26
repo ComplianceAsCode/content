@@ -38,7 +38,7 @@ if hasattr(subprocess, "check_output"):
 def input_func(prompt=None):
     try:
         return str(raw_input(prompt))
-    except:
+    except NameError:
         return input(prompt)
 
 
