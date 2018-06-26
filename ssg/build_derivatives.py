@@ -94,15 +94,3 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
             if ref.text is not None:
                 if re.search(ref_exp, ref.text):
                     rule.remove(ref)
-
-
-def scrape_benchmarks(root, namespace, dest):
-    """
-    Add all benchmark elements in root to dest list
-    """
-    dest.extend([
-        (namespace, elem)
-        for elem in list(root.findall(".//{%s}Benchmark" % (namespace)))
-    ])
-    if root.tag == "{%s}Benchmark" % (namespace):
-        dest.append((namespace, root))

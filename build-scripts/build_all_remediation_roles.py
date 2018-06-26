@@ -64,7 +64,7 @@ def main():
         sys.exit(0)
 
     input_tree = ssg.xml.ElementTree.parse(input_path)
-    benchmarks = ssg.xccdf.get_benchmark_ids_titles_for_input(input_tree)
+    benchmarks = ssg.xccdf.get_benchmark_id_title_map(input_tree)
     if len(benchmarks) == 0:
         raise RuntimeError(
             "Expected input file '%s' to contain at least 1 xccdf:Benchmark. "

@@ -18,18 +18,17 @@ PROFILE_ID_BLACKLIST = ["test", "index", "default"]
 PROFILE_ID_PREFIX = ("^xccdf_org.*content_profile_")
 
 
-def get_benchmark_ids_titles_for_input(input_tree):
+def get_benchmark_id_title_map(input_tree):
+    input_root = input_tree.getroot()
     ret = {}
 
-    def scrape_benchmarks(root_element, namespace, dest):
-        candidates = \
-            list(root_element.findall(".//{%s}Benchmark" % (namespace)))
-        if root_element.tag == "{%s}Benchmark" % (namespace):
-            candidates.append(root_element)
+    for namespace in [XCCDF11_NS, XCCDF12_NS]:
+        candidates = []
+        scrape_benchmarks(input_root, namespace, candidates)
 
-        for elem in candidates:
-            id_ = elem.get("id")
-            if id_ is None:
+        for _, elem in candidates:
+            _id = elem.get("id")
+            if _id is None:
                 continue
 
             title = "<unknown>"
@@ -37,16 +36,7 @@ def get_benchmark_ids_titles_for_input(input_tree):
                 title = element.text
                 break
 
-            dest[id_] = title
-
-    input_root = input_tree.getroot()
-
-    scrape_benchmarks(
-        input_root, XCCDF11_NS, ret
-    )
-    scrape_benchmarks(
-        input_root, XCCDF12_NS, ret
-    )
+            ret[_id] = title
 
     return ret
 
@@ -113,3 +103,15 @@ def get_profile_short_id(long_id):
         return long_id[re.search(PROFILE_ID_PREFIX, long_id).end():]
 
     return long_id
+
+
+def scrape_benchmarks(root, namespace, dest):
+    """
+    Add all benchmark elements in root to dest list
+    """
+    dest.extend([
+        (namespace, elem)
+        for elem in list(root.findall(".//{%s}Benchmark" % (namespace)))
+    ])
+    if root.tag == "{%s}Benchmark" % (namespace):
+        dest.append((namespace, root))
