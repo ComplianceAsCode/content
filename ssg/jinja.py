@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
-import jinja2
 import os.path
+import jinja2
 
 from .utils import required_key
 

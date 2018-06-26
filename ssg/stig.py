@@ -4,7 +4,7 @@ import sys
 import csv
 
 from .xml import parse_file as parse_xml_file
-from .constants import disa_cciuri, XCCDF11_NS, stig_ns, stig_refs
+from .constants import disa_cciuri, XCCDF11_NS
 
 # This script creates a CSV file from an XCCDF file formatted in the
 # structure of a STIG.  This should enable its ingestion into VMS,

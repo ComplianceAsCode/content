@@ -1,12 +1,13 @@
 from __future__ import absolute_import
 
+import os
 import sys
 
 from .ansible import add_minimum_version
 from .shims import subprocess_check_output, Queue
 from .build_guides import _is_blacklisted_profile
-from .xccdf import *
-from .constants import *
+from .xccdf import get_profile_short_id
+from .constants import OSCAP_PATH, OSCAP_DS_STRING
 
 
 def generate_for_input_content(input_content, benchmark_id, profile_id,
