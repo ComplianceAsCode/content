@@ -85,13 +85,13 @@ class Profile(object):
         return profile
 
     def to_xml_element(self):
-        el = ET.Element('Profile')
-        el.set("id", self.id_)
+        element = ET.Element('Profile')
+        element.set("id", self.id_)
         if self.extends:
-            el.set("extends", self.extends)
-        title = add_sub_element(el, "title", self.title)
+            element.set("extends", self.extends)
+        title = add_sub_element(element, "title", self.title)
         title.set("override", "true")
-        desc = add_sub_element(el, "description", self.description)
+        desc = add_sub_element(element, "description", self.description)
         desc.set("override", "true")
 
         for selection in self.selections:
@@ -99,20 +99,20 @@ class Profile(object):
                 unselect = ET.Element("select")
                 unselect.set("idref", selection[1:])
                 unselect.set("selected", "false")
-                el.append(unselect)
+                element.append(unselect)
             elif "=" in selection:
                 refine_value = ET.Element("refine-value")
                 value_id, selector = selection.split("=", 1)
                 refine_value.set("idref", value_id)
                 refine_value.set("selector", selector)
-                el.append(refine_value)
+                element.append(refine_value)
             else:
                 select = ET.Element("select")
                 select.set("idref", selection)
                 select.set("selected", "true")
-                el.append(select)
+                element.append(select)
 
-        return el
+        return element
 
 
 class Value(object):
@@ -276,7 +276,7 @@ class Benchmark(object):
             if not os.path.isfile(dir_item_path):
                 continue
 
-            basename, ext = os.path.splitext(os.path.basename(dir_item_path))
+            _, ext = os.path.splitext(os.path.basename(dir_item_path))
             if ext != '.profile':
                 sys.stderr.write(
                     "Encountered file '%s' while looking for profiles, "
@@ -329,14 +329,14 @@ class Benchmark(object):
             if profile is not None:
                 root.append(profile.to_xml_element())
 
-        for v in self.values.values():
-            root.append(v.to_xml_element())
+        for value in self.values.values():
+            root.append(value.to_xml_element())
         if self.bash_remediation_fns_group is not None:
             root.append(self.bash_remediation_fns_group)
-        for g in self.groups.values():
-            root.append(g.to_xml_element())
-        for r in self.rules.values():
-            root.append(r.to_xml_element())
+        for group in self.groups.values():
+            root.append(group.to_xml_element())
+        for rule in self.rules.values():
+            root.append(rule.to_xml_element())
 
         return root
 
@@ -418,12 +418,12 @@ class Group(object):
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
 
-        for v in self.values.values():
-            group.append(v.to_xml_element())
-        for g in self.groups.values():
-            group.append(g.to_xml_element())
-        for r in self.rules.values():
-            group.append(r.to_xml_element())
+        for _value in self.values.values():
+            group.append(_value.to_xml_element())
+        for _group in self.groups.values():
+            group.append(_group.to_xml_element())
+        for _rule in self.rules.values():
+            group.append(_rule.to_xml_element())
 
         return group
 
@@ -510,7 +510,7 @@ class Rule(object):
 
         # Validate all identifiers are non-empty:
         for ident_type, ident_val in self.identifiers.items():
-            if not type(ident_type) == str or not type(ident_val) == str:
+            if not isinstance(ident_type, str) or not isinstance(ident_val, str):
                 raise ValueError("Identifiers and values must be strings: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_val.strip() == "":
@@ -526,7 +526,7 @@ class Rule(object):
             raise ValueError("Empty references section in file %s" % yaml_file)
 
         for ref_type, ref_val in self.references.items():
-            if not type(ref_type) == str or not type(ref_val) == str:
+            if not isinstance(ref_type, str) or not isinstance(ref_val, str):
                 raise ValueError("References and values must be strings: %s in file %s"
                                  % (ref_type, yaml_file))
             if ref_val.strip() == "":
@@ -602,44 +602,14 @@ class Rule(object):
         tree.write(file_name)
 
 
-def add_from_directory(action, parent_group, guide_directory, profiles_dir,
-                       bash_remediation_fns, output_file, env_yaml):
-    benchmark_file = None
-    group_file = None
-    rules = []
-    values = []
-    subdirectories = []
-    for dir_item in os.listdir(guide_directory):
-        dir_item_path = os.path.join(guide_directory, dir_item)
-        if os.path.isdir(dir_item_path):
-            subdirectories.append(dir_item_path)
-        else:
-            name, extension = os.path.splitext(dir_item)
-            if extension == '.var':
-                values.append(dir_item_path)
-            elif dir_item == "benchmark.yml":
-                if benchmark_file:
-                    raise ValueError("Multiple benchmarks in one directory")
-                benchmark_file = dir_item_path
-            elif dir_item == "group.yml":
-                if group_file:
-                    raise ValueError("Multiple groups in one directory")
-                group_file = dir_item_path
-            elif extension == '.rule':
-                rules.append(dir_item_path)
-            else:
-                sys.stderr.write(
-                    "Encountered file '%s' while recursing, extension '%s' "
-                    "is unknown. Skipping..\n"
-                    % (dir_item, extension)
-                )
-
+def load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
+                            profiles_dir, env_yaml, bash_remediation_fns):
+    group = None
     if group_file and benchmark_file:
         raise ValueError("A .benchmark file and a .group file were found in "
                          "the same directory '%s'" % (guide_directory))
 
     # we treat benchmark as a special form of group in the following code
-    group = None
     if benchmark_file:
         group = Benchmark.from_yaml(
             benchmark_file, 'product-name', env_yaml
@@ -654,6 +624,43 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
         group = Group.from_yaml(group_file, env_yaml)
         if action == "list-inputs":
             print(group_file)
+
+    return group
+
+
+def add_from_directory(action, parent_group, guide_directory, profiles_dir,
+                       bash_remediation_fns, output_file, env_yaml):
+    benchmark_file = None
+    group_file = None
+    rules = []
+    values = []
+    subdirectories = []
+    for dir_item in os.listdir(guide_directory):
+        dir_item_path = os.path.join(guide_directory, dir_item)
+        _, extension = os.path.splitext(dir_item)
+        if os.path.isdir(dir_item_path):
+            subdirectories.append(dir_item_path)
+        elif extension == '.var':
+            values.append(dir_item_path)
+        elif dir_item == "benchmark.yml":
+            if benchmark_file:
+                raise ValueError("Multiple benchmarks in one directory")
+            benchmark_file = dir_item_path
+        elif dir_item == "group.yml":
+            if group_file:
+                raise ValueError("Multiple groups in one directory")
+            group_file = dir_item_path
+        elif extension == '.rule':
+            rules.append(dir_item_path)
+        else:
+            sys.stderr.write(
+                "Encountered file '%s' while recursing, extension '%s' "
+                "is unknown. Skipping..\n"
+                % (dir_item, extension)
+            )
+
+    group = load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
+                                    profiles_dir, env_yaml, bash_remediation_fns)
 
     if group is not None:
         for value_yaml in values:
