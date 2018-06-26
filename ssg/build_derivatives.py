@@ -86,7 +86,7 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
     for rule in tree_root.findall(".//{%s}Rule" % (namespace)):
         for ident in rule.findall(".//{%s}ident" % (namespace)):
             if ident is not None:
-                if (re.search('CCE-*', ident.text) or
+                if (re.search(r'CCE-*', ident.text) or
                         re.search(ident_exp, ident.text)):
                     rule.remove(ident)
 

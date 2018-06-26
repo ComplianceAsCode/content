@@ -25,7 +25,7 @@ _version_name_map = {
 multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp"]
 
-PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
+PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
 
 def parse_name(product):
