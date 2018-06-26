@@ -2,18 +2,9 @@ from __future__ import absolute_import
 
 import os
 import os.path
-import errno
-import re
 import sys
 from copy import deepcopy
-import argparse
 import collections
-
-try:
-    from configparser import SafeConfigParser
-except ImportError:
-    # for python2
-    from ConfigParser import SafeConfigParser
 
 from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
@@ -22,19 +13,6 @@ from .products import parse_name, multi_list, map_name
 from .jinja import process_file
 from .utils import required_key
 from .xml import ElementTree
-
-
-def parse_conf_file(conf_file, product):
-    parser = SafeConfigParser()
-    parser.read(conf_file)
-    multi_platform = {}
-
-    for section in parser.sections():
-        for name, setting in parser.items(section):
-            setting = re.sub('.;:', ',', re.sub(' ', '', setting))
-            multi_platform[name] = [item for item in setting.split(",")]
-
-    return multi_platform
 
 
 def _check_is_applicable_for_product(oval_check_def, product):
@@ -50,8 +28,8 @@ def _check_is_applicable_for_product(oval_check_def, product):
 
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
-    for mp in multi_platforms:
-        if mp in oval_check_def and product in multi_list:
+    for multi_prod in multi_platforms:
+        if multi_prod in oval_check_def and product in multi_list:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'
@@ -241,8 +219,8 @@ def _check_oval_version_from_oval(xml_content, oval_version):
     try:
         argument = oval_header + xml_content + oval_footer
         oval_file_tree = ElementTree.fromstring(argument)
-    except ElementTree.ParseError as p:
-        line, column = p.position
+    except ElementTree.ParseError as error:
+        line, column = error.position
         lines = argument.splitlines()
         before = '\n'.join(lines[:line])
         column_pointer = ' ' * (column - 1) + '^'
@@ -282,10 +260,9 @@ def checks(env_yaml, oval_version, oval_dirs):
                     xml_content = process_file(
                         os.path.join(oval_dir, filename), env_yaml
                     )
-                    if not _check_is_applicable_for_product(
-                        xml_content,
-                        required_key(env_yaml, "product")
-                    ):
+
+                    product = required_key(env_yaml, "product")
+                    if not _check_is_applicable_for_product(xml_content, product):
                         continue
                     if _check_is_loaded(already_loaded, filename, oval_version):
                         continue
