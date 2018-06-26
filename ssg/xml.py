@@ -8,7 +8,7 @@ from .constants import xml_version, oval_header, timestamp
 
 try:
     from xml.etree import cElementTree as ElementTree
-except ImportError as e:
+except ImportError:
     import cElementTree as ElementTree
 
 
