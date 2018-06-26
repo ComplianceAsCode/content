@@ -4,8 +4,10 @@ import datetime
 import os.path
 
 
-JINJA_MACROS_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros.jinja")
+JINJA_MACROS_HIGHLEVEL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros-highlevel.jinja")
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 

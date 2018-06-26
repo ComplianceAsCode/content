@@ -6,7 +6,8 @@ import yaml
 from .jinja import _extract_substitutions_dict_from_template
 from .jinja import _rename_items
 from .jinja import process_file
-from .constants import PKG_MANAGER_TO_SYSTEM, JINJA_MACROS_DEFINITIONS
+from .constants import (PKG_MANAGER_TO_SYSTEM,
+                        JINJA_MACROS_BASE_DEFINITIONS, JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
@@ -37,33 +38,6 @@ def _open_yaml(stream):
         return None
 
     return yaml_contents
-
-
-def _identify_special_macro_mapping(existing_properties):
-    result = dict()
-
-    pkg_manager = existing_properties.get("pkg_manager")
-    if pkg_manager is not None:
-        _save_rename(result, "describe_package_install", pkg_manager)
-        _save_rename(result, "describe_package_remove", pkg_manager)
-
-    pkg_system = existing_properties.get("pkg_system")
-    if pkg_system is not None:
-        _save_rename(result, "ocil_package", pkg_system)
-        _save_rename(result, "complete_ocil_entry_package", pkg_system)
-
-    init_system = existing_properties.get("init_system")
-    if init_system is not None:
-        _save_rename(result, "describe_service_enable", init_system)
-        _save_rename(result, "describe_service_disable", init_system)
-        _save_rename(result, "ocil_service_enabled", init_system)
-        _save_rename(result, "ocil_service_disabled", init_system)
-        _save_rename(result, "describe_socket_enable", init_system)
-        _save_rename(result, "describe_socket_disable", init_system)
-        _save_rename(result, "complete_ocil_entry_socket_and_service_disabled",
-                     init_system)
-
-    return result
 
 
 def _get_implied_properties(existing_properties):
@@ -100,15 +74,14 @@ def open_and_macro_expand(yaml_file, substitutions_dict=None):
 
     try:
         macro_definitions = _extract_substitutions_dict_from_template(
-            JINJA_MACROS_DEFINITIONS, substitutions_dict)
+            JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
+        macro_definitions.update(_extract_substitutions_dict_from_template(
+            JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict))
     except Exception as exc:
-        msg = ("Error extracting macro definitions from {0}: {1}"
-               .format(JINJA_MACROS_DEFINITIONS, str(exc)))
+        msg = ("Error extracting macro definitions: {0}"
+               .format(str(exc)))
         raise RuntimeError(msg)
-    mapping = _identify_special_macro_mapping(substitutions_dict)
-    special_macros = _rename_items(macro_definitions, mapping)
     substitutions_dict.update(macro_definitions)
-    substitutions_dict.update(special_macros)
     return open_and_expand(yaml_file, substitutions_dict)
 
 
