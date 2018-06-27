@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'System Audit Logs Must Have Mode 0640 or Less Permissive'
 
@@ -17,9 +17,13 @@ rationale: 'If users can write to audit logs, audit trails can be modified or de
 severity: medium
 
 identifiers:
+    cce@rhel6: 27243-5
     cce@rhel7: 27205-4
 
 references:
+    stigid@rhel6: RHEL-06-000383
+    srg@rhel6: SRG-OS-000058
+    disa@rhel6: '166'
     cjis: 5.4.1.1
     cui: 3.3.1
     nist: AC-6,AU-1(b),AU-9,IR-5

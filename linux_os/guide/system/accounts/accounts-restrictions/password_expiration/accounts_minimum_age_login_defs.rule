@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Set Password Minimum Age'
 
@@ -18,9 +18,12 @@ rationale: "Enforcing a minimum password lifetime helps to prevent repeated pass
 severity: medium
 
 identifiers:
+    cce@rhel6: 27013-2
     cce@rhel7: 27002-5
 
 references:
+    stigid@rhel6: RHEL-06-000051
+    srg@rhel6: SRG-OS-000075
     cjis: 5.6.2.1.1
     cui: 3.5.8
     disa: "198"

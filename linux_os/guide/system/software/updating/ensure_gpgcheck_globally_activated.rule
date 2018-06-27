@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora,ol7
+prodtype: rhel6,rhel7,fedora,ol7
 
 title: 'Ensure gpgcheck Enabled In Main Yum Configuration'
 
@@ -17,9 +17,13 @@ rationale: "Changes to any software components can have significant effects on t
 severity: high
 
 identifiers:
+    cce@rhel6: 26709-6
     cce@rhel7: 26989-4
 
 references:
+    stigid@rhel6: RHEL-06-000013
+    srg@rhel6: SRG-OS-000103
+    disa@rhel6: 352,663
     cis: 1.2.2
     cjis: 5.10.4.1
     cui: 3.4.8

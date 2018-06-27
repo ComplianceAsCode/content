@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure All Accounts on the System Have Unique Names'
 
@@ -11,9 +11,12 @@ rationale: 'Unique usernames allow for accountability on the system.'
 severity: unknown
 
 identifiers:
+    cce@rhel6: 27609-7
     cce@rhel7: 80208-2
 
 references:
+    stigid@rhel6: RHEL-06-000296
+    srg@rhel6: SRG-OS-000121
     cjis: 5.5.2
     disa: 770,804
     pcidss: Req-8.1.1

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Limit the Number of Concurrent Login Sessions Allowed Per User'
 
@@ -19,9 +19,12 @@ rationale: |-
 severity: low
 
 identifiers:
+    cce@rhel6: 27457-1
     cce@rhel7: 27081-9
 
 references:
+    stigid@rhel6: RHEL-06-000319
+    srg@rhel6: SRG-OS-000027
     cjis: 5.5.2.2
     disa: "54"
     nist: AC-10

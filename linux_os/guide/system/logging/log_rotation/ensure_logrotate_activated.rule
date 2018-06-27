@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure Logrotate Runs Periodically'
 
@@ -14,9 +14,12 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 27014-0
     cce@rhel7: 80195-1
 
 references:
+    stigid@rhel6: RHEL-06-000138
+    srg@rhel6: SRG-OS-999999
     disa: "366"
     nist: AU-9
     pcidss: Req-10.7

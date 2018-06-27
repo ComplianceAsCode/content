@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure <tt>auditd</tt> Collects Information on Exporting to Media (successful)'
 
@@ -27,9 +27,14 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 26573-6
     cce@rhel7: 27447-2
 
 references:
+    stigid@rhel6: RHEL-06-000199
+    srg@rhel6: SRG-OS-000064
+    nist@rhel6: AC-3(10)
+    disa@rhel6: '126'
     cis: 5.2.13
     cjis: 5.4.1.1
     cui: 3.1.7

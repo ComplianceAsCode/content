@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Uninstall rsh-server Package'
 
@@ -20,9 +20,14 @@ rationale: |-
 severity: high
 
 identifiers:
+    cce@rhel6: 27062-9
     cce@rhel7: 27342-5
 
 references:
+    stigid@rhel6: RHEL-06-000213
+    srg@rhel6: SRG-OS-000095
+    nist@rhel6: CM-7
+    disa@rhel6: '305'
     disa: "381"
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
     iso27001-2013: A.8.2.3,A.13.1.1,A.13.2.1,A.13.2.3,A.14.1.2,A.14.1.3

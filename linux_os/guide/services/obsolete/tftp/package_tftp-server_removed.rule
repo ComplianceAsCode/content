@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Uninstall tftp-server Package'
 
@@ -11,9 +11,13 @@ rationale: "Removing the <tt>tftp-server</tt> package decreases the risk of the\
 severity: high
 
 identifiers:
+    cce@rhel6: 26946-4
     cce@rhel7: 80213-2
 
 references:
+    stigid@rhel6: RHEL-06-000222
+    srg@rhel6: SRG-OS-000095
+    disa@rhel6: '305'
     disa: 318,368,1812,1813,1814
     nist: AC-17(8),CM-6(c),CM-7
     srg: SRG-OS-000480-GPOS-00227

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Encrypt Partitions'
 
@@ -39,9 +39,14 @@ rationale: |-
 severity: high
 
 identifiers:
+    cce@rhel6: 27596-6
     cce@rhel7: 27128-8
 
 references:
+    stigid@rhel6: RHEL-06-000275
+    srg@rhel6: SRG-OS-000131,SRG-OS-000185,SRG-OS-000230
+    nist@rhel6: SC-28
+    disa@rhel6: 1019,1200
     cui: 3.13.16
     disa: 1199,2476
     hipaa: 164.308(a)(1)(ii)(D),164.308(b)(1),164.310(d),164.312(a)(1),164.312(a)(2)(iii),164.312(a)(2)(iv),164.312(b),164.312(c),164.314(b)(2)(i),164.312(d)

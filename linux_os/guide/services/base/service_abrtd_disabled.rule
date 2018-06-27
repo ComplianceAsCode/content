@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable Automatic Bug Reporting Tool (abrtd)'
 
@@ -20,9 +20,13 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 27247-6
     cce@rhel7: 26872-2
 
 references:
+    stigid@rhel6: RHEL-06-000261
+    srg@rhel6: SRG-OS-000096
+    disa@rhel6: '381'
     nist: AC-17(8),CM-7
 
 ocil: '{{{ ocil_service_disabled(service="abrtd") }}}'

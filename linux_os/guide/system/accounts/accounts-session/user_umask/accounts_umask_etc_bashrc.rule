@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Ensure the Default Bash Umask is Set Correctly'
 
@@ -18,9 +18,12 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 26917-5
     cce@rhel7: 80202-5
 
 references:
+    stigid@rhel6: RHEL-06-000342
+    srg@rhel6: SRG-OS-999999
     cis: 5.4.4
     disa: "366"
     nist: SA-8

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable Apache Qpid (qpidd)'
 
@@ -16,9 +16,12 @@ rationale: "The qpidd service is automatically installed when the \"base\" \npac
 severity: unknown
 
 identifiers:
+    cce@rhel6: 26928-2
     cce@rhel7: 80266-0
 
 references:
+    stigid@rhel6: RHEL-06-000267
+    srg@rhel6: SRG-OS-000096
     disa: "382"
     nist: AC-17(8),CM-7
 

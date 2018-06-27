@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,opensuse,fedora,ol7
+prodtype: rhel6,rhel7,opensuse,fedora,ol7
 
 title: 'Ensure No World-Writable Files Exist'
 
@@ -23,9 +23,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 26910-0
     cce@rhel7: 80131-6
 
 references:
+    stigid@rhel6: RHEL-06-000282
+    srg@rhel6: SRG-OS-999999
     cis: 6.1.10
     nist: AC-6
 

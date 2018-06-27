@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable Network Router Discovery Daemon (rdisc)'
 
@@ -20,9 +20,12 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 27261-7
     cce@rhel7: 80268-6
 
 references:
+    stigid@rhel6: RHEL-06-000268
+    srg@rhel6: SRG-OS-000096
     disa: "382"
     nist: AC-17(8),AC-4,CM-7
 

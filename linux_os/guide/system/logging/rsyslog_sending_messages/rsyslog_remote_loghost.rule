@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure Logs Sent To Remote Host'
 
@@ -38,9 +38,12 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 26801-1
     cce@rhel7: 27343-3
 
 references:
+    stigid@rhel6: RHEL-06-000136
+    srg@rhel6: SRG-OS-000043,SRG-OS-000215
     cis: 4.2.1.4
     disa: 366,1348,136,1851
     hipaa: 164.308(a)(1)(ii)(D),164.308(a)(5)(ii)(B),164.308(a)(5)(ii)(C),164.308(a)(6)(ii),164.308(a)(8),164.310(d)(2)(iii),164.312(b),164.314(a)(2)(i)(C),164.314(a)(2)(iii)

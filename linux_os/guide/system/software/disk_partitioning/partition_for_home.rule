@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Ensure /home Located On Separate Partition'
 
@@ -19,9 +19,13 @@ rationale: |-
 severity: low
 
 identifiers:
+    cce@rhel6: 26557-9
     cce@rhel7: 80144-9
 
 references:
+    stigid@rhel6: RHEL-06-000007
+    srg@rhel6: SRG-OS-999999
+    nist@rhel6: SC-32
     cis: 1.1.13
     disa: 366,1208
     nist: SC-32(1)

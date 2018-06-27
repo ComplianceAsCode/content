@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Uninstall telnet-server Package'
 
@@ -14,9 +14,14 @@ rationale: "It is detrimental for operating systems to provide, or install by de
 severity: high
 
 identifiers:
+    cce@rhel6: 27073-6
     cce@rhel7: 27165-0
 
 references:
+    stigid@rhel6: RHEL-06-000206
+    srg@rhel6: SRG-OS-000095
+    nist@rhel6: CM-7
+    disa@rhel6: '305'
     cis: 2.1.1
     disa: "381"
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)

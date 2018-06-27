@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Configure Kernel Parameter to Use TCP Syncookies'
 
@@ -17,9 +17,13 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 27053-8
     cce@rhel7: 27495-1
 
 references:
+    stigid@rhel6: RHEL-06-000095
+    srg@rhel6: SRG-OS-000142
+    disa@rhel6: 1092,1095
     cis: 3.2.8
     cjis: 5.10.1.1
     cui: 3.1.20

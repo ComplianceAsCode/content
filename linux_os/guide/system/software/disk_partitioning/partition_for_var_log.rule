@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Ensure /var/log Located On Separate Partition'
 
@@ -17,9 +17,13 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 26215-4
     cce@rhel7: 26967-0
 
 references:
+    stigid@rhel6: RHEL-06-000003
+    srg@rhel6: SRG-OS-999999
+    disa@rhel6: '1208'
     cis: 1.1.11
     nist: AU-9,SC-32
 

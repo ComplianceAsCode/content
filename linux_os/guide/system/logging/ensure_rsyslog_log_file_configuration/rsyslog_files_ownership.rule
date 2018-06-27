@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure Log Files Are Owned By Appropriate User'
 
@@ -24,9 +24,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 26812-8
     cce@rhel7: 80189-4
 
 references:
+    stigid@rhel6: RHEL-06-000133
+    srg@rhel6: SRG-OS-000206
     disa: "1314"
     nist: AC-6,SI-11
     pcidss: Req-10.5.1,Req-10.5.2

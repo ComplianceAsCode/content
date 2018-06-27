@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Ensure /var/log/audit Located On Separate Partition'
 
@@ -20,9 +20,14 @@ rationale: |-
 severity: low
 
 identifiers:
+    cce@rhel6: 26436-6
     cce@rhel7: 26971-2
 
 references:
+    stigid@rhel6: RHEL-06-000004
+    srg@rhel6: SRG-OS-000044
+    nist@rhel6: SC-32
+    disa@rhel6: 1208,137,138
     cis: 1.1.12
     disa: "366"
     hipaa: 164.312(a)(2)(ii)

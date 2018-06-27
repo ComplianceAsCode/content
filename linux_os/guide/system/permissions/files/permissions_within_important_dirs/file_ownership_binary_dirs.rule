@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Verify that System Executables Have Root Ownership'
 
@@ -27,9 +27,13 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 27623-8
     cce@rhel7: 27119-7
 
 references:
+    stigid@rhel6: RHEL-06-000048
+    srg@rhel6: SRG-OS-000259
+    disa@rhel6: '1499'
     nist: AC-6
 
 ocil_clause: 'any system executables are found to not be owned by root'

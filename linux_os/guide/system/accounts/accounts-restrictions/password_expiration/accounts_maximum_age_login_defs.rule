@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Set Password Maximum Age'
 
@@ -11,9 +11,13 @@ rationale: "Any password, no matter how complex, can eventually be cracked. Ther
 severity: medium
 
 identifiers:
+    cce@rhel6: 26985-2
     cce@rhel7: 27051-2
 
 references:
+    stigid@rhel6: RHEL-06-000053
+    srg@rhel6: SRG-OS-000076
+    disa@rhel6: '180'
     cis: 5.4.1.1
     cjis: 5.6.2.1
     cui: 3.5.6

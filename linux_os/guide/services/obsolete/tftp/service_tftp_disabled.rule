@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable tftp Service'
 
@@ -15,9 +15,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 27055-3
     cce@rhel7: 80212-4
 
 references:
+    stigid@rhel6: RHEL-06-000223
+    srg@rhel6: SRG-OS-000248
     cis: 2.1.6
     disa: "1436"
     nist: AC-17(8),CM-7

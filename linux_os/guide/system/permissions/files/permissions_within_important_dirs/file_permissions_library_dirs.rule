@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Verify that Shared Library Files Have Restrictive Permissions'
 
@@ -28,9 +28,13 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 27381-3
     cce@rhel7: 26966-2
 
 references:
+    stigid@rhel6: RHEL-06-000045
+    srg@rhel6: SRG-OS-000259
+    disa@rhel6: '1499'
     nist: AC-6
 
 ocil_clause: 'any of these files are group-writable or world-writable'

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable Postfix Network Listening'
 
@@ -17,9 +17,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 26780-7
     cce@rhel7: 80289-2
 
 references:
+    stigid@rhel6: RHEL-06-000249
+    srg@rhel6: SRG-OS-000096
     cis: 2.2.15
     disa: "382"
     nist: CM-7

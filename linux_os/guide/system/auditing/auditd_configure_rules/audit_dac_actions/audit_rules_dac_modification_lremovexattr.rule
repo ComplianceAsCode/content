@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Record Events that Modify the System''s Discretionary Access Controls - lremovexattr'
 
@@ -34,9 +34,14 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 27182-5
     cce@rhel7: 27410-0
 
 references:
+    stigid@rhel6: RHEL-06-000193
+    srg@rhel6: SRG-OS-000064
+    nist@rhel6: AC-3(10)
+    disa@rhel6: '126'
     cis: 5.2.10
     cjis: 5.4.1.1
     cui: 3.1.7

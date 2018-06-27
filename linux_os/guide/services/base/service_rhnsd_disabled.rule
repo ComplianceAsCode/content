@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable Red Hat Network Service (rhnsd)'
 
@@ -20,9 +20,12 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 26846-6
     cce@rhel7: 80269-4
 
 references:
+    stigid@rhel6: RHEL-06-000009
+    srg@rhel6: SRG-OS-000096
     cis: 1.2.5
     disa: "382"
     nist: AC-17(8),CM-7
