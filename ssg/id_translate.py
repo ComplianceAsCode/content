@@ -4,39 +4,8 @@ from __future__ import print_function
 from .xml import ElementTree
 from .constants import oval_namespace as oval_ns
 from .constants import ocil_namespace as ocil_ns
-
-ovaltag_to_abbrev = {
-    'definition': 'def',
-    'criteria': 'crit',
-    'test': 'tst',
-    'object': 'obj',
-    'state': 'ste',
-    'variable': 'var',
-}
-
-ociltag_to_abbrev = {
-    'questionnaire': 'questionnaire',
-    'action': 'testaction',
-    'question': 'question',
-    'artifact': 'artifact',
-    'variable': 'variable',
-}
-
-ovalrefattr_to_tag = {
-    "definition_ref": "definition",
-    "test_ref": "test",
-    "object_ref": "object",
-    "state_ref": "state",
-    "var_ref": "variable",
-}
-
-ocilrefattr_to_tag = {
-    "question_ref": "question",
-}
-
-ocilrefchild_to_tag = {
-    "test_action_ref": "action",
-}
+from .constants import OVALTAG_TO_ABBREV, OCILTAG_TO_ABBREV
+from .constants import OVALREFATTR_TO_TAG, OCILREFATTR_TO_TAG
 
 
 def _split_namespace(tag):
@@ -68,9 +37,9 @@ def _tagname_to_abbrev(tag):
     # grab the last part of the tag name to determine its type
     tag = tag.rsplit("_", 1)[-1]
     if namespace == ocil_ns:
-        return ociltag_to_abbrev[tag]
+        return OCILTAG_TO_ABBREV[tag]
     if namespace == oval_ns:
-        return ovaltag_to_abbrev[tag]
+        return OVALTAG_TO_ABBREV[tag]
 
     raise RuntimeError(
         "Error: unknown checksystem referenced in tag : %s" % tag
@@ -118,13 +87,13 @@ class IDTranslator(object):
                                                 element.text)
                 continue
             for attr in element.keys():
-                if attr in ovalrefattr_to_tag.keys():
+                if attr in OVALREFATTR_TO_TAG.keys():
                     element.set(attr, self.generate_id(
-                        "{%s}%s" % (oval_ns, ovalrefattr_to_tag[attr]),
+                        "{%s}%s" % (oval_ns, OVALREFATTR_TO_TAG[attr]),
                         element.get(attr)))
-                if attr in ocilrefattr_to_tag.keys():
+                if attr in OCILREFATTR_TO_TAG.keys():
                     element.set(attr, self.generate_id(
-                        "{%s}%s" % (ocil_ns, ocilrefattr_to_tag[attr]),
+                        "{%s}%s" % (ocil_ns, OCILREFATTR_TO_TAG[attr]),
                         element.get(attr)))
             if element.tag == "{%s}test_action_ref" % ocil_ns:
                 element.text = self.generate_id("{%s}action" % ocil_ns,

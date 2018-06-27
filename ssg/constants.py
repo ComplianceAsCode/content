@@ -162,3 +162,32 @@ OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS = {
     'fileset_revision': 'string',
     'binary': 'string'
 }
+
+OVALTAG_TO_ABBREV = {
+    'definition': 'def',
+    'criteria': 'crit',
+    'test': 'tst',
+    'object': 'obj',
+    'state': 'ste',
+    'variable': 'var',
+}
+
+OCILTAG_TO_ABBREV = {
+    'questionnaire': 'questionnaire',
+    'action': 'testaction',
+    'question': 'question',
+    'artifact': 'artifact',
+    'variable': 'variable',
+}
+
+OVALREFATTR_TO_TAG = {
+    "definition_ref": "definition",
+    "test_ref": "test",
+    "object_ref": "object",
+    "state_ref": "state",
+    "var_ref": "variable",
+}
+
+OCILREFATTR_TO_TAG = {
+    "question_ref": "question",
+}
