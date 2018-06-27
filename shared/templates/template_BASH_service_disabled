@@ -3,7 +3,22 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
+{{%- if init_system == "systemd" %}}
 
-service_command disable %DAEMONNAME%
+SYSTEMCTL_EXEC='/usr/bin/systemctl'
+"$SYSTEMCTL_EXEC" stop '%DAEMONNAME%.service'
+"$SYSTEMCTL_EXEC" disable '%DAEMONNAME%.service'
+# Disable socket activation if we have a unit file for it
+"$SYSTEMCTL_EXEC" list-unit-files | grep -q '^%DAEMONNAME%.socket\>' && "$SYSTEMCTL_EXEC" disable '%DAEMONNAME%.socket'
+# The service may not be running because it has been started and failed,
+# so let's reset the state so OVAL checks pass.
+# Service should be 'inactive', not 'failed' after reboot though.
+"$SYSTEMCTL_EXEC" reset-failed '%DAEMONNAME%.service'
+{{% elif init_system == "upstart" %}}
+
+/sbin/service '%DAEMONNAME%' disable
+/sbin/chkconfig --level 0123456 '%DAEMONNAME%' off
+{{% else %}}
+
+JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
+{{%- endif %}}
