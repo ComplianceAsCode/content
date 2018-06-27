@@ -3,6 +3,7 @@ Common functions for enabling derivative products
 """
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 import re
 from .xml import ElementTree
@@ -85,7 +86,7 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
     for rule in tree_root.findall(".//{%s}Rule" % (namespace)):
         for ident in rule.findall(".//{%s}ident" % (namespace)):
             if ident is not None:
-                if (re.search('CCE-*', ident.text) or
+                if (re.search(r'CCE-*', ident.text) or
                         re.search(ident_exp, ident.text)):
                     rule.remove(ident)
 
@@ -93,15 +94,3 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
             if ref.text is not None:
                 if re.search(ref_exp, ref.text):
                     rule.remove(ref)
-
-
-def scrape_benchmarks(root, namespace, dest):
-    """
-    Add all benchmark elements in root to dest list
-    """
-    dest.extend([
-        (namespace, elem)
-        for elem in list(root.findall(".//{%s}Benchmark" % (namespace)))
-    ])
-    if root.tag == "{%s}Benchmark" % (namespace):
-        dest.append((namespace, root))

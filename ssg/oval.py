@@ -14,7 +14,7 @@ from .xml import ElementTree as ET
 from .xml import oval_generated_header
 from .id_translate import IDTranslator
 
-SHARED_OVAL = re.sub('shared.*', 'shared', __file__) + '/checks/oval/'
+SHARED_OVAL = re.sub(r'shared.*', 'shared', __file__) + '/checks/oval/'
 
 
 # globals, to make recursion easier in case we encounter extend_definition

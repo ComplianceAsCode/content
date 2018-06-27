@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 import re
 
@@ -24,21 +25,19 @@ _version_name_map = {
 multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp"]
 
-PRODUCT_NAME_PARSER = re.compile("([a-zA-Z\-]+)([0-9]+)")
+PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
 
 def parse_name(product):
-    product_version = None
+    _product = product
+    _product_version = None
     match = PRODUCT_NAME_PARSER.match(product)
 
-    if match is not None:
-        if isinstance(match.group(1), str) or \
-                isinstance(match.group(1), unicode):
-            product = match.group(1)
-        if match.group(2).isdigit():
-            product_version = match.group(2)
+    if match:
+        _product = match.group(1)
+        _product_version = match.group(2)
 
-    return product, product_version
+    return _product, _product_version
 
 
 def map_name(version):

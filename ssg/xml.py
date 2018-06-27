@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 import platform
 
@@ -7,7 +8,7 @@ from .constants import xml_version, oval_header, timestamp
 
 try:
     from xml.etree import cElementTree as ElementTree
-except ImportError as e:
+except ImportError:
     import cElementTree as ElementTree
 
 

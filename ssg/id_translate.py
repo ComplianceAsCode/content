@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 from .xml import ElementTree
 from .constants import oval_namespace as oval_ns

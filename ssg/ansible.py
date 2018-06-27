@@ -3,6 +3,7 @@ Common ansible functions for SSG
 """
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 from .constants import ansible_version_requirement_pre_task_name
 from .constants import min_ansible_version

@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 import subprocess
 
@@ -37,7 +38,7 @@ if hasattr(subprocess, "check_output"):
 def input_func(prompt=None):
     try:
         return str(raw_input(prompt))
-    except:
+    except NameError:
         return input(prompt)
 
 

@@ -19,6 +19,7 @@ from optparse import OptionParser
 
 import ssg.constants
 import ssg.build_derivatives
+import ssg.xccdf
 import ssg.xml
 
 XCCDF11_NS = ssg.constants.XCCDF11_NS
@@ -80,8 +81,8 @@ def main():
 
     benchmarks = []
 
-    ssg.build_derivatives.scrape_benchmarks(root, XCCDF11_NS, benchmarks)
-    ssg.build_derivatives.scrape_benchmarks(root, XCCDF12_NS, benchmarks)
+    ssg.xccdf.scrape_benchmarks(root, XCCDF11_NS, benchmarks)
+    ssg.xccdf.scrape_benchmarks(root, XCCDF12_NS, benchmarks)
 
     # Remove CCEs and DISA STIG IDs from derivatives as these are specific to
     # the vendor/OS.

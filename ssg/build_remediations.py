@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 import sys
 import os
@@ -134,7 +135,7 @@ def get_populate_replacement(remediation_type, text):
 
     if remediation_type == 'bash':
         # Extract variable name
-        varname = re.search('\npopulate (\S+)\n',
+        varname = re.search(r'\npopulate (\S+)\n',
                             text, re.DOTALL).group(1)
         # Define fix text part to contribute to main fix text
         fixtextcontribution = '\n%s="' % varname
@@ -338,7 +339,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                     # This chunk contains call of other remediation function
                     else:
                         # Extract remediation function name
-                        funcname = re.search('\n\s*(\S+)(| .*)\n',
+                        funcname = re.search(r'\n\s*(\S+)(| .*)\n',
                                              fixparts[idx],
                                              re.DOTALL).group(1)
                         # Define new XCCDF <sub> element for the function
@@ -360,7 +361,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                         # end up with newline character, append the newline
                         # to the fix.text
                         if list(fix).index(xccdffuncsub) == 0:
-                            if re.search('.*\n$', fix.text) is None:
+                            if re.search(r'.*\n$', fix.text) is None:
                                 fix.text += '\n'
                         # If xccdffuncsub isn't the first child (first
                         # <xccdf:sub> being added), and tail of previous
@@ -368,7 +369,7 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                         # to the tail of previous child
                         else:
                             previouselem = fix[list(fix).index(xccdffuncsub) - 1]
-                            if re.search('.*\n$', previouselem.tail) is None:
+                            if re.search(r'.*\n$', previouselem.tail) is None:
                                 previouselem.tail += '\n'
 
         # Perform a sanity check if all known remediation function calls have been
