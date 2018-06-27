@@ -8,7 +8,7 @@ from template_common import FilesGenerator, UnknownTargetError
 
 class AccountsPasswordGenerator(FilesGenerator):
     def generate(self, target, pam_info):
-        VARIABLE, COMPARISON = pam_info
+        VARIABLE, OPERATION = pam_info
 
         if target == "bash":
             self.file_from_template(
@@ -32,7 +32,7 @@ class AccountsPasswordGenerator(FilesGenerator):
                 "./template_OVAL_accounts_password",
                 {
                     "%VARIABLE%": VARIABLE,
-                    "%COMPARISON%": COMPARISON
+                    "%OPERATION%": OPERATION
                 },
                 "./oval/accounts_password_pam_{0}.xml", VARIABLE
             )
