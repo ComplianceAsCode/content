@@ -25,8 +25,8 @@ def fix_is_applicable_for_product(platform, product):
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     result = False
-    for mp in multi_platforms:
-        if mp in platform and product in multi_list:
+    for _platform in multi_platforms:
+        if _platform in platform and product in multi_list:
             result = True
 
     product_name = ""
@@ -37,8 +37,8 @@ def fix_is_applicable_for_product(platform, product):
         product_name = map_name(product)
 
     # Test if this is for the concrete product version
-    for pf in platform.split(','):
-        if product_name == pf.strip():
+    for _name_part in platform.split(','):
+        if product_name == _name_part.strip():
             result = True
 
     # Remediation script isn't neither a multi platform one, nor isn't
@@ -73,7 +73,7 @@ def get_available_functions(build_dir):
         # ElementTree sorting XML attrs alphabetically. Hidden is guaranteed
         # to be the first attr and ID is guaranteed to be second.
         remediation_functions = re.findall(
-            '<Value hidden=\"true\" id=\"function_(\S+)\"',
+            r'<Value hidden=\"true\" id=\"function_(\S+)\"',
             filestring, re.DOTALL
         )
 
@@ -265,19 +265,18 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
         # This remediation script utilizes some of internal remediation functions
         # Expand shell variables and remediation functions calls with <xccdf:sub>
         # elements
-        pattern = '\n+(\s*(?:' + '|'.join(remediation_functions) + ')[^\n]*)\n'
+        pattern = r'\n+(\s*(?:' + r'|'.join(remediation_functions) + r')[^\n]*)\n'
         patcomp = re.compile(pattern, re.DOTALL)
         fixparts = re.split(patcomp, fix.text)
         if fixparts[0] is not None:
             # Split the portion of fix.text from fix start to first call of
-            # remediation function into two parts:
-            # * head        to hold inclusion of the remediation functions
+            # remediation function, keeping only the third part:
             # * tail        to hold part of the fix.text after inclusion,
             #               but before first call of remediation function
             try:
                 rfpattern = '(.*remediation_functions)(.*)'
                 rfpatcomp = re.compile(rfpattern, re.DOTALL)
-                _, head, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
+                _, _, tail, _ = re.split(rfpatcomp, fixparts[0], maxsplit=2)
             except ValueError:
                 sys.stderr.write("Processing fix.text for: %s rule\n"
                                  % fix.get('rule'))
@@ -311,9 +310,8 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 if re.match(pattern, fixparts[idx], re.DOTALL) is not None:
                     # This chunk contains call of 'populate' function
                     if "populate" in fixparts[idx]:
-                        varname, fixtextcontrib = get_populate_replacement(
-                                remediation_type,
-                                fixparts[idx])
+                        varname, fixtextcontrib = get_populate_replacement(remediation_type,
+                                                                           fixparts[idx])
                         # Define new XCCDF <sub> element for the variable
                         xccdfvarsub = ElementTree.Element("sub", idref=varname)
 
@@ -382,17 +380,17 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             if child is not None and child.text is not None:
                 modfix.append(child.text)
         modfixtext = "".join(modfix)
-        for f in remediation_functions:
+        for func in remediation_functions:
             # Then efine expected XCCDF sub element form for this function
-            funcxccdfsub = "<sub idref=\"function_%s\"" % f
+            funcxccdfsub = "<sub idref=\"function_%s\"" % func
             # Finally perform the sanity check -- if function was properly XCCDF
             # substituted both the original function call and XCCDF <sub> element
             # for that function need to be present in the modified text of the fix
             # Otherwise something went wrong, thus exit with failure
-            if f in modfixtext and funcxccdfsub not in modfixtext:
+            if func in modfixtext and funcxccdfsub not in modfixtext:
                 sys.stderr.write("Error performing XCCDF <sub> substitution "
                                  "for function %s in %s fix. Exiting...\n"
-                                 % (f, fix.get("rule")))
+                                 % (func, fix.get("rule")))
                 sys.exit(1)
     else:
         sys.stderr.write("Unknown remediation type '%s'\n" % (remediation_type))
