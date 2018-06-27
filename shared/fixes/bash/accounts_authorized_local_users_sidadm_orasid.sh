@@ -8,6 +8,24 @@ default_os_user="root"
 # add users sidamd, orasid, sapadm and oracle if needed
 userlist="root"
 sapmnt_SID_stem="/sapmnt/[A-Z][A-Z0-9][A-Z0-9]"
+oracle_SID_stem="/oracle/[A-Z][A-Z0-9][A-Z0-9]"
+
+# if owner of any directory or file in the given list is the user oracle,
+# add the user oracle to the variable userlist. 
+# Usage: verify_oracle_user_to_userlist "$path_list"
+# Note: this function might modify the value of the global variable userlist
+function verify_oracle_user_to_userlist {
+	local path_list="$1"
+	local is_oracle=no
+	for path in $path_list ; do
+		if [ $(ls -ld "$path" | awk '{print $3}') = "oracle" ]; then
+			is_oracle=yes
+		fi
+	done
+	if test "$is_oracle" = yes ; then
+		userlist="$userlist|oracle" ;
+	fi
+} 
 
 # if /sapmnt is a directory or a symbolic link to a directory,
 # then try to add SAP system users to the userlist
@@ -25,23 +43,22 @@ if [ -d "/sapmnt" ] ; then
 
 	# if brspace exist in any of the above directory of a SID, add orasid to the userlist 
 	for path_to_brspace in $path_to_brspace_list ; do
-        	SID=${path_to_brspace:8:3}
-        	userlist="$userlist|ora$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')"
+		SID=${path_to_brspace:8:3}
+		userlist="$userlist|ora$(echo "$SID" | sed -e 's/\(.*\)/\L\1/')"
 	done
 
 	# if owner of any brspace file is oracle, add oracle to the userlist
-	oracle=false
-	for path_to_brspace in $path_to_brspace_list ; do
-        	if [ $(ls -ld $path_to_brspace | awk '{print $3}') = "oracle" ]; then
-                	oracle=true
-        	fi
-	done
-	if test "$oracle" = true ; then
-        	userlist="$userlist|oracle"
-	fi
+	verify_oracle_user_to_userlist "$path_to_brspace_list"
 fi
 
-# if /usr/sap/hostctrl is a directory or a symbolic linkd to a directory, add sapadm to the list
+# if owner of any /oracle/SID directory is oracle, add oracle to the userlist
+# the user oracle could be added twice in the userlist, but it is harmlos to the final result
+if [ -d "/oracle" ] ; then
+	path_oracle_SID_list=$(find /oracle/ -regex "^$oracle_SID_stem$")
+	verify_oracle_user_to_userlist "$path_oracle_SID_list"
+fi
+
+# if /usr/sap/hostctrl is a directory or a symbolic link to a directory, add sapadm to the list
 if [ -d /usr/sap/hostctrl ] ; then
 	userlist="$userlist|sapadm"
 fi
