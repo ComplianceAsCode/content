@@ -8,7 +8,7 @@ from template_common import FilesGenerator, UnknownTargetError
 
 class AccountsPasswordGenerator(FilesGenerator):
     def generate(self, target, pam_info):
-        VARIABLE, = pam_info
+        VARIABLE, OPERATION = pam_info
 
         if target == "bash":
             self.file_from_template(
@@ -26,6 +26,15 @@ class AccountsPasswordGenerator(FilesGenerator):
                     "%VARIABLE%": VARIABLE
                 },
                 "./ansible/accounts_password_pam_{0}.yml", VARIABLE
+            )
+        elif target == "oval":
+            self.file_from_template(
+                "./template_OVAL_accounts_password",
+                {
+                    "%VARIABLE%": VARIABLE,
+                    "%OPERATION%": OPERATION
+                },
+                "./oval/accounts_password_pam_{0}.xml", VARIABLE
             )
 
         else:
