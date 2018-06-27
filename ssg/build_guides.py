@@ -53,8 +53,8 @@ def builder(queue):
                 input_path, benchmark_id, profile_id
             )
 
-            with open(guide_path, "wb") as file:
-                file.write(guide_html.encode("utf-8"))
+            with open(guide_path, "wb") as guide_file:
+                guide_file.write(guide_html.encode("utf-8"))
 
             queue.task_done()
         except Queue.Empty:
