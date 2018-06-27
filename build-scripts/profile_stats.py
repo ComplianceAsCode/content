@@ -9,6 +9,7 @@ import os.path
 import sys
 
 import ssg.build_profile
+import ssg.constants
 import ssg.xml
 
 
@@ -93,7 +94,7 @@ def main():
     if args.profile:
         ret.append(benchmark.show_profile_stats(args.profile, args))
     else:
-        all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (xccdf_ns))
+        all_profile_elems = benchmark.tree.findall("./{%s}Profile" % (ssg.constants.XCCDF11_NS))
         ret = []
         for elem in all_profile_elems:
             profile = elem.get('id')
