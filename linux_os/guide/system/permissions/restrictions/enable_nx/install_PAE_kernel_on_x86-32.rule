@@ -13,8 +13,12 @@ description: |-
     be installed to enable XD or NX support:
     <pre>$ sudo yum install kernel-PAE</pre>
     The installation process should also have configured the
-    bootloader to load the new kernel at boot. Verify this at reboot
+    bootloader to load the new kernel at boot. Verify this after reboot
+    {{% if product == "rhel6" %}}
+    and modify <tt>/etc/grub.conf</tt> if necessary.
+    {{% else %}}
     and modify <tt>/etc/default/grub</tt> if necessary.
+    {{% endif %}}
 
 rationale: |-
     On 32-bit systems that support the XD or NX bit, the vendor-supplied
