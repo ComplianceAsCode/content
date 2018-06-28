@@ -89,7 +89,7 @@ selections:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_repo_metadata
     - ensure_gpgcheck_local_packages
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - service_auditd_enabled
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_su

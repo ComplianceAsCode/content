@@ -11,7 +11,7 @@ description: |-
 
 selections:
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
     - auditd_data_retention_max_log_file_action

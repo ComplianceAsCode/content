@@ -192,7 +192,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - rsyslog_cron_logging
     - rsyslog_nolisten
     - service_auditd_enabled

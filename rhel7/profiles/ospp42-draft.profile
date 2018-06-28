@@ -10,7 +10,7 @@ description: "This profile reflects mandatory configuration controls identified\
 
 selections:
     - installed_OS_is_certified
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - service_auditd_enabled
     - grub2_enable_fips_mode
     - rpm_verify_hashes

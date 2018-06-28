@@ -38,7 +38,7 @@ selections:
     - account_unique_name
     - service_firewalld_enabled
     - set_firewalld_default_zone
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - var_auditd_num_logs=5
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file

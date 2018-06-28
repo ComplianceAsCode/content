@@ -133,7 +133,7 @@ selections:
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_max_log_file_action
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
