@@ -99,7 +99,7 @@ selections:
     - disable_host_auth
     - bootloader_password
     - require_singleuser_auth
-    - bootloader_uefi_password
+    - grub2_uefi_password
     - smartcard_auth
     - package_rsh-server_removed
     - package_ypserv_removed

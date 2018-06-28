@@ -43,7 +43,7 @@ selections:
     - dconf_gnome_session_idle_user_locks
     - accounts_tmout
     - bootloader_password
-    - bootloader_uefi_password
+    - grub2_uefi_password
     - disable_interactive_boot
     - no_empty_passwords
     - require_singleuser_auth

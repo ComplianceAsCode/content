@@ -15,7 +15,7 @@ description: |-
 
 selections:
     - bootloader_password
-    - bootloader_uefi_password
+    - grub2_uefi_password
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
     - file_user_owner_grub2_cfg

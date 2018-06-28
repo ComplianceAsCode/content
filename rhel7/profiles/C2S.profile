@@ -53,7 +53,7 @@ selections:
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
     - bootloader_password
-    - bootloader_uefi_password
+    - grub2_uefi_password
     - require_singleuser_auth
     - disable_users_coredumps
     - sysctl_fs_suid_dumpable

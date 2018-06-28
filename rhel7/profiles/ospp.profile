@@ -51,7 +51,7 @@ selections:
     - sshd_set_idle_timeout
     - accounts_password_all_shadowed
     - bootloader_password
-    - bootloader_uefi_password
+    - grub2_uefi_password
     - disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
