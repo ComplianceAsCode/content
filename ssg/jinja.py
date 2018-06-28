@@ -24,13 +24,13 @@ class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
         if not os.path.isabs(template):
             raise jinja2.TemplateNotFound(template)
 
-        f = jinja2.utils.open_if_exists(template)
-        if f is None:
+        template_file = jinja2.utils.open_if_exists(template)
+        if template_file is None:
             raise jinja2.TemplateNotFound(template)
         try:
-            contents = f.read().decode(self.encoding)
+            contents = template_file.read().decode(self.encoding)
         finally:
-            f.close()
+            template_file.close()
 
         mtime = os.path.getmtime(template)
 

@@ -51,7 +51,9 @@ class XCCDFBenchmark(object):
             if rule_id is None:
                 raise RuntimeError("Can't index a rule with no id attribute!")
 
-            assert(rule_id not in self.indexed_rules)
+            if rule_id in self.indexed_rules:
+                raise RuntimeError("Multiple rules exist with same id attribute: %s!" % rule_id)
+
             self.indexed_rules[rule_id] = rule
 
     def get_profile_stats(self, profile):
@@ -59,7 +61,7 @@ class XCCDFBenchmark(object):
 
         # Holds the intermediary statistics for profile
         profile_stats = {
-            'profile_id': None,
+            'profile_id': "",
             'ssg_version': 0,
             'rules_count': 0,
             'implemented_ovals': [],
@@ -100,8 +102,8 @@ class XCCDFBenchmark(object):
                       % profile)
                 print("* Available profiles:")
                 profiles_avail = self.tree.findall("./{%s}Profile" % (xccdf_ns))
-                for profile in profiles_avail:
-                    print("** %s" % profile.get('id'))
+                for _profile in profiles_avail:
+                    print("** %s" % _profile.get('id'))
                 sys.exit(1)
 
             # This will only work with SSG where the (default) profile has zero
@@ -389,11 +391,11 @@ class XCCDFBenchmark(object):
            long, each row 'width' characters wide"""
 
         msg = ''
-        for x in content:
-            if len(msg) + len(x) < width - 6:
-                msg += '   ' + "%-45s" % x
+        for item in content:
+            if len(msg) + len(item) < width - 6:
+                msg += '   ' + "%-45s" % item
             else:
                 print("%s" % msg)
-                msg = '   ' + "%-45s" % x
+                msg = '   ' + "%-45s" % item
         if msg != '':
             print("%s" % msg)

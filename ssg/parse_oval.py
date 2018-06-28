@@ -51,9 +51,9 @@ class ElementFinder(object):
             reference_target = REFERENCE_TO_GROUP[name]
             new_root = self.oval_groups[reference_target][element.text]
         else:
-            x = _search_element_for_reference_attributes(element)
-            if x is not None:
-                ref_attribute_name, entity_id = x
+            _attr_group = _search_element_for_reference_attributes(element)
+            if _attr_group is not None:
+                ref_attribute_name, entity_id = _attr_group
                 reference_target = REFERENCE_TO_GROUP[ref_attribute_name]
                 new_root = self.oval_groups[reference_target][entity_id]
 
@@ -63,15 +63,15 @@ class ElementFinder(object):
 
 def _sort_by_id(elements):
     ret = dict()
-    for el in elements:
-        ret[el.attrib["id"]] = el
+    for element in elements:
+        ret[element.attrib["id"]] = element
     return ret
 
 
 def _search_dict_for_items_that_end_with(dic, what_to_look_for):
-    for it in dic:
-        if it.endswith(what_to_look_for):
-            return dic[it]
+    for item in dic:
+        if item.endswith(what_to_look_for):
+            return dic[item]
     return None
 
 
@@ -97,17 +97,15 @@ def find_extending_defs(oval_groups, defn):
 
 
 def get_container_groups(fname):
-    et = ET.parse(fname)
-
-    return _get_container_oval_groups_from_tree(et)
+    return _get_container_oval_groups_from_tree(ET.parse(fname))
 
 
 def _strip_ns_from_tag(tag_name):
     return tag_name.split("}", 1)[1]
 
 
-def _get_container_oval_groups_from_tree(et):
-    root = et.getroot()
+def _get_container_oval_groups_from_tree(element_tree):
+    root = element_tree.getroot()
 
     oval_groups = {}
     for child in root:

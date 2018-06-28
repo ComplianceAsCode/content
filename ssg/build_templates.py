@@ -34,6 +34,8 @@ from create_file_permissions import FilePermissionsGenerator
 class Builder(object):
     def __init__(self):
         self.input_dir = None
+        self.template_dir = None
+        self.csv_dir = None
         self.output_dir = None
         self.ssg_shared = ""
 

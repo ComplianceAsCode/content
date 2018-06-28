@@ -6,10 +6,11 @@ import sys
 from .xml import ElementTree as ET
 from .constants import XCCDF11_NS, stig_ns, stig_refs
 
+
 def add_references(reference, destination):
     try:
         reference_root = ET.parse(reference)
-    except IOError as exception:
+    except IOError:
         print("INFO: DISA STIG Reference file not found for this platform")
         sys.exit(0)
 
