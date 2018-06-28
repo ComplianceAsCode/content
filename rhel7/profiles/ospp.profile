@@ -52,7 +52,7 @@ selections:
     - accounts_password_all_shadowed
     - grub2_password
     - grub2_uefi_password
-    - disable_interactive_boot
+    - grub2_disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
     - require_singleuser_auth

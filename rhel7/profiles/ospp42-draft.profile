@@ -44,7 +44,7 @@ selections:
     - accounts_tmout
     - grub2_password
     - grub2_uefi_password
-    - disable_interactive_boot
+    - grub2_disable_interactive_boot
     - no_empty_passwords
     - require_singleuser_auth
     - service_debug-shell_disabled

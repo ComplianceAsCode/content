@@ -19,7 +19,7 @@ selections:
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
     - file_user_owner_grub2_cfg
-    - disable_interactive_boot
+    - grub2_disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
     - require_singleuser_auth
