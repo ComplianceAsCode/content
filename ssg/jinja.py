@@ -70,7 +70,7 @@ _get_jinja_environment.env = None
 
 def _extract_substitutions_dict_from_template(filename, substitutions_dict):
     template = _get_jinja_environment(substitutions_dict).get_template(filename)
-    all_symbols = template.make_module().__dict__
+    all_symbols = template.make_module(substitutions_dict).__dict__
     symbols_to_export = dict()
     for name, symbol in all_symbols.items():
         if name.startswith("_"):
