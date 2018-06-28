@@ -251,7 +251,7 @@ selections:
     - accounts_no_uid_except_zero
     - accounts_umask_etc_login_defs
     - dir_perms_world_writable_system_owned
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - file_group_owner_grub2_cfg
     - file_groupowner_cron_allow
     - file_owner_cron_allow

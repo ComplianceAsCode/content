@@ -70,7 +70,7 @@ selections:
     - sshd_use_approved_macs
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - sebool_selinuxuser_execheap
     - sebool_selinuxuser_execmod
     - sebool_selinuxuser_execstack

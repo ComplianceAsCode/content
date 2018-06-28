@@ -60,7 +60,7 @@ selections:
     - sysctl_kernel_exec_shield
     - sysctl_kernel_randomize_va_space
     - disable_prelink
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - var_selinux_state=enforcing
     - selinux_state
     - var_selinux_policy_name=targeted
