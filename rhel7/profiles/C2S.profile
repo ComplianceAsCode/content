@@ -52,7 +52,7 @@ selections:
     - file_user_owner_grub2_cfg
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
-    - bootloader_password
+    - grub2_password
     - grub2_uefi_password
     - require_singleuser_auth
     - disable_users_coredumps

@@ -14,7 +14,7 @@ description: |-
     Rule identified for securing of electronic protected health information.
 
 selections:
-    - bootloader_password
+    - grub2_password
     - grub2_uefi_password
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg

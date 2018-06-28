@@ -42,7 +42,7 @@ selections:
     - dconf_gnome_screensaver_user_locks
     - dconf_gnome_session_idle_user_locks
     - accounts_tmout
-    - bootloader_password
+    - grub2_password
     - grub2_uefi_password
     - disable_interactive_boot
     - no_empty_passwords

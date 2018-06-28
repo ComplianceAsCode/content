@@ -97,7 +97,7 @@ selections:
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
     - disable_host_auth
-    - bootloader_password
+    - grub2_password
     - require_singleuser_auth
     - grub2_uefi_password
     - smartcard_auth
