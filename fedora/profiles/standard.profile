@@ -78,7 +78,7 @@ selections:
     - audit_rules_sysadmin_actions
     - audit_rules_kernel_module_loading
     - audit_rules_immutable
-    - bootloader_nousb_argument
+    - grub2_nousb_argument.rule
     - service_chronyd_or_ntpd_enabled
     - chronyd_or_ntpd_specify_remote_server
     - service_auditd_enabled
