@@ -462,14 +462,6 @@
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="os-type-macro">
-    <xsl:choose>
-      <xsl:when test="contains(@type, $prod_type) = 'true'">
-        <xsl:apply-templates select="node()|text()"/>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Removes prodtype from Elements as it is not a part of the XCCDF specification -->
   <xsl:template match="@prodtype"/>
 
