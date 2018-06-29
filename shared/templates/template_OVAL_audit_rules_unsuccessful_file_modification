@@ -3,7 +3,7 @@
     <metadata>
       <title>Ensure auditd Collects Unauthorized Access Attempts to Files (unsuccessful) - %NAME%</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
         <platform>multi_platform_fedora</platform>
       </affected>
       <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
@@ -46,12 +46,18 @@
     </criteria>
   </definition>
 
+{{% if product == "rhel6" %}}
+  {{% set AUID = 500 %}}
+{{% else %}}
+  {{% set AUID = 1000 %}}
+{{% endif %}}
+
   <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eacces" id="test_32bit_arufm_eacces_%NAME%_augenrules" version="1">
     <ind:object object_ref="object_32bit_arufm_eacces_%NAME%_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eacces_%NAME%_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -60,7 +66,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eperm_%NAME%_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -69,7 +75,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eacces_%NAME%_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -78,7 +84,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eperm_%NAME%_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -87,7 +93,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eacces_%NAME%_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -96,7 +102,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eperm_%NAME%_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -105,7 +111,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eacces_%NAME%_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -114,7 +120,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eperm_%NAME%_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>=1000[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+%NAME%[\s]+|([\s]+|[,])%NAME%([\s]+|[,])))(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ AUID }}}[\s]+)(?:.*-F\s+auid!=4294967295[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
