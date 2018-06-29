@@ -2,7 +2,16 @@ documentation_complete: true
 
 title: 'Use Only FIPS 140-2 Validated MACs'
 
+{{% if product == "rhel6" %}}
+description: |-
+    Limit the MACs to those hash algorithms which are FIPS-approved.
+    The following line in <tt>/etc/ssh/sshd_config</tt>
+    demonstrates use of FIPS-approved MACs:
+    <pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
+    The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
+{{% else %}}
 description: "Limit the MACs to those hash algorithms which are FIPS-approved.\nThe following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use \nof FIPS-approved MACs:\n<br /><br />\n<pre>MACs hmac-sha2-512,hmac-sha2-256</pre>\n<br /><br />\nOnly the following message authentication codes are FIPS 140-2 certified on RHEL 7:\n<br />- hmac-sha1\n<br />- hmac-sha2-256\n<br />- hmac-sha2-512\n<br />- hmac-sha1-etm@openssh.com\n<br />- hmac-sha2-256-etm@openssh.com\n<br />- hmac-sha2-512-etm@openssh.com\n<br /><br />\nAny combination of the above MACs will pass this check. Official FIPS 140-2 paperwork for\nRHEL7 can be found at http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf."
+{{% endif %}}
 
 rationale: |-
     DoD Information Systems are required to use FIPS-approved cryptographic hash
