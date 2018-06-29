@@ -1,14 +1,21 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6, rhel7
 
-title: 'Configure <tt>firewalld</tt> to Allow Access to the Web Server'
+title: 'Configure firewall to Allow Access to the Web Server'
 
 description: |-
+    {{% if product == "rhel7" %}}
     By default, <tt>firewalld</tt>
     blocks access to the ports used by the web server.
     {{{ describe_firewalld_allow(proto="tcp", service="http") }}}
     {{{ describe_firewalld_allow(proto="tcp", service="https") }}}
+    {{% else %}}
+    By default, <tt>iptables</tt>
+    blocks access to the ports used by the web server.
+    {{{ describe_iptables_allow(proto="tcp", port=80) }}}
+    {{{ describe_iptables_allow(proto="tcp", port=443) }}}
+    {{% endif %}}
 
 rationale: |-
     Failure to comply with DoD ports, protocols, and services (PPS) requirements
@@ -18,7 +25,7 @@ rationale: |-
 severity: low
 
 references:
-    stigid: WG610
+    stigid@rhel7: WG610
 
 ocil_clause: 'it is not'
 

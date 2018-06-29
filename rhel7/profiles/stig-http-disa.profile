@@ -25,7 +25,7 @@ selections:
     - httpd_antivirus_scan_uploads
     - dir_perms_var_log_httpd
     - http_configure_log_file_ownership
-    - httpd_configure_firewalld
+    - httpd_configure_firewall
     - httpd_configure_documentroot
     - partition_for_web_content
     - httpd_encrypt_file_uploads
