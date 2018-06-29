@@ -2,7 +2,17 @@ documentation_complete: true
 
 title: 'Use Only FIPS 140-2 Validated Ciphers'
 
+{{% if product == "rhel6" %}}
+description: |-
+    Limit the ciphers to those algorithms which are FIPS-approved.
+    Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+    The following line in <tt>/etc/ssh/sshd_config</tt>
+    demonstrates use of FIPS-approved ciphers:
+    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
+    The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+{{% else %}}
 description: "Limit the ciphers to those algorithms which are FIPS-approved.\nCounter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.\nThe following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of \nFIPS 140-2 validated ciphers:\n<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>\n<br /><br />\nThe following ciphers are FIPS 140-2 certified on RHEL 7:\n<br />- aes128-ctr\n<br />- aes192-ctr\n<br />- aes256-ctr\n<br />- aes128-cbc\n<br />- aes192-cbc\n<br />- aes256-cbc\n<br />- 3des-cbc\n<br />- rijndael-cbc@lysator.liu.se\n<br /><br />\nAny combination of the above ciphers will pass this check. Official FIPS 140-2 paperwork for \nRHEL7 can be found at http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf."
+{{% endif %}}
 
 rationale: |-
     Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore
