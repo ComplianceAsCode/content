@@ -14,12 +14,12 @@ description: |-
     Rule identified for securing of electronic protected health information.
 
 selections:
-    - bootloader_password
-    - bootloader_uefi_password
+    - grub2_password
+    - grub2_uefi_password
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
     - file_user_owner_grub2_cfg
-    - disable_interactive_boot
+    - grub2_disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
     - require_singleuser_auth
@@ -70,7 +70,7 @@ selections:
     - sshd_use_approved_macs
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - sebool_selinuxuser_execheap
     - sebool_selinuxuser_execmod
     - sebool_selinuxuser_execstack
@@ -89,7 +89,7 @@ selections:
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_repo_metadata
     - ensure_gpgcheck_local_packages
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - service_auditd_enabled
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_su

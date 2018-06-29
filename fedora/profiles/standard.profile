@@ -38,7 +38,7 @@ selections:
     - account_unique_name
     - service_firewalld_enabled
     - set_firewalld_default_zone
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - var_auditd_num_logs=5
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
@@ -78,7 +78,7 @@ selections:
     - audit_rules_sysadmin_actions
     - audit_rules_kernel_module_loading
     - audit_rules_immutable
-    - bootloader_nousb_argument
+    - grub2_nousb_argument.rule
     - service_chronyd_or_ntpd_enabled
     - chronyd_or_ntpd_specify_remote_server
     - service_auditd_enabled

@@ -52,15 +52,15 @@ selections:
     - file_user_owner_grub2_cfg
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
-    - bootloader_password
-    - bootloader_uefi_password
+    - grub2_password
+    - grub2_uefi_password
     - require_singleuser_auth
     - disable_users_coredumps
     - sysctl_fs_suid_dumpable
     - sysctl_kernel_exec_shield
     - sysctl_kernel_randomize_va_space
     - disable_prelink
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - var_selinux_state=enforcing
     - selinux_state
     - var_selinux_policy_name=targeted
@@ -133,7 +133,7 @@ selections:
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_max_log_file_action
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime

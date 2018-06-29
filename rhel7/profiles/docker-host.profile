@@ -12,7 +12,7 @@ selections:
     - service_docker_enabled
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - selinux_state
     - selinux_policytype
     - docker_selinux_enabled

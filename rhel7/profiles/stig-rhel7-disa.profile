@@ -97,9 +97,9 @@ selections:
     - gnome_gdm_disable_guest_login
     - sshd_do_not_permit_user_env
     - disable_host_auth
-    - bootloader_password
+    - grub2_password
     - require_singleuser_auth
-    - bootloader_uefi_password
+    - grub2_uefi_password
     - smartcard_auth
     - package_rsh-server_removed
     - package_ypserv_removed
@@ -156,7 +156,7 @@ selections:
     - aide_verify_acls
     - aide_verify_ext_attributes
     - aide_use_fips_hashes
-    - bootloader_no_removeable_media
+    - grub2_no_removeable_media
     - package_telnet-server_removed
     - service_auditd_enabled
     - audit_rules_system_shutdown

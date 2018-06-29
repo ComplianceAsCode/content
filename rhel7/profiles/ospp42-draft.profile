@@ -10,7 +10,7 @@ description: "This profile reflects mandatory configuration controls identified\
 
 selections:
     - installed_OS_is_certified
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - service_auditd_enabled
     - grub2_enable_fips_mode
     - rpm_verify_hashes
@@ -42,9 +42,9 @@ selections:
     - dconf_gnome_screensaver_user_locks
     - dconf_gnome_session_idle_user_locks
     - accounts_tmout
-    - bootloader_password
-    - bootloader_uefi_password
-    - disable_interactive_boot
+    - grub2_password
+    - grub2_uefi_password
+    - grub2_disable_interactive_boot
     - no_empty_passwords
     - require_singleuser_auth
     - service_debug-shell_disabled

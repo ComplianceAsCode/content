@@ -76,7 +76,7 @@ selections:
     - file_user_owner_grub2_cfg
     - file_group_owner_grub2_cfg
     - file_permissions_grub2_cfg
-    - bootloader_password
+    - grub2_password
     - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
     - service_firewalld_enabled

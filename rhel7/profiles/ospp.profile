@@ -50,9 +50,9 @@ selections:
     - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
     - accounts_password_all_shadowed
-    - bootloader_password
-    - bootloader_uefi_password
-    - disable_interactive_boot
+    - grub2_password
+    - grub2_uefi_password
+    - grub2_disable_interactive_boot
     - no_direct_root_logins
     - no_empty_passwords
     - require_singleuser_auth
@@ -192,7 +192,7 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
-    - bootloader_audit_argument
+    - grub2_audit_argument
     - rsyslog_cron_logging
     - rsyslog_nolisten
     - service_auditd_enabled
@@ -251,7 +251,7 @@ selections:
     - accounts_no_uid_except_zero
     - accounts_umask_etc_login_defs
     - dir_perms_world_writable_system_owned
-    - enable_selinux_bootloader
+    - grub2_enable_selinux
     - file_group_owner_grub2_cfg
     - file_groupowner_cron_allow
     - file_owner_cron_allow
