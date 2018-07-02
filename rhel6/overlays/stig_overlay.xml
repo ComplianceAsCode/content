@@ -48,7 +48,7 @@
 		<VMSinfo VKey="38489" SVKey="50290" VRelease="1" />
 		<title>A file integrity tool must be installed.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="enable_selinux_bootloader" ownerid="RHEL-06-000017" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="grub_legacy_enable_selinux" ownerid="RHEL-06-000017" disa="366" severity="medium">
 		<VMSinfo VKey="51337" SVKey="65547" VRelease="1" />
 		<title>The system must use a Linux Security Module at boot time.</title>
 	</overlay>
@@ -176,23 +176,23 @@
 		<VMSinfo VKey="38480" SVKey="50280" VRelease="1" />
 		<title>Users must be warned 7 days in advance of password expiration.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_dcredit" ownerid="RHEL-06-000056" disa="194" severity="low">
+	<overlay owner="disastig" ruleid="cracklib_accounts_password_pam_dcredit" ownerid="RHEL-06-000056" disa="194" severity="low">
 		<VMSinfo VKey="38482" SVKey="50282" VRelease="1" />
 		<title>The system must require passwords to contain at least one numeric character.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_ucredit" ownerid="RHEL-06-000057" disa="192" severity="low">
+	<overlay owner="disastig" ruleid="cracklib_accounts_password_pam_ucredit" ownerid="RHEL-06-000057" disa="192" severity="low">
 		<VMSinfo VKey="38569" SVKey="50370" VRelease="1" />
 		<title>The system must require passwords to contain at least one uppercase alphabetic character.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_ocredit" ownerid="RHEL-06-000058" disa="1619" severity="low">
+	<overlay owner="disastig" ruleid="cracklib_accounts_password_pam_ocredit" ownerid="RHEL-06-000058" disa="1619" severity="low">
 		<VMSinfo VKey="38570" SVKey="50371" VRelease="1" />
 		<title>The system must require passwords to contain at least one special character.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_lcredit" ownerid="RHEL-06-000059" disa="193" severity="low">
+	<overlay owner="disastig" ruleid="cracklib_accounts_password_pam_lcredit" ownerid="RHEL-06-000059" disa="193" severity="low">
 		<VMSinfo VKey="38571" SVKey="50372" VRelease="1" />
 		<title>The system must require passwords to contain at least one lowercase alphabetic character.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_difok" ownerid="RHEL-06-000060" disa="195" severity="low">
+	<overlay owner="disastig" ruleid="cracklib_accounts_password_pam_difok" ownerid="RHEL-06-000060" disa="195" severity="low">
 		<VMSinfo VKey="38572" SVKey="50373" VRelease="1" />
 		<title>The system must require at least four characters be changed between the old and new passwords during a password change.</title>
 	</overlay>
@@ -225,7 +225,7 @@
 		<title>The system boot loader configuration file(s) must have mode 0600 or less permissive.</title>
 		<fix action="append">Boot partitions based on VFAT, NTFS, or other non-standard configurations may require alternative measures.</fix>
 	</overlay>
-	<overlay owner="disastig" ruleid="bootloader_password" ownerid="RHEL-06-000068" disa="213" severity="medium">
+	<overlay owner="disastig" ruleid="grub_legacy_password" ownerid="RHEL-06-000068" disa="213" severity="medium">
 		<VMSinfo VKey="38585" SVKey="50386" VRelease="1" />
 		<title>The system boot loader must require authentication.</title>
 	</overlay>
@@ -233,7 +233,7 @@
 		<VMSinfo VKey="38586" SVKey="50387" VRelease="1" />
 		<title>The system must require authentication upon booting into single-user and maintenance modes.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="disable_interactive_boot" ownerid="RHEL-06-000070" disa="213" severity="medium">
+	<overlay owner="disastig" ruleid="grub_legacy_disable_interactive_boot" ownerid="RHEL-06-000070" disa="213" severity="medium">
 		<VMSinfo VKey="38588" SVKey="50389" VRelease="1" />
 		<title>The system must not permit interactive boot.</title>
 	</overlay>
@@ -446,7 +446,7 @@
 		<VMSinfo VKey="38632" SVKey="50433" VRelease="2" />
 		<title>The operating system must produce audit records containing sufficient information to establish what type of events occurred.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="bootloader_audit_argument" ownerid="RHEL-06-000157" disa="1464" severity="low">
+	<overlay owner="disastig" ruleid="grub_legacy_audit_argument" ownerid="RHEL-06-000157" disa="1464" severity="low">
 		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
 	</overlay>
 	<overlay owner="disastig" ruleid="auditd_data_retention_num_logs" ownerid="RHEL-06-000159" disa="366" severity="medium">
@@ -867,7 +867,7 @@
 		<VMSinfo VKey="38690" SVKey="50491" VRelease="1" />
 		<title>Emergency accounts must be provisioned with an expiration date.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="accounts_password_pam_maxrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
+	<overlay owner="disastig" ruleid="cracklib_accounts_password_pam_maxrepeat" ownerid="RHEL-06-000299" disa="366" severity="low">
 		<VMSinfo VKey="38693" SVKey="50494" VRelease="2" />
 		<title>The system must require passwords to contain no more than three consecutive repeating characters.</title>
 	</overlay>
@@ -932,7 +932,7 @@
 		<VMSinfo VKey="38686" SVKey="50487" VRelease="1" />
 		<title>The systems local firewall must implement a deny-all, allow-by-exception policy for forwarded packets.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="package_openswan_installed" ownerid="RHEL-06-000321" disa="1130" severity="low">
+	<overlay owner="disastig" ruleid="package_libreswan_installed" ownerid="RHEL-06-000321" disa="1130" severity="low">
 		<VMSinfo VKey="38687" SVKey="50488" VRelease="2" />
 		<title>The system must provide VPN connectivity for communications over untrusted networks.</title>
 		<check action="prepend">If the system does not communicate over untrusted networks, this is not applicable.</check>
@@ -1323,7 +1323,7 @@
 		<VMSinfo VKey="38439" SVKey="50239" VRelease="1" />
 		<title>The system must provide automated support for account management functions.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="bootloader_audit_argument" ownerid="RHEL-06-000525" disa="169" severity="low">
+	<overlay owner="disastig" ruleid="grub_legacy_audit_argument" ownerid="RHEL-06-000525" disa="169" severity="low">
 		<VMSinfo VKey="38438" SVKey="50238" VRelease="1" />
 		<title>Auditing must be enabled at boot by setting a kernel parameter.</title>
 	</overlay>

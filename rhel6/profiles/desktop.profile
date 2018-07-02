@@ -13,7 +13,7 @@ selections:
     - gconf_gnome_screensaver_idle_activation_enabled
     - gconf_gnome_screensaver_lock_enabled
     - gconf_gnome_screensaver_mode_blank
-    - package_openswan_installed
+    - package_libreswan_installed
     - service_vsftpd_disabled
     - package_vsftpd_removed
     - service_named_disabled

@@ -41,7 +41,7 @@ selections:
     - gid_passwd_group_same
     - account_unique_name
     - account_temp_expire_date
-    - accounts_password_pam_maxrepeat
+    - cracklib_accounts_password_pam_maxrepeat
     - no_files_unowned_by_user
     - file_permissions_ungroupowned
     - aide_periodic_cron_checking
@@ -62,7 +62,7 @@ selections:
     - accounts_max_concurrent_login_sessions
     - var_accounts_max_concurrent_login_sessions=10
     - set_iptables_default_rule_forward
-    - package_openswan_installed
+    - package_libreswan_installed
     - gconf_gdm_enable_warning_gui_banner
     - gconf_gdm_set_login_banner_text
     - login_banner_text=dod_banners
