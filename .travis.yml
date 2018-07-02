@@ -1,0 +1,12 @@
+sudo: required
+
+services:
+    - docker
+
+language: python
+
+before_install:
+    - docker build --no-cache --tag ssg:latest .
+
+script:
+    - docker run ssg:latest
