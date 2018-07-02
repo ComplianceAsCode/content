@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Disable TIPC Support'
+
+description: |-
+    The Transparent Inter-Process Communication (TIPC) protocol
+    is designed to provide communications between nodes in a
+    cluster.
+    {{{ describe_module_disable(module="tipc") }}}
+
+rationale: |-
+    Disabling TIPC protects
+    the system against exploitation of any flaws in its implementation.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 26696-5
+
+references:
+    disa@rhel6: "382"
+    nist: CM-7
+    srg@rhel6: SRG-OS-000096
+    stigid@rhel6: RHEL-06-000127
+
+{{{ complete_ocil_entry_module_disable(module="tipc") }}}
