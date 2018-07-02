@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: 'Disable WIFI Network Connection Notification in GNOME'
+
+description: |-
+    By default, <tt>GNOME</tt> disables WIFI notification when connecting to a wireless
+    network. This should be permanently set so that users do not connect to a wireless
+    network when the system finds one. While useful for mobile devices, this setting
+    should be disabled for all other systems. To configure the system to disable the
+    WIFI notication, run the following:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/nm-applet/disable-connected-notifications true</pre>
+
+rationale: |-
+    Wireless network connections should not be allowed to be configured by general
+    users on a given system as it could open the system to backdoor attacks.
+
+severity: medium
+
+ocil_clause: 'wireless connecting network notification is enabled and not disabled'
+
+ocil: |-
+    To ensure that wireless network notification is disabled, run the following command:
+    <pre>$ gconftool-2 -g /apps/nm-applet/disable-connected-notifications</pre>
+    The output should return <tt>true</tt>.
