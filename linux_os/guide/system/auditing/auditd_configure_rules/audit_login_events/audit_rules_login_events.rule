@@ -24,12 +24,18 @@ rationale: |-
     Manual editing of these files may indicate nefarious activity, such
     as an attacker attempting to remove evidence of an intrusion.
 
+{{% if product == "rhel6" %}}
+severity: unknown
+{{% else %}}
 severity: medium
+{{% endif %}}
 
 identifiers:
+    cce@rhel6: 26691-6
     cce@rhel7: 27204-7
 
 references:
+    nist@rhel6: AC-3(10)
     cis: 5.2.8
     cjis: 5.4.1.1
     cui: 3.1.7
