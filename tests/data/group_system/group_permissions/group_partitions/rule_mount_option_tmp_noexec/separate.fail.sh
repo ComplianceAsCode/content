@@ -4,7 +4,7 @@
 # Remediating would mount /tmp, which would break the test environment.
 # remediation = none
 
-. partition.sh
+. ../partition.sh
 
 create_partition
 
