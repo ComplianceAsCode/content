@@ -1,7 +1,7 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_stig-rhel7-disa
 
-. partition.sh
+. ../partition.sh
 
 umount /home || true  # no problem if not mounted
 
