@@ -7,7 +7,11 @@ title: 'Enable Smart Card Login'
 description: |-
     To enable smart card authentication, consult the documentation at:
     <ul>
+    {{% if product == "rhel6" %}}
+    <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Managing_Smart_Cards/enabling-smart-card-login.html") }}}</b></li>
+    {{% elif product == "rhel7" %}}
     <li><b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/smartcards.html#authconfig-smartcards") }}}</b></li>
+    {{% endif %}}
     </ul>
     For guidance on enabling SSH to authenticate against a Common Access Card (CAC), consult documentation at:
     <ul>
