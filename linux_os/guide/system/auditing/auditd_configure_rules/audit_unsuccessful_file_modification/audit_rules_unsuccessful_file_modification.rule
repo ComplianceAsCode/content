@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure <tt>auditd</tt> Collects Unauthorized Access Attempts to Files (unsuccessful)'
 
@@ -30,12 +30,21 @@ rationale: |-
     Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
     these events could serve as evidence of potential system compromise.
 
+{{% if product == "rhel6" %}}
+severity: unknown
+{{% else %}}
 severity: medium
+{{% endif %}}
 
 identifiers:
+    cce@rhel6: 26712-0
     cce@rhel7: 27347-4
 
 references:
+    disa@rhel6: "126"
+    nist@rhel6: AC-3(10)
+    srg@rhel6: SRG-OS-000064
+    stigid@rhel6: RHEL-06-000197
     cis: 5.2.10
     cjis: 5.4.1.1
     cui: 3.1.7
