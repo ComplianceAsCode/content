@@ -17,48 +17,46 @@ from ssg_test_suite import xml_operations
 
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--hypervisor",
+                        dest="hypervisor",
+                        metavar="HYPERVISOR",
+                        default="qemu:///session",
+                        help="libvirt hypervisor")
+    parser.add_argument("--domain",
+                        dest="domain_name",
+                        metavar="DOMAIN",
+                        required=True,
+                        help=("Specify libvirt domain to be used as a test "
+                              "bed. This domain will get remediations "
+                              "applied in it, possibly making system "
+                              "unusable for a moment. Snapshot will be "
+                              "reverted immediately afterwards. "
+                              "Domain will be returned without changes"))
+    parser.add_argument("--datastream",
+                        dest="datastream",
+                        metavar="DATASTREAM",
+                        required=True,
+                        help=("Path to the Source DataStream on this "
+                              "machine which is going to be tested"))
+    parser.add_argument("--xccdf-id",
+                        dest="xccdf_id",
+                        metavar="REF-ID",
+                        required=True,
+                        help="Reference ID related to benchmark to be used."
+                             " Get one using 'oscap info <datastream>'.")
+    parser.add_argument("--loglevel",
+                        dest="loglevel",
+                        metavar="LOGLEVEL",
+                        default="INFO",
+                        help="Default level of console output")
+    parser.add_argument("--logdir",
+                        dest="logdir",
+                        metavar="LOGDIR",
+                        default=None,
+                        help="Directory to which all output is saved")
 
-    common_parser = argparse.ArgumentParser(add_help=False)
-    common_parser.add_argument("--hypervisor",
-                               dest="hypervisor",
-                               metavar="HYPERVISOR",
-                               default="qemu:///session",
-                               help="libvirt hypervisor")
-    common_parser.add_argument("--domain",
-                               dest="domain_name",
-                               metavar="DOMAIN",
-                               required=True,
-                               help=("Specify libvirt domain to be used as a test "
-                                     "bed. This domain will get remediations "
-                                     "applied in it, possibly making system "
-                                     "unusable for a moment. Snapshot will be "
-                                     "reverted immediately afterwards. "
-                                     "Domain will be returned without changes"))
-    common_parser.add_argument("--datastream",
-                               dest="datastream",
-                               metavar="DATASTREAM",
-                               required=True,
-                               help=("Path to the Source DataStream on this "
-                                     "machine which is going to be tested"))
-    common_parser.add_argument("--xccdf-id",
-                               dest="xccdf_id",
-                               metavar="REF-ID",
-                               required=True,
-                               help="Reference ID related to benchmark to be used."
-                                    " Get one using 'oscap info <datastream>'.")
-    common_parser.add_argument("--loglevel",
-                               dest="loglevel",
-                               metavar="LOGLEVEL",
-                               default="INFO",
-                               help="Default level of console output")
-    common_parser.add_argument("--logdir",
-                               dest="logdir",
-                               metavar="LOGDIR",
-                               default=None,
-                               help="Directory to which all output is saved")
-
-    common_parser.add_argument(
+    parser.add_argument(
         "--remediate-using",
         dest="remediate_using",
         default="oscap",
@@ -74,14 +72,14 @@ def parse_args():
                                            help=('Testing profile-based '
                                                  'remediation applied on already '
                                                  'installed machine'),
-                                           parents=[common_parser])
+                                           parents=[parser])
     parser_profile.set_defaults(func=ssg_test_suite.profile.perform_profile_check)
     parser_rule = subparsers.add_parser('rule',
                                         help=('Testing remediations of particular '
                                               'rule for various situations - '
                                               'currently not supported '
                                               'by openscap!'),
-                                        parents=[common_parser])
+                                        parents=[parser])
     parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
 
     parser_profile.add_argument("target",
@@ -124,7 +122,6 @@ def main():
         msg = "Error inferring benchmark ID: {}".format(str(exc))
         logging.error(msg)
         sys.exit(1)
-
 
     LogHelper.add_console_logger(log, options.loglevel)
     # logging dir needs to be created based on other options
