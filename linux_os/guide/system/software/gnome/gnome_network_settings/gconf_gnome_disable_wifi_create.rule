@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'Disable WIFI Network Connection Creation in GNOME'
+
+description: |-
+    <tt>GNOME</tt> allows users to create ad-hoc wireless connections through the
+    <tt>NetworkManager</tt> applet. Wireless connections should be disabled by
+    running the following:
+    <pre>$ sudo gconftool-2 --direct \
+      --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+      --type bool \
+      --set /apps/nm-applet/disable-wifi-create true</pre>
+
+rationale: |-
+    Wireless network connections should not be allowed to be configured by general
+    users on a given system as it could open the system to backdoor attacks.
+
+severity: medium
+
+ocil_clause: 'WIFI connections can be created through GNOME'
+
+ocil: |-
+    To ensure that WIFI connections cannot be created, run the following command:
+    <pre>$ gconftool-2 -g /apps/nm-applet/disable-wifi-create</pre>
+    The output should return <tt>true</tt>.
