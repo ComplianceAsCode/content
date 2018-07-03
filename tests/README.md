@@ -27,6 +27,14 @@ Ansible installed on the host machine.
 
 1. Install domain, using `kickstarts/rhel_centos_7.cfg`
    Typically, you supply a boot option `inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.
+   To create a CentOS 7 machine named like our examples, run:
+    ```bash
+    virt-install -n ssg-test-suite-centos -r 4096 --vcpus=4 \
+    --os-variant=rhel7 --accelerate \
+    --disk path=/var/lib/libvirt/images/ssg-test-suite-centos.qcow,size=50 \
+    -x "inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg" \
+    --location http://mirror.centos.org/centos/7/os/x86_64
+    ```
 1. Import ssh key to the machine and make sure that you can use them to log in
    as the `root` superuser.
 1. Setup repo, so machine can install and uninstall packages.
@@ -84,7 +92,7 @@ Rule-based testing enables to perform two kinds of tests:
 If you would like to evaluate the rule `rule_sysctl_net_ipv4_conf_default_secure_redirects`:
 
 ```
-./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml ipv4_conf_default_secure_redirects
+./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml --xccdf-id xccdf-id ipv4_conf_default_secure_redirects
 ```
 
 Notice there is not full rule name used on the command line.
