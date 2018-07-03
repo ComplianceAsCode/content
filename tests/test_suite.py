@@ -69,6 +69,7 @@ def parse_args():
 
     subparsers = parser.add_subparsers(dest='subparser_name',
                                        help='Subcommands: profile, rule')
+    subparsers.required = True
 
     parser_profile = subparsers.add_parser('profile',
                                            help=('Testing profile-based '
