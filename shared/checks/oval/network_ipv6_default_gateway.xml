@@ -4,13 +4,18 @@
     <metadata>
       <title>Manually Assign IPv6 Router Address</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>Define default gateways for IPv6 traffic</description>
     </metadata>
     <criteria operator="OR">
+      {{%- if product == "rhel6" -%}}
+      <extend_definition comment="IPv6 disabled or..."
+      definition_ref="kernel_module_ipv6_option_disabled" />
+      {{%- else -%}}
       <extend_definition comment="IPv6 disabled or..."
       definition_ref="sysctl_kernel_ipv6_disable" />
+      {{%- endif -%}}
       <criterion comment="Define default gateways" 
       test_ref="test_network_ipv6_default_gateway" />
     </criteria>
