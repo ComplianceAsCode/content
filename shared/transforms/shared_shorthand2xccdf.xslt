@@ -390,14 +390,7 @@
           <xsl:attribute name="system">ocil-transitional</xsl:attribute>
           <check-export>
 
-            <xsl:attribute name="export-name">
-              <!-- add clauses if specific macros are found within -->
-              <xsl:if test="fileperms-check-macro or fileowner-check-macro or filegroupowner-check-macro">it does not</xsl:if>
-              <xsl:if test="service-disable-check-macro">the service is running</xsl:if>
-              <xsl:if test="socket-disable-check-macro">the socket is running</xsl:if>
-              <xsl:if test="service-enable-check-macro">the service is not running</xsl:if>
-              <xsl:if test="module-disable-check-macro">no line is returned</xsl:if>
-            </xsl:attribute>
+            <xsl:attribute name="export-name"/>
 
             <!-- add clause if explicitly specified (and also override any above) -->
             <xsl:if test="@clause">
