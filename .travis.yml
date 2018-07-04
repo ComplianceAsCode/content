@@ -5,8 +5,15 @@ services:
 
 language: python
 
-before_install:
-    - docker build --no-cache --tag ssg:latest .
-
-script:
-    - docker run ssg:latest
+matrix:
+    include:
+        - env: BASE_IMAGE="Fedora"
+          before_install:
+            - docker build --no-cache --tag ssg:latest -f Dockerfile .
+          script:
+            - docker run ssg:latest
+        - env: BASE_IMAGE="Ubuntu"
+          before_install:
+            - docker build --no-cache --tag ssg_ubuntu:latest -f Dockerfile_ubuntu .
+          script:
+            - docker run ssg_ubuntu:latest
