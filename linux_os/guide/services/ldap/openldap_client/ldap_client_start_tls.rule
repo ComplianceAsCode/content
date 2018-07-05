@@ -5,7 +5,7 @@ prodtype: rhel6,rhel7
 title: 'Configure LDAP Client to Use TLS For All Transactions'
 
 description: |-
-    This check verifies that RHEL7 implements cryptography
+    This check verifies that {{{ full_name }}} implements cryptography
     to protect the integrity of remote LDAP authentication sessions.
     <br /><br />
     To determine if LDAP is being used for authentication, use the following
@@ -31,8 +31,10 @@ references:
     nist: AC-17(2),CM-7
     srg: SRG-OS-000250-GPOS-00093
 
-ocil_clause: 'the ''ssl'' option is not ''start_tls'''
+ocil_clause: 'LDAP is not in use, the line is commented out, or not configured correctly'
 
 ocil: |-
-    If the system is not using TLS, set the <tt>ssl</tt> option in <tt>/etc/pam_ldap.conf</tt>
-    to <tt>start_tls</tt>.
+    To ensure LDAP is configured to use TLS for all transactions, run the following command:
+    <pre>$ grep start_tls /etc/pam_ldap.conf</pre>
+    The result should contain:
+    <pre>ssl start_tls</pre>

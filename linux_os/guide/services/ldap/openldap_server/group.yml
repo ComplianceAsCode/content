@@ -4,5 +4,11 @@ title: 'Configure OpenLDAP Server'
 
 description: |-
     This section details some security-relevant settings
-    for an OpenLDAP server.  Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is available at:
+    for an OpenLDAP server.
+    {{% if product == "rhel7" %}}
+    Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is available at:
     {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/openldap.html") }}}.
+    {{% elif product == "rhel6" %}}
+    Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 6 is available at:
+    {{{ weblink(link="https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html") }}}.
+    {{% endif %}}

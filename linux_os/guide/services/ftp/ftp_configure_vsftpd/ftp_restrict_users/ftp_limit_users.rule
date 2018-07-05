@@ -12,3 +12,7 @@ description: |-
     If anonymous access is also required, add the anonymous usernames to <tt>/etc/vsftp.ftpusers</tt> as well.
     <pre>anonymous
     ftp</pre>
+
+rationale: 'Historically, the file <tt>/etc/ftpusers</tt> contained a list of users who were not allowed to access the system via FTP. It was used to prevent system users such as the root user from logging in via the insecure FTP protocol. However, when the configuration option <tt>userlist deny=NO</tt> is set, vsftpd interprets ftpusers as the set of users who are allowed to login via FTP. Since it should be possible for most users to access their accounts via secure protocols, it is recommended that this setting be used, so that non-anonymous FTP access can be limited to legacy users who have been explicitly identified.'
+
+severity: unknown

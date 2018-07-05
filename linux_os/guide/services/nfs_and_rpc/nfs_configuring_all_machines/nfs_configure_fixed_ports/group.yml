@@ -8,7 +8,11 @@ description: |-
     should never be accessible from outside the organization. However, by default
     for NFSv3 and NFSv2, the RPC Bind service assigns each NFS service to a port
     dynamically at service startup time. Dynamic ports cannot be protected by port
+    {{% if product == "rhel7" %}}
     filtering firewalls such as <tt>firewalld</tt>.
+    {{% else %}}
+    filtering firewalls such as <tt>iptables</tt>.
+    {{% endif %}}
     <br /><br />
     Therefore, restrict each service to always use a given port, so that
     firewalling can be done effectively. Note that, because of the way RPC is

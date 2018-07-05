@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6,rhel7
 
 title: 'Disable telnet Service'
 
@@ -39,9 +39,13 @@ rationale: |-
 severity: high
 
 identifiers:
+    cce@rhel6: 26836-7
     cce@rhel7: 27401-9
 
 references:
+    disa@rhel6: 68,1436,197,877,888
+    srg@rhel6: SRG-OS-000129
+    stigid@rhel6: RHEL-06-000211
     cis: 2.2.18
     cui: 3.1.13,3.4.7
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)

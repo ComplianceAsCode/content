@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7
+prodtype: rhel6, rhel7
 
 title: 'Disable Avahi Server Software'
 
@@ -15,11 +15,14 @@ rationale: |-
 severity: unknown
 
 identifiers:
+    cce@rhel6: 27087-6
     cce@rhel7: 80338-7
 
 references:
     cis: 2.2.3
     disa: "366"
     nist: CM-7
+    srg@rhel6: SRG-OS-999999
+    stigid@rhel6: RHEL-06-000246
 
 ocil: '{{{ ocil_service_disabled(service="avahi-daemon") }}}'

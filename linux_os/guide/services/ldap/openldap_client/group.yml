@@ -5,14 +5,19 @@ title: 'Configure OpenLDAP Clients'
 description: |-
     This section provides information on which security settings are
     important to configure in OpenLDAP clients by manually editing the appropriate
-    configuration files.  Red Hat Enterprise Linux 7 provides an automated configuration tool called
+    configuration files.  {{{ full_name }}} provides an automated configuration tool called
     authconfig and a graphical wrapper for authconfig called
     <tt>system-config-authentication</tt>. However, these tools do not provide as
     much control over configuration as manual editing of configuration files. The
     authconfig tools do not allow you to specify locations of SSL certificate
     files, which is useful when trying to use SSL cleanly across several protocols.
+    {{% if product == "rhel7" %}}
     Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is available at
     {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/openldap.html") }}}.
+    {{% elif product == "rhel6" %}}
+    Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 6 is available at
+    {{{ weblink(link="https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html") }}}.
+    {{% endif %}}
 
 warnings:
     - general: |-
