@@ -1,5 +1,6 @@
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = multi_platform_rhel, multi_platform_fedora
 
+{{%- if init_system == "systemd" -%}}
 # Systemd confirm_spawn regex to search for and delete if found
 CONFIRM_SPAWN_REGEX="systemd.confirm_spawn=\(1\|yes\|true\|on\)"
 
@@ -20,3 +21,15 @@ do
 done
 # Remove 'systemd.confirm_spawn' kernel argument also from runtime settings
 /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
+{{%- else -%}}
+# Ensure value of PROMPT key in /etc/sysconfig/init is set to 'no'
+grep -q ^PROMPT /etc/sysconfig/init && \
+  sed -i "s/PROMPT.*/PROMPT=no/g" /etc/sysconfig/init
+if ! [ $? -eq 0 ]; then
+    echo "PROMPT=no" >> /etc/sysconfig/init
+fi
+
+# Ensure 'confirm' kernel boot argument is not present in some of
+# kernel lines in /etc/grub.conf
+sed -i --follow-symlinks "s/confirm//gI" /etc/grub.conf
+{{%- endif -%}}
