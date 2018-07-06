@@ -7,18 +7,18 @@ language: python
 
 matrix:
     include:
-        - env: BASE_IMAGE="Fedora"
+        - env: BASE_IMAGE="fedora_python3"
           before_install:
-            - docker build --no-cache --tag ssg:latest -f Dockerfile .
+            - docker build --no-cache --tag ssg_$BASE_IMAGE:latest -f Dockerfiles/$BASE_IMAGE .
           script:
-            - docker run ssg:latest
-        - env: BASE_IMAGE="Ubuntu"
+            - docker run ssg_$BASE_IMAGE:latest
+        - env: BASE_IMAGE="ubuntu"
           before_install:
-            - docker build --no-cache --tag ssg_ubuntu:latest -f Dockerfile_ubuntu .
+            - docker build --no-cache --tag ssg_$BASE_IMAGE:latest -f Dockerfiles/$BASE_IMAGE .
           script:
-            - docker run ssg_ubuntu:latest
-        - env: BASE_IMAGE="Fedora_python2"
+            - docker run ssg_$BASE_IMAGE:latest
+        - env: BASE_IMAGE="fedora_python2"
           before_install:
-            - docker build --no-cache --tag ssg_python2:latest -f Dockerfile_python2 .
+            - docker build --no-cache --tag ssg_$BASE_IMAGE:latest -f Dockerfiles/$BASE_IMAGE .
           script:
-            - docker run ssg_python2:latest
+            - docker run ssg_$BASE_IMAGE:latest
