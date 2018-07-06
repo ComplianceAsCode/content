@@ -5,7 +5,7 @@ ENV OSCAP_DIR scap-security-guide
 ENV BUILD_JOBS 4
 
 RUN dnf -y upgrade && \
-    dnf -y install cmake ninja-build openscap-utils python3-jinja2 python3-PyYAML && \
+    dnf -y install cmake ninja-build openscap-utils python3-jinja2 python3-PyYAML ansible && \
     mkdir -p /home/$OSCAP_USERNAME && \
     dnf clean all && \
     rm -rf /usr/share/doc /usr/share/doc-base \
