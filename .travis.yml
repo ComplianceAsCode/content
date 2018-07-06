@@ -17,3 +17,8 @@ matrix:
             - docker build --no-cache --tag ssg_ubuntu:latest -f Dockerfile_ubuntu .
           script:
             - docker run ssg_ubuntu:latest
+        - env: BASE_IMAGE="Fedora_python2"
+          before_install:
+            - docker build --no-cache --tag ssg_python2:latest -f Dockerfile_python2 .
+          script:
+            - docker run ssg_python2:latest
