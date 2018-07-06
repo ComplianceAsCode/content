@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Ensure <tt>auditd</tt> Collects Information on Kernel Module Loading and Unloading'
 
@@ -14,7 +14,7 @@ description: |-
     -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
     </pre>
 
-    Place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
+    The place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
     to use the <tt>augenrules</tt> program (the default), add the lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
 
@@ -26,12 +26,21 @@ rationale: |-
     the kernel and potentially introduce malicious code into kernel space. It is important
     to have an audit trail of modules that have been introduced into the kernel.
 
+{{% if product == "rhel6" %}}
+severity: unknown
+{{% else %}}
 severity: medium
+{{% endif %}}
 
 identifiers:
+    cce@rhel6: 26611-4
     cce@rhel7: 27129-6
 
 references:
+    disa@rhel6: "126"
+    nist@rhel6: AC-3(10)
+    srg@rhel6: SRG-OS-000064
+    stigid@rhel6: RHEL-06-000202
     cis: 5.2.17
     cjis: 5.4.1.1
     cui: 3.1.7

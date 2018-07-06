@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Install Intrusion Detection Software'
 
@@ -14,15 +14,22 @@ rationale: |-
     Host-based intrusion detection tools provide a system-level defense when an
     intruder gains access to a system or network.
 
+{{% if product == "rhel6" %}}
+severity: medium
+{{% else %}}
 severity: high
+{{% endif %}}
 
 identifiers:
+    cce@rhel6: 27409-2
     cce@rhel7: 26818-5
 
 references:
     disa: "1263"
     nist: SC-7
     pcidss: Req-11.4
+    srg@rhel6: SRG-OS-000196
+    stigid@rhel6: RHEL-06-000285
 
 ocil_clause: 'no host-based intrusion detection tools are installed'
 

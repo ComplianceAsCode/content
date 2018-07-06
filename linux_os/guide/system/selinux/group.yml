@@ -8,7 +8,7 @@ description: |-
     SELinux enforces the idea that programs should be limited in what
     files they can access and what actions they can take.
     <br /><br />
-    The default SELinux policy, as configured on Red Hat Enterprise Linux 7, has been
+    The default SELinux policy, as configured on {{{ full_name }}}, has been
     sufficiently developed and debugged that it should be usable on
     almost any Red Hat system with minimal configuration and a small
     amount of system administrator training. This policy prevents
@@ -23,5 +23,7 @@ description: |-
     default (targeted) policy on every Red Hat system, unless that
     system has unusual requirements which make a stronger policy
     appropriate.
+    {{% if product == "rhel7" %}}
     <br /><br />
     For more information on SELinux, see <b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide") }}}</b>.
+    {{% endif %}}

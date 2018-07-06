@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Install Virus Scanning Software'
 
@@ -19,14 +19,21 @@ rationale: |-
     Virus scanning software can be used to detect if a system has been compromised by
     computer viruses, as well as to limit their spread to other systems.
 
+{{% if product == "rhel6" %}}
+severity: unknown
+{{% else %}}
 severity: high
+{{% endif %}}
 
 identifiers:
+    cce@rhel6: 27529-7
     cce@rhel7: 27140-3
 
 references:
     disa: 1239,1668
     nist: 'SC-28, SI-3'
+    srg@rhel6: SRG-OS-00270
+    stigid@rhel6: RHEL-06-000284
 
 ocil_clause: 'virus scanning software does not run continuously, or at least daily, or has signatures that are out of date'
 

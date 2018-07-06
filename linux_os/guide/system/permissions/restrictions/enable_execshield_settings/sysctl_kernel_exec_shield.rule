@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel6,rhel7,fedora
 
 title: 'Enable ExecShield via sysctl'
 
@@ -11,9 +11,12 @@ rationale: "ExecShield uses the segmentation feature on all x86 systems\nto prev
 severity: medium
 
 identifiers:
+    cce@hrel6: 27007-4
     cce@rhel7: 27211-2
 
 references:
+    srg@rhel6: SRG-OS-999999
+    stigid@rhel6: RHEL-06-000079
     cis: 1.5.2
     cui: 3.1.7
     disa: "2530"
