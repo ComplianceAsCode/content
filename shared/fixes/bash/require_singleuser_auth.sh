@@ -10,4 +10,4 @@ grep -q ^SINGLE /etc/sysconfig/init && \
 if ! [ $? -eq 0 ]; then
     echo "SINGLE=/sbin/sulogin" >> /etc/sysconfig/init
 fi
-{{%- endif %}}
+{{%- endif -%}}

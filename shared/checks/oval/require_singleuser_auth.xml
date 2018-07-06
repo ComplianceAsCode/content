@@ -9,12 +9,7 @@
       <description>The requirement for a password to boot into single-user mode
       should be configured correctly.</description>
     </metadata>
-    {{%- if product == "rhel6" -%}}
-    <criteria>
-      <criterion comment="Conditions are satisfied"
-      test_ref="test_require_singleuser_auth" />
-    </criteria>
-    {{%- else -%}}
+    {{%- if init_system == "systemd" -%}}
     <criteria operator="AND">
       <criterion comment="Conditions are satisfied"
       test_ref="test_require_rescue_service" />
@@ -22,20 +17,14 @@
       <criterion test_ref="test_no_custom_runlevel1_target" negate="true"/>
       <criterion test_ref="test_no_custom_rescue_service" negate="true"/>
     </criteria>
+    {{%- else -%}}
+    <criteria>
+      <criterion comment="Conditions are satisfied"
+      test_ref="test_require_singleuser_auth" />
+    </criteria>
     {{%- endif -%}}
   </definition>
-  {{%- if product == "rhel6 -%}}
-  <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Tests that the SINGLE variable in the /etc/sysconfig/init file is set to /sbin/sulogin, to ensure that a password must be entered to access single user mode"
-  id="test_require_singleuser_auth" version="1">
-    <ind:object object_ref="obj_require_singleuser_auth" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_require_singleuser_auth" version="1">
-    <ind:filepath>/etc/sysconfig/init</ind:filepath>
-    <ind:pattern operation="pattern match">^SINGLE=/sbin/sulogin[\s]*</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  {{%- else -%}}
+  {{%- if init_system == "systemd" -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Tests that /sbin/sulogin was not removed from the default systemd rescue.service to ensure that a
   password must be entered to access single user mode"
@@ -82,5 +71,16 @@
     <unix:path operation="equals">/etc/systemd/system</unix:path>
     <unix:filename operation="pattern match">^runlevel1.target$</unix:filename>
   </unix:file_object>
+  {{%- else -%}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Tests that the SINGLE variable in the /etc/sysconfig/init file is set to /sbin/sulogin, to ensure that a password must be entered to access single user mode"
+  id="test_require_singleuser_auth" version="1">
+    <ind:object object_ref="obj_require_singleuser_auth" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_require_singleuser_auth" version="1">
+    <ind:filepath>/etc/sysconfig/init</ind:filepath>
+    <ind:pattern operation="pattern match">^SINGLE=/sbin/sulogin[\s]*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
   {{%- endif -%}}
 </def-group>
