@@ -11,7 +11,7 @@ def add_references(reference, destination):
     try:
         reference_root = ET.parse(reference)
     except IOError:
-        print("INFO: DISA STIG Reference file not found for this platform")
+        print("INFO: DISA STIG Reference file not found for this platform: %s" % reference)
         sys.exit(0)
 
     reference_rules = reference_root.findall('.//{%s}Rule' % XCCDF11_NS)

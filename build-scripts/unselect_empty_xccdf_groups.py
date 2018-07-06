@@ -140,8 +140,6 @@ def main():
 
         affected_profiles.append(profile_element.get("id"))
 
-    print("Unselected empty groups in %s." % (", ".join(affected_profiles)))
-
     input_tree.write(options.output)
 
 

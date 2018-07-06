@@ -191,9 +191,6 @@ def main():
             # Also update the ID replacing 'ecomp' with 'comp'
             move_ocil_content_from_ds_extended_component_to_ds_component(datastreamtree, oldocilhref)
 
-    else:
-        print("No extended-components, nothing to do...")
-
     # if the in and out files are the same and we didn't do any changes we can
     # skip the serialization
     if extendedcomps is not None or outdatastreamfile != indatastreamfile:
