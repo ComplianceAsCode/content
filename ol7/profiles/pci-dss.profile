@@ -2,8 +2,7 @@ documentation_complete: true
 
 title: 'PCI-DSS v3 Control Baseline Draft for Oracle Linux 7'
 
-description: 'Ensures PCI-DSS v3 related security configuration settings \n
-    \ are applied.'
+description: 'Ensures PCI-DSS v3 related security configuration settings are applied.'
 
 selections:
 #    - var_password_pam_unix_remember=4
@@ -107,6 +106,6 @@ selections:
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
-#    - file_user_owner_grub2_cfg
-#    - file_group_owner_grub2_cfg
+    - file_user_owner_grub2_cfg
+    - file_group_owner_grub2_cfg
     - package_libreswan_installed
