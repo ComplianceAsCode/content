@@ -1,17 +1,22 @@
 <def-group>
+{{% if product == "rhel6" %}}
+  {{% set AUID = 500 %}}
+{{% else %}}
+  {{% set AUID = 1000 %}}
+{{% endif %}}
   <definition class="compliance" id="dir_perms_world_writable_system_owned" version="1">
     <metadata>
       <title>Find world writable directories not owned by a system account</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>All world writable directories should be owned by a system user.</description>
     </metadata>
-    <criteria comment="check for local directories that are world writable and have uid greater than or equal to 1000" negate="true">
-      <criterion comment="check for local directories that are world writable and have uid greater than or equal to 1000" test_ref="test_dir_world_writable_uid_gt_1000" />
+    <criteria comment="check for local directories that are world writable and have uid greater than or equal to {{{ AUID }}}" negate="true">
+      <criterion comment="check for local directories that are world writable and have uid greater than or equal to {{{ AUID }}}" test_ref="test_dir_world_writable_uid_gt_value" />
     </criteria>
   </definition>
-  <unix:file_test check="all" comment="check for local directories that are world writable and have uid greater than or equal to 1000" id="test_dir_world_writable_uid_gt_1000" version="1">
+  <unix:file_test check="all" comment="check for local directories that are world writable and have uid greater than or equal to {{{ AUID }}}" id="test_dir_world_writable_uid_gt_value" version="1">
     <unix:object object_ref="all_local_directories" />
     <unix:state state_ref="state_gid_is_user_and_world_writable" />
   </unix:file_test>
@@ -21,8 +26,8 @@
     <unix:filename xsi:nil="true" />
     <filter action="include">state_gid_is_user_and_world_writable</filter>
   </unix:file_object>
-  <unix:file_state comment="uid greater than or equal to 1000 and world writable" id="state_gid_is_user_and_world_writable" version="1">
-    <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+  <unix:file_state comment="uid greater than or equal to {{{ AUID }}} and world writable" id="state_gid_is_user_and_world_writable" version="1">
+    <unix:user_id datatype="int" operation="greater than or equal">{{{ AUID }}}</unix:user_id>
     <unix:owrite datatype="boolean">true</unix:owrite>
   </unix:file_state>
 </def-group>
