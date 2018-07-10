@@ -3,6 +3,6 @@
 # remediation = bash
 
 . ../setup_config_files.sh
-setup_correct_auth_and_sssd_configs
+setup_correct_sssd_config
 
-sed -i 's/ldap_id_use_start_tls = True/ldap_id_use_start_tls = False/' /etc/sssd/sssd.conf
+sed -i '/ldap_tls_cacertdir/d' /etc/sssd/sssd.conf
