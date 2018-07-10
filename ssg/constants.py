@@ -195,4 +195,4 @@ OCILREFATTR_TO_TAG = {
 }
 
 # Application constants
-default_uid_min = 1000
+DEFAULT_UID_MIN = 1000

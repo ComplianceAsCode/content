@@ -8,7 +8,7 @@ from .jinja import _rename_items
 from .jinja import process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
                         JINJA_MACROS_BASE_DEFINITIONS, JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
-from .constants import default_uid_min
+from .constants import DEFAULT_UID_MIN
 
 try:
     from yaml import CSafeLoader as yaml_SafeLoader
@@ -48,8 +48,8 @@ def _get_implied_properties(existing_properties):
         pkg_manager = existing_properties["pkg_manager"]
         result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
 
-    if ("uid_min" not in existing_properties):
-        result["uid_min"] = result["auid"] = default_uid_min
+    if "uid_min" not in existing_properties:
+        result["uid_min"] = result["auid"] = DEFAULT_UID_MIN
     else:
         result["auid"] = existing_properties["uid_min"]
 
