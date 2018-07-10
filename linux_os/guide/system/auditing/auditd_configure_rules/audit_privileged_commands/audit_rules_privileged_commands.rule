@@ -70,3 +70,14 @@ ocil: |-
     <pre>$ sudo grep path /etc/audit/audit.rules</pre>
     It should be the case that all relevant setuid / setgid programs have a line
     in the audit rules.
+
+warnings:
+    - general: |-
+        This rule checks for multiple syscalls related to privileged commands;
+        it was written with DISA STIG in mind. Other policies should use a
+        separate rule for each syscall that needs to be checked. For example:
+        <ul>
+        <li><tt>audit_rules_privileged_commands_su</tt></li>
+        <li><tt>audit_rules_privileged_commands_umount</tt></li>
+        <li><tt>audit_rules_privileged_commands_passwd</tt></li>
+        </ul>

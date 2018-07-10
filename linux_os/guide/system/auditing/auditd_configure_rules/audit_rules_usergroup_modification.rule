@@ -57,3 +57,14 @@ ocil: |-
     <pre>auditctl -l | egrep '(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/security/opasswd)'</pre>
     If the system is configured to watch for account changes, lines should be returned for
     each file specified (and with <tt>perm=wa</tt> for each).
+
+warnings:
+    - general: |-
+        This rule checks for multiple syscalls related to account changes;
+        it was written with DISA STIG in mind. Other policies should use a
+        separate rule for each syscall that needs to be checked. For example:
+        <ul>
+        <li><tt>audit_rules_usergroup_modification_group</tt></li>
+        <li><tt>audit_rules_usergroup_modification_gshadow</tt></li>
+        <li><tt>audit_rules_usergroup_modification_passwd</tt></li>
+        </ul>

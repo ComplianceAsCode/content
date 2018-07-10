@@ -42,3 +42,14 @@ references:
     disa: 172,2884
     nist: AC-17(7),AU-1(b),AU-12(a),AU-12(c),IR-5
     pcidss: Req-10.2.3
+
+warnings:
+    - general: |-
+        This rule checks for multiple syscalls related to login events;
+        it was written with DISA STIG in mind. Other policies should use a
+        separate rule for each syscall that needs to be checked. For example:
+        <ul>
+        <li><tt>audit_rules_login_events_tallylog</tt></li>
+        <li><tt>audit_rules_login_events_faillock</tt></li>
+        <li><tt>audit_rules_login_events_lastlog</tt></li>
+        </ul>
