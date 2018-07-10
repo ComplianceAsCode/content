@@ -13,6 +13,8 @@ selections:
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
     - security_patches_up_to_date
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
     - file_groupowner_etc_group
