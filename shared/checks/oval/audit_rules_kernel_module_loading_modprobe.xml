@@ -26,12 +26,18 @@
     </criteria>
   </definition>
 
+{{% if product == "rhel6" %}}
+  {{% set modprobe_path = "/sbin/modprobe" %}}
+{{% else %}}
+  {{% set modprobe_path = "/usr/sbin/modprobe" %}}
+{{% endif %}}
+
   <ind:textfilecontent54_test check="all" comment="audit augenrules modprobe" id="test_audit_rule_kernel_module_loading_modprobe_augenrules" version="1">
     <ind:object object_ref="object_audit_rule_kernel_module_loading_modprobe_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_modprobe_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/modprobe[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+{{{ modprobe_path }}}[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -40,7 +46,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_modprobe_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/modprobe[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+{{{ modprobe_path }}}[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
