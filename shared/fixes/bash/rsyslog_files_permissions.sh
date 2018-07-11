@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,Oracle Linux 7
 
 # List of log file paths to be inspected for correct permissions
 # * Primarily inspect log file paths listed in /etc/rsyslog.conf
