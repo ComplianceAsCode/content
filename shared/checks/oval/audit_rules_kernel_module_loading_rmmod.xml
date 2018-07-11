@@ -3,7 +3,7 @@
     <metadata>
       <title>Audit Kernel Module Loading and Unloading - rmmod</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
         <platform>multi_platform_fedora</platform>
       </affected>
       <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
@@ -26,12 +26,18 @@
     </criteria>
   </definition>
 
+{{% if product == "rhel6" %}}
+  {{% set rmmod_path = "/sbin/rmmod" %}}
+{{% else %}}
+  {{% set rmmod_path = "/usr/sbin/rmmod" %}}
+{{% endif %}}
+
   <ind:textfilecontent54_test check="all" comment="audit augenrules rmmod" id="test_audit_rule_kernel_module_loading_rmmod_augenrules" version="1">
     <ind:object object_ref="object_audit_rule_kernel_module_loading_rmmod_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_rmmod_augenrules" version="1">
     <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/rmmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+{{{ rmmod_path }}}[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -40,7 +46,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_rmmod_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^\-w[\s]+/usr/sbin/rmmod[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\-w[\s]+{{{ rmmod_path }}}[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
