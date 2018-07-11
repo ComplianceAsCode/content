@@ -77,17 +77,17 @@ selections:
     - var_accounts_password_minlen_login_defs=12
     - accounts_password_minlen_login_defs
     - var_password_pam_retry=3
-    - accounts_password_pam_retry
+    - cracklib_accounts_password_pam_retry
     - var_password_pam_dcredit=1
-    - accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_dcredit
     - var_password_pam_ucredit=1
-    - accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_ucredit
     - var_password_pam_lcredit=1
-    - accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_lcredit
     - var_password_pam_ocredit=1
-    - accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_ocredit
     - var_password_pam_difok=3
-    - accounts_password_pam_difok
+    - cracklib_accounts_password_pam_difok
     - var_accounts_passwords_pam_faillock_deny=5
     - accounts_passwords_pam_faillock_deny
     - set_password_hashing_algorithm_systemauth
@@ -105,8 +105,8 @@ selections:
     - file_user_owner_grub_conf
     - file_group_owner_grub_conf
     - file_permissions_grub_conf
-    - bootloader_password
-    - disable_interactive_boot
+    - grub_legacy_password
+    - grub_legacy_disable_interactive_boot
     - inactivity_timeout_value=15_minutes
     - gconf_gnome_screensaver_idle_delay
     - gconf_gnome_screensaver_idle_activation_enabled
@@ -118,7 +118,7 @@ selections:
     - selinux_state
     - var_selinux_policy_name=targeted
     - selinux_policytype
-    - enable_selinux_bootloader
+    - grub_legacy_enable_selinux
     - selinux_confinement_of_daemons
     - selinux_all_devicefiles_labeled
     - sysctl_net_ipv4_ip_forward
@@ -170,7 +170,7 @@ selections:
     - rsyslog_nolisten
     - ensure_logrotate_activated
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub_legacy_audit_argument
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
@@ -201,7 +201,7 @@ selections:
     - audit_rules_immutable
     - service_xinetd_disabled
     - package_xinetd_removed
-    - service_telnetd_disabled
+    - service_telnet_disabled
     - package_telnet-server_removed
     - package_rsh-server_removed
     - service_ypbind_disabled

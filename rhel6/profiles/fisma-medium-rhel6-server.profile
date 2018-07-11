@@ -10,7 +10,7 @@ selections:
     - account_temp_expire_date
     - audit_rules_usergroup_modification
     - audit_rules_sysadmin_actions
-    - enable_selinux_bootloader
+    - grub_legacy_enable_selinux
     - selinux_state
     - selinux_policytype
     - service_restorecond_enabled
@@ -72,7 +72,7 @@ selections:
     - accounts_max_concurrent_login_sessions
     - package_screen_installed
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub_legacy_audit_argument
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
@@ -105,7 +105,7 @@ selections:
     - sshd_allow_only_protocol2
     - service_xinetd_disabled
     - package_xinetd_removed
-    - service_telnetd_disabled
+    - service_telnet_disabled
     - package_telnet-server_removed
     - package_rsh_removed
     - service_rexec_disabled
@@ -134,7 +134,7 @@ selections:
     - mount_option_noexec_removable_partitions
     - mount_option_nosuid_removable_partitions
     - kernel_module_usb-storage_disabled
-    - bootloader_nousb_argument
+    - grub_legacy_nousb_argument
     - bios_disable_usb_boot
     - service_autofs_disabled
     - auditd_data_retention_num_logs
@@ -206,12 +206,12 @@ selections:
     - network_ipv6_disable_rpc
     - sysctl_net_ipv6_conf_default_accept_ra
     - sysctl_net_ipv6_conf_default_accept_redirects
-    - bootloader_password
-    - accounts_password_pam_retry
-    - accounts_password_pam_maxrepeat
-    - accounts_password_pam_ucredit
-    - accounts_password_pam_ocredit
-    - accounts_password_pam_lcredit
+    - grub_legacy_password
+    - cracklib_accounts_password_pam_retry
+    - cracklib_accounts_password_pam_maxrepeat
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_lcredit
     - var_password_pam_unix_remember=24
     - accounts_password_pam_unix_remember
     - set_password_hashing_algorithm_systemauth
@@ -227,4 +227,4 @@ selections:
     - accounts_password_warn_age_login_defs
     - require_singleuser_auth
     - var_password_pam_difok=1
-    - accounts_password_pam_difok
+    - cracklib_accounts_password_pam_difok

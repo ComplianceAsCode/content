@@ -48,7 +48,7 @@ selections:
     - disable_prelink
     - aide_build_database
     - aide_periodic_cron_checking
-    - enable_selinux_bootloader
+    - grub_legacy_enable_selinux
     - selinux_state
     - selinux_policytype
     - package_setroubleshoot_removed
@@ -57,9 +57,9 @@ selections:
     - file_user_owner_grub_conf
     - file_group_owner_grub_conf
     - file_permissions_grub_conf
-    - bootloader_password
+    - grub_legacy_password
     - require_singleuser_auth
-    - disable_interactive_boot
+    - grub_legacy_disable_interactive_boot
     - disable_users_coredumps
     - sysctl_fs_suid_dumpable
     - sysctl_kernel_exec_shield
@@ -134,7 +134,7 @@ selections:
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_max_log_file_action
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub_legacy_audit_argument
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime

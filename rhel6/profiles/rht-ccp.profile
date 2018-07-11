@@ -27,7 +27,7 @@ selections:
     - partition_for_var
     - partition_for_var_log
     - partition_for_var_log_audit
-    - enable_selinux_bootloader
+    - grub_legacy_enable_selinux
     - selinux_state
     - selinux_policytype
     - selinux_all_devicefiles_labeled
@@ -45,12 +45,12 @@ selections:
     - accounts_minimum_age_login_defs
     - accounts_maximum_age_login_defs
     - accounts_password_warn_age_login_defs
-    - accounts_password_pam_retry
-    - accounts_password_pam_dcredit
-    - accounts_password_pam_ucredit
-    - accounts_password_pam_ocredit
-    - accounts_password_pam_lcredit
-    - accounts_password_pam_difok
+    - cracklib_accounts_password_pam_retry
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_difok
     - accounts_passwords_pam_faillock_deny
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
@@ -76,7 +76,7 @@ selections:
     - file_user_owner_grub_conf
     - file_group_owner_grub_conf
     - file_permissions_grub_conf
-    - bootloader_password
+    - grub_legacy_password
     - sysctl_kernel_randomize_va_space
     - sysctl_kernel_exec_shield
     - kernel_module_ipv6_option_disabled
@@ -90,7 +90,7 @@ selections:
     - service_xinetd_disabled
     - package_xinetd_removed
     - package_telnet-server_removed
-    - service_telnetd_disabled
+    - service_telnet_disabled
     - package_rsh-server_removed
     - service_rsh_disabled
     - service_rexec_disabled

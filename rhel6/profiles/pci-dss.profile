@@ -14,7 +14,7 @@ selections:
     - var_password_pam_minclass=2
     - var_accounts_maximum_age_login_defs=90
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub_legacy_audit_argument
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
     - auditd_data_retention_max_log_file_action
@@ -81,10 +81,10 @@ selections:
     - gconf_gnome_screensaver_lock_enabled
     - gconf_gnome_screensaver_mode_blank
     - sshd_set_idle_timeout
-    - accounts_password_pam_minlen
-    - accounts_password_pam_dcredit
-    - accounts_password_pam_ucredit
-    - accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_minlen
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_maximum_age_login_defs
     - ensure_redhat_gpgkey_installed
@@ -106,4 +106,4 @@ selections:
     - file_permissions_etc_passwd
     - file_user_owner_grub_conf
     - file_group_owner_grub_conf
-    - package_openswan_installed
+    - package_libreswan_installed

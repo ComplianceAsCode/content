@@ -50,8 +50,8 @@ selections:
     - audit_rules_time_watch_localtime
     - audit_rules_sysadmin_actions
     - bios_disable_usb_boot
-    - "!bootloader_nousb_argument"
-    - bootloader_password
+    - "!grub_legacy_nousb_argument"
+    - grub_legacy_password
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_admin_space_left_action
     - auditd_audispd_syslog_plugin_activated
@@ -97,16 +97,16 @@ selections:
     - sysctl_net_ipv4_conf_all_accept_redirects
     - sysctl_net_ipv4_conf_all_secure_redirects
     - sysctl_net_ipv4_ip_forward
-    - "!service_telnetd_disabled"
+    - "!service_telnet_disabled"
     - service_tftp_disabled
     - service_vsftpd_disabled
     - service_ypbind_disabled
     - dns_server_authenticate_zone_transfers
-    - bootloader_audit_argument
+    - grub_legacy_audit_argument
     - gconf_gdm_enable_warning_gui_banner
     - gconf_gnome_screensaver_idle_activation_enabled
     - gconf_gnome_screensaver_lock_enabled
-    - enable_selinux_bootloader
+    - grub_legacy_enable_selinux
     - ensure_logrotate_activated
     - file_ownership_binary_dirs
     - file_ownership_library_dirs
@@ -160,13 +160,13 @@ selections:
     - partition_for_var_log_audit
     - accounts_maximum_age_login_defs
     - accounts_password_minlen_login_defs
-    - "!accounts_password_pam_maxrepeat"
-    - accounts_password_pam_difok
-    - accounts_password_pam_dcredit
-    - accounts_password_pam_lcredit
-    - accounts_password_pam_ocredit
-    - accounts_password_pam_ucredit
-    - accounts_password_pam_retry
+    - "!cracklib_accounts_password_pam_maxrepeat"
+    - cracklib_accounts_password_pam_difok
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_retry
     - accounts_password_warn_age_login_defs
     - file_permissions_etc_group
     - file_permissions_etc_shadow
@@ -177,7 +177,7 @@ selections:
     - "!rpm_verify_hashes"
     - "!rpm_verify_permissions"
     - rsyslog_nolisten
-    - rsyslog_listen_tcp
+    - rsyslog_accept_remote_messages_tcp
     - rsyslog_accept_remote_messages_udp
     - "!rsyslog_remote_loghost"
     - selinux_confinement_of_daemons
@@ -256,7 +256,7 @@ selections:
     - userowner_shadow_file
     - wireless_disable_in_bios
     - "!dir_perms_world_writable_system_owned"
-    - disable_interactive_boot
+    - grub_legacy_disable_interactive_boot
     - install_hids
     - install_antivirus
     - sysctl_kernel_exec_shield

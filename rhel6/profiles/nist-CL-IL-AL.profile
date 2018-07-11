@@ -30,7 +30,7 @@ selections:
     - audit_rules_usergroup_modification
     - audit_rules_sysadmin_actions
     - sshd_use_approved_ciphers
-    - enable_selinux_bootloader
+    - grub_legacy_enable_selinux
     - selinux_state
     - selinux_policytype
     - service_restorecond_enabled
@@ -88,7 +88,7 @@ selections:
     - gconf_gnome_screensaver_lock_enabled
     - gconf_gnome_screensaver_mode_blank
     - service_auditd_enabled
-    - bootloader_audit_argument
+    - grub_legacy_audit_argument
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
     - audit_rules_time_stime
@@ -119,7 +119,7 @@ selections:
     - sysctl_net_ipv4_conf_all_log_martians
     - service_xinetd_disabled
     - package_xinetd_removed
-    - service_telnetd_disabled
+    - service_telnet_disabled
     - package_telnet-server_removed
     - package_rsh_removed
     - service_rexec_disabled
@@ -148,7 +148,7 @@ selections:
     - mount_option_noexec_removable_partitions
     - mount_option_nosuid_removable_partitions
     - kernel_module_usb-storage_disabled
-    - bootloader_nousb_argument
+    - grub_legacy_nousb_argument
     - bios_disable_usb_boot
     - service_autofs_disabled
     - gconf_gnome_disable_automount

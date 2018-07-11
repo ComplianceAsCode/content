@@ -11,17 +11,17 @@ selections:
     - var_accounts_minimum_age_login_defs=1
     - accounts_maximum_age_login_defs
     - var_accounts_maximum_age_login_defs=180
-    - accounts_password_pam_dcredit
-    - accounts_password_pam_ucredit
-    - accounts_password_pam_ocredit
-    - accounts_password_pam_lcredit
-    - accounts_password_pam_difok
+    - cracklib_accounts_password_pam_dcredit
+    - cracklib_accounts_password_pam_ucredit
+    - cracklib_accounts_password_pam_ocredit
+    - cracklib_accounts_password_pam_lcredit
+    - cracklib_accounts_password_pam_difok
     - accounts_password_pam_unix_remember
     - var_password_pam_unix_remember=10
     - accounts_password_warn_age_login_defs
     - account_disable_post_pw_expiration
     - accounts_passwords_pam_faillock_deny
-    - accounts_password_pam_retry
+    - cracklib_accounts_password_pam_retry
     - accounts_max_concurrent_login_sessions
     - var_accounts_max_concurrent_login_sessions=3
     - partition_for_tmp
@@ -47,7 +47,7 @@ selections:
     - mount_option_dev_shm_nosuid
     - mount_option_var_tmp_bind
     - kernel_module_usb-storage_disabled
-    - bootloader_nousb_argument
+    - grub_legacy_nousb_argument
     - kernel_module_cramfs_disabled
     - kernel_module_freevxfs_disabled
     - kernel_module_jffs2_disabled
@@ -84,7 +84,7 @@ selections:
     - accounts_umask_etc_csh_cshrc
     - accounts_umask_etc_profile
     - no_netrc_files
-    - disable_interactive_boot
+    - grub_legacy_disable_interactive_boot
     - package_screen_installed
     - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
@@ -162,7 +162,7 @@ selections:
     - selinux_policytype
     - require_singleuser_auth
     - disable_ctrlaltdel_reboot
-    - bootloader_password
+    - grub_legacy_password
     - gconf_gnome_screensaver_idle_delay
     - inactivity_timeout_value=15_minutes
     - gconf_gnome_screensaver_idle_activation_enabled
@@ -231,7 +231,7 @@ selections:
     - service_xinetd_disabled
     - package_xinetd_removed
     - package_telnet-server_removed
-    - service_telnetd_disabled
+    - service_telnet_disabled
     - package_rsh-server_removed
     - service_rsh_disabled
     - package_ypserv_removed
@@ -322,7 +322,7 @@ selections:
     - package_squid_removed
     - service_snmpd_disabled
     - package_net-snmp_removed
-    - package_openswan_installed
+    - package_libreswan_installed
     - no_rsh_trust_files
     - tftpd_uses_secure_mode
     - service_avahi-daemon_disabled
