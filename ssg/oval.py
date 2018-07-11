@@ -14,7 +14,7 @@ from .xml import ElementTree as ET
 from .xml import oval_generated_header
 from .id_translate import IDTranslator
 
-SHARED_OVAL = re.sub(r'shared.*', 'shared', __file__) + '/checks/oval/'
+SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
 
 
 # globals, to make recursion easier in case we encounter extend_definition
@@ -65,7 +65,7 @@ def _add_elements(body, header):
             for defchild in childnode.findall(".//{%s}extend_definition"
                                               % ovalns):
                 defid = defchild.get("definition_ref")
-                extend_ref = find_testfile(defid+".xml")
+                extend_ref = find_testfile_or_exit(defid+".xml")
                 includedbody = read_ovaldefgroup_file(extend_ref)
                 # recursively add the elements in the other file
                 _add_elements(includedbody, header)
@@ -106,24 +106,29 @@ def replace_external_vars(tree):
     return tree
 
 
+def find_testfile_or_exit(testfile):
+    """Find OVAL files in CWD or shared/oval and calls sys.exit if the file is not found"""
+    testfile = find_testfile(testfile)
+    if testfile is None:
+        print(
+            "ERROR: {0} does not exist! Please specify a valid OVAL file."
+            .format(testfile), file=sys.stderr)
+        sys.exit(1)
+    else:
+        return testfile
+
+
 def find_testfile(testfile):
-    """Find OVAL files in CWD or shared/oval"""
+    """Find OVAL files in CWD or shared/oval and returns None if the file is not found"""
+    found_file = None
     for path in ['.', SHARED_OVAL]:
         for root, _, _ in os.walk(path):
-            searchfile = root + '/' + testfile
-            if not os.path.isfile(searchfile):
-                searchfile = ""
-            else:
-                testfile = searchfile.strip()
-                # Most likely found file, exit this loop
+            searchfile = os.path.join(root, testfile).strip()
+            if os.path.isfile(searchfile):
+                found_file = searchfile
                 break
 
-    if not os.path.isfile(testfile):
-        print("ERROR: %s does not exist! Please specify a valid OVAL file."
-              % testfile, file=sys.stderr)
-        sys.exit(1)
-
-    return testfile
+    return found_file
 
 
 def read_ovaldefgroup_file(testfile):
@@ -180,7 +185,7 @@ def main():
 
     testfile = args.xmlfile
     header = oval_generated_header("testoval.py", oval_version, "0.0.1")
-    testfile = find_testfile(testfile)
+    testfile = find_testfile_or_exit(testfile)
     body = read_ovaldefgroup_file(testfile)
     defname = _add_elements(body, header)
     if defname is None:
