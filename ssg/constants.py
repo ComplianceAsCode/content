@@ -193,3 +193,6 @@ OVALREFATTR_TO_TAG = {
 OCILREFATTR_TO_TAG = {
     "question_ref": "question",
 }
+
+# Application constants
+DEFAULT_UID_MIN = 1000
