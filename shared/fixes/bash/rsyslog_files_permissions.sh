@@ -35,10 +35,10 @@ do
 	fi
 done
 
-for PATH in "${LOG_FILE_PATHS[@]}"
+for LOG_FILE_PATH in "${LOG_FILE_PATHS[@]}"
 do
-	# Sanity check - if particular $PATH is empty string, skip it from further processing
-	if [ -z "$PATH" ]
+	# Sanity check - if particular $LOG_FILE_PATH is empty string, skip it from further processing
+	if [ -z "$LOG_FILE_PATH" ]
 	then
 		continue
 	fi
@@ -46,7 +46,7 @@ do
 	{{% if product == "rhel6" %}}
 	# Per https://access.redhat.com/solutions/66805 '/var/log/boot.log' log file needs special care => perform it
 	# This has been fixed in RHEL7, the workaround is only necessary for RHEL6
-	if [ "$PATH" == "/var/log/boot.log" ]
+	if [ "$LOG_FILE_PATH" == "/var/log/boot.log" ]
 	then
 		# Ensure permissions of /var/log/boot.log are configured to be updated in /etc/rc.local
 		if ! /bin/grep -q "boot.log" "/etc/rc.local"
@@ -63,8 +63,8 @@ do
 	{{% endif %}}
 
 	# Also for each log file check if its permissions differ from 600. If so, correct them
-	if [ "$(/usr/bin/stat -c %a "$PATH")" -ne 600 ]
+	if [ "$(/usr/bin/stat -c %a "$LOG_FILE_PATH")" -ne 600 ]
 	then
-		/bin/chmod 600 "$PATH"
+		/bin/chmod 600 "$LOG_FILE_PATH"
 	fi
 done
