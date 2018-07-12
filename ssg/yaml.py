@@ -1,7 +1,9 @@
 from __future__ import absolute_import
+from __future__ import print_function
 
 import codecs
 import yaml
+import sys
 
 from .jinja import _extract_substitutions_dict_from_template
 from .jinja import _rename_items
@@ -28,17 +30,28 @@ def _save_rename(result, stem, prefix):
     result["{0}_{1}".format(prefix, stem)] = stem
 
 
-def _open_yaml(stream):
+def _open_yaml(stream, original_file=None):
     """
-    Open given file-like object and parse it as YAML
+    Open given file-like object and parse it as YAML.
+
+    Optionally, pass the path to the original_file for better error handling
+    when the file contents are passed.
+
     Return None if it contains "documentation_complete" key set to "false".
     """
-    yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
+    try:
+        yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
 
-    if yaml_contents.pop("documentation_complete", "true") == "false":
-        return None
+        if yaml_contents.pop("documentation_complete", "true") == "false":
+            return None
 
-    return yaml_contents
+        return yaml_contents
+    except Exception as e:
+        _file = original_file
+        if not _file:
+            _file = stream
+        print("Exception while handling file: %s" % _file, file=sys.stderr)
+        raise e
 
 
 def _get_implied_properties(existing_properties):
@@ -68,7 +81,7 @@ def open_and_expand(yaml_file, substitutions_dict=None):
         substitutions_dict = dict()
 
     expanded_template = process_file(yaml_file, substitutions_dict)
-    yaml_contents = _open_yaml(expanded_template)
+    yaml_contents = _open_yaml(expanded_template, original_file=yaml_file)
     return yaml_contents
 
 
@@ -101,7 +114,7 @@ def open_raw(yaml_file):
     See also: _open_yaml
     """
     with codecs.open(yaml_file, "r", "utf8") as stream:
-        yaml_contents = _open_yaml(stream)
+        yaml_contents = _open_yaml(stream, original_file=yaml_file)
     return yaml_contents
 
 
