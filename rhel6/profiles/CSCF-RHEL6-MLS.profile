@@ -118,7 +118,7 @@ selections:
     - file_groupowner_etc_gshadow
     - file_groupowner_etc_passwd
     - rsyslog_files_groupownership
-    - groupowner_shadow_file
+    - file_groupowner_etc_shadow
     - file_permissions_httpd_server_conf_files
     - dir_perms_var_log_httpd
     - httpd_servertokens_prod

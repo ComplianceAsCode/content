@@ -57,7 +57,7 @@ selections:
     - set_password_hashing_algorithm_libuserconf
     - require_singleuser_auth
     - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow

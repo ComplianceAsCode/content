@@ -96,7 +96,7 @@ selections:
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
     - file_groupowner_etc_group
