@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: 'Standard System Security Profile for Ubuntu 16'
+title: 'Standard System Security Profile for Ubuntu 16.04'
 
 description: |-
     This profile contains rules to ensure standard security baseline
-    of an Ubuntu 16 system. Regardless of your system's workload
+    of an Ubuntu 16.04 system. Regardless of your system's workload
     all of these checks should pass.
 
 selections:
@@ -32,16 +32,26 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_allow_only_protocol2
     - sshd_set_keepalive
+    - file_owner_logfiles_value=adm
     - rsyslog_files_ownership
+    - file_groupowner_logfiles_value=adm
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
     - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
     - file_permissions_systemmap
     - file_permissions_etc_shadow
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_gshadow
+    - file_owner_etc_gshadow
+    - file_groupowner_etc_gshadow
     - file_permissions_etc_passwd
+    - file_owner_etc_passwd
+    - file_groupowner_etc_passwd
     - file_permissions_etc_group
+    - file_owner_etc_group
+    - file_groupowner_etc_group
     - sysctl_fs_protected_symlinks
     - sysctl_fs_protected_hardlinks
     - sysctl_fs_suid_dumpable
