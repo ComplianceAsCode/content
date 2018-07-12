@@ -1,6 +1,0 @@
-documentation_complete: true
-
-title: 'Inspect and Activate Default Rules'
-
-description: "View the currently-enforced <tt>iptables</tt> rules by running\nthe command:\n<pre>$ sudo iptables -nL --line-numbers</pre>\nThe command is analogous for <tt>ip6tables</tt>.\n<br /><br />\nIf the firewall does not appear to be active (i.e., no rules\nappear), activate it and ensure that it starts at boot by issuing\nthe following commands (and analogously for <tt>ip6tables</tt>):\n<pre>$ sudo service iptables restart</pre>\nThe default iptables rules are:\n<pre>Chain INPUT (policy ACCEPT)\nnum  target     prot opt source       destination\n1    ACCEPT     all  --  0.0.0.0/0    0.0.0.0/0    state RELATED,ESTABLISHED \n2    ACCEPT     icmp --  0.0.0.0/0    0.0.0.0/0\n3    ACCEPT     all  --  0.0.0.0/0    0.0.0.0/0\n4    ACCEPT     tcp  --  0.0.0.0/0    0.0.0.0/0    state NEW tcp dpt:22 \n5    REJECT     all  --  0.0.0.0/0    0.0.0.0/0    reject-with icmp-host-prohibited \n\nChain FORWARD (policy ACCEPT)\nnum  target     prot opt source       destination\n1    REJECT     all \
-    \ --  0.0.0.0/0    0.0.0.0/0    reject-with icmp-host-prohibited \n\nChain OUTPUT (policy ACCEPT)\nnum  target     prot opt source       destination</pre>\nThe <tt>ip6tables</tt> default rules are essentially the same."

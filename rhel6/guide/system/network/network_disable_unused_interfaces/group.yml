@@ -1,5 +1,0 @@
-documentation_complete: true
-
-title: 'Disable Unused Interfaces'
-
-description: "Network interfaces expand the attack surface of the \nsystem.  Unused interfaces are not monitored or controlled, and \nshould be disabled.\n<br /><br />\nIf the system does not require network communications but still\nneeds to use the loopback interface, remove all files of the form\n<tt>ifcfg-<i>interface</i></tt> except for <tt>ifcfg-lo</tt> from\n<tt>/etc/sysconfig/network-scripts</tt>:\n<pre>$ sudo rm /etc/sysconfig/network-scripts/ifcfg-<i>interface</i></pre>\nIf the system is a standalone machine with no need for network access or even\ncommunication over the loopback device, then disable this service.\n{{{ describe_service_disable(service="network") }}}"
