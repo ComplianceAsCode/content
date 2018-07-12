@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: 'Enable cron Service'
+
+description: |-
+    The <tt>crond</tt> service is used to execute commands at
+    preconfigured times. It is required by almost all systems to perform necessary
+    maintenance tasks, such as notifying root of system activity.
+    {{{ describe_service_enable(service="cron") }}}
+
+rationale: |-
+    Due to its usage for maintenance and security-supporting tasks,
+    enabling the cron daemon is essential.
+
+severity: medium
+
+references:
+    nist: CM-7
+
+ocil: '{{{ ocil_service_enabled(service="cron") }}}'
