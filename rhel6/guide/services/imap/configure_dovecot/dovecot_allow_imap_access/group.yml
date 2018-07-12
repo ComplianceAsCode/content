@@ -1,9 +1,0 @@
-documentation_complete: true
-
-title: 'Allow IMAP Clients to Access the Server'
-
-description: |-
-    The default iptables configuration does not allow inbound access to any services.
-    This modification will allow remote hosts to initiate connections to the IMAP daemon,
-    while keeping all other ports on the server in their default protected state.
-    {{{ describe_iptables_allow(proto="tcp", port=143) }}}

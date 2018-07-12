@@ -1,5 +1,0 @@
-documentation_complete: true
-
-title: 'Strengthen Firewall Configuration if Possible'
-
-description: "If the SSH server is expected to only receive connections from \nthe local network, then strengthen the default firewall rule for the SSH service\nto only accept connections from the appropriate network segment(s).\n<br /><br />\nDetermine an appropriate network block, <tt>netwk</tt>, and network mask, <tt>mask</tt>, \nrepresenting the systems on your network which will be allowed to access this SSH server.\n<br /><br />\nEdit the files <tt>etc/sysconfig/iptables</tt> and <tt>/etc/sysconfig/ip6tables</tt>\n(if IPv6 is in use). In each file, locate the line:\n<pre>-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT</pre>\nand replace it with:\n<pre>-A INPUT -s netwk/mask -m state --state NEW -p tcp --dport 22 -j ACCEPT</pre>"
