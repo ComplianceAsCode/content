@@ -52,10 +52,7 @@ def _get_implied_properties(existing_properties):
         result["uid_min"] = DEFAULT_UID_MIN
 
     if "auid" not in existing_properties:
-        if "uid_min" in existing_properties:
-            result["auid"] = existing_properties["uid_min"]
-        else:
-            result["auid"] = DEFAULT_UID_MIN
+        result["auid"] = existing_properties.get("uid_min", DEFAULT_UID_MIN)
 
     return result
 
