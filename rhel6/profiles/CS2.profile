@@ -133,7 +133,7 @@ selections:
     - audit_rules_file_deletion_events
     - securetty_root_login_console_only
     - no_direct_root_logins
-    - userowner_shadow_file
+    - file_owner_etc_shadow
     - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow

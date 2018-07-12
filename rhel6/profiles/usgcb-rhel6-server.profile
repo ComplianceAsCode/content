@@ -43,7 +43,7 @@ selections:
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
     - file_permissions_etc_shadow
-    - userowner_shadow_file
+    - file_owner_etc_shadow
     - file_groupowner_etc_shadow
     - file_permissions_etc_group
     - file_owner_etc_group

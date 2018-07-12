@@ -28,7 +28,7 @@ selections:
     - var_umask_for_daemons=022
     - sshd_disable_root_login
     - umask_for_daemons
-    - userowner_shadow_file
+    - file_owner_etc_shadow
     - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
