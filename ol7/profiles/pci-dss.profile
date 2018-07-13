@@ -31,3 +31,6 @@ selections:
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
+    - package_aide_installed
+    - aide_build_database
+    - aide_periodic_cron_checking
