@@ -49,8 +49,8 @@ selections:
     - rpm_verify_permissions
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
     - file_groupowner_etc_group

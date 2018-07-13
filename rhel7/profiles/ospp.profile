@@ -252,7 +252,7 @@ selections:
     - accounts_umask_etc_login_defs
     - dir_perms_world_writable_system_owned
     - grub2_enable_selinux
-    - file_group_owner_grub2_cfg
+    - file_groupowner_grub2_cfg
     - file_groupowner_cron_allow
     - file_owner_cron_allow
     - file_ownership_var_log_audit
@@ -260,7 +260,7 @@ selections:
     - file_permissions_sshd_private_key
     - file_permissions_sshd_pub_key
     - file_permissions_ungroupowned
-    - file_user_owner_grub2_cfg
+    - file_owner_grub2_cfg
     - gid_passwd_group_same
     - mount_option_krb_sec_remote_filesystems
     - mount_option_nodev_remote_filesystems

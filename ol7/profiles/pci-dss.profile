@@ -20,6 +20,6 @@ selections:
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
-    - file_user_owner_grub2_cfg
-    - file_group_owner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_groupowner_grub2_cfg
     - package_libreswan_installed

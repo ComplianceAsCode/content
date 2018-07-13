@@ -56,8 +56,8 @@ selections:
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
     - require_singleuser_auth
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
@@ -73,8 +73,8 @@ selections:
     - file_permissions_binary_dirs
     - file_ownership_binary_dirs
     - file_permissions_var_log_audit
-    - file_user_owner_grub_conf
-    - file_group_owner_grub_conf
+    - file_owner_grub_conf
+    - file_groupowner_grub_conf
     - file_permissions_grub_conf
     - grub_legacy_password
     - sysctl_kernel_randomize_va_space

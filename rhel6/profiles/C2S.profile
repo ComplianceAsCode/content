@@ -54,8 +54,8 @@ selections:
     - package_setroubleshoot_removed
     - package_mcstrans_removed
     - selinux_confinement_of_daemons
-    - file_user_owner_grub_conf
-    - file_group_owner_grub_conf
+    - file_owner_grub_conf
+    - file_groupowner_grub_conf
     - file_permissions_grub_conf
     - grub_legacy_password
     - require_singleuser_auth
@@ -185,8 +185,8 @@ selections:
     - file_permissions_etc_group
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
     - file_owner_etc_group
