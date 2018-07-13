@@ -4,4 +4,5 @@
 
 rm -f /etc/audit/rules.d/*
 > /etc/audit/audit.rules
-true
+# This is a trick to fail setup of this test in rhel6 systems
+ls /usr/lib/systemd/system/auditd.service

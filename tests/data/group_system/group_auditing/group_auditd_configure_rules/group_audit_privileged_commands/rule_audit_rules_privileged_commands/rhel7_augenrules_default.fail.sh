@@ -3,4 +3,5 @@
 # remediation = bash
 
 # augenrules is default for rhel7
-true
+# This is a trick to fail setup of this test in rhel6 systems
+ls  /usr/lib/systemd/system/auditd.service
