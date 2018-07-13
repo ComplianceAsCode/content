@@ -2,7 +2,7 @@
 
 import sys
 import os
-import ssg
+import ssg.oval
 
 # always use shared/testoval_module.py version
 if __name__ == "__main__":
