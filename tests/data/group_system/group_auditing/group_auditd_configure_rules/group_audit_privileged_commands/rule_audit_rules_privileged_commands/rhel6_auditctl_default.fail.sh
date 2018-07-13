@@ -3,4 +3,5 @@
 # remediation = bash
 
 # auditctl is default for rhel6
-true
+# This is a trick to fail setup of this test in rhel7 systems
+ls /etc/sysconfig/auditd
