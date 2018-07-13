@@ -14,7 +14,7 @@
       <criteria operator="OR">
         <criterion test_ref="test_grub2_enable_fips_mode" comment="check for fips=1 in /etc/default/grub via GRUB_CMDLINE_LINUX" />
         <criteria operator="AND">
-          <criterion test_ref="test_grub2_default_exists" comment="check for GRUB_CMDLINE_LINUX_DEFAULT exists in /etc/default/grub" />
+          <extend_definition definition_ref="grub2_default_exists" comment="check for GRUB_CMDLINE_LINUX_DEFAULT exists in /etc/default/grub" />
           <criterion test_ref="test_grub2_enable_fips_mode_default" comment="check for fips=1 in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
           <criterion test_ref="test_grub2_enable_fips_mode" comment="check for fips=1 in /etc/default/grub via GRUB_CMDLINE_LINUX" />
         </criteria>
@@ -51,17 +51,4 @@
   <ind:textfilecontent54_state id="state_grub2_enable_fips_mode" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^.*fips=1.*$</ind:subexpression>
   </ind:textfilecontent54_state>
-
-  <ind:textfilecontent54_test id="test_grub2_default_exists"
-  comment="check for GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub"
-  check="all" check_existence="all_exist" version="1">
-    <ind:object object_ref="object_grub2_default_exists" />
-  </ind:textfilecontent54_test>
-
-  <ind:textfilecontent54_object id="object_grub2_default_exists" version="1">
-    <ind:filepath>/etc/default/grub</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT=.*$</ind:pattern>
-    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
-  </ind:textfilecontent54_object>
-
 </def-group>
