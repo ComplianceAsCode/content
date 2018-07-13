@@ -28,3 +28,6 @@ selections:
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
     - package_libreswan_installed
+    - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_logindefs
+    - set_password_hashing_algorithm_libuserconf
