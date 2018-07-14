@@ -25,7 +25,7 @@
   lineinfile:
     path: /etc/sssd/sssd.conf
     regexp: '^\s*ldap_tls_cacertdir'
-    insertafter: '\s*[domain\/[^]]*]'
+    insertafter: '\s*\[domain\/[^]]*]'
     line: 'ldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}'
   tags:
     @ANSIBLE_TAGS@
