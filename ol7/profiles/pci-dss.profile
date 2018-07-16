@@ -35,3 +35,5 @@ selections:
     - aide_build_database
     - aide_periodic_cron_checking
     - service_auditd_enabled
+    - file_permissions_var_log_audit
+    - file_ownership_var_log_audit
