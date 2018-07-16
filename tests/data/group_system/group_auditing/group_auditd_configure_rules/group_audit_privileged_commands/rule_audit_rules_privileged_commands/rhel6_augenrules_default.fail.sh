@@ -2,4 +2,4 @@
 # profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
 
-cp privileged.rules /etc/audit/rules.d/
+sed -i "s/USE_AUGENRULES=.*/USE_AUGENRULES=\"yes\"/" /etc/sysconfig/auditd

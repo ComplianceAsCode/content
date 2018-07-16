@@ -5,3 +5,4 @@
 
 # Perform the remediation
 perform_audit_rules_privileged_commands_remediation "auditctl" "500"
+perform_audit_rules_privileged_commands_remediation "augenrules" "500"
