@@ -39,3 +39,4 @@ selections:
     - file_ownership_var_log_audit
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
+    - auditd_data_retention_max_log_file_action
