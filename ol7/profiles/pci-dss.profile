@@ -34,3 +34,4 @@ selections:
     - package_aide_installed
     - aide_build_database
     - aide_periodic_cron_checking
+    - service_auditd_enabled
