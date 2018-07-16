@@ -37,5 +37,5 @@ selections:
     - service_auditd_enabled
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
-    - var_auditd_num_logs=5
     - auditd_data_retention_num_logs
+    - auditd_data_retention_max_log_file
