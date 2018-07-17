@@ -88,5 +88,6 @@ def _rename_items(original_dict, renames):
 
 
 def process_file(filepath, substitutions_dict):
+    filepath = os.path.abspath(filepath)
     template = _get_jinja_environment(substitutions_dict).get_template(filepath)
     return template.render(substitutions_dict)

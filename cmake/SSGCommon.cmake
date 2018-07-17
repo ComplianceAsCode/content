@@ -184,13 +184,13 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes")
 
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" list-inputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-inputs
         OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_DEPENDS "${LANGUAGE_REMEDIATIONS_DEPENDS_STR}")
 
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" list-outputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-outputs
         OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_OUTPUTS "${LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
@@ -209,7 +209,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
         OUTPUT ${LANGUAGE_REMEDIATIONS_OUTPUTS}
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
         DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
@@ -292,12 +292,12 @@ macro(ssg_build_oval_unlinked PRODUCT)
 
     message(STATUS "Scanning for dependencies of ${PRODUCT} checks (OVAL)...")
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" list-inputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-inputs
         OUTPUT_VARIABLE OVAL_CHECKS_DEPENDS_STR
     )
     string(REPLACE "\n" ";" OVAL_CHECKS_DEPENDS "${OVAL_CHECKS_DEPENDS_STR}")
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" list-outputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-outputs
         OUTPUT_VARIABLE OVAL_CHECKS_OUTPUTS_STR
     )
     string(REPLACE "\n" ";" OVAL_CHECKS_OUTPUTS "${OVAL_CHECKS_OUTPUTS_STR}")
@@ -310,7 +310,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
         # We have to remove all old checks in case the user removed something from the CSV files
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
         DEPENDS ${OVAL_CHECKS_DEPENDS}

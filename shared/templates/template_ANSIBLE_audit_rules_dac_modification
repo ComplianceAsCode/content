@@ -7,7 +7,7 @@
 #
 # What architecture are we on?
 #
-- name: Set architecture for audit %ATTR% tasks
+- name: Set architecture for audit {{{ ATTR }}} tasks
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
@@ -20,57 +20,57 @@
     recurse: no
     contains: "-F key=perm_mod$"
     patterns: "*.rules"
-  register: find_%ATTR%
+  register: find_{{{ ATTR }}}
 
 - name: If existing DAC ruleset not found, use /etc/audit/rules.d/privileged.rules as the recipient for the rule
   set_fact:
-    all_files: 
+    all_files:
       - /etc/audit/rules.d/privileged.rules
-  when: find_%ATTR%.matched == 0
+  when: find_{{{ ATTR }}}.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
-      - "{{ find_%ATTR%.files | map(attribute='path') | list | first }}"
-  when: find_%ATTR%.matched > 0
+      - "{{ find_{{{ ATTR }}}.files | map(attribute='path') | list | first }}"
+  when: find_{{{ ATTR }}}.matched > 0
 
-- name: Inserts/replaces the %ATTR% rule in rules.d when on x86
+- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S %ATTR% -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
+    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
     create: yes
   tags:
     @ANSIBLE_TAGS@
 
-- name: Inserts/replaces the %ATTR% rule in rules.d when on x86_64
+- name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86_64
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b64 -S %ATTR% -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
+    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
     create: yes
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@
-#    
+#   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
-- name: Inserts/replaces the %ATTR% rule in /etc/audit/audit.rules when on x86
+- name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/audit.rules when on x86
   lineinfile:
     line: "{{ item }}"
     state: present
     dest: /etc/audit/audit.rules
   with_items:
-    - "-a always,exit -F arch=b32 -S %ATTR% -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
+    - "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
   tags:
     @ANSIBLE_TAGS@
 
-- name: Inserts/replaces the %ATTR% rule in audit.rules when on x86_64
+- name: Inserts/replaces the {{{ ATTR }}} rule in audit.rules when on x86_64
   lineinfile:
     line: "{{ item }}"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S %ATTR% -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
+    - "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@

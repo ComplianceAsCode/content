@@ -7,7 +7,7 @@
 #
 # What architecture are we on?
 #
-- name: Set architecture for audit %NAME% tasks
+- name: Set architecture for audit {{{ NAME }}} tasks
   set_fact:
     audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
 
@@ -20,37 +20,37 @@
     recurse: no
     contains: "-k logins$"
     patterns: "*.rules"
-  register: find_%NAME%
+  register: find_{{{ NAME }}}
 
 - name: If existing user/group modification ruleset not found, use /etc/audit/rules.d/logins.rules as the recipient for the rule
   set_fact:
-    all_files: 
+    all_files:
       - /etc/audit/rules.d/logins.rules
-  when: find_%NAME%.matched == 0
+  when: find_{{{ NAME }}}.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
-      - "{{ find_%NAME%.files | map(attribute='path') | list | first }}"
-  when: find_%NAME%.matched > 0
+      - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
+  when: find_{{{ NAME }}}.matched > 0
 
-- name: Inserts/replaces the %NAME% rule in rules.d when on x86
+- name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-w %PATH% -p wa -k logins"
+    line: "-w {{{ PATH }}} -p wa -k logins"
     create: yes
   tags:
     @ANSIBLE_TAGS@
 
-#    
+#   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
-- name: Inserts/replaces the %NAME% rule in /etc/audit/audit.rules 
+- name: Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
   lineinfile:
     line: "{{ item }}"
     state: present
     dest: /etc/audit/audit.rules
   with_items:
-    - "-w %PATH% -p wa -k logins"
+    - "-w {{{ PATH }}} -p wa -k logins"
   tags:
     @ANSIBLE_TAGS@

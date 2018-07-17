@@ -26,8 +26,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_service_disabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./bash/service_{0}_disabled.sh", servicename
             )
@@ -36,8 +36,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_service_disabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./ansible/service_{0}_disabled.yml", servicename
             )
@@ -46,8 +46,8 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_PUPPET_service_disabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./puppet/service_{0}_disabled.yml", servicename
             )
@@ -56,9 +56,9 @@ class ServiceDisabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_service_disabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%":  daemonname,
-                    "%PACKAGENAME%": packagename
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME":  daemonname,
+                    "PACKAGENAME": packagename
                 },
                 "./oval/service_{0}_disabled.xml", servicename
             )

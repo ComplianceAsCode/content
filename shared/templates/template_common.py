@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 """
 Common methods for generating files from templates
 """
@@ -6,6 +8,8 @@ import csv
 import sys
 import os
 import re
+import ssg.jinja
+import ssg.utils
 from abc import abstractmethod
 
 
@@ -39,6 +43,7 @@ class FilesGenerator(object):
     def __init__(self):
         self.delimiter = ','
         self.reset()
+        self.env_yaml = {}
 
     def reset(self):
         self.files = []
@@ -72,85 +77,34 @@ class FilesGenerator(object):
 
         raise TemplateNotFoundError(filename, paths)
 
-    def load_modified(self, filename, constants_dict):
-        """
-        Load file and replace constants according to constants_dict
-
-        constants_dict: dict of constants - replace ( key -> value)
-        regex_dict: dict of regex substitutions - sub ( key -> value)
-        """
-
-        template_filename = self.get_template_filename(filename)
-
-        if self.action == ActionType.OUTPUT:
-            return ""
-
-        if self.action == ActionType.INPUT:
-            self.files.append(template_filename)
-            return ""
-
-        with open(template_filename, "r") as template_file:
-            filestring = template_file.read()
-
-        for key, value in constants_dict.items():
-            if not key.startswith("%") or not key.endswith("%"):
-                raise RuntimeError(
-                    "Refuse to replace '%s' because it doesn't start and end "
-                    "with the %% character. Please follow conventions! "
-                    "Class name: %s" % (key, self.__class__))
-
-            filestring = filestring.replace(key, value)
-
-            trimmed_key = key[1:-1]  # the key without the % padding chars
-            if trimmed_key in filestring:
-                highlighted_filestring = filestring.replace(
-                    trimmed_key, "--->%s<---" % (trimmed_key)
-                )
-                raise RuntimeError(
-                    "Trimmed key '%s' was found in the filestring after the "
-                    "substitution was performed. This is usually a typo or a "
-                    "mistake in the template, the python generator or both. "
-                    "In the rare case where this is expected please rename the "
-                    "key to something unambiguous. Class name: %s. Filestring "
-                    "with the trimmed key highlighted:\n%s"
-                    % (trimmed_key, self.__class__, highlighted_filestring))
-
-        return filestring
-
-    def save_modified(self, filename_format, filename_value, string):
-        """
-        Save string to file
-        """
-
-        if self.action == ActionType.INPUT:
-            return
-
-        filename = os.path.join(
-            self.output_dir, filename_format.format(filename_value)
-        )
-
-        if self.action == ActionType.OUTPUT:
-            self.files.append(filename)
-            return
-
-        with open(filename, "w") as f:
-            f.write(string)
-
     def file_from_template(self, template_filename, constants,
                            filename_format, filename_value):
         """
         Load template, fill constant and create new file
         """
 
-        try:
-            filled_template = \
-                self.load_modified(template_filename, constants)
+        template_filepath = self.get_template_filename(template_filename)
+        output_filepath = os.path.join(
+            self.output_dir, filename_format.format(filename_value)
+        )
 
-            self.save_modified(filename_format, filename_value, filled_template)
+        if self.action == ActionType.INPUT:
+            self.files.append(template_filepath)
+            return
+        elif self.action == ActionType.OUTPUT:
+            self.files.append(output_filepath)
+            return
+
+        try:
+            jinja_dict = ssg.utils.merge_dicts(self.env_yaml, constants)
+            filled_template = ssg.jinja.process_file(template_filepath,
+                                                     jinja_dict)
+
+            with open(output_filepath, "w") as f:
+                f.write(filled_template)
 
         except TemplateNotFoundError as e:
-            if self.action == ActionType.BUILD:
-                sys.stderr.write(str(e) + "\n")
+            print(e, file=sys.stderr)
 
     def process_csv_line(self, line, target):
         """

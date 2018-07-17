@@ -28,8 +28,8 @@ class FileOwnerGenerator(FilesGenerator):
 #            self.file_from_template(
 #                "./template_OVAL_file_owner",
 #                {
-#                    "%PATH%": path,
-#                    "%NAME%": name
+#                    "PATH": path,
+#                    "NAME": name
 #                },
 #                "./oval/file_owner{0}.xml", name
 #            )
@@ -38,8 +38,8 @@ class FileOwnerGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_file_owner",
                 {
-                    "%PATH%": path,
-                    "%USER%": user,
+                    "PATH": path,
+                    "USER": user,
                 },
                 "./bash/file_owner{0}.sh", name
             )
@@ -48,8 +48,8 @@ class FileOwnerGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_file_owner",
                 {
-                    "%PATH%": path,
-                    "%USER%": user,
+                    "PATH": path,
+                    "USER": user,
                 },
                 "./ansible/file_owner{0}.yml", name
             )

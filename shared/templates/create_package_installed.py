@@ -27,8 +27,8 @@ class PackageInstalledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_package_installed",
                 {
-                    "%PKGNAME%": pkgname,
-                    "%EVR%": evr
+                    "PKGNAME": pkgname,
+                    "EVR": evr
                 },
                 "./oval/package_{0}_installed.xml", pkgname
             )
@@ -36,28 +36,28 @@ class PackageInstalledGenerator(FilesGenerator):
         elif target == "bash":
             self.file_from_template(
                 "./template_BASH_package_installed",
-                {"%PKGNAME%": pkgname},
+                {"PKGNAME": pkgname},
                 "./bash/package_{0}_installed.sh", pkgname
             )
 
         elif target == "ansible":
             self.file_from_template(
                 "./template_ANSIBLE_package_installed",
-                {"%PKGNAME%": pkgname},
+                {"PKGNAME": pkgname},
                 "./ansible/package_{0}_installed.yml", pkgname
             )
 
         elif target == "anaconda":
             self.file_from_template(
                 "./template_ANACONDA_package_installed",
-                {"%PKGNAME%": pkgname},
+                {"PKGNAME": pkgname},
                 "./anaconda/package_{0}_installed.anaconda", pkgname
             )
 
         elif target == "puppet":
             self.file_from_template(
                 "./template_PUPPET_package_installed",
-                {"%PKGNAME%": pkgname},
+                {"PKGNAME": pkgname},
                 "./puppet/package_{0}_installed.pp", pkgname
             )
 

@@ -3,17 +3,17 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-- (xccdf-var var_%SEBOOLID%)
+- (xccdf-var var_{{{ SEBOOLID }}})
 
 - name: Ensure libsemanage-python installed
   package:
     name: libsemanage-python
     state: latest
 
-- name: Set SELinux boolean %SEBOOLID% accordingly
+- name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
   seboolean:
-    name: %SEBOOLID%
-    state: "{{ var_%SEBOOLID% }}"
+    name: {{{ SEBOOLID }}}
+    state: "{{ var_{{{ SEBOOLID }}} }}"
     persistent: yes
   tags:
     @ANSIBLE_TAGS@

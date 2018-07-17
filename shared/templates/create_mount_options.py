@@ -74,9 +74,9 @@ class RemediationTarget(MountOptionTarget):
         self.generator.file_from_template(
             self.template_file,
             {
-                "%MOUNT_HAS_TO_EXIST%": mount_has_to_exist,
-                "%MOUNTPOINT%": self._mount_point,
-                "%MOUNTOPTION%": re.sub(' ', ',', self._mount_option),
+                "MOUNT_HAS_TO_EXIST": mount_has_to_exist,
+                "MOUNTPOINT": self._mount_point,
+                "MOUNTOPTION": re.sub(' ', ',', self._mount_option),
             },
             self._output_fname,
             ""
@@ -116,9 +116,9 @@ class OvalTarget(MountOptionTarget):
         self.generator.file_from_template(
             self.template_file,
             {
-                "%MOUNTPOINT%":  self._mount_point,
-                "%MOUNTOPTION%": self._mount_option,
-                "%POINTID%":     self._point_id,
+                "MOUNTPOINT":  self._mount_point,
+                "MOUNTOPTION": self._mount_option,
+                "POINTID":     self._point_id,
             },
             self._output_fname,
             ""

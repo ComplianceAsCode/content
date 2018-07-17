@@ -4,18 +4,18 @@
 # complexity = low
 # disruption = low
 
-- name: Find %PATH% file(s)
+- name: Find {{{ PATH }}} file(s)
   find:
-    paths: "{{ '%PATH%' | dirname }}"
-    patterns: "{{ '%PATH%' | basename }}"
+    paths: "{{ '{{{ PATH }}}' | dirname }}"
+    patterns: "{{ '{{{ PATH }}}' | basename }}"
   register: files_found
   tags:
     @ANSIBLE_TAGS@
 
-- name: Set group ownership to %GROUP%
+- name: Set group ownership to {{{ GROUP }}}
   file:
     path: "{{ item.path }}"
-    group: %GROUP%
+    group: {{{ GROUP }}}
   with_items:
     - "{{ files_found.files }}"
   tags:

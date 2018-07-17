@@ -16,7 +16,7 @@ class AuditRulesUnsuccessfulFileModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_audit_rules_unsuccessful_file_modification",
                 {
-                    "%NAME%":	name
+                    "NAME":	name
                 },
                 "./oval/audit_rules_unsuccessful_file_modification_{0}.xml", name
             )
@@ -25,7 +25,7 @@ class AuditRulesUnsuccessfulFileModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_audit_rules_unsuccessful_file_modification",
                 {
-                    "%NAME%":	name
+                    "NAME":	name
                 },
                 "./bash/audit_rules_unsuccessful_file_modification_{0}.sh", name
             )
@@ -34,7 +34,7 @@ class AuditRulesUnsuccessfulFileModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_audit_rules_unsuccessful_file_modification",
                 {
-                    "%NAME%":	name
+                    "NAME":	name
                 },
                 "./ansible/audit_rules_unsuccessful_file_modification_{0}.yml", name
             )

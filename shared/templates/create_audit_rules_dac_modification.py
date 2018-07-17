@@ -19,7 +19,7 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_audit_rules_dac_modification",
                 {
-                    "%ATTR%":           attr,
+                    "ATTR":           attr,
                 },
                 "./oval/audit_rules_dac_modification_{0}.xml", attr
             )
@@ -28,7 +28,7 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_audit_rules_dac_modification",
                 {
-                    "%ATTR%":	attr,
+                    "ATTR":	attr,
                 },
                 "./bash/audit_rules_dac_modification_{0}.sh", attr
             )
@@ -37,7 +37,7 @@ class AuditRulesDacModificationGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_audit_rules_dac_modification",
                 {
-                    "%ATTR%":	attr,
+                    "ATTR":	attr,
                 },
                 "./ansible/audit_rules_dac_modification_{0}.yml", attr
             )
