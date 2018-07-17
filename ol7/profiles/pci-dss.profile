@@ -42,3 +42,4 @@ selections:
     - auditd_data_retention_max_log_file_action
     - auditd_data_retention_space_left_action
     - auditd_data_retention_admin_space_left_action
+    - auditd_data_retention_action_mail_acct
