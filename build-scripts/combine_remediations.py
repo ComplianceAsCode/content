@@ -144,9 +144,10 @@ def main():
                             remediation_functions
                         )
                 else:
-                    sys.stderr.write("Skipping '%s' remediation script. "
-                                     "The platform identifier in the "
-                                     "script is missing!\n" % (filename))
+                    raise RuntimeError(
+                        "The '%s' remediation script does not contain the "
+                        "platform identifier!" % (filename))
+
     sys.stderr.write("Merged %d %s remediations.\n"
                      % (included_fixes_count, args.remediation_type))
     tree = ssg.xml.ElementTree.ElementTree(fixcontent)
