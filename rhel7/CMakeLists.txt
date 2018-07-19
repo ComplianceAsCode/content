@@ -19,10 +19,11 @@ ssg_build_html_nistrefs_table(${PRODUCT} "ospp")
 ssg_build_html_nistrefs_table(${PRODUCT} "C2S")
 ssg_build_html_nistrefs_table(${PRODUCT} "stig-${PRODUCT}-disa")
 
-ssg_build_html_anssirefs_table(${PRODUCT} "nt28_minimal")
-ssg_build_html_anssirefs_table(${PRODUCT} "nt28_intermediary")
-ssg_build_html_anssirefs_table(${PRODUCT} "nt28_enhanced")
-ssg_build_html_anssirefs_table(${PRODUCT} "nt28_high")
+# Uncomment when anssi profiles are marked documentation_complete: true
+#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_minimal")
+#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_intermediary")
+#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_enhanced")
+#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_high")
 
 ssg_build_html_cce_table(${PRODUCT})
 
