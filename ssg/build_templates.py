@@ -32,12 +32,13 @@ from create_file_permissions import FilePermissionsGenerator
 
 
 class Builder(object):
-    def __init__(self):
+    def __init__(self, env_yaml):
         self.input_dir = None
         self.template_dir = None
         self.csv_dir = None
         self.output_dir = None
         self.ssg_shared = ""
+        self.env_yaml = env_yaml
 
         self.script_dict = {
             "sysctl_values.csv":                SysctlGenerator(),
@@ -123,6 +124,7 @@ class Builder(object):
             csv_filepath = os.path.join(self.csv_dir, csv_filename)
 
             generator.reset()
+            generator.env_yaml = self.env_yaml
             generator.output_dir = self.output_dir
             generator.action = ActionType.BUILD
             generator.product_input_dir = self.template_dir
@@ -146,6 +148,7 @@ class Builder(object):
                 list_.append(csv_filepath)
 
             generator.reset()
+            generator.env_yaml = self.env_yaml
             generator.output_dir = self.output_dir
             generator.action = action
             generator.product_input_dir = self.template_dir

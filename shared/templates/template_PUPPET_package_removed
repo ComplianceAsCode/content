@@ -3,10 +3,10 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-include remove_%PKGNAME%
+include remove_{{{ PKGNAME }}}
 
-class remove_%PKGNAME% {
-  package { '%PKGNAME%':
+class remove_{{{ PKGNAME }}} {
+  package { '{{{ PKGNAME }}}':
     ensure => 'purged',
   }
 }

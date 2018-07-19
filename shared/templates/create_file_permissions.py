@@ -28,10 +28,10 @@ class FilePermissionsGenerator(FilesGenerator):
 #            self.file_from_template(
 #                "./template_OVAL_file_permissions",
 #                {
-#                    "%PATH%": path,
-#                    "%MODE%": mode,
-#                    "%PLATFORMS%": platforms,
-#                    "%NAME%": name
+#                    "PATH": path,
+#                    "MODE": mode,
+#                    "PLATFORMS": platforms,
+#                    "NAME": name
 #                },
 #                "./oval/file_permissions{0}.xml", name
 #            )
@@ -40,8 +40,8 @@ class FilePermissionsGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_file_permissions",
                 {
-                    "%PATH%": path,
-                    "%MODE%": mode,
+                    "PATH": path,
+                    "MODE": mode,
                 },
                 "./bash/file_permissions{0}.sh", name
             )
@@ -50,8 +50,8 @@ class FilePermissionsGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_file_permissions",
                 {
-                    "%PATH%": path,
-                    "%MODE%": mode,
+                    "PATH": path,
+                    "MODE": mode,
                 },
                 "./ansible/file_permissions{0}.yml", name
             )

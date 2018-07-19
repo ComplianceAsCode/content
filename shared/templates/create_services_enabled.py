@@ -28,9 +28,9 @@ class ServiceEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_service_enabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%PACKAGENAME%": packagename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "PACKAGENAME": packagename,
+                    "DAEMONNAME": daemonname
                 },
                 "./oval/service_{0}_enabled.xml", servicename
             )
@@ -38,8 +38,8 @@ class ServiceEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_service_enabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./bash/service_{0}_enabled.sh", servicename
             )
@@ -48,8 +48,8 @@ class ServiceEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_service_enabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./ansible/service_{0}_enabled.yml", servicename
             )
@@ -58,8 +58,8 @@ class ServiceEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_PUPPET_service_enabled",
                 {
-                    "%SERVICENAME%": servicename,
-                    "%DAEMONNAME%": daemonname
+                    "SERVICENAME": servicename,
+                    "DAEMONNAME": daemonname
                 },
                 "./puppet/service_{0}_enabled.yml", servicename
             )

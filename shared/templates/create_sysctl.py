@@ -45,8 +45,8 @@ class SysctlGenerator(FilesGenerator):
                 self.file_from_template(
                     "template_BASH_sysctl_var",
                     {
-                        "%SYSCTLID%":  sysctl_var_id,
-                        "%SYSCTLVAR%": sysctl_var
+                        "SYSCTLID":  sysctl_var_id,
+                        "SYSCTLVAR": sysctl_var
                     },
                     "./bash/sysctl_{0}.sh", sysctl_var_id
                 )
@@ -54,9 +54,9 @@ class SysctlGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_BASH_sysctl",
                     {
-                        "%SYSCTLID%":  sysctl_var_id,
-                        "%SYSCTLVAR%": sysctl_var,
-                        "%SYSCTLVAL%": sysctl_val
+                        "SYSCTLID":  sysctl_var_id,
+                        "SYSCTLVAR": sysctl_var,
+                        "SYSCTLVAL": sysctl_val
                     },
                     "./bash/sysctl_{0}.sh", sysctl_var_id
                 )
@@ -68,8 +68,8 @@ class SysctlGenerator(FilesGenerator):
                 self.file_from_template(
                     "template_ANSIBLE_sysctl_var",
                     {
-                        "%SYSCTLID%":  sysctl_var_id,
-                        "%SYSCTLVAR%": sysctl_var
+                        "SYSCTLID":  sysctl_var_id,
+                        "SYSCTLVAR": sysctl_var
                     },
                     "./ansible/sysctl_{0}.yml", sysctl_var_id
                 )
@@ -77,9 +77,9 @@ class SysctlGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_ANSIBLE_sysctl",
                     {
-                        "%SYSCTLID%":  sysctl_var_id,
-                        "%SYSCTLVAR%": sysctl_var,
-                        "%SYSCTLVAL%": sysctl_val
+                        "SYSCTLID":  sysctl_var_id,
+                        "SYSCTLVAR": sysctl_var,
+                        "SYSCTLVAL": sysctl_val
                     },
                     "./ansible/sysctl_{0}.yml", sysctl_var_id
                 )
@@ -93,8 +93,8 @@ class SysctlGenerator(FilesGenerator):
                     self.file_from_template(
                         sysctlfile,
                         {
-                            "%SYSCTLID%":  sysctl_var_id,
-                            "%SYSCTLVAR%": sysctl_var,
+                            "SYSCTLID":  sysctl_var_id,
+                            "SYSCTLVAR": sysctl_var,
                         },
                         "./oval/{0}.xml", prefix + sysctl_var_id
                     )
@@ -105,9 +105,9 @@ class SysctlGenerator(FilesGenerator):
                     self.file_from_template(
                         sysctlfile,
                         {
-                            "%SYSCTLID%":  sysctl_var_id,
-                            "%SYSCTLVAR%": sysctl_var,
-                            "%SYSCTLVAL%": sysctl_val
+                            "SYSCTLID":  sysctl_var_id,
+                            "SYSCTLVAR": sysctl_var,
+                            "SYSCTLVAL": sysctl_val
                         },
                         "./oval/{0}.xml", prefix + sysctl_var_id
                     )

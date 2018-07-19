@@ -18,7 +18,7 @@ class MountsGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_ANACONDA_mount",
                     {
-                        "%MOUNTPOINT%":  mount_point,
+                        "MOUNTPOINT":  mount_point,
                     },
                     "./anaconda/partition_for{0}.anaconda", point_id
                 )
@@ -27,8 +27,8 @@ class MountsGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_OVAL_mount",
                     {
-                        "%MOUNTPOINT%":  mount_point,
-                        "%POINTID%":     point_id,
+                        "MOUNTPOINT":  mount_point,
+                        "POINTID":     point_id,
                     },
                     "./oval/partition_for{0}.xml", point_id
                 )

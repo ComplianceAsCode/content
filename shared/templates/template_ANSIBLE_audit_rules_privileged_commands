@@ -10,36 +10,36 @@
   find:
     paths: "/etc/audit/rules.d"
     recurse: no
-    contains: "^.*path=%PATH%.*$"
+    contains: "^.*path={{{ PATH }}}.*$"
     patterns: "*.rules"
-  register: find_%NAME%
+  register: find_{{{ NAME }}}
 
 - name: Use /etc/audit/rules.d/privileged.rules as the recipient for the rule
   set_fact:
-    all_files: 
+    all_files:
       - /etc/audit/rules.d/privileged.rules
-  when: find_%NAME%.matched == 0
+  when: find_{{{ NAME }}}.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
-      - "{{ find_%NAME%.files | map(attribute='path') | list | first }}"
-  when: find_%NAME%.matched > 0
+      - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
+  when: find_{{{ NAME }}}.matched > 0
 
-- name: Inserts/replaces the %NAME% rule in rules.d
+- name: Inserts/replaces the {{{ NAME }}} rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
-    
-# Inserts/replaces the %NAME% rule in /etc/audit/audit.rules
+   
+# Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
 
-- name: Inserts/replaces the %NAME% rule in audit.rules
+- name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path=%PATH% -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@

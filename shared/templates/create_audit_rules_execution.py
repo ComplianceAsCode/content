@@ -20,10 +20,10 @@ class AuditRulesExecutionGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_audit_rules_privileged_commands",
                 {
-                    "%ID%": "audit_rules_execution_" + name,
-                    "%TITLE%": "Record Any Attempts to Run " + name,
-                    "%NAME%":	name,
-                    "%PATH%":	path.replace("/", "\\/")
+                    "ID": "audit_rules_execution_" + name,
+                    "TITLE": "Record Any Attempts to Run " + name,
+                    "NAME":	name,
+                    "PATH":	path.replace("/", "\\/")
                 },
                 "./oval/audit_rules_execution_{0}.xml", name
             )
@@ -32,7 +32,7 @@ class AuditRulesExecutionGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_audit_rules_privileged_commands",
                 {
-                    "%PATH%":	path
+                    "PATH":	path
                 },
                 "./bash/audit_rules_execution_{0}.sh", name
             )
@@ -41,8 +41,8 @@ class AuditRulesExecutionGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_audit_rules_privileged_commands",
                 {
-                    "%NAME%":	name,
-                    "%PATH%":	path
+                    "NAME":	name,
+                    "PATH":	path
                 },
                 "./ansible/audit_rules_execution_{0}.yml", name
             )

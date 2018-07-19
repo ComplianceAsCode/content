@@ -22,15 +22,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_OVAL_sebool",
                         {
-                            "%SEBOOLID%": sebool_id,
-                            "%SEBOOL_BOOL%": sebool_bool
+                            "SEBOOLID": sebool_id,
+                            "SEBOOL_BOOL": sebool_bool
                         },
                         "./oval/sebool_{0}.xml", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_OVAL_sebool_var",
                         {
-                            "%SEBOOLID%": sebool_id
+                            "SEBOOLID": sebool_id
                         },
                         "./oval/sebool_{0}.xml", sebool_id
                     )
@@ -40,15 +40,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_BASH_sebool",
                         {
-                            "%SEBOOLID%": sebool_id,
-                            "%SEBOOL_BOOL%": sebool_bool
+                            "SEBOOLID": sebool_id,
+                            "SEBOOL_BOOL": sebool_bool
                         },
                         "./bash/sebool_{0}.sh", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_BASH_sebool_var",
                         {
-                            "%SEBOOLID%": sebool_id
+                            "SEBOOLID": sebool_id
                         },
                         "./bash/sebool_{0}.sh", sebool_id
                     )
@@ -58,15 +58,15 @@ class SEBoolGenerator(FilesGenerator):
                     self.file_from_template(
                         "./template_ANSIBLE_sebool",
                         {
-                            "%SEBOOLID%": sebool_id,
-                            "%SEBOOL_BOOL%": sebool_bool
+                            "SEBOOLID": sebool_id,
+                            "SEBOOL_BOOL": sebool_bool
                         },
                         "./ansible/sebool_{0}.yml", sebool_id)
                 else:
                     self.file_from_template(
                         "./template_ANSIBLE_sebool_var",
                         {
-                            "%SEBOOLID%": sebool_id
+                            "SEBOOLID": sebool_id
                         },
                         "./ansible/sebool_{0}.yml", sebool_id
                     )

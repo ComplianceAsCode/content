@@ -28,8 +28,8 @@ class FileGroupOwnerGenerator(FilesGenerator):
 #            self.file_from_template(
 #                "./template_OVAL_file_groupowner",
 #                {
-#                    "%PATH%": path,
-#                    "%NAME%": name
+#                    "PATH": path,
+#                    "NAME": name
 #                },
 #                "./oval/file_groupowner{0}.xml", name
 #            )
@@ -38,8 +38,8 @@ class FileGroupOwnerGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_file_groupowner",
                 {
-                    "%PATH%": path,
-                    "%GROUP%": group,
+                    "PATH": path,
+                    "GROUP": group,
                 },
                 "./bash/file_groupowner{0}.sh", name
             )
@@ -48,8 +48,8 @@ class FileGroupOwnerGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_file_groupowner",
                 {
-                    "%PATH%": path,
-                    "%GROUP%": group,
+                    "PATH": path,
+                    "GROUP": group,
                 },
                 "./ansible/file_groupowner{0}.yml", name
             )

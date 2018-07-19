@@ -19,8 +19,8 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_audit_rules_login_events",
                 {
-                    "%NAME%":	name,
-                    "%PATH%":	path.replace("/", "\\/")
+                    "NAME":	name,
+                    "PATH":	path.replace("/", "\\/")
                 },
                 "./oval/audit_rules_login_events_{0}.xml", name
             )
@@ -29,7 +29,7 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_audit_rules_login_events",
                 {
-                    "%PATH%":	path
+                    "PATH":	path
                 },
                 "./bash/audit_rules_login_events_{0}.sh", name
             )
@@ -38,8 +38,8 @@ class AuditRulesLoginEventsGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_audit_rules_login_events",
                 {
-                    "%NAME%":	name,
-                    "%PATH%":	path
+                    "NAME":	name,
+                    "PATH":	path
                 },
                 "./ansible/audit_rules_login_events_{0}.yml", name
             )

@@ -7,6 +7,7 @@ import sys
 import argparse
 
 import ssg.build_templates
+import ssg.yaml
 
 
 def parse_args():
@@ -31,6 +32,16 @@ def parse_args():
                    help="List of output directories")
     p.add_argument("--shared", metavar="PATH", required=True,
                    help="Full absolute path to SSG shared directory")
+    p.add_argument(
+        "--build-config-yaml", required=True, dest="build_config_yaml",
+        help="YAML file with information about the build configuration. "
+        "e.g.: ~/scap-security-guide/build/build_config.yml"
+    )
+    p.add_argument(
+        "--product-yaml", required=True, dest="product_yaml",
+        help="YAML file with information about the product we are building. "
+        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+    )
 
     args = p.parse_args()
     if len(args.input) != len(args.output):
@@ -44,8 +55,11 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
+    env_yaml = ssg.yaml.open_environment(
+        args.build_config_yaml, args.product_yaml)
+
     for index in range(0, len(args.input)):
-        builder = ssg.build_templates.Builder()
+        builder = ssg.build_templates.Builder(env_yaml)
         builder.set_langs(args.languages)
 
         builder.set_input_dir(args.input[index])

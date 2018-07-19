@@ -42,8 +42,8 @@ class PermissionGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_BASH_permissions",
                     {
-                        "%FILEPATH%":      full_path,
-                        "%FILEMODE%":      mode,
+                        "FILEPATH":      full_path,
+                        "FILEMODE":      mode,
                     },
                     "./bash/file_permissions{0}.sh", path_id
                 )
@@ -52,9 +52,9 @@ class PermissionGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_BASH_regex_permissions",
                     {
-                        "%FILEPATH%":      dir_path,
-                        "%FILENAME%":      file_name,
-                        "%FILEMODE%":      mode,
+                        "FILEPATH":      dir_path,
+                        "FILENAME":      file_name,
+                        "FILEMODE":      mode,
                     },
                     "./bash/file_permissions{0}.sh", path_id
                 )
@@ -63,8 +63,8 @@ class PermissionGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_permissions",
                 {
-                    "%FILEPATH%":      full_path,
-                    "%FILEMODE%":      mode,
+                    "FILEPATH":      full_path,
+                    "FILEMODE":      mode,
                 },
                 "./ansible/file_permissions{0}.yml", path_id
             )
@@ -97,14 +97,14 @@ class PermissionGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_OVAL_permissions",
                 {
-                    "%FILEID%":        path_id,
-                    "%FILEPATH%":      full_path,
-                    "%FILEDIR%":       dir_path,
-                    "%FILEUID%":       uid,
-                    "%FILEGID%":       gid,
-                    "%FILEMODE%":      mode,
-                    "%STATEMODE%":     mode_str,
-                    "%UNIX_FILENAME%": unix_filename
+                    "FILEID":        path_id,
+                    "FILEPATH":      full_path,
+                    "FILEDIR":       dir_path,
+                    "FILEUID":       uid,
+                    "FILEGID":       gid,
+                    "FILEMODE":      mode,
+                    "STATEMODE":     mode_str,
+                    "UNIX_FILENAME": unix_filename
                 },
                 "./oval/file_permissions{0}.xml", path_id
             )

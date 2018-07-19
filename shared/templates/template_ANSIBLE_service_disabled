@@ -3,7 +3,7 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-- name: Disable service %SERVICENAME%
+- name: Disable service {{{ SERVICENAME }}}
   service:
     name="{{item}}"
     enabled="no"
@@ -11,12 +11,12 @@
   register: service_result
   failed_when: "service_result is failed and ('Could not find the requested service' not in service_result.msg)"
   with_items:
-    - %DAEMONNAME%
+    - {{{ DAEMONNAME }}}
   tags:
     @ANSIBLE_TAGS@
 
 {{% if init_system == "systemd" %}}
-- name: Disable socket of service %SERVICENAME% if applicable
+- name: Disable socket of service {{{ SERVICENAME }}} if applicable
   service:
     name="{{item}}"
     enabled="no"
@@ -24,7 +24,7 @@
   register: socket_result
   failed_when: "socket_result is failed and ('Could not find the requested service' not in socket_result.msg)"
   with_items:
-    - %DAEMONNAME%.socket
+    - {{{ DAEMONNAME }}}.socket
   tags:
     @ANSIBLE_TAGS@
 {{% endif %}}
