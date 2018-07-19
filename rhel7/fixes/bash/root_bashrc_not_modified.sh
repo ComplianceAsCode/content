@@ -1,0 +1,4 @@
+# platform = Red Hat Enterprise Linux 7
+
+rhel7_bashrc_base64_encoded="IyAuYmFzaHJjCgojIFVzZXIgc3BlY2lmaWMgYWxpYXNlcyBhbmQgZnVuY3Rpb25zCgphbGlhcyBybT0ncm0gLWknCmFsaWFzIGNwPSdjcCAtaScKYWxpYXMgbXY9J212IC1pJwoKIyBTb3VyY2UgZ2xvYmFsIGRlZmluaXRpb25zCmlmIFsgLWYgL2V0Yy9iYXNocmMgXTsgdGhlbgoJLiAvZXRjL2Jhc2hyYwpmaQo="
+printf "%s" "$rhel7_bashrc_base64_encoded" | base64 -d > /root/.bashrc

@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="root_bashrc_not_modified" version="1">
+    <metadata>
+      <title>Verify hash of the root's .bashrc file</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>This description in OVALs is mandatory, but the most important is to have description in XCCDF.</description>
+    </metadata>
+    <criteria>
+	    <criterion comment="Check file hash of /root/.bashrc" test_ref="test_root_bashrc_hash" />
+    </criteria>
+  </definition>
+  <ind:filehash58_test check="all" comment="Test that bashrc has a given hash." id="test_root_bashrc_hash" version="1">
+    <ind:object object_ref="concerned_file" />
+    <ind:state state_ref="hash_value" />
+  </ind:filehash58_test>
+  <ind:filehash58_object id="concerned_file" version="1">
+    <ind:filepath>/root/.bashrc</ind:filepath>
+    <ind:hash_type>SHA-512</ind:hash_type>
+  </ind:filehash58_object>
+  <ind:filehash58_state id="hash_value" version="1">
+    <ind:hash_type>SHA-512</ind:hash_type>
+    <ind:hash>5b559bb00d09275abf2fcb7b9a577b77557f338a2c18c9e370bf338db6aae2ae9ab814c790a207be4c2eb972f46c79fbc70819c8d1f0e682e00ebb8f5f45f74d</ind:hash>
+  </ind:filehash58_state>
+</def-group>
+

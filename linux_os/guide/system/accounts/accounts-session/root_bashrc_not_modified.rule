@@ -1,0 +1,15 @@
+documentation_complete: true
+
+title: 'Ensure that Root''s .bashrc was not modified.'
+
+description: |-
+    Check the file hash of the <tt>/root/.bashrc</tt> file to determine whether
+    it has not been modified.
+    Overlaps with the RPM verification, as it is provided by the 
+    <tt>rootfiles</tt> package.
+
+rationale: |-
+    Code in <tt>.bashrc</tt> is executed on each login, so contents of this
+    file have to be strictly controled.
+
+severity: unknown
