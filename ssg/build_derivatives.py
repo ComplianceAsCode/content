@@ -94,3 +94,14 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
             if ref.text is not None:
                 if re.search(ref_exp, ref.text):
                     rule.remove(ref)
+
+        for fix in rule.findall(".//{%s}fix" % (namespace)):
+            if "fips" in fix.get("id"):
+                rule.remove(fix)
+            sub_elems = fix.findall(".//{%s}sub" % (namespace))
+            for sub_elem in sub_elems:
+                sub_elem.tail = re.sub(r"[\s]+- CCE-.*", "", sub_elem.tail)
+                sub_elem.tail = re.sub(r"CCE-[0-9]*-[0-9]*", "", sub_elem.tail)
+            if fix.text is not None:
+                fix.text = re.sub(r"[\s]+- CCE-.*", "", fix.text)
+                fix.text = re.sub(r"CCE-[0-9]*-[0-9]*", "", fix.text)
