@@ -1,14 +1,15 @@
 source fix_audit_syscall_rule.sh
 
 # Perform the remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
-# system calls on Red Hat Enterprise Linux 6 OS
-function rhel6_perform_audit_adjtimex_settimeofday_stime_remediation {
+# system calls on Red Hat Enterprise Linux 7 or Fedora OSes
+function perform_audit_adjtimex_settimeofday_stime_remediation {
 
 # Retrieve hardware architecture of the underlying system
 [ $(getconf LONG_BIT) = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
+
 	PATTERN="-a always,exit -F arch=${ARCH} -S .* -k *"
 	# Create expected audit group and audit rule form for particular system call & architecture
 	if [ ${ARCH} = "b32" ]
@@ -24,8 +25,11 @@ do
 		GROUP="\(adjtimex\|settimeofday\)"
 		FULL_RULE="-a always,exit -F arch=${ARCH} -S adjtimex -S settimeofday -k audit_time_rules"
 	fi
-	# Perform the remediation itself
+	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+    {{% if product == "rhel7" %}}
+	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
+    {{% endif %}}
 done
 
 }
