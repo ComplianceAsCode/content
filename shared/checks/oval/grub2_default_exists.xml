@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="grub2_default_exists" version="1">
+    <metadata>
+      <title>GRUB_CMDLINE_LINUX_DEFAULT existance check</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Check if GRUB_CMDLINE_LINUX_DEFAULT exists in /etc/default/grub.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_grub2_default_exists" comment="check for GRUB_CMDLINE_LINUX_DEFAULT exists in /etc/default/grub" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_grub2_default_exists"
+  comment="check for GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_grub2_default_exists" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_grub2_default_exists" version="1">
+    <ind:filepath>/etc/default/grub</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT=.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
