@@ -118,7 +118,7 @@ selections:
     - file_groupowner_etc_gshadow
     - file_groupowner_etc_passwd
     - rsyslog_files_groupownership
-    - groupowner_shadow_file
+    - file_groupowner_etc_shadow
     - file_permissions_httpd_server_conf_files
     - dir_perms_var_log_httpd
     - httpd_servertokens_prod
@@ -253,7 +253,7 @@ selections:
     - file_owner_etc_gshadow
     - file_owner_etc_passwd
     - "!rsyslog_files_ownership"
-    - userowner_shadow_file
+    - file_owner_etc_shadow
     - wireless_disable_in_bios
     - "!dir_perms_world_writable_system_owned"
     - grub_legacy_disable_interactive_boot

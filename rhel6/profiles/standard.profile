@@ -37,8 +37,8 @@ selections:
     - dir_perms_world_writable_sticky_bits
     - accounts_password_all_shadowed
     - accounts_no_uid_except_zero
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
