@@ -28,9 +28,12 @@ class AccountsPasswordGenerator(FilesGenerator):
                 "./ansible/accounts_password_pam_{0}.yml", VARIABLE
             )
         elif target == "oval":
+            # Only credit related variables allow negative values
+            SIGN = "-?" if VARIABLE.endswith("credit") else ""
             self.file_from_template(
                 "./template_OVAL_accounts_password",
                 {
+                    "SIGN": SIGN,
                     "VARIABLE": VARIABLE,
                     "OPERATION": OPERATION
                 },
