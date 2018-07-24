@@ -5,8 +5,8 @@
 # disruption = low
 - name: Ensure {{{ PKGNAME }}} is removed
   package:
-    name="{{item}}"
-    state=absent
+    name: "{{item}}"
+    state: absent
   with_items:
     - {{{ PKGNAME }}}
   tags:

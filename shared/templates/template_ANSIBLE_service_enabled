@@ -5,9 +5,9 @@
 # disruption = low
 - name: Enable service {{{ SERVICENAME }}}
   service:
-    name="{{item}}"
-    enabled="yes"
-    state="started"
+    name: "{{item}}"
+    enabled: "yes"
+    state: "started"
   with_items:
     - {{{ DAEMONNAME }}}
   tags:

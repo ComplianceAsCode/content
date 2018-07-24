@@ -5,7 +5,7 @@
 # disruption = low
 - name: Does prelink file exist
   stat:
-    path=/etc/sysconfig/prelink
+    path: /etc/sysconfig/prelink
   register: prelink_exists
   tags:
     @ANSIBLE_TAGS@  

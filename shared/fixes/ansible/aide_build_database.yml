@@ -5,8 +5,8 @@
 # disruption = low
 - name: "Ensure AIDE is installed"
   package:
-    name="{{item}}"
-    state=present
+    name: "{{item}}"
+    state: present
   with_items:
     - aide
   tags:
