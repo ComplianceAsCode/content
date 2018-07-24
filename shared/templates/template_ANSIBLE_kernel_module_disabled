@@ -5,10 +5,10 @@
 # disruption = medium
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
   lineinfile:
-    create=yes
-    dest="/etc/modprobe.d/{{item}}.conf"
-    regexp="{{item}}"
-    line="install {{item}} /bin/true"
+    create: yes
+    dest: "/etc/modprobe.d/{{item}}.conf"
+    regexp: '{{item}}'
+    line: "install {{item}} /bin/true"
   with_items:
     - {{{ KERNMODULE }}}
   tags:

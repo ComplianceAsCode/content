@@ -5,8 +5,8 @@
 # disruption = low
 - name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
   file:
-    path="{{item}}"
-    mode={{{ FILEMODE }}}
+    path: "{{item}}"
+    mode: {{{ FILEMODE }}}
   with_items:
     - {{{ FILEPATH }}}
   tags:
