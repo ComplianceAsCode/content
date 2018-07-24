@@ -58,3 +58,14 @@ ocil: |-
     To verify that the audit system collects unauthorized file accesses, run the following commands:
     <pre>$ sudo grep EACCES /etc/audit/audit.rules</pre>
     <pre>$ sudo grep EPERM /etc/audit/audit.rules</pre>
+
+warnings:
+    - general: |-
+        This rule checks for multiple syscalls related to unsuccessful file modification;
+        it was written with DISA STIG in mind. Other policies should use a
+        separate rule for each syscall that needs to be checked. For example:
+        <ul>
+        <li><tt>audit_rules_unsuccessful_file_modification_open</tt></li>
+        <li><tt>audit_rules_unsuccessful_file_modification_ftruncate</tt></li>
+        <li><tt>audit_rules_unsuccessful_file_modification_creat</tt></li>
+        </ul>
