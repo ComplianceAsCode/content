@@ -3,12 +3,19 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
+- name: Ensure permission {{{ FILEMODE }}}, owner {{{ FILEUID }}}, and group {{{ FILEGID }}} on {{{ FILEPATH }}}
   file:
-    path: "{{item}}"
+    path: "{{ item }}"
+    {{% if FILEMODE != "" %}}
     mode: {{{ FILEMODE }}}
+    {{% endif %}}
+    {{% if FILEUID != "" %}}
+    owner: {{{ FILEUID }}}
+    {{% endif %}}
+    {{% if FILEGID != "" %}}
+    group: {{{ FILEGID }}}
+    {{% endif %}}
   with_items:
     - {{{ FILEPATH }}}
   tags:
     @ANSIBLE_TAGS@
-

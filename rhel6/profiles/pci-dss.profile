@@ -95,8 +95,8 @@ selections:
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
     - file_groupowner_etc_group
@@ -104,6 +104,6 @@ selections:
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
-    - file_user_owner_grub_conf
-    - file_group_owner_grub_conf
+    - file_owner_grub_conf
+    - file_groupowner_grub_conf
     - package_libreswan_installed

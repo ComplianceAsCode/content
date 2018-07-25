@@ -96,11 +96,11 @@
 		<VMSinfo VKey="38500" SVKey="50301" VRelease="2" />
 		<title>The root account must be the only account having a UID of 0.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="userowner_shadow_file" ownerid="RHEL-06-000033" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_owner_etc_shadow" ownerid="RHEL-06-000033" disa="366" severity="medium">
 		<VMSinfo VKey="38502" SVKey="50303" VRelease="1" />
 		<title>The /etc/shadow file must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="groupowner_shadow_file" ownerid="RHEL-06-000034" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_groupowner_etc_shadow" ownerid="RHEL-06-000034" disa="366" severity="medium">
 		<VMSinfo VKey="38503" SVKey="50304" VRelease="1" />
 		<title>The /etc/shadow file must be group-owned by root.</title>
 	</overlay>
@@ -212,11 +212,11 @@
 		<VMSinfo VKey="38577" SVKey="50378" VRelease="1" />
 		<title>The system must use a FIPS 140-2 approved cryptographic hashing algorithm for generating account password hashes (libuser.conf).</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="file_user_owner_grub_conf" ownerid="RHEL-06-000065" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_owner_grub_conf" ownerid="RHEL-06-000065" disa="366" severity="medium">
 		<VMSinfo VKey="38579" SVKey="50380" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be owned by root.</title>
 	</overlay>
-	<overlay owner="disastig" ruleid="file_group_owner_grub_conf" ownerid="RHEL-06-000066" disa="366" severity="medium">
+	<overlay owner="disastig" ruleid="file_groupowner_grub_conf" ownerid="RHEL-06-000066" disa="366" severity="medium">
 		<VMSinfo VKey="38581" SVKey="50382" VRelease="1" />
 		<title>The system boot loader configuration file(s) must be group-owned by root.</title>
 	</overlay>

@@ -49,8 +49,8 @@ selections:
     - service_rhnsd_disabled
     - package_aide_installed
     - aide_periodic_cron_checking
-    - file_user_owner_grub2_cfg
-    - file_group_owner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_groupowner_grub2_cfg
     - file_permissions_grub2_cfg
     - grub2_password
     - grub2_uefi_password
@@ -227,8 +227,8 @@ selections:
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
     - file_groupowner_etc_group

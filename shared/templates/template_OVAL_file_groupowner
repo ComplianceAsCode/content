@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="file_groupowner{{{ FILEID }}}" version="1">
+    <metadata>
+      <title>Verify {{{ FILEPATH }}} Group Owner</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>This test makes sure that {{{ FILEPATH }}} is group owned by {{{ FILEGID }}}.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check file group ownership of {{{ FILEPATH }}}" test_ref="test_file_groupowner{{{ FILEID }}}" />
+    </criteria>
+  </definition>
+  <unix:file_test check="all" check_existence="all_exist" comment="Testing group ownership of {{{ FILEPATH }}}" id="test_file_groupowner{{{ FILEID }}}" version="1">
+    <unix:object object_ref="object_file_groupowner{{{ FILEID }}}" />
+    <unix:state state_ref="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}" />
+  </unix:file_test>
+  <unix:file_state id="state_file_groupowner{{{ FILEID }}}_gid_{{{ FILEGID }}}" version="1">
+    <unix:group_id datatype="int">{{{ FILEGID }}}</unix:group_id>
+  </unix:file_state>
+  <unix:file_object comment="{{{ FILEPATH }}}" id="object_file_groupowner{{{ FILEID }}}" version="1">
+    <unix:path>{{{ FILEDIR }}}</unix:path>
+    {{{ UNIX_FILENAME }}}
+  </unix:file_object>
+</def-group>

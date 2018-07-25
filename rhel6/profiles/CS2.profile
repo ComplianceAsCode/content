@@ -133,8 +133,8 @@ selections:
     - audit_rules_file_deletion_events
     - securetty_root_login_console_only
     - no_direct_root_logins
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_gshadow
     - file_groupowner_etc_gshadow
@@ -151,8 +151,8 @@ selections:
     - file_ownership_binary_dirs
     - gid_passwd_group_same
     - file_permissions_home_dirs
-    - file_user_owner_grub_conf
-    - file_group_owner_grub_conf
+    - file_owner_grub_conf
+    - file_groupowner_grub_conf
     - file_permissions_grub_conf
     - sysctl_fs_suid_dumpable
     - service_restorecond_enabled

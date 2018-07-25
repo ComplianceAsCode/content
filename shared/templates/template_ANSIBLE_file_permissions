@@ -3,21 +3,12 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-
-- name: Find {{{ PATH }}} file(s)
-  find:
-    paths: "{{ '{{{ PATH }}}' | dirname }}"
-    patterns: "{{ '{{{ PATH }}}' | basename }}"
-  register: files_found
-  tags:
-    @ANSIBLE_TAGS@
-
-- name: Set permissions
+- name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
   file:
-    path: "{{ item.path }}"
-    mode: {{{ MODE }}}
+    path: "{{ item }}"
+    mode: {{{ FILEMODE }}}
   with_items:
-    - "{{ files_found.files }}"
+    - {{{ FILEPATH }}}
   tags:
     @ANSIBLE_TAGS@
 

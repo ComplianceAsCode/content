@@ -3,21 +3,11 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-
-- name: Find {{{ PATH }}} file(s)
-  find:
-    paths: "{{ '{{{ PATH }}}' | dirname }}"
-    patterns: "{{ '{{{ PATH }}}' | basename }}"
-  register: files_found
-  tags:
-    @ANSIBLE_TAGS@
-
-- name: Set user ownership to {{{ USER }}}
+- name: Ensure owner {{{ FILEUID }}} on {{{ FILEPATH }}}
   file:
-    path: "{{ item.path }}"
-    owner: {{{ USER }}}
+    path: "{{ item }}"
+    owner: {{{ FILEUID }}}
   with_items:
-    - "{{ files_found.files }}"
+    - {{{ FILEPATH }}}
   tags:
     @ANSIBLE_TAGS@
-

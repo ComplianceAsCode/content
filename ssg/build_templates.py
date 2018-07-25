@@ -14,7 +14,7 @@ from create_mounts import MountsGenerator
 from create_mount_options import MountOptionsGenerator
 from create_package_installed import PackageInstalledGenerator
 from create_package_removed import PackageRemovedGenerator
-from create_permission import PermissionGenerator
+from create_permissions import PermissionGenerator
 from create_selinux_booleans import SEBoolGenerator
 from create_services_disabled import ServiceDisabledGenerator
 from create_services_enabled import ServiceEnabledGenerator
@@ -26,9 +26,6 @@ from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
 from create_audit_rules_privileged_commands import AuditRulesPrivilegedCommandsGenerator
 from create_audit_rules_usergroup_modification import AuditRulesUserGroupModificationGenerator
 from create_audit_rules_execution import AuditRulesExecutionGenerator
-from create_file_groupowner import FileGroupOwnerGenerator
-from create_file_owner import FileOwnerGenerator
-from create_file_permissions import FilePermissionsGenerator
 
 
 class Builder(object):
@@ -59,9 +56,6 @@ class Builder(object):
             "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
             "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
-            "file_groupowner.csv":              FileGroupOwnerGenerator(),
-            "file_owner.csv":                   FileOwnerGenerator(),
-            "file_permissions.csv":             FilePermissionsGenerator(),
         }
         self.langs = TEMPLATED_LANGUAGES
         utils_dir = os.path.dirname(os.path.realpath(__file__))

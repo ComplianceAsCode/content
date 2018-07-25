@@ -1,5 +1,11 @@
-/etc,gshadow,0,0,0000
 /etc,shadow,0,0,0000
-/etc,passwd,0,0,0000
-/etc,group,0,0,0000
-#/boot/grub,grub.conf,0,0,600 # different filename
+/etc,gshadow,0,0,0000
+/etc,passwd,0,0,0644
+/etc,group,0,0,0644
+/etc,cron.allow,0,0,0644,cron_allow
+/etc/httpd/conf.d,*,,,0640,httpd_server_conf_d_files
+/etc/httpd/conf,*,,,0640,httpd_server_conf_files
+/etc/ssh,*.pub,,,0644,sshd_pub_key
+/etc/ssh,*_key,,,0600,sshd_private_key
+/etc/httpd/conf.modules.d,*,,,0640,https_server_modules_files
+/boot/grub,grub.conf,0,0,600,grub_conf

@@ -3,4 +3,15 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+
+# Ensure permission {{{ FILEMODE }}}, owner {{{ FILEUID }}}, and group {{{ FILEGID }}} on {{{ FILEPATH }}}
+
+{{% if FILEUID != "" %}}
+chown {{{ FILEUID }}} {{{ FILEPATH }}}
+{{% endif %}}
+{{% if FILEGID != "" %}}
+chgrp {{{ FILEGID }}} {{{ FILEPATH }}}
+{{% endif %}}
+{{% if FILEMODE != "" %}}
 chmod {{{ FILEMODE }}} {{{ FILEPATH }}}
+{{% endif %}}

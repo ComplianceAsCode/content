@@ -72,8 +72,8 @@ selections:
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
-    - userowner_shadow_file
-    - groupowner_shadow_file
+    - file_owner_etc_shadow
+    - file_groupowner_etc_shadow
     - file_permissions_etc_shadow
     - file_owner_etc_group
     - file_groupowner_etc_group
@@ -81,8 +81,8 @@ selections:
     - file_owner_etc_passwd
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
-    - file_user_owner_grub2_cfg
-    - file_group_owner_grub2_cfg
+    - file_owner_grub2_cfg
+    - file_groupowner_grub2_cfg
     - var_password_pam_retry=5
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_passwords_pam_faillock_unlock_time=600
