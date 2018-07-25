@@ -3,6 +3,7 @@
 import os.path
 import codecs
 import ssg
+import ssg.contributors
 
 
 def main():
