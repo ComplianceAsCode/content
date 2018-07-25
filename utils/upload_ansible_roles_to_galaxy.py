@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 
 from tempfile import mkdtemp
+import io
 import os
 import os.path
 import sys
@@ -20,7 +22,7 @@ except ImportError:
     sys.exit(1)
 
 
-import ssg
+import ssg.ansible
 
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
 GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
@@ -65,7 +67,7 @@ def clone_and_init_repository(parent_dir, repo):
 def update_repository(repository, local_file_path):
     print("Processing %s..." % repository.name)
 
-    with open(local_file_path, 'r') as f:
+    with io.open(local_file_path, 'r', encoding="utf-8") as f:
         filedata = f.read()
 
     role_data = yaml.load(filedata)
@@ -84,7 +86,7 @@ def update_repository(repository, local_file_path):
         pre_tasks_data = role_data[0]["pre_tasks"]
         if len(pre_tasks_data) == 1 and \
                 pre_tasks_data[0]["name"] == \
-                ssgcommon.ansible_version_requirement_pre_task_name:
+                ssg.ansible.ansible_version_requirement_pre_task_name:
             pass
         else:
             sys.stderr.write(
@@ -142,13 +144,13 @@ def update_repository(repository, local_file_path):
         homepage="https://www.open-scap.org/",
     )
 
-    with open(README_TEMPLATE_PATH, 'r') as f:
+    with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
         readme_template = f.read()
 
     local_readme_content = readme_template.replace("@DESCRIPTION@", description)
     local_readme_content = local_readme_content.replace("@TITLE@", title)
     local_readme_content = local_readme_content.replace(
-        "@MIN_ANSIBLE_VERSION@", ssgcommon.min_ansible_version)
+        "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
     local_readme_content = local_readme_content.replace("@ROLE_NAME@",
                                                         repository.name)
 
@@ -171,7 +173,7 @@ def update_repository(repository, local_file_path):
 
     local_meta_content = meta_template.replace("@DESCRIPTION@", title)
     local_meta_content = local_meta_content.replace(
-        "@MIN_ANSIBLE_VERSION@", ssgcommon.min_ansible_version)
+        "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
     remote_meta_file = repository.get_file_contents("/meta/main.yml")
 
     if local_meta_content != remote_meta_file.decoded_content:
