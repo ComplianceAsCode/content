@@ -23,4 +23,6 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "021110"
 
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/cron.allow", owner="root") }}}'
+
 ocil: '{{{ ocil_file_owner(file="/etc/cron.allow", owner="root") }}}'
