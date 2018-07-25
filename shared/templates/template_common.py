@@ -36,7 +36,7 @@ class TemplateNotFoundError(RuntimeError):
 
 
 TEMPLATED_LANGUAGES = ["bash", "ansible", "oval", "anaconda", "puppet"]
-TARGET_REGEX = re.compile(r"#\s*only-for:([\s\w,]*)")
+TARGET_EXCLUDE_REGEX = re.compile(r"#\s*except-for:([\s\w,]*)")
 
 
 class FilesGenerator(object):
@@ -113,13 +113,13 @@ class FilesGenerator(object):
         """
 
         if target is not None:
-            match = TARGET_REGEX.search(line)
+            exclude_match = TARGET_EXCLUDE_REGEX.search(line)
 
-            if match:
-                # if line contains restriction to target, check it
-                supported_targets = \
-                    [x.strip() for x in match.group(1).split(",")]
-                if target not in supported_targets:
+            if exclude_match:
+                # Check if line contains restriction to target
+                unsupported_targets = \
+                    [x.strip() for x in exclude_match.group(1).split(",")]
+                if target in unsupported_targets:
                     return None
 
         # get part before comment
