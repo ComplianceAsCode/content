@@ -20,4 +20,6 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040420"
 
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'
+
 ocil: '{{{ ocil_file_permissions(file="/etc/ssh/*_key", perms="-rw-r-----") }}}'
