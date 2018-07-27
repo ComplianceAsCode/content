@@ -5,9 +5,7 @@ import codecs
 import yaml
 import sys
 
-from .jinja import _extract_substitutions_dict_from_template
-from .jinja import _rename_items
-from .jinja import process_file
+from .jinja import extract_substitutions_dict_from_template, process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
                         JINJA_MACROS_BASE_DEFINITIONS, JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
 from .constants import DEFAULT_UID_MIN
@@ -94,9 +92,9 @@ def open_and_macro_expand(yaml_file, substitutions_dict=None):
         substitutions_dict = dict()
 
     try:
-        macro_definitions = _extract_substitutions_dict_from_template(
+        macro_definitions = extract_substitutions_dict_from_template(
             JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
-        macro_definitions.update(_extract_substitutions_dict_from_template(
+        macro_definitions.update(extract_substitutions_dict_from_template(
             JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict))
     except Exception as exc:
         msg = ("Error extracting macro definitions: {0}"
