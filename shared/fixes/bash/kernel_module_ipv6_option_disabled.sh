@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 6
+# platform = multi_platform_all
 
 # Prevent the IPv6 kernel module (ipv6) from loading the IPv6 networking stack
 echo "options ipv6 disable=1" > /etc/modprobe.d/ipv6.conf

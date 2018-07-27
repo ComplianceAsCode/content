@@ -13,14 +13,24 @@
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
         definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server removed"
         definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
       </criteria>
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
         <criteria comment="SSH version is equal or higher than 7.4 has deprecated RhostsRSAAuthentication" operator="OR">
           <extend_definition comment="OpenSSH version 7.4 or higher has deprecated RhostsRSAAuthentication" definition_ref="sshd_version_equal_or_higher_than_74" />
           <criterion comment="Check RhostsRSAAuthentication in /etc/ssh/sshd_config"
