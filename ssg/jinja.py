@@ -68,7 +68,12 @@ def _get_jinja_environment(substitutions_dict):
 _get_jinja_environment.env = None
 
 
-def _extract_substitutions_dict_from_template(filename, substitutions_dict):
+def extract_substitutions_dict_from_template(filename, substitutions_dict):
+    """
+    Treat the given filename as a jinja2 file containing macro definitions,
+    and export definitions that don't start with _ as a name->macro dictionary.
+    During macro compilation, symbols from substitutions_dict may be used in those definitions.
+    """
     template = _get_jinja_environment(substitutions_dict).get_template(filename)
     all_symbols = template.make_module(substitutions_dict).__dict__
     symbols_to_export = dict()
@@ -77,14 +82,6 @@ def _extract_substitutions_dict_from_template(filename, substitutions_dict):
             continue
         symbols_to_export[name] = symbol
     return symbols_to_export
-
-
-def _rename_items(original_dict, renames):
-    renamed_macros = dict()
-    for rename_from, rename_to in renames.items():
-        if rename_from in original_dict:
-            renamed_macros[rename_to] = original_dict[rename_from]
-    return renamed_macros
 
 
 def process_file(filepath, substitutions_dict):
