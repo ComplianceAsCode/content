@@ -527,8 +527,7 @@ SSG also has its own templating mechanism, allowing content writers to create mo
 The SSG content is primarily divided by platform and it can be seen on its directory structure:
 
 
-====
-[%hardbreaks]
+----
 *scap-security-guide/*
 ├── _build_
 ├── _build-scripts_
@@ -551,7 +550,7 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 ├── ubuntu16
 ├── _utils_
 ├── wrlinux
-====
+----
 
 Except for _build_ and _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
 The shared directory contains checks and remediations that can be used by more than one platform.
@@ -675,7 +674,6 @@ Remediations, also called fixes, are used to change the state of the machine, so
 They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
 Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
 
-[source,yml]
 ----
 # platform = multi_platform_all
 # reboot = false
@@ -724,7 +722,6 @@ written using link:ttp://docs.ansible.com/ansible/latest/intro.html[Ansible's ow
 
 Here is an example of a Ansible remediation that ensures the SELinux is enabled in grub:
 
-[source,yml]
 ----
 # platform = multi_platform_rhel,multi_platform_fedora
 # reboot = false
@@ -745,7 +742,6 @@ Bash remediations are stored as shell script files in directory _/template/stati
 
 Following, you can see an example of a bash remediation that sets the maximum number of days a password may be used:
 
-[source,sh]
 ----
 # platform = Red Hat Enterprise Linux 7
 . /usr/share/scap-security-guide/remediation_functions
@@ -787,7 +783,6 @@ include::{templatesdir}/template_OVAL_package_installed
 
 And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
-[source,yml]
 ----
 include::{templatesdir}/template_ANSIBLE_package_installed
 ----
@@ -796,7 +791,6 @@ include::{templatesdir}/template_ANSIBLE_package_installed
 
 This is the file _rhel7/template/csv/packages_installed.csv_:
 
-[source,csv]
 ----
 include::{rhel7dir}/template/csv/packages_installed.csv
 ----
@@ -836,7 +830,6 @@ This is an example of a patch to add a new template into the templating system:
          self.supported_ovals = ["oval_5.10"]
 ----
 
-=== Utilities
 
 === Tests (ctest)
 
