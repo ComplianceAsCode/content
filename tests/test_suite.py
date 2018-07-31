@@ -109,6 +109,39 @@ def parse_args():
     return parser.parse_args()
 
 
+def get_logging_dir(options):
+    body = 'custom'
+    if 'ALL' in options.target:
+        body = 'ALL'
+
+    generic_logdir_stem = "{0}-{1}".format(options.subparser_name, body)
+
+    if options.logdir is None:
+
+        date_string = time.strftime('%Y-%m-%d-%H%M', time.localtime())
+        logging_dir = os.path.join(
+            os.getcwd(), 'logs', '{0}-{1}'.format(
+                generic_logdir_stem, date_string))
+        logging_dir = LogHelper.find_name(logging_dir)
+    else:
+        logging_dir = LogHelper.find_name(options.logdir)
+
+    return logging_dir
+
+
+def normalize_passed_arguments(options):
+    if 'ALL' in options.target:
+        options.target = ['ALL']
+
+    try:
+        bench_id = xml_operations.infer_benchmark_id_from_component_ref_id(
+            options.datastream, options.xccdf_id)
+        options.benchmark_id = bench_id
+    except RuntimeError as exc:
+        msg = "Error inferring benchmark ID from component refId: {}".format(str(exc))
+        raise RuntimeError(msg)
+
+
 def main():
     options = parse_args()
 
@@ -118,38 +151,18 @@ def main():
     log.setLevel(logging.DEBUG)
 
     try:
-        bench_id = xml_operations.infer_benchmark_id_from_component_ref_id(
-            options.datastream, options.xccdf_id)
-        options.benchmark_id = bench_id
+        normalize_passed_arguments(options)
     except RuntimeError as exc:
-        msg = "Error inferring benchmark ID: {}".format(str(exc))
+        msg = "Error occurred during options normalization: {}".format(str(exc))
         logging.error(msg)
         sys.exit(1)
-
 
     LogHelper.add_console_logger(log, options.loglevel)
     # logging dir needs to be created based on other options
     # thus we have to postprocess it
-    if 'ALL' in options.target:
-        options.target = ['ALL']
-    if options.logdir is None:
-        # default!
-        prefix = options.subparser_name
-        body = ""
-        if 'ALL' in options.target:
-            body = 'ALL'
-        else:
-            body = 'custom'
 
-        date_string = time.strftime('%Y-%m-%d-%H%M', time.localtime())
-        logging_dir = os.path.join(os.getcwd(),
-                                   'logs',
-                                   '{0}-{1}-{2}'.format(prefix,
-                                                        body,
-                                                        date_string))
-        logging_dir = LogHelper.find_name(logging_dir)
-    else:
-        logging_dir = LogHelper.find_name(options.logdir)
+    logging_dir = get_logging_dir(options)
+
     LogHelper.add_logging_dir(log, logging_dir)
 
     options.func(options)
