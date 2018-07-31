@@ -6,8 +6,6 @@ import logging
 import os
 import os.path
 import re
-import shlex
-import string
 import subprocess
 import sys
 
@@ -34,7 +32,7 @@ def _parse_parameters(script):
                               re.MULTILINE)
             if found is None:
                 continue
-            params[parameter] = string.split(found.group(1), ', ')
+            params[parameter] = found.group(1).split(', ')
     return params
 
 
@@ -68,24 +66,24 @@ def _send_scripts(domain_ip):
     logging.debug("Uploading scripts.")
     log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
-    command = "ssh {0} mkdir -p {1}".format(machine, remote_dir)
+    command = ("ssh", machine, "mkdir", "-p", remote_dir)
     with open(log_file_name, 'a') as log_file:
         try:
-            subprocess.check_call(shlex.split(command),
+            subprocess.check_call(command,
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             logging.error("Cannot create directory {0}.".format(remote_dir))
             return False
 
-        command = "scp {0} {1}:{2}".format(archive_file, machine, remote_dir)
-        subprocess.check_call(shlex.split(command),
+        command = ("scp", archive_file, "{0}:{1}".format(machine, remote_dir))
+        subprocess.check_call(command,
                               stdout=log_file,
                               stderr=subprocess.STDOUT)
 
-        command = "ssh {0} tar xf {1} -C {2}".format(machine, remote_archive_file, remote_dir)
+        command = ("ssh", machine, "tar", "xf", remote_archive_file, "-C", remote_dir)
         try:
-            subprocess.check_call(shlex.split(command),
+            subprocess.check_call(command,
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
@@ -105,9 +103,9 @@ def _apply_script(rule_dir, domain_ip, script):
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
-        command = "ssh {0} cd {1}; bash -x {2}".format(machine, rule_dir, script)
+        command = ("ssh", machine, "cd {0}; bash -x {1}".format(rule_dir, script))
         try:
-            subprocess.check_call(shlex.split(command),
+            subprocess.check_call(command,
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
@@ -169,6 +167,7 @@ def perform_rule_check(options):
     snapshot_stack = SnapshotStack(dom)
     atexit.register(snapshot_stack.clear)
 
+    # create origin
     snapshot_stack.create('origin')
     ssg_test_suite.virt.start_domain(dom)
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
@@ -190,17 +189,20 @@ def perform_rule_check(options):
         for script, script_context, script_params in _get_scenarios(local_rule_dir, scripts):
             logging.debug(('Using test script {0} '
                            'with context {1}').format(script, script_context))
+            # create origin <- script
             snapshot_stack.create('script')
             has_worked = False
 
             if not _apply_script(remote_rule_dir, domain_ip, script):
                 logging.error("Environment failed to prepare, skipping test")
+                # maybe revert script
                 snapshot_stack.revert()
                 continue
             profiles = get_viable_profiles(script_params['profiles'],
                                            options.datastream,
                                            options.benchmark_id)
             if len(profiles) > 1:
+                # create origin <- script <- profile
                 snapshot_stack.create('profile')
             for profile in profiles:
                 LogHelper.preload_log(logging.INFO,
@@ -222,11 +224,14 @@ def perform_rule_check(options):
                     script, script_params, options.remediate_using,
                     options.dont_clean,
                 )
+                # revert either profile (if created), or script. Don't delete
                 snapshot_stack.revert(delete=False)
             if not has_worked:
                 logging.error("Nothing has been tested!")
+            # Delete the reverted profile or script.
             snapshot_stack.delete()
             if len(profiles) > 1:
+                # revert script (we have reverted profile before).
                 snapshot_stack.revert()
     if not scanned_something:
         logging.error("Rule {0} has not been found".format(options.target))
