@@ -389,14 +389,7 @@
         <check>
           <xsl:attribute name="system">ocil-transitional</xsl:attribute>
           <check-export>
-
-            <xsl:attribute name="export-name"/>
-
-            <!-- add clause if explicitly specified (and also override any above) -->
-            <xsl:if test="@clause">
-              <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
-            </xsl:if>
-
+            <xsl:attribute name="export-name"><xsl:value-of select="@clause" /></xsl:attribute>
             <xsl:attribute name="value-id">conditional_clause</xsl:attribute>
           </check-export>
           <!-- add the actual manual checking text -->
