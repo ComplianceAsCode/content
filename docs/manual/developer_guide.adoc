@@ -45,10 +45,12 @@ GitHub dynamically generates the appropriate git URLs, and dynamically generates
 === Committing to your Local Repository
 When you begin to work on your patch, make sure that you are on the right and up-to-date branch.
 Typically it is the `master` branch, so you can
-```
+
+----
 git checkout master
 git pull upstream master
-```
+----
+
 Then, create a new branch for your fix - e.g. `git checkout -b my_new_feature`.
 
 Proceed with your work.
@@ -305,26 +307,26 @@ wrlinux
 |===
 |Directory |Description
 
-|```build```
+|`build`
 | Can be used to build the content using CMake.
 
-|```build-scripts```
+|`build-scripts`
 | Scripts used by the build system.
 
-|```cmake```
+|`cmake`
 | Contains the CMake build configuration files.
 
-|```docs```
+|`docs`
 | Contains the Markdown Manuals, MAN pages, etc.
 
-|```shared```
+|`shared`
 | Contains content, tools and utilities, scripts, etc. that can be used for
 multiple products.
 
-|```tests```
+|`tests`
 | Contains the test suite for content validation and testing.
 
-|```utils```
+|`utils`
 | Miscellaneous scripts used for development but not used by the build system.
 |===
 
@@ -336,29 +338,29 @@ directories.
 |===
 |File |Description
 
-|```BUILD.md```
+|`BUILD.md`
 | Contains the content build instructions
 
 
-|```CMakeLists.txt```
+|`CMakeLists.txt`
 | Top-level CMake build configuration file
 
-|```Contributors.md```
+|`Contributors.md`
 | *DO NOT MANUALLY EDIT* script-generated file
 
-|```Contributors.xml```
+|`Contributors.xml`
 | *DO NOT MANUALLY EDIT* script-generated file
 
-|```DISCLAIMER```
+|`DISCLAIMER`
 | Disclaimer for usage of content
 
-|```Dockerfile```
+|`Dockerfile`
 | CentOS7 Docker build file
 
-|```LICENSE```
+|`LICENSE`
 | Content license
 
-|```README.md```
+|`README.md`
 | Project README file
 
 |===
@@ -405,53 +407,53 @@ rhel7
 |===
 |Directory |Description
 
-|```checks```
-|```[red]#Required#``` Contains content such as OVAL to check whether or not a
+|`checks`
+|`[red]#Required#` Contains content such as OVAL to check whether or not a
 system is configured correctly to meet government or commercial compliance
-standards. Can contain the following directories: ```oval```
+standards. Can contain the following directories: `oval`
 
-|```cpe```
-|```[red]#Required#``` Contains the Common Platform Enumeration (CPE) product
+|`cpe`
+|`[red]#Required#` Contains the Common Platform Enumeration (CPE) product
 identifier that is provided from link:https://nvd.nist.gov/products/cpe[NIST].
 
-|```fixes```
-|```[red]#Required#``` Contains scripts in various languages that fixes
+|`fixes`
+|`[red]#Required#` Contains scripts in various languages that fixes
 configuration to meet government or commercial compliance standards. Can contain
-the following directories: ```bash``` ```ansible``` ```puppet``` ```anaconda```
+the following directories: `bash` `ansible` `puppet` `anaconda`
 
-|```kickstart```
-|```[red]#Optional#``` Contains product kickstart or build files to be used in
+|`kickstart`
+|`[red]#Optional#` Contains product kickstart or build files to be used in
 testing, development, or production (not recommended) of compliance content.
 
-|```overlays```
-|```[red]#Required#``` Contains overlay files for specific standards
+|`overlays`
+|`[red]#Required#` Contains overlay files for specific standards
 organizations such as NIST, DISA STIG, PCI-DSS, etc.
 
-|```profiles```
-|```[red]#Required#``` Contains profiles that are created and tailored to meet
+|`profiles`
+|`[red]#Required#` Contains profiles that are created and tailored to meet
 government or commercial compliance standards.
 
-|```templates```
-|```[red]#Required#``` Can contain the following directories: ```csv```
+|`templates`
+|`[red]#Required#` Can contain the following directories: `csv`
 
-|```tests```
-|```[red]#Optional#``` Can contain local tests to the product. The top-level
-```tests``` directory is preferred over using this directory.
+|`tests`
+|`[red]#Optional#` Can contain local tests to the product. The top-level
+`tests` directory is preferred over using this directory.
 
-|```transforms```
-|```[red]#Required#``` Contains XSLT files and scripts that are used to
+|`transforms`
+|`[red]#Required#` Contains XSLT files and scripts that are used to
 transform the content into the expected compliance document such as XCCDF, OVAL,
 Datastream, etc.
 
-|```xccdf```
-|```[red]#Optional#``` If the correct content does not exist in
-```shared/xccdf```, use this directory to create the human-readable compliance
+|`xccdf`
+|`[red]#Optional#` If the correct content does not exist in
+`shared/xccdf`, use this directory to create the human-readable compliance
 guide.
 |===
 
 [IMPORTANT]
 ====
-For any of the ```[red]#Required#``` directories that may not yet add content,
+For any of the `[red]#Required#` directories that may not yet add content,
 add a `.gitkeep` file for any empty directories.
 ====
 
@@ -525,8 +527,7 @@ SSG also has its own templating mechanism, allowing content writers to create mo
 The SSG content is primarily divided by platform and it can be seen on its directory structure:
 
 
-====
-[%hardbreaks]
+----
 *scap-security-guide/*
 ├── _build_
 ├── _build-scripts_
@@ -549,7 +550,7 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 ├── ubuntu16
 ├── _utils_
 ├── wrlinux
-====
+----
 
 Except for _build_ and _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
 The shared directory contains checks and remediations that can be used by more than one platform.
@@ -673,7 +674,6 @@ Remediations, also called fixes, are used to change the state of the machine, so
 They also have to be idempotent, meaning that they must be able to be executed multiple times without causing the fixes to accumulate. The Ansible's language works in such a way that this behavior is built-in, however, for the other versions, the remediations must have it implemented explicitly.
 Remediations also carry metadata that should be present at the beginning of the files. This meta data will be converted in link:https://scap.nist.gov/specifications/xccdf/xccdf_element_dictionary.html#fixType[XCCDF tags] during the building process. That is how it looks like and what it means:
 
-[source,yml]
 ----
 # platform = multi_platform_all
 # reboot = false
@@ -722,7 +722,6 @@ written using link:ttp://docs.ansible.com/ansible/latest/intro.html[Ansible's ow
 
 Here is an example of a Ansible remediation that ensures the SELinux is enabled in grub:
 
-[source,yml]
 ----
 # platform = multi_platform_rhel,multi_platform_fedora
 # reboot = false
@@ -743,7 +742,6 @@ Bash remediations are stored as shell script files in directory _/template/stati
 
 Following, you can see an example of a bash remediation that sets the maximum number of days a password may be used:
 
-[source,sh]
 ----
 # platform = Red Hat Enterprise Linux 7
 . /usr/share/scap-security-guide/remediation_functions
@@ -785,7 +783,6 @@ include::{templatesdir}/template_OVAL_package_installed
 
 And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
-[source,yml]
 ----
 include::{templatesdir}/template_ANSIBLE_package_installed
 ----
@@ -794,7 +791,6 @@ include::{templatesdir}/template_ANSIBLE_package_installed
 
 This is the file _rhel7/template/csv/packages_installed.csv_:
 
-[source,csv]
 ----
 include::{rhel7dir}/template/csv/packages_installed.csv
 ----
@@ -834,15 +830,15 @@ This is an example of a patch to add a new template into the templating system:
          self.supported_ovals = ["oval_5.10"]
 ----
 
-=== Utilities
 
 === Tests (ctest)
 
 SCAP Security Guide uses ctest to orchestrate testing upstream. To run the test suite go to the build folder and execute `ctest`:
-```
+
+----
 cd build/
 ctest -j 4
-```
+----
 
 Check out the various `ctest` options to perform specific testing, you can rerun just one test or skip all tests that match a regex. (See -R, -E and other options in the ctest man page)
 
