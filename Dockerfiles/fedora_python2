@@ -4,12 +4,14 @@ ENV OSCAP_USERNAME oscap
 ENV OSCAP_DIR scap-security-guide
 ENV BUILD_JOBS 4
 
-RUN dnf -y upgrade && \
-    dnf -y install cmake ninja-build openscap-utils python2-jinja2 python2-pyyaml && \
-    mkdir -p /home/$OSCAP_USERNAME && \
-    dnf clean all && \
-    rm -rf /usr/share/doc /usr/share/doc-base \
-        /usr/share/man /usr/share/locale /usr/share/zoneinfo
+RUN true \
+	&& dnf -y upgrade \
+	&& dnf -y install cmake ninja-build openscap-utils python2-jinja2 python2-pyyaml \
+	&& mkdir -p /home/$OSCAP_USERNAME \
+	&& dnf clean all \
+	&& rm -rf /usr/share/doc /usr/share/doc-base \
+		/usr/share/man /usr/share/locale /usr/share/zoneinfo \
+	&& true
 
 WORKDIR /home/$OSCAP_USERNAME
 
@@ -20,4 +22,8 @@ RUN rm -rf $OSCAP_DIR/build/*
 
 WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
 
-CMD cmake -DPYTHON_EXECUTABLE=/usr/bin/python2 -G Ninja .. && ninja -j $BUILD_JOBS && ctest --output-on-failure -j $BUILD_JOBS
+CMD true \
+	&& cmake -DPYTHON_EXECUTABLE=/usr/bin/python2 -G Ninja .. \
+	&& ninja -j $BUILD_JOBS \
+	&& ctest --output-on-failure -j $BUILD_JOBS \
+	&& true
