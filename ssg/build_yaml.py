@@ -6,6 +6,8 @@ import os.path
 import datetime
 import sys
 
+from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
+
 from .checks import is_cce_valid
 from .yaml import open_and_expand, open_and_macro_expand
 from .utils import required_key
@@ -474,7 +476,10 @@ class Rule(object):
         if yaml_contents is None:
             return None
 
-        rule_id, _ = os.path.splitext(os.path.basename(yaml_file))
+        rule_id, ext = os.path.splitext(os.path.basename(yaml_file))
+        if rule_id == "rule" and ext == ".yml":
+            rule_id = get_rule_dir_id(yaml_file)
+
         rule = Rule(rule_id)
         rule.prodtype = yaml_contents.pop("prodtype", "all")
         rule.title = required_key(yaml_contents, "title")
@@ -638,9 +643,8 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
     for dir_item in os.listdir(guide_directory):
         dir_item_path = os.path.join(guide_directory, dir_item)
         _, extension = os.path.splitext(dir_item)
-        if os.path.isdir(dir_item_path):
-            subdirectories.append(dir_item_path)
-        elif extension == '.var':
+
+        if extension == '.var':
             values.append(dir_item_path)
         elif dir_item == "benchmark.yml":
             if benchmark_file:
@@ -652,12 +656,17 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
             group_file = dir_item_path
         elif extension == '.rule':
             rules.append(dir_item_path)
-        else:
-            sys.stderr.write(
-                "Encountered file '%s' while recursing, extension '%s' "
-                "is unknown. Skipping..\n"
-                % (dir_item, extension)
-            )
+        elif is_rule_dir(dir_item_path):
+            rules.append(get_rule_dir_yaml(dir_item_path))
+        elif dir_item != "tests":
+            if os.path.isdir(dir_item_path):
+                subdirectories.append(dir_item_path)
+            else:
+                sys.stderr.write(
+                    "Encountered file '%s' while recursing, extension '%s' "
+                    "is unknown. Skipping..\n"
+                    % (dir_item, extension)
+                )
 
     group = load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
                                     profiles_dir, env_yaml, bash_remediation_fns)

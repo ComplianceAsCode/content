@@ -7,16 +7,13 @@ import re
 import errno
 import argparse
 import codecs
-from collections import defaultdict
 
 import ssg.build_remediations as remediation
+import ssg.rules
 import ssg.jinja
 import ssg.yaml
 import ssg.utils
 import ssg.xml
-
-
-FILE_GENERATED = '# THIS FILE IS GENERATED'
 
 
 def parse_args():
@@ -53,92 +50,39 @@ def main():
 
     product = ssg.utils.required_key(env_yaml, "product")
 
-    fixcontent = ssg.xml.ElementTree.Element(
-        "fix-content", system="urn:xccdf:fix:script:sh",
-        xmlns="http://checklists.nist.gov/xccdf/1.1")
-    fixgroup = remediation.get_fixgroup_for_type(fixcontent,
-                                                 args.remediation_type)
+    product_dir = os.path.dirname(args.product_yaml)
+    relative_guide_dir = ssg.utils.required_key(env_yaml, "benchmark_root")
+    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
+
+    # As fixes is continually updated, the last seen fix that is applicable for a
+    # given fix_name is chosen to replace newer fix_names
     fixes = dict()
-
-    remediation_functions = remediation.get_available_functions(args.build_dir)
-
-    included_fixes_count = 0
     for fixdir in args.fixdirs:
         if os.path.isdir(fixdir):
             for filename in os.listdir(fixdir):
-                if not remediation.is_supported_filename(args.remediation_type, filename):
-                    continue
+                file_path = os.path.join(fixdir, filename)
+                fix_name, _ = os.path.splitext(filename)
 
-                # Create and populate new fix element based on shell file
-                fixname = os.path.splitext(filename)[0]
+                # Fixes gets updated with the contents of the fix, if it is applicable
+                remediation.process_fix(fixes, args.remediation_type,
+                                        env_yaml, product, file_path,
+                                        fix_name)
 
-                mod_file = []
-                config = defaultdict(lambda: None)
+    # Walk the guide last, looking for rule folders as they have the highest priority
+    for _dir_path in ssg.rules.find_rule_dirs(guide_dir):
+        rule_id = ssg.rules.get_rule_dir_id(_dir_path)
 
-                fix_file_lines = ssg.jinja.process_file(
-                    os.path.join(fixdir, filename),
-                    env_yaml
-                ).splitlines()
+        contents = ssg.rules.get_rule_dir_remediations(_dir_path, args.remediation_type, product)
+        for _path in reversed(contents):
+            # To be compatible with the later checks, use the rule_id
+            # (i.e., the value of _dir) to create the fix_name
+            remediation.process_fix(fixes, args.remediation_type, env_yaml,
+                                    product, _path, rule_id)
 
-                # Assignment automatically escapes shell characters for XML
-                for line in fix_file_lines:
-                    line += "\n"
-                    if line.startswith('#'):
-                        try:
-                            (key, value) = line.strip('#').split('=')
-                            if key.strip() in ['complexity', 'disruption',
-                                               'platform', 'reboot',
-                                               'strategy']:
-                                config[key.strip()] = value.strip()
-                            else:
-                                if not line.startswith(FILE_GENERATED):
-                                    mod_file.append(line)
-                        except ValueError:
-                            if not line.startswith(FILE_GENERATED):
-                                mod_file.append(line)
-                    else:
-                        mod_file.append(line)
+    remediation.write_fixes(args.remediation_type, args.build_dir,
+                            args.output, fixes)
 
-                if config['platform']:
-                    product_name, result = remediation.fix_is_applicable_for_product(
-                        config['platform'], product)
-
-                    if result:
-                        if fixname in fixes:
-                            fix = fixes[fixname]
-                            for child in list(fix):
-                                fix.remove(child)
-                        else:
-                            fix = ssg.xml.ElementTree.SubElement(fixgroup, "fix")
-                            fix.set("rule", fixname)
-                            if config['complexity']:
-                                fix.set("complexity", config['complexity'])
-                            if config['disruption']:
-                                fix.set("disruption", config['disruption'])
-                            if config['reboot']:
-                                fix.set("reboot", config['reboot'])
-                            if config['strategy']:
-                                fix.set("strategy", config['strategy'])
-                            fixes[fixname] = fix
-                            included_fixes_count += 1
-
-                        fix.text = "".join(mod_file)
-
-                        # Expand shell variables and remediation functions
-                        # into corresponding XCCDF <sub> elements
-                        remediation.expand_xccdf_subs(
-                            fix, args.remediation_type,
-                            remediation_functions
-                        )
-                else:
-                    raise RuntimeError(
-                        "The '%s' remediation script does not contain the "
-                        "platform identifier!" % (filename))
-
-    sys.stderr.write("Merged %d %s remediations.\n"
-                     % (included_fixes_count, args.remediation_type))
-    tree = ssg.xml.ElementTree.ElementTree(fixcontent)
-    tree.write(args.output)
+    sys.stderr.write("Merged %d %s remediations.\n" % (len(fixes), args.remediation_type))
 
     sys.exit(0)
 
