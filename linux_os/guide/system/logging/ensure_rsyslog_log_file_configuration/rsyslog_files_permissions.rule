@@ -1,7 +1,5 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,fedora
-
 title: 'Ensure System Log Files Have Correct Permissions'
 
 description: "The file permissions for all log files written by\n<tt>rsyslog</tt> should be set to 600, or more restrictive.\nThese log files are determined by the second part of each Rule line in\n<tt>/etc/rsyslog.conf</tt> and typically all appear in <tt>/var/log</tt>. \nFor each log file <i>LOGFILE</i> referenced in <tt>/etc/rsyslog.conf</tt>,\nrun the following command to inspect the file's permissions:\n<pre>$ ls -l <i>LOGFILE</i></pre>\nIf the permissions are not 600 or more restrictive,\nrun the following command to correct this:\n<pre>$ sudo chmod 0600 <i>LOGFILE</i></pre>"
