@@ -146,3 +146,23 @@ Now, you can perform validation check with command
 ```
 ./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml rule_sshd_disable_kerb_auth
 ```
+
+## Docker backend
+
+You can use either docker-based or libvirt-based environment for running tests.
+If you provide `--base-image <image name>` option on the command-line, the docker-based environment will be picked, if not, you will end up with the libvirt-based environment.
+
+On your side, you need to have
+- the [docker](https://pypi.org/project/docker/) Python module installed. You may have to use `pip` to install it on older distributions s.a. RHEL 7, running `pip install --user docker` as `root` will do the trick of installing it only for the `root` user.
+- the Docker service running, and
+- rights that allow you to start/stop containers and to create images.
+- Insecure: create a `docker` group, add yourself in it and restart `docker`.
+
+The Docker image you want to use with the tests needs to be prepared, so it can scan itself, and that it can accept connections and data.
+Following services need to be supported:
+
+TLDR: `yum install openssh-clients openssh-server openscap-scanner`
+
+- `sshd` (`openssh-server` needs to be installed, server host keys have to be in place, root's `.ssh/authorized_keys` are set up with correct permissions)
+- `scp` (`openssh-clients` need to be installed - scp requires more than a ssh server on the server-side)
+- `oscap` (`openscap-scanner` - the container has to be able to scan itself)
