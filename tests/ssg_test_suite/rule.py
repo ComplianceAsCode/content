@@ -58,6 +58,16 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     return valid_profiles
 
 
+def _run_with_stdout_logging(command, log_file):
+    try:
+        subprocess.check_call(command,
+                              stdout=log_file,
+                              stderr=subprocess.STDOUT)
+        return True
+    except subprocess.CalledProcessError as e:
+        return False
+
+
 def _send_scripts(domain_ip):
     remote_dir = './ssgts'
     archive_file = data.create_tarball('.')
@@ -66,29 +76,23 @@ def _send_scripts(domain_ip):
     logging.debug("Uploading scripts.")
     log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
-    command = ("ssh", machine, "mkdir", "-p", remote_dir)
     with open(log_file_name, 'a') as log_file:
-        try:
-            subprocess.check_call(command,
-                                  stdout=log_file,
-                                  stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
+        command = ("ssh", machine, "mkdir", "-p", remote_dir)
+        if not _run_with_stdout_logging(command, log_file):
             logging.error("Cannot create directory {0}.".format(remote_dir))
             return False
 
         command = ("scp", archive_file, "{0}:{1}".format(machine, remote_dir))
-        subprocess.check_call(command,
-                              stdout=log_file,
-                              stderr=subprocess.STDOUT)
+        if not _run_with_stdout_logging(command, log_file):
+            logging.error("Cannot copy archive {0} to the target machine's directory {1}."
+                          .format(archive_file, remote_dir))
+            return False
 
-        command = ("ssh", machine, "tar", "xf", remote_archive_file, "-C", remote_dir)
-        try:
-            subprocess.check_call(command,
-                                  stdout=log_file,
-                                  stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
+        command = ("ssh", machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir))
+        if not _run_with_stdout_logging(command, log_file):
             logging.error("Cannot extract data tarball {0}.".format(remote_archive_file))
             return False
+
     return remote_dir
 
 
