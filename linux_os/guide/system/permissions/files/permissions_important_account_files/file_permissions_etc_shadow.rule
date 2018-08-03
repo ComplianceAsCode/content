@@ -2,7 +2,8 @@ documentation_complete: true
 
 title: 'Verify Permissions on <tt>shadow</tt> File'
 
-description: '{{{ describe_file_permissions(file="/etc/shadow", perms="0000") }}}'
+description:  |-
+    {{{ describe_file_permissions(file="/etc/shadow", perms="0640") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -18,6 +19,7 @@ identifiers:
     cce@rhel7: 27100-7
 
 references:
+    anssi@debian8: NT28(R36)
     stigid@rhel6: RHEL-06-000035
     srg@rhel6: SRG-OS-999999
     disa@rhel6: '225'
@@ -28,4 +30,5 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow", perms="----------") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/shadow", perms="----------") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/shadow", perms="-rw-r-----") }}}

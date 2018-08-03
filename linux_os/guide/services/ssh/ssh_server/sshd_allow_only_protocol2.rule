@@ -22,6 +22,8 @@ identifiers:
     cce@rhel7: 27320-1
 
 references:
+    nist@debian8: AC-17(7)
+    anssi@debian8: NT007(R1)
     stigid@rhel6: RHEL-06-000227
     srg@rhel6: SRG-OS-000112
     nist@rhel6: AC-3(10)
@@ -39,7 +41,11 @@ ocil_clause: 'it is commented out or is not set correctly to Protocol 2'
 
 ocil: |-
     To check which SSH protocol version is allowed, check version of <tt>openssh-server</tt> with following command:
+    {{% if pkg_system == "rpm" %}}
     <pre>$ rpm -qi openssh-server | grep Version</pre>
+    {{% else %}}
+    <pre>$ dpkg -s openssh-server | grep Version</pre>
+    {{% endif %}}
     Versions equal to or higher than 7.4 only allow Protocol 2.
     If version is lower than 7.4, run the following command to check configuration:
     <pre>$ sudo grep Protocol /etc/ssh/sshd_config</pre>

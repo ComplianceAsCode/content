@@ -2,7 +2,8 @@ documentation_complete: true
 
 title: 'Verify Permissions on <tt>gshadow</tt> File'
 
-description: '{{{ describe_file_permissions(file="/etc/gshadow", perms="0000") }}}'
+description: |-
+    {{{ describe_file_permissions(file="/etc/gshadow", perms="0000") }}}
 
 rationale: |-
     The <tt>/etc/gshadow</tt> file contains group password hashes. Protection of this file
@@ -15,6 +16,7 @@ identifiers:
     cce@rhel7: 27162-7
 
 references:
+    anssi@debian8: NT28(R36)
     stigid@rhel6: RHEL-06-000038
     srg@rhel6: SRG-OS-999999
     disa@rhel6: '225'
@@ -23,4 +25,5 @@ references:
 
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/gshadow", perms="----------") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/gshadow", perms="----------") }}}'
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/gshadow", perms="----------") }}}
