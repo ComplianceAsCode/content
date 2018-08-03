@@ -1,12 +1,12 @@
 #!/usr/bin/env python2
 from __future__ import print_function
+
 import logging
 import os.path
 import re
 import subprocess
 import collections
 import xml.etree.ElementTree
-import sys
 import json
 
 from ssg_test_suite.log import LogHelper
@@ -51,18 +51,10 @@ def triage_xml_results(fname):
     return triaged
 
 
-def run_cmd(command, verbose_path):
+def run_cmd_local(command, verbose_path):
     command_string = ' '.join(command)
     logging.debug('Running {}'.format(command_string))
-    returncode = 0
-    output = ""
-    try:
-        with open(verbose_path, 'w') as verbose_file:
-            output = subprocess.check_output(command,
-                                             stderr=verbose_file)
-    except subprocess.CalledProcessError as e:
-        returncode = e.returncode
-        output = e.output
+    returncode, output = _run_cmd(command, verbose_path)
     return returncode, output
 
 
@@ -70,12 +62,17 @@ def run_cmd_remote(command_string, domain_ip, verbose_path):
     machine = 'root@{0}'.format(domain_ip)
     remote_cmd = ['ssh', machine, command_string]
     logging.debug('Running {}'.format(command_string))
+    returncode, output = _run_cmd(remote_cmd, verbose_path)
+    return returncode, output
+
+
+def _run_cmd(command_list, verbose_path):
     returncode = 0
     output = ""
     try:
         with open(verbose_path, 'w') as verbose_file:
-            output = subprocess.check_output(remote_cmd,
-                                             stderr=verbose_file)
+            output = subprocess.check_output(
+                command_list, stderr=verbose_file)
     except subprocess.CalledProcessError as e:
         returncode = e.returncode
         output = e.output
@@ -92,7 +89,7 @@ def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
     logging.debug('Uploading files {0} to {1}'.format(files_string,
                                                       destination))
     command = ['scp'] + list(files) + [destination]
-    if run_cmd(command, verbose_path)[0] != 0:
+    if run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to upload files {0}'.format(files_string))
         success = False
     return success
@@ -106,7 +103,7 @@ def get_file_remote(verbose_path, local_dir, domain_ip, remote_path):
     logging.debug('Downloading file {0} to {1}'
                   .format(source, local_dir))
     command = ['scp', source, local_dir]
-    if run_cmd(command, verbose_path)[0] != 0:
+    if run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to download file {0}'.format(remote_path))
         success = False
     return success
@@ -133,7 +130,7 @@ def ansible_playbook_set_hosts(playbook):
 def get_result_id_from_arf(arf_path, verbose_path):
     command = ['oscap', 'info', arf_path]
     command_string = ' '.join(command)
-    returncode, output = run_cmd(command, verbose_path)
+    returncode, output = run_cmd_local(command, verbose_path)
     if returncode != 0:
         raise RuntimeError('{0} returned {1} exit code'.
                            format(command_string, returncode))
@@ -181,7 +178,7 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
         'ansible-playbook',  '-i', '{0},'.format(formatting['domain_ip']),
         '-u' 'root', formatting['playbook'])
     command_string = ' '.join(command)
-    returncode, output = run_cmd(command, verbose_path)
+    returncode, output = run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
     with open(verbose_path, 'a') as f:
         f.write('Stdout of "{}":'.format(command_string))
@@ -401,7 +398,7 @@ class ProfileRunner(GenericRunner):
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
         self._generate_report_file()
-        returncode = run_cmd(self.get_command, self.verbose_path)[0]
+        returncode = run_cmd_local(self.get_command, self.verbose_path)[0]
         if returncode not in [0, 2]:
             logging.error(('Profile run should end with return code 0 or 2 '
                            'not "{0}" as it did!').format(returncode))
@@ -443,7 +440,7 @@ class RuleRunner(GenericRunner):
         self.command_options.extend(
             ['--rule', self.rule_id])
 
-        returncode, self._oscap_output = run_cmd(self.get_command, self.verbose_path)
+        returncode, self._oscap_output = run_cmd_local(self.get_command, self.verbose_path)
 
         expected_return_code = _CONTEXT_RETURN_CODES[self.context]
 

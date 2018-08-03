@@ -29,6 +29,7 @@ def perform_profile_check(options):
     snapshot_stack = SnapshotStack(dom)
     atexit.register(snapshot_stack.clear)
 
+    # create origin
     snapshot_stack.create('origin')
     ssg_test_suite.virt.start_domain(dom)
     domain_ip = ssg_test_suite.virt.determine_ip(dom)
@@ -38,6 +39,7 @@ def perform_profile_check(options):
                                    options.datastream,
                                    options.benchmark_id)
     if len(profiles) > 1:
+        # create origin <- profile
         snapshot_stack.create('profile')
     for profile in profiles:
         logging.info("Evaluation of profile {0}.".format(profile))
@@ -61,9 +63,11 @@ def perform_profile_check(options):
                                          options.datastream,
                                          options.benchmark_id,
                                          runner=runner)
+        # revert either profile (if created), or origin. Don't delete
         snapshot_stack.revert(delete=False)
     if not has_worked:
         logging.error("Nothing has been tested!")
+        # Delete the reverted profile or origin.
     snapshot_stack.delete()
     # depending on number of profiles we have either "origin" snapshot
     # still to be reverted (multiple profiles) or we are reverted
