@@ -7,6 +7,7 @@ import re
 import errno
 import argparse
 import codecs
+from collections import defaultdict
 
 import ssg.build_remediations as remediation
 import ssg.jinja
@@ -50,6 +51,8 @@ def main():
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
 
+    product = ssg.utils.required_key(env_yaml, "product")
+
     fixcontent = ssg.xml.ElementTree.Element(
         "fix-content", system="urn:xccdf:fix:script:sh",
         xmlns="http://checklists.nist.gov/xccdf/1.1")
@@ -70,7 +73,7 @@ def main():
                 fixname = os.path.splitext(filename)[0]
 
                 mod_file = []
-                config = {}
+                config = defaultdict(lambda: None)
 
                 fix_file_lines = ssg.jinja.process_file(
                     os.path.join(fixdir, filename),
@@ -96,26 +99,10 @@ def main():
                     else:
                         mod_file.append(line)
 
-                complexity = None
-                disruption = None
-                reboot = None
-                script_platform = None
-                strategy = None
-
-                if 'complexity' in config:
-                    complexity = config['complexity']
-                if 'disruption' in config:
-                    disruption = config['disruption']
-                if 'platform' in config:
-                    script_platform = config['platform']
-                if 'complexity' in config:
-                    reboot = config['reboot']
-                if 'complexity' in config:
-                    strategy = config['strategy']
-
-                if script_platform:
+                if config['platform']:
                     product_name, result = remediation.fix_is_applicable_for_product(
-                        script_platform, ssg.utils.required_key(env_yaml, "product"))
+                        config['platform'], product)
+
                     if result:
                         if fixname in fixes:
                             fix = fixes[fixname]
@@ -124,14 +111,14 @@ def main():
                         else:
                             fix = ssg.xml.ElementTree.SubElement(fixgroup, "fix")
                             fix.set("rule", fixname)
-                            if complexity is not None:
-                                fix.set("complexity", complexity)
-                            if disruption is not None:
-                                fix.set("disruption", disruption)
-                            if reboot is not None:
-                                fix.set("reboot", reboot)
-                            if strategy is not None:
-                                fix.set("strategy", strategy)
+                            if config['complexity']:
+                                fix.set("complexity", config['complexity'])
+                            if config['disruption']:
+                                fix.set("disruption", config['disruption'])
+                            if config['reboot']:
+                                fix.set("reboot", config['reboot'])
+                            if config['strategy']:
+                                fix.set("strategy", config['strategy'])
                             fixes[fixname] = fix
                             included_fixes_count += 1
 
