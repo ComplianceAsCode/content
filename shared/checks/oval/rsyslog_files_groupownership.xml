@@ -8,6 +8,7 @@
         <platform>Debian 8</platform>
         <platform>Ubuntu 1404</platform>
         <platform>Ubuntu 1604</platform>
+        <platform>multi_platform_ol</platform>
       </affected>
       <description>All syslog log files should be owned by the appropriate group.</description>
     </metadata>
@@ -95,9 +96,9 @@
   <unix:file_state id="state_rsyslog_files_groupownership" version="1">
     <unix:type operation="equals">regular</unix:type>
     {{% if product in ["debian8", "ubuntu1404", "ubuntu1604"] %}}
-    <unix:group_id datatype="int">0</unix:group_id>
-    {{% else %}}
     <unix:group_id datatype="int">4</unix:group_id>
+    {{% else %}}
+    <unix:group_id datatype="int">0</unix:group_id>
     {{% endif %}}
   </unix:file_state>
 
