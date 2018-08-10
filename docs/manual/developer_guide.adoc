@@ -481,7 +481,7 @@ generated XCCDF file (e.g. `ssg-rhel7-xccdf.xml`)
 
 Example using `create-stig-overlay.py`:
 ----
-$ utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel7-xccdf.xml -o rhel7/overlays/stig_overlay.xml
+$ PYTHONPATH=`./.pyenv.sh` utils/create-stig-overlay.py --disa-xccdf=disa-stig-rhel7-v1r12-xccdf-manual.xml --ssg-xccdf=ssg-rhel7-xccdf.xml -o rhel7/overlays/stig_overlay.xml
 ----
 
 ==== Updating stig_overlay.xml
@@ -494,6 +494,15 @@ here as well.
 
 == Tools and Utilities
 
+To run the Python utilities (those ending in `.py`), you will need to have the
+PYTHONPATH environment variable set. This can be accomplished one of two ways: by
+prefixing all commands with a local variable (`PYTHONPATH=/path/to/scap-security-guide`),
+or by exporting `PYTHONPATH` in your shell environment. We provide a script
+for making this easier: `.pyenv.sh`. To set `PYTHONPATH` correctly for the
+current shell, simply call `source .pyenv.sh`. For more information on how to
+use this script, please see the comments at the top of the file.
+
+
 === Testing OVAL Content
 
 Located in `utils` directory, the `testoval.py` script allows easy testing of oval
@@ -503,7 +512,7 @@ scanning, very useful for testing new OVAL content or modifying existing ones.
 Example usage:
 
 ----
-$ ./utils/testoval.py install_hid.xml
+$ PYTHONPATH=`./.pyenv.sh` ./utils/testoval.py install_hid.xml
 ----
 
 Create or add an alias to the script so that you don't have to type out the full path

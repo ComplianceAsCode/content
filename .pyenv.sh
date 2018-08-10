@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script sets the PYTHONPATH environment variable for the user, without
 # overriding their existing path. This allows them to directly execute scripts
@@ -9,7 +9,7 @@
 #     $ source ../relative/or/absolute/path/to/.pyenv.sh
 # In which case, the user can then proceed to use any script as they wish.
 # Otherwise, it can be executed as:
-#     $ `../path/to/.pyenv.sh` python2 utils/some_script.py
+#     $ PYTHONPATH=`.../path/to/.pyenv.sh` .../path/to/utils/some_script.py
 # In which case, the changes to $PYTHONPATH will not persist past this command.
 
 
@@ -27,5 +27,5 @@ if [ "x$PYTHONPATH" != "x" ]; then
     newpath="$newpath:$PYTHONPATH"
 fi
 
-echo "PYTHONPATH=$newpath"
+echo "$newpath"
 export PYTHONPATH="$newpath"
