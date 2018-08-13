@@ -668,17 +668,20 @@ macro(ssg_build_product PRODUCT)
     add_dependencies(stats ${PRODUCT}-stats)
     add_dependencies(profile-stats ${PRODUCT}-profile-stats)
 
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    if (SSG_SEPARATE_SCAP_FILES_ENABLED)
+        install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+        install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-oval.xml"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+        install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ocil.xml"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+        install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+        install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    endif()
+
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time
@@ -793,8 +796,11 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-roles)
 
-    install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
-        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    if (SSG_SEPARATE_SCAP_FILES_ENABLED)
+        install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
+            DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    endif()
+
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
