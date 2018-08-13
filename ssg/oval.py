@@ -10,11 +10,13 @@ import subprocess
 
 from .constants import oval_footer as footer
 from .constants import oval_namespace as ovalns
+from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .xml import ElementTree as ET
 from .xml import oval_generated_header
 from .id_translate import IDTranslator
 
 SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
+LINUX_OS_GUIDE = re.sub(r'ssg/.*', 'linux_os', __file__) + '/guide/'
 
 
 # globals, to make recursion easier in case we encounter extend_definition
@@ -66,7 +68,7 @@ def _add_elements(body, header):
             for defchild in childnode.findall(".//{%s}extend_definition"
                                               % ovalns):
                 defid = defchild.get("definition_ref")
-                extend_ref = find_testfile_or_exit(defid+".xml")
+                extend_ref = find_testfile_or_exit(defid)
                 includedbody = read_ovaldefgroup_file(extend_ref)
                 # recursively add the elements in the other file
                 _add_elements(includedbody, header)
@@ -118,15 +120,35 @@ def find_testfile_or_exit(testfile):
         return _testfile
 
 
-def find_testfile(testfile):
-    """Find OVAL files in CWD or shared/oval and returns None if the file is not found"""
+def find_testfile(oval_id):
+    """
+    Find OVAL file by id in CWD, SHARED_OVAL, or LINUX_OS_GUIDE. Understands rule
+    directories and defaults to returning shared.xml over {{{ product }}}.xml.
+
+    Returns path to OVAL file or None if not found.
+    """
+    if oval_id.endswith(".xml"):
+        oval_id, _ = os.path.splitext(oval_id)
+        oval_id = os.path.basename(oval_id)
+
+    candidates = [oval_id, "%s.xml" % oval_id]
+
     found_file = None
-    for path in ['.', SHARED_OVAL]:
+    for path in ['.', SHARED_OVAL, LINUX_OS_GUIDE]:
         for root, _, _ in os.walk(path):
-            searchfile = os.path.join(root, testfile).strip()
-            if os.path.isfile(searchfile):
-                found_file = searchfile
-                break
+            for candidate in candidates:
+                search_file = os.path.join(root, candidate).strip()
+                if os.path.isfile(search_file):
+                    found_file = search_file
+                    break
+
+        for rule_dir in find_rule_dirs(path):
+            rule_id = get_rule_dir_id(rule_dir)
+            if rule_id == oval_id:
+                ovals = get_rule_dir_ovals(rule_dir, product="shared")
+                if ovals:
+                    found_file = ovals[0]
+                    break
 
     return found_file
 
