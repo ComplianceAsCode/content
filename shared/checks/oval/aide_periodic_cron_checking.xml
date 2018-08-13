@@ -4,6 +4,7 @@
       <title>Configure Periodic Execution of AIDE</title>
       <affected family="unix">
         <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
       </affected>
       <description>By default, AIDE does not install itself for periodic
@@ -59,5 +60,5 @@
     <ind:pattern operation="pattern match">^\s*/usr/sbin/aide[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-   
+
 </def-group>
