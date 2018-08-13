@@ -1,4 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
+
+# Inspired and referenced from https://blog.kitware.com/cmake-and-the-default-build-type
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Release' as none was specified.")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+        "MinSizeRel" "RelWithDebInfo")
+endif()
+
 project(scap-security-guide NONE)
 
 set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
@@ -152,6 +161,7 @@ find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
 message(STATUS "CMake:")
+message(STATUS "build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "generator: ${CMAKE_GENERATOR}")
 message(STATUS "source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
