@@ -160,6 +160,7 @@ find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
 message(STATUS "CMake:")
+message(STATUS "build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "generator: ${CMAKE_GENERATOR}")
 message(STATUS "source directory: ${CMAKE_SOURCE_DIR}")
 message(STATUS "build directory: ${CMAKE_BINARY_DIR}")
