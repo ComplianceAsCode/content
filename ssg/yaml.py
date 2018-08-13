@@ -28,7 +28,7 @@ def _save_rename(result, stem, prefix):
     result["{0}_{1}".format(prefix, stem)] = stem
 
 
-def _open_yaml(stream, original_file=None):
+def _open_yaml(stream, original_file=None, substitutions_dict={}):
     """
     Open given file-like object and parse it as YAML.
 
@@ -40,7 +40,8 @@ def _open_yaml(stream, original_file=None):
     try:
         yaml_contents = yaml.load(stream, Loader=yaml_SafeLoader)
 
-        if yaml_contents.pop("documentation_complete", "true") == "false":
+        if yaml_contents.pop("documentation_complete", "true") == "false" and \
+                substitutions_dict.get("cmake_build_type") != "Debug":
             return None
 
         return yaml_contents
@@ -79,7 +80,7 @@ def open_and_expand(yaml_file, substitutions_dict=None):
         substitutions_dict = dict()
 
     expanded_template = process_file(yaml_file, substitutions_dict)
-    yaml_contents = _open_yaml(expanded_template, original_file=yaml_file)
+    yaml_contents = _open_yaml(expanded_template, yaml_file, substitutions_dict)
     return yaml_contents
 
 
