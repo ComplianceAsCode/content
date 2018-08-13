@@ -18,11 +18,12 @@ SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
 
 
 # globals, to make recursion easier in case we encounter extend_definition
-definitions = ET.Element("definitions")
-tests = ET.Element("tests")
-objects = ET.Element("objects")
-states = ET.Element("states")
-variables = ET.Element("variables")
+ET.register_namespace("oval", ovalns)
+definitions = ET.Element("oval:definitions")
+tests = ET.Element("oval:tests")
+objects = ET.Element("oval:objects")
+states = ET.Element("oval:states")
+variables = ET.Element("oval:variables")
 silent_mode = False
 
 
@@ -108,14 +109,13 @@ def replace_external_vars(tree):
 
 def find_testfile_or_exit(testfile):
     """Find OVAL files in CWD or shared/oval and calls sys.exit if the file is not found"""
-    testfile = find_testfile(testfile)
-    if testfile is None:
-        print(
-            "ERROR: {0} does not exist! Please specify a valid OVAL file."
-            .format(testfile), file=sys.stderr)
+    _testfile = find_testfile(testfile)
+    if _testfile is None:
+        print("ERROR: %s does not exist! Please specify a valid OVAL file." % testfile,
+              file=sys.stderr)
         sys.exit(1)
     else:
-        return testfile
+        return _testfile
 
 
 def find_testfile(testfile):
@@ -187,6 +187,7 @@ def main():
     header = oval_generated_header("testoval.py", oval_version, "0.0.1")
     testfile = find_testfile_or_exit(testfile)
     body = read_ovaldefgroup_file(testfile)
+
     defname = _add_elements(body, header)
     if defname is None:
         print("Error while evaluating oval: defname not set; missing "
@@ -197,8 +198,9 @@ def main():
 
     # append each major element type, if it has subelements
     for element in [definitions, tests, objects, states, variables]:
-        if list(element) > 0:
+        if list(element):
             ovaltree.append(element)
+
     # re-map all the element ids from meaningful names to meaningless
     # numbers
     testtranslator = IDTranslator("scap-security-guide.testing")
@@ -206,29 +208,39 @@ def main():
     (ovalfile, fname) = tempfile.mkstemp(prefix=defname, suffix=".xml")
     os.write(ovalfile, ET.tostring(ovaltree))
     os.close(ovalfile)
+
+    cmd = ['oscap', 'oval', 'eval', '--results', fname + '-results', fname]
     if not silent_mode:
         print("Evaluating with OVAL tempfile: " + fname)
         print("OVAL Schema Version: %s" % oval_version)
         print("Writing results to: " + fname + "-results")
-    cmd = "oscap oval eval --results " + fname + "-results " + fname
-    oscap_child = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
+        print("Running command: %s\n" % " ".join(cmd))
+
+    oscap_child = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     cmd_out = oscap_child.communicate()[0]
+
+    if isinstance(cmd_out, bytes):
+        cmd_out = cmd_out.decode('utf-8')
+
     if not silent_mode:
-        print(cmd_out)
+        print(cmd_out, file=sys.stderr)
+
     if oscap_child.returncode != 0:
         if not silent_mode:
-            print("Error launching 'oscap' command: \n\t" + cmd)
+            print("Error launching 'oscap' command: return code %d" % oscap_child.returncode)
         sys.exit(2)
-    if 'false' in cmd_out:
+
+    if 'false' in cmd_out or 'error' in cmd_out:
         # at least one from the evaluated OVAL definitions evaluated to
         # 'false' result, exit with '1' to indicate OVAL scan FAIL result
         sys.exit(1)
+
     # perhaps delete tempfile?
-    definitions = ET.Element("definitions")
-    tests = ET.Element("tests")
-    objects = ET.Element("objects")
-    states = ET.Element("states")
-    variables = ET.Element("variables")
+    definitions = ET.Element("oval:definitions")
+    tests = ET.Element("oval:tests")
+    objects = ET.Element("oval:objects")
+    states = ET.Element("oval:states")
+    variables = ET.Element("oval:variables")
 
     # 'false' keyword wasn't found in oscap's command output
     # exit with '0' to indicate OVAL scan TRUE result
