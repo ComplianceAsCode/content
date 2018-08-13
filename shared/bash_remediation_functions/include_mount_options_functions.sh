@@ -2,6 +2,18 @@ function include_mount_options_functions {
 	:
 }
 
+# $1: type of filesystem
+# $2: new mount point option
+function ensure_mount_option_for_vfstype {
+        local _vfstype="$1" _new_opt="$2" _vfstype_points=()
+        _vfstype_points=($(grep -E "[[:space:]]$_vfstype[[:space:]]" /etc/fstab | awk '{print $2}'))
+
+        for _vfstype_point in "${_vfstype_points[@]}"
+        do
+                ensure_mount_option_in_fstab "$_vfstype_point" "$_new_opt"
+        done
+}
+
 # $1: mount point
 # $2: new mount point option
 function ensure_mount_option_in_fstab {
