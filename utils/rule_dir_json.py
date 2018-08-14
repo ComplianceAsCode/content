@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 import argparse
-import codecs
 import os
 import sys
 from collections import defaultdict
