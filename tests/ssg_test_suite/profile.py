@@ -12,6 +12,11 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 class ProfileChecker(ssg_test_suite.oscap.Checker):
+    """
+    Iterate over profiles in datastream and perform scanning of unaltered system
+    using every profile according to input. Also perform remediation run.
+    Return value not defined, textual output and generated reports is the result.
+    """
     def _test_target(self, target):
         profiles = get_viable_profiles(
             target, self.datastream, self.benchmark_id)
