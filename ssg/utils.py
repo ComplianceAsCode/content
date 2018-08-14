@@ -46,3 +46,17 @@ def merge_dicts(left, right):
     result = left.copy()
     result.update(right)
     return result
+
+
+def subset_dict(dictionary, keys):
+    """
+    Restricts dictionary to only have keys from keys. Does not modify either
+    dictionary or keys, returning the result instead.
+    """
+
+    result = dictionary.copy()
+    for original_key in dictionary:
+        if original_key not in keys:
+            del result[original_key]
+
+    return result
