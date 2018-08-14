@@ -20,9 +20,9 @@ class ProfileChecker(ssg_test_suite.oscap.Checker):
     def _test_target(self, target):
         profiles = get_viable_profiles(
             target, self.datastream, self.benchmark_id)
-        self._test_by_profiles(profiles)
+        self.run_test_for_all_profiles(profiles)
 
-    def _run_test(self, profile, ** run_test_args):
+    def _run_test(self, profile, test_data):
         logging.info("Evaluation of profile {0}.".format(profile))
         self.executed_tests += 1
 

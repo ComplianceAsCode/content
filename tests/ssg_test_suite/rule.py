@@ -11,6 +11,7 @@ import collections
 import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
 from ssg_test_suite import xml_operations
+from ssg_test_suite import test_env
 from ssg_test_suite.log import LogHelper
 import data
 
@@ -55,7 +56,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
             if ds_profile.endswith(sel_profile):
                 valid_profiles += [ds_profile]
     if not valid_profiles:
-        logging.error('No profile matched with "{0}"'
+        logging.error('No profile ends with "{0}"'
                       .format(", ".join(selected_profiles)))
     return valid_profiles
 
@@ -63,9 +64,8 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
 def _run_with_stdout_logging(command, log_file):
     log_file.write(" ".join(command) + "\n")
     try:
-        subprocess.check_call(command,
-                              stdout=log_file,
-                              stderr=subprocess.STDOUT)
+        subprocess.check_call(
+            command, stdout=log_file, stderr=subprocess.STDOUT)
         return True
     except subprocess.CalledProcessError as e:
         return False
@@ -176,9 +176,9 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         super(RuleChecker, self).__init__(test_env)
         self._matching_rule_found = False
 
-    def _run_test(self, profile, ** run_test_args):
-        scenario = run_test_args["scenario"]
-        rule_id = run_test_args["rule_id"]
+    def _run_test(self, profile, test_data):
+        scenario = test_data["scenario"]
+        rule_id = test_data["rule_id"]
 
         LogHelper.preload_log(
             logging.INFO, "Script {0} using profile {1} OK".format(scenario.script, profile),
@@ -246,31 +246,31 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
         self._matching_rule_found = False
 
-        for rule in data.iterate_over_rules():
-            self._check_rule(rule, remote_dir, target)
+        with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
+            args_list = [(r, remote_dir, target)
+                         for r in data.iterate_over_rules()
+                         if _matches_target(r.directory, target)]
+            state.map_on_top(self._check_rule, args_list)
 
         if not self._matching_rule_found:
             logging.error("No matching rule ID found for '{0}'".format(target))
 
     def _check_rule(self, rule, remote_dir, target):
-        rule_dir = rule.directory
-        remote_rule_dir = os.path.join(remote_dir, rule_dir)
-        local_rule_dir = os.path.join(data.DATA_DIR, rule_dir)
-
-        if not _matches_target(rule_dir, target):
-            return
+        remote_rule_dir = os.path.join(remote_dir, rule.directory)
+        local_rule_dir = os.path.join(data.DATA_DIR, rule.directory)
 
         logging.info(rule.id)
         self._matching_rule_found = True
 
-        logging.debug("Testing rule directory {0}".format(rule_dir))
+        logging.debug("Testing rule directory {0}".format(rule.directory))
 
         for scenario in _get_scenarios(local_rule_dir, rule.files):
             logging.debug('Using test script {0} with context {1}'
                           .format(scenario.script, scenario.context))
-            with self.test_env.in_layer('script'):
-                self._check_rule_scenario(scenario, remote_rule_dir, rule.id)
-            self.executed_tests += 1
+            with test_env.SavedState.create_from_environment(self.test_env, "scenario") as state:
+                args_list = [(s, remote_rule_dir, rule.id)
+                             for s in _get_scenarios(local_rule_dir, rule.files)]
+                state.map_on_top(self._check_rule_scenario, args_list)
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id):
         if not _apply_script(
@@ -280,7 +280,10 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
         profiles = get_viable_profiles(
             scenario.script_params['profiles'], self.datastream, self.benchmark_id)
-        self._test_by_profiles(profiles, scenario=scenario, rule_id=rule_id)
+        test_data = dict(scenario=scenario, rule_id=rule_id)
+        self.run_test_for_all_profiles(profiles, test_data)
+
+        self.executed_tests += 1
 
 
 def perform_rule_check(options):

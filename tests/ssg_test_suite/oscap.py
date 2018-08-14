@@ -8,7 +8,9 @@ import subprocess
 import collections
 import xml.etree.ElementTree
 import json
+
 from ssg_test_suite.log import LogHelper
+from ssg_test_suite import test_env
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -578,20 +580,21 @@ class Checker(object):
     def test_target(self, target):
         self.start()
         try:
-            with self.test_env.in_layer('origin'):
-                self._test_target(target)
+            self._test_target(target)
         except KeyboardInterrupt:
             logging.info("Terminating the test run due to keyboard interrupt.")
+        except Exception as exc:
+            logging.error("Terminating due to error: {msg}.".format(msg=str(exc)))
         finally:
             self.finalize()
 
-    def _test_by_profiles(self, profiles, ** run_test_args):
+    def run_test_for_all_profiles(self, profiles, test_data=None):
         if len(profiles) > 1:
-            for profile in profiles:
-                with self.test_env.in_layer('profile'):
-                    self._run_test(profile, ** run_test_args)
+            with test_env.SavedState.create_from_environment(self.test_env, "profile") as state:
+                args_list = [(p, test_data) for p in profiles]
+                state.map_on_top(self._run_test, args_list)
         elif profiles:
-            self._run_test(profiles[0], ** run_test_args)
+            self._run_test(profiles[0], test_data)
 
     def _test_target(self, target):
         raise NotImplementedError()
