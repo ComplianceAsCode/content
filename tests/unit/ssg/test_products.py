@@ -33,3 +33,19 @@ def test_get_all():
 
     assert "jre" in products.other
     assert "jre" not in products.linux
+
+
+def test_map_name():
+    mn = ssg.products.map_name
+
+    assert mn('multi_platform_rhel') == 'Red Hat Enterprise Linux'
+    assert mn('rhel') == 'Red Hat Enterprise Linux'
+    assert mn('rhel7') == 'Red Hat Enterprise Linux'
+    assert mn('rhel-osp') == 'Red Hat OpenStack Platform'
+    assert mn('rhel-osp7') == 'Red Hat OpenStack Platform'
+
+    with pytest.raises(RuntimeError):
+        mn('not-a-platform')
+
+    with pytest.raises(RuntimeError):
+        mn('multi_platform_all')
