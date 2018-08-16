@@ -30,9 +30,12 @@ def parse_args():
     )
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("ovaldirs", metavar="OVAL_DIR", nargs="+",
-                   help="Directory(ies) from which we will collect "
+                   help="Shared directory(ies) from which we will collect "
                    "OVAL definitions to combine. Order matters, latter "
-                   "directories override former.")
+                   "directories override former. These will be overwritten "
+                   "by OVALs in the product_yaml['guide'] directory (which "
+                   "in turn preference oval/{{{ product }}}.xml over "
+                   "oval/shared.xml for a given rule.")
 
     return p.parse_args()
 
@@ -52,6 +55,7 @@ def main():
 
     body = ssg.build_ovals.checks(
         env_yaml,
+        args.product_yaml,
         ssg.utils.required_key(env_yaml, "target_oval_version_str"),
         args.ovaldirs)
 

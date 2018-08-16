@@ -12,6 +12,7 @@ from .constants import oval_footer
 from .constants import oval_header
 from .products import parse_name, multi_list, map_name
 from .jinja import process_file
+from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .utils import required_key
 from .xml import ElementTree
 
@@ -242,16 +243,48 @@ def _check_oval_version_from_oval(xml_content, oval_version):
         return True
 
 
-def checks(env_yaml, oval_version, oval_dirs):
-    """Concatenate all XML files in the oval directory, to create the document
-       body
-       oval_dirs: list of directory with oval files (later has higher priority)
-       Return: The document body"""
+def checks(env_yaml, yaml_path, oval_version, oval_dirs):
+    """
+    Concatenate all XML files in the oval directory, to create the document
+    body. Then concatenates this with all XML files in the guide directories,
+    preferring {{{ product }}}.xml to shared.xml.
+
+    oval_dirs: list of directory with oval files (later has higher priority)
+
+    Return: The document body
+    """
 
     body = []
+    product = required_key(env_yaml, "product")
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
     already_loaded = dict()  # filename -> oval_version
+
+    product_dir = os.path.dirname(yaml_path)
+    relative_guide_dir = required_key(env_yaml, "benchmark_root")
+    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
+
+    for _dir_path in find_rule_dirs(guide_dir):
+        rule_id = get_rule_dir_id(_dir_path)
+
+        for _path in get_rule_dir_ovals(_dir_path, product):
+            # To be compatible with the later checks, use the rule_id
+            # (i.e., the value of _dir) to recreate the expected filename if
+            # this OVAL was in a rule directory.
+            filename = "%s.xml" % rule_id
+
+            xml_content = process_file(_path, env_yaml)
+
+            if not _check_is_applicable_for_product(xml_content, product):
+                continue
+            if _check_is_loaded(already_loaded, filename, oval_version):
+                continue
+            if not _check_oval_version_from_oval(xml_content, oval_version):
+                continue
+
+            body.append(xml_content)
+            included_checks_count += 1
+            already_loaded[filename] = oval_version
 
     for oval_dir in reversed_dirs:
         if os.path.isdir(oval_dir):
@@ -262,7 +295,6 @@ def checks(env_yaml, oval_version, oval_dirs):
                         os.path.join(oval_dir, filename), env_yaml
                     )
 
-                    product = required_key(env_yaml, "product")
                     if not _check_is_applicable_for_product(xml_content, product):
                         continue
                     if _check_is_loaded(already_loaded, filename, oval_version):

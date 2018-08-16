@@ -6,15 +6,34 @@ import os
 import os.path
 import re
 import codecs
+from collections import defaultdict, namedtuple
 
+from .jinja import process_file as jinja_process_file
 from .xml import ElementTree
 from .products import parse_name, multi_list, map_name
 
+REMEDIATION_TO_EXT_MAP = {
+    'anaconda': '.anaconda',
+    'ansible': '.yml',
+    'bash': '.sh',
+    'puppet': '.pp'
+}
 
-def fix_is_applicable_for_product(platform, product):
+FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
+
+REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
+                           'strategy']
+REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
+
+
+def is_applicable_for_product(platform, product):
     """Based on the platform dict specifier of the remediation script to
     determine if this remediation script is applicable for this product.
     Return 'True' if so, 'False' otherwise"""
+
+    # If the platform is None, platform must not exist in the config, so exit with False.
+    if not platform:
+        return False
 
     product, product_version = parse_name(product)
 
@@ -24,10 +43,9 @@ def fix_is_applicable_for_product(platform, product):
 
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
-    result = False
     for _platform in multi_platforms:
         if _platform in platform and product in multi_list:
-            result = True
+            return True
 
     product_name = ""
     # Get official name for product
@@ -39,11 +57,11 @@ def fix_is_applicable_for_product(platform, product):
     # Test if this is for the concrete product version
     for _name_part in platform.split(','):
         if product_name == _name_part.strip():
-            result = True
+            return True
 
     # Remediation script isn't neither a multi platform one, nor isn't
     # applicable for this product => return False to indicate that
-    return product_name, result
+    return False
 
 
 def get_available_functions(build_dir):
@@ -111,17 +129,13 @@ def get_fixgroup_for_type(fixcontent, remediation_type):
 
 
 def is_supported_filename(remediation_type, filename):
-    if remediation_type == 'anaconda':
-        return filename.endswith('.anaconda')
+    """
+    Checks if filename has a supported extension for remediation_type.
 
-    elif remediation_type == 'ansible':
-        return filename.endswith('.yml')
-
-    elif remediation_type == 'bash':
-        return filename.endswith('.sh')
-
-    elif remediation_type == 'puppet':
-        return filename.endswith('.pp')
+    Exits when remediation_type is of an unknown type.
+    """
+    if remediation_type in REMEDIATION_TO_EXT_MAP:
+        return filename.endswith(REMEDIATION_TO_EXT_MAP[remediation_type])
 
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
@@ -144,6 +158,94 @@ def get_populate_replacement(remediation_type, text):
     sys.stderr.write("ERROR: Unknown remediation type '%s'!\n"
                      % (remediation_type))
     sys.exit(1)
+
+
+def parse_from_file(file_path, env_yaml):
+    """
+    Parses a remediation from a file. As remediations contain jinja macros,
+    we need a env_yaml context to process these. In practice, no remediations
+    use jinja in the configuration, so for extracting only the configuration,
+    env_yaml can be an abritrary product.yml dictionary.
+    """
+
+    mod_file = []
+    config = defaultdict(lambda: None)
+
+    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
+
+    # Assignment automatically escapes shell characters for XML
+    for line in fix_file_lines:
+        if line.startswith('#'):
+            try:
+                (key, value) = line.strip('#').split('=')
+                if key.strip() in REMEDIATION_CONFIG_KEYS:
+                    config[key.strip()] = value.strip()
+                else:
+                    if not line.startswith(FILE_GENERATED_HASH_COMMENT):
+                        mod_file.append(line)
+            except ValueError:
+                if not line.startswith(FILE_GENERATED_HASH_COMMENT):
+                    mod_file.append(line)
+        else:
+            mod_file.append(line)
+
+    remediation = namedtuple('remediation', ['contents', 'config'])
+    return remediation(mod_file, config)
+
+
+def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name):
+    """
+    Process a fix, adding it to fixes iff the file is of a valid extension
+    for the remediation type and the fix is valid for the current product.
+
+    Note that platform is a required field in the contents of the fix.
+    """
+
+    if not is_supported_filename(remediation_type, file_path):
+        return
+
+    result = parse_from_file(file_path, env_yaml)
+
+    if not result.config['platform']:
+        raise RuntimeError(
+            "The '%s' remediation script does not contain the "
+            "platform identifier!" % (file_path))
+
+    if is_applicable_for_product(result.config['platform'], product):
+        fixes[fix_name] = result
+
+
+def write_fixes(remediation_type, build_dir, output_path, fixes):
+    """
+    Builds a fix-content XML tree from the contents of fixes
+    and writes it to output_path.
+    """
+
+    fixcontent = ElementTree.Element("fix-content", system="urn:xccdf:fix:script:sh",
+                                     xmlns="http://checklists.nist.gov/xccdf/1.1")
+    fixgroup = get_fixgroup_for_type(fixcontent, remediation_type)
+
+    remediation_functions = get_available_functions(build_dir)
+
+    for fix_name in fixes:
+        fix_contents, config = fixes[fix_name]
+
+        fix_elm = ElementTree.SubElement(fixgroup, "fix")
+        fix_elm.set("rule", fix_name)
+
+        for key in REMEDIATION_ELM_KEYS:
+            if config[key]:
+                fix_elm.set(key, config[key])
+
+        fix_elm.text = "\n".join(fix_contents)
+        fix_elm.text += "\n"
+
+        # Expand shell variables and remediation functions
+        # into corresponding XCCDF <sub> elements
+        expand_xccdf_subs(fix_elm, remediation_type, remediation_functions)
+
+    tree = ElementTree.ElementTree(fixcontent)
+    tree.write(output_path)
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
