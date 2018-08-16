@@ -7,6 +7,7 @@ from __future__ import print_function
 
 import re
 import sys
+import os
 
 from template_common import FilesGenerator, UnknownTargetError
 
@@ -89,9 +90,12 @@ class RemediationTarget(MountOptionTarget):
             self.template_file = "{0}_var".format(self.TEMPLATE_FILE_BASE)
             self._output_id_template = "{mount_option}_{point_id}"
         elif not mount_point.startswith("/"):  # no path, but not a variable either
+            self.template_file = "{0}_{1}".format(self.TEMPLATE_FILE_BASE, self._point_id)
+
+        template_path = os.path.join(self.generator.product_input_dir, self.template_file)
+        if not os.path.isfile(template_path):
             raise Skipped(
-                "Remediations are available only for for literal mount points, "
-                "or by mount points defined by variables, thus beginning with 'var_'."
+                "Template file {0} doesn't exist.".format(self.template_file)
             )
 
 
