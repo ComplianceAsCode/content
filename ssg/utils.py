@@ -9,6 +9,11 @@ class SSGError(RuntimeError):
 
 
 def required_key(_dict, _key):
+    """
+    Returns the value of _key if it is in _dict; otherwise, raise an
+    exception stating that it was not found but is required.
+    """
+
     if _key in _dict:
         return _dict[_key]
 
@@ -17,6 +22,12 @@ def required_key(_dict, _key):
 
 
 def get_cpu_count():
+    """
+    Returns the most likely estimate of the number of CPUs in the machine
+    for threading purposes, gracefully handling errors and possible
+    exceptions.
+    """
+
     try:
         return max(1, multiprocessing.cpu_count())
 
