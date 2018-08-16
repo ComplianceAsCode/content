@@ -570,22 +570,31 @@ Contributions can be made for rules, checks, remediations or even utilities. The
 
 ==== Rules
 
-Rules are input in a simplified XCCDF format, which is basically an XML container.
-Rules are defined as members of a `Group` in a XML file.
-In the likely case if the rule can be reused in multiple platforms, the file containing the definition will be placed under the `shared/xccdf` directory.
-If the rule is platform-specific, place it under the `<platform>/xccdf` directory.
-The exact location depends on a rule category.
-For an example of rule group, see `shared/xccdf/system/software/disk_partitioning.xml`.
+Rules are input described in YAML which mirrors the XCCDF format (an XML container).
+Rules are translated to become members of a `Group` in an XML file.
+All existing rules for Linux products can be found in the `linux_os/guide` directory. For non-Linux products (e.g., `jre`), this content can be found in the `<product>/guide`.
+The exact location depends on the group (or category) that a rule belongs to.
+
+
+For an example of rule group, see `linux_os/guide/system/software/disk_partitioning/partition_for_tmp.rule`.
+The id of this rule is `partition_for_tmp.rule`; this rule belongs to the `disk_partitioning` group, which in turn belongs to the `software` group (which in turn belongs to the `system` group).
+Because this rule is in `linux_os/guide`, it can be shared by all Linux products.
 
 Rules describe the desired state of the system and may contain references if they are parts of higher-level standards.
-For example, the `partition_for_tmp` rule from the mentioned file is part of STIG, so definition of the rule contains the `ref` reference to it.
+All rules should reflect only a single configuration change for compliance purposes.
 
-A rule itself has these attributes:
 
-* `id`: The primary key for the rule. It is referenced by profiles.
-* `severity`: Can be `low`, `medium`, or `high`.
+Structurally, a rule is a YAML file (which can contain Jinja macros) that represents a dictionary.
 
-A rule contains those elements that are text-centric:
+A rule YAML file has one implied attribute:
+
+* `id`: The primary identifier for the rule to be referenced from profiles. This is inferred from the file name and links it to checks and fixes with the same file name.
+
+A rule itself contains these attributes:
+
+* `severity`: Can be `unknown`, `low`, `medium`, or `high`.
+
+A rule must contain these attributes:
 
 * `title`: Human-readable title of the rule.
 * `rationale`: Human-readable HTML description of the reason why the rule exists and why it is important from the technical point of view. For example, rationale of the `partition_for_tmp` rule states that:
@@ -594,24 +603,25 @@ The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placi
 * `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
 +
 The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
-* `ocil`: Defines assert statements. The `clause` attribute contains the statement, and the element text describes how to determine whether the statement is true or false. Check out rule `encrypt_partitions` in `shared/xccdf/system/software/disk_partitioning.xml`, that contains the `partitions do not have a type of crypto_LUKS` clause.
+* `ocil`: Defines asserting statements to check whether or not the rule is valid.
+* `ocil_clause` attribute contains the statement which describes how to determine whether the statement is true or false. Check out `encrypt_partitions.rule` in `linux_os/guide/system/software/disk_partitioning/`: this contains a `partitions do not have a type of crypto_LUKS` value for `ocil_clause`. This clause is prefixed with the phrase "It is the case that".
 
-A rule may contain those reference-type elements:
+A rule may contain those reference-type attributes:
 
-* `oval`: Link to the check that is able to determine whether the scanned system complies to the rule. Checks are written in the OVAL language (see the section Checks for further info).
-* `ident`: This is related to products/CCEs that the rule applies to.
+* `identifiers`: This is related to products/CCEs that the rule applies to; this is a dictionary, whose keys should be `cce` and a value. If `cce` is modified with a product (e.g., `cce@rhel6`), it restricts what products that identifiers applies to.
+* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stig`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stig@rhel6`) to restrict what products an identifiers applies to.
 +
 When the rule is related to RHEL, it should have a CCE.
 Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
-* `ref`: If the rule is part of a standard, it is referenced using the `ref` element. One rule can have multiple `ref` elements.
+See `linux_os/guide/system/software/disk_partitioning/encrypt_partitions.rule` for an example of reference-type attributes.
 
-Some of existing rule definitions contain elements that use macros.
+Some of existing rule definitions contain attributes that use macros.
 There are two implementations of macros:
 
 * link:http://jinja.pocoo.org/docs/2.10/[Jinja macros], that are defined in `shared/macros.jinja`, and `shared/macros-highlevel.jinja`.
 * Legacy XSLT macros, which are defined in `shared/transforms/*.xslt`.
 
-For example, the `ocil` element of `service_ntpd_enabled` uses the `ocil_service_enabled` jinja macro.
+For example, the `ocil` attribute of `service_ntpd_enabled` uses the `ocil_service_enabled` jinja macro.
 Due to the need of supporting Ansible output, which also uses jinja, we had to modify control sequences, so macro operations require one more curly brace.
 For example, invocation of the partition macro looks like `{{{ complete_ocil_entry_separate_partition(part="/tmp") }}}` - there are three opening and closing curly braces instead of the two that are documented in the Jinja guide.
 
@@ -626,7 +636,7 @@ Rules are unselected by default - even if the scanner reads rule definitions, th
 A rule may be selected by any number of profiles, so when the scanner is scanning using a profile the rule is included in, the rule is taken into account.
 For example, the rule identified by `partition_for_tmp` defined in `shared/xccdf/system/software/disk_partitioning.xml` is included in the `RHEL7 C2S` profile in `rhel7/profiles/C2S.xml`.
 
-Checks are connected to rules by the `oval` rule element.
+Checks are connected to rules by the `oval` element and the filename in which it is found.
 Remediations (i.e. fixes) are assigned to rules based on their basename.
 Therefore, the rule `sshd_print_last_log` has a `bash` fix associated as there is a `bash` script `shared/fixes/bash/sshd_print_last_log.sh`. As there is an Ansible playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has also an Ansible fix associated.
 
