@@ -640,6 +640,61 @@ Checks are connected to rules by the `oval` element and the filename in which it
 Remediations (i.e. fixes) are assigned to rules based on their basename.
 Therefore, the rule `sshd_print_last_log` has a `bash` fix associated as there is a `bash` script `shared/fixes/bash/sshd_print_last_log.sh`. As there is an Ansible playbook `shared/fixes/ansible/sshd_print_last_log.yml`, the rule has also an Ansible fix associated.
 
+==== Rule Directories
+
+The rule directory simplifies the structure of a rule and all of its
+associated content by placing it all under a common directory. The
+structure of a rule directory looks like the following example:
+
+----
+linux_os/guide/system/group/rule_id/rule.yml
+linux_os/guide/system/group/rule_id/bash/ol7.sh
+linux_os/guide/system/group/rule_id/bash/shared.sh
+linux_os/guide/system/group/rule_id/oval/rhel7.xml
+linux_os/guide/system/group/rule_id/oval/shared.xml
+----
+
+To be considered a rule directory, it must be a directory contained in a
+benchmark pointed to by some product. The directory must have a name that
+is the id of the rule, and must contain a file called `rule.yml` which
+is a YAML Rule description as described above. This directory can then
+contain the following subdirectories:
+
+ - `anaconda` -- for Anaconda remediation content, ending in `.anaconda`
+ - `ansible` -- for Ansible remediation content, ending in `.yml`
+ - `bash` -- for Bash remediation content, ending in `.sh`
+ - `oval` -- for OVAL check content, ending in `.xml`
+ - `puppet` -- for Puppet remediation content, ending in `.pp`
+
+In each of these subdirectories, a file named `shared.ext` will apply to all
+products and be included in all builds, but `{{{ product }}}.ext` will
+only get included in the build for `{{{ product }}}` (e.g., `rhel7.xml` above
+will only be included in the build of the `rhel7` guide content and not in the
+`ol7` content). Note that `.ext` must be substituted for the correct
+extension for content of that type (e.g., `.sh` for `bash` content). Further,
+all of these directories are optional and will only be searched for content if
+present. Lastly, the product naming of content will not override the contents
+of `platform` or `prodtype` fields in the content itself (e.g., if `rhel7` is
+not present in the `rhel7.xml` OVAL check platform specifier, it will be
+included in the build artifacts but later removed because it doesn't match
+the platform).
+
+Currently the build system supports both rule files (discussed above) and rule
+directories. For example content in this format, please see rules in
+`linux_os/guide`.
+
+To interact with build directories, the `ssg.rules` and `ssg.rule_dir_stats`
+modules have been created, as well as three utilities:
+
+  - `utils/rule_dir_json.py` -- to generate a JSON tree describing the
+    current content of all guides
+  - `utils/rule_dir_stats.py` -- for analyzing the JSON tree and finding
+    information about specific rules, products, or summary statistics
+  - `utils/rule_dir_diff.py` -- for diffing two JSON trees (e.g., before and
+    after a major change), using the same interface as `rule_dir_stats.py`.
+
+For more information about these utilities, please see their help text.
+
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
