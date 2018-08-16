@@ -27,9 +27,7 @@ do
 	fi
 	# Perform the remediation for both possible tools: 'auditctl' and 'augenrules'
 	fix_audit_syscall_rule "auditctl" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-    {{% if product == "rhel7" %}}
 	fix_audit_syscall_rule "augenrules" "$PATTERN" "$GROUP" "$ARCH" "$FULL_RULE"
-    {{% endif %}}
 done
 
 }
