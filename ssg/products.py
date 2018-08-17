@@ -35,6 +35,13 @@ PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
 
 def parse_name(product):
+    """
+    Returns a namedtuple of (name, version) from parsing a given product;
+    e.g., "rhel7" -> ("rhel", "7")
+    """
+
+    prod_tuple = namedtuple('product', ['name', 'version'])
+
     _product = product
     _product_version = None
     match = PRODUCT_NAME_PARSER.match(product)
@@ -43,7 +50,7 @@ def parse_name(product):
         _product = match.group(1)
         _product_version = match.group(2)
 
-    return _product, _product_version
+    return prod_tuple(_product, _product_version)
 
 
 def get_all(ssg_root):

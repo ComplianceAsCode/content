@@ -8,7 +8,6 @@ import ssg.jinja
 def get_definitions_with_substitution(subs_dict=None):
     if subs_dict is None:
         subs_dict = dict()
-    subs_dict["jinja2_cache_enabled"] = "false"
 
     definitions = os.path.join(os.path.dirname(__file__), "data", "definitions.jinja")
     defs = ssg.jinja.extract_substitutions_dict_from_template(definitions, subs_dict)
