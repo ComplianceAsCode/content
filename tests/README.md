@@ -10,6 +10,8 @@ remediation works.
 
 ## Prerequisites
 
+You can use the more powerful VM-based tests, or more lightweight Docker-based tests.
+
 For the Test Suite to work, you need to have libvirt domains prepared for
 testing.
 SSG Test Suite currently does not provide automated provisioning of domains.
@@ -41,20 +43,28 @@ Ansible installed on the host machine.
 
 *NOTE*: Create snapshot after all these steps, to manually revert in case the
 test suite breaks something and fails to revert. Do not use snapshot names
-starting with `ssg_`
+starting with `ssg_`.
 
 ## Executing the test suite
 
 ### Common options
 
-- `--hypervisor`: Typically, you will use the `qemu:///system` value.
-- `--domain`: `libvirt` domain, which is basically name of the virtual machine.
 - `--datastream`: Path to the datastream that you want to use for scanning.
   It will be transferred to the scanned VM via SSH.
 - `--xccdf-id`: Also known as `Ref-ID`, it is the identifier of benchmark within
   the datastream.  It can be obtained by running `oscap info` over the
   datastream XML and searching for `Ref-ID` strings.
 - `--help`: This will get you the invocation help.
+
+VM-based tests:
+
+- `--libvirt`: Accepts two arguments - `hypervisor` and `domain`.
+  - `hypervisor`: Typically, you will use the `qemu:///system` value.
+  - `domain`: `libvirt` domain, which is basically name of the virtual machine.
+
+docker-based tests:
+
+- `--docker`: Accepts the base image name.
 
 ### Profile-based testing
 
@@ -65,7 +75,7 @@ target domain and remediates it based on particular profile.
 An example invocation may look like this:
 
 ```
-./test_suite.py profile --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ssg-centos7-ds.xml --xccdf-id xccdf-id profile-id
+./test_suite.py profile --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml profile-id
 ```
 
 `profile-id` is matched by the suffix so it is the same as the `oscap` tool
@@ -92,7 +102,7 @@ Rule-based testing enables to perform two kinds of tests:
 If you would like to evaluate the rule `rule_sysctl_net_ipv4_conf_default_secure_redirects`:
 
 ```
-./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml --xccdf-id xccdf-id ipv4_conf_default_secure_redirects
+./test_suite.py rule --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml ipv4_conf_default_secure_redirects
 ```
 
 Notice there is not full rule name used on the command line.
@@ -144,25 +154,48 @@ Bugzilla is about `sshd_config` being not altered correctly. Thus:
 Now, you can perform validation check with command
 
 ```
-./test_suite.py rule --hypervisor qemu:///system --domain ssg-test-suite-centos --datastream ./ssg-centos7-ds.xml rule_sshd_disable_kerb_auth
+./test_suite.py rule --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
 ```
 
 ## Docker backend
 
-You can use either docker-based or libvirt-based environment for running tests.
-If you provide `--base-image <image name>` option on the command-line, the docker-based environment will be picked, if not, you will end up with the libvirt-based environment.
+You can also use the docker-based for running tests, just use the script with the `--docker` argument.
+You need to provide `--docker <base image name>` option on the command-line.
+
+To obtain the base image, you can use `test_suite-*` Dockerfiles in the `Dockerfiles` directory to build it.
+We recomend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
+
+Build the image using this command:
+
+```
+docker build --build-arg CLIENT_PUBLIC_KEY="ssh-rsa AAAAB3NzaC1y...rJSs4BL me@localhost" -t ssg_test_suite -f test_suite-rhel .
+```
+
+Run the test suite using this command:
+
+```
+./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
+```
 
 On your side, you need to have
 - the [docker](https://pypi.org/project/docker/) Python module installed. You may have to use `pip` to install it on older distributions s.a. RHEL 7, running `pip install --user docker` as `root` will do the trick of installing it only for the `root` user.
 - the Docker service running, and
 - rights that allow you to start/stop containers and to create images.
-- Insecure: create a `docker` group, add yourself in it and restart `docker`.
+  This level of rights is considered to be insecure, so it is recomended to run the test suite in a VM.
+  You can accomplish this by creating a `docker` group, then add yourself in it and restart `docker`.
 
 The Docker image you want to use with the tests needs to be prepared, so it can scan itself, and that it can accept connections and data.
 Following services need to be supported:
 
-TLDR: `yum install openssh-clients openssh-server openscap-scanner`
-
 - `sshd` (`openssh-server` needs to be installed, server host keys have to be in place, root's `.ssh/authorized_keys` are set up with correct permissions)
 - `scp` (`openssh-clients` need to be installed - scp requires more than a ssh server on the server-side)
 - `oscap` (`openscap-scanner` - the container has to be able to scan itself)
+- You may want to include another packages, as base images tend to be bare-bone and tests may require more packages to be present.
+Also, as containers may get any IP address, a conflict may appear in your local client's `known_hosts` file.
+As `oscap-ssh` doesn't let you to switch known hosts checks off at the client-side, it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
+You can do that by putting following lines in your `$HOME/.ssh/config` file:
+
+```
+StrictHostKeyChecking no
+UserKnownHostsFile /dev/null
+```
