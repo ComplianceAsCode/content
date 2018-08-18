@@ -13,6 +13,7 @@ from .yaml import open_raw
 _version_name_map = {
     'chromium': 'Google Chromium Browser',
     'fedora': 'Fedora',
+    'rawhide': 'Fedora Rawhide',
     'firefox': 'Mozilla Firefox',
     'jre': 'Java Runtime Environment',
     'rhel-osp': 'Red Hat OpenStack Platform',
@@ -28,7 +29,7 @@ _version_name_map = {
     'ocp': 'Red Hat OpenShift Container Platform',
 }
 
-multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
+multi_list = ["rhel", "rawhide", "fedora", "rhel-osp", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp"]
 
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
