@@ -99,6 +99,11 @@ def get_available_functions(build_dir):
 
 
 def get_fixgroup_for_type(fixcontent, remediation_type):
+    """
+    For a given remediation type, return a new subelement of that type.
+
+    Exits if passed an unknown remediation type.
+    """
     if remediation_type == 'anaconda':
         return ElementTree.SubElement(
             fixcontent, "fix-group", id="anaconda",
