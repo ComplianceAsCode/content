@@ -17,6 +17,17 @@ from .shims import unicode_func
 
 
 def add_sub_element(parent, tag, data):
+    """
+    Creates a new child element under parent with tag tag, and sets
+    data as the content under the tag. In particular, data is a string
+    to be parsed as an XML tree, allowing sub-elements of children to be
+    added.
+
+    If data should not be parsed as an XML tree, either escape the contents
+    before passing into this function, or use ElementTree.SubElement().
+
+    Returns the newly created subelement of type tag.
+    """
     # This is used because our YAML data contain XML and XHTML elements
     # ET.SubElement() escapes the < > characters by &lt; and &gt;
     # and therefore it does not add child elements
@@ -609,6 +620,13 @@ class Rule(object):
 
 def load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
                             profiles_dir, env_yaml, bash_remediation_fns):
+    """
+    Loads a given benchmark or group from the specified benchmark_file or
+    group_file, in the context of guide_directory, action, profiles_dir,
+    env_yaml, and bash_remediation_fns.
+
+    Returns the loaded group or benchmark.
+    """
     group = None
     if group_file and benchmark_file:
         raise ValueError("A .benchmark file and a .group file were found in "
@@ -635,6 +653,12 @@ def load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
 
 def add_from_directory(action, parent_group, guide_directory, profiles_dir,
                        bash_remediation_fns, output_file, env_yaml):
+    """
+    Process Variables, Benchmarks, and Rules in a given subdirectory,
+    recursing as necessary.
+
+    Behavior is dependent upon the value of action.
+    """
     benchmark_file = None
     group_file = None
     rules = []
