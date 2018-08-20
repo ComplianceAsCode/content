@@ -5,6 +5,7 @@ Common functions for building CPEs
 from __future__ import absolute_import
 from __future__ import print_function
 
+
 def extract_subelement(objects, sub_elem_type):
     """
     From a collection of element objects, return the value of
