@@ -17,6 +17,10 @@ oval_cs = oval_namespace
 
 
 class FileLinker(object):
+    """
+    Bass class which represents the linking of checks to their identifiers.
+    """
+
     CHECK_SYSTEM = None
     CHECK_NAMESPACE = None
 
@@ -29,9 +33,17 @@ class FileLinker(object):
         self.xccdftree = xccdftree
 
     def _get_related_checks(self, checks):
+        """
+        Returns a list of checks which have the same check system as this
+        class.
+        """
         return [ch for ch in checks if ch.get("system") == self.CHECK_SYSTEM]
 
     def _get_fnames_from_related_checks(self):
+        """
+        Returns a list of filenames from non-remote check content href
+        attributes.
+        """
         checkfiles = set()
         for check in self.checks_related_to_us:
             # Include the file in the particular check system only if it's NOT
@@ -43,6 +55,12 @@ class FileLinker(object):
         return checkfiles
 
     def _get_input_fname(self):
+        """
+        Returns the input filename referenced from the related check.
+
+        Raises SSGError if there are more than one filenames related to
+        this check system.
+        """
         fnames = self._get_fnames_from_related_checks()
         if len(fnames) > 1:
             msg = ("referencing more than one file per check system "
@@ -51,6 +69,9 @@ class FileLinker(object):
         return fnames.pop() if fnames else None
 
     def save_linked_tree(self):
+        """
+        Write internal tree to the file in self.linked_fname.
+        """
         assert self.tree is not None, \
             "There is no tree to save, you have probably skipped the linking phase"
         ET.ElementTree(self.tree).write(self.linked_fname)
