@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import os
 import sys
+from collections import namedtuple
 
 from .ansible import add_minimum_version
 from .shims import subprocess_check_output, Queue
@@ -33,6 +34,10 @@ def generate_for_input_content(input_content, benchmark_id, profile_id,
 
 
 def _get_filename(path_base, extension, profile_id, benchmark_id, benchmarks):
+    """
+    Returns the filename for a given role from the profile_id and
+    benchmark_id.
+    """
     profile_id_for_path = "default" if not profile_id else profile_id
     benchmark_id_for_path = benchmark_id
     if benchmark_id_for_path.startswith(OSCAP_DS_STRING):
@@ -51,6 +56,10 @@ def _get_filename(path_base, extension, profile_id, benchmark_id, benchmarks):
 
 def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
                      output_dir):
+    """
+    Returns a list of output filenames for each non-blacklisted profile in
+    the benchmark.
+    """
     role_paths = []
 
     for benchmark_id, profile_id, _ in benchmark_profile_pairs:
@@ -68,7 +77,14 @@ def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
 
 def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
                extension, output_dir, template):
+    """
+    Returns a queue containing tasks to create each role. A task is a
+    namedtuple of (benchmark_id, profile_id, input_path, extension, role_path,
+    template).
+    """
     queue = Queue.Queue()
+    task = namedtuple('task', ['benchmark_id', 'profile_id', 'input_path',
+                               'extension', 'role_path', 'template'])
 
     for benchmark_id, profile_id, _ in benchmark_profile_pairs:
         if _is_blacklisted_profile(profile_id):
@@ -78,12 +94,21 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
                                       benchmark_id, benchmarks)
         role_path = os.path.join(output_dir, role_filename)
 
-        queue.put((benchmark_id, profile_id, input_path, extension, role_path, template))
+        queue.put(task(benchmark_id, profile_id, input_path, extension,
+                       role_path, template))
 
     return queue
 
 
 def builder(queue):
+    """
+    While there are tasks in the queue, process them with
+    generate_input_for_content and write their output to the correct
+    location.
+
+    Raises any exceptions which occur during handling of a task.
+    """
+
     while True:
         try:
             (benchmark_id, profile_id, input_path, extension, role_path,
