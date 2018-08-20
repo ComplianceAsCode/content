@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel, Fedora Rawhide
 
 {{% if product == "rhel7" %}}
 # Correct the form of default kernel command line in /etc/default/grub
