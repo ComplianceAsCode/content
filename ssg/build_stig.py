@@ -8,6 +8,13 @@ from .constants import XCCDF11_NS, stig_ns, stig_refs
 
 
 def add_references(reference, destination):
+    """
+    For a given reference XCCDF file and destination file, process all
+    STIG references in the rules from destination and correctly link
+    them to the corresponding reference rule.
+
+    Returns the updated ElementTree containing updated reference elements.
+    """
     try:
         reference_root = ET.parse(reference)
     except IOError:
