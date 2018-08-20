@@ -136,7 +136,7 @@ def determine_ip(domain):
                             0)
 
     # get IPv4 address of the guest
-    for (name, val) in ifaces.iteritems():
+    for (name, val) in ifaces.items():
         if val['hwaddr'] == domain_mac and val['addrs']:
             for ipaddr in val['addrs']:
                 if ipaddr['type'] == libvirt.VIR_IP_ADDR_TYPE_IPV4:

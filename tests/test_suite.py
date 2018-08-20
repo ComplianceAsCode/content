@@ -10,7 +10,7 @@ import sys
 
 from ssg_test_suite.log import LogHelper
 import ssg_test_suite.oscap
-import ssg_test_suite.virt
+import ssg_test_suite.test_env
 import ssg_test_suite.profile
 import ssg_test_suite.rule
 from ssg_test_suite import xml_operations
@@ -20,21 +20,19 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     common_parser = argparse.ArgumentParser(add_help=False)
-    common_parser.add_argument("--hypervisor",
-                               dest="hypervisor",
-                               metavar="HYPERVISOR",
-                               default="qemu:///session",
-                               help="libvirt hypervisor")
-    common_parser.add_argument("--domain",
-                               dest="domain_name",
-                               metavar="DOMAIN",
-                               required=True,
-                               help=("Specify libvirt domain to be used as a test "
-                                     "bed. This domain will get remediations "
-                                     "applied in it, possibly making system "
-                                     "unusable for a moment. Snapshot will be "
-                                     "reverted immediately afterwards. "
-                                     "Domain will be returned without changes"))
+    common_parser.set_defaults(test_env=None)
+
+    backends = common_parser.add_mutually_exclusive_group(required=True)
+
+    backends.add_argument(
+        "--docker", dest="docker", metavar="BASE_IMAGE",
+        help="Use Docker test environment with this base image.")
+
+    backends.add_argument(
+        "--libvirt", dest="libvirt", metavar="HYPERVISOR DOMAIN", nargs=2,
+        help="libvirt hypervisor and domain name. "
+        "Example of a hypervisor domain name tuple: qemu:///system ssg-test-suite")
+
     common_parser.add_argument("--datastream",
                                dest="datastream",
                                metavar="DATASTREAM",
@@ -141,6 +139,20 @@ def normalize_passed_arguments(options):
         msg = "Error inferring benchmark ID from component refId: {}".format(str(exc))
         raise RuntimeError(msg)
 
+    if options.docker:
+        options.test_env = ssg_test_suite.test_env.DockerTestEnv(
+            options.docker)
+        logging.info(
+            "The base image option has been specified, "
+            "choosing Docker-based test environment.")
+    else:
+        hypervisor, domain_name = options.libvirt
+        options.test_env = ssg_test_suite.test_env.VMTestEnv(
+            hypervisor, domain_name)
+        logging.info(
+            "The base image option has not been specified, "
+            "choosing libvirt-based test environment.")
+
 
 def main():
     options = parse_args()
@@ -150,14 +162,14 @@ def main():
     # debug otherwise it cuts silently everything
     log.setLevel(logging.DEBUG)
 
+    LogHelper.add_console_logger(log, options.loglevel)
+
     try:
         normalize_passed_arguments(options)
     except RuntimeError as exc:
         msg = "Error occurred during options normalization: {}".format(str(exc))
         logging.error(msg)
         sys.exit(1)
-
-    LogHelper.add_console_logger(log, options.loglevel)
     # logging dir needs to be created based on other options
     # thus we have to postprocess it
 

@@ -8,7 +8,6 @@ import subprocess
 import collections
 import xml.etree.ElementTree
 import json
-
 from ssg_test_suite.log import LogHelper
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
@@ -68,7 +67,7 @@ def run_cmd_remote(command_string, domain_ip, verbose_path):
 
 def _run_cmd(command_list, verbose_path):
     returncode = 0
-    output = ""
+    output = b""
     try:
         with open(verbose_path, 'w') as verbose_file:
             output = subprocess.check_output(
@@ -76,7 +75,7 @@ def _run_cmd(command_list, verbose_path):
     except subprocess.CalledProcessError as e:
         returncode = e.returncode
         output = e.output
-    return returncode, output
+    return returncode, output.decode('utf-8')
 
 
 def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
@@ -335,8 +334,15 @@ class GenericRunner(object):
             raise RuntimeError('Unknown stage: {}.'.format(stage))
 
         if self.clean_files:
-            for fname in self._filenames_to_clean_afterwards:
-                os.remove(fname)
+            for fname in tuple(self._filenames_to_clean_afterwards):
+                try:
+                    os.remove(fname)
+                except OSError as exc:
+                    logging.error(
+                        "Failed to cleanup file '{0}'"
+                        .format(fname))
+                finally:
+                    self._filenames_to_clean_afterwards.remove(fname)
 
         if result:
             LogHelper.log_preloaded('pass')
@@ -409,13 +415,13 @@ class ProfileRunner(GenericRunner):
 class RuleRunner(GenericRunner):
     def __init__(
             self, domain_ip, profile, datastream, benchmark_id,
-            rule_id, context, script_name, dont_clean):
+            rule_id, script_name, dont_clean):
         super(RuleRunner, self).__init__(
             domain_ip, profile, datastream, benchmark_id,
         )
 
         self.rule_id = rule_id
-        self.context = context
+        self.context = None
         self.script_name = script_name
         self.clean_files = not dont_clean
 
@@ -489,6 +495,10 @@ class RuleRunner(GenericRunner):
 
         return fmt
 
+    def run_stage_with_context(self, stage, context):
+        self.context = context
+        return self.run_stage(stage)
+
 
 class OscapProfileRunner(ProfileRunner):
     def remediation(self):
@@ -556,47 +566,56 @@ class AnsibleRuleRunner(RuleRunner):
         return success
 
 
-def run_profile(domain_ip,
-                profile,
-                stage,
-                datastream,
-                benchmark_id,
-                runner):
-    """Run `oscap-ssh` command with provided parameters to check given profile.
-    Log output into LogHelper.LOG_DIR.
+class Checker(object):
+    def __init__(self, test_env):
+        self.test_env = test_env
+        self.executed_tests = 0
 
-    Return True if command ends with exit codes 0 or 2 for bash remediations or
-    with 0 for Ansible remediations, otherwise return False.
-    """
-    runner_cls = REMEDIATION_PROFILE_RUNNERS[runner]
-    runner = runner_cls(
-        domain_ip, profile, datastream, benchmark_id)
-    success = runner.run_stage(stage)
-    return success
+        self.datastream = ""
+        self.benchmark_id = ""
+        self.remediate_using = ""
 
+    def test_target(self, target):
+        self.start()
+        try:
+            with self.test_env.in_layer('origin'):
+                self._test_target(target)
+        except KeyboardInterrupt:
+            logging.info("Terminating the test run due to keyboard interrupt.")
+        finally:
+            self.finalize()
 
-def run_rule(domain_ip,
-             profile,
-             stage,
-             datastream,
-             benchmark_id,
-             rule_id,
-             context,
-             script_name,
-             runner,
-             dont_clean=False):
-    """Run `oscap-ssh` command with provided parameters to check given rule,
-    utilizing --rule option. Log output to LogHelper.LOG_DIR directory.
+    def _test_by_profiles(self, profiles, ** run_test_args):
+        if len(profiles) > 1:
+            for profile in profiles:
+                with self.test_env.in_layer('profile'):
+                    self._run_test(profile, ** run_test_args)
+        elif profiles:
+            self._run_test(profiles[0], ** run_test_args)
 
-    Return True if result is as expected by context parameter. Check both
-    exit code and output message.
-    """
-    runner_cls = REMEDIATION_RULE_RUNNERS[runner]
-    runner = runner_cls(
-        domain_ip, profile, datastream, benchmark_id,
-        rule_id, context, script_name, dont_clean)
-    success = runner.run_stage(stage)
-    return success
+    def _test_target(self, target):
+        raise NotImplementedError()
+
+    def start(self):
+        self.executed_tests = 0
+
+        try:
+            self.test_env.start()
+        except Exception as exc:
+            msg = ("Failed to start test environment '{0}': {1}"
+                   .format(self.test_env.name, str(exc)))
+            raise RuntimeError(msg)
+
+    def finalize(self):
+        if not self.executed_tests:
+            logging.error("Nothing has been tested!")
+
+        try:
+            self.test_env.finalize()
+        except Exception as exc:
+            msg = ("Failed to finalize test environment '{0}': {1}"
+                   .format(self.test_env.name, str(exc)))
+            raise RuntimeError(msg)
 
 
 REMEDIATION_PROFILE_RUNNERS = {

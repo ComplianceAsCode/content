@@ -1,22 +1,24 @@
 #!/usr/bin/env python2
 from __future__ import print_function
 
-import atexit
 import logging
 import os
 import os.path
 import re
 import subprocess
-import sys
+import collections
 
 import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
 from ssg_test_suite import xml_operations
-from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite.log import LogHelper
 import data
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+
+Scenario = collections.namedtuple(
+    "Scenario", ["script", "context", "script_params"])
 
 
 def _parse_parameters(script):
@@ -59,6 +61,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
 
 
 def _run_with_stdout_logging(command, log_file):
+    log_file.write(" ".join(command) + "\n")
     try:
         subprocess.check_call(command,
                               stdout=log_file,
@@ -101,8 +104,8 @@ def _apply_script(rule_dir, domain_ip, script):
     machine = "root@{0}".format(domain_ip)
     logging.debug("Applying script {0}".format(script))
     rule_name = os.path.basename(rule_dir)
-    log_file_name = os.path.join(LogHelper.LOG_DIR,
-                                 rule_name + ".prescripts.log")
+    log_file_name = os.path.join(
+        LogHelper.LOG_DIR, rule_name + ".prescripts.log")
 
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
@@ -113,9 +116,8 @@ def _apply_script(rule_dir, domain_ip, script):
                                   stdout=log_file,
                                   stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            logging.error(("Rule testing script {0} "
-                           "failed with exit code {1}").format(script,
-                                                               e.returncode))
+            logging.error("Rule testing script {0} failed with exit code {1}"
+                          .format(script, e.returncode))
             return False
     return True
 
@@ -149,141 +151,144 @@ def _get_scenarios(rule_dir, scripts):
         script_context = _get_script_context(script)
         if script_context is not None:
             script_params = _parse_parameters(os.path.join(rule_dir, script))
-            scenarios += [(script, script_context, script_params)]
+            scenarios += [Scenario(script, script_context, script_params)]
     return scenarios
 
 
-def perform_rule_check(options):
-    """Perform rule check.
-
-    Iterate over rule-testing scenarios and utilize `oscap-ssh` to test every
-    scenario. Expected result is encoded in scenario file name. In case of
-    `fail` or `error` results expected, continue with remediation and
-    reevaluation. Revert system to clean state using snapshots.
-
-    Return value not defined, textual output and generated reports is the
-    result.
+class RuleChecker(ssg_test_suite.oscap.Checker):
     """
-    dom = ssg_test_suite.virt.connect_domain(options.hypervisor,
-                                             options.domain_name)
-    if dom is None:
-        sys.exit(1)
-    snapshot_stack = SnapshotStack(dom)
-    atexit.register(snapshot_stack.clear)
+    Rule checks generally work like this -
+    for every profile that supports that rule:
 
-    # create origin
-    snapshot_stack.create('origin')
-    ssg_test_suite.virt.start_domain(dom)
-    domain_ip = ssg_test_suite.virt.determine_ip(dom)
-    scanned_something = False
+    - Alter the system.
+    - Run the scan, check that the result meets expectations.
+      If the test scenario passed as requested, return True,
+      if it failed or passed unexpectedly, return False.
 
-    remote_dir = _send_scripts(domain_ip)
-    if not remote_dir:
-        return
+    The following sequence applies if the initial scan
+    has failed as expected:
 
-    for rule_dir, rule, scripts in data.iterate_over_rules():
+    - If there are no remediations, return True.
+    - Run remediation, return False if it failed.
+    - Return result of the final scan of remediated system.
+    """
+    def __init__(self, test_env):
+        super(RuleChecker, self).__init__(test_env)
+        self._matching_rule_found = False
+
+    def _run_test(self, profile, ** run_test_args):
+        scenario = run_test_args["scenario"]
+        rule_id = run_test_args["rule_id"]
+
+        LogHelper.preload_log(
+            logging.INFO, "Script {0} using profile {1} OK".format(scenario.script, profile),
+            log_target='pass')
+        LogHelper.preload_log(
+            logging.ERROR,
+            "Script {0} using profile {1} found issue:".format(scenario.script, profile),
+            log_target='fail')
+
+        runner_cls = ssg_test_suite.oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
+        runner = runner_cls(
+            self.test_env.domain_ip, profile, self.datastream, self.benchmark_id,
+            rule_id, scenario.script, self.dont_clean)
+
+        if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
+            return False
+
+        supported_and_available_remediations = self._get_available_remediations()
+        if (scenario.context not in ['fail', 'error']
+                or not supported_and_available_remediations):
+            return True
+
+        if not self._remediation_went_ok(runner, rule_id):
+            return False
+
+        return self._final_scan_went_ok(runner, rule_id)
+
+    def _initial_scan_went_ok(self, runner, rule_id, context):
+        success = runner.run_stage_with_context("initial", context)
+        if not success:
+            msg = ("The initial scan failed for rule '{}'."
+                   .format(rule_id))
+            logging.error(msg)
+            return False
+
+    def _get_available_remediations(self, scenario):
+        is_supported = set(['all'])
+        is_supported.add(
+            oscap.REMEDIATION_RUNNER_TO_REMEDIATION_MEANS[self.remediate_using])
+        supported_and_available_remediations = set(
+            scenario.script_params['remediation']).intersection(is_supported)
+        return supported_and_available_remediations
+
+    def _remediation_went_ok(self, runner, rule_id):
+        success = runner.run_stage_with_context('remediation', 'fixed')
+        if not success:
+            msg = ("The remediation failed for rule '{}'."
+                   .format(rule_id))
+            logging.error(msg)
+            return success
+
+    def _final_scan_went_ok(self, runner, rule_id):
+        success = runner.run_stage_with_context('final', 'pass')
+        if not success:
+            msg = ("The check after remediation failed for rule '{}'."
+                   .format(rule_id))
+            logging.error(msg)
+        return success
+
+    def _test_target(self, target):
+        remote_dir = _send_scripts(self.test_env.domain_ip)
+        if not remote_dir:
+            msg = "Unable to upload test scripts"
+            raise RuntimeError(msg)
+
+        self._matching_rule_found = False
+
+        for rule in data.iterate_over_rules():
+            self._check_rule(rule, remote_dir, target)
+
+        if not self._matching_rule_found:
+            logging.error("No matching rule ID found for '{0}'".format(target))
+
+    def _check_rule(self, rule, remote_dir, target):
+        rule_dir = rule.directory
         remote_rule_dir = os.path.join(remote_dir, rule_dir)
         local_rule_dir = os.path.join(data.DATA_DIR, rule_dir)
-        if not _matches_target(rule_dir, options.target):
-            continue
-        logging.info(rule)
-        scanned_something = True
+
+        if not _matches_target(rule_dir, target):
+            return
+
+        logging.info(rule.id)
+        self._matching_rule_found = True
+
         logging.debug("Testing rule directory {0}".format(rule_dir))
 
-        for script, script_context, script_params in _get_scenarios(local_rule_dir, scripts):
-            logging.debug(('Using test script {0} '
-                           'with context {1}').format(script, script_context))
-            # create origin <- script
-            snapshot_stack.create('script')
-            has_worked = False
+        for scenario in _get_scenarios(local_rule_dir, rule.files):
+            logging.debug('Using test script {0} with context {1}'
+                          .format(scenario.script, scenario.context))
+            with self.test_env.in_layer('script'):
+                self._check_rule_scenario(scenario, remote_rule_dir, rule.id)
+            self.executed_tests += 1
 
-            if not _apply_script(remote_rule_dir, domain_ip, script):
-                logging.error("Environment failed to prepare, skipping test")
-                # maybe revert script
-                snapshot_stack.revert()
-                continue
-            profiles = get_viable_profiles(script_params['profiles'],
-                                           options.datastream,
-                                           options.benchmark_id)
-            if len(profiles) > 1:
-                # create origin <- script <- profile
-                snapshot_stack.create('profile')
-            for profile in profiles:
-                LogHelper.preload_log(logging.INFO,
-                                      ("Script {0} "
-                                       "using profile {1} "
-                                       "OK").format(script,
-                                                    profile),
-                                      log_target='pass')
-                LogHelper.preload_log(logging.ERROR,
-                                      ("Script {0} "
-                                       "using profile {1} "
-                                       "found issue:").format(script,
-                                                              profile),
-                                      log_target='fail')
-                has_worked = True
-                run_rule_checks(
-                    domain_ip, profile, options.datastream,
-                    options.benchmark_id, rule, script_context,
-                    script, script_params, options.remediate_using,
-                    options.dont_clean,
-                )
-                # revert either profile (if created), or script. Don't delete
-                snapshot_stack.revert(delete=False)
-            if not has_worked:
-                logging.error("Nothing has been tested!")
-            # Delete the reverted profile or script.
-            snapshot_stack.delete()
-            if len(profiles) > 1:
-                # revert script (we have reverted profile before).
-                snapshot_stack.revert()
-    if not scanned_something:
-        logging.error("Rule {0} has not been found".format(options.target))
+    def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id):
+        if not _apply_script(
+                remote_rule_dir, self.test_env.domain_ip, scenario.script):
+            logging.error("Environment failed to prepare, skipping test")
+            return
+
+        profiles = get_viable_profiles(
+            scenario.script_params['profiles'], self.datastream, self.benchmark_id)
+        self._test_by_profiles(profiles, scenario=scenario, rule_id=rule_id)
 
 
-def run_rule_checks(
-        domain_ip, profile, datastream, benchmark_id, rule,
-        script_context, script_name, script_params, runner, dont_clean):
-    def oscap_run_rule(stage, context):
-        return oscap.run_rule(
-            domain_ip=domain_ip,
-            profile=profile,
-            stage=stage,
-            datastream=datastream,
-            benchmark_id=benchmark_id,
-            rule_id=rule,
-            context=context,
-            script_name=script_name,
-            runner=runner,
-            dont_clean=dont_clean)
+def perform_rule_check(options):
+    checker = RuleChecker(options.test_env)
 
-    success = oscap_run_rule('initial', script_context)
-    if not success:
-        msg = ("The initial scan failed for rule '{}'."
-               .format(rule))
-        logging.error(msg)
-        return False
+    checker.datastream = options.datastream
+    checker.benchmark_id = options.benchmark_id
+    checker.remediate_using = options.remediate_using
+    checker.dont_clean = options.dont_clean
 
-    is_supported = set(['all'])
-    is_supported.add(
-        oscap.REMEDIATION_RUNNER_TO_REMEDIATION_MEANS[runner])
-    supported_and_available_remediations = set(
-        script_params['remediation']).intersection(is_supported)
-
-    if (script_context not in ['fail', 'error'] or
-            len(supported_and_available_remediations) == 0):
-        return success
-
-    success = oscap_run_rule('remediation', 'fixed')
-    if not success:
-        msg = ("The remediation failed for rule '{}'."
-               .format(rule))
-        logging.error(msg)
-        return success
-
-    success = oscap_run_rule('final', 'pass')
-    if not success:
-        msg = ("The check after remediation failed for rule '{}'."
-               .format(rule))
-        logging.error(msg)
-    return success
+    checker.test_target(options.target)

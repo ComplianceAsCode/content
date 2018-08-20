@@ -1,25 +1,31 @@
 import os
 import os.path
 import tarfile
+import collections
 
 _DIR = os.path.dirname(__file__)
 _TAR_BASENAME = 'data.tar'
 _SSG_PREFIX = 'xccdf_org.ssgproject.content_'
+
+Rule = collections.namedtuple(
+    "Rule", ["directory", "id", "files"])
 
 
 def iterate_over_rules():
     """Iterate over directories beginning with "rule_".
 
     Returns:
-    dir_name -- absolute path to the rule directory
-    rule -- full rule id as it is present in datastream
-    files -- list of files in the directory
+        Named tuple having these fields:
+            directory -- absolute path to the rule directory
+            id -- full rule id as it is present in datastream
+            files -- list of files in the directory
     """
     for dir_name, directories, files in os.walk(_DIR):
         leaf_dir = os.path.basename(dir_name)
         rel_dir = '.' + dir_name[len(_DIR):]
         if leaf_dir.startswith('rule_'):
-            yield rel_dir, _SSG_PREFIX + leaf_dir, files
+            result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, files)
+            yield result
 
 
 def _exclude_utils(file_name):
