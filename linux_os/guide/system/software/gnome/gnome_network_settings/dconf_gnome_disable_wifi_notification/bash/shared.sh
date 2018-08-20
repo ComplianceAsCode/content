@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7, multi_platform_fedora, Fedora Rawhide
 . /usr/share/scap-security-guide/remediation_functions
 
 include_dconf_settings

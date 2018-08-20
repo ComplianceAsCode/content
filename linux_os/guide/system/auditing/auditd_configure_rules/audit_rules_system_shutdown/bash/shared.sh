@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7, multi_platform_fedora, Fedora Rawhide
 
 # Traverse all of:
 #
