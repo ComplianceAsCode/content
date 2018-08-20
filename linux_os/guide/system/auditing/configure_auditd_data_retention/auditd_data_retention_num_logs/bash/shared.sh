@@ -1,11 +1,7 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
 populate var_auditd_num_logs
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-grep -q ^num_logs $AUDITCONFIG && \
-  sed -i 's/^num_logs.*/num_logs = '"$var_auditd_num_logs"'/g' $AUDITCONFIG
-if ! [ $? -eq 0 ]; then
-  echo "num_logs = $var_auditd_num_logs" >> $AUDITCONFIG
-fi
+replace_or_append $AUDITCONFIG '^num_logs' "$var_auditd_num_logs" "@CCENUM@"

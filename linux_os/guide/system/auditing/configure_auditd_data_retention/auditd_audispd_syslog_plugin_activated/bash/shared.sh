@@ -1,7 +1,7 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_ol
+. /usr/share/scap-security-guide/remediation_functions
+var_syslog_active="yes"
 
-grep -q ^active /etc/audisp/plugins.d/syslog.conf && \
-  sed -i "s/active.*/active = yes/g" /etc/audisp/plugins.d/syslog.conf
-if ! [ $? -eq 0 ]; then
-    echo "active = yes" >> /etc/audisp/plugins.d/syslog.conf
-fi
+AUDISP_SYSLOGCONFIG=/etc/audisp/plugins.d/syslog.conf
+
+replace_or_append $AUDISP_SYSLOGCONFIG '^active' "$var_syslog_active" "@CCENUM@"

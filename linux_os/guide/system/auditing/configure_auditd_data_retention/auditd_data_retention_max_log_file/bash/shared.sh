@@ -1,11 +1,7 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
 populate var_auditd_max_log_file
 
 AUDITCONFIG=/etc/audit/auditd.conf
 
-grep -q ^max_log_file $AUDITCONFIG && \
-  sed -i 's/^max_log_file.*/max_log_file = '"$var_auditd_max_log_file"'/g' $AUDITCONFIG
-if ! [ $? -eq 0 ]; then
-  echo "max_log_file = $var_auditd_max_log_file" >> $AUDITCONFIG
-fi
+replace_or_append $AUDITCONFIG '^max_log_file' "$var_auditd_max_log_file" "@CCENUM@"

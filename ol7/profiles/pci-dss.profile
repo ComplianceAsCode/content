@@ -34,3 +34,13 @@ selections:
     - package_aide_installed
     - aide_build_database
     - aide_periodic_cron_checking
+    - service_auditd_enabled
+    - file_permissions_var_log_audit
+    - file_ownership_var_log_audit
+    - auditd_data_retention_num_logs
+    - auditd_data_retention_max_log_file
+    - auditd_data_retention_max_log_file_action
+    - auditd_data_retention_space_left_action
+    - auditd_data_retention_admin_space_left_action
+    - auditd_data_retention_action_mail_acct
+    - auditd_audispd_syslog_plugin_activated
