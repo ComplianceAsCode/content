@@ -9,7 +9,11 @@ description: |-
     -w /usr/sbin/insmod -p x -k modules
     -w /usr/sbin/rmmod -p x -k modules
     -w /usr/sbin/modprobe -p x -k modules
+{{% if product == "rhel6" %}}
     -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
+{{% else %}}
+    -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,create_module,delete_module -F key=modules
+{{% endif %}}
     </pre>
 
     The place to add the lines depends on a way <tt>auditd</tt> daemon is configured. If it is configured
