@@ -96,9 +96,9 @@ def select_indices(data, indices):
     return [data[index] for index in indices]
 
 
-def process_missing(args, left_rules, right_rules):
+def process_diff_missing(args, left_rules, right_rules):
     data = rds.walk_rules_diff(args, left_rules, right_rules, rds.missing_oval, rds.missing_remediation)
-    result = rds.walk_rules_diff_stats(args, data)
+    result = rds.walk_rules_diff_stats(data)
     left_only_data, right_only_data, left_changed_data, right_changed_data, common_data = result
 
     statements = ["Missing Objects Summary",
@@ -144,9 +144,9 @@ def process_missing(args, left_rules, right_rules):
         print_summary(args, statements, r_d, '>')
 
 
-def process_two_plus(args, left_rules, right_rules):
+def process_diff_two_plus(args, left_rules, right_rules):
     data = rds.walk_rules_diff(args, left_rules, right_rules, rds.two_plus_oval, rds.two_plus_remediation)
-    result = rds.walk_rules_diff_stats(args, data)
+    result = rds.walk_rules_diff_stats(data)
     left_only_data, right_only_data, left_changed_data, right_changed_data, common_data = result
 
     statements = ["Two Plus Objects Summary:",
@@ -192,9 +192,9 @@ def process_two_plus(args, left_rules, right_rules):
         print_summary(args, statements, r_d, '>')
 
 
-def process_prodtypes(args, left_rules, right_rules):
+def process_diff_prodtypes(args, left_rules, right_rules):
     data = rds.walk_rules_diff(args, left_rules, right_rules, rds.prodtypes_oval, rds.prodtypes_remediation)
-    result = rds.walk_rules_diff_stats(args, data)
+    result = rds.walk_rules_diff_stats(data)
     left_only_data, right_only_data, left_changed_data, right_changed_data, common_data = result
 
     statements = ["Prodtypes Objects Summary",
@@ -240,9 +240,9 @@ def process_prodtypes(args, left_rules, right_rules):
         print_summary(args, statements, r_d, '>')
 
 
-def process_product_names(args, left_rules, right_rules):
+def process_diff_product_names(args, left_rules, right_rules):
     data = rds.walk_rules_diff(args, left_rules, right_rules, rds.product_names_oval, rds.product_names_remediation)
-    result = rds.walk_rules_diff_stats(args, data)
+    result = rds.walk_rules_diff_stats(data)
     left_only_data, right_only_data, left_changed_data, right_changed_data, common_data = result
 
     if not args.right_only:
@@ -329,13 +329,13 @@ def main():
     print("> Total number of known rule directories: %d\n" % len(right_rules))
 
     if args.missing:
-        process_missing(args, left_rules, right_rules)
+        process_diff_missing(args, left_rules, right_rules)
     if args.two_plus:
-        process_two_plus(args, left_rules, right_rules)
+        process_diff_two_plus(args, left_rules, right_rules)
     if args.prodtypes:
-        process_prodtypes(args, left_rules, right_rules)
+        process_diff_prodtypes(args, left_rules, right_rules)
     if args.product_names:
-        process_product_names(args, left_rules, right_rules)
+        process_diff_product_names(args, left_rules, right_rules)
 
 
 if __name__ == "__main__":

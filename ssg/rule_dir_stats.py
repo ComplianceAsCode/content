@@ -1,3 +1,10 @@
+"""
+This module contains common code shared by utils/rule_dir_stats.py and
+utils/rule_dir_diff.py. This code includes functions for walking the output
+of the utils/rule_dir_json.py script, and filtering functions used in both
+scripts.
+"""
+
 from __future__ import absolute_import
 from __future__ import print_function
 
@@ -58,14 +65,13 @@ def _walk_rule(args, rule_obj, oval_func, remediation_func, verbose_output):
         return False
 
     if not args.fixes_only:
-        result = oval_func(args, rule_obj)
+        result = oval_func(rule_obj)
         if result:
             verbose_output[rule_id]['oval'] = result
 
     if not args.ovals_only:
-        any_remediations = False
         for r_type in REMEDIATION_MAP:
-            result = remediation_func(args, rule_obj, r_type)
+            result = remediation_func(rule_obj, r_type)
             if result:
                 verbose_output[rule_id][r_type] = result
 
@@ -109,7 +115,15 @@ def walk_rules(args, known_rules, oval_func, remediation_func):
     return affected_rules, verbose_output
 
 
-def walk_rule_stats(rule_id, rule_output):
+def walk_rule_stats(rule_output):
+    """
+    Walk the output of a rule, generating statistics about affected
+    ovals, remediations, and generating verbose output in a stable order.
+
+    Returns a tuple of (affected_ovals, affected_remediations,
+    all_affected_remediations, affected_remediations_type, all_output)
+    """
+
     affected_ovals = 0
     affected_remediations = 0
     all_affected_remediations = 0
@@ -164,7 +178,7 @@ def walk_rules_stats(args, known_rules, oval_func, remediation_func):
 
     for rule_id in sorted(verbose_output):
         rule_output = verbose_output[rule_id]
-        results = walk_rule_stats(rule_id, rule_output)
+        results = walk_rule_stats(rule_output)
 
         affected_ovals += results[0]
         affected_remediations += results[1]
@@ -198,7 +212,7 @@ def walk_rules_parallel(args, left_rules, right_rules, oval_func, remediation_fu
     right_verbose_output = defaultdict(lambda: defaultdict(lambda: None))
     common_verbose_output = defaultdict(lambda: defaultdict(lambda: None))
 
-    assert(set(left_rules) == set(right_rules))
+    assert set(left_rules) == set(right_rules)
 
     for rule_id in left_rules:
         left_rule_obj = left_rules[rule_id]
@@ -262,12 +276,17 @@ def walk_rules_diff(args, left_rules, right_rules, oval_func, remediation_func):
 
     left_only_data = walk_rules(args, left_restricted, oval_func, remediation_func)
     right_only_data = walk_rules(args, right_restricted, oval_func, remediation_func)
-    left_changed_data, right_changed_data, common_data = walk_rules_parallel(args, left_common, right_common, oval_func, remediation_func)
+    l_c_d, r_c_d, c_d = walk_rules_parallel(args, left_common, right_common,
+                                            oval_func, remediation_func)
+
+    left_changed_data = l_c_d
+    right_changed_data = r_c_d
+    common_data = c_d
 
     return (left_only_data, right_only_data, left_changed_data, right_changed_data, common_data)
 
 
-def walk_rules_diff_stats(args, results):
+def walk_rules_diff_stats(results):
     """
     Takes the results of walk_rules_diff (results) and generates five sets of
     output statistics: left_only rules output, right_only rules output,
@@ -278,7 +297,7 @@ def walk_rules_diff_stats(args, results):
     Can assert.
     """
 
-    assert(len(results) == 5)
+    assert len(results) == 5
 
     output_data = []
 
@@ -293,7 +312,7 @@ def walk_rules_diff_stats(args, results):
 
         for rule_id in sorted(verbose_output):
             rule_output = verbose_output[rule_id]
-            _results = walk_rule_stats(rule_id, rule_output)
+            _results = walk_rule_stats(rule_output)
 
             affected_ovals += _results[0]
             affected_remediations += _results[1]
@@ -307,42 +326,62 @@ def walk_rules_diff_stats(args, results):
                             affected_remediations, all_affected_remediations,
                             affected_remediations_type, all_output))
 
-    assert(len(output_data) == 5)
+    assert len(output_data) == 5
 
     return tuple(output_data)
 
 
+def missing_oval(rule_obj):
+    """
+    For a rule object, check if it is missing an oval.
+    """
 
-
-def missing_oval(args, rule_obj):
     rule_id = rule_obj['id']
     check = len(rule_obj['ovals']) > 0
     if not check:
         return "\trule_id:%s is missing all OVALs" % rule_id
 
 
-def missing_remediation(args, rule_obj, r_type):
+def missing_remediation(rule_obj, r_type):
+    """
+    For a rule object, check if it is missing a remediation of type r_type.
+    """
+
     rule_id = rule_obj['id']
     check = len(rule_obj['remediations'][r_type]) > 0
     if not check:
         return "\trule_id:%s is missing %s remediations" % (rule_id, r_type)
 
 
-def two_plus_oval(args, rule_obj):
+def two_plus_oval(rule_obj):
+    """
+    For a rule object, check if it has two or more OVALs.
+    """
+
     rule_id = rule_obj['id']
     check = len(rule_obj['ovals']) >= 2
     if check:
         return "\trule_id:%s has two or more OVALs: %s" % (rule_id, ','.join(rule_obj['ovals']))
 
 
-def two_plus_remediation(args, rule_obj, r_type):
+def two_plus_remediation(rule_obj, r_type):
+    """
+    For a rule object, check if it has two or more remediations of type r_type.
+    """
+
     rule_id = rule_obj['id']
     check = len(rule_obj['remediations'][r_type]) >= 2
     if check:
-        return "\trule_id:%s has two or more %s remediations: %s" % (rule_id, r_type, ','.join(rule_obj['remediations'][r_type]))
+        return "\trule_id:%s has two or more %s remediations: %s" % \
+               (rule_id, r_type, ','.join(rule_obj['remediations'][r_type]))
 
 
-def prodtypes_oval(args, rule_obj):
+def prodtypes_oval(rule_obj):
+    """
+    For a rule object, check if the prodtypes match between the YAML and the
+    OVALs.
+    """
+
     rule_id = rule_obj['id']
 
     rule_products = set(rule_obj['products'])
@@ -358,10 +397,16 @@ def prodtypes_oval(args, rule_obj):
     sym_diff = sorted(rule_products.symmetric_difference(oval_products))
     check = len(sym_diff) > 0
     if check:
-        return "\trule_id:%s has a different prodtypes between YAML and OVALs: %s" % (rule_id, ','.join(sym_diff))
+        return "\trule_id:%s has a different prodtypes between YAML and OVALs: %s" % \
+               (rule_id, ','.join(sym_diff))
 
 
-def prodtypes_remediation(args, rule_obj, r_type):
+def prodtypes_remediation(rule_obj, r_type):
+    """
+    For a rule object, check if the prodtypes match between the YAML and the
+    remediations of type r_type.
+    """
+
     rule_id = rule_obj['id']
 
     rule_products = set(rule_obj['products'])
@@ -377,10 +422,16 @@ def prodtypes_remediation(args, rule_obj, r_type):
     sym_diff = sorted(rule_products.symmetric_difference(remediation_products))
     check = len(sym_diff) > 0 and rule_products and remediation_products
     if check:
-        return "\trule_id:%s has a different prodtypes between YAML and %s remediations: %s" % (rule_id, r_type, ','.join(sym_diff))
+        return "\trule_id:%s has a different prodtypes between YAML and %s remediations: %s" % \
+               (rule_id, r_type, ','.join(sym_diff))
 
 
-def product_names_oval(args, rule_obj):
+def product_names_oval(rule_obj):
+    """
+    For a rule_obj, check the scope of the platforms versus the product name
+    of the OVAL objects.
+    """
+
     rule_id = rule_obj['id']
     for oval_name in rule_obj['ovals']:
         if oval_name == "shared.xml":
@@ -389,10 +440,16 @@ def product_names_oval(args, rule_obj):
         oval_product, _ = os.path.splitext(oval_name)
         for product in rule_obj['ovals'][oval_name]['products']:
             if product != oval_product:
-                return "\trule_id:%s has a different product and OVALs names: %s is not %s" % (rule_id, product, oval_product)
+                return "\trule_id:%s has a different product and OVALs names: %s is not %s" % \
+                       (rule_id, product, oval_product)
 
 
-def product_names_remediation(args, rule_obj, r_type):
+def product_names_remediation(rule_obj, r_type):
+    """
+    For a rule_obj, check the scope of the platforms versus the product name
+    of the remediations of type r_type.
+    """
+
     rule_id = rule_obj['id']
     for r_name in rule_obj['remediations'][r_type]:
         r_product, _ = os.path.splitext(r_name)
@@ -401,4 +458,5 @@ def product_names_remediation(args, rule_obj, r_type):
 
         for product in rule_obj['remediations'][r_type][r_name]['products']:
             if product != r_product:
-                return "\trule_id:%s has a different product and %s remediation names: %s is not %s" % (rule_id, r_type, product, r_product)
+                return "\trule_id:%s has a different product and %s remediation names: %s is not %s" % \
+                       (rule_id, r_type, product, r_product)
