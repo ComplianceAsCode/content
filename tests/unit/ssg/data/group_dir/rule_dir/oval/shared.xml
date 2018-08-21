@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="sudo_remove_nopasswd" version="1">
+    <metadata>
+      <title>Ensure NOPASSWD Is Not Used in Sudo</title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_debian</platform>
+        <platform>multi_platform_ubuntu</platform>
+      </affected>
+      <description>Checks sudo usage without password</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="NOPASSWD is not configured in /etc/sudoers" test_ref="test_nopasswd_etc_sudoers" />
+      <criterion comment="NOPASSWD is not configured in /etc/sudoers.d" test_ref="test_nopasswd_etc_sudoers_d" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="NOPASSWD does not exist /etc/sudoers" id="test_nopasswd_etc_sudoers" version="1">
+    <ind:object object_ref="object_nopasswd_etc_sudoers" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nopasswd_etc_sudoers" version="1">
+    <ind:filepath>/etc/sudoers</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#).*[\s]+NOPASSWD[\s]*\:.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="NOPASSWD does not exist in /etc/sudoers.d" id="test_nopasswd_etc_sudoers_d" version="1">
+    <ind:object object_ref="object_nopasswd_etc_sudoers_d" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_nopasswd_etc_sudoers_d" version="1">
+    <ind:path>/etc/sudoers.d</ind:path>
+    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:pattern operation="pattern match">^(?!#).*[\s]+NOPASSWD[\s]*\:.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
