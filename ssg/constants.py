@@ -7,7 +7,7 @@ import os.path
 product_directories = ['debian8', 'fedora', 'ol7', 'opensuse', 'rhel6',
                        'rhel7', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'wrlinux', 'rhel-osp7', 'chromium',
-                       'eap6', 'firefox', 'fuse6', 'jre', 'ocp3']
+                       'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'example']
 
 JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros.jinja")

@@ -24,12 +24,13 @@ _version_name_map = {
     'opensuse': 'openSUSE',
     'sle': 'SUSE Linux Enterprise',
     'wrlinux': 'Wind River Linux',
+    'example': 'Example Linux Content',
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
 }
 
 multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
-              "wrlinux", "opensuse", "sle", "ol", "ocp"]
+              "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
