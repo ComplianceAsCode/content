@@ -61,14 +61,14 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     return valid_profiles
 
 
-def _run_with_stdout_logging(command, log_file):
-    log_file.write(" ".join(command) + "\n")
+def _run_with_stdout_logging(command, args, log_file):
+    log_file.write(" ".join((command,) + args) + "\n")
     try:
         subprocess.check_call(
-            command, stdout=log_file, stderr=subprocess.STDOUT)
-        return True
+            (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
+        return 0
     except subprocess.CalledProcessError as e:
-        return False
+        return e.returncode
 
 
 def _send_scripts(domain_ip):
@@ -80,19 +80,21 @@ def _send_scripts(domain_ip):
     log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
     with open(log_file_name, 'a') as log_file:
-        command = ("ssh", machine, "mkdir", "-p", remote_dir)
-        if not _run_with_stdout_logging(command, log_file):
+        args = oscap.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, "mkdir", "-p", remote_dir)
+        if _run_with_stdout_logging("ssh", args, log_file) != 0:
             logging.error("Cannot create directory {0}.".format(remote_dir))
             return False
 
-        command = ("scp", archive_file, "{0}:{1}".format(machine, remote_dir))
-        if not _run_with_stdout_logging(command, log_file):
+        args = (oscap.IGNORE_KNOWN_HOSTS_OPTIONS
+                + (archive_file, "{0}:{1}".format(machine, remote_dir)))
+        if _run_with_stdout_logging("scp", args, log_file) != 0:
             logging.error("Cannot copy archive {0} to the target machine's directory {1}."
                           .format(archive_file, remote_dir))
             return False
 
-        command = ("ssh", machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir))
-        if not _run_with_stdout_logging(command, log_file):
+        args = (oscap.IGNORE_KNOWN_HOSTS_OPTIONS
+                + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
+        if _run_with_stdout_logging("ssh", args, log_file) != 0:
             logging.error("Cannot extract data tarball {0}.".format(remote_archive_file))
             return False
 
@@ -110,14 +112,12 @@ def _apply_script(rule_dir, domain_ip, script):
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
-        command = ("ssh", machine, "cd {0}; bash -x {1}".format(rule_dir, script))
-        try:
-            subprocess.check_call(command,
-                                  stdout=log_file,
-                                  stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            logging.error("Rule testing script {0} failed with exit code {1}"
-                          .format(script, e.returncode))
+        command = "cd {0}; bash -x {1}".format(rule_dir, script)
+        args = oscap.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, command)
+
+        rc = _run_with_stdout_logging("ssh", args, log_file)
+        if rc != 0:
+            logging.error("Rule testing script {0} failed with exit code {1}".format(script, rc))
             return False
     return True
 

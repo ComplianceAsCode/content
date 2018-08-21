@@ -20,6 +20,11 @@ _CONTEXT_RETURN_CODES = {'pass': 0,
                          'notapplicable': 0,
                          'fixed': 0}
 
+IGNORE_KNOWN_HOSTS_OPTIONS = (
+    "-o", "StrictHostKeyChecking=no",
+    "-o", "UserKnownHostsFile=/dev/null",
+)
+
 _ANSIBLE_TEMPLATE = 'urn:xccdf:fix:script:ansible'
 _BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
 _XCCDF_NS = 'http://checklists.nist.gov/xccdf/1.2'
@@ -52,28 +57,28 @@ def triage_xml_results(fname):
     return triaged
 
 
-def run_cmd_local(command, verbose_path):
+def run_cmd_local(command, verbose_path, env=None):
     command_string = ' '.join(command)
     logging.debug('Running {}'.format(command_string))
-    returncode, output = _run_cmd(command, verbose_path)
+    returncode, output = _run_cmd(command, verbose_path, env)
     return returncode, output
 
 
-def run_cmd_remote(command_string, domain_ip, verbose_path):
+def run_cmd_remote(command_string, domain_ip, verbose_path, env=None):
     machine = 'root@{0}'.format(domain_ip)
-    remote_cmd = ['ssh', machine, command_string]
+    remote_cmd = ['ssh'] + IGNORE_KNOWN_HOSTS_OPTIONS + [machine, command_string]
     logging.debug('Running {}'.format(command_string))
-    returncode, output = _run_cmd(remote_cmd, verbose_path)
+    returncode, output = _run_cmd(remote_cmd, verbose_path, env)
     return returncode, output
 
 
-def _run_cmd(command_list, verbose_path):
+def _run_cmd(command_list, verbose_path, env=None):
     returncode = 0
     output = b""
     try:
         with open(verbose_path, 'w') as verbose_file:
             output = subprocess.check_output(
-                command_list, stderr=verbose_file)
+                command_list, stderr=verbose_file, env=env)
     except subprocess.CalledProcessError as e:
         returncode = e.returncode
         output = e.output
@@ -89,7 +94,7 @@ def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
 
     logging.debug('Uploading files {0} to {1}'.format(files_string,
                                                       destination))
-    command = ['scp'] + list(files) + [destination]
+    command = ['scp'] + IGNORE_KNOWN_HOSTS_OPTIONS + list(files) + [destination]
     if run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to upload files {0}'.format(files_string))
         success = False
@@ -103,7 +108,7 @@ def get_file_remote(verbose_path, local_dir, domain_ip, remote_path):
     source = 'root@{0}:{1}'.format(domain_ip, remote_path)
     logging.debug('Downloading file {0} to {1}'
                   .format(source, local_dir))
-    command = ['scp', source, local_dir]
+    command = ['scp'] + IGNORE_KNOWN_HOSTS_OPTIONS + [source, local_dir]
     if run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to download file {0}'.format(remote_path))
         success = False
@@ -406,7 +411,9 @@ class ProfileRunner(GenericRunner):
     def make_oscap_call(self):
         self.prepare_oscap_ssh_arguments()
         self._generate_report_file()
-        returncode = run_cmd_local(self.get_command, self.verbose_path)[0]
+        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(IGNORE_KNOWN_HOSTS_OPTIONS))
+        env.update(os.environ)
+        returncode = run_cmd_local(self.get_command, self.verbose_path, env=env)[0]
         if returncode not in [0, 2]:
             logging.error(('Profile run should end with return code 0 or 2 '
                            'not "{0}" as it did!').format(returncode))
@@ -448,7 +455,10 @@ class RuleRunner(GenericRunner):
         self.command_options.extend(
             ['--rule', self.rule_id])
 
-        returncode, self._oscap_output = run_cmd_local(self.get_command, self.verbose_path)
+        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(IGNORE_KNOWN_HOSTS_OPTIONS))
+        env.update(os.environ)
+        returncode, self._oscap_output = run_cmd_local(
+            self.get_command, self.verbose_path, env=env)
 
         expected_return_code = _CONTEXT_RETURN_CODES[self.context]
 
