@@ -26,3 +26,16 @@ def test_required_key():
 
     with pytest.raises(ValueError):
         rk(_dict, 'not-in-dict')
+
+
+def test_subset_dict():
+    _dict = {1: 2, "red fish": "blue fish"}
+
+    _keys = [1]
+    assert ssg.utils.subset_dict(_dict, _keys) == {1: 2}
+    assert _keys == [1]
+    assert _dict == {1: 2, "red fish": "blue fish"}
+
+    assert ssg.utils.subset_dict(_dict, ["red fish"]) == {"red fish": "blue fish"}
+    assert ssg.utils.subset_dict(_dict, [1, "red fish"]) == _dict
+    assert ssg.utils.subset_dict(_dict, []) == dict()
