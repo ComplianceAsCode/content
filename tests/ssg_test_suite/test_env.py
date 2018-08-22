@@ -2,14 +2,14 @@ from __future__ import print_function
 
 import contextlib
 import sys
-
+import os
 import time
-import logging
 
 import docker
 
 import ssg_test_suite
 from ssg_test_suite.virt import SnapshotStack
+from ssg_test_suite import common
 
 
 class SavedState(object):
@@ -21,9 +21,12 @@ class SavedState(object):
     def map_on_top(self, function, args_list):
         current_running_state = self.initial_running_state
         function(* args_list[0])
-        for args in args_list[1:]:
-            current_running_state = self.environment.reset_state_to(self.name)
+        for idx, args in enumerate(args_list[1:], 1):
+            current_running_state = self.environment.reset_state_to(
+                self.name, "running_%d" % idx)
             function(* args)
+        current_running_state = self.environment.reset_state_to(
+            self.name, "running_last")
 
     @classmethod
     @contextlib.contextmanager
@@ -51,9 +54,11 @@ class SavedState(object):
 
 
 class TestEnv(object):
-    def __init__(self):
+    def __init__(self, scanning_mode):
         self.running_state_base = None
         self.running_state = None
+
+        self.scanning_mode = scanning_mode
 
     def start(self):
         """
@@ -69,10 +74,12 @@ class TestEnv(object):
         """
         pass
 
+    def reset_state_to(self, state_name, new_running_state_name):
+        raise NotImplementedError()
+
     def _save_state(self, state_name):
         self.running_state_base = state_name
         running_state = self.running_state
-
         return None
 
     def _delete_saved_state(self, state_name):
@@ -81,59 +88,41 @@ class TestEnv(object):
     def _stop_state(self, state):
         pass
 
-    @contextlib.contextmanager
-    def run_state(self, state_name, try_to_use_current_state=True):
-        if try_to_use_current_state and state_name == self.running_state_base:
-            running_state = self.running_state
-            self.running_state_base = None
+    def _oscap_ssh_base_arguments(self):
+        full_hostname = 'root@{}'.format(self.domain_ip)
+        command_base = []
+        command_base.extend(
+            ['oscap-ssh', full_hostname, '22'])
+        command_base.extend(
+            ['xccdf', 'eval'])
+        return command_base
+
+    def scan(self, args, verbose_path):
+        if self.scanning_mode == "online":
+            return self.online_scan(args, verbose_path)
+        elif self.scanning_mode == "offline":
+            return self.offline_scan(args, verbose_path)
         else:
-            self.running_state = None
-            running_state = self.get_running_state(state_name)
+            msg = "Invalid scanning mode {mode}".format(mode=self.scanning_mode)
+            raise KeyError(msg)
 
-        try:
-            yield running_state
-        except KeyboardInterrupt as exc:
-            print("Hang on for a minute, aborting the running state '{0}'."
-                  .format(state_name), file=sys.stderr)
-            exception_to_reraise = exc
-        finally:
-            try:
-                self._stop_state(running_state)
-            except KeyboardInterrupt as exc:
-                print("Hang on for a minute, aborting the running state '{0}'."
-                      .format(state_name), file=sys.stderr)
-                self._stop_state(running_state)
-            finally:
-                if exception_to_reraise:
-                    raise exception_to_reraise
+    def online_scan(self, args, verbose_path):
+        command_list = self._oscap_ssh_base_arguments() + args
 
-    @contextlib.contextmanager
-    def save_state(self, state_name):
-        snapshot = self._save_state(state_name)
-        exception_to_reraise = None
-        try:
-            yield snapshot
-        except KeyboardInterrupt as exc:
-            print("Hang on for a minute, cleaning up the snapshot '{0}'."
-                  .format(state_name), file=sys.stderr)
-            exception_to_reraise = exc
-        finally:
-            try:
-                self._delete_saved_state(snapshot)
-            except KeyboardInterrupt as exc:
-                print("Hang on for a minute, cleaning up the snapshot '{0}'."
-                      .format(state_name), file=sys.stderr)
-                self._delete_saved_state(snapshot)
-            finally:
-                if exception_to_reraise:
-                    raise exception_to_reraise
+        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(common.IGNORE_KNOWN_HOSTS_OPTIONS))
+        env.update(os.environ)
+
+        return common.run_cmd_local(command_list, verbose_path, env=env)
+
+    def offline_scan(self, args, verbose_path):
+        raise NotImplementedError()
 
 
 class VMTestEnv(TestEnv):
     name = "libvirt-based"
 
-    def __init__(self, hypervisor, domain_name):
-        super(VMTestEnv, self).__init__()
+    def __init__(self, mode, hypervisor, domain_name):
+        super(VMTestEnv, self).__init__(mode)
         self.domain = None
 
         self.hypervisor = hypervisor
@@ -157,7 +146,7 @@ class VMTestEnv(TestEnv):
         # self.domain.shutdown()
         # logging.debug('Shut the domain off')
 
-    def reset_state_to(self, state_name):
+    def reset_state_to(self, state_name, new_running_state_name):
         last_snapshot_name = self.snapshot_stack.snapshot_stack[-1].getName()
         assert last_snapshot_name == state_name, (
             "You can only revert to the last snapshot, which is {0}, not {1}"
@@ -176,12 +165,25 @@ class VMTestEnv(TestEnv):
     def _delete_saved_state(self, snapshot):
         self.snapshot_stack.revert()
 
+    def _oscap_docker_base_arguments(self):
+        command_base = []
+        command_base.extend(
+            ['oscap-vm', "domain", self.domain_name])
+        command_base.extend(
+            ['xccdf', 'eval'])
+        return command_base
+
+    def offline_scan(self, args, verbose_path):
+        command_list = self._oscap_docker_base_arguments() + args
+
+        return common.run_cmd_local(command_list, verbose_path)
+
 
 class DockerTestEnv(TestEnv):
     name = "container-based"
 
-    def __init__(self, image_name):
-        super(DockerTestEnv, self).__init__()
+    def __init__(self, mode, image_name):
+        super(DockerTestEnv, self).__init__(mode)
 
         self._name_stem = "ssg_test"
 
@@ -239,16 +241,19 @@ class DockerTestEnv(TestEnv):
         new_container = self._new_container_from_image(image_name, container_name)
         self.containers.append(new_container)
 
+        # Get the container time to fully start its service
+        time.sleep(0.2)
+
         new_container.reload()
         self.domain_ip = new_container.attrs["NetworkSettings"]["Networks"]["bridge"]["IPAddress"]
 
         return new_container
 
-    def reset_state_to(self, state_name):
+    def reset_state_to(self, state_name, new_running_state_name):
         self._terminate_current_running_container_if_applicable()
         image_name = self.image_stem2fqn(state_name)
 
-        new_container = self.run_container(image_name)
+        new_container = self.run_container(image_name, new_running_state_name)
 
         return new_container
 
@@ -280,3 +285,16 @@ class DockerTestEnv(TestEnv):
 
     def discard_running_state(self, state_handle):
         self._terminate_current_running_container_if_applicable()
+
+    def _oscap_docker_base_arguments(self):
+        command_base = []
+        command_base.extend(
+            ['oscap-docker', "container", self.current_container.id])
+        command_base.extend(
+            ['xccdf', 'eval'])
+        return command_base
+
+    def offline_scan(self, args, verbose_path):
+        command_list = self._oscap_docker_base_arguments() + args
+
+        return common.run_cmd_local(command_list, verbose_path)

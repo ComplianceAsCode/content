@@ -12,6 +12,7 @@ import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
+from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 import data
 
@@ -80,19 +81,19 @@ def _send_scripts(domain_ip):
     log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
     with open(log_file_name, 'a') as log_file:
-        args = oscap.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, "mkdir", "-p", remote_dir)
+        args = common.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, "mkdir", "-p", remote_dir)
         if _run_with_stdout_logging("ssh", args, log_file) != 0:
             logging.error("Cannot create directory {0}.".format(remote_dir))
             return False
 
-        args = (oscap.IGNORE_KNOWN_HOSTS_OPTIONS
+        args = (common.IGNORE_KNOWN_HOSTS_OPTIONS
                 + (archive_file, "{0}:{1}".format(machine, remote_dir)))
         if _run_with_stdout_logging("scp", args, log_file) != 0:
             logging.error("Cannot copy archive {0} to the target machine's directory {1}."
                           .format(archive_file, remote_dir))
             return False
 
-        args = (oscap.IGNORE_KNOWN_HOSTS_OPTIONS
+        args = (common.IGNORE_KNOWN_HOSTS_OPTIONS
                 + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
         if _run_with_stdout_logging("ssh", args, log_file) != 0:
             logging.error("Cannot extract data tarball {0}.".format(remote_archive_file))
@@ -113,7 +114,7 @@ def _apply_script(rule_dir, domain_ip, script):
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
         command = "cd {0}; bash -x {1}".format(rule_dir, script)
-        args = oscap.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, command)
+        args = common.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, command)
 
         rc = _run_with_stdout_logging("ssh", args, log_file)
         if rc != 0:
@@ -190,7 +191,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
         runner_cls = ssg_test_suite.oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
         runner = runner_cls(
-            self.test_env.domain_ip, profile, self.datastream, self.benchmark_id,
+            self.test_env, profile, self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean)
 
         if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
@@ -247,36 +248,35 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         self._matching_rule_found = False
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
-            args_list = [(r, remote_dir, target)
-                         for r in data.iterate_over_rules()
-                         if _matches_target(r.directory, target)]
-            state.map_on_top(self._check_rule, args_list)
+            for rule in data.iterate_over_rules():
+                if not _matches_target(rule.directory, target):
+                    continue
+                self._matching_rule_found = True
+                self._check_rule(rule, remote_dir, state)
 
         if not self._matching_rule_found:
             logging.error("No matching rule ID found for '{0}'".format(target))
 
-    def _check_rule(self, rule, remote_dir, target):
+    def _check_rule(self, rule, remote_dir, state):
         remote_rule_dir = os.path.join(remote_dir, rule.directory)
         local_rule_dir = os.path.join(data.DATA_DIR, rule.directory)
 
         logging.info(rule.id)
-        self._matching_rule_found = True
 
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
-        for scenario in _get_scenarios(local_rule_dir, rule.files):
-            logging.debug('Using test script {0} with context {1}'
-                          .format(scenario.script, scenario.context))
-            with test_env.SavedState.create_from_environment(self.test_env, "scenario") as state:
-                args_list = [(s, remote_rule_dir, rule.id)
-                             for s in _get_scenarios(local_rule_dir, rule.files)]
-                state.map_on_top(self._check_rule_scenario, args_list)
+        args_list = [(s, remote_rule_dir, rule.id)
+                     for s in _get_scenarios(local_rule_dir, rule.files)]
+        state.map_on_top(self._check_rule_scenario, args_list)
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id):
         if not _apply_script(
                 remote_rule_dir, self.test_env.domain_ip, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
             return
+
+        logging.debug('Using test script {0} with context {1}'
+                      .format(scenario.script, scenario.context))
 
         profiles = get_viable_profiles(
             scenario.script_params['profiles'], self.datastream, self.benchmark_id)

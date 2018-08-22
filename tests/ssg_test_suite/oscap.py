@@ -4,13 +4,13 @@ from __future__ import print_function
 import logging
 import os.path
 import re
-import subprocess
 import collections
 import xml.etree.ElementTree
 import json
 
 from ssg_test_suite.log import LogHelper
 from ssg_test_suite import test_env
+from ssg_test_suite import common
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -19,11 +19,6 @@ _CONTEXT_RETURN_CODES = {'pass': 0,
                          'error': 1,
                          'notapplicable': 0,
                          'fixed': 0}
-
-IGNORE_KNOWN_HOSTS_OPTIONS = (
-    "-o", "StrictHostKeyChecking=no",
-    "-o", "UserKnownHostsFile=/dev/null",
-)
 
 _ANSIBLE_TEMPLATE = 'urn:xccdf:fix:script:ansible'
 _BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
@@ -57,34 +52,6 @@ def triage_xml_results(fname):
     return triaged
 
 
-def run_cmd_local(command, verbose_path, env=None):
-    command_string = ' '.join(command)
-    logging.debug('Running {}'.format(command_string))
-    returncode, output = _run_cmd(command, verbose_path, env)
-    return returncode, output
-
-
-def run_cmd_remote(command_string, domain_ip, verbose_path, env=None):
-    machine = 'root@{0}'.format(domain_ip)
-    remote_cmd = ['ssh'] + IGNORE_KNOWN_HOSTS_OPTIONS + [machine, command_string]
-    logging.debug('Running {}'.format(command_string))
-    returncode, output = _run_cmd(remote_cmd, verbose_path, env)
-    return returncode, output
-
-
-def _run_cmd(command_list, verbose_path, env=None):
-    returncode = 0
-    output = b""
-    try:
-        with open(verbose_path, 'w') as verbose_file:
-            output = subprocess.check_output(
-                command_list, stderr=verbose_file, env=env)
-    except subprocess.CalledProcessError as e:
-        returncode = e.returncode
-        output = e.output
-    return returncode, output.decode('utf-8')
-
-
 def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
     """Upload files to VM."""
     # files is a list of absolute paths on the host
@@ -94,8 +61,8 @@ def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
 
     logging.debug('Uploading files {0} to {1}'.format(files_string,
                                                       destination))
-    command = ['scp'] + IGNORE_KNOWN_HOSTS_OPTIONS + list(files) + [destination]
-    if run_cmd_local(command, verbose_path)[0] != 0:
+    command = ['scp'] + common.IGNORE_KNOWN_HOSTS_OPTIONS + list(files) + [destination]
+    if common.run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to upload files {0}'.format(files_string))
         success = False
     return success
@@ -108,8 +75,8 @@ def get_file_remote(verbose_path, local_dir, domain_ip, remote_path):
     source = 'root@{0}:{1}'.format(domain_ip, remote_path)
     logging.debug('Downloading file {0} to {1}'
                   .format(source, local_dir))
-    command = ['scp'] + IGNORE_KNOWN_HOSTS_OPTIONS + [source, local_dir]
-    if run_cmd_local(command, verbose_path)[0] != 0:
+    command = ['scp'] + common.IGNORE_KNOWN_HOSTS_OPTIONS + [source, local_dir]
+    if common.run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to download file {0}'.format(remote_path))
         success = False
     return success
@@ -136,7 +103,7 @@ def ansible_playbook_set_hosts(playbook):
 def get_result_id_from_arf(arf_path, verbose_path):
     command = ['oscap', 'info', arf_path]
     command_string = ' '.join(command)
-    returncode, output = run_cmd_local(command, verbose_path)
+    returncode, output = common.run_cmd_local(command, verbose_path)
     if returncode != 0:
         raise RuntimeError('{0} returned {1} exit code'.
                            format(command_string, returncode))
@@ -160,8 +127,8 @@ def generate_fixes_remotely(formatting, verbose_path):
         command_options.extend(['--result-id', formatting['result_id']])
 
     command_string = ' '.join(command_base + command_options + command_operands)
-    rc, stdout = run_cmd_remote(command_string,
-                                formatting['domain_ip'], verbose_path)
+    rc, stdout = common.run_cmd_remote(
+        command_string, formatting['domain_ip'], verbose_path)
     if rc != 0:
         msg = ('Command {0} ended with return code {1} (expected 0).'
                .format(command_string, rc))
@@ -184,7 +151,7 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
         'ansible-playbook',  '-i', '{0},'.format(formatting['domain_ip']),
         '-u' 'root', formatting['playbook'])
     command_string = ' '.join(command)
-    returncode, output = run_cmd_local(command, verbose_path)
+    returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
     with open(verbose_path, 'a') as f:
         f.write('Stdout of "{}":'.format(command_string))
@@ -212,7 +179,7 @@ def run_stage_remediation_bash(run_type, formatting, verbose_path):
         return False
 
     command_string = '/bin/bash /{output_file}'.format(** formatting)
-    returncode, output = run_cmd_remote(
+    returncode, output = common.run_cmd_remote(
         command_string, formatting['domain_ip'], verbose_path)
     # Appends output of script execution to the verbose_path file.
     with open(verbose_path, 'a') as f:
@@ -249,8 +216,8 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
 
 
 class GenericRunner(object):
-    def __init__(self, domain_ip, profile, datastream, benchmark_id):
-        self.domain_ip = domain_ip
+    def __init__(self, environment, profile, datastream, benchmark_id):
+        self.environment = environment
         self.profile = profile
         self.datastream = datastream
         self.benchmark_id = benchmark_id
@@ -306,10 +273,18 @@ class GenericRunner(object):
         ])
         self._filenames_to_clean_afterwards.add(self.report_path)
 
-    def prepare_oscap_ssh_arguments(self):
-        full_hostname = 'root@{}'.format(self.domain_ip)
+    def prepare_oscap_docker_arguments(self):
         self.command_base.extend(
-            ['oscap-ssh', full_hostname, '22', 'xccdf', 'eval'])
+            ['oscap-docker', "xxx", 'xccdf', 'eval'])
+        self.command_options.extend([
+            '--benchmark-id', self.benchmark_id,
+            '--profile', self.profile,
+            '--verbose', 'DEVEL',
+            '--progress', '--oval-results',
+        ])
+        self.command_operands.append(self.datastream)
+
+    def prepare_online_scanning_arguments(self):
         self.command_options.extend([
             '--benchmark-id', self.benchmark_id,
             '--profile', self.profile,
@@ -385,7 +360,7 @@ class GenericRunner(object):
 
     def _get_formatting_dict_for_remediation(self):
         formatting = {
-            'domain_ip': self.domain_ip,
+            'domain_ip': self.environment.domain_ip,
             'profile': self.profile,
             'datastream': self.datastream,
             'benchmark_id': self.benchmark_id
@@ -409,11 +384,11 @@ class ProfileRunner(GenericRunner):
         return '{0}-{1}-results'.format(self.profile, self.stage)
 
     def make_oscap_call(self):
-        self.prepare_oscap_ssh_arguments()
+        self.prepare_online_scanning_arguments()
         self._generate_report_file()
-        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(IGNORE_KNOWN_HOSTS_OPTIONS))
+        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(common.IGNORE_KNOWN_HOSTS_OPTIONS))
         env.update(os.environ)
-        returncode = run_cmd_local(self.get_command, self.verbose_path, env=env)[0]
+        returncode = common.run_cmd_local(self.get_command, self.verbose_path, env=env)[0]
         if returncode not in [0, 2]:
             logging.error(('Profile run should end with return code 0 or 2 '
                            'not "{0}" as it did!').format(returncode))
@@ -423,10 +398,10 @@ class ProfileRunner(GenericRunner):
 
 class RuleRunner(GenericRunner):
     def __init__(
-            self, domain_ip, profile, datastream, benchmark_id,
+            self, environment, profile, datastream, benchmark_id,
             rule_id, script_name, dont_clean):
         super(RuleRunner, self).__init__(
-            domain_ip, profile, datastream, benchmark_id,
+            environment, profile, datastream, benchmark_id,
         )
 
         self.rule_id = rule_id
@@ -450,15 +425,12 @@ class RuleRunner(GenericRunner):
             self.rule_id, self.script_name, self.profile, self.stage)
 
     def make_oscap_call(self):
-        self.prepare_oscap_ssh_arguments()
+        self.prepare_online_scanning_arguments()
         self._generate_report_file()
         self.command_options.extend(
             ['--rule', self.rule_id])
-
-        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(IGNORE_KNOWN_HOSTS_OPTIONS))
-        env.update(os.environ)
-        returncode, self._oscap_output = run_cmd_local(
-            self.get_command, self.verbose_path, env=env)
+        returncode, self._oscap_output = self.environment.scan(
+            self.command_options + self.command_operands, self.verbose_path)
 
         expected_return_code = _CONTEXT_RETURN_CODES[self.context]
 
@@ -593,14 +565,14 @@ class Checker(object):
             self._test_target(target)
         except KeyboardInterrupt:
             logging.info("Terminating the test run due to keyboard interrupt.")
-        except Exception as exc:
+        except RuntimeError as exc:
             logging.error("Terminating due to error: {msg}.".format(msg=str(exc)))
         finally:
             self.finalize()
 
     def run_test_for_all_profiles(self, profiles, test_data=None):
         if len(profiles) > 1:
-            with test_env.SavedState.create_from_environment(self.test_env, "profile") as state:
+            with test_env.SavedState.create_from_environment(self.test_env, "prepared") as state:
                 args_list = [(p, test_data) for p in profiles]
                 state.map_on_top(self._run_test, args_list)
         elif profiles:

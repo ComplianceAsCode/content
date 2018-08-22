@@ -57,6 +57,15 @@ def parse_args():
                                help="Directory to which all output is saved")
 
     common_parser.add_argument(
+        "--mode",
+        dest="scanning_mode",
+        default="online",
+        choices=("online", "offline"),
+        help="What type of check to use: "
+        "Online check done by running oscap inside the concerned system, or "
+        "offline check that examines the filesystem from the host?")
+
+    common_parser.add_argument(
         "--remediate-using",
         dest="remediate_using",
         default="oscap",
@@ -141,14 +150,14 @@ def normalize_passed_arguments(options):
 
     if options.docker:
         options.test_env = ssg_test_suite.test_env.DockerTestEnv(
-            options.docker)
+            options.scanning_mode, options.docker)
         logging.info(
             "The base image option has been specified, "
             "choosing Docker-based test environment.")
     else:
         hypervisor, domain_name = options.libvirt
         options.test_env = ssg_test_suite.test_env.VMTestEnv(
-            hypervisor, domain_name)
+            options.scanning_mode, hypervisor, domain_name)
         logging.info(
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")

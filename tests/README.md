@@ -54,6 +54,9 @@ starting with `ssg_`.
 - `--xccdf-id`: Also known as `Ref-ID`, it is the identifier of benchmark within
   the datastream.  It can be obtained by running `oscap info` over the
   datastream XML and searching for `Ref-ID` strings.
+- `--mode`: Can be either `online` or `offline`, which corresponds either to
+  online or offline scanning mode. Online scanning mode uses `oscap-ssh`, while
+  offline scanning is backend-specific.
 - `--help`: This will get you the invocation help.
 
 VM-based tests:
@@ -192,7 +195,7 @@ Following services need to be supported:
 - `oscap` (`openscap-scanner` - the container has to be able to scan itself)
 - You may want to include another packages, as base images tend to be bare-bone and tests may require more packages to be present.
 Also, as containers may get any IP address, a conflict may appear in your local client's `known_hosts` file.
-As `oscap-ssh` doesn't let you to switch known hosts checks off at the client-side, it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
+You might have a version of `oscap-ssh` that doesn't support ssh connetion customization at the client-side, so it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
 You can do that by putting following lines in your `$HOME/.ssh/config` file:
 
 ```

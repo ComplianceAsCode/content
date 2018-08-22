@@ -28,7 +28,7 @@ class ProfileChecker(ssg_test_suite.oscap.Checker):
 
         runner_cls = ssg_test_suite.oscap.REMEDIATION_PROFILE_RUNNERS[self.remediate_using]
         runner = runner_cls(
-            self.test_env.domain_ip, profile, self.datastream, self.benchmark_id)
+            self.test_env, profile, self.datastream, self.benchmark_id)
 
         for stage in ("initial", "remediation", "final"):
             result = runner.run_stage(stage)
