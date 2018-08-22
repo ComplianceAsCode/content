@@ -1,7 +1,16 @@
 source fix_audit_syscall_rule.sh
 
-# Perform the remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
-# system calls on Red Hat Enterprise Linux 7 or Fedora OSes
+# Function to perform remediation for the 'adjtimex', 'settimeofday', and 'stime' audit
+# system calls on RHEL, Fedora or OL systems.
+# Remediation performed for both possible tools: 'auditctl' and 'augenrules'.
+#
+# Note: 'stime' system call isn't known at 64-bit arch (see "$ ausyscall x86_64 stime" 's output)
+# therefore excluded from the list of time group system calls to be audited on this arch
+#
+# Example Call:
+#
+#      perform_audit_adjtimex_settimeofday_stime_remediation
+#
 function perform_audit_adjtimex_settimeofday_stime_remediation {
 
 # Retrieve hardware architecture of the underlying system
