@@ -331,6 +331,39 @@ def walk_rules_diff_stats(results):
     return tuple(output_data)
 
 
+def filter_rule_ids(all_keys, queries):
+    """
+    From a set of queries (a comma separated list of queries, where a query is either a
+    rule id or a substring thereof), return the set of matching keys from all_keys. When
+    queries is the literal string "all", return all of the keys.
+    """
+
+    if not queries:
+        return set()
+
+    if queries == 'all':
+        return set(all_keys)
+
+    # We assume that all_keys is much longer than queries; this allows us to do
+    # len(all_keys) iterations of size len(query_parts) instead of len(query_parts)
+    # queries of size len(all_keys) -- which hopefully should be a faster data access
+    # pattern due to caches but in reality shouldn't matter. Note that we have to iterate
+    # over the keys in all_keys either way, because we wish to check whether query is a
+    # substring of a key, not whether query is a key.
+    #
+    # This does have the side-effect of not having the results be ordered according to
+    # their order in query_parts, so we instead, we intentionally discard order by using
+    # a set. This also guarantees that our results are unique.
+    results = set()
+    query_parts = queries.split(',')
+    for key in all_keys:
+        for query in query_parts:
+            if query in key:
+                results.add(key)
+
+    return results
+
+
 def missing_oval(rule_obj):
     """
     For a rule object, check if it is missing an oval.

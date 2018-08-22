@@ -313,12 +313,10 @@ def main():
         args.products = args.products.split(',')
     args.products = set(args.products)
 
-    if isinstance(args.query, str):
-        args.query = args.query.split(',')
-        for rule_id in args.query:
-            if rule_id not in left_rules and rule_id not in right_rules:
-                print("Unknown rule_id:%s or rule_id appears only in left or right." % rule_id)
-                sys.exit(1)
+    left_query_keys = rds.filter_rule_ids(set(left_rules), args.query)
+    right_query_keys = rds.filter_rule_ids(set(right_rules), args.query)
+    args.query = left_query_keys.union(right_query_keys)
+    print("Total number of queried rules: %d\n" % len(args.query))
 
     if not args.missing and not args.two_plus and not args.prodtypes and not args.product_names:
         args.missing = True
@@ -327,6 +325,7 @@ def main():
 
     print("< Total number of known rule directories: %d" % len(left_rules))
     print("> Total number of known rule directories: %d\n" % len(right_rules))
+    print("= Total number of queried rules: %d\n" % len(args.query))
 
     if args.missing:
         process_diff_missing(args, left_rules, right_rules)

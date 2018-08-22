@@ -213,19 +213,15 @@ def main():
         args.products = args.products.split(',')
     args.products = set(args.products)
 
-    if isinstance(args.query, str):
-        args.query = args.query.split(',')
-        for rule_id in args.query:
-            if not rule_id in known_rules:
-                print("Unknown rule_id:%s" % rule_id)
-                sys.exit(1)
+    args.query = rds.filter_rule_ids(set(known_rules), args.query)
 
     if not args.missing and not args.two_plus and not args.prodtypes and not args.introspect and not args.unassociated and not args.product_names:
         args.missing = True
         args.two_plus = True
         args.prodtypes = True
 
-    print("Total number of known rule directories: %d\n" % len(known_rules))
+    print("Total number of known rule directories: %d" % len(known_rules))
+    print("Total number of queried rules: %d\n" % len(args.query))
 
     if args.missing:
         process_missing(args, known_rules)
