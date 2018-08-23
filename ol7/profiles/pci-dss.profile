@@ -44,3 +44,14 @@ selections:
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_action_mail_acct
     - auditd_audispd_syslog_plugin_activated
+    - audit_rules_time_adjtimex
+    - audit_rules_time_settimeofday
+    - audit_rules_time_stime
+    - audit_rules_time_clock_settime
+    - audit_rules_time_watch_localtime
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
+    - audit_rules_networkconfig_modification
