@@ -93,7 +93,6 @@ selections:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - "!security_patches_up_to_date"
     - smartcard_auth
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
