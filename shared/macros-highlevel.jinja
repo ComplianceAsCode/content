@@ -19,31 +19,39 @@
     {{%- endif -%}}
 {{%- endmacro %}}
 
-
 {{%- macro describe_package_install(package) -%}}
+    The <code>{{{ package }}}</code> package can be installed with the following command:
+    <pre>{{{ package_install(package) }}}</pre>
+{{%- endmacro %}}
+
+{{%- macro package_install(package) -%}}
     {{%- if pkg_manager == "apt_get" -%}}
-        {{{ apt_get_describe_package_install(package) }}}
+        {{{ apt_get_package_install(package) }}}
     {{%- elif pkg_manager == "zypper" -%}}
-        {{{ zypper_describe_package_install(package) }}}
+        {{{ zypper_package_install(package) }}}
     {{%- elif pkg_manager == "yum" -%}}
-        {{{ yum_describe_package_install(package) }}}
+        {{{ yum_package_install(package) }}}
     {{%- elif pkg_manager == "dnf" -%}}
-        {{{ dnf_describe_package_install(package) }}}
+        {{{ dnf_package_install(package) }}}
     {{%- else %}}
         JINJA MACRO ERROR: Unknown package manager '{{{ pkg_manager }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
-
 {{%- macro describe_package_remove(package) -%}}
+    The <code>{{{ package }}}</code> package can be removed with the following command:
+    <pre>{{{ package_remove(package) }}}</pre>
+{{%- endmacro %}}
+
+{{%- macro package_remove(package) -%}}
     {{%- if pkg_manager == "apt_get" -%}}
-        {{{ apt_get_describe_package_remove(package) }}}
+        {{{ apt_get_package_remove(package) }}}
     {{%- elif pkg_manager == "zypper" -%}}
-        {{{ zypper_describe_package_remove(package) }}}
+        {{{ zypper_package_remove(package) }}}
     {{%- elif pkg_manager == "yum" -%}}
-        {{{ yum_describe_package_remove(package) }}}
+        {{{ yum_package_remove(package) }}}
     {{%- elif pkg_manager == "dnf" -%}}
-        {{{ dnf_describe_package_remove(package) }}}
+        {{{ dnf_package_remove(package) }}}
     {{%- else %}}
         JINJA MACRO ERROR: Unknown package manager '{{{ pkg_manager }}}'.
     {{%- endif -%}}

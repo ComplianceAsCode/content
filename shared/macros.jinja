@@ -395,51 +395,43 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
-{{%- macro apt_get_describe_package_install(package) %}}
-    The <code>{{{ package }}}</code> package can be installed with the following command:
-    <pre>$ apt-get install {{{ package }}}</pre>
+{{%- macro apt_get_package_install(package) %}}
+    $ apt-get install {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro apt_get_describe_package_remove(package) %}}
-    The <code>{{{ package }}}</code> package can be removed with the following command:
-    <pre>$ apt-get remove {{{ package }}}</pre>
+{{%- macro apt_get_package_remove(package) %}}
+    $ apt-get remove {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro dnf_describe_package_install(package) %}}
-    The <code>{{{ package }}}</code> package can be installed with the following command:
-    <pre>$ sudo dnf install {{{ package }}}</pre>
+{{%- macro dnf_package_install(package) %}}
+    $ sudo dnf install {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro dnf_describe_package_remove(package) %}}
-    The <code>{{{ package }}}</code> package can be removed with the following command:
-    <pre>$ sudo dnf erase {{{ package }}}</pre>
+{{%- macro dnf_package_remove(package) %}}
+    $ sudo dnf erase {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro yum_describe_package_install(package) %}}
-    The <code>{{{ package }}}</code> package can be installed with the following command:
-    <pre>$ sudo yum install {{{ package }}}</pre>
+{{%- macro yum_package_install(package) %}}
+    $ sudo yum install {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro yum_describe_package_remove(package) %}}
-    The <code>{{{ package }}}</code> package can be removed with the following command:
-    <pre>$ sudo yum erase {{{ package }}}</pre>
+{{%- macro yum_package_remove(package) %}}
+    $ sudo yum erase {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro zypper_describe_package_install(package) %}}
-    The <code>{{{ package }}}</code> package can be installed with the following command:
-    <pre>$ sudo zypper install {{{ package }}}</pre>
+{{%- macro zypper_package_install(package) %}}
+    $ sudo zypper install {{{ package }}}
 {{%- endmacro %}}
 
 
-{{%- macro zypper_describe_package_remove(package) %}}
-    The <code>{{{ package }}}</code> package can be removed with the following command:
-    <pre>$ sudo zypper remove {{{ package }}}</pre>
+{{%- macro zypper_package_remove(package) %}}
+    $ sudo zypper remove {{{ package }}}
 {{%- endmacro %}}
 
 
