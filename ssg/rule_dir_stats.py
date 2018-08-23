@@ -77,6 +77,7 @@ def _walk_rule(args, rule_obj, oval_func, remediation_func, verbose_output):
 
     return True
 
+
 def walk_rules(args, known_rules, oval_func, remediation_func):
     """
     Walk a dictionary of known_rules, returning the number of visited rules
