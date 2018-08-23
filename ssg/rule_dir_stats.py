@@ -404,7 +404,8 @@ def two_plus_remediation(rule_obj, r_type):
     """
 
     rule_id = rule_obj['id']
-    check = len(rule_obj['remediations'][r_type]) >= 2
+    check = (r_type in rule_obj['remediations'] and
+             len(rule_obj['remediations'][r_type]) >= 2)
     if check:
         return "\trule_id:%s has two or more %s remediations: %s" % \
                (rule_id, r_type, ','.join(rule_obj['remediations'][r_type]))
@@ -418,13 +419,13 @@ def prodtypes_oval(rule_obj):
 
     rule_id = rule_obj['id']
 
-    rule_products = set(rule_obj['products'])
+    rule_products = set(rule_obj.get('products', []))
     if not rule_products:
         return
 
     oval_products = set()
-    for oval in rule_obj['ovals']:
-        oval_products.update(rule_obj['ovals'][oval]['products'])
+    for oval in rule_obj.get('ovals', []):
+        oval_products.update(rule_obj['ovals'][oval].get('products', []))
     if not oval_products:
         return
 
@@ -443,12 +444,12 @@ def prodtypes_remediation(rule_obj, r_type):
 
     rule_id = rule_obj['id']
 
-    rule_products = set(rule_obj['products'])
+    rule_products = set(rule_obj.get('products', []))
     if not rule_products:
         return
 
     remediation_products = set()
-    for remediation in rule_obj['remediations'][r_type]:
+    for remediation in rule_obj.get('remediations', dict()).get(r_type, dict()):
         remediation_products.update(rule_obj['remediations'][r_type][remediation]['products'])
     if not remediation_products:
         return
