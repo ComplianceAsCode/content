@@ -381,7 +381,8 @@ def missing_remediation(rule_obj, r_type):
     """
 
     rule_id = rule_obj['id']
-    check = len(rule_obj['remediations'][r_type]) > 0
+    check = (r_type in rule_obj['remediations'] and
+             len(rule_obj['remediations'][r_type]) > 0)
     if not check:
         return "\trule_id:%s is missing %s remediations" % (rule_id, r_type)
 
