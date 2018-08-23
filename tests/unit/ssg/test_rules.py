@@ -7,6 +7,25 @@ data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "data"))
 rule_dir = os.path.join(data_dir, "group_dir", "rule_dir")
 
 
+def test_is_applicable():
+    assert ssg.rules.is_applicable('all', 'rhel7')
+    assert ssg.rules.is_applicable('multi_platform_all', 'rhel7')
+    assert ssg.rules.is_applicable('rhel7', 'rhel7')
+    assert ssg.rules.is_applicable('multi_platform_rhel', 'rhel7')
+    assert ssg.rules.is_applicable('Red Hat Enterprise Linux 7', 'rhel7')
+
+    assert ssg.rules.is_applicable('all', 'rhel-osp7')
+    assert ssg.rules.is_applicable('multi_platform_rhel-osp', 'rhel-osp7')
+    assert ssg.rules.is_applicable('rhel-osp7', 'rhel-osp7')
+    assert ssg.rules.is_applicable('Red Hat OpenStack Platform 7', 'rhel-osp7')
+    assert not ssg.rules.is_applicable('rhel7', 'rhel-osp7')
+
+    assert not ssg.rules.is_applicable('rhel-osp7', 'rhel7')
+    assert not ssg.rules.is_applicable('fedora,multi_platform_ubuntu', 'rhel7')
+    assert not ssg.rules.is_applicable('ol7', 'rhel7')
+    assert not ssg.rules.is_applicable('fedora,debian8', 'rhel7')
+
+
 def test_get_rule_dir_id():
     assert ssg.rules.get_rule_dir_id("/some/path/fix_all_vulns/rule.yml") == "fix_all_vulns"
     assert ssg.rules.get_rule_dir_id("/some/path/fix_all_vulns") == "fix_all_vulns"

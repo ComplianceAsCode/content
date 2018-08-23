@@ -83,6 +83,24 @@ def _add_elements(body, header):
     return defname
 
 
+def applicable_platforms(oval_file):
+    """
+    Returns the applicable platforms for a given oval file
+    """
+
+    platforms = []
+    header = oval_generated_header("applicable_platforms", "5.11", "0.0.1")
+    body = read_ovaldefgroup_file(oval_file)
+    oval_tree = ET.fromstring(header + body + footer)
+
+    element_path = "./{%s}def-group/{%s}definition/{%s}metadata/{%s}affected/{%s}platform"
+    element_ns_path = element_path % (ovalns, ovalns, ovalns, ovalns, ovalns)
+    for node in oval_tree.findall(element_ns_path):
+        platforms.append(node.text)
+
+    return platforms
+
+
 def replace_external_vars(tree):
     """Replace external_variables with local_variables, so the definition can be
        tested independently of an XCCDF file"""

@@ -1,0 +1,17 @@
+<def-group oval_version="5.11">
+  <definition class="compliance" id="service_chronyd_or_ntpd_enabled" version="1">
+    <metadata>
+      <title>Service chronyd Or Service ntpd Enabled</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>At least one of the chronyd or ntpd services should be enabled if possible.</description>
+    </metadata>
+
+    <criteria comment="chronyd or ntpd service enabled" operator="OR">
+      <extend_definition comment="service chronyd enabled" definition_ref="service_chronyd_enabled" />
+      <extend_definition comment="service ntpd enabled" definition_ref="service_ntpd_enabled" />
+    </criteria>
+
+  </definition>
+</def-group>

@@ -5,6 +5,29 @@ import os
 
 
 from .build_remediations import REMEDIATION_TO_EXT_MAP as REMEDIATION_MAP
+from .build_remediations import is_applicable_for_product
+
+
+def is_applicable(platform, product):
+    """
+    Function to check if a platform is applicable for the product.
+    Handles when a platform is really a list of products, i.e., a
+    prodtype field from a rule.yml.
+
+    Returns true iff product is applicable for the platform or list
+    of products
+    """
+
+    if platform == 'all' or platform == 'multi_platform_all':
+        return True
+
+    if is_applicable_for_product(platform, product):
+        return True
+
+    if 'osp7' in product and 'osp7' in platform:
+        return True
+
+    return product in platform.split(',')
 
 
 def get_rule_dir_yaml(dir_path):
