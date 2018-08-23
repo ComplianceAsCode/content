@@ -1,0 +1,51 @@
+<def-group>
+  <definition class="compliance" id="ensure_fedora_gpgkey_installed" version="2">
+    <metadata>
+      <title>Fedora Release gpg-pubkey Package Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>The Fedora release key package is required to be installed.</description>
+    </metadata>
+    <criteria comment="Fedora Vendor keys" operator="AND">
+      <extend_definition comment="Fedora installed" definition_ref="installed_OS_is_fedora" />
+      <criterion comment="Fedora 28 package gpg-pubkey-9db62fb1-59920156 is installed"
+      test_ref="test_package_gpgkey-9db62fb1-59920156_installed" />
+      <criterion comment="Fedora 27 package gpg-pubkey-f5282ee4-58ac92a3 is installed"
+      test_ref="test_package_gpgkey-f5282ee4-58ac92a3_installed" />
+    </criteria>
+  </definition>
+
+  <!-- First define global "object_package_gpg-pubkey" to be shared (reused) across multiple tests -->
+  <linux:rpminfo_object id="object_package_gpg-pubkey" version="1">
+    <linux:name>gpg-pubkey</linux:name>
+  </linux:rpminfo_object>
+
+  <!-- Perform the particular tests themselves -->
+  <!-- Test for Fedora 28 release key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-9db62fb1-59920156_installed" version="1"
+  comment="Fedora 28 release key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-9db62fb1-59920156" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-9db62fb1-59920156" version="1">
+    <linux:release>59920156</linux:release>
+    <linux:version>9db62fb1</linux:version>
+  </linux:rpminfo_state>
+
+  <!-- Test for Fedora 27 release key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-f5282ee4-58ac92a3_installed" version="1"
+  comment="Fedora 27 release key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpgkey-f5282ee4-58ac92a3" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpgkey-f5282ee4-58ac92a3" version="1">
+    <linux:release>58ac92a3</linux:release>
+    <linux:version>f5282ee4</linux:version>
+  </linux:rpminfo_state>
+
+</def-group>

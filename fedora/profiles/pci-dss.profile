@@ -90,7 +90,7 @@ selections:
     - accounts_password_pam_lcredit
     - accounts_password_pam_unix_remember
     - accounts_maximum_age_login_defs
-    - ensure_redhat_gpgkey_installed
+    - ensure_fedora_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
     - smartcard_auth
