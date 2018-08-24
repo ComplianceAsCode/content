@@ -12,29 +12,7 @@ from collections import namedtuple
 import yaml
 
 from .rules import get_rule_dir_yaml
-
-
-def read_file_list(path):
-    """
-    Reads the given file path and returns the contents as a list.
-    """
-
-    file_contents = open(path, 'r').read().split("\n")
-    if file_contents[-1] == '':
-        file_contents = file_contents[:-1]
-    return file_contents
-
-
-def write_list_file(path, contents):
-    """
-    Writes the given contents to path.
-    """
-
-    _contents = "\n".join(contents) + "\n"
-    _f = open(path, 'w')
-    _f.write(_contents)
-    _f.flush()
-    _f.close()
+from .utils import read_file_list
 
 
 def find_section_lines(file_contents, sec):

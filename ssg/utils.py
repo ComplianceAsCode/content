@@ -60,3 +60,26 @@ def subset_dict(dictionary, keys):
             del result[original_key]
 
     return result
+
+
+def read_file_list(path):
+    """
+    Reads the given file path and returns the contents as a list.
+    """
+
+    file_contents = open(path, 'r').read().split("\n")
+    if file_contents[-1] == '':
+        file_contents = file_contents[:-1]
+    return file_contents
+
+
+def write_list_file(path, contents):
+    """
+    Writes the given contents to path.
+    """
+
+    _contents = "\n".join(contents) + "\n"
+    _f = open(path, 'w')
+    _f.write(_contents)
+    _f.flush()
+    _f.close()

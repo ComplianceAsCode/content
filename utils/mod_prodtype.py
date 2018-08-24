@@ -6,6 +6,7 @@ import argparse
 import json
 
 import ssg.rules
+import ssg.utils
 import ssg.rule_yaml
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -83,7 +84,7 @@ def add_products(rule_obj, products):
         yaml_contents = ssg.rule_yaml.update_key_value(yaml_contents, 'prodtype',
                                                        prodtype, new_prodtype_str)
 
-    ssg.rule_yaml.write_list_file(yaml_file, yaml_contents)
+    ssg.utils.write_list_file(yaml_file, yaml_contents)
 
 
 def remove_products(rule_obj, products):
@@ -112,7 +113,7 @@ def remove_products(rule_obj, products):
         print("New prodtype is empty")
         yaml_contents = ssg.rule_yaml.remove_lines(yaml_contents, prodtype_section)
 
-    ssg.rule_yaml.write_list_file(yaml_file, yaml_contents)
+    ssg.utils.write_list_file(yaml_file, yaml_contents)
 
 
 def replace_products(rule_obj, products):
@@ -157,7 +158,7 @@ def replace_products(rule_obj, products):
     yaml_contents = ssg.rule_yaml.update_key_value(yaml_contents, 'prodtype',
                                                    prodtype, new_prodtype_str)
 
-    ssg.rule_yaml.write_list_file(yaml_file, yaml_contents)
+    ssg.utils.write_list_file(yaml_file, yaml_contents)
 
 
 def main():
