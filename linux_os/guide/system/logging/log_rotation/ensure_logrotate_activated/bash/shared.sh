@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_all
 
 LOGROTATE_CONF_FILE="/etc/logrotate.conf"
 CRON_DAILY_LOGROTATE_FILE="/etc/cron.daily/logrotate"
