@@ -5,8 +5,9 @@ prodtype: rhel7
 title: 'Enable FIPS Mode in GRUB2'
 
 description: |-
-    To ensure FIPS mode is enabled, rebuild <tt>initramfs</tt> by running the following command:
-    <pre>dracut -f</pre>
+    To ensure FIPS mode is enabled, install package <tt>dracut-fips</tt>, and rebuild <tt>initramfs</tt> by running the following commands:
+    <pre>{{{ package_install("dracut-fips") }}}
+    dracut -f</pre>
     After the <tt>dracut</tt> command has been run, add the argument <tt>fips=1</tt> to the default
     GRUB 2 command line for the Linux operating system in
     <tt>/etc/default/grub</tt>, in the manner below:
