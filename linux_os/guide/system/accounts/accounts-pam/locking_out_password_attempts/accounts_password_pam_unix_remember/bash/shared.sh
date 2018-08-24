@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7
+# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7, multi_platform_fedora
 . /usr/share/scap-security-guide/remediation_functions
 populate var_password_pam_unix_remember
 
