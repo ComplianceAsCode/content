@@ -29,7 +29,11 @@ selections:
     - audit_rules_time_stime
     - audit_rules_time_clock_settime
     - audit_rules_time_watch_localtime
-    - audit_rules_usergroup_modification
+    - audit_rules_usergroup_modification_group
+    - audit_rules_usergroup_modification_gshadow
+    - audit_rules_usergroup_modification_opasswd
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
     - audit_rules_networkconfig_modification
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
