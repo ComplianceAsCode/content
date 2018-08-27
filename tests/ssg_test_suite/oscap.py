@@ -7,6 +7,7 @@ import re
 import collections
 import xml.etree.ElementTree
 import json
+import datetime
 
 from ssg_test_suite.log import LogHelper
 from ssg_test_suite import test_env
@@ -564,6 +565,9 @@ class Checker(object):
         self.benchmark_id = ""
         self.remediate_using = ""
 
+        now = datetime.datetime.now()
+        self.test_timestamp_str = now.strftime("%Y-%m-%d %H:%M")
+
     def test_target(self, target):
         self.start()
         try:
@@ -582,6 +586,9 @@ class Checker(object):
                 state.map_on_top(self._run_test, args_list)
         elif profiles:
             self._run_test(profiles[0], test_data)
+
+    def _run_test(profile, test_data):
+        raise NotImplementedError()
 
     def _test_target(self, target):
         raise NotImplementedError()

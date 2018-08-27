@@ -33,7 +33,7 @@ class SavedState(object):
     def create_from_environment(cls, environment, state_name):
         state = cls(environment, state_name)
 
-        state_handle = environment._save_state(state_name)
+        state_handle = environment.save_state(state_name)
         exception_to_reraise = None
         try:
             yield state
@@ -59,6 +59,7 @@ class TestEnv(object):
         self.running_state = None
 
         self.scanning_mode = scanning_mode
+        self.backend = None
 
     def start(self):
         """
@@ -77,10 +78,10 @@ class TestEnv(object):
     def reset_state_to(self, state_name, new_running_state_name):
         raise NotImplementedError()
 
-    def _save_state(self, state_name):
+    def save_state(self, state_name):
         self.running_state_base = state_name
         running_state = self.running_state
-        return None
+        return self._save_state(state_name)
 
     def _delete_saved_state(self, state_name):
         raise NotImplementedError()
@@ -153,7 +154,6 @@ class VMTestEnv(TestEnv):
         pass
 
     def _save_state(self, state_name):
-        super(VMTestEnv, self)._save_state(state_name)
         state = self.snapshot_stack.create(state_name)
         return state
 
@@ -223,7 +223,6 @@ class DockerTestEnv(TestEnv):
         return new_image_name
 
     def _save_state(self, state_name):
-        super(DockerTestEnv, self)._save_state(state_name)
         state = self._create_new_image(self.current_container, state_name)
         return state
 
