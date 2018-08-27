@@ -16,6 +16,7 @@ if (PY_PYTEST)
     ssg_python_unit_tests("build-scripts" "build-scripts")
     ssg_python_unit_tests("utils" "utils")
     ssg_python_unit_tests("ssg-module" ".")
+    ssg_python_unit_tests("ssg_test_suite" "tests")
 endif()
 
 add_test(
