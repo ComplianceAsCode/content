@@ -58,14 +58,14 @@
 
 {{% else %}}
 
-  {{% if product == "ubuntu1404" %}}
+  {{% if product == "ubuntu14" %}}
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_disabled"
   version="1">
     <metadata>
       <title>Service {{{ SERVICENAME }}} Disabled</title>
       <affected family="unix">
-        <platform>Ubuntu 1404</platform>
+        <platform>Ubuntu 14</platform>
       </affected>
       <description>The {{{ SERVICENAME }}} service should be disabled if possible.</description>
     </metadata>

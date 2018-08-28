@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,ubuntu1404,ubuntu1604,ol7
+prodtype: rhel6,rhel7,ubuntu14,ubuntu16,ol7
 
 title: 'Ensure Software Patches Installed'
 
@@ -54,9 +54,9 @@ references:
 oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL6.xml.bz2"
 {{% elif product == "rhel7" %}}
 oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2"
-{{% elif product == "ubuntu1404" %}}
+{{% elif product == "ubuntu14" %}}
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.trusty.cve.oval.xml"
-{{% elif product == "ubuntu1604" %}}
+{{% elif product == "ubuntu16" %}}
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.xenial.cve.oval.xml"
 {{% elif product == "ol7" %}}
 oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
