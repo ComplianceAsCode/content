@@ -61,9 +61,10 @@ def parse_args():
         dest="scanning_mode",
         default="online",
         choices=("online", "offline"),
-        help="What type of check to use: "
+        help="What type of check to use - either "
         "Online check done by running oscap inside the concerned system, or "
-        "offline check that examines the filesystem from the host?")
+        "offline check that examines the filesystem from the host "
+        "(either may require extended privileges).")
 
     common_parser.add_argument(
         "--remediate-using",

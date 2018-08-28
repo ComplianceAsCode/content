@@ -57,6 +57,8 @@ starting with `ssg_`.
 - `--mode`: Can be either `online` or `offline`, which corresponds either to
   online or offline scanning mode. Online scanning mode uses `oscap-ssh`, while
   offline scanning is backend-specific.
+  As offline scanning examines the filesystem of the container or VM, it may require
+  extended privileges.
 - `--help`: This will get you the invocation help.
 
 VM-based tests:
@@ -166,12 +168,13 @@ You can also use the docker-based for running tests, just use the script with th
 You need to provide `--docker <base image name>` option on the command-line.
 
 To obtain the base image, you can use `test_suite-*` Dockerfiles in the `Dockerfiles` directory to build it.
-We recomend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
+We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
 Build the image using this command:
 
 ```
-docker build --build-arg CLIENT_PUBLIC_KEY="ssh-rsa AAAAB3NzaC1y...rJSs4BL me@localhost" -t ssg_test_suite -f test_suite-rhel .
+public_key="ssh-rsa AAAAB3NzaC1y...rJSs4BL me@localhost"
+docker build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
 ```
 
 Run the test suite using this command:
@@ -184,18 +187,18 @@ On your side, you need to have
 - the [docker](https://pypi.org/project/docker/) Python module installed. You may have to use `pip` to install it on older distributions s.a. RHEL 7, running `pip install --user docker` as `root` will do the trick of installing it only for the `root` user.
 - the Docker service running, and
 - rights that allow you to start/stop containers and to create images.
-  This level of rights is considered to be insecure, so it is recomended to run the test suite in a VM.
+  This level of rights is considered to be insecure, so it is recommended to run the test suite in a VM.
   You can accomplish this by creating a `docker` group, then add yourself in it and restart `docker`.
 
 The Docker image you want to use with the tests needs to be prepared, so it can scan itself, and that it can accept connections and data.
 Following services need to be supported:
 
 - `sshd` (`openssh-server` needs to be installed, server host keys have to be in place, root's `.ssh/authorized_keys` are set up with correct permissions)
-- `scp` (`openssh-clients` need to be installed - scp requires more than a ssh server on the server-side)
+- `scp` (`openssh-clients` need to be installed - `scp` requires more than a ssh server on the server-side)
 - `oscap` (`openscap-scanner` - the container has to be able to scan itself)
 - You may want to include another packages, as base images tend to be bare-bone and tests may require more packages to be present.
 Also, as containers may get any IP address, a conflict may appear in your local client's `known_hosts` file.
-You might have a version of `oscap-ssh` that doesn't support ssh connetion customization at the client-side, so it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
+You might have a version of `oscap-ssh` that doesn't support ssh connection customization at the client-side, so it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
 You can do that by putting following lines in your `$HOME/.ssh/config` file:
 
 ```
