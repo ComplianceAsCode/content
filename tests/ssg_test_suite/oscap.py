@@ -273,17 +273,6 @@ class GenericRunner(object):
         ])
         self._filenames_to_clean_afterwards.add(self.report_path)
 
-    def prepare_oscap_docker_arguments(self):
-        self.command_base.extend(
-            ['oscap-docker', "xxx", 'xccdf', 'eval'])
-        self.command_options.extend([
-            '--benchmark-id', self.benchmark_id,
-            '--profile', self.profile,
-            '--verbose', 'DEVEL',
-            '--progress', '--oval-results',
-        ])
-        self.command_operands.append(self.datastream)
-
     def prepare_online_scanning_arguments(self):
         self.command_options.extend([
             '--benchmark-id', self.benchmark_id,

@@ -63,7 +63,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
 
 
 def _run_with_stdout_logging(command, args, log_file):
-    log_file.write(" ".join((command,) + args) + "\n")
+    log_file.write("{0} {1}\n".format(command, " ".join(args)))
     try:
         subprocess.check_call(
             (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
@@ -82,22 +82,31 @@ def _send_scripts(domain_ip):
 
     with open(log_file_name, 'a') as log_file:
         args = common.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, "mkdir", "-p", remote_dir)
-        if _run_with_stdout_logging("ssh", args, log_file) != 0:
-            logging.error("Cannot create directory {0}.".format(remote_dir))
-            return False
+        try:
+            _run_with_stdout_logging("ssh", args, log_file)
+        except Exception:
+            msg = "Cannot create directory {0}.".format(remote_dir)
+            logging.error(msg)
+            raise RuntimeError(msg)
 
         args = (common.IGNORE_KNOWN_HOSTS_OPTIONS
                 + (archive_file, "{0}:{1}".format(machine, remote_dir)))
-        if _run_with_stdout_logging("scp", args, log_file) != 0:
-            logging.error("Cannot copy archive {0} to the target machine's directory {1}."
-                          .format(archive_file, remote_dir))
-            return False
+        try:
+            _run_with_stdout_logging("scp", args, log_file)
+        except Exception:
+            msg = ("Cannot copy archive {0} to the target machine's directory {1}."
+                   .format(archive_file, remote_dir))
+            logging.error(msg)
+            raise RuntimeError(msg)
 
         args = (common.IGNORE_KNOWN_HOSTS_OPTIONS
                 + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
-        if _run_with_stdout_logging("ssh", args, log_file) != 0:
-            logging.error("Cannot extract data tarball {0}.".format(remote_archive_file))
-            return False
+        try:
+            _run_with_stdout_logging("ssh", args, log_file)
+        except Exception:
+            msg = "Cannot extract data tarball {0}.".format(remote_archive_file)
+            logging.error(msg)
+            raise RuntimeError(msg)
 
     return remote_dir
 
@@ -116,9 +125,11 @@ def _apply_script(rule_dir, domain_ip, script):
         command = "cd {0}; bash -x {1}".format(rule_dir, script)
         args = common.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, command)
 
-        rc = _run_with_stdout_logging("ssh", args, log_file)
-        if rc != 0:
-            logging.error("Rule testing script {0} failed with exit code {1}".format(script, rc))
+        try:
+            _run_with_stdout_logging("ssh", args, log_file)
+        except subprocess.CalledProcessError as exc:
+            logging.error("Rule testing script {script} failed with exit code {rc}"
+                          .format(script=script, rc=exc.returncode))
             return False
     return True
 
@@ -240,9 +251,10 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         return success
 
     def _test_target(self, target):
-        remote_dir = _send_scripts(self.test_env.domain_ip)
-        if not remote_dir:
-            msg = "Unable to upload test scripts"
+        try:
+            remote_dir = _send_scripts(self.test_env.domain_ip)
+        except RuntimeError as exc:
+            msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
 
         self._matching_rule_found = False
