@@ -1,5 +1,7 @@
 # platform = multi_platform_fedora
 
+dnf install -y gpg
+
 fedora_version=$(grep -oP '[[:digit:]]+' /etc/redhat-release)
 
 if [ "${fedora_version}" -eq "{{{ latest_version }}}" ]
