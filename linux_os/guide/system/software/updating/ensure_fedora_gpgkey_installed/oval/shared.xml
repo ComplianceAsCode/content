@@ -9,10 +9,12 @@
     </metadata>
     <criteria comment="Fedora Vendor keys" operator="AND">
       <extend_definition comment="Fedora installed" definition_ref="installed_OS_is_fedora" />
-      <criterion comment="Fedora 28 package gpg-pubkey-9db62fb1-59920156 is installed"
-      test_ref="test_package_gpgkey-9db62fb1-59920156_installed" />
-      <criterion comment="Fedora 27 package gpg-pubkey-f5282ee4-58ac92a3 is installed"
-      test_ref="test_package_gpgkey-f5282ee4-58ac92a3_installed" />
+      <criteria comment="Supported Fedora key is installed" operator="OR">
+        <criterion comment="Fedora 28 package gpg-pubkey-9db62fb1-59920156 is installed"
+        test_ref="test_package_gpgkey-9db62fb1-59920156_installed" />
+        <criterion comment="Fedora 27 package gpg-pubkey-f5282ee4-58ac92a3 is installed"
+        test_ref="test_package_gpgkey-f5282ee4-58ac92a3_installed" />
+      </criteria>
     </criteria>
   </definition>
 
