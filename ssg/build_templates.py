@@ -29,6 +29,19 @@ from create_audit_rules_execution import AuditRulesExecutionGenerator
 
 
 class Builder(object):
+    """
+    Class for building all templated content for a given product.
+
+    To generate, pass the combined build_config_yaml and product_yaml into
+    the constructor, use set_langs to set output languages, specify the
+    input, output, and shared directories, and then call the one of the
+    following functions:
+
+        list_inputs() -- to generate a list of inputs into the build process
+        list_outputs() -- to generate a list of outputs from the build process
+        build() -- to perform a build
+    """
+
     def __init__(self, env_yaml):
         self.input_dir = None
         self.template_dir = None
@@ -64,14 +77,24 @@ class Builder(object):
             os.path.join(root_dir, "shared", "templates")
 
     def set_langs(self, langs):
+        """
+        Set the languages to be generated for the given template
+        """
         self.langs = langs
 
     def set_input_dir(self, input_dir):
+        """
+        Specifies the input directory to find templated information in
+        """
         self.input_dir = input_dir
         self.template_dir = input_dir
         self.csv_dir = os.path.join(input_dir, "csv")
 
     def _get_csv_list(self):
+        """
+        Returns a list containing all CSV files from the internal CSV
+        directory.
+        """
         csvs = []
 
         if not os.path.isdir(self.csv_dir):
@@ -94,6 +117,11 @@ class Builder(object):
         return csvs
 
     def _get_generator_for_csv(self, csv_filename):
+        """
+        For a given CSV file, return the corresponding template generator.
+
+        Exits if no corresponding template generator exists.
+        """
         try:
             return self.script_dict[csv_filename]
 
@@ -105,9 +133,17 @@ class Builder(object):
             sys.exit(1)
 
     def _deduplicate(self, files):
+        """
+        Returns the deduplicated set of input files.
+        """
         return set(os.path.realpath(file_) for file_ in files)
 
     def build(self):
+        """
+        Builds all template files for the specified languages, writing
+        the output to the correct build directories.
+        """
+
         for lang in self.langs:
             dir_ = os.path.join(self.output_dir, lang)
             if not os.path.exists(dir_):
@@ -128,6 +164,13 @@ class Builder(object):
                 generator.csv_map(csv_filepath, language=lang)
 
     def get_file_list(self, action):
+        """
+        For a given action (INPUT or OUTPUT), get the list of
+        files associated with building the templated content for
+        all languages.
+
+        Returns a set of all such files.
+        """
         assert(action in [ActionType.INPUT, ActionType.OUTPUT])
 
         list_ = []
@@ -156,9 +199,15 @@ class Builder(object):
         return self._deduplicate(list_)
 
     def list_inputs(self):
+        """
+        Write the list of input files to STDOUT.
+        """
         for file_ in self.get_file_list(ActionType.INPUT):
             print(file_)
 
     def list_outputs(self):
+        """
+        Write the list of output files to STDOUT.
+        """
         for file_ in self.get_file_list(ActionType.OUTPUT):
             print(file_)

@@ -17,6 +17,10 @@ console_width = 80
 
 
 class RuleStats(object):
+    """
+    Class representing the content of a rule for statistics generation
+    purposes.
+    """
     def __init__(self, rid=None, roval=None,
                  rbash_fix=None, ransible_fix=None,
                  rpuppet_fix=None, ranaconda_fix=None,
@@ -34,6 +38,11 @@ class RuleStats(object):
 
 
 class XCCDFBenchmark(object):
+    """
+    Class for processing an XCCDF benchmark to generate
+    statistics about the profiles contained within it.
+    """
+
     def __init__(self, filepath):
         self.tree = None
         try:

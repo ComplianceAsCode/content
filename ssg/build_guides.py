@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import os
 import sys
+from collections import namedtuple
 
 from .shims import subprocess_check_output, Queue
 from .xccdf import get_profile_choices_for_input, get_profile_short_id
@@ -11,6 +12,14 @@ from .constants import OSCAP_DS_STRING, OSCAP_PATH
 
 
 def get_path_args(args):
+    """
+    Return a namedtuple of (input_path, input_basename, path_base,
+    output_dir) from an argparse containing args.input and args.output.
+    """
+
+    paths = namedtuple('paths', ['input_path', 'input_basename',
+                                 'path_base', 'output_dir'])
+
     input_path = os.path.abspath(args.input)
 
     output_dir = os.path.abspath(args.output)
@@ -23,7 +32,7 @@ def get_path_args(args):
     elif path_base.endswith("-xccdf"):
         path_base = path_base[:-6]
 
-    return input_path, input_basename, path_base, output_dir
+    return paths(input_path, input_basename, path_base, output_dir)
 
 
 def generate_for_input_content(input_content, benchmark_id, profile_id):
@@ -44,6 +53,13 @@ def generate_for_input_content(input_content, benchmark_id, profile_id):
 
 
 def builder(queue):
+    """
+    Fetch from a queue of tasks, process tasks until the queue is empty.
+    Each task is processed with generate_for_input_content, and the
+    guide is written as output.
+
+    Raises: when an error occurred when processing a task.
+    """
     while True:
         try:
             benchmark_id, profile_id, input_path, guide_path = \
@@ -129,6 +145,11 @@ def _get_guide_filename(path_base, profile_id, benchmark_id, benchmarks):
 
 def get_output_guide_paths(benchmarks, benchmark_profile_pairs, path_base,
                            output_dir):
+    """
+    Return a list of guide paths containing guides for each non-blacklisted
+    profile_id in a benchmark.
+    """
+
     guide_paths = []
 
     for benchmark_id, profile_id, _ in benchmark_profile_pairs:
@@ -146,10 +167,20 @@ def get_output_guide_paths(benchmarks, benchmark_profile_pairs, path_base,
 
 def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
                output_dir):
+    """
+    For each benchmark and profile in the benchmark, create a queue of
+    tasks for later processing. A task is a named tuple (benchmark_id,
+    profile_id, input_path, guide_path).
+
+    Returns: queue of tasks.
+    """
+
     index_links = []
     index_options = {}
     index_initial_src = None
     queue = Queue.Queue()
+
+    task = namedtuple('task', ['benchmark_id', 'profile_id', 'input_path', 'guide_path'])
 
     for benchmark_id, profile_id, profile_title in benchmark_profile_pairs:
         if _is_blacklisted_profile(profile_id):
@@ -177,7 +208,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
         if index_initial_src is None:
             index_initial_src = guide_filename
 
-        queue.put((benchmark_id, profile_id, input_path, guide_path))
+        queue.put(task(benchmark_id, profile_id, input_path, guide_path))
 
     return index_links, index_options, index_initial_src, queue
 
