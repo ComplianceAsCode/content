@@ -9,7 +9,6 @@ description: "This profile reflects mandatory configuration controls identified\
     \ Systems."
 
 selections:
-    - installed_OS_is_certified
     - grub2_audit_argument
     - service_auditd_enabled
     - grub2_enable_fips_mode
@@ -131,7 +130,7 @@ selections:
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_su
     - audit_rules_session_events
-    - ensure_redhat_gpgkey_installed
+    - ensure_fedora_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
     - ensure_gpgcheck_local_packages
@@ -142,4 +141,3 @@ selections:
     - audit_rules_kernel_module_loading_insmod
     - audit_rules_kernel_module_loading_modprobe
     - audit_rules_kernel_module_loading_rmmod
-    - security_patches_up_to_date
