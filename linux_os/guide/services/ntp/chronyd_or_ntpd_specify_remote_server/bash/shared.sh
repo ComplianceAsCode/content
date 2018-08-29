@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
 . /usr/share/scap-security-guide/remediation_functions
 populate var_multiple_time_servers
 
@@ -8,4 +8,4 @@ rhel7_ensure_there_are_servers_in_ntp_compatible_config_file
 config_file="/etc/ntp.conf"
 /usr/sbin/pidof ntpd || config_file="/etc/chrony.conf"
 
-[ "$(grep -c '^server' "$config_file")" -gt 1 ] || rhel7_ensure_there_are_servers_in_ntp_compatible_config_file "$config_file" "$var_multiple_time_servers"
+grep -q ^server "$config_file" || rhel7_ensure_there_are_servers_in_ntp_compatible_config_file "$config_file" "$var_multiple_time_servers"

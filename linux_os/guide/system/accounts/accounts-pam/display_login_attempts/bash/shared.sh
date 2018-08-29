@@ -1,8 +1,8 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel, multi_platform_fedora
 
 {{%- if product == "rhel6" -%}}
 sed -i --follow-symlinks '/pam_limits.so/a session\t    required\t  pam_lastlog.so showfailed' /etc/pam.d/system-auth
-{{%- else -%}}
+{{% else %}}
 if $(grep -q "^session.*pam_lastlog.so" /etc/pam.d/postlogin) ; then
 	sed -i --follow-symlinks "/pam_lastlog.so/d" /etc/pam.d/postlogin
 fi

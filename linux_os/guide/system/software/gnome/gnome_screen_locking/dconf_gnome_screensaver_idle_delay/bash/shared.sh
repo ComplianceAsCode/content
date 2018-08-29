@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
 . /usr/share/scap-security-guide/remediation_functions
 populate inactivity_timeout_value
 
