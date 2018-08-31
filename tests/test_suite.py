@@ -8,6 +8,9 @@ import os.path
 import time
 import sys
 
+ssg_dir = os.path.join(os.path.dirname(__file__), "..")
+sys.path.append(ssg_dir)
+
 from ssg_test_suite.log import LogHelper
 import ssg_test_suite.oscap
 import ssg_test_suite.test_env
@@ -108,6 +111,12 @@ def parse_args():
                                    "ask for subset of all rules this way. (If you "
                                    "type ipv6 as a target, all rules containing "
                                    "ipv6 within id will be performed."))
+    parser_rule.add_argument("--debug",
+                             dest="manual_debug",
+                             action="store_true",
+                             help=("If an error is encountered, all execution "
+                                   "on the VM / container will pause to allow "
+                                   "debugging."))
     parser_rule.add_argument("--dontclean",
                              dest="dont_clean",
                              action="store_true",
