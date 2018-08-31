@@ -16,20 +16,26 @@ For the Test Suite to work, you need to have libvirt domains prepared for
 testing.
 SSG Test Suite currently does not provide automated provisioning of domains.
 You can use kickstart usable for Red Hat Enterprise Linux 7 (and of course
-CentOS 7) in `kickstarts` directory, which installs machine to be capable of
-building openscap and builds and installs the latest upstream code.
+CentOS 7) and Fedora in `kickstarts` directory, which installs machine capable of
+running tests with SSG Test Suite.
 
 If you want to use your own domain, make sure `openscap-1.2.15` and
 `qemu-guest-agent` are installed there, `root` is accessible via ssh and that
-`yum` command is able to install packages. For testing Ansible remediations, it
-is sufficient to have `root` accessible via ssh on the libvirt domain and have
-Ansible installed on the host machine.
+packages packages can be installed (for RHEL7, it means subscription enabled).
+For testing Ansible remediations, it is sufficient to have `root` accessible via
+ssh on the libvirt domain and have Ansible installed on the host machine.
 
-### Domain preparation (example CentOS)
+### Domain preparation
+
 
 1. Install domain, using `kickstarts/rhel_centos_7.cfg`
-   Typically, you supply a boot option `inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.
-   To create a CentOS 7 machine named like our examples, run:
+
+   To install the domain via graphical install, supply boot option:  
+   `inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.  
+   And the installation will be guided by the kickstart.
+
+   To install the domain via command line, see example command below:  
+   1. To install a CentOS VM:
     ```bash
     virt-install -n ssg-test-suite-centos -r 4096 --vcpus=4 \
     --os-variant=rhel7 --accelerate \
@@ -37,9 +43,13 @@ Ansible installed on the host machine.
     -x "inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg" \
     --location http://mirror.centos.org/centos/7/os/x86_64
     ```
+   2. To setup a Fedora machine, change the following parameters:  
+     `--os-variant=fedora28`  
+     `--location https://dl.fedoraproject.org/pub/fedora/linux/releases/28/Everything/x86_64/os`  
+     NOTE: The Everything compose is necessary to be able to install `openscap-scanner` during kickstart installation.
 1. Import ssh key to the machine and make sure that you can use them to log in
    as the `root` superuser.
-1. Setup repo, so machine can install and uninstall packages.
+1. In case of installing a RHEL domain, setup subscription so that the machine can install and uninstall packages.
 
 *NOTE*: Create snapshot after all these steps, to manually revert in case the
 test suite breaks something and fails to revert. Do not use snapshot names
