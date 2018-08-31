@@ -24,7 +24,9 @@ def iterate_over_rules():
         leaf_dir = os.path.basename(dir_name)
         rel_dir = '.' + dir_name[len(_DIR):]
         if leaf_dir.startswith('rule_'):
-            result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, files)
+            # use only .sh files
+            scripts = filter(lambda x: x.endswith(".sh"), files)
+            result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, scripts)
             yield result
 
 
