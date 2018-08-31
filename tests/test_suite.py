@@ -75,24 +75,16 @@ def parse_args():
         "or remediation done by using remediation roles "
         "that are saved to disk beforehand.")
 
-    subparsers = parser.add_subparsers(dest='subparser_name',
-                                       help='Subcommands: profile, rule')
+    subparsers = parser.add_subparsers(dest="subparser_name",
+                                       help="Subcommands: profile, rule")
     subparsers.required = True
 
-    parser_profile = subparsers.add_parser('profile',
-                                           help=('Testing profile-based '
-                                                 'remediation applied on already '
-                                                 'installed machine'),
+    parser_profile = subparsers.add_parser("profile",
+                                           help=("Testing profile-based "
+                                                 "remediation applied on already "
+                                                 "installed machine"),
                                            parents=[common_parser])
     parser_profile.set_defaults(func=ssg_test_suite.profile.perform_profile_check)
-    parser_rule = subparsers.add_parser('rule',
-                                        help=('Testing remediations of particular '
-                                              'rule for various situations - '
-                                              'currently not supported '
-                                              'by openscap!'),
-                                        parents=[common_parser])
-    parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
-
     parser_profile.add_argument("target",
                                 nargs="+",
                                 metavar="DSPROFILE",
@@ -100,6 +92,13 @@ def parse_args():
                                       "profile of particular benchmark will be "
                                       "evaluated."))
 
+    parser_rule = subparsers.add_parser("rule",
+                                        help=("Testing remediations of particular "
+                                              "rule for various situations - "
+                                              "currently not supported "
+                                              "by openscap!"),
+                                        parents=[common_parser])
+    parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
     parser_rule.add_argument("target",
                              nargs="+",
                              metavar="RULE",

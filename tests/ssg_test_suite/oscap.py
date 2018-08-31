@@ -575,6 +575,9 @@ class Checker(object):
     def _test_target(self, target):
         raise NotImplementedError()
 
+    def _run_test(self, profile, test_data):
+        raise NotImplementedError()
+
     def start(self):
         self.executed_tests = 0
 
