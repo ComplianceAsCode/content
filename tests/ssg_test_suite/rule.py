@@ -64,12 +64,8 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
 
 def _run_with_stdout_logging(command, args, log_file):
     log_file.write("{0} {1}\n".format(command, " ".join(args)))
-    try:
-        subprocess.check_call(
-            (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
-        return 0
-    except subprocess.CalledProcessError as e:
-        return e.returncode
+    subprocess.check_call(
+        (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
 
 
 def _send_scripts(domain_ip):
