@@ -707,6 +707,29 @@ modules have been created, as well as three utilities:
 
 For more information about these utilities, please see their help text.
 
+To interact with `rule.yml` files and the OVALs inside a rule directory, the
+following utilities are provided:
+
+===== `utils/mod_prodtype.py`
+
+This utility modifies the prodtype field of rules. It supports several
+commands:
+
+   - `mod_prodtype.py <rule_id> list` - list the computed and actual prodtype
+     of the rule specified by `rule_id`.
+   - `mod_prodtype.py <rule_id> add <product> [<product> ...]` - add additional
+     products to the prodtype of the rule specified by `rule_id`.
+   - `mod_prodtype.py <rule_id> remove <product> [<product> ...]` - remove products
+     to the prodtype of the rule specified by `rule_id`.
+   - `mod_prodtype.py <rule_id> replace <replacement> [<replacement> ...]` - do
+     the specified replacement transformations. A replacement transformation is
+     of the form `match~replace` where `match` and `replace` are a comma
+     separated list of products. If all of the products in `match` exist in the
+     original `prodtype` of the rule, they are removed and the products in
+     `replace` are added.
+
+This utility requires an up to date JSON tree created by `rule_dir_json.py`.
+
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
