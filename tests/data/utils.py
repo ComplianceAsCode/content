@@ -25,8 +25,12 @@ def iterate_over_rules():
     for dir_name, directories, files in os.walk(_DIR):
         leaf_dir = os.path.basename(dir_name)
         rel_dir = '.' + dir_name[len(_DIR):]
+        print(rel_dir)
         if leaf_dir.startswith('rule_'):
             result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, files)
+            yield result
+        if rel_dir.startswith('./templates/'):
+            result = Rule(rel_dir, leaf_dir, files)
             yield result
 
 
