@@ -200,11 +200,10 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         runner = runner_cls(
             self.test_env, profile, self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean)
-
         if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
             return False
 
-        supported_and_available_remediations = self._get_available_remediations()
+        supported_and_available_remediations = self._get_available_remediations(scenario)
         if (scenario.context not in ['fail', 'error']
                 or not supported_and_available_remediations):
             return True
@@ -220,7 +219,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
             msg = ("The initial scan failed for rule '{}'."
                    .format(rule_id))
             logging.error(msg)
-            return False
+        return success
 
     def _get_available_remediations(self, scenario):
         is_supported = set(['all'])
@@ -236,7 +235,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
             msg = ("The remediation failed for rule '{}'."
                    .format(rule_id))
             logging.error(msg)
-            return success
+        return success
 
     def _final_scan_went_ok(self, runner, rule_id):
         success = runner.run_stage_with_context('final', 'pass')
