@@ -149,17 +149,21 @@ def _matches_target(rule_dir, targets):
         return False
 
 
-def _get_scenarios(rule_dir, scripts):
+def _get_scenarios(remote_dir, rule):
     """ Returns only valid scenario files, rest is ignored (is not meant
     to be executed directly.
     """
+
+    remote_rule_dir = os.path.join(remote_dir, rule.directory)
+    rule_dir = os.path.join(data.DATA_DIR, rule.directory)
+    scripts = rule.files
 
     scenarios = []
     for script in scripts:
         script_context = _get_script_context(script)
         if script_context is not None:
             script_params = _parse_parameters(os.path.join(rule_dir, script))
-            scenarios += [Scenario(script, script_context, script_params)]
+            scenarios += [(Scenario(script, script_context, script_params), remote_rule_dir, rule.id)]
     return scenarios
 
 
@@ -266,15 +270,12 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
             logging.error("No matching rule ID found for '{0}'".format(target))
 
     def _check_rule(self, rule, remote_dir, state):
-        remote_rule_dir = os.path.join(remote_dir, rule.directory)
-        local_rule_dir = os.path.join(data.DATA_DIR, rule.directory)
 
         logging.info(rule.id)
 
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
-        args_list = [(s, remote_rule_dir, rule.id)
-                     for s in _get_scenarios(local_rule_dir, rule.files)]
+        args_list = _get_scenarios(remote_dir, rule)
         state.map_on_top(self._check_rule_scenario, args_list)
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id):
