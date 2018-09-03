@@ -13,6 +13,7 @@ description: |-
     similar to the one mandated by US National Security Systems.
 
 selections:
+    - installed_OS_is_certified
     - grub2_audit_argument
     - service_auditd_enabled
     - grub2_enable_fips_mode
