@@ -1,9 +1,11 @@
 import os
 import os.path
+import re
 import tarfile
 import collections
 
 _DIR = os.path.dirname(__file__)
+_TEMPLATE_SCENARIOS_DIR = os.path.join(_DIR, "templates")
 _TAR_BASENAME = 'data.tar'
 _SSG_PREFIX = 'xccdf_org.ssgproject.content_'
 
@@ -43,3 +45,40 @@ def create_tarball(tar_dir):
     with tarfile.TarFile.open(archive_path, 'w') as tarball:
         tarball.add(_DIR, arcname='.', exclude=_exclude_utils)
     return archive_path
+
+
+def _get_template_dir(template):
+    """Return the dir with test scenarios for a template"""
+    template_dir = os.path.join(_TEMPLATE_SCENARIOS_DIR, template)
+
+    if not os.path.exists(template_dir):
+        msg = "Template scenario directory {} not found, expected {} to exist.".format(template, template_dir)
+        raise RuntimeError(msg)
+
+    return template_dir
+
+
+def _get_template_rule_name(script):
+    """Return name of the script.
+    Used to get rule to check template scenario.
+    """
+    result = re.search('(.*)\.[^.]*\.[^.]*$', script)
+    if result is None:
+        return None
+    return result.group(1)
+
+
+def get_template_rules(template):
+    """ Return list of rules in template tests."""
+
+    template_dir = _get_template_dir(template)
+
+    rules = []
+    for scenario_file in os.listdir(template_dir):
+        files = []
+        if os.path.isfile(os.path.join(template_dir, scenario_file)):
+            files.append(scenario_file)
+            rel_dir = '.' + template_dir[len(_DIR):]
+            rules.append(Rule(rel_dir, _SSG_PREFIX + _get_template_rule_name(scenario_file), files))
+
+    return rules

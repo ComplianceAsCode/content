@@ -138,6 +138,14 @@ def _get_script_context(script):
     return result.group(1)
 
 
+def _get_script_template(script):
+    """Return name of templated scenarios."""
+    result = re.search('(.*)\.template$', script)
+    if result is None:
+        return None
+    return result.group(1)
+
+
 def _matches_target(rule_dir, targets):
     if 'ALL' in targets:
         # we want to have them all
@@ -160,10 +168,19 @@ def _get_scenarios(remote_dir, rule):
 
     scenarios = []
     for script in scripts:
+        # script scenario is either a scenario with context, or a template test scenario
         script_context = _get_script_context(script)
+        template = _get_script_template(script)
         if script_context is not None:
             script_params = _parse_parameters(os.path.join(rule_dir, script))
             scenarios += [(Scenario(script, script_context, script_params), remote_rule_dir, rule.id)]
+        elif template is not None:
+            # Inject template scenarios
+            template_rules = data.get_template_rules(template)
+
+            for template_rule in template_rules:
+                # TODO: Remember if we have already loaded scenarios for a template test
+                scenarios += _get_scenarios(remote_dir, template_rule)
     return scenarios
 
 
