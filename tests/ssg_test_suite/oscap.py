@@ -510,6 +510,11 @@ class OscapRuleRunner(RuleRunner):
         self.command_options += ['--remediate']
         return self.make_oscap_call()
 
+    def final(self):
+        """ There is no need to run final scan again - result won't be different
+        to what we already have in remediation step."""
+        return True
+
 
 class BashRuleRunner(RuleRunner):
     def initial(self):
