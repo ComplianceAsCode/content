@@ -24,7 +24,12 @@ def iterate_over_rules():
         leaf_dir = os.path.basename(dir_name)
         rel_dir = '.' + dir_name[len(_DIR):]
         if leaf_dir.startswith('rule_'):
-            # use only .sh files
+            # Use only .sh files
+            # We care only about '.sh' files because only these files
+            # are supposed to contain bash scripts with test cases
+            # and we can expect them to be executable.
+            # Other files in rule directories are editor swap files
+            # or other content than a test case.
             scripts = filter(lambda x: x.endswith(".sh"), files)
             result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, scripts)
             yield result
