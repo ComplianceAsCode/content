@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="auditd_audispd_encrypt_sent_records" version="1">
+    <metadata>
+      <title>Kerberos 5 Authentication and Encryption in Audit Event Multiplexor (audispd) Is Activated</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>enable_krb5 setting in /etc/audisp/audisp-remote.conf is set to 'yes'</description>
+    </metadata>
+
+    <criteria>
+      <criterion comment="enable_krb5 setting in audisp-remote.conf" test_ref="test_auditd_audispd_encrypt_sent_records" />
+    </criteria>
+
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="enable_krb5 setting in audisp-remote.conf" id="test_auditd_audispd_encrypt_sent_records" version="1">
+    <ind:object object_ref="object_auditd_audispd_encrypt_sent_records" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_auditd_audispd_encrypt_sent_records" version="1">
+    <ind:filepath>/etc/audisp/audisp-remote.conf</ind:filepath>
+    <!-- Allow only space (exactly) as delimiter -->
+    <!-- Require at least one space before and after the equal sign -->
+    <ind:pattern operation="pattern match">^[ ]*enable_krb5[ ]+=[ ]+yes[ ]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
