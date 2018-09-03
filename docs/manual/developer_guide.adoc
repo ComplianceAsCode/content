@@ -730,6 +730,36 @@ commands:
 
 This utility requires an up to date JSON tree created by `rule_dir_json.py`.
 
+===== `utils/mod_checks.py`
+
+This utility modifies the `<affected>` element of an OVAL check. It supports
+several commands on a given rule:
+
+   - `mod_checks.py <rule_id> list` - list all OVALs, their computed products,
+     and their actual platforms.
+   - `mod_checks.py <rule_id> delete <product>` - delete the OVAL for the
+     the specified product.
+   - `mod_checks.py <rule_id> make_shared <product>` - moves the product OVAL
+     to the shared OVAL (e.g., `rhel7.xml` to `shared.xml`).
+   - `mod_checks.py <rule_id> diff <product> <product>` - Performs a diff
+     between two OVALs (product can be `shared` to diff against the shared
+     OVAL).
+
+In addition, the `mod_checks.py` utility supports modifying the shared OVAL
+with the following commands:
+
+   - `mod_checks.py <rule_id> add <platform> [<platform> ...]` - adds the
+     specified platforms to the shared OVAL for the rule specified by
+     `rule_id`.
+   - `mod_checks.py <rule_id> remove <platform> [<platform> ...]` - removes
+     the specified platforms from the shared OVAL.
+   - `mod_checks.py <rule_id> replace <replacement> [<replacement ...]` - do
+     the specified replacement against the platforms in the shared OVAL. See
+     the description of `replace` under `mod_prodtype.py` for more
+     information about the format of a replacement.
+
+This utility requires an up to date JSON tree created by `rule_dir_json.py`.
+
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
