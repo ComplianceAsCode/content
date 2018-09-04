@@ -180,19 +180,21 @@ def parse_from_file(file_path, env_yaml):
 
     # Assignment automatically escapes shell characters for XML
     for line in fix_file_lines:
-        if line.startswith('#'):
-            try:
-                (key, value) = line.strip('#').split('=')
-                if key.strip() in REMEDIATION_CONFIG_KEYS:
-                    config[key.strip()] = value.strip()
-                else:
-                    if not line.startswith(FILE_GENERATED_HASH_COMMENT):
-                        mod_file.append(line)
-            except ValueError:
-                if not line.startswith(FILE_GENERATED_HASH_COMMENT):
-                    mod_file.append(line)
-        else:
-            mod_file.append(line)
+        if line.startswith(FILE_GENERATED_HASH_COMMENT):
+            continue
+
+        if line.startswith('#') and line.count('=') == 1:
+            (key, value) = line.strip('#').split('=')
+            if key.strip() in REMEDIATION_CONFIG_KEYS:
+                config[key.strip()] = value.strip()
+                continue
+
+        # If our parsed line wasn't a config item, add it to the
+        # returned file contents. This includes when the line
+        # begins with a '#' and contains an equals sign, but
+        # the "key" isn't one of the known keys from
+        # REMEDIATION_CONFIG_KEYS.
+        mod_file.append(line)
 
     remediation = namedtuple('remediation', ['contents', 'config'])
     return remediation(mod_file, config)
