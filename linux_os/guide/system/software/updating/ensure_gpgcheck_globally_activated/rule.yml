@@ -2,13 +2,13 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,fedora,ol7
 
-title: 'Ensure gpgcheck Enabled In Main Yum Configuration'
+title: 'Ensure gpgcheck Enabled In Main {{{ pkg_manager }}} Configuration'
 
 description: |-
     The <tt>gpgcheck</tt> option controls whether
     RPM packages' signatures are always checked prior to installation.
-    To configure yum to check package signatures before installing
-    them, ensure the following line appears in <tt>/etc/yum.conf</tt> in
+    To configure {{{ pkg_manager }}} to check package signatures before installing
+    them, ensure the following line appears in <tt>{{{ pkg_manager_config_file }}}</tt> in
     the <tt>[main]</tt> section:
     <pre>gpgcheck=1</pre>
 
@@ -38,8 +38,8 @@ references:
 ocil_clause: 'GPG checking is not enabled'
 
 ocil: |-
-    To determine whether <tt>yum</tt> is configured to use <tt>gpgcheck</tt>,
-    inspect <tt>/etc/yum.conf</tt> and ensure the following appears in the
+    To determine whether <tt>{{{ pkg_manager }}}</tt> is configured to use <tt>gpgcheck</tt>,
+    inspect <tt>{{{ pkg_manager_config_file }}}</tt> and ensure the following appears in the
     <tt>[main]</tt> section:
     <pre>gpgcheck=1</pre>
     A value of <tt>1</tt> indicates that <tt>gpgcheck</tt> is enabled. Absence of a
