@@ -171,6 +171,9 @@ def parse_from_file(file_path, env_yaml):
     we need a env_yaml context to process these. In practice, no remediations
     use jinja in the configuration, so for extracting only the configuration,
     env_yaml can be an abritrary product.yml dictionary.
+
+    If the logic of configuration parsing changes significantly, please also
+    update ssg.fixes.parse_platform(...).
     """
 
     mod_file = []
