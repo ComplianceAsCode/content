@@ -7,7 +7,9 @@ import sys
 
 from .jinja import extract_substitutions_dict_from_template, process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
-                        JINJA_MACROS_BASE_DEFINITIONS, JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
+                        PKG_MANAGER_TO_CONFIG_FILE,
+                        JINJA_MACROS_BASE_DEFINITIONS,
+                        JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
 from .constants import DEFAULT_UID_MIN
 
 try:
@@ -55,10 +57,13 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
 
 def _get_implied_properties(existing_properties):
     result = dict()
-    if ("pkg_manager" in existing_properties and
-            "pkg_system" not in existing_properties):
+    if "pkg_manager" in existing_properties:
         pkg_manager = existing_properties["pkg_manager"]
-        result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
+        if "pkg_system" not in existing_properties:
+            result["pkg_system"] = PKG_MANAGER_TO_SYSTEM[pkg_manager]
+        if "pkg_manager_config_file" not in existing_properties:
+            if pkg_manager in PKG_MANAGER_TO_CONFIG_FILE:
+                result["pkg_manager_config_file"] = PKG_MANAGER_TO_CONFIG_FILE[pkg_manager]
 
     if "uid_min" not in existing_properties:
         result["uid_min"] = DEFAULT_UID_MIN
