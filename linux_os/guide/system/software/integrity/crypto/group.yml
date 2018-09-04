@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'System Cryptographic Policies'
+
+description: |-
+    Linux has the capability to centrally configure cryptographic polices. The command
+    <tt>update-crypto-policies</tt> is used to set the policy applicable for the various
+    cryptographic back-ends, such as SSL/TLS libraries. The configured cryptographic
+    policies will be the default policy used by these backends unless the application
+    user configures them otherwise. When the system has been configured to use the
+    centralized cryptographic policies, the administrator is assured that any application
+    that utilizes the supported backends will follow a policy that adheres to the
+    configured profile.
+
+    Currently the supported backends are:
+    <ul>
+    <li>GnuTLS library</li>
+    <li>OpenSSL library</li>
+    <li>NSS library</li>
+    <li>OpenJDK</li>
+    <li>Libkrb5</li>
+    <li>BIND</li>
+    <li>OpenSSH</li>
+    </ul>
+    Applications and languages which rely on any of these backends will follow the
+    system policies as well. Examples are apache httpd, nginx, php, and others.
