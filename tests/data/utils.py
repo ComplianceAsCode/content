@@ -18,13 +18,18 @@ def iterate_over_rules():
         Named tuple having these fields:
             directory -- absolute path to the rule directory
             id -- full rule id as it is present in datastream
-            files -- list of files in the directory
+            files -- list of executable .sh files in the
+            directory containing the test scenarios in Bash
     """
     for dir_name, directories, files in os.walk(_DIR):
         leaf_dir = os.path.basename(dir_name)
         rel_dir = '.' + dir_name[len(_DIR):]
         if leaf_dir.startswith('rule_'):
-            result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, files)
+            # Filter out everything except the shell test scenarios.
+            # Other files in rule directories are editor swap files
+            # or other content than a test case.
+            scripts = filter(lambda x: x.endswith(".sh"), files)
+            result = Rule(rel_dir, _SSG_PREFIX + leaf_dir, scripts)
             yield result
 
 
