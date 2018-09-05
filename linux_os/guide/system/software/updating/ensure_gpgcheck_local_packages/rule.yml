@@ -5,9 +5,9 @@ prodtype: rhel7,fedora
 title: 'Ensure gpgcheck Enabled for Local Packages'
 
 description: |-
-    <tt>Yum</tt> should be configured to verify the signature(s) of local packages
-    prior to installation. To configure <tt>yum</tt> to verify signatures of local
-    packages, set the <tt>localpkg_gpgcheck</tt> to <tt>1</tt> in <tt>/etc/yum.conf</tt>.
+    <tt>{{{ pkg_manager }}}</tt> should be configured to verify the signature(s) of local packages
+    prior to installation. To configure <tt>{{{ pkg_manager }}}</tt> to verify signatures of local
+    packages, set the <tt>localpkg_gpgcheck</tt> to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
 
 rationale: |-
     Changes to any software components can have significant effects to the overall security
@@ -36,6 +36,6 @@ ocil_clause: 'gpgcheck is not enabled or configured correctly to verify local pa
 ocil: |-
     To verify that <tt>localpkg_gpgcheck</tt> is configured properly, run the following
     command:
-    <pre>$ grep localpkg_gpgcheck /etc/yum.conf</pre>
+    <pre>$ grep localpkg_gpgcheck {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:
     <pre>localpkg_gpgcheck=1</pre>
