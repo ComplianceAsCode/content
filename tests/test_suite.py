@@ -8,6 +8,9 @@ import os.path
 import time
 import sys
 
+ssg_dir = os.path.join(os.path.dirname(__file__), "..")
+sys.path.append(ssg_dir)
+
 from ssg_test_suite.log import LogHelper
 import ssg_test_suite.oscap
 import ssg_test_suite.test_env
@@ -75,24 +78,16 @@ def parse_args():
         "or remediation done by using remediation roles "
         "that are saved to disk beforehand.")
 
-    subparsers = parser.add_subparsers(dest='subparser_name',
-                                       help='Subcommands: profile, rule')
+    subparsers = parser.add_subparsers(dest="subparser_name",
+                                       help="Subcommands: profile, rule")
     subparsers.required = True
 
-    parser_profile = subparsers.add_parser('profile',
-                                           help=('Testing profile-based '
-                                                 'remediation applied on already '
-                                                 'installed machine'),
+    parser_profile = subparsers.add_parser("profile",
+                                           help=("Testing profile-based "
+                                                 "remediation applied on already "
+                                                 "installed machine"),
                                            parents=[common_parser])
     parser_profile.set_defaults(func=ssg_test_suite.profile.perform_profile_check)
-    parser_rule = subparsers.add_parser('rule',
-                                        help=('Testing remediations of particular '
-                                              'rule for various situations - '
-                                              'currently not supported '
-                                              'by openscap!'),
-                                        parents=[common_parser])
-    parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
-
     parser_profile.add_argument("target",
                                 nargs="+",
                                 metavar="DSPROFILE",
@@ -100,6 +95,13 @@ def parse_args():
                                       "profile of particular benchmark will be "
                                       "evaluated."))
 
+    parser_rule = subparsers.add_parser("rule",
+                                        help=("Testing remediations of particular "
+                                              "rule for various situations - "
+                                              "currently not supported "
+                                              "by openscap!"),
+                                        parents=[common_parser])
+    parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
     parser_rule.add_argument("target",
                              nargs="+",
                              metavar="RULE",
@@ -109,6 +111,12 @@ def parse_args():
                                    "ask for subset of all rules this way. (If you "
                                    "type ipv6 as a target, all rules containing "
                                    "ipv6 within id will be performed."))
+    parser_rule.add_argument("--debug",
+                             dest="manual_debug",
+                             action="store_true",
+                             help=("If an error is encountered, all execution "
+                                   "on the VM / container will pause to allow "
+                                   "debugging."))
     parser_rule.add_argument("--dontclean",
                              dest="dont_clean",
                              action="store_true",

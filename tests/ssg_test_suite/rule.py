@@ -199,7 +199,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         runner_cls = ssg_test_suite.oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
         runner = runner_cls(
             self.test_env, profile, self.datastream, self.benchmark_id,
-            rule_id, scenario.script, self.dont_clean)
+            rule_id, scenario.script, self.dont_clean, self.manual_debug)
         if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
             return False
 
@@ -300,5 +300,6 @@ def perform_rule_check(options):
     checker.benchmark_id = options.benchmark_id
     checker.remediate_using = options.remediate_using
     checker.dont_clean = options.dont_clean
+    checker.manual_debug = options.manual_debug
 
     checker.test_target(options.target)

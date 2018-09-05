@@ -12,6 +12,8 @@ from ssg_test_suite.log import LogHelper
 from ssg_test_suite import test_env
 from ssg_test_suite import common
 
+from ssg.shims import input_func
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 _CONTEXT_RETURN_CODES = {'pass': 0,
@@ -230,6 +232,7 @@ class GenericRunner(object):
         self.stage = 'undefined'
 
         self.clean_files = False
+        self.manual_debug = False
         self._filenames_to_clean_afterwards = set()
 
         self.command_base = []
@@ -272,6 +275,11 @@ class GenericRunner(object):
             '--report', self.report_path,
         ])
         self._filenames_to_clean_afterwards.add(self.report_path)
+
+    def _wait_for_continue(self):
+        """ In case user requests to leave machine in failed state for hands
+        on debugging, ask for keypress to continue."""
+        input_func("Paused for manual debugging. Continue by pressing return.")
 
     def prepare_online_scanning_arguments(self):
         self.command_options.extend([
@@ -319,6 +327,8 @@ class GenericRunner(object):
             LogHelper.log_preloaded('pass')
         else:
             LogHelper.log_preloaded('fail')
+            if self.manual_debug:
+                self._wait_for_continue()
         return result
 
     @property
@@ -388,7 +398,7 @@ class ProfileRunner(GenericRunner):
 class RuleRunner(GenericRunner):
     def __init__(
             self, environment, profile, datastream, benchmark_id,
-            rule_id, script_name, dont_clean):
+            rule_id, script_name, dont_clean, manual_debug):
         super(RuleRunner, self).__init__(
             environment, profile, datastream, benchmark_id,
         )
@@ -397,6 +407,7 @@ class RuleRunner(GenericRunner):
         self.context = None
         self.script_name = script_name
         self.clean_files = not dont_clean
+        self.manual_debug = manual_debug
 
         self._oscap_output = ''
 
@@ -573,6 +584,9 @@ class Checker(object):
             self._run_test(profiles[0], test_data)
 
     def _test_target(self, target):
+        raise NotImplementedError()
+
+    def _run_test(self, profile, test_data):
         raise NotImplementedError()
 
     def start(self):
