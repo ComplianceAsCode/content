@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: fedora
+
+title: 'Configure System Cryptography Policy'
+
+description: |-
+    To configure the system cyptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
+    policy, run the following command:
+    <pre>$ sudo update-crypto-policies --set <sub idref="var_system_crypto_policy" /></pre>
+
+rationale: |-
+    Centralized cryptographic policies simplify applying secure ciphers across an operating system and
+    the applications that run on that operating system. Use of weak or untested encryption algorithms
+    undermines the purposes of utilizing encryption to protect data.
+
+severity: high
+
+ocil_clause: 'cryptographic policy is not configured or is configured incorrectly'
+
+ocil: |-
+    To verify that cryptography policy has been configured correctly, run the
+    following command:
+    <pre>$ update-crypto-policies --show</pre>
+    The output should return <pre><sub idref="var_system_crypto_policy" /></pre>.
