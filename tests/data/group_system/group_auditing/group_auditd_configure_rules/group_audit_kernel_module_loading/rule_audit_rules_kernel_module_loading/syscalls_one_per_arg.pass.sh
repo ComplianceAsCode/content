@@ -9,5 +9,3 @@ rm -f /etc/audit/rules.d/*
 
 # cut out irrelevant rules for this test
 sed '1,14d' test_audit.rules > /etc/audit/audit.rules
-cat /etc/audit/audit.rules
-true
