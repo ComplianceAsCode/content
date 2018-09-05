@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,fedora,ol7
 
-title: 'Ensure gpgcheck Enabled For All Yum Package Repositories'
+title: 'Ensure gpgcheck Enabled For All {{{ pkg_manager }}} Package Repositories'
 
 description: |-
     To ensure signature checking is not disabled for
@@ -33,7 +33,7 @@ references:
 ocil_clause: 'GPG checking is disabled'
 
 ocil: |-
-    To determine whether <tt>yum</tt> has been configured to disable
+    To determine whether <tt>{{{ pkg_manager }}}</tt> has been configured to disable
     <tt>gpgcheck</tt> for any repos,  inspect all files in
     <tt>/etc/yum.repos.d</tt> and ensure the following does not appear in any
     sections:
