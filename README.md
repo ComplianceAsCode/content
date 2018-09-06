@@ -40,9 +40,10 @@ some deployment scenarios bash is the only option.
 
 ### Why?
 
-This project is an attempt to allow multiple organizations to
-efficiently develop security content by avoiding redundancy, which is
-possible by taking advantage of the powerful build system of this project.
+We want multiple organizations to be able to efficiently develop security
+content. By taking advantage of the powerful build system of this project
+we avoid as much redundancy as possible.
+
 The build system combines the easy-to-edit YAML rule files with OVAL checks,
 Ansible task snippets, Bash fixes and other files. Templating is provided
 at every step to avoid boilerplate. Security identifiers
