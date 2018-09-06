@@ -41,7 +41,7 @@ some deployment scenarios bash is the only option.
 ### Why?
 
 We want multiple organizations to be able to efficiently develop security
-content. By taking advantage of the powerful build system of this project
+content. By taking advantage of the powerful build system of this project,
 we avoid as much redundancy as possible.
 
 The build system combines the easy-to-edit YAML rule files with OVAL checks,
@@ -250,7 +250,7 @@ You can also join the `#openscap` IRC channel on `chat.freenode.net`.
 
 This project started in 2011 as a collaboration between government agencies and
 commercial operating system vendors. The original name was SCAP Security Guide.
-The original scope was to create SCAP datastreams. Over time it grew into the
+The original scope was to create SCAP datastreams. Over time, it grew into the
 biggest open-source SCAP content project.
 
 The next few years saw the introduction of not just government-specific security
@@ -259,7 +259,7 @@ profiles but also commercial, such as PCI-DSS.
 Later, the industry starting moving towards different security content formats,
 such as Ansible, Puppet and Chef InSpec. The community reacted by evolving the
 tooling and helped transform SSG into a more general-purpose security content
-project. This change happened over time in 2017 and 2018. In September 2018 we
+project. This change happened over time in 2017 and 2018. In September 2018, we
 decided to change the name of the project to avoid confusion.
 
 We envision that the future will be format-agnostic. That's why opted for an
