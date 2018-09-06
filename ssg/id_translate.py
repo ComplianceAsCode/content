@@ -9,14 +9,13 @@ from .constants import OVALREFATTR_TO_TAG, OCILREFATTR_TO_TAG
 
 
 def _split_namespace(tag):
-    """
-    returns a namedtuple of (namespace, tag), removing any
-    fragment id from namespace
+    """returns a tuple of (namespace, tag),
+    removing any fragment id from namespace
     """
 
     if tag[0] == "{":
         namespace, name = tag[1:].split("}", 1)
-        return (namespace.split("#")[0], name)
+        return (namespace.split("#", 1)[0], name)
 
     return (None, tag)
 
