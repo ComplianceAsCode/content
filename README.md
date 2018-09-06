@@ -11,7 +11,8 @@
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
 The purpose of this project is to create *security policy content* for various
-platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, and others.
+platforms -- *Red Hat Enterprise Linux*, *Fedora*, *Ubuntu*, *Debian*, ... --
+as well as products -- *Firefox*, *Chromium*, *JRE*, ...
 Our aim is to make it as easy as possible to write new and maintain existing
 security content in all the commonly used formats.
 
@@ -39,9 +40,10 @@ some deployment scenarios bash is the only option.
 
 ### Why?
 
-This project is an attempt to allow multiple organizations to
-efficiently develop security content by avoiding redundancy, which is
-possible by taking advantage of the powerful build system of this project.
+We want multiple organizations to be able to efficiently develop security
+content. By taking advantage of the powerful build system of this project,
+we avoid as much redundancy as possible.
+
 The build system combines the easy-to-edit YAML rule files with OVAL checks,
 Ansible task snippets, Bash fixes and other files. Templating is provided
 at every step to avoid boilerplate. Security identifiers
@@ -243,6 +245,25 @@ The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/lis
 If you encounter issues with OpenSCAP or SCAP Workbench, use [https://www.redhat.com/mailman/listinfo/open-scap-list](https://www.redhat.com/mailman/listinfo/open-scap-list)
 
 You can also join the `#openscap` IRC channel on `chat.freenode.net`.
+
+## A little bit of history
+
+This project started in 2011 as a collaboration between government agencies and
+commercial operating system vendors. The original name was SCAP Security Guide.
+The original scope was to create SCAP datastreams. Over time, it grew into the
+biggest open-source SCAP content project.
+
+The next few years saw the introduction of not just government-specific security
+profiles but also commercial, such as PCI-DSS.
+
+Later, the industry starting moving towards different security content formats,
+such as Ansible, Puppet and Chef InSpec. The community reacted by evolving the
+tooling and helped transform SSG into a more general-purpose security content
+project. This change happened over time in 2017 and 2018. In September 2018, we
+decided to change the name of the project to avoid confusion.
+
+We envision that the future will be format-agnostic. That's why opted for an
+abstraction instead of using XCCDF for the input format.
 
 ## Further reading
 
