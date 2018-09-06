@@ -1,8 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-from collections import namedtuple
-
 from .xml import ElementTree
 from .constants import oval_namespace as oval_ns
 from .constants import ocil_namespace as ocil_ns
@@ -16,13 +14,11 @@ def _split_namespace(tag):
     fragment id from namespace
     """
 
-    element = namedtuple('element', ['namespace', 'tag'])
-
     if tag[0] == "{":
         namespace, name = tag[1:].split("}", 1)
-        return element(namespace.split("#")[0], name)
+        return (namespace.split("#")[0], name)
 
-    return element(None, tag)
+    return (None, tag)
 
 
 def _namespace_to_prefix(tag):
