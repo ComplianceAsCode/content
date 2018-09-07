@@ -119,7 +119,7 @@ def replace_external_vars(tree):
             sys.exit(2)
         # replace tag name: external -> local
         node.tag = "{%s}local_variable" % ovalns
-        literal = ET.Element("literal_component")
+        literal = ET.Element("oval:literal_component")
         literal.text = os.environ[extvar_id]
         node.append(literal)
         # TODO: assignment of external_variable via environment vars, for
@@ -145,6 +145,9 @@ def find_testfile(oval_id):
 
     Returns path to OVAL file or None if not found.
     """
+    if os.path.isfile(os.path.abspath(oval_id)):
+        return os.path.abspath(oval_id)
+
     if oval_id.endswith(".xml"):
         oval_id, _ = os.path.splitext(oval_id)
         oval_id = os.path.basename(oval_id)
