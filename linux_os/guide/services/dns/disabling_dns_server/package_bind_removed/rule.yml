@@ -5,9 +5,8 @@ prodtype: rhel6,rhel7
 title: 'Uninstall bind Package'
 
 description: |-
-    To remove the <tt>bind</tt> package, which contains the
-    <tt>named</tt> service, run the following command:
-    <pre>$ sudo yum erase bind</pre>
+    The <tt>named</tt> service is provided by the <tt>bind</tt> package.
+    {{{ describe_package_remove(package="bind") }}}
 
 rationale: |-
     If there is no need to make DNS server software available,

@@ -11,8 +11,7 @@ description: |-
     with SAP where massive UUIDs are created in a short time period, it is
     important to install the package <tt>uuidd</tt>. More information can be
     found in SAP note 1391070.
-    Using the following command to install and/or update the package:
-    <pre>$ sudo yum install uuidd</pre>
+    {{{ describe_package_install(package="uuidd") }}}
 
 rationale: |-
     The <tt>uuidd</tt> package contains a userspace daemon (uuidd) which is 
