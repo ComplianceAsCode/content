@@ -28,25 +28,17 @@ ssh on the libvirt domain and have Ansible installed on the host machine.
 ### Domain preparation
 
 
-1. Install domain, using `kickstarts/rhel_centos_7.cfg`
+1. Install domain, using provided kickstart
 
    To install the domain via graphical install, supply boot option:  
-   `inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg`.  
+   `inst.ks=https://raw.githubusercontent.com/ComplianceAsCode/content/master/tests/kickstarts/rhel_centos_7.cfg`.
    And the installation will be guided by the kickstart.
 
-   To install the domain via command line, see example command below:  
-   1. To install a CentOS VM:
-    ```bash
-    virt-install -n ssg-test-suite-centos -r 2048 --vcpus=2 \
-    --os-variant=rhel7 --accelerate \
-    --disk path=/var/lib/libvirt/images/ssg-test-suite-centos.qcow,size=12 \
-    -x "inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg" \
-    --location http://mirror.centos.org/centos/7/os/x86_64
-    ```
-   2. To setup a Fedora machine, change the following parameters:  
-     `--os-variant=fedora28`  
-     `--location https://dl.fedoraproject.org/pub/fedora/linux/releases/28/Everything/x86_64/os`  
-     NOTE: The Everything compose is necessary to be able to install `openscap-scanner` during kickstart installation.
+   To install the domain via command line, you can use script `./install_vm.py`. Common usage will look like:
+   ```
+   ./install_vm.py --domain test-suite-fedora --distro fedora
+   ```
+
 1. Import ssh key to the machine and make sure that you can use them to log in
    as the `root` superuser.
 1. In case of installing a RHEL domain, setup subscription so that the machine can install and uninstall packages.
