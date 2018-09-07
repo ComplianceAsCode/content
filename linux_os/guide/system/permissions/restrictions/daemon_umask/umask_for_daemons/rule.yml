@@ -6,18 +6,16 @@ title: 'Set Daemon Umask'
 
 description: |-
     The file <tt>/etc/init.d/functions</tt> includes initialization
-    parameters for most or all daemons started at boot time.  The default umask of
-    022 prevents creation of group- or world-writable files.  To set the default
-    umask for daemons, edit the following line, inserting 022 or 027 for
-    <i>UMASK</i> appropriately:
+    parameters for most or all daemons started at boot time. Many daemons
+    on the system already individually restrict themselves to
+    a umask of <tt>077</tt> in their own init scripts. By default, the umask of
+    <tt>022</tt> is set which prevents creation of group- or world-writable files.
+    To set the umask for daemons expected by the profile, edit the following line:
     <pre>umask <i><sub idref="var_umask_for_daemons" /></i></pre>
-    Setting the umask to too restrictive a setting can cause serious errors at
-    runtime.  Many daemons on the system already individually restrict themselves to
-    a umask of 077 in their own init scripts.
 
 rationale: |-
     The umask influences the permissions assigned to files created by a
-    process at run time.  An unnecessarily permissive umask could result in files
+    process at run time. An unnecessarily permissive umask could result in files
     being created with insecure permissions.
 
 severity: unknown
@@ -36,4 +34,9 @@ ocil_clause: 'it does not'
 ocil: |-
     To check the value of the <tt>umask</tt>, run the following command:
     <pre>$ grep umask /etc/init.d/functions</pre>
-    The output should show either <tt>022</tt> or <tt>027</tt>.
+    The output should show <tt><sub idref="var_umask_for_daemons" /></tt>.
+
+warnings:
+    - functionality: |-
+        Setting the umask to too restrictive a setting can cause serious errors at
+        runtime.
