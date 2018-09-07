@@ -37,9 +37,9 @@ ssh on the libvirt domain and have Ansible installed on the host machine.
    To install the domain via command line, see example command below:  
    1. To install a CentOS VM:
     ```bash
-    virt-install -n ssg-test-suite-centos -r 4096 --vcpus=4 \
+    virt-install -n ssg-test-suite-centos -r 2048 --vcpus=2 \
     --os-variant=rhel7 --accelerate \
-    --disk path=/var/lib/libvirt/images/ssg-test-suite-centos.qcow,size=50 \
+    --disk path=/var/lib/libvirt/images/ssg-test-suite-centos.qcow,size=12 \
     -x "inst.ks=https://raw.githubusercontent.com/OpenSCAP/scap-security-guide/master/tests/kickstarts/rhel_centos_7.cfg" \
     --location http://mirror.centos.org/centos/7/os/x86_64
     ```
