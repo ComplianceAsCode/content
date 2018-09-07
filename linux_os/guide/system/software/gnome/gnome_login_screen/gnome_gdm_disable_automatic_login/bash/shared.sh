@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
 
 if rpm --quiet -q gdm
 then
