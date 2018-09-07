@@ -632,6 +632,12 @@ Sometimes, a rule requires `ocil` and `ocil_clause` to be specified, and they de
 Macros that begin with `complete_ocil_entry_` were designed for exactly this purpose, as they make sure that OCIL and OCIL clauses are defined and consistent.
 Macros that begin with underscores are not meant to be used in descriptions.
 
+To parametrize rules and remediations as well as Jinja macros, you can use product-specific variables defined in `product.yml` in product root directory.
+Moreover, you can define *implied properties* which are variables inferred from them.
+For example, you can define a condition that checks if the system uses `yum` or `dnf` as a package manager and based on that populate a variable containing correct path to the configuration file.
+The inferring logic is implemented in `_get_implied_properties` in `ssg/yaml.py`.
+Constants and mappings used in implied properties should be defined in `ssg/constants.py`.
+
 Rules are unselected by default - even if the scanner reads rule definitions, they are effectively ignored during the scan or remediation.
 A rule may be selected by any number of profiles, so when the scanner is scanning using a profile the rule is included in, the rule is taken into account.
 For example, the rule identified by `partition_for_tmp` defined in `shared/xccdf/system/software/disk_partitioning.xml` is included in the `RHEL7 C2S` profile in `rhel7/profiles/C2S.xml`.

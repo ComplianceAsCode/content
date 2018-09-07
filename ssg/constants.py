@@ -72,6 +72,11 @@ PKG_MANAGER_TO_SYSTEM = {
     "apt_get": "dpkg",
 }
 
+PKG_MANAGER_TO_CONFIG_FILE = {
+    "yum": "/etc/yum.conf",
+    "dnf": "/etc/dnf/dnf.conf",
+}
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",

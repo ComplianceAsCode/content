@@ -4,13 +4,13 @@
 # complexity = low
 # disruption = medium
 #
-- name: Find All Yum Repositories
+- name: Find All {{{ pkg_manager }}} Repositories
   find:
     paths: "/etc/yum.repos.d/"
     patterns: "*.repo"
   register: yum_find
 
-- name: Ensure gpgcheck Enabled For All Yum Package Repositories
+- name: Ensure gpgcheck Enabled For All {{{ pkg_manager }}} Package Repositories
   with_items: "{{ yum_find.files }}"
   lineinfile:
     create: yes
