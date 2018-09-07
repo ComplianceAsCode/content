@@ -4,10 +4,30 @@ prodtype: rhel7
 
 title: 'Ensure gpgcheck Enabled for Repository Metadata'
 
-description: "Verify the operating system prevents the installation of patches, service packs, device\ndrivers, or operating system components of local packages without verification of the \nrepository metadata.\n<br /><br />\nCheck that <tt>yum</tt> verifies the repository metadata prior to install with the\nfollowing command. This should be configured by setting <tt>repo_gpgcheck</tt> to <tt>1</tt>\nin <tt>/etc/yum.conf</tt>."
+description: |-
+    Verify the operating system prevents the installation of patches,
+    service packs, device drivers, or operating system components of
+    local packages without verification of the repository metadata.
+    Check that <tt>{{{ pkg_manager }}}</tt> verifies the repository
+    metadata prior to install with the following command.
+    This should be configured by setting <tt>repo_gpgcheck</tt> to <tt>1</tt>
+    in <tt>{{{ pkg_manager_config_file }}}</tt>.
 
-rationale: "Changes to any software components can have significant effects to the overall security\nof the operating system. This requirement ensures the software has not been tampered and\nhas been provided by a trusted vendor.\n<br /><br />\nAccordingly, patches, service packs, device drivers, or operating system components must\nbe signed with a certificate recognized and approved by the organization.\n<br /><br />\nVerifying the authenticity of the software prior to installation validates the integrity\nof the patch or upgrade received from a vendor. This ensures the software has not been\ntampered with and that it has been provided by a trusted vendor. Self-signed certificates\nare disallowed by this requirement. The operating system should not have to verify the software\nagain.\n<br /><br />\nNOTE: For U.S. Military systems, this requirement does not mandate DoD certificates for\nthis purpose; however, the certificate used to verify the software must be from an \napproved Certificate\
-    \ Authority."
+rationale: |-
+    Changes to any software components can have significant effects to the
+    overall security of the operating system. This requirement ensures the
+    software has not been tampered and has been provided by a trusted vendor.
+    Accordingly, patches, service packs, device drivers, or operating system
+    components must be signed with a certificate recognized and approved by
+    the organization. Verifying the authenticity of the software prior to
+    installation validates the integrity of the patch or upgrade received from
+    a vendor. This ensures the software has not been tampered with and that it
+    has been provided by a trusted vendor. Self-signed certificates are
+    disallowed by this requirement. The operating system should not have
+    to verify the software again. NOTE: For U.S. Military systems, this
+    requirement does not mandate DoD certificates for this purpose; however,
+    the certificate used to verify the software must be from an approved
+    Certificate Authority.
 
 severity: high
 
@@ -26,6 +46,6 @@ ocil_clause: 'gpgcheck is not enabled or configured correctly to verify reposito
 ocil: |-
     To verify that <tt>repo_gpgcheck</tt> is configured properly, run the following
     command:
-    <pre>$ grep repo_gpgcheck /etc/yum.conf</pre>
+    <pre>$ grep repo_gpgcheck {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:
     <pre>repo_gpgcheck=1</pre>
