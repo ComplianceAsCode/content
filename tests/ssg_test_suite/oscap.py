@@ -385,9 +385,9 @@ class ProfileRunner(GenericRunner):
     def make_oscap_call(self):
         self.prepare_online_scanning_arguments()
         self._generate_report_file()
-        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(common.IGNORE_KNOWN_HOSTS_OPTIONS))
-        env.update(os.environ)
-        returncode = common.run_cmd_local(self.get_command, self.verbose_path, env=env)[0]
+        returncode, self._oscap_output = self.environment.scan(
+            self.command_options + self.command_operands, self.verbose_path)
+
         if returncode not in [0, 2]:
             logging.error(('Profile run should end with return code 0 or 2 '
                            'not "{0}" as it did!').format(returncode))
