@@ -115,9 +115,13 @@ selections:
     - audit_rules_execution_setsebool
     - audit_rules_mac_modification
     - audit_rules_dac_modification_chown
+    - audit_rules_unsuccessful_file_modification_chown
     - audit_rules_dac_modification_fchownat
+    - audit_rules_unsuccessful_file_modification_fchownat
     - audit_rules_dac_modification_fchown
+    - audit_rules_unsuccessful_file_modification_fchown
     - audit_rules_dac_modification_lchown
+    - audit_rules_unsuccessful_file_modification_lchown
     - audit_rules_privileged_commands_passwd
     - audit_rules_privileged_commands_unix_chkpwd
     - audit_rules_privileged_commands_userhelper
