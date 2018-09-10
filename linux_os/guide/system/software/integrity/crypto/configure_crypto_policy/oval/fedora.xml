@@ -5,16 +5,54 @@
       <affected family="unix">
         <platform>multi_platform_fedora</platform>
       </affected>
-      <description>Look for crypto policy correctly configured in /etc/crypto-policy/config.</description>
+      <description>Look for crypto policy correctly configured in /etc/crypto-policies/config, and the policy is current.</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
       test_ref="test_configure_crypto_policy" />
+      <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
+      test_ref="test_configure_crypto_policy_current" />
+      <criterion comment="Check if update-crypto-policies has been run after config update" test_ref="test_crypto_policies_updated" />
     </criteria>
   </definition>
 
+  <unix:file_object id="crypto_policies_current_file" comment="crypto-policies current state" version="1">
+    <unix:filepath>/etc/crypto-policies/state/current</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object id="crypto_policies_config_file" comment="crypto-policies config state" version="1">
+    <unix:filepath datatype="string">/etc/crypto-policies/config</unix:filepath>
+  </unix:file_object>
+
+  <local_variable id="variable_crypto_policies_current_file_age" version="1" comment="Age of /etc/crypto-policies/state/current" datatype="int">
+      <time_difference format_2="seconds_since_epoch">
+        <object_component object_ref="crypto_policies_current_file" item_field="m_time"/>
+      </time_difference>
+  </local_variable>
+
+  <local_variable id="variable_crypto_policies_config_file_age" version="1" comment="Age of /etc/crypto-policies/config" datatype="int">
+    <time_difference format_2="seconds_since_epoch">
+      <object_component object_ref="crypto_policies_config_file" item_field="m_time"/>
+    </time_difference>
+  </local_variable>
+
+  <ind:variable_test check="all" check_existence="all_exist" id="test_crypto_policies_updated" version="1" comment="Check if update-crypto-policies has been run">
+    <ind:object object_ref="object_crypto_policies_config_file_modified_time" />
+    <ind:state state_ref="state_crypto_current_file_newer_than_config_file" />
+  </ind:variable_test>
+
+  <ind:variable_object comment="Crypto policy current file age"
+id="object_crypto_policies_config_file_modified_time" version="1">
+     <ind:var_ref>variable_crypto_policies_config_file_age</ind:var_ref>
+   </ind:variable_object>
+
+  <ind:variable_state id="state_crypto_current_file_newer_than_config_file" version="1">
+    <ind:value datatype="int" operation="greater than or equal" var_check="all"
+    var_ref="variable_crypto_policies_current_file_age" />
+  </ind:variable_state>
+
   <ind:textfilecontent54_test id="test_configure_crypto_policy"
-  comment="check for crypto policy correctly configured in /etc/crypto-policy/config"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/config"
   check="all" check_existence="only_one_exists" version="1">
     <ind:object object_ref="object_configure_crypto_policy" />
     <ind:state state_ref="state_configure_crypto_policy" />
@@ -27,6 +65,24 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_configure_crypto_policy" version="1">
+    <ind:subexpression operation="equals" var_check="all"
+    var_ref="var_system_crypto_policy" />
+  </ind:textfilecontent54_state>
+
+    <ind:textfilecontent54_test id="test_configure_crypto_policy_current"
+  comment="check for crypto policy correctly configured in /etc/crypto-policies/state/current"
+  check="all" check_existence="only_one_exists" version="1">
+    <ind:object object_ref="object_configure_crypto_policy_current" />
+    <ind:state state_ref="state_configure_crypto_policy_current" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_configure_crypto_policy_current" version="1">
+    <ind:filepath>/etc/crypto-policies/state/current</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!#)(\S+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_configure_crypto_policy_current" version="1">
     <ind:subexpression operation="equals" var_check="all"
     var_ref="var_system_crypto_policy" />
   </ind:textfilecontent54_state>
