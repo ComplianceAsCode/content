@@ -90,6 +90,10 @@ selections:
     - audit_rules_unsuccessful_file_modification_open
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_unlink
+    - audit_rules_unsuccessful_file_modification_unlinkat
+    - audit_rules_unsuccessful_file_modification_rename
+    - audit_rules_unsuccessful_file_modification_renameat
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_rmdir
