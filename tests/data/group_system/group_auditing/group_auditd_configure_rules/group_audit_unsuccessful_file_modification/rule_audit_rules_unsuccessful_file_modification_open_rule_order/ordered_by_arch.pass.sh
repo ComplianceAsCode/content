@@ -3,4 +3,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 # remediation = none
 
-cp ./ordered_by_arch_error.rules /etc/audit/rules.d/
+grep -h 'arch=b32.*EACCES' ../audit_open_o_creat.rules ../audit_open_o_trunc_write.rules ../audit_open.rules > /etc/audit/rules.d/ordered_by_arch_error.rules
+grep -h 'arch=b32.*EPERM' ../audit_open_o_creat.rules ../audit_open_o_trunc_write.rules ../audit_open.rules >> /etc/audit/rules.d/ordered_by_arch_error.rules
+grep -h 'arch=b64.*EACCES' ../audit_open_o_creat.rules ../audit_open_o_trunc_write.rules ../audit_open.rules >> /etc/audit/rules.d/ordered_by_arch_error.rules
+grep -h 'arch=b64.*EPERM' ../audit_open_o_creat.rules ../audit_open_o_trunc_write.rules ../audit_open.rules >> /etc/audit/rules.d/ordered_by_arch_error.rules
