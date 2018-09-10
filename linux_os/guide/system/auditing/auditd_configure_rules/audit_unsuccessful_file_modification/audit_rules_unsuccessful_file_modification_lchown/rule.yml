@@ -22,7 +22,7 @@ description: |-
 
 
 rationale: |-
-    Unsuccessful attempts to delete files could be an indicator of malicious activity on a system. Auditing
+    Unsuccessful attempts to change ownership of files could be an indicator of malicious activity on a system. Auditing
     these events could serve as evidence of potential system compromise.
 
 severity: medium
@@ -32,6 +32,7 @@ severity: medium
 warnings:
     - general: |-
         Note that these rules can be configured in a
-        number of ways while still achieving the desired effect. Here the system calls
-        have been placed independent of other system calls. Grouping these system
-        calls with others as identifying earlier in this guide is more efficient.
+        number of ways while still achieving the desired effect. Here the audit rule checks a
+        system call independently of other system calls. Grouping system calls related
+        to the same event is more efficient. See the following example:
+        <pre>-a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-perm-change</pre>
