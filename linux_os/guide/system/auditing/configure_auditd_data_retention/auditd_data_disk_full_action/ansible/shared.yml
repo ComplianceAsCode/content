@@ -3,13 +3,12 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- (xccdf-var var_auditd_max_log_file_action)
+- (xccdf-var var_auditd_disk_full_action)
 
-- name: Configure auditd max_log_file_action Upon Reaching Maximum Log Size
+- name: Configure auditd Disk Full Action when Disk Space Is Full
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: "max_log_file_action = {{ var_auditd_max_log_file_action }}"
-    regexp: '^\s*max_log_file_action\s*=\s*.*$'
+    line: "disk_full_action = {{ var_auditd_disk_full_action }}"
     state: present
   #notify: reload auditd
   tags:

@@ -8,6 +8,7 @@
     dest: /etc/audit/auditd.conf
     regexp: '.*flush.*'
     line: flush = data
+    state: present
   #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@

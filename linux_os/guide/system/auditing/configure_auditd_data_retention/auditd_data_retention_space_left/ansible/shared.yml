@@ -9,7 +9,8 @@
   lineinfile:
     dest: /etc/audit/auditd.conf
     line: "space_left = {{ var_auditd_space_left }}"
-    regexp: "^space_left =*"
+    regexp: '^\s*space_left\s*=\s*.*$'
+    state: present
   #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@
