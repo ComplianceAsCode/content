@@ -5,13 +5,15 @@ prodtype: rhel7,fedora
 title: 'Verify that Interactive Boot is Disabled'
 
 description: |-
-    Red Hat Enterprise Linux systems support an "interactive boot" option that can
-    be used to prevent services from being started. On a Red Hat Enterprise Linux 7
+    {{{ full_name }}} systems support an "interactive boot" option that can
+    be used to prevent services from being started. On a {{{ full_name }}}
     system, interactive boot can be enabled by providing a <tt>1</tt>,
     <tt>yes</tt>, <tt>true</tt>, or <tt>on</tt> value to the
     <tt>systemd.confirm_spawn</tt> kernel argument in <tt>/etc/default/grub</tt>.
     Remove any instance of <pre>systemd.confirm_spawn=(1|yes|true|on)</pre> from
-    the kernel arguments in that file to disable interactive boot.
+    the kernel arguments in that file to disable interactive boot. It is also
+    required to change the runtime configuration, run:
+    <pre>/sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"</pre>
 
 rationale: |-
     Using interactive boot, the console user could disable auditing, firewalls,
