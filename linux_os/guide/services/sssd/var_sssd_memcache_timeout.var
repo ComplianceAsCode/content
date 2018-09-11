@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: 'SSSD memcache_timeout option'
+
+description: |-
+    Value of the memcache_timeout option in the [nss] section
+    of SSSD config /etc/sssd/sssd.conf.
+
+type: number
+
+operator: equals
+
+interactive: false
+
+options:
+    3_minutes: 180
+    5_minutes: 300
+    10_minutes: 600
+    15_minutes: 900
+    30_minutes: 1800
+    1_day: 86400
+    default: 300
