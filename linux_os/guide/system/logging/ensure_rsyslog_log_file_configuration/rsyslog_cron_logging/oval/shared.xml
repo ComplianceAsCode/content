@@ -4,7 +4,8 @@
     <metadata>
       <title>Verify Cron is Logging to Rsyslog</title>
       <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>Rsyslog should be configured to capture cron messages.</description>
     </metadata>
@@ -23,7 +24,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*cron\.\*[\s]*/var/log/cron$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*cron\.\*[\s]+/var/log/cron$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -35,7 +36,7 @@
   <ind:textfilecontent54_object id="obj_cron_logging_rsyslog_dir" version="1">
     <ind:path>/etc/rsyslog.d</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
-    <ind:pattern operation="pattern match">^[\s]*cron\.\*[\s]*/var/log/cron$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*cron\.\*[\s]+/var/log/cron$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
