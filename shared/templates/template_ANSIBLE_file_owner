@@ -3,11 +3,17 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+- name: Test for existence {{{ FILEPATH }}}
+  stat:
+    path: {{{ FILEPATH }}}
+  register: file_exists
+
 - name: Ensure owner {{{ FILEUID }}} on {{{ FILEPATH }}}
   file:
     path: "{{ item }}"
     owner: {{{ FILEUID }}}
   with_items:
     - {{{ FILEPATH }}}
+  when: file_exists.stat.exists
   tags:
     @ANSIBLE_TAGS@
