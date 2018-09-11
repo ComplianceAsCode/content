@@ -101,7 +101,8 @@ class PermissionGenerator(FilesGenerator):
                 self.file_from_template(
                     "./template_ANSIBLE_file_permissions",
                     {
-                        "FILEPATH":      full_path,
+                        "FILEPATH":      dir_path,
+                        "FILENAME":      file_name,
                         "FILEMODE":      mode,
                     },
                     "./ansible/file_permissions{0}.yml", path_id

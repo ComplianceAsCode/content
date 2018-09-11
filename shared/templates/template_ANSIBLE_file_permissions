@@ -3,12 +3,20 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
+- name: Enumerate files for {{{ FILEPATH }}}{{{ FILENAME }}}
+  find:
+    paths: {{{ FILEPATH }}}
+    patterns: "{{{ FILENAME }}}"
+  register: files_for_permissions
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}{{{ FILENAME }}}
   file:
-    path: "{{ item }}"
+    path: "{{ item.path }}"
     mode: {{{ FILEMODE }}}
   with_items:
-    - {{{ FILEPATH }}}
+    - "{{ files_for_permissions.files }}"
   tags:
     @ANSIBLE_TAGS@
 
