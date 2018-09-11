@@ -90,11 +90,7 @@ class TestEnv(object):
 
     def _oscap_ssh_base_arguments(self):
         full_hostname = 'root@{}'.format(self.domain_ip)
-        command_base = []
-        command_base.extend(
-            ['oscap-ssh', full_hostname, '22',
-             'xccdf', 'eval'])
-        return command_base
+        return ['oscap-ssh', full_hostname, '22', 'xccdf', 'eval']
 
     def scan(self, args, verbose_path):
         if self.scanning_mode == "online":
@@ -165,11 +161,7 @@ class VMTestEnv(TestEnv):
         self.snapshot_stack.revert()
 
     def _local_oscap_check_base_arguments(self):
-        command_base = []
-        command_base.extend(
-            ['oscap-vm', "domain", self.domain_name,
-             'xccdf', 'eval'])
-        return command_base
+        return ['oscap-vm', "domain", self.domain_name, 'xccdf', 'eval']
 
     def offline_scan(self, args, verbose_path):
         command_list = self._local_oscap_check_base_arguments() + args
@@ -285,11 +277,8 @@ class DockerTestEnv(TestEnv):
         self._terminate_current_running_container_if_applicable()
 
     def _local_oscap_check_base_arguments(self):
-        command_base = []
-        command_base.extend(
-            ['oscap-docker', "container", self.current_container.id,
-             'xccdf', 'eval'])
-        return command_base
+        return ['oscap-docker', "container", self.current_container.id,
+                                                            'xccdf', 'eval']
 
     def offline_scan(self, args, verbose_path):
         command_list = self._local_oscap_check_base_arguments() + args
