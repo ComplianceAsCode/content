@@ -144,6 +144,7 @@ selections:
     - audit_rules_privileged_commands_sudo
     - audit_rules_privileged_commands_su
     - audit_rules_session_events
+    - directory_access_var_log_audit
     - ensure_fedora_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
