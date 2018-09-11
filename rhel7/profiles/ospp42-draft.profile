@@ -108,6 +108,15 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_unsuccessful_file_modification_chmod
+    - audit_rules_unsuccessful_file_modification_fchmodat
+    - audit_rules_unsuccessful_file_modification_fchmod
+    - audit_rules_unsuccessful_file_modification_fremovexattr
+    - audit_rules_unsuccessful_file_modification_fsetxattr
+    - audit_rules_unsuccessful_file_modification_lremovexattr
+    - audit_rules_unsuccessful_file_modification_lsetxattr
+    - audit_rules_unsuccessful_file_modification_removexattr
+    - audit_rules_unsuccessful_file_modification_setxattr
     - audit_rules_execution_chcon
     - audit_rules_execution_restorecon
     - audit_rules_execution_semanage
