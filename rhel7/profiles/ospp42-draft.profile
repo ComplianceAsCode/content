@@ -121,6 +121,7 @@ selections:
     - audit_rules_execution_restorecon
     - audit_rules_execution_semanage
     - audit_rules_execution_setsebool
+    - audit_rules_execution_seunshare
     - audit_rules_mac_modification
     - audit_rules_dac_modification_chown
     - audit_rules_unsuccessful_file_modification_chown
@@ -130,15 +131,20 @@ selections:
     - audit_rules_unsuccessful_file_modification_fchown
     - audit_rules_dac_modification_lchown
     - audit_rules_unsuccessful_file_modification_lchown
+    - audit_rules_privileged_commands_at
+    - audit_rules_privileged_commands_mount
     - audit_rules_privileged_commands_passwd
     - audit_rules_privileged_commands_unix_chkpwd
     - audit_rules_privileged_commands_userhelper
+    - audit_rules_privileged_commands_usernetctl
     - audit_rules_privileged_commands_chage
     - audit_rules_privileged_commands_chsh
     - audit_rules_privileged_commands_pt_chown
     - audit_rules_sysadmin_actions
     - audit_rules_privileged_commands_gpasswd
+    - audit_rules_privileged_commands_newgidmap
     - audit_rules_privileged_commands_newgrp
+    - audit_rules_privileged_commands_newuidmap
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
     - audit_rules_usergroup_modification_opasswd
