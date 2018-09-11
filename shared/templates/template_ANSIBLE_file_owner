@@ -10,10 +10,8 @@
 
 - name: Ensure owner {{{ FILEUID }}} on {{{ FILEPATH }}}
   file:
-    path: "{{ item }}"
+    path: {{{ FILEPATH }}}
     owner: {{{ FILEUID }}}
-  with_items:
-    - {{{ FILEPATH }}}
   when: file_exists.stat.exists
   tags:
     @ANSIBLE_TAGS@

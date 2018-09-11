@@ -47,10 +47,8 @@
 #
 - name: Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
   lineinfile:
-    line: "{{ item }}"
+    line: "-w {{{ PATH }}} -p wa -k logins"
     state: present
     dest: /etc/audit/audit.rules
-  with_items:
-    - "-w {{{ PATH }}} -p wa -k logins"
   tags:
     @ANSIBLE_TAGS@

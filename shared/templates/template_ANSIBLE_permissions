@@ -5,7 +5,7 @@
 # disruption = low
 - name: Ensure permission {{{ FILEMODE }}}, owner {{{ FILEUID }}}, and group {{{ FILEGID }}} on {{{ FILEPATH }}}
   file:
-    path: "{{ item }}"
+    path: {{{ FILEPATH }}}
     {{% if FILEMODE != "" %}}
     mode: {{{ FILEMODE }}}
     {{% endif %}}
@@ -15,7 +15,5 @@
     {{% if FILEGID != "" %}}
     group: {{{ FILEGID }}}
     {{% endif %}}
-  with_items:
-    - {{{ FILEPATH }}}
   tags:
     @ANSIBLE_TAGS@

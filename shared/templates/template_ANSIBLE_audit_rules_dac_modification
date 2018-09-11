@@ -55,22 +55,18 @@
 #
 - name: Inserts/replaces the {{{ ATTR }}} rule in /etc/audit/audit.rules when on x86
   lineinfile:
-    line: "{{ item }}"
+    line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
     state: present
     dest: /etc/audit/audit.rules
-  with_items:
-    - "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
   tags:
     @ANSIBLE_TAGS@
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in audit.rules when on x86_64
   lineinfile:
-    line: "{{ item }}"
+    line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
-  with_items:
-    - "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>=1000 -F auid!=4294967295 -F key=perm_mod"
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@

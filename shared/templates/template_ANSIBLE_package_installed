@@ -5,10 +5,8 @@
 # disruption = low
 - name: Ensure {{{ PKGNAME }}} is installed
   package:
-    name: "{{item}}"
+    name: {{{ PKGNAME }}}
     state: present
-  with_items:
-    - {{{ PKGNAME }}}
   tags:
     @ANSIBLE_TAGS@
 

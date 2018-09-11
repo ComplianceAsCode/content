@@ -5,10 +5,8 @@
 # disruption = low
 - name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
   file:
-    path: "{{ item }}"
+    path: {{{ FILEPATH }}}
     mode: {{{ FILEMODE }}}
-  with_items:
-    - {{{ FILEPATH }}}
   tags:
     @ANSIBLE_TAGS@
 
