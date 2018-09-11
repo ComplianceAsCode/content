@@ -27,9 +27,6 @@ severity: unknown
 ocil_clause: "no line is returned"
 
 ocil: |-
-    Run the following command to check the mode of the system audit logs:
-    <pre>$ ls -ld /var/log/audit</pre>
-    Audit log directories must be mode 0700 or less permissive.
     To determine if the system is configured to audit accesses to
     <code>/var/log/audit</code> directory, run the following command:
     <pre space="preserve">$ sudo grep "dir=/var/log/audit" /etc/audit/audit.rules</pre>
