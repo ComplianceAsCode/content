@@ -17,7 +17,7 @@ def run_cmd_local(command, verbose_path, env=None):
 
 def run_cmd_remote(command_string, domain_ip, verbose_path, env=None):
     machine = 'root@{0}'.format(domain_ip)
-    remote_cmd = ['ssh'] + IGNORE_KNOWN_HOSTS_OPTIONS + [machine, command_string]
+    remote_cmd = ['ssh'] + list(IGNORE_KNOWN_HOSTS_OPTIONS) + [machine, command_string]
     logging.debug('Running {}'.format(command_string))
     returncode, output = _run_cmd(remote_cmd, verbose_path, env)
     return returncode, output
