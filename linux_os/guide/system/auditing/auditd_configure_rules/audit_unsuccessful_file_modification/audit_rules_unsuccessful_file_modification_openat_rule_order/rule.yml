@@ -2,17 +2,17 @@ documentation_complete: true
 
 prodtype: rhel7,fedora
 
-title: 'Ensure auditd Rules For Unauthorized Attempts To open Are Ordered Correctly'
+title: 'Ensure auditd Rules For Unauthorized Attempts To openat Are Ordered Correctly'
 
 description: |-
     The audit system should collect detailed unauthorized file
     accesses for all users and root.
     To correctly identify unsuccessful creation, unsuccessful modification and unsuccessful access
-    of files via <tt>open</tt> syscall the audit rules collecting these events need to be in certain order.
+    of files via <tt>openat</tt> syscall the audit rules collecting these events need to be in certain order.
     The more specific rules need to come before the less specific rules. The reason for that is that more
     specific rules cover a subset of events covered in the less specific rules, thus, they need to come
     before to not be overshadowed by less specific rules, which match a bigger set of events.
-    Make sure that rules for unsuccessful calls of <tt>open</tt> syscall are in the order shown below.
+    Make sure that rules for unsuccessful calls of <tt>openat</tt> syscall are in the order shown below.
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
     program to read audit rules during daemon startup (the default), check the order of
     rules below in a file with suffix <tt>.rules</tt> in the directory
@@ -21,21 +21,21 @@ description: |-
     utility to read audit rules during daemon startup, check the order of rules below in
     <tt>/etc/audit/audit.rules</tt> file.
     <pre>
-    -a always,exit -F arch=b32 -S open -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b32 -S open -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b32 -S open -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b32 -S open -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b32 -S open -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
-    -a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S openat -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S openat -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S openat -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
     </pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S open -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b64 -S open -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b64 -S open -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b64 -S open -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
-    -a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
-    -a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S openat -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S openat -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S openat -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
+    -a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-access
     </pre>
 
 rationale: |-
@@ -55,4 +55,4 @@ references:
     pcidss: Req-10.2.4,Req-10.2.1
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172
 
-{{{ complete_ocil_entry_audit_syscall(syscall="open") }}}
+{{{ complete_ocil_entry_audit_syscall(syscall="openat") }}}

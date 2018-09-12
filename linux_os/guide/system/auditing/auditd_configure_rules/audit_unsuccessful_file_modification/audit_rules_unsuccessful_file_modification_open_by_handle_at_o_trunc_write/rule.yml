@@ -2,15 +2,14 @@ documentation_complete: true
 
 prodtype: rhel7,fedora
 
-title: 'Record Unauthorized Creation Attempts to Files - open O_CREAT'
-
+title: 'Record Unauthorized Modification Attempts to Files - open_by_handle_at O_TRUNC'
 
 description: |-
-    The audit system should collect unauthorized file accesses for
-    all users and root. The <tt>open</tt> syscall can be used to create new files
-    when O_CREAT flag is specified.
-    The following auidt rules will asure that unsuccessful attempts to create a
-    file via <tt>open</tt> syscall are collected.
+    The audit system should collect detailed unauthorized file accesses for
+    all users and root. The <tt>open_by_handle_at</tt> syscall can be used to modify files
+    if called for write operation of with O_TRUNC flag.
+    The following auidt rules will asure that unsuccessful attempts to modify a
+    file via <tt>open_by_handle_at</tt> syscall are collected.
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
     program to read audit rules during daemon startup (the default), add the
     rules below to a file with suffix <tt>.rules</tt> in the directory
@@ -19,13 +18,13 @@ description: |-
     utility to read audit rules during daemon startup, add the rules below to
     <tt>/etc/audit/audit.rules</tt> file.
     <pre>
-    -a always,exit -F arch=b32 -S open -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b32 -S open -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
     </pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S open -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
-    -a always,exit -F arch=b64 -S open -F a2&amp;0100 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-create
+    -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
+    -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification
     </pre>
 
 rationale: |-
@@ -44,7 +43,7 @@ references:
     pcidss: Req-10.2.4,Req-10.2.1
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172
 
-{{{ complete_ocil_entry_audit_syscall(syscall="open") }}}
+{{{ complete_ocil_entry_audit_syscall(syscall="open_by_handle_at") }}}
 
 warnings:
     - general: |-
@@ -52,4 +51,4 @@ warnings:
         number of ways while still achieving the desired effect. Here the system calls
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
-        <pre>-a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F a2&amp;0100 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-create</pre>
+        <pre>-a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification</pre>
