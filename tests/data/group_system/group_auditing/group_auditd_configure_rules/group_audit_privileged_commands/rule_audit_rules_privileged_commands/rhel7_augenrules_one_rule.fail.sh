@@ -2,6 +2,6 @@
 # profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
 
-./generate_privileged_commands_rule.sh 1000 own_key /etc/audit/rules.d/privileged.rules
+echo "-a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=unset -k privileged" >> /etc/audit/rules.d/privileged.rules
 # This is a trick to fail setup of this test in rhel6 systems
 ls /usr/lib/systemd/system/auditd.service

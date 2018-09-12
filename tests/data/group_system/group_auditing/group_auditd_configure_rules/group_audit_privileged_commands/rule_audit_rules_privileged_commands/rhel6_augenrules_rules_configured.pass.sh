@@ -2,6 +2,5 @@
 # profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
 
-cp rhel6_audit.rules /etc/audit/rules.d/privileged.rules
-cp rhel6_audit.rules /etc/audit/audit.rules
+./generate_privileged_commands_rule.sh 500 privileged /etc/audit/rules.d/privileged.rules
 sed -i "s/USE_AUGENRULES=.*/USE_AUGENRULES=\"yes\"/" /etc/sysconfig/auditd

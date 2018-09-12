@@ -2,5 +2,5 @@
 # profiles = xccdf_org.ssgproject.content_profile_pci-dss
 # remediation = bash
 
-./generate_privileged_commands_rule.sh 1000 privileged /etc/audit/audit.rules
+echo "-a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=unset -k privileged" >> /etc/audit/audit.rules
 sed -i "s%^ExecStartPost=.*%ExecStartPost=-/sbin/auditctl%" /usr/lib/systemd/system/auditd.service
