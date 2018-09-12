@@ -90,8 +90,14 @@ selections:
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog
     - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_openat_o_creat
+    - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
     - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_openat_rule_order
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_rule_order
     - audit_rules_unsuccessful_file_modification_open_o_creat
     - audit_rules_unsuccessful_file_modification_open_o_trunc_write
     - audit_rules_unsuccessful_file_modification_open
