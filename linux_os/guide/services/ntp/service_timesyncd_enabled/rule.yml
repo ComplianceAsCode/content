@@ -1,0 +1,26 @@
+documentation_complete: true
+
+title: 'Enable systemd_timesyncd'
+
+description: '{{{ describe_service_enable(service="systemd_timesyncd") }}}'
+
+rationale: |-
+    Enabling the <tt>systemd_timesyncd</tt> service ensures that this host 
+    uses the ntp protocol to fetch time data from a ntp server.
+    Synchronizing time is essential for authentication
+    services such as Kerberos, but it is also important for maintaining accurate
+    logs and auditing possible security breaches.
+    <br /><br />
+    deprecated. Additional information on Ubuntu network time protocol is 
+    available at
+    {{{ weblink(link="https://help.ubuntu.com/lts/serverguide/NTP.html.en") }}}.
+
+severity: high
+
+references:
+    anssi: NT012(R03)
+    disa: "160"
+    nist: AU-8(1)
+    pcidss: Req-10.4
+
+ocil: '{{{ ocil_service_enabled(service="systemd_timesyncd") }}}'
