@@ -63,6 +63,11 @@ ocil: |-
     To check if authentication is required for single-user mode, run the following command:
     <pre>$ grep sulogin /usr/lib/systemd/system/rescue.service</pre>
     The output should be similar to the following, and the line must begin with
-    ExecStart and /sbin/sulogin:
-    <pre>ExecStart=-/sbin/sulogin</pre>
+    {{% if product == "fedora" -%}}
+        ExecStart and /usr/lib/systemd/systemd-sulogin-shell.
+        <pre>ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue</pre>
+    {{%- else -%}}
+        ExecStart and /sbin/sulogin.
+        <pre>ExecStart=-/sbin/sulogin</pre>
+    {{%- endif %}}
 {{% endif %}}

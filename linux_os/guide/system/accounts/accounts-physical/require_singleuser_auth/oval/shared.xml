@@ -26,14 +26,24 @@
   </definition>
   {{%- if init_system == "systemd" -%}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
-  comment="Tests that /sbin/sulogin was not removed from the default systemd rescue.service to ensure that a
+    comment="Tests that
+    {{% if product == "fedora" -%}}
+    /usr/lib/systemd/systemd-sulogin-shell
+    {{%- else -%}}
+    /sbin/sulogin
+    {{%- endif %}}
+    was not removed from the default systemd rescue.service to ensure that a
   password must be entered to access single user mode"
   id="test_require_rescue_service" version="1">
     <ind:object object_ref="obj_require_rescue_service" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_require_rescue_service" version="1">
     <ind:filepath>/usr/lib/systemd/system/rescue.service</ind:filepath>
+    {{%- if product == "fedora" -%}}
+    <ind:pattern operation="pattern match">^ExecStart=\-.*/usr/lib/systemd/systemd-sulogin-shell[ ]+rescue</ind:pattern>
+    {{%- else -%}}
     <ind:pattern operation="pattern match">^ExecStart=\-.*/sbin/sulogin</ind:pattern>
+    {{%- endif -%}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
