@@ -26,6 +26,7 @@ from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
 from create_audit_rules_privileged_commands import AuditRulesPrivilegedCommandsGenerator
 from create_audit_rules_usergroup_modification import AuditRulesUserGroupModificationGenerator
 from create_audit_rules_execution import AuditRulesExecutionGenerator
+from create_audit_rules_path_syscall import AuditRulesPathSyscallGenerator
 
 
 class Builder(object):
@@ -69,6 +70,7 @@ class Builder(object):
             "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
             "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
+            "audit_rules_path_syscall.csv":        AuditRulesPathSyscallGenerator(),
         }
         self.langs = TEMPLATED_LANGUAGES
         utils_dir = os.path.dirname(os.path.realpath(__file__))
