@@ -20,9 +20,7 @@
           <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules-->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
-          <criteria operator="AND">
-            <criterion comment="audit rule to record write events to /etc/passwd" test_ref="test_audit_rules_etc_passwd_open_64bit_augenrules" />
-          </criteria>
+          <criterion comment="audit rule to record write events to /etc/passwd" test_ref="test_audit_rules_etc_passwd_open_64bit_augenrules" />
         </criteria>
       </criteria>
 
@@ -35,10 +33,7 @@
           <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules -->
           <extend_definition comment="64-bit_system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
-          <criteria operator="AND">
-            <criterion comment="audit rule to record write events to /etc/passwd" test_ref="test_audit_rules_etc_passwd_open_64bit_auditctl" />
-
-          </criteria>
+          <criterion comment="audit rule to record write events to /etc/passwd" test_ref="test_audit_rules_etc_passwd_open_64bit_auditctl" />
         </criteria>
       </criteria>
 
