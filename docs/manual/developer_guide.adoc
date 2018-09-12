@@ -10,7 +10,7 @@ toc::[]
 
 == Introduction
 
-This document tries provides information useful for ComplianceAsCode/content project developers.
+This document tries provides information useful for ComplianceAsCode/content project contributors.
 We will guide you through the structure of the project.
 We will explain the directory layout, used formats and the build system.
 
@@ -943,22 +943,17 @@ The SSG build and templating system is mostly written in Python.
 == Legacy Notice
 
 This project has been created by renaming SCAP Security Guide Project (SSG).
-SSG was originally a project that provides security policies in SCAP format.
-Over the time, the scope of the SSG project has extended over SCAP.
-We started to develop in Bash, Ansible and we introduced a new universal YAML format for
-security content.
-The word SCAP in the project name started to limit our expansion, because people were afraid
-that SCAP is overkill for their needs.
+It was a project that provides security policies in SCAP format.
+Project outgrown former name SCAP Security Guide, and changed its name to imply broader scope than just SCAP.
 Therefore, the SCAP Security Guide has been transformed into ComplianceAsCode/content, which better
-described the aim of the project.
+describes the goal of the project.
 
 This git repository was created by simply renaming and moving the SCAP Security Guide (SSG)
 repository to a different GitHub organization.
 
-However, due to this history, the repository contains many mentions of SCAP Security Guide.
+Due to this history, the repository contains many mentions of SCAP Security Guide.
 These legacy mentions are continuously cleaned up as the project develops.
 Some of them are kept due to backwards compatibility.
 
 For example, the output files produced by our build system still start by `ssg-` prefix.
-The reason for this is that the various Linux distributions package ship these files
-and packages would have to rename them.
+Various Linux distributions still ship our files in `scap-security-guide` package.
