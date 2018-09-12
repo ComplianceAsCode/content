@@ -3,12 +3,14 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
+- (xccdf-var var_sssd_memcache_timeout)
+
 - name: "Configure SSSD's Memory Cache to Expire"
   ini_file:
     dest: /etc/sssd/sssd.conf
     section: nss
     option: memcache_timeout
-    value: 86400
+    value: "{{ var_sssd_memcache_timeout }}"
     create: yes
   tags:
     @ANSIBLE_TAGS@
