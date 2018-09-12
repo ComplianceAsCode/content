@@ -45,7 +45,7 @@ function firefox_cfg_setting {
       fi
 
       # If the key exists, change it. Otherwise, add it to the config_file.
-      if `grep -q "^lockPref(\"${key}\", " "${firefox_dir}/${firefox_cfg}"` ; then
+      if LC_ALL=C grep -m 1 -q "^lockPref(\"${key}\", " "${firefox_dir}/${firefox_cfg}"; then
         sed -i "s/lockPref(\"${key}\".*/lockPref(\"${key}\", ${value});/g" "${firefox_dir}/${firefox_cfg}"
       else
         echo "lockPref(\"${key}\", ${value});" >> "${firefox_dir}/${firefox_cfg}"

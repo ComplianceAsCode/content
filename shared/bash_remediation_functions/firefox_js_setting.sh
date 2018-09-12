@@ -57,7 +57,7 @@ function firefox_js_setting {
       fi
 
       # If the key exists, change it. Otherwise, add it to the config_file.
-      if `grep -q "^pref(\"${key}\", " "${firefox_pref_dir}/${firefox_js}"` ; then
+      if LC_ALL=C grep -m 1 -q "^pref(\"${key}\", " "${firefox_pref_dir}/${firefox_js}"; then
         sed -i "s/pref(\"${key}\".*/pref(\"${key}\", ${value});/g" "${firefox_pref_dir}/${firefox_js}"
       else
         echo "pref(\"${key}\", ${value});" >> "${firefox_pref_dir}/${firefox_js}"

@@ -1,6 +1,6 @@
 # platform = multi_platform_all
 
-if `grep -q ^log_group /etc/audit/auditd.conf` ; then
+if LC_ALL=C grep -m 1 -q ^log_group /etc/audit/auditd.conf; then
   GROUP=$(awk -F "=" '/log_group/ {print $2}' /etc/audit/auditd.conf | tr -d ' ')
   if ! [ "${GROUP}" == 'root' ] ; then
     chown root.${GROUP} /var/log/audit
