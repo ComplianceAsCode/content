@@ -39,8 +39,9 @@ description: |-
     </pre>
 
 rationale: |-
-    Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
-    these events could serve as evidence of potential system compromise.
+    The more specific rules cover a subset of events covered by the less specific rules.
+    By ordering them from more specific to less specific, it is assured that the less specific
+    rule will not catch events better recorded by the more specific rule.
 
 severity: medium
 
