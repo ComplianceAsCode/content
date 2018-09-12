@@ -25,6 +25,7 @@ selections:
     - service_auditd_enabled
     - service_cron_enabled
     - service_ntp_enabled
+    - service_timesyncd_enabled
     - service_rsyslog_enabled
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout

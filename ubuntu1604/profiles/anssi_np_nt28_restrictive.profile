@@ -16,3 +16,4 @@ selections:
     - package_cron_installed
     - service_auditd_enabled
     - service_ntp_enabled
+    - service_timesyncd_enabled
