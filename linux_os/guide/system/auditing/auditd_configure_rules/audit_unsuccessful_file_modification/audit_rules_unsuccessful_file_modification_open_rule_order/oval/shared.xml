@@ -1,12 +1,13 @@
 <def-group>
   <definition class="compliance" id="audit_rules_unsuccessful_file_modification_open_rule_order" version="1">
     <metadata>
-      <title>Ensure auditd Collects Detailed Information on Unsuccesful Access Attemps to Files</title>
+      <title>Ensure auditd Unauthorized Access Attempts To open Are Ordered Correctly</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>multi_platform_fedora</platform>
       </affected>
-      <description>Audit rules about the information on the use of privileged commands are enabled.</description>
+      <description>Audit rules about the information on the unsuccessful use of open is configured in the proper rule order.</description>
+
     </metadata>
 
     <criteria operator="OR">
