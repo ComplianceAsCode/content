@@ -21,7 +21,7 @@ from create_services_enabled import ServiceEnabledGenerator
 from create_sysctl import SysctlGenerator
 from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
 from create_audit_rules_unsuccessful_file_modification import AuditRulesUnsuccessfulFileModificationGenerator
-from create_audit_rules_unsuccessful_file_modification_detailed import AuditRulesUnsuccessfulFileModificationDetailedGenerator
+from create_audit_rules_unsuccessful_file_modification_detailed import ARUFMDetailedGenerator
 from create_audit_rules_file_deletion_events import AuditRulesFileDeletionEventsGenerator
 from create_audit_rules_login_events import AuditRulesLoginEventsGenerator
 from create_audit_rules_privileged_commands import AuditRulesPrivilegedCommandsGenerator
@@ -65,7 +65,7 @@ class Builder(object):
             "selinux_booleans.csv":             SEBoolGenerator(),
             "audit_rules_dac_modification.csv": AuditRulesDacModificationGenerator(),
             "audit_rules_unsuccessful_file_modification.csv":   AuditRulesUnsuccessfulFileModificationGenerator(),
-            "audit_rules_unsuccessful_file_modification_detailed.csv":   AuditRulesUnsuccessfulFileModificationDetailedGenerator(),
+            "audit_rules_unsuccessful_file_modification_detailed.csv":   ARUFMDetailedGenerator(),
             "audit_rules_file_deletion_events.csv":  AuditRulesFileDeletionEventsGenerator(),
             "audit_rules_login_events.csv":  AuditRulesLoginEventsGenerator(),
             "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
