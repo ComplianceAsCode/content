@@ -1,0 +1,13 @@
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# reboot = false
+# strategy = disable
+# complexity = low
+# disruption = low
+
+- name: Disable Ctrl-Alt-Del Reboot Activation
+  systemd:
+    name: ctrl-alt-del.target
+    masked: yes
+  tags:
+    @ANSIBLE_TAGS@
+
