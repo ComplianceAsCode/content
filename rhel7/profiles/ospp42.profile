@@ -1,9 +1,9 @@
-documentation_complete: false
+documentation_complete: true
 
-title: 'DRAFT - Protection Profile for General Purpose Operating Systems'
+title: 'Protection Profile for General Purpose Operating Systems v. 4.2'
 
 description: "This profile reflects mandatory configuration controls identified\nin the NIAP Configuration Annex to the Protection\
-    \ Profile for General Purpose Operating\nSystems (Protection Profile Version 4.2 draft). \n\nThis Annex is consistent\
+    \ Profile for General Purpose Operating\nSystems (Protection Profile Version 4.2). \n\nThis Annex is consistent\
     \ with CNSSI-1253, which requires US National Security\nSystems to adhere to certain configuration parameters. Accordingly,\
     \ configuration\nguidance produced according to the requirements of this Annex is suitable for use\nin US National Security\
     \ Systems."
