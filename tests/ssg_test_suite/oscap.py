@@ -63,7 +63,7 @@ def send_files_remote(verbose_path, remote_dir, domain_ip, *files):
 
     logging.debug('Uploading files {0} to {1}'.format(files_string,
                                                       destination))
-    command = ['scp'] + common.IGNORE_KNOWN_HOSTS_OPTIONS + list(files) + [destination]
+    command = ['scp'] + list(common.IGNORE_KNOWN_HOSTS_OPTIONS) + list(files) + [destination]
     if common.run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to upload files {0}'.format(files_string))
         success = False
@@ -77,7 +77,7 @@ def get_file_remote(verbose_path, local_dir, domain_ip, remote_path):
     source = 'root@{0}:{1}'.format(domain_ip, remote_path)
     logging.debug('Downloading file {0} to {1}'
                   .format(source, local_dir))
-    command = ['scp'] + common.IGNORE_KNOWN_HOSTS_OPTIONS + [source, local_dir]
+    command = ['scp'] + list(common.IGNORE_KNOWN_HOSTS_OPTIONS) + [source, local_dir]
     if common.run_cmd_local(command, verbose_path)[0] != 0:
         logging.error('Failed to download file {0}'.format(remote_path))
         success = False
