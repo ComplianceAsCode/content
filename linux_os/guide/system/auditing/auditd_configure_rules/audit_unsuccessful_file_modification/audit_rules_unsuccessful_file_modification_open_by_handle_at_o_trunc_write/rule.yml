@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,fedora
 
-title: 'Record Unauthorized Modification Attempts to Files (unsuccessful) - open_by_handle_at O_TRUNC'
+title: 'Record Unauthorized Modification Attempts to Files - open_by_handle_at O_TRUNC'
 
 description: |-
     The audit system should collect detailed unauthorized file accesses for
@@ -49,5 +49,6 @@ warnings:
     - general: |-
         Note that these rules can be configured in a
         number of ways while still achieving the desired effect. Here the system calls
-        have been placed independent of other system calls. Grouping these system
-        calls with others as identifying earlier in this guide is more efficient.
+        have been placed independent of other system calls. Grouping system calls related
+        to the same event is more efficient. See the following example:
+        <pre>-a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccesful-modification</pre>
