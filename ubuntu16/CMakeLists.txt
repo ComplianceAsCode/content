@@ -3,4 +3,4 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
     message(FATAL_ERROR "cmake has to be used on the root CMakeLists.txt, see BUILD.md for more details!")
 endif()
 
-ssg_build_product("ubuntu1604")
+ssg_build_product("ubuntu16")

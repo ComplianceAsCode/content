@@ -4,6 +4,6 @@
 
 <xsl:include href="constants.xslt"/>
 <xsl:param name="ssg_version">unknown</xsl:param>
-<xsl:variable name="ovalfile">unlinked-ubuntu1404-oval.xml</xsl:variable>
+<xsl:variable name="ovalfile">unlinked-ubuntu16-oval.xml</xsl:variable>
 
 </xsl:stylesheet>
