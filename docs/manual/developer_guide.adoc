@@ -10,6 +10,10 @@ toc::[]
 
 == Introduction
 
+This document tries provides information useful for ComplianceAsCode/content project contributors.
+We will guide you through the structure of the project.
+We will explain the directory layout, used formats and the build system.
+
 == Establishing Accounts
 
 === Mailing List
@@ -935,3 +939,21 @@ The SSG build and templating system is mostly written in Python.
 * The common pattern is to dynamically add the `shared/modules` to the import path. The `ssgcommon` module has many useful utility functions and predefined constants. See scripts at `./build-scripts` as an example of this practice.
 * Follow the link:https://www.python.org/dev/peps/pep-0008/[PEP8 standard].
 * Try to keep most of your lines length under 80 characters. Although the 99 character limit is within link:https://www.python.org/dev/peps/pep-0008/#maximum-line-length[PEP8 requirements], there is no reason for most lines to be that long.
+
+== Legacy Notice
+
+This project has been created by renaming SCAP Security Guide Project (SSG).
+It was a project that provides security policies in SCAP format.
+Project outgrown former name SCAP Security Guide, and changed its name to imply broader scope than just SCAP.
+Therefore, the SCAP Security Guide has been transformed into ComplianceAsCode/content, which better
+describes the goal of the project.
+
+This git repository was created by simply renaming and moving the SCAP Security Guide (SSG)
+repository to a different GitHub organization.
+
+Due to this history, the repository contains many mentions of SCAP Security Guide.
+These legacy mentions are continuously cleaned up as the project develops.
+Some of them are kept due to backwards compatibility.
+
+For example, the output files produced by our build system still start by `ssg-` prefix.
+Various Linux distributions still ship our files in `scap-security-guide` package.
