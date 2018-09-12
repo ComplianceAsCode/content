@@ -78,14 +78,15 @@ class FilesGenerator(object):
         raise TemplateNotFoundError(filename, paths)
 
     def file_from_template(self, template_filename, constants,
-                           filename_format, filename_value):
+                           filename_format, filename_value, *extra_filename_args):
         """
         Load template, fill constant and create new file
         """
 
         template_filepath = self.get_template_filename(template_filename)
+        format_args = (filename_value,) + extra_filename_args
         output_filepath = os.path.join(
-            self.output_dir, filename_format.format(filename_value)
+            self.output_dir, filename_format.format(*format_args)
         )
 
         if self.action == ActionType.INPUT:
