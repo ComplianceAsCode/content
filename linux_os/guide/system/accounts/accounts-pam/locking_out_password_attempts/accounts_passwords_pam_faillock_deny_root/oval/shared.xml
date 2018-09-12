@@ -4,6 +4,7 @@
       <title>Lock out the root account after failed login attempts</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>The root account should be configured to deny access after the number of defined
       failed attempts has been reached.</description>
@@ -50,7 +51,7 @@
     <ind:behaviors singleline="true" />
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
     <!-- Since order of PAM modules matters ensure pam_faillock.so in auth section is listed right after pam_unix.so auth row -->
-    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]+(?s).*[\n][\s]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*even_deny_root[^\n]*[\n]</ind:pattern>
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]*(?s).*[\n][\s]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*even_deny_root[^\n]*[\n]</ind:pattern>
     <!-- Check only the first instance -->
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -85,7 +86,7 @@
     <ind:behaviors singleline="true" />
     <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
     <!-- Since order of PAM modules matters ensure pam_faillock.so in auth section is listed right after pam_unix.so auth row -->
-    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]+(?s).*[\n][\s]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*even_deny_root[^\n]*[\n]</ind:pattern>
+    <ind:pattern operation="pattern match">[\n][\s]*auth[\s]+(?:(?:sufficient)|(?:\[.*default=die.*\]))[\s]+pam_unix\.so[^\n]*(?s).*[\n][\s]*auth[\s]+\[default=die\][\s]+pam_faillock\.so[\s]+authfail[\s]+[^\n]*even_deny_root[^\n]*[\n]</ind:pattern>
     <!-- Check only the first instance -->
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
