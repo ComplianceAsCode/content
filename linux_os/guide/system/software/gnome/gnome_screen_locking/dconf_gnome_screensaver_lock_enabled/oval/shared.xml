@@ -12,7 +12,6 @@
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable screensaver lock and prevent user from changing it" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
-        <extend_definition comment="Check screensaver lock delay settings" definition_ref="dconf_gnome_screensaver_lock_delay" />
         <criterion comment="screensaver lock is enabled" test_ref="test_screensaver_lock_enabled" />
         <criterion comment="screensaver lock prevent user from changing" test_ref="test_prevent_user_screensaver_lock" />
       </criteria>
