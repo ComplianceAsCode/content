@@ -79,7 +79,7 @@ do
 	local count_of_inspected_files=0
 
 	# Define expected rule form for this binary
-	expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=4294967295 -k privileged"
+	expected_rule="-a always,exit -F path=${sbinary} -F perm=x -F auid>=${min_auid} -F auid!=unset -k privileged"
 
 	# If list of audit rules files to be inspected is empty, just add new rule and move on to next binary
 	if [[ ${#files_to_inspect[@]} -eq 0 ]]; then
@@ -100,9 +100,9 @@ do
 		# * existing rule contains all arguments from expected rule form (though can contain
 		#   them in arbitrary order)
 	
-		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'/!d' \
-				-e '/-F path=[^[:space:]]\+/!d'   -e '/-F perm=.*/!d'                 \
-				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=4294967295/!d'        \
+		base_search=$(sed -e '/-a always,exit/!d' -e '/-F path='"${sbinary_esc}"'/!d'		\
+				-e '/-F path=[^[:space:]]\+/!d'   -e '/-F perm=.*/!d'						\
+				-e '/-F auid>='"${min_auid}"'/!d' -e '/-F auid!=\(?:4294967295\|unset\)/!d'	\
 				-e '/-k privileged/!d' "$afile")
 
 		# Increase the count of inspected files for this sbinary
