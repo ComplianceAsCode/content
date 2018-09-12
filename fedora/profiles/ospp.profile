@@ -92,7 +92,10 @@ selections:
     - audit_rules_unsuccessful_file_modification_creat
     - audit_rules_unsuccessful_file_modification_openat
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_open_o_creat
+    - audit_rules_unsuccessful_file_modification_open_o_trunc_write
     - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_open_rule_order
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_truncate
     - audit_rules_unsuccessful_file_modification_unlink
