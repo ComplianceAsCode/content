@@ -10,10 +10,8 @@
 
 - name: Ensure group owner {{{ FILEGID }}} on {{{ FILEPATH }}}
   file:
-    path: "{{ item }}"
+    path: {{{ FILEPATH }}}
     group: {{{ FILEGID }}}
-  with_items:
-    - {{{ FILEPATH }}}
   when: file_exists.stat.exists
   tags:
     @ANSIBLE_TAGS@

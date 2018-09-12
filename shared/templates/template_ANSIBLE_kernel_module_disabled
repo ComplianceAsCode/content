@@ -6,11 +6,9 @@
 - name: Ensure kernel module '{{{ KERNMODULE }}}' is disabled
   lineinfile:
     create: yes
-    dest: "/etc/modprobe.d/{{item}}.conf"
-    regexp: '{{item}}'
-    line: "install {{item}} /bin/true"
-  with_items:
-    - {{{ KERNMODULE }}}
+    dest: "/etc/modprobe.d/{{{ KERNMODULE }}}.conf"
+    regexp: '{{{ KERNMODULE }}}'
+    line: "install {{{ KERNMODULE }}} /bin/true"
   tags:
     @ANSIBLE_TAGS@
 

@@ -5,10 +5,8 @@
 # disruption = low
 - name: Ensure {{{ PKGNAME }}} is removed
   package:
-    name: "{{item}}"
+    name: {{{ PKGNAME }}}
     state: absent
-  with_items:
-    - {{{ PKGNAME }}}
   tags:
     @ANSIBLE_TAGS@
 

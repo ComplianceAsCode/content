@@ -64,23 +64,19 @@
 #
 - name: Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules when on x86
   lineinfile:
-    line: "{{ item }}"
+    line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
     state: present
     dest: /etc/audit/audit.rules
-  with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
   when: audit_arch == 'b32'
   tags:
     @ANSIBLE_TAGS@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
-    line: "{{ item }}"
+    line: "-a always,exit -F arch=b64 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
-  with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@
