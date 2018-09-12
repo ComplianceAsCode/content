@@ -167,3 +167,4 @@ selections:
     - audit_rules_kernel_module_loading_modprobe
     - audit_rules_kernel_module_loading_rmmod
     - security_patches_up_to_date
+    - audit_rules_etc_passwd_open
