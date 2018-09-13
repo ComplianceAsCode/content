@@ -30,14 +30,14 @@ class AuditRulesFileDeletionEventsGenerator(FilesGenerator):
                 "./bash/audit_rules_file_deletion_events_{0}.sh", name
             )
 
-#        elif target == "ansible":
-#            self.file_from_template(
-#                "./template_ANSIBLE_audit_rules_file_deletion_events",
-#                {
-#                    "NAME":	name
-#                },
-#                "./ansible/audit_rules_file_deletion_events_{0}.yml", name
-#            )
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_file_deletion_events",
+                {
+                    "NAME":	name
+                },
+                "./ansible/audit_rules_file_deletion_events_{0}.yml", name
+            )
 
         else:
             raise UnknownTargetError(target)

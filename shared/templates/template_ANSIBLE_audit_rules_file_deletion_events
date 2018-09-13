@@ -50,15 +50,6 @@
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@
-
-- name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86
-  lineinfile:
-    path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
-    create: yes
-  when: audit_arch == 'b32'
-  tags:
-    @ANSIBLE_TAGS@
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
@@ -67,7 +58,6 @@
     line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
     state: present
     dest: /etc/audit/audit.rules
-  when: audit_arch == 'b32'
   tags:
     @ANSIBLE_TAGS@
 
