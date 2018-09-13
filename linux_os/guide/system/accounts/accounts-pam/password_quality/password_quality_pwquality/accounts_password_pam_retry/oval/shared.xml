@@ -14,7 +14,6 @@
     </criteria>
   </definition>
 
-  <!-- BEGIN RHEL7 & Fedora CHECKS -->
   <ind:textfilecontent54_test check="all" comment="check the configuration of /etc/pam.d/system-auth" id="test_password_pam_pwquality_retry" version="1">
     <ind:object object_ref="obj_password_pam_pwquality_retry" />
     <ind:state state_ref="state_password_pam_retry" />
@@ -26,7 +25,6 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <!-- The following state & variables are reused between the RHEL6/RHEL7 checks -->
   <ind:textfilecontent54_state id="state_password_pam_retry" version="1">
     <ind:subexpression datatype="int" operation="less than or equal" var_ref="var_password_pam_retry" />
   </ind:textfilecontent54_state>
