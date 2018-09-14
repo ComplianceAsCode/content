@@ -46,12 +46,60 @@
     </criteria>
   </definition>
 
+  <!-- General rule boiler plate -->
+  <constant_variable id="var_32bit_arufm_{{{ NAME }}}_head" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))</value>
+  </constant_variable>
+  <constant_variable id="var_64bit_arufm_{{{ NAME }}}_head" version="1" datatype="string" comment="audit rule arch and syscal">
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))</value>
+  </constant_variable>
+  <constant_variable id="var_arufm_{{{ NAME }}}_tail" version="1" datatype="string" comment="audit rule auid and key">
+    <value>(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+  </constant_variable>
+
+  <!-- 32bit EACCES rules -->
+  <local_variable id="var_32bit_arufm_eacces_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ NAME }}} EACCES syscall">
+    <concat>
+      <variable_component var_ref="var_32bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=-EACCES[\s]+)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+  <!-- 32bit EPERM rules -->
+  <local_variable id="var_32bit_arufm_eperm_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ NAME }}} EPERM EACCES syscall">
+    <concat>
+      <variable_component var_ref="var_32bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?!.*-F\s+a2&amp;)(?:-.*F\s+exit=-EPERM[\s]+)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+  <!-- 64bit EACCES rules -->
+  <local_variable id="var_64bit_arufm_eacces_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 64bit {{{ NAME }}} EACCES syscall">
+    <concat>
+      <variable_component var_ref="var_64bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?!.*-F\s+a2&amp;)(?:-.*F\s+exit=-EACCES[\s]+)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+  <!-- 64bit EPERM rules -->
+  <local_variable id="var_64bit_arufm_eperm_{{{ NAME }}}_regex" version="1" datatype="string" comment="Expression to match 64bit {{{ NAME }}} EPERM syscall">
+    <concat>
+      <variable_component var_ref="var_64bit_arufm_{{{ NAME }}}_head" />
+      <literal_component>(?!.*-F\s+a2&amp;)(?:-.*F\s+exit=-EPERM[\s]+)</literal_component>
+      <variable_component var_ref="var_arufm_{{{ NAME }}}_tail" />
+    </concat>
+  </local_variable>
+
+
   <ind:textfilecontent54_test check="all" comment="audit augenrules 32-bit file eacces" id="test_32bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
     <ind:object object_ref="object_32bit_arufm_eacces_{{{ NAME }}}_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eacces_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -60,7 +108,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eperm_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -69,7 +117,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eacces_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -78,7 +126,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
     <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eperm_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -87,7 +135,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eacces_{{{ NAME }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eacces_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -96,7 +144,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eperm_{{{ NAME }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b32[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eperm_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -105,7 +153,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eacces_{{{ NAME }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EACCES[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eacces_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -114,7 +162,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eperm_{{{ NAME }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+(?:.*-F[\s]+arch=b64[\s]+)(?:.*(-S[\s]+{{{ NAME }}}[\s]+|([\s]+|[,]){{{ NAME }}}([\s]+|[,])))(?!.*-F\s+a2&amp;)(?:.*-F\s+exit=\-EPERM[\s]+)(?:.*-F\s+auid>={{{ auid }}}[\s]+)(?:.*-F\s+auid!=(?:4294967295|unset)[\s]+).*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eperm_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
