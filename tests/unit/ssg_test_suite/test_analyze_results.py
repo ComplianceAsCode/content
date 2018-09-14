@@ -3,6 +3,7 @@ import os
 
 import pytest
 
+from ssg_test_suite import common
 import analyze_results as analyze
 
 
@@ -13,20 +14,20 @@ def raw_results():
 
 @pytest.fixture
 def results_list(raw_results):
-    return [analyze.RuleResult(r) for r in raw_results.values()]
+    return [common.RuleResult(r) for r in raw_results.values()]
 
 
 @pytest.fixture
 def different_results(raw_results):
-    return [analyze.RuleResult(raw_results[key])
+    return [common.RuleResult(raw_results[key])
             for key in ("container_failed_remediation", "vm_passed_everything")]
 
 
 def test_success(raw_results):
-    rule_ok = analyze.RuleResult(raw_results["vm_passed_everything"])
+    rule_ok = common.RuleResult(raw_results["vm_passed_everything"])
     assert rule_ok.success
 
-    rule_not_ok = analyze.RuleResult(raw_results["container_failed_remediation"])
+    rule_not_ok = common.RuleResult(raw_results["container_failed_remediation"])
     assert not rule_not_ok.success
 
 
@@ -40,3 +41,9 @@ def test_differences(different_results):
 
     difference = analyze.analyze_differences(different_results)
     assert difference.why_failed == "remediation"
+
+
+def test_persistence(raw_results):
+    for r in raw_results.values():
+        intermediate = common.RuleResult(r)
+        assert r == intermediate.save_to_dict()
