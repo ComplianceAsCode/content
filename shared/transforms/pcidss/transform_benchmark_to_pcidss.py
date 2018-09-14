@@ -159,6 +159,7 @@ def main():
                         "the Operating System level?",
                         rule.get("id"), ref.text
                     )
+                    sys.exit(1)
 
     if len(unused_rules) > 0:
         logging.warning(
