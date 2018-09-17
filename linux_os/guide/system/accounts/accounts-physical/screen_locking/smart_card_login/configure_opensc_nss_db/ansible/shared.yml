@@ -1,0 +1,17 @@
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: Get NSS database smart card configuration
+  shell: /usr/bin/pkcs11-switch
+  register: pkcsw_output
+  tags:
+    @ANSIBLE_TAGS@
+
+- name: "@RULE_TITLE@"
+  shell: /usr/bin/pkcs11-switch opensc
+  when: pkcsw_output.stdout != "opensc"
+  tags:
+    @ANSIBLE_TAGS@
