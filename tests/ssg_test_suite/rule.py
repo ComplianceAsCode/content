@@ -7,6 +7,7 @@ import os.path
 import re
 import subprocess
 import collections
+import json
 
 import ssg_test_suite.oscap as oscap
 import ssg_test_suite.virt
@@ -184,6 +185,9 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         super(RuleChecker, self).__init__(test_env)
         self._matching_rule_found = False
 
+        self.results = list()
+        self._current_result = None
+
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
         rule_id = test_data["rule_id"]
@@ -215,6 +219,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
     def _initial_scan_went_ok(self, runner, rule_id, context):
         success = runner.run_stage_with_context("initial", context)
+        self._current_result.record_stage_result("initial_scan", success)
         if not success:
             msg = ("The initial scan failed for rule '{}'."
                    .format(rule_id))
@@ -231,6 +236,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
     def _remediation_went_ok(self, runner, rule_id):
         success = runner.run_stage_with_context('remediation', 'fixed')
+        self._current_result.record_stage_result("remediation", success)
         if not success:
             msg = ("The remediation failed for rule '{}'."
                    .format(rule_id))
@@ -239,6 +245,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
     def _final_scan_went_ok(self, runner, rule_id):
         success = runner.run_stage_with_context('final', 'pass')
+        self._current_result.record_stage_result("final_scan", success)
         if not success:
             msg = ("The check after remediation failed for rule '{}'."
                    .format(rule_id))
@@ -274,14 +281,28 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
 
         args_list = [(s, remote_rule_dir, rule.id)
                      for s in _get_scenarios(local_rule_dir, rule.files)]
-        state.map_on_top(self._check_rule_scenario, args_list)
+        state.map_on_top(self._check_and_record_rule_scenario, args_list)
+
+    def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id):
+        self._current_result = common.RuleResult()
+
+        self._current_result.conditions = common.Scenario_conditions(
+            self.test_env.name, self.test_env.scanning_mode,
+            self.remediate_using, self.datastream)
+        self._current_result.scenario = common.Scenario_run(rule_id, scenario.script)
+        self._current_result.when = self.test_timestamp_str
+
+        self._check_rule_scenario(scenario, remote_rule_dir, rule_id)
+        self.results.append(self._current_result.save_to_dict())
 
     def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id):
         if not _apply_script(
                 remote_rule_dir, self.test_env.domain_ip, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
+            self._current_result.record_stage_result("preparation", False)
             return
 
+        self._current_result.record_stage_result("preparation", True)
         logging.debug('Using test script {0} with context {1}'
                       .format(scenario.script, scenario.context))
 
@@ -291,6 +312,11 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         self.run_test_for_all_profiles(profiles, test_data)
 
         self.executed_tests += 1
+
+    def finalize(self):
+        super(RuleChecker, self).finalize()
+        with open(os.path.join(LogHelper.LOG_DIR, "results.json"), "w") as f:
+            json.dump(self.results, f)
 
 
 def perform_rule_check(options):

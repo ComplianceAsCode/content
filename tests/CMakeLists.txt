@@ -2,29 +2,21 @@ if (ENABLE_PYTHON_COVERAGE)
     set(PYTEST_COVERAGE_OPTIONS --cov-append --cov-report=xml --cov "${CMAKE_SOURCE_DIR}/")
 endif()
 
-macro(ssg_python_unit_tests PYTHON_COMPONENT)
+macro(ssg_python_unit_tests PYTHON_COMPONENT_ID RELATIVE_PYTHONPATH)
     add_test(
-        NAME "python-unit-${PYTHON_COMPONENT}"
-        COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT}"
+        NAME "python-unit-${PYTHON_COMPONENT_ID}"
+        COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/${PYTHON_COMPONENT_ID}"
     )
-    set_tests_properties ("python-unit-${PYTHON_COMPONENT}" PROPERTIES ENVIRONMENT
-        "PYTHONPATH=${CMAKE_SOURCE_DIR}/${PYTHON_COMPONENT}:$ENV{PYTHONPATH}"
+    set_tests_properties ("python-unit-${PYTHON_COMPONENT_ID}" PROPERTIES ENVIRONMENT
+        "PYTHONPATH=${CMAKE_SOURCE_DIR}/${RELATIVE_PYTHONPATH}:$ENV{PYTHONPATH}"
     )
 endmacro()
 
 if (PY_PYTEST)
-    ssg_python_unit_tests("build-scripts")
-    ssg_python_unit_tests("utils")
-    # The SSG Python package unit test requires special handling of PYTHONPATH
-    # Unlike other directories with Python files, the parent directory of the ssg directory (i.e. not the directory itself)
-    # has to be in the PYTHONPATH
-    add_test(
-        NAME "python-unit-ssg-module"
-        COMMAND "${PYTHON_EXECUTABLE}" -m pytest ${PYTEST_COVERAGE_OPTIONS} "${CMAKE_SOURCE_DIR}/tests/unit/ssg"
-    )
-    set_tests_properties ("python-unit-ssg-module" PROPERTIES ENVIRONMENT
-        "PYTHONPATH=${CMAKE_SOURCE_DIR}:$ENV{PYTHONPATH}"
-    )
+    ssg_python_unit_tests("build-scripts" "build-scripts")
+    ssg_python_unit_tests("utils" "utils")
+    ssg_python_unit_tests("ssg-module" ".")
+    ssg_python_unit_tests("ssg_test_suite" "tests")
 endif()
 
 add_test(

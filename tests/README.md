@@ -207,3 +207,17 @@ You can do that by putting following lines in your `$HOME/.ssh/config` file:
 StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
 ```
+
+## Analysis of results
+
+The rule tests results are saved as `results.json` into the corresponding log directory.
+You can then analyze those results by running e.g.
+
+```
+python analyze_results.py $(find . -name results.json)
+```
+
+The tool will print some general statistics and it will give you more detailed information about
+scenarios that yielded different results.
+Sometimes, different results may have been caused by different test environments, whereas sometimes
+the security content is different, and those scans can be identified by respective scanning dates only.
