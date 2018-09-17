@@ -8,7 +8,7 @@
 - name: Configure auditd Max Log File Size
   lineinfile:
     dest: /etc/audit/auditd.conf
-    line: "max_log_file {{ var_auditd_max_log_file }}"
+    line: "max_log_file = {{ var_auditd_max_log_file }}"
     state: present
   #notify: reload auditd
   tags:
