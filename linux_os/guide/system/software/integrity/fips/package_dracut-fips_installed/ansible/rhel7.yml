@@ -1,0 +1,13 @@
+# platform = Red Hat Enterprise Linux 7
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Ensure dracut-fips is installed
+  package:
+    name: dracut-fips
+    state: present
+    when: ansible_distribution == 'Red Hat Enterprise Linux'
+  tags:
+    @ANSIBLE_TAGS@
+
