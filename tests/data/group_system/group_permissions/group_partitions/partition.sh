@@ -33,7 +33,7 @@ mount_partition() {
 
 mount_bind_partition() {
 	mkdir -p "$1"
-	mount --target -B "$1"
+	mount -B "$PARTITION" "$1"
 }
 
 # $1: The path to umount and remove from /etc/fstab
