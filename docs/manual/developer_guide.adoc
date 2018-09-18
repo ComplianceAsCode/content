@@ -534,6 +534,25 @@ An alternative is adding the directory where `testoval.py` resides to your PATH.
 $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 ----
 
+== The SSG Python Module
+
+Locaated in the `ssg` directory are several useful Python modules for working with
+the content in SSG. Some of these utilities are of broader interest to the broader
+community working with OVAL content as well. However, the modules with prefix `build_`
+are only useful for building SSG. Contributions to this module are actively welcomed.
+
+By installing this in the user context from an active repository, as shown below, you
+can use the Python utilities in the `utils` directory without setting `PYTHONPATH`.
+
+To install the SSG Python module in a user scope:
+----
+$ pip install --user -e ./
+----
+
+Note that this module is not published on PyPI and is not obtainable from there.
+Further, we don't recommend installing this module in the system scope as it includes
+many utilities meant for development. Use of a virtualenv would be suggested instead.
+
 == Contributing with XCCDFs, OVALs and remediations
 
 There are three main types of content in SSG, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
