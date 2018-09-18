@@ -3,6 +3,9 @@
 
 . ../partition.sh
 
+# Make sure scenario preparation starts from a clean state
+clean_up_partition /var/tmp
+
 # PARTITION is defined in partition.sh
 mkdir -p "$PARTITION"
 make_fstab_bind_partition_line /var/tmp

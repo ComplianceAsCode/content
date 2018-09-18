@@ -35,3 +35,11 @@ mount_bind_partition() {
 	mkdir -p "$1"
 	mount --target -B "$1"
 }
+
+# $1: The path to umount and remove from /etc/fstab
+clean_up_partition() {
+    path="$1"
+    escaped_path=${path//$'/'/$'\/'}
+    sed -i "/${escaped_path}/d" /etc/fstab
+    umount ${path} || true  # no problem if not mounted
+}
