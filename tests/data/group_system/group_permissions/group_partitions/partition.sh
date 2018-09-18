@@ -13,7 +13,7 @@ create_partition() {
 make_fstab_given_partition_line() {
 	local _mount_point="$1" _type="$2" _additional_mount_options="$3"
 	test -z "$_additional_mount_options" || _additional_mount_options=",$_additional_mount_options"
-	printf "%s     %s     %s     rw%s     0 0\n" "$PARTITION" "$_mount_point" "$_type" "$_additional_mount_options" > /etc/fstab
+	printf "%s     %s     %s     rw%s     0 0\n" "$PARTITION" "$_mount_point" "$_type" "$_additional_mount_options" >> /etc/fstab
 }
 
 # $1: The mount point
