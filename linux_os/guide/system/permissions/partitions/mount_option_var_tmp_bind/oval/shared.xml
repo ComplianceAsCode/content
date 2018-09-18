@@ -10,6 +10,8 @@
       same techniques as /tmp.</description>
     </metadata>
     <criteria operator="AND">
+      <criterion comment="Ensure /var/tmp is configured to bind mount to /tmp"
+      test_ref="test_configure_mount_option_var_tmp_bind_tmp" />
       <criterion comment="Ensure /var/tmp is mounted"
       test_ref="test_mount_option_var_tmp" />
       <criteria operator="OR">
@@ -20,6 +22,18 @@
       </criteria>
     </criteria>
   </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists"
+  comment="Ensure /var/tmp is configured to bind mount to /tmp"
+  id="test_configure_mount_option_var_tmp_bind_tmp" version="1">
+    <ind:object object_ref="object_configure_mount_option_var_tmp_bind_tmp" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object comment="look for the partition mount point in /etc/mtab"
+  id="object_configure_mount_option_var_tmp_bind_tmp" version="1">
+    <ind:filepath>/etc/fstab</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*/tmp[\s]+/var/tmp[\s]+.*bind.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
 
   <linux:partition_test id="test_mount_option_var_tmp" version="1"
   comment="Ensure /var/tmp is mounted" check="all">
