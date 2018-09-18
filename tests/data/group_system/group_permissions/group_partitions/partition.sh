@@ -8,16 +8,21 @@ create_partition() {
 }
 
 # $1: The mount point
-# $2: The additional mount options
+# $2: The type of file system
+# $3: The additional mount options
 make_fstab_given_partition_line() {
-	local _mount_point="$1" _additional_mount_options="$2"
+	local _mount_point="$1" _type="$2" _additional_mount_options="$3"
 	test -z "$_additional_mount_options" || _additional_mount_options=",$_additional_mount_options"
-	printf "%s     %s     ext2     rw%s     0 0\n" "$PARTITION" "$_mount_point" "$_additional_mount_options" > /etc/fstab
+	printf "%s     %s     %s     rw%s     0 0\n" "$PARTITION" "$_mount_point" "$_type" "$_additional_mount_options" > /etc/fstab
 }
 
 # $1: The mount point
 make_fstab_correct_partition_line() {
-	make_fstab_given_partition_line "$1" "nodev,noexec,nosuid"
+	make_fstab_given_partition_line "$1" "ext2" "nodev,noexec,nosuid"
+}
+
+make_fstab_bind_partition_line() {
+	make_fstab_given_partition_line "$1" "none" "nodev,noexec,nosuid,bind"
 }
 
 # $1: The mount point
