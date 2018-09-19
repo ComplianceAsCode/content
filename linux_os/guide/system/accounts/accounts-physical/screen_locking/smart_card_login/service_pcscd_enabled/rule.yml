@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,fedora
 
-title: 'Install the opensc Package For Multifactor Authentication'
+title: 'Enable the pcscd Service'
 
 description: |-
-    {{{ describe_package_install(package="opensc") }}}
+    {{{ describe_service_enable(service="pcscd") }}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -22,12 +22,12 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: 80568-9
+    cce@rhel7: 80569-7
 
 references:
     disa: "1954"
     srg: SRG-OS-000375-GPOS-00160
 
-ocil_clause: 'the package is not installed'
+ocil_clause: 'the pcscd service is not enabled'
 
-ocil: '{{{ ocil_package(package="opensc") }}}'
+ocil: '{{{ ocil_service_enabled(service="pcscd") }}}'
