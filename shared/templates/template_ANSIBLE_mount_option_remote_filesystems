@@ -15,5 +15,6 @@
   shell: awk '$2=="{{ item }}"{$4=$4",{{{ MOUNTOPTION }}}"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
   with_items:
     - "{{ points_register.stdout_lines }}"
+  when: points_register.stdout | length > 0
   tags:
     @ANSIBLE_TAGS@
