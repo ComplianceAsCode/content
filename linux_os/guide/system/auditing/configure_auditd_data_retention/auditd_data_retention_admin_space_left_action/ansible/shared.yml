@@ -9,7 +9,8 @@
   lineinfile:
     dest: /etc/audit/auditd.conf
     line: "admin_space_left_action = {{ var_auditd_admin_space_left_action }}"
-    regexp: "^admin_space_left_action*"
+    regexp: '^\s*admin_space_left_action\s*=\s*.*$'
+    state: present
   #notify: reload auditd
   tags:
     @ANSIBLE_TAGS@
