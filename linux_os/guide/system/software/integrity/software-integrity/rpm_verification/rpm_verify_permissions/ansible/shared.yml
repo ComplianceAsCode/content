@@ -4,7 +4,7 @@
 # complexity = high
 # disruption = medium
 - name: "Read list of files with incorrect permissions"
-  shell: "rpm -Va | awk '/^.M/ {print $NF}'"
+  shell: "rpm -Va --nofiledigest | awk '/^.M/ {print $NF}'"
   register: files_with_incorrect_permissions
   failed_when: False
   changed_when: False
