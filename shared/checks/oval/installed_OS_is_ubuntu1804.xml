@@ -1,0 +1,26 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_ubuntu1804" version="1">
+    <metadata>
+      <title>Ubuntu 1804</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:canonical:ubuntu_linux:18.04" source="CPE" />
+      <description>The operating system installed on the system is Ubuntu 1804</description>
+    </metadata>
+    <criteria comment="current Ubuntu version is Bionic" operator="AND">
+      <extend_definition comment="Ubuntu is installed" definition_ref="installed_OS_is_ubuntu" />
+      <criterion comment="Bionic is installed" test_ref="test_ubuntu_bionic" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check Ubuntu version" id="test_ubuntu_bionic" version="1">
+    <ind:object object_ref="obj_ubuntu_bionic" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_ubuntu_bionic" version="1" comment="Check Ubuntu version">
+    <ind:filepath>/etc/lsb-release</ind:filepath>
+    <ind:pattern operation="pattern match">^DISTRIB_CODENAME=bionic$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
