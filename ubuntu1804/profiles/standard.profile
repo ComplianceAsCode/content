@@ -3,9 +3,7 @@ documentation_complete: true
 title: 'Standard System Security Profile for Ubuntu 18.04'
 
 description: |-
-    This profile contains rules to ensure standard security baseline
-    of an Ubuntu 18.04 system. Regardless of your system's workload
-    all of these checks should pass.
+    This profile contains rules to ensure standard security baseline of an Ubuntu 18.04 system. Regardless of your system's workload all of these checks should pass.
 
 selections:
     - partition_for_tmp
