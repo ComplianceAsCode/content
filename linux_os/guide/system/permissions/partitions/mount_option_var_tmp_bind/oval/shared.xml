@@ -15,7 +15,7 @@
       <criterion comment="Ensure /var/tmp is mounted"
       test_ref="test_mount_option_var_tmp" />
       <criteria operator="OR">
-        <criterion comment="Ensure /tmp is bind mounted"
+        <criterion comment="Ensure /var/tmp is mounted and binded"
         test_ref="test_mount_option_var_tmp_bind" />
         <criterion comment="Ensure /var/tmp and /tmp have the same source device"
         test_ref="test_mount_option_var_tmp_bind_compare_source" />
