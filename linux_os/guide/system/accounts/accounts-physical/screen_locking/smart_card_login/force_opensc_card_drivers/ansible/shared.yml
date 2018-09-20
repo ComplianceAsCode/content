@@ -1,0 +1,15 @@
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+- (xccdf-var var_smartcard_drivers)
+
+- name: "@RULE_TITLE@"
+  lineinfile:
+    path: /etc/opensc-{{ ansible_architecture }}.conf
+    line: '        force_card_driver = {{ var_smartcard_drivers }}'
+    regexp: '(^\s+#|^)\s+force_card_driver\s+=\s+.*'
+    state: present
+  tags:
+    @ANSIBLE_TAGS@

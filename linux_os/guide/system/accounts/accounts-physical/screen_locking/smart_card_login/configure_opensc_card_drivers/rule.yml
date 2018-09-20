@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel7,fedora
+
+title: 'Configure opensc Smart Card Drivers'
+
+description: |-
+    The OpenSC smart card tool can auto-detect smart card drivers; however,
+    setting the smart card drivers in use by your organization helps to prevent
+    users from using unauthorized smart cards. The default smart card driver for this
+    profile is <tt><sub idref="var_smartcard_drivers" /></tt>. 
+    To configure the OpenSC driver, edit the <tt>/etc/opensc-<i>ARCH</i>.conf</tt> (where
+    <i>ARCH</i> is the architecture of your operating system) file. Look for a
+    line similar to:
+    <pre># card_drivers = old, internal;</pre>
+    and change it to:
+    <pre>card_drivers = <sub idref="var_smartcard_drivers" />;</pre>
+
+rationale: |-
+    Smart card login provides two-factor authentication stronger than
+    that provided by a username and password combination. Smart cards leverage PKI
+    (public key infrastructure) in order to provide and verify credentials.
+    Configuring the smart card driver in use by your organization helps to prevent
+    users from using unauthorized smart cards.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 80565-5
+
+references:
+    disa: 765,766,767,768,771,772,884
+    nist: IA-2(2)
+    pcidss: Req-8.3
+    srg: SRG-OS-000104-GPOS-00051,SRG-OS-000106-GPOS-00053,SRG-OS-000107-GPOS-00054,SRG-OS-000109-GPOS-00056,SRG-OS-000108-GPOS-00055,SRG-OS-000108-GPOS-00057,SRG-OS-000108-GPOS-00058
+
+ocil_clause: 'the smart card driver is not configured correctly'
+
+ocil: |-
+    To verify that <tt><sub idref="var_smartcard_drivers" /></tt> is configured
+    as the smart card driver, run the following command changing <i>ARCH</i> for
+    the architecture of your operating system:
+    <pre>$ grep card_drivers /etc/opensc-<i>ARCH</i></pre>
+    The output should return something similar to:
+    <pre>card_drivers = <sub idref="var_smartcard_drivers" />;</pre>
