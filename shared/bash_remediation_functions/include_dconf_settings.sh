@@ -32,7 +32,7 @@ function dconf_settings {
 		echo "[${_path}]" >> ${DCONFFILE}
 		echo "${_key}=${_value}" >> ${DCONFFILE}
 	else
-		if grep -q "${_key}" ${SETTINGSFILES[@]}
+		if grep -q "^(?!#)${_key}" ${SETTINGSFILES[@]}
 		then
 			sed -i "s/${_key}\s*=\s*.*/${_key}=${_value}/g" ${SETTINGSFILES[@]}
 		else
