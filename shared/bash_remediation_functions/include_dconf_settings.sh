@@ -39,6 +39,8 @@ function dconf_settings {
 			sed -i "\|\[${_path}]|a\\${_key}=${_value}" ${SETTINGSFILES[@]}
 		fi
 	fi
+
+	dconf update
 }
 
 # Function to configure DConf locks for RHEL and Fedora systems.
