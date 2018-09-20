@@ -141,7 +141,9 @@ selections:
     - audit_rules_dac_modification_lchown
     - audit_rules_unsuccessful_file_modification_lchown
     - audit_rules_privileged_commands_at
+    - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_mount
+    - audit_rules_privileged_commands_umount
     - audit_rules_privileged_commands_passwd
     - audit_rules_privileged_commands_unix_chkpwd
     - audit_rules_privileged_commands_userhelper
