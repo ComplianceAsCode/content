@@ -7,6 +7,6 @@ umount /home || true  # no problem if not mounted
 
 create_partition
 
-make_fstab_given_partition_line /home nodev
+make_fstab_given_partition_line /home ext2 nodev
 
 mount_partition /home

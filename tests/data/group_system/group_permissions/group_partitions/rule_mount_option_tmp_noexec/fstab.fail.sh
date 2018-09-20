@@ -5,6 +5,6 @@
 
 create_partition
 
-make_fstab_given_partition_line /tmp nodev
+make_fstab_given_partition_line /tmp ext2 nodev
 
 mount_partition /tmp
