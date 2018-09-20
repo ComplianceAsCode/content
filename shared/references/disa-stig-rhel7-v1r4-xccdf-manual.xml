@@ -4532,7 +4532,7 @@ If "enable-smartcard-authentication" is set to "false" or the keyword is missing
 
 Create a file under "/etc/modprobe.d" with the following command:
 
-# touch /etc/modprobe.d/nodccp
+# touch /etc/modprobe.d/nodccp.conf
 
 Add the following line to the created file:
 
@@ -4540,9 +4540,14 @@ install dccp /bin/true</fixtext><fix id="F-84521r2_fix" /><check system="C-77439
 
 Check to see if the DCCP kernel module is disabled with the following command:
 
-# grep -r dccp /etc/modprobe.d/* | grep -i "/bin/true" | grep -v "^#"
+# grep -r dccp /etc/modprobe.d/* | grep -iE '(/bin/true|blacklist)' | grep -v "^#"
 
 install dccp /bin/true
+   or
+blacklist dccp
+blacklist dccp_diag
+blacklist dccp_ipv4
+blacklist dccp_ipv6
 
 If the command does not return any output, or the line is commented out, and use of DCCP is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.</check-content></check></Rule></Group><Group id="V-77823"><title>SRG-OS-000080-GPOS-00048</title><description>&lt;GroupDescription&gt;&lt;/GroupDescription&gt;</description><Rule id="SV-92519r1_rule" severity="medium" weight="10.0"><version>RHEL-07-010481</version><title>The operating system must require authentication upon booting into single-user and maintenance modes.</title><description>&lt;VulnDiscussion&gt;If the system does not require valid root authentication before it boots into single-user or maintenance mode, anyone who invokes single-user or maintenance mode is granted privileged access to all files on the system.&lt;/VulnDiscussion&gt;&lt;FalsePositives&gt;&lt;/FalsePositives&gt;&lt;FalseNegatives&gt;&lt;/FalseNegatives&gt;&lt;Documentable&gt;false&lt;/Documentable&gt;&lt;Mitigations&gt;&lt;/Mitigations&gt;&lt;SeverityOverrideGuidance&gt;&lt;/SeverityOverrideGuidance&gt;&lt;PotentialImpacts&gt;&lt;/PotentialImpacts&gt;&lt;ThirdPartyTools&gt;&lt;/ThirdPartyTools&gt;&lt;MitigationControl&gt;&lt;/MitigationControl&gt;&lt;Responsibility&gt;&lt;/Responsibility&gt;&lt;IAControls&gt;&lt;/IAControls&gt;</description><reference><dc:title>DPMS Target Red Hat 7</dc:title><dc:publisher>DISA</dc:publisher><dc:type>DPMS Target</dc:type><dc:subject>Red Hat 7</dc:subject><dc:identifier>2777</dc:identifier></reference><ident system="http://iase.disa.mil/cci">CCI-000213</ident><fixtext fixref="F-84523r1_fix">Configure the operating system to require authentication upon booting into single-user and maintenance modes.
 
