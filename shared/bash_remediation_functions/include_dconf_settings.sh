@@ -32,13 +32,15 @@ function dconf_settings {
 		echo "[${_path}]" >> ${DCONFFILE}
 		echo "${_key}=${_value}" >> ${DCONFFILE}
 	else
-		if grep -q "${_key}" ${SETTINGSFILES[@]}
+		if grep -q "^(?!#)${_key}" ${SETTINGSFILES[@]}
 		then
 			sed -i "s/${_key}\s*=\s*.*/${_key}=${_value}/g" ${SETTINGSFILES[@]}
 		else
 			sed -i "\|\[${_path}]|a\\${_key}=${_value}" ${SETTINGSFILES[@]}
 		fi
 	fi
+
+	dconf update
 }
 
 # Function to configure DConf locks for RHEL and Fedora systems.
