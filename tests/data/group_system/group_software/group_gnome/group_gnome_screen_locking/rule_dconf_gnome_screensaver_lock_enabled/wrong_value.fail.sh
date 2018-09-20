@@ -1,13 +1,9 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
-yum -y install dconf
+. ../../dconf_test_functions.sh
 
-# It is ok if string is not found in any file
-file=$(grep -R "lock-enabled" /etc/dconf/db/local.d) || true
-if [ -n "$file" ] ; then
-	sed -i "s/^lock-enabled=.*/lock-enabled=false/g" $file
-else
-	echo "[org/gnome/desktop/screensaver]" > /etc/dconf/db/local.d/00-security-settings
-	echo "lock-enabled=false" >> /etc/dconf/db/local.d/00-security-settings
-fi
+yum -y install dconf
+clean_dconf_settings
+add_dconf_setting "org/gnome/desktop/screensaver" "lock-enabled" "false" "local.d" "00-security-settings"
+add_dconf_lock "org/gnome/desktop/screensaver" "lock-enabled" "local.d" "00-security-settings"
