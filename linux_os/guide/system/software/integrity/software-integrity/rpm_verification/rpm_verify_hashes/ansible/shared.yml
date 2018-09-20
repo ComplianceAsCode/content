@@ -18,7 +18,7 @@
     @ANSIBLE_TAGS@
 
 - name: "Read files with incorrect hash"
-  shell: "rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | sed -r 's;^.*\\s+(.+);\\1;g'"
+  shell: "rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | awk '{print $NF}'"
   register: files_with_incorrect_hash
   changed_when: False
   when: package_manager_reinstall_cmd is defined
