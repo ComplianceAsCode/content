@@ -6,7 +6,7 @@
 populate var_sssd_memcache_timeout
 
 SSSD_CONF="/etc/sssd/sssd.conf"
-MEMCACHE_TIMEOUT_REGEX="[[:space:]]*\[nss]([^(\n)]*(\n)+)+?[[:space:]]*memcache_timeout"
+MEMCACHE_TIMEOUT_REGEX="[[:space:]]*\[nss]([^\n\[]*\n+)+?[[:space:]]*memcache_timeout"
 NSS_REGEX="[[:space:]]*\[nss]"
 
 # Try find [nss] and memcache_timeout in sssd.conf, if it exists, set to
