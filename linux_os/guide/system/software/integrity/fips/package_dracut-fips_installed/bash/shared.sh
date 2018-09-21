@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = multi_platform_rhel
 
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions
