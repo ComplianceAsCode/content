@@ -38,3 +38,10 @@ ocil: |-
     Inspect the file <tt>/etc/firewalld/firewalld.conf</tt> to determine
     the default zone for the <tt>firewalld</tt>. It should be set to <tt>DefaultZone=drop</tt>:
     <pre>$ sudo grep DefaultZone /etc/firewalld/firewalld.conf</pre>
+
+warnings:
+    - general: |-
+        To prevent denying any access to the system, automatic remediation
+        of this control is not available. Remediation must be automated as
+        a component of machine provisioning, or followed manually as outlined
+        above.

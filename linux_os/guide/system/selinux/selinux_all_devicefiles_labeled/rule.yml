@@ -31,3 +31,8 @@ ocil: |-
     To check for unlabeled device files, run the following command:
     <pre>$ sudo find /dev -context *:device_t:* \( -type c -o -type b \) -printf "%p %Z\n"</pre>
     It should produce no output in a well-configured system.
+
+warnings:
+    - general: |-
+        Automatic remediation of this control is not available. The remediation
+        can be achieved by amending SELinux policy.
