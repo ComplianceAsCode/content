@@ -5,6 +5,7 @@
 . shared.sh
 
 interval="900"
+set_default_configuration
 
 preauth_set=1
 authfail_set=1
