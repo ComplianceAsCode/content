@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 function insert_preauth {
 	local pam_file="$1"
 	local fail_interval="$2"
