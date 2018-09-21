@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
 # reboot = false
 # strategy = configure
 # complexity = low
