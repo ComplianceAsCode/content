@@ -4,7 +4,7 @@
 # complexity = high
 # disruption = medium
 - name: "Read list of files with incorrect ownership"
-  shell: "rpm -Va --nofiledigest | grep "^.....\(U\|.G\)" | awk '{print $NF}'"
+  shell: rpm -Va --nofiledigest | grep "^.....\(U\|.G\)" | awk '{print $NF}'
   register: files_with_incorrect_ownership
   failed_when: False
   changed_when: False
