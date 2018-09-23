@@ -101,6 +101,87 @@ def applicable_platforms(oval_file):
     return platforms
 
 
+def parse_affected(oval_contents):
+    """
+    Returns the tuple (start_affected, end_affected, platform_indents) for
+    the passed oval file contents. start_affected is the line number of
+    starting tag of the <affected> element, end_affected is the line number of
+    the closing tag of the </affected> element, and platform_indents is a
+    string containing the indenting characters before the contents of the
+    <affected> element.
+    """
+
+    start_affected = list(filter(lambda x: "<affected" in oval_contents[x],
+                                 range(0, len(oval_contents))))
+    if len(start_affected) != 1:
+        raise ValueError("OVAL file does not contain a single <affected> "
+                         "element; counted %d in:\n%s\n\n" %
+                         (len(start_affected), "\n".join(oval_contents)))
+
+    start_affected = start_affected[0]
+
+    end_affected = list(filter(lambda x: "</affected" in oval_contents[x],
+                               range(0, len(oval_contents))))
+    if len(end_affected) != 1:
+        raise ValueError("Malformed OVAL file does not contain a single "
+                         "closing </affected>; counted %d in:\n%s\n\n" %
+                         (len(start_affected), "\n".join(oval_contents)))
+    end_affected = end_affected[0]
+
+    if start_affected >= end_affected:
+        raise ValueError("Malformed OVAL file: start affected tag begins "
+                         "on the same line or after ending affected tag: "
+                         "start:%d vs end:%d:\n%s\n\n" %
+                         (start_affected, end_affected, oval_contents))
+
+    # Validate that start_affected contains only a starting <affected> tag;
+    # otherwise, using this information to update the <platform> subelements
+    # would fail.
+    start_line = oval_contents[start_affected]
+    start_line = start_line.strip()
+
+    if not start_line.startswith('<affected'):
+        raise ValueError("Malformed OVAL file: line with starting affected "
+                         "tag contains other elements: line:%s\n%s\n\n" %
+                         (start_line, oval_contents))
+    if '<' in start_line[1:]:
+        raise ValueError("Malformed OVAL file: line with starting affected "
+                         "tag contains other elements: line:%s\n%s\n\n" %
+                         (start_line, oval_contents))
+
+    # Validate that end_affected contains only an ending </affected> tag;
+    # otherwise, using this information to update the <platform> subelements
+    # would fail.
+    end_line = oval_contents[end_affected]
+    end_line = end_line.strip()
+
+    if not end_line.startswith('</affected>'):
+        raise ValueError("Malformed OVAL file: line with ending affected "
+                         "tag contains other elements: line:%s\n%s\n\n" %
+                         (end_line, oval_contents))
+    if '<' in end_line[1:]:
+        raise ValueError("Malformed OVAL file: line with ending affected "
+                         "tag contains other elements: line:%s\n%s\n\n" %
+                         (end_line, oval_contents))
+
+    indents = ""
+    if start_affected+1 == end_affected:
+        # Since the affected element is present but empty, the indents should
+        # be two more spaces than that of the starting <affected> element.
+        start_index = oval_contents[start_affected].index('<')
+        indents = oval_contents[start_affected][0:start_index]
+        indents += "  "
+    else:
+        # Otherwise, grab the indents off the next line unmodified, as this is
+        # likely a platform element tag. We don't validate here that this is
+        # indeed the case, as other parts of the build infrastructure will
+        # validate this for us.
+        start_index = oval_contents[start_affected+1].index('<')
+        indents = oval_contents[start_affected+1][0:start_index]
+
+    return start_affected, end_affected, indents
+
+
 def replace_external_vars(tree):
     """Replace external_variables with local_variables, so the definition can be
        tested independently of an XCCDF file"""
