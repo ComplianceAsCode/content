@@ -4,6 +4,7 @@
       <title>Lock out account after failed login attempts</title>
       <affected family="unix">
         <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
       </affected>
       <description>The number of allowed failed logins should be set correctly.</description>
     </metadata>
@@ -12,6 +13,8 @@
       <criterion comment="authfail default is set to 900" test_ref="test_accounts_passwords_pam_faillock_authfail_fail_interval_system-auth" />
       <criterion comment="authfail default is set to 900" test_ref="test_accounts_passwords_pam_faillock_fail_interval_password-auth" />
       <criterion comment="preauth default is set to 900" test_ref="test_accounts_passwords_pam_faillock_preauth_fail_interval_password-auth" />
+      <criterion comment="account requires pam_faillock.so in /etc/pam.d/password-auth" test_ref="test_accounts_passwords_pam_faillock_account_requires_password-auth" />
+      <criterion comment="account requires pam_faillock.so in /etc/pam.d/system-auth" test_ref="test_accounts_passwords_pam_faillock_account_requires_system-auth" />
     </criteria>
   </definition>
 
@@ -35,6 +38,14 @@
     <ind:state state_ref="state_accounts_passwords_pam_faillock_fail_interval_password-auth" />
   </ind:textfilecontent54_test>
 
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check if pam_faillock.so is required in account section in /etc/pam.d/password-auth" id="test_accounts_passwords_pam_faillock_account_requires_password-auth" version="2">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_account_requires_password-auth"/>
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check if pam_faillock.so is required in account section in /etc/pam.d/system-auth" id="test_accounts_passwords_pam_faillock_account_requires_system-auth" version="2">
+    <ind:object object_ref="object_accounts_passwords_pam_faillock_account_requires_system-auth"/>
+  </ind:textfilecontent54_test>
+
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_fail_interval_system-auth" version="2">
     <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*auth\s+(?:(?:required))\s+pam_faillock\.so\s+preauth.*fail_interval=([0-9]*).*$</ind:pattern>
@@ -56,6 +67,18 @@
   <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_preauth_fail_interval_password-auth" version="2">
     <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
     <ind:pattern operation="pattern match">^\s*auth\s+(?:(?:required))\s+pam_faillock\.so\s+preauth.*fail_interval=([0-9]*).*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_account_requires_password-auth" version="2">
+    <ind:filepath>/etc/pam.d/password-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*account\s+required\s+pam_faillock\.so.*$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_accounts_passwords_pam_faillock_account_requires_system-auth" version="2">
+    <ind:filepath>/etc/pam.d/system-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*account\s+required\s+pam_faillock\.so.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
