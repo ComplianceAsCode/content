@@ -1,0 +1,14 @@
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = medium
+- name: "Enable Smartcards in SSSD"
+  ini_file:
+    dest: /etc/sssd/sssd.conf
+    section: pam
+    option: pam_cert_auth 
+    value: true
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
