@@ -33,6 +33,10 @@ selections:
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
     - package_screen_installed
+    - sysctl_kernel_yama_ptrace_scope
+    - sysctl_kernel_kptr_restrict
+    - sysctl_kernel_kexec_load_disabled
+    - sysctl_kernel_dmesg_restrict
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_lock_delay
