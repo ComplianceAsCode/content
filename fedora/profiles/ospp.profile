@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Protection Profile for General Purpose Operating Systems'
+title: 'OSPP - Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the
