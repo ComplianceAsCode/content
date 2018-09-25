@@ -89,14 +89,14 @@ class RemediationTarget(MountOptionTarget):
             self._point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
             self.template_file = "{0}_var".format(self.TEMPLATE_FILE_BASE)
             self._output_id_template = "{mount_option}_{point_id}"
-        elif not mount_point.startswith("/"):  # no path, but not a variable either
+        elif not mount_point.startswith("/"):  # relates to rules specified by descriptive name (e.g. remote_filesystems)
             self.template_file = "{0}_{1}".format(self.TEMPLATE_FILE_BASE, self._point_id)
 
-        template_path = os.path.join(self.generator.product_input_dir, self.template_file)
-        if not os.path.isfile(template_path):
-            raise Skipped(
-                "Template file {0} doesn't exist.".format(self.template_file)
-            )
+            template_path = os.path.join(self.generator.product_input_dir, self.template_file)
+            if not os.path.isfile(template_path):
+                raise Skipped(
+                    "Template file {0} doesn't exist.".format(self.template_file)
+                )
 
 
 class OvalTarget(MountOptionTarget):
