@@ -15,7 +15,7 @@ function insert_preauth {
 		# the option is not set.
 		else
 			# append the option
-			sed -i --follow-symlinks "/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ $option=$value/" "$_pamFile"
+			sed -i --follow-symlinks "/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ $option=$value/" "$pam_file"
 		fi
 	# auth required pam_faillock.so preauth is not present, insert the whole line
 	else
@@ -36,7 +36,7 @@ function insert_authfail {
 		# the option is not set.
 		else
 			# append the option
-			sed -i --follow-symlinks "/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ $option=$value/" "$_pamFile"
+			sed -i --follow-symlinks "/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ $option=$value/" "$pam_file"
 		fi
 	# auth default pam_faillock.so authfail is not present, insert the whole line
 	else
