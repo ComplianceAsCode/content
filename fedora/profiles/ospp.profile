@@ -15,6 +15,7 @@ description: |-
 selections:
     - installed_OS_is_certified
     - grub2_audit_argument
+    - grub2_audit_backlog_limit_argument
     - service_auditd_enabled
     - grub2_enable_fips_mode
     - rpm_verify_hashes
@@ -54,6 +55,9 @@ selections:
     - grub2_password
     - grub2_uefi_password
     - grub2_disable_interactive_boot
+    - grub2_slub_debug_argument
+    - grub2_page_poison_argument
+    - grub2_vsyscall_argument
     - no_empty_passwords
     - require_singleuser_auth
     - service_debug-shell_disabled
