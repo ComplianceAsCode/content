@@ -13,6 +13,7 @@ class GRUB2BootloaderArgumentGenerator(FilesGenerator):
     def generate(self, target, args):
         arg_name, arg_value = args[0:2]
         arg_name_value = arg_name + '=' + arg_value
+
         if target == "bash":
             self.file_from_template(
                 "./template_BASH_grub2_bootloader_argument",
@@ -22,7 +23,7 @@ class GRUB2BootloaderArgumentGenerator(FilesGenerator):
                 },
                 "./bash/grub2_{0}_argument.sh", arg_name
             )
-        if target == "oval":
+        elif target == "oval":
             self.file_from_template(
                 "./template_OVAL_grub2_bootloader_argument",
                 {
