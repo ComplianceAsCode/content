@@ -2,11 +2,15 @@ documentation_complete: true
 
 title: 'OSPP - Protection Profile for General Purpose Operating Systems v. 4.2'
 
-description: "This profile reflects mandatory configuration controls identified\nin the NIAP Configuration Annex to the Protection\
-    \ Profile for General Purpose Operating\nSystems (Protection Profile Version 4.2). \n\nThis Annex is consistent\
-    \ with CNSSI-1253, which requires US National Security\nSystems to adhere to certain configuration parameters. Accordingly,\
-    \ configuration\nguidance produced according to the requirements of this Annex is suitable for use\nin US National Security\
-    \ Systems."
+description: |-
+    This profile reflects mandatory configuration controls identified in the
+    NIAP Configuration Annex to the Protection Profile for General Purpose
+    Operating Systems (Protection Profile Version 4.2).
+
+    This Annex is consistent with CNSSI-1253, which requires US National Security
+    Systems to adhere to certain configuration parameters. Accordingly, configuration
+    guidance produced according to the requirements of this Annex is suitable for use
+    in US National Security Systems.
 
 selections:
     - installed_OS_is_certified
