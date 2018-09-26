@@ -24,6 +24,7 @@ import ssg.xml
 
 XCCDF11_NS = ssg.constants.XCCDF11_NS
 XCCDF12_NS = ssg.constants.XCCDF12_NS
+oval_ns = ssg.constants.oval_namespace
 
 CENTOS_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.CENTOS_NOTICE)
 SL_NOTICE_ELEMENT = ssg.xml.ElementTree.fromstring(ssg.constants.SL_NOTICE)
@@ -68,11 +69,13 @@ def main():
         mapping = ssg.constants.RHEL_CENTOS_CPE_MAPPING
         notice = CENTOS_NOTICE_ELEMENT
         warning = CENTOS_WARNING
+        derivative = "CentOS"
 
     if options.sl:
         mapping = ssg.constants.RHEL_SL_CPE_MAPPING
         notice = SL_NOTICE_ELEMENT
         warning = SL_WARNING
+        derivative = "Scientific Linux"
 
     tree = ssg.xml.ElementTree.ElementTree()
     tree.parse(options.input_content)
@@ -105,6 +108,8 @@ def main():
                 "Managed to add derivative OS CPEs but failed to add the "
                 "notice to affected XCCDF Benchmark '%s'." % (benchmark)
             )
+
+    ssg.build_derivatives.replace_platform(root, oval_ns, derivative)
 
     tree.write(options.output)
 

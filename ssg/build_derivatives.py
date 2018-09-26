@@ -105,3 +105,8 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
             if fix.text is not None:
                 fix.text = re.sub(r"[\s]+- CCE-.*", "", fix.text)
                 fix.text = re.sub(r"CCE-[0-9]*-[0-9]*", "", fix.text)
+
+def replace_platform(tree_root, namespace, product):
+    for oval in tree_root.findall(".//{%s}oval_definitions" % (namespace)):
+        for platform in oval.findall(".//{%s}platform" % (namespace)):
+            platform.text = (platform.text).replace("Red Hat Enterprise Linux", product)
