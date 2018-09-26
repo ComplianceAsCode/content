@@ -20,7 +20,13 @@ LINUX_OS_GUIDE = re.sub(r'ssg/.*', 'linux_os', __file__) + '/guide/'
 
 
 # globals, to make recursion easier in case we encounter extend_definition
-ET.register_namespace("oval", ovalns)
+try:
+    ET.register_namespace("oval", ovalns)
+except AttributeError:
+    # Legacy Python 2.6 fix, see e.g.
+    # https://www.programcreek.com/python/example/57552/xml.etree.ElementTree._namespace_map
+    ET._namespace_map[ovalns] = "oval"
+
 definitions = ET.Element("oval:definitions")
 tests = ET.Element("oval:tests")
 objects = ET.Element("oval:objects")
