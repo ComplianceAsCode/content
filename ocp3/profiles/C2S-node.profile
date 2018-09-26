@@ -15,4 +15,13 @@ description: |-
     ensure a system is in compliance or consistency with the CIS
     baseline.
 
-selections: []
+selections:
+    - file_permissions_node_config
+    - file_owner_node_config
+    - file_groupowner_node_config
+    - file_permissions_openshift_node_client_crt
+    - file_owner_openshift_node_client_crt
+    - file_groupowner_openshift_node_client_crt
+    - file_permissions_openshift_node_service
+    - file_owner_openshift_node_service
+    - file_groupowner_openshift_node_service

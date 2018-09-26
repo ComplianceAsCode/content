@@ -17,4 +17,34 @@ description: |-
 
 extends: C2S-node
 
-selections: []
+selections:
+    - file_groupowner_master_admin_conf
+    - file_groupowner_master_api_server
+    - file_groupowner_master_cni_conf
+    - file_groupowner_master_conf
+    - file_groupowner_master_controller_manager
+    - file_groupowner_master_etcd
+    - file_groupowner_master_openshift_conf
+    - file_groupowner_master_scheduler
+    - file_owner_master_admin_conf
+    - file_owner_master_api_server
+    - file_owner_master_cni_conf
+    - file_owner_master_conf
+    - file_owner_master_controller_manager
+    - file_owner_master_etcd
+    - file_owner_master_openshift_conf
+    - file_owner_master_scheduler
+    - file_permissions_master_admin_conf
+    - file_permissions_master_api_server
+    - file_permissions_master_cni_conf
+    - file_permissions_master_conf
+    - file_permissions_master_controller_manager
+    - file_permissions_master_etcd
+    - file_permissions_master_openshift_conf
+    - file_permissions_master_scheduler
+    - directory_permissions_etc_origin
+    - directory_permissions_var_lib_etcd
+    - file_groupowner_etc_origin
+    - file_owner_etc_origin
+    - file_groupowner_var_lib_etcd
+    - file_owner_var_lib_etcd
