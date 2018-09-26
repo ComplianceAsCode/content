@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Ensure that the --anonymous-auth argument is set to false'
+
+description: |-
+    'By default, anonymous access to the OpenShift API is enabled. This
+    configuration check ensures that anonymous requests to the OpenShift
+    API server are disabled.
+
+    Edit the API server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
+    on the master node(s) and set the below parameter:
+
+    <pre><tt>--anonymous-auth=false</tt></pre>'
+
+rationale: |-
+    When enabled, requests that are not rejected by other configured
+    authentication methods are treated as anonymous requests. These
+    requests are then served by the API server. OpenShift Operators should
+    rely on authentication to authorize access and disallow anonymous
+    requests.
+
+severity: medium
+
+ocil_clause: '<tt>--anonymous-auth</tt> is set to true'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre><tt>ps -ef | grep kube-apiserver</tt></pre>'
+
+references:
+    cis: 1.1.1
