@@ -10,7 +10,7 @@ description: |-
     Edit the API server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
     on the master node(s) and set the below parameter:
 
-    <pre><tt>--anonymous-auth=false</tt></pre>'
+    <pre>--anonymous-auth=false</pre>'
 
 rationale: |-
     When enabled, requests that are not rejected by other configured
@@ -21,11 +21,14 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--anonymous-auth</tt> is set to true'
+ocil_clause: '<tt>--anonymous-auth</tt> is not set to <tt>false</tt>'
 
 ocil: |-
     'Run the following command on the master node(s):
-     <pre><tt>ps -ef | grep kube-apiserver</tt></pre>'
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--anonymous-auth</tt> argument is set to
+     <tt>false</tt>.'
 
 references:
     cis: 1.1.1

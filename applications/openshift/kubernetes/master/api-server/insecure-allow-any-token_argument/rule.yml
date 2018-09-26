@@ -4,8 +4,8 @@ title: 'Ensure that the --insecure-allow-any-token argument is not set'
 
 description: |-
     'Insecure tokens should be forbidden. Edit the API server pod specification file
-    <pre>/etc/kubernetes/manifests/kube-apiserver.yaml</pre> on the master node(s) and
-    remove the <pre>--insecure-allow-any-token</pre> parameter.'
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s) and
+    remove the <tt>--insecure-allow-any-token</tt> parameter.'
 
 rationale: |-
     Accepting insecure tokens would allow any token without performing
@@ -18,7 +18,7 @@ ocil_clause: '<tt>--insecure-allow-any-token</tt> is enabled'
 
 ocil: |-
     'Run the following command on the master node(s):
-     <pre><tt>ps -ef | grep kube-apiserver</tt></pre>
+     <pre>ps -ef | grep kube-apiserver</pre>
 
      Verify that the <tt>--insecure-allow-any-token</tt> argument does not exist.'
 
