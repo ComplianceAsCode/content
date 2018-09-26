@@ -3,21 +3,20 @@ documentation_complete: true
 title: 'Ensure that the --insecure-bind-address argument is not set'
 
 description: |-
-    'To ensure the API Server is bound to a secure loopback address, edit the
-    API Server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
-    on the master node(s) and remove the <tt>--insecure-bind-address</tt> parameter. This will
-    ensure the default value of <i>127.0.0.1</i> is used.'
+    'OpenShift should not bind to non-loopback insecure addresses. Edit the API
+    Server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
+    on the master node(s) and remove the <tt>--insecure-bind-address</tt>
+    parameter.'
 
 rationale: |-
-    If the API Server is bound to an insecure address then it would be
-    possible to have unauthenticated and unencrypted access to master nodes.
-    The API Server does not perform authentication checking for insecure binds and
-    the traffic is generally not encrypted. The API Server should not be bound
-    to an insecure (non-local) address.
+    If the API Server is bound to an insecure address the installation would
+    be susceptible to unauthented and unencrypted access to the master node(s).
+    The API Server does not perform authentication checking for insecure
+    binds and the traffic is generally not encrypted.
 
 severity: medium
 
-ocil_clause: '<tt>--insecure-bind-address</tt> is specified it must be set to <tt>127.0.0.1</tt>'
+ocil_clause: '<tt>--insecure-bind-address</tt> is specified it must be set to <tt>127.0.01</tt>'
 
 ocil: |-
     'Run the following command on the master node(s):
