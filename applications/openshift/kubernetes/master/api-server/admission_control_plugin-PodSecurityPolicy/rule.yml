@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Ensure that the admission control plugin PodSecurityPolicy is set'
+
+description: |-
+    'To reject pods that do not match Pod Security Policies, follow the
+    OpenShift documentation and create Pod Security Policy objects as per your
+    environment. Then, edit the API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    and set <tt>--enable-admission-plugins</tt> parameter to a value that includes
+    <tt>PodSecurityPolicy</tt>:
+
+    <pre>--enable-admission-plugins=...,PodSecurityPolicy,...</pre>
+
+    Once configured, the API Server service will need to be restarted.'
+
+rationale: |-
+    'A Pod Security Policy is a cluster-level resource that controls the actions
+    which a pod can perform and what the pod may access. The
+    <tt>PodSecurityPolicy</tt> objects define a set of conditions that a pod
+    must run with in order to be accepted into the system. Pod Security Policies
+    are comprised of settings and strategies that control the security features
+    a pod has access to and hence this must be used to control pod access
+    permissions.
+
+    NOTE: When the <tt>PodSecurityPolicy</tt> admission plugin is in use, there
+    needs to be at least one <tt>PodSecurityPolicy</tt> in place for ANY pods to
+    be admitted.'
+
+severity: medium
+
+ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not contain <tt>PodSecurityPolicy</tt>'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--enable-admission-plugins</tt> argument is set,
+     and that its value includes <tt>PodSecurityPolicy</tt>.
+
+references:
+    cis: 1.1.34
