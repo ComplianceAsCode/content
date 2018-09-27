@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Ensure that the --secure-port argument is not set to 0'
+
+description: |-
+    To ensure traffic is served over HTTPS, edit the API Server pod specification
+    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    and either remove the <tt>--secure-port</tt> parameter or set it to a different
+    (non-zero) desired port.
+
+rationale: |-
+    The secure port is used to serve HTTPS with authentication and authorization.
+    If <tt>--secure-port</tt> is disabled, as indicated with a value of <tt>0</tt>,
+    HTTPS traffic will not be served and all traffic will be unencrypted.
+
+severity: medium
+
+ocil_clause: '<tt>--secure-port</tt> is set with a value greater than <tt>0</tt>'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--secure-port</tt> argument is either not set
+     (reflecting default value of <tt>6443</tt>) or is set to an integer value
+     between 1 and 65535.
+
+references:
+    cis: 1.1.7
