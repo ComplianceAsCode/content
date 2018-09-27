@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'Verify Group Who Owns The OpenShift Node Kubeconfig File'
 
-description: '{{{ describe_file_group_owner(file="/etc/origin/node/node.kubeconfig", perms="0600") }}}
+description: '{{{ describe_file_group_owner(file="/etc/origin/node/node.kubeconfig", group="root") }}}'
 rationale: |-
     The <tt>/etc/origin/node/node.kubeconfig</tt> file contains information about the configuration of the
     OpenShift node that is configured on the system. Protection of this file is
