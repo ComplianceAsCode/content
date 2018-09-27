@@ -1,0 +1,34 @@
+documentation_complete: true
+
+title: 'Ensure that the --client-ca-file argument is set as appropriate'
+
+description: |-
+    'Certificates must be provided to fully setup TLS client certificate
+    authentication. Follow the OpenShift documentation and setup the TLS
+    connection on the API Server. Then, edit the API Server pod specification
+    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    and set the client certificate authority file:
+
+    <pre>--client-ca-file=</path/to/client-ca-file></pre>'
+
+rationale: |-
+    API Server communication contains sensitive parameters that should remain
+    encrypted in transit. Configure the API Server to serve only HTTPS traffic.
+    If <tt>--client-ca-file</tt> argument is set, any request presenting a client
+    certificate signed by one of the authorities in the <tt>client-ca-file</tt>
+    is authenticated with an identity corresponding to the <i>CommonName</i> of
+    the client certificate.
+
+severity: medium
+
+ocil_clause: '<tt>--client-ca-file</tt> does not exist or is not set as appropriate'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--client-ca-file</tt> argument exists and is set
+     as appropriate.'
+
+references:
+    cis: 1.1.39
