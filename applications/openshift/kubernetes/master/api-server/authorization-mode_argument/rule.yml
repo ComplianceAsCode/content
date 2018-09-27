@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Ensure that the --authorization-mode argument is not set to AlwaysAllow'
+
+description: |-
+    'To ensure only authorized requests will be served, edit the API Server
+    pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
+    on the master node(s) and set the <tt>--authorization-mode</tt> parameter to
+    values other than <tt>AllowsAllow</tt>. One such example could be as below:
+
+    <pre>--authorization-mode=RBAC</pre>'
+
+rationale: |-
+    The API Server, by default, allows all requests. This behavior should be
+    restricted to only allow authorization modes that you explicitly use in
+    your environment. For example, REST APIs are not used, it is a good
+    security practice to switch off that capability.
+
+severity: high
+
+ocil_clause: '<tt>--authorization-mode</tt> arguments exist and include <tt>AlwaysAllow</tt>'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--authorization-mode</tt> argument is set,
+     as appropriate.'
+
+references:
+    cis: 1.1.29
