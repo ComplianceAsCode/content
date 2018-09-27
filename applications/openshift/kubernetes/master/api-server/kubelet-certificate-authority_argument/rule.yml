@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Ensure that the --kubelet-certificate-authority argument is set as appropriate'
+
+description: |-
+    'To ensure OpenShift verifies kubelet certificates before establishing
+    connections, follow the OpenShift documentation and setup the TLS connection
+    between the API Server and kubelets. Then, edit the API server pod specification
+    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    and set the <tt>--kubelet-certificate-authority</tt> parameter to the path
+    of the cert file for the certificate authority. For example:
+
+    <pre>--kubelet-certificate-authority=<ca-string></pre>'
+
+rationale: |-
+    Connections from the API Server to the kubelet are used for fetching logs
+    for pods, attaching (through kubectl) to running pods, and using the kubelet
+    port-forwarding functionality. These connections terminate at the kubelet
+    HTTPS endpoint. By default, teh API Server does not verify the kubelet serving
+    certificate, which makes the connection subject to man-in-the-middle attacks,
+    and unsafe to run over untrusted and/or public networks.
+
+severity: high
+
+ocil_clause: '<tt>--kubelet-certificate-authority</tt> argument does not exist or is not set appropriately'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--kubelet-certificate-authority</tt> argument
+     is set to a valid path.'
+
+references:
+    cis: 1.1.31
