@@ -40,7 +40,7 @@ class PermissionGenerator(FilesGenerator):
 
         # build a string that contains the full path to the file
         # full_path maps to FILEPATH in the template
-        if file_name == '[NULL]':
+        if file_name == '[NULL]' or file_name == '':
             full_path = dir_path
         else:
             full_path = dir_path + '/' + file_name
@@ -139,7 +139,7 @@ class PermissionGenerator(FilesGenerator):
         elif target == "oval":
             # support pattern matching, requiring that the filename starts with '^'
             # and fichishes with '$'
-            if file_name == '[NULL]':
+            if file_name == '[NULL]' or file_name == '':
                 unix_filename = "<unix:filename xsi:nil=\"true\" />"
             elif re.match(r'\^.*\$', file_name, 0):
                 unix_filename = "<unix:filename operation=\"pattern match\">" + file_name + "</unix:filename>"
