@@ -1,14 +1,14 @@
 documentation_complete: true
 
-title: 'Ensure that the --address argument is set to 127.0.0.1'
+title: 'Ensure that the --address argument is set'
 
 description: |-
-    'To ensure the Scheduler service is bound to a secure loopback
+    To ensure the Scheduler service is bound to a secure loopback
     address, edit the Scheduler pod specification file
     <tt>/etc/kubernetes/manifests/kube-scheduler.yaml</tt> on the master
     node and ensure the correct value for the <tt>--address</tt> parameter:
 
-    <pre>--address=127.0.0.1</pre>'
+    <pre>--address=127.0.0.1</pre>
 
 rationale: |-
     The Scheduler API service which runs on port 10251/TCP by default is used
@@ -21,10 +21,10 @@ severity: medium
 ocil_clause: '<tt>--address</tt> argument is not set to the IP address of the loopback device'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+     <pre>$ ps -ef | grep kube-apiserver</pre>
 
-    Verify that the <tt>--address</tt> argument is set to 127.0.0.1.'
+    Verify that the <tt>--address</tt> argument is set to <tt>127.0.0.1</tt>.
 
 references:
     cis: 1.2.2
