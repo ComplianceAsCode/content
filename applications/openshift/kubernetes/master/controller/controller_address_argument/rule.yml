@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Ensure that the --address argument is set'
+
+description: |-
+    To ensure the Controller Manager service is bound to secure loopback
+    address, edit the Controller Manager pod specification file
+    <tt>/etc/kubernetes/manifests/kube-controller-manager.yaml</tt> on the
+    master node(s) and ensure the correct value for the <tt>--address</tt>
+    parameter.
+
+rationale: |-
+    The Controller Manager API service which runs on port 10252/TCP by default
+    is used for health and metrics information and is available without
+    authentication or encryption. As such it should only be bound to a localhost
+    interface, to minimize the cluster's attack surface.
+
+severity: low
+
+ocil_clause: |-
+    <tt>--address</tt> is not configured to a secure loopback IP address
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-controller-manager</pre>
+
+    Verify that the <tt>--address</tt> argument is set to a secure
+    loopback IP address (for example, <tt>127.0.0.1</tt>).
+
+references:
+    cis: 1.3.7
