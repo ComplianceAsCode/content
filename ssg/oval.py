@@ -25,6 +25,7 @@ try:
 except AttributeError:
     # Legacy Python 2.6 fix, see e.g.
     # https://www.programcreek.com/python/example/57552/xml.etree.ElementTree._namespace_map
+    from xml.etree import ElementTree as ET
     ET._namespace_map[ovalns] = "oval"
 
 definitions = ET.Element("oval:definitions")
