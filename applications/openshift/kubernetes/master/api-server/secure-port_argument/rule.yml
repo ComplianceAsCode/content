@@ -18,12 +18,12 @@ severity: medium
 ocil_clause: '<tt>--secure-port</tt> is set with a value greater than <tt>0</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--secure-port</tt> argument is either not set
-     (reflecting default value of <tt>6443</tt>) or is set to an integer value
-     between 1 and 65535.
+    Verify that the <tt>--secure-port</tt> argument is either not set
+    (reflecting default value of <tt>6443</tt>) or is set to an integer value
+    between 1 and 65535.
 
 references:
     cis: 1.1.7

@@ -3,11 +3,11 @@ documentation_complete: true
 title: 'Ensure that the --profiling argument is set to false'
 
 description: |-
-    'To disable profiling, edit the API Server pod specification file
+    To disable profiling, edit the API Server pod specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
     and set <tt>--profiling</tt> to <tt>false</tt>:
 
-    <pre>--profiling=false</pre>'
+    <pre>--profiling=false</pre>
 
 rationale: |-
     Profiling allows for the identification of specific performance bottlenecks. It
@@ -21,10 +21,10 @@ severity: low
 ocil_clause: '<tt>--profiling</tt> is enabled (set to value of <tt>true</tt>)'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--profiling</tt> argument is <tt>false</tt>.
+    Verify that the <tt>--profiling</tt> argument is <tt>false</tt>.
 
 references:
     cis: 1.1.8

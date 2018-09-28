@@ -3,13 +3,13 @@ documentation_complete: true
 title: 'Ensure that the --authorization-mode argument includes Node'
 
 description: |-
-    'To restrict kubelet nodes to reading only objects associated with them,
+    To restrict kubelet nodes to reading only objects associated with them,
     edit the API Server pod specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
     node(s) and set the <tt>--authorization-mode</tt> parameter to a value
     that includes <tt>Node</tt>:
 
-    <pre>--authorization-mode=..,Node,...</pre>'
+    <pre>--authorization-mode=..,Node,...</pre>
 
 rationale: |-
     The <tt>Node</tt> authorization mode only allows kubelets to read
@@ -21,11 +21,11 @@ severity: medium
 ocil_clause: '<tt>--authorization-mode</tt> paremeter does not include <tt>Node</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--authorization-mode</tt> argument exists and is
-     set to a value that includes <tt>Node</tt>.'
+    Verify that the <tt>--authorization-mode</tt> argument exists and is
+    set to a value that includes <tt>Node</tt>.
 
 references:
     cis: 1.1.42

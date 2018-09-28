@@ -3,14 +3,14 @@ documentation_complete: true
 title: 'Ensure that the --experimental-encryption-provider-config argument is set as appropriate'
 
 description: |-
-    'To encrypt the etcd key-value store, follow the OpenShift documentation
+    To encrypt the etcd key-value store, follow the OpenShift documentation
     and configure a <tt>EncryptionConfig</tt> file. Then, edit the API Server
     pod specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
     node(s) and set the <tt>--experimental-encryption-provider-config</tt>
     parameter to the path of that file:
 
-    <pre>--experimental-encryption-provider-config=</path/to/EncryptionConfig/file></pre>'
+    <pre>--experimental-encryption-provider-config=</path/to/EncryptionConfig/file></pre>
 
 rationale: |-
     etcd is a highly available key-value store used by OpenShift deployments
@@ -23,14 +23,13 @@ severity: medium
 ocil_clause: '<tt>--experimental-encryption-provider-config</tt> arguments do not point to the <tt>EncryptionConfig</tt> file'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
     Verify that the <tt>--experimental-encryption-provider-config</tt>
     argument is set to a <tt>EncryptionConfig</tt> file. Additionally, ensure
     that the <tt>EncryptionConfig</tt> file has all the desired
-    <tt>resources</tt> covered especially any secrets.'
-
+    <tt>resources</tt> covered especially any secrets.
 
 references:
     cis: 1.1.44

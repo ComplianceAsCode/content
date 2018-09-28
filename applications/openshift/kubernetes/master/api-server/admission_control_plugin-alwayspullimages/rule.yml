@@ -3,13 +3,13 @@ documentation_complete: true
 title: 'Ensure that the admission control plugin AlwaysPullImages is set'
 
 description: |-
-    'To ensure credentials are required to pull images, edit the API Server pod
+    To ensure credentials are required to pull images, edit the API Server pod
     specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s) and
     set the <tt>--enable-admission-plugins</tt> parameter to include
     <tt>AlwaysPullImages</tt>:
 
-    <pre>--enable-admission-plugins=...,AlwaysPullImages,...</pre>'
+    <pre>--enable-admission-plugins=...,AlwaysPullImages,...</pre>
 
 rationale: |-
     Setting admission control policy to include <tt>AlwaysPullImages</tt> forces
@@ -26,11 +26,11 @@ severity: high
 ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not contain <tt>AlwaysPullImages</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--enable-admission-plugins</tt> argument is set,
-     and that its value includes <tt>AlwaysPullImages</tt>.
+    Verify that the <tt>--enable-admission-plugins</tt> argument is set,
+    and that its value includes <tt>AlwaysPullImages</tt>.
 
 references:
     cis: 1.1.14

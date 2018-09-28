@@ -3,14 +3,14 @@ documentation_complete: true
 title: 'Ensure that the admission control plugin EventRateLimit is set'
 
 description: |-
-    'To limit the rate at which the API Server accepts requests, follow
+    To limit the rate at which the API Server accepts requests, follow
     the OpenShift documentation and set the desired limits in a configuration
     file. Then, edit the API Server pod specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> and set the
     below parameters:
 
     <pre>--enable-admission-plugins=...,EventRateLimit,...<br />
-    --admission-control-config-file=</path/to/configuration/file></pre>'
+    --admission-control-config-file=</path/to/configuration/file></pre>
 
 rationale: |-
     Using <tt>EventRateLimit</tt> admission control enforces a limit on the
@@ -25,11 +25,11 @@ severity: medium
 ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not include <tt>EventRateLimit</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
     Verify that the <tt>--enable-admission-plugins</tt> argument is set to
-    a value that includes <tt>EventRateLimit</tt>.'
+    a value that includes <tt>EventRateLimit</tt>.
 
 references:
     cis: 1.1.46

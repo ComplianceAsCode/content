@@ -11,24 +11,24 @@ description: |-
     <pre>--tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256</pre>'
 
 rationale: |-
-     'TLS ciphers have had a number of known vulnerabilities and weaknesses,
+     TLS ciphers have had a number of known vulnerabilities and weaknesses,
      which can reduce the protection provided. By default OpenShift supports
      a number of TLS ciphersuites including some that have security concerns,
      weakening the protection provided.
 
      NOTE: Once configured, API Server clients that cannot support modern
      cryptographic ciphers will not be able to make connections to the API
-     server.'
+     server.
 
 severity: medium
 
 ocil_clause: '<tt>--tls-cipher-suites</tt> does not contain TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--tls-cipher-suites</tt> argument is set as outlined.'
+    Verify that the <tt>--tls-cipher-suites</tt> argument is set as outlined.
 
 references:
     cis: 1.1.40

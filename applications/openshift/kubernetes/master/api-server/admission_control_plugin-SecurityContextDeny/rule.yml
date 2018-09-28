@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Ensure that the admission control plugin SecurityContextDeny is set'
 
 description: |-
-    'Instead of using a customized SecurityContext for pods, a Pod Security
+    Instead of using a customized SecurityContext for pods, a Pod Security
     Policy (PSP) should be used. PSP is a cluster-level resource that controls
     the actions that a pod can perform and what resource the pod may access.
 
@@ -13,7 +13,7 @@ description: |-
     set the <tt>--enable-admission-plugins</tt> parameter to include
     <tt>SecurityContextDeny</tt>:
 
-    <pre>--enable-admission-plugins=...,SecurityContextDeny,...</pre>'
+    <pre>--enable-admission-plugins=...,SecurityContextDeny,...</pre>
 
 rationale: |-
     Setting admission control policy to <tt>SecurityContextDeny</tt> denies the
@@ -27,11 +27,11 @@ severity: medium
 ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not contain <tt>SecurityContextDeny</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--enable-admission-plugins</tt> argument is set,
-     and that its value includes <tt>SecurityContextDeny</tt>.
+    Verify that the <tt>--enable-admission-plugins</tt> argument is set,
+    and that its value includes <tt>SecurityContextDeny</tt>.
 
 references:
     cis: 1.1.17

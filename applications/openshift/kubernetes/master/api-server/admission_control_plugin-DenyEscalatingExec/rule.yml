@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Ensure that the admission control plugin DenyEscalatingExec is set'
 
 description: |-
-    'By default, <tt>DenyEscalatingExec</tt> is not enabled, which allows
+    By default, <tt>DenyEscalatingExec</tt> is not enabled, which allows
     privileged pods to execute <tt>exec</tt> and <tt>attach</tt> commands.
 
     To disable this capability, edit the API Server pod specification file
@@ -11,7 +11,7 @@ description: |-
     set the <tt>--enable-admission-plugins</tt> parameter to a value that includes
     <tt>DenyEscalatingExec</tt>:
 
-    <pre>--enable-admission-plugins=...,DenyEscalatingExec,...</pre>'
+    <pre>--enable-admission-plugins=...,DenyEscalatingExec,...</pre>
 
 rationale: |-
     Setting admission control policy to include <tt>DenyEscalatingExec</tt>
@@ -25,11 +25,11 @@ severity: high
 ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not contain <tt>DenyEscalatingExec</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--enable-admission-plugins</tt> argument is set,
-     and that its value includes <tt>DenyEscalatingExec</tt>.
+    Verify that the <tt>--enable-admission-plugins</tt> argument is set,
+    and that its value includes <tt>DenyEscalatingExec</tt>.
 
 references:
     cis: 1.1.15

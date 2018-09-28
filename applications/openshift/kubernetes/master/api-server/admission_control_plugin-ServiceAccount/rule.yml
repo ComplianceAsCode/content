@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Ensure that the admission control plugin ServiceAccount is set'
 
 description: |-
-    'To ensure <tt>ServiceAccount</tt> objects must be created and granted
+    To ensure <tt>ServiceAccount</tt> objects must be created and granted
     before pod creation is allowed, follow the documentation and create
     <tt>ServiceAccount</tt> objects as per your environment. Then, edit the
     API Server pod specification file
@@ -11,7 +11,7 @@ description: |-
     and set the <tt>--enable-admission-plugins</tt> parameter to a value
     that includes <tt>ServiceAccount</tt>:
 
-    <pre>--enable-admission-plugins=...,ServiceAccount,...</pre>'
+    <pre>--enable-admission-plugins=...,ServiceAccount,...</pre>
 
 rationale: |-
     When a pod is created, if a service account is not specified, the pod
@@ -24,11 +24,11 @@ severity: medium
 ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not contain <tt>ServiceAccount</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--enable-admission-plugins</tt> argument is set,
-     and that its value includes <tt>ServiceAccount</tt>.
+    Verify that the <tt>--enable-admission-plugins</tt> argument is set,
+    and that its value includes <tt>ServiceAccount</tt>.
 
 references:
     cis: 1.1.37

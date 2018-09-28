@@ -3,12 +3,12 @@ documentation_complete: true
 title: 'Ensure that the --repair-malformed-updates argument is set to false'
 
 description: |-
-    'Malformed updates are allowed by default. To disable this setting, edit the
-     API Server pod specification file
-     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s) and
-     set <tt>--repair-malformed-updates</tt> to <tt>false</tt>:
+    Malformed updates are allowed by default. To disable this setting, edit the
+    API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s) and
+    set <tt>--repair-malformed-updates</tt> to <tt>false</tt>:
 
-     <pre>--repair-malformed-updates=false</pre>'
+    <pre>--repair-malformed-updates=false</pre>
 
 rationale: |-
     The API Server will potentially attempt to fix the update requests to pass
@@ -21,10 +21,10 @@ severity: medium
 ocil_clause: '<tt>--repair-malformed-updates</tt> is not set to <tt>false</tt>'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
-     Verify that the <tt>--repair-malformed-updates</tt> argument is <tt>false</tt>.
+    Verify that the <tt>--repair-malformed-updates</tt> argument is <tt>false</tt>.
 
 references:
     cis: 1.1.9

@@ -30,13 +30,13 @@ severity: medium
 ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
 
 ocil: |-
-    'Run the following command on the master node(s):
-     <pre>ps -ef | grep kube-apiserver</pre>
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
 
     Get the <tt>EncryptionConfig</tt> file set for
     <tt>--experimental-encryption-provider-config</tt> argument. Verify that
     the <tt>aescbc</tt> encryption provider is used for all the desired
-    <tt>resources</tt>.'
+    <tt>resources</tt>.
 
 references:
     cis: 1.1.45
