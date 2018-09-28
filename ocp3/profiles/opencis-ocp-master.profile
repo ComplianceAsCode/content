@@ -45,3 +45,5 @@ selections:
     - file_permissions_master_openshift_kubeconfig
     - file_permissions_master_scheduler_conf
     - file_permissions_var_lib_etcd
+    - address_argument
+    - profiling_argument
