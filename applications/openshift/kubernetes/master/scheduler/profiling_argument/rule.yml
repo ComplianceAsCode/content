@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure that the --profile argument is set to false'
+
+description: |-
+    'Profiling should be disabled if not needed. To disable profiling,
+    edit the Scheduler pod specification file
+    <tt>/etc/kubernetes/manifests/kube-scheduler.yaml</tt> file on the master
+    node and set the below parameter:
+
+    <pre>--profiling=false</pre>'
+
+rationale: |-
+    Profiling allows for the identification of specific performance
+    bottlenecks. It generates a significant amount of program data that could
+    potentially be exploited to uncover system and program details. If you are
+    not experiencing any bottlenecks and do not need the profiler for
+    troubleshooting purposes, it is recommended to turn it off to reduce the
+    potential attack surface.
+
+severity: low
+
+ocil_clause: 'profiling is not being used, and the <tt>--profiling</tt> argument is not disabled'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--profiling</tt> argument is set to <tt>false</tt>.'
+
+references:
+    cis: 1.2.1
