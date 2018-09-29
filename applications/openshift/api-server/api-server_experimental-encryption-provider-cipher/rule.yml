@@ -9,17 +9,17 @@ description: |-
     as the encryption provider:
 
     <pre>
-kind: EncryptionConfig
-apiVersion: v1
-resources:
-  - resources:
-    - secrets
-    providers:
-    - aescbc:
-        keys:
-        - name: key1
-          secret: <32-byte base64-encoded secret>
-</pre>'
+    kind: EncryptionConfig
+    apiVersion: v1
+    resources:
+      - resources:
+        - secrets
+        providers:
+        - aescbc:
+            keys:
+            - name: key1
+              secret: <32-byte base64-encoded secret>
+    </pre>'
 
 rationale: |-
     <tt>aescbc</tt> is currently the strongest encryption provider, it should
