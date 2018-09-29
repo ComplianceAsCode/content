@@ -3,14 +3,14 @@ documentation_complete: true
 title: 'Ensure that the --etcd-cafile argument is set as appropriate'
 
 description: |-
-    To ensure etcd is configured to make use of TLS encryption for client
+    'To ensure etcd is configured to make use of TLS encryption for client
     connections, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, edit the API Server
     pod specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
     node(s) and set the etcd <tt>--etcd-cafile</tt> parameter:
 
-    <pre>--etcd-cafile=<path/to/ca-file></pre>
+    <pre>--etcd-cafile=<path/to/ca-file></pre>'
 
 rationale: |-
     etcd is a highly-available key-value store used by OpenShift deployments
