@@ -84,3 +84,10 @@ selections:
     - api-server_tls-cert-file_and-tle-private-key-file
     - api-server_tls-cipher-suites
     - api-server_token-auth-file
+    - controller_address
+    - controller_feature-gates_RotateKubeletServerCertificate_option
+    - controller_profiling
+    - controller_root-ca-file
+    - controller_service-account-private-key-file
+    - controller_terminated-pod-gc-threshhold
+    - controller_use-service-account-credentials
