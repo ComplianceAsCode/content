@@ -28,8 +28,12 @@ email_mappings = {
     "agilmore@ecahdb2.bor.doi.net": "agilmore2@gmail.com",
     # Marek Haicman
     "dahaic@users.noreply.github.com": "mhaicman@redhat.com",
+    # John Hooks
+    "hooksie11@gmail.com": "jhooks@starscream.pa.jhbcomputers.com",
     # Simon Lukasik
     "isimluk@fedoraproject.org": "slukasik@redhat.com",
+    # Milan Lysonek
+    "milan.lysonek@gmail.com": "mlysonek@redhat.com",
     # Zbynek Moravec
     "ybznek@users.noreply.github.com": "zmoravec@redhat.com",
     "moraveczbynek@gmail.com": "zmoravec@redhat.com",

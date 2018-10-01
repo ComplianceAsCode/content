@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2018-07-25 13:30
+Last Modified: 2018-10-01 11:13
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -30,6 +30,7 @@ The following people have contributed to the SCAP Security Guide project
 * Deric Crago <deric.crago@gmail.com>
 * Maura Dailey <maura@eclipse.ncsc.mil>
 * Klaas Demter <demter@atix.de>
+* dhanushkar-wso2 <dhanushkar@wso2.com>
 * Andrew DiPrinzio <andrew.diprinzio@jhuapl.edu>
 * Jean-Baptiste Donnette <jean-baptiste.donnette@epita.fr>
 * drax <applezip@gmail.com>
@@ -53,6 +54,7 @@ The following people have contributed to the SCAP Security Guide project
 * Peter 'Pessoft' Kolínek <github@pessoft.com>
 * Luke Kordell <luke.t.kordell@lmco.com>
 * kspargur <kspargur@kspargur.csb>
+* Amit Kumar <amitkuma@redhat.com>
 * Fen Labalme <fen@civicactions.com>
 * Ian Lee <lee1001@llnl.gov>
 * Jan Lieskovsky <jlieskov@redhat.com>
@@ -66,12 +68,14 @@ The following people have contributed to the SCAP Security Guide project
 * Rodney Mercer <rmercer@harris.com>
 * Matt Micene <nzwulfin@gmail.com>
 * Brian Millett <bmillett@gmail.com>
+* Mixer9 <35545791+Mixer9@users.noreply.github.com>
 * mmosel <mmosel@kde.example.com>
 * Zbynek Moravec <zmoravec@redhat.com>
 * Kazuo Moriwaka <moriwaka@users.noreply.github.com>
 * Michael Moseley <michael@eclipse.ncsc.mil>
 * Joe Nall <joe@nall.com>
 * Neiloy <neiloy@redhat.com>
+* Axel Nennker <axel@nennker.de>
 * Michele Newman <mnewman@redhat.com>
 * Sean O'Keeffe <seanokeeffe797@gmail.com>
 * Ilya Okomin <ilya.okomin@oracle.com>
@@ -111,10 +115,12 @@ The following people have contributed to the SCAP Security Guide project
 * Brian Stinson <brian@bstinson.com>
 * Philippe Thierry <phil@reseau-libre.net>
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
+* tomas.hudik <tomas.hudik@embedit.cz>
 * Jeb Trayer <jeb.d.trayer@uscg.mil>
 * Matěj Týč <matyc@redhat.com>
 * VadimDor <29509093+VadimDor@users.noreply.github.com>
 * Shawn Wells <shawn@redhat.com>
+* Daniel E. White <linuxdan@users.noreply.github.com>
 * Roy Williams <roywilli@roywilli.redhat.com>
 * Rob Wilmoth <rwilmoth@redhat.com>
 * Lucas Yamanishi <lucas.yamanishi@onyxpoint.com>
