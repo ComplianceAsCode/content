@@ -19,6 +19,8 @@ class SavedState(object):
         self.initial_running_state = True
 
     def map_on_top(self, function, args_list):
+        if not args_list:
+            return
         current_running_state = self.initial_running_state
         function(* args_list[0])
         for idx, args in enumerate(args_list[1:], 1):
