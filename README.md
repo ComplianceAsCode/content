@@ -1,6 +1,6 @@
 # Welcome!
 
-[![Release](https://img.shields.io/github/release/openscap/scap-security-guide.svg)](https://github.com/openscap/scap-security-guide/releases/latest)
+[![Release](https://img.shields.io/github/release/ComplianceAsCode/content.svg)](https://github.com/ComplianceAsCode/content/releases/latest)
 [![Nightly ZIP Status](https://jenkins.complianceascode.io/job/scap-security-guide-nightly-zip/badge/icon)](https://jenkins.complianceascode.io/job/scap-security-guide-nightly-zip/)
 [![Nightly 5.10 ZIP Status](https://jenkins.complianceascode.io/job/scap-security-guide-nightly-oval510-zip/badge/icon)](https://jenkins.complianceascode.io/job/scap-security-guide-nightly-oval510-zip/)
 [![Link-checker Status](https://jenkins.complianceascode.io/job/scap-security-guide-linkcheck/badge/icon)](https://jenkins.complianceascode.io/job/scap-security-guide-linkcheck/)
