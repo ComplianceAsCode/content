@@ -17,13 +17,14 @@ import ssg.yaml
 
 
 SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+BUILD_OUTPUT = os.path.join(SSG_ROOT, "build", "rule_dirs.json")
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--root", type=str, action="store", default=SSG_ROOT,
                    help="Path to SSG root directory (defaults to %s)" % SSG_ROOT)
-    parser.add_argument("-o", "--output", type=str, action="store", default="build/rule_dirs.json",
+    parser.add_argument("-o", "--output", type=str, action="store", default=BUILD_OUTPUT,
                    help="File to write json output to (defaults to build/rule_dirs.json)")
 
     return parser.parse_args()
