@@ -92,7 +92,7 @@ def replace_platforms(rule_obj, platforms):
     for platform in platforms:
         parsed_platform = platform.split('~')
         if not len(parsed_platform) == 2:
-            print("Invalid platform replacement description: %s" % product,
+            print("Invalid platform replacement description: %s" % platform,
                   file=sys.stderr)
             sys.exit(1)
 
