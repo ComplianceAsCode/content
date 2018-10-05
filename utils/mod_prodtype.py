@@ -150,7 +150,7 @@ def replace_products(rule_obj, products):
             new_prodtypes.difference_update(change['match'])
             new_prodtypes.update(change['replacement'])
 
-    new_prodtype_str = ','.join(new_prodtypes)
+    new_prodtype_str = ','.join(sorted(new_prodtypes))
 
     print("Current prodtype: %s" % prodtype)
     print("New prodtype: %s" % new_prodtype_str)
