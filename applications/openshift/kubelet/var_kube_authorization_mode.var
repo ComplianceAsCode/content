@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'kubelet - Authorization Options'
+
+description: |-
+    ABAC - Attribute-Based Access Control (ABAC) mode allows you to configure policies using local files.
+    <br />RBAC - Role-based access control (RBAC) mode allows you to create and store policies using the Kubernetes API.
+    <br />Webhook - WebHook is an HTTP callback mode that allows you to manage authorization using a remote REST endpoint.
+    <br />Node Node - authorization is a special-purpose authorization mode that specifically authorizes API requests made by kubelets.
+    <br />AlwaysDeny - This flag blocks all requests. Use this flag only for testing.
+
+type: string
+
+operator: equals
+
+interactive: false
+
+options:
+    default: Webhook
+    abac: ABAC
+    rbac: RBAC
+    webhook: Webhook
+    node: Node
+    alwaysdeny: AlwaysDeny
