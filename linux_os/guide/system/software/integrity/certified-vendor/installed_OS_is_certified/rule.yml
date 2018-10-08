@@ -1,14 +1,22 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,fedora
+prodtype: rhel6,rhel7,fedora,sle12
 
 title: 'The Installed Operating System Is Vendor Supported and Certified'
 
+{{% if product in ["rhel6", "rhel7"] %}}
 description: |-
     The installed operating system must be maintained and certified by a vendor.
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for providing security patches as well
     as meeting and maintaining goverment certifications and standards.
+{{% elif product == "sle12" %}}
+description: |-
+    The installed operating system must be maintained and certified by a vendor.
+    SUSE Linux Enterprise is supported and maintained by SUSE. SUSE is responsible for
+    providing security patches as well as meeting and maintaining goverment
+    certifications and standards.
+{{% endif %}}
 
 rationale: |-
     An operating system is considered "supported" if the vendor continues to provide
@@ -38,6 +46,13 @@ ocil: |-
     To verify that the installed operating system is supported or certified, run
     the following command:
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
+    The output should contain something similar to:
+    <pre>{{{ full_name }}}</pre>
+{{% elif product == "sle12" %}}
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
+    <pre>$ grep -i "suse linux enterprise" /etc/os-release</pre>
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
 {{% endif %}}
