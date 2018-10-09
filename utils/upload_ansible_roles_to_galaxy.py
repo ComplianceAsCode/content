@@ -13,6 +13,7 @@ import re
 import argparse
 import getpass
 import yaml
+import collections
 
 try:
     from github import Github, InputGitAuthor
@@ -23,6 +24,21 @@ except ImportError:
 
 
 import ssg.ansible
+
+# The following code preserves ansible yaml order
+# code from arcaduf's gist
+# https://gist.github.com/arcaduf/8edbe5900372f0dd30aa037272dfe826
+_mapping_tag = yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG
+
+def dict_representer(dumper, data):
+  return dumper.represent_mapping(_mapping_tag, data.iteritems())
+
+def dict_constructor(loader, node):
+  return collections.OrderedDict(loader.construct_pairs(node))
+
+yaml.add_representer( collections.OrderedDict , dict_representer )
+yaml.add_constructor( _mapping_tag, dict_constructor )
+# End arcaduf gist
 
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
 GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
