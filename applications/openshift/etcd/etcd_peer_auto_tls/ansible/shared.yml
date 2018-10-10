@@ -3,13 +3,13 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- (xccdf-var var_etcd_auto_tls)
+- (xccdf-var var_etcd_peer_auto_tls)
 
 - name: "@RULE_TITLE@"
   lineinfile:
     path: /etc/etcd/etcd.conf
-    regexp: '^ETCD_AUTO_TLS='
-    line: "ETCD_AUTO_TLS={{ var_etcd_auto_tls }}"
+    regexp: '^ETCD_PEER_AUTO_TLS='
+    line: "ETCD_PEER_AUTO_TLS={{ var_etcd_peer_auto_tls }}"
     create: yes
   tags:
     @ANSIBLE_TAGS@
