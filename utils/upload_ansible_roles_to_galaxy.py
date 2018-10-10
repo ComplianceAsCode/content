@@ -30,14 +30,16 @@ import ssg.ansible
 # https://gist.github.com/arcaduf/8edbe5900372f0dd30aa037272dfe826
 _mapping_tag = yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG
 
+
 def dict_representer(dumper, data):
-  return dumper.represent_mapping(_mapping_tag, data.iteritems())
+    return dumper.represent_mapping(_mapping_tag, data.iteritems())
+
 
 def dict_constructor(loader, node):
-  return collections.OrderedDict(loader.construct_pairs(node))
+    return collections.OrderedDict(loader.construct_pairs(node))
 
-yaml.add_representer( collections.OrderedDict , dict_representer )
-yaml.add_constructor( _mapping_tag, dict_constructor )
+yaml.add_representer(collections.OrderedDict, dict_representer)
+yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
 ORGANIZATION_NAME = "Ansible-Security-Compliance"
@@ -106,8 +108,9 @@ def update_repository(repository, local_file_path):
             pass
         else:
             sys.stderr.write(
-                "%s contains pre_tasks other than the version check. pre_tasks "
-                "are not supported for ansible roles and will be skipped!.\n")
+                "%s contains pre_tasks other than the version check. "
+                "pre_tasks are not supported for ansible roles and "
+                "will be skipped!.\n")
 
     tasks_local_content = yaml.dump(tasks_data, width=120, indent=4,
                                     default_flow_style=False)
@@ -163,7 +166,8 @@ def update_repository(repository, local_file_path):
     with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
         readme_template = f.read()
 
-    local_readme_content = readme_template.replace("@DESCRIPTION@", description)
+    local_readme_content = readme_template.replace("@DESCRIPTION@",
+                                                   description)
     local_readme_content = local_readme_content.replace("@TITLE@", title)
     local_readme_content = local_readme_content.replace(
         "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
