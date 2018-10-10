@@ -47,6 +47,13 @@ selections:
     - file_permissions_var_lib_etcd
     - scheduler_address_argument
     - scheduler_profiling_argument
+    - controller_address
+    - controller_feature-gates_RotateKubeletServerCertificate_option
+    - controller_profiling
+    - controller_root-ca-file
+    - controller_service-account-private-key-file
+    - controller_terminated-pod-gc-threshhold
+    - controller_use-service-account-credentials
     - api-server_admission_control_plugin-AlwaysAdmit
     - api-server_admission_control_plugin-AlwaysPullImages
     - api-server_admission_control_plugin-DenyEscalatingExec
