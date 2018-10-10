@@ -13,17 +13,17 @@
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="ETCD_AUTO_TLS is false" id="test_etcd_auto_tls" version="1">
-    <ind:object object_ref="object_etc_etcd_etcd_conf" />
-    <ind:state state_ref="state_etc_etcd_etcd_conf" />
+    <ind:object object_ref="object_etcd_auto_tls" />
+    <ind:state state_ref="state_etcd_auto_tls" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_etc_etcd_etcd_conf" version="1">
+  <ind:textfilecontent54_object id="object_etcd_auto_tls" version="1">
     <ind:filepath>/etc/etcd/etcd.conf</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*ETCD_AUTO_TLS=(.*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_etc_etcd_etcd_conf" version="1">
+  <ind:textfilecontent54_state id="state_etcd_auto_tls" version="1">
     <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_etcd_auto_tls" />
   </ind:textfilecontent54_state>
 
