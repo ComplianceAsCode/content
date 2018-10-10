@@ -21,12 +21,25 @@ selections:
     - cinder_glance_tls
     - cinder_nas_secure_file_permissions
     - cinder_osapi_max_request_body
+    #
+    # Keystone Rules
+    #
+    - var_keystone_lockout_failure_attempts=3
+    - var_keystone_lockout_duration=15_minutes
+    - var_keystone_disable_user_account_days_inactive=90
+
     - keystone_file_ownership
     - keystone_file_perms
     - keystone_use_ssl
     - keystone_algorithm_hashing
     - keystone_max_request_body_size
     - keystone_disable_admin_token
+    - keystone_lockout_failure_attempts
+    - keystone_lockout_duration
+    - keystone_disable_user_account_days
+    #
+    # Neutron Rules
+    #
     - neutron_file_ownership
     - neutron_file_perms
     - neutron_use_keystone
