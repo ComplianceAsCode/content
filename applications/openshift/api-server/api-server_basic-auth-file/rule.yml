@@ -6,7 +6,7 @@ description: |-
    Basic Authentication should not be used. Follow the OpenShift documentation
    and configure alternate mechanisms for authentication. Then, edit API
    server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
-   on the master node and remove the <tt>--basic-auth-file=<filename></tt> parameter.
+   on the master node and remove the <tt>--basic-auth-file=<i>filename</i></tt> parameter.
 
    Alternate authentication mechanisms such as tokens and certificates will need to be
    used. Username and password for basic authentication will be disabled.
