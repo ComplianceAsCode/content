@@ -1,0 +1,15 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var var_etcd_peer_client_cert_auth)
+
+- name: "@RULE_TITLE@"
+  lineinfile:
+    path: /etc/etcd/etcd.conf
+    regexp: '^ETCD_PEER_CLIENT_CERT_AUTH='
+    line: "ETCD_PEER_CLIENT_CERT_AUTH={{ var_etcd_peer_client_cert_auth }}"
+    create: yes
+  tags:
+    @ANSIBLE_TAGS@
