@@ -36,7 +36,7 @@ selections:
     - keystone_disable_admin_token
     - keystone_lockout_failure_attempts
     - keystone_lockout_duration
-    - keystone_disable_user_account_days
+    - keystone_disable_user_account_days_inactive
     #
     # Neutron Rules
     #
