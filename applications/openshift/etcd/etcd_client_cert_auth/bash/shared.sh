@@ -2,5 +2,6 @@
 #
 # Include source function library
 . /usr/share/scap-security-guide/remediation_functions
+populate var_etcd_client_cert_auth
 
-replace_or_append '/etc/etcd/etcd.conf' '^ETCD_CLIENT_CERT_AUTH=' true '@CCENUM@' '%s=%s'
+replace_or_append '/etc/etcd/etcd.conf' '^ETCD_CLIENT_CERT_AUTH=' $var_etcd_client_cert_auth '@CCENUM@' '%s=%s'
