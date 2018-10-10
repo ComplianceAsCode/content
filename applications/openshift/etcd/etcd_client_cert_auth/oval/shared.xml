@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="compliance" id="etcd_client_cert_auth" version="1">
+    <metadata>
+      <title>Enable Client Certificate Authentication</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+      </affected>
+      <description>ETCD_CLIENT_CERT_AUTH is correctly set</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_etcd_client_cert_auth" comment="Check ETCD_CLIENT_CERT_AUTH in /etc/etcd/etcd.conf" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test id="test_etcd_client_cert_auth"
+  comment="check ETCD_CLIENT_CERT_AUTH in /etc/etcd/etcd.conf"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_etcd_client_cert_auth" />
+    <ind:state state_ref="state_etcd_client_cert_auth" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_etcd_client_cert_auth" version="1">
+    <ind:filepath>/etc/etcd/etcd.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*ETCD_CLIENT_CERT_AUTH=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_etcd_client_cert_auth"
+  version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^true$</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+</def-group>
