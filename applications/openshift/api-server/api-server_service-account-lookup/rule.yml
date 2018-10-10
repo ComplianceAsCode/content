@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure that the --service-account-lookup argument is set to true'
+
+description: |-
+    To validate service accounts prior to validating tokens, edit the API
+    Server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
+    on the master node(s) and set <tt>--service-account-lookup</tt> to <tt>true</tt>:
+
+    <pre>--service-account-lookup=true</pre>
+
+rationale: |-
+    By default, the API Server only verifies that the authentication token
+    is valid. However, it does not validate that the service account token
+    mentioned in the request is actually present in etcd. This allows using
+    a service account token even after the corresponding service account is
+    deleted. This is an example of <i>time of check to time of use</i>
+    security issue.
+
+severity: medium
+
+ocil_clause: '<tt>--service-account-lookup</tt> is not set to <tt>true</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--service-account-lookup</tt> argument exists
+    and is set to <tt>true</tt>.
+
+references:
+    cis: 1.1.33

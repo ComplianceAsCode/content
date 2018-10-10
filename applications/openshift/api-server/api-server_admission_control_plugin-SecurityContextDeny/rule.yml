@@ -1,0 +1,37 @@
+documentation_complete: true
+
+title: 'Ensure that the admission control plugin SecurityContextDeny is set'
+
+description: |-
+    Instead of using a customized SecurityContext for pods, a Pod Security
+    Policy (PSP) should be used. PSP is a cluster-level resource that controls
+    the actions that a pod can perform and what resource the pod may access.
+
+    The <tt>SecurityContextDeny</tt> admission control policy enables PSP. To
+    configure OpenShift to use PSP, edit the API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s) and
+    set the <tt>--enable-admission-plugins</tt> parameter to include
+    <tt>SecurityContextDeny</tt>:
+
+    <pre>--enable-admission-plugins=...,SecurityContextDeny,...</pre>
+
+rationale: |-
+    Setting admission control policy to <tt>SecurityContextDeny</tt> denies the
+    pod level SecurityContext customization. Any attempts to customize the
+    SecurityContext that are not explicitly defined in the Pod Security Policy
+    (PSP) are blocked. This ensures that all pods adhere to the PSP defined
+    by your organization and you have a uniform pod level security posture.
+
+severity: medium
+
+ocil_clause: '<tt>--enable-admission-plugins</tt> arguments do not contain <tt>SecurityContextDeny</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--enable-admission-plugins</tt> argument is set,
+    and that its value includes <tt>SecurityContextDeny</tt>.
+
+references:
+    cis: 1.1.17

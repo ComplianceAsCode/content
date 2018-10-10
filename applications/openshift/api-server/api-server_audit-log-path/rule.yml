@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure that the --audit-log-path argument is set as appropriate'
+
+description: |-
+    To enable auditing on the OpenShift API Server the audit log path
+    must be set. Edit the API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    and set the <tt>--audit-log-path</tt> parameter to a suitable path and file
+    where you would like audit logs to be written. For example:
+
+    <pre>--audit-log-path=/var/log/openshift/apiserver/audit.log</pre>
+
+rationale: |-
+    Auditing of the API Server is not enabled by default. Auditing the API Server
+    provides a security-relevant chronological set of records documenting the sequence
+    of activities that have affected the system by users, administrators, or other
+    system components.
+
+severity: high
+
+ocil_clause: '<tt>--audit-log-path</tt> arguments do not contain a valid audit file path'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--audit-log-path</tt> argument is set,
+    as appropriate.
+
+references:
+    cis: 1.1.22

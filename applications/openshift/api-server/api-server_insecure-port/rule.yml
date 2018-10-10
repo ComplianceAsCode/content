@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure that the --insecure-port argument is set to 0'
+
+description: |-
+    All components that use the API should connect via the secured port,
+    authenticate themselves, and be authorized to use the API. To ensure
+    such a configuration, edit the API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
+    node(s) and set the <tt>--insecure-port</tt> argument to <tt>0</tt>:
+
+    <pre>--insecure-port=0</pre>
+
+rationale: |-
+    Configuring the API Server on an insecure port would allow unauthenticated
+    and unencrypted access to your master node(s). It is assumed firewall rules
+    will be configured to ensure this port is not reachable from outside
+    the cluster, however as a defense in depth measure, OpenShift should not
+    be configured to use insecure ports.
+
+severity: medium
+
+ocil_clause: '<tt>--insecure-port</tt> not set to <tt>0</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--insecure-port</tt> argument is set to <tt>0</tt>.
+
+references:
+    cis: 1.1.6

@@ -47,3 +47,40 @@ selections:
     - file_permissions_var_lib_etcd
     - scheduler_address_argument
     - scheduler_profiling_argument
+    - api-server_admission_control_plugin-AlwaysAdmit
+    - api-server_admission_control_plugin-AlwaysPullImages
+    - api-server_admission_control_plugin-DenyEscalatingExec
+    - api-server_admission_control_plugin-EventRateLimit
+    - api-server_admission_control_plugin-NamespaceLifecycle
+    - api-server_admission_control_plugin-NodeRestriction
+    - api-server_admission_control_plugin-PodSecurityPolicy
+    - api-server_admission_control_plugin-SecurityContextDeny
+    - api-server_admission_control_plugin-ServiceAccount
+    - api-server_advanced-auditing
+    - api-server_anonymous-auth
+    - api-server_audit-log-maxage
+    - api-server_audit-log-maxbackup
+    - api-server_audit-log-maxsize
+    - api-server_audit-log-path
+    - api-server_authorization-mode
+    - api-server_basic-auth-file
+    - api-server_client-ca-file
+    - api-server_etcd-cafile
+    - api-server_etcd-certfile_and_etcd-keyfile
+    - api-server_experimental-encryption-provider-cipher
+    - api-server_experimental-encryption-provider-config
+    - api-server_insecure-allow-any-token
+    - api-server_insecure-bind-address
+    - api-server_insecure-port
+    - api-server_kubelet-certificate-authority
+    - api-server_kubelet-client-certificate_and_kubelet-client-key
+    - api-server_kubelet-https
+    - api-server_profiling
+    - api-server_repair-malformed-updates
+    - api-server_request-timeout
+    - api-server_secure-port
+    - api-server_service-account-key-file
+    - api-server_service-account-lookup
+    - api-server_tls-cert-file_and-tle-private-key-file
+    - api-server_tls-cipher-suites
+    - api-server_token-auth-file
