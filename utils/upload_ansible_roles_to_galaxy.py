@@ -42,7 +42,7 @@ yaml.add_representer(collections.OrderedDict, dict_representer)
 yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
-ORGANIZATION_NAME = "Ansible-Security-Compliance"
+ORGANIZATION_NAME = "RedHatOfficial"
 GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 META_TEMPLATE_PATH = os.path.join(

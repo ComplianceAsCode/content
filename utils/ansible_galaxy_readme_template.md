@@ -21,12 +21,12 @@ N/A
 Example Playbook
 ----------------
 
-Run `ansible-galaxy install Ansible-Security-Compliance.@ROLE_NAME@` to
+Run `ansible-galaxy install RedHatOfficial.@ROLE_NAME@` to
 download and install the role. Then you can use the following playbook snippet.
 
     - hosts: all
       roles:
-         - { role: Ansible-Security-Compliance.@ROLE_NAME@ }
+         - { role: RedHatOfficial.@ROLE_NAME@ }
 
 Then first check the playbook using (on the localhost):
 
