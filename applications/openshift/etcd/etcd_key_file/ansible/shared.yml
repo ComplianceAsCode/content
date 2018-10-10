@@ -7,8 +7,8 @@
 - name: "@RULE_TITLE@"
   lineinfile:
     path: /etc/etcd/etcd.conf
-    regexp: '^ETCD_CERT_FILE='
-    line: "ETCD_CERT_FILE /etc/etcd/server.crt"
+    regexp: '^ETCD_KEY_FILE='
+    line: "ETCD_KEY_FILE /etc/etcd/server.key"
     create: yes
   tags:
     @ANSIBLE_TAGS@
