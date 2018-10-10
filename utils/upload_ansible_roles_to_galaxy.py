@@ -43,7 +43,7 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
 ORGANIZATION_NAME = "RedHatOfficial"
-GIT_COMMIT_AUTHOR_NAME = "SCAP Security Guide development team"
+GIT_COMMIT_AUTHOR_NAME = "Red Hat Security Automation development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 META_TEMPLATE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -60,8 +60,8 @@ def create_empty_repositories(github_new_repos, github_org):
         print("Creating new Github repository: %s" % github_new_repo)
         github_org.create_repo(
             github_new_repo,
-            description="Role generated from SCAP Security Guide",
-            homepage="https://www.open-scap.org/",
+            description="Role generated from ComplianceAsCode Project",
+            homepage="https://github.com/ComplianceAsCode/content/",
             private=False,
             has_issues=False,
             has_wiki=False,
@@ -210,11 +210,11 @@ def update_repository(repository, local_file_path):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Updates SSG Galaxy Ansible Roles')
+        description='Updates Galaxy Ansible Roles')
     parser.add_argument(
         "--build-roles-dir", required=True,
-        help="Path to directory containing the ssg generated roles. Most "
-        "likely this is going to be scap-security-guide/build/roles",
+        help="Path to directory containing the generated roles. Most "
+        "likely this is going to be ./build/roles",
         dest="build_roles_dir")
     return parser.parse_args()
 
