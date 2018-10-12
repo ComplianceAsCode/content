@@ -76,6 +76,19 @@ macro(ssg_build_bash_remediation_functions)
     )
 endmacro()
 
+macro(ssg_build_man_page)
+    add_custom_command(
+        OUTPUT "${CMAKE_BINARY_DIR}/scap-security-guide.8"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_man_page.py" --input_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_BINARY_DIR}/scap-security-guide.8"
+        COMMENT "[man-page] generating man page"
+    )
+    add_custom_target(
+        man_page
+        ALL
+        DEPENDS "${CMAKE_BINARY_DIR}/scap-security-guide.8"
+    )
+endmacro()
+
 macro(ssg_build_shorthand_xml PRODUCT)
     execute_process(
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
@@ -667,6 +680,7 @@ macro(ssg_build_product PRODUCT)
     ssg_make_stats_for_product(${PRODUCT})
     add_dependencies(stats ${PRODUCT}-stats)
     add_dependencies(profile-stats ${PRODUCT}-profile-stats)
+    add_dependencies(man_page ${PRODUCT})
 
     if (SSG_SEPARATE_SCAP_FILES_ENABLED)
         install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"

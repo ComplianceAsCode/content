@@ -238,6 +238,8 @@ add_custom_target(profile-stats)
 
 ssg_build_bash_remediation_functions()
 
+ssg_build_man_page()
+
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
 if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
@@ -321,7 +323,7 @@ install(FILES "${CMAKE_SOURCE_DIR}/README.md"
 install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
-install(FILES "docs/scap-security-guide.8"
+install(FILES "${CMAKE_BINARY_DIR}/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
 
 # We use CPack to generate the tarball with all sources and
