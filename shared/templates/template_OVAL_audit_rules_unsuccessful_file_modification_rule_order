@@ -161,19 +161,19 @@
 
   <!-- 32bit EACCES augenrules objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a201003_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -192,7 +192,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eacces_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_eacces_augenrules_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -200,19 +200,19 @@
 
   <!-- 32bit EPERM augenrules objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a201003_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -231,7 +231,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eperm_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_eperm_augenrules_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -239,19 +239,19 @@
 
   <!-- 64bit EACCES augenrules objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a20100_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a201003_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -270,7 +270,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_64bit_{{{ SYSCALL }}}_eacces_augenrules_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -278,19 +278,19 @@
 
   <!-- 64bit EPERM augenrules objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a20100_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a201003_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -309,7 +309,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eperm_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_eperm_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_64bit_{{{ SYSCALL }}}_eperm_augenrules_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -317,19 +317,19 @@
 
   <!-- 32bit EACCES auditctl objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a201003_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -348,7 +348,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eacces_auditctl" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_auditctl_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -356,19 +356,19 @@
 
   <!-- 32bit EPERM auditctl objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a201003_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -388,7 +388,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eperm_auditctl" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_32bit_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_auditctl_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -396,19 +396,19 @@
 
   <!-- 64bit EACCES auditctl objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a20100_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a201003_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -427,7 +427,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_auditctl" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_{{{ SYSCALL }}}_order_64bit_auditctl_eacces_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -435,19 +435,19 @@
 
   <!-- 64bit EPERM auditctl objects -->
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a20100_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a201003_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -466,7 +466,7 @@
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eperm_auditctl" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_arufm_{{{ SYSCALL }}}_order_64bit_eperm_auditctl" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_arufm_rule_order_64bit_{{{ SYSCALL }}}_auditctl_eperm_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
