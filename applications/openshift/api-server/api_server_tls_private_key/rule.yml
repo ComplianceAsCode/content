@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure that the --tls-private-key-file arguments are set as appropriate'
+
+description: |-
+    To ensure the API Server utilizes its own TLS certificates, the
+    <tt>--tls-private-key-file</tt> argument
+    must be configured. Follow the OpenShift documentation and setup the TLS
+    connection on the API Server. Then, edit the API Server pod specification
+    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
+    node(s) and set the <tt>--tls-private-key-file</tt> parameter:
+
+    <pre>--tls-private-key-file=<i>/path/to/tls-key-file</i></pre>
+
+rationale: |-
+    API Server communication contains sensitive parameters that should remain
+    encrypted in transit. Configure the API Server to serve only HTTPS
+    traffic.
+
+severity: medium
+
+ocil_clause: '<tt>--tls-private-key-file</tt> parameter is not configured as appropriate'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--tls-private-key-file</tt> argument exist and
+    is set as appropriate.
+
+references:
+    cis: 1.1.38

@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Ensure that the encryption provider is set to aescbc'
 
 description: |-
-    'To configure OpenShift to use the <tt>aescbc</tt> encryption provider,
+    To configure OpenShift to use the <tt>aescbc</tt> encryption provider,
     follow the OpenShift documentation and configure a
     <tt>EncryptionConfig</tt> file. In this file, choose <tt>aescbc</tt>
     as the encryption provider:
@@ -19,7 +19,7 @@ description: |-
             keys:
             - name: key1
               secret: <i>32-byte base64-encoded secret</i>
-    </pre>'
+    </pre>
 
 rationale: |-
     <tt>aescbc</tt> is currently the strongest encryption provider, it should
