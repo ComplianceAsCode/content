@@ -1,0 +1,36 @@
+documentation_complete: true
+
+title: 'Ensure that the --service-account-key-file argument is set as appropriate'
+
+description: |-
+    By default the <tt>--service-account-key-file</tt> argument is not set,
+    which configures OpenShift to use the private key from the TLS serving
+    certificate. To ensure the API Server utilizes its own key pair, edit the
+    API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    and set the <tt>--service-account-key-file</tt> parameter to the public
+    key file for service accounts:
+
+    <pre>--service-account-key-file=<i>filename</i></pre>
+
+rationale: |-
+    By default, if no <tt>--service-account-key-file</tt> is specified to the
+    API Server, the API Server uses the private key from the TLS serving
+    certificate to verify service account tokens. To ensure that the keys
+    for service account tokens could be rotated as needed, a separate
+    public/private key pair should be used for signing service account
+    tokens.
+
+severity: medium
+
+ocil_clause: '<tt>--service-acount-key-file</tt> argument is not set or does not refer to the API Server specific key'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--service-account-key-file</tt> argument exists
+    and is set as appropriate.
+
+references:
+    cis: 1.1.35

@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora
+# platform = multi_platform_fedora,multi_platform_rhel
 . /usr/share/scap-security-guide/remediation_functions
 declare var_accounts_password_minlen_login_defs
 populate var_accounts_password_minlen_login_defs

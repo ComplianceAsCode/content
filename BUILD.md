@@ -251,8 +251,8 @@ make zipfile
 
 ### Build the docker container image
 
-Use the [Dockerfile](Dockerfile) present in the top directory and build the
-image.
+Use a suitable Dockerfile present in the [Dockerfiles](Dockerfiles)
+directory and build the image.
 This will take care of the build environment and all necessary setup.
 
 ```bash

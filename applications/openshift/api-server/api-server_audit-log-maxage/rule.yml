@@ -1,0 +1,28 @@
+documentation_complete: true
+
+title: 'Ensure that the --audit-log-maxage argument is set to 30 or as appropriate'
+
+description: |-
+    To configure audit log retention, edit the API Server pod specification file
+    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s) and set
+    the <tt>--audit-log-maxage</tt> parameter to 30 or as appropriate number of days:
+
+    <pre>--audit-log-maxage=30</pre>
+
+rationale: |-
+    Retaining audit logs for a specified period of time allows OpenShift Operators
+    to retroactively review and correlate events, such as for investigative purposes.
+
+severity: medium
+
+ocil_clause: '<tt>--audit-log-maxage</tt> argument is set less than <tt>30</tt> or as appropriate'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ ps -ef | grep kube-apiserver</pre>
+
+    Verify that the <tt>--audit-log-maxage</tt> argument is set,
+    and contains a value of <tt>30</tt> or alternative as appropriate.
+
+references:
+    cis: 1.1.23

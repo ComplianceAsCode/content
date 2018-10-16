@@ -1,0 +1,25 @@
+documentation_complete: true
+
+title: 'kubelet - Enable Server Certificate Rotation'
+
+description: |-
+    To enable the kubelet to rotate server certificates, edit the kubelet configuration
+    file <tt>/etc/origin/node/node-config.yaml</tt>
+    on the kubelet node(s) and set the below parameter:
+    <pre>RotateKubeletServerCertificate=true</pre>
+
+rationale: |-
+    Allowing the kubelet to auto-update the certificates ensure that there is no downtime
+    in certificate renewal as well as ensures confidentiality and integrity.
+
+severity: medium
+
+ocil_clause: 'the kubelet cannot rotate server certificate'
+
+ocil: |-
+    Run the following command on the kubelet node(s):
+    <pre>$ sudo grep -B1 RotateKubeletServerCertificate /etc/origin/node/node-config.yaml</pre>
+    The output should return <tt>true</tt>.
+
+references:
+    cis: 2.1.15

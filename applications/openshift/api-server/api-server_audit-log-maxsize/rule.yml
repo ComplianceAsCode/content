@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate'
+
+description: |-
+    'To rotate audit logs upon reaching a maximum size, edit the API Server pod
+     specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on
+     the master node(s) and set the <tt>--audit-log-maxsize</tt> parameter to
+     an appropriate size in MB. For example, to set it to 100 MB:
+
+     <pre>--audit-log-maxsize=100MB</pre>'
+
+rationale: |-
+     OpenShift automatically rotates log files. Retaining old log files ensures that
+     OpenShift Operators have sufficient log data available for carrying out any
+     investigation or correlation. If you have set file size of 100 MB and the number of
+     old log files to keep as 10, there would be approximately 1 GB of log data
+     available for use in analysis.
+
+severity: medium
+
+ocil_clause: '<tt>--audit-log-maxsize</tt> argument is set less than <tt>100</tt> or as appropriate'
+
+ocil: |-
+    'Run the following command on the master node(s):
+     <pre>$ ps -ef | grep kube-apiserver</pre>
+
+     Verify that the <tt>--audit-log-maxsize</tt> argument is set,
+     and contains a value of <tt>100</tt> or alternative as appropriate.
+
+references:
+    cis: 1.1.28
