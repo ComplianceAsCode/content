@@ -36,7 +36,7 @@
     <ind:object object_ref="object_audit_rule_kernel_module_loading_modprobe_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_audit_rule_kernel_module_loading_modprobe_augenrules" version="1">
-    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match">^\-w[\s]+{{{ modprobe_path }}}[\s]+\-p[\s]+\b([raw]*x[raw]*)\b[\s]+(-k[\s]+|-F[\s]+key=)[-\w]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

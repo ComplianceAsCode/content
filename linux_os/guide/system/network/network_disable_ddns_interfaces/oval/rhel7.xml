@@ -36,7 +36,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_network_disable_ddns_interfaces_dhclient"
   version="1">
-    <ind:filepath operation="pattern match">/etc/dhclient.*\.conf</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/dhclient.*\.conf$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*send[\s]+host-name.*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
