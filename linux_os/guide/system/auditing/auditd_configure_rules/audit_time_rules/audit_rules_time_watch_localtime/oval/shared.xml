@@ -31,7 +31,7 @@
     <ind:object object_ref="object_artw_etc_localtime_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_artw_etc_localtime_augenrules" version="1">
-    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*-w[\s]+\/etc\/localtime[\s]+-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b.*(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

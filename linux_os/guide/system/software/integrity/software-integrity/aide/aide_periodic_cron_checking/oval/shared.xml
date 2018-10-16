@@ -55,7 +55,7 @@
     <ind:object object_ref="object_aide_crontabs_checking" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object comment="run aide with cron.(daily|weekly|monthly)" id="object_aide_crontabs_checking" version="1">
-    <ind:path operation="pattern match">/etc/cron.(daily|weekly|monthly)</ind:path>
+    <ind:path operation="pattern match">^/etc/cron.(daily|weekly|monthly)$</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^\s*/usr/sbin/aide[\s]*\-\-check.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>

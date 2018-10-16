@@ -17,7 +17,7 @@
     <ind:object object_ref="obj_apt_sources_list_base_official" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_apt_sources_list_base_official" version="1">
-    <ind:filepath operation="pattern match">^/etc/apt/sources(.d\/[a-zA-Z0-9]+){0,1}.list</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/apt/sources(.d\/[a-zA-Z0-9]+){0,1}.list$</ind:filepath>
     <ind:pattern operation="pattern match">^deb[\s]+http://[a-z\.]+\.debian\.org/debian[\s]+[a-z]+[\s]+main</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -26,7 +26,7 @@
     <ind:object object_ref="obj_apt_sources_list_security_official" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_apt_sources_list_security_official" version="1">
-    <ind:filepath operation="pattern match">^/etc/apt/sources(.d\/[a-zA-Z0-9]+){0,1}.list</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/apt/sources(.d\/[a-zA-Z0-9]+){0,1}.list$</ind:filepath>
     <ind:pattern operation="pattern match">^deb[\s]+http://security\.debian\.org[\s]+[a-z]+/updates[\s]+main</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

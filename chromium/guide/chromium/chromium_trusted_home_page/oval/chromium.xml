@@ -17,7 +17,7 @@
     <ind:state state_ref="state_chromium_trusted_home_page" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_chromium_trusted_home_page" version="1">
-    <ind:filepath operation="pattern match">/etc/chromium/policies/managed/.*\.json</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/chromium/policies/managed/.*\.json$</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]+\"HomepageLocation\"\:[\s]+\"(\S+)\",</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
