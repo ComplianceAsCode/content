@@ -12,8 +12,6 @@ description: |-
     ensure a system is in compliance or consistency with the CIS
     baseline.
 
-extends: opencis-ocp-node
-
 selections:
     - file_groupowner_etc_origin
     - file_groupowner_master_admin_conf
