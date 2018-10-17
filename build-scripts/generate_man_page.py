@@ -9,13 +9,14 @@ import ssg.constants
 import ssg.xml
 import os
 import io
+from jinja2 import Template
 
 try:
     from xml.etree import cElementTree as ElementTree
 except ImportError:
     import cElementTree as ElementTree
 
-prolog = u"""
+man_page_template = u"""
 .TH scap-security-guide 8 "26 Jan 2013" "version 1"
 
 .SH NAME
@@ -38,9 +39,9 @@ formats to support automation whenever possible.
 
 The projects homepage is located at:
 https://www.open-scap.org/security-policies/scap-security-guide
-"""
 
-epilog = u"""
+{{ profiles }}
+
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the
 ospp profile:
@@ -160,39 +161,42 @@ def main():
     p.add_argument("--output", required=True)
     args = p.parse_args()
     input_dir = os.path.abspath(args.input_dir)
+    template = Template(man_page_template)
+    all_profiles = get_all_profiles(input_dir)
+    man_page = template.render(profiles=all_profiles)
     with io.open(args.output, "w", encoding="utf-8") as output_file:
-        output_file.write(prolog)
-        print_all_profiles(input_dir, output_file)
-        output_file.write(epilog)
+        output_file.write(man_page)
 
 
-def print_all_profiles(input_dir, output_file):
+def get_all_profiles(input_dir):
+    all_profiles = ""
     for item in sorted(os.listdir(input_dir)):
         if item.endswith("-ds.xml"):
-            print_profiles_in_ds(os.path.join(input_dir, item), output_file)
+            all_profiles += get_profiles_in_ds(os.path.join(input_dir, item))
+    return all_profiles
 
 
-def print_profiles_in_ds(ds_filepath, output_file):
+def get_profiles_in_ds(ds_filepath):
+    profiles_in_ds = ""
     tree = ElementTree.parse(ds_filepath)
     root = tree.getroot()
     benchmark = root.find(".//{%s}Benchmark" % (ssg.constants.XCCDF12_NS))
     benchmark_title = benchmark.find(
         "{%s}title" % (ssg.constants.XCCDF12_NS)).text
-    output_file.write(u".SH\nProfiles in %s\n\n" % (benchmark_title))
+    profiles_in_ds += u".SH\nProfiles in %s\n\n" % (benchmark_title)
     ds_filename = os.path.basename(ds_filepath)
-    output_file.write(u"Source Datastream: \\fI %s\\fR\n\n" % (ds_filename))
-    output_file.write(
-        u"The %s is broken into 'profiles', groupings of security settings "
+    profiles_in_ds += u"Source Datastream: \\fI %s\\fR\n\n" % (ds_filename)
+    profiles_in_ds += u"The %s is broken into 'profiles', groupings of security settings " \
         "that correlate to a known policy. Available profiles are:\n\n" % (
-            benchmark_title))
-    profiles = list_profiles(benchmark)
+            benchmark_title)
+    profiles = get_profiles_info(benchmark)
     for profile_id, title, description in profiles:
-        output_file.write(
-            u".B %s\n\n.RS\nProfile ID: \\fI%s\\fR\n\n%s\n.RE\n\n\n" % (
-                title, profile_id, description))
+        profiles_in_ds += u".B %s\n\n.RS\nProfile ID: \\fI%s\\fR\n\n%s\n.RE\n\n\n" % (
+                title, profile_id, description)
+    return profiles_in_ds
 
 
-def list_profiles(benchmark):
+def get_profiles_info(benchmark):
     all_profile_elems = benchmark.findall(
         "./{%s}Profile" % (ssg.constants.XCCDF12_NS))
     profiles_info = []
