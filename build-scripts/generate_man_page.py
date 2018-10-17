@@ -10,7 +10,10 @@ import ssg.xml
 import os
 import io
 
-import xml.etree.ElementTree as ET
+try:
+    from xml.etree import cElementTree as ElementTree
+except ImportError:
+    import cElementTree as ElementTree
 
 prolog = u"""
 .TH scap-security-guide 8 "26 Jan 2013" "version 1"
@@ -170,7 +173,7 @@ def print_all_profiles(input_dir, output_file):
 
 
 def print_profiles_in_ds(ds_filepath, output_file):
-    tree = ET.parse(ds_filepath)
+    tree = ElementTree.parse(ds_filepath)
     root = tree.getroot()
     benchmark = root.find(".//{%s}Benchmark" % (ssg.constants.XCCDF12_NS))
     benchmark_title = benchmark.find(
