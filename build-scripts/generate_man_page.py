@@ -8,9 +8,9 @@ import ssg.build_profile
 import ssg.constants
 # ssg.xml provides ElementTree which is a wrapper for standard ElementTree
 import ssg.xml
+import ssg.jinja
 import os
 import io
-from jinja2 import Template
 
 def main():
     p = argparse.ArgumentParser(
@@ -20,10 +20,9 @@ def main():
     p.add_argument("--template", required=True)
     args = p.parse_args()
     input_dir = os.path.abspath(args.input_dir)
-    with io.open(args.template, "r", encoding="utf-8") as template_file:
-        template = Template(template_file.read())
     all_profiles = get_all_profiles(input_dir)
-    man_page = template.render(profiles=all_profiles)
+    substitution_dicts = {"profiles": all_profiles}
+    man_page = ssg.jinja.process_file(args.template, substitution_dicts)
     with io.open(args.output, "w", encoding="utf-8") as output_file:
         output_file.write(man_page)
 
