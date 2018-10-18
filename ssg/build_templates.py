@@ -29,6 +29,7 @@ from create_audit_rules_usergroup_modification import AuditRulesUserGroupModific
 from create_audit_rules_execution import AuditRulesExecutionGenerator
 from create_audit_rules_path_syscall import AuditRulesPathSyscallGenerator
 from create_grub2_bootloader_argument import GRUB2BootloaderArgumentGenerator
+from create_ocp_service_runtime_config import OCPServiceRuntimeConfigGenerator
 
 
 class Builder(object):
@@ -76,6 +77,7 @@ class Builder(object):
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
             "audit_rules_path_syscall.csv":        AuditRulesPathSyscallGenerator(),
             "grub2_bootloader_argument.csv":        GRUB2BootloaderArgumentGenerator(),
+            "ocp_service_runtime_config.csv":        OCPServiceRuntimeConfigGenerator(),
         }
         self.langs = TEMPLATED_LANGUAGES
         utils_dir = os.path.dirname(os.path.realpath(__file__))
