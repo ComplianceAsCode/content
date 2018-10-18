@@ -6,15 +6,11 @@ import argparse
 import sys
 import ssg.build_profile
 import ssg.constants
+# ssg.xml provides ElementTree which is a wrapper for standard ElementTree
 import ssg.xml
 import os
 import io
 from jinja2 import Template
-
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    import cElementTree as ElementTree
 
 def main():
     p = argparse.ArgumentParser(
@@ -42,7 +38,7 @@ def get_all_profiles(input_dir):
 
 def get_profiles_in_ds(ds_filepath):
     profiles_in_ds = ""
-    tree = ElementTree.parse(ds_filepath)
+    tree = ssg.xml.ElementTree.parse(ds_filepath)
     root = tree.getroot()
     benchmark = root.find(".//{%s}Benchmark" % (ssg.constants.XCCDF12_NS))
     benchmark_title = benchmark.find(
