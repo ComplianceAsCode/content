@@ -27,13 +27,15 @@ foreach(NAME ${OPENSCAP_POSSIBLE_ROOT_DIRS})
 endforeach()
 
 if (NOT EXISTS "${OPENSCAP_XCCDF_XSL_1_2}")
-    MESSAGE(SEND_ERROR
-            "ERROR: The OPENSCAP XSL XCCDF file was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
+    list(APPEND OscapErrors "ERROR: The OPENSCAP XSL XCCDF file was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
 endif()
 
 if (NOT EXISTS "${OPENSCAP_OSCAP_EXECUTABLE}")
-    MESSAGE(SEND_ERROR
-            "ERROR: The OPENSCAP executable was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
+    list(APPEND OscapErrors "ERROR: The OPENSCAP executable was not found. Please specify the OPENSCAP ROOT DIR with the OPENSCAP_ROOT_DIR environment variable.")
+endif()
+
+if (OscapErrors)
+    MESSAGE(FATAL_ERROR "${OscapErrors}")
 endif()
 
 execute_process(
