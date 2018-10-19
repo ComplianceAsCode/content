@@ -1,0 +1,25 @@
+<def-group>
+  <definition class="compliance" id="controller_address" version="1">
+    <metadata>
+      <title>Check OpenShift Runtime Process Configuration of /usr/bin/service-catalog controller-manager - address</title>
+      <affected family="unix">
+        <platform>multi_platform_ocp</platform>
+      </affected>
+      <description>Verify the OpenShift process runtime configuration of the address option.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="ocp process runtime parameter --address set to 127.0.0.1" test_ref="test_ocp_runtime_address" />
+    </criteria>
+  </definition>
+  <unix:process58_test check="all" comment="ocp process runtime parameter --address set to 127.0.0.1" id="test_ocp_runtime_address" version="1">
+    <unix:object object_ref="object_controller_address" />
+    <unix:state state_ref="state_controller_address" />
+  </unix:process58_test>
+  <unix:process58_object id="object_controller_address" version="1">
+    <unix:command_line operation="pattern match">^/usr/bin/service-catalog controller-manager.*$</unix:command_line>
+    <unix:pid datatype="int" operation="greater than">0</unix:pid>
+  </unix:process58_object>
+  <unix:process58_state id="state_controller_address" version="1">
+    <unix:command_line operation="pattern match">^.*[\s]+--address=127.0.0.1([\s]+.*$|$)</unix:command_line>
+  </unix:process58_state>
+</def-group>
