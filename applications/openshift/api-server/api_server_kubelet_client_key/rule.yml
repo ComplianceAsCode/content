@@ -1,17 +1,16 @@
 documentation_complete: true
 
-title: 'Ensure that the --kubelet-client-certificate and --kubelet-client-key arguments are set as appropriate'
+title: 'Ensure that the --kubelet-client-key argument is set as appropriate'
 
 description: |-
     To enable certificate based kubelet authentication, follow the OpenShift
     documentation and setup the TLS connection between the API Server and
     kubelets. Then, edit the API Server pod specification file
     <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
-    node and set the kubelet client certificate and key parameters as
+    node and set the kubelet client key parameters as
     below:
 
-    <pre>--kubelet-client-certificate=<i>/path/to/client-certificate-file</i><br />
-    --kubelet-client-key=<i>/path/to/client-key-file</i></pre>
+    <pre>--kubelet-client-key=<i>/path/to/client-key-file</i></pre>
 
 rationale: |-
     By default the API Server does not authenticate itself to the kublet's
@@ -21,14 +20,13 @@ rationale: |-
 
 severity: high
 
-ocil_clause: '<tt>--kubelet-client-certificate</tt> and <tt>--kubelet-client-key</tt> parameters do not point to valid certificate files'
+ocil_clause: '<tt>--kubelet-client-key</tt> parameters do not point to valid certificate files'
 
 ocil: |-
     Run the following command on the master node(s):
      <pre>$ ps -ef | grep kube-apiserver</pre>
 
-    Verify that the <tt>--kubelet-client-certificate</tt> and
-    <tt>--kubelet-client-key</tt> arguments exist and they are set as
+    Verify that the <tt>--kubelet-client-key</tt> argument exists and is set as
     appropriate.
 
 references:
