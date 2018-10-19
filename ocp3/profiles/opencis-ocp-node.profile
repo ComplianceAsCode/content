@@ -22,3 +22,20 @@ selections:
     - file_permissions_openshift_node_service
     - file_owner_openshift_node_service
     - file_groupowner_openshift_node_service
+    - var_kube_authorization_mode=default
+    - var_streaming_connection_timeouts=default
+    - kubelet_configure_client_ca
+    - kubelet_configure_event_creation
+    - kubelet_configure_tls_cert
+    - kubelet_configure_tls_key
+    - kubelet_disable_anon_access
+    - kubelet_disable_cadvisor_port
+    - kubelet_disable_hostname_override
+    - kubelet_disable_readonly_port
+    - kubelet_enable_authorization
+    - kubelet_enable_client_cert_rotation
+    - kubelet_enable_client_server_rotation
+    - kubelet_enable_iptables_util_chains
+    - kubelet_enable_kernel_defaults
+    - kubelet_enable_streaming_connections
+    - kubelet_privileged_containers
