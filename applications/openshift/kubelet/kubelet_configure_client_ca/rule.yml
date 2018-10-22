@@ -24,7 +24,7 @@ ocil_clause: 'no client CA certificate has been configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 client-ca-file /etc/origin/node/node-config.yaml</pre>
+    <pre>$ sudo grep client-ca.crt /etc/origin/node/node-config.yaml</pre>
     The output should something similar to <tt>client-ca.crt</tt>.
 
 references:
