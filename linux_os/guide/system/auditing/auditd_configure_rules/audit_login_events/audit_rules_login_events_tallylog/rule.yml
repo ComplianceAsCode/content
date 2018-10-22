@@ -43,4 +43,4 @@ ocil_clause: 'there is not output'
 
 ocil: |-
     To verify that auditing is configured for system administrator actions, run the following command:
-    <pre>$ sudo auditctl -l | grep "watch=/var/log/tallylog"</pre>
+    <pre>$ sudo auditctl -l | grep "watch=/var/log/tallylog\|-w /var/log/tallylog"</pre>
