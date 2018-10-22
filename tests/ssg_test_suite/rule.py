@@ -218,7 +218,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         return self._final_scan_went_ok(runner, rule_id)
 
     def _initial_scan_went_ok(self, runner, rule_id, context):
-        success = runner.run_stage_with_context("initial", context)
+        success = runner.run_stage_with_context("initial_scan", context)
         self._current_result.record_stage_result("initial_scan", success)
         if not success:
             msg = ("The initial scan failed for rule '{}'."
@@ -244,7 +244,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         return success
 
     def _final_scan_went_ok(self, runner, rule_id):
-        success = runner.run_stage_with_context('final', 'pass')
+        success = runner.run_stage_with_context('final_scan', 'pass')
         self._current_result.record_stage_result("final_scan", success)
         if not success:
             msg = ("The check after remediation failed for rule '{}'."
@@ -286,10 +286,11 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
     def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id):
         self._current_result = common.RuleResult()
 
-        self._current_result.conditions = common.Scenario_conditions(
-            self.test_env.name, self.test_env.scanning_mode,
-            self.remediate_using, self.datastream)
-        self._current_result.scenario = common.Scenario_run(rule_id, scenario.script)
+        self._current_result.conditions = common.Run_conditions(
+            backend=self.test_env.name, scanning_mode=self.test_env.scanning_mode,
+            remediated_by=self.remediate_using, datastream=self.datastream)
+        self._current_result.scenario = common.Run_id(
+            rule_id=rule_id, name=scenario.script)
         self._current_result.when = self.test_timestamp_str
 
         self._check_rule_scenario(scenario, remote_rule_dir, rule_id)

@@ -30,7 +30,7 @@ ssh on the libvirt domain and have Ansible installed on the host machine.
 
 1. Install domain, using provided kickstart
 
-   To install the domain via graphical install, supply boot option:  
+   To install the domain via graphical install, supply boot option:
    `inst.ks=https://raw.githubusercontent.com/ComplianceAsCode/content/master/tests/kickstarts/rhel_centos_7.cfg`.
    And the installation will be guided by the kickstart.
 
@@ -214,10 +214,15 @@ The rule tests results are saved as `results.json` into the corresponding log di
 You can then analyze those results by running e.g.
 
 ```
-python analyze_results.py $(find . -name results.json)
+python analyze_results_rule.py $(find . -name results.json | grep rule)
 ```
 
 The tool will print some general statistics and it will give you more detailed information about
 scenarios that yielded different results.
 Sometimes, different results may have been caused by different test environments, whereas sometimes
 the security content is different, and those scans can be identified by respective scanning dates only.
+
+For examining profile-based results, use the `analyze_results_profile.py` script.
+
+If you supply only one result `.json` file to either of the utilities, they will print
+a human-readable summary of the test run.

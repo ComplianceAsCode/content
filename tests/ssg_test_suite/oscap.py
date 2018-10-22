@@ -286,9 +286,9 @@ class GenericRunner(object):
         self.command_options.extend([
             '--benchmark-id', self.benchmark_id,
             '--profile', self.profile,
-            '--verbose', 'DEVEL',
             '--progress', '--oval-results',
         ])
+        #   '--verbose', 'DEVEL',  # Has been taken away, as it is incompatible between oscap 1.2 and 1.3
         self.command_operands.append(self.datastream)
 
     def run_stage(self, stage):
@@ -304,11 +304,11 @@ class GenericRunner(object):
         self.command_operands = []
 
         result = None
-        if stage == 'initial':
+        if stage == 'initial_scan':
             result = self.initial()
         elif stage == 'remediation':
             result = self.remediation()
-        elif stage == 'final':
+        elif stage == 'final_scan':
             result = self.final()
         else:
             raise RuntimeError('Unknown stage: {}.'.format(stage))

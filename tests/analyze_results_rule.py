@@ -25,7 +25,7 @@ class Difference(object):
 def aggregate_results_by_scenarios(rule_results):
     aggregated = collections.defaultdict(list)
     for result in rule_results:
-        aggregated[result.scenario].append(result)
+        aggregated[result.run].append(result)
     return aggregated
 
 
@@ -33,35 +33,39 @@ def analyze_differences(rules):
     rules = sorted(rules)
     # For the time being, support only comparison of two results -
     # compare the best one and the worst one
-    return analyze_pair(rules[0], rules[-1])
+    diffs = analyze_pair(rules[0], rules[-1])
+    return diffs
+
+
+def get_failure_string(passed_stages_count):
+    if passed_stages_count < common.Stage.PREPARATION:
+        failure_string = "preparation"
+    elif passed_stages_count < common.Stage.INITIAL_SCAN:
+        failure_string = "initial scan"
+    elif passed_stages_count < common.Stage.REMEDIATION:
+        failure_string = "remediation"
+    else:
+        failure_string = "final scan"
+    return failure_string
 
 
 def analyze_pair(best, other):
     if best == other:
         return None
 
-    if other.passed_stages_count < common.Stage.PREPARATION:
-        failure_string = "preparation"
-    elif other.passed_stages_count < common.Stage.INITIAL_SCAN:
-        failure_string = "initial scan"
-    elif other.passed_stages_count < common.Stage.REMEDIATION:
-        failure_string = "remediation"
-    else:
-        failure_string = "final scan"
-
+    failure_string = get_failure_string(other.passed_stages_count)
     good_conditions, bad_conditions = best.relative_conditions_to(other)
 
     return Difference(bad_conditions, failure_string, good_conditions)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser("Rule-based scan result analysis/comparison.")
     parser.add_argument("json_results", nargs="+")
     return parser.parse_args()
 
 
-def print_result_differences(json_results):
-    results = [json.load(open(fname, "r")) for fname in json_results]
+def print_result_differences(results):
     rules = [common.RuleResult(r) for r in sum(results, [])]
     aggregated_results = aggregate_results_by_scenarios(rules)
 
@@ -80,12 +84,9 @@ def print_result_differences(json_results):
             continue
         difference = analyze_differences(results)
         if difference:
-            rule_stem = re.sub("xccdf_org.ssgproject.content_rule_(.+)", r"\1", scenario.rule_id)
-            assert len(rule_stem) < len(scenario.rule_id), (
-                "The rule ID '{rule_id}' has a strange form, as it doesn't have "
-                "the common rule prefix.".format(rule_id=scenario.rule_id))
+            rule_stem = common.shorten_rule_id(scenario.rule_id)
             msg = ("{scenario} in {rule_stem}: {diff}"
-                   .format(scenario=scenario.script, rule_stem=rule_stem, diff=difference))
+                   .format(scenario=scenario.name, rule_stem=rule_stem, diff=difference))
             differences.append(msg)
         else:
             rules_that_ended_same += 1
@@ -104,9 +105,38 @@ def print_result_differences(json_results):
     return len(aggregated_results) == rules_that_ended_by_success
 
 
+def sum_up_result(results):
+    results = [common.RuleResult(r) for r in results]
+
+    total_count = len(results)
+    success_count = 0
+    failed_in = collections.defaultdict(set)
+    for result in results:
+        if result.success:
+            success_count += 1
+        else:
+            failed_in[get_failure_string(result.passed_stages_count)].add(result.name)
+
+    print("Of {total} scenarios, {success} succeeded and {fail} failed"
+          .format(total=total_count, success=success_count, fail=total_count - success_count))
+    print()
+
+    for failing_stage, scenarios in failed_in.items():
+        print("{stage}: {failed} failed scenarios"
+              .format(stage=failing_stage, failed=len(scenarios)))
+        for s in scenarios:
+            print(" - {scenario} in {stem}"
+                  .format(scenario=s.name, stem=common.shorten_rule_id(s.rule_id)))
+        print()
+
+
 def main():
     args = parse_args()
-    print_result_differences(args.json_results)
+    results = [json.load(open(fname, "r")) for fname in args.json_results]
+    if len(results) > 1:
+        print_result_differences(results)
+    else:
+        sum_up_result(results[0])
 
 
 if __name__ == "__main__":

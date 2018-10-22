@@ -4,7 +4,8 @@ import os
 import pytest
 
 from ssg_test_suite import common
-import analyze_results as analyze
+import analyze_results_rule as analyze_rule
+import analyze_results_rule as analyze_profile
 
 
 @pytest.fixture
@@ -32,14 +33,14 @@ def test_success(raw_results):
 
 
 def test_aggregation(results_list):
-    aggregated = analyze.aggregate_results_by_scenarios(results_list)
+    aggregated = analyze_rule.aggregate_results_by_scenarios(results_list)
     assert len(aggregated) == 3
 
 
 def test_differences(different_results):
     assert sorted(different_results)[0].success
 
-    difference = analyze.analyze_differences(different_results)
+    difference = analyze_rule.analyze_differences(different_results)
     assert difference.why_failed == "remediation"
 
 

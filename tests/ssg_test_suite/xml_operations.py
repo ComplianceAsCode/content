@@ -13,6 +13,19 @@ NAMESPACES = {
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
+def get_rule_results_from_profile_result_file(profile_results):
+    all_results = {}
+
+    root = ET.parse(profile_results).getroot()
+    rule_results = root.findall("./xccdf:TestResult/xccdf:rule-result", NAMESPACES)
+    for r in rule_results:
+        rule_id = r.attrib["idref"]
+        result = r.getchildren()[0].text
+        all_results[rule_id] = result
+
+    return all_results
+
+
 def infer_benchmark_id_from_component_ref_id(datastream, ref_id):
     root = ET.parse(datastream).getroot()
     component_ref_node = root.find("*//ds:component-ref[@id='{0}']"
