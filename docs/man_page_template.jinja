@@ -21,7 +21,27 @@ formats to support automation whenever possible.
 The projects homepage is located at:
 https://www.open-scap.org/security-policies/scap-security-guide
 
-{{{ profiles }}}
+{{% for product in products %}}
+.SH Profiles in {{{ product.title }}}
+
+Source Datastream: \fI {{{ product.ds_filename }}} \fR
+
+The {{{ product.title }}} is broken into 'profiles', groupings of security settings
+that correlate to a known policy. Available profiles are:
+
+{{% for profile in product.profiles %}}
+
+.B {{{ profile.title }}}
+
+.RS
+Profile ID: \fI {{{ profile.profile_id }}} \fR
+
+{{{ profile.description }}}
+.RE
+{{% endfor %}}
+
+
+{{% endfor %}}
 
 .SH EXAMPLES
 To scan your system utilizing the OpenSCAP utility against the

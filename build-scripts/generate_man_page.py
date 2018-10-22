@@ -12,6 +12,7 @@ import ssg.jinja
 import os
 import io
 
+
 def main():
     p = argparse.ArgumentParser(
         description="Generates man page from profile data")
@@ -20,39 +21,36 @@ def main():
     p.add_argument("--template", required=True)
     args = p.parse_args()
     input_dir = os.path.abspath(args.input_dir)
-    all_profiles = get_all_profiles(input_dir)
-    substitution_dicts = {"profiles": all_profiles}
+    all_products = get_all_products(input_dir)
+    substitution_dicts = {"products": all_products}
     man_page = ssg.jinja.process_file(args.template, substitution_dicts)
     with io.open(args.output, "w", encoding="utf-8") as output_file:
         output_file.write(man_page)
 
 
-def get_all_profiles(input_dir):
-    all_profiles = ""
+def get_all_products(input_dir):
+    all_products = []
     for item in sorted(os.listdir(input_dir)):
         if item.endswith("-ds.xml"):
-            all_profiles += get_profiles_in_ds(os.path.join(input_dir, item))
-    return all_profiles
+            ds_filepath = os.path.join(input_dir, item)
+            all_products.append(get_product_info(ds_filepath))
+    return all_products
 
 
-def get_profiles_in_ds(ds_filepath):
-    profiles_in_ds = ""
+def get_product_info(ds_filepath):
     tree = ssg.xml.ElementTree.parse(ds_filepath)
     root = tree.getroot()
     benchmark = root.find(".//{%s}Benchmark" % (ssg.constants.XCCDF12_NS))
     benchmark_title = benchmark.find(
         "{%s}title" % (ssg.constants.XCCDF12_NS)).text
-    profiles_in_ds += u".SH\nProfiles in %s\n\n" % (benchmark_title)
     ds_filename = os.path.basename(ds_filepath)
-    profiles_in_ds += u"Source Datastream: \\fI %s\\fR\n\n" % (ds_filename)
-    profiles_in_ds += u"The %s is broken into 'profiles', groupings of security settings " \
-        "that correlate to a known policy. Available profiles are:\n\n" % (
-            benchmark_title)
     profiles = get_profiles_info(benchmark)
-    for profile_id, title, description in profiles:
-        profiles_in_ds += u".B %s\n\n.RS\nProfile ID: \\fI%s\\fR\n\n%s\n.RE\n\n\n" % (
-                title, profile_id, description)
-    return profiles_in_ds
+    product = {
+        "title": benchmark_title,
+        "ds_filename": ds_filename,
+        "profiles": profiles,
+    }
+    return product
 
 
 def get_profiles_info(benchmark):
@@ -67,7 +65,12 @@ def get_profiles_info(benchmark):
         description = elem.find(
                 "{%s}description" % (ssg.constants.XCCDF12_NS)
                 ).text
-        profiles_info.append((profile_id, title, description))
+        profile = {
+            "profile_id": profile_id,
+            "title": title,
+            "description": description
+        }
+        profiles_info.append(profile)
     return profiles_info
 
 
