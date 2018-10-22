@@ -4,12 +4,15 @@ import contextlib
 import sys
 import os
 import time
+import logging
 
 import docker
 
 import ssg_test_suite
 from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite import common
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 class SavedState(object):
@@ -134,15 +137,34 @@ class VMTestEnv(TestEnv):
             self.hypervisor, self.domain_name)
         self.snapshot_stack = SnapshotStack(self.domain)
 
-        ssg_test_suite.virt.start_domain(self.domain)
-        self.domain_ip = ssg_test_suite.virt.determine_ip(self.domain)
+        if self.scanning_mode == "online":
+            self._ensure_domain_started()
+            self.domain_ip = ssg_test_suite.virt.determine_ip(self.domain)
+        else:
+            self._ensure_domain_stopped()
 
         self._origin = self._save_state("origin")
 
+    def _ensure_domain_started(self):
+        if not self.domain.isActive():
+            logging.debug("Starting domain '{0}'".format(self.domain.name()))
+            self.domain.create()
+
+            timeout = 30
+            logging.debug('Waiting %ds for domain to start', timeout)
+            time.sleep(timeout)
+
+    def _ensure_domain_stopped(self):
+        if self.domain.isActive():
+            logging.debug("Stopping domain '{0}'".format(self.domain.name()))
+            self.domain.shutdown()
+
+            timeout = 5
+            logging.debug('Waiting %ds for domain to stop', timeout)
+            time.sleep(timeout)
+
     def finalize(self):
         self._delete_saved_state(self._origin)
-        # self.domain.shutdown()
-        # logging.debug('Shut the domain off')
 
     def reset_state_to(self, state_name, new_running_state_name):
         last_snapshot_name = self.snapshot_stack.snapshot_stack[-1].getName()

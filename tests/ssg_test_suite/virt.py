@@ -142,11 +142,3 @@ def determine_ip(domain):
                 if ipaddr['type'] == libvirt.VIR_IP_ADDR_TYPE_IPV4:
                     logging.debug('IP address is {0}'.format(ipaddr['addr']))
                     return ipaddr['addr']
-
-
-def start_domain(domain):
-    if not domain.isActive():
-        logging.debug("Starting domain '{0}'".format(domain.name()))
-        domain.create()
-        logging.debug('Waiting 30s for domain to start')
-        time.sleep(30)
