@@ -10,10 +10,15 @@ from template_common import FilesGenerator, UnknownTargetError
 
 class OCPServiceRuntimeConfigGenerator(FilesGenerator):
     def generate(self, target, ocp_process_info):
-        process_cmd, process_cmd_option, process_cmd_val = ocp_process_info
+        process_cmd, process_cmd_option, process_cmd_val = ocp_process_info[0:3]
+
         # convert variable name to a format suitable for 'id' tags
         ocp_proc_id = re.sub(r'[-._]', '_', process_cmd_option.strip("--="))
         process_cmd_option = process_cmd_option.strip("=")
+
+        if len(ocp_process_info) == 4:
+            ocp_proc_id = ocp_process_info[3]
+
         if target == "oval":
             self.file_from_template(
                 "./template_OVAL_ocp_service_runtime_config",
