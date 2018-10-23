@@ -10,7 +10,9 @@ description: |-
     To require authorization requests, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>anonymous-auth=<sub idref="var_kube_authorization_mode"/></pre>
+    <pre>kubeletArguments:
+      authorization-mode:
+      - '<sub idref="var_kube_authorization_mode"/>'</pre>
 
 rationale: |-
     When enabled, all type of authentication requests including anonymous requests are

@@ -8,7 +8,9 @@ description: |-
     To prevent the kubelet from changing kernel parameters, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>protect-kernel-defaults=true</pre>
+    <pre>kubeletArguments:
+      protect-kernel-defaults:
+      - 'true'</pre>
 
 rationale: |-
     Preventing the kubelet from modifying kernel parameters or tunables will ensure that

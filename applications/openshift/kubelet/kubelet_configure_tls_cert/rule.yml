@@ -26,7 +26,7 @@ ocil_clause: 'the kubelet certificate is not configured'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep cert-dir /etc/origin/node/certificates</pre>
+    <pre>$ sudo grep -A1 cert-dir /etc/origin/node/node-config.yaml</pre>
     Verify that a certificate path is configured.
     <pre>$ sudo ls /etc/origin/node/certificates/kubelet-client-current.pem</pre>
     Verify that a client certificate is configured.
