@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 # reboot = true
 # strategy = restrict
 # complexity = low
@@ -37,7 +37,7 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
+    line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=delete"
     create: yes
   tags:
     @ANSIBLE_TAGS@
@@ -45,7 +45,7 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: "-a always,exit -F arch=b64 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
+    line: "-a always,exit -F arch=b64 -S {{{ NAME }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=delete"
     create: yes
   when: audit_arch == 'b64'
   tags:
@@ -55,7 +55,7 @@
 #
 - name: Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules when on x86
   lineinfile:
-    line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
+    line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=delete"
     state: present
     dest: /etc/audit/audit.rules
   tags:
@@ -63,7 +63,7 @@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
-    line: "-a always,exit -F arch=b64 -S {{{ NAME }}} -F auid>=1000 -F auid!=4294967295 -F key=delete"
+    line: "-a always,exit -F arch=b64 -S {{{ NAME }}} -F auid>={{{ auid }}} -F auid!=4294967295 -F key=delete"
     state: present
     dest: /etc/audit/audit.rules
     create: yes
