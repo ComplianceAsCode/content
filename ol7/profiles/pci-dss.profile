@@ -69,3 +69,7 @@ selections:
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
     - audit_rules_dac_modification_setxattr
+    - audit_rules_login_events
+    - audit_rules_session_events
+    - audit_rules_unsuccessful_file_modification
+    - audit_rules_privileged_commands
