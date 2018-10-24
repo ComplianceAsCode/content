@@ -62,17 +62,20 @@ https://www.github.com/OpenSCAP/scap-security-guide/wiki
 .RS
 Houses SCAP content utilizing the following naming conventions:
 
-.I CPE_Dictionaries:
-ssg-{profile}-cpe-dictionary.xml
+.I SCAP Source Datastreams:
+ssg-{product}-ds.xml
 
-.I CPE_OVAL_Content:
-ssg-{profile}-cpe-oval.xml
+.I CPE Dictionaries:
+ssg-{product}-cpe-dictionary.xml
 
-.I OVAL_Content:
-ssg-{profile}-oval.xml
+.I CPE OVAL Content:
+ssg-{product}-cpe-oval.xml
 
-.I XCCDF_Content:
-ssg-{profile}-xccdf.xml
+.I OVAL Content:
+ssg-{product}-oval.xml
+
+.I XCCDF Content:
+ssg-{product}-xccdf.xml
 .RE
 
 .I /usr/share/doc/scap-security-guide/guides/
@@ -80,6 +83,15 @@ ssg-{profile}-xccdf.xml
 HTML versions of SSG profiles.
 .RE
 
+.I /usr/share/scap-security-guide/ansible/
+.RS
+Contains Ansible Playbooks for SSG profiles.
+.RE
+
+.I /usr/share/scap-security-guide/bash/
+.RS
+Contains Bash roles for SSG profiles.
+.RE
 
 .SH STATEMENT OF SUPPORT
 The SCAP Security Guide, an open source project jointly maintained by Red Hat
