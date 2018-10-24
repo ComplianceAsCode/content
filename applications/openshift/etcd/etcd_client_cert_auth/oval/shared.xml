@@ -7,7 +7,7 @@
       </affected>
       <description>Ensure OpenShift has enabled Client Certificate Authentication</description>
     </metadata>
-    <criteria operator="AND">
+    <criteria>
       <criterion comment="ETCD_CLIENT_CERT_AUTH is enabled" test_ref="test_etcd_client_cert_auth" />
     </criteria>
   </definition>
@@ -24,9 +24,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_etcd_client_cert_auth" version="1">
-    <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_etcd_client_cert_auth" />
+    <ind:subexpression datatype="string" operation="pattern match">^true$</ind:subexpression>
   </ind:textfilecontent54_state>
 
-  <external_variable comment="external variable for ETCD_CLIENT_CERT_AUTH"
-  datatype="string" id="var_etcd_client_cert_auth" version="1" />
 </def-group>
