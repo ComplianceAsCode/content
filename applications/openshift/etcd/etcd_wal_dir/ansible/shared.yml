@@ -6,8 +6,8 @@
 - name: "@RULE_TITLE@"
   lineinfile:
     path: /etc/etcd/etcd.conf
-    regexp: '^ETCD_PEER_AUTO_TLS='
-    line: "ETCD_PEER_AUTO_TLS=false"
+    regexp: '^ETCD_WAL_DIR='
+    line: "ETCD_WAL_DIR=/var/lib/etcd/member/wal"
     create: yes
   tags:
     @ANSIBLE_TAGS@
