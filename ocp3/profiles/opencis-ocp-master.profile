@@ -52,6 +52,17 @@ selections:
     - controller_service_account_private_key
     - controller_terminated_pod_gc_threshhold
     - controller_use_service_account
+    - etcd_auto_tls
+    - etcd_cert_file
+    - etcd_client_cert_auth
+    - etcd_key_file
+    - etcd_max_wals
+    - etcd_peer_auto_tls
+    - etcd_peer_cert_file
+    - etcd_peer_client_cert_auth
+    - etcd_peer_key_file
+    - etcd_unique_ca
+    - etcd_wal_dir
     - api_server_admission_control_plugin_AlwaysAdmit
     - api_server_admission_control_plugin_AlwaysPullImages
     - api_server_admission_control_plugin_DenyEscalatingExec
