@@ -10,7 +10,7 @@ description: |-
     <br /><br />
     The default SELinux policy, as configured on {{{ full_name }}}, has been
     sufficiently developed and debugged that it should be usable on
-    almost any Red Hat system with minimal configuration and a small
+    almost any system with minimal configuration and a small
     amount of system administrator training. This policy prevents
     system services - including most of the common network-visible
     services such as mail servers, FTP servers, and DNS servers - from
@@ -20,10 +20,12 @@ description: |-
     so forth.
     <br /><br />
     This guide recommends that SELinux be enabled using the
-    default (targeted) policy on every Red Hat system, unless that
+    default (targeted) policy on every {{{ full_name }}} system, unless that
     system has unusual requirements which make a stronger policy
     appropriate.
     {{% if product == "rhel7" %}}
     <br /><br />
     For more information on SELinux, see <b>{{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/SELinux_Users_and_Administrators_Guide") }}}</b>.
+    {{% elif product == "ol7" %}}
+    For more information on SELinux, see <b>{{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-s1-syssec.html") }}}</b>.
     {{% endif %}}

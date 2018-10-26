@@ -11,12 +11,13 @@ description: |-
     much control over configuration as manual editing of configuration files. The
     authconfig tools do not allow you to specify locations of SSL certificate
     files, which is useful when trying to use SSL cleanly across several protocols.
+    Installation and configuration of OpenLDAP on {{{ full_name }}} is available at
     {{% if product == "rhel7" %}}
-    Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 7 is available at
-    {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/openldap.html") }}}.
+        {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System-Level_Authentication_Guide/openldap.html") }}}.
     {{% elif product == "rhel6" %}}
-    Installation and configuration of OpenLDAP on Red Hat Enterprise Linux 6 is available at
-    {{{ weblink(link="https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html") }}}.
+        {{{ weblink(link="https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Deployment_Guide/ch-Directory_Servers.html") }}}.
+    {{% elif product == "ol7" %}}
+        {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-s9-auth.html") }}}.
     {{% endif %}}
 
 warnings:

@@ -9,8 +9,43 @@ description: |-
     demonstrates use of FIPS-approved MACs:
     <pre>MACs hmac-sha2-512,hmac-sha2-256,hmac-sha1</pre>
     The man page <tt>sshd_config(5)</tt> contains a list of supported MACs.
+{{% elif product == "ol7" %}}
+description: |-
+    Limit the MACs to those hash algorithms which are FIPS-approved.
+    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use
+    of FIPS-approved MACs:
+    <br /><br />
+    <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
+    <br /><br />
+    Only the following message authentication codes are FIPS 140-2 certified on {{{ full_name }}}:
+    <br />- hmac-sha1
+    <br />- hmac-sha2-256
+    <br />- hmac-sha2-512
+    <br />- hmac-sha1-etm@openssh.com
+    <br />- hmac-sha2-256-etm@openssh.com
+    <br />- hmac-sha2-512-etm@openssh.com
+    <br /><br />
+    Any combination of the above MACs will pass this check. Official FIPS 140-2 paperwork for
+    {{{ full_name }}} can be found at 
+    {{{ weblink(link="https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3028.pdf") }}}
 {{% else %}}
-description: "Limit the MACs to those hash algorithms which are FIPS-approved.\nThe following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use \nof FIPS-approved MACs:\n<br /><br />\n<pre>MACs hmac-sha2-512,hmac-sha2-256</pre>\n<br /><br />\nOnly the following message authentication codes are FIPS 140-2 certified on RHEL 7:\n<br />- hmac-sha1\n<br />- hmac-sha2-256\n<br />- hmac-sha2-512\n<br />- hmac-sha1-etm@openssh.com\n<br />- hmac-sha2-256-etm@openssh.com\n<br />- hmac-sha2-512-etm@openssh.com\n<br /><br />\nAny combination of the above MACs will pass this check. Official FIPS 140-2 paperwork for\nRHEL7 can be found at http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf."
+description: |-
+    Limit the MACs to those hash algorithms which are FIPS-approved.
+    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use
+    of FIPS-approved MACs:
+    <br /><br />
+    <pre>MACs hmac-sha2-512,hmac-sha2-256</pre>
+    <br /><br />
+    Only the following message authentication codes are FIPS 140-2 certified on RHEL 7:
+    <br />- hmac-sha1
+    <br />- hmac-sha2-256
+    <br />- hmac-sha2-512
+    <br />- hmac-sha1-etm@openssh.com
+    <br />- hmac-sha2-256-etm@openssh.com
+    <br />- hmac-sha2-512-etm@openssh.com
+    <br /><br />
+    Any combination of the above MACs will pass this check. Official FIPS 140-2 paperwork for
+    RHEL7 can be found at {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
 {{% endif %}}
 
 rationale: |-

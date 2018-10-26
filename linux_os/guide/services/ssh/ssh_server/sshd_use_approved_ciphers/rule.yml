@@ -10,8 +10,47 @@ description: |-
     demonstrates use of FIPS-approved ciphers:
     <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
     The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
+{{% elif product == "ol7" %}}
+description: |-
+    Limit the ciphers to those algorithms which are FIPS-approved.
+    Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of
+    FIPS 140-2 validated ciphers:
+    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+    <br /><br />
+    The following ciphers are FIPS 140-2 certified on {{{ full_name }}}:
+    <br />- aes128-ctr
+    <br />- aes192-ctr
+    <br />- aes256-ctr
+    <br />- aes128-cbc
+    <br />- aes192-cbc
+    <br />- aes256-cbc
+    <br />- 3des-cbc
+    <br />- rijndael-cbc@lysator.liu.se
+    <br /><br />
+    Any combination of the above ciphers will pass this check. 
+    Official FIPS 140-2 paperwork for {{{ full_name }}} can be found at
+    {{{ weblink(link="https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3028.pdf") }}}
 {{% else %}}
-description: "Limit the ciphers to those algorithms which are FIPS-approved.\nCounter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.\nThe following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of \nFIPS 140-2 validated ciphers:\n<pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>\n<br /><br />\nThe following ciphers are FIPS 140-2 certified on RHEL 7:\n<br />- aes128-ctr\n<br />- aes192-ctr\n<br />- aes256-ctr\n<br />- aes128-cbc\n<br />- aes192-cbc\n<br />- aes256-cbc\n<br />- 3des-cbc\n<br />- rijndael-cbc@lysator.liu.se\n<br /><br />\nAny combination of the above ciphers will pass this check. Official FIPS 140-2 paperwork for \nRHEL7 can be found at http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf."
+description: |-
+    Limit the ciphers to those algorithms which are FIPS-approved.
+    Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
+    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of 
+    FIPS 140-2 validated ciphers:
+    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+    <br /><br />
+    The following ciphers are FIPS 140-2 certified on RHEL 7:
+    <br />- aes128-ctr
+    <br />- aes192-ctr
+    <br />- aes256-ctr
+    <br />- aes128-cbc
+    <br />- aes192-cbc
+    <br />- aes256-cbc
+    <br />- 3des-cbc
+    <br />- rijndael-cbc@lysator.liu.se
+    <br /><br />
+    Any combination of the above ciphers will pass this check. Official FIPS 140-2 paperwork for
+    RHEL7 can be found at {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
 {{% endif %}}
 
 rationale: |-
@@ -23,7 +62,7 @@ rationale: |-
     <br />
     FIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules
     utilize authentication that meets industry and government requirements. For government systems, this allows
-    Security Levels 1, 2, 3, or 4 for use on Red Hat Enterprise Linux.
+    Security Levels 1, 2, 3, or 4 for use on {{{ full_name }}}.
 
 severity: medium
 
