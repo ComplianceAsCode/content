@@ -15,13 +15,16 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="clientCA is configured" id="test_kubelet_configure_client_ca" version="1">
     <ind:object object_ref="object_kubelet_configure_client_ca" />
+    <ind:state state_ref="state_kubelet_configure_client_ca" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kubelet_configure_client_ca" version="1">
     <ind:filepath>/etc/origin/node/node-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*servingInfo\:(?:[^\n]*\n+)+?[\s]*clientCA\:[\s]*client-ca.crt$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*servingInfo\:(?:[^\n]*\n+)+?[\s]*clientCA\:[\s]*(\S+)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_state id="state_kubelet_configure_client_ca" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^client-ca.crt$</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
-

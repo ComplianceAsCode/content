@@ -17,13 +17,16 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="anonymous-auth is disabled" id="test_kubelet_disable_anon_access" version="1">
     <ind:object object_ref="object_kubelet_disable_anon_access" />
+    <ind:state state_ref="state_kubelet_disable_anon_access" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kubelet_disable_anon_access" version="1">
     <ind:filepath>/etc/origin/node/node-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*anonymous-auth\:[\s]*[\n]+[\s]*-[\s]+'false'[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*anonymous-auth\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_state id="state_kubelet_disable_anon_access" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^'false'$</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
-

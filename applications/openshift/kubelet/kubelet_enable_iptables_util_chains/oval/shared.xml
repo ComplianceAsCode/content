@@ -15,13 +15,16 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="make-iptables-util-chains is configured" id="test_kubelet_enable_iptables_util_chains" version="1">
     <ind:object object_ref="object_kubelet_enable_iptables_util_chains" />
+    <ind:state state_ref="state_kubelet_enable_iptables_util_chains" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kubelet_enable_iptables_util_chains" version="1">
     <ind:filepath>/etc/origin/node/node-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*make-iptables-util-chains\:[\s]*[\n]+[\s]*-[\s]+'true'[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*make-iptables-util-chains\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_state id="state_kubelet_enable_iptables_util_chains" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^'true'$</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
-

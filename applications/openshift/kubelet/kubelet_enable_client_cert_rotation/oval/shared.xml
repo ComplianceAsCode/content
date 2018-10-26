@@ -15,12 +15,16 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="RotateKubeletClientCertificate is configured" id="test_kubelet_enable_client_cert_rotation" version="1">
     <ind:object object_ref="object_kubelet_enable_client_cert_rotation" />
+    <ind:state state_ref="state_kubelet_enable_client_cert_rotation" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kubelet_enable_client_cert_rotation" version="1">
     <ind:filepath>/etc/origin/node/node-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*feature-gates\:[\s]*[\n]+[\s]*-[\s]+.*RotateKubeletClientCertificate=true.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*feature-gates\:[\s]*[\n]+[\s]*-[\s]+(\S+).*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-</def-group>
 
+  <ind:textfilecontent54_state id="state_kubelet_enable_client_cert_rotation" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^.*RotateKubeletClientCertificate=true.*$</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

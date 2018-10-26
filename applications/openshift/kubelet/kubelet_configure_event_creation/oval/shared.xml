@@ -16,13 +16,16 @@
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="event-qps is configured" id="test_kubelet_configure_event_creation" version="1">
     <ind:object object_ref="object_kubelet_configure_event_creation" />
+    <ind:state state_ref="state_kubelet_configure_event_creation" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kubelet_configure_event_creation" version="1">
     <ind:filepath>/etc/origin/node/node-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*event-qps\:[\s]*[\n]+[\s]*-[\s]+'0'[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*event-qps\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
+  <ind:textfilecontent54_state id="state_kubelet_configure_event_creation" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^'0'$</ind:subexpression>
+  </ind:textfilecontent54_state>
 </def-group>
-
