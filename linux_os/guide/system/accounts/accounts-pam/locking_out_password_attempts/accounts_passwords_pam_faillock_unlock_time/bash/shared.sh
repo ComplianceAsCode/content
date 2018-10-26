@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel, multi_platform_fedora
+# platform = multi_platform_rhel, multi_platform_fedora, multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_passwords_pam_faillock_unlock_time
 
