@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,fedora,ol7
 
 title: 'Set GNOME3 Screensaver Inactivity Timeout'
 
@@ -12,7 +12,7 @@ description: |-
     For example, to configure the system for a 15 minute delay, add the following to
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>:
     <pre>[org/gnome/desktop/session]
-    idle-delay='uint32 900'</pre>
+    idle-delay=uint32 900</pre>
     Once the setting has been added, add a lock to
     <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
     For example:
