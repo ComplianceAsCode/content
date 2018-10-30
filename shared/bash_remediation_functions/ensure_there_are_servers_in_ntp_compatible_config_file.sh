@@ -1,7 +1,7 @@
 # Function ensures that the ntp/chrony config file contains valid server entries
 # $1: Path to the config file
 # $2: Comma-separated list of servers
-function rhel7_ensure_there_are_servers_in_ntp_compatible_config_file {
+function ensure_there_are_servers_in_ntp_compatible_config_file {
 	# If invoked with no arguments, exit. This is an intentional behavior.
 	[ $# -gt 1 ] || return 0
 	[ $# = 2 ] || die "$0 requires zero or exactly two arguments"
