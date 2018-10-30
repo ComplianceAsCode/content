@@ -73,3 +73,14 @@ selections:
     - audit_rules_session_events
     - audit_rules_unsuccessful_file_modification
     - audit_rules_privileged_commands
+    - ensure_logrotate_activated
+    - sshd_idle_timeout_value=15_minutes
+    - sshd_set_idle_timeout
+    - disable_prelink
+    - display_login_attempts
+    - gid_passwd_group_same
+    - grub2_audit_argument
+    - smartcard_auth
+    - var_multiple_time_servers=ol
+    - chronyd_or_ntpd_specify_multiple_servers
+    - chronyd_or_ntpd_specify_remote_server

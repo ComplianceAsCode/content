@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7
+# platform = Red Hat Enterprise Linux 7, multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
 
 # Install required packages
@@ -39,7 +39,7 @@ pam_pkcs11.so nodebug"
 SMARTCARD_AUTH_CONF="/etc/pam.d/smartcard-auth"
 # Define 'pam_pkcs11.so' auth section to be appended past $PAM_ENV_SO into $SMARTCARD_AUTH_CONF
 SMARTCARD_AUTH_SECTION="\
-auth        [success=done ignore=ignore default=die] pam_pkcs11.so wait_for_card card_only"
+auth        [success=done ignore=ignore default=die] pam_pkcs11.so nodebug wait_for_card"
 # Define expected 'pam_permit.so' row in $SMARTCARD_AUTH_CONF
 PAM_PERMIT_SO="account.*required.*pam_permit.so"
 # Define 'pam_pkcs11.so' password section

@@ -5,6 +5,7 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 6</platform>
         <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>multi_platform_ol</platform>
       </affected>
       <description>Enable Smart Card logins</description>
     </metadata>
@@ -116,7 +117,7 @@
 {{% if product == "rhel6" %}}
       <literal_component>pam_pkcs11.so[\s]wait_for_card[\s]card_only\n</literal_component>
 {{% else %}}
-      <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n</literal_component>
+      <literal_component>pam_pkcs11.so[\s]nodebug[\s]wait_for_card\n.*</literal_component>
 {{% endif %}}
       <literal_component>\npassword[\s]+required[\s]+pam_pkcs11.so\n</literal_component>
     </concat>
