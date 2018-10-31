@@ -5,6 +5,14 @@ title: 'PCI-DSS v3 Control Baseline Draft for Oracle Linux 7'
 description: 'Ensures PCI-DSS v3 related security configuration settings are applied.'
 
 selections:
+    - var_account_disable_post_pw_expiration=90
+    - var_accounts_maximum_age_login_defs=90
+    - var_accounts_passwords_pam_faillock_deny=6
+    - var_accounts_passwords_pam_faillock_unlock_time=1800
+    - var_auditd_num_logs=5
+    - var_password_pam_minclass=2
+    - var_password_pam_minlen=7
+    - var_password_pam_unix_remember=4
     - rpm_verify_permissions
     - rpm_verify_hashes
     - rsyslog_files_permissions
@@ -73,6 +81,12 @@ selections:
     - audit_rules_session_events
     - audit_rules_unsuccessful_file_modification
     - audit_rules_privileged_commands
+    - audit_rules_media_export
+    - audit_rules_file_deletion_events
+    - audit_rules_sysadmin_actions
+    - audit_rules_immutable
+    - audit_rules_kernel_module_loading
+    - audit_rules_usergroup_modification
     - ensure_logrotate_activated
     - sshd_idle_timeout_value=15_minutes
     - sshd_set_idle_timeout
@@ -84,3 +98,18 @@ selections:
     - var_multiple_time_servers=ol
     - chronyd_or_ntpd_specify_multiple_servers
     - chronyd_or_ntpd_specify_remote_server
+    - account_disable_post_pw_expiration
+    - accounts_maximum_age_login_defs
+    - accounts_password_pam_dcredit
+    - accounts_password_pam_lcredit
+    - accounts_password_pam_minlen
+    - accounts_password_pam_ucredit
+    - accounts_password_pam_unix_remember
+    - accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_unlock_time
+    - account_unique_name
+    - dconf_gnome_screensaver_idle_activation_enabled
+    - dconf_gnome_screensaver_idle_delay
+    - dconf_gnome_screensaver_lock_enabled
+    - dconf_gnome_screensaver_mode_blank
+    - service_chronyd_or_ntpd_enabled
