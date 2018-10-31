@@ -32,9 +32,9 @@ ocil_clause: |-
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -B3 RotateKubeletServerCertificate=false</pre>
+    <pre>$ grep RotateKubeletServerCertificate</pre>
 
-    If there is output, this is a finding.
+   The output should return <tt>true</tt>.
 
 identifiers:
     cce@ocp3: 80590-3
