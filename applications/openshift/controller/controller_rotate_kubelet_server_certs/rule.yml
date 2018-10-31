@@ -10,7 +10,8 @@ description: |-
     <tt>RotateKubeletServerCertificate=true</tt>. For example:
     <pre>kubernetesMasterConfig:
       controllerArguments:
-        - RotateKubeletServerCertificate=true</pre>
+        feature-gates:
+          - RotateKubeletServerCertificate=true</pre>
 
 rationale: |-
     <tt>RotateKubeletServerCertificate</tt> causes the kubelet to both request
