@@ -8,7 +8,6 @@
       <description>Profiling should be disabled on the Scheduler.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_scheduler_profiling_argument" />
       <criterion comment="profiling is disabled" test_ref="test_scheduler_profiling_argument" />
     </criteria>
   </definition>
