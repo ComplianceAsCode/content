@@ -48,7 +48,6 @@ selections:
     - controller_root_ca
     - controller_rotate_kubelet_server_certs
     - controller_service_account_private_key
-    - controller_terminated_pod_gc_threshhold
     - controller_use_service_account
     - etcd_auto_tls
     - etcd_cert_file
