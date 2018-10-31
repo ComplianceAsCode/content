@@ -46,7 +46,6 @@ selections:
     - scheduler_address_argument
     - scheduler_profiling_argument
     - controller_address
-    - controller_profiling
     - controller_root_ca
     - controller_rotate_kubelet_server_certs
     - controller_service_account_private_key
