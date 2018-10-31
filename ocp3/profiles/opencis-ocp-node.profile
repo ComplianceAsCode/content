@@ -34,7 +34,7 @@ selections:
     - kubelet_disable_readonly_port
     - kubelet_enable_authorization
     - kubelet_enable_client_cert_rotation
-    - kubelet_enable_client_server_rotation
+    - kubelet_enable_server_cert_rotation
     - kubelet_enable_iptables_util_chains
     - kubelet_enable_kernel_defaults
     - kubelet_enable_streaming_connections

@@ -9,7 +9,9 @@ description: |-
     To prevent log creation limiting, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>event-qps=0</pre>
+    <pre>kubeletArguments:
+      event-qps:
+      - '0'</pre>
 
 rationale: |-
     All events should be captured and not restricted as this helps in

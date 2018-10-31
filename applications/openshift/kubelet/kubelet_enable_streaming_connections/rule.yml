@@ -8,7 +8,9 @@ description: |-
     To configure streaming connection timeouts, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>streaming-connection-timeout=<sub idref="var_streaming_connection_timeouts"/></pre>
+    <pre>kubeletArguments:
+      streaming-connection-timeout:
+      - '<sub idref="var_streaming_connection_timeouts"/>'</pre>
 
 rationale: |-
     Ensuring connections have timeouts helps to protect against denial-of-service attacks as

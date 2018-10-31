@@ -6,13 +6,15 @@ description: |-
     To disable the read-only port, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>read-only-port=0</pre>
+    <pre>kubeletArguments:
+      read-only-port:
+      - '0'</pre>
 
 rationale: |-
     Not having a CA certificate for the kubelet will subject the kubelet to possible
     man-in-the-middle attacks especially on unsafe or untrusted networks.
     Certificate validation for the kubelet allows the API server to validate
-    the kubelet's identity. 
+    the kubelet's identity.
 
 severity: medium
 
@@ -21,7 +23,7 @@ ocil_clause: 'the read-only port is not disabled'
 ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ sudo grep -A1 read-only-port /etc/origin/node/node-config.yaml</pre>
-    The output should something similar to <tt>client-ca.crt</tt>.
+    The output should something similar to <tt>0</tt>.
 
 references:
     cis: 2.1.5

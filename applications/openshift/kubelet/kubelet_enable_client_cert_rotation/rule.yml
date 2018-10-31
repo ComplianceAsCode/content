@@ -6,7 +6,9 @@ description: |-
     To enable the kubelet to rotate client certificates, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>RotateKubeletClientCertificate=true</pre>
+    <pre>kubeletArguments:
+      feature-gates:
+        - RotateKubeletClientCertificate=true</pre>
 
 rationale: |-
     Allowing the kubelet to auto-update the certificates ensure that there is no downtime
@@ -18,7 +20,7 @@ ocil_clause: 'the kubelet cannot rotate client certificate'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -B1 RotateKubeletClientCertificate /etc/origin/node/node-config.yaml</pre>
+    <pre>$ sudo grep RotateKubeletClientCertificate /etc/origin/node/node-config.yaml</pre>
     The output should return <tt>true</tt>.
 
 references:

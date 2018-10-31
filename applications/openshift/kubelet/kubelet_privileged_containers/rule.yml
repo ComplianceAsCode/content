@@ -6,9 +6,9 @@ description: |-
     To disable privileged containers, edit the kubelet configuration file
     <tt>/etc/origin/node/node-config.yaml</tt> on the kubelet node(s) and
     set the below parameter:
-    <pre>  kubeletArguments:
-      allow-privileged
-      - false</pre>
+    <pre>kubeletArguments:
+      allow-privileged:
+      - 'false'</pre>
 
 rationale: |-
     When enabled, privileged containers have unrestricted access and should be

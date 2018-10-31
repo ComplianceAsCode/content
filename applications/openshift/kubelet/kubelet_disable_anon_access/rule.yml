@@ -9,7 +9,9 @@ description: |-
 
     Edit the kubelet configuration file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>anonymous-auth=false</pre>
+    <pre>kubeletArguments:
+      anonymous-auth:
+      - 'false'</pre>
 
 rationale: |-
     When enabled, requests that are not rejected by other configured
