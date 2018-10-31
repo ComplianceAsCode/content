@@ -1,12 +1,16 @@
 documentation_complete: true
 
-title: 'Ensure that the --insecure-bind-address argument is not set'
+title: 'Ensure that insecure-bind-address is not set'
 
 description: |-
     OpenShift should not bind to non-loopback insecure addresses. Edit the API
-    Server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
-    on the master node(s) and remove the <tt>--insecure-bind-address</tt>
+    Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    on the master node(s) and remove the <tt>insecure-bind-address</tt>
     parameter.
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        insecure-bind-address:
+        - 127.0.0.1</pre>
 
 rationale: |-
     If the API Server is bound to an insecure address the installation would
@@ -16,14 +20,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--insecure-bind-address</tt> is specified it must be set to <tt>127.0.01</tt>'
+references:
+    cis: 1.1.5
+
+ocil_clause: 'insecure-bind-address is specified it must be set to <tt>127.0.01</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--insecure-bind-address</tt> argument either does not exist or
-    is set to <tt>127.0.0.1</tt>.
-
-references:
-    cis: 1.1.5
+    <pre>$ grep -A2 insecure-bind-address /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>127.0.01</pre>.

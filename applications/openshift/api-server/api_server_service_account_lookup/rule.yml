@@ -1,13 +1,15 @@
 documentation_complete: true
 
-title: 'Ensure that the --service-account-lookup argument is set to true'
+title: 'Ensure that service-account-lookup is set to true'
 
 description: |-
     To validate service accounts prior to validating tokens, edit the API
-    Server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
-    on the master node(s) and set <tt>--service-account-lookup</tt> to <tt>true</tt>:
-
-    <pre>--service-account-lookup=true</pre>
+    Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    on the master node(s) and set <tt>service-account-lookup</tt> to <tt>true</tt>:
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        service-account-lookup:
+        - 'true'</pre>
 
 rationale: |-
     By default, the API Server only verifies that the authentication token
@@ -19,14 +21,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--service-account-lookup</tt> is not set to <tt>true</tt>'
+references:
+    cis: 1.1.33
+
+ocil_clause: '<tt>service-account-lookup</tt> is not set to <tt>true</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--service-account-lookup</tt> argument exists
-    and is set to <tt>true</tt>.
-
-references:
-    cis: 1.1.33
+    <pre>$ grep -A2 service-account-lookup /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>true</pre>.

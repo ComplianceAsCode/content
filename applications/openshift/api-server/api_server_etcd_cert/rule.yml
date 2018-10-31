@@ -7,7 +7,7 @@ description: |-
     communications, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, edit the API Server
     pod specificiation file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) and set the etcd certificate and key file parameters:
 
     <pre>--etcd-certfile=<i>/path/to/client-certificate-file</i>

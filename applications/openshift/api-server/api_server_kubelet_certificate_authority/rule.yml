@@ -6,7 +6,7 @@ description: |-
     To ensure OpenShift verifies kubelet certificates before establishing
     connections, follow the OpenShift documentation and setup the TLS connection
     between the API Server and kubelets. Then, edit the API server pod specification
-    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    file <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the <tt>--kubelet-certificate-authority</tt> parameter to the path
     of the cert file for the certificate authority. For example:
 

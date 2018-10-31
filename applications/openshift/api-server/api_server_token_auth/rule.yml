@@ -1,13 +1,17 @@
 documentation_complete: true
 
-title: 'Ensure that the --token-auth-file parameter is not set'
+title: 'Ensure that token-auth-file Is Not Configured'
 
 description: |-
     To ensure OpenShift does not accept token-based authentication,
     follow the OpenShift documentation and configure alternate mechanisms for
     authentication. Then, edit the API Server pod specification file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
-    node(s) and remove the <tt>--token-auth-file=<i>filename</i></tt> parameter.
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) and remove the <tt>token-auth-file</tt> setting.
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        token-auth-file:
+        - /path/to/file</pre>
 
 rationale: |-
     The token-based authentication utilizes static tokens to authenticate
@@ -17,13 +21,12 @@ rationale: |-
 
 severity: high
 
-ocil_clause: '<tt>--token-auth-file</tt> argument is configured'
+references:
+    cis: 1.1.30
+
+ocil_clause: '<tt>token-auth-file</tt> argument is configured'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--token-auth-file</tt> argument is not set.
-
-references:
-    cis: 1.1.30
+    <pre>$ grep -A2 token-auth-file /etc/origin/master/master-config.yaml</pre>
+    The output should return no output.

@@ -7,7 +7,7 @@ description: |-
     <tt>--tls-private-key-file</tt> argument
     must be configured. Follow the OpenShift documentation and setup the TLS
     connection on the API Server. Then, edit the API Server pod specification
-    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
+    file <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) and set the <tt>--tls-private-key-file</tt> parameter:
 
     <pre>--tls-private-key-file=<i>/path/to/tls-key-file</i></pre>

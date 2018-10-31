@@ -6,7 +6,7 @@ description: |-
     Certificates must be provided to fully setup TLS client certificate
     authentication. Follow the OpenShift documentation and setup the TLS
     connection on the API Server. Then, edit the API Server pod specification
-    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    file <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the client certificate authority file:
 
     <pre>--client-ca-file=<i>/path/to/client-ca-file</i></pre>

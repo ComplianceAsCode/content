@@ -7,7 +7,7 @@ description: |-
     which configures OpenShift to use the private key from the TLS serving
     certificate. To ensure the API Server utilizes its own key pair, edit the
     API Server pod specification file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the <tt>--service-account-key-file</tt> parameter to the public
     key file for service accounts:
 

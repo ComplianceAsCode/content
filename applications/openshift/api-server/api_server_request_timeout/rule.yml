@@ -1,14 +1,17 @@
 documentation_complete: true
 
-title: 'Ensure that the --request-timout argument is set as appropriate'
+title: 'Ensure that request-timeout is configured'
 
 description: |-
-    To set global request timeout for API Server requests, edit the API
-    Server pod specification file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> and set the
-    parameter below as appropriate and if needed. For example:
-
-    <pre>--request-timeout=300s</pre>
+    All components that use the API should connect via the secured port,
+    authenticate themselves, and be authorized to use the API. To ensure
+    such a configuration, edit the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) and set the <tt>request-timeout</tt> to <tt>300</tt>:
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        request-timeout:
+        - 300</pre>
 
 rationale: |-
     Setting global request timout allows extending the API Server request
@@ -23,14 +26,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--request-timeout</tt> is not set or is not set to an appropriate value'
+references:
+    cis: 1.1.48
+
+ocil_clause: '<tt>request-timeout</tt> is not set or is not set to an appropriate value'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify the <tt>--request-timout</tt> argument is either not set or set
-    to an appropriate value.
-
-references:
-    cis: 1.1.48
+    <pre>$ grep -A2 insecure-port /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>300</pre>.

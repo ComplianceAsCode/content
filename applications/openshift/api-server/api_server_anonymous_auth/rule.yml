@@ -7,7 +7,7 @@ description: |-
     configuration check ensures that anonymous requests to the OpenShift
     API server are disabled.
 
-    Edit the API server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
+    Edit the API server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and set the below parameter:
 
     <pre>--anonymous-auth=false</pre>

@@ -4,9 +4,15 @@ title: 'Ensure that the admission control plugin NamespaceLifecyle is set'
 
 description: |-
     To enable <tt>NamespaceLifecycle</tt>, edit the API Server pod specification
-    file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
-    and ensure the <tt>--disable-admission-plugins</tt> parameter does not include
-    <tt>NamespaceLifecycle</tt>.
+    file <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    and set the <tt>admissionConfig</tt> to include <tt>NamespaceLifecyle</tt>:
+    <pre>admissionConfig:
+      pluginConfig:
+        NamespaceLifecyle:
+          configuration:
+          kind: DefaultAdmissionConfig
+          apiVersion: v1
+          disable: false</pre>
 
 rationale: |-
     Setting admission control policy to <tt>NamespaceLifecycle</tt> ensures that
@@ -17,14 +23,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--disable-admission-plugins</tt> arguments contain <tt>NamespaceLifecycle</tt>'
+references:
+    cis: 1.1.19
+
+ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>NamespaceLifecycle</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    If the <tt>--disable-dmission-plugins</tt> argument is set,
-    verify that its value does not include <tt>NamespaceLifecycle</tt>.
-
-references:
-    cis: 1.1.19
+    <pre>$ grep -A4 NamespaceLifecycle /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>disable: false</pre>.

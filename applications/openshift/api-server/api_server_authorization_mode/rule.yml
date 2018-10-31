@@ -1,11 +1,11 @@
 documentation_complete: true
 
-title: 'Ensure that the --authorization-mode argument includes Node'
+title: 'Ensure AlwaysAllow Is Not Set'
 
 description: |-
     To restrict kubelet nodes to reading only objects associated with them,
     edit the API Server pod specification file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) and set the <tt>--authorization-mode</tt> parameter to a value
     that includes <tt>Node</tt>:
 
@@ -18,14 +18,12 @@ rationale: |-
 
 severity: medium
 
+references:
+    cis: 1.1.42
+
 ocil_clause: '<tt>--authorization-mode</tt> paremeter does not include <tt>Node</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--authorization-mode</tt> argument exists and is
-    set to a value that includes <tt>Node</tt>.
-
-references:
-    cis: 1.1.42
+    <pre>$ grep -A2 basic-auth-file /etc/origin/master/master-config.yaml</pre>
+    The output should return no output.

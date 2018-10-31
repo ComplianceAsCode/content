@@ -1,13 +1,17 @@
 documentation_complete: true
 
-title: 'Ensure that the --kubelet-https argument is set to true'
+title: 'Ensure that kubelet-https Is Enabled'
 
 description: |-
     HTTPS should be used for connections between the API Server and Kubelets.
 
-    Edit the API Server pod specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt>
-    on the master node(s) and remove the <tt>--kubelet-https</tt> parameter. This will ensure communications
+    Edit the API Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    on the master node(s) and remove the <tt>kubelet-https</tt> parameter. This will ensure communications
     are encrypted using TLS (the default setting).
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        kubelet-https:
+        - 'false'</pre>
 
 rationale: |-
     Connections from the API Server to Kubelets could potentially carry
@@ -17,14 +21,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--kubelet-https</tt> is specified it must be set to <tt>true</tt>'
+references:
+    cis: 1.1.4
+
+ocil_clause: 'kubelet-https is specified it must be set to <tt>true</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--kubelet-https</tt> argument either does not exist or
-    is set to <tt>true</tt>.
-
-references:
-    cis: 1.1.4
+    <pre>$ grep kubelet-https /etc/origin/master/master-config.yaml</pre>
+    The output should return no output.
