@@ -8,7 +8,6 @@
       <description>Enable controller to enable kubelet server certificate rotation.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_RotateKubeletServerCertificate" />
       <criterion comment="RotateKubeletServerCertificate is configured" test_ref="test_controller_rotate_kubelet_server_certs" />
     </criteria>
   </definition>
