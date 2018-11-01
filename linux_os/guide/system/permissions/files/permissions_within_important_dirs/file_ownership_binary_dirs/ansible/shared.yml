@@ -11,6 +11,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Set ownership to root of system executables"
   file:
@@ -20,4 +21,5 @@
   when: no_root_system_executables.stdout_lines | length > 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

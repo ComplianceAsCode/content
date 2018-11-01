@@ -9,6 +9,7 @@
   register: st_smb
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Require Client SMB Packet Signing, if using smbclient
   lineinfile:
@@ -19,4 +20,5 @@
   when: st_smb.stat.exists
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

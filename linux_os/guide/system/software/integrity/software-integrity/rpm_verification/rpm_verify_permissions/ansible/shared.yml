@@ -11,6 +11,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Correct file permissions with RPM"
   shell: "rpm --quiet --setperms $(rpm -qf '{{item}}')"
@@ -18,4 +19,5 @@
   when: files_with_incorrect_permissions.stdout_lines | length > 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

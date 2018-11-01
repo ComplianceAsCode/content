@@ -8,7 +8,8 @@
     path: /etc/sysconfig/prelink
   register: prelink_exists
   tags:
-    @ANSIBLE_TAGS@  
+    @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@  
 
 - name: disable prelinking
   lineinfile:
@@ -18,3 +19,4 @@
   when: prelink_exists.stat.exists == True
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

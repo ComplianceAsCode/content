@@ -23,6 +23,7 @@
   when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or yum_config_file.stat.exists
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Ensure GPG check is globally activated (dnf)
   ini_file:
@@ -35,4 +36,5 @@
   when: ansible_distribution == "Fedora"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

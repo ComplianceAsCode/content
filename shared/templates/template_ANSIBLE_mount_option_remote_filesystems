@@ -10,6 +10,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Add {{{ MOUNTOPTION }}} to mount points"
   shell: awk '$2=="{{ item }}"{$4=$4",{{{ MOUNTOPTION }}}"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
@@ -18,3 +19,4 @@
   when: points_register.stdout | length > 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

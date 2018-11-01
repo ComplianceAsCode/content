@@ -9,6 +9,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - block:
   - name: get back device previous mount option
@@ -31,3 +32,4 @@
   when: device_name.stdout | length > 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

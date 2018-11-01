@@ -44,6 +44,7 @@
     - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
   lineinfile:
@@ -56,6 +57,7 @@
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
@@ -69,6 +71,7 @@
     - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
@@ -82,3 +85,4 @@
   when: audit_arch == 'b64'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

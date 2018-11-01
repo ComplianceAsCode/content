@@ -12,6 +12,7 @@
     - firewalld
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - (xccdf-var sshd_listening_port)
 
@@ -23,6 +24,7 @@
   when: sshd_listening_port != 22
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Enable SSHD in firewalld (default port)
   firewalld:
@@ -32,4 +34,5 @@
   when: sshd_listening_port == 22
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

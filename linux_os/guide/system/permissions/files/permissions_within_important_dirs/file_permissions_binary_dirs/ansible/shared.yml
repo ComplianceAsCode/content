@@ -11,6 +11,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Remove world/group writability of system executables"
   file:
@@ -20,4 +21,5 @@
   when: world_writable_library_files.stdout_lines | length > 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

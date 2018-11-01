@@ -10,6 +10,7 @@
     regexp: 'nullok'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent Log In to Accounts With Empty Password - password-auth"
   replace:
@@ -18,4 +19,5 @@
     regexp: 'nullok'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

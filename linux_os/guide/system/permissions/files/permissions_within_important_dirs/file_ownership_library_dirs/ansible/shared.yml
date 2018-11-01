@@ -11,6 +11,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Set ownership of system libraries to root"
   file:
@@ -20,4 +21,5 @@
   when: libraries_not_owned_by_root | length > 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

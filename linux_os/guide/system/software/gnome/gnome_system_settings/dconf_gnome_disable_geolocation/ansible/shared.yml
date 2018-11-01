@@ -12,6 +12,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Disable Geolocation in GNOME3 - clock location tracking"
   ini_file:
@@ -29,6 +30,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME geolocation - clock location tracking"
   lineinfile:
@@ -38,3 +40,4 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

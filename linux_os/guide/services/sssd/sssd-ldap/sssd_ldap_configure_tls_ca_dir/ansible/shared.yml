@@ -11,6 +11,7 @@
   ignore_errors: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Add default domain group and set CA directory (if no domain there)"
   lineinfile:
@@ -20,6 +21,7 @@
   when: test_grep_domain.stdout == ""
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Configure LDAPs path to CA directory"
   lineinfile:
@@ -29,4 +31,5 @@
     line: 'ldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

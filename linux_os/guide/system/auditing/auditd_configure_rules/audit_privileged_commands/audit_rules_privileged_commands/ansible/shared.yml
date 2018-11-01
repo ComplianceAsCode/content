@@ -10,6 +10,7 @@
   register: find_result
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 # Inserts/replaces the rule in /etc/audit/rules.d
 
@@ -24,6 +25,7 @@
   register: files_result
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
   
 - name: Overwrites the rule in rules.d
   lineinfile:
@@ -36,6 +38,7 @@
     - files
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
     
 - name: Adds the rule in rules.d
   lineinfile:
@@ -47,6 +50,7 @@
   when: item.matched == 0
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
   
 # Adds/overwrites the rule in /etc/audit/audit.rules
 
@@ -60,6 +64,7 @@
     - "{{ files_result.results }}"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 
 

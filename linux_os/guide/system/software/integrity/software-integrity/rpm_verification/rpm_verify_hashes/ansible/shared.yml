@@ -9,6 +9,7 @@
   when: ansible_distribution == "Fedora"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Set fact: Package manager reinstall command (yum)"
   set_fact:
@@ -16,6 +17,7 @@
   when: ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Read files with incorrect hash"
   shell: "rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | awk '{print $NF}'"
@@ -25,6 +27,7 @@
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Reinstall packages of files with incorrect hash"
   shell: "{{package_manager_reinstall_cmd}} $(rpm -qf '{{item}}')"
@@ -32,4 +35,5 @@
   when: package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0)
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
