@@ -203,5 +203,10 @@ OCILREFATTR_TO_TAG = {
     "question_ref": "question",
 }
 
+XCCDF_PLATFORM_TO_CPE = {
+    "machine": "cpe:/a:machine",
+    "container": "cpe:/a:container"
+}
+
 # Application constants
 DEFAULT_UID_MIN = 1000

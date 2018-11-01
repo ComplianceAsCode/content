@@ -6,6 +6,7 @@ import os.path
 import datetime
 import sys
 
+from .constants import XCCDF_PLATFORM_TO_CPE
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 
 from .checks import is_cce_valid
@@ -395,6 +396,7 @@ class Group(object):
         self.values = {}
         self.groups = {}
         self.rules = {}
+        self.platform = None
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -410,6 +412,7 @@ class Group(object):
         group.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         group.warnings = yaml_contents.pop("warnings", [])
+        group.platform = yaml_contents.pop("platform", None)
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
@@ -430,6 +433,11 @@ class Group(object):
         title.text = self.title
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
+
+        if self.platform:
+            platform_el = ET.SubElement(group, "platform")
+            platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            platform_el.set("idref", platform_cpe)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -480,6 +488,7 @@ class Rule(object):
         self.ocil = None
         self.external_oval = None
         self.warnings = []
+        self.platform = None
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -507,6 +516,7 @@ class Rule(object):
         rule.ocil = yaml_contents.pop("ocil", None)
         rule.external_oval = yaml_contents.pop("oval_external_content", None)
         rule.warnings = yaml_contents.pop("warnings", [])
+        rule.platform = yaml_contents.pop("platform", None)
 
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
@@ -609,6 +619,11 @@ class Rule(object):
                 ocil.set("clause", self.ocil_clause)
 
         add_warning_elements(rule, self.warnings)
+
+        if self.platform:
+            platform_el = ET.SubElement(rule, "platform")
+            platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            platform_el.set("idref", platform_cpe)
 
         return rule
 
