@@ -159,6 +159,8 @@ find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
 find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
 find_program(GREP_EXECUTABLE NAMES grep)
 find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
+find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
+find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
 
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
@@ -183,6 +185,8 @@ message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
 message(STATUS "grep (optional): ${GREP_EXECUTABLE}")
 message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABLE}")
+message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
+message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -224,6 +228,10 @@ message(STATUS "Oracle Linux 7: ${SSG_PRODUCT_OL7}")
 
 message(STATUS " ")
 
+# Remove this option when we would like to run ansible-lint and yamllint against our playbooks by default.
+# Right now these checks are not performed and need to be enabled by adding -DANSIBLE_CHECKS=ON to cmake
+# before running ctest.
+option(ANSIBLE_CHECKS "Set to ON to enable ansible-lint and yamllint checks" OFF)
 enable_testing()
 
 include(SSGCommon)
