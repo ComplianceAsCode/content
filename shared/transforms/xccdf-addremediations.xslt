@@ -56,6 +56,13 @@
   <xsl:param name="fix"/>
   <xsl:variable name="rep0" select="."/>
 
+  <xsl:variable name="platform_cpe">
+    <xsl:call-template name="find-and-replace">
+      <xsl:with-param name="text" select="$rule/xccdf:platform/@idref"/>
+      <xsl:with-param name="replace" select="'cpe:/a:'"/>
+      <xsl:with-param name="with" select="''"/>
+    </xsl:call-template>
+  </xsl:variable>
   <xsl:variable name="ident_cce" select="$rule/xccdf:ident[@system='https://nvd.nist.gov/cce/index.cfm']/text()"/>
   <xsl:variable name="ref_nist800_53" select="$rule/xccdf:reference[starts-with(@href, 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53')]/text()"/>
   <xsl:variable name="ref_nist800_171" select="$rule/xccdf:reference[starts-with(@href, 'http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171')]/text()"/>
@@ -109,7 +116,35 @@
     </xsl:call-template>
   </xsl:variable>
 
-  <xsl:value-of select="$rep4"/>
+  <xsl:variable name='newline'><xsl:text>
+</xsl:text></xsl:variable>
+
+  <xsl:variable name="rep5">
+    <xsl:variable name="platform_condition">
+      <xsl:choose>
+        <xsl:when test="$rule/xccdf:platform">
+          <xsl:choose>
+            <xsl:when test="$platform_cpe = 'machine'">
+              <xsl:value-of select="concat('when:  # Bare-metal-only rule, not applicable for containers', $newline, '    - ansible_virtualization_role == &quot;guest&quot;', $newline, '    - ansible_virtualization_type == &quot;docker&quot;')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat('# Error ensuring that the platform is applicable - unknown platform CPE spec encountered: &quot;', $platform_cpe, '&quot;')"/>
+            </xsl:otherwise>
+	  </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'# This rule is applicable for all platforms'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:call-template name="find-and-replace">
+      <xsl:with-param name="text" select="$rep4"/>
+      <xsl:with-param name="replace" select="'@ANSIBLE_ENSURE_PLATFORM@'"/>
+      <xsl:with-param name="with" select="$platform_condition"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:value-of select="$rep5"/>
 </xsl:template>
 
 <xsl:template match="@* | node()" mode="fix_contents">
