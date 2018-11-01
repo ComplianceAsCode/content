@@ -76,3 +76,5 @@ selections:
     - service_oddjobd_disabled
     - service_rdisc_disabled
     - service_rsyslog_enabled
+    - partition_for_var_log
+    - partition_for_var_log_audit
