@@ -91,3 +91,4 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
+    - bind_obeys_crypto_policy
