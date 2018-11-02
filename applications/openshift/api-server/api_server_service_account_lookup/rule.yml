@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that service-account-lookup is set to true'
+title: 'Enable service-account-lookup on the API Server'
 
 description: |-
     To validate service accounts prior to validating tokens, edit the API
@@ -24,9 +24,10 @@ severity: medium
 references:
     cis: 1.1.33
 
-ocil_clause: '<tt>service-account-lookup</tt> is not set to <tt>true</tt>'
+ocil_clause: '<tt>--service-account-lookup</tt> is not set to <tt>true</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -A2 service-account-lookup /etc/origin/master/master-config.yaml</pre>
-    The output should return <pre>true</pre>.
+    <pre>$ sudo grep -A1 service-account-lookup /etc/origin/master/master-config.yaml</pre>
+    The output should return <tt>true</tt>.
+

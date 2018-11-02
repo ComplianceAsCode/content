@@ -1,16 +1,19 @@
 documentation_complete: true
 
-title: 'Ensure that the --kubelet-client-certificate argument is set as appropriate'
+title: 'Configure the kubelet Certificate File for the API Server'
 
 description: |-
     To enable certificate based kubelet authentication, follow the OpenShift
     documentation and setup the TLS connection between the API Server and
-    kubelets. Then, edit the API Server pod specification file
+    kubelets. Then, verify
+    that <tt>kubeletClientInfo</tt> has the <tt>certFile</tt> configured in 
+    the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node and set the kubelet client certificate parameters as
-    below:
-
-    <pre>--kubelet-client-certificate=<i>/path/to/client-certificate-file</i></pre>
+    node(s) to something similar to:
+    <pre>kubeletClientInfo:
+      ca: ca-bundle.crt
+      certFile: master.kubelet-client.crt
+      keyFile: master.kubelet-client.key</pre>
 
 rationale: |-
     By default the API Server does not authenticate itself to the kublet's
@@ -20,14 +23,16 @@ rationale: |-
 
 severity: high
 
-ocil_clause: '<tt>--kubelet-client-certificate</tt> parameters do not point to valid certificate files'
+references:
+    cis: 1.1.32
+
+ocil_clause: '<tt>certFile</tt> is not set as appropriate for <tt>kubeletClientInfo</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-     <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--kubelet-client-certificate</tt> and
-    argument exists and is set as appropriate.
-
-references:
-    cis: 1.1.32
+    <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
+    The output should contain something similar to:
+    <pre>kubeletClientInfo:
+      ca: ca-bundle.crt
+      certFile: master.kubelet-client.crt
+      keyFile: master.kubelet-client.key</pre>

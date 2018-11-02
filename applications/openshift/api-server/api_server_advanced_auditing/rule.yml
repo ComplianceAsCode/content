@@ -1,16 +1,16 @@
 documentation_complete: true
 
-title: 'Ensure that AdvancedAuditing Is Not Disabled'
+title: 'Enable Advanced Auditing for the API Server'
 
 description: |-
-    To ensure advanced auditing is not disabled, follow the OpenShift
-    documentation and set the desired audit policy in the
-    <tt>/etc/kubernetes/audit-policy.yaml</tt> file. Then, edit the API
+    To ensure advanced auditing is not disabled, edit the API
     server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> and set the
     parameters below:
-
-    <pre>--audit-policy-file=/etc/kubernetes/audit-policy.yaml</pre>
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        feature-gates:
+        - AdvancedAuditing=true</pre>
 
 rationale: |-
     <tt>AdvancedAuditing</tt> enables a much more general API auditing
@@ -26,23 +26,9 @@ severity: medium
 references:
     cis: 1.1.47
 
-ocil_clause: '<tt>feature-gates</tt> argument is set to a value that includes <tt>AdvancedAuditing=false</tt>'
+ocil_clause: '<tt>feature-gates</tt> is set to a value that includes <tt>AdvancedAuditing=false</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--feature-gates</tt> argument is not set to a value
-    that includes <tt>AdvancedAuditing=false</tt>. If
-    <tt>--feature-gates</tt> or <tt>AdvancedAuditing</tt> arguments are not
-    present, then it means that <tt>AdvancedAuditing</tt> is enabled and
-    enforced by default.
-
-    Additionally, review the audit policy file specified in the
-    <tt>--audit-policy-file</tt> argument and ensure that it is set
-    as appropriate. At a minimum, it should have below policy set:
-
-    <pre># Log all requests at the Metadata level.
-    rules:
-    - level: Metadata</pre>
-
+    <pre>$ sudo grep AdvancedAuditing /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>AdvancedAuditing=true</pre>.

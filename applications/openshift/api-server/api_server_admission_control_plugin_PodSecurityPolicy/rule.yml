@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that the admission control plugin PodSecurityPolicy is enabled'
+title: 'Enable the PodSecurityPolicy Admission Control Plugin'
 
 description: |-
     To reject pods that do not match Pod Security Policies, follow the
@@ -36,7 +36,7 @@ ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>PodSecurityPolicy</t
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -A4 PodSecurityPolicy /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep -A4 PodSecurityPolicy /etc/origin/master/master-config.yaml</pre>
     The output should return <pre>disable: false</pre>.
 
 warnings:

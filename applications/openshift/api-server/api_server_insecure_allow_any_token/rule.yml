@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that insecure-allow-any-token argument Is Not Configured'
+title: 'Disable Insecure Tokens'
 
 description: |-
     Insecure tokens should be forbidden. Edit the API server pod specification file
@@ -21,5 +21,5 @@ ocil_clause: 'insecure-allow-any-token is configured and enabled on the master n
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep insecure-allow-any-token /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep insecure-allow-any-token /etc/origin/master/master-config.yaml</pre>
     The output should return no output.

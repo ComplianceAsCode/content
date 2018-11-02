@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that the admission control plugin DenyEscalatingExec is enabled'
+title: 'Enable the DenyEscalatingExec Admission Control Plugin'
 
 description: |-
     By default, <tt>DenyEscalatingExec</tt> is not enabled, which allows
@@ -32,5 +32,5 @@ ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>DenyEscalatingExec</
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -A4 DenyEscalatingExec /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep -A4 DenyEscalatingExec /etc/origin/master/master-config.yaml</pre>
     The output should return <pre>disable: false</pre>.

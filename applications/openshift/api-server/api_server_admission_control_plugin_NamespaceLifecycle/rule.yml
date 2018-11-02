@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that the admission control plugin NamespaceLifecyle is set'
+title: 'Enable the NamespaceLifecyle Admission Control Plugin'
 
 description: |-
     To enable <tt>NamespaceLifecycle</tt>, edit the API Server pod specification
@@ -30,5 +30,5 @@ ocil_clause: '<tt>admissionConfig</tt> does not contain <tt>NamespaceLifecycle</
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -A4 NamespaceLifecycle /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep -A4 NamespaceLifecycle /etc/origin/master/master-config.yaml</pre>
     The output should return <pre>disable: false</pre>.

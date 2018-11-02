@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Configure the Audit Log Maxage is set to 30 or as appropriate'
+title: 'Configure the Audit Log Maxage'
 
 description: |-
     To configure audit log retention, edit the API Server pod specification file
@@ -26,5 +26,5 @@ ocil_clause: '<tt>maximumFileRetentionDays</tt> is set less than <tt>30</tt> or 
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep maximumFileRetentionDays /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep maximumFileRetentionDays /etc/origin/master/master-config.yaml</pre>
     The output should return a value of <pre>30</pre> or as appropriate.

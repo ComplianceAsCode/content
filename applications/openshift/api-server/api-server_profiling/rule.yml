@@ -1,15 +1,14 @@
 documentation_complete: true
 
-title: 'Disable Profiling on the API server'
+title: 'Disable Profiling on the API Server'
 
 description: |-
     To disable profiling, edit the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set <tt>profiling</tt> to <tt>false</tt>:
-    <pre>kubernetesMasterConfig:
-      schedulerArguments:
-        profiling:
-        - false</pre>
+    <pre>schedulerArguments:
+      profiling:
+      - 'false'</pre>
 
 rationale: |-
     Profiling allows for the identification of specific performance bottlenecks. It
@@ -20,12 +19,12 @@ rationale: |-
 
 severity: low
 
-references:
-    cis: 1.1.8
-
 ocil_clause: '<tt>profiling</tt> is enabled (set to value of <tt>true</tt>)'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ sudo grep -A2 profiling /etc/origin/master/master-config.yaml</pre>
-    The output should return <pre>false</pre>.
+    <pre>$ sudo grep -A1 profiling</pre>
+    Verify that the <tt>profiling</tt> argument is <tt>false</tt>.
+
+references:
+    cis: 1.1.8

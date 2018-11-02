@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that the admission control plugin EventRateLimit is enabled'
+title: 'Enable the EventRateLimit Admission Control Plugin'
 
 description: |-
     To limit the rate at which the API Server accepts requests, follow
@@ -33,5 +33,5 @@ ocil_clause: '<tt>enable-admission-plugins</tt> does not include <tt>EventRateLi
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -A4 EventRateLimit /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep -A4 EventRateLimit /etc/origin/master/master-config.yaml</pre>
     The output should return <pre>disable: false</pre>.

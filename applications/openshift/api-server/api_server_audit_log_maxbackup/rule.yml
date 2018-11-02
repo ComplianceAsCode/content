@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Ensure that the Audit Log Maxbackup is set to 10 or as appropriate'
+title: 'Configure the Maximum Retained Audit Logs'
 
 description: |-
     To configure how many rotations of audit logs are retained, edit the API Server
@@ -30,5 +30,5 @@ ocil_clause: '<tt>maximumRetainedFiles</tt> is set to <tt>10</tt> or as appropri
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep maximumRetainedFiles /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep maximumRetainedFiles /etc/origin/master/master-config.yaml</pre>
     The output should return a value of <pre>10</pre> or as appropriate.

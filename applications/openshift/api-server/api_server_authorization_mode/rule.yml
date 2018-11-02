@@ -1,29 +1,30 @@
 documentation_complete: true
 
-title: 'Ensure AlwaysAllow Is Not Set'
+title: 'Disable use of AlwaysAllow for the API Server Authorization Mode'
 
 description: |-
-    To restrict kubelet nodes to reading only objects associated with them,
-    edit the API Server pod specification file
-    <tt>/etc/origin/master/master-config.yaml</tt> on the master
-    node(s) and set the <tt>--authorization-mode</tt> parameter to a value
-    that includes <tt>Node</tt>:
-
-    <pre>--authorization-mode=..,Node,...</pre>
+    The OpenShift API server should not allow anonymous API requests.
+    To ensure that the API server requires authorization for API requests,
+    validate that <tt>AlwaysAllow</tt> is not configured for <tt>authorization-mode</tt>
+    in <tt>/etc/origin/master/master-config.yaml</tt>:
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        authorization-mode:
+        - AlwaysAllow</pre>
 
 rationale: |-
-    The <tt>Node</tt> authorization mode only allows kubelets to read
-    <tt>Secret</tt>, <tt>ConfigMap</tt>, <tt>PersistentVolume</tt>, and
-    <tt>PersistentVolumeClaim</tt> objects associated with their nodes.
+    The <tt>AlwaysAllow</tt> authorization mode allows all requests including
+    anonymous requests. This would grant any authenticated entity full cluster
+    access.
 
 severity: medium
 
 references:
     cis: 1.1.42
 
-ocil_clause: '<tt>--authorization-mode</tt> paremeter does not include <tt>Node</tt>'
+ocil_clause: '<tt>authorization-mode</tt> is configured to use <tt>AlwaysAllow</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep -A2 basic-auth-file /etc/origin/master/master-config.yaml</pre>
-    The output should return no output.
+    <pre>$ sudo grep -A1 authorization-mode /etc/origin/master/master-config.yaml</pre>
+    Verify that the output does not contain <tt>AlwaysAllow</tt>.
