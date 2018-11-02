@@ -436,7 +436,10 @@ class Group(object):
 
         if self.platform:
             platform_el = ET.SubElement(group, "platform")
-            platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            try:
+                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            except KeyError:
+                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
             platform_el.set("idref", platform_cpe)
 
         for _value in self.values.values():
@@ -622,7 +625,10 @@ class Rule(object):
 
         if self.platform:
             platform_el = ET.SubElement(rule, "platform")
-            platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            try:
+                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            except KeyError:
+                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
             platform_el.set("idref", platform_cpe)
 
         return rule
