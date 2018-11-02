@@ -1,6 +1,6 @@
 # platform =  multi_platform_fedora
 
-function remediate() {
+function remediate_bind_crypto_policy() {
 	CONFIG_FILE="/etc/named.conf"
 	if test -f "$CONFIG_FILE"; then
 		sed -i 's|options {|&\n\tinclude "/etc/crypto-policies/back-ends/bind.config";|' "$CONFIG_FILE"
@@ -11,4 +11,4 @@ function remediate() {
 	fi
 }
 
-remediate
+remediate_bind_crypto_policy

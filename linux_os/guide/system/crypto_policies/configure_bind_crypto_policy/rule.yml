@@ -2,13 +2,14 @@ documentation_complete: true
 
 prodtype: fedora
 
-title: 'BIND and Crypto Policies'
+title: 'Configure BIND to use System Crypto Policy'
 
 description: |-
     Crypto Policies provide a centralized control over crypto algorithms usage of many packages.
-    BIND is supported by crypto policy, but the library may be configured to ignore it.
+    BIND is supported by crypto policy, but the BIND configuration may be
+    set up to ignore it.
 
-    To check that Crypto Policies settings are obeyed, ensure that the <tt>/etc/named.conf</tt>
+    To check that Crypto Policies settings are configured correctly, ensure that the <tt>/etc/named.conf</tt>
     includes the appropriate configuration:
     In the <tt>options</tt> section of <tt>/etc/named.conf</tt>, make sure that the following line
     is not commented out or superseded by later includes:
