@@ -5,11 +5,13 @@ title: 'Ensure that the RotateKubeletServerCertificate argument is set'
 description: |-
     To enforce kublet server certificate rotation on the Controller Manager,
     edit the Controller Manager pod specification file
-    <tt>/etc/kubernetes/manifests/kube-controller-manager.yaml</tt> on the
-    master node(s) and set the <tt>--feature-gates</tt> parameter to include
+    <tt>/etc/origin/master/master-config.yaml</tt> on the
+    master node(s) and set the <tt>controllerArguments</tt> parameter to include
     <tt>RotateKubeletServerCertificate=true</tt>. For example:
-
-    <pre>--feature-gates=...,RotateKubletServerCertificate=true,...</pre>
+    <pre>kubernetesMasterConfig:
+      controllerArguments:
+        feature-gates:
+          - RotateKubeletServerCertificate=true</pre>
 
 rationale: |-
     <tt>RotateKubeletServerCertificate</tt> causes the kubelet to both request
@@ -26,15 +28,14 @@ rationale: |-
 severity: medium
 
 ocil_clause: |-
-    <tt>RotateKubeletServerCertificate=true</tt> argument is not present in the
-    <tt>--feature-gates</tt> options
+    <tt>RotateKubeletServerCertificate</tt> argument is set to <tt>false</tt> in the
+    <tt>controllerArguments</tt> options
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-controller-manager</pre>
+    <pre>$ grep RotateKubeletServerCertificate</pre>
 
-    Verify that the <tt>RotateKubletServerCertificate</tt> argument exists
-    and is set to <tt>true</tt>.
+    The output should return <tt>true</tt>.
 
 identifiers:
     cce@ocp3: 80590-3
