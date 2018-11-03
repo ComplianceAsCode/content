@@ -28,7 +28,7 @@ ocil_clause: '<tt>terminated-pod-gc-threshold</tt> is not enabled'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep terminated-pod-gc-threshold /etc/origin/master/master-config.yaml</pre>
+    <pre>$ sudo grep terminated-pod-gc-threshold /etc/origin/master/master-config.yaml</pre>
 
     Verify that the <tt>terminated-pod-gc-threshold</tt> argument is not set
     to <tt>false</tt>.
