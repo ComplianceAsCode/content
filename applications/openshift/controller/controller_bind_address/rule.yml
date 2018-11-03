@@ -13,9 +13,12 @@ description: |-
         bind-address:
           - '192.168.1.101'</pre>
 
-     WARNING: The associated value must be reachable by the rest of the cluster, and by
-     CLI/web clients. If blank all interfaces will be used (<tt>0.0.0.0</tt> for IPv4
-     and ``::`` for IPv6).
+
+warnings:
+  - functionality: |-
+      The associated value must be reachable by the rest of the cluster, and by
+      CLI/web clients. If blank all interfaces will be used (<tt>0.0.0.0</tt> for IPv4
+      and ``::`` for IPv6).
 
 rationale: |-
     The Controller Manager API service (which runs on a port specified by the
