@@ -17,7 +17,7 @@ def test_is_applicable():
     assert ssg.rules.is_applicable('all', 'rhosp13')
     assert ssg.rules.is_applicable('multi_platform_rhosp', 'rhosp13')
     assert ssg.rules.is_applicable('rhosp13', 'rhosp13')
-    assert ssg.rules.is_applicable('Red Hat OpenStack Platform 7', 'rhosp13')
+    assert ssg.rules.is_applicable('Red Hat OpenStack Platform 13', 'rhosp13')
     assert not ssg.rules.is_applicable('rhel7', 'rhosp13')
 
     assert not ssg.rules.is_applicable('rhosp13', 'rhel7')
