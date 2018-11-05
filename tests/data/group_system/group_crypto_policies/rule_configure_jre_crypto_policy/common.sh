@@ -1,0 +1,7 @@
+#!/bin/bash
+# profiles = xccdf_org.ssgproject.content_profile_standard
+
+JRE_CONFIG_FILE="/usr/lib/jvm/jre/lib/security/java.security"
+
+mkdir -p $(dirname $JRE_CONFIG_FILE)
+touch $JRE_CONFIG_FILE
