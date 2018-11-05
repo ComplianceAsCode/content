@@ -464,11 +464,15 @@ class Group(object):
     def add_group(self, group):
         if group is None:
             return
+        if self.platform and not group.platform:
+            group.platform = self.platform
         self.groups[group.id_] = group
 
     def add_rule(self, rule):
         if rule is None:
             return
+        if self.platform and not rule.platform:
+            rule.platform = self.platform
         self.rules[rule.id_] = rule
 
     def __str__(self):
@@ -717,6 +721,8 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
                                     profiles_dir, env_yaml, bash_remediation_fns)
 
     if group is not None:
+        if parent_group:
+            parent_group.add_group(group)
         for value_yaml in values:
             if action == "list-inputs":
                 print(value_yaml)
@@ -736,9 +742,7 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
                 rule = Rule.from_yaml(rule_yaml, env_yaml)
                 group.add_rule(rule)
 
-        if parent_group:
-            parent_group.add_group(group)
-        else:
+        if not parent_group:
             # We are on the top level!
             # Lets dump the XCCDF group or benchmark to a file
             if action == "build":
