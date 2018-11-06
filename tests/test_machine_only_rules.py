@@ -7,9 +7,6 @@ import sys
 import ssg.constants
 import ssg.yaml
 
-ns = {
-    "xccdf": "http://checklists.nist.gov/xccdf/1.2"
-}
 machine_cpe = "cpe:/a:machine"
 
 
@@ -43,18 +40,19 @@ def check_ds(ds_path, what, input_elems):
     root = tree.getroot()
     if what == "groups":
         replacement = "xccdf_org.ssgproject.content_group_"
-        xpath_query = ".//xccdf:Group"
+        xpath_query = ".//{%s}Group" % ssg.constants.XCCDF12_NS
     if what == "rules":
         replacement = "xccdf_org.ssgproject.content_rule_"
-        xpath_query = ".//xccdf:Rule"
-    benchmark = root.find(".//xccdf:Benchmark", ns)
-    for elem in benchmark.findall(xpath_query, ns):
+        xpath_query = ".//{%s}Rule" % ssg.constants.XCCDF12_NS
+    benchmark = root.find(".//{%s}Benchmark" % ssg.constants.XCCDF12_NS)
+    for elem in benchmark.findall(xpath_query):
         elem_id = elem.get("id")
         elem_short_id = elem_id.replace(replacement, "")
         if elem_short_id not in input_elems:
             continue
         machine_platform = elem.findall(
-            "xccdf:platform[@idref='" + machine_cpe + "']", ns)
+            "{%s}platform[@idref='%s']" %
+            (ssg.constants.XCCDF12_NS, machine_cpe))
         if not machine_platform:
             sys.stderr.write("%s %s in %s is missing <platform> element" %
                              (what, elem_short_id, ds_path))
