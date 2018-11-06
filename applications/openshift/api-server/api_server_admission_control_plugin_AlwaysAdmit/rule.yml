@@ -1,13 +1,12 @@
 documentation_complete: true
 
-title: 'Ensure that the admission control plugin AlwaysAdmit is not set'
+title: 'Disable the AlwaysAdmit Admission Control Plugin'
 
 description: |-
     To ensure OpenShift only responses to requests explicitly allowed by the
     admissions control plugin, edit the API Server pod specification file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
-    and set the <tt>--enable-admission-plugin</tt> parameter to a value that
-    does not include <tt>AlwaysAdmit</tt>.
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    and ensure the <tt>admissionConfig</tt> is not configured to include <tt>AlwaysAdmit</tt>.
 
 rationale: |-
     Enabling the admission control plugin <tt>AlwaysAdmin</tt> allows all
@@ -15,14 +14,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--enable-admission-plugins</tt> is not set, or if <tt>--enable-admissions-plugins</tt> is configured and parameters contain <tt>AlwaysAdmit</tt>'
+references:
+    cis: 1.1.10
+
+ocil_clause: '<tt>admissionConfig</tt> is not set'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--enable-admission-plugins</tt> argument is set,
-    and that its value does not include <tt>AlwaysAdmit</tt>.
-
-references:
-    cis: 1.1.10
+    <pre>$ sudo grep -A4 AlwaysAdmit /etc/origin/master/master-config.yaml</pre>
+    The output should return no output.

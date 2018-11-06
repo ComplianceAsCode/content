@@ -1,17 +1,19 @@
 documentation_complete: true
 
-title: 'Ensure that the --etcd-certfile and --etcd-keyfile arguments are set as appropriate'
+title: 'Configure the etcd Certificate Key for the API Server'
 
 description: |-
     To ensure etcd is configured to make use of TLS encryption for client
     communications, follow the OpenShift documentation and setup the TLS
-    connection between the API Server and etcd. Then, edit the API Server
-    pod specificiation file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master
-    node(s) and set the etcd certificate and key file parameters:
-
-    <pre>--etcd-certfile=<i>/path/to/client-certificate-file</i>
-    --etcd-keyfile=<i>/path/to/client-key-file</i></pre>
+    connection between the API Server and etcd. Then, verify
+    that <tt>etcdClientInfo</tt> has the <tt>keyFile</tt> configured in 
+    the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>etcdClientInfo:
+      ca: master.etcd-ca.crt
+      certFile: master.etcd-client.crt
+      keyFile: master.etcd-client.key</pre>
 
 rationale: |-
     etcd is a highly-available key-value store used by OpenShift deployments
@@ -22,14 +24,16 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--etcd-certfile</tt> and <tt>--etcd-keyfile</tt> do not exist or are not configured to valid certificates'
+references:
+    cis: 1.1.36
+
+ocil_clause: '<tt>keyFile</tt> does not exist or is not configured to valid certificates'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--etcd-certfile</tt> and <tt>--etcd-keyfile</tt>
-    arguments exist and they are set as appropriate.
-
-references:
-    cis: 1.1.36
+    <pre>$ sudo grep -A3 etcdClientInfo /etc/origin/master/master-config.yaml</pre>
+    The output should contain something similar to:
+    <pre>etcdClientInfo:
+      ca: master.etcd-ca.crt
+      certFile: master.etcd-client.crt
+      keyFile: master.etcd-client.key</pre>

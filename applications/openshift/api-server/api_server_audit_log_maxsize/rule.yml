@@ -1,14 +1,18 @@
 documentation_complete: true
 
-title: 'Ensure that the --audit-log-maxsize argument is set to 100 or as appropriate'
+title: 'Configure Maximum Audit Log Size'
 
 description: |-
     To rotate audit logs upon reaching a maximum size, edit the API Server pod
-    specification file <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on
-    the master node(s) and set the <tt>--audit-log-maxsize</tt> parameter to
+    specification file <tt>/etc/origin/master/master-config.yaml</tt> on
+    the master node(s) and set the <tt>maximumFileSizeMegabytes</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
-
-    <pre>--audit-log-maxsize=100MB</pre>
+    <pre>auditConfig:
+      auditFilePath: "/var/log/audit-ocp.log"
+      enabled: true
+      maximumFileRetentionDays: 30
+      maximumFileSizeMegabytes: 100
+      maximumRetainedFiles: 10</pre>
 
 rationale: |-
     OpenShift automatically rotates log files. Retaining old log files ensures that
@@ -19,14 +23,12 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--audit-log-maxsize</tt> argument is set less than <tt>100</tt> or as appropriate'
+references:
+    cis: 1.1.28
+
+ocil_clause: '<tt>maximumFileSizeMegabytes</tt> is set to <tt>100</tt> or as appropriate'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--audit-log-maxsize</tt> argument is set,
-    and contains a value of <tt>100</tt> or alternative as appropriate.
-
-references:
-    cis: 1.1.28
+    <pre>$ sudo grep maximumFileSizeMegabytes /etc/origin/master/master-config.yaml</pre>
+    The output should return a value of <pre>100</pre> or as appropriate.

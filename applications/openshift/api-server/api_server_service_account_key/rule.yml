@@ -1,20 +1,21 @@
 documentation_complete: true
 
-title: 'Ensure that the --service-account-key-file argument is set as appropriate'
+title: 'Configure the Service Account Public Key for the API Server'
 
 description: |-
-    By default the <tt>--service-account-key-file</tt> argument is not set,
-    which configures OpenShift to use the private key from the TLS serving
-    certificate. To ensure the API Server utilizes its own key pair, edit the
+    To ensure the API Server utilizes its own key pair, edit the
     API Server pod specification file
-    <tt>/etc/kubernetes/manifests/kube-apiserver.yaml</tt> on the master node(s)
-    and set the <tt>--service-account-key-file</tt> parameter to the public
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
+    and set the <tt>publicKeyFiles</tt> parameter to the public
     key file for service accounts:
-
-    <pre>--service-account-key-file=<i>filename</i></pre>
+    <pre>serviceAccountConfig:
+      masterCA: ca-bundle.crt
+      privateKeyFile: serviceaccounts.private.key
+      publicKeyFiles:
+      - serviceaccounts.public.key</pre>
 
 rationale: |-
-    By default, if no <tt>--service-account-key-file</tt> is specified to the
+    By default, if no <tt>privateKeyFile</tt> is specified to the
     API Server, the API Server uses the private key from the TLS serving
     certificate to verify service account tokens. To ensure that the keys
     for service account tokens could be rotated as needed, a separate
@@ -23,14 +24,17 @@ rationale: |-
 
 severity: medium
 
-ocil_clause: '<tt>--service-acount-key-file</tt> argument is not set or does not refer to the API Server specific key'
+references:
+    cis: 1.1.35
+
+ocil_clause: '<tt>publicKeyFiles</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ ps -ef | grep kube-apiserver</pre>
-
-    Verify that the <tt>--service-account-key-file</tt> argument exists
-    and is set as appropriate.
-
-references:
-    cis: 1.1.35
+    <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
+    The output should contain something similar to:
+    <pre>serviceAccountConfig:
+      masterCA: ca-bundle.crt
+      privateKeyFile: serviceaccounts.private.key
+      publicKeyFiles:
+      - serviceaccounts.public.key</pre>
