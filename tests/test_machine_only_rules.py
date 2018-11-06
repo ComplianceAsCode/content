@@ -36,9 +36,9 @@ def check_product(build_dir, product, guide_dir):
 def check_ds(ds_path, what, input_elems):
     try:
         tree = ET.parse(ds_path)
-    except FileNotFoundError as e:
-        print("The product datastream '%s' hasn't been build,"
-              "skipping the test." % (ds_path), file=sys.stderr)
+    except IOError as e:
+        sys.stderr.write("The product datastream '%s' hasn't been build, "
+              "skipping the test." % (ds_path))
         return True
     root = tree.getroot()
     if what == "groups":
@@ -56,8 +56,8 @@ def check_ds(ds_path, what, input_elems):
         machine_platform = elem.findall(
             "xccdf:platform[@idref='" + machine_cpe + "']", ns)
         if not machine_platform:
-            print("%s %s in %s is missing <platform> element" %
-                  (what, elem_short_id, ds_path), file=sys.stderr)
+            sys.stderr.write("%s %s in %s is missing <platform> element" %
+                  (what, elem_short_id, ds_path))
             return False
     return True
 
