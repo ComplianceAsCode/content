@@ -33,10 +33,17 @@ source code:
 yum install git
 ```
 
-(optional) Install the ShellCheck package to perform fix script static analysis:
+(optional) Install the `ShellCheck` package to perform fix script static analysis:
 
 ```bash
 yum install ShellCheck
+```
+
+(optional) Install `yamllint` and `ansible-lint` packages to perform Ansible
+playbooks checks. These checks are not enabled by default in CTest, to enable
+them add `-DANSIBLE_CHECKS=ON` option to `cmake`.
+```bash
+yum install yamllint ansible-lint
 ```
 
 (optional) Install the `ninja` build system if you want to use it instead of

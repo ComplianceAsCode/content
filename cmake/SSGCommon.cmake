@@ -266,8 +266,22 @@ macro(ssg_build_remediations PRODUCT)
     if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
         add_test(
             NAME "ansible-role-syntax-check-${PRODUCT}"
-            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_syntax_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles" "${PRODUCT}"
+            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles" "${PRODUCT}"
         )
+    endif()
+    if (ANSIBLE_CHECKS)
+        if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+            add_test(
+                NAME "ansible-role-ansible-lint-check-${PRODUCT}"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles" "${PRODUCT}"
+            )
+        endif()
+        if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
+            add_test(
+                NAME "ansible-role-yamllint-check-${PRODUCT}"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/roles" "${PRODUCT}" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+            )
+        endif()
     endif()
 endmacro()
 
