@@ -38,7 +38,7 @@ def check_ds(ds_path, what, input_elems):
         tree = ET.parse(ds_path)
     except IOError as e:
         sys.stderr.write("The product datastream '%s' hasn't been build, "
-              "skipping the test." % (ds_path))
+                         "skipping the test." % (ds_path))
         return True
     root = tree.getroot()
     if what == "groups":
@@ -57,7 +57,7 @@ def check_ds(ds_path, what, input_elems):
             "xccdf:platform[@idref='" + machine_cpe + "']", ns)
         if not machine_platform:
             sys.stderr.write("%s %s in %s is missing <platform> element" %
-                  (what, elem_short_id, ds_path))
+                             (what, elem_short_id, ds_path))
             return False
     return True
 
