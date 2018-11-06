@@ -50,9 +50,12 @@ def check_ds(ds_path, what, input_elems):
         elem_short_id = elem_id.replace(replacement, "")
         if elem_short_id not in input_elems:
             continue
-        machine_platform = elem.findall(
-            "{%s}platform[@idref='%s']" %
-            (ssg.constants.XCCDF12_NS, machine_cpe))
+        platforms = elem.findall("{%s}platform" % ssg.constants.XCCDF12_NS)
+        machine_platform = False
+        for p in platforms:
+            idref = p.get("idref")
+            if idref == machine_cpe:
+                machine_platform = True
         if not machine_platform:
             sys.stderr.write("%s %s in %s is missing <platform> element" %
                              (what, elem_short_id, ds_path))
