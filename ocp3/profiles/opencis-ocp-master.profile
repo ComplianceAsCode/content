@@ -45,7 +45,6 @@ selections:
     - file_permissions_var_lib_etcd
     - scheduler_profiling_argument
     - controller_address
-    - controller_root_ca
     - controller_rotate_kubelet_server_certs
     - controller_terminated_pod_gc_threshhold
     - controller_use_service_account
