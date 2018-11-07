@@ -1,5 +1,4 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_standard
 
 JRE_CONFIG_FILE="/usr/lib/jvm/jre/lib/security/java.security"
 

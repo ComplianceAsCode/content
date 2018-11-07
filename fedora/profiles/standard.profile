@@ -92,4 +92,3 @@ selections:
     - configure_openssl_crypto_policy
     - configure_kerberos_crypto_policy
     - configure_bind_crypto_policy
-    - configure_jre_crypto_policy
