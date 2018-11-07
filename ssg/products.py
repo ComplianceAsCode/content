@@ -17,6 +17,7 @@ _version_name_map = {
     'jre': 'Java Runtime Environment',
     'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
+    'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
     'eap': 'JBoss Enterprise Application Platform',
@@ -29,7 +30,7 @@ _version_name_map = {
     'ocp': 'Red Hat OpenShift Container Platform',
 }
 
-multi_list = ["rhel", "fedora", "rhosp", "debian", "ubuntu",
+multi_list = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")

@@ -20,6 +20,7 @@
 <xsl:variable name="disa-stigs-apps-web-server-uri">http://iase.disa.mil/stigs/app-security/web-servers/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-stigs-os-mainframe-uri">http://iase.disa.mil/stigs/os/mainframe/Pages/index.aspx</xsl:variable>
 <xsl:variable name="disa-stigs-os-unix-linux-uri">http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx</xsl:variable>
+<xsl:variable name="disa-stigs-virutalization-uri">https://iase.disa.mil/stigs/os/virtualization/Pages/index.aspx</xsl:variable>
 <xsl:variable name="hipaauri">https://www.gpo.gov/fdsys/pkg/CFR-2007-title45-vol1/pdf/CFR-2007-title45-vol1-chapA-subchapC.pdf</xsl:variable>
 <xsl:variable name="iso27001-2013uri">https://www.iso.org/standard/54534.html</xsl:variable>
 <xsl:variable name="nist800-171uri">http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-171.pdf</xsl:variable>
