@@ -19,3 +19,11 @@ rationale: |-
     and makes system configuration more fragmented.
 
 severity: unknown
+
+ocil_clause: |-
+    the <pre>java.security</pre> doesn't contain the <pre>security.useSystemPropertiesFile=true</pre> line
+
+ocil: |-
+    To verify that Java uses the system crypto policy, check out that the respective JRE config file
+    <pre>/usr/lib/jvm/jre/lib/security/java.security</pre> contains the <pre>security.useSystemPropertiesFile=true</pre> line:
+    <pre>grep 'security.useSystemPropertiesFile=true' /usr/lib/jvm/jre/lib/security/java.security</pre>.
