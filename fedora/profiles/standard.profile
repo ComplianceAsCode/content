@@ -88,3 +88,4 @@ selections:
     - sshd_set_idle_timeout
     - sshd_set_keepalive
     - configure_ssh_crypto_policy
+    - configure_libreswan_crypto_policy
