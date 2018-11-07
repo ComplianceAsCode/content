@@ -20,3 +20,13 @@ rationale: |-
     and makes system configuration more fragmented.
 
 severity: unknown
+
+ocil_clause: |-
+    the BIND config file doesn't contain the
+    <pre>include "/etc/crypto-policies/back-ends/bind.config";</pre> directive
+
+ocil: |-
+    To verify that BIND uses the system crypto policy, check out that the BIND config file
+    <pre>/etc/named.conf</pre> contains the <pre>include "/etc/crypto-policies/back-ends/bind.config";</pre>
+    directive: <pre>grep 'include "/etc/crypto-policies/back-ends/bind.config";' /etc/named.conf</pre>,
+    and verify that the directive is at the bottom of the <pre>options</pre> section of the config file.
