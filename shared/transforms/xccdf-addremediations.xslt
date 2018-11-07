@@ -125,16 +125,13 @@
         <xsl:when test="$rule/xccdf:platform">
           <xsl:choose>
             <xsl:when test="$platform_cpe = 'machine'">
-              <xsl:value-of select="concat('when:  # Bare-metal-only rule, not applicable for containers', $newline, '    - ansible_virtualization_role == &quot;guest&quot;', $newline, '    - ansible_virtualization_type == &quot;docker&quot;')"/>
+              <xsl:value-of select="concat('when:  # Bare-metal/VM task, not applicable for containers', $newline, '    - ansible_virtualization_role != &quot;guest&quot;', $newline, '    - ansible_virtualization_type != &quot;docker&quot;')"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="concat('# Error ensuring that the platform is applicable - unknown platform CPE spec encountered: &quot;', $platform_cpe, '&quot;')"/>
             </xsl:otherwise>
 	  </xsl:choose>
         </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="'# This rule is applicable for all platforms'"/>
-        </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:call-template name="find-and-replace">
@@ -144,7 +141,32 @@
     </xsl:call-template>
   </xsl:variable>
 
-  <xsl:value-of select="$rep5"/>
+  <xsl:variable name="rep6">
+    <xsl:variable name="platform_condition">
+      <xsl:choose>
+        <xsl:when test="$rule/xccdf:platform">
+          <xsl:choose>
+            <xsl:when test="$platform_cpe = 'machine'">
+              <xsl:value-of select="'(ansible_virtualization_role != &quot;guest&quot; and ansible_virtualization_type != &quot;docker&quot;)'"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat(' # Error ensuring that the platform is applicable - unknown platform CPE spec encountered: &quot;', $platform_cpe, '&quot;')"/>
+            </xsl:otherwise>
+	  </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+	  <xsl:value-of select="'True'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:call-template name="find-and-replace">
+      <xsl:with-param name="text" select="$rep5"/>
+      <xsl:with-param name="replace" select="'@ANSIBLE_PLATFORM_CONDITION@'"/>
+      <xsl:with-param name="with" select="$platform_condition"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:value-of select="$rep6"/>
 </xsl:template>
 
 <xsl:template match="@* | node()" mode="fix_contents">

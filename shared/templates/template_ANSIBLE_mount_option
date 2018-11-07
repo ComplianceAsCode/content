@@ -29,7 +29,6 @@
       opts: "{{device_cur_mountoption.stdout}},{{{ MOUNTOPTION }}}"
       state: "mounted"
       fstype: "{{device_fstype.stdout}}"
-  when: device_name.stdout | length > 0
+  when: (device_name.stdout | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

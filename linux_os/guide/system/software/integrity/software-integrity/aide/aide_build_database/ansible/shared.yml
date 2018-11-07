@@ -34,7 +34,6 @@
     dest: /var/lib/aide/aide.db.gz
     backup: yes
     remote_src: yes
-  when: aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists
+  when: (aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

@@ -12,7 +12,6 @@
   file:
     path: {{{ FILEPATH }}}
     owner: {{{ FILEUID }}}
-  when: file_exists.stat.exists
+  when: file_exists.stat.exists and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

@@ -47,10 +47,9 @@
     create: yes
   with_items:
     - "{{ files_result.results }}"
-  when: item.matched == 0
+  when: item.matched == 0 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
   
 # Adds/overwrites the rule in /etc/audit/audit.rules
 
@@ -65,6 +64,3 @@
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
-
-
-

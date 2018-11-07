@@ -39,6 +39,6 @@
     and (( gpg_fingerprints.stdout_lines | difference(gpg_valid_fingerprints)) | length == 0)
     and (gpg_fingerprints.stdout_lines | length > 0)
     and (ansible_distribution == "RedHat")
+    and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

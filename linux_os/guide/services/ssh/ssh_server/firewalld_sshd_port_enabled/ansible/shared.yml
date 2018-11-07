@@ -21,18 +21,15 @@
     port: "{{ sshd_listening_port }}/tcp"
     permanent: yes
     state: enabled
-  when: sshd_listening_port != 22
+  when: sshd_listening_port != 22 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Enable SSHD in firewalld (default port)
   firewalld:
     service: ssh
     permanent: yes
     state: enabled
-  when: sshd_listening_port == 22
+  when: sshd_listening_port == 22 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
-

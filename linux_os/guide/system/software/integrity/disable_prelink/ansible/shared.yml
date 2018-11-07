@@ -9,14 +9,13 @@
   register: prelink_exists
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@  
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: disable prelinking
   lineinfile:
     path: /etc/sysconfig/prelink
     regexp: '^PRELINKING='
     line: 'PRELINKING=no'
-  when: prelink_exists.stat.exists == True
+  when: prelink_exists.stat.exists == True and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

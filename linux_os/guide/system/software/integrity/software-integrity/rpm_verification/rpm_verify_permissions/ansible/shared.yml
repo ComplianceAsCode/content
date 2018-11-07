@@ -16,8 +16,6 @@
 - name: "Correct file permissions with RPM"
   shell: "rpm --quiet --setperms $(rpm -qf '{{item}}')"
   with_items: "{{ files_with_incorrect_permissions.stdout_lines }}"
-  when: files_with_incorrect_permissions.stdout_lines | length > 0
+  when: (files_with_incorrect_permissions.stdout_lines | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
-

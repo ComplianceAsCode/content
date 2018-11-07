@@ -17,8 +17,6 @@
     line: client signing = mandatory
     state: present
     insertafter: [global]
-  when: st_smb.stat.exists
+  when: st_smb.stat.exists and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
-

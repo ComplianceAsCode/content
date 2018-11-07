@@ -18,10 +18,9 @@
     path: /etc/sssd/sssd.conf
     create: yes
     line: "[domain/default]\nldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}\n"
-  when: test_grep_domain.stdout == ""
+  when: test_grep_domain.stdout == "" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Configure LDAPs path to CA directory"
   lineinfile:
