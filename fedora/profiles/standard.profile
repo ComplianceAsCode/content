@@ -87,3 +87,4 @@ selections:
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
     - sshd_set_keepalive
+    - configure_ssh_crypto_policy
