@@ -1,4 +1,4 @@
-# platform =  multi_platform_fedora,Java Runtime Environment
+# platform =  Java Runtime Environment
 
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
