@@ -33,10 +33,17 @@ source code:
 yum install git
 ```
 
-(optional) Install the ShellCheck package to perform fix script static analysis:
+(optional) Install the `ShellCheck` package to perform fix script static analysis:
 
 ```bash
 yum install ShellCheck
+```
+
+(optional) Install `yamllint` and `ansible-lint` packages to perform Ansible
+playbooks checks. These checks are not enabled by default in CTest, to enable
+them add `-DANSIBLE_CHECKS=ON` option to `cmake`.
+```bash
+yum install yamllint ansible-lint
 ```
 
 (optional) Install the `ninja` build system if you want to use it instead of
@@ -171,7 +178,7 @@ tables/table-rhel7-stig.html
 ### Testing
 
 To ensure validity of built artifacts prior to installation, we recommend
-running our test suite against the build output. This is done with ctest:
+running our test suite against the build output. This is done with CTest:
 
 ```bash
 cd scap-security-guide/
@@ -180,6 +187,8 @@ cmake ../
 make -j4
 ctest -j4
 ```
+
+Note: CTest does not run [SSG Test Suite](tests/README.md) which provides simple system of test scenarios for testing profiles and rule remediations.
 
 ### Installation
 
@@ -251,8 +260,8 @@ make zipfile
 
 ### Build the docker container image
 
-Use the [Dockerfile](Dockerfile) present in the top directory and build the
-image.
+Use a suitable Dockerfile present in the [Dockerfiles](Dockerfiles)
+directory and build the image.
 This will take care of the build environment and all necessary setup.
 
 ```bash

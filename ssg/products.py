@@ -15,8 +15,9 @@ _version_name_map = {
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'jre': 'Java Runtime Environment',
-    'rhel-osp': 'Red Hat OpenStack Platform',
+    'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
+    'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
     'eap': 'JBoss Enterprise Application Platform',
@@ -29,7 +30,7 @@ _version_name_map = {
     'ocp': 'Red Hat OpenShift Container Platform',
 }
 
-multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
+multi_list = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
               "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
@@ -95,7 +96,7 @@ def map_name(version):
         return map_name(trimmed_version)
 
     # By sorting in reversed order, keys which are a longer version of other keys are
-    # visited first (e.g., rhel-osp vs. rhel)
+    # visited first (e.g., rhosp vs. rhel)
     for key in sorted(_version_name_map, reverse=True):
         if version.startswith(key):
             return _version_name_map[key]

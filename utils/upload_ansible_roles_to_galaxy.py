@@ -114,6 +114,9 @@ def update_repository(repository, local_file_path):
 
     tasks_local_content = yaml.dump(tasks_data, width=120, indent=4,
                                     default_flow_style=False)
+
+    # Add \n in between tasks to increase readability
+    tasks_local_content = tasks_local_content.replace('\n- ', '\n\n- ')
     tasks_remote_content = repository.get_file_contents("/tasks/main.yml")
 
     if tasks_local_content != tasks_remote_content.decoded_content:

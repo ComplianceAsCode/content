@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,fedora,ol7
 
 title: 'Ensure auditd Collects Information on the Use of Privileged Commands - newgrp'
 
@@ -49,3 +49,5 @@ ocil: |-
     following command:
     <pre>$ sudo grep newgrp /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     It should return a relevant line in the audit rules.
+
+platform: machine

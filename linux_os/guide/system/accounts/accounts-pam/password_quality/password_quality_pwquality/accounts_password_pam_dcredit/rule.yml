@@ -1,12 +1,27 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,fedora,ol7
 
 title: 'Set Password Strength Minimum Digit Characters'
 
-description: "The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for\nusage of digits in a password. When set to a negative number, any password will be required to\ncontain that many digits. When set to a positive number, pam_pwquality will grant +1 additional\nlength credit for each digit. Modify the <tt>dcredit</tt> setting in \n<tt>/etc/security/pwquality.conf</tt> to require the use of a digit in passwords."
+description: |-
+    The pam_pwquality module's <tt>dcredit</tt> parameter controls requirements for
+    usage of digits in a password. When set to a negative number, any password will be required to
+    contain that many digits. When set to a positive number, pam_pwquality will grant +1 additional
+    length credit for each digit. Modify the <tt>dcredit</tt> setting in
+    <tt>/etc/security/pwquality.conf</tt> to require the use of a digit in passwords.
 
-rationale: "Use of a complex password helps to increase the time and resources required\nto compromise the password. Password complexity, or strength, is a measure of\nthe effectiveness of a password in resisting attempts at guessing and brute-force\nattacks. \n<br /><br />\nPassword complexity is one factor of several that determines how long it takes\nto crack a password. The more complex the password, the greater the number of \npossble combinations that need to be tested before the password is compromised.\nRequiring digits makes password guessing attacks more difficult by ensuring a larger\nsearch space."
+rationale: |-
+    Use of a complex password helps to increase the time and resources required
+    to compromise the password. Password complexity, or strength, is a measure of
+    the effectiveness of a password in resisting attempts at guessing and brute-force
+    attacks.
+    <br /><br />
+    Password complexity is one factor of several that determines how long it takes
+    to crack a password. The more complex the password, the greater the number of
+    possible combinations that need to be tested before the password is compromised.
+    Requiring digits makes password guessing attacks more difficult by ensuring a larger
+    search space.
 
 severity: medium
 

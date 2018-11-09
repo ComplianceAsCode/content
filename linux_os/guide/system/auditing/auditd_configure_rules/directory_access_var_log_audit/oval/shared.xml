@@ -37,7 +37,7 @@
     <ind:object object_ref="object_directory_acccess_var_log_audit_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_directory_acccess_var_log_audit_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_audit_rule_access_var_log_audit_regex" />
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>

@@ -5,6 +5,7 @@
       <affected family="unix">
         <platform>multi_platform_rhel</platform>
         <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
       </affected>
       <description>Audit rules about the unauthorized access attempts to files (unsuccessful) are enabled.</description>
     </metadata>
@@ -98,7 +99,7 @@
     <ind:object object_ref="object_32bit_arufm_eacces_{{{ NAME }}}_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eacces_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -107,7 +108,7 @@
     <ind:object object_ref="object_32bit_arufm_eperm_{{{ NAME }}}_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_32bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_32bit_arufm_eperm_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -116,7 +117,7 @@
     <ind:object object_ref="object_64bit_arufm_eacces_{{{ NAME }}}_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eacces_{{{ NAME }}}_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eacces_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -125,7 +126,7 @@
     <ind:object object_ref="object_64bit_arufm_eperm_{{{ NAME }}}_augenrules" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_64bit_arufm_eperm_{{{ NAME }}}_augenrules" version="1">
-    <ind:filepath operation="pattern match">/etc/audit/rules\.d/.*\.rules</ind:filepath>
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
     <ind:pattern operation="pattern match" var_ref="var_64bit_arufm_eperm_{{{ NAME }}}_regex" />
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>

@@ -47,3 +47,5 @@ ocil: |-
     <pre>$ sudo grep "path=/usr/bin/chcon" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     The output should return something similar to:
     <pre>-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -F key=privileged-priv_change</pre>
+
+platform: machine

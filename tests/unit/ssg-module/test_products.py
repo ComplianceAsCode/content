@@ -16,9 +16,9 @@ def test_parse_name():
     assert n == "rhel"
     assert not v
 
-    n, v = pn("rhel-osp7")
-    assert n == "rhel-osp"
-    assert v == "7"
+    n, v = pn("rhosp13")
+    assert n == "rhosp"
+    assert v == "13"
 
 
 def test_get_all():
@@ -41,8 +41,8 @@ def test_map_name():
     assert mn('multi_platform_rhel') == 'Red Hat Enterprise Linux'
     assert mn('rhel') == 'Red Hat Enterprise Linux'
     assert mn('rhel7') == 'Red Hat Enterprise Linux'
-    assert mn('rhel-osp') == 'Red Hat OpenStack Platform'
-    assert mn('rhel-osp7') == 'Red Hat OpenStack Platform'
+    assert mn('rhosp') == 'Red Hat OpenStack Platform'
+    assert mn('rhosp13') == 'Red Hat OpenStack Platform'
 
     with pytest.raises(RuntimeError):
         mn('not-a-platform')

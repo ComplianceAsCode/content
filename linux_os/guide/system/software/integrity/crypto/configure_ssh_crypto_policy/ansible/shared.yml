@@ -1,0 +1,13 @@
+# platform = multi_platform_fedora
+# reboot = true
+# strategy = disable
+# complexity = low
+# disruption = medium
+
+- name: "@RULE_TITLE@"
+  lineinfile:
+    dest: /etc/sysconfig/sshd
+    state: absent
+    regexp: ^\s*CRYPTO_POLICY.*$
+  tags:
+    @ANSIBLE_TAGS@
