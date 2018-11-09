@@ -21,10 +21,8 @@ severity: unknown
 ocil_clause: 'the symlink does not exist or points to a different target'
 
 ocil: |-
-    Check that the symlink exists and target the correct kerberos crypto policy, with the following command:<br/>
+    Check that the symlink exists and target the correct kerberos crypto policy, with the following command:
     <pre>file /etc/krb5.conf.d/crypto-policies</pre>
-    <br/>
     If command ouput shows the following line, kerberos is configured to use the system-wide crypto policy.
-    <br/>
     <pre>/etc/krb5.conf.d/crypto-policies: symbolic link to /etc/crypto-policies/back-ends/krb5.config</pre>
 
