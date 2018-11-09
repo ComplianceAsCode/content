@@ -27,5 +27,5 @@ ocil: |-
     To verify that OpenSSL uses the system crypro policy, check out that the OpenSSL config file
     <pre>/etc/pki/tls/openssl.cnf</pre> contains the <pre>[ crypto_policy ]</pre> section with the
     <pre>.include /etc/crypto-policies/back-ends/openssl.config</pre> directive:
-    <pre>grep -A 3 '\[\s*crypto_policy\s*\]\s*$' /etc/pki/tls/openssl.cnf | grep '^\s*\.include \s*/etc/crypto-policies/back-ends/openssl.config\s*$' </pre>.
+    <pre>grep '\.include\s* /etc/crypto-policies/back-ends/openssl.config$' /etc/pki/tls/openssl.cnf</pre>.
 
