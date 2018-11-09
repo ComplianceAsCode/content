@@ -6,6 +6,7 @@ import os.path
 import datetime
 import sys
 
+from .constants import XCCDF_PLATFORM_TO_CPE
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 
 from .checks import is_cce_valid
@@ -395,6 +396,7 @@ class Group(object):
         self.values = {}
         self.groups = {}
         self.rules = {}
+        self.platform = None
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -410,6 +412,7 @@ class Group(object):
         group.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         group.warnings = yaml_contents.pop("warnings", [])
+        group.platform = yaml_contents.pop("platform", None)
 
         for warning_list in group.warnings:
             if len(warning_list) != 1:
@@ -430,6 +433,14 @@ class Group(object):
         title.text = self.title
         add_sub_element(group, 'description', self.description)
         add_warning_elements(group, self.warnings)
+
+        if self.platform:
+            platform_el = ET.SubElement(group, "platform")
+            try:
+                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            except KeyError:
+                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+            platform_el.set("idref", platform_cpe)
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
@@ -453,11 +464,15 @@ class Group(object):
     def add_group(self, group):
         if group is None:
             return
+        if self.platform and not group.platform:
+            group.platform = self.platform
         self.groups[group.id_] = group
 
     def add_rule(self, rule):
         if rule is None:
             return
+        if self.platform and not rule.platform:
+            rule.platform = self.platform
         self.rules[rule.id_] = rule
 
     def __str__(self):
@@ -480,6 +495,7 @@ class Rule(object):
         self.ocil = None
         self.external_oval = None
         self.warnings = []
+        self.platform = None
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -507,6 +523,7 @@ class Rule(object):
         rule.ocil = yaml_contents.pop("ocil", None)
         rule.external_oval = yaml_contents.pop("oval_external_content", None)
         rule.warnings = yaml_contents.pop("warnings", [])
+        rule.platform = yaml_contents.pop("platform", None)
 
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
@@ -610,6 +627,14 @@ class Rule(object):
 
         add_warning_elements(rule, self.warnings)
 
+        if self.platform:
+            platform_el = ET.SubElement(rule, "platform")
+            try:
+                platform_cpe = XCCDF_PLATFORM_TO_CPE[self.platform]
+            except KeyError:
+                raise ValueError("Unsupported platform '%s' in rule '%s'." % (self.platform, self.id_))
+            platform_el.set("idref", platform_cpe)
+
         return rule
 
     def to_file(self, file_name):
@@ -696,6 +721,8 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
                                     profiles_dir, env_yaml, bash_remediation_fns)
 
     if group is not None:
+        if parent_group:
+            parent_group.add_group(group)
         for value_yaml in values:
             if action == "list-inputs":
                 print(value_yaml)
@@ -715,9 +742,7 @@ def add_from_directory(action, parent_group, guide_directory, profiles_dir,
                 rule = Rule.from_yaml(rule_yaml, env_yaml)
                 group.add_rule(rule)
 
-        if parent_group:
-            parent_group.add_group(group)
-        else:
+        if not parent_group:
             # We are on the top level!
             # Lets dump the XCCDF group or benchmark to a file
             if action == "build":
