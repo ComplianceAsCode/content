@@ -9,7 +9,7 @@ SETPERMS_RPM_LIST=()
 
 # Create a list of files on the system having permissions different from what
 # is expected by the RPM database
-FILES_WITH_INCORRECT_PERMS=($(rpm -Va --nofiledigest | grep "^.*\(G\|U\)" | cut -d ' ' -f4-))
+FILES_WITH_INCORRECT_PERMS=($(rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'))
 
 # For each file path from that list:
 # * Determine the RPM package the file path is shipped by,
