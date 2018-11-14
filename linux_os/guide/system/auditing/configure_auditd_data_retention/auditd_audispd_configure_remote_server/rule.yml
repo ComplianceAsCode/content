@@ -7,7 +7,13 @@ title: 'Configure audispd Plugin To Send Logs To Remote Server'
 description: |-
     Configure the audispd plugin to off-load audit records onto a different
     system or media from the system being audited.
-    Set the <tt>remote_server</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>
+    Set the <tt>remote_server</tt> option in <pre>
+{{%- if product in ["rhel8", "fedora"] -%}}
+    /etc/audit/audisp-remote.conf
+{{%- else -%}}
+    /etc/audisp/audisp-remote.conf
+{{%- endif -%}}
+    </pre>
     with an IP address or hostname of the system that the audispd plugin should
     send audit records to. For example replacing <i>REMOTE_SYSTEM</i> with an IP
     address or hostname:
@@ -33,7 +39,11 @@ ocil_clause: 'audispd is not sending logs to a remote system'
 ocil: |-
     To verify the audispd plugin off-loads audit records onto a different system or
     media from the system being audited, run the following command:
+{{% if product in ["rhel8", "fedora"] %}}
+    <pre>$ sudo grep -i remote_server /etc/audit/audisp-remote.conf</pre>
+{{% else %}}
     <pre>$ sudo grep -i remote_server /etc/audisp/audisp-remote.conf</pre>
+{{% endif %}}
     The output should return something similar to where <i>REMOTE_SYSTEM</i>
     is an IP address or hostname:
     <pre>remote_server = <i>REMOTE_SYSTEM</i></pre>

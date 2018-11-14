@@ -5,10 +5,14 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
+{{% if product in ["rhel8", "fedora"] %}}
+      <description>remote_server setting in /etc/audit/audisp-remote.conf is set to a certain IP address or hostname</description>
+{{% else %}}
       <description>remote_server setting in /etc/audisp/audisp-remote.conf is set to a certain IP address or hostname</description>
+{{% endif %}}
     </metadata>
     <criteria>
-        <criterion comment="remote_server setting in /etc/audisp/audisp-remote.conf" test_ref="test_auditd_audispd_configure_remote_server" />
+        <criterion comment="remote_server setting in audisp-remote.conf" test_ref="test_auditd_audispd_configure_remote_server" />
     </criteria>
   </definition>
 
@@ -18,7 +22,11 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_auditd_audispd_configure_remote_server" version="1">
+{{% if product in ["rhel8", "fedora"] %}}
+    <ind:filepath>/etc/audit/audisp-remote.conf</ind:filepath>
+{{% else %}}
     <ind:filepath>/etc/audisp/audisp-remote.conf</ind:filepath>
+{{% endif %}}
     <!-- Allow only space (exactly) as delimiter -->
     <!-- Require at least one space before and after the equal sign -->
     <ind:pattern operation="pattern match">^[ ]*remote_server[ ]+=[ ]+(\S+)[ ]*$</ind:pattern>
