@@ -7,9 +7,15 @@ title: 'Encrypt Audit Records Sent With audispd Plugin'
 description: |-
     Configure the operating system to encrypt the transfer of off-loaded audit
     records onto a different system or media from the system being audited.
+{{% if product in ["rhel8", "fedora"] %}}
+    Uncomment the <tt>transport</tt> option in <pre>/etc/audit/audisp-remote.conf</pre>,
+    and set it with the following line:
+    <pre>transport = KRB5</pre>
+{{% else %}}
     Uncomment the <tt>enable_krb5</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>,
     and set it with the following line:
     <pre>enable_krb5 = yes</pre>
+{{% endif %}}
 
 rationale: |-
     Information stored in one location is vulnerable to accidental or incidental deletion
@@ -31,8 +37,14 @@ ocil_clause: 'audispd is not encrypting audit records when sent over the network
 ocil: |-
     To verify the audispd plugin encrypts audit records off-loaded onto a different
     system or media from the system being audited, run the following command:
+{{% if product in ["rhel8", "fedora"] %}}
+    <pre>$ sudo grep -i transport /etc/audit/audisp-remote.conf</pre>
+    The output should return the following:
+    <pre>transport = KRB5</pre>
+{{% else %}}
     <pre>$ sudo grep -i enable_krb5 /etc/audisp/audisp-remote.conf</pre>
     The output should return the following:
     <pre>enable_krb5 = yes</pre>
+{{% endif %}}
 
 platform: machine
