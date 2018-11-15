@@ -17,6 +17,7 @@
     - gdm.d/locks
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   file:
@@ -30,6 +31,7 @@
     - locks/00-security-settings-lock
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   ini_file:
@@ -40,6 +42,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
   lineinfile:
@@ -50,3 +53,4 @@
     state: present
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

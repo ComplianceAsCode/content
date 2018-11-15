@@ -12,6 +12,7 @@
     - firewalld
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - (xccdf-var sshd_listening_port)
 
@@ -20,7 +21,7 @@
     port: "{{ sshd_listening_port }}/tcp"
     permanent: yes
     state: enabled
-  when: sshd_listening_port != 22
+  when: sshd_listening_port != 22 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 
@@ -29,7 +30,6 @@
     service: ssh
     permanent: yes
     state: enabled
-  when: sshd_listening_port == 22
+  when: sshd_listening_port == 22 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-

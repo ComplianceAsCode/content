@@ -24,6 +24,7 @@
     state: before
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: set auth pam_faillock after pam_unix.so
   pamd:
@@ -42,6 +43,7 @@
     state: after
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: set account pam_faillock before pam_unix.so
   pamd:
@@ -55,3 +57,4 @@
     state: before
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

@@ -11,11 +11,13 @@
     - aide
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Build and Test AIDE Database"
   shell: /usr/sbin/aide --init
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 # mainly to allow ansible's check mode to work
 - name: "Check whether the stock AIDE Database exists"
@@ -24,6 +26,7 @@
   register: aide_database_stat
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Stage AIDE Database"
   copy:
@@ -31,6 +34,6 @@
     dest: /var/lib/aide/aide.db.gz
     backup: yes
     remote_src: yes
-  when: aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists
+  when: (aide_database_stat.stat.exists is defined and aide_database_stat.stat.exists) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

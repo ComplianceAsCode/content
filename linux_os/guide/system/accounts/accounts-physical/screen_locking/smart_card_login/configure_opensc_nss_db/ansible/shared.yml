@@ -9,9 +9,10 @@
   register: pkcsw_output
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   shell: /usr/bin/pkcs11-switch opensc
-  when: pkcsw_output.stdout != "opensc"
+  when: pkcsw_output.stdout != "opensc" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

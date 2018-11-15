@@ -44,6 +44,7 @@
     - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
   lineinfile:
@@ -53,7 +54,7 @@
   with_items:
     - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
     - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
-  when: audit_arch == 'b64'
+  when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 #   
@@ -69,6 +70,7 @@
     - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
@@ -79,6 +81,6 @@
   with_items:
     - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
     - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
-  when: audit_arch == 'b64'
+  when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

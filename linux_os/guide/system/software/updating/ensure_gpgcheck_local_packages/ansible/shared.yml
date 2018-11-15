@@ -20,7 +20,7 @@
     value: 1
     create: True
   with_items: "/etc/yum.conf"
-  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or yum_config_file.stat.exists
+  when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or yum_config_file.stat.exists) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 
@@ -32,7 +32,6 @@
     value: 1
     create: True
   with_items: "/etc/dnf/dnf.conf"
-  when: ansible_distribution == "Fedora"
+  when: ansible_distribution == "Fedora" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-

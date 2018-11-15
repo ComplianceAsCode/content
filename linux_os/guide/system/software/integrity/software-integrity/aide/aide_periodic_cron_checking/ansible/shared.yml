@@ -11,6 +11,7 @@
     - aide
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   cron:
@@ -22,3 +23,4 @@
     job: "/usr/sbin/aide --check"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

@@ -12,6 +12,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Test for domain group"
   shell: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
@@ -19,12 +20,13 @@
   ignore_errors: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Add default domain group and use STARTTLS (if no domain there)"
   lineinfile:
     path: /etc/sssd/sssd.conf
     line: "[domain/default]\nldap_id_use_start_tls = True\n"
-  when: test_grep_domain.stdout == ""
+  when: test_grep_domain.stdout == "" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 
@@ -36,3 +38,4 @@
     line: 'ldap_id_use_start_tls = True'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

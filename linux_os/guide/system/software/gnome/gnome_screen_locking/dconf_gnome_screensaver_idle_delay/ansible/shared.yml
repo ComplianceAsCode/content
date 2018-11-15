@@ -14,6 +14,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME idle-delay"
   lineinfile:
@@ -23,3 +24,4 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
