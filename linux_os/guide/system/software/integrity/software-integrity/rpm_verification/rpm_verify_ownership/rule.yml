@@ -9,7 +9,7 @@ description: |-
     permissions of installed software packages, including many that are
     important to system security. After locating a file with incorrect
     permissions, which can be found with
-    <pre>rpm -Va | grep "^.....\(U\|.G\)"</pre>
+    <pre>rpm -Va | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
     run the following command to determine which package owns it:
     <pre>$ rpm -qf <i>FILENAME</i></pre>
     Next, run the following command to reset its permissions to
@@ -45,7 +45,7 @@ ocil_clause: 'there is output'
 ocil: |-
     The following command will list which files on the system have ownership different from what
     is expected by the RPM database:
-    <pre>$ rpm -Va | grep "^.....\(U\|.G\)"</pre>
+    <pre>$ rpm -Va | rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
 
 warnings:
     - general: |-
