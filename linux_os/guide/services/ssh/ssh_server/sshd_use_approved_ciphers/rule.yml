@@ -10,7 +10,7 @@ description: |-
     demonstrates use of FIPS-approved ciphers:
     <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
     The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
-{{% elif product == "ol7" %}}
+{{% elif product in ["ol7","rhel7"] %}}
 description: |-
     Limit the ciphers to those algorithms which are FIPS-approved.
     Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
@@ -30,27 +30,11 @@ description: |-
     <br /><br />
     Any combination of the above ciphers will pass this check. 
     Official FIPS 140-2 paperwork for {{{ full_name }}} can be found at
+    {{% if product == "ol7" %}}
     {{{ weblink(link="https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3028.pdf") }}}
-{{% else %}}
-description: |-
-    Limit the ciphers to those algorithms which are FIPS-approved.
-    Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
-    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of 
-    FIPS 140-2 validated ciphers:
-    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
-    <br /><br />
-    The following ciphers are FIPS 140-2 certified on RHEL 7:
-    <br />- aes128-ctr
-    <br />- aes192-ctr
-    <br />- aes256-ctr
-    <br />- aes128-cbc
-    <br />- aes192-cbc
-    <br />- aes256-cbc
-    <br />- 3des-cbc
-    <br />- rijndael-cbc@lysator.liu.se
-    <br /><br />
-    Any combination of the above ciphers will pass this check. Official FIPS 140-2 paperwork for
-    RHEL7 can be found at {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
+    {{% else %}}
+    {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2630.pdf") }}}
+    {{% endif %}}
 {{% endif %}}
 
 rationale: |-
