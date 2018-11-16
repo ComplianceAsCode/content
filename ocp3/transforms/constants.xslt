@@ -2,7 +2,7 @@
 
 <xsl:include href="../../shared/transforms/shared_constants.xslt"/>
 
-<xsl:variable name="product_long_name">Red Hat Enterprise OpenShift Container Platform 3</xsl:variable>
+<xsl:variable name="product_long_name">Red Hat OpenShift Container Platform 3</xsl:variable>
 <xsl:variable name="product_short_name">OCP 3</xsl:variable>
 <xsl:variable name="product_stig_id_name">OCP_3_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">OCP-3</xsl:variable>
