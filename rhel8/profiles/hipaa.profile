@@ -10,7 +10,7 @@ description: |-
     confidentiality, integrity, and security of electronic protected health
     information.
 
-    This profile configures Red Hat Enterprise Linux 7 to the HIPAA Security
+    This profile configures Red Hat Enterprise Linux 8 to the HIPAA Security
     Rule identified for securing of electronic protected health information.
 
 selections:

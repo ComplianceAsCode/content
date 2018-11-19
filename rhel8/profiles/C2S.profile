@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'C2S for Red Hat Enterprise Linux 7'
+title: 'C2S for Red Hat Enterprise Linux 8'
 
 description: |-
     This profile demonstrates compliance against the
