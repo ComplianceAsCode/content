@@ -5,7 +5,7 @@ import datetime
 import os.path
 
 product_directories = ['debian8', 'fedora', 'ol7', 'opensuse', 'rhel6',
-                       'rhel7', 'sle11', 'sle12', 'ubuntu1404',
+                       'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'wrlinux', 'rhosp13', 'chromium',
                        'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'example']
 
