@@ -19,6 +19,8 @@
 
 - name: "Read files with incorrect hash"
   shell: "rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | awk '{print $NF}'"
+  args:
+    warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
   register: files_with_incorrect_hash
   changed_when: False
   when: (package_manager_reinstall_cmd is defined) and @ANSIBLE_PLATFORM_CONDITION@
@@ -28,6 +30,8 @@
 
 - name: "Reinstall packages of files with incorrect hash"
   shell: "{{package_manager_reinstall_cmd}} $(rpm -qf '{{item}}')"
+  args:
+    warn: False # Ignore ANSIBLE0006, this task is flexible with regards to package manager
   with_items: "{{ files_with_incorrect_hash.stdout_lines }}"
   when: (package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0)) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
