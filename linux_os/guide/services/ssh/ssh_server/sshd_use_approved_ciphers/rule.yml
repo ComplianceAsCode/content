@@ -2,7 +2,6 @@ documentation_complete: true
 
 title: 'Use Only FIPS 140-2 Validated Ciphers'
 
-{{% if product == "rhel6" %}}
 description: |-
     Limit the ciphers to those algorithms which are FIPS-approved.
     Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
@@ -10,13 +9,7 @@ description: |-
     demonstrates use of FIPS-approved ciphers:
     <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc</pre>
     The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
-{{% elif product in ["ol7","rhel7"] %}}
-description: |-
-    Limit the ciphers to those algorithms which are FIPS-approved.
-    Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
-    The following line in <tt>/etc/ssh/sshd_config</tt> demonstrates use of
-    FIPS 140-2 validated ciphers:
-    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
+{{% if product in ["rhel7","ol7"] %}}
     <br /><br />
     The following ciphers are FIPS 140-2 certified on {{{ full_name }}}:
     <br />- aes128-ctr
