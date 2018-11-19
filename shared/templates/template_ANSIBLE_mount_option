@@ -7,6 +7,7 @@
   shell: mount | grep ' {{{ MOUNTPOINT }}} ' |cut -d ' ' -f 1
   register: device_name
   check_mode: no
+  changed_when: False
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
