@@ -1,0 +1,29 @@
+<def-group>
+  <definition class="compliance" id="system_info_architecture_aarch_64"
+  version="1">
+    <!-- Note that this does not meet requirements for class=inventory as
+         that only tests for patches per 5.10.1 Revision 1 -->
+    <metadata>
+      <title>Test for aarch_64 Architecture</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Generic test for aarch_64 architecture to be used by other tests</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Generic test for aarch_64 architecture"
+      test_ref="test_system_info_architecture_aarch_64" />
+    </criteria>
+  </definition>
+  <unix:uname_test check="all" comment="64 bit architecture"
+  id="test_system_info_architecture_aarch_64" version="1">
+    <unix:object object_ref="object_system_info_architecture_aarch_64" />
+    <unix:state state_ref="state_system_info_architecture_aarch_64" />
+  </unix:uname_test>
+  <unix:uname_object comment="64 bit architecture"
+  id="object_system_info_architecture_aarch_64" version="1" />
+  <unix:uname_state comment="64 bit architecture"
+  id="state_system_info_architecture_aarch_64" version="1">
+    <unix:processor_type operation="equals">aarch64</unix:processor_type>
+  </unix:uname_state>
+</def-group>
