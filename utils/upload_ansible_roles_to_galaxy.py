@@ -83,10 +83,10 @@ def clone_and_init_repository(parent_dir, organization, repo):
         os.chdir("..")
 
 
-class Repository(object):
-    def __init__(self, repo, local_filename):
-        self.repository = repo
-        self.local_filename = local_filename
+class Role(object):
+    def __init__(self, repo, local_playbook_filename):
+        self.remote_repo = repo
+        self.local_playbook_filename = local_playbook_filename
 
         self.role_data = None
         self.vars_data = []
@@ -99,7 +99,7 @@ class Repository(object):
         self.title = None
 
     def gather_data(self):
-        with io.open(self.local_filename, 'r', encoding="utf-8") as f:
+        with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
             filedata = f.read()
 
         self.role_data = yaml.load(filedata)
@@ -153,10 +153,10 @@ class Repository(object):
         return description
 
     def _update_tasks_content_if_needed(self):
-        tasks_remote_content = self.repository.get_file_contents("/tasks/main.yml")
+        tasks_remote_content = self.remote_repo.get_file_contents("/tasks/main.yml")
 
         if self.tasks_local_content != tasks_remote_content.decoded_content:
-            self.repository.update_file(
+            self.remote_repo.update_file(
                 "/tasks/main.yml",
                 "Updates tasks/main.yml",
                 self.tasks_local_content,
@@ -164,15 +164,15 @@ class Repository(object):
                 author=InputGitAuthor(
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
-            print("Updating tasks/main.yml in %s" % self.repository.name)
+            print("Updating tasks/main.yml in %s" % self.remote_repo.name)
 
     def _update_vars_content_if_needed(self):
-        vars_remote_content = self.repository.get_file_contents("/vars/main.yml")
+        vars_remote_content = self.remote_repo.get_file_contents("/vars/main.yml")
         vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
                                        default_flow_style=False)
 
         if vars_local_content != vars_remote_content.decoded_content:
-            self.repository.update_file(
+            self.remote_repo.update_file(
                 "/vars/main.yml",
                 "Updates vars/main.yml",
                 vars_local_content,
@@ -181,7 +181,7 @@ class Repository(object):
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
 
-            print("Updating vars/main.yml in %s" % self.repository.name)
+            print("Updating vars/main.yml in %s" % self.remote_repo.name)
 
     def _generate_readme_content(self):
         with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
@@ -194,17 +194,17 @@ class Repository(object):
         local_readme_content = local_readme_content.replace(
             "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
         local_readme_content = local_readme_content.replace(
-            "@ROLE_NAME@", self.repository.name)
+            "@ROLE_NAME@", self.remote_repo.name)
         return local_readme_content
 
     def _update_readme_content_if_needed(self):
         local_readme_content = self._generate_readme_content()
-        remote_readme_file = self.repository.get_file_contents("/README.md")
+        remote_readme_file = self.remote_repo.get_file_contents("/README.md")
 
         if local_readme_content != remote_readme_file.decoded_content.decode("utf-8"):
-            print("Updating README.md in %s" % self.repository.name)
+            print("Updating README.md in %s" % self.remote_repo.name)
 
-            self.repository.update_file(
+            self.remote_repo.update_file(
                 "/README.md",
                 "Updates README.md",
                 local_readme_content,
@@ -220,11 +220,11 @@ class Repository(object):
         local_meta_content = meta_template.replace("@DESCRIPTION@", self.title)
         local_meta_content = local_meta_content.replace(
             "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
-        remote_meta_file = self.repository.get_file_contents("/meta/main.yml")
+        remote_meta_file = self.remote_repo.get_file_contents("/meta/main.yml")
 
         if local_meta_content != remote_meta_file.decoded_content:
-            print("Updating meta/main.yml in %s" % self.repository.name)
-            self.repository.update_file(
+            print("Updating meta/main.yml in %s" % self.remote_repo.name)
+            self.remote_repo.update_file(
                 "/meta/main.yml",
                 "Updates meta/main.yml",
                 local_meta_content,
@@ -233,8 +233,8 @@ class Repository(object):
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
 
-    def update(self):
-        print("Processing %s..." % self.repository.name)
+    def update_repository(self):
+        print("Processing %s..." % self.remote_repo.name)
 
         self.gather_data()
         self._reformat_local_content()
@@ -249,10 +249,10 @@ class Repository(object):
         self._update_meta_content_if_needed()
 
         repo_description = (
-            "{title} - Ansible role generated from the SCAP Security Guide project"
+            "{title} - Ansible role generated from ComplianceAsCode"
             .format(title=self.title))
-        self.repository.edit(
-            self.repository.name,
+        self.remote_repo.edit(
+            self.remote_repo.name,
             description=repo_description,
             homepage="https://www.open-scap.org/",
         )
@@ -270,8 +270,8 @@ def parse_args():
         "--organization", "-o", default=ORGANIZATION_NAME,
         help="Name of the Github organization")
     parser.add_argument(
-        "--profile", "-p", default=[], nargs="*",
-        help="What profiles to build, if not specified, build all.")
+        "--profile", "-p", default=[], nargs="*", action="append",
+        help="What profiles to upload, if not specified, upload them all.")
     return parser.parse_args()
 
 
@@ -332,7 +332,7 @@ def main():
         if repo.name in roles:
             corresponding_filename = os.path.join(
                 args.build_roles_dir, "ssg-" + repo.name + ".yml")
-            Repository(repo, corresponding_filename).update()
+            Role(repo, corresponding_filename).update_repository()
         else:
             print("Repo %s should be deleted, please verify and do that "
                   "manually!" % repo.name)
