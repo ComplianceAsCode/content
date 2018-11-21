@@ -5,7 +5,7 @@ import datetime
 import os.path
 
 product_directories = ['debian8', 'fedora', 'ol7', 'opensuse', 'rhel6',
-                       'rhel7', 'sle11', 'sle12', 'ubuntu1404',
+                       'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'wrlinux', 'rhosp13', 'chromium',
                        'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'example']
 
@@ -80,11 +80,13 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
+    "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
 }
 
 RHEL_SL_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:scientificlinux:scientificlinux:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
+    "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:scientificlinux:scientificlinux:8",
 }
 
 CENTOS_NOTICE = \
