@@ -32,7 +32,7 @@ selections:
     - accounts_password_pam_ucredit
     - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
-    - package_screen_installed
+    - package_tmux_installed
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_kexec_load_disabled
