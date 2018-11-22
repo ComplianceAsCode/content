@@ -43,6 +43,17 @@ yaml.add_representer(collections.OrderedDict, dict_representer)
 yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
+PROFILE_WHITELIST = set([
+    "C2S",
+    "hipaa",
+    "nist-800-171-cui",
+    "ospp",
+    "pci-dss",
+    "rht-ccp",
+    "stig-rhel7-disa",
+])
+
+
 ORGANIZATION_NAME = "RedHatOfficial"
 GIT_COMMIT_AUTHOR_NAME = "Red Hat Security Automation development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
@@ -271,7 +282,8 @@ def parse_args():
         help="Name of the Github organization")
     parser.add_argument(
         "--profile", "-p", default=[], nargs="*", action="append",
-        help="What profiles to upload, if not specified, upload them all.")
+        metavar="PROFILE", choices=PROFILE_WHITELIST,
+        help="What profiles to upload, if not specified, upload all that are applicable.")
     return parser.parse_args()
 
 
@@ -290,15 +302,7 @@ def locally_clone_and_init_repositories(organization, repo_list):
 def main():
     args = parse_args()
 
-    role_whitelist = set([
-        "rhel7-role-C2S",
-        "rhel7-role-hipaa",
-        "rhel7-role-nist-800-171-cui",
-        "rhel7-role-ospp",
-        "rhel7-role-pci-dss",
-        "rhel7-role-rht-ccp",
-        "rhel7-role-stig-rhel7-disa"
-    ])
+    role_whitelist = {"rhel7-role-%s" % p for p in PROFILE_WHITELIST}
     if args.profile:
         selected_roles = {"rhel7-role-%s" % p for p in args.profile}
         role_whitelist.intersection_update(selected_roles)
