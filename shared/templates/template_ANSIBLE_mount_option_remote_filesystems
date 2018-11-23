@@ -8,6 +8,7 @@
   shell: grep -E "[[:space:]]nfs[4]?[[:space:]]" /etc/fstab | grep -v "{{{ MOUNTOPTION }}}" | awk '{print $2}'
   register: points_register
   check_mode: no
+  changed_when: False
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
