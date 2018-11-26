@@ -7,6 +7,7 @@ from __future__ import print_function
 
 import re
 from .xml import ElementTree
+from .constants import standard_profiles, OSCAP_VENDOR
 
 
 def add_cpes(elem, namespace, mapping):
@@ -105,6 +106,18 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
             if fix.text is not None:
                 fix.text = re.sub(r"[\s]+- CCE-.*", "", fix.text)
                 fix.text = re.sub(r"CCE-[0-9]*-[0-9]*", "", fix.text)
+
+
+def profile_handling(tree_root, namespace):
+    ns_profiles = []
+    for i in standard_profiles:
+        ns_profiles.append("xccdf_%s.content_profile_%s" % (OSCAP_VENDOR, i))
+    all_profiles = standard_profiles + ns_profiles
+    for profile in tree_root.findall(".//{%s}Profile" % (namespace)):
+        if profile.get("id") not in all_profiles:
+            print(profile.get("id"))
+            tree_root.remove(profile)
+
 
 def replace_platform(tree_root, namespace, product):
     for oval in tree_root.findall(".//{%s}oval_definitions" % (namespace)):
