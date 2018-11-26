@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora
+
+title: "Enable Dracut FIPS Module"
+
+description: |-
+    To enable FIPS, the system requires that the <tt>fips</tt> module is added in
+    <tt>dracut</tt> configuration.
+    Check if <tt>/etc/dracut.conf.d/40-fips.conf</tt> contain <tt>add_dracutmodules+=" fips "</tt>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: medium
+
+ocil_clause: 'the Dracut FIPS module is not enabled'
+
+ocil: |-
+    To verify that the Dracut FIPS module is enabled, run the following command:
+    <tt>grep "add_dracutmodules" /etc/dracut.conf.d/40-fips.conf</tt>
+    The output should look like this:
+    <tt>add_dracutmodules+=" fips "</tt>
