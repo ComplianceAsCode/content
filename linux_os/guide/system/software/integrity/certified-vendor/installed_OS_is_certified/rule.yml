@@ -1,14 +1,21 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora
+prodtype: rhel6,rhel7,rhel8,fedora,ol7
 
 title: 'The Installed Operating System Is Vendor Supported and Certified'
 
 description: |-
     The installed operating system must be maintained and certified by a vendor.
+    {{% if product == "ol7" %}}
+    Oracle Linux is supported by Oracle Corporation. As the Oracle
+    Linux vendor, Oracle Corporation is responsible for providing security patches as well
+    as meeting and maintaining goverment certifications and standards.
+    {{% else %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for providing security patches as well
     as meeting and maintaining goverment certifications and standards.
+    {{% endif %}}
+
 
 rationale: |-
     An operating system is considered "supported" if the vendor continues to provide

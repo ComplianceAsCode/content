@@ -48,7 +48,13 @@ description: |-
     to use broadcast or multicast IP, or to perform authentication of packets with
     the <tt>Autokey</tt> protocol, should consider using <tt>ntpd</tt>.
     <br /><br />
-    Refer to {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}} for more detailed comparison of features of <tt>chronyd</tt>
+    Refer to
+    {{% if product == "ol7" %}}
+        {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-nettime.html") }}}
+    {{% else %}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}}
+    {{% endif %}}
+    for more detailed comparison of features of <tt>chronyd</tt>
     and <tt>ntpd</tt> daemon features respectively, and for further guidance how to
     choose between the two NTP daemons.
     <br /><br />

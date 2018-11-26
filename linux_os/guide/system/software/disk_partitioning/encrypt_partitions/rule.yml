@@ -5,7 +5,7 @@ prodtype: rhel6,rhel7,rhel8
 title: 'Encrypt Partitions'
 
 description: |-
-    Red Hat Enterprise Linux 7 natively supports partition encryption through the
+    {{{ full_name }}} natively supports partition encryption through the
     Linux Unified Key Setup-on-disk-format (LUKS) technology. The easiest way to
     encrypt a partition is during installation time.
     <br /><br />
@@ -28,8 +28,12 @@ description: |-
     with a minimum <tt>512</tt> bit key size which should be compatible with FIPS enabled.
     <br /><br />
     Detailed information on encrypting partitions using LUKS or LUKS ciphers can be found on
-    the Red Hat Documentation web site:<br />
-    {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html") }}}.
+    the {{{ full_name }}} Documentation web site:<br />
+    {{% if product == "ol7" %}}
+        {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54670/html/ol7-encrypt-sec.html") }}}.
+    {{% else %}}
+        {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html") }}}.
+    {{% endif %}}
 
 rationale: |-
     The risk of a system's physical compromise, particularly mobile systems such as
