@@ -8,9 +8,8 @@ description: |-
     Configure the operating system to encrypt the transfer of off-loaded audit
     records onto a different system or media from the system being audited.
 {{% if product in ["rhel8", "fedora"] %}}
-    Uncomment the <tt>transport</tt> option in <pre>/etc/audit/audisp-remote.conf</pre>,
-    and set it with the following line:
-    <pre>transport = KRB5</pre>
+    Set the <tt>transport</tt> option in <pre>/etc/audit/audisp-remote.conf</pre>
+    to <tt>KRB5</tt>.
 {{% else %}}
     Uncomment the <tt>enable_krb5</tt> option in <pre>/etc/audisp/audisp-remote.conf</pre>,
     and set it with the following line:
