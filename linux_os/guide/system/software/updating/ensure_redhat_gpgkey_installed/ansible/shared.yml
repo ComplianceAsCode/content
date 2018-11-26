@@ -15,7 +15,12 @@
 # It should fail if it doesn't find any fingerprints in file - maybe file was not parsed well.
 
 - name: Read signatures in GPG key
-  shell: gpg --with-fingerprint '/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release' | grep 'Key fingerprint =' | tr -s ' ' | sed 's;.*= ;;g'
+  # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
+  {{% if product == "rhel8" -%}}
+  shell: gpg --show-key --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+  {{%- else -%}}
+  shell: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+  {{%- endif %}}
   changed_when: False
   register: gpg_fingerprints
   check_mode: no
@@ -25,7 +30,7 @@
 
 - name: Set Fact - Valid fingerprints
   set_fact:
-     gpg_valid_fingerprints: ("567E 347A D004 4ADE 55BA 8A5F 199E 2F91 FD43 1D51" "43A6 E49C 4A38 F4BE 9ABF 2A53 4568 9C88 2FA6 58E0")
+     gpg_valid_fingerprints: ("567E347AD0044ADE55BA8A5F199E2F91FD431D51" "43A6E49C4A38F4BE9ABF2A5345689C882FA658E0")
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
