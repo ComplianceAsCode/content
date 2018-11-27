@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
 SSH_CONF="/etc/sysconfig/sshd"
 
