@@ -28,6 +28,7 @@ def _parse_parameters(script):
     """Parse parameters from script header"""
     params = {'profiles': [],
               'templates': [],
+              'platform': ['multi_platform_all'],
               'remediation': ['all']}
     with open(script, 'r') as script_file:
         script_content = script_file.read()
@@ -37,7 +38,7 @@ def _parse_parameters(script):
                               re.MULTILINE)
             if found is None:
                 continue
-            params[parameter] = found.group(1).split(', ')
+            params[parameter] = [value.strip() for value in found.group(1).split(',')]
     return params
 
 
@@ -150,7 +151,23 @@ def _matches_target(rule_dir, targets):
         return False
 
 
-def _get_scenarios(rule_dir, scripts):
+def _matches_platform(scenario_platforms, benchmark_cpes):
+    if "multi_platform_all" in scenario_platforms:
+        return True
+    scenario_cpes = set()
+    for platform in scenario_platforms:
+        try:
+            if platform.startswith("multi_platform_"):
+                platform_cpes = set(common.TEST_MULTI_PLATFORMS[platform])
+            else:
+                platform_cpes = set(common.TEST_PLATFORMS[platform])
+        except KeyError:
+            raise ValueError("Platform '%s' is not supported by the test suite." % platform)
+        scenario_cpes |= platform_cpes
+    return len(scenario_cpes & benchmark_cpes) > 0
+
+
+def _get_scenarios(rule_dir, scripts, benchmark_cpes):
     """ Returns only valid scenario files, rest is ignored (is not meant
     to be executed directly.
     """
@@ -160,7 +177,10 @@ def _get_scenarios(rule_dir, scripts):
         script_context = _get_script_context(script)
         if script_context is not None:
             script_params = _parse_parameters(os.path.join(rule_dir, script))
-            scenarios += [Scenario(script, script_context, script_params)]
+            if _matches_platform(script_params["platform"], benchmark_cpes):
+                scenarios += [Scenario(script, script_context, script_params)]
+            else:
+                logging.info("Script %s is not applicable on given platform" % script)
     return scenarios
 
 
@@ -280,7 +300,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
         args_list = [(s, remote_rule_dir, rule.id)
-                     for s in _get_scenarios(local_rule_dir, rule.files)]
+                     for s in _get_scenarios(local_rule_dir, rule.files, self.benchmark_cpes)]
         state.map_on_top(self._check_and_record_rule_scenario, args_list)
 
     def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id):
@@ -327,5 +347,6 @@ def perform_rule_check(options):
     checker.remediate_using = options.remediate_using
     checker.dont_clean = options.dont_clean
     checker.manual_debug = options.manual_debug
+    checker.benchmark_cpes = options.benchmark_cpes
 
     checker.test_target(options.target)

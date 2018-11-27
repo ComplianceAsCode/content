@@ -141,6 +141,28 @@ expects success.
 Support files, that are available to the scenarios during their runtime. Can
 be used as common libraries.
 
+### Scenarios format
+
+Scenarios are simple bash scripts. The scenarios start with a header which provides metadata.
+The header consists of comments (starting by `#`). Possible values are:
+- `platform` is a comma-separated list of platforms where the test scenario can be run. This is similar to `platform` used in our remediations. Examples of values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`, `multi_platform_all`. If `platform` is not specified in the header, `multi_platform_all` is assumed.
+- `profiles` is a comma-separated list of profiles which are using this scenario.
+- `remediation` is a comma-separated list of allowed remediation types (eg. `bash`, `ansible`).
+- `templates` has no effect at the moment.
+
+Example of a scenario:
+
+```
+#!/bin/bash
+#
+# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# profiles = xccdf_org.ssgproject.content_profile_ospp
+
+echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
+```
+
+After the header arbitrary bash commands follow.
+
 ## Example of incorporating new test scenario
 
 Let's show how to add test scenario for

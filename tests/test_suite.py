@@ -171,6 +171,15 @@ def normalize_passed_arguments(options):
             "The base image option has not been specified, "
             "choosing libvirt-based test environment.")
 
+    try:
+        benchmark_cpes = xml_operations.benchmark_get_applicable_platforms(
+            options.datastream, options.benchmark_id
+        )
+        options.benchmark_cpes = benchmark_cpes
+    except RuntimeError as exc:
+        msg = "Error inferring platform from component refId: {}".format(str(exc))
+        raise RuntimeError(msg)
+
 
 def main():
     options = parse_args()

@@ -564,6 +564,7 @@ class Checker(object):
         self.datastream = ""
         self.benchmark_id = ""
         self.remediate_using = ""
+        self.benchmark_cpes = set()
 
         now = datetime.datetime.now()
         self.test_timestamp_str = now.strftime("%Y-%m-%d %H:%M")
