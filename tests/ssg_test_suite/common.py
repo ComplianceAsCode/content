@@ -21,17 +21,35 @@ IGNORE_KNOWN_HOSTS_OPTIONS = (
 # Keys are strings used in test scenario header in 'platform' list
 # CentOS CPEs are added to allow testing RHEL profiles on CentOS VMs
 TEST_PLATFORMS = {
-    "Red Hat Enterprise Linux 6": ["cpe:/o:redhat:enterprise_linux:6", "cpe:/o:centos:centos:6"],
-    "Red Hat Enterprise Linux 7": ["cpe:/o:redhat:enterprise_linux:7", "cpe:/o:centos:centos:7"],
-    "Red Hat Enterprise Linux 8": ["cpe:/o:redhat:enterprise_linux:8", "cpe:/o:centos:centos:8"],
-    "Fedora": ["cpe:/o:fedoraproject:fedora:28", "cpe:/o:fedoraproject:fedora:29", "cpe:/o:fedoraproject:fedora:30"],
+    "Red Hat Enterprise Linux 6": [
+        "cpe:/o:redhat:enterprise_linux:6",
+        "cpe:/o:centos:centos:6"
+    ],
+    "Red Hat Enterprise Linux 7": [
+        "cpe:/o:redhat:enterprise_linux:7",
+        "cpe:/o:centos:centos:7"
+    ],
+    "Red Hat Enterprise Linux 8": [
+        "cpe:/o:redhat:enterprise_linux:8",
+        "cpe:/o:centos:centos:8"
+    ],
+    "Fedora": [
+        "cpe:/o:fedoraproject:fedora:28",
+        "cpe:/o:fedoraproject:fedora:29",
+        "cpe:/o:fedoraproject:fedora:30"
+    ],
 }
 
 # Keys are strings used in test scenario header in 'platform' list
 TEST_MULTI_PLATFORMS = {
-    "multi_platform_rhel": TEST_PLATFORMS["Red Hat Enterprise Linux 6"] + TEST_PLATFORMS["Red Hat Enterprise Linux 7"] + TEST_PLATFORMS["Red Hat Enterprise Linux 8"],
-    "multi_platform_fedora": TEST_PLATFORMS["Fedora"]
+    "multi_platform_rhel":
+        TEST_PLATFORMS["Red Hat Enterprise Linux 6"] +
+        TEST_PLATFORMS["Red Hat Enterprise Linux 7"] +
+        TEST_PLATFORMS["Red Hat Enterprise Linux 8"],
+    "multi_platform_fedora":
+        TEST_PLATFORMS["Fedora"]
 }
+
 
 class Stage(enum.IntEnum):
     NONE = 0

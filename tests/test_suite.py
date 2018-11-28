@@ -177,7 +177,7 @@ def normalize_passed_arguments(options):
         )
         options.benchmark_cpes = benchmark_cpes
     except RuntimeError as exc:
-        msg = "Error inferring platform from component refId: {}".format(str(exc))
+        msg = "Error inferring platform from benchmark: {}".format(str(exc))
         raise RuntimeError(msg)
 
 

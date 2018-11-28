@@ -38,7 +38,8 @@ def _parse_parameters(script):
                               re.MULTILINE)
             if found is None:
                 continue
-            params[parameter] = [value.strip() for value in found.group(1).split(',')]
+            splitted = found.group(1).split(',')
+            params[parameter] = [value.strip() for value in splitted]
     return params
 
 
@@ -162,7 +163,8 @@ def _matches_platform(scenario_platforms, benchmark_cpes):
             else:
                 platform_cpes = set(common.TEST_PLATFORMS[platform])
         except KeyError:
-            raise ValueError("Platform '%s' is not supported by the test suite." % platform)
+            raise ValueError(
+                "Platform '%s' is not supported by the test suite." % platform)
         scenario_cpes |= platform_cpes
     return len(scenario_cpes & benchmark_cpes) > 0
 
