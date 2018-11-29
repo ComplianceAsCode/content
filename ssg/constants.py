@@ -77,6 +77,124 @@ PKG_MANAGER_TO_CONFIG_FILE = {
     "dnf": "/etc/dnf/dnf.conf",
 }
 
+PRODUCT_TO_CPE_MAPPING = {
+    "chromium": [
+        "cpe:/a:google:chromium-browser",
+    ],
+    "debian8": [
+        "cpe:/o:debianproject:debian:8",
+    ],
+    "eap6": [
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.1.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.1.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.2",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.3",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.4",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.2",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.3",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.2",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.3",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.4",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.5",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.6",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.7",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.8",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.9",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.10",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.11",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.12",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.13",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.14",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.15",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.16",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.17",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.18",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.19",
+    ],
+    "example": [
+    ],
+    "fedora": [
+        "cpe:/o:fedoraproject:fedora:30",
+        "cpe:/o:fedoraproject:fedora:29",
+        "cpe:/o:fedoraproject:fedora:28",
+        "cpe:/o:fedoraproject:fedora:27",
+        "cpe:/o:fedoraproject:fedora:26",
+        "cpe:/o:fedoraproject:fedora:25",
+    ],
+    "firefox": [
+        "cpe:/a:mozilla:firefox",
+    ],
+    "fuse6": [
+        "cpe:/a:redhat:jboss_fuse:6.0",
+        "cpe:/a:redhat:jboss_fuse:6.1.0",
+        "cpe:/a:redhat:jboss_fuse_service_works:6.0",
+    ],
+    "jre": [
+        "cpe:/a:oracle:jre:",
+        "cpe:/a:sun:jre:",
+        "cpe:/a:redhat:openjdk:",
+        "cpe:/a:ibm:jre:",
+    ],
+    "ocp3": [
+        "cpe:/a:redhat:openshift_container_platform:3.10",
+        "cpe:/a:redhat:openshift_container_platform:3.11",
+    ],
+    "ol7": [
+        "cpe:/o:oracle:linux:7",
+    ],
+    "opensuse": [
+        "cpe:/o:opensuse:leap:42.1",
+        "cpe:/o:opensuse:leap:42.2",
+        "cpe:/o:opensuse:leap:42.3",
+        "cpe:/o:opensuse:leap:15.0",
+    ],
+    "rhel6": [
+        "cpe:/o:redhat:enterprise_linux:6",
+        "cpe:/o:redhat:enterprise_linux:6::client",
+        "cpe:/o:redhat:enterprise_linux:6::computenode",
+    ],
+    "rhel7": [
+        "cpe:/o:redhat:enterprise_linux:7",
+        "cpe:/o:redhat:enterprise_linux:7::client",
+        "cpe:/o:redhat:enterprise_linux:7::computenode",
+    ],
+    "rhel8": [
+        "cpe:/o:redhat:enterprise_linux:8",
+    ],
+    "rhosp13": [
+        "cpe:/a:redhat:openstack:13.0",
+    ],
+    "rhv4": [
+        "cpe:/o:redhat:virtualization:4",
+    ],
+    "sle11": [
+        "cpe:/o:suse:linux_enterprise_server:11",
+    ],
+    "sle12": [
+        "cpe:/o:suse:linux_enterprise_server:12",
+    ],
+    "ubuntu1404": [
+        "cpe:/o:canonical:ubuntu_linux:14.04",
+    ],
+    "ubuntu1604": [
+        "cpe:/o:canonical:ubuntu_linux:16.04",
+    ],
+    "ubuntu1804": [
+        "cpe:/o:canonical:ubuntu_linux:18.04",
+    ],
+    "wrlinux": [
+        "cpe:/o:windriver:wrlinux:8",
+    ],
+}
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
