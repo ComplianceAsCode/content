@@ -147,7 +147,8 @@ Scenarios are simple bash scripts. The scenarios start with a header which provi
 The header consists of comments (starting by `#`). Possible values are:
 - `platform` is a comma-separated list of platforms where the test scenario can be run. This is similar to `platform` used in our remediations. Examples of values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`, `multi_platform_all`. If `platform` is not specified in the header, `multi_platform_all` is assumed.
 - `profiles` is a comma-separated list of profiles which are using this scenario.
-- `remediation` is a comma-separated list of allowed remediation types (eg. `bash`, `ansible`).
+- `remediation` is a comma-separated list of allowed remediation types (eg. `bash`, `ansible`, `none`).
+  The `none` value means that the tested rule has no implemented remediation.
 - `templates` has no effect at the moment.
 
 Example of a scenario:
