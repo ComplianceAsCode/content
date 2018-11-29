@@ -223,6 +223,21 @@ PRODUCT_TO_CPE_MAPPING = {
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
+MULTI_PLATFORM_MAPPING = {
+    "multi_platform_debian": ["debian8"],
+    "multi_platform_example": ["example"],
+    "multi_platform_fedora": ["fedora"],
+    "multi_platform_opensuse": ["opensuse"],
+    "multi_platform_ol": ["ol7"],
+    "multi_platform_ocp": ["ocp3"],
+    "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
+    "multi_platform_rhosp": ["rhosp13"],
+    "multi_platform_rhv": ["rhv4"],
+    "multi_platform_sle": ["sle11", "sle12"],
+    "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
+    "multi_platform_wrlinux": ["wrlinux"],
+}
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
