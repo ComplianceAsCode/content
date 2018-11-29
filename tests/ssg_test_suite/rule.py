@@ -15,6 +15,9 @@ from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
+from ssg.constants import MULTI_PLATFORM_MAPPING
+from ssg.constants import PRODUCT_TO_CPE_MAPPING
+from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 import data
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
@@ -152,20 +155,39 @@ def _matches_target(rule_dir, targets):
         return False
 
 
+def _get_platform_cpes(platform):
+    if platform.startswith("multi_platform_"):
+        try:
+            products = MULTI_PLATFORM_MAPPING[platform]
+        except KeyError:
+            logging.error(
+                "Unknown multi_platform specifier: %s is not from %s"
+                % (platform, ", ".join(MULTI_PLATFORM_MAPPING.keys())))
+            return set()
+        platform_cpes = set()
+        for p in products:
+            platform_cpes |= set(PRODUCT_TO_CPE_MAPPING[p])
+        return platform_cpes
+    else:
+        # scenario platform is specified by a full product name
+        try:
+            product = FULL_NAME_TO_PRODUCT_MAPPING[platform]
+        except KeyError:
+            logging.error(
+                "Unknown product name: %s is not from %s"
+                % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
+            return set()
+        platform_cpes = set(PRODUCT_TO_CPE_MAPPING[product])
+        return platform_cpes
+
+
 def _matches_platform(scenario_platforms, benchmark_cpes):
     if "multi_platform_all" in scenario_platforms:
         return True
     scenario_cpes = set()
-    for platform in scenario_platforms:
-        try:
-            if platform.startswith("multi_platform_"):
-                platform_cpes = set(common.TEST_MULTI_PLATFORMS[platform])
-            else:
-                platform_cpes = set(common.TEST_PLATFORMS[platform])
-        except KeyError:
-            raise ValueError(
-                "Platform '%s' is not supported by the test suite." % platform)
-        scenario_cpes |= platform_cpes
+    for p in scenario_platforms:
+        scenario_cpes |= _get_platform_cpes(p)
+    print(scenario_cpes)
     return len(scenario_cpes & benchmark_cpes) > 0
 
 
