@@ -77,6 +77,31 @@ PKG_MANAGER_TO_CONFIG_FILE = {
     "dnf": "/etc/dnf/dnf.conf",
 }
 
+FULL_NAME_TO_PRODUCT_MAPPING = {
+    "Chromium": "chromium",
+    "Debian 8": "debian8",
+    "JBoss EAP 6": "eap6",
+    "Example": "example",
+    "Fedora": "fedora",
+    "Firefox": "firefox",
+    "JBoss Fuse 6": "fuse6",
+    "Java Runtime Environment": "jre",
+    "Red Hat OpenShift Container Platform 3": "ocp3",
+    "Oracle Linux 7": "ol7",
+    "openSUSE": "opensuse",
+    "Red Hat Enterprise Linux 6": "rhel6",
+    "Red Hat Enterprise Linux 7": "rhel7",
+    "Red Hat Enterprise Linux 8": "rhel8",
+    "Red Hat OpenStack Platform 13": "rhosp13",
+    "Red Hat Virtualization 4": "rhv4",
+    "SUSE Linux Enterprise 11": "sle11",
+    "SUSE Linux Enterprise 12": "sle12",
+    "Ubuntu 14.04": "ubuntu1404",
+    "Ubuntu 16.04": "ubuntu1604",
+    "Ubuntu 18.04": "ubuntu1804",
+    "WRLinux": "wrlinux",
+}
+
 PRODUCT_TO_CPE_MAPPING = {
     "chromium": [
         "cpe:/a:google:chromium-browser",
