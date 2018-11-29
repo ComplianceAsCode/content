@@ -195,6 +195,9 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
 }
 
+MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
+                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
