@@ -1,4 +1,4 @@
-# platform =  multi_platform_fedora
+# platform =  multi_platform_fedora,Red Hat Enterprise Linux 8
 
 function remediate_libreswan_crypto_policy() {
     CONFIG_FILE="/etc/ipsec.conf"

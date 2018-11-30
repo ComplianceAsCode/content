@@ -1,4 +1,4 @@
-# platform = multi_platform_fedora
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions
