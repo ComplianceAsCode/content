@@ -15,9 +15,6 @@ from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
-from ssg.constants import MULTI_PLATFORM_MAPPING
-from ssg.constants import PRODUCT_TO_CPE_MAPPING
-from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 import data
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
@@ -154,43 +151,6 @@ def _matches_target(rule_dir, targets):
                 return True
         return False
 
-
-def _get_platform_cpes(platform):
-    if platform.startswith("multi_platform_"):
-        try:
-            products = MULTI_PLATFORM_MAPPING[platform]
-        except KeyError:
-            logging.error(
-                "Unknown multi_platform specifier: %s is not from %s"
-                % (platform, ", ".join(MULTI_PLATFORM_MAPPING.keys())))
-            raise ValueError
-        platform_cpes = set()
-        for p in products:
-            platform_cpes |= set(PRODUCT_TO_CPE_MAPPING[p])
-        return platform_cpes
-    else:
-        # scenario platform is specified by a full product name
-        try:
-            product = FULL_NAME_TO_PRODUCT_MAPPING[platform]
-        except KeyError:
-            logging.error(
-                "Unknown product name: %s is not from %s"
-                % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
-            raise ValueError
-        platform_cpes = set(PRODUCT_TO_CPE_MAPPING[product])
-        return platform_cpes
-
-
-def _matches_platform(scenario_platforms, benchmark_cpes):
-    if "multi_platform_all" in scenario_platforms:
-        return True
-    scenario_cpes = set()
-    for p in scenario_platforms:
-        scenario_cpes |= _get_platform_cpes(p)
-    print(scenario_cpes)
-    return len(scenario_cpes & benchmark_cpes) > 0
-
-
 def _get_scenarios(rule_dir, scripts, benchmark_cpes):
     """ Returns only valid scenario files, rest is ignored (is not meant
     to be executed directly.
@@ -201,7 +161,7 @@ def _get_scenarios(rule_dir, scripts, benchmark_cpes):
         script_context = _get_script_context(script)
         if script_context is not None:
             script_params = _parse_parameters(os.path.join(rule_dir, script))
-            if _matches_platform(script_params["platform"], benchmark_cpes):
+            if common.matches_platform(script_params["platform"], benchmark_cpes):
                 scenarios += [Scenario(script, script_context, script_params)]
             else:
                 logging.info("Script %s is not applicable on given platform" % script)

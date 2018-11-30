@@ -3,7 +3,9 @@ import subprocess
 from collections import namedtuple
 import enum
 import functools
-
+from ssg.constants import MULTI_PLATFORM_MAPPING
+from ssg.constants import PRODUCT_TO_CPE_MAPPING
+from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
 
 Scenario_run = namedtuple(
     "Scenario_run",
@@ -132,3 +134,39 @@ def _run_cmd(command_list, verbose_path, env=None):
         returncode = e.returncode
         output = e.output
     return returncode, output.decode('utf-8')
+
+
+def _get_platform_cpes(platform):
+    if platform.startswith("multi_platform_"):
+        try:
+            products = MULTI_PLATFORM_MAPPING[platform]
+        except KeyError:
+            logging.error(
+                "Unknown multi_platform specifier: %s is not from %s"
+                % (platform, ", ".join(MULTI_PLATFORM_MAPPING.keys())))
+            raise ValueError
+        platform_cpes = set()
+        for p in products:
+            platform_cpes |= set(PRODUCT_TO_CPE_MAPPING[p])
+        return platform_cpes
+    else:
+        # scenario platform is specified by a full product name
+        try:
+            product = FULL_NAME_TO_PRODUCT_MAPPING[platform]
+        except KeyError:
+            logging.error(
+                "Unknown product name: %s is not from %s"
+                % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
+            raise ValueError
+        platform_cpes = set(PRODUCT_TO_CPE_MAPPING[product])
+        return platform_cpes
+
+
+def matches_platform(scenario_platforms, benchmark_cpes):
+    if "multi_platform_all" in scenario_platforms:
+        return True
+    scenario_cpes = set()
+    for p in scenario_platforms:
+        scenario_cpes |= _get_platform_cpes(p)
+    print(scenario_cpes)
+    return len(scenario_cpes & benchmark_cpes) > 0
