@@ -163,7 +163,7 @@ def _get_platform_cpes(platform):
             logging.error(
                 "Unknown multi_platform specifier: %s is not from %s"
                 % (platform, ", ".join(MULTI_PLATFORM_MAPPING.keys())))
-            return set()
+            raise ValueError
         platform_cpes = set()
         for p in products:
             platform_cpes |= set(PRODUCT_TO_CPE_MAPPING[p])
@@ -176,7 +176,7 @@ def _get_platform_cpes(platform):
             logging.error(
                 "Unknown product name: %s is not from %s"
                 % (platform, ", ".join(FULL_NAME_TO_PRODUCT_MAPPING.keys())))
-            return set()
+            raise ValueError
         platform_cpes = set(PRODUCT_TO_CPE_MAPPING[product])
         return platform_cpes
 
