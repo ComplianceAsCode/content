@@ -115,7 +115,6 @@ def profile_handling(tree_root, namespace):
     all_profiles = standard_profiles + ns_profiles
     for profile in tree_root.findall(".//{%s}Profile" % (namespace)):
         if profile.get("id") not in all_profiles:
-            print(profile.get("id"))
             tree_root.remove(profile)
 
 
