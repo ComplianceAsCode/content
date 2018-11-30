@@ -168,5 +168,4 @@ def matches_platform(scenario_platforms, benchmark_cpes):
     scenario_cpes = set()
     for p in scenario_platforms:
         scenario_cpes |= _get_platform_cpes(p)
-    print(scenario_cpes)
     return len(scenario_cpes & benchmark_cpes) > 0
