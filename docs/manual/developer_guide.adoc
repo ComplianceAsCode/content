@@ -26,6 +26,19 @@ To register for a free GitHub account, visit https://github.com/join. Registerin
 === OpenSCAP "Content Developers"
 If you envision committing code, and needing direct push access to the repository (vs GitHub's pull request system), send a quick hello to the mailing list introducing yourself. The community may already know you, but this is an opportunity to reintroduce yourself and update the community on areas you'd like to contribute to. This need not be formal; though don't forget to include your GitHub account name! Pending approval from an existing maintainer, you will be added to the OpenSCAP Content Developers group on GitHub: https://github.com/orgs/OpenSCAP/teams/content-authors.
 
+== Required Development Packages
+To successfully build ComplianceAsCode, the following packages must be installed:
+
+* ``make``
+* ``cmake``
+* ``python36`` (RHEL8)
+* ``python3-pyyaml`` (RHEL8)
+* ``python3-jinja2`` (RHEL8)
+
+`````
+$ sudo yum -y install cmake make python36 python3-pyyaml python3-jinja2
+`````
+
 == Patch Creation
 
 .... intro on GitHub pull request system .....
