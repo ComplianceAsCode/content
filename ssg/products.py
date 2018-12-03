@@ -7,6 +7,7 @@ from collections import namedtuple
 
 from .constants import product_directories
 from .yaml import open_raw
+from .constants import MULTI_PLATFORM_LIST
 
 
 # SSG Makefile to official product name mapping
@@ -29,9 +30,6 @@ _version_name_map = {
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
 }
-
-multi_list = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-              "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
@@ -87,11 +85,11 @@ def map_name(version):
 
     if version.startswith("multi_platform_"):
         trimmed_version = version[len("multi_platform_"):]
-        if trimmed_version not in multi_list:
+        if trimmed_version not in MULTI_PLATFORM_LIST:
             raise RuntimeError(
                 "%s is an invalid product version. If it's multi_platform the "
                 "suffix has to be from (%s)."
-                % (version, ", ".join(multi_list))
+                % (version, ", ".join(MULTI_PLATFORM_LIST))
             )
         return map_name(trimmed_version)
 

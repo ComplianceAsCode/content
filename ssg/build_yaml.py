@@ -7,6 +7,7 @@ import datetime
 import sys
 
 from .constants import XCCDF_PLATFORM_TO_CPE
+from .constants import PRODUCT_TO_CPE_MAPPING
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 
 from .checks import is_cce_valid
@@ -280,7 +281,8 @@ class Benchmark(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
-        benchmark.cpes = product_yaml.get("cpes", [])
+        if product_yaml:
+            benchmark.cpes = PRODUCT_TO_CPE_MAPPING[product_yaml["product"]]
 
         return benchmark
 

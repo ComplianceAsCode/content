@@ -10,7 +10,8 @@ from collections import defaultdict, namedtuple
 
 from .jinja import process_file as jinja_process_file
 from .xml import ElementTree
-from .products import parse_name, multi_list, map_name
+from .products import parse_name, map_name
+from .constants import MULTI_PLATFORM_LIST
 
 REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
@@ -44,7 +45,7 @@ def is_applicable_for_product(platform, product):
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for _platform in multi_platforms:
-        if _platform in platform and product in multi_list:
+        if _platform in platform and product in MULTI_PLATFORM_LIST:
             return True
 
     product_name = ""

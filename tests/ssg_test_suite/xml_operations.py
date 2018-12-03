@@ -38,7 +38,7 @@ def infer_benchmark_id_from_component_ref_id(datastream, ref_id):
     return benchmark_node.get('id')
 
 
-def get_all_profiles_in_benchmark(datastream, benchmark_id, logging=None):
+def _get_benchmark_node(datastream, benchmark_id, logging):
     root = ET.parse(datastream).getroot()
     benchmark_node = root.find(
         "*//xccdf:Benchmark[@id='{0}']".format(benchmark_id), NAMESPACES)
@@ -47,7 +47,20 @@ def get_all_profiles_in_benchmark(datastream, benchmark_id, logging=None):
             logging.error(
                 "Benchmark ID '{}' not found within DataStream"
                 .format(benchmark_id))
-        return []
+    return benchmark_node
 
+
+def get_all_profiles_in_benchmark(datastream, benchmark_id, logging=None):
+    benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
     all_profiles = benchmark_node.findall('xccdf:Profile', NAMESPACES)
     return all_profiles
+
+
+def benchmark_get_applicable_platforms(datastream, benchmark_id, logging=None):
+    """
+    Returns a set of CPEs the given benchmark is applicable to.
+    """
+    benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
+    platform_elements = benchmark_node.findall('xccdf:platform', NAMESPACES)
+    cpes = {platform_el.get("idref") for platform_el in platform_elements}
+    return cpes
