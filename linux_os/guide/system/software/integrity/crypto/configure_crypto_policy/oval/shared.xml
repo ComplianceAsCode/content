@@ -1,3 +1,5 @@
+{{%- if target_oval_version == [5, 11] -%}}
+{{# there is no good alternative for symlink_test for OVAL 5.10 #}}
 {{%- macro crypto_policy_symlink_criterion(library) %}}
       <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
 {{%- endmacro %}}
@@ -28,6 +30,7 @@
   </unix:symlink_state>
 {{%- endmacro %}}
 
+{{% endif %}}
 
 <def-group>
   <definition class="compliance" id="configure_crypto_policy" version="1">
@@ -45,6 +48,7 @@
       <criterion comment="check for crypto policy correctly configured in /etc/crypto-policy/state/current"
       test_ref="test_configure_crypto_policy_current" />
       <criterion comment="Check if update-crypto-policies has been run after config update" test_ref="test_crypto_policies_updated" />
+{{%- if target_oval_version == [5, 11] -%}}
       {{{ crypto_policy_symlink_criterion(library="bind") }}}
       {{{ crypto_policy_symlink_criterion(library="gnutls") }}}
       {{{ crypto_policy_symlink_criterion(library="java") }}}
@@ -54,6 +58,7 @@
       {{{ crypto_policy_symlink_criterion(library="openssh") }}}
       {{{ crypto_policy_symlink_criterion(library="opensshserver") }}}
       {{{ crypto_policy_symlink_criterion(library="openssl") }}}
+  {{% endif %}}
     </criteria>
   </definition>
 
@@ -128,6 +133,7 @@ id="object_crypto_policies_config_file_modified_time" version="1">
     var_ref="var_system_crypto_policy" />
   </ind:textfilecontent54_state>
 
+{{%- if target_oval_version == [5, 11] -%}}
   {{{ crypto_policy_symlink_check(library="bind") }}}
   {{{ crypto_policy_symlink_check(library="gnutls") }}}
   {{{ crypto_policy_symlink_check(library="java") }}}
@@ -137,6 +143,7 @@ id="object_crypto_policies_config_file_modified_time" version="1">
   {{{ crypto_policy_symlink_check(library="openssh") }}}
   {{{ crypto_policy_symlink_check(library="opensshserver") }}}
   {{{ crypto_policy_symlink_check(library="openssl") }}}
+{{% endif %}}
 
   <external_variable comment="defined crypto policy" datatype="string"
   id="var_system_crypto_policy" version="1" />
