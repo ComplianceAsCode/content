@@ -10,8 +10,10 @@
     <criteria comment="Fedora Vendor keys" operator="AND">
       <extend_definition comment="Fedora installed" definition_ref="installed_OS_is_fedora" />
       <criteria comment="Supported Fedora key is installed" operator="OR">
-        <criterion comment="Fedora 28 package gpg-pubkey-9db62fb1-59920156 is installed"
-        test_ref="test_package_gpgkey-9db62fb1-59920156_installed" />
+        <criterion comment="Fedora {{{ latest_version }}} package gpg-pubkey-{{{ latest_pkg_version }}}-{{{ latest_pkg_release }}} is installed"
+        test_ref="test_package_gpgkey-{{{ latest_pkg_version }}}-{{{ latest_pkg_release }}}_installed" />
+        <criterion comment="Fedora {{{ previous_version }}} package gpg-pubkey-{{{ previous_pkg_version }}}-{{{ previous_pkg_release }}} is installed"
+        test_ref="test_package_gpgkey-{{{ previous_pkg_version }}}-{{{ previous_pkg_release }}}_installed" />
       </criteria>
     </criteria>
   </definition>
@@ -22,17 +24,30 @@
   </linux:rpminfo_object>
 
   <!-- Perform the particular tests themselves -->
-  <!-- Test for Fedora 28 release key -->
+  <!-- Test for Fedora {{{ latest_version }}} release key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-9db62fb1-59920156_installed" version="1"
-  comment="Fedora 28 release key package is installed">
+  id="test_package_gpgkey-{{{ latest_pkg_version }}}-{{{ latest_pkg_release }}}_installed" version="1"
+  comment="Fedora {{{ latest_pkg_version }}} release key package is installed">
     <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-9db62fb1-59920156" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ latest_pkg_version }}}-{{{ latest_pkg_release }}}" />
   </linux:rpminfo_test>
 
-  <linux:rpminfo_state id="state_package_gpg-pubkey-9db62fb1-59920156" version="1">
-    <linux:release>59920156</linux:release>
-    <linux:version>9db62fb1</linux:version>
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ latest_pkg_version }}}-{{{ latest_pkg_release }}}" version="1">
+    <linux:release>{{{ latest_pkg_release }}}</linux:release>
+    <linux:version>{{{ latest_pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+
+  <!-- Test for Fedora {{{ previous_version }}} release key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-{{{ previous_pkg_version }}}-{{{ previous_pkg_release }}}_installed" version="1"
+  comment="Fedora {{{ previous_pkg_version }}} release key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ previous_pkg_version }}}-{{{ previous_pkg_release }}}" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ previous_pkg_version }}}-{{{ previous_pkg_release }}}" version="1">
+    <linux:release>{{{ previous_pkg_release }}}</linux:release>
+    <linux:version>{{{ previous_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
 </def-group>
