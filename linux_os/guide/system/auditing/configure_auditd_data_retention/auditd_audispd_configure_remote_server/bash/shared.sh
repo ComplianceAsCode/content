@@ -2,6 +2,10 @@
 . /usr/share/scap-security-guide/remediation_functions
 populate var_audispd_remote_server
 
+{{% if product in ["rhel8", "fedora"] %}}
+AUDITCONFIG=/etc/audit/audisp-remote.conf
+{{% else %}}
 AUDITCONFIG=/etc/audisp/audisp-remote.conf
+{{% endif %}}
 
 replace_or_append $AUDITCONFIG '^remote_server' "$var_audispd_remote_server" "@CCENUM@"
