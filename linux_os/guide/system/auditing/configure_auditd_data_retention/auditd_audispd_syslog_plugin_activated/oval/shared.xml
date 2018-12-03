@@ -5,7 +5,11 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
+{{% if product in ["rhel8", "fedora"] %}}
+      <description>active setting in /etc/audit/plugins.d/syslog.conf is set to 'yes'</description>
+{{% else %}}
       <description>active setting in /etc/audisp/plugins.d/syslog.conf is set to 'yes'</description>
+{{% endif %}}
     </metadata>
 
     <criteria>
@@ -19,7 +23,11 @@
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_auditd_audispd_syslog_plugin_activated" version="1">
+{{% if product in ["rhel8", "fedora"] %}}
+    <ind:filepath>/etc/audit/plugins.d/syslog.conf</ind:filepath>
+{{% else %}}
     <ind:filepath>/etc/audisp/plugins.d/syslog.conf</ind:filepath>
+{{% endif %}}
     <!-- Allow only space (exactly) as delimiter: https://fedorahosted.org/audit/browser/trunk/src/auditd-config.c#L426 -->
     <!-- Require at least one space before and after the equal sign -->
     <ind:pattern operation="pattern match">^[ ]*active[ ]+=[ ]+yes[ ]*$</ind:pattern>
