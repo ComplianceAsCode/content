@@ -286,7 +286,6 @@ class GenericRunner(object):
         self.command_options.extend([
             '--benchmark-id', self.benchmark_id,
             '--profile', self.profile,
-            '--verbose', 'DEVEL',
             '--progress', '--oval-results',
         ])
         self.command_operands.append(self.datastream)
@@ -340,7 +339,10 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def initial(self):
-        self.command_options += ['--results', self.results_path]
+        self.command_options += [
+                '--verbose', 'DEVEL',
+                '--results', self.results_path
+        ]
         result = self.make_oscap_call()
         return result
 
