@@ -112,7 +112,13 @@ selections:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - smartcard_auth
+    - package_opensc_installed
+    - var_smartcard_drivers=cac
+    - configure_opensc_nss_db
+    - configure_opensc_card_drivers
+    - force_opensc_card_drivers
+    - service_pcscd_enabled
+    - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
