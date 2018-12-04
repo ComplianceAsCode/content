@@ -40,8 +40,8 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
@@ -52,8 +52,8 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
   when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
@@ -66,8 +66,8 @@
     state: present
     dest: /etc/audit/audit.rules
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
@@ -79,8 +79,8 @@
     dest: /etc/audit/audit.rules
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
   when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

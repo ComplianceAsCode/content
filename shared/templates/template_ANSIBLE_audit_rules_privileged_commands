@@ -29,7 +29,7 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
@@ -40,7 +40,7 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
