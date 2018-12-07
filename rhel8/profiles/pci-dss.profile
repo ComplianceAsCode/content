@@ -128,7 +128,6 @@ selections:
     - file_owner_grub2_cfg
     - file_groupowner_grub2_cfg
     - package_libreswan_installed
-    - var_system_crypto_policy=default
     - configure_crypto_policy
     - configure_bind_crypto_policy
     - configure_openssl_crypto_policy
