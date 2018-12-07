@@ -25,7 +25,7 @@ if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error).
-  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint "${REDHAT_RELEASE_KEY}" | grep 'Key fingerprint ='))
+  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint --with-colons "${REDHAT_RELEASE_KEY}" | grep '"^fpr' | cut -d ":" -f 10))
   GPG_RESULT=$?
   # Reset IFS back to default
   unset IFS
