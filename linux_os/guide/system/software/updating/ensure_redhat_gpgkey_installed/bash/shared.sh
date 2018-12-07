@@ -23,7 +23,7 @@ then
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
-    tr -s ' ' <<< "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_2_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}" || {
+    echo "${GPG_OUT[*]}" | grep -vE "${REDHAT_RELEASE_2_FINGERPRINT}|${REDHAT_AUXILIARY_FINGERPRINT}" || {
       # If $REDHAT_RELEASE_KEY file doesn't contain any keys with unknown fingerprint, import it
       rpm --import "${REDHAT_RELEASE_KEY}"
     }

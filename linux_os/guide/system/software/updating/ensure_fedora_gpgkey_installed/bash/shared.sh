@@ -32,7 +32,7 @@ then
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
-    tr -s ' ' <<< "${GPG_OUT}" | grep -vE "${FEDORA_RELEASE_FINGERPRINT}" || {
+    echo "${GPG_OUT}" | grep -vE "${FEDORA_RELEASE_FINGERPRINT}" || {
       # If file doesn't contains any keys with unknown fingerprint, import it
       rpm --import "${REDHAT_RELEASE_KEY}"
     }
