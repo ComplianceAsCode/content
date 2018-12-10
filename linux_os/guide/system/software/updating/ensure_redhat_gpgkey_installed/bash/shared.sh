@@ -12,6 +12,8 @@ if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error).
+  # Backup IFS value
+  IFS_BKP=$IFS
 {{% if product == "rhel8" %}}
   IFS=$'\n' GPG_OUT=($(gpg --show-key --with-colons "$REDHAT_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10))
 {{% else %}}
@@ -19,7 +21,7 @@ then
 {{% endif %}}
   GPG_RESULT=$?
   # Reset IFS back to default
-  unset IFS
+  IFS=$IFS_BKP
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
