@@ -30,9 +30,6 @@
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
-  - audit_rules_privileged_commands_finit_module
-  - NIST-800-53-AU-12(c)
-  - DISA-STIG-RHEL-07-030821
 - name: Inserts/replaces the finit_module rule in rules.d on x86_64
   lineinfile:
     path: '{{ all_files[0] }}'
@@ -42,9 +39,6 @@
   when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  - audit_rules_privileged_commands_finit_module
-  - NIST-800-53-AU-12(c)
-  - DISA-STIG-RHEL-07-030821
 
 # Inserts/replaces the finit_modules rule in /etc/audit/audit.rules
 
@@ -56,9 +50,6 @@
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
-  - audit_rules_privileged_commands_finit_module
-  - NIST-800-53-AU-12(c)
-  - DISA-STIG-RHEL-07-030821
 - name: Inserts/replaces the finit_module rule in audit.rules when on x86_64
   lineinfile:
     path: /etc/audit/audit.rules
@@ -67,6 +58,3 @@
   when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  - audit_rules_privileged_commands_finit_module
-  - NIST-800-53-AU-12(c)
-  - DISA-STIG-RHEL-07-030821
