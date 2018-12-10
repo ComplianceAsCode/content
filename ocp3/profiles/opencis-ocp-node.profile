@@ -22,8 +22,6 @@ selections:
     - file_permissions_openshift_node_service
     - file_owner_openshift_node_service
     - file_groupowner_openshift_node_service
-    - var_kube_authorization_mode=default
-    - var_streaming_connection_timeouts=default
     - kubelet_configure_client_ca
     - kubelet_configure_event_creation
     - kubelet_configure_tls_cert
