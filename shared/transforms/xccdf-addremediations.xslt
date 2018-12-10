@@ -125,7 +125,7 @@
         <xsl:when test="$rule/xccdf:platform">
           <xsl:choose>
             <xsl:when test="$platform_cpe = 'machine'">
-              <xsl:value-of select="concat('when:  # Bare-metal/VM task, not applicable for containers', $newline, '    - ansible_virtualization_role != &quot;guest&quot;', $newline, '    - ansible_virtualization_type != &quot;docker&quot;')"/>
+              <xsl:value-of select="concat('when:  # Bare-metal/VM task, not applicable for containers', $newline, '    - (ansible_virtualization_role != &quot;guest&quot; or ansible_virtualization_type != &quot;docker&quot;)')"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="concat('# Error ensuring that the platform is applicable - unknown platform CPE spec encountered: &quot;', $platform_cpe, '&quot;')"/>
@@ -147,7 +147,7 @@
         <xsl:when test="$rule/xccdf:platform">
           <xsl:choose>
             <xsl:when test="$platform_cpe = 'machine'">
-              <xsl:value-of select="'(ansible_virtualization_role != &quot;guest&quot; and ansible_virtualization_type != &quot;docker&quot;)'"/>
+              <xsl:value-of select="'(ansible_virtualization_role != &quot;guest&quot; or ansible_virtualization_type != &quot;docker&quot;)'"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:value-of select="concat(' # Error ensuring that the platform is applicable - unknown platform CPE spec encountered: &quot;', $platform_cpe, '&quot;')"/>
