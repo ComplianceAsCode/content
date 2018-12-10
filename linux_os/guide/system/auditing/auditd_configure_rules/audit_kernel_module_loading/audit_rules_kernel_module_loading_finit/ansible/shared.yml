@@ -2,6 +2,12 @@
 # reboot = false
 # complexity = low
 
+# What architecture are we on?
+
+- name: Set architecture for audit finit_module tasks
+  set_fact:
+    audit_arch: "b{{ ansible_architecture | regex_replace('.*(\\d\\d$)','\\1') }}"
+
 # Inserts/replaces the rule in /etc/audit/rules.d
 
 - name: Search /etc/audit/rules.d for audit rule entries
