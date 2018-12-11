@@ -1,0 +1,113 @@
+# platform = multi_platform_rhel, Red Hat Enterprise Linux 7
+# reboot = true
+# strategy = enable
+# complexity = medium
+# disruption = high
+
+# Check to see if FIPS is enabled before doing anything
+
+- name: Determine if FIPS is enabled
+  shell: sysctl crypto.fips_enabled | tail -c 2
+  register: fips_state
+  changed_when: false
+  tags:
+  - always
+    @ANSIBLE_TAGS@
+
+# If system is not in FIPS mode, packages will be installed, initramfs rebuilt, prelinking disabled, grub defaults updated, kernel parameters updated, and grub rebuilt. Note the system will need to be rebooted for these changes to take into full effect.
+
+-   block:
+
+  # Install dracut-fips and dracut-fips-aesni packages
+
+  - name: Ensure dracut-fips and dracut-fips-aesni are installed
+    package:
+      name: '{{item}}'
+      state: present
+    with_items:
+    - dracut-fips
+    - dracut-fips-aesni  
+    tags:
+    - fips_install_packages
+      @ANSIBLE_TAGS@
+
+  # Rebuild initramfs for changes to take effect
+
+  - name: Rebuild initramfs after installing fips packages
+    shell: dracut -v -f
+    tags: 
+    - fips_rebuild_initramfs
+      @ANSIBLE_TAGS@
+  
+  # Check to see if prelink package exists and disable prelinking if appicable
+
+  - name: Check if prelink package is installed
+    yum:
+      list="prelink"
+    register: prelink_installed
+    tags:
+    - fips_check_prelink
+  - name:  Disable prelinking
+    lineinfile:
+      dest: /etc/sysconfig/prelink
+      regexp: '^#?PRELINKING'
+      line: 'PRELINKING=no'
+    when: prelink_installed.results|selectattr("yumstate","match", "installed")|list|length !=0
+    notify: undo existing prelinking
+    tags:
+    - fips_disable_prelink
+      @ANSIBLE_TAGS@
+
+  # Update grub defaults to include fips
+
+  - name: Enable fips in /etc/default/grub
+    lineinfile:
+      dest: /etc/default/grub
+      backrefs: True
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.*fips)\"[^\"]+)(\".*)'
+      line: '\1 fips=1\2'
+    tags:
+    - fips_enable_grub
+      @ANSIBLE_TAGS@
+
+  # Identify UUID to add to kernel parameter and grub defaults
+
+  - name: Identify UUID to update kernel and grub
+    shell: findmnt -no uuid /boot
+    register: grub_uuid
+    tags:
+    - fips_grub_identify_uuid
+
+  # Update grub with uuid and fips
+
+  - name: Update boot parameter with UUID in /etc/default/grub
+    lineinfile:
+      dest: /etc/default/grub
+      backrefs: True
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.*boot)\"[^\"]+)(\".*)'
+      line: '\1 boot=UUID={{ grub_uuid.stdout }}\2'
+    tags:
+    - fips_grub_update_uuid
+      @ANSIBLE_TAGS@
+
+  # Update kernel with uuid and fips
+
+  - name: Update kernel to include fips and uuid
+    shell: 'grubby --update-kernel=$(grubby --default-kernel) --args={{item}}'
+    with_items:
+    - fips=1
+    - boot=UUID={{ grub_uuid.stdout }}
+    tags:
+    - fips_kernel_update
+      @ANSIBLE_TAGS@
+
+  # Rebuild grub to include fips and uuid values
+
+  - name: Rebuild grub to include fips and uuid
+    shell: grub2-mkconfig -o /boot/grub2/grub.cfg
+    tags:
+    - fips_make_config_grub
+      @ANSIBLE_TAGS@
+  when: fips_state.stdout == "0"
+
+  # Note - A reboot will be required for these changes to take into full effect
