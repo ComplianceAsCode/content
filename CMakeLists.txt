@@ -70,6 +70,7 @@ option(SSG_PRODUCT_UBUNTU16 "If enabled, the Ubuntu16 SCAP content will be built
 option(SSG_PRODUCT_UBUNTU18 "If enabled, the Ubuntu18 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_WRLINUX "If enabled, the WRLinux SCAP content will be built" TRUE)
 option(SSG_PRODUCT_OL7 "If enabled, the Oracle Linux 7 SCAP content will be built" TRUE)
+option(SSG_PRODUCT_OL8 "If enabled, the Oracle Linux 8 SCAP content will be built" TRUE)
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -229,6 +230,7 @@ message(STATUS "Ubuntu 16: ${SSG_PRODUCT_UBUNTU16}")
 message(STATUS "Ubuntu 18: ${SSG_PRODUCT_UBUNTU18}")
 message(STATUS "WRLinux: ${SSG_PRODUCT_WRLINUX}")
 message(STATUS "Oracle Linux 7: ${SSG_PRODUCT_OL7}")
+message(STATUS "Oracle Linux 8: ${SSG_PRODUCT_OL8}")
 
 message(STATUS " ")
 
@@ -329,6 +331,10 @@ endif()
 
 if (SSG_PRODUCT_OL7)
     add_subdirectory("ol7")
+endif()
+
+if (SSG_PRODUCT_OL8)
+    add_subdirectory("ol8")
 endif()
 
 
