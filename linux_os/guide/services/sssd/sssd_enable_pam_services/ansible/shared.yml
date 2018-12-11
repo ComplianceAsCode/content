@@ -1,0 +1,22 @@
+# platform = multi_platform_rhel
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = low
+
+- name: "Test for sssd group"
+  shell: grep '\s*\[sssd\/[^]]*]' /etc/sssd/sssd.conf
+  register: test_grep_sssd
+  ignore_errors: yes
+  tags:
+    @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
+
+- name: "Add sssd group and use pam (if no sssd there)"
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    create: yes
+    line: "[sssd]\nservices = pam\n"
+  when: test_grep_sssd.stdout == "" and @ANSIBLE_PLATFORM_CONDITION@
+  tags:
+    @ANSIBLE_TAGS@
