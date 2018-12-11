@@ -5,7 +5,7 @@
 <xsl:variable name="product_long_name">Red Hat OpenStack Platform 13</xsl:variable>
 <xsl:variable name="product_short_name">RHOSP 13</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHOSP_13_STIG</xsl:variable>
-<xsl:variable name="prod_type">osp13</xsl:variable>
+<xsl:variable name="prod_type">rhosp13</xsl:variable>
 
 <xsl:variable name="cisuri">empty</xsl:variable>
 <xsl:variable name="product_guide_id_name">RHEL-13-OSP</xsl:variable>
