@@ -25,14 +25,16 @@ if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error).
-  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint "${REDHAT_RELEASE_KEY}" | grep 'Key fingerprint ='))
+  # Backup IFS value
+  IFS_BKP=$IFS
+  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint --with-colons "${REDHAT_RELEASE_KEY}" | grep '"^fpr' | cut -d ":" -f 10))
   GPG_RESULT=$?
   # Reset IFS back to default
-  unset IFS
+  IFS=$IFS_BKP
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
   then
-    tr -s ' ' <<< "${GPG_OUT}" | grep -vE "${FEDORA_RELEASE_FINGERPRINT}" || {
+    echo "${GPG_OUT}" | grep -vE "${FEDORA_RELEASE_FINGERPRINT}" || {
       # If file doesn't contains any keys with unknown fingerprint, import it
       rpm --import "${REDHAT_RELEASE_KEY}"
     }

@@ -1,3 +1,23 @@
+{{% macro fedora_gpgkey_criterion(fedora_version, pkg_release, pkg_version) %}}
+   <criterion comment="Fedora {{{ fedora_version }}} package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"
+        test_ref="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
+{{% endmacro %}}
+
+{{% macro fedora_gpgkey_check(fedora_version, pkg_release, pkg_version) %}}
+  <!-- Test for Fedora {{{ fedora_version }}} release key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" version="1"
+  comment="Fedora {{{ pkg_version }}} release key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}}" version="1">
+    <linux:release>{{{ pkg_release }}}</linux:release>
+    <linux:version>{{{ pkg_version }}}</linux:version>
+  </linux:rpminfo_state>
+{{% endmacro %}}
+
 <def-group>
   <definition class="compliance" id="ensure_fedora_gpgkey_installed" version="2">
     <metadata>
@@ -10,8 +30,8 @@
     <criteria comment="Fedora Vendor keys" operator="AND">
       <extend_definition comment="Fedora installed" definition_ref="installed_OS_is_fedora" />
       <criteria comment="Supported Fedora key is installed" operator="OR">
-        <criterion comment="Fedora 28 package gpg-pubkey-9db62fb1-59920156 is installed"
-        test_ref="test_package_gpgkey-9db62fb1-59920156_installed" />
+          {{{ fedora_gpgkey_criterion(latest_version, latest_pkg_release, latest_pkg_version) }}}
+          {{{ fedora_gpgkey_criterion(previous_version, previous_pkg_release, previous_pkg_version) }}}
       </criteria>
     </criteria>
   </definition>
@@ -22,17 +42,7 @@
   </linux:rpminfo_object>
 
   <!-- Perform the particular tests themselves -->
-  <!-- Test for Fedora 28 release key -->
-  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
-  id="test_package_gpgkey-9db62fb1-59920156_installed" version="1"
-  comment="Fedora 28 release key package is installed">
-    <linux:object object_ref="object_package_gpg-pubkey" />
-    <linux:state state_ref="state_package_gpg-pubkey-9db62fb1-59920156" />
-  </linux:rpminfo_test>
-
-  <linux:rpminfo_state id="state_package_gpg-pubkey-9db62fb1-59920156" version="1">
-    <linux:release>59920156</linux:release>
-    <linux:version>9db62fb1</linux:version>
-  </linux:rpminfo_state>
+  {{{ fedora_gpgkey_check(latest_version, latest_pkg_release, latest_pkg_version) }}}
+  {{{ fedora_gpgkey_check(previous_version, previous_pkg_release, previous_pkg_version) }}}
 
 </def-group>
