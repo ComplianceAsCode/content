@@ -8,13 +8,6 @@ description: |-
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
     <br />
-    The <tt>fips-mode-setup</tt> command completes the installation of FIPS
-    modules by calling <tt>fips-finish-install</tt>. Then, it changes the
-    system crypto policy to FIPS by calling <tt>update-crypto-policies</tt>
-    tool. Also, the command modifies the boot loader configuration to add
-    <tt>fips=1</tt> and <tt>boot=&lt;boot-device&gt;</tt> options to the kernel
-    command line.
-    <br />
     On a system running in FIPS mode, the kernel FIPS mode flag
     (<tt>/proc/sys/crypto/fips_enabled</tt>) should be set to <tt>1</tt> and
     the <tt>/etc/system-fips</tt> should exist. The system crypto policy should
