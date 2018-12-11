@@ -55,6 +55,7 @@ email_mappings = {
     # Shawn Wells
     "shawn@localhost.localdomain": "shawn@redhat.com",
     "shawnw@localhost.localdomain": "shawn@redhat.com",
+    "shawndwells@gmail.com": "shawn@redhat.com",
 
     # No idea / ignore
     "lyd@chippy.(none)": "",

@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2018-10-01 11:13
+Last Modified: 2018-12-11 13:37
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -36,6 +36,7 @@ The following people have contributed to the SCAP Security Guide project
 * drax <applezip@gmail.com>
 * Greg Elin <gregelin@gitmachines.com>
 * Leah Fisher <lfisher047@gmail.com>
+* Alijohn Ghassemlouei <alijohn.ghassemlouei@sapns2.com>
 * Andrew Gilmore <agilmore2@gmail.com>
 * Joshua Glemza <jglemza@nasa.gov>
 * Loren Gordon <lorengordon@users.noreply.github.com>
@@ -43,6 +44,7 @@ The following people have contributed to the SCAP Security Guide project
 * Marek Haicman <mhaicman@redhat.com>
 * Rebekah Hayes <rhayes@corp.rivierautilities.com>
 * Trey Henefield <thenefield@gmail.com>
+* Henning Henkel <henning.henkel@helvetia.ch>
 * hex2a <hex2a@users.noreply.github.com>
 * John Hooks <jhooks@starscream.pa.jhbcomputers.com>
 * Robin Price II <robin@redhat.com>
