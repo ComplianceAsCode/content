@@ -1,0 +1,43 @@
+# platform = multi_platform_rhel
+# reboot = false
+# complexity = low
+
+- name: Search /etc/audit/rules.d for other sudoers audit rules
+  find:
+    paths: /etc/audit/rules.d
+    recurse: false
+    contains: -k sudoers$
+    patterns: '*.rules'
+  register: find_sudoers
+  tags:
+    @ANSIBLE_TAGS@
+- name: If existing sudoers ruleset not found, use /etc/audit/rules.d/privileged.rules as the recipient for the rule
+  set_fact:
+    all_files:
+    - /etc/audit/rules.d/privileged.rules
+  when: find_sudoers.matched == 0
+- name: Use matched file as the recipient for the rule
+  set_fact:
+    all_files:
+    - '{{ find_sudoers.files | map(attribute=''path'') | list | first }}'
+  when: find_sudoers.matched > 0
+- name: Inserts/replaces the sudoers rule in rules.d
+  lineinfile:
+    path: '{{ all_files[0] }}'
+    line: '{{ item }}'
+    create: true
+  with_items:
+  - -w /etc/sudoers -p wa -k privileged-actions
+  - -w /etc/sudoers.d/ -p wa -k privileged-actions
+  tags:
+    @ANSIBLE_TAGS@
+- name: Inserts/replaces the sudoers rule in /etc/audit/audit.rules
+  lineinfile:
+    line: '{{ item }}'
+    state: present
+    dest: /etc/audit/audit.rules
+  with_items:
+  - -w /etc/sudoers -p wa -k privileged-actions
+  - -w /etc/sudoers.d/ -p wa -k privileged-actions
+  tags:
+    @ANSIBLE_TAGS@
