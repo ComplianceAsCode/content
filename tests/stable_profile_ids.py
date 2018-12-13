@@ -18,7 +18,7 @@ from collections import defaultdict
 # xccdf_org.ssgproject.content_profile_ospp42 becomes ospp42
 
 STABLE_PROFILE_IDS = {
-    "FEDORA": ["standard"],
+    "FEDORA": ["standard", "ospp", "pci-dss"],
     "RHEL-6": ["C2S", "CS2", "CSCF-RHEL6-MLS", "fisma-medium-rhel6-server",
                "pci-dss", "rht-ccp", "stig-rhel6-disa", "usgcb-rhel6-server"],
     "RHEL-7": ["C2S", "cjis", "hipaa", "nist-800-171-cui", "rht-ccp",
