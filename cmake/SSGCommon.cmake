@@ -798,6 +798,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     add_custom_target(${DERIVATIVE} ALL)
     add_dependencies(${DERIVATIVE} ${DERIVATIVE}-content)
+    add_dependencies(man_page ${DERIVATIVE})
 
     add_dependencies(
         ${DERIVATIVE}-content
