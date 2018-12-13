@@ -8,12 +8,15 @@ description: |-
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
     <br />
-    On a system running in FIPS mode, the kernel FIPS mode flag
-    (<tt>/proc/sys/crypto/fips_enabled</tt>) should be set to <tt>1</tt> and
-    the <tt>/etc/system-fips</tt> should exist. The system crypto policy should
-    be set to FIPS in <tt>/etc/crypto-policies/config</tt>. Also, the Dracut
-    <tt>fips</tt> module should be loaded. Furthermore, the system running in
-    FIPS mode should be FIPS certified.
+    The <tt>fips-mode-setup</tt> command will configure the system in
+    FIPS mode by automatically configuring the following:
+    <ul>
+    <li>Setting the kernel FIPS mode flag (<tt>/proc/sys/crypto/fips_enabled</tt>) to <tt>1</tt></li>
+    <li>Creating <tt>/etc/system-fips</tt></li>
+    <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>FIPS</tt></li>
+    <li>Loading the Dracut <tt>fips</tt> module</li>
+    </ul>
+    Furthermore, the system running in FIPS mode should be FIPS certified by NIST.
 
 rationale: |-
     Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
