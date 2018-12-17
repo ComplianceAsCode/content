@@ -78,3 +78,9 @@ selections:
     - service_rsyslog_enabled
     - partition_for_var_log
     - partition_for_var_log_audit
+    - configure_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_kerberos_crypto_policy

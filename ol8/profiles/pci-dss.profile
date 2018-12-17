@@ -127,3 +127,9 @@ selections:
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
     - service_chronyd_or_ntpd_enabled
+    - configure_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_ssh_crypto_policy
+    - configure_kerberos_crypto_policy
