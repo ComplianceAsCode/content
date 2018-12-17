@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7
+prodtype: rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Enable Auditing for Processes Which Start Prior to the Audit Daemon'
 
@@ -55,7 +55,7 @@ warnings:
         <li>On BIOS-based machines, issue the following command as <tt>root</tt>:
         <pre>~]# grub2-mkconfig -o /boot/grub2/grub.cfg</pre></li>
         <li>On UEFI-based machines, issue the following command as <tt>root</tt>:
-{{% if product in ["rhel7", "ol7"] %}}
+{{% if product in ["rhel7", "rhel8", "ol7", "ol8"] %}}
         <pre>~]# grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg</pre></li>
 {{% else %}}
         <pre>~]# grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
