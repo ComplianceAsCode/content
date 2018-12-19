@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7
+
+title: 'The Installed Operating System Is FIPS 140-2 Certified'
+
+description: |-
+    To enable processing of sensitive information the operating system must
+    provide certified cryptographic modules compliant with FIPS 140-2
+    standard.
+    {{% if product in ["rhel6", "rhel7"] %}}
+    Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
+    Linux vendor, Red Hat, Inc. is responsible for maintaining government certifications and standards.
+    {{% endif %}}
+
+rationale: |-
+    The Federal Information Processing Standard (FIPS) Publication 140-2, (FIPS
+    PUB 140-2) is a computer security standard. The standard specifies security
+    requirements for cryptographic modules used to protect sensitive
+    unclassified information.  Refer to the full FIPS 140-2 standard at
+    {{{ weblink(link="http://csrc.nist.gov/publications/fips/fips140-2/fips1402.pdf") }}}
+    for further details on the requirements.
+    FIPS 140-2 validation is required by U.S. law when information systems use
+    cryptography to protect sensitive government information. In order to
+    achieve FIPS 140-2 certification, cryptographic modules are subject to
+    extensive testing by independent laboratories, accredited by National
+    Institute of Standards and Technology (NIST).
+
+warnings:
+    - general: |-
+        There is no remediation besides switching to a different operating system.
+
+severity: high
+
+ocil_clause: 'the installed operating system is not FIPS 140-2 certified'
+
+{{% if product in ["rhel6", "rhel7"] %}}
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
+    <pre>$ grep -i "red hat" /etc/redhat-release</pre>
+    The output should contain something similar to:
+    <pre>{{{ full_name }}}</pre>
+{{% endif %}}

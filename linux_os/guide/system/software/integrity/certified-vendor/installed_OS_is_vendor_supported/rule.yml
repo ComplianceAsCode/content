@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7
+
+title: 'The Installed Operating System Is Vendor Supported'
+
+description: |-
+    The installed operating system must be maintained by a vendor.
+    {{% if product == "ol7" %}}
+    Oracle Linux is supported by Oracle Corporation. As the Oracle
+    Linux vendor, Oracle Corporation is responsible for providing security patches.
+    {{% else %}}
+    Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
+    Linux vendor, Red Hat, Inc. is responsible for providing security patches.
+    {{% endif %}}
+
+
+rationale: |-
+    An operating system is considered "supported" if the vendor continues to
+    provide security patches for the product.  With an unsupported release, it
+    will not be possible to resolve any security issue discovered in the system
+    software.
+
+warnings:
+    - general: |-
+        There is no remediation besides switching to a different operating system.
+
+severity: high
+
+references:
+    disa: "366"
+    nist: SI-2(c)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@rhel7: "020250"
+
+ocil_clause: 'the installed operating system is not supported'
+
+{{% if product in ["rhel6", "rhel7"] %}}
+ocil: |-
+    To verify that the installed operating system is supported, run
+    the following command:
+    <pre>$ grep -i "red hat" /etc/redhat-release</pre>
+    The output should contain something similar to:
+    <pre>{{{ full_name }}}</pre>
+{{% endif %}}

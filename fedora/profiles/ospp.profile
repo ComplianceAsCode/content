@@ -13,7 +13,7 @@ description: |-
     similar to the one mandated by US National Security Systems.
 
 selections:
-    - installed_OS_is_certified
+    - installed_OS_is_vendor_supported
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - service_auditd_enabled

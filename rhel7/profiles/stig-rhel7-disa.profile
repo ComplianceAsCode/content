@@ -119,7 +119,7 @@ selections:
     - selinux_policytype
     - disable_ctrlaltdel_reboot
     - accounts_umask_etc_login_defs
-    - installed_OS_is_certified
+    - installed_OS_is_vendor_supported
     - security_patches_up_to_date
     - gid_passwd_group_same
     - accounts_no_uid_except_zero
