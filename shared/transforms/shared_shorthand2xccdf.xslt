@@ -271,6 +271,21 @@
           <xsl:if test="$refsource = 'nist'">
             <xsl:value-of select="$nist800-53uri" />
           </xsl:if>
+          <xsl:if test="$refsource = 'nist-csf'">
+            <xsl:value-of select="$nistcsfuri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'isa-62443-2013'">
+            <xsl:value-of select="$isa-62443-2013uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'isa-62443-2009'">
+            <xsl:value-of select="$isa-62443-2009uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'cobit5'">
+            <xsl:value-of select="$cobit5uri" />
+          </xsl:if>
+          <xsl:if test="$refsource = 'cis-csc'">
+            <xsl:value-of select="$cis-cscuri" />
+          </xsl:if>
           <xsl:if test="$refsource = 'cjis'">
             <xsl:value-of select="$cjisd-its-uri" />
           </xsl:if>
