@@ -8,7 +8,7 @@ description: |-
     Operating Systems (Protection Profile Version 4.2).
 
 selections:
-    - installed_OS_is_certified
+    - installed_OS_is_vendor_supported
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - service_auditd_enabled
