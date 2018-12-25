@@ -1,7 +1,9 @@
-# platform = multi_platform_rhel, multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 {{%- if init_system == "systemd" -%}}
+{{% if product in ["rhel7", "rhel8"] %}}
 # The process to disable ctrl+alt+del has changed in RHEL7. 
 # Reference: https://access.redhat.com/solutions/1123873
+{{% endif %}}
 systemctl mask ctrl-alt-del.target
 {{%- else -%}}
 # If system does not contain control-alt-delete.override,
