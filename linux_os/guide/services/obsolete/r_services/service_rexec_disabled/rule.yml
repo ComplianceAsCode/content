@@ -1,13 +1,14 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8
+prodtype: rhel6,rhel7,rhel8,ol7,ol8
 
 title: 'Disable rexec Service'
 
 description: |-
-    The <tt>rexec</tt> service, which is available with the <tt>rsh-server</tt> package and runs as a service through xinetd or separately as a systemd socket, should be disabled.
+    The <tt>rexec</tt> service, which is available with the <tt>rsh-server</tt> package
+    and runs as a service through xinetd or separately as a systemd socket, should be disabled.
     If using xinetd, set <tt>disable</tt> to <tt>yes</tt> in <tt>/etc/xinetd.d/rexec</tt>.
-    {{{ describe_socket_disable(socket="rexec") }}}"
+    {{{ describe_socket_disable(socket="rexec") }}}
 
 rationale: |-
     The rexec service uses unencrypted network communications, which
