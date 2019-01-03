@@ -103,6 +103,7 @@ class Role(object):
         self.vars_data = []
         self.tasks_data = []
         self.pre_tasks_data = []
+        self.added_variables = set()
 
         self.tasks_local_content = None
 
@@ -135,11 +136,56 @@ class Role(object):
                     "pre_tasks are not supported for ansible roles and "
                     "will be skipped!.\n")
 
-        self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, indent=4, default_flow_style=False)
-
         description = self.get_description_from_filedata(filedata)
         self.description = description
+
+    def add_variables_to_tasks(self):
+        for task in self.tasks_data:
+            if "when" not in task:
+                task["when"] = []
+            elif isinstance(task["when"], str):
+                task["when"] = [task["when"]]
+
+            self.add_variables_to_task(task)
+
+            if not task["when"]:
+                del task["when"]
+
+    def tag_is_valid_variable(self, tag):
+        if "-" in tag:
+            return False
+        if tag == "always":
+            return False
+        return True
+
+    def add_variables_to_task(self, task):
+        if "tags" not in task:
+            return
+        variables_to_add = {tag for tag in task["tags"] if self.tag_is_valid_variable(tag)}
+        task["when"] += ["{{{{ {varname} | bool }}}}".format(varname=v) for v in variables_to_add]
+        self.added_variables.update(variables_to_add)
+
+    def add_task_variables_to_default_variables_if_needed(self):
+        default_vars_to_add = sorted(self.added_variables)
+        lines = [
+            "---", "# defaults file for {role_name}\n".format(role_name=self.remote_repo.name),
+        ]
+        lines += ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
+        lines.append("")
+
+        default_vars_local_content = "\n".join(lines)
+
+        default_vars_remote_content = self.remote_repo.get_file_contents("/defaults/main.yml")
+        if default_vars_local_content != default_vars_remote_content.decoded_content:
+            self.remote_repo.update_file(
+                "/defaults/main.yml",
+                "Updates defaults/main.yml",
+                default_vars_local_content,
+                default_vars_remote_content.sha,
+                author=InputGitAuthor(
+                    GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
+            )
+            print("Updating defaults/main.yml in %s" % self.remote_repo.name)
 
     def _reformat_local_content(self):
         # Add \n in between tasks to increase readability
@@ -248,6 +294,11 @@ class Role(object):
         print("Processing %s..." % self.remote_repo.name)
 
         self.gather_data()
+
+        self.add_variables_to_tasks()
+        self.tasks_local_content = yaml.dump(
+            self.tasks_data, width=120, indent=4, default_flow_style=False)
+
         self._reformat_local_content()
         self.title = re.search(
             r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
@@ -258,6 +309,7 @@ class Role(object):
         self._update_vars_content_if_needed()
         self._update_readme_content_if_needed()
         self._update_meta_content_if_needed()
+        self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
             "{title} - Ansible role generated from ComplianceAsCode"
@@ -281,7 +333,7 @@ def parse_args():
         "--organization", "-o", default=ORGANIZATION_NAME,
         help="Name of the Github organization")
     parser.add_argument(
-        "--profile", "-p", default=[], nargs="*", action="append",
+        "--profile", "-p", default=[], action="append",
         metavar="PROFILE", choices=PROFILE_WHITELIST,
         help="What profiles to upload, if not specified, upload all that are applicable.")
     return parser.parse_args()
@@ -302,7 +354,8 @@ def locally_clone_and_init_repositories(organization, repo_list):
 def main():
     args = parse_args()
 
-    role_whitelist = {"rhel7-role-%s" % p for p in PROFILE_WHITELIST}
+    all_role_whitelist = {"rhel7-role-%s" % p for p in PROFILE_WHITELIST}
+    role_whitelist = set(all_role_whitelist)
     if args.profile:
         selected_roles = {"rhel7-role-%s" % p for p in args.profile}
         role_whitelist.intersection_update(selected_roles)
@@ -313,8 +366,8 @@ def main():
         [f[4:-4]
          for f in os.listdir(args.build_roles_dir) if f.endswith(".yml")]
     )
-    # print(available_roles)
-    roles = available_roles.intersection(role_whitelist)
+    selected_roles = available_roles.intersection(role_whitelist)
+    potential_roles = available_roles.intersection(all_role_whitelist)
 
     print("Input your GitHub credentials:")
     username = raw_input("username or token: ")
@@ -325,7 +378,7 @@ def main():
     github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Create empty repositories
-    github_new_repos = sorted(list(set(roles) - set(github_repositories)))
+    github_new_repos = sorted(list(set(selected_roles) - set(github_repositories)))
     if github_new_repos:
         create_empty_repositories(github_new_repos, github_org)
 
@@ -333,11 +386,11 @@ def main():
 
     # Update repositories
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
-        if repo.name in roles:
+        if repo.name in selected_roles:
             corresponding_filename = os.path.join(
                 args.build_roles_dir, "ssg-" + repo.name + ".yml")
             Role(repo, corresponding_filename).update_repository()
-        else:
+        elif repo.name not in potential_roles:
             print("Repo %s should be deleted, please verify and do that "
                   "manually!" % repo.name)
 
