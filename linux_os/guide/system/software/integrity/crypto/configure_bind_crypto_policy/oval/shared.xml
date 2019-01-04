@@ -6,9 +6,10 @@
         <platform>multi_platform_fedora</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
       </affected>
-      <description>BIND should be configured to use the system-wide crypto policy setting.</description>
+      <description>BIND is not installed or is configured to use the system-wide crypto policy setting.</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="Check if package bind is not installed" definition_ref="package_bind_removed" />
       <criterion test_ref="test_configure_bind_crypto_policy"
       comment="Check that the configuration includes the policy config file." />
     </criteria>

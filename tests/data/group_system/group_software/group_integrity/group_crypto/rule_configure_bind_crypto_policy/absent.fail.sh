@@ -1,6 +1,8 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_standard
 
+yum install -y bind
+
 BIND_CONF='/etc/named.conf'
 
 cat << EOF > "$BIND_CONF"
