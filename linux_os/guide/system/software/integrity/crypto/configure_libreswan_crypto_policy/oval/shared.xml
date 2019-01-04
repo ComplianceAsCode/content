@@ -6,9 +6,10 @@
         <platform>multi_platform_fedora</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
       </affected>
-      <description>Libreswan should be configured to use the system-wide crypto policy setting.</description>
+      <description>Libreswan is not installed or is configured to use the system-wide crypto policy setting.</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="Check if package libreswan is not installed" definition_ref="package_libreswan_installed" negate="true" />
       <criterion test_ref="test_configure_libreswan_crypto_policy"
         comment="Check that the libreswan configuration includes the crypto policy config file" />
     </criteria>
