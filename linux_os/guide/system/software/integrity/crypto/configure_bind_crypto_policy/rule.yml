@@ -9,8 +9,6 @@ description: |-
     BIND is supported by crypto policy, but the BIND configuration may be
     set up to ignore it.
 
-    Either BIND is not installed, or it is configured to use the system-wide defined crypto policy.
-
     To check that Crypto Policies settings are configured correctly, ensure that the <tt>/etc/named.conf</tt>
     includes the appropriate configuration:
     In the <tt>options</tt> section of <tt>/etc/named.conf</tt>, make sure that the following line
@@ -24,7 +22,7 @@ rationale: |-
 severity: unknown
 
 ocil_clause: |-
-    the BIND config file doesn't contain the
+    BIND is installed and the BIND config file doesn't contain the
     <pre>include "/etc/crypto-policies/back-ends/bind.config";</pre> directive
 
 ocil: |-

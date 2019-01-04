@@ -9,8 +9,6 @@ description: |-
     Libreswan is supported by system crypto policy, but the Libreswan configuration may be
     set up to ignore it.
 
-    Either Libreswan is not installed, or it is configured to use the system-wide defined crypto policy.
-
     To check that Crypto Policies settings are configured correctly, ensure that the <tt>/etc/ipsec.conf</tt>
     includes the appropriate configuration file.
     In <tt>/etc/ipsec.conf</tt>, make sure that the following line
@@ -25,7 +23,7 @@ rationale: |-
 severity: unknown
 
 ocil_clause: |-
-    <tt>/etc/ipsec.conf</tt> does not contain <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
+    Libreswan is installed and <tt>/etc/ipsec.conf</tt> does not contain <tt>include /etc/crypto-policies/back-ends/libreswan.config</tt>
 
 ocil: |-
     To verify that Libreswan uses the system crypto policy, run the following command:
