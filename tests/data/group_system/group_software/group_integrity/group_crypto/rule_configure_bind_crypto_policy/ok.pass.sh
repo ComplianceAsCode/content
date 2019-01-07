@@ -3,6 +3,8 @@
 
 BIND_CONF='/etc/named.conf'
 
+yum install -y bind
+
 cat << EOF > "$BIND_CONF"
 options {
 	listen-on port 53 { 127.0.0.1; };

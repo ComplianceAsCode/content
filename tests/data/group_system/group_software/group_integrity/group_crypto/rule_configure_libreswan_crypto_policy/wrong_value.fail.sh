@@ -1,6 +1,8 @@
 #!/bin/bash
 # profiles = xccdf_org.ssgproject.content_profile_standard
 
+yum install -y libreswan
+
 cp ipsec.conf /etc
 config_file="/etc/ipsec.conf"
 crypto="/etc/crypto-policies/back-ends/libreswan.config"
