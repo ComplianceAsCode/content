@@ -2,10 +2,13 @@ documentation_complete: true
 
 title: 'CSCF RHEL6 MLS Core Baseline'
 
-description: "This profile reflects the Centralized Super Computing Facility \n(CSCF) baseline for Red Hat Enterprise Linux\
-    \ 6. This baseline has received \ngovernment ATO through the ICD 503 process, utilizing the CNSSI 1253 cross \ndomain\
-    \ overlay. This profile should be considered in active development. \nAdditional tailoring will be needed, such as the\
-    \ creation of RBAC roles \nfor production deployment."
+description: |-
+    This profile reflects the Centralized Super Computing Facility
+    (CSCF) baseline for Red Hat Enterprise Linux 6. This baseline has received
+    government ATO through the ICD 503 process, utilizing the CNSSI 1253 cross
+    domain overlay. This profile should be considered in active development.
+    Additional tailoring will be needed, such as the creation of RBAC roles
+    for production deployment.
 
 selections:
     - var_auditd_max_log_file_action=keep_logs

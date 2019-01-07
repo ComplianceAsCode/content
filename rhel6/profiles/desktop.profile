@@ -2,7 +2,8 @@ documentation_complete: true
 
 title: 'Desktop Baseline'
 
-description: "This profile is for a desktop installation of \nRed Hat Enterprise Linux 6."
+description: |-
+    This profile is for a desktop installation of Red Hat Enterprise Linux 6.
 
 extends: standard
 

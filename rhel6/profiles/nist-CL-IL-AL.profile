@@ -2,9 +2,10 @@ documentation_complete: true
 
 title: "CNSSI 1253 Low/Low/Low Control Baseline"
 
-description: "This profile follows the Committee on National \nSecurity Systems Instruction (CNSSI) No. 1253, \"Security Categorization\
-    \ and \nControl Selection for National Security Systems\" on security controls to meet\nlow confidentiality, low integrity,\
-    \ and low assurance.\""
+description: |-
+    This profile follows the Committee on National Security Systems Instruction (CNSSI) No. 1253, 
+    "Security Categorization and Control Selection for National Security Systems" 
+    on security controls to meet low confidentiality, low integrity, and low assurance.
 
 extends: standard
 

@@ -3,8 +3,7 @@ documentation_complete: true
 title: 'Server Baseline'
 
 description: |-
-    This profile is for Red Hat Enterprise Linux 6
-    acting as a server.
+    This profile is for Red Hat Enterprise Linux 6 acting as a server.
 
 extends: standard
 
