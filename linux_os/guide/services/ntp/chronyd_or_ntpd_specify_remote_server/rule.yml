@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7
+prodtype: rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Specify a Remote NTP Server'
 
@@ -9,7 +9,7 @@ description: |-
     production environment, the {{{ full_name }}} system can be
     configured to utilize the services of the <tt>chronyd</tt> NTP daemon (the
     default), or services of the <tt>ntpd</tt> NTP daemon. Refer to
-    {{% if product == "ol7" %}}
+    {{% if product in ["ol7", "ol8"] %}}
          {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54669/html/ol7-nettime.html") }}}
     {{% else %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/System_Administrators_Guide/ch-Configuring_NTP_Using_the_chrony_Suite.html") }}}

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,ubuntu1404,ubuntu1604,ol7
+prodtype: rhel6,rhel7,rhel8,ubuntu1404,ubuntu1604,ol7,ol8
 
 title: 'Ensure Software Patches Installed'
 
@@ -11,7 +11,7 @@ description: |-
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded from the Red Hat Network and installed using <tt>rpm</tt>.
-{{% elif product == "ol7" %}}
+{{% elif product in ["ol7", "ol8"] %}}
     If the system is joined to the ULN
     or a yum server, run the following command to install updates:
     <pre>$ sudo yum update</pre>
@@ -63,7 +63,7 @@ oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhs
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.trusty.cve.oval.xml"
 {{% elif product == "ubuntu1604" %}}
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.xenial.cve.oval.xml"
-{{% elif product == "ol7" %}}
+{{% elif product in ["ol7", "ol8"] %}}
 oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
 {{% else %}}
 {{# The rule will be "notchecked" #}}
@@ -91,7 +91,7 @@ ocil: |-
     Compare this to Red Hat Security Advisories (RHSA) listed at
     {{{ weblink(link="https://access.redhat.com/security/updates/active/") }}}
     to determine if the system is missing applicable updates.
-{{% elif product == "ol7" %}}
+{{% elif product in ["ol7", "ol8"] %}}
     Compare this to Oracle Linux Security Advisories (ELSA) listed at
     {{{ weblink(link="https://linux.oracle.com/pls/apex/f?p=105:21:::NO:RP::") }}}
     to determine if the system is missing applicable updates.

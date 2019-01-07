@@ -6,7 +6,7 @@ description: |-
     To configure the <tt>auditd</tt> service to use the
     <tt>syslog</tt> plug-in of the <tt>audispd</tt> audit event multiplexor, set
     the <tt>active</tt> line in <tt>
-{{%- if product in ["rhel8", "fedora"] -%}}
+{{%- if product in ["rhel8", "fedora", "ol8"] -%}}
     /etc/audit/plugins.d/syslog.conf
 {{%- else -%}}
     /etc/audisp/plugins.d/syslog.conf

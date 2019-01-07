@@ -4,7 +4,7 @@ from __future__ import print_function
 import datetime
 import os.path
 
-product_directories = ['debian8', 'fedora', 'ol7', 'opensuse', 'rhel6',
+product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
                        'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'wrlinux', 'rhosp13', 'chromium',
                        'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'example']
@@ -89,6 +89,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Java Runtime Environment": "jre",
     "Red Hat OpenShift Container Platform 3": "ocp3",
     "Oracle Linux 7": "ol7",
+    "Oracle Linux 8": "ol8",
     "openSUSE": "opensuse",
     "Red Hat Enterprise Linux 6": "rhel6",
     "Red Hat Enterprise Linux 7": "rhel7",
@@ -176,6 +177,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "ol7": [
         "cpe:/o:oracle:linux:7",
     ],
+    "ol8": [
+        "cpe:/o:oracle:linux:8",
+    ],
     "opensuse": [
         "cpe:/o:opensuse:leap:42.1",
         "cpe:/o:opensuse:leap:42.2",
@@ -229,7 +233,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
-    "multi_platform_ol": ["ol7"],
+    "multi_platform_ol": ["ol7","ol8"],
     "multi_platform_ocp": ["ocp3"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp13"],
