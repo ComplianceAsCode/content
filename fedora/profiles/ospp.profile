@@ -203,3 +203,9 @@ selections:
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
+    - configure_ssh_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_crypto_policy
