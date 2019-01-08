@@ -66,8 +66,9 @@ selections:
     - sshd_set_keepalive
     - sshd_use_priv_separation
     - encrypt_partitions
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
+    - var_system_crypto_policy=fips
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
     - grub2_enable_selinux
