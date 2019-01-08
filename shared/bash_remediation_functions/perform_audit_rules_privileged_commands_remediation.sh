@@ -19,6 +19,9 @@ function perform_audit_rules_privileged_commands_remediation {
 local tool="$1"
 local min_auid="$2"
 
+# Backup IFS value
+IFS_BKP="$IFS"
+
 # Check sanity of the input
 if [ $# -ne "2" ]
 then
@@ -170,4 +173,7 @@ do
 	done
 
 done
+
+# Reset IFS back to default
+IFS="$IFS_BKP"
 }

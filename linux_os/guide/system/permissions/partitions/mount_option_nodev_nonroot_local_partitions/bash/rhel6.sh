@@ -7,6 +7,9 @@
 # Shortened ID for frequently used character class
 SP="[:space:]"
 
+# Backup IFS value
+IFS_BKP="$IFS"
+
 # Load /etc/fstab's content with LABEL= and UUID= tags expanded to real
 # device names into FSTAB_REAL_DEVICES array splitting items by newline
 IFS=$'\n' FSTAB_REAL_DEVICES=($(findmnt --fstab --evaluate --noheadings))
@@ -63,3 +66,6 @@ do
         fi
     fi
 done
+
+# Reset IFS back to default
+IFS="$IFS_BKP"
