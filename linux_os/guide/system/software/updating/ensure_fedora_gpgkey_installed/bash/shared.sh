@@ -27,7 +27,8 @@ then
   # (to ensure there won't be e.g. CRC error).
   # Backup IFS value
   IFS_BKP="$IFS"
-  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint --with-colons "${REDHAT_RELEASE_KEY}" | grep '"^fpr' | cut -d ":" -f 10))
+  IFS=$'\n'
+  GPG_OUT=($(gpg --with-fingerprint --with-colons "${REDHAT_RELEASE_KEY}" | grep '"^fpr' | cut -d ":" -f 10))
   GPG_RESULT=$?
   # Reset IFS back to default
   IFS="$IFS_BKP"

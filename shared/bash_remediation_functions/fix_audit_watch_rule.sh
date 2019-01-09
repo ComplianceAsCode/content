@@ -63,7 +63,8 @@ then
 	IFS_BKP="$IFS"
 	# Case when particular audit rule is already defined in some of /etc/audit/rules.d/*.rules file
 	# Get pair -- filepath : matching_row into @matches array
-	IFS=$'\n' matches=($(grep -P "[\s]*-w[\s]+$path" /etc/audit/rules.d/*.rules))
+	IFS=$'\n'
+	matches=($(grep -P "[\s]*-w[\s]+$path" /etc/audit/rules.d/*.rules))
 	# Reset IFS back to default
 	IFS="$IFS_BKP"
 

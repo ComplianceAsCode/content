@@ -84,7 +84,8 @@ then
 	key=$(expr "$full_rule" : '.*-k[[:space:]]\([^[:space:]]\+\)' '|' "$full_rule" : '.*-F[[:space:]]key=\([^[:space:]]\+\)')
 	IFS_BKP="$IFS"
 	# Check if particular audit rule is already defined
-	IFS=$'\n' matches=($(sed -s -n -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d;F" /etc/audit/rules.d/*.rules))
+	IFS=$'\n'
+	matches=($(sed -s -n -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d;F" /etc/audit/rules.d/*.rules))
 	if [ $? -ne 0 ]
 	then
 		retval=1
@@ -119,7 +120,8 @@ do
 	# * follow the rule pattern, and
 	# * meet the hardware architecture requirement, and
 	# * are current syscall group specific
-	IFS=$'\n' existing_rules=($(sed -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d"  "$audit_file"))
+	IFS=$'\n'
+	existing_rules=($(sed -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d"  "$audit_file"))
 	if [ $? -ne 0 ]
 	then
 		retval=1
@@ -171,7 +173,8 @@ do
 				IFS_BKP="$IFS"
 				# 2) Delete syscalls for this group, but keep those from other groups
 				# Convert current rule syscall's string into array splitting by '-S' delimiter
-				IFS=$'-S' read -a rule_syscalls_as_array <<< "$rule_syscalls"
+				IFS=$'-S'
+				read -a rule_syscalls_as_array <<< "$rule_syscalls"
 				# Reset IFS back to default
 				IFS="$IFS_BKP"
 				# Declare new empty string to hold '-S syscall' arguments from other groups

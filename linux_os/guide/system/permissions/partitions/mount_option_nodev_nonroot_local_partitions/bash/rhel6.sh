@@ -12,7 +12,8 @@ IFS_BKP="$IFS"
 
 # Load /etc/fstab's content with LABEL= and UUID= tags expanded to real
 # device names into FSTAB_REAL_DEVICES array splitting items by newline
-IFS=$'\n' FSTAB_REAL_DEVICES=($(findmnt --fstab --evaluate --noheadings))
+IFS=$'\n'
+FSTAB_REAL_DEVICES=($(findmnt --fstab --evaluate --noheadings))
 
 for line in ${FSTAB_REAL_DEVICES[@]}
 do
@@ -20,7 +21,8 @@ do
     # * squeeze multiple space characters into one,
     # * split line content info four columns (target, source, fstype, and
     #   mount options) by space delimiter
-    IFS=$' ' read TARGET SOURCE FSTYPE MOUNT_OPTIONS <<< "$(echo $line | tr -s ' ')"
+    IFS=$' '
+    read TARGET SOURCE FSTYPE MOUNT_OPTIONS <<< "$(echo $line | tr -s ' ')"
 
     # Filter the targets according to the following criteria:
     # * don't include record for root partition,
@@ -58,7 +60,8 @@ do
             # Split the retrieved value by the hash '#' delimiter to get the
             # row's head & tail (i.e. columns other than mount options) which won't
             # get modified
-            IFS=$'#' read TARGET_HEAD TARGET_OPTS TARGET_TAIL <<< "$FSTAB_TARGET_ROW"
+            IFS=$'#'
+            read TARGET_HEAD TARGET_OPTS TARGET_TAIL <<< "$FSTAB_TARGET_ROW"
             # Replace old mount options for particular /etc/fstab's row (for this target
             # and fstype) with new mount options
             sed -i "s#${TARGET_HEAD}\(.*\)${TARGET_TAIL}#${TARGET_HEAD}${MOUNT_OPTIONS}${TARGET_TAIL}#" /etc/fstab
