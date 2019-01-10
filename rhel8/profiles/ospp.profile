@@ -809,7 +809,6 @@ selections:
     #######################################################
     ## Rules that need a home?
 
-    - installed_OS_is_vendor_supported
     - enable_fips_mode
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_kptr_restrict
