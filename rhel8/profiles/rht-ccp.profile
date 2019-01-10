@@ -96,4 +96,6 @@ selections:
     - sshd_disable_empty_passwords
     - sshd_enable_warning_banner
     - sshd_do_not_permit_user_env
-    - sshd_use_approved_ciphers
+    - var_system_crypto_policy=fips
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
