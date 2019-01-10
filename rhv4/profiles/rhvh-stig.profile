@@ -398,7 +398,6 @@ selections:
     - accounts_password_set_max_life_existing
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
-    - smartcard_auth
     - selinux_user_login_roles
     - accounts_user_interactive_home_directory_defined
     - accounts_have_homedir_login_defs
@@ -448,9 +447,7 @@ selections:
     - tftpd_uses_secure_mode
     - package_xorg-x11-server-common_removed
     - snmpd_not_default_password
-    - install_smartcard_packages
     - sssd_enable_pam_services
-    - smartcard_configure_cert_checking
     - mount_option_noexec_remote_filesystems
     - auditd_audispd_network_failure_action
     - package_gdm_removed
