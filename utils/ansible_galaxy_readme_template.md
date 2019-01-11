@@ -45,6 +45,6 @@ Author Information
 ------------------
 
 This Ansible remediation role has been generated from the body of security
-policies developed by the SCAP Security Guide project. Please see
-[https://github.com/OpenSCAP/scap-security-guide/blob/master/Contributors.md](https://github.com/OpenSCAP/scap-security-guide/blob/master/Contributors.md)
+policies developed by the ComplianceAsCode project. Please see
+[https://github.com/complianceascode/content/blob/master/Contributors.md](https://github.com/complianceascode/content/blob/master/Contributors.md)
 for an updated list of authors and contributors.
