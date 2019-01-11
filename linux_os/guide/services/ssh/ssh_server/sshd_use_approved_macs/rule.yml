@@ -31,6 +31,14 @@ rationale: |-
     DoD Information Systems are required to use FIPS-approved cryptographic hash
     functions. The only SSHv2 hash algorithms meeting this requirement is SHA2.
 
+{{% if product in ["fedora", "rhel8","ol8"] %}}
+warnings:
+    - general: |-
+        This rule seems to be included in a benchmark of a platform that supports crypto policies.
+        Crypto policies centralise crypto algorithms configuration across the whole system, and unless overriden in a very specific way, they take priority over legacy configuration, such as one described by this rule.
+        Therefore, this rule is irrelevant and shouldn't even be part of the {{{ full_name }}} benchmark at all.
+{{% endif %}}
+
 severity: medium
 
 identifiers:

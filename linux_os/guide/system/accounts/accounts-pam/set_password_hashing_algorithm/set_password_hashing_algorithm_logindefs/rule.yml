@@ -9,6 +9,10 @@ description: |-
     the system will use SHA-512 as the hashing algorithm:
     <pre>ENCRYPT_METHOD SHA512</pre>
 
+    {{% if product in ["fedora", "rhel8","ol8"] %}}
+    Although this rule involves settings related to crypto algorithms, it does not overlap with system-wide Crypto Policies and can be safely used on systems where system-wide Crypto Policies are enabled s.a. {{{ full_name }}}.
+    {{% endif %}}
+
 rationale: |-
     Passwords need to be protected at all times, and encryption is the standard method for protecting passwords.
     If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. Passwords

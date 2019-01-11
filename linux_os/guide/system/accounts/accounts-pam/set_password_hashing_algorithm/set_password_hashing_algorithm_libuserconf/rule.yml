@@ -10,6 +10,10 @@ description: |-
     algorithm for password hashing:
     <pre>crypt_style = sha512</pre>
 
+    {{% if product in ["fedora", "rhel8","ol8"] %}}
+    Although this rule involves settings related to crypto algorithms, it does not overlap with system-wide Crypto Policies and can be safely used on systems where system-wide Crypto Policies are enabled s.a. {{{ full_name }}}.
+    {{% endif %}}
+
 rationale: |-
     Passwords need to be protected at all times, and encryption is the standard
     method for protecting passwords. If passwords are not encrypted, they can
