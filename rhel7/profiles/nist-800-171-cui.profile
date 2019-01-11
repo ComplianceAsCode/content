@@ -4,7 +4,7 @@ title: 'Unclassified Information in Non-federal Information Systems and Organiza
 
 description: |-
     From NIST 800-171, Section 2.2:
-    Security requirements for protecting the confidentiality of CUI in nonfederal
+    Security requirements for protecting the confidentiality of CUI in non-federal
     information systems and organizations have a well-defined structure that
     consists of:
 
