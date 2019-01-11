@@ -14,7 +14,8 @@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Build and Test AIDE Database"
-  shell: /usr/sbin/aide --init
+  command: /usr/sbin/aide --init
+  changed_when: True
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@

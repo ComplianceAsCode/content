@@ -14,24 +14,22 @@
 
 - name: Ensure GPG check Enabled for Local Packages (Yum)
   ini_file:
-    dest: "{{item}}"
+    dest: /etc/yum.conf
     section: main
     option: localpkg_gpgcheck
     value: 1
     create: True
-  with_items: "/etc/yum.conf"
   when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or yum_config_file.stat.exists) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 
 - name: Ensure GPG check Enabled for Local Packages (DNF)
   ini_file:
-    dest: "{{item}}"
+    dest: /etc/dnf/dnf.conf
     section: main
     option: localpkg_gpgcheck
     value: 1
     create: True
-  with_items: "/etc/dnf/dnf.conf"
   when: ansible_distribution == "Fedora" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

@@ -14,7 +14,7 @@
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
-    
+
 - name: Create list of uniq packages
   shell: "rpm -qf {{ files_with_incorrect_ownership.stdout_lines }}|sort |uniq"
   args:

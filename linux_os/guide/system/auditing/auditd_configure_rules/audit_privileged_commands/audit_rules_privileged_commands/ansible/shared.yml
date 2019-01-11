@@ -26,7 +26,7 @@
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
-  
+
 - name: Overwrites the rule in rules.d
   lineinfile:
     path: "{{ item.1.path }}"
@@ -39,7 +39,7 @@
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
-    
+
 - name: Adds the rule in rules.d
   lineinfile:
     path: /etc/audit/rules.d/privileged.rules
@@ -50,7 +50,7 @@
   when: item.matched == 0 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  
+
 # Adds/overwrites the rule in /etc/audit/audit.rules
 
 - name: Inserts/replaces the rule in audit.rules

@@ -7,7 +7,7 @@
   lineinfile:
     create: yes
     dest: /etc/ssh/sshd_config
-    regexp: (?i)^#?compression 
+    regexp: (?i)^#?compression
     line: Compression delayed
     validate: sshd -t -f %s
   #notify: restart sshd

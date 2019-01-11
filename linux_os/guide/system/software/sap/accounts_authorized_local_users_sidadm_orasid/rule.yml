@@ -20,7 +20,7 @@ description: |-
     <br /> <br />
     Test result of both <tt>fail</tt> or <tt>error</tt> means mismatch of user names and
     SAP system. The bash remediation commands can be used to delete unexpected users on
-    the operating system. 
+    the operating system.
 
 rationale: |-
     Accounts providing no operational purpose provide additional opportunities for
@@ -50,7 +50,7 @@ warnings:
         one SID in /sapmnt and /usr/sap).
         <br />
         With the above limitations, the SAP system users <tt>sidadm</tt>, <tt>orasid</tt>, <tt>sapadm</tt>
-        and <tt>oracle</tt> can be automatically detected. 
+        and <tt>oracle</tt> can be automatically detected.
         <br /> <br />
         For other cases, please use the general purpose rule <tt>accounts_authorized_local_users</tt>
         and customize the refine value variable <tt>var_accounts_authorized_local_users_regex</tt>

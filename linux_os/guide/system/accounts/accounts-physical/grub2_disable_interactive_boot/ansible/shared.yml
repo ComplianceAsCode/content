@@ -14,7 +14,7 @@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Verify that Interactive Boot is Disabled (runtime)
-  shell: /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
+  command: /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
