@@ -4,7 +4,7 @@ title: 'DRAFT - Standard Docker Host Security Profile'
 
 description: |-
     This profile contains rules to ensure standard security
-    baseline of Red Hat Enterprise Linux 7 system running the docker
+    baseline of Red Hat Enterprise Linux 7 system running docker.
 
     This discussion is currently being held on open-scap-list@redhat.com
     and scap-security-guide@lists.fedorahosted.org.
