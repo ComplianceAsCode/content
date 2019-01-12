@@ -158,7 +158,14 @@ selections:
     ### The OS shall implement access controls which can prohibit
     ### unprivileged users from accessing files and directories
     ### owned by other users
+    - var_selinux_policy_name=targeted
+    - var_selinux_state=enforcing
 
+    - selinux_all_devicefiles_labeled
+    - selinux_confinement_of_daemons
+    - selinux_policytype
+    - selinux_state
+    
 
     #######################################################
     # 5.1.3 Security Management (FMT)
@@ -172,13 +179,10 @@ selections:
     ### the administrator
 
     #### enable/disable screen lock
-
     #### enable/disable session timeout
-
     #### configure screen lock inactivity timeout
-
     #### configure session inactivity timeout
-
+    - dconf_gnome_disable_user_admin
 
 
     #######################################################
@@ -699,13 +703,8 @@ selections:
     - grub2_audit_backlog_limit_argument
     - service_auditd_enabled
     - rpm_verify_hashes
-    - selinux_all_devicefiles_labeled
-    - selinux_confinement_of_daemons
-    - selinux_policytype
-    - selinux_state
     - audit_rules_immutable
-    - var_selinux_policy_name=targeted
-    - var_selinux_state=enforcing
+
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
