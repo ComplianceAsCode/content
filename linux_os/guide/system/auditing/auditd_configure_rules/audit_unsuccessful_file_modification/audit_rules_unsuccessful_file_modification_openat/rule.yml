@@ -10,21 +10,21 @@ description: |-
     to use the <tt>augenrules</tt> program to read audit rules during daemon
     startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
-    <pre>-a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    <pre>-a always,exit -F arch=b32 -S openat -F a2&0100 -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create
+    -a always,exit -F arch=b32 -S openat -F a2&0100 -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create</pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    -a always,exit -F arch=b64 -S openat -F a2&0100 -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create
+    -a always,exit -F arch=b64 -S openat -F a2&0100 -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F arch=b32 -S openat -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b32 -S openat -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    <pre>-a always,exit -F arch=b32 -S openat -F a2&0100 -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create
+    -a always,exit -F arch=b32 -S openat -F a2&0100 -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create</pre>
     If the system is 64 bit then also add the following lines:
     <pre>
-    -a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
-    -a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+    -a always,exit -F arch=b64 -S openat -F a2&0100 -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create
+    -a always,exit -F arch=b64 -S openat -F a2&0100 -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-create</pre>
 
 rationale: |-
     Unsuccessful attempts to access files could be an indicator of malicious activity on a system. Auditing
@@ -34,6 +34,7 @@ severity: medium
 
 identifiers:
     cce@rhel7: 80387-4
+    cce@rhel8: 80650-5
 
 references:
     cis: 5.2.10
@@ -43,6 +44,7 @@ references:
     nist: AC-17(7),AU-1(b),AU-2(a),AU-2(c),AU-2(d),AU-12(a),AU-12(c),IR-5
     nist-csf: DE.AE-3,DE.AE-5,DE.CM-1,DE.CM-3,DE.CM-7,ID.SC-4,PR.AC-3,PR.PT-1,PR.PT-4,RS.AN-1,RS.AN-4
     ospp@rhel7: FAU_GEN.1.1.c
+    ospp@rhel8: FAU_GEN.1.1.c
     pcidss: Req-10.2.4,Req-10.2.1
     srg: SRG-OS-000064-GPOS-00033,SRG-OS-000458-GPOS-00203,SRG-OS-000461-GPOS-00205,SRG-OS-000392-GPOS-00172
     stigid@rhel7: "030520"

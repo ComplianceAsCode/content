@@ -288,7 +288,10 @@ selections:
 
     ### FAU_GEN.1.1.c / AU-4(1)
     ### Configure the System to Offload Audit Records to a Log Server
-
+    - rsyslog_remote_loghost
+    - auditd_audispd_syslog_plugin_activated
+    - auditd_audispd_configure_remote_server
+    - auditd_audispd_encrypt_sent_records    
 
     ### FMT_MOF_EXT.1 / AC-8(a)
     ### Set Logon Warning Banner
@@ -307,12 +310,13 @@ selections:
     ### Audit File and Object Events (Unsuccessful)
 
     #### CREATE (Unsuccessful)
+    # openat, open_by_handle_at, open, creat
+    - audit_rules_unsuccessful_file_modification_openat
     - audit_rules_unsuccessful_file_modification_creat
 
     #### ACCESS (Unsuccessful)
     - audit_rules_unsuccessful_file_modification_openat_o_creat
     - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
-    - audit_rules_unsuccessful_file_modification_openat
     - audit_rules_unsuccessful_file_modification_openat_rule_order
     - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
     - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
@@ -817,10 +821,6 @@ selections:
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 
-    - auditd_audispd_syslog_plugin_activated
-    - auditd_audispd_configure_remote_server
-    - rsyslog_remote_loghost
-    - auditd_audispd_encrypt_sent_records
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_mount
