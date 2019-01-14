@@ -5,14 +5,15 @@
 # disruption = low
 
 - name: Get NSS database smart card configuration
-  shell: /usr/bin/pkcs11-switch
+  command: /usr/bin/pkcs11-switch
+  changed_when: True
   register: pkcsw_output
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
-  shell: /usr/bin/pkcs11-switch opensc
+  command: /usr/bin/pkcs11-switch opensc
   when: pkcsw_output.stdout != "opensc" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

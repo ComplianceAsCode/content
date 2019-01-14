@@ -3,8 +3,14 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- name: Test for existence /etc/cron.allow
+  stat:
+    path: /etc/securetty
+  register: securetty_empty
+
 - name: "Direct root Logins Not Allowed"
   shell: echo > /etc/securetty
+  changed_when: securetty_empty.stat.size > "1"
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
