@@ -87,3 +87,9 @@ selections:
     - sshd_idle_timeout_value=5_minutes
     - sshd_set_idle_timeout
     - sshd_set_keepalive
+    - configure_ssh_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_crypto_policy

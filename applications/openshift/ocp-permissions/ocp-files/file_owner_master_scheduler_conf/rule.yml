@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'Verify User Who Owns The OpenShift Scheduler Configuration File'
 
 description: '{{{ describe_file_owner(file="/etc/origin/master/scheduler.json", owner="root") }}}'
@@ -10,6 +12,9 @@ rationale: |-
     critical for OpenShift security.
 
 severity: medium
+
+identifiers:
+    cce@ocp3: 80628-1
 
 references:
     cis: 1.4.16

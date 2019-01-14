@@ -10,7 +10,8 @@ import collections
 from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
-from .products import parse_name, multi_list, map_name
+from .constants import MULTI_PLATFORM_LIST
+from .products import parse_name, map_name
 from .jinja import process_file
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .utils import required_key
@@ -31,7 +32,7 @@ def _check_is_applicable_for_product(oval_check_def, product):
     # First test if OVAL check isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for multi_prod in multi_platforms:
-        if multi_prod in oval_check_def and product in multi_list:
+        if multi_prod in oval_check_def and product in MULTI_PLATFORM_LIST:
             return True
 
     # Current SSG checks aren't unified which element of '<platform>'

@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'Verify User Who Owns OpenShift Node Certificate File'
 
 description: '{{{ describe_file_owner(file="/etc/origin/node/client-ca.crt", owner="root") }}}'
@@ -10,6 +12,9 @@ rationale: |-
     critical for OpenShift security.
 
 severity: medium
+
+identifiers:
+    cce@ocp3: 80631-5
 
 references:
     cis: 2.2.8

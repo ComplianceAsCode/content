@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'kubelet - Ensure AlwaysAllow Is Not Set'
 
 description: |-
@@ -10,7 +12,9 @@ description: |-
     To require authorization requests, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>anonymous-auth=<sub idref="var_kube_authorization_mode"/></pre>
+    <pre>kubeletArguments:
+      authorization-mode:
+      - '<sub idref="var_kube_authorization_mode"/>'</pre>
 
 rationale: |-
     When enabled, all type of authentication requests including anonymous requests are
@@ -26,6 +30,9 @@ ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ sudo grep -A1 authorization-mode /etc/origin/node/node-config.yaml</pre>
     The output should return <tt><sub idref="var_kube_authorization_mode"/></tt>.
+
+identifiers:
+    cce@ocp3: 80602-6
 
 references:
     cis: 2.1.3

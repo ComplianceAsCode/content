@@ -1,10 +1,20 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Enable GNOME3 Screensaver Idle Activation'
 
-description: "To activate the screensaver in the GNOME3 desktop after a period of inactivity,\nadd or set <tt>idle-activation-enabled</tt> to <tt>true</tt> in \n<tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:\n<pre>[org/gnome/desktop/screensaver]\nidle_activation_enabled=true</pre>\nOnce the setting has been added, add a lock to\n<tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.\nFor example:\n<pre>/org/gnome/desktop/screensaver/idle-activation-enabled</pre>\nAfter the settings have been set, run <tt>dconf update</tt>."
+description: |-
+    To activate the screensaver in the GNOME3 desktop after a period of inactivity,
+    add or set <tt>idle-activation-enabled</tt> to <tt>true</tt> in
+    <tt>/etc/dconf/db/local.d/00-security-settings</tt>. For example:
+    <pre>[org/gnome/desktop/screensaver]
+    idle-activation-enabled=true</pre>
+    Once the setting has been added, add a lock to
+    <tt>/etc/dconf/db/local.d/locks/00-security-settings-lock</tt> to prevent user modification.
+    For example:
+    <pre>/org/gnome/desktop/screensaver/idle-activation-enabled</pre>
+    After the settings have been set, run <tt>dconf update</tt>.
 
 rationale: |-
     A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate
@@ -29,10 +39,16 @@ references:
     cui: 3.1.10
     disa: "57"
     nist: AC-11(a)
+    nist-csf: PR.AC-7
     ospp@rhel7: FMT_MOF_EXT.1
     pcidss: Req-8.1.8
     srg: SRG-OS-000029-GPOS-00010
     stigid@rhel7: "010100"
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
+    isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
+    cobit5: DSS05.04,DSS05.10,DSS06.10
+    iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
+    cis-csc: 1,12,15,16
 
 ocil_clause: 'idle_activation_enabled is not enabled or configured'
 
@@ -43,3 +59,5 @@ ocil: |-
     To ensure that users cannot disable the screensaver idle inactivity setting, run the following:
     <pre>$ grep idle-activation-enabled /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/screensaver/idle-activation-enabled</tt>
+
+platform: machine

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,rhel8,fedora
 
 title: 'Disable Geolocation in GNOME3'
 
@@ -27,3 +27,5 @@ ocil: |-
     <pre>$ grep location /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be
     <tt>/org/gnome/system/location/enabled</tt> and <tt>/org/gnome/clocks/geolocation</tt>.
+
+platform: machine

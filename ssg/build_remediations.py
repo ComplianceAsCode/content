@@ -10,7 +10,8 @@ from collections import defaultdict, namedtuple
 
 from .jinja import process_file as jinja_process_file
 from .xml import ElementTree
-from .products import parse_name, multi_list, map_name
+from .products import parse_name, map_name
+from .constants import MULTI_PLATFORM_LIST
 
 REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
@@ -44,7 +45,7 @@ def is_applicable_for_product(platform, product):
     # First test if platform isn't for 'multi_platform_all' or
     # 'multi_platform_' + product
     for _platform in multi_platforms:
-        if _platform in platform and product in multi_list:
+        if _platform in platform and product in MULTI_PLATFORM_LIST:
             return True
 
     product_name = ""
@@ -301,15 +302,20 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
                 "substituting directly."
             )
 
-        # we use the horrid "!!str |-" syntax to force strings without using
-        # quotes. quotes enable yaml escaping rules so we'd have to escape all
-        # the backslashes and at this point we don't know if there are any.
+        # If you change this string make sure it still matches the pattern
+        # defined in OpenSCAP. Otherwise you break variable handling in
+        # 'oscap xccdf generate fix' and the variables won't be customizable!
+        # https://github.com/OpenSCAP/openscap/blob/1.2.17/src/XCCDF_POLICY/xccdf_policy_remediate.c#L588
+        #   const char *pattern =
+        #     "- name: XCCDF Value [^ ]+ # promote to variable\n  set_fact:\n"
+        #     "    ([^:]+): (.+)\n  tags:\n    - always\n";
+        # We use !!str typecast to prevent treating values as different types
+        # eg. yes as a bool or 077 as an octal number
         fix_text = re.sub(
             r"- \(xccdf-var\s+(\S+)\)",
             r"- name: XCCDF Value \1 # promote to variable\n"
             r"  set_fact:\n"
-            r"    \1: !!str |-\n"
-            r"        (ansible-populate \1)\n"
+            r"    \1: !!str (ansible-populate \1)\n"
             r"  tags:\n"
             r"    - always",
             fix_text

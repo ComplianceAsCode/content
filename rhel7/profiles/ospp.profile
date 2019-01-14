@@ -33,7 +33,7 @@ description: |-
     consensus and release processes.
 
 selections:
-    - installed_OS_is_certified
+    - installed_OS_is_vendor_supported
     - login_banner_text=usgcb_default
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15

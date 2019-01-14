@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 # reboot = true
 # strategy = restrict
 # complexity = low
@@ -40,10 +40,11 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86_64
   lineinfile:
@@ -51,9 +52,9 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
-  when: audit_arch == 'b64'
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+  when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 #   
@@ -65,10 +66,11 @@
     state: present
     dest: /etc/audit/audit.rules
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
@@ -77,8 +79,8 @@
     dest: /etc/audit/audit.rules
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -F key=access"
-    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -F key=access"
-  when: audit_arch == 'b64'
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+    - "-a always,exit -F arch=b64 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"
+  when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

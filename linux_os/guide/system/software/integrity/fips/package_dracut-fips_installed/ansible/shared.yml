@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel, multi_platform_fedora
+# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7
 # reboot = false
 # strategy = enable
 # complexity = low
@@ -7,7 +7,6 @@
   package:
     name: dracut-fips
     state: present
-    when: ansible_distribution == 'Red Hat Enterprise Linux'
+    when: ansible_distribution == 'Red Hat Enterprise Linux' and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-

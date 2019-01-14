@@ -1,21 +1,25 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 # reboot = false
 # strategy = restrict
 # complexity = high
 # disruption = medium
 - name: "Read list of files with incorrect permissions"
-  shell: "rpm -Va --nofiledigest | awk '/^.M/ {print $NF}'"
+  shell: "rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)==\"M\") print $NF }'"
+  args:
+    warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect permissions using rpm module
   register: files_with_incorrect_permissions
   failed_when: False
   changed_when: False
   check_mode: no
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Correct file permissions with RPM"
   shell: "rpm --quiet --setperms $(rpm -qf '{{item}}')"
+  args:
+    warn: False # Ignore ANSIBLE0006, we can't correct permissions using rpm module
   with_items: "{{ files_with_incorrect_permissions.stdout_lines }}"
-  when: files_with_incorrect_permissions.stdout_lines | length > 0
+  when: (files_with_incorrect_permissions.stdout_lines | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-

@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'Verify Group Who Owns The OpenShift API Specification File'
 
 description: '{{{ describe_file_group_owner(file="/etc/origin/node/pods/apiserver.yaml", group="root") }}}'
@@ -10,6 +12,9 @@ rationale: |-
     critical for OpenShift security.
 
 severity: medium
+
+identifiers:
+    cce@ocp3: 80576-2
 
 references:
     cis: 1.4.2

@@ -2,11 +2,16 @@ documentation_complete: true
 
 title: 'C2S for Red Hat Enterprise Linux 6'
 
-description: "This profile demonstrates compliance against the \nU.S. Government Commercial Cloud Services (C2S) baseline.\n\
-    \nThis baseline was inspired by the Center for Internet Security\n(CIS) Red Hat Enterprise Linux 6 Benchmark, v1.2.0 -\
-    \ 06-25-2013.\nFor the SCAP Security Guide project to remain in compliance with\nCIS' terms and conditions, specifically\
-    \ Restrictions(8), note \nthere is no representation or claim that the C2S profile will\nensure a system is in compliance\
-    \ or consistency with the CIS\nbaseline."
+description: |-
+    This profile demonstrates compliance against the
+    U.S. Government Commercial Cloud Services (C2S) baseline.
+    nThis baseline was inspired by the Center for Internet Security
+    (CIS) Red Hat Enterprise Linux 6 Benchmark, v1.2.0 - 06-25-2013.
+    For the SCAP Security Guide project to remain in compliance with
+    CIS' terms and conditions, specifically Restrictions(8), note
+    there is no representation or claim that the C2S profile will
+    ensure a system is in compliance or consistency with the CIS
+    baseline.
 
 selections:
     - var_selinux_state=enforcing

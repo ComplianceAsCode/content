@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,rhel8,fedora
 
 title: 'Set the GNOME3 Login Number of Failures'
 
@@ -45,3 +45,5 @@ ocil: |-
     number of failures on the login screen, run the following:
     <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/allowed-failures</tt>
+
+platform: machine

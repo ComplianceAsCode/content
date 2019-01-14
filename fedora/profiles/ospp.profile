@@ -13,11 +13,12 @@ description: |-
     similar to the one mandated by US National Security Systems.
 
 selections:
-    - installed_OS_is_certified
+    - installed_OS_is_vendor_supported
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - service_auditd_enabled
-    - grub2_enable_fips_mode
+    - enable_fips_mode
+    - var_system_crypto_policy=fips
     - rpm_verify_hashes
     - selinux_all_devicefiles_labeled
     - selinux_confinement_of_daemons
@@ -71,7 +72,6 @@ selections:
     - disable_host_auth
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
-    - sshd_disable_rhosts_rsa
     - sshd_disable_rhosts
     - sshd_disable_user_known_hosts
     - var_accounts_passwords_pam_faillock_deny=3
@@ -202,3 +202,9 @@ selections:
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
+    - configure_ssh_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_kerberos_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_crypto_policy

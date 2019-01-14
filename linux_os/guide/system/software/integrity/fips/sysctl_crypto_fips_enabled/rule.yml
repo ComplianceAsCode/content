@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora
+
+title: "Set kernel parameter 'crypto.fips_enabled' to 1"
+
+description: |-
+    System running in FIPS mode is indicated by kernel parameter
+    <tt>'crypto.fips_enabled'</tt>. This parameter should be set to <tt>1</tt>
+    in FIPS mode.
+    To enable FIPS mode, run the following command:
+    <pre>fips-mode-setup --enable</pre>
+
+rationale: |-
+    Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to
+    protect data. The operating system must implement cryptographic modules adhering to the higher
+    standards approved by the federal government since this provides assurance they have been tested
+    and validated.
+
+severity: high
+
+ocil_clause: 'crypto.fips_enabled is not 1'
+
+ocil: |-
+    To verify that kernel parameter 'crypto.fips_enabled' is set properly, run the following command:
+    <pre>sysctl crypto.fips_enabled</pre>
+    The output should contain the following:
+    <pre>crypto.fips_enabled =  1</pre>
+
+warnings:
+    - general: |-
+        The system needs to be rebooted for these changes to take effect.
+    - regulatory: |-
+        The ability to enable FIPS does not denote FIPS compliancy or certification.
+        Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant. Community
+        projects such as CentOS, Scientific Linux, Fedora, etc. do not necessarily meet FIPS certification and compliancy.
+        Therefore, non-certified vendors and/or projects do not meet this requirement even if technically feasible.
+        <br /><br />
+        See <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>
+        for a list of FIPS certified vendors.
+
+platform: machine

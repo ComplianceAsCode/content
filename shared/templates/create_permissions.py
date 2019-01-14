@@ -96,45 +96,57 @@ class PermissionGenerator(FilesGenerator):
                     "./bash/file_permissions{0}.sh", path_id
                 )
 
-        elif target == "ansible" and not re.match(r'\^.*\$', file_name, 0):
-            if mode:
+        elif target == "ansible":
+            if not re.match(r'\^.*\$', file_name, 0):
+                if mode:
+                    self.file_from_template(
+                        "./template_ANSIBLE_file_permissions",
+                        {
+                            "FILEPATH":      full_path,
+                            "FILEMODE":      mode,
+                        },
+                        "./ansible/file_permissions{0}.yml", path_id
+                    )
+                if uid:
+                    self.file_from_template(
+                        "./template_ANSIBLE_file_owner",
+                        {
+                            "FILEPATH":      full_path,
+                            "FILEUID":       uid,
+                        },
+                        "./ansible/file_owner{0}.yml", path_id
+                    )
+                if gid:
+                    self.file_from_template(
+                        "./template_ANSIBLE_file_groupowner",
+                        {
+                            "FILEPATH":      full_path,
+                            "FILEGID":       gid,
+                        },
+                        "./ansible/file_groupowner{0}.yml", path_id
+                    )
+
                 self.file_from_template(
-                    "./template_ANSIBLE_file_permissions",
+                    "./template_ANSIBLE_permissions",
                     {
                         "FILEPATH":      full_path,
+                        "FILEMODE":      mode,
+                        "FILEUID":       uid,
+                        "FILEGID":       gid,
+                    },
+                    "./ansible/permissions{0}.yml", path_id
+                )
+            else:
+                self.file_from_template(
+                    "./template_ANSIBLE_file_regex_permissions",
+                    {
+                        "FILEPATH":      dir_path,
+                        "FILENAME":      file_name,
                         "FILEMODE":      mode,
                     },
                     "./ansible/file_permissions{0}.yml", path_id
                 )
-            if uid:
-                self.file_from_template(
-                    "./template_ANSIBLE_file_owner",
-                    {
-                        "FILEPATH":      full_path,
-                        "FILEUID":       uid,
-                    },
-                    "./ansible/file_owner{0}.yml", path_id
-                )
-            if gid:
-                self.file_from_template(
-                    "./template_ANSIBLE_file_groupowner",
-                    {
-                        "FILEPATH":      full_path,
-                        "FILEGID":       gid,
-                    },
-                    "./ansible/file_groupowner{0}.yml", path_id
-                )
 
-            self.file_from_template(
-                "./template_ANSIBLE_permissions",
-                {
-                    "FILEPATH":      full_path,
-                    "FILEMODE":      mode,
-                    "FILEUID":       uid,
-                    "FILEGID":       gid,
-                },
-                "./ansible/permissions{0}.yml", path_id
-            )
 
         elif target == "oval":
             # support pattern matching, requiring that the filename starts with '^'

@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'Verify Group Who Owns The OpenShift etcd Data Directory'
 
 description: '{{{ describe_file_group_owner(file="/var/lib/etcd", group="root") }}}'
@@ -10,6 +12,9 @@ rationale: |-
     data and the cluster.
 
 severity: medium
+
+identifiers:
+    cce@ocp3: 80621-6
 
 references:
     cis: 1.4.12

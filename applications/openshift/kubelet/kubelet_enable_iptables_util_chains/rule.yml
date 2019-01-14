@@ -1,15 +1,19 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'kubelet - Allow Automatic Firewall Configuration'
 
 description: |-
     The kubelet has the ability to automatically configure the firewall to allow
-    the containers required ports and connections to networking resources and destinations.
+    the containers required ports and connections to networking resources and destinations
     parameters potentially creating a security incident.
     To allow the kubelet to modify the firewall, edit the kubelet configuration
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
-    <pre>make-iptables-util-chains=true</pre>
+    <pre>kubeletArguments:
+      make-iptables-util-chains:
+      - 'true'</pre>
 
 rationale: |-
     The kubelet should automatically configure the firewall settings to allow access and
@@ -25,6 +29,9 @@ ocil: |-
     Run the following command on the kubelet node(s):
     <pre>$ sudo grep -A1 make-iptables-util-chains /etc/origin/node/node-config.yaml</pre>
     The output should return <tt>true</tt>.
+
+identifiers:
+    cce@ocp3: 80604-2
 
 references:
     cis: 2.1.8

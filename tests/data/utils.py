@@ -33,18 +33,19 @@ def iterate_over_rules():
             yield result
 
 
-def _exclude_utils(file_name):
+def _exclude_utils(tarinfo):
+    file_name = tarinfo.name
     if file_name in ['./__init__.py', './utils.py']:
-        return True
+        return None
     if file_name.endswith('pyc'):
-        return True
+        return None
     if file_name.endswith('swp'):
-        return True
-    return False
+        return None
+    return tarinfo
 
 
 def create_tarball(tar_dir):
     archive_path = os.path.join(tar_dir, _TAR_BASENAME)
     with tarfile.TarFile.open(archive_path, 'w') as tarball:
-        tarball.add(_DIR, arcname='.', exclude=_exclude_utils)
+        tarball.add(_DIR, arcname='.', filter=_exclude_utils)
     return archive_path

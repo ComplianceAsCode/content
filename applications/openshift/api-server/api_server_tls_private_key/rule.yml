@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Configure the Certificate Key for the API Server'
+
+description: |-
+    To ensure the API Server utilizes its own TLS certificates, the
+    <tt>keyFile</tt> must be configured. To, verify
+    that <tt>servingInfo</tt> has the <tt>keyFile</tt> configured in 
+    the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>servingInfo:
+      clientCA: ca.crt
+      certFile: master.server.crt
+      keyFile: master.server.key</pre>
+
+rationale: |-
+    API Server communication contains sensitive parameters that should remain
+    encrypted in transit. Configure the API Server to serve only HTTPS
+    traffic.
+
+severity: medium
+
+references:
+    cis: 1.1.38
+
+ocil_clause: '<tt>keyFile</tt> is not set as appropriate for <tt>servingInfo</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A7 servingInfo /etc/origin/master/master-config.yaml</pre>
+    The output should contain something similar to:
+    <pre>servingInfo:
+      clientCA: ca.crt
+      certFile: master.server.crt
+      keyFile: master.server.key</pre>

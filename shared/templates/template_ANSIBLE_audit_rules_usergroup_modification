@@ -41,6 +41,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
@@ -52,3 +53,4 @@
     dest: /etc/audit/audit.rules
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

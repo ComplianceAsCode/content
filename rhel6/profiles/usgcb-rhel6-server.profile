@@ -3,8 +3,7 @@ documentation_complete: true
 title: 'United States Government Configuration Baseline (USGCB)'
 
 description: |-
-    This profile is a working draft for a USGCB submission against
-    RHEL6 Server.
+    This profile is a working draft for a USGCB submission against RHEL6 Server.
 
 selections:
     - kernel_disable_entropy_contribution_for_solid_state_drives

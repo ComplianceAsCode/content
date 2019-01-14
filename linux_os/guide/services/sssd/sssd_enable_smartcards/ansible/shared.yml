@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -7,8 +7,9 @@
   ini_file:
     dest: /etc/sssd/sssd.conf
     section: pam
-    option: pam_cert_auth 
+    option: pam_cert_auth
     value: true
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

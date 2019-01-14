@@ -18,12 +18,22 @@ from collections import defaultdict
 # xccdf_org.ssgproject.content_profile_ospp42 becomes ospp42
 
 STABLE_PROFILE_IDS = {
-    "FEDORA": ["standard"],
+    "FEDORA": ["standard", "ospp", "pci-dss"],
     "RHEL-6": ["C2S", "CS2", "CSCF-RHEL6-MLS", "fisma-medium-rhel6-server",
                "pci-dss", "rht-ccp", "stig-rhel6-disa", "usgcb-rhel6-server"],
     "RHEL-7": ["C2S", "cjis", "hipaa", "nist-800-171-cui", "rht-ccp",
                "ospp", "ospp42", "pci-dss", "stig-rhel7-disa"],
+    "RHEL-8": ["ospp", "pci-dss"],
 }
+
+
+BENCHMARK_TO_FILE_STEM = {
+    "FEDORA": "fedora",
+    "RHEL-6": "rhel6",
+    "RHEL-7": "rhel7",
+    "RHEL-8": "rhel8",
+}
+
 
 BENCHMARK_ID_PREFIX = "xccdf_org.ssgproject.content_benchmark_"
 PROFILE_ID_PREFIX = "xccdf_org.ssgproject.content_profile_"
@@ -40,7 +50,7 @@ def parse_args():
     return p.parse_args()
 
 
-def gather_profiles_from_datastream(path, profiles_per_benchmark):
+def gather_profiles_from_datastream(path, build_dir, profiles_per_benchmark):
     input_tree = ssg.xml.ElementTree.parse(path)
     benchmarks = ssg.xccdf.get_benchmark_id_title_map(input_tree)
     if len(benchmarks) == 0:
@@ -53,6 +63,10 @@ def gather_profiles_from_datastream(path, profiles_per_benchmark):
         input_tree, benchmarks)
 
     for bench_id, profile_id, title in benchmark_profile_pairs:
+        bench_short_id = bench_id[len(BENCHMARK_ID_PREFIX):]
+        if respective_datastream_absent(bench_short_id, build_dir):
+            continue
+
         if not bench_id.startswith(BENCHMARK_ID_PREFIX):
             raise RuntimeError("Expected benchmark ID '%s' from '%s' to be "
                                "prefixed with '%s'."
@@ -68,30 +82,49 @@ def gather_profiles_from_datastream(path, profiles_per_benchmark):
                                "prefixed with '%s'."
                                % (profile_id, path, PROFILE_ID_PREFIX))
 
-        bench_id = bench_id[len(BENCHMARK_ID_PREFIX):]
         profile_id = profile_id[len(PROFILE_ID_PREFIX):]
 
-        profiles_per_benchmark[bench_id].append(profile_id)
+        profiles_per_benchmark[bench_short_id].append(profile_id)
+
+
+def respective_datastream_absent(bench_id, build_dir):
+    if bench_id not in BENCHMARK_TO_FILE_STEM:
+        return True
+
+    datastream_filename = "ssg-{stem}-ds.xml".format(stem=BENCHMARK_TO_FILE_STEM[bench_id])
+    datastream_path = os.path.join(build_dir, datastream_filename)
+    if not os.path.isfile(datastream_path):
+        return True
+    else:
+        return False
+
+
+def check_build_dir(build_dir):
+    profiles_per_benchmark = defaultdict(list)
+    for path in glob.glob(os.path.join(build_dir, "ssg-*-ds.xml")):
+        gather_profiles_from_datastream(path, build_dir, profiles_per_benchmark)
+
+    for bench_short_id in STABLE_PROFILE_IDS.keys():
+        if respective_datastream_absent(bench_short_id, build_dir):
+            continue
+
+        if bench_short_id not in profiles_per_benchmark:
+            raise RuntimeError("Expected benchmark ID '%s' has to be "
+                               "prefixed with '%s'."
+                               % (bench_short_id, BENCHMARK_ID_PREFIX))
+
+        for profile_id in STABLE_PROFILE_IDS[bench_short_id]:
+            if profile_id not in profiles_per_benchmark[bench_short_id]:
+                raise RuntimeError("Profile '%s' is required to be in the "
+                                   "'%s' benchmark. It is a stable profile "
+                                   "that can't be renamed or removed!"
+                                   % (profile_id, bench_short_id))
 
 
 def main():
     args = parse_args()
 
-    profiles_per_benchmark = defaultdict(list)
-    for path in glob.glob(os.path.join(args.build_dir, "ssg-*-ds.xml")):
-        gather_profiles_from_datastream(path, profiles_per_benchmark)
-
-    for bench_id in STABLE_PROFILE_IDS.keys():
-        if bench_id not in profiles_per_benchmark:
-            raise RuntimeError("Benchmark of shortened ID '%s' was not found "
-                               "within any of the datastreams!" % (bench_id))
-
-        for profile_id in STABLE_PROFILE_IDS[bench_id]:
-            if profile_id not in profiles_per_benchmark[bench_id]:
-                raise RuntimeError("Profile '%s' is required to be in the "
-                                   "'%s' benchmark. It is a stable profile "
-                                   "that can't be renamed or removed!"
-                                   % (profile_id, bench_id))
+    check_build_dir(args.build_dir)
 
 
 if __name__ == "__main__":

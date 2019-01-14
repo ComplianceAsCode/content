@@ -4,9 +4,9 @@ from __future__ import print_function
 import datetime
 import os.path
 
-product_directories = ['debian8', 'fedora', 'ol7', 'opensuse', 'rhel6',
-                       'rhel7', 'sle11', 'sle12', 'ubuntu1404',
-                       'ubuntu1604', 'wrlinux', 'rhel-osp7', 'chromium',
+product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
+                       'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
+                       'ubuntu1604', 'wrlinux', 'rhosp13', 'chromium',
                        'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'example']
 
 JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
@@ -46,6 +46,7 @@ XCCDF12_NS = "http://checklists.nist.gov/xccdf/1.2"
 min_ansible_version = "2.3"
 ansible_version_requirement_pre_task_name = \
     "Verify Ansible meets SCAP-Security-Guide version requirements."
+standard_profiles = ['standard', 'pci-dss', 'desktop', 'server']
 
 oval_header = (
     """
@@ -77,14 +78,181 @@ PKG_MANAGER_TO_CONFIG_FILE = {
     "dnf": "/etc/dnf/dnf.conf",
 }
 
+FULL_NAME_TO_PRODUCT_MAPPING = {
+    "Chromium": "chromium",
+    "Debian 8": "debian8",
+    "JBoss EAP 6": "eap6",
+    "Example": "example",
+    "Fedora": "fedora",
+    "Firefox": "firefox",
+    "JBoss Fuse 6": "fuse6",
+    "Java Runtime Environment": "jre",
+    "Red Hat OpenShift Container Platform 3": "ocp3",
+    "Oracle Linux 7": "ol7",
+    "Oracle Linux 8": "ol8",
+    "openSUSE": "opensuse",
+    "Red Hat Enterprise Linux 6": "rhel6",
+    "Red Hat Enterprise Linux 7": "rhel7",
+    "Red Hat Enterprise Linux 8": "rhel8",
+    "Red Hat OpenStack Platform 13": "rhosp13",
+    "Red Hat Virtualization 4": "rhv4",
+    "SUSE Linux Enterprise 11": "sle11",
+    "SUSE Linux Enterprise 12": "sle12",
+    "Ubuntu 14.04": "ubuntu1404",
+    "Ubuntu 16.04": "ubuntu1604",
+    "Ubuntu 18.04": "ubuntu1804",
+    "WRLinux": "wrlinux",
+}
+
+PRODUCT_TO_CPE_MAPPING = {
+    "chromium": [
+        "cpe:/a:google:chromium-browser",
+    ],
+    "debian8": [
+        "cpe:/o:debianproject:debian:8",
+    ],
+    "eap6": [
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.1.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.1.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.2",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.3",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.2.4",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.2",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.3.3",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.0",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.1",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.2",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.3",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.4",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.5",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.6",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.7",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.8",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.9",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.10",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.11",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.12",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.13",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.14",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.15",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.16",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.17",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.18",
+        "cpe:/a:redhat:jboss_enterprise_application_platform:6.4.19",
+    ],
+    "example": [
+    ],
+    "fedora": [
+        "cpe:/o:fedoraproject:fedora:30",
+        "cpe:/o:fedoraproject:fedora:29",
+        "cpe:/o:fedoraproject:fedora:28",
+        "cpe:/o:fedoraproject:fedora:27",
+        "cpe:/o:fedoraproject:fedora:26",
+        "cpe:/o:fedoraproject:fedora:25",
+    ],
+    "firefox": [
+        "cpe:/a:mozilla:firefox",
+    ],
+    "fuse6": [
+        "cpe:/a:redhat:jboss_fuse:6.0",
+        "cpe:/a:redhat:jboss_fuse:6.1.0",
+        "cpe:/a:redhat:jboss_fuse_service_works:6.0",
+    ],
+    "jre": [
+        "cpe:/a:oracle:jre:",
+        "cpe:/a:sun:jre:",
+        "cpe:/a:redhat:openjdk:",
+        "cpe:/a:ibm:jre:",
+    ],
+    "ocp3": [
+        "cpe:/a:redhat:openshift_container_platform:3.10",
+        "cpe:/a:redhat:openshift_container_platform:3.11",
+    ],
+    "ol7": [
+        "cpe:/o:oracle:linux:7",
+    ],
+    "ol8": [
+        "cpe:/o:oracle:linux:8",
+    ],
+    "opensuse": [
+        "cpe:/o:opensuse:leap:42.1",
+        "cpe:/o:opensuse:leap:42.2",
+        "cpe:/o:opensuse:leap:42.3",
+        "cpe:/o:opensuse:leap:15.0",
+    ],
+    "rhel6": [
+        "cpe:/o:redhat:enterprise_linux:6",
+        "cpe:/o:redhat:enterprise_linux:6::client",
+        "cpe:/o:redhat:enterprise_linux:6::computenode",
+    ],
+    "rhel7": [
+        "cpe:/o:redhat:enterprise_linux:7",
+        "cpe:/o:redhat:enterprise_linux:7::client",
+        "cpe:/o:redhat:enterprise_linux:7::computenode",
+    ],
+    "rhel8": [
+        "cpe:/o:redhat:enterprise_linux:8",
+    ],
+    "rhosp13": [
+        "cpe:/a:redhat:openstack:13.0",
+    ],
+    "rhv4": [
+        "cpe:/o:redhat:virtualization:4",
+    ],
+    "sle11": [
+        "cpe:/o:suse:linux_enterprise_server:11",
+    ],
+    "sle12": [
+        "cpe:/o:suse:linux_enterprise_server:12",
+    ],
+    "ubuntu1404": [
+        "cpe:/o:canonical:ubuntu_linux:14.04",
+    ],
+    "ubuntu1604": [
+        "cpe:/o:canonical:ubuntu_linux:16.04",
+    ],
+    "ubuntu1804": [
+        "cpe:/o:canonical:ubuntu_linux:18.04",
+    ],
+    "wrlinux": [
+        "cpe:/o:windriver:wrlinux:8",
+    ],
+}
+
+MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
+                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
+
+MULTI_PLATFORM_MAPPING = {
+    "multi_platform_debian": ["debian8"],
+    "multi_platform_example": ["example"],
+    "multi_platform_fedora": ["fedora"],
+    "multi_platform_opensuse": ["opensuse"],
+    "multi_platform_ol": ["ol7","ol8"],
+    "multi_platform_ocp": ["ocp3"],
+    "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
+    "multi_platform_rhosp": ["rhosp13"],
+    "multi_platform_rhv": ["rhv4"],
+    "multi_platform_sle": ["sle11", "sle12"],
+    "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
+    "multi_platform_wrlinux": ["wrlinux"],
+}
+
 RHEL_CENTOS_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:centos:centos:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:centos:centos:7",
+    "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:centos:centos:8",
 }
 
 RHEL_SL_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:scientificlinux:scientificlinux:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
+    "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:scientificlinux:scientificlinux:8",
 }
 
 CENTOS_NOTICE = \
@@ -201,6 +369,11 @@ OVALREFATTR_TO_TAG = {
 
 OCILREFATTR_TO_TAG = {
     "question_ref": "question",
+}
+
+XCCDF_PLATFORM_TO_CPE = {
+    "machine": "cpe:/a:machine",
+    "container": "cpe:/a:container"
 }
 
 # Application constants

@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -29,17 +29,19 @@
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d
   lineinfile:
     path: "{{ all_files[0] }}"
-    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
-   
+  @ANSIBLE_ENSURE_PLATFORM@
+
 # Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

@@ -1,0 +1,35 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Disable Insecure Port Access'
+
+description: |-
+    All components that use the API should connect via the secured port,
+    authenticate themselves, and be authorized to use the API. To ensure
+    such a configuration, edit the API Server pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) and set the <tt>insecure-port</tt> to <tt>0</tt>:
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        insecure-port:
+        - 0</pre>
+
+rationale: |-
+    Configuring the API Server on an insecure port would allow unauthenticated
+    and unencrypted access to your master node(s). It is assumed firewall rules
+    will be configured to ensure this port is not reachable from outside
+    the cluster, however as a defense in depth measure, OpenShift should not
+    be configured to use insecure ports.
+
+severity: medium
+
+references:
+    cis: 1.1.6
+
+ocil_clause: '<tt>insecure-port</tt> not set to <tt>0</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A2 insecure-port /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>0</pre>.

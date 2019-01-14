@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: ocp3
+
 title: 'Verify Group Who Owns The OpenShift Node Configuration File'
 
 description: '{{{ describe_file_group_owner(file="/etc/origin/node/node-config.yaml", group="root") }}}'
@@ -10,6 +12,9 @@ rationale: |-
     critical for OpenShift security.
 
 severity: medium
+
+identifiers:
+    cce@ocp3: 80617-4
 
 references:
     cis: 2.2.2

@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel, multi_platform_fedora
+# platform = multi_platform_rhel, multi_platform_fedora, multi_platform_ol
 # reboot = false
 # strategy = unknown
 # complexity = low
@@ -12,6 +12,7 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME lock-enabled"
   lineinfile:
@@ -21,3 +22,4 @@
     create: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@

@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Disable Use of the Insecure Bind Address'
+
+description: |-
+    OpenShift should not bind to non-loopback insecure addresses. Edit the API
+    Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
+    on the master node(s) and remove the <tt>insecure-bind-address</tt>
+    parameter.
+    <pre>kubernetesMasterConfig:
+      apiServerArguments:
+        insecure-bind-address:
+        - 127.0.0.1</pre>
+
+rationale: |-
+    If the API Server is bound to an insecure address the installation would
+    be susceptible to unauthented and unencrypted access to the master node(s).
+    The API Server does not perform authentication checking for insecure
+    binds and the traffic is generally not encrypted.
+
+severity: medium
+
+references:
+    cis: 1.1.5
+
+ocil_clause: 'insecure-bind-address is specified and it must be set to <tt>127.0.01</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A2 insecure-bind-address /etc/origin/master/master-config.yaml</pre>
+    The output should return <pre>127.0.01</pre>.

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,fedora
+prodtype: rhel7,rhel8,fedora
 
 title: 'Disable WIFI Network Notification in GNOME3'
 
@@ -42,3 +42,5 @@ ocil: |-
     <pre>$ grep wireless-networks-available /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be
     <tt>/org/gnome/nm-applet/suppress-wireless-networks-available</tt>
+
+platform: machine

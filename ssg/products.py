@@ -7,6 +7,7 @@ from collections import namedtuple
 
 from .constants import product_directories
 from .yaml import open_raw
+from .constants import MULTI_PLATFORM_LIST
 
 
 # SSG Makefile to official product name mapping
@@ -15,8 +16,9 @@ _version_name_map = {
     'fedora': 'Fedora',
     'firefox': 'Mozilla Firefox',
     'jre': 'Java Runtime Environment',
-    'rhel-osp': 'Red Hat OpenStack Platform',
+    'rhosp': 'Red Hat OpenStack Platform',
     'rhel': 'Red Hat Enterprise Linux',
+    'rhv': 'Red Hat Virtualization',
     'debian': 'Debian',
     'ubuntu': 'Ubuntu',
     'eap': 'JBoss Enterprise Application Platform',
@@ -28,9 +30,6 @@ _version_name_map = {
     'ol': 'Oracle Linux',
     'ocp': 'Red Hat OpenShift Container Platform',
 }
-
-multi_list = ["rhel", "fedora", "rhel-osp", "debian", "ubuntu",
-              "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 PRODUCT_NAME_PARSER = re.compile(r"([a-zA-Z\-]+)([0-9]+)")
 
@@ -86,16 +85,16 @@ def map_name(version):
 
     if version.startswith("multi_platform_"):
         trimmed_version = version[len("multi_platform_"):]
-        if trimmed_version not in multi_list:
+        if trimmed_version not in MULTI_PLATFORM_LIST:
             raise RuntimeError(
                 "%s is an invalid product version. If it's multi_platform the "
                 "suffix has to be from (%s)."
-                % (version, ", ".join(multi_list))
+                % (version, ", ".join(MULTI_PLATFORM_LIST))
             )
         return map_name(trimmed_version)
 
     # By sorting in reversed order, keys which are a longer version of other keys are
-    # visited first (e.g., rhel-osp vs. rhel)
+    # visited first (e.g., rhosp vs. rhel)
     for key in sorted(_version_name_map, reverse=True):
         if version.startswith(key):
             return _version_name_map[key]

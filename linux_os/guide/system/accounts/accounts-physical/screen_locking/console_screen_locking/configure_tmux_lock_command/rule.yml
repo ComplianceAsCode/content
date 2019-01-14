@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora
+
+title: 'Configure the tmux Lock Command'
+
+description: |-
+    To enable console screen locking in <tt>tmux</tt> terminal multiplexer,
+    the <tt>vlock</tt> command must be configured to be used as a locking
+    mechanism.
+    Add the following line to <tt>/etc/tmux.conf</tt>:
+    <pre>set -g lock-command vlock</pre>.
+    The console can now be locked with the following key combination:
+    <pre>ctrl+b :lock-session</pre>
+
+rationale: |-
+    The <tt>tmux</tt> package allows for a session lock to be implemented and configured.
+    However, the session lock is implemented by an external command. The <tt>tmux</tt>
+    default configuration does not contain an effective session lock.
+
+severity: medium
+
+ocil_clause: 'lock-command is not set'
+
+ocil: |-
+    To verify that vlock is configured as a locking mechanism in tmux, run the following command:
+    <pre>$ grep lock-command /etc/tmux.conf</pre>
+    The output should return the following:
+    <pre>set -g lock-command vlock</pre>
+
+platform: machine

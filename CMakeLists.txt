@@ -31,7 +31,7 @@ set(SSG_KICKSTART_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/scap-security-guide/kick
 
 set(SSG_MAJOR_VERSION 0)
 set(SSG_MINOR_VERSION 1)
-set(SSG_PATCH_VERSION 41)
+set(SSG_PATCH_VERSION 43)
 set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}")
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
@@ -58,9 +58,11 @@ option(SSG_PRODUCT_JBOSS_FUSE6 "If enabled, the JBoss Fuse6 SCAP content will be
 option(SSG_PRODUCT_JRE "If enabled, the JRE SCAP content will be built" TRUE)
 option(SSG_PRODUCT_OCP3 "If enabled, the RHOCP3 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_OPENSUSE "If enabled, the openSUSE SCAP content will be built" TRUE)
-option(SSG_PRODUCT_OSP7 "If enabled, the RHOSP7 SCAP content will be built" TRUE)
+option(SSG_PRODUCT_OSP13 "If enabled, the RHOSP13 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_RHEL6 "If enabled, the RHEL6 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_RHEL7 "If enabled, the RHEL7 SCAP content will be built" TRUE)
+option(SSG_PRODUCT_RHEL8 "If enabled, the RHEL8 SCAP content will be built" TRUE)
+option(SSG_PRODUCT_RHV4 "If enabled, the RHV4 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_SUSE11 "If enabled, the SLE11 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_SUSE12 "If enabled, the SLE12 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_UBUNTU14 "If enabled, the Ubuntu14 SCAP content will be built" TRUE)
@@ -68,6 +70,7 @@ option(SSG_PRODUCT_UBUNTU16 "If enabled, the Ubuntu16 SCAP content will be built
 option(SSG_PRODUCT_UBUNTU18 "If enabled, the Ubuntu18 SCAP content will be built" TRUE)
 option(SSG_PRODUCT_WRLINUX "If enabled, the WRLinux SCAP content will be built" TRUE)
 option(SSG_PRODUCT_OL7 "If enabled, the Oracle Linux 7 SCAP content will be built" TRUE)
+option(SSG_PRODUCT_OL8 "If enabled, the Oracle Linux 8 SCAP content will be built" TRUE)
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -159,6 +162,8 @@ find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
 find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
 find_program(GREP_EXECUTABLE NAMES grep)
 find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
+find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
+find_program(YAMLLINT_EXECUTABLE NAMES yamllint)
 
 configure_file("${CMAKE_SOURCE_DIR}/build_config.yml.in" "${CMAKE_BINARY_DIR}/build_config.yml" @ONLY)
 
@@ -183,6 +188,8 @@ message(STATUS "linkchecker (optional): ${LINKCHECKER_EXECUTABLE}")
 message(STATUS "grep (optional): ${GREP_EXECUTABLE}")
 message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABLE}")
+message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
+message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
@@ -211,9 +218,11 @@ message(STATUS "JBoss Fuse 6: ${SSG_PRODUCT_JBOSS_FUSE6}")
 message(STATUS "JRE: ${SSG_PRODUCT_JRE}")
 message(STATUS "openSUSE: ${SSG_PRODUCT_OPENSUSE}")
 message(STATUS "RHOCP3: ${SSG_PRODUCT_OCP3}")
-message(STATUS "RHEL-OSP7: ${SSG_PRODUCT_OSP7}")
+message(STATUS "RHOSP13: ${SSG_PRODUCT_OSP13}")
 message(STATUS "RHEL 6: ${SSG_PRODUCT_RHEL6}")
 message(STATUS "RHEL 7: ${SSG_PRODUCT_RHEL7}")
+message(STATUS "RHEL 8: ${SSG_PRODUCT_RHEL8}")
+message(STATUS "RHV 4: ${SSG_PRODUCT_RHV4}")
 message(STATUS "SUSE 11: ${SSG_PRODUCT_SUSE11}")
 message(STATUS "SUSE 12: ${SSG_PRODUCT_SUSE12}")
 message(STATUS "Ubuntu 14: ${SSG_PRODUCT_UBUNTU14}")
@@ -221,9 +230,14 @@ message(STATUS "Ubuntu 16: ${SSG_PRODUCT_UBUNTU16}")
 message(STATUS "Ubuntu 18: ${SSG_PRODUCT_UBUNTU18}")
 message(STATUS "WRLinux: ${SSG_PRODUCT_WRLINUX}")
 message(STATUS "Oracle Linux 7: ${SSG_PRODUCT_OL7}")
+message(STATUS "Oracle Linux 8: ${SSG_PRODUCT_OL8}")
 
 message(STATUS " ")
 
+# Remove this option when we would like to run ansible-lint and yamllint against our playbooks by default.
+# Right now these checks are not performed and need to be enabled by adding -DANSIBLE_CHECKS=ON to cmake
+# before running ctest.
+option(ANSIBLE_CHECKS "Set to ON to enable ansible-lint and yamllint checks" OFF)
 enable_testing()
 
 include(SSGCommon)
@@ -237,6 +251,8 @@ add_custom_target(stats)
 add_custom_target(profile-stats)
 
 ssg_build_bash_remediation_functions()
+
+ssg_build_man_page()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
@@ -278,14 +294,20 @@ endif()
 if (SSG_PRODUCT_OPENSUSE)
     add_subdirectory("opensuse")
 endif()
-if (SSG_PRODUCT_OSP7)
-    add_subdirectory("rhel-osp7")
+if (SSG_PRODUCT_OSP13)
+    add_subdirectory("rhosp13")
 endif()
 if (SSG_PRODUCT_RHEL6)
     add_subdirectory("rhel6")
 endif()
 if (SSG_PRODUCT_RHEL7)
     add_subdirectory("rhel7")
+endif()
+if (SSG_PRODUCT_RHEL8)
+    add_subdirectory("rhel8")
+endif()
+if (SSG_PRODUCT_RHV4)
+	#    add_subdirectory("rhv4")
 endif()
 if (SSG_PRODUCT_SUSE11)
     add_subdirectory("sle11")
@@ -311,6 +333,10 @@ if (SSG_PRODUCT_OL7)
     add_subdirectory("ol7")
 endif()
 
+if (SSG_PRODUCT_OL8)
+    add_subdirectory("ol8")
+endif()
+
 
 ssg_define_guide_and_table_tests()
 
@@ -321,7 +347,7 @@ install(FILES "${CMAKE_SOURCE_DIR}/README.md"
 install(FILES "${CMAKE_SOURCE_DIR}/Contributors.md"
     DESTINATION ${CMAKE_INSTALL_DOCDIR})
 
-install(FILES "docs/scap-security-guide.8"
+install(FILES "${CMAKE_BINARY_DIR}/scap-security-guide.8"
     DESTINATION "${CMAKE_INSTALL_MANDIR}/man8")
 
 # We use CPack to generate the tarball with all sources and

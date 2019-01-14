@@ -11,13 +11,14 @@
   ignore_errors: yes
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Add default domain group and set CA directory (if no domain there)"
   lineinfile:
     path: /etc/sssd/sssd.conf
     create: yes
     line: "[domain/default]\nldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}\n"
-  when: test_grep_domain.stdout == ""
+  when: test_grep_domain.stdout == "" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
 
@@ -29,4 +30,5 @@
     line: 'ldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}'
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 

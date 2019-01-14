@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Ensure that the --use-service-account-credentials argument is set'
+
+description: |-
+    To ensure individual service account credentials are used,
+    edit the Controller Manager pod specification file
+    <tt>/etc/origin/master/master-config.yaml</tt> on the
+    master node(s) and set the <tt>use-service-account-credentials</tt> option,
+    under the <tt>controllerArguments</tt> stanza, to <tt>true</tt>. For example:
+    <pre>kubernetesMasterConfig:
+      controllerArguments:
+        use-service-account-credentials:
+        - true</pre>
+
+rationale: |-
+    The controller manager creates a service account per controller in
+    <tt>kube-system</tt> namespace, generates an API token and credentials for it,
+    then builds a dedicated API client with that service account credential
+    for each controller loop to use. Setting the
+    <tt>use-service-account-credentials</tt> to <tt>true</tt> runs each
+    control loop within the contoller manager using a separate service
+    account credential. When used in combination with RBAC, this ensures
+    that the control loops run with the minimum permissions required to
+    perform their intended tasks.
+
+severity: medium
+
+ocil_clause: '<tt>use-service-account-credentials</tt> is set to <tt>false</tt>'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep service-account-credentials /etc/origin/master/master-config.yaml</pre> 
+
+    Verify that the <tt>controllerArguments</tt> option
+    <tt>use-service-account-credentials</tt> argument is not set to
+    <tt>false</tt>.
+
+    If the configuration file does not explicitly set 
+    <tt>use-service-account-credentials</tt>, and the grep command returns no
+    text, the default value of <tt>true</tt> is being used.
+
+identifiers:
+    cce@ocp3: 80593-7
+
+references:
+    cis: 1.3.3

@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
 # reboot = false
 # strategy = restrict
 # complexity = low
@@ -10,6 +10,7 @@
   register: find_result
   tags:
     @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
 
 # Inserts/replaces the rule in /etc/audit/rules.d
 
@@ -24,11 +25,12 @@
   register: files_result
   tags:
     @ANSIBLE_TAGS@
-  
+  @ANSIBLE_ENSURE_PLATFORM@
+
 - name: Overwrites the rule in rules.d
   lineinfile:
     path: "{{ item.1.path }}"
-    line: '-a always,exit -F path={{ item.0.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{ item.0.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: no
     regexp: "^.*path={{ item.0.item }} .*$"
   with_subelements:
@@ -36,30 +38,29 @@
     - files
   tags:
     @ANSIBLE_TAGS@
-    
+  @ANSIBLE_ENSURE_PLATFORM@
+
 - name: Adds the rule in rules.d
   lineinfile:
     path: /etc/audit/rules.d/privileged.rules
-    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
   with_items:
     - "{{ files_result.results }}"
-  when: item.matched == 0
+  when: item.matched == 0 and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  
+
 # Adds/overwrites the rule in /etc/audit/audit.rules
 
 - name: Inserts/replaces the rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=4294967295 -F key=privileged'
+    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
     regexp: "^.*path={{ item.item }} .*$"
   with_items:
     - "{{ files_result.results }}"
   tags:
     @ANSIBLE_TAGS@
-
-
-
+  @ANSIBLE_ENSURE_PLATFORM@
