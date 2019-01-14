@@ -15,7 +15,7 @@
 
 - name: "Set ownership of system libraries to root"
   file:
-    path: "{{item}}"
+    path: "{{ item }}"
     owner: "root"
   with_items: "{{ libraries_not_owned_by_root.stdout_lines }}"
   when: libraries_not_owned_by_root | length > 0 and @ANSIBLE_PLATFORM_CONDITION@

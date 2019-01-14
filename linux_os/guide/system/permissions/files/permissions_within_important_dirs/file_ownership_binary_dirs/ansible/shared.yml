@@ -15,7 +15,7 @@
 
 - name: "Set ownership to root of system executables"
   file:
-    path: "{{item}}"
+    path: "{{ item }}"
     owner: "root"
   with_items: "{{ no_root_system_executables.stdout_lines }}"
   when: no_root_system_executables.stdout_lines | length > 0 and @ANSIBLE_PLATFORM_CONDITION@
