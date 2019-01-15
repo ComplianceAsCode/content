@@ -29,7 +29,7 @@
     @ANSIBLE_TAGS@
 
 - name: "Reinstall packages of files with incorrect hash"
-  shell: "{{package_manager_reinstall_cmd}} $(rpm -qf '{{item}}')"
+  shell: "{{ package_manager_reinstall_cmd }} $(rpm -qf '{{ item }}')"
   args:
     warn: False # Ignore ANSIBLE0006, this task is flexible with regards to package manager
   with_items: "{{ files_with_incorrect_hash.stdout_lines }}"

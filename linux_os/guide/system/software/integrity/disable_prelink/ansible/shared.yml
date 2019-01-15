@@ -16,6 +16,6 @@
     path: /etc/sysconfig/prelink
     regexp: '^PRELINKING='
     line: 'PRELINKING=no'
-  when: prelink_exists.stat.exists == True and @ANSIBLE_PLATFORM_CONDITION@
+  when: prelink_exists.stat.exists and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

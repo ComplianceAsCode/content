@@ -22,7 +22,7 @@
 
 - name: "Disable writability to root directories"
   file:
-    path: "{{item}}"
+    path: "{{ item }}"
     mode: "g-w,o-w"
   with_items: "{{ root_paths.stdout_lines }}"
   when: root_paths.stdout_lines is defined and @ANSIBLE_PLATFORM_CONDITION@
