@@ -172,131 +172,9 @@ class VMTestEnv(TestEnv):
         return common.run_cmd_local(command_list, verbose_path)
 
 
-class DockerTestEnv(TestEnv):
-    name = "docker-based"
-
-    def __init__(self, mode, image_name):
-        super(DockerTestEnv, self).__init__(mode)
-
-        self._name_stem = "ssg_test"
-
-        try:
-            self.client = docker.from_env(version="auto")
-            self.client.ping()
-        except Exception as exc:
-            msg = (
-                "Unable to start the Docker test environment, "
-                "is the Docker service started "
-                "and do you have rights to access it?"
-                .format(str(exc)))
-            raise RuntimeError(msg)
-
-        self.base_image = image_name
-        self.created_images = []
-        self.containers = []
-
-    def start(self):
-        self.run_container(self.base_image)
-
-    def finalize(self):
-        self._terminate_current_running_container_if_applicable()
-
-    def image_stem2fqn(self, stem):
-        image_name = "{0}_{1}".format(self.base_image, stem)
-        return image_name
-
-    @property
-    def current_container(self):
-        if self.containers:
-            return self.containers[-1]
-        return None
-
-    @property
-    def current_image(self):
-        if self.created_images:
-            return self.created_images[-1]
-        return self.base_image
-
-    def _create_new_image(self, from_container, name):
-        new_image_name = self.image_stem2fqn(name)
-        if not from_container:
-            from_container = self.run_container(self.current_image)
-        from_container.commit(repository=new_image_name)
-        self.created_images.append(new_image_name)
-        return new_image_name
-
-    def _save_state(self, state_name):
-        state = self._create_new_image(self.current_container, state_name)
-        return state
-
-    def run_container(self, image_name, container_name="running"):
-        new_container = self._new_container_from_image(image_name, container_name)
-        self.containers.append(new_container)
-
-        # Get the container time to fully start its service
-        time.sleep(0.2)
-
-        new_container.reload()
-        self.domain_ip = new_container.attrs["NetworkSettings"]["Networks"]["bridge"]["IPAddress"]
-
-        return new_container
-
-    def reset_state_to(self, state_name, new_running_state_name):
-        self._terminate_current_running_container_if_applicable()
-        image_name = self.image_stem2fqn(state_name)
-
-        new_container = self.run_container(image_name, new_running_state_name)
-
-        return new_container
-
-    def _find_image_by_name(self, image_name):
-        # only in DockerTestEnv
-        return self.client.images.get(image_name)
-
-    def _new_container_from_image(self, image_name, container_name):
-        img = self._find_image_by_name(image_name)
-        result = self.client.containers.run(
-            img, "/usr/sbin/sshd -D",
-            name="{0}_{1}".format(self._name_stem, container_name), ports={"22": None},
-            detach=True)
-        return result
-
-    def _terminate_current_running_container_if_applicable(self):
-        if self.containers:
-            running_state = self.containers.pop()
-            running_state.stop()
-            running_state.remove()
-
-    def _delete_saved_state(self, image):
-        self._terminate_current_running_container_if_applicable()
-
-        assert self.created_images
-
-        associated_image = self.created_images.pop()
-        assert associated_image == image
-        self.client.images.remove(associated_image)
-
-    def discard_running_state(self, state_handle):
-        self._terminate_current_running_container_if_applicable()
-
-    def _local_oscap_check_base_arguments(self):
-        return ['oscap-docker', "container", self.current_container.id,
-                                                            'xccdf', 'eval']
-
-    def offline_scan(self, args, verbose_path):
-        command_list = self._local_oscap_check_base_arguments() + args
-
-        return common.run_cmd_local(command_list, verbose_path)
-
-
-class PodmanTestEnv(TestEnv):
-    # TODO: Rework this class using Podman Python bindings (python3-podman)
-    # at the moment when their API will provide methods to run containers,
-    # commit images and inspect containers
-    name = "podman-based"
-
+class ContainerTestEnv(TestEnv):
     def __init__(self, scanning_mode, image_name):
-        super(PodmanTestEnv, self).__init__(scanning_mode)
+        super(ContainerTestEnv, self).__init__(scanning_mode)
         self._name_stem = "ssg_test"
         self.base_image = image_name
         self.created_images = []
@@ -329,12 +207,7 @@ class PodmanTestEnv(TestEnv):
         new_image_name = self.image_stem2fqn(name)
         if not from_container:
             from_container = self.run_container(self.current_image)
-        podman_cmd = ["podman", "commit", from_container, new_image_name]
-        try:
-            subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
-            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
-            raise RuntimeError(msg)
+        self._commit(from_container, new_image_name)
         self.created_images.append(new_image_name)
         return new_image_name
 
@@ -347,6 +220,7 @@ class PodmanTestEnv(TestEnv):
         self.containers.append(new_container)
         # Get the container time to fully start its service
         time.sleep(0.2)
+
         self.domain_ip = self._get_container_ip(new_container)
         return new_container
 
@@ -357,6 +231,105 @@ class PodmanTestEnv(TestEnv):
         new_container = self.run_container(image_name, new_running_state_name)
 
         return new_container
+
+    def _delete_saved_state(self, image):
+        self._terminate_current_running_container_if_applicable()
+
+        assert self.created_images
+
+        associated_image = self.created_images.pop()
+        assert associated_image == image
+        self._remove_image(associated_image)
+
+    def discard_running_state(self, state_handle):
+        self._terminate_current_running_container_if_applicable()
+
+    def offline_scan(self, args, verbose_path):
+        command_list = self._local_oscap_check_base_arguments() + args
+
+        return common.run_cmd_local(command_list, verbose_path)
+
+    def _commit(self, container, image):
+        pass
+
+    def _new_container_from_image(self, image_name, container_name):
+        pass
+
+    def _get_container_ip(self, container):
+        pass
+
+    def _terminate_current_running_container_if_applicable(self):
+        pass
+
+    def _remove_image(self, image):
+        pass
+
+    def _local_oscap_check_base_arguments(self):
+        pass
+
+
+class DockerTestEnv(ContainerTestEnv):
+    name = "docker-based"
+
+    def __init__(self, mode, image_name):
+        super(DockerTestEnv, self).__init__(mode, image_name)
+        try:
+            self.client = docker.from_env(version="auto")
+            self.client.ping()
+        except Exception as exc:
+            msg = (
+                "Unable to start the Docker test environment, "
+                "is the Docker service started "
+                "and do you have rights to access it?"
+                .format(str(exc)))
+            raise RuntimeError(msg)
+
+    def _commit(self, container, image):
+        container.commit(repository=image)
+
+    def _new_container_from_image(self, image_name, container_name):
+        img = self.client.images.get(image_name)
+        result = self.client.containers.run(
+            img, "/usr/sbin/sshd -D",
+            name="{0}_{1}".format(self._name_stem, container_name), ports={"22": None},
+            detach=True)
+        return result
+
+    def _get_container_ip(self, container):
+        container.reload()
+        container_ip = container.attrs["NetworkSettings"]["Networks"]["bridge"]["IPAddress"]
+        return container_ip
+
+    def _terminate_current_running_container_if_applicable(self):
+        if self.containers:
+            running_state = self.containers.pop()
+            running_state.stop()
+            running_state.remove()
+
+    def _remove_image(self, image):
+        self.client.images.remove(image)
+
+    def _local_oscap_check_base_arguments(self):
+        return ['oscap-docker', "container", self.current_container.id,
+                                                            'xccdf', 'eval']
+
+
+class PodmanTestEnv(ContainerTestEnv):
+    # TODO: Rework this class using Podman Python bindings (python3-podman)
+    # at the moment when their API will provide methods to run containers,
+    # commit images and inspect containers
+    name = "podman-based"
+
+    def __init__(self, scanning_mode, image_name):
+        super(PodmanTestEnv, self).__init__(scanning_mode, image_name)
+
+    def _commit(self, container, image):
+        podman_cmd = ["podman", "commit", container, image]
+        try:
+            subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            raise RuntimeError(msg)
 
     def _new_container_from_image(self, image_name, container_name):
         long_name = "{0}_{1}".format(self._name_stem, container_name)
@@ -372,7 +345,6 @@ class PodmanTestEnv(TestEnv):
         return container_id
 
     def _get_container_ip(self, container):
-        # only in PodmanTestEnv
         podman_cmd = ["podman", "inspect", container, "--format", "{{.NetworkSettings.IPAddress}}"]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
@@ -398,25 +370,13 @@ class PodmanTestEnv(TestEnv):
                 msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
                 raise RuntimeError(msg)
 
-    def _delete_saved_state(self, image):
-        self._terminate_current_running_container_if_applicable()
-
-        assert self.created_images
-
-        associated_image = self.created_images.pop()
-        assert associated_image == image
-        podman_cmd = ["podman", "rmi", associated_image]
+    def _remove_image(self, image):
+        podman_cmd = ["podman", "rmi", image]
         try:
             subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
 
-    def discard_running_state(self, state_handle):
-        self._terminate_current_running_container_if_applicable()
-
     def _local_oscap_check_base_arguments(self):
-        raise NotImplementedError
-
-    def offline_scan(self, args, verbose_path):
         raise NotImplementedError("OpenSCAP doesn't support offline scanning of Podman Containers")
