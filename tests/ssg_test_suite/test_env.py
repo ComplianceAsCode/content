@@ -6,8 +6,6 @@ import os
 import time
 import subprocess
 
-import docker
-
 import ssg_test_suite
 from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite import common
@@ -273,6 +271,10 @@ class DockerTestEnv(ContainerTestEnv):
 
     def __init__(self, mode, image_name):
         super(DockerTestEnv, self).__init__(mode, image_name)
+        try:
+            import docker
+        except ImportError:
+            raise RuntimeError("Can't import Docker, Docker backend will not work.")
         try:
             self.client = docker.from_env(version="auto")
             self.client.ping()
