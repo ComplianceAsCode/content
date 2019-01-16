@@ -10,7 +10,7 @@ remediation works.
 
 ## Prerequisites
 
-You can use the more powerful VM-based tests, or more lightweight Docker-based tests.
+You can use the more powerful VM-based tests, or more lightweight container-based tests.
 
 For the Test Suite to work, you need to have libvirt domains prepared for
 testing.
@@ -69,9 +69,10 @@ VM-based tests:
   - `hypervisor`: Typically, you will use the `qemu:///system` value.
   - `domain`: `libvirt` domain, which is basically name of the virtual machine.
 
-docker-based tests:
+Container-based tests:
 
-- `--docker`: Accepts the base image name.
+- `--docker`: Uses Docker as container engine. Accepts the base image name.
+- `--container`: Uses Podman as container engine. Accepts the base image name.
 
 ### Profile-based testing
 
@@ -187,41 +188,74 @@ Now, you can perform validation check with command
 ./test_suite.py rule --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
 ```
 
-## Docker backend
+## Container backends
 
-You can also use the docker-based for running tests, just use the script with the `--docker` argument.
-You need to provide `--docker <base image name>` option on the command-line.
+You can also run the tests in a container. There are 2 container backends, Podman and Docker, supported.
+
+To use container backends, use the following options on the command line:
+
+- Podman - `--container <base image name>`
+- Docker - `--docker <base image name>`
 
 To obtain the base image, you can use `test_suite-*` Dockerfiles in the `Dockerfiles` directory to build it.
 We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
-Build the image using this command:
+To use Podman backend, you need to have:
 
-```
-public_key="ssh-rsa AAAAB3NzaC1y...rJSs4BL me@localhost"
-docker build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
-```
+- `podman` package installed, and
+- rights that allow you to start/stop containers and to create images.
 
-Run the test suite using this command:
+To use Docker backend, you need to have:
 
-```
-./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
-```
-
-On your side, you need to have
 - the [docker](https://pypi.org/project/docker/) Python module installed. You may have to use `pip` to install it on older distributions s.a. RHEL 7, running `pip install --user docker` as `root` will do the trick of installing it only for the `root` user.
 - the Docker service running, and
 - rights that allow you to start/stop containers and to create images.
   This level of rights is considered to be insecure, so it is recommended to run the test suite in a VM.
   You can accomplish this by creating a `docker` group, then add yourself in it and restart `docker`.
 
-The Docker image you want to use with the tests needs to be prepared, so it can scan itself, and that it can accept connections and data.
+
+### Building the base image
+
+The container image you want to use with the tests needs to be prepared, so it can scan itself, and that it can accept connections and data.
 Following services need to be supported:
 
 - `sshd` (`openssh-server` needs to be installed, server host keys have to be in place, root's `.ssh/authorized_keys` are set up with correct permissions)
 - `scp` (`openssh-clients` need to be installed - `scp` requires more than a ssh server on the server-side)
 - `oscap` (`openscap-scanner` - the container has to be able to scan itself)
 - You may want to include another packages, as base images tend to be bare-bone and tests may require more packages to be present.
+
+Using Podman:
+
+NOTE: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
+
+```
+# public_key="ssh-rsa AAAAB3NzaC1y...rJSs4BL root@localhost"
+# podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
+```
+
+Using Docker:
+
+```
+public_key="ssh-rsa AAAAB3NzaC1y...rJSs4BL me@localhost"
+docker build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
+```
+
+### Running the tests
+
+This is an example to run test scenarios for rule `rule_sshd_disable_kerb_auth`:
+
+Using Podman:
+
+```
+./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
+```
+
+Using Docker:
+
+```
+./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
+```
+
 Also, as containers may get any IP address, a conflict may appear in your local client's `known_hosts` file.
 You might have a version of `oscap-ssh` that doesn't support ssh connection customization at the client-side, so it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
 You can do that by putting following lines in your `$HOME/.ssh/config` file:
