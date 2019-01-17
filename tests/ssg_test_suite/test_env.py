@@ -151,9 +151,6 @@ class VMTestEnv(TestEnv):
         state = self.snapshot_stack.revert(delete=False)
         return state
 
-    def discard_running_state(self, state_handle):
-        pass
-
     def _save_state(self, state_name):
         state = self.snapshot_stack.create(state_name)
         return state
@@ -238,9 +235,6 @@ class ContainerTestEnv(TestEnv):
         associated_image = self.created_images.pop()
         assert associated_image == image
         self._remove_image(associated_image)
-
-    def discard_running_state(self, state_handle):
-        self._terminate_current_running_container_if_applicable()
 
     def offline_scan(self, args, verbose_path):
         command_list = self._local_oscap_check_base_arguments() + args
