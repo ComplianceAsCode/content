@@ -12,7 +12,6 @@ description: |-
 
     - Red Hat Enterprise Linux Server
     - Red Hat Enterprise Linux Workstation and Desktop
-    - Red Hat Virtualization Hypervisor (RHV-H)
     - Red Hat Enterprise Linux for HPC
     - Red Hat Storage
 
