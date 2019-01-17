@@ -45,6 +45,7 @@ yaml.add_constructor(_mapping_tag, dict_constructor)
 
 PROFILE_WHITELIST = set([
     "C2S",
+    "cjis",
     "hipaa",
     "nist-800-171-cui",
     "ospp",
