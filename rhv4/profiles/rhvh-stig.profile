@@ -395,7 +395,7 @@ selections:
     - accounts_password_pam_maxrepeat
     - accounts_password_set_min_life_existing
     - accounts_password_set_max_life_existing
-    - sudo_remove_nopasswd
+    - sudo_vdsm_nopasswd
     - sudo_remove_no_authenticate
     - selinux_user_login_roles
     - accounts_user_interactive_home_directory_defined
