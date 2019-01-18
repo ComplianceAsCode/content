@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'DISA STIG for Red Hat Virtualization Host'
+title: '[DRAFT] DISA STIG for Red Hat Virtualization Host'
 
 description: |-
-    This profile contains configuration checks that align to the
+    This *draft* profile contains configuration checks that align to the
     DISA STIG for Red Hat Virtualization Host.
     
 selections:
