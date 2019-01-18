@@ -242,22 +242,22 @@ class ContainerTestEnv(TestEnv):
         return common.run_cmd_local(command_list, verbose_path)
 
     def _commit(self, container, image):
-        pass
+        raise NotImplementedError
 
     def _new_container_from_image(self, image_name, container_name):
-        pass
+        raise NotImplementedError
 
     def _get_container_ip(self, container):
-        pass
+        raise NotImplementedError
 
     def _terminate_current_running_container_if_applicable(self):
-        pass
+        raise NotImplementedError
 
     def _remove_image(self, image):
-        pass
+        raise NotImplementedError
 
     def _local_oscap_check_base_arguments(self):
-        pass
+        raise NotImplementedError
 
 
 class DockerTestEnv(ContainerTestEnv):
