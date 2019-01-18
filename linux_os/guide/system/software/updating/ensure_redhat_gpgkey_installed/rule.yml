@@ -4,9 +4,25 @@ prodtype: rhel6,rhel7,rhel8
 
 title: 'Ensure Red Hat GPG Key Installed'
 
-description: "To ensure the system can cryptographically verify base software\npackages come from Red Hat (and to connect to the Red Hat Network to\nreceive them), the Red Hat GPG key must properly be installed.  \nTo install the Red Hat GPG key, run:\n<pre>$ sudo subscription-manager register</pre>\nIf the system is not connected to the Internet or an RHN Satellite,\nthen install the Red Hat GPG key from trusted media such as\nthe Red Hat installation CD-ROM or DVD. Assuming the disc is mounted\nin <tt>/media/cdrom</tt>, use the following command as the root user to import\nit into the keyring:\n<pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>"
+description: |-
+    To ensure the system can cryptographically verify base software packages
+    come from Red Hat (and to connect to the Red Hat Network to receive them),
+    the Red Hat GPG key must properly be installed. To install the Red Hat GPG
+    key, run:
+    <pre>$ sudo subscription-manager register</pre>
+    If the system is not connected to the Internet or an RHN Satellite, then
+    install the Red Hat GPG key from trusted media such as the Red Hat
+    installation CD-ROM or DVD. Assuming the disc is mounted in
+    <tt>/media/cdrom</tt>, use the following command as the root user to import
+    it into the keyring:
+    <pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>
 
-rationale: "Changes to software components can have significant effects on the\noverall security of the operating system. This requirement ensures\nthe software has not been tampered with and that it has been provided \nby a trusted vendor. The Red Hat GPG key is necessary to \ncryptographically verify packages are from Red Hat."
+rationale: |-
+    Changes to software components can have significant effects on the overall
+    security of the operating system. This requirement ensures the software has
+    not been tampered with and that it has been provided by a trusted vendor.
+    The Red Hat GPG key is necessary to cryptographically verify packages are
+    from Red Hat.
 
 severity: high
 
@@ -18,6 +34,7 @@ references:
     stigid@rhel6: RHEL-06-000008
     srg@rhel6: SRG-OS-000090
     srg: SRG-OS-000366-GPOS-00153
+    vsrg: SRG-OS-000366-VMM-001430,SRG-OS-000370-VMM-001460,SRG-OS-000404-VMM-001650
     disa@rhel6: '351'
     cis: 1.2.3
     cjis: 5.10.4.1
