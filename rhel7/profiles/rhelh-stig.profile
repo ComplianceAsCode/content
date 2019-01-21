@@ -7,7 +7,7 @@ description: |-
     DISA STIG for Red Hat Enterprise Linux Virtualization Host (RHELH).
     
 selections:
-    - installed_OS_is_certified
+    - installed_OS_is_FIPS_certified
     - login_banner_text=dod_banners
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15
