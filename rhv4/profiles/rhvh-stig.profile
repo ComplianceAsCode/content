@@ -385,9 +385,7 @@ selections:
     - kernel_module_jffs2_disabled
     - kernel_module_sctp_disabled
     - var_sssd_ssh_known_hosts_timeout=5_minutes
-    - var_accounts_minimum_age_login_defs=1
     - var_password_pam_maxrepeat=3
-    - var_account_disable_post_pw_expiration=0
     - var_removable_partition=dev_cdrom
     - var_time_service_set_maxpoll=system_default
     - sysctl_net_ipv4_conf_all_accept_source_route_value=disabled
