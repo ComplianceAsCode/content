@@ -1,11 +1,15 @@
 documentation_complete: true
 
-title: 'OSPP - Protection Profile for General Purpose Operating Systems'
+title: '[DRAFT] OSPP - Protection Profile for General Purpose Operating Systems'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the
     NIAP Configuration Annex to the Protection Profile for General Purpose
     Operating Systems (Protection Profile Version 4.2).
+
+    This profile is currently under review. Use of this profile does not
+    denote or guarantee NIAP approval or certification until this profile
+    has been approved by NIAP.
 
 selections:
     - installed_OS_is_vendor_supported
