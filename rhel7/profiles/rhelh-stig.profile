@@ -1,10 +1,10 @@
 documentation_complete: true
 
-title: '[DRAFT] DISA STIG for Red Hat Virtualization Host (RHVH)'
+title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux Virtualization Host (RHELH)'
 
 description: |-
     This *draft* profile contains configuration checks that align to the
-    DISA STIG for Red Hat Virtualization Host (RHVH).
+    DISA STIG for Red Hat Enterprise Linux Virtualization Host (RHELH).
     
 selections:
     - installed_OS_is_certified
