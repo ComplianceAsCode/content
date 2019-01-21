@@ -41,6 +41,6 @@ ocil_clause: 'maxlogins is not equal to or less than the expected value'
 ocil: |-
     Run the following command to ensure the <tt>maxlogins</tt> value is
     configured for all users on the system:
-    <pre># grep \"maxlogins\" /etc/security/limits.conf</pre>
+    <pre># grep "maxlogins" /etc/security/limits.conf</pre>
     You should receive output similar to the following:
-    <pre>*\t\thard\tmaxlogins\t<sub idref=\"var_accounts_max_concurrent_login_sessions\" /></pre>
+    <pre>*\t\thard\tmaxlogins\t<sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
