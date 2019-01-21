@@ -2,7 +2,15 @@ documentation_complete: true
 
 title: 'Verify Only Root Has UID 0'
 
-description: "If any account other than root has a UID of 0, this misconfiguration should \nbe investigated and the accounts other than root should be removed or \nhave their UID changed.\n<br />\nIf the account is associated with system commands or applications the UID should be changed\nto one greater than \"0\" but less than \"1000.\" Otherwise assign a UID greater than \"1000\" that\nhas not already been assigned."
+description: |-
+    If any account other than root has a UID of 0, this misconfiguration should
+    be investigated and the accounts other than root should be removed or have
+    their UID changed.
+    <br />
+    If the account is associated with system commands or applications the UID
+    should be changed to one greater than \"0\" but less than \"1000.\"
+    Otherwise assign a UID greater than \"1000\" that has not already been
+    assigned.
 
 rationale: |-
     An account has root authority if it has a UID of 0. Multiple accounts
@@ -35,4 +43,14 @@ references:
 
 ocil_clause: 'any account other than root has a UID of 0'
 
-ocil: "To list all password file entries for accounts with UID 0, run the following command:\n<pre>$ awk -F: '($3 == \"0\") {print}' /etc/passwd</pre>\nThis should print only one line, for the user root.\n<br />\nIf there is a finding, change the UID of the failing (non-root) user. If the account is\nassociated with the system commands or applications the UID should be changed to one \ngreater than <tt>0</tt> but less than <tt>1000</tt>. Otherwise assign a UID of\ngreater than <tt>1000</tt> that has not already been assigned."
+ocil: |-
+    To list all password file entries for accounts with UID 0, run the
+    following command:
+    <pre>$ awk -F: '($3 == \"0\") {print}' /etc/passwd</pre>
+    This should print only one line, for the user root.
+    <br />
+    If there is a finding, change the UID of the failing (non-root) user. If
+    the account is associated with the system commands or applications the UID
+    should be changed to one greater than <tt>0</tt> but less than
+    <tt>1000</tt>. Otherwise assign a UID of greater than <tt>1000</tt> that
+    has not already been assigned.

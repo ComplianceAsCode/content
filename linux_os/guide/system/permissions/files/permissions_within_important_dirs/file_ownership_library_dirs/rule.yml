@@ -43,4 +43,12 @@ references:
 
 ocil_clause: 'any of these files are not owned by root'
 
-ocil: "Shared libraries are stored in the following directories:\n<pre>/lib\n/lib64\n/usr/lib\n/usr/lib64\n</pre>\nFor each of these directories, run the following command to find files not \nowned by root:\n<pre>$ sudo find -L <i>$DIR</i> \\! -user root -exec chown root {} \\;</pre>"
+ocil: |-
+    Shared libraries are stored in the following directories:
+    <pre>/lib
+    /lib64
+    /usr/lib
+    /usr/lib64</pre>
+    For each of these directories, run the following command to find files not
+    owned by root:
+    <pre>$ sudo find -L <i>$DIR</i> ! -user root -exec chown root {} \;</pre>

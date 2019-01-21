@@ -4,8 +4,21 @@ prodtype: rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Configure the root Account for Failed Password Attempts'
 
-description: "To configure the system to lock out the <tt>root</tt> account after a number of incorrect login\nattempts using <tt>pam_faillock.so</tt>, modify the content of both\n<tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:\n<br /><br />\n<ul> \n<li>Modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:\n<pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref=\"var_accounts_passwords_pam_faillock_deny\" /> unlock_time=<sub idref=\"var_accounts_passwords_pam_faillock_unlock_time\" /> fail_interval=<sub idref=\"var_accounts_passwords_pam_faillock_fail_interval\" /></pre></li>\n<li>Modify the following line in the <tt>AUTH</tt> section to add <tt>even_deny_root</tt>:\n<pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref=\"var_accounts_passwords_pam_faillock_deny\" /> unlock_time=<sub idref=\"var_accounts_passwords_pam_faillock_unlock_time\" /> fail_interval=<sub\
-    \ idref=\"var_accounts_passwords_pam_faillock_fail_interval\" /></pre></li>\n</ul>"
+description: |-
+    To configure the system to lock out the <tt>root</tt> account after a
+    number of incorrect login attempts using <tt>pam_faillock.so</tt>, modify
+    the content of both <tt>/etc/pam.d/system-auth</tt> and
+    <tt>/etc/pam.d/password-auth</tt> as follows:
+    <br /><br />
+    <ul>
+    <li>Modify the following line in the <tt>AUTH</tt> section to add
+    <tt>even_deny_root</tt>:
+    <pre>auth required pam_faillock.so preauth silent <b>even_deny_root</b> deny=<sub idref=\"var_accounts_passwords_pam_faillock_deny\" /> unlock_time=<sub idref=\"var_accounts_passwords_pam_faillock_unlock_time\" /> fail_interval=<sub idref=\"var_accounts_passwords_pam_faillock_fail_interval\" /></pre></li>
+    <li>Modify the following line in the <tt>AUTH</tt> section to add
+    <tt>even_deny_root</tt>:
+    <pre>auth [default=die] pam_faillock.so authfail <b>even_deny_root</b> deny=<sub idref=\"var_accounts_passwords_pam_faillock_deny\" /> unlock_time=<sub idref=\"var_accounts_passwords_pam_faillock_unlock_time\" /> fail_interval=<sub idref=\"var_accounts_passwords_pam_faillock_fail_interval\" /></pre>
+    </li>
+    </ul>
 
 rationale: |-
     By limiting the number of failed logon attempts, the risk of unauthorized system access via user password

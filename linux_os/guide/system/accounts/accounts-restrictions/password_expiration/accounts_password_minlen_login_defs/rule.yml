@@ -2,7 +2,19 @@ documentation_complete: true
 
 title: 'Set Password Minimum Length in login.defs'
 
-description: "To specify password length requirements for new accounts,\nedit the file <tt>/etc/login.defs</tt> and add or correct the following\nline:\n<pre>PASS_MIN_LEN <sub idref=\"var_accounts_password_minlen_login_defs\" /></pre>\n<br /><br />\nThe DoD requirement is <tt>15</tt>. \nThe FISMA requirement is <tt>12</tt>.\nThe profile requirement is <tt><sub idref=\"var_accounts_password_minlen_login_defs\" /></tt>.\nIf a program consults <tt>/etc/login.defs</tt> and also another PAM module\n(such as <tt>pam_pwquality</tt>) during a password change operation,\nthen the most restrictive must be satisfied. See PAM section\nfor more information about enforcing password quality requirements."
+description: |-
+    To specify password length requirements for new accounts, edit the file
+    <tt>/etc/login.defs</tt> and add or correct the following line:
+    <pre>PASS_MIN_LEN <sub idref=\"var_accounts_password_minlen_login_defs\" /></pre>
+    <br /><br />
+    The DoD requirement is <tt>15</tt>. 
+    The FISMA requirement is <tt>12</tt>.
+    The profile requirement is
+    <tt><sub idref=\"var_accounts_password_minlen_login_defs\" /></tt>.
+    If a program consults <tt>/etc/login.defs</tt> and also another PAM module
+    (such as <tt>pam_pwquality</tt>) during a password change operation, then
+    the most restrictive must be satisfied. See PAM section for more
+    information about enforcing password quality requirements.
 
 rationale: |-
     Requiring a minimum password length makes password

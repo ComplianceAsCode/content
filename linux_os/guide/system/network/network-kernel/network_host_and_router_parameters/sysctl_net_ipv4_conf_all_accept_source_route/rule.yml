@@ -6,7 +6,15 @@ title: 'Configure Kernel Parameter for Accepting IPv4 Source-Routed Packets for 
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.accept_source_route", value="0") }}}'
 
-rationale: "Source-routed packets allow the source of the packet to suggest routers\nforward the packet along a different path than configured on the router, which can\nbe used to bypass network security measures. This requirement applies only to the\nforwarding of source-routerd traffic, such as when IPv4 forwarding is enabled and \nthe system is functioning as a router.\n<br /><br />\nAccepting source-routed packets in the IPv4 protocol has few legitimate\nuses. It should be disabled unless it is absolutely required."
+rationale: |-
+    Source-routed packets allow the source of the packet to suggest routers
+    forward the packet along a different path than configured on the router,
+    which can be used to bypass network security measures. This requirement
+    applies only to the forwarding of source-routerd traffic, such as when IPv4
+    forwarding is enabled and the system is functioning as a router.
+    <br /><br />
+    Accepting source-routed packets in the IPv4 protocol has few legitimate
+    uses. It should be disabled unless it is absolutely required.
 
 severity: medium
 

@@ -18,7 +18,15 @@ description: |-
     following command:
     <pre>$ sudo chmod +t <i>DIR</i></pre>
 
-rationale: "Failing to set the sticky bit on public directories allows unauthorized users to delete files in the directory structure.\n<br /><br />\nThe only authorized public directories are those temporary directories supplied with the system, \nor those designed to be temporary file repositories.  The setting is normally reserved for directories \nused by the system, by users for temporary file storage (such as <tt>/tmp</tt>), and for directories \nrequiring global read/write access."
+rationale: |-
+    Failing to set the sticky bit on public directories allows unauthorized
+    users to delete files in the directory structure.
+    <br /><br />
+    The only authorized public directories are those temporary directories
+    supplied with the system, or those designed to be temporary file
+    repositories. The setting is normally reserved for directories used by the
+    system, by users for temporary file storage (such as <tt>/tmp</tt>), and
+    for directories requiring global read/write access.
 
 severity: unknown
 

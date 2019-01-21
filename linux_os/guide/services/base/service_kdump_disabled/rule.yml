@@ -10,7 +10,12 @@ description: |-
     crash, which can load information from the crashed kernel for analysis.
     {{{ describe_service_disable(service="kdump") }}}
 
-rationale: "Kernel core dumps may contain the full contents of system memory at the time of the crash.\nKernel core dumps consume a considerable amount of disk space and may result in denial of \nservice by exhausting the available space on the target file system partition.\nUnless the system is used for kernel development or testing, there\nis little need to run the kdump service."
+rationale: |-
+    Kernel core dumps may contain the full contents of system memory at the
+    time of the crash. Kernel core dumps consume a considerable amount of disk
+    space and may result in denial of service by exhausting the available space
+    on the target file system partition. Unless the system is used for kernel
+    development or testing, there is little need to run the kdump service.
 
 severity: medium
 
