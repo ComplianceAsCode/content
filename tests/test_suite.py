@@ -30,6 +30,9 @@ def parse_args():
     backends.add_argument(
         "--docker", dest="docker", metavar="BASE_IMAGE",
         help="Use Docker test environment with this base image.")
+    backends.add_argument(
+        "--container", dest="container", metavar="BASE_IMAGE",
+        help="Use container test environment with this base image.")
 
     backends.add_argument(
         "--libvirt", dest="libvirt", metavar="HYPERVISOR DOMAIN", nargs=2,
@@ -163,6 +166,12 @@ def normalize_passed_arguments(options):
         logging.info(
             "The base image option has been specified, "
             "choosing Docker-based test environment.")
+    elif options.container:
+        options.test_env = ssg_test_suite.test_env.PodmanTestEnv(
+            options.scanning_mode, options.container)
+        logging.info(
+            "The base image option has been specified, "
+            "choosing Podman-based test environment.")
     else:
         hypervisor, domain_name = options.libvirt
         options.test_env = ssg_test_suite.test_env.VMTestEnv(

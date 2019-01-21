@@ -25,7 +25,7 @@
     @ANSIBLE_TAGS@
 
 - name: "Correct file ownership with RPM"
-  shell: "rpm --quiet --setugids '{{item}}'"
+  shell: "rpm --quiet --setugids '{{ item }}'"
   args:
     warn: False # Ignore ANSIBLE0006, we can't correct ownership using rpm module
   with_items: "{{ uniq_list_of_packages.stdout_lines }}"

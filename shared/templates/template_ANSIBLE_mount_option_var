@@ -34,10 +34,10 @@
   - name: Ensure permission {{{ MOUNTOPTION }}} are set on {{{ MOUNTPOINT }}}
     mount:
       path: "{{ {{{ MOUNTPOINT }}} }}"
-      src: "{{device_name.stdout}}"
+      src: "{{ device_name.stdout }}"
       opts: "{{ device_cur_mountoption.stdout }},{{{ MOUNTOPTION }}}"
       state: "mounted"
-      fstype: "{{device_fstype.stdout}}"
+      fstype: "{{ device_fstype.stdout }}"
   when: (device_name.stdout | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

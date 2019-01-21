@@ -6,7 +6,7 @@
 
 - name: Ensure firewalld is installed
   package:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: present
   with_items:
     - firewalld

@@ -7,6 +7,7 @@ from __future__ import print_function
 
 from .constants import ansible_version_requirement_pre_task_name
 from .constants import min_ansible_version
+import re
 
 
 def add_minimum_version(ansible_src):
@@ -30,7 +31,22 @@ def add_minimum_version(ansible_src):
         if 'ansible_version.full is version_compare' in ansible_src:
             return ansible_src
 
-        raise ValueError("A pre_task already exists in ansible_src; failing to process: %s" %
-                         ansible_src)
+        raise ValueError(
+            "A pre_task already exists in ansible_src; failing to process: %s" %
+            ansible_src)
 
     return ansible_src.replace(" - hosts: all", pre_task, 1)
+
+
+def remove_multiple_blank_lines(ansible_src):
+    """
+    Removes multiple blank lines in an Ansible script
+    """
+    return re.sub(r'\n\s*\n', '\n\n', ansible_src)
+
+
+def remove_trailing_whitespace(ansible_src):
+    """
+    Removes trailing whitespace in an Ansible script
+    """
+    return re.sub(r'[ \t]+$', '', ansible_src, 0, flags=re.M)
