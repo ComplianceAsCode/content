@@ -9,7 +9,13 @@ description: |-
     any repos, remove any lines from files in <tt>/etc/yum.repos.d</tt> of the form:
     <pre>gpgcheck=0</pre>
 
-rationale: "Verifying the authenticity of the software prior to installation\nvalidates the integrity of the patch or upgrade received from\na vendor. This ensures the software has not been tampered with and\nthat it has been provided by a trusted vendor. Self-signed \ncertificates are disallowed by this requirement. Certificates\nused to verify the software must be from an approved Certificate\nAuthority (CA)."
+rationale: |-
+    Verifying the authenticity of the software prior to installation validates
+    the integrity of the patch or upgrade received from a vendor. This ensures
+    the software has not been tampered with and that it has been provided by a
+    trusted vendor. Self-signed certificates are disallowed by this
+    requirement. Certificates used to verify the software must be from an
+    approved Certificate Authority (CA)."
 
 severity: high
 
@@ -21,6 +27,7 @@ references:
     stigid@rhel6: RHEL-06-000015
     srg@rhel6: SRG-OS-000103
     srg: SRG-OS-000366-GPOS-00153
+    vmmsrg: SRG-OS-000366-VMM-001430,SRG-OS-000370-VMM-001460,SRG-OS-000404-VMM-001650
     disa@rhel6: 352,663
     cjis: 5.10.4.1
     cui: 3.4.8
