@@ -23,7 +23,7 @@ On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
 installed.
 
 ```bash
-apt-get install cmake libopenscap8 libxml2-utils xsltproc python-jinja2
+apt-get install cmake expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
 ```
 
 (optional) Install git if you want to clone the GitHub repository to get the
@@ -55,12 +55,12 @@ yum install ninja-build
 
 ### Downloading the source code
 
-Download and extract a tarball from the [list of releases](https://github.com/OpenSCAP/scap-security-guide/releases):
+Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):
 
 ```bash
 # change X.Y.Z for desired version
 ssg_version="X.Y.Z"
-wget https://github.com/OpenSCAP/scap-security-guide/releases/download/v$ssg_version/scap-security-guide-$ssg_version.tar.bz2
+wget "https://github.com/ComplianceAsCode/content/releases/download/v$ssg_version/scap-security-guide-$ssg_version.tar.bz2"
 tar -xvjf ./scap-security-guide-$ssg_version.tar.bz2
 cd ./scap-security-guide-$ssg_version/
 ```
@@ -68,8 +68,8 @@ cd ./scap-security-guide-$ssg_version/
 Or clone the GitHub repository:
 
 ```bash
-git clone https://github.com/OpenSCAP/scap-security-guide.git
-cd scap-security-guide/
+git clone https://github.com/ComplianceAsCode/content.git
+cd content/
 # (optional) select release version - change X.Y.Z for desired version
 git checkout vX.Y.Z
 # (optional) select latest development version
@@ -81,7 +81,7 @@ git checkout master
 To build all the security content:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake ../
 make -j4
@@ -91,7 +91,7 @@ make -j4
 security content only for *Red Hat Enterprise Linux 7*:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake ../
 make -j4 rhel7
@@ -100,7 +100,7 @@ make -j4 rhel7
 (optional) To build only specific content for one specific product:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake ../
 make -j4 rhel7-content  # SCAP XML files for RHEL7
@@ -113,7 +113,7 @@ make -j4 rhel7  # everything above for RHEL7
 (optional) Configure options before building using a GUI tool:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake-gui ../
 make -j4
@@ -122,7 +122,7 @@ make -j4
 (optional) Use the `ninja` build system (requires the `ninja-build` package):
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake -G Ninja ../
 ninja-build  # depending on the distribution just "ninja" may also work
@@ -181,7 +181,7 @@ To ensure validity of built artifacts prior to installation, we recommend
 running our test suite against the build output. This is done with CTest:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake ../
 make -j4
@@ -195,7 +195,7 @@ Note: CTest does not run [SSG Test Suite](tests/README.md) which provides simple
 System-wide installation:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake ../
 make -j4
@@ -205,7 +205,7 @@ sudo make install
 (optional) Custom install location:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake ../
 make -j4
@@ -215,7 +215,7 @@ sudo make DESTDIR=/opt/absolute/path/to/ssg/ install
 (optional) System-wide installation using ninja:
 
 ```bash
-cd scap-security-guide/
+cd content/
 cd build/
 cmake -G Ninja ../
 ninja-build
@@ -274,13 +274,6 @@ To build all the content, run a container without any flags.
 
 ```bash
 docker run --cap-drop=all --name scap-security-guide oscap:latest
-```
-
-(optional) To build content only for a specific distribution, add the relevant
-name as a flag:
-
-```bash
-docker run --cap-drop=all --name scap-security-guide oscap:latest firefox
 ```
 
 Using `docker cp` to copy all the generated content to the your host:
