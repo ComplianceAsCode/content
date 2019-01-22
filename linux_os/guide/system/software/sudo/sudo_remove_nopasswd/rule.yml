@@ -2,7 +2,12 @@ documentation_complete: true
 
 title: 'Ensure Users Re-Authenticate for Privilege Escalation - sudo NOPASSWD'
 
-description: "The sudo <tt>NOPASSWD</tt> tag, when specified, allows a user to execute commands using\nsudo without having to authenticate. This should be disabled by making sure that the\n<tt>NOPASSWD</tt> tag does not exist in <tt>/etc/sudoers</tt> configuration file or \nany sudo configuration snippets in <tt>/etc/sudoers.d/</tt>."
+description: |-
+    The sudo <tt>NOPASSWD</tt> tag, when specified, allows a user to execute
+    commands using sudo without having to authenticate. This should be disabled
+    by making sure that the <tt>NOPASSWD</tt> tag does not exist in
+    <tt>/etc/sudoers</tt> configuration file or any sudo configuration snippets
+    in <tt>/etc/sudoers.d/</tt>.
 
 rationale: |-
     Without re-authentication, users may access resources or perform tasks for which they

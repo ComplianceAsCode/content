@@ -2,7 +2,13 @@ documentation_complete: true
 
 title: 'Set GNOME Screen Locking Keybindings'
 
-description: "Run the following command to prevent changes to the screensaver\nlock keybindings: \n<pre>$ sudo gconftool-2 --direct \\\n  --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \\\n  --type string \\\n  --set /apps/gnome_settings_daemon/keybindings/screensaver \"&lt;Control&gt;&lt;Alt&gt;l\"</pre>"
+description: |-
+    Run the following command to prevent changes to the screensaver lock
+    keybindings:
+    <pre>$ sudo gconftool-2 --direct \
+    --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory \
+    --type string \
+    --set /apps/gnome_settings_daemon/keybindings/screensaver "&lt;Control&gt;&lt;Alt&gt;l"</pre>
 
 rationale: |-
     The ability to lock graphical desktop sessions manually allows users to

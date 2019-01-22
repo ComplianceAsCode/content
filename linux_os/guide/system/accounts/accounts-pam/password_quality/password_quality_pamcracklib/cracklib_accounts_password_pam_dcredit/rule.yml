@@ -2,7 +2,13 @@ documentation_complete: true
 
 title: 'Set Password Strength Minimum Digit Characters'
 
-description: "The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements for\nusage of digits in a password. When set to a negative number, any password will be required to\ncontain that many digits. When set to a positive number, pam_cracklib will grant +1 additional\nlength credit for each digit.  \nAdd <tt>dcredit=-1</tt> after pam_cracklib.so to require use of a digit in passwords."
+description: |-
+    The pam_cracklib module's <tt>dcredit</tt> parameter controls requirements
+    for usage of digits in a password. When set to a negative number, any
+    password will be required to contain that many digits. When set to a
+    positive number, pam_cracklib will grant +1 additional length credit for
+    each digit. Add <tt>dcredit=-1</tt> after pam_cracklib.so to require use of
+    a digit in passwords.
 
 rationale: |-
     Requiring digits makes password guessing attacks more difficult by ensuring a larger

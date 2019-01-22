@@ -4,7 +4,17 @@ prodtype: rhel6,rhel7,rhel8,fedora
 
 title: 'Ensure Insecure File Locking is Not Allowed'
 
-description: "By default the NFS server requires secure file-lock requests,\nwhich require credentials from the client in order to lock a file. Most NFS\nclients send credentials with file lock requests, however, there are a few\nclients that do not send credentials when requesting a file-lock, allowing the\nclient to only be able to lock world-readable files. To get around this, the\n<tt>insecure_locks</tt> option can be used so these clients can access the\ndesired export. This poses a security risk by potentially allowing the client\naccess to data for which it does not have authorization.\nRemove any instances of the \n<tt>insecure_locks</tt> option from the file <tt>/etc/exports</tt>."
+description: |-
+    By default the NFS server requires secure file-lock requests, which require
+    credentials from the client in order to lock a file. Most NFS clients send
+    credentials with file lock requests, however, there are a few clients that
+    do not send credentials when requesting a file-lock, allowing the client to
+    only be able to lock world-readable files. To get around this, the
+    <tt>insecure_locks</tt> option can be used so these clients can access the
+    desired export. This poses a security risk by potentially allowing the
+    client access to data for which it does not have authorization. Remove any
+    instances of the <tt>insecure_locks</tt> option from the file
+    <tt>/etc/exports</tt>.
 
 rationale: |-
     Allowing insecure file locking could allow for sensitive data to be

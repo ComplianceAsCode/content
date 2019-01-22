@@ -71,7 +71,7 @@ ocil: |-
     To ensure the system is configured to log a message instead of rebooting the
     system when Ctrl-Alt-Del is pressed, ensure the following line is in
     <tt>/etc/init/control-alt-delete.conf</tt>:
-    <pre>exec /usr/bin/logger -p security.info \"Control-Alt-Delete pressed\"</pre>
+    <pre>exec /usr/bin/logger -p security.info "Control-Alt-Delete pressed"</pre>
 {{% else %}}
 ocil: |-
     To ensure the system is configured to mask the Ctrl-Alt-Del sequence,
