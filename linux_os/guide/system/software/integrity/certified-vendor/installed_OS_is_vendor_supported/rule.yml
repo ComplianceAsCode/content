@@ -1,12 +1,12 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
 
 title: 'The Installed Operating System Is Vendor Supported'
 
 description: |-
     The installed operating system must be maintained by a vendor.
-    {{% if product == "ol7" %}}
+    {{% if product in ["ol7", "ol8"] %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
     {{% else %}}
@@ -40,11 +40,18 @@ references:
 
 ocil_clause: 'the installed operating system is not supported'
 
-{{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
 ocil: |-
     To verify that the installed operating system is supported, run
     the following command:
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
+    The output should contain something similar to:
+    <pre>{{{ full_name }}}</pre>
+{{% elif product in ["ol7", "ol8"] %}}
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
+    <pre>$ grep -i "oracle" /etc/oracle-release</pre>
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
 {{% endif %}}
