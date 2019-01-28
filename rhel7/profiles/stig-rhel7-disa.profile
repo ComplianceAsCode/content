@@ -111,7 +111,6 @@ selections:
     - aide_scan_notification
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
-    - ensure_gpgcheck_repo_metadata
     - kernel_module_usb-storage_disabled
     - kernel_module_dccp_disabled
     - service_autofs_disabled
