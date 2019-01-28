@@ -229,8 +229,6 @@ selections:
     - rsyslog_remote_loghost
     - rsyslog_nolisten
     - install_mcafee_antivirus
-    - mcafee_antivirus_definitions_updated
-    - var_mcafee_antivirus_definition_expire=1_week
     - accounts_max_concurrent_login_sessions
     - configure_firewalld_ports
     - sshd_use_approved_ciphers

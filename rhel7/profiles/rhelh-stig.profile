@@ -426,8 +426,6 @@ selections:
     - audit_rules_kernel_module_loading_create
     - audit_rules_kernel_module_loading_finit
     - install_mcafee_antivirus
-    - mcafee_antivirus_definitions_updated
-    - var_mcafee_antivirus_definition_expire=1_week
     - configure_firewalld_ports
     - package_openssh-server_installed
     - sshd_print_last_log
