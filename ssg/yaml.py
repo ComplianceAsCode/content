@@ -4,6 +4,7 @@ from __future__ import print_function
 import codecs
 import yaml
 import sys
+import re
 
 from .jinja import extract_substitutions_dict_from_template, process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
@@ -48,9 +49,20 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
 
         return yaml_contents
     except Exception as e:
+        count = 0
         _file = original_file
         if not _file:
             _file = stream
+        with open(_file, "r") as e_file:
+            lines = e_file.readlines()
+            for line in lines:
+                count = count + 1
+                if re.match(r"^\s*\t+\s*", line):
+                    print("Exception while handling file: %s" % _file, file=sys.stderr)
+                    print("TabIndentationError: Line %s contains tabs instead of spaces:" % (count), file=sys.stderr)
+                    print("%s\n\n" % repr(line.strip("\n")), file=sys.stderr)
+                    sys.exit(1)
+
         print("Exception while handling file: %s" % _file, file=sys.stderr)
         raise e
 
