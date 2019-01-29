@@ -7,6 +7,7 @@ import sys
 import argparse
 import os
 import ssg
+import ssg.xml
 
 ET = ssg.xml.ElementTree
 
