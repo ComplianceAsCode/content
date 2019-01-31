@@ -19,7 +19,7 @@
     module_arguments: 'preauth
         silent
         even_deny_root
-        deny: {{ var_accounts_passwords_pam_faillock_deny }}
+        deny={{ var_accounts_passwords_pam_faillock_deny }}
         unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}
         fail_interval={{ var_accounts_passwords_pam_faillock_fail_interval }}'
     state: before
@@ -39,7 +39,7 @@
     module_arguments: 'preauth
         silent
         even_deny_root
-        deny: {{ var_accounts_passwords_pam_faillock_deny }}
+        deny={{ var_accounts_passwords_pam_faillock_deny }}
         unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}
         fail_interval={{ var_accounts_passwords_pam_faillock_fail_interval }}'
     state: after
