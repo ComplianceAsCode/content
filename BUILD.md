@@ -9,13 +9,13 @@ On *Red Hat Enterprise Linux* make sure the packages `cmake`, `openscap-utils`,
 version `1.0.8` or later of `openscap-utils`.
 
 ```bash
-yum install cmake openscap-utils PyYAML python-jinja2
+yum install cmake make openscap-utils PyYAML python-jinja2
 ```
 
-On Fedora the package list is the same, but their names are a bit different:
+On *Fedora* the package list is the same, but their names are a bit different:
 
 ```bash
-dnf install cmake openscap-utils python3-pyyaml python3-jinja2
+dnf install cmake make openscap-utils python3-pyyaml python3-jinja2
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
@@ -23,7 +23,7 @@ On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
 installed.
 
 ```bash
-apt-get install cmake expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
+apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
 ```
 
 (optional) Install git if you want to clone the GitHub repository to get the
