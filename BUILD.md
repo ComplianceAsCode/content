@@ -12,10 +12,10 @@ version `1.0.8` or later of `openscap-utils`.
 yum install cmake openscap-utils PyYAML python-jinja2
 ```
 
-On Fedora the package list is almost the same except for `python2-jinja2`:
+On Fedora the package list is the same, but their names are a bit different:
 
 ```bash
-dnf install cmake openscap-utils PyYAML python2-jinja2
+dnf install cmake openscap-utils python3-pyyaml python3-jinja2
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
