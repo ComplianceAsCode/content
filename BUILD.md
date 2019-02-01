@@ -132,7 +132,7 @@ ninja-build  # depending on the distribution just "ninja" may also work
 
 When the build has completed, the output will be in the build folder.
 That can be any folder you choose but if you followed the examples above
-it will be the `scap-security-guide/build` folder.
+it will be the `content/build` folder.
 
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
 `ssg-rhel7-ds.xml` is the *Red Hat Enterprise Linux 7* **source datastream**.
@@ -279,5 +279,5 @@ docker run --cap-drop=all --name scap-security-guide oscap:latest
 Using `docker cp` to copy all the generated content to the your host:
 
 ```bash
-docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build
+docker cp scap-security-guide:/home/oscap/content/build $(pwd)/container_build
 ```
