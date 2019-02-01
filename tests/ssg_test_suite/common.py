@@ -1,7 +1,6 @@
 import logging
 import subprocess
 from collections import namedtuple
-import enum
 import functools
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import PRODUCT_TO_CPE_MAPPING
@@ -21,7 +20,7 @@ IGNORE_KNOWN_HOSTS_OPTIONS = (
 )
 
 
-class Stage(enum.IntEnum):
+class Stage(object):
     NONE = 0
     PREPARATION = 1
     INITIAL_SCAN = 2

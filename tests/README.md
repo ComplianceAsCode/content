@@ -224,21 +224,38 @@ Following services need to be supported:
 - `oscap` (`openscap-scanner` - the container has to be able to scan itself)
 - You may want to include another packages, as base images tend to be bare-bone and tests may require more packages to be present.
 
-Using Podman:
+#### Using Podman
 
 NOTE: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
 
-```
-# public_key="ssh-rsa AAAAB3NzaC1y...rJSs4BL root@localhost"
-# podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
-```
-
-Using Docker:
+The root user therefore needs an key without passphrase, so it can log in to the container without any additional interaction.
+Root user typically doesn't have a SSH key, or it has one without a passphrase.
+Use this test to find out whether it has a key:
 
 ```
-public_key="ssh-rsa AAAAB3NzaC1y...rJSs4BL me@localhost"
-docker build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
+sudo test -f /root/.ssh/id_rsa && echo "Root user already has an id_rsa key" || echo "Root user has no id_rsa key"
 ```
+
+If there is no key, it is safe to create one:
+
+```
+ssh-keygen -f id_rsa -N ""
+sudo mkdir -p /root/.ssh
+sudo chmod go-rwx /root/.ssh
+sudo mv id_rsa* /root/.ssh
+```
+
+In any case, `root` now has an `id_rsa` key without passphrase, so let's build the container.
+Go into the `Dockerfiles` directory of the project, and execute the following:
+
+```
+public_key="$(sudo cat /root/.ssh/id_rsa.pub)"
+podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
+```
+
+#### Using Docker
+
+The procedure is same as using Podman, you just swap the `podman` call with `sudo docker`.
 
 ### Running the tests
 
