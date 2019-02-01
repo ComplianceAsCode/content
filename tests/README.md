@@ -255,11 +255,12 @@ podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f te
 
 #### Using Docker
 
-The procedure is same as using Podman, you just swap the `podman` call with `sudo docker`.
+The procedure is same as using Podman, you just swap the `podman` call with `docker`, which moreover needs root privileges.
 
 ### Running the tests
 
-This is an example to run test scenarios for rule `rule_sshd_disable_kerb_auth`:
+This is an example to run test scenarios for rule `rule_sshd_disable_kerb_auth`.
+Note that you need to have root privileges for both cases:
 
 Using Podman:
 
