@@ -255,7 +255,12 @@ podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f te
 
 #### Using Docker
 
-The procedure is same as using Podman, you just swap the `podman` call with `docker`, which moreover needs root privileges.
+The procedure is same as using Podman, you just swap the `podman` call with `docker`, which moreover needs root privileges:
+
+```
+public_key="$(sudo cat /root/.ssh/id_rsa.pub)"
+$ sudo docker build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
+````
 
 ### Running the tests
 
