@@ -5,7 +5,6 @@ import logging
 
 
 import ssg_test_suite.oscap
-import ssg_test_suite.virt
 from ssg_test_suite.rule import get_viable_profiles
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
