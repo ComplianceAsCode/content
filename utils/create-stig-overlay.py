@@ -121,7 +121,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile,
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
     tree = ET.ElementTree(new_stig_overlay)
-    tree.write(outfile, pretty_print=True, encoding="UTF-8",
+    tree.write(outfile, encoding="UTF-8",
                xml_declaration=True)
     print("\nGenerated the new STIG overlay file: %s" % outfile)
 
