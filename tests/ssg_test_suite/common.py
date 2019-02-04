@@ -1,3 +1,4 @@
+import os
 import logging
 import subprocess
 from collections import namedtuple
@@ -14,10 +15,17 @@ Scenario_conditions = namedtuple(
     ("backend", "scanning_mode", "remediated_by", "datastream"))
 
 
-IGNORE_KNOWN_HOSTS_OPTIONS = (
+try:
+    SSH_ADDITIONAL_OPTS = tuple(os.environ.get('SSH_ADDITIONAL_OPTIONS').split())
+except AttributeError:
+    # If SSH_ADDITIONAL_OPTIONS is not defined set it to empty tuple.
+    SSH_ADDITIONAL_OPTS = tuple()
+
+SSH_ADDITIONAL_OPTS = (
     "-o", "StrictHostKeyChecking=no",
     "-o", "UserKnownHostsFile=/dev/null",
-)
+    "-o", "GSSAPIAuthentication=no",
+) + SSH_ADDITIONAL_OPTS
 
 
 class Stage(object):
@@ -116,7 +124,7 @@ def run_cmd_local(command, verbose_path, env=None):
 
 def run_cmd_remote(command_string, domain_ip, verbose_path, env=None):
     machine = 'root@{0}'.format(domain_ip)
-    remote_cmd = ['ssh'] + list(IGNORE_KNOWN_HOSTS_OPTIONS) + [machine, command_string]
+    remote_cmd = ['ssh'] + list(SSH_ADDITIONAL_OPTS) + [machine, command_string]
     logging.debug('Running {}'.format(command_string))
     returncode, output = _run_cmd(remote_cmd, verbose_path, env)
     return returncode, output
