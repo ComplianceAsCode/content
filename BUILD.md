@@ -9,13 +9,13 @@ On *Red Hat Enterprise Linux* make sure the packages `cmake`, `openscap-utils`,
 version `1.0.8` or later of `openscap-utils`.
 
 ```bash
-yum install cmake openscap-utils PyYAML python-jinja2
+yum install cmake make openscap-utils PyYAML python-jinja2
 ```
 
-On Fedora the package list is almost the same except for `python2-jinja2`:
+On *Fedora* the package list is the same, but their names are a bit different:
 
 ```bash
-dnf install cmake openscap-utils PyYAML python2-jinja2
+dnf install cmake make openscap-utils python3-pyyaml python3-jinja2
 ```
 
 On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
@@ -23,7 +23,7 @@ On *Ubuntu* and *Debian*, make sure the packages `libopenscap8`,
 installed.
 
 ```bash
-apt-get install cmake expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
+apt-get install cmake make expat libopenscap8 libxml2-utils ninja-build python3-jinja2 python3-yaml xsltproc
 ```
 
 (optional) Install git if you want to clone the GitHub repository to get the
@@ -132,7 +132,7 @@ ninja-build  # depending on the distribution just "ninja" may also work
 
 When the build has completed, the output will be in the build folder.
 That can be any folder you choose but if you followed the examples above
-it will be the `scap-security-guide/build` folder.
+it will be the `content/build` folder.
 
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
 `ssg-rhel7-ds.xml` is the *Red Hat Enterprise Linux 7* **source datastream**.
@@ -279,5 +279,5 @@ docker run --cap-drop=all --name scap-security-guide oscap:latest
 Using `docker cp` to copy all the generated content to the your host:
 
 ```bash
-docker cp scap-security-guide:/home/oscap/scap-security-guide/build $(pwd)/container_build
+docker cp scap-security-guide:/home/oscap/content/build $(pwd)/container_build
 ```
