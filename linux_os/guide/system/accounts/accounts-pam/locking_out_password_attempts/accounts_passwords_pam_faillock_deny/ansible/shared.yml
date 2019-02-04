@@ -9,7 +9,7 @@
 
 - name: set auth pam_faillock before pam_unix.so
   pamd:
-    name: system-auth
+    name: "{{ item }}"
     type: auth
     control: sufficient
     module_path: pam_unix.so
@@ -22,32 +22,37 @@
         unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}
         fail_interval={{ var_accounts_passwords_pam_faillock_fail_interval }}'
     state: before
+  loop:
+    - system-auth
+    - password-auth
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: set auth pam_faillock after pam_unix.so
   pamd:
-    name: system-auth
+    name: "{{ item }}"
     type: auth
     control: sufficient
     module_path: pam_unix.so
     new_type: auth
     new_control: '[default=die]'
     new_module_path: pam_faillock.so
-    module_arguments: 'preauth
-        silent
+    module_arguments: 'authfail
         deny={{ var_accounts_passwords_pam_faillock_deny }}
         unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}
         fail_interval={{ var_accounts_passwords_pam_faillock_fail_interval }}'
     state: after
+  loop:
+    - system-auth
+    - password-auth
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: set account pam_faillock before pam_unix.so
   pamd:
-    name: system-auth
+    name: "{{ item }}"
     type: account
     control: required
     module_path: pam_unix.so
@@ -55,6 +60,9 @@
     new_control: required
     new_module_path: pam_faillock.so
     state: before
+  loop:
+    - system-auth
+    - password-auth
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
