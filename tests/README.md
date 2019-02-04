@@ -8,6 +8,14 @@ Priority is to provide very simple system of test scenarios, easily extendable
 so everyone contributing remediation can also provide cases where this
 remediation works.
 
+The Test Suite executes the scans, remediations, and test scenarios on VMs or containers.\
+To test content using VMs, *Libvirt backend* is used;\
+to test content using containers, either *Podman* or *Docker* backend can be used.
+
+Once a domain or container is prepared it can be used indefinitely.\
+The Test Suite can perform tests focused on a profile or a specific rule.\
+Typically, for a test run, a sequence of scan, remediation and scan is peformed.
+
 ## How to prepare a backend for testing
 For the Test Suite to work, you need to have libvirt domains prepared for
 testing.
