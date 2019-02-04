@@ -134,14 +134,15 @@ class VMTestEnv(TestEnv):
         self._origin = None
 
     def start(self):
-        self.domain = ssg_test_suite.virt.connect_domain(
+        from ssg_test_suite import virt
+
+        self.domain = virt.connect_domain(
             self.hypervisor, self.domain_name)
 
-        from ssg_test_suite.virt import SnapshotStack
-        self.snapshot_stack = SnapshotStack(self.domain)
+        self.snapshot_stack = virt.SnapshotStack(self.domain)
 
-        ssg_test_suite.virt.start_domain(self.domain)
-        self.domain_ip = ssg_test_suite.virt.determine_ip(self.domain)
+        virt.start_domain(self.domain)
+        self.domain_ip = virt.determine_ip(self.domain)
 
         self._origin = self._save_state("origin")
 
