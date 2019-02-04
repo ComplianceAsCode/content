@@ -85,6 +85,21 @@ def get_file_remote(verbose_path, local_dir, domain_ip, remote_path):
     return success
 
 
+def find_rule_result_in_output(rule_id, output):
+    # oscap --progress options outputs rule results to stdout in following format:
+    # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:pass
+    match = re.findall('^'+rule_id+':(.*)', output, re.MULTILINE)
+    if match is None:
+        return None
+
+    # When --remediation is executed, there will be two entries in progress output,
+    # one for fail, and one for fixed, e.g.
+    # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:fail
+    # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:fixed
+    # We are interested in the last one
+    return match[-1]
+
+
 def find_result_id_in_output(output):
     match = re.search('result id.*$', output, re.IGNORECASE | re.MULTILINE)
     if match is None:
@@ -435,13 +450,13 @@ class RuleRunner(GenericRunner):
         returncode, self._oscap_output = self.environment.scan(
             self.command_options + self.command_operands, self.verbose_path)
 
-        expected_return_code = _CONTEXT_RETURN_CODES[self.context]
+        rule_result = find_rule_result_in_output(self.rule_id, self._oscap_output)
 
-        if returncode != expected_return_code:
+        if rule_result != self.context:
             msg = (
-                'Scan has exited with return code {0}, '
-                'instead of expected {1} during stage {2}'
-                .format(returncode, expected_return_code, self.stage)
+                'Rule evaluation resulted in {0}, '
+                'instead of expected {1} during {2} stage '
+                .format(rule_result, self.context, self.stage)
             )
             LogHelper.preload_log(logging.ERROR, msg, 'fail')
             return False
