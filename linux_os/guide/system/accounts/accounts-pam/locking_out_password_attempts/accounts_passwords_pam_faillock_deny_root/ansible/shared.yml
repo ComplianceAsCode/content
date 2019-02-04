@@ -39,8 +39,7 @@
     new_type: auth
     new_control: '[default=die]'
     new_module_path: pam_faillock.so
-    module_arguments: 'preauth
-        silent
+    module_arguments: 'authfail
         even_deny_root
         deny={{ var_accounts_passwords_pam_faillock_deny }}
         unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}
