@@ -16,7 +16,11 @@ description: |-
     configured to use TLS, use the following command:
     <pre>$ sudo grep -i ssl /etc/pam_ldap.conf</pre>
 
-rationale: "Without cryptographic integrity protections, information can be\naltered by unauthorized users without detection. The ssl directive specifies \nwhether to use TLS or not. If not specified it will default to no. \nIt should be set to start_tls rather than doing LDAP over SSL."
+rationale: |-
+    Without cryptographic integrity protections, information can be altered by
+    unauthorized users without detection. The ssl directive specifies whether
+    to use TLS or not. If not specified it will default to no. It should be set
+    to start_tls rather than doing LDAP over SSL.
 
 severity: medium
 

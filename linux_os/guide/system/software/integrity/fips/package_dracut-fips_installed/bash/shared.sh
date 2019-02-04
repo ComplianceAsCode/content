@@ -1,8 +1,6 @@
-# platform = Red Hat Enterprise Linux 6, Red Hat Enterprise Linux 7
+# platform = Red Hat Enterprise Linux 6,Red Hat Enterprise Linux 7,Oracle Linux 7
 
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions
 
-if [ $(cat /etc/system-release-cpe | cut -d":" -f3) == "redhat" ] ; then
-	package_install dracut-fips
-fi
+package_install dracut-fips

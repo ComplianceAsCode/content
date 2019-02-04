@@ -339,10 +339,10 @@ class GenericRunner(object):
         raise NotImplementedError()
 
     def initial(self):
-        self.command_options += [
+        self.command_options = [
                 '--verbose', 'DEVEL',
                 '--results', self.results_path
-        ]
+        ] + self.command_options
         result = self.make_oscap_call()
         return result
 

@@ -9,8 +9,7 @@ import subprocess
 import collections
 import json
 
-import ssg_test_suite.oscap as oscap
-import ssg_test_suite.virt
+from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
 from ssg_test_suite import common
@@ -168,7 +167,7 @@ def _get_scenarios(rule_dir, scripts, benchmark_cpes):
     return scenarios
 
 
-class RuleChecker(ssg_test_suite.oscap.Checker):
+class RuleChecker(oscap.Checker):
     """
     Rule checks generally work like this -
     for every profile that supports that rule:
@@ -204,7 +203,7 @@ class RuleChecker(ssg_test_suite.oscap.Checker):
             "Script {0} using profile {1} found issue:".format(scenario.script, profile),
             log_target='fail')
 
-        runner_cls = ssg_test_suite.oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
+        runner_cls = oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
         runner = runner_cls(
             self.test_env, profile, self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean, self.manual_debug)

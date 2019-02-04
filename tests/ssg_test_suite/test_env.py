@@ -7,7 +7,6 @@ import time
 import subprocess
 
 import ssg_test_suite
-from ssg_test_suite.virt import SnapshotStack
 from ssg_test_suite import common
 
 
@@ -120,6 +119,12 @@ class VMTestEnv(TestEnv):
 
     def __init__(self, mode, hypervisor, domain_name):
         super(VMTestEnv, self).__init__(mode)
+
+        try:
+            import libvirt
+        except ImportError:
+            raise RuntimeError("Can't import libvirt module, libvirt backend will therefore not work.")
+
         self.domain = None
 
         self.hypervisor = hypervisor
@@ -131,6 +136,8 @@ class VMTestEnv(TestEnv):
     def start(self):
         self.domain = ssg_test_suite.virt.connect_domain(
             self.hypervisor, self.domain_name)
+
+        from ssg_test_suite.virt import SnapshotStack
         self.snapshot_stack = SnapshotStack(self.domain)
 
         ssg_test_suite.virt.start_domain(self.domain)
@@ -268,7 +275,7 @@ class DockerTestEnv(ContainerTestEnv):
         try:
             import docker
         except ImportError:
-            raise RuntimeError("Can't import Docker, Docker backend will not work.")
+            raise RuntimeError("Can't import the docker module, Docker backend will not work.")
         try:
             self.client = docker.from_env(version="auto")
             self.client.ping()

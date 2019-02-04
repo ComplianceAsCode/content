@@ -7,7 +7,20 @@ title: 'Uninstall telnet-server Package'
 description: |-
     {{{ describe_package_remove(package="telnet-server") }}}
 
-rationale: "It is detrimental for operating systems to provide, or install by default, functionality exceeding\nrequirements or mission objectives. These unnecessary capabilities are often overlooked and therefore\nmay remain unsecure. They increase the risk to the platform by providing additional attack vectors.\n<br />\nThe telnet service provides an unencrypted remote access service which does not provide for the \nconfidentiality and integrity of user passwords or the remote session. If a privileged user were\nto login using this service, the privileged user password could be compromised.\n<br />\nRemoving the <tt>telnet-server</tt> package decreases the risk of the telnet service's accidental \n(or intentional) activation."
+rationale: |-
+    It is detrimental for operating systems to provide, or install by default,
+    functionality exceeding requirements or mission objectives. These
+    unnecessary capabilities are often overlooked and therefore may remain
+    unsecure. They increase the risk to the platform by providing additional
+    attack vectors.
+    <br />
+    The telnet service provides an unencrypted remote access service which does
+    not provide for the confidentiality and integrity of user passwords or the
+    remote session. If a privileged user were to login using this service, the
+    privileged user password could be compromised.
+    <br />
+    Removing the <tt>telnet-server</tt> package decreases the risk of the
+    telnet service's accidental (or intentional) activation.
 
 severity: high
 

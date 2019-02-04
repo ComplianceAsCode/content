@@ -4,7 +4,10 @@ prodtype: rhel6,rhel7,rhel8,fedora
 
 title: 'Disable anacron Service'
 
-description: 'The <tt>cronie-anacron</tt> package, which provides <tt>anacron</tt>\nfunctionality, is installed by default. \n{{{ describe_package_remove(package="cronie-anacron") }}}'
+description: |-
+    The <tt>cronie-anacron</tt> package, which provides <tt>anacron</tt>
+    functionality, is installed by default. 
+    {{{ describe_package_remove(package="cronie-anacron") }}}
 
 rationale: |-
     The <tt>anacron</tt> service provides <tt>cron</tt> functionality for systems

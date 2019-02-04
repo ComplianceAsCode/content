@@ -1,7 +1,7 @@
 # platform = multi_platform_all
 . /usr/share/scap-security-guide/remediation_functions
 
-{{% if product in ["rhel8", "fedora"] %}}
+{{% if product in ["rhel8", "fedora", "ol8"] %}}
 AUDISP_REMOTE_CONFIG="/etc/audit/audisp-remote.conf"
 option="^transport"
 value="KRB5"

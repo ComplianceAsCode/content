@@ -43,11 +43,16 @@
     <ind:state state_ref="state_sshd_clientalivecountmax" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_state id="state_sshd_clientalivecountmax" version="1">
-    <ind:subexpression datatype="int" operation="equals">0</ind:subexpression>
+    <ind:subexpression datatype="int" operation="less than or equal" var_check="all"
+    var_ref="sshd_max_auth_tries_value" />
   </ind:textfilecontent54_state>
   <ind:textfilecontent54_object id="obj_sshd_clientalivecountmax" version="2">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*(?i)ClientAliveCountMax[\s]+([\d]+)[\s]*(?:|(?:#.*))?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <external_variable comment="ClientAliveCountMax value" datatype="int"
+  id="var_sshd_set_keepalive" version="1" />
+
 </def-group>

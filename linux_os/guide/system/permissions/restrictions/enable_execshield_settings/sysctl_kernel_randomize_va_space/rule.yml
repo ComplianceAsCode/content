@@ -4,7 +4,13 @@ title: 'Enable Randomized Layout of Virtual Address Space'
 
 description: '{{{ describe_sysctl_option_value(sysctl="kernel.randomize_va_space", value="2") }}}'
 
-rationale: "Address space layout randomization (ASLR) makes it more difficult\nfor an attacker to predict the location of attack code they have introduced\ninto a process's address space during an attempt at exploitation.  Additionally, ASLR \nmakes it more difficult for an attacker to know the location of existing code\nin order to re-purpose it using return oriented programming (ROP) techniques."
+rationale: |-
+    Address space layout randomization (ASLR) makes it more difficult for an
+    attacker to predict the location of attack code they have introduced into a
+    process's address space during an attempt at exploitation.  Additionally,
+    ASLR makes it more difficult for an attacker to know the location of
+    existing code in order to re-purpose it using return oriented programming
+    (ROP) techniques.
 
 severity: medium
 

@@ -7,7 +7,13 @@ title: 'Uninstall ypserv Package'
 description: |-
     {{{ describe_package_remove(package="ypserv") }}}
 
-rationale: "The NIS service provides an unencrypted authentication service which does not\nprovide for the confidentiality and integrity of user passwords or the remote session.\n\nRemoving the <tt>ypserv</tt> package decreases the risk of the accidental (or intentional) \nactivation of NIS or NIS+ services."
+rationale: |-
+    The NIS service provides an unencrypted authentication service which does
+    not provide for the confidentiality and integrity of user passwords or the
+    remote session.
+    
+    Removing the <tt>ypserv</tt> package decreases the risk of the accidental
+    (or intentional) activation of NIS or NIS+ services.
 
 severity: high
 
