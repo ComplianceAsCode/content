@@ -3,19 +3,15 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-vars:
-  filepath: {{{ FILEPATH }}}
-
-- name: Ensure {{{ FILEPATH }}} exists
-  stat: {{{ FILEPATH }}}
-  register: filepresent
+- name: Test for existence {{{ FILEPATH }}}
+  stat:
+    path: {{{ FILEPATH }}}
+  register: file_exists
   
 - name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
   file:
     path: {{{ FILEPATH }}}
     mode: {{{ FILEMODE }}}
-  when: filepresent.stat.exists
+  when: file_exists.stat.exists and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
-
