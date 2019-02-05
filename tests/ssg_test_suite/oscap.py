@@ -443,25 +443,24 @@ class RuleRunner(GenericRunner):
 
         return success
 
-
     def _find_rule_result_in_output(self):
-        # oscap --progress options outputs rule results to stdout in following format:
-        # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:pass
+        # oscap --progress options outputs rule results to stdout in
+        # following format:
+        # xccdf_org....rule_accounts_password_minlen_login_defs:pass
         match = re.findall('{0}:(.*)$'.format(self.rule_id),
-                                    self._oscap_output,
-                                    re.MULTILINE)
+                           self._oscap_output,
+                           re.MULTILINE)
 
         if not match:
             # When the rule is not selected, it won't match in output
             return "notselected"
 
-        # When --remediation is executed, there will be two entries in progress output,
-        # one for fail, and one for fixed, e.g.
-        # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:fail
-        # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:fixed
+        # When --remediation is executed, there will be two entries in
+        # progress output, one for fail, and one for fixed, e.g.
+        # xccdf_org....rule_accounts_password_minlen_login_defs:fail
+        # xccdf_org....rule_accounts_password_minlen_login_defs:fixed
         # We are interested in the last one
         return match[-1]
-
 
     def _analyze_output_of_oscap_call(self):
         local_success = True
@@ -472,7 +471,8 @@ class RuleRunner(GenericRunner):
             local_success = False
             if rule_result is 'notselected':
                 msg = (
-                    'Rule {0} has not been evaluated! Wrong profile selected in test scenario?'
+                    'Rule {0} has not been evaluated! '
+                    'Wrong profile selected in test scenario?'
                     .format(self.rule_id))
             else:
                 msg = (
@@ -511,7 +511,9 @@ class AnsibleProfileRunner(ProfileRunner):
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
                                               formatting['output_file'])
 
-        return run_stage_remediation_ansible('profile', formatting, self.verbose_path)
+        return run_stage_remediation_ansible('profile',
+                                             formatting,
+                                             self.verbose_path)
 
 
 class BashProfileRunner(ProfileRunner):
