@@ -3,10 +3,18 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+vars:
+  filepath: {{{ FILEPATH }}}
+
+- name: Ensure {{{ FILEPATH }}} exists
+  stat: {{{ FILEPATH }}}
+  register: filepresent
+  
 - name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
   file:
     path: {{{ FILEPATH }}}
     mode: {{{ FILEMODE }}}
+  when: filepresent.stat.exists
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
