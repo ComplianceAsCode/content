@@ -89,8 +89,9 @@ def find_rule_result_in_output(rule_id, output):
     # oscap --progress options outputs rule results to stdout in following format:
     # xccdf_org.ssgproject.content_rule_accounts_password_minlen_login_defs:pass
     match = re.findall('^'+rule_id+':(.*)', output, re.MULTILINE)
-    if match is None:
-        return None
+    if not match:
+        # When the rule is not selected, it won't match in output
+        return "notselected"
 
     # When --remediation is executed, there will be two entries in progress output,
     # one for fail, and one for fixed, e.g.
