@@ -3,13 +3,24 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- name: "Force dconf to use the textfiles instead of a binary DB"
+- name: "Remove the existing \"use textfile backend\" directive from the config - it may not be at the file's very top"
+  lineinfile:
+    path: '/etc/dconf/profile/user'
+    regexp: '^service-db:keyfile/user.*'
+    state: 'absent'
+  check_mode: no
+  tags:
+    @ANSIBLE_TAGS@
+  @ANSIBLE_ENSURE_PLATFORM@
+
+- name: "Insert the \" use textfiles backend\" directive at the top of the config file"
   lineinfile:
     path: '/etc/dconf/profile/user'
     regexp: '^service-db:keyfile/user$'
     line: 'service-db:keyfile/user'
     insertbefore: 'BOF'
     create: yes
+  check_mode: no
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
