@@ -26,45 +26,37 @@ SSG Test Suite currently does not provide automated provisioning of VMs or conta
 
 To use Libvirt backend, you need to have:
 
-- These packages installed
+- These packages installed in your host
   - `libvirt`
   - `libvirt-daemon`
-  - `virt-install`  (optional, used by `install_vm.py` script)
+  - `virt-install`  (recommended, used by `install_vm.py` script)
   - `virt-viewer`   (optional, to access graphical console of VMs)
   - `virt-manager`  (optional, to help you manage VMs)
+  - `ansible`       (required if remediating via Ansible)
+- A VM that fullfils following requirements:
+  - Package `qemu-guest-agent` installed
+  - Package `openscap` version 1.2.15 or higher installed
+  - `root` can login via ssh (it is recommended to setup key-based authentication)
+  - `root` can install packages (for RHEL7, it means subscription enabled).
 
-You can use kickstart usable for Red Hat Enterprise Linux 7 (and of course
-CentOS 7) and Fedora in `kickstarts` directory, which installs machine capable of
-running tests with SSG Test Suite.
+An easy way to install your VM is via `install_vm.py` script. It will setup a VM\
+according to the requirements, including configuration of a key for SSH login.
 
-1. Install domain, using provided kickstart
+Common usage looks like:
+```
+$ ./install_vm.py --domain test-suite-fedora --distro fedora
+```
 
-   To install the domain via graphical install, supply boot option:\
-   `inst.ks=https://raw.githubusercontent.com/ComplianceAsCode/content/master/tests/kickstarts/rhel_centos_7.cfg`.
-   And the installation will be guided by the kickstart.
+By default, the key at `~/.ssh/id_rsa.pub` is used. You can change default key used via `--ssh-pubkey` option.
 
-   To install the domain via command line, you can use script `./install_vm.py`. Common usage will look like:
-   ```
-   ./install_vm.py --domain test-suite-fedora --distro fedora
-   ```
+By default, the VM will be created on the user hypervisor, i.e. `qemu:///session`.
+For TestSuite this should be enough, in case you need the VM to reside under `qemu:///system`, use the install script with `--libvirt qemu:///system`.
 
-<!--- Document qemu:///system vs qemu:///session --->
+When installing a RHEL VM, you will still need to subscribe it.
 
-<!--- To be changed --->
-After VM is installed, some extra steps are necessary:
-1. Import ssh key to the machine and make sure that you can use them to log in
-   as the `root` superuser.
-1. In case of installing a RHEL domain, setup subscription so that the machine can install and uninstall packages.
-
-*NOTE*: Create snapshot after all these steps, to manually revert in case the
-test suite breaks something and fails to revert. Do not use snapshot names
-starting with `ssg_`.
-
-*NOTE*: If you want to use your own domain, make sure `openscap-1.2.15` and
-`qemu-guest-agent` are installed there, `root` is accessible via ssh and that
-packages packages can be installed (for RHEL7, it means subscription enabled).
-For testing Ansible remediations, it is sufficient to have `root` accessible via
-ssh on the libvirt domain and have Ansible installed on the host machine.
+*TIP*: Create a snapshot as soon as your VM is setup. This way, you can manually revert
+in case the test suite breaks something and fails to revert.\
+Do not use snapshot names starting with `ssg_`.
 
 ### Container backends
 
