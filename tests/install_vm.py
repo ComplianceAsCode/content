@@ -7,6 +7,13 @@ def parse_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
+        "--libvirt",
+        dest="libvirt",
+        default="qemu:///session",
+        choices=("qemu:///session", "qemu:///system"),
+        help="What hypervisor should be used when installing VM."
+    )
+    parser.add_argument(
         "--kickstart",
         dest="kickstart",
         default="kickstarts/test_suite.cfg",
@@ -28,7 +35,7 @@ def parse_args():
     parser.add_argument(
         "--disk-dir",
         dest="disk_dir",
-        default="/var/lib/libvirt/images/",
+        default=None,
         help="Location of the VM qcow2 file."
     )
     parser.add_argument(
@@ -69,7 +76,31 @@ def parse_args():
 
 def main():
     data = parse_args()
+    username = ""
+    try:
+        username = os.environ["SUDO_USER"]
+    except KeyError:
+        pass
+    home_dir = os.path.expanduser('~' + username)
+
+    if not data.ssh_pubkey:
+        data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
+    if not os.path.isfile(data.ssh_pubkey):
+        sys.stderr.write("Error: SSH public key not found at {0}\n".format(data.ssh_pubkey))
+        sys.stderr.write("You can use the `--ssh-pubkey` to specify which key should be used.\n")
+        return 1
+    with open(data.ssh_pubkey) as f:
+        pub_key = f.readline().rstrip()
+    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
+    print("Using hypervisor: {0}".format(data.libvirt))
+
+    if not data.disk_dir:
+        if data.libvirt == "qemu:///system":
+            data.disk_dir = "/var/lib/libvirt/images/"
+        else:
+            data.disk_dir = home_dir + "/.local/share/libvirt/images/"
     data.disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
+    print("Location of VM disk: {0}".format(data.disk_path))
     data.ks_basename = os.path.basename(data.kickstart)
 
     if data.distro == "fedora":
@@ -85,22 +116,6 @@ def main():
     elif data.distro == "rhel8":
         data.variant = "rhel8.0"
 
-    if not data.ssh_pubkey:
-        username = ""
-        try:
-            username = os.environ["SUDO_USER"]
-        except KeyError:
-            pass
-        home_dir = os.path.expanduser('~' + username)
-        data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
-    if not os.path.isfile(data.ssh_pubkey):
-        sys.stderr.write("Error: SSH public key not found at {0}\n".format(data.ssh_pubkey))
-        sys.stderr.write("You can use the `--ssh-pubkey` to specify which key should be used.\n")
-        return 1
-    with open(data.ssh_pubkey) as f:
-        pub_key = f.readline().rstrip()
-    print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
-
     tmp_kickstart = "/tmp/" + data.ks_basename
     with open(data.kickstart) as infile, open(tmp_kickstart, "w") as outfile:
         old_content = infile.read()
@@ -112,7 +127,11 @@ def main():
     # The kernel option 'net.ifnames=0' is used to disable predictable network
     # interface names, for more details see:
     # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
-    command = 'virt-install --name={domain} --memory={ram} --vcpus={cpu} --os-variant={variant} --hvm --accelerate --network=default --disk path={disk_path},size=20,format=qcow2 --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0" --wait=-1 --vnc --location={url}'.format(**data.__dict__)
+    if data.libvirt == "qemu:///system":
+        data.network = "default"
+    else:
+        data.network = "bridge=virbr0"
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --os-variant={variant} --hvm --accelerate --network {network} --disk path={disk_path},size=20,format=qcow2 --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0" --graphics=none --noautoconsole --wait=-1 --location={url}'.format(**data.__dict__)
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
         print(command)
@@ -120,11 +139,15 @@ def main():
         os.system(command)
 
     print("\nTo determine the IP address of the {0} VM use:".format(data.domain))
-    print("sudo virsh domifaddr {0}\n".format(data.domain))
+    if data.libvirt == "qemu:///system":
+        print("sudo virsh domifaddr {0}\n".format(data.domain))
+    else:
+        print("arp -n | grep $(virsh -q domiflist {0} | awk '{{print $5}}')\n".format(data.domain))
     print("To connect to the {0} VM use:\nssh {1} root@IP".format(data.domain, "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GSSAPIAuthentication=no"))
     print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY' option to your ssh command")
-    print("and export the SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY' before running the SSG Test Suite.\n")
-    print("IMPORTANT: When running SSG Test Suite use `sudo -E` to make sure that your SSH key is used.")
+    print("and export the SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY' before running the SSG Test Suite.")
+    if data.libvirt == "qemu:///system":
+        print("\nIMPORTANT: When running SSG Test Suite use `sudo -E` to make sure that your SSH key is used.")
 
 
 if __name__ == '__main__':
