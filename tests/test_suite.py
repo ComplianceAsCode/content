@@ -159,6 +159,10 @@ def auto_select_xccdf_id(datastream, bench_number):
     xccdf_ids = xml_operations.get_all_xccdf_ids_in_datastream(datastream)
     n_xccdf_ids = len(xccdf_ids)
 
+    if n_xccdf_ids == 0:
+        msg = ("The provided DataStream doesn't contain any Benchmark")
+        raise RuntimeError(msg)
+
     if n_xccdf_ids > 1:
         logging.info("The DataStream contains {0} "
                      "Benchmarks".format(n_xccdf_ids))
