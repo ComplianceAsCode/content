@@ -49,8 +49,15 @@ def parse_args():
                                dest="xccdf_id",
                                metavar="REF-ID",
                                default=None,
-                               help="Reference ID related to benchmark to be used."
-                                    " Get one using 'oscap info <datastream>'.")
+                               help="Reference ID related to benchmark to "
+                                    "be used.")
+    common_parser.add_argument("--xccdf-id-number",
+                               dest="xccdf_id_number",
+                               metavar="REF-ID-SELECT",
+                               type=int,
+                               default=0,
+                               help="Selection number of reference ID related "
+                                    "to benchmark to be used.")
     common_parser.add_argument("--loglevel",
                                dest="loglevel",
                                metavar="LOGLEVEL",
@@ -148,22 +155,35 @@ def get_logging_dir(options):
     return logging_dir
 
 
-def auto_select_xccdf_id(datastream):
+def auto_select_xccdf_id(datastream, bench_number):
     xccdf_ids = xml_operations.get_all_xccdf_ids_in_datastream(datastream)
-    if len(xccdf_ids) > 1:
-        logging.info("{0} Benchmarks found in DataStream, "
-                     "we will default to the first one: "
-                     "{1}".format(len(xccdf_ids), xccdf_ids[0]))
-    return xccdf_ids[0]
+    n_xccdf_ids = len(xccdf_ids)
+
+    if n_xccdf_ids > 1:
+        logging.info("The DataStream contains {0} "
+                     "Benchmarks".format(n_xccdf_ids))
+        for i in range(0, n_xccdf_ids):
+            logging.info("{0} - {1}".format(i, xccdf_ids[i]))
+
+        logging.info("Selected Benchmark is {0}".format(bench_number))
+        if bench_number < 0 or bench_number >= n_xccdf_ids:
+            msg = ("Please select a Benchmark number "
+                   "between 0 and {0}.".format(n_xccdf_ids-1))
+            raise RuntimeError(msg)
+        logging.info("To select a different Benchmark, "
+                     "use --xccdf-id-number option.")
+
+    return xccdf_ids[bench_number]
 
 
 def normalize_passed_arguments(options):
     if 'ALL' in options.target:
         options.target = ['ALL']
 
+    if options.xccdf_id is None:
+        options.xccdf_id = auto_select_xccdf_id(options.datastream,
+                                                options.xccdf_id_number)
     try:
-        if options.xccdf_id is None:
-            options.xccdf_id = auto_select_xccdf_id(options.datastream)
         bench_id = xml_operations.infer_benchmark_id_from_component_ref_id(
             options.datastream, options.xccdf_id)
         options.benchmark_id = bench_id
