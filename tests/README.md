@@ -17,12 +17,21 @@ The Test Suite can perform tests focused on a profile or a specific rule.\
 Typically, for a test run, a sequence of scan, remediation and scan is peformed.
 
 ## How to prepare a backend for testing
-For the Test Suite to work, you need to have libvirt domains prepared for
-testing.
-You can use the more powerful VM-based tests, or more lightweight container-based tests.
-SSG Test Suite currently does not provide automated provisioning of domains.
+For the Test Suite to work, you need to have a backend image prepared for testing.\
+You can use a powerful full-blown VM backend, or a lightweight container backend.
 
-### Libvirt Backend
+SSG Test Suite currently does not provide automated provisioning of VMs or containers.
+
+### Libvirt backend
+
+To use Libvirt backend, you need to have:
+
+- These packages installed
+  - `libvirt`
+  - `libvirt-daemon`
+  - `virt-install`  (optional, used by `install_vm.py` script)
+  - `virt-viewer`   (optional, to access graphical console of VMs)
+  - `virt-manager`  (optional, to help you manage VMs)
 
 You can use kickstart usable for Red Hat Enterprise Linux 7 (and of course
 CentOS 7) and Fedora in `kickstarts` directory, which installs machine capable of
@@ -30,7 +39,7 @@ running tests with SSG Test Suite.
 
 1. Install domain, using provided kickstart
 
-   To install the domain via graphical install, supply boot option:  
+   To install the domain via graphical install, supply boot option:\
    `inst.ks=https://raw.githubusercontent.com/ComplianceAsCode/content/master/tests/kickstarts/rhel_centos_7.cfg`.
    And the installation will be guided by the kickstart.
 
@@ -39,6 +48,10 @@ running tests with SSG Test Suite.
    ./install_vm.py --domain test-suite-fedora --distro fedora
    ```
 
+<!--- Document qemu:///system vs qemu:///session --->
+
+<!--- To be changed --->
+After VM is installed, some extra steps are necessary:
 1. Import ssh key to the machine and make sure that you can use them to log in
    as the `root` superuser.
 1. In case of installing a RHEL domain, setup subscription so that the machine can install and uninstall packages.
@@ -47,37 +60,38 @@ running tests with SSG Test Suite.
 test suite breaks something and fails to revert. Do not use snapshot names
 starting with `ssg_`.
 
-If you want to use your own domain, make sure `openscap-1.2.15` and
+*NOTE*: If you want to use your own domain, make sure `openscap-1.2.15` and
 `qemu-guest-agent` are installed there, `root` is accessible via ssh and that
 packages packages can be installed (for RHEL7, it means subscription enabled).
 For testing Ansible remediations, it is sufficient to have `root` accessible via
 ssh on the libvirt domain and have Ansible installed on the host machine.
 
-## Container backends
+### Container backends
 
-You can also run the tests in a container. There are 2 container backends, Podman and Docker, supported.
+There are 2 container backends supported, Podman and Docker.
 
-The container image you want to use with the tests needs to be prepared, so it can scan itself, and that it can accept connections and data.
-Following services need to be supported:
+The container image needs to be prepared so it can accept ssh connections, and scan itself.\
+The following services need to be supported:
 
 - `sshd` (`openssh-server` needs to be installed, server host keys have to be in place, root's `.ssh/authorized_keys` are set up with correct permissions)
 - `scp` (`openssh-clients` need to be installed - `scp` requires more than a ssh server on the server-side)
 - `oscap` (`openscap-scanner` - the container has to be able to scan itself)
-- You may want to include another packages, as base images tend to be bare-bone and tests may require more packages to be present.
+- You may want to include other packages, as base images tend to be bare-bone and tests may require more packages to be present.
 
-To obtain the base image, you can use `test_suite-*` Dockerfiles in the `Dockerfiles` directory to build it.
+You can use `test_suite-*` Dockerfiles in the `content/Dockerfiles` directory to build it.
 We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
-### Using Podman
+#### Podman
 
 To use Podman backend, you need to have:
 
 - `podman` package installed, and
 - rights that allow you to start/stop containers and to create images.
 
-NOTE: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
+<!--- try slirp4netns --->
+*NOTE*: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
 
-### Building podman base image
+##### Building podman base image
 The root user therefore needs an key without passphrase, so it can log in to the container without any additional interaction.
 Root user typically doesn't have a SSH key, or it has one without a passphrase.
 Use this test to find out whether it has a key:
@@ -114,6 +128,7 @@ To use Docker backend, you need to have:
   You can accomplish this by creating a `docker` group, then add yourself in it and restart `docker`.
 
 ##### Building docker base image
+
 The procedure is same as using Podman, you just swap the `podman` call with `docker`, which moreover needs root privileges.
 
 ## Executing the test suite
