@@ -79,7 +79,7 @@ def _send_scripts(domain_ip):
     log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
     with open(log_file_name, 'a') as log_file:
-        args = common.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, "mkdir", "-p", remote_dir)
+        args = common.SSH_ADDITIONAL_OPTS + (machine, "mkdir", "-p", remote_dir)
         try:
             _run_with_stdout_logging("ssh", args, log_file)
         except Exception:
@@ -87,7 +87,7 @@ def _send_scripts(domain_ip):
             logging.error(msg)
             raise RuntimeError(msg)
 
-        args = (common.IGNORE_KNOWN_HOSTS_OPTIONS
+        args = (common.SSH_ADDITIONAL_OPTS
                 + (archive_file, "{0}:{1}".format(machine, remote_dir)))
         try:
             _run_with_stdout_logging("scp", args, log_file)
@@ -97,7 +97,7 @@ def _send_scripts(domain_ip):
             logging.error(msg)
             raise RuntimeError(msg)
 
-        args = (common.IGNORE_KNOWN_HOSTS_OPTIONS
+        args = (common.SSH_ADDITIONAL_OPTS
                 + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
         try:
             _run_with_stdout_logging("ssh", args, log_file)
@@ -121,7 +121,7 @@ def _apply_script(rule_dir, domain_ip, script):
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
 
         command = "cd {0}; bash -x {1}".format(rule_dir, script)
-        args = common.IGNORE_KNOWN_HOSTS_OPTIONS + (machine, command)
+        args = common.SSH_ADDITIONAL_OPTS + (machine, command)
 
         try:
             _run_with_stdout_logging("ssh", args, log_file)
