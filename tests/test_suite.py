@@ -45,13 +45,14 @@ def parse_args():
                                required=True,
                                help=("Path to the Source DataStream on this "
                                      "machine which is going to be tested"))
-    common_parser.add_argument("--xccdf-id",
+    benchmarks = common_parser.add_mutually_exclusive_group()
+    benchmarks.add_argument("--xccdf-id",
                                dest="xccdf_id",
                                metavar="REF-ID",
                                default=None,
                                help="Reference ID related to benchmark to "
                                     "be used.")
-    common_parser.add_argument("--xccdf-id-number",
+    benchmarks.add_argument("--xccdf-id-number",
                                dest="xccdf_id_number",
                                metavar="REF-ID-SELECT",
                                type=int,
