@@ -48,7 +48,7 @@ def parse_args():
     common_parser.add_argument("--xccdf-id",
                                dest="xccdf_id",
                                metavar="REF-ID",
-                               required=True,
+                               default=None,
                                help="Reference ID related to benchmark to be used."
                                     " Get one using 'oscap info <datastream>'.")
     common_parser.add_argument("--loglevel",
@@ -148,11 +148,22 @@ def get_logging_dir(options):
     return logging_dir
 
 
+def auto_select_xccdf_id(datastream):
+    xccdf_ids = xml_operations.get_all_xccdf_ids_in_datastream(datastream)
+    if len(xccdf_ids) > 1:
+        logging.info("{0} Benchmarks found in DataStream, "
+                     "we will default to the first one: "
+                     "{1}".format(len(xccdf_ids), xccdf_ids[0]))
+    return xccdf_ids[0]
+
+
 def normalize_passed_arguments(options):
     if 'ALL' in options.target:
         options.target = ['ALL']
 
     try:
+        if options.xccdf_id is None:
+            options.xccdf_id = auto_select_xccdf_id(options.datastream)
         bench_id = xml_operations.infer_benchmark_id_from_component_ref_id(
             options.datastream, options.xccdf_id)
         options.benchmark_id = bench_id

@@ -13,6 +13,20 @@ NAMESPACES = {
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
+def get_all_xccdf_ids_in_datastream(datastream):
+    root = ET.parse(datastream).getroot()
+
+    checklists_node = root.find(".//ds:checklists", NAMESPACES)
+    if checklists_node is None:
+        logging.error(
+            "Checklists not found within DataStream")
+
+    all_checklist_components = checklists_node.findall('ds:component-ref',
+                                                       NAMESPACES)
+    xccdf_ids = [component.get("id") for component in all_checklist_components]
+    return xccdf_ids
+
+
 def infer_benchmark_id_from_component_ref_id(datastream, ref_id):
     root = ET.parse(datastream).getroot()
     component_ref_node = root.find("*//ds:component-ref[@id='{0}']"
