@@ -155,6 +155,10 @@ def get_logging_dir(options):
 
     return logging_dir
 
+def _print_available_benchmarks(xccdf_ids, n_xccdf_ids):
+    logging.info("The DataStream contains {0} Benchmarks".format(n_xccdf_ids))
+    for i in range(0, n_xccdf_ids):
+        logging.info("{0} - {1}".format(i, xccdf_ids[i]))
 
 def auto_select_xccdf_id(datastream, bench_number):
     xccdf_ids = xml_operations.get_all_xccdf_ids_in_datastream(datastream)
@@ -164,17 +168,17 @@ def auto_select_xccdf_id(datastream, bench_number):
         msg = ("The provided DataStream doesn't contain any Benchmark")
         raise RuntimeError(msg)
 
-    if n_xccdf_ids > 1:
-        logging.info("The DataStream contains {0} "
-                     "Benchmarks".format(n_xccdf_ids))
-        for i in range(0, n_xccdf_ids):
-            logging.info("{0} - {1}".format(i, xccdf_ids[i]))
-
+    if bench_number < 0 or bench_number >= n_xccdf_ids:
+        _print_available_benchmarks(xccdf_ids, n_xccdf_ids)
         logging.info("Selected Benchmark is {0}".format(bench_number))
-        if bench_number < 0 or bench_number >= n_xccdf_ids:
-            msg = ("Please select a Benchmark number "
-                   "between 0 and {0}.".format(n_xccdf_ids-1))
-            raise RuntimeError(msg)
+
+        msg = ("Please select a valid Benchmark number")
+        raise RuntimeError(msg)
+
+    if n_xccdf_ids > 1:
+        _print_available_benchmarks(xccdf_ids, n_xccdf_ids)
+        logging.info("Selected Benchmark is {0}".format(bench_number))
+
         logging.info("To select a different Benchmark, "
                      "use --xccdf-id-number option.")
 
