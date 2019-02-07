@@ -62,29 +62,31 @@ Do not use snapshot names starting with `ssg_`.
 
 There are 2 container backends supported, Podman and Docker.
 
-The container image needs to be prepared so it can accept ssh connections, and scan itself.\
-The following services need to be supported:
+The container image needs to be prepared so it can accept ssh connections from `root`, and run OpenSCAP scan.\
+The image needs to fulfil the following requirements:
 
-- `sshd` (`openssh-server` needs to be installed, server host keys have to be in place, root's `.ssh/authorized_keys` are set up with correct permissions)
-- `scp` (`openssh-clients` need to be installed - `scp` requires more than a ssh server on the server-side)
-- `oscap` (`openscap-scanner` - the container has to be able to scan itself)
-- You may want to include other packages, as base images tend to be bare-bone and tests may require more packages to be present.
+  - Package `openssh-server` installed
+    - `root`'s `.ssh/authorized_keys` is setup with correct permissions
+    - the container's server host keys have to be in place
+  - Packages `scp` and `openssh-clients` are installed
+    - `scp` requires more than a ssh server on the server-side
+  - Package `openscap-scanner` version 1.2.15 or higher installed
+  - You may want to include other packages, as base images tend to be bare-bone and tests may require more packages to be present.
 
-You can use `test_suite-*` Dockerfiles in the `content/Dockerfiles` directory to build it.
+You can use `test_suite-*` Dockerfiles in the `content/Dockerfiles` directory to build the images.
 We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
 #### Podman
 
 To use Podman backend, you need to have:
 
-- `podman` package installed, and
-- rights that allow you to start/stop containers and to create images.
+- `podman` package installed
 
 <!--- try slirp4netns --->
 *NOTE*: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
 
 ##### Building podman base image
-The root user therefore needs an key without passphrase, so it can log in to the container without any additional interaction.
+The root user needs to log in to the container via SSH, so lets setup a key without passphrase, so it can happen without any additional interaction.
 Root user typically doesn't have a SSH key, or it has one without a passphrase.
 Use this test to find out whether it has a key:
 
@@ -113,15 +115,15 @@ podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f te
 
 To use Docker backend, you need to have:
 
-- the [docker](https://pypi.org/project/docker/) Python module installed. You may have to use `pip` to install it on older distributions s.a. RHEL 7, running `pip install --user docker` as `root` will do the trick of installing it only for the `root` user.
+- The [docker](https://pypi.org/project/docker/) Python module installed. You may have to use `pip` to install it on older distributions s.a. RHEL 7, running `pip install --user docker` as `root` will do the trick of installing it only for the `root` user.
 - the Docker service running, and
-- rights that allow you to start/stop containers and to create images.
-  This level of rights is considered to be insecure, so it is recommended to run the test suite in a VM.
-  You can accomplish this by creating a `docker` group, then add yourself in it and restart `docker`.
+- Rights that allow you to start/stop containers and to create images. This is achieved by:
+  - using `sudo` with every `docker` command, or;
+  - create a `docker` group, then add yourself to it and restart `docker`. Depending on your OS, you may need to logout for the group change to apply.
 
 ##### Building docker base image
 
-The procedure is same as using Podman, you just swap the `podman` call with `docker`, which moreover needs root privileges.
+The procedure is same as using Podman, you just swap the `podman` call with `docker`.
 
 ## Executing the test suite
 
