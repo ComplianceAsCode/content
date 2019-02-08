@@ -173,6 +173,8 @@ StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
 ```
 
+All logs of TestSuite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
+
 ### Profile-based testing
 
 In this operation mode, you specify the `profile` command and you supply the
@@ -257,6 +259,11 @@ Using Docker:
 Notice we didn't use full rule name on the command line.
 Test suite runs every rule, which contains given substring in the name.
 So all that is needed is to use unique substring.
+
+#### Debug mode
+
+Use `--debug` option, to investigate a test scenario which is not evaluating to expected result.
+The Test Suite will pause its execution, and you will be able to SSH into the environment to inspect its state manually.
 
 #### How rule validation scenarios work
 
