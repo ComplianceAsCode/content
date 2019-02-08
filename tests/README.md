@@ -125,54 +125,43 @@ To use Docker backend, you need to have:
 
 The procedure is same as using Podman, you just swap the `podman` call with `docker`.
 
-## Executing the test suite
+## How to run the tests
 
-### Common options
+To test you profile or rule use `test_suite.py` script. It can take your DataStream, and test it on the specified backend.
+The Test Suite can test a whole profile or just a specific rule within a profile.
 
+## Argument summary
+
+Mode of operation, specify one of the following commands;
+- `profile`: Evaluate, remediate and evalute again using selected profile
+- `rule`: Evaluate a rule, remediate, and evalute again in context of test scenarios.
+
+Specify backend and image to use:
+- To use VM backend, use the following option on the command line:
+  - Libvirt - `--libvirt <hypervisor> <domain>`
+    - `hypervisor`: Typically, you will use the `qemu:///session`, or `qemu:///sysstem`.
+       It depends on where your VM resides.
+    - `domain`: `libvirt` domain, which is basically name of the virtual machine.
+- To use container backends, use the following options on the command line:
+  - Podman - `--container <base image name>`
+  - Docker - `--docker <base image name>`
+
+Specify DataStream to use:
 - `--datastream`: Path to the datastream that you want to use for scanning.
-  It will be transferred to the scanned VM via SSH.
-- `--xccdf-id`: Also known as `Ref-ID`, it is the identifier of benchmark within
-  the datastream.  It can be obtained by running `oscap info` over the
-  datastream XML and searching for `Ref-ID` strings.
-- `--mode`: Can be either `online` or `offline`, which corresponds either to
-  online or offline scanning mode. Online scanning mode uses `oscap-ssh`, while
-  offline scanning is backend-specific.
-  As offline scanning examines the filesystem of the container or VM, it may require
-  extended privileges.
-- `--help`: This will get you the invocation help.
+  It will be transferred to the scanned system via SSH.
 
-VM-based tests:
+Specify as last argument the id of a profile or rule to be tested.
 
-- `--libvirt`: Accepts two arguments - `hypervisor` and `domain`.
-  - `hypervisor`: Typically, you will use the `qemu:///system` value.
-  - `domain`: `libvirt` domain, which is basically name of the virtual machine.
+<!--- Commented until offline support is fixed --->
+<!--- - `mode`: Can be either `online` or `offline`, which corresponds either to --->
+<!---   online or offline scanning mode. Default is `online`. --->
+<!---   Online scanning mode uses `oscap-ssh`, while offline scanning is backend-specific. --->
+<!---   As offline scanning examines the filesystem of the container or VM, it may require --->
+<!---   extended privileges. --->
 
-Container-based tests:
 
-- `--docker`: Uses Docker as container engine. Accepts the base image name.
-- `--container`: Uses Podman as container engine. Accepts the base image name.
-
-To use container backends, use the following options on the command line:
-
-- Podman - `--container <base image name>`
-- Docker - `--docker <base image name>`
-
-This is an example to run test scenarios for rule `rule_sshd_disable_kerb_auth`.
-Note that you need to have root privileges for both cases:
-
-Using Podman:
-
-```
-./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
-```
-
-Using Docker:
-
-```
-./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
-```
-
-Also, as containers may get any IP address, a conflict may appear in your local client's `known_hosts` file.
+<!--- Is there an environmenent variable for that? --->
+*Note*:Also, as containers may get any IP address, a conflict may happen in your local client's `known_hosts` file.
 You might have a version of `oscap-ssh` that doesn't support ssh connection customization at the client-side, so it may be a good idea to disable known hosts checks for all hosts if you are testing on a VM or under a separate user.
 You can do that by putting following lines in your `$HOME/.ssh/config` file:
 
@@ -187,19 +176,28 @@ In this operation mode, you specify the `profile` command and you supply the
 profile ID as a positional argument.  The test suite then runs scans over the
 target domain and remediates it based on particular profile.
 
-An example invocation may look like this:
-
+To test RHEL7 STIG Profile on a VM:
 ```
-./test_suite.py profile --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml profile-id
+./test_suite.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig-rhel7-disa
 ```
 
-`profile-id` is matched by the suffix so it is the same as the `oscap` tool
-works (you can use `oscap info --profiles` to see available profiles).
+To test Fedora Standard Profile on a Podman container:
+```
+./test_suite.py profile --container ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
+```
+
+To test Fedora Standard Profile on a Docker container:
+```
+./test_suite.py profile --docker ssg_test_suite --datastream ../build/ssg-fedora-ds.xml standard
+```
+
+Note that `profile-id` is matched by the suffix, so it works the same as in `oscap` tool
+(you can use `oscap info --profiles` to see available profiles).
 
 ### Rule-based testing
 
 In this mode, you specify the `rule` command and you supply part of the rule
-title as a positional argument.  Unlike the profile mode, here each rule from
+title as a positional argument. Unlike the profile mode, here each rule from
 the matching rule set is addressed independently, one-by-one.
 
 Rule-based testing enables to perform two kinds of tests:
@@ -216,15 +214,26 @@ Rule-based testing enables to perform two kinds of tests:
 
 If you would like to evaluate the rule `rule_sysctl_net_ipv4_conf_default_secure_redirects`:
 
+Using Libvirt:
 ```
-./test_suite.py rule --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml ipv4_conf_default_secure_redirects
+./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml ipv4_conf_default_secure_redirects
 ```
 
-Notice there is not full rule name used on the command line.
+Using Podman:
+```
+./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml rule_sshd_disable_kerb_auth
+```
+
+Using Docker:
+```
+./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml rule_sshd_disable_kerb_auth
+```
+
+Notice we didn't use full rule name on the command line.
 Test suite runs every rule, which contains given substring in the name.
 So all that is needed is to use unique substring.
 
-### How rule validation scenarios work
+#### How rule validation scenarios work
 
 In directory `data` are directories mirroring `group/group/.../rule`
 structure of datastream. In reality, only name of the rule directory needs to be
@@ -233,20 +242,20 @@ correct, group structure is currently not used.
 Scenarios are currently supported only in `bash`. And type of scenario is
 defined by its file name.
 
-#### (something).pass.sh
+##### (something).pass.sh
 
 Success scenario - script is expected to prepare machine in such way that the
 rule is expected to pass.
 
-#### (something).fail.sh
+##### (something).fail.sh
 
 Fail scenario - script is expected to break machine so the rule fails. Test
-Suite than, if initial scan successfully fails, tries to remediate machine and
-expects success.
+Suite than, if initial scan fails as expected, tries to remediate machine and
+expects evaluation to pass.
 
-#### (something).sh
+##### (something).sh
 
-Support files, that are available to the scenarios during their runtime. Can
+Support files, these are available to the scenarios during their runtime. Can
 be used as common libraries.
 
 ### Scenarios format
