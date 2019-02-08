@@ -27,12 +27,15 @@ SSG Test Suite currently does not provide automated provisioning of VMs or conta
 To use Libvirt backend, you need to have:
 
 - These packages installed in your host
+  - `openssh-clients`
   - `libvirt`
   - `libvirt-daemon`
-  - `virt-install`  (recommended, used by `install_vm.py` script)
-  - `virt-viewer`   (optional, to access graphical console of VMs)
-  - `virt-manager`  (optional, to help you manage VMs)
-  - `ansible`       (required if remediating via Ansible)
+  - `python2-libvirt/python3-libvirt`
+  - `virt-install`      (recommended, used by `install_vm.py` script)
+  - `libvirt-client`    (optional, to manage VMs via console)
+  - `virt-manager`      (optional, to manage VMs via GUI)
+  - `virt-viewer`       (optional, to access graphical console of VMs)
+  - `ansible`           (required if remediating via Ansible)
 - A VM that fullfils following requirements:
   - Package `qemu-guest-agent` installed
   - Package `openscap` version 1.2.15 or higher installed
