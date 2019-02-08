@@ -197,6 +197,28 @@ To test Fedora Standard Profile on a Docker container:
 Note that `profile-id` is matched by the suffix, so it works the same as in `oscap` tool
 (you can use `oscap info --profiles` to see available profiles).
 
+#### Unselecting problematic rules
+
+Sometimes you would like to skip a rule in the profile because they are too slow to test,\
+or you know a rule doesn't have a remediation and you get less value by testing it.
+
+For these situations, use `ds_unselect_rules.sh` to unselect these rules in all profiles of the datastream.
+It will copy your `datastream` to `/tmp` and unselect rules listed in `rules_list`
+
+```
+./ds_unselect_rules.sh <datastream> <rules_list>
+```
+Where:
+- `datastream`: is the DataStream to unselect rules from
+- `rules_list`: is a file with list of complete rule IDs, one per line
+
+Example usage:
+```
+./ds_unselect_rules.sh ../build/ssg-fedora-ds.xml unselect_rules_list
+```
+
+*Tip*: file `unselect_rules_list` contains a few typical rules you may want to skip
+
 ### Rule-based testing
 
 In this mode, you specify the `rule` command and you supply part of the rule
