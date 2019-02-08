@@ -258,13 +258,15 @@ expects evaluation to pass.
 Support files, these are available to the scenarios during their runtime. Can
 be used as common libraries.
 
+## How to write new test scenarios
+
 ### Scenarios format
 
 Scenarios are simple bash scripts. The scenarios start with a header which provides metadata.
 The header consists of comments (starting by `#`). Possible values are:
 - `platform` is a comma-separated list of platforms where the test scenario can be run. This is similar to `platform` used in our remediations. Examples of values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`, `multi_platform_all`. If `platform` is not specified in the header, `multi_platform_all` is assumed.
 - `profiles` is a comma-separated list of profiles which are using this scenario.
-- `remediation` is a comma-separated list of allowed remediation types (eg. `bash`, `ansible`, `none`).
+- `remediation` is a string specifying one of the allowed remediation types (eg. `bash`, `ansible`, `none`).
   The `none` value means that the tested rule has no implemented remediation.
 - `templates` has no effect at the moment.
 
@@ -279,29 +281,22 @@ Example of a scenario:
 echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
 ```
 
-After the header arbitrary bash commands follow.
+After the header bash commands to prepare the scenario follow.
+
 ## Example of incorporating new test scenario
 
-Let's show how to add test scenario for
-[Red Hat Bugzilla 1392679](https://bugzilla.redhat.com/show_bug.cgi?id=1392679)
-(already included).
-
-Bugzilla is about `sshd_config` being not altered correctly. Thus:
+Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 
 1. Create appropriate directory within `data/` directory tree (in this case
-  `data/group_services/group_ssh/group_ssh_server/rule_sshd_disable_kerb_auth`
-  further referenced as *DIR*).
-1. put few fail scripts - for example removing the line, commenting it, etc.
+  `data/group_system/group_accounts/group_accounts-restrictions/group_password_expiration/rule_accounts_password_minlen_login_defs` further referenced as *DIR*).
+1. write a few fail scripts - for example removing the line, commenting it, wrong value, etc.
  into *DIR*
-1. put pass script into *DIR*
-1. ????
-1. PROFIT (nothing more to do)
-
-Now, you can perform validation check with command
-
+1. write a pass script into *DIR* - (some rules can have more than one pass scenario)
+1. run `test_suite.py` with command:
 ```
-./test_suite.py rule --libvirt qemu:///system ssg-test-suite-centos --datastream ../build/ssg-centos7-ds.xml --xccdf-id scap_org.open-scap_cref_ssg-rhel7-xccdf-1.2.xml rule_sshd_disable_kerb_auth
+./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora --datastream ../build/ssg-fedora-ds.xml accounts_password_minlen_login_defs
 ```
+Example of test scenarios for this rule can be found at: #3697
 
 ## Analysis of results
 
