@@ -835,7 +835,6 @@ selections:
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
     - package_abrt_removed
-    - package_sendmail_removed
 
     - var_system_crypto_policy=fips
     - configure_crypto_policy
