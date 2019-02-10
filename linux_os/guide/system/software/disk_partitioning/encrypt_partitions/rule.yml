@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8
+prodtype: rhel6,rhel7,rhel8,ol7,ol8
 
 title: 'Encrypt Partitions'
 
@@ -29,7 +29,7 @@ description: |-
     <br /><br />
     Detailed information on encrypting partitions using LUKS or LUKS ciphers can be found on
     the {{{ full_name }}} Documentation web site:<br />
-    {{% if product == "ol7" %}}
+    {{% if product in ["ol7", "ol8"] %}}
         {{{ weblink(link="https://docs.oracle.com/cd/E52668_01/E54670/html/ol7-encrypt-sec.html") }}}.
     {{% else %}}
         {{{ weblink(link="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Encryption.html") }}}.
