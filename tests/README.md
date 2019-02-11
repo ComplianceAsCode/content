@@ -53,13 +53,14 @@ $ ./install_vm.py --domain test-suite-fedora --distro fedora
 By default, the key at `~/.ssh/id_rsa.pub` is used. You can change default key used via `--ssh-pubkey` option.
 
 By default, the VM will be created on the user hypervisor, i.e. `qemu:///session`.
-For TestSuite this should be enough, in case you need the VM to reside under `qemu:///system`, use the install script with `--libvirt qemu:///system`.
+For Test Suite this should be enough, in case you need the VM to reside under `qemu:///system`, use the install script with `--libvirt qemu:///system`.
 
 When installing a RHEL VM, you will still need to subscribe it.
 
 *TIP*: Create a snapshot as soon as your VM is setup. This way, you can manually revert
-in case the test suite breaks something and fails to revert.\
-Do not use snapshot names starting with `ssg_`.
+in case the test suite breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\
+You can create a snapshot using `virsh` or `virt-manager`.
+
 
 ### Container backends
 
@@ -76,7 +77,7 @@ The image needs to fulfil the following requirements:
   - Package `openscap-scanner` version 1.2.15 or higher installed
   - You may want to include other packages, as base images tend to be bare-bone and tests may require more packages to be present.
 
-You can use `test_suite-*` Dockerfiles in the `content/Dockerfiles` directory to build the images.
+You can use `test_suite-*` Dockerfiles in the [`content/Dockerfiles`](../Dockerfiles) directory to build the images.
 We recommend to use RHEL-based containers, as the test suite is optimized for testing the RHEL content.
 
 #### Podman
@@ -142,7 +143,7 @@ Mode of operation, specify one of the following commands;
 Specify backend and image to use:
 - To use VM backend, use the following option on the command line:
   - Libvirt - `--libvirt <hypervisor> <domain>`
-    - `hypervisor`: Typically, you will use the `qemu:///session`, or `qemu:///sysstem`.
+    - `hypervisor`: Typically, you will use the `qemu:///session`, or `qemu:///system`.
        It depends on where your VM resides.
     - `domain`: `libvirt` domain, which is basically name of the virtual machine.
 - To use container backends, use the following options on the command line:
@@ -173,7 +174,7 @@ StrictHostKeyChecking no
 UserKnownHostsFile /dev/null
 ```
 
-All logs of TestSuite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
+All logs of Test Suite are stored in `logs` directory. The specific diretory is shown at the beginning of each test run.
 
 ### Profile-based testing
 
@@ -294,13 +295,15 @@ be used as common libraries.
 
 ### Scenarios format
 
-Scenarios are simple bash scripts. The scenarios start with a header which provides metadata.
+Scenarios are simple bash scripts. A scenario starts with a header which provides metadata.
 The header consists of comments (starting by `#`). Possible values are:
 - `platform` is a comma-separated list of platforms where the test scenario can be run. This is similar to `platform` used in our remediations. Examples of values: `multi_platform_rhel`, `Red Hat Enterprise Linux 7`, `multi_platform_all`. If `platform` is not specified in the header, `multi_platform_all` is assumed.
-- `profiles` is a comma-separated list of profiles which are using this scenario.
+- `profiles` is a comma-separated list of profiles to which this scenario applies to.
 - `remediation` is a string specifying one of the allowed remediation types (eg. `bash`, `ansible`, `none`).
   The `none` value means that the tested rule has no implemented remediation.
 - `templates` has no effect at the moment.
+
+After the header, bash commands that prepare the scenario follow.
 
 Example of a scenario:
 
@@ -312,8 +315,6 @@ Example of a scenario:
 
 echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
 ```
-
-After the header bash commands to prepare the scenario follow.
 
 ## Example of incorporating new test scenario
 
@@ -328,7 +329,7 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 ```
 ./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora --datastream ../build/ssg-fedora-ds.xml accounts_password_minlen_login_defs
 ```
-Example of test scenarios for this rule can be found at: #3697
+Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
 
 ## Analysis of results
 
