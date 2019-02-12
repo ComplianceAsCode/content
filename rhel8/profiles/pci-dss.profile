@@ -113,6 +113,7 @@ selections:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
+    - security_patches_up_to_date
     - package_opensc_installed
     - var_smartcard_drivers=cac
     - configure_opensc_nss_db

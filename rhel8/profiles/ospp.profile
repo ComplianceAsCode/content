@@ -512,6 +512,7 @@ selections:
     ### FPT_TUD_EXT.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FPT_TUD_EXT.1.1
     ### The OS shall provide the ability to check for updates
     ### to the OS software itself.
+    - security_patches_up_to_date
 
     ### FPT_TUD_EXT.1.2: https://www.niap-ccevs.org/MMO/PP/-424-/#FPT_TUD_EXT.1.2
     ### The OS shall cryptographically verify updates to itself using
