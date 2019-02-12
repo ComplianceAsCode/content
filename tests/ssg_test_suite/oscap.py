@@ -435,17 +435,7 @@ class RuleRunner(GenericRunner):
         returncode, self._oscap_output = self.environment.scan(
             self.command_options + self.command_operands, self.verbose_path)
 
-        expected_return_code = _CONTEXT_RETURN_CODES[self.context]
-
-        if returncode != expected_return_code:
-            msg = (
-                'Scan has exited with return code {0}, '
-                'instead of expected {1} during stage {2}'
-                .format(returncode, expected_return_code, self.stage)
-            )
-            LogHelper.preload_log(logging.ERROR, msg, 'fail')
-            return False
-        return True
+        return self._analyze_output_of_oscap_call()
 
     def final(self):
         success = super(RuleRunner, self).final()
@@ -453,27 +443,44 @@ class RuleRunner(GenericRunner):
 
         return success
 
+    def _find_rule_result_in_output(self):
+        # oscap --progress options outputs rule results to stdout in
+        # following format:
+        # xccdf_org....rule_accounts_password_minlen_login_defs:pass
+        match = re.findall('{0}:(.*)$'.format(self.rule_id),
+                           self._oscap_output,
+                           re.MULTILINE)
+
+        if not match:
+            # When the rule is not selected, it won't match in output
+            return "notselected"
+
+        # When --remediation is executed, there will be two entries in
+        # progress output, one for fail, and one for fixed, e.g.
+        # xccdf_org....rule_accounts_password_minlen_login_defs:fail
+        # xccdf_org....rule_accounts_password_minlen_login_defs:fixed
+        # We are interested in the last one
+        return match[-1]
+
     def _analyze_output_of_oscap_call(self):
         local_success = True
         # check expected result
-        actual_results = re.findall('{0}:(.*)$'.format(self.rule_id),
-                                    self._oscap_output,
-                                    re.MULTILINE)
-        if actual_results:
-            if self.context not in actual_results:
-                LogHelper.preload_log(logging.ERROR,
-                                      ('Rule result should have been '
-                                       '"{0}", but is "{1}"!'
-                                       ).format(self.context,
-                                                ', '.join(actual_results)),
-                                      'fail')
-                local_success = False
-        else:
-            msg = (
-                'Rule {0} has not been evaluated! Wrong profile selected?'
-                .format(self.rule_id))
-            LogHelper.preload_log(logging.ERROR, msg, 'fail')
+        rule_result = self._find_rule_result_in_output()
+
+        if rule_result != self.context:
             local_success = False
+            if rule_result is 'notselected':
+                msg = (
+                    'Rule {0} has not been evaluated! '
+                    'Wrong profile selected in test scenario?'
+                    .format(self.rule_id))
+            else:
+                msg = (
+                    'Rule evaluation resulted in {0}, '
+                    'instead of expected {1} during {2} stage '
+                    .format(rule_result, self.context, self.stage)
+                )
+            LogHelper.preload_log(logging.ERROR, msg, 'fail')
         return local_success
 
     def _get_formatting_dict_for_remediation(self):
@@ -504,7 +511,9 @@ class AnsibleProfileRunner(ProfileRunner):
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
                                               formatting['output_file'])
 
-        return run_stage_remediation_ansible('profile', formatting, self.verbose_path)
+        return run_stage_remediation_ansible('profile',
+                                             formatting,
+                                             self.verbose_path)
 
 
 class BashProfileRunner(ProfileRunner):
