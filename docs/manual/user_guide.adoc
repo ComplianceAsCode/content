@@ -66,15 +66,44 @@ https://nvd.nist.gov/ncp/checklist/811[Red Hat Enterprise Linux related checklis
 
 == Installing
 
-* Red Hat Enterprise Linux 6+
+By installing distribution packages, you will get the built content.
+For example, on Red Hat-based distributions, those will be files under the `/usr/share/xml/scap/ssg/content/` directory.
+What files will that be depends on the distribution, but for example on Fedora, you will get the Fedora datastream at `/usr/share/xml/scap/ssg/content/ssg-fedora-ds.xml`.
 
+
+=== Installing from distribution packages
+
+* Red Hat Enterprise Linux 6+
++
 ------------
 $ sudo yum -y install scap-security-guide
 ------------
 
 * Fedora
++
 ------------
 $ sudo dnf -y install scap-security-guide
+------------
+
+
+=== Building
+
+If you need to build the upstream content rather than getting it from the distribution, you can build it yourself.
+Either of the steps below will conclude with datastreams and other content built in the `build` directory.
+
+* Use the `build_product` script to build a single product of your choice:
++
+------------
+$ ./build_product fedora
+$ cd build
+------------
+
+* Manual build process:
++
+------------
+$ cd build
+$ cmake ..
+$ make fedora
 ------------
 
 == Running a Scan

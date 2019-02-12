@@ -1,0 +1,76 @@
+#!/bin/bash
+
+to_uppercase() {
+	printf '%s' "$1" | tr 'a-z' 'A-Z'
+}
+
+to_lowercase() {
+	printf '%s' "$1" | tr 'A-Z' 'a-z'
+}
+
+opt_product_in() {
+	switch="-DSSG_PRODUCT_$(to_uppercase "$1")=ON"
+	printf "%s" "$switch"
+}
+
+handle_wrong_argument() {
+	all_cmake_lowercase=()
+	for p in "${all_cmake_products[@]}"; do
+		all_cmake_lowercase+=("$(to_lowercase "$p")")
+	done
+	possible_products=$'\n'"$(printf ' * %s\n' "${all_cmake_lowercase[@]}")"
+	printf "Wipes out contents of the 'build' directory and builds only and only the given product."
+	echo
+	echo
+	printf 'Usage:\n'
+	printf '\tbuild-product <product name>\n'
+	echo
+	if test -n "$1"; then
+		printf "The argument '%s' is not supported.\\n" "$1"
+	else
+		printf 'Supply product name as first argument to the script.\n'
+	fi
+	printf 'Choose one of product names from the list: %s' "$possible_products"
+	echo
+	exit 1
+}
+
+all_cmake_products=(
+	CHROMIUM
+	DEBIAN8
+	EXAMPLE
+	FEDORA
+	FIREFOX
+	JBOSS_EAP6
+	JBOSS_FUSE6
+	JRE
+	OCP3
+	OL7
+	OL8
+	OPENSUSE
+	OSP13
+	RHEL6
+	RHEL7
+	RHEL8
+	RHV4
+	SUSE11
+	SUSE12
+	UBUNTU14
+	UBUNTU16
+	UBUNTU18
+	WRLINUX
+)
+
+chosen_product=$1
+
+chosen_product_encountered_among_cmake=off
+cmake_disable_all_args=()
+for p in "${all_cmake_products[@]}"; do
+	cmake_disable_all_args+=(-DSSG_PRODUCT_$p=OFF)
+	if test "$(to_uppercase "$chosen_product")" = "$p"; then
+		chosen_product_encountered_among_cmake=on
+	fi
+done
+test "$chosen_product_encountered_among_cmake" = on || handle_wrong_argument "$chosen_product"
+
+cd build && rm -rf * && cmake .. "${cmake_disable_all_args[@]}" "$(opt_product_in $chosen_product)" && make "$chosen_product"
