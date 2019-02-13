@@ -64,7 +64,7 @@ The following people have contributed to the SCAP Security Guide project
 * Ian Lee <lee1001@llnl.gov>
 * Jarrett Lee <jarrettl@umd.edu>
 * Jan Lieskovsky <jlieskov@redhat.com>
-* lkinser <lee.kinser@gmail.com>
+* Lee Kinser <lee.kinser@gmail.com>
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
