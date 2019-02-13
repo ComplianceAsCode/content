@@ -24,7 +24,6 @@ except AttributeError:
 SSH_ADDITIONAL_OPTS = (
     "-o", "StrictHostKeyChecking=no",
     "-o", "UserKnownHostsFile=/dev/null",
-    "-o", "GSSAPIAuthentication=no",
 ) + SSH_ADDITIONAL_OPTS
 
 
