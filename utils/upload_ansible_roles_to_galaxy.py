@@ -291,7 +291,7 @@ class Role(object):
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
 
-    def update_repository(self):
+    def update_repository(self, repo_status):
         print("Processing %s..." % self.remote_repo.name)
 
         self.gather_data()
@@ -308,8 +308,9 @@ class Role(object):
 
         self._update_tasks_content_if_needed()
         self._update_vars_content_if_needed()
-        self._update_readme_content_if_needed()
-        self._update_meta_content_if_needed()
+        if repo_status == "new":
+            self._update_readme_content_if_needed()
+            self._update_meta_content_if_needed()
         self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
@@ -318,7 +319,7 @@ class Role(object):
         self.remote_repo.edit(
             self.remote_repo.name,
             description=repo_description,
-            homepage="https://www.open-scap.org/",
+            homepage="https://github.com/complianceascode/content",
         )
 
 
@@ -354,6 +355,7 @@ def locally_clone_and_init_repositories(organization, repo_list):
 
 def main():
     args = parse_args()
+    repo_status = "update"
 
     all_role_whitelist = {"rhel7-role-%s" % p for p in PROFILE_WHITELIST}
     role_whitelist = set(all_role_whitelist)
@@ -381,6 +383,7 @@ def main():
     # Create empty repositories
     github_new_repos = sorted(list(set(selected_roles) - set(github_repositories)))
     if github_new_repos:
+        repo_status = "new"
         create_empty_repositories(github_new_repos, github_org)
 
         locally_clone_and_init_repositories(args.organization, github_repositories)
@@ -390,7 +393,7 @@ def main():
         if repo.name in selected_roles:
             corresponding_filename = os.path.join(
                 args.build_roles_dir, "ssg-" + repo.name + ".yml")
-            Role(repo, corresponding_filename).update_repository()
+            Role(repo, corresponding_filename).update_repository(repo_status)
         elif repo.name not in potential_roles:
             print("Repo %s should be deleted, please verify and do that "
                   "manually!" % repo.name)
