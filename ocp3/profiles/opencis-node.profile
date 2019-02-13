@@ -30,7 +30,6 @@ selections:
     - kubelet_disable_cadvisor_port
     - kubelet_disable_hostname_override
     - kubelet_disable_readonly_port
-    - kubelet_enable_authorization
     - kubelet_enable_client_cert_rotation
     - kubelet_enable_server_cert_rotation
     - kubelet_enable_iptables_util_chains
