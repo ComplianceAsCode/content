@@ -34,6 +34,5 @@ selections:
     - kubelet_enable_client_cert_rotation
     - kubelet_enable_server_cert_rotation
     - kubelet_enable_iptables_util_chains
-    - kubelet_enable_kernel_defaults
     - kubelet_enable_streaming_connections
     - kubelet_privileged_containers
