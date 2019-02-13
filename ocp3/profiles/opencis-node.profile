@@ -26,7 +26,6 @@ selections:
     - kubelet_configure_event_creation
     - kubelet_configure_tls_cert
     - kubelet_configure_tls_key
-    - kubelet_disable_anon_access
     - kubelet_disable_cadvisor_port
     - kubelet_disable_hostname_override
     - kubelet_disable_readonly_port
