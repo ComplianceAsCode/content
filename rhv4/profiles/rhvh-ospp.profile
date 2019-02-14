@@ -31,6 +31,40 @@ description: |-
     consensus and release processes.
 
 selections:
+    # AC-2
+    - service_auditd_enabled
+
+    # AC-3
+    - selinux_state
+    - grub2_enable_selinux
+    - selinux_policytype
+    - grub2_password
+    - grub2_uefi_password
+    - grub2_disable_interactive_boot
+    - disable_host_auth
+
+    # AC-7(a)
+    - accounts_passwords_pam_faillock_deny
+    ######### NEED VARIABLE var_accounts_passwords_pam_faillock_deny
+    - accounts_passwords_pam_faillock_interval
+    ### NEED var_accounts_passwords_pam_faillock_fail_interval
+    - accounts_passwords_pam_faillock_deny_root
+
+    # AC-7(b)
+    - accounts_passwords_pam_faillock_unlock_time
+    ##### NEED var_accounts_passwords_pam_faillock_unlock_time
+
+    # AC-8
+    - banner_etc_issue+
+
+
+
+
+
+
+
+
+
     # SI-2, RA-1
     - security_patches_up_to_date
     - clean_components_post_updating
@@ -176,7 +210,6 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_gshadow
     - grub2_audit_argument
-    - service_auditd_enabled
     - auditd_data_retention_max_log_file
     - auditd_audispd_syslog_plugin_activated
     - auditd_data_retention_max_log_file_action
@@ -611,161 +644,39 @@ selections:
     - kernel_module_bluetooth_disabled
     - service_bluetooth_disabled
 
-    # AC-17
-    - gnome package_gdm_removed
+    # AC-17(a)
+    - file_permissions_sshd_private_key
+    - file_permissions_sshd_pub_key
+    - disable_host_auth
+    - sshd_allow_only_protocol2
+    - sshd_disable_compression
+    - sshd_disable_gssapi_auth
+    - sshd_disable_kerb_auth
+    - sshd_disable_rhosts
+    - sshd_disable_rhosts_rsa
+    - sshd_disable_root_login
+    - sshd_disable_user_known_hosts
+    - sshd_do_not_permit_user_env
+    - sshd_enable_strictmodes
+    - sshd_enable_warning_banner
+    - sshd_print_last_log
+    - sshd_set_idle_timeout
+    - sshd_set_keepalive
+    - sshd_set_loglevel_info
+    - sshd_use_approved_ciphers
+    - sshd_use_approved_macs
+    - sshd_use_priv_separation
+
+
     - grub2_enable_fips_mode
     - package_dracut-fips_installed
     - sysctl_net_ipv4_conf_default_log_martians
     - sysctl_net_ipv4_conf_all_log_martians
     - package_libreswan_installed
     - configure_firewalld_ports
-    - wireless_disable_interfaces
-    - wireless_disable_in_bios
     - kernel_module_bluetooth_disabled
     - service_bluetooth_disabled
-    - audit_rules_unsuccessful_file_modification_rename
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at_rule_order
-    - audit_rules_unsuccessful_file_modification_ftruncate
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
-    - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
-    - audit_rules_unsuccessful_file_modification_open_o_trunc_write
-    - audit_rules_unsuccessful_file_modification
-    - audit_rules_unsuccessful_file_modification_unlinkat
-    - audit_rules_unsuccessful_file_modification_openat_o_creat
-    - audit_rules_unsuccessful_file_modification_openat_rule_order
-    - audit_rules_unsuccessful_file_modification_openat
-    - audit_rules_unsuccessful_file_modification_open_rule_order
-    - audit_rules_unsuccessful_file_modification_open
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
-    - audit_rules_unsuccessful_file_modification_truncate
-    - audit_rules_unsuccessful_file_modification_renameat
-    - audit_rules_unsuccessful_file_modification_creat
-    - audit_rules_unsuccessful_file_modification_open_o_creat
-    - audit_rules_unsuccessful_file_modification_unlink
-    - audit_rules_mac_modification
-    - audit_rules_usergroup_modification
-    - audit_rules_usergroup_modification_passwd
-    - audit_rules_networkconfig_modification
-    - audit_rules_file_deletion_events_rmdir
-    - audit_rules_file_deletion_events
-    - audit_rules_file_deletion_events_renameat
-    - audit_rules_file_deletion_events_unlinkat
-    - audit_rules_file_deletion_events_rename
-    - audit_rules_file_deletion_events_unlink
-    - audit_rules_time_adjtimex
-    - audit_rules_time_settimeofday
-    - audit_rules_time_watch_localtime
-    - audit_rules_time_clock_settime
-    - audit_rules_time_stime
-    - audit_rules_sysadmin_actions
-    - audit_rules_media_export
-    - audit_rules_privileged_commands
-    - audit_rules_session_events
-    - audit_rules_login_events_faillock
-    - audit_rules_login_events
-    - audit_rules_login_events_tallylog
-    - audit_rules_login_events_lastlog
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_finit
-    - audit_rules_kernel_module_loading_modprobe
-    - audit_rules_kernel_module_loading_init
-    - audit_rules_kernel_module_loading_rmmod
-    - audit_rules_kernel_module_loading_insmod
-    - audit_rules_kernel_module_loading
-    - audit_rules_usergroup_modification_shadow
-    - audit_rules_usergroup_modification_group
-    - audit_rules_dac_modification_lchown
-    - audit_rules_dac_modification_fchownat
-    - audit_rules_dac_modification_setxattr
-    - audit_rules_dac_modification_chmod
-    - audit_rules_dac_modification_removexattr
-    - audit_rules_dac_modification_lsetxattr
-    - audit_rules_dac_modification_chown
-    - audit_rules_dac_modification_fremovexattr
-    - audit_rules_dac_modification_lremovexattr
-    - audit_rules_dac_modification_fchmod
-    - audit_rules_dac_modification_fchmodat
-    - audit_rules_dac_modification_fsetxattr
-    - audit_rules_dac_modification_fchown
-    - audit_rules_usergroup_modification_opasswd
-    - audit_rules_usergroup_modification_gshadow
-    - grub2_audit_argument
-    - service_auditd_enabled
-    - sshd_allow_only_protocol2
-    - sshd_use_approved_macs
-    - sshd_use_approved_ciphers
-    - service_abrtd_disabled
-    - service_rdisc_disabled
-    - service_netconsole_disabled
-    - service_qpidd_disabled
-    - service_rhnsd_disabled
-    - service_portreserve_disabled
-    - service_saslauthd_disabled
-    - service_kdump_disabled
-    - service_ntpdate_disabled
-    - package_xorg-x11-server-common_removed
-    - xwindows_runlevel_target
-    - package_ypserv_removed
-    - service_ypbind_disabled
-    - service_tftp_disabled
-    - package_tftp-server_removed
-    - tftpd_uses_secure_mode
-    - service_xinetd_disabled
-    - package_xinetd_removed
-    - package_telnet-server_removed
-    - service_telnet_disabled
-    - service_rexec_disabled
-    - service_rlogin_disabled
-    - no_rsh_trust_files
-    - package_rsh-server_removed
-    - service_rsh_disabled
-    - sssd_ldap_start_tls
 
-    # AC-14
-    - use_kerberos_security_all_exports
-    - mount_option_krb_sec_remote_filesystems
 
-    # AC-8
-    - banner_etc_issue
-    - sshd_enable_warning_banner
 
-    # AC-7
-    - accounts_passwords_pam_faillock_deny_root
-    - accounts_passwords_pam_faillock_unlock_time
-    - accounts_passwords_pam_faillock_interval
-    - accounts_passwords_pam_faillock_deny
 
-    # AC-3
-    - file_permissions_ungroupowned
-    - no_files_unowned_by_user
-    - selinux_state
-    - grub2_enable_selinux
-    - selinux_policytype
-    - grub2_password
-    - grub2_uefi_password
-    - grub2_disable_interactive_boot
-    - no_netrc_files
-    - restrict_nfs_clients_to_privileged_ports
-    - service_nfs_disabled
-    - disable_host_auth
-    - sshd_disable_rhosts
-    - sshd_disable_root_login
-    - sshd_disable_empty_passwords
-    - sshd_limit_user_access
-    - sshd_use_approved_ciphers
-    - xwindows_runlevel_setting
-
-    # AC-2
-    - audit_rules_usergroup_modification_passwd
-    - audit_rules_sysadmin_actions
-    - audit_rules_usergroup_modification_shadow
-    - audit_rules_usergroup_modification_group
-    - audit_rules_usergroup_modification_opasswd
-    - audit_rules_usergroup_modification_gshadow
-    - account_temp_expire_date
-    - account_disable_post_pw_expiration
-    - accounts_password_warn_age_login_defs
-    - no_shelllogin_for_systemaccounts
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
