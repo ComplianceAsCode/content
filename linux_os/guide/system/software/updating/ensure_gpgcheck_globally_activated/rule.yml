@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,sle12
 
 title: 'Ensure gpgcheck Enabled In Main {{{ pkg_manager }}} Configuration'
 
@@ -10,7 +10,13 @@ description: |-
     To configure {{{ pkg_manager }}} to check package signatures before installing
     them, ensure the following line appears in <tt>{{{ pkg_manager_config_file }}}</tt> in
     the <tt>[main]</tt> section:
+    {{% if product in ["sle11", "sle12"] %}}
+    <pre>gpgcheck = on
+    repo_gpgcheck = on
+    pkg_gpgcheck = on</pre>
+    {{% else %}}
     <pre>gpgcheck=1</pre>
+    {{% endif %}}
 
 rationale: |-
     Changes to any software components can have significant effects on the
@@ -38,6 +44,7 @@ references:
     stigid@rhel6: RHEL-06-000013
     srg@rhel6: SRG-OS-000103
     disa@rhel6: 352,663
+    stigid@sle12: SLES-12-010550
     cis: 1.2.2
     cjis: 5.10.4.1
     cui: 3.4.8
