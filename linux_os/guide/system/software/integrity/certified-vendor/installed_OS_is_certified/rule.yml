@@ -10,12 +10,15 @@ description: |-
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for providing security patches as well
     as meeting and maintaining goverment certifications and standards.
-{{% elif product == "sle12" %}}
+{{% elif product in ["sle11", "sle12"] %}}
 description: |-
     The installed operating system must be maintained and certified by a vendor.
     SUSE Linux Enterprise is supported and maintained by SUSE. SUSE is responsible for
     providing security patches as well as meeting and maintaining goverment
     certifications and standards.
+{{% else %}}
+description: |-
+    Unknown OS.
 {{% endif %}}
 
 rationale: |-
