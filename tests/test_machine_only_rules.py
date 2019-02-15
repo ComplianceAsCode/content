@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 import sys
 import ssg.constants
 import ssg.yaml
+import io
 
 machine_cpe = "cpe:/a:machine"
 
@@ -80,7 +81,7 @@ def check_if_machine_only(dirpath, name, is_machine_only_group):
         if is_machine_only_group:
             return True
         yml_path = os.path.join(dirpath, name)
-        with open(yml_path, "r") as yml_file:
+        with io.open(yml_path, "r", encoding="utf-8") as yml_file:
             yml_file_contents = yml_file.read()
             if "platform: machine" in yml_file_contents:
                 return True
