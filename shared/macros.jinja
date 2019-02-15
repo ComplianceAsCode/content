@@ -546,3 +546,13 @@ ocil_clause: "the correct value is not returned"
         <a xmlns='http://www.w3.org/1999/xhtml' href='{{{ link }}}'>{{{ link }}}</a>
     {{%- endif %}}
 {{%- endmacro %}}
+
+
+{{% macro body_of_warning_about_dependent_rule(rule_id, why) -%}}
+        When selecting this rule in a profile, 
+        {{%- if why %}}
+            make sure that rule with ID <code>{{{ rule_id }}}</code> is selected as well: {{{ why }}}
+        {{%- else %}}
+            rule <code>{{{ rule_id }}}</code> has to be selected as well.
+        {{%- endif %}}
+{{% endmacro %}}
