@@ -1,4 +1,4 @@
-# Function to install packages on RHEL, Fedora, Debian, and possibly other systems.
+# Function to install packages on RHEL, Fedora, Debian, SLE, OpenSUSE, and possibly other systems.
 #
 # Example Call(s):
 #
@@ -27,8 +27,10 @@ elif which yum ; then
   fi
 elif which apt-get ; then
   apt-get install -y "$package"
+elif which zypper ; then
+  zypper install -y "$package"
 else
-  echo "Failed to detect available packaging system, tried dnf, yum and apt-get!"
+  echo "Failed to detect available packaging system, tried dnf, yum, apt-get and zypper!"
   echo "Aborting."
   exit 1
 fi
