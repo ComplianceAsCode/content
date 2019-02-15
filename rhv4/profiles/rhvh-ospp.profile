@@ -57,9 +57,41 @@ selections:
     # AC-8
     - banner_etc_issue+
 
+    # AC-17(a)
+    - file_permissions_sshd_private_key
+    - file_permissions_sshd_pub_key
+    - disable_host_auth
+    - sshd_allow_only_protocol2
+    - sshd_disable_compression
+    - sshd_disable_gssapi_auth
+    - sshd_disable_kerb_auth
+    - sshd_disable_rhosts
+    - sshd_disable_rhosts_rsa
+    - sshd_disable_root_login
+    - sshd_disable_user_known_hosts
+    - sshd_do_not_permit_user_env
+    - sshd_enable_strictmodes
+    - sshd_enable_warning_banner
+    - sshd_print_last_log
+    - sshd_set_idle_timeout
+    - sshd_set_keepalive
+    - sshd_set_loglevel_info
+    - sshd_use_approved_ciphers
+    - sshd_use_approved_macs
+    - sshd_use_priv_separation
 
+    # AU -5(b)
+    - audit_rules_system_shutdown
 
+    # AU-9
+    - file_permissions_var_log_audit
+    - file_ownership_var_log_audit
+    - rpm_verify_permissions
+    - rpm_verify_ownership
+    - rpm_verify_hashes
 
+    # AU-12
+    - grub2_audit_argument
 
 
 
@@ -402,7 +434,7 @@ selections:
     - audit_dac_actions audit_rules_dac_modification_fchown
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_gshadow
-    - service_auditd_enabled
+
     - auditd_data_retention_flush
 
     # AU-11
@@ -419,30 +451,30 @@ selections:
     - selinux_confinement_of_daemons
     - partition_for_var_log_audit
     - partition_for_var_log
-    - rpm_verify_permissions
-    - rpm_verify_ownership
+
     - ensure_logrotate_activated
     - package_rsyslog_installed
     - rsyslog_accept_remote_messages_tcp
     - rsyslog_nolisten
     - rsyslog_remote_loghost
-    - file_permissions_var_log_audit
+
+
+
     - directory_permissions_var_log_audit
-    - file_ownership_var_log_audit
     - auditd_data_retention_flush
 
     # AU-8
     - service_chronyd_or_ntpd_enabled
     - chronyd_or_ntpd_specify_multiple_servers
-    - service_chronyd_or_ntpd_enabled
     - chronyd_or_ntpd_set_maxpoll
     - chronyd_or_ntpd_specify_remote_server
 
     # AU-6
     - audit_rules_privileged_commands
 
-    # AU -5
-    - audit_rules_system_shutdown
+
+
+
     - auditd_data_retention_space_left_action
     - auditd_data_retention_admin_space_left_action
     - auditd_data_disk_error_action
@@ -644,28 +676,7 @@ selections:
     - kernel_module_bluetooth_disabled
     - service_bluetooth_disabled
 
-    # AC-17(a)
-    - file_permissions_sshd_private_key
-    - file_permissions_sshd_pub_key
-    - disable_host_auth
-    - sshd_allow_only_protocol2
-    - sshd_disable_compression
-    - sshd_disable_gssapi_auth
-    - sshd_disable_kerb_auth
-    - sshd_disable_rhosts
-    - sshd_disable_rhosts_rsa
-    - sshd_disable_root_login
-    - sshd_disable_user_known_hosts
-    - sshd_do_not_permit_user_env
-    - sshd_enable_strictmodes
-    - sshd_enable_warning_banner
-    - sshd_print_last_log
-    - sshd_set_idle_timeout
-    - sshd_set_keepalive
-    - sshd_set_loglevel_info
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
-    - sshd_use_priv_separation
+
 
 
     - grub2_enable_fips_mode
