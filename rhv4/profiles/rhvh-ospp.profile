@@ -93,6 +93,57 @@ selections:
     # AU-12
     - grub2_audit_argument
 
+    # CM-11
+    - ensure_gpgcheck_never_disabled
+    - ensure_redhat_gpgkey_installed
+    - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_local_packages
+
+    # IA-2
+    - grub2_password
+    - grub2_uefi_password
+    - require_singleuser_auth
+    - accounts_no_uid_except_zero
+    - no_direct_root_logins
+    - no_password_auth_for_systemaccounts
+    - restrict_serial_port_logins
+    - securetty_root_login_console_only
+    - sshd_disable_root_login
+
+    # IA-2 (1)
+    - smartcard_auth
+
+    # IA-4
+    - account_disable_post_pw_expiration
+
+    # IA-5 (1)
+    - accounts_password_pam_dcredit
+    - accounts_password_pam_difok
+    - accounts_password_pam_maxclassrepeat
+    - accounts_password_pam_maxrepeat
+    - accounts_password_pam_minlen
+    - accounts_password_pam_ocredit
+    - accounts_password_pam_ucredit
+    - accounts_password_pam_lcredit
+    - accounts_maximum_age_login_defs
+    - accounts_minimum_age_login_defs
+    - accounts_password_pam_unix_remember
+    - set_password_hashing_algorithm_logindefs
+    - set_password_hashing_algorithm_systemauth
+    - set_password_hashing_algorithm_libuserconf
+    - no_empty_passwords
+
+    # IA-7
+    - installed_OS_is_FIPS_certified
+    - grub2_enable_fips_mode
+    - sysctl_crypto_fips_enabled
+
+    # MP-7
+   - kernel_module_usb-storage_disabled
+
+
+
+###################
 
 
 
@@ -165,10 +216,7 @@ selections:
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_unlink
 
-    # MA-1
-    - ensure_gpgcheck_never_disabled
-    - ensure_redhat_gpgkey_installed
-    - ensure_gpgcheck_globally_activated
+
     - security_patches_up_to_date
     - network_sniffer_disabled
 
@@ -253,44 +301,9 @@ selections:
     - auditd_data_retention_action_mail_acct
     - auditd_data_retention_num_logs
 
-    # IA-7
-    - set_password_hashing_algorithm_logindefs
-    - set_password_hashing_algorithm_systemauth
-    - set_password_hashing_algorithm_libuserconf
-    - sshd_use_approved_macs
-    - sshd_use_approved_ciphers
 
-    # IA-5(1)
-    - accounts_password_pam_unix_remember
-    - set_password_hashing_algorithm_logindefs
-    - set_password_hashing_algorithm_systemauth
-    - set_password_hashing_algorithm_libuserconf
-    - accounts_password_pam_ocredit
-    - accounts_password_pam_lcredit
-    - accounts_password_pam_difok
-    - accounts_password_pam_dcredit
-    - accounts_password_pam_minlen
-    - accounts_password_pam_ucredit
-    - accounts_password_minlen_login_defs
-    - accounts_maximum_age_login_defs
-    - accounts_minimum_age_login_defs
-    - no_empty_passwords
-    - sshd_allow_only_protocol2
-    - sshd_use_approved_ciphers
-    - service_telnet_disabled
-    - service_rlogin_disabled
-    - service_rsh_disabled
 
-    # IA-4
-    - account_disable_post_pw_expiration
-    - accounts_no_uid_except_zero
 
-    # IA-2(1)
-    - grub2_password
-    - require_singleuser_auth
-    - accounts_no_uid_except_zero
-    - sshd_disable_root_login
-    - no_direct_root_logins
 
     # CM-7
     - package_httpd_removed
@@ -665,7 +678,7 @@ selections:
     - mount_option_nosuid_removable_partitions
     - mount_option_noexec_removable_partitions
     - mount_option_nodev_removable_partitions
-    - kernel_module_usb-storage_disabled
+ 
     - bios_disable_usb_boot
     - grub2_nousb_argument
     - service_autofs_disabled
