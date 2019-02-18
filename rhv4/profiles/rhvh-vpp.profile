@@ -201,9 +201,9 @@ selections:
     - sysctl_crypto_fips_enabled
 
     # MP-7
-   - kernel_module_usb-storage_disabled
-   - kernel_module_bluetooth_disabled
-   - service_bluetooth_disabled
+    - kernel_module_usb-storage_disabled
+    - kernel_module_bluetooth_disabled
+    - service_bluetooth_disabled
 
     # SC-39
     - sysctl_kernel_exec_shield
