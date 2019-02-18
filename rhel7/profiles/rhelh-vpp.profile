@@ -173,7 +173,13 @@ selections:
     - securetty_root_login_console_only
 
     # IA-2 (1)
-    - smartcard_auth
+    - package_opensc_installed
+    - var_smartcard_drivers=cac
+    - configure_opensc_nss_db
+    - configure_opensc_card_drivers
+    - force_opensc_card_drivers
+    - service_pcscd_enabled
+    - sssd_enable_smartcards
 
     # IA-4
     - account_disable_post_pw_expiration
