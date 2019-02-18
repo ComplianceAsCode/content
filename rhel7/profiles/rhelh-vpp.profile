@@ -43,7 +43,6 @@ selections:
     - grub2_password
     - grub2_uefi_password
     - grub2_disable_interactive_boot
-    - disable_host_auth
 
     # AC-7(a)
     - var_accounts_passwords_pam_faillock_deny=3
@@ -157,7 +156,6 @@ selections:
     - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
-    - audit_rules_system_shutdown
 
     # CM-11
     - ensure_gpgcheck_never_disabled
@@ -167,15 +165,12 @@ selections:
     - clean_components_post_updating
 
     # IA-2
-    - grub2_password
-    - grub2_uefi_password
     - require_singleuser_auth
     - accounts_no_uid_except_zero
     - no_direct_root_logins
     - no_password_auth_for_systemaccounts
     - restrict_serial_port_logins
     - securetty_root_login_console_only
-    - sshd_disable_root_login
 
     # IA-2 (1)
     - smartcard_auth
