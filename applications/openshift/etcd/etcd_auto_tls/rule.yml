@@ -31,4 +31,4 @@ ocil_clause: 'the etcd is using self-signed certificates'
 ocil: |-
     Run the following command on the master node(s):
     <pre>$ grep ETCD_AUTO_TLS /etc/etcd/etcd.conf</pre>
-    The output should return <tt>false</tt>.
+    The output should not return <tt>true</tt>.
