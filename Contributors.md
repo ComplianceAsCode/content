@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2018-12-11 13:37
+Last Modified: 2019-02-18 16:33
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -10,10 +10,12 @@ The following people have contributed to the SCAP Security Guide project
 * Gabe Alford <redhatrises@gmail.com>
 * Firas AlShafei <firas.alshafei@us.abb.com>
 * Christopher Anderson <cba@fedoraproject.org>
+* angystardust <angystardust@users.noreply.github.com>
 * Chuck Atkins <chuck.atkins@kitware.com>
 * Ryan Ballanger <root@rballang-admin-2.fastenal.com>
 * Alex Baranowski <alex@euro-linux.com>
 * Molly Jo Bault <Molly.Jo.Bault@ballardtech.com>
+* Gabriel Becker <ggasparb@redhat.com>
 * Alexander Bergmann <abergmann@suse.com>
 * Jose Luis BG <bgjoseluis@gmail.com>
 * Joseph Bisch <joseph.bisch@gmail.com>
@@ -40,6 +42,7 @@ The following people have contributed to the SCAP Security Guide project
 * Andrew Gilmore <agilmore2@gmail.com>
 * Joshua Glemza <jglemza@nasa.gov>
 * Loren Gordon <lorengordon@users.noreply.github.com>
+* Patrik Greco <sikevux@sikevux.se>
 * Steve Grubb <sgrubb@redhat.com>
 * Marek Haicman <mhaicman@redhat.com>
 * Rebekah Hayes <rhayes@corp.rivierautilities.com>
@@ -59,7 +62,9 @@ The following people have contributed to the SCAP Security Guide project
 * Amit Kumar <amitkuma@redhat.com>
 * Fen Labalme <fen@civicactions.com>
 * Ian Lee <lee1001@llnl.gov>
+* Jarrett Lee <jarrettl@umd.edu>
 * Jan Lieskovsky <jlieskov@redhat.com>
+* lkinser <lee.kinser@gmail.com>
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
