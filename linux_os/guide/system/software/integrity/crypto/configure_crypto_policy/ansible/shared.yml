@@ -16,4 +16,4 @@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Verify that Crypto Policy is Set (runtime)
-  shell: /usr/bin/update-crypto-policies set {{ var_system_crypto_policy }}
+  shell: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
