@@ -3,9 +3,9 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- (xccdf-var var_accounts_passwords_pam_faillock_deny)
+- (xccdf-var var_accounts_passwords_pam_faillock_unlock_time)
 
-- name: Add auth pam_faillock preauth deny before pam_unix.so
+- name: Add auth pam_faillock preauth unlock_time before pam_unix.so
   pamd:
     name: "{{ item }}"
     type: auth
@@ -16,7 +16,7 @@
     new_module_path: pam_faillock.so
     module_arguments: 'preauth
         silent
-        deny={{ var_accounts_passwords_pam_faillock_deny }}'
+        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
     state: before
   loop:
     - system-auth
@@ -25,7 +25,7 @@
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
-- name: Add deny argument to auth pam_faillock preauth
+- name: Add unlock_time argument to pam_faillock preauth
   pamd:
     name: "{{ item }}"
     type: auth
@@ -33,7 +33,7 @@
     module_path: pam_faillock.so
     module_arguments: 'preauth
         silent
-        deny={{ var_accounts_passwords_pam_faillock_deny }}'
+        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
     state: args_present
   loop:
     - system-auth
@@ -42,7 +42,7 @@
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
-- name: Add auth pam_faillock authfail deny after pam_unix.so
+- name: Add auth pam_faillock authfail unlock_interval after pam_unix.so
   pamd:
     name: "{{ item }}"
     type: auth
@@ -52,7 +52,7 @@
     new_control: '[default=die]'
     new_module_path: pam_faillock.so
     module_arguments: 'authfail
-        deny={{ var_accounts_passwords_pam_faillock_deny }}'
+        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
     state: after
   loop:
     - system-auth
@@ -61,15 +61,14 @@
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
-- name: Add deny argument to auth pam_faillock authfail
+- name: Add unlock_time argument to auth pam_faillock authfail
   pamd:
     name: "{{ item }}"
     type: auth
-    new_type: auth
     control: '[default=die]'
     module_path: pam_faillock.so
     module_arguments: 'authfail
-        deny={{ var_accounts_passwords_pam_faillock_deny }}'
+        unlock_time={{ var_accounts_passwords_pam_faillock_unlock_time }}'
     state: args_present
   loop:
     - system-auth
