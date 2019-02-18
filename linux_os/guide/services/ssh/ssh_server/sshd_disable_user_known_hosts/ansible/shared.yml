@@ -9,6 +9,8 @@
     dest: /etc/ssh/sshd_config
     regexp: ^IgnoreUserKnownHosts
     line: IgnoreUserKnownHosts yes
+    insertbefore: ^Match
+    firstmatch: yes 
     validate: sshd -t -f %s
   #notify: restart sshd
   tags:
