@@ -46,18 +46,18 @@ selections:
     - disable_host_auth
 
     # AC-7(a)
+    - var_accounts_passwords_pam_faillock_deny=3
     - accounts_passwords_pam_faillock_deny
-    ######### NEED VARIABLE var_accounts_passwords_pam_faillock_deny
+    - var_accounts_passwords_pam_faillock_fail_interval=900
     - accounts_passwords_pam_faillock_interval
-    ### NEED var_accounts_passwords_pam_faillock_fail_interval
     - accounts_passwords_pam_faillock_deny_root
 
     # AC-7(b)
+    - var_accounts_passwords_pam_faillock_unlock_time=never
     - accounts_passwords_pam_faillock_unlock_time
-    ##### NEED var_accounts_passwords_pam_faillock_unlock_time
 
     # AC-8
-    - banner_etc_issue+
+    - banner_etc_issue
 
     # AC-17(a)
     - file_permissions_sshd_private_key
