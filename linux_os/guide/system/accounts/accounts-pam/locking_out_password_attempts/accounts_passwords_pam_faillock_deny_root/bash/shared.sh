@@ -12,20 +12,10 @@ AUTH_FILES[1]="/etc/pam.d/password-auth"
 # The placement of pam_faillock.so entries will not be changed
 # if they are already present
 
-# ensure, that pam.d folder exists
-mkdir -p "/etc/pam.d"
-
 for pamFile in "${AUTH_FILES[@]}"
 do
-	# if auth file is missing, create it and add what this rule needs
+	# if PAM file is missing, system is not using PAM or broken
 	if [ ! -f $pamFile ]; then
-		touch $pamFile
-		echo "
-auth required pam_faillock.so preauth silent even_deny_root deny=3 unlock_time=never fail_interval=900
-auth sufficient pam_unix.so
-auth [default=die] pam_faillock.so authfail silent even_deny_root deny=3 unlock_time=never fail_interval=900
-" >> $pamFile
-		# everything is set, don't check it again
 		continue
 	fi
 
