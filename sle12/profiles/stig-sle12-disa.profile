@@ -13,4 +13,5 @@ selections:
      - package_aide_installed
      - ensure_gpgcheck_globally_activated
      - gui_login_dod_acknowledgement
+     - banner_etc_motd
 
