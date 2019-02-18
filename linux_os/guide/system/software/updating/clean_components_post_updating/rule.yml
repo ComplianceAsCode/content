@@ -6,7 +6,7 @@ title: 'Ensure {{{ pkg_manager }}} Removes Previous Package Versions'
 
 description: |-
     <tt>{{{ pkg_manager }}}</tt> should be configured to remove previous software components after
-    previous versions have been installed. To configure <tt>{{{ pkg_manager }}}</tt> to remove the
+    new versions have been installed. To configure <tt>{{{ pkg_manager }}}</tt> to remove the
     previous software components after updating, set the <tt>clean_requirements_on_remove</tt>
     to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
 
@@ -22,7 +22,7 @@ identifiers:
 references:
     cui: 3.4.8
     disa: "2617"
-    nist: SI-2(6)
+    nist: SI-2(6),CM-11
     nist-csf: ID.RA-1,PR.IP-12
     srg: SRG-OS-000437-GPOS-00194
     stigid@rhel7: "020200"
