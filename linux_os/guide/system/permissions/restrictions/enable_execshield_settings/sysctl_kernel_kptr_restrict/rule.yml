@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Restrict exposed kernel pointers addresses access'
+title: 'Restrict Exposed Kernel Pointer Addresses Access'
 
 description: '{{{ describe_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}'
 
@@ -11,9 +11,13 @@ rationale: |-
     option disallow any program withtout the CAP_SYSLOG capability from getting the kernel pointers addresses,
     replacing them with 0.
 
-severity: low
+severity: medium
+
+identifiers:
+    cce@rhel7: 80659-6
 
 references:
     anssi: NT28(R23)
+    nist: SC-39
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kptr_restrict", value="1") }}}
