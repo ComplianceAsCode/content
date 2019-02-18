@@ -1,11 +1,11 @@
 documentation_complete: true
 
-title: 'VPP - Protection Profile for Virtualization v. 1.0'
+title: 'VPP - Protection Profile for Virtualization v. 1.0 for Red Hat Enterprise Linux Hypervisor (RHELH)'
 
 description: |-
     This compliance profile reflects the core set of security
     related configuration settings for deployment of Red Hat Enterprise
-    Linux 7.x into U.S. Defense, Intelligence, and Civilian agencies.
+    Linux Hypervisor (RHELH) 7.x into U.S. Defense, Intelligence, and Civilian agencies.
     Development partners and sponsors include the U.S. National Institute
     of Standards and Technology (NIST), U.S. Department of Defense,
     the National Security Agency, and Red Hat.
