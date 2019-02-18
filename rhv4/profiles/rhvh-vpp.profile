@@ -198,7 +198,6 @@ selections:
     # IA-7
     - installed_OS_is_FIPS_certified
     - grub2_enable_fips_mode
-    - sysctl_crypto_fips_enabled
 
     # MP-7
     - kernel_module_usb-storage_disabled
