@@ -24,9 +24,9 @@ description: |-
     scap-security-guide-docs package.
 
     This profile reflects U.S. Government consensus content and is developed through
-    the OpenSCAP/SCAP Security Guide initiative, championed by the National
+    the ComplianceAsCode project, championed by the National
     Security Agency. Except for differences in formatting to accommodate
-    publishing processes, this profile mirrors OpenSCAP/SCAP Security Guide
+    publishing processes, this profile mirrors ComplianceAsCode
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
