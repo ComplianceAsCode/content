@@ -10,8 +10,10 @@ rationale: |
     Disabling kexec_load allows greater control of the kernel memory.
     It makes it impossible to load another kernel image after it has been disabled.
 
-severity: unknown
+severity: medium
 
+identifiers:
+    cce@rhel8: 80952-5
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
 
