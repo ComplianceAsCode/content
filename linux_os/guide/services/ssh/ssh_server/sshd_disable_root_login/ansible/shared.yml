@@ -10,7 +10,7 @@
     regexp: "^PermitRootLogin"
     line: "PermitRootLogin no"
     insertafter: '(?i)^#?authentication'
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@

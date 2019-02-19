@@ -9,7 +9,7 @@
     dest: /etc/ssh/sshd_config
     regexp: ^PermitUserEnvironment
     line: PermitUserEnvironment no
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@

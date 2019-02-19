@@ -5,7 +5,7 @@
     dest: /etc/ssh/sshd_config
     regexp: ^PrintLastLog
     line: PrintLastLog yes
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@
