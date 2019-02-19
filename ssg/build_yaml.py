@@ -6,6 +6,8 @@ import os.path
 import datetime
 import sys
 
+import yaml
+
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
@@ -554,8 +556,6 @@ class Rule(object):
         for key in interesting_keys:
             yaml_contents[key] = getattr(self, key)
 
-        yaml_contents["documentation_complete"] = True
-
         return yaml_contents
 
     def validate_identifiers(self, yaml_file):
@@ -664,107 +664,166 @@ class Rule(object):
         tree.write(file_name)
 
 
-def load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
-                            profiles_dir, env_yaml, bash_remediation_fns):
-    """
-    Loads a given benchmark or group from the specified benchmark_file or
-    group_file, in the context of guide_directory, action, profiles_dir,
-    env_yaml, and bash_remediation_fns.
+class DirectoryLoader(object):
+    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml):
+        self.benchmark_file = None
+        self.group_file = None
+        self.loaded_group = None
+        self.rules = []
+        self.values = []
+        self.subdirectories = []
 
-    Returns the loaded group or benchmark.
-    """
-    group = None
-    if group_file and benchmark_file:
-        raise ValueError("A .benchmark file and a .group file were found in "
-                         "the same directory '%s'" % (guide_directory))
+        self.profiles_dir = profiles_dir
+        self.bash_remediation_fns = bash_remediation_fns
+        self.env_yaml = env_yaml
 
-    # we treat benchmark as a special form of group in the following code
-    if benchmark_file:
-        group = Benchmark.from_yaml(
-            benchmark_file, 'product-name', env_yaml
-        )
-        if profiles_dir:
-            group.add_profiles_from_dir(action, profiles_dir, env_yaml)
-        group.add_bash_remediation_fns_from_file(action, bash_remediation_fns)
-        if action == "list-inputs":
-            print(benchmark_file)
+        self.parent_group = None
 
-    if group_file:
-        group = Group.from_yaml(group_file, env_yaml)
-        if action == "list-inputs":
-            print(group_file)
+    def _collect_items_to_load(self, guide_directory):
+        for dir_item in os.listdir(guide_directory):
+            dir_item_path = os.path.join(guide_directory, dir_item)
+            _, extension = os.path.splitext(dir_item)
 
-    return group
+            if extension == '.var':
+                self.values.append(dir_item_path)
+            elif dir_item == "benchmark.yml":
+                if self.benchmark_file:
+                    raise ValueError("Multiple benchmarks in one directory")
+                self.benchmark_file = dir_item_path
+            elif dir_item == "group.yml":
+                if self.group_file:
+                    raise ValueError("Multiple groups in one directory")
+                self.group_file = dir_item_path
+            elif extension == '.rule':
+                self.rules.append(dir_item_path)
+            elif is_rule_dir(dir_item_path):
+                self.rules.append(get_rule_dir_yaml(dir_item_path))
+            elif dir_item != "tests":
+                if os.path.isdir(dir_item_path):
+                    self.subdirectories.append(dir_item_path)
+                else:
+                    sys.stderr.write(
+                        "Encountered file '%s' while recursing, extension '%s' "
+                        "is unknown. Skipping..\n"
+                        % (dir_item, extension)
+                    )
+
+    def load_benchmark_or_group(self, guide_directory):
+        """
+        Loads a given benchmark or group from the specified benchmark_file or
+        group_file, in the context of guide_directory, action, profiles_dir,
+        env_yaml, and bash_remediation_fns.
+
+        Returns the loaded group or benchmark.
+        """
+        group = None
+        if self.group_file and self.benchmark_file:
+            raise ValueError("A .benchmark file and a .group file were found in "
+                             "the same directory '%s'" % (guide_directory))
+
+        # we treat benchmark as a special form of group in the following code
+        if self.benchmark_file:
+            group = Benchmark.from_yaml(
+                self.benchmark_file, 'product-name', self.env_yaml
+            )
+            if self.profiles_dir:
+                group.add_profiles_from_dir(self.action, self.profiles_dir, self.env_yaml)
+            group.add_bash_remediation_fns_from_file(self.action, self.bash_remediation_fns)
+
+        if self.group_file:
+            group = Group.from_yaml(self.group_file, self.env_yaml)
+
+        return group
+
+    def _load_group_process_and_recurse(self, guide_directory):
+        self.loaded_group = self.load_benchmark_or_group(guide_directory)
+
+        if self.loaded_group:
+            if self.parent_group:
+                self.parent_group.add_group(self.loaded_group)
+
+            self._process_values()
+            self._recurse_into_subdirs()
+            self._process_rules()
+
+    def process_directory_tree(self, start_dir):
+        self._collect_items_to_load(start_dir)
+        self._load_group_process_and_recurse(start_dir)
+
+    def _recurse_into_subdirs(self):
+        for subdir in self.subdirectories:
+            loader = self._get_new_loader()
+            loader.parent_group = self.loaded_group
+            loader.process_directory_tree(subdir)
+
+    def _get_new_loader(self):
+        raise NotImplementedError()
+
+    def _process_values(self):
+        raise NotImplementedError()
+
+    def _process_rules(self):
+        raise NotImplementedError()
 
 
-def add_from_directory(action, parent_group, guide_directory, profiles_dir,
-                       bash_remediation_fns, output_file, env_yaml):
-    """
-    Process Variables, Benchmarks, and Rules in a given subdirectory,
-    recursing as necessary.
+class BuildLoader(DirectoryLoader):
+    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml, resolved_rules_dir=None):
+        super(BuildLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
 
-    Behavior is dependent upon the value of action.
-    """
-    benchmark_file = None
-    group_file = None
-    rules = []
-    values = []
-    subdirectories = []
-    for dir_item in os.listdir(guide_directory):
-        dir_item_path = os.path.join(guide_directory, dir_item)
-        _, extension = os.path.splitext(dir_item)
+        self.action = "build"
 
-        if extension == '.var':
-            values.append(dir_item_path)
-        elif dir_item == "benchmark.yml":
-            if benchmark_file:
-                raise ValueError("Multiple benchmarks in one directory")
-            benchmark_file = dir_item_path
-        elif dir_item == "group.yml":
-            if group_file:
-                raise ValueError("Multiple groups in one directory")
-            group_file = dir_item_path
-        elif extension == '.rule':
-            rules.append(dir_item_path)
-        elif is_rule_dir(dir_item_path):
-            rules.append(get_rule_dir_yaml(dir_item_path))
-        elif dir_item != "tests":
-            if os.path.isdir(dir_item_path):
-                subdirectories.append(dir_item_path)
-            else:
-                sys.stderr.write(
-                    "Encountered file '%s' while recursing, extension '%s' "
-                    "is unknown. Skipping..\n"
-                    % (dir_item, extension)
-                )
+        self.resolved_rules_dir = resolved_rules_dir
+        if resolved_rules_dir and not os.path.isdir(resolved_rules_dir):
+            os.mkdir(resolved_rules_dir)
 
-    group = load_benchmark_or_group(group_file, benchmark_file, guide_directory, action,
-                                    profiles_dir, env_yaml, bash_remediation_fns)
+    def _process_values(self):
+        for value_yaml in self.values:
+            value = Value.from_yaml(value_yaml, self.env_yaml)
+            self.loaded_group.add_value(value)
 
-    if group is not None:
-        if parent_group:
-            parent_group.add_group(group)
-        for value_yaml in values:
-            if action == "list-inputs":
-                print(value_yaml)
-            else:
-                value = Value.from_yaml(value_yaml, env_yaml)
-                group.add_value(value)
+    def _process_rules(self):
+        for rule_yaml in self.rules:
+            rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            if self.resolved_rules_dir:
+                output_for_rule = os.path.join(
+                    self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
+                with open(output_for_rule, "w") as f:
+                    yaml.dump(rule.to_contents_dict(), f)
+            self.loaded_group.add_rule(rule)
 
-        for subdir in subdirectories:
-            add_from_directory(action, group, subdir, profiles_dir,
-                               bash_remediation_fns, output_file,
-                               env_yaml)
+    def _get_new_loader(self):
+        return BuildLoader(
+            self.profiles_dir, self.bash_remediation_fns, self.env_yaml, self.resolved_rules_dir)
 
-        for rule_yaml in rules:
-            if action == "list-inputs":
-                print(rule_yaml)
-            else:
-                rule = Rule.from_yaml(rule_yaml, env_yaml)
-                group.add_rule(rule)
+    def export_group_to_file(self, filename):
+        return self.loaded_group.to_file(filename)
 
-        if not parent_group:
-            # We are on the top level!
-            # Lets dump the XCCDF group or benchmark to a file
-            if action == "build":
-                group.to_file(output_file)
+
+class ListInputsLoader(DirectoryLoader):
+    def __init__(self, profiles_dir, bash_remediation_fns, env_yaml):
+        super(ListInputsLoader, self).__init__(profiles_dir, bash_remediation_fns, env_yaml)
+
+        self.action = "list-inputs"
+
+    def _process_values(self):
+        for value_yaml in self.values:
+            print(value_yaml)
+
+    def _process_rules(self):
+        for rule_yaml in self.rules:
+            print(rule_yaml)
+
+    def _get_new_loader(self):
+        return ListInputsLoader(
+            self.profiles_dir, self.bash_remediation_fns, self.env_yaml)
+
+    def load_benchmark_or_group(self, guide_directory):
+        result = super(ListInputsLoader, self).load_benchmark_or_group(guide_directory)
+
+        if self.benchmark_file:
+            print(self.benchmark_file)
+
+        if self.group_file:
+            print(self.group_file)
+
+        return result
