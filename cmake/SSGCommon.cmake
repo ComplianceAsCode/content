@@ -241,14 +241,26 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
       set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/all_fixes/${LANGUAGE}")
 
       add_custom_command(
-          OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" --output_dir "${ALL_FIXES_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
+          OUTPUT "${ALL_FIXES_DIR}"
+          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --output_dir "${ALL_FIXES_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
           DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
           DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
           DEPENDS ${EXTRA_LANGUAGE_DEPENDS}
           DEPENDS ${EXTRA_SHARED_LANGUAGE_DEPENDS}
           DEPENDS "${SSG_BUILD_SCRIPTS}/combine_remediations.py"
           DEPENDS generate-internal-language-remedations-${PRODUCT}
+          COMMENT "[${PRODUCT}-content] collectiong all ${LANGUAGE} fixes"
+      )
+      add_custom_target(
+          generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
+          DEPENDS "${ALL_FIXES_DIR}"
+      )
+
+      add_custom_command(
+          OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
+          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${ALL_FIXES_DIR}"
+          DEPENDS "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py"
+          DEPENDS generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
           COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-fixes.xml"
       )
       add_custom_target(
