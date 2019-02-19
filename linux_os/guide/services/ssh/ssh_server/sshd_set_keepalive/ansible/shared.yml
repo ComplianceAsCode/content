@@ -11,7 +11,7 @@
     dest: /etc/ssh/sshd_config
     regexp: ^ClientAliveCountMax
     line: 'ClientAliveCountMax {{ var_sshd_set_keepalive }}'
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@
