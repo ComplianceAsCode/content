@@ -158,13 +158,6 @@ selections:
     ### The OS shall implement access controls which can prohibit
     ### unprivileged users from accessing files and directories
     ### owned by other users
-    - var_selinux_policy_name=targeted
-    - var_selinux_state=enforcing
-    - selinux_all_devicefiles_labeled
-    - selinux_confinement_of_daemons
-    - selinux_policytype
-    - selinux_state
-    
 
     #######################################################
     # 5.1.3 Security Management (FMT)
@@ -829,10 +822,6 @@ selections:
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 
-    - auditd_audispd_syslog_plugin_activated
-    - auditd_audispd_configure_remote_server
-    - rsyslog_remote_loghost
-    - auditd_audispd_encrypt_sent_records
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_mount
