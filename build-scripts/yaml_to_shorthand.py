@@ -37,6 +37,8 @@ def parse_args():
     parser.add_argument("action",
                         choices=["build", "list-inputs", "list-outputs"],
                         help="Which action to perform.")
+    parser.add_argument("--resolve-rules-into", "-l",
+                        help="To which directory to put processed rule YAMLs.")
     return parser.parse_args()
 
 
