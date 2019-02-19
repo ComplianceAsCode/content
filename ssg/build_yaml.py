@@ -495,7 +495,7 @@ class Rule(object):
         self.identifiers = {}
         self.ocil_clause = None
         self.ocil = None
-        self.external_oval = None
+        self.oval_external_content = None
         self.warnings = []
         self.platform = None
 
@@ -523,7 +523,7 @@ class Rule(object):
         rule.identifiers = yaml_contents.pop("identifiers", {})
         rule.ocil_clause = yaml_contents.pop("ocil_clause", None)
         rule.ocil = yaml_contents.pop("ocil", None)
-        rule.external_oval = yaml_contents.pop("oval_external_content", None)
+        rule.oval_external_content = yaml_contents.pop("oval_external_content", None)
         rule.warnings = yaml_contents.pop("warnings", [])
         rule.platform = yaml_contents.pop("platform", None)
 
@@ -538,6 +538,25 @@ class Rule(object):
         rule.validate_identifiers(yaml_file)
         rule.validate_references(yaml_file)
         return rule
+
+    def to_contents_dict(self):
+        """
+        Returns a dictionary that is the same schema as the dict obtained when loading rule YAML.
+        """
+        interesting_keys = [
+            "prodtype", "title", "description", "rationale",
+            "severity", "references", "identifiers",
+            "ocil_clause", "ocil", "oval_external_content",
+            "warnings", "platform",
+        ]
+
+        yaml_contents = dict()
+        for key in interesting_keys:
+            yaml_contents[key] = getattr(self, key)
+
+        yaml_contents["documentation_complete"] = True
+
+        return yaml_contents
 
     def validate_identifiers(self, yaml_file):
         if self.identifiers is None:
@@ -610,11 +629,11 @@ class Rule(object):
         if main_ref.attrib:
             rule.append(main_ref)
 
-        if self.external_oval:
+        if self.oval_external_content:
             check = ET.SubElement(rule, 'check')
             check.set("system", "http://oval.mitre.org/XMLSchema/oval-definitions-5")
             external_content = ET.SubElement(check, "check-content-ref")
-            external_content.set("href", self.external_oval)
+            external_content.set("href", self.oval_external_content)
         else:
             # TODO: This is pretty much a hack, oval ID will be the same as rule ID
             #       and we don't want the developers to have to keep them in sync.
