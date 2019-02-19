@@ -4,9 +4,7 @@ import sys
 import os
 import os.path
 import re
-import errno
 import argparse
-import codecs
 
 import ssg.build_remediations as remediation
 import ssg.rules
@@ -55,7 +53,7 @@ def main():
     for filename in os.listdir(args.fixdir):
         file_path = os.path.join(args.fixdir, filename)
         fix_name, _ = os.path.splitext(filename)
-        result = remediation.parse_from_file(file_path, env_yaml)
+        result = remediation.parse_from_file_without_jinja(file_path)
         fixes[fix_name] = result
 
     remediation.write_fixes_to_xml(args.remediation_type, args.build_dir,

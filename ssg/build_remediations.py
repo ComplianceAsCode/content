@@ -205,6 +205,15 @@ def parse_from_file(file_path, env_yaml):
     fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
     return _parse_remediation(fix_file_lines)
 
+def parse_from_file_without_jinja(file_path):
+    """
+    Parses a remediation from a file. Doesn't process the Jinja macros.
+    This function is useful in build phases in which all the Jinja macros
+    are already resolved.
+    """
+    with open(file_path, "r") as f:
+        lines = f.read().splitlines()
+        return _parse_remediation(lines)
 
 def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name):
     """
