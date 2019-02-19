@@ -165,22 +165,9 @@ def get_populate_replacement(remediation_type, text):
                      % (remediation_type))
     sys.exit(1)
 
-
-def parse_from_file(file_path, env_yaml):
-    """
-    Parses a remediation from a file. As remediations contain jinja macros,
-    we need a env_yaml context to process these. In practice, no remediations
-    use jinja in the configuration, so for extracting only the configuration,
-    env_yaml can be an abritrary product.yml dictionary.
-
-    If the logic of configuration parsing changes significantly, please also
-    update ssg.fixes.parse_platform(...).
-    """
-
+def _parse_remediation(fix_file_lines):
     mod_file = []
     config = defaultdict(lambda: None)
-
-    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
 
     # Assignment automatically escapes shell characters for XML
     for line in fix_file_lines:
@@ -202,6 +189,21 @@ def parse_from_file(file_path, env_yaml):
 
     remediation = namedtuple('remediation', ['contents', 'config'])
     return remediation(mod_file, config)
+
+
+def parse_from_file(file_path, env_yaml):
+    """
+    Parses a remediation from a file. As remediations contain jinja macros,
+    we need a env_yaml context to process these. In practice, no remediations
+    use jinja in the configuration, so for extracting only the configuration,
+    env_yaml can be an abritrary product.yml dictionary.
+
+    If the logic of configuration parsing changes significantly, please also
+    update ssg.fixes.parse_platform(...).
+    """
+
+    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
+    return _parse_remediation(fix_file_lines)
 
 
 def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name):
