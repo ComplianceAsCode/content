@@ -249,7 +249,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
           DEPENDS ${EXTRA_SHARED_LANGUAGE_DEPENDS}
           DEPENDS "${SSG_BUILD_SCRIPTS}/combine_remediations.py"
           DEPENDS generate-internal-language-remedations-${PRODUCT}
-          COMMENT "[${PRODUCT}-content] collectiong all ${LANGUAGE} fixes"
+          COMMENT "[${PRODUCT}-content] collecting all ${LANGUAGE} fixes"
       )
       add_custom_target(
           generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
