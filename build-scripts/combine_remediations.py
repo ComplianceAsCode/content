@@ -77,7 +77,8 @@ def main():
             remediation.process_fix(fixes, args.remediation_type, env_yaml,
                                     product, _path, rule_id)
 
-    remediation.write_fixes_to_dir(fixes, args.output_dir)
+    remediation.write_fixes_to_dir(fixes, args.remediation_type,
+            args.output_dir)
 
     sys.stderr.write("Collected %d %s remediations.\n" % (len(fixes), args.remediation_type))
 

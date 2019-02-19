@@ -259,15 +259,20 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
     tree.write(output_path)
 
 
-def write_fixes_to_dir(fixes, output_dir):
+def write_fixes_to_dir(fixes, remediation_type, output_dir):
     """
     Writes fixes as files to output_dir, each fix as a separate file
     """
+    try:
+        extension = REMEDIATION_TO_EXT_MAP[remediation_type]
+    except KeyError:
+        raise ValueError("Unknown remediation type %s." % remediation_type)
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     for fix_name in fixes:
         fix_contents, config = fixes[fix_name]
-        fix_path = os.path.join(output_dir, fix_name)
+        fix_path = os.path.join(output_dir, fix_name + extension)
         with open(fix_path, "w") as f:
             for k, v in config.items():
                 f.write("# %s = %s\n" % (k, v))
