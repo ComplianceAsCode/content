@@ -6,7 +6,7 @@
 <xsl:variable name="product_short_name">RHV 4</xsl:variable>
 <xsl:variable name="product_stig_id_name">RHV_4_STIG</xsl:variable>
 <xsl:variable name="product_guide_id_name">RHV-4</xsl:variable>
-<xsl:variable name="prod_type">RHV4</xsl:variable>
+<xsl:variable name="prod_type">rhv4</xsl:variable>
 
 
 <!-- Define URI of official CIS Kubernetes Benchmark -->
