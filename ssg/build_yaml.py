@@ -486,6 +486,21 @@ class Group(object):
 class Rule(object):
     """Represents XCCDF Rule
     """
+    YAML_KEYS_DEFAULTS = {
+        "prodtype": lambda: "all",
+        "title": lambda: RuntimeError("Missing key 'title'"),
+        "description": lambda: RuntimeError("Missing key 'description'"),
+        "rationale": lambda: RuntimeError("Missing key 'rationale'"),
+        "severity": lambda: RuntimeError("Missing key 'severity'"),
+        "references": lambda: dict(),
+        "identifiers": lambda: dict(),
+        "ocil_clause": lambda: None,
+        "ocil": lambda: None,
+        "oval_external_content": lambda: None,
+        "warnings": lambda: list(),
+        "platform": lambda: None,
+    }
+
     def __init__(self, id_):
         self.id_ = id_
         self.prodtype = "all"
@@ -512,22 +527,13 @@ class Rule(object):
             rule_id = get_rule_dir_id(yaml_file)
 
         rule = Rule(rule_id)
-        rule.prodtype = yaml_contents.pop("prodtype", "all")
-        rule.title = required_key(yaml_contents, "title")
-        del yaml_contents["title"]
-        rule.description = required_key(yaml_contents, "description")
-        del yaml_contents["description"]
-        rule.rationale = required_key(yaml_contents, "rationale")
-        del yaml_contents["rationale"]
-        rule.severity = required_key(yaml_contents, "severity")
-        del yaml_contents["severity"]
-        rule.references = yaml_contents.pop("references", {})
-        rule.identifiers = yaml_contents.pop("identifiers", {})
-        rule.ocil_clause = yaml_contents.pop("ocil_clause", None)
-        rule.ocil = yaml_contents.pop("ocil", None)
-        rule.oval_external_content = yaml_contents.pop("oval_external_content", None)
-        rule.warnings = yaml_contents.pop("warnings", [])
-        rule.platform = yaml_contents.pop("platform", None)
+
+        try:
+            rule._set_attributes_from_dict(yaml_contents)
+        except RuntimeError as exc:
+            msg = ("Error processing '{fname}': {err}"
+                   .format(fname=yaml_file, err=str(exc)))
+            raise RuntimeError(msg)
 
         for warning_list in rule.warnings:
             if len(warning_list) != 1:
@@ -541,19 +547,24 @@ class Rule(object):
         rule.validate_references(yaml_file)
         return rule
 
+    def _set_attributes_from_dict(self, yaml_contents):
+        for key, default_getter in self.YAML_KEYS_DEFAULTS.items():
+            if key not in yaml_contents:
+                value = default_getter()
+                if isinstance(value, Exception):
+                    raise value
+            else:
+                value = yaml_contents.pop(key)
+
+            setattr(self, key, value)
+
     def to_contents_dict(self):
         """
         Returns a dictionary that is the same schema as the dict obtained when loading rule YAML.
         """
-        interesting_keys = [
-            "prodtype", "title", "description", "rationale",
-            "severity", "references", "identifiers",
-            "ocil_clause", "ocil", "oval_external_content",
-            "warnings", "platform",
-        ]
 
         yaml_contents = dict()
-        for key in interesting_keys:
+        for key in Rule.YAML_KEYS_DEFAULTS:
             yaml_contents[key] = getattr(self, key)
 
         return yaml_contents
