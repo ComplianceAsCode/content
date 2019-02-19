@@ -159,7 +159,6 @@ selections:
     ### unprivileged users from accessing files and directories
     ### owned by other users
 
-
     #######################################################
     # 5.1.3 Security Management (FMT)
 
@@ -178,7 +177,7 @@ selections:
     #### configure screen lock inactivity timeout
 
     #### configure session inactivity timeout
-
+    - dconf_gnome_disable_user_admin
 
 
     #######################################################
@@ -285,7 +284,10 @@ selections:
 
     ### FAU_GEN.1.1.c / AU-4(1)
     ### Configure the System to Offload Audit Records to a Log Server
-
+    - rsyslog_remote_loghost
+    - auditd_audispd_syslog_plugin_activated
+    - auditd_audispd_configure_remote_server
+    - auditd_audispd_encrypt_sent_records    
 
     ### FMT_MOF_EXT.1 / AC-8(a)
     ### Set Logon Warning Banner
@@ -820,10 +822,6 @@ selections:
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 
-    - auditd_audispd_syslog_plugin_activated
-    - auditd_audispd_configure_remote_server
-    - rsyslog_remote_loghost
-    - auditd_audispd_encrypt_sent_records
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_mount
