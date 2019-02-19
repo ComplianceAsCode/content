@@ -16,7 +16,10 @@ rationale: |-
     Overriding the system crypto policy makes the behavior of the SSH service violate expectations,
     and makes system configuration more fragmented.
 
-severity: unknown
+severity: medium
+
+identifiers:
+    cce@rhel8: 80939-2
 
 ocil_clause: 'the CRYPTO_POLICY variable is not set or is commented in the /etc/sysconfig/sshd'
 

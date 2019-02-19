@@ -19,7 +19,10 @@ rationale: |-
     Overriding the system crypto policy makes the behavior of the BIND service violate expectations,
     and makes system configuration more fragmented.
 
-severity: unknown
+severity: medium
+
+identifiers:
+    cce@rhel8: 80934-3
 
 ocil_clause: |-
     BIND is installed and the BIND config file doesn't contain the
