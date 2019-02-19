@@ -241,7 +241,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
 
       add_custom_command(
           OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
+          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" --output_dir "${CMAKE_CURRENT_BINARY_DIR}/all_fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${SSG_SHARED}/fixes/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}" "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}"
           DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
           DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
           DEPENDS ${EXTRA_LANGUAGE_DEPENDS}

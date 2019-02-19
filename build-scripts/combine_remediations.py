@@ -34,6 +34,8 @@ def parse_args():
     p.add_argument("--build_dir", required=True,
                    help="where is the cmake build directory. pass value of "
                    "$CMAKE_BINARY_DIR.")
+    p.add_argument("--output_dir", required=True,
+            help="output directory where all remediations will be saved")
     p.add_argument("--output", type=argparse.FileType("wb"), required=True)
     p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
                    help="directory(ies) from which we will collect "
@@ -81,6 +83,8 @@ def main():
 
     remediation.write_fixes_to_xml(args.remediation_type, args.build_dir,
                             args.output, fixes)
+
+    remediation.write_fixes_to_dir(fixes, args.output_dir)
 
     sys.stderr.write("Merged %d %s remediations.\n" % (len(fixes), args.remediation_type))
 

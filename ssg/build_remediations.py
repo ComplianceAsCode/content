@@ -259,6 +259,18 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
     tree.write(output_path)
 
 
+def write_fixes_to_dir(fixes, output_dir):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    for fix_name in fixes:
+        fix_contents, config = fixes[fix_name]
+        fix_path = os.path.join(output_dir, fix_name)
+        with open(fix_path, "w") as f:
+            for k, v in config.items():
+                f.write("# %s = %s\n" % (k, v))
+            f.write("\n".join(fix_contents))
+
+
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
     """For those remediation scripts utilizing some of the internal SCAP
     Security Guide remediation functions expand the selected shell variables
