@@ -158,7 +158,13 @@ selections:
     ### The OS shall implement access controls which can prohibit
     ### unprivileged users from accessing files and directories
     ### owned by other users
-
+    - var_selinux_policy_name=targeted
+    - var_selinux_state=enforcing
+    - selinux_all_devicefiles_labeled
+    - selinux_confinement_of_daemons
+    - selinux_policytype
+    - selinux_state
+    
 
     #######################################################
     # 5.1.3 Security Management (FMT)
@@ -178,7 +184,7 @@ selections:
     #### configure screen lock inactivity timeout
 
     #### configure session inactivity timeout
-
+    - dconf_gnome_disable_user_admin
 
 
     #######################################################
@@ -285,7 +291,10 @@ selections:
 
     ### FAU_GEN.1.1.c / AU-4(1)
     ### Configure the System to Offload Audit Records to a Log Server
-
+    - rsyslog_remote_loghost
+    - auditd_audispd_syslog_plugin_activated
+    - auditd_audispd_configure_remote_server
+    - auditd_audispd_encrypt_sent_records    
 
     ### FMT_MOF_EXT.1 / AC-8(a)
     ### Set Logon Warning Banner
