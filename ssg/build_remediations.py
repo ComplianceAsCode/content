@@ -260,6 +260,9 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
 
 
 def write_fixes_to_dir(fixes, output_dir):
+    """
+    Writes fixes as files to output_dir, each fix as a separate file
+    """
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     for fix_name in fixes:
