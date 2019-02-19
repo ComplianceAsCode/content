@@ -226,7 +226,7 @@ def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name)
         fixes[fix_name] = result
 
 
-def write_fixes(remediation_type, build_dir, output_path, fixes):
+def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
     """
     Builds a fix-content XML tree from the contents of fixes
     and writes it to output_path.
