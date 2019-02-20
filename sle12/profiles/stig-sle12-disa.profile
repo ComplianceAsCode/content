@@ -16,4 +16,5 @@ selections:
      - banner_etc_motd
      - dconf_gnome_banner_enabled
      - vlock_installed
+     - accounts_tmout
 
