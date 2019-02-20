@@ -10,4 +10,8 @@ selections:
      - account_temp_expire_date
      - account_disable_post_pw_expiration
      - var_account_disable_post_pw_expiration=0
+     - package_aide_installed
+     - ensure_gpgcheck_globally_activated
+     - gui_login_dod_acknowledgement
+     - banner_etc_motd
 

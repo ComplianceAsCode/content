@@ -1,4 +1,4 @@
-# Function to remove packages on RHEL, Fedora, Debian, and possibly other systems.
+# Function to remove packages on RHEL, Fedora, Debian, SLE, OpenSUSE, and possibly other systems.
 #
 # Example Call(s):
 #
@@ -27,8 +27,10 @@ elif which yum ; then
   fi
 elif which apt-get ; then
   apt-get remove -y "$package"
+elif which apt-get ; then
+  zypper remove -y "$package"
 else
-  echo "Failed to detect available packaging system, tried dnf, yum and apt-get!"
+  echo "Failed to detect available packaging system, tried dnf, yum, apt-get and zypper!"
   echo "Aborting."
   exit 1
 fi

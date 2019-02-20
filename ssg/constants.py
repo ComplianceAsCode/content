@@ -76,6 +76,7 @@ PKG_MANAGER_TO_SYSTEM = {
 PKG_MANAGER_TO_CONFIG_FILE = {
     "yum": "/etc/yum.conf",
     "dnf": "/etc/dnf/dnf.conf",
+    "zypper": "/etc/zypp/zypp.conf",
 }
 
 FULL_NAME_TO_PRODUCT_MAPPING = {
