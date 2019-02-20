@@ -14,4 +14,6 @@ selections:
      - ensure_gpgcheck_globally_activated
      - gui_login_dod_acknowledgement
      - banner_etc_motd
+     - dconf_gnome_banner_enabled
+     - vlock_installed
 

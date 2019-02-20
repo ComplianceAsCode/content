@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Check for vlock Command'
+
+description: |-
+    The SUSE operating system must have vlock installed to allow for session locking.
+
+rationale: |-
+    A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.
+
+    The session lock is implemented at the point where session activity can be determined.
+
+    Regardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.
+
+severity: medium
+
+references:
+    stigid@sle12: SLES-12-010070
+    disa: "56,58,60"
+    nist: "AC-11(a),AC-11(b),AC-11(1)"
+
+ocil_clause: 'the package is not installed'
+
+ocil: 'Run the following command to determine if <tt>vlock</tt> is installed: <pre>$ rpm -q --whatprovides vlock</pre>'
