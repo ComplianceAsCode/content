@@ -17,4 +17,6 @@ selections:
      - dconf_gnome_banner_enabled
      - vlock_installed
      - accounts_tmout
+     - sudo_remove_no_authenticate
+     - sudo_remove_nopasswd
 
