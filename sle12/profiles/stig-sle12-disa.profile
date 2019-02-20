@@ -19,4 +19,6 @@ selections:
      - accounts_tmout
      - sudo_remove_no_authenticate
      - sudo_remove_nopasswd
+     - var_accounts_max_concurrent_login_sessions=10
+     - accounts_max_concurrent_login_sessions
 
