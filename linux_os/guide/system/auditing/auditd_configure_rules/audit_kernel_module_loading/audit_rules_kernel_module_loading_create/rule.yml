@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
 title: 'Ensure auditd Collects Information on Kernel Module Loading - create_module'
 
@@ -22,6 +22,10 @@ rationale: |-
     to have an audit trail of modules that have been introduced into the kernel.
 
 severity: medium
+
+identifiers:
+    cce@rhel7: 80661-2
+    cce@rhel8: 80710-7
 
 references:
     disa: "172"

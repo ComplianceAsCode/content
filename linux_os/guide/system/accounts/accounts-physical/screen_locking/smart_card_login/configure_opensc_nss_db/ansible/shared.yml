@@ -3,17 +3,22 @@
 # strategy = configure
 # complexity = low
 # disruption = low
+-   name: Check existence of pkcs11-switch
+    stat:
+        path: /usr/bin/pkcs11-switch
+    register: pkcs11switch
 
 - name: Get NSS database smart card configuration
   command: /usr/bin/pkcs11-switch
   changed_when: True
   register: pkcsw_output
+  when: pkcs11switch.stat.exists
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   command: /usr/bin/pkcs11-switch opensc
-  when: pkcsw_output.stdout != "opensc" and @ANSIBLE_PLATFORM_CONDITION@
+  when: pkcs11switch.stat.exists and pkcsw_output.stdout != "opensc" and @ANSIBLE_PLATFORM_CONDITION@
   tags:
     @ANSIBLE_TAGS@

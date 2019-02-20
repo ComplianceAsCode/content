@@ -27,12 +27,17 @@ rationale: |-
 
 severity: medium
 
+warnings:
+    - dependency: |-
+        {{{ body_of_dconf_warning_about_dependent_rule() }}}
+
 identifiers:
     cce@rhel7: 80109-2
+    cce@rhel8: 80771-9
 
 references:
     cui: 3.1.8
-    ospp@rhel7: FMT_MOF_EXT.1
+    ospp: FMT_MOF_EXT.1
 
 ocil_clause: 'allowed-failures is not equal to or less than the expected value'
 

@@ -12,8 +12,10 @@ rationale: |
     sensitive information from the target processes (e.g. SSH sessions, web browser, ...)
     without any additional assistance from the user (i.e. without resorting to phishing).
 
-severity: unknown
+severity: medium
 
+identifiers:
+    cce@rhel8: 80953-3
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.yama.ptrace_scope", value="1") }}}
 

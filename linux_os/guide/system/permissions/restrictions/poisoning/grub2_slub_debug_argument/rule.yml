@@ -18,7 +18,10 @@ rationale: |-
     This prevents many types of use-after-free vulnerabilities at little performance cost.
     Also prevents leak of data and detection of corrupted memory.
 
-severity: unknown
+severity: medium
+
+identifiers:
+    cce@rhel8: 80945-9
 
 ocil_clause: 'SLUB/SLAB poisoning is not enabled'
 

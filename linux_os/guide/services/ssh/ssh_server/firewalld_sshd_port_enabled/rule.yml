@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,ol7,ol8
 
-title: 'Enable SSH Server firewalld Firewall exception'
+title: 'Enable SSH Server firewalld Firewall Exception'
 
 description: |-
     By default, inbound connections to SSH's port are allowed. If
@@ -15,13 +15,15 @@ rationale: |-
     If inbound SSH connections are expected, adding a firewall rule exception
     will allow remote access through the SSH port.
 
-severity: unknown
+severity: medium
 
 identifiers:
     cce@rhel7: 80361-9
+    cce@rhel8: 80820-4
 
 references:
     cui: 3.1.12
+    nist: AC-17(a)
 
 ocil: |
     {{{ ocil_firewalld_allow_access(port="22", proto="tcp", service="ssh") }}}

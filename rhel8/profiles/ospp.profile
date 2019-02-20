@@ -159,7 +159,6 @@ selections:
     ### unprivileged users from accessing files and directories
     ### owned by other users
 
-
     #######################################################
     # 5.1.3 Security Management (FMT)
 
@@ -178,7 +177,7 @@ selections:
     #### configure screen lock inactivity timeout
 
     #### configure session inactivity timeout
-
+    - dconf_gnome_disable_user_admin
 
 
     #######################################################
@@ -220,6 +219,7 @@ selections:
     ### FMT_MOF_EXT.1 / AC-11(a)
     ### Enable Screen Lock
     - package_tmux_installed
+    - dconf_use_text_backend
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_lock_delay
@@ -284,7 +284,10 @@ selections:
 
     ### FAU_GEN.1.1.c / AU-4(1)
     ### Configure the System to Offload Audit Records to a Log Server
-
+    - rsyslog_remote_loghost
+    - auditd_audispd_syslog_plugin_activated
+    - auditd_audispd_configure_remote_server
+    - auditd_audispd_encrypt_sent_records    
 
     ### FMT_MOF_EXT.1 / AC-8(a)
     ### Set Logon Warning Banner
@@ -511,6 +514,7 @@ selections:
     ### FPT_TUD_EXT.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FPT_TUD_EXT.1.1
     ### The OS shall provide the ability to check for updates
     ### to the OS software itself.
+    - security_patches_up_to_date
 
     ### FPT_TUD_EXT.1.2: https://www.niap-ccevs.org/MMO/PP/-424-/#FPT_TUD_EXT.1.2
     ### The OS shall cryptographically verify updates to itself using
@@ -818,10 +822,6 @@ selections:
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
 
-    - auditd_audispd_syslog_plugin_activated
-    - auditd_audispd_configure_remote_server
-    - rsyslog_remote_loghost
-    - auditd_audispd_encrypt_sent_records
     - audit_rules_privileged_commands_at
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_mount
@@ -835,7 +835,6 @@ selections:
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
     - package_abrt_removed
-    - package_sendmail_removed
 
     - var_system_crypto_policy=fips
     - configure_crypto_policy

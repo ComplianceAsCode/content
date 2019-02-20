@@ -68,6 +68,7 @@ name_mappings = {
     "Gabe": "Gabe Alford",
     "Olivier": "Olivier Bonhomme",
     "OnceUponALoop": "Firas AlShafei",
+    "lkinser": "Lee Kinser",
 }
 
 

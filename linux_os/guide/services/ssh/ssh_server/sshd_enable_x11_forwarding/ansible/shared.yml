@@ -9,7 +9,7 @@
     dest: /etc/ssh/sshd_config
     regexp: ^X11Forwarding
     line: X11Forwarding yes
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@

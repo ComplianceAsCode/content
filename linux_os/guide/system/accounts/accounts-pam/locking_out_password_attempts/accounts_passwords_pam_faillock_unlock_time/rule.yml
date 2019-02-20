@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Lockout Time For Failed Password Attempts'
+title: 'Set Lockout Time for Failed Password Attempts'
 
 description: |-
     To configure the system to lock out accounts after a number of incorrect login
@@ -29,6 +29,7 @@ severity: medium
 identifiers:
     cce@rhel6: 27110-6
     cce@rhel7: 26884-7
+    cce@rhel8: 80670-3
 
 references:
     stigid@rhel6: RHEL-06-000356
@@ -41,7 +42,7 @@ references:
     disa: "002238"
     nist: AC-7(b)
     nist-csf: PR.AC-7
-    ospp@rhel7: FMT_MOF_EXT.1
+    ospp: FMT_MOF_EXT.1
     pcidss: Req-8.1.7
     srg: SRG-OS-000329-GPOS-00128,SRG-OS-000021-GPOS-00005
     vmmsrg: SRG-OS-000329-VMM-001180

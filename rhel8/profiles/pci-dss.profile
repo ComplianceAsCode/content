@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'PCI-DSS v3 Control Baseline for Red Hat Enterprise Linux 8'
+title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
 
 description: |-
-    Ensures PCI-DSS v3 related security configuration settings are applied.
+    Ensures PCI-DSS v3.2.1 related security configuration settings are applied.
 
 selections:
     - var_password_pam_unix_remember=4
@@ -98,6 +98,7 @@ selections:
     - account_disable_post_pw_expiration
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - dconf_use_text_backend
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
@@ -112,7 +113,14 @@ selections:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - smartcard_auth
+    - security_patches_up_to_date
+    - package_opensc_installed
+    - var_smartcard_drivers=cac
+    - configure_opensc_nss_db
+    - configure_opensc_card_drivers
+    - force_opensc_card_drivers
+    - service_pcscd_enabled
+    - sssd_enable_smartcards
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf

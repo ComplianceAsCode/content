@@ -21,10 +21,15 @@ rationale: |-
     A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity
     of the information system but does not want to logout because of the temporary nature of the absense.
 
+warnings:
+    - dependency: |-
+        {{{ body_of_dconf_warning_about_dependent_rule() }}}
+
 severity: medium
 
 identifiers:
     cce@rhel7: 80112-6
+    cce@rhel8: 80777-6
 
 references:
     cjis: 5.5.5
@@ -32,7 +37,7 @@ references:
     disa: "56"
     nist: AC-11(b)
     nist-csf: PR.AC-7
-    ospp@rhel7: FMT_MOF_EXT.1
+    ospp: FMT_MOF_EXT.1
     pcidss: Req-8.1.8
     srg: SRG-OS-000028-GPOS-00009,OS-SRG-000030-GPOS-00011
     stigid@rhel7: "010060"

@@ -5,12 +5,18 @@
 # disruption = low
 - (xccdf-var var_smartcard_drivers)
 
+- name: Check existence of opensc conf
+  stat:
+    path: /etc/opensc-{{ ansible_architecture }}.conf
+  register: opensc_conf_cd
+
 - name: "@RULE_TITLE@"
   lineinfile:
     path: /etc/opensc-{{ ansible_architecture }}.conf
     line: '        card_drivers = {{ var_smartcard_drivers }}'
     regexp: '(^\s+#|^)\s+card_drivers\s+=\s+.*'
     state: present
+  when: opensc_conf_cd.stat.exists    
   tags:
     @ANSIBLE_TAGS@
   @ANSIBLE_ENSURE_PLATFORM@

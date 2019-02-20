@@ -19,17 +19,22 @@ rationale: |-
     GNOME desktops can be configured to identify when a user's session has idled and take action to initiate the
     session lock. As such, users should not be allowed to change session settings.
 
+warnings:
+    - dependency: |-
+        {{{ body_of_dconf_warning_about_dependent_rule() }}}
+
 severity: medium
 
 identifiers:
     cce@rhel7: 80544-0
+    cce@rhel8: 80781-8
 
 references:
     cui: 3.1.10
     disa: "57"
     nist: AC-11(a)
     nist-csf: PR.AC-7
-    ospp@rhel7: FMT_MOF_EXT.1
+    ospp: FMT_MOF_EXT.1
     srg: SRG-OS-00029-GPOS-0010
     stigid@rhel7: "010082"
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'

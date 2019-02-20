@@ -5,7 +5,7 @@ prodtype: rhel6,rhel7,rhel8,ubuntu1404,ubuntu1604,ol7,ol8
 title: 'Ensure Software Patches Installed'
 
 description: |-
-{{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server,
     or a yum server, run the following command to install updates:
     <pre>$ sudo yum update</pre>
@@ -34,6 +34,7 @@ severity: high
 identifiers:
     cce@rhel6: 27635-2
     cce@rhel7: 26895-3
+    cce@rhel8: 80865-9
 
 references:
     stigid@rhel6: RHEL-06-000011
@@ -44,7 +45,7 @@ references:
     disa: "366"
     nist: SI-2,SI-2(c),MA-1(b)
     nist-csf: ID.RA-1,PR.IP-12
-    ospp@rhel7: FMT_MOF_EXT.1
+    ospp: FMT_MOF_EXT.1
     pcidss: Req-6.2
     srg: SRG-OS-000480-GPOS-00227
     vmmsrg: SRG-OS-000480-VMM-002000
@@ -60,6 +61,8 @@ references:
 oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL6.xml.bz2"
 {{% elif product == "rhel7" %}}
 oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL7.xml.bz2"
+{{% elif product == "rhel8" %}}
+oval_external_content: "https://www.redhat.com/security/data/oval/com.redhat.rhsa-RHEL8.xml.bz2"
 {{% elif product == "ubuntu1404" %}}
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.trusty.cve.oval.xml"
 {{% elif product == "ubuntu1604" %}}
@@ -74,7 +77,7 @@ ocil_clause: 'updates are not installed'
 
 {{# TODO: What about non-rpm systems? #}}
 ocil: |-
-{{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
     If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
     a yum server which provides updates, invoking the following command will
     indicate if updates are available:
@@ -88,12 +91,12 @@ ocil: |-
     run the following command to list when each package was last updated:
     <pre>$ rpm -qa -last</pre>
     <br /><br />
-{{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
     Compare this to Red Hat Security Advisories (RHSA) listed at
-    {{{ weblink(link="https://access.redhat.com/security/updates/active/") }}}
+    https://access.redhat.com/security/updates/active/
     to determine if the system is missing applicable updates.
 {{% elif product in ["ol7", "ol8"] %}}
     Compare this to Oracle Linux Security Advisories (ELSA) listed at
-    {{{ weblink(link="https://linux.oracle.com/pls/apex/f?p=105:21:::NO:RP::") }}}
+    https://linux.oracle.com/pls/apex/f?p=105:21:::NO:RP::
     to determine if the system is missing applicable updates.
 {{% endif %}}

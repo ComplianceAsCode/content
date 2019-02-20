@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora
+prodtype: rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Require Encryption for Remote Access in GNOME3'
 
@@ -22,10 +22,15 @@ rationale: |-
     Open X displays allow an attacker to capture keystrokes and to execute commands
     remotely.
 
+warnings:
+    - dependency: |-
+        {{{ body_of_dconf_warning_about_dependent_rule() }}}
+
 severity: medium
 
 identifiers:
     cce@rhel7: 80121-7
+    cce@rhel8: 80773-5
 
 references:
     cui: 3.1.13

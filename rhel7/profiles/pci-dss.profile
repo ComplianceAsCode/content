@@ -1,9 +1,9 @@
 documentation_complete: true
 
-title: 'PCI-DSS v3 Control Baseline for Red Hat Enterprise Linux 7'
+title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 7'
 
 description: |-
-    Ensures PCI-DSS v3 related security configuration settings are applied.
+    Ensures PCI-DSS v3.2.1 related security configuration settings are applied.
 
 selections:
     - var_password_pam_unix_remember=4
@@ -79,6 +79,7 @@ selections:
     - account_disable_post_pw_expiration
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
+    - dconf_use_text_backend
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled

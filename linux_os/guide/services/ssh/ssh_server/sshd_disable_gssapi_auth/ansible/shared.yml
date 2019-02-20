@@ -9,7 +9,7 @@
     dest: /etc/ssh/sshd_config
     regexp: (?i)^#?gssapiauthentication
     line: GSSAPIAuthentication no
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   #notify: sshd -t -f %s
   tags:
     @ANSIBLE_TAGS@

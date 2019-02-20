@@ -9,7 +9,7 @@
     dest: /etc/ssh/sshd_config
     regexp: (?i)^#?kerberosauthentication
     line: KerberosAuthentication no
-    validate: sshd -t -f %s
+    validate: /usr/sbin/sshd -t -f %s
   #notify: restart sshd
   tags:
     @ANSIBLE_TAGS@
