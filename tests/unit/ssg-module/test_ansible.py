@@ -4,6 +4,7 @@ import os
 import re
 import textwrap
 import ssg.ansible
+from ssg.constants import min_ansible_version
 
 
 def strings_equal_except_whitespaces(left, right):
@@ -42,13 +43,13 @@ def test_add_minimum_version():
        pre_tasks:
          - name: Verify Ansible meets SCAP-Security-Guide version requirements.
            assert:
-             that: "ansible_version.full is version_compare('2.3', '>=')"
+             that: "ansible_version.full is version_compare('{min_version}', '>=')"
              msg: >
-               "You must update Ansible to at least version 2.3 to use this role."
+               "You must update Ansible to at least version {min_version} to use this role."
 
        vars:
        tasks:
-    """
+    """.format(min_version=min_ansible_version)
     processed_snippet = textwrap.dedent(processed_snippet)
 
     output = ssg.ansible.add_minimum_version(good_snippet)
