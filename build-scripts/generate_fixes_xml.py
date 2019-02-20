@@ -3,7 +3,6 @@
 import sys
 import os
 import os.path
-import re
 import argparse
 
 import ssg.build_remediations as remediation
@@ -16,16 +15,6 @@ import ssg.xml
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument(
-        "--build-config-yaml", required=True, dest="build_config_yaml",
-        help="YAML file with information about the build configuration. "
-        "e.g.: ~/scap-security-guide/build/build_config.yml"
-    )
-    p.add_argument(
-        "--product-yaml", required=True, dest="product_yaml",
-        help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml"
-    )
     p.add_argument("--remediation_type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
@@ -42,8 +31,6 @@ def parse_args():
 
 def main():
     args = parse_args()
-    env_yaml = ssg.yaml.open_environment(
-        args.build_config_yaml, args.product_yaml)
 
     if not os.path.isdir(args.fixdir):
         sys.stderr.write("Directory %s does not exist" % args.fixdir)

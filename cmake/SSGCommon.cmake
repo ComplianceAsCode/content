@@ -258,7 +258,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
 
       add_custom_command(
           OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${ALL_FIXES_DIR}"
+          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py" --remediation_type "${LANGUAGE}" --build_dir "${CMAKE_BINARY_DIR}" --output "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml" "${ALL_FIXES_DIR}"
           DEPENDS "${SSG_BUILD_SCRIPTS}/generate_fixes_xml.py"
           DEPENDS generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
           COMMENT "[${PRODUCT}-content] generating ${LANGUAGE}-fixes.xml"
