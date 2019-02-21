@@ -586,7 +586,7 @@ class Rule(object):
                     raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
                                      " in file '%s'" % (ident_val, ident_type, yaml_file))
                 if not is_cce_value_valid("CCE-" + ident_val):
-                    raise ValueError("CCE Identifier value must be valid: invalid value '%s' for CEE '%s'"
+                    raise ValueError("CCE Identifier value is not a valid checksum: invalid value '%s' for CEE '%s'"
                                      " in file '%s'" % (ident_val, ident_type, yaml_file))
 
     def validate_references(self, yaml_file):
