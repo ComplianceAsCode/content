@@ -22,4 +22,6 @@ selections:
      - var_accounts_max_concurrent_login_sessions=10
      - accounts_max_concurrent_login_sessions
      - accounts_passwords_pam_tally2
+     - var_accounts_fail_delay=4
+     - accounts_logon_fail_delay
 
