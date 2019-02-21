@@ -25,4 +25,5 @@ selections:
      - var_accounts_fail_delay=4
      - accounts_logon_fail_delay
      - cracklib_accounts_password_pam_ucredit
+     - cracklib_accounts_password_pam_lcredit
 
