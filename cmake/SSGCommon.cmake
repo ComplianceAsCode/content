@@ -194,7 +194,7 @@ macro(ssg_build_ocil_unlinked PRODUCT)
 endmacro()
 
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
-    set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes")
+    set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
 
     execute_process(
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-inputs
@@ -238,7 +238,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
     foreach(LANGUAGE ${LANGUAGES})
       file(GLOB EXTRA_LANGUAGE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/fixes/${LANGUAGE}/*")
       file(GLOB EXTRA_SHARED_LANGUAGE_DEPENDS "${SSG_SHARED}/fixes/${LANGUAGE}/*")
-      set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/all_fixes/${LANGUAGE}")
+      set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
 
       add_custom_command(
           OUTPUT "${ALL_FIXES_DIR}"
