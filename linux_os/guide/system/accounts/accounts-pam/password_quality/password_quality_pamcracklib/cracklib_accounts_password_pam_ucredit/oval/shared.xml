@@ -1,11 +1,13 @@
 <def-group>
     <definition class="compliance" id="cracklib_accounts_password_pam_ucredit" version="4">
     <metadata>
-      <title></title>
+      <title>Set Password Strength Minimum Uppercase Characters</title>
       <affected family="unix">
         <platform>multi_platform_sle</platform>
       </affected>
-      <description></description>
+      <description>The pam_cracklib module's "ucredit=" parameter controls requirements for
+    usage of uppercase letters in a password. When set to a negative number, any password will be required to
+    contain that many uppercase characters.</description>
     </metadata>
     <criteria operator="AND">
       <criterion test_ref="test_cracklib_accounts_password_pam_ucredit" comment="Verify ucredit is set to the desired value" />
