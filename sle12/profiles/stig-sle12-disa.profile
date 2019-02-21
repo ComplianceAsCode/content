@@ -31,4 +31,5 @@ selections:
      - cracklib_accounts_password_pam_difok
      - set_password_hashing_algorithm_systemauth
      - set_password_hashing_algorithm_logindefs
+     - accounts_password_all_shadowed_sha512
 
