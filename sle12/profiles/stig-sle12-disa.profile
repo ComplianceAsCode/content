@@ -29,4 +29,5 @@ selections:
      - cracklib_accounts_password_pam_dcredit
      - cracklib_accounts_password_pam_ocredit
      - cracklib_accounts_password_pam_difok
+     - set_password_hashing_algorithm_systemauth
 

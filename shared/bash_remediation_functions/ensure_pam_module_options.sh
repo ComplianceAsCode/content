@@ -7,6 +7,11 @@ function ensure_pam_module_options {
 
 	[ -e "$_pamFile" ] || die "$_pamFile doesn't exist"
 
+	# non-empty values need to be preceded by an equals sign
+	[ -n "${_valueRegex}" ] && _valueRegex="=${_valueRegex}"
+	# add an equals sign to non-empty values
+	[ -n "${_defaultValue}" ] && _defaultValue="=${_defaultValue}"
+
 	# fix 'type' if it's wrong
 	if grep -q -P "^\\s*(?"'!'"${_type}\\s)[[:alnum:]]+\\s+[[:alnum:]]+\\s+${_module}" < "${_pamFile}" ; then
 		sed --follow-symlinks -i -E -e "s/^(\\s*)[[:alnum:]]+(\\s+[[:alnum:]]+\\s+${_module})/\\1${_type}\\2/" "${_pamFile}"
@@ -18,16 +23,16 @@ function ensure_pam_module_options {
 	fi
 
 	# fix the value for 'option' if one exists but does not match '_valueRegex'
-    if grep -q -P "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}=(?"'!'"${_valueRegex})" < "${_pamFile}" ; then
-		sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s)${_option}=[^[:space:]]+/\\1${_option}=${_defaultValue}/" "${_pamFile}"
+    if grep -q -P "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}(?"'!'"${_valueRegex}(\\s|\$))" < "${_pamFile}" ; then
+		sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s)${_option}=[^[:space:]]+/\\1${_option}${_defaultValue}/" "${_pamFile}"
 
     # add 'option=default' if option is not set
 	elif grep -q -E "^\\s*${_type}\\s+${_control}\\s+${_module}" < "${_pamFile}" &&
 	   grep    -E "^\\s*${_type}\\s+${_control}\\s+${_module}" < "${_pamFile}" | grep -q -E -v "\\s${_option}=" ; then
 
-		sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}[^\\n]*)/\\1 ${_option}=${_defaultValue}/" "${_pamFile}"
+		sed --follow-symlinks -i -E -e "s/^(\\s*${_type}\\s+${_control}\\s+${_module}[^\\n]*)/\\1 ${_option}${_defaultValue}/" "${_pamFile}"
 	# add a new entry if none exists
-	elif ! grep -q -E "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}=${_valueRegex}" < "${_pamFile}" ; then
-		echo "${_type} ${_control} ${_module} ${_option}=${_defaultValue}" >> "${_pamFile}"
+	elif ! grep -q -P "^\\s*${_type}\\s+${_control}\\s+${_module}(\\s.+)?\\s+${_option}${_valueRegex}(\\s|\$)" < "${_pamFile}" ; then
+		echo "${_type} ${_control} ${_module} ${_option}${_defaultValue}" >> "${_pamFile}"
 	fi
 }
