@@ -21,4 +21,5 @@ selections:
      - sudo_remove_nopasswd
      - var_accounts_max_concurrent_login_sessions=10
      - accounts_max_concurrent_login_sessions
+     - accounts_passwords_pam_tally2
 
