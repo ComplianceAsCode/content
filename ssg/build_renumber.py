@@ -9,7 +9,7 @@ from .parse_oval import resolve_definition, find_extending_defs, get_container_g
 from .xml import parse_file, map_elements_to_their_ids
 
 
-from .checks import get_content_ref_if_exists_and_not_remote, is_cce_valid
+from .checks import get_content_ref_if_exists_and_not_remote, is_cce_value_valid, is_cce_format_valid
 from .utils import SSGError
 from .xml import ElementTree as ET
 oval_ns = oval_namespace
@@ -177,7 +177,7 @@ class OVALFileLinker(FileLinker):
                 "OVAL rule '{0}' doesn't have a description, which is mandatory".format(ovalid)
 
             xccdfcceid = idmappingdict[ovalid]
-            if is_cce_valid(xccdfcceid):
+            if is_cce_format_valid(xccdfcceid) and is_cce_value_valid(xccdfcceid):
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
                 ccerefelem = ET.Element('reference', ref_id=xccdfcceid,

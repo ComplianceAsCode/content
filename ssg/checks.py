@@ -45,7 +45,7 @@ def is_content_href_remote(check_content_ref):
     return hrefattr.startswith("http://") or hrefattr.startswith("https://")
 
 
-def is_cce_valid(cceid):
+def is_cce_format_valid(cceid):
     """
     IF CCE ID IS IN VALID FORM (either 'CCE-XXXX-X' or 'CCE-XXXXX-X'
     where each X is a digit, and the final X is a check-digit)
@@ -54,15 +54,16 @@ def is_cce_valid(cceid):
     http://people.redhat.com/swells/nist-scap-validation/scap-val-requirements-1.2.html
     """
     match = re.match(r'^CCE-\d{4,5}-\d$', cceid)
-    if match is None:
-        return False
+    return match is not None
 
+
+def is_cce_value_valid(cceid):
     # For context, see:
     # https://github.com/ComplianceAsCode/content/issues/3044#issuecomment-420844095
 
     # concat(substr ... , substr ...) -- just remove non-digit characters.
     # Since we've already validated format, this hack suffices:
-    cce = cceid.replace('-', '')[3:]
+    cce = re.sub(r'(CCE|-)', '', cceid)
 
     # (string-to-codepoints - 48) is the same as int. Add in the reverse too.
     # Double list cast is necessary: map isn't reversible, and generator
