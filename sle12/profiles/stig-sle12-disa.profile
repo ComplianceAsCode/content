@@ -26,5 +26,7 @@ selections:
      - accounts_logon_fail_delay
      - cracklib_accounts_password_pam_ucredit
      - cracklib_accounts_password_pam_lcredit
+     - cracklib_accounts_password_pam_dcredit
+     - cracklib_accounts_password_pam_ocredit
      - cracklib_accounts_password_pam_difok
 
