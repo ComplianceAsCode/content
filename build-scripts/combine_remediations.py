@@ -31,8 +31,10 @@ def parse_args():
     p.add_argument("--remediation_type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
-    p.add_argument("--output_dir", required=True,
-            help="output directory where all remediations will be saved")
+    p.add_argument(
+        "--output_dir", required=True,
+        help="output directory where all remediations will be saved"
+    )
     p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
                    help="directory(ies) from which we will collect "
                    "remediations to combine.")
@@ -78,7 +80,7 @@ def main():
                                     product, _path, rule_id)
 
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
-            args.output_dir)
+                                   args.output_dir)
 
     sys.stderr.write("Collected %d %s remediations.\n" % (len(fixes), args.remediation_type))
 
