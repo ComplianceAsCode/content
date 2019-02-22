@@ -38,8 +38,8 @@ def has_prefix_cce(yaml_file, product_yaml=None):
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = ssgcommon.is_cce_valid("CCE-" + i_value[3:])
-                remainder_valid |= ssgcommon.is_cce_valid("CCE-" + i_value[4:])
+                remainder_valid = ssgcommon.is_cce_format_valid("CCE-" + i_value[3:])
+                remainder_valid |= ssgcommon.is_cce_format_valid("CCE-" + i_value[4:])
                 return has_prefix and remainder_valid
     return False
 
@@ -49,7 +49,7 @@ def has_invalid_cce(yaml_file, product_yaml=None):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
-                if not ssgcommon.is_cce_valid("CCE-" + i_value):
+                if not ssgcommon.is_cce_value_valid("CCE-" + i_value):
                     return True
     return False
 
@@ -231,9 +231,9 @@ def rewrite_value_remove_prefix(line):
     key = line[0:key_end]
     value = line[key_end+1:].strip()
     new_value = value
-    if ssgcommon.is_cce_valid("CCE-" + value[3:]):
+    if ssgcommon.is_cce_format_valid("CCE-" + value[3:]):
         new_value = value[3:]
-    elif ssgcommon.is_cce_valid("CCE-" + value[4:]):
+    elif ssgcommon.is_cce_format_valid("CCE-" + value[4:]):
         new_value = value[4:]
     return key + ": " + new_value
 
@@ -307,8 +307,8 @@ def fix_prefix_cce(file_contents, yaml_contents):
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = ssgcommon.is_cce_valid("CCE-" + i_value[3:])
-                remainder_valid |= ssgcommon.is_cce_valid("CCE-" + i_value[4:])
+                remainder_valid = ssgcommon.is_cce_format_valid("CCE-" + i_value[3:])
+                remainder_valid |= ssgcommon.is_cce_format_valid("CCE-" + i_value[4:])
                 if has_prefix and remainder_valid:
                     prefixed_identifiers.append(i_type)
 
@@ -324,7 +324,7 @@ def fix_invalid_cce(file_contents, yaml_contents):
     if yaml_contents[section] is not None:
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
-                if not ssgcommon.is_cce_valid("CCE-" + i_value):
+                if not ssgcommon.is_cce_value_valid("CCE-" + i_value):
                     invalid_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)

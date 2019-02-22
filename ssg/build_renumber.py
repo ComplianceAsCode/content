@@ -425,7 +425,7 @@ def verify_correct_form_of_referenced_cce_identifiers(xccdftree):
         identcce = _find_identcce(rule)
         if identcce is not None:
             cceid = identcce.text
-            if not is_cce_valid(cceid):
+            if not is_cce_format_valid(cceid):
                 print("Warning: CCE '{0}' is invalid for rule '{1}'. Removing CCE..."
                       .format(cceid, rule.get("id"), file=sys.stderr))
                 rule.remove(identcce)
