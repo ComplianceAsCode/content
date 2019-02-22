@@ -192,7 +192,7 @@ def _split_remediation_content_and_metadata(fix_file_lines):
     return remediation(remediation_contents, config)
 
 
-def parse_from_file(file_path, env_yaml):
+def parse_from_file_with_jinja(file_path, env_yaml):
     """
     Parses a remediation from a file. As remediations contain jinja macros,
     we need a env_yaml context to process these. In practice, no remediations
@@ -229,7 +229,7 @@ def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name)
     if not is_supported_filename(remediation_type, file_path):
         return
 
-    result = parse_from_file(file_path, env_yaml)
+    result = parse_from_file_with_jinja(file_path, env_yaml)
 
     if not result.config['platform']:
         raise RuntimeError(

@@ -44,8 +44,8 @@ def do_test_contents(remediation, config):
     assert 'low' == config['disruption']
 
 
-def test_parse_from_file():
-    remediation, config = sbr.parse_from_file(rhel_bash, {})
+def test_parse_from_file_with_jinja():
+    remediation, config = sbr.parse_from_file_with_jinja(rhel_bash, {})
     do_test_contents(remediation, config)
 
 
