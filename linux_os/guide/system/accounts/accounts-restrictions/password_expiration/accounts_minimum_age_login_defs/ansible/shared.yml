@@ -11,6 +11,3 @@
       dest: /etc/login.defs
       regexp: ^#?PASS_MIN_DAYS
       line: "PASS_MIN_DAYS {{ var_accounts_minimum_age_login_defs }}"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

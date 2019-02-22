@@ -9,9 +9,6 @@
     regexp: '^service-db:keyfile/user.*'
     state: 'absent'
   check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Insert the \" use textfiles backend\" directive at the top of the config file"
   lineinfile:
@@ -21,7 +18,4 @@
     insertbefore: 'BOF'
     create: yes
   check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 

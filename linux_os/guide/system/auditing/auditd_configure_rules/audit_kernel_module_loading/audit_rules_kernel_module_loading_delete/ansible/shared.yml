@@ -33,18 +33,13 @@
     line: '-a always,exit -F arch=b32 -S delete_module -k module-change'
     state: present
     create: true
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 - name: Inserts/replaces the delete_module rule in rules.d on x86_64
   lineinfile:
     path: '{{ all_files[0] }}'
     line: '-a always,exit -F arch=b64 -S delete_module -k module-change'
     state: present
     create: true
-  when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: audit_arch == 'b64'
 
 # Inserts/replaces the delete_modules rule in /etc/audit/audit.rules
 
@@ -53,14 +48,9 @@
     path: /etc/audit/audit.rules
     line: '-a always,exit -F arch=b32 -S delete_module -k module-change'
     create: true
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 - name: Inserts/replaces the delete_module rule in audit.rules when on x86_64
   lineinfile:
     path: /etc/audit/audit.rules
     line: '-a always,exit -F arch=b64 -S delete_module -k module-change'
     create: true
-  when: audit_arch == 'b64' and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: audit_arch == 'b64'

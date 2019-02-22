@@ -10,9 +10,6 @@
     state: "stopped"
   register: service_result
   failed_when: "service_result is failed and ('Could not find the requested service' not in service_result.msg)"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 {{% if init_system == "systemd" %}}
 - name: Disable socket of service {{{ SERVICENAME }}} if applicable
@@ -22,7 +19,4 @@
     state: "stopped"
   register: socket_result
   failed_when: "socket_result is failed and ('Could not find the requested service' not in socket_result.msg)"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 {{% endif %}}

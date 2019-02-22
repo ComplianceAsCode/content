@@ -10,9 +10,6 @@
   register: device_name
   check_mode: no
   changed_when: False
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - block:
   - name: get back device previous mount option
@@ -36,6 +33,4 @@
       opts: "{{ device_cur_mountoption.stdout }},{{{ MOUNTOPTION }}}"
       state: "mounted"
       fstype: "{{ device_fstype.stdout }}"
-  when: (device_name.stdout | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (device_name.stdout | length > 0)

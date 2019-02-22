@@ -8,16 +8,10 @@
     dest: /etc/pam.d/system-auth
     follow: yes
     regexp: 'nullok'
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent Log In to Accounts With Empty Password - password-auth"
   replace:
     dest: /etc/pam.d/password-auth
     follow: yes
     regexp: 'nullok'
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 

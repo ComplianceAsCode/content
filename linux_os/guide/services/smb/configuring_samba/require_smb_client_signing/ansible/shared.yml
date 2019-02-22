@@ -7,9 +7,6 @@
   stat:
     path: /etc/samba/smb.conf
   register: st_smb
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Require Client SMB Packet Signing, if using smbclient
   lineinfile:
@@ -17,6 +14,4 @@
     line: client signing = mandatory
     state: present
     insertafter: [global]
-  when: st_smb.stat.exists and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: st_smb.stat.exists

@@ -10,9 +10,6 @@
     option: banner-message-enable
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME banner-message-enabled"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/login-screen/banner-message-enable'
     line: '/org/gnome/login-screen/banner-message-enable'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

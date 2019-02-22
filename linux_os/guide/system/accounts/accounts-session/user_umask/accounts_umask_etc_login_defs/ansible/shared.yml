@@ -11,6 +11,3 @@
     dest: /etc/login.defs
     regexp: ^UMASK
     line: "UMASK {{ var_accounts_user_umask }}"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

@@ -10,9 +10,6 @@
     option: authentication-methods
     value: "['vnc']"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Credential Prompting for Remote Access"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/Vino/authentication-methods'
     line: '/org/gnome/Vino/authentication-methods'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

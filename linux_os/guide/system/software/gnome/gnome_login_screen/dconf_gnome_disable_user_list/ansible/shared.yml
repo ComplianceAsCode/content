@@ -10,9 +10,6 @@
     option: disable-user-list
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 disablement of Login User List"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/login-screen/disable-user-list'
     line: '/org/gnome/login-screen/disable-user-list'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

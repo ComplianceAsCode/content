@@ -15,9 +15,6 @@
   with_items:
     - gdm.d
     - gdm.d/locks
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   file:
@@ -29,9 +26,6 @@
   with_items:
     - 00-security-settings
     - locks/00-security-settings-lock
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   ini_file:
@@ -40,9 +34,6 @@
     option: banner-message-text
     value: string '{{ login_banner_text }}'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
   lineinfile:
@@ -51,6 +42,3 @@
     line: 'org/gnome/login-screen/banner-message-text'
     create: yes
     state: present
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

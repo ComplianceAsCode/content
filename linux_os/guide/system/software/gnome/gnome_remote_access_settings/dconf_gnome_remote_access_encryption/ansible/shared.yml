@@ -10,9 +10,6 @@
     option: require-encryption
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Encryption for Remote Access"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/Vino/require-encryption'
     line: '/org/gnome/Vino/require-encryption'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

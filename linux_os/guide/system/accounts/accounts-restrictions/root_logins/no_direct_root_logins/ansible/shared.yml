@@ -11,6 +11,3 @@
 - name: "Direct root Logins Not Allowed"
   shell: echo > /etc/securetty
   changed_when: securetty_empty.stat.size > "1"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

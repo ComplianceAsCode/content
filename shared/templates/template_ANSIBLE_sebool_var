@@ -9,15 +9,10 @@
   package:
     name: libsemanage-python
     state: latest
-  tags:
-    - skip_ansible_lint # [ANSIBLE0010] Skipping lint because ANSIBLE0010 is a bad security practice
 
 - name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
   seboolean:
     name: {{{ SEBOOLID }}}
     state: "{{ var_{{{ SEBOOLID }}} }}"
     persistent: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
