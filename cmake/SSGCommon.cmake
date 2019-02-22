@@ -1112,6 +1112,10 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/roles"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/roles/*.sh" "zipfile/${ZIPNAME}/roles"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/roles/*.yml" "zipfile/${ZIPNAME}/roles"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/guides"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/guides/*" "zipfile/${ZIPNAME}/guides"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/tables"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/tables/*" "zipfile/${ZIPNAME}/tables"
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
         COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
         )
