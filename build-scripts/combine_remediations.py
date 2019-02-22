@@ -28,6 +28,10 @@ def parse_args():
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
+    p.add_argument(
+        "--resolved-rules", required=True,
+        help="Directory with <rule-id>.yml resolved rule YAMLs"
+    )
     p.add_argument("--remediation_type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
@@ -56,6 +60,8 @@ def main():
 
     # As fixes is continually updated, the last seen fix that is applicable for a
     # given fix_name is chosen to replace newer fix_names
+    remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
+
     fixes = dict()
     for fixdir in args.fixdirs:
         if os.path.isdir(fixdir):
@@ -63,10 +69,10 @@ def main():
                 file_path = os.path.join(fixdir, filename)
                 fix_name, _ = os.path.splitext(filename)
 
+                remediation_obj = remediation_cls(
+                    env_yaml, args.resolved_rules, product, file_path, fix_name)
                 # Fixes gets updated with the contents of the fix, if it is applicable
-                remediation.process_fix(fixes, args.remediation_type,
-                                        env_yaml, product, file_path,
-                                        fix_name)
+                remediation_obj.process(fixes)
 
     # Walk the guide last, looking for rule folders as they have the highest priority
     for _dir_path in ssg.rules.find_rule_dirs(guide_dir):
@@ -76,8 +82,11 @@ def main():
         for _path in reversed(contents):
             # To be compatible with the later checks, use the rule_id
             # (i.e., the value of _dir) to create the fix_name
-            remediation.process_fix(fixes, args.remediation_type, env_yaml,
-                                    product, _path, rule_id)
+
+            remediation_obj = remediation_cls(
+                env_yaml, args.resolved_rules, product, _path, rule_id)
+            # Fixes gets updated with the contents of the fix, if it is applicable
+            remediation_obj.process(fixes)
 
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
                                    args.output_dir)

@@ -8,6 +8,8 @@ import re
 import codecs
 from collections import defaultdict, namedtuple
 
+
+import ssg.yaml
 from .jinja import process_file as jinja_process_file
 from .xml import ElementTree
 from .products import parse_name, map_name
@@ -189,7 +191,7 @@ def _split_remediation_content_and_metadata(fix_file_lines):
         remediation_contents.append(line)
 
     remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(remediation_contents, config)
+    return remediation(contents=remediation_contents, config=config)
 
 
 def parse_from_file_with_jinja(file_path, env_yaml):
@@ -218,26 +220,94 @@ def parse_from_file_without_jinja(file_path):
         return _split_remediation_content_and_metadata(lines)
 
 
-def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name):
-    """
-    Process a fix, adding it to fixes iff the file is of a valid extension
-    for the remediation type and the fix is valid for the current product.
+class Remediation(object):
+    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name, remediation_type):
+        self.env_yaml = env_yaml
+        self.resolved_rules = resolved_rules
+        self.product = product
+        self.file_path = file_path
+        self.fix_name = fix_name
+        self.remediation_type = remediation_type
 
-    Note that platform is a required field in the contents of the fix.
-    """
+    def process(self, fixes):
+        """
+        Process a fix, adding it to fixes iff the file is of a valid extension
+        for the remediation type and the fix is valid for the current product.
 
-    if not is_supported_filename(remediation_type, file_path):
-        return
+        Note that platform is a required field in the contents of the fix.
+        """
 
-    result = parse_from_file_with_jinja(file_path, env_yaml)
+        if not is_supported_filename(self.remediation_type, self.file_path):
+            return
 
-    if not result.config['platform']:
-        raise RuntimeError(
-            "The '%s' remediation script does not contain the "
-            "platform identifier!" % (file_path))
+        result = parse_from_file_with_jinja(self.file_path, self.env_yaml)
 
-    if is_applicable_for_product(result.config['platform'], product):
-        fixes[fix_name] = result
+        if not result.config['platform']:
+            raise RuntimeError(
+                "The '%s' remediation script does not contain the "
+                "platform identifier!" % (self.file_path))
+
+        if is_applicable_for_product(result.config['platform'], self.product):
+            fixes[self.fix_name] = result
+
+        return result
+
+
+class BashRemediation(Remediation):
+    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+        super(BashRemediation, self).__init__(
+            env_yaml, resolved_rules, product, file_path, fix_name, "bash")
+
+
+class AnsibleRemediation(Remediation):
+    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+        super(AnsibleRemediation, self).__init__(
+            env_yaml, resolved_rules, product, file_path, fix_name, "ansible")
+
+    def process(self, fixes):
+        result = super(AnsibleRemediation, self).process(fixes)
+
+        rule_path = os.path.join(
+            self.resolved_rules, self.fix_name + ".yml")
+        if not os.path.isfile(rule_path):
+            msg = ("Ansible snippet for rule {rule_id} "
+                   "doesn't have respective rule YML at {rule_fname}"
+                   .format(rule_id=os.path.splitext(self.fix_name)[0], rule_fname=rule_path))
+            print(msg, file=sys.stderr)
+            return result
+
+        import ssg.ansible
+        from ssg import build_yaml
+
+        remediation_obj = ssg.ansible.AnsibleRemediation(result.contents, result.config)
+        remediation_obj.rule = build_yaml.Rule.from_yaml(rule_path)
+        remediation_obj.update(self.product)
+
+        updated_yaml_text = ssg.yaml.ordered_dump(
+            remediation_obj.parsed, None, default_flow_style=False)
+        result.contents[:] = updated_yaml_text.split("\n")
+
+        return result
+
+
+class AnacondaRemediation(Remediation):
+    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+        super(AnacondaRemediation, self).__init__(
+            env_yaml, resolved_rules, product, file_path, fix_name, "anaconda")
+
+
+class PuppetRemediation(Remediation):
+    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+        super(PuppetRemediation, self).__init__(
+            env_yaml, resolved_rules, product, file_path, fix_name, "puppet")
+
+
+REMEDIATION_TO_CLASS = {
+    'anaconda': AnacondaRemediation,
+    'ansible': AnsibleRemediation,
+    'bash': BashRemediation,
+    'puppet': PuppetRemediation,
+}
 
 
 def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
