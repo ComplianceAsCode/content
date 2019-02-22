@@ -166,7 +166,7 @@ def get_populate_replacement(remediation_type, text):
     sys.exit(1)
 
 
-def _parse_remediation(fix_file_lines):
+def _split_remediation_content_and_metadata(fix_file_lines):
     remediation_contents = []
     config = defaultdict(lambda: None)
 
@@ -204,7 +204,7 @@ def parse_from_file(file_path, env_yaml):
     """
 
     fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
-    return _parse_remediation(fix_file_lines)
+    return _split_remediation_content_and_metadata(fix_file_lines)
 
 
 def parse_from_file_without_jinja(file_path):
@@ -215,7 +215,7 @@ def parse_from_file_without_jinja(file_path):
     """
     with open(file_path, "r") as f:
         lines = f.read().splitlines()
-        return _parse_remediation(lines)
+        return _split_remediation_content_and_metadata(lines)
 
 
 def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name):
