@@ -47,7 +47,7 @@ def test_is_cce_format_valid():
 def test_is_cce_value_valid():
     icv = ssg.checks.is_cce_value_valid
     assert icv("CCE-27191-6")
-    assert icv("CCE-7223-7")
+    assert icv("CCE-27223-7")
 
     assert not icv("1234-5")
     assert not icv("12345-6")
