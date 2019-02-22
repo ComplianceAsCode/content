@@ -38,4 +38,5 @@ selections:
      - cracklib_accounts_password_pam_minlen
      - var_accounts_minimum_age_login_defs=1
      - accounts_minimum_age_login_defs
+     - account_minimum_age_shadow
 

@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Account Password Minimum Lifetime'
+
+description: |-
+    Configure all user accounts to enforce 24 hours/1 day or greater as the
+    minimum password age.
+
+    Change the minimum time period between password changes for each
+    <tt>[USER]</tt> account to "<tt>1</tt>" day with the command, replacing
+    <tt>[USER]</tt> with the user account that must be changed:
+
+    <pre># sudo passwd -n 1 [USER]</pre>
+
+rationale: |-
+    Enforcing a minimum password lifetime helps prevent repeated password
+    changes to defeat the password reuse or history enforcement requirement. If
+    users are allowed to immediately and continually change their password, the
+    password could be repeatedly changed in a short period of time to defeat
+    the organization's policy regarding password reuse.
+
+severity: medium
+
+references:
+    stigid@sle12: "010270"
+    disa: "198"
+    nist: IA-5(1)(d),IA-5(1).1(v)
+
+ocil_clause: 'the second column is zero for any account'
+
+ocil: |-
+    Check the minimum time period between password changes for each user account with the following command:
+
+    <pre># sudo cat /etc/shadow | cut -d ':' -f1,4 | grep -v 1 | grep -v ":$"
+
+    smithj:1</pre>
