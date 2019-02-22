@@ -284,8 +284,8 @@ def write_fixes_to_dir(fixes, remediation_type, output_dir):
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
-    for fix_name in fixes:
-        fix_contents, config = fixes[fix_name]
+    for fix_name, fix in fixes.items():
+        fix_contents, config = fix
         fix_path = os.path.join(output_dir, fix_name + extension)
         with open(fix_path, "w") as f:
             for k, v in config.items():
