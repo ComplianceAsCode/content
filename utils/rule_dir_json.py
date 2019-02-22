@@ -132,7 +132,9 @@ def handle_remediations(product_list, product_yamls, rule_obj):
                 prod_type = r_product
             product_yaml = product_yamls[prod_type]
 
-            _, config = ssg.build_remediations.parse_from_file(r_path, product_yaml)
+            _, config = ssg.build_remediations.parse_from_file_with_jinja(
+                r_path, product_yaml
+            )
             platforms = config['platform']
             if not platforms:
                 print(config['platform'])
