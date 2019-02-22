@@ -37,6 +37,8 @@ def parse_args():
     parser.add_argument("action",
                         choices=["build", "list-inputs", "list-outputs"],
                         help="Which action to perform.")
+    parser.add_argument("--resolve-rules-into", "-l",
+                        help="To which directory to put processed rule YAMLs.")
     return parser.parse_args()
 
 
@@ -46,7 +48,6 @@ def main():
     if args.action == "list-outputs":
         print(args.output)
         sys.exit(0)
-
 
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
@@ -61,9 +62,17 @@ def main():
     if not os.path.isabs(profiles_root):
         profiles_root = os.path.join(base_dir, profiles_root)
 
-    ssg.build_yaml.add_from_directory(args.action, None, benchmark_root,
-                                      profiles_root, args.bash_remediation_fns,
-                                      args.output, env_yaml)
+    if args.action == "build":
+        loader = ssg.build_yaml.BuildLoader(
+            profiles_root, args.bash_remediation_fns, env_yaml, args.resolve_rules_into)
+        loader.process_directory_tree(benchmark_root)
+        loader.export_group_to_file(args.output)
+    elif args.action == "list-inputs":
+        loader = ssg.build_yaml.ListInputsLoader(
+            profiles_root, args.bash_remediation_fns, env_yaml)
+        loader.process_directory_tree(benchmark_root)
+    else:
+        RuntimeError("Invalid action: {action}".format(action=args.action))
 
 
 if __name__ == "__main__":
