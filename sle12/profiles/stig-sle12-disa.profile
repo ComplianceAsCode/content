@@ -36,4 +36,6 @@ selections:
      - set_password_hashing_min_rounds_logindefs
      - var_password_pam_minlen=15
      - cracklib_accounts_password_pam_minlen
+     - var_accounts_minimum_age_login_defs=1
+     - accounts_minimum_age_login_defs
 
