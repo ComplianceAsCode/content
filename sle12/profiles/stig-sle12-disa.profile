@@ -33,4 +33,5 @@ selections:
      - set_password_hashing_algorithm_logindefs
      - accounts_password_all_shadowed_sha512
      - no_empty_passwords
+     - set_password_hashing_min_rounds_logindefs
 
