@@ -274,6 +274,23 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
     endforeach()
 endmacro()
 
+macro(ssg_build_ansible_playbooks PRODUCT)
+    set(ANSIBLE_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/ansible")
+    set(ANSIBLE_PLAYBOOKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/playbooks")
+    add_custom_command(
+        OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${ANSIBLE_FIXES_DIR}" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml"
+        DEPENDS "${ANSIBLE_FIXES_DIR}"
+        DEPENDS generate-internal-${PRODUCT}-ansible-all-fixes
+        DEPENDS "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py"
+        COMMENT "[${PRODUCT}-content] Generating Ansible Playbooks"
+    )
+    add_custom_target(
+        generate-${PRODUCT}-ansible-playbooks
+        DEPENDS "${ANSIBLE_PLAYBOOKS_DIR}"
+    )
+endmacro()
+
 macro(ssg_build_remediations PRODUCT)
     message(STATUS "Scanning for dependencies of ${PRODUCT} fixes (bash, ansible, puppet and anaconda)...")
     _ssg_build_remediations_for_language(${PRODUCT} "bash;ansible;puppet;anaconda")
@@ -657,6 +674,7 @@ macro(ssg_build_product PRODUCT)
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
+    ssg_build_ansible_playbooks(${PRODUCT})
     ssg_build_xccdf_with_remediations(${PRODUCT})
     ssg_build_oval_unlinked(${PRODUCT})
     ssg_build_cpe_dictionary(${PRODUCT})
@@ -680,6 +698,7 @@ macro(ssg_build_product PRODUCT)
         generate-ssg-${PRODUCT}-ocil.xml
         generate-ssg-${PRODUCT}-cpe-dictionary.xml
         generate-ssg-${PRODUCT}-ds.xml
+        generate-${PRODUCT}-ansible-playbooks
     )
 
     add_dependencies(zipfile "generate-ssg-${PRODUCT}-ds.xml")
