@@ -39,4 +39,6 @@ selections:
      - var_accounts_minimum_age_login_defs=1
      - accounts_minimum_age_login_defs
      - account_minimum_age_shadow
+     - var_accounts_maximum_age_login_defs=60
+     - accounts_maximum_age_login_defs
 
