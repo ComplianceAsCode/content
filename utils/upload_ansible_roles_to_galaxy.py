@@ -229,7 +229,8 @@ class Role(object):
         vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
                                        default_flow_style=False)
 
-        if vars_local_content != vars_remote_content.decoded_content:
+        if vars_local_content != vars_remote_content.decoded_content and \
+            vars_local_content.splitlines()[0] != "null":
             self.remote_repo.update_file(
                 "/vars/main.yml",
                 "Updates vars/main.yml",
