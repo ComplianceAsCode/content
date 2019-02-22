@@ -83,7 +83,7 @@ def create_empty_repositories(github_new_repos, github_org):
 
 def clone_and_init_repository(parent_dir, organization, repo):
     os.system(
-        "git clone git@github.com:%s/%s.git" % (organization, repo))
+        "git clone https://github.com/%s/%s" % (organization, repo))
     os.system("ansible-galaxy init " + repo + " --force")
     os.chdir(repo)
     try:
@@ -301,9 +301,14 @@ class Role(object):
             self.tasks_data, width=120, indent=4, default_flow_style=False)
 
         self._reformat_local_content()
-        self.title = re.search(
-            r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        # Why so?
+        try:
+            self.title = re.search(
+                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+        except AttributeError:
+            self.title = re.search(
+                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
+
+        # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
         self._update_tasks_content_if_needed()
@@ -383,19 +388,24 @@ def main():
     # Create empty repositories
     github_new_repos = sorted(list(set(selected_roles) - set(github_repositories)))
     if github_new_repos:
-        repo_status = "new"
         create_empty_repositories(github_new_repos, github_org)
 
-        locally_clone_and_init_repositories(args.organization, github_repositories)
+        locally_clone_and_init_repositories(args.organization, github_new_repos)
 
     # Update repositories
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
+        if repo.name in github_new_repos:
+            repo_status = "new"
+        else:
+            repo_status = "update"
+
         if repo.name in selected_roles:
             corresponding_filename = os.path.join(
                 args.build_roles_dir, "ssg-" + repo.name + ".yml")
             Role(repo, corresponding_filename).update_repository(repo_status)
         elif repo.name not in potential_roles:
-            print("Repo %s should be deleted, please verify and do that "
+            print("Repo '%s' is not managed by this script. "
+                  "It may need to be deleted, please verify and do that "
                   "manually!" % repo.name)
 
 
