@@ -167,7 +167,7 @@ def get_populate_replacement(remediation_type, text):
 
 
 def _parse_remediation(fix_file_lines):
-    mod_file = []
+    remediation_contents = []
     config = defaultdict(lambda: None)
 
     # Assignment automatically escapes shell characters for XML
@@ -186,10 +186,10 @@ def _parse_remediation(fix_file_lines):
         # begins with a '#' and contains an equals sign, but
         # the "key" isn't one of the known keys from
         # REMEDIATION_CONFIG_KEYS.
-        mod_file.append(line)
+        remediation_contents.append(line)
 
     remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(mod_file, config)
+    return remediation(remediation_contents, config)
 
 
 def parse_from_file(file_path, env_yaml):
