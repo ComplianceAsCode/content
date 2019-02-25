@@ -181,33 +181,33 @@ class PlaybookBuilder():
                 playbook, playbook_file, default_flow_style=False
             )
 
-    def create_playbooks_for_profile(self, profile_path, variables):
+    def open_profile(self, profile_path):
+        if not os.path.isfile(profile_path):
+            raise RuntimeError("'%s' is not a file!\n" % profile_path)
+        profile_id, ext = os.path.splitext(os.path.basename(profile_path))
+        if ext != ".profile":
+            raise RuntimeError(
+                "Encountered file '%s' while looking for profiles, "
+                "extension '%s' is unknown. Skipping..\n"
+                % (profile_path, ext)
+            )
+
+        profile = ssg.build_yaml.Profile.from_yaml(profile_path, self.env_yaml)
+        if not profile:
+            raise RuntimeError("Could not parse profile %s.\n" % profile_path)
+        return profile
+
+    def create_playbooks_for_profile(self, profile, variables):
         """
         Creates playbooks for profile from tasks from snippets.
         Created playbooks are parametrized by variables according
         to profile definition. Playbooks are written into a new subdirectory
         in output_dir.
         """
-        if not os.path.isfile(profile_path):
-            sys.stderr.write("'%s' is not a file! Skippping." % profile_path)
-            return None
-        profile_id, ext = os.path.splitext(os.path.basename(profile_path))
-        if ext != ".profile":
-            sys.stderr.write(
-                "Encountered file '%s' while looking for profiles, "
-                "extension '%s' is unknown. Skipping..\n"
-                % (profile_path, ext)
-            )
-            return None
-
-        profile = ssg.build_yaml.Profile.from_yaml(profile_path, self.env_yaml)
-        if not profile:
-            sys.stderr.write("Could not parse profile %s.\n" % profile_path)
-            return None
         profile_refines = self.get_variable_selectors_from_profile(profile)
         profile_rules = self.get_rules_from_profile(profile)
 
-        profile_playbooks_dir = os.path.join(self.output_dir, profile_id)
+        profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
         os.makedirs(profile_playbooks_dir)
 
         for snippet in os.listdir(self.input_dir):
@@ -225,11 +225,23 @@ class PlaybookBuilder():
                     profile_refines, profile_playbooks_dir
                 )
 
-    def build_all_playbooks(self):
+    def build_all_playbooks(self, profile_id=None):
         variables = self.get_benchmark_variables()
-        for profile_file in os.listdir(self.profiles_dir):
-            profile_path = os.path.join(self.profiles_dir, profile_file)
-            self.create_playbooks_for_profile(profile_path, variables)
+        if profile_id:
+            profile_path = os.path.join(
+                self.profiles_dir, profile_id + ".profile")
+            profile = self.open_profile(profile_path)
+            self.create_playbooks_for_profile(profile, variables)
+        else:
+            # run for all profiles
+            for profile_file in os.listdir(self.profiles_dir):
+                profile_path = os.path.join(self.profiles_dir, profile_file)
+                try:
+                    profile = self.open_profile(profile_path)
+                except RuntimeError as e:
+                    sys.stderr.write("%s. Skipping %s." % (str(e), profile_id))
+                    continue
+                self.create_playbooks_for_profile(profile, variables)
 
 
 def parse_args():
@@ -256,6 +268,10 @@ def parse_args():
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
+    p.add_argument(
+        "--profile",
+        help="Generate Playbooks only for given Profile ID"
+    )
     return p.parse_args()
 
 
@@ -265,7 +281,7 @@ def main():
         args.build_config_yaml, args.product_yaml,
         args.input_dir, args.output_dir
     )
-    playbook_builder.build_all_playbooks()
+    playbook_builder.build_all_playbooks(args.profile)
 
 
 if __name__ == "__main__":
