@@ -149,10 +149,11 @@ class PlaybookBuilder():
         snippet_yaml = ssg.yaml.ordered_load(snippet_str)
         # end of workaround
 
-        tasks, vars = self.get_data_from_snippet(snippet_yaml, variables,
-                                                 refinements)
+        play_tasks, play_vars = self.get_data_from_snippet(
+            snippet_yaml, variables, refinements
+        )
 
-        if len(tasks) == 0:
+        if len(play_tasks) == 0:
             raise ValueError(
                 "Ansible remediation for rule '%s' in '%s' "
                 "doesn't contain any task." %
@@ -167,11 +168,11 @@ class PlaybookBuilder():
             ("hosts", "@@HOSTS@@"),
             ("become", True),
         ]
-        if len(vars) > 0:
-            play.append(("vars", vars))
+        if len(play_vars) > 0:
+            play.append(("vars", play_vars))
         if len(tags) > 0:
             play.append(("tags", tags))
-        play.append(("tasks", tasks))
+        play.append(("tasks", play_tasks))
         play_ordered_dict = OrderedDict(play)
 
         playbook = [play_ordered_dict]
