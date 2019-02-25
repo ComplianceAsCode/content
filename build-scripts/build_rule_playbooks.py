@@ -33,6 +33,12 @@ class PlaybookBuilder():
             os.path.join(product_dir, relative_profiles_dir))
 
     def get_profile_selections(self, profile):
+        """
+        Provides a tuple (rules, variables) where rules is a list of rules
+        selected in the profile and variables is a dictionary of
+        variables and their values in the profile. The method can handle
+        profiles which extend other profiles.
+        """
         rules = []
         variables = dict()
         if profile.extends:
@@ -77,6 +83,9 @@ class PlaybookBuilder():
         return value
 
     def get_data_from_snippet(self, snippet_yaml, variables, refinements):
+        """
+        Extracts and resolves tasks and variables from Ansible snippet.
+        """
         xccdf_var_pattern = re.compile(r"\(xccdf-var\s+(\S+)\)")
         tasks = []
         values = dict()
@@ -95,6 +104,9 @@ class PlaybookBuilder():
         return tasks, values
 
     def get_tags_from_comments(self, snippet_path):
+        """
+        Adds tags based on recognized comments in the given Ansible snippet.
+        """
         tags = []
         remediation = ssg.build_remediations.parse_from_file_without_jinja(
             snippet_path
@@ -128,6 +140,10 @@ class PlaybookBuilder():
 
     def create_playbook_for_rule(self, snippet_path, rule_id, variables,
                                  refinements, output_dir):
+        """
+        Creates a Playbook from Ansible snippet for the given rule specified
+        by rule ID, fills in the profile values and saves it into output_dir.
+        """
         tags = self.get_tags_from_comments(snippet_path)
 
         # TODO: Remove this temporary workaround
@@ -176,6 +192,9 @@ class PlaybookBuilder():
             )
 
     def open_profile(self, profile_path):
+        """
+        Opens and parses profile at the given profile_path.
+        """
         if not os.path.isfile(profile_path):
             raise RuntimeError("'%s' is not a file!\n" % profile_path)
         profile_id, ext = os.path.splitext(os.path.basename(profile_path))
@@ -193,10 +212,10 @@ class PlaybookBuilder():
 
     def create_playbooks_for_profile(self, profile, variables):
         """
-        Creates playbooks for profile from tasks from snippets.
-        Created playbooks are parametrized by variables according
-        to profile definition. Playbooks are written into a new subdirectory
-        in output_dir.
+        Creates a Playbook for each rule selected in a profile from tasks
+        extracted from snippets. Created Playbooks are parametrized by
+        variables according to profile selection. Playbooks are written into
+        a new subdirectory in output_dir.
         """
         profile_rules, profile_refines = self.get_profile_selections(profile)
 
@@ -219,6 +238,11 @@ class PlaybookBuilder():
                 )
 
     def build_all_playbooks(self, profile_id=None):
+        """
+        Creates Playbooks for a specified profile.
+        If profile is not given, creates playbooks for all profiles
+        in the product.
+        """
         variables = self.get_benchmark_variables()
         if profile_id:
             profile_path = os.path.join(
