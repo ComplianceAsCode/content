@@ -391,6 +391,10 @@ class Benchmark(object):
 class Group(object):
     """Represents XCCDF Group
     """
+    ATTRIBUTES_TO_PASS_ON = (
+        "platform",
+    )
+
     def __init__(self, id_):
         self.id_ = id_
         self.prodtype = "all"
@@ -471,6 +475,12 @@ class Group(object):
         if self.platform and not group.platform:
             group.platform = self.platform
         self.groups[group.id_] = group
+        self._pass_our_properties_on_to(group)
+
+    def _pass_our_properties_on_to(self, obj):
+        for attr in self.ATTRIBUTES_TO_PASS_ON:
+            if hasattr(obj, attr) and getattr(obj, attr) is None:
+                setattr(obj, attr, getattr(self, attr))
 
     def add_rule(self, rule):
         if rule is None:
@@ -478,6 +488,7 @@ class Group(object):
         if self.platform and not rule.platform:
             rule.platform = self.platform
         self.rules[rule.id_] = rule
+        self._pass_our_properties_on_to(rule)
 
     def __str__(self):
         return self.id_
@@ -795,12 +806,12 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rules:
             rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            self.loaded_group.add_rule(rule)
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
                 with open(output_for_rule, "w") as f:
                     yaml.dump(rule.to_contents_dict(), f)
-            self.loaded_group.add_rule(rule)
 
     def _get_new_loader(self):
         return BuildLoader(
