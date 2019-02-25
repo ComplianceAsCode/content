@@ -166,21 +166,9 @@ def get_populate_replacement(remediation_type, text):
     sys.exit(1)
 
 
-def parse_from_file(file_path, env_yaml):
-    """
-    Parses a remediation from a file. As remediations contain jinja macros,
-    we need a env_yaml context to process these. In practice, no remediations
-    use jinja in the configuration, so for extracting only the configuration,
-    env_yaml can be an abritrary product.yml dictionary.
-
-    If the logic of configuration parsing changes significantly, please also
-    update ssg.fixes.parse_platform(...).
-    """
-
-    mod_file = []
+def _split_remediation_content_and_metadata(fix_file_lines):
+    remediation_contents = []
     config = defaultdict(lambda: None)
-
-    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
 
     # Assignment automatically escapes shell characters for XML
     for line in fix_file_lines:
@@ -198,10 +186,36 @@ def parse_from_file(file_path, env_yaml):
         # begins with a '#' and contains an equals sign, but
         # the "key" isn't one of the known keys from
         # REMEDIATION_CONFIG_KEYS.
-        mod_file.append(line)
+        remediation_contents.append(line)
 
     remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(mod_file, config)
+    return remediation(remediation_contents, config)
+
+
+def parse_from_file_with_jinja(file_path, env_yaml):
+    """
+    Parses a remediation from a file. As remediations contain jinja macros,
+    we need a env_yaml context to process these. In practice, no remediations
+    use jinja in the configuration, so for extracting only the configuration,
+    env_yaml can be an abritrary product.yml dictionary.
+
+    If the logic of configuration parsing changes significantly, please also
+    update ssg.fixes.parse_platform(...).
+    """
+
+    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
+    return _split_remediation_content_and_metadata(fix_file_lines)
+
+
+def parse_from_file_without_jinja(file_path):
+    """
+    Parses a remediation from a file. Doesn't process the Jinja macros.
+    This function is useful in build phases in which all the Jinja macros
+    are already resolved.
+    """
+    with open(file_path, "r") as f:
+        lines = f.read().splitlines()
+        return _split_remediation_content_and_metadata(lines)
 
 
 def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name):
@@ -215,7 +229,7 @@ def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name)
     if not is_supported_filename(remediation_type, file_path):
         return
 
-    result = parse_from_file(file_path, env_yaml)
+    result = parse_from_file_with_jinja(file_path, env_yaml)
 
     if not result.config['platform']:
         raise RuntimeError(
@@ -226,7 +240,7 @@ def process_fix(fixes, remediation_type, env_yaml, product, file_path, fix_name)
         fixes[fix_name] = result
 
 
-def write_fixes(remediation_type, build_dir, output_path, fixes):
+def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
     """
     Builds a fix-content XML tree from the contents of fixes
     and writes it to output_path.
@@ -257,6 +271,26 @@ def write_fixes(remediation_type, build_dir, output_path, fixes):
 
     tree = ElementTree.ElementTree(fixcontent)
     tree.write(output_path)
+
+
+def write_fixes_to_dir(fixes, remediation_type, output_dir):
+    """
+    Writes fixes as files to output_dir, each fix as a separate file
+    """
+    try:
+        extension = REMEDIATION_TO_EXT_MAP[remediation_type]
+    except KeyError:
+        raise ValueError("Unknown remediation type %s." % remediation_type)
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    for fix_name, fix in fixes.items():
+        fix_contents, config = fix
+        fix_path = os.path.join(output_dir, fix_name + extension)
+        with open(fix_path, "w") as f:
+            for k, v in config.items():
+                f.write("# %s = %s\n" % (k, v))
+            f.write("\n".join(fix_contents))
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):

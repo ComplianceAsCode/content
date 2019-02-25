@@ -1,5 +1,3 @@
-import pytest
-
 import os
 import ssg.rule_yaml
 

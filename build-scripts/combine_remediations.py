@@ -31,10 +31,10 @@ def parse_args():
     p.add_argument("--remediation_type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
-    p.add_argument("--build_dir", required=True,
-                   help="where is the cmake build directory. pass value of "
-                   "$CMAKE_BINARY_DIR.")
-    p.add_argument("--output", type=argparse.FileType("wb"), required=True)
+    p.add_argument(
+        "--output_dir", required=True,
+        help="output directory where all remediations will be saved"
+    )
     p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
                    help="directory(ies) from which we will collect "
                    "remediations to combine.")
@@ -79,10 +79,10 @@ def main():
             remediation.process_fix(fixes, args.remediation_type, env_yaml,
                                     product, _path, rule_id)
 
-    remediation.write_fixes(args.remediation_type, args.build_dir,
-                            args.output, fixes)
+    remediation.write_fixes_to_dir(fixes, args.remediation_type,
+                                   args.output_dir)
 
-    sys.stderr.write("Merged %d %s remediations.\n" % (len(fixes), args.remediation_type))
+    sys.stderr.write("Collected %d %s remediations.\n" % (len(fixes), args.remediation_type))
 
     sys.exit(0)
 
