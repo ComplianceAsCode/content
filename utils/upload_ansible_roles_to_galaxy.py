@@ -230,7 +230,7 @@ class Role(object):
                                        default_flow_style=False)
 
         if vars_local_content != vars_remote_content.decoded_content and \
-            vars_local_content.splitlines()[0] != "null":
+           vars_local_content.splitlines()[0] != "null":
             self.remote_repo.update_file(
                 "/vars/main.yml",
                 "Updates vars/main.yml",
@@ -361,7 +361,6 @@ def locally_clone_and_init_repositories(organization, repo_list):
 
 def main():
     args = parse_args()
-    repo_status = "update"
 
     all_role_whitelist = {"rhel7-role-%s" % p for p in PROFILE_WHITELIST}
     role_whitelist = set(all_role_whitelist)
