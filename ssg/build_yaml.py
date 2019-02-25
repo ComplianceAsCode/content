@@ -131,6 +131,16 @@ class Profile(object):
 
         return element
 
+    def get_rules(self):
+        return list(filter(lambda x: not "=" in x, self.selections))
+
+    def get_variable_selectors(self):
+        variables = dict()
+        for var_selection in filter(lambda x: "=" in x, self.selections):
+            k, v = var_selection.split("=")
+            variables[k] = v
+        return variables
+
 
 class Value(object):
     """Represents XCCDF Value

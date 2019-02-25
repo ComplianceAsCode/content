@@ -32,7 +32,8 @@ class PlaybookBuilder():
         self.profiles_dir = os.path.abspath(
             os.path.join(product_dir, relative_profiles_dir))
 
-    def get_variable_selectors_from_profile(self, profile):
+    def get_profile_selections(self, profile):
+        rules = []
         variables = dict()
         if profile.extends:
             extended_profile_path = os.path.join(
@@ -43,18 +44,10 @@ class PlaybookBuilder():
                 sys.stderr.write(
                     "Could not parse profile %s.\n" % extended_profile_path)
                 return None
-            variables = self.get_variable_selectors_from_profile(
-                extended_profile)
-        if not profile.selections:
-            return variables
-        for var_selection in filter(lambda x: "=" in x, profile.selections):
-            k, v = var_selection.split("=")
-            variables[k] = v
-        return variables
-
-    def get_rules_from_profile(self, profile):
-        return list(filter(lambda x: not x.startswith("var_"),
-                           profile.selections))
+            rules, variables = self.get_profile_selections(extended_profile)
+        rules.extend(profile.get_rules())
+        variables.update(profile.get_variable_selectors())
+        return rules, variables
 
     def choose_variable_value(self, var_id, variables, refinements):
         """
@@ -205,8 +198,7 @@ class PlaybookBuilder():
         to profile definition. Playbooks are written into a new subdirectory
         in output_dir.
         """
-        profile_refines = self.get_variable_selectors_from_profile(profile)
-        profile_rules = self.get_rules_from_profile(profile)
+        profile_rules, profile_refines = self.get_profile_selections(profile)
 
         profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
         os.makedirs(profile_playbooks_dir)
