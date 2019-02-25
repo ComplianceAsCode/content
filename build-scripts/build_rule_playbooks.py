@@ -138,8 +138,8 @@ class PlaybookBuilder():
                     variables[xccdf_value.id_] = options
         return variables
 
-    def create_playbook_for_rule(self, snippet_path, rule_id, variables,
-                                 refinements, output_dir):
+    def create_playbook(self, snippet_path, rule_id, variables,
+                        refinements, output_dir):
         """
         Creates a Playbook from Ansible snippet for the given rule specified
         by rule ID, fills in the profile values and saves it into output_dir.
@@ -210,7 +210,7 @@ class PlaybookBuilder():
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile
 
-    def create_playbooks_for_profile(self, profile, variables):
+    def create_playbooks_for_all_rules(self, profile, variables):
         """
         Creates a Playbook for each rule selected in a profile from tasks
         extracted from snippets. Created Playbooks are parametrized by
@@ -232,23 +232,44 @@ class PlaybookBuilder():
                     % (snippet_path, ext)
                 )
             if rule_id in profile_rules:
-                self.create_playbook_for_rule(
+                self.create_playbook(
                     snippet_path, rule_id, variables,
                     profile_refines, profile_playbooks_dir
                 )
 
-    def build_all_playbooks(self, profile_id=None):
+    def create_playbook_for_single_rule(self, profile, rule_id, variables):
+        """
+        Creates a Playbook for given rule specified by a rule_id. Created
+        Playbooks are parametrized by variables according to profile selection.
+        Playbooks are written into a new subdirectory in output_dir.
+        """
+        profile_rules, profile_refines = self.get_profile_selections(profile)
+        profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
+        os.makedirs(profile_playbooks_dir)
+        snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
+        if rule_id in profile_rules:
+            self.create_playbook(
+                snippet_path, rule_id, variables,
+                profile_refines, profile_playbooks_dir
+            )
+
+    def build(self, profile_id=None, rule_id=None):
         """
         Creates Playbooks for a specified profile.
         If profile is not given, creates playbooks for all profiles
         in the product.
+        If the rule_id is not given, Playbooks are created for every rule.
         """
         variables = self.get_benchmark_variables()
         if profile_id:
             profile_path = os.path.join(
                 self.profiles_dir, profile_id + ".profile")
             profile = self.open_profile(profile_path)
-            self.create_playbooks_for_profile(profile, variables)
+            if rule_id:
+                self.create_playbook_for_single_rule(profile, rule_id,
+                                                     variables)
+            else:
+                self.create_playbooks_for_all_rules(profile, variables)
         else:
             # run for all profiles
             for profile_file in os.listdir(self.profiles_dir):
@@ -258,7 +279,11 @@ class PlaybookBuilder():
                 except RuntimeError as e:
                     sys.stderr.write("%s. Skipping %s." % (str(e), profile_id))
                     continue
-                self.create_playbooks_for_profile(profile, variables)
+                if rule_id:
+                    self.create_playbook_for_single_rule(profile, rule_id,
+                                                         variables)
+                else:
+                    self.create_playbooks_for_all_rules(profile, variables)
 
 
 def parse_args():
@@ -289,6 +314,10 @@ def parse_args():
         "--profile",
         help="Generate Playbooks only for given Profile ID"
     )
+    p.add_argument(
+        "--rule",
+        help="Rule ID"
+    )
     return p.parse_args()
 
 
@@ -298,7 +327,7 @@ def main():
         args.build_config_yaml, args.product_yaml,
         args.input_dir, args.output_dir
     )
-    playbook_builder.build_all_playbooks(args.profile)
+    playbook_builder.build(args.profile, args.rule)
 
 
 if __name__ == "__main__":
