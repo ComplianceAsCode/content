@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Set Account Password Maximum Lifetime'
+
+description: |-
+    Configure all user accounts to enforce 24 hours/1 day or greater as the
+    maximum password age.
+
+    Change the maximum time period between password changes for each
+    <tt>[USER]</tt> account to "<tt>1</tt>" day with the command, replacing
+    <tt>[USER]</tt> with the user account that must be changed:
+
+    <pre># sudo passwd -x {{{ var_accounts_maximum_age_login_defs }}} [USER]</pre>
+
+rationale: |-
+    Enforcing a maximum password lifetime helps prevent repeated password
+    changes to defeat the password reuse or history enforcement requirement. If
+    users are allowed to immediately and continually change their password, the
+    password could be repeatedly changed in a short period of time to defeat
+    the organization's policy regarding password reuse.
+
+severity: medium
+
+references:
+    stigid@sle12: "010290"
+    disa: "199"
+    nist: IA-5(1)(d),IA-5(1).1(v)
+
+ocil_clause: 'any line appears'
+
+ocil: |-
+    Check the maximum time period between password changes for each user account with the following command:
+
+    <pre># sudo awk -F':' '$5 &gt; {{{ var_accounts_maximum_age_login_defs|striptags }}} { print $1, $5 }' &lt; /etc/shadow
+
+    smithj 90</pre>

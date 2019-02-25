@@ -1,0 +1,27 @@
+<def-group>
+  <definition class="compliance" id="account_minimum_age_shadow" version="2">
+    <metadata>
+      <title>Set Accounts to Expire Following Password Expiration</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>The accounts should be configured to expire automatically following password expiration.</description>
+    </metadata>
+    <criteria comment="no accounts should have a minimum password lifetime of 0">
+      <criterion test_ref="test_account_passwords_minimum_lifetime" />
+    </criteria>
+  </definition>
+
+
+  <unix:shadow_test check="all" check_existence="none_exist" comment="user passwords have minimum lifetime" id="test_account_passwords_minimum_lifetime" version="1">
+    <unix:object object_ref="object_account_passwords_minimum_lifetime" />
+  </unix:shadow_test>
+  <unix:shadow_object id="object_account_passwords_minimum_lifetime" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+    <filter action="exclude">state_account_passwords_minimum_lifetime</filter>
+  </unix:shadow_object>
+  <unix:shadow_state id="state_account_passwords_minimum_lifetime" version="1">
+      <unix:chg_allow operation="not equal" datatype="int">0</unix:chg_allow>
+  </unix:shadow_state>
+
+</def-group>

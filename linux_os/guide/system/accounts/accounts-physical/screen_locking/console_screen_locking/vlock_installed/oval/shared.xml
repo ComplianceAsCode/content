@@ -1,0 +1,16 @@
+<def-group>
+  <definition class="compliance" id="vlock_installed" version="1">
+    <metadata>
+      <title>Ensure vlock Command is Installed</title>
+      <affected family="unix">
+          <!--<platform>SUSE Linux Enterprise 12</platform>-->
+          <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Check if the vlock command is installed.</description>
+    </metadata>
+    <criteria comment="Check vlock or kbd Package is installed" operator="OR">
+        <extend_definition comment="Package vlock is installed" definition_ref="package_vlock_installed" />
+        <extend_definition comment="Package kbd is installed" definition_ref="package_kbd_installed" />
+    </criteria>
+  </definition>
+</def-group>

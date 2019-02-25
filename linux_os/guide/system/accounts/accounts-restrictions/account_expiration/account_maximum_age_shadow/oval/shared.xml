@@ -1,0 +1,31 @@
+<def-group>
+  <definition class="compliance" id="account_maximum_age_shadow" version="2">
+    <metadata>
+      <title>Set Accounts to Expire Following Password Expiration</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>The accounts should be configured to expire automatically following password expiration.</description>
+    </metadata>
+    <criteria comment="no accounts should have a maximum password lifetime of 0">
+      <criterion test_ref="test_account_passwords_maximum_lifetime" />
+    </criteria>
+  </definition>
+
+
+  <unix:shadow_test check="all" check_existence="all_exist" comment="user passwords have maximum lifetime" id="test_account_passwords_maximum_lifetime" version="1">
+    <unix:object object_ref="object_account_passwords_maximum_lifetime" />
+    <unix:state state_ref="state_account_passwords_maximum_lifetime" />
+  </unix:shadow_test>
+
+  <unix:shadow_object id="object_account_passwords_maximum_lifetime" version="1">
+    <unix:username operation="pattern match">.*</unix:username>
+  </unix:shadow_object>
+
+  <unix:shadow_state id="state_account_passwords_maximum_lifetime" version="1">
+      <unix:chg_req operation="less than or equal" datatype="int" var_ref="var_accounts_maximum_age_login_defs" />
+  </unix:shadow_state>
+
+  <external_variable comment="account maximum age" datatype="int" id="var_accounts_maximum_age_login_defs" version="1" />
+
+</def-group>

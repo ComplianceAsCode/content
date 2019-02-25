@@ -1,0 +1,27 @@
+<def-group>
+    <definition class="compliance" id="cracklib_accounts_password_pam_ucredit" version="4">
+    <metadata>
+      <title>Set Password Strength Minimum Uppercase Characters</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>The pam_cracklib module's "ucredit=" parameter controls requirements for
+    usage of uppercase letters in a password. When set to a negative number, any password will be required to
+    contain that many uppercase characters.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion test_ref="test_cracklib_accounts_password_pam_ucredit" comment="Verify ucredit is set to the desired value" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test id="test_cracklib_accounts_password_pam_ucredit"
+  check="all" check_existence="all_exist"
+  comment="Verify ucredit configuation of pam_cracklib" version="1">
+    <ind:object object_ref="object_cracklib_accounts_password_pam_ucredit" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_cracklib_accounts_password_pam_ucredit" comment="Check ucredit configuration of pam_cracklib" version="1">
+    <ind:filepath>/etc/pam.d/common-password</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*password(?:(?!\n)\s)+requisite(?:(?!\n)\s)+pam_cracklib.so((?!\n)\s[^\n]+)?(?!\n)\sucredit=-1(\s|$)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
