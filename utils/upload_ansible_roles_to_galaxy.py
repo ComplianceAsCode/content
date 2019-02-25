@@ -299,7 +299,7 @@ class Role(object):
 
         self.add_variables_to_tasks()
         self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, indent=4, default_flow_style=False)
+            self.tasks_data, width=120, default_flow_style=False)
 
         self._reformat_local_content()
         try:
