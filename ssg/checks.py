@@ -65,20 +65,23 @@ def is_cce_value_valid(cceid):
     # Since we've already validated format, this hack suffices:
     cce = re.sub(r'(CCE|-)', '', cceid)
 
-    # (string-to-codepoints - 48) is the same as int. Add in the reverse too.
-    # Double list cast is necessary: map isn't reversible, and generator
-    # isn't indexable.
-    digits = list(reversed(list(map(int, cce))))
+    # The below is an implementation of Luhn's algorithm as this is what the
+    # XPath code does.
+
+    # First, map string numbers to integers. List cast is necessary to be able
+    # to index it.
+    digits = list(map(int, cce))
 
     # Even indices are doubled. Coerce to list for list addition. However,
     # XPath uses 1-indexing so "evens" and "odds" are swapped from Python.
-    evens = list(map(lambda i: i*2, digits[1::2]))
-    odds = digits[0::2]
+    # We handle both the idiv and the mod here as well; note that we only
+    # hvae to do this for evens: no single digit is above 10, so the idiv
+    # always returns 0 and the mod always returns the original number.
+    evens = list(map(lambda i: (i*2)//10 + (i*2) % 10, digits[-2::-2]))
+    odds = digits[-1::-2]
 
-    # XPath flattens the for loop's return into a single list; do this in
-    # via a double sum.
-    tuples = map(lambda j: [j % 10, j // 10], evens + odds)
-    value = sum(sum(tuples, [])) % 10
+    # The checksum value is now the sum of the evens and the odds.
+    value = sum(evens + odds) % 10
 
     # Valid CCE <=> value == 0
     return value == 0
