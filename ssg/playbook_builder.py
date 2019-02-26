@@ -220,16 +220,9 @@ class PlaybookBuilder():
         profile_playbooks_dir = os.path.join(self.output_dir, profile.id_)
         os.makedirs(profile_playbooks_dir)
 
-        for snippet in os.listdir(self.input_dir):
-            snippet_path = os.path.join(self.input_dir, snippet)
-            rule_id, ext = os.path.splitext(os.path.basename(snippet_path))
-            if ext != ".yml":
-                sys.stderr.write(
-                    "Found file '%s' while looking for Ansible snippets, "
-                    "extension '%s' is unknown. Skipping...\n"
-                    % (snippet_path, ext)
-                )
-            if rule_id in profile_rules:
+        for rule_id in profile_rules:
+            snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
+            if os.path.exists(snippet_path):
                 self.create_playbook(
                     snippet_path, rule_id, variables,
                     profile_refines, profile_playbooks_dir
