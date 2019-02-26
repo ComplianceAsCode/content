@@ -12,7 +12,7 @@ from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 
-from .checks import is_cce_valid
+from .checks import is_cce_format_valid, is_cce_value_valid
 from .yaml import open_and_expand, open_and_macro_expand
 from .utils import required_key
 
@@ -593,9 +593,12 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not is_cce_valid("CCE-" + ident_val):
-                    raise ValueError("CCE Identifiers must be valid: value %s for cce %s"
-                                     " in file %s" % (ident_val, ident_type, yaml_file))
+                if not is_cce_format_valid("CCE-" + ident_val):
+                    raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
+                                     " in file '%s'" % (ident_val, ident_type, yaml_file))
+                if not is_cce_value_valid("CCE-" + ident_val):
+                    raise ValueError("CCE Identifier value is not a valid checksum: invalid value '%s' for CEE '%s'"
+                                     " in file '%s'" % (ident_val, ident_type, yaml_file))
 
     def validate_references(self, yaml_file):
         if self.references is None:
