@@ -49,7 +49,7 @@ class PlaybookBuilder():
                     "Could not parse profile %s.\n" % extended_profile_path)
                 return None
             rules, variables = self.get_profile_selections(extended_profile)
-        rules.extend(profile.get_rules())
+        rules.extend(profile.get_rule_selectors())
         variables.update(profile.get_variable_selectors())
         return rules, variables
 

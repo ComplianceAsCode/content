@@ -131,7 +131,7 @@ class Profile(object):
 
         return element
 
-    def get_rules(self):
+    def get_rule_selectors(self):
         return list(filter(lambda x: "=" not in x, self.selections))
 
     def get_variable_selectors(self):
