@@ -1,0 +1,18 @@
+- name: selinux_state
+  hosts: '@@HOSTS@@'
+  become: true
+  vars:
+    var_selinux_state: enforcing
+  tags:
+  - restrict_strategy
+  - low_complexity
+  - low_disruption
+  tasks:
+  - name: '@RULE_TITLE@'
+    lineinfile:
+      path: /etc/sysconfig/selinux
+      regexp: ^SELINUX=
+      line: SELINUX={{ var_selinux_state }}
+      create: true
+    tags:
+    - dummy_tag
