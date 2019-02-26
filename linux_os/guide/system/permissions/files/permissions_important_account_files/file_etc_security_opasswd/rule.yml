@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions and Ownership of Old Passwords File'
+
+description: '{{{ describe_file_owner(file="/etc/security/opasswd", owner="root") }}}
+{{{ describe_file_group_owner(file="/etc/security/opasswd", group="root") }}}
+{{{ describe_file_permissions(file="/etc/security/opasswd", perms="0600") }}}'
+
+rationale: |-
+    The <tt>/etc/security/opasswd</tt> file stores old passwords to prevent password reuse.
+    Protection of this file is critical for system security.
+
+severity: medium
+
+references:
+    stigid@sle12: "010300"
+    disa@sle12: '200'
+    nist@sle12: IA-5(1)(e),IA-5(1).1(v)
+
+ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/security/opasswd", owner="root") }}} and {{{ ocil_clause_file_group_owner(file="/etc/security/opasswd", group="root") }}} and {{{ ocil_clause_file_permissions(file="/etc/security/opasswd", perms="0600") }}}'
+
+ocil: '{{{ ocil_file_owner(file="/etc/security/opasswd", owner="root") }}}
+{{{ ocil_file_group_owner(file="/etc/security/opasswd", group="root") }}}
+{{{ ocil_file_permissions(file="/etc/security/opasswd", perms="0600") }}}'

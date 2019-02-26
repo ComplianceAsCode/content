@@ -42,4 +42,5 @@ selections:
      - var_accounts_maximum_age_login_defs=60
      - accounts_maximum_age_login_defs
      - account_maximum_age_shadow
+     - file_etc_security_opasswd
 
