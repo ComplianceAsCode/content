@@ -43,4 +43,6 @@ selections:
      - accounts_maximum_age_login_defs
      - account_maximum_age_shadow
      - file_etc_security_opasswd
+     - var_password_pam_unix_remember=5
+     - accounts_password_pam_unix_remember
 
