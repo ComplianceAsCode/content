@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="faildelay" version="1">
+    <metadata>
+      <title>Set Last Login/Access Notification</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Configure the system to notify users of last login/access using pam_lastlog.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Conditions for pam_faildelay are satisfied" test_ref="test_faildelay" />
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="Check the pam_faildelay configuration" id="test_faildelay" version="1">
+    <ind:object object_ref="obj_faildelay" />
+    <ind:state state_ref="state_faildelay" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="obj_faildelay" version="1">
+    <ind:filepath>/etc/pam.d/common-auth</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*auth(?:(?!\n)\s)+required(?:(?!\n)\s)+pam_faildelay.so(?:(?!\n)\s[^\n]+)?(?!\n)\sdelay=([0-9]+)(?:\s|$)</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_faildelay" version="1">
+    <ind:subexpression operation="greater than or equal" var_ref="var_faildelay_us" datatype="int" />
+  </ind:textfilecontent54_state>
+
+  <local_variable id="var_faildelay_us" datatype="int" comment="expected delay in microseconds" version="1">
+    <arithmetic arithmetic_operation="multiply">
+      <variable_component var_ref="var_accounts_fail_delay" />
+      <literal_component datatype="int">1000000</literal_component>
+    </arithmetic>
+  </local_variable>
+
+  <external_variable comment="login failure delay in seconds" datatype="int" id="var_accounts_fail_delay" version="1" />
+</def-group>
