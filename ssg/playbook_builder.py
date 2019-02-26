@@ -243,6 +243,9 @@ class PlaybookBuilder():
                 snippet_path, rule_id, variables,
                 profile_refines, profile_playbooks_dir
             )
+        else:
+            raise ValueError("Rule '%s' isn't part of profile '%s'" %
+                             (rule_id, profile.id_))
 
     def build(self, profile_id=None, rule_id=None):
         """
