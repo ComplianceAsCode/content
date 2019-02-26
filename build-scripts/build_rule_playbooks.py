@@ -17,17 +17,16 @@ COMMENTS_TO_PARSE = ["strategy", "complexity", "disruption"]
 
 
 class PlaybookBuilder():
-    def __init__(self, build_config_yaml, product_yaml, input_dir, output_dir):
+    def __init__(self, product_yaml_path, input_dir, output_dir):
         self.input_dir = input_dir
         self.output_dir = output_dir
-        self.env_yaml = ssg.yaml.open_environment(build_config_yaml,
-                                                  product_yaml)
-        product_dir = os.path.dirname(product_yaml)
-        relative_guide_dir = ssg.utils.required_key(self.env_yaml,
+        product_yaml = ssg.yaml.open_raw(product_yaml_path)
+        product_dir = os.path.dirname(product_yaml_path)
+        relative_guide_dir = ssg.utils.required_key(product_yaml,
                                                     "benchmark_root")
         self.guide_dir = os.path.abspath(os.path.join(product_dir,
                                                       relative_guide_dir))
-        relative_profiles_dir = ssg.utils.required_key(self.env_yaml,
+        relative_profiles_dir = ssg.utils.required_key(product_yaml,
                                                        "profiles_root")
         self.profiles_dir = os.path.abspath(
             os.path.join(product_dir, relative_profiles_dir))
@@ -45,7 +44,7 @@ class PlaybookBuilder():
             extended_profile_path = os.path.join(
                 self.profiles_dir, profile.extends + ".profile")
             extended_profile = ssg.build_yaml.Profile.from_yaml(
-                extended_profile_path, self.env_yaml)
+                extended_profile_path)
             if not profile:
                 sys.stderr.write(
                     "Could not parse profile %s.\n" % extended_profile_path)
@@ -205,7 +204,7 @@ class PlaybookBuilder():
                 % (profile_path, ext)
             )
 
-        profile = ssg.build_yaml.Profile.from_yaml(profile_path, self.env_yaml)
+        profile = ssg.build_yaml.Profile.from_yaml(profile_path)
         if not profile:
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile
@@ -301,11 +300,6 @@ def parse_args():
         "e.g. ~/scap-security-guide/build/fedora/playbooks"
     )
     p.add_argument(
-        "--build-config-yaml", required=True, dest="build_config_yaml",
-        help="YAML file with information about the build configuration. "
-        "e.g.: ~/scap-security-guide/build/build_config.yml"
-    )
-    p.add_argument(
         "--product-yaml", required=True, dest="product_yaml",
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
@@ -325,8 +319,7 @@ def parse_args():
 def main():
     args = parse_args()
     playbook_builder = PlaybookBuilder(
-        args.build_config_yaml, args.product_yaml,
-        args.input_dir, args.output_dir
+        args.product_yaml, args.input_dir, args.output_dir
     )
     playbook_builder.build(args.profile, args.rule)
 
