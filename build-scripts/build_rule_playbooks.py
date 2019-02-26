@@ -316,7 +316,8 @@ def parse_args():
     )
     p.add_argument(
         "--rule",
-        help="Rule ID"
+        help="Generate Ansible Playbooks only for given rule specified by"
+             "a shortened Rule ID"
     )
     return p.parse_args()
 
