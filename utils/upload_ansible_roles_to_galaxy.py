@@ -83,7 +83,7 @@ def create_empty_repositories(github_new_repos, github_org):
 
 def clone_and_init_repository(parent_dir, organization, repo):
     os.system(
-        "git clone git@github.com:%s/%s.git" % (organization, repo))
+        "git clone https://github.com/%s/%s" % (organization, repo))
     os.system("ansible-galaxy init " + repo + " --force")
     os.chdir(repo)
     try:
@@ -229,7 +229,8 @@ class Role(object):
         vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
                                        default_flow_style=False)
 
-        if vars_local_content != vars_remote_content.decoded_content:
+        if vars_local_content != vars_remote_content.decoded_content and \
+           vars_local_content.splitlines()[0] != "null":
             self.remote_repo.update_file(
                 "/vars/main.yml",
                 "Updates vars/main.yml",
@@ -291,25 +292,31 @@ class Role(object):
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
 
-    def update_repository(self):
+    def update_repository(self, repo_status):
         print("Processing %s..." % self.remote_repo.name)
 
         self.gather_data()
 
         self.add_variables_to_tasks()
         self.tasks_local_content = yaml.dump(
-            self.tasks_data, width=120, indent=4, default_flow_style=False)
+            self.tasks_data, width=120, default_flow_style=False)
 
         self._reformat_local_content()
-        self.title = re.search(
-            r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
-        # Why so?
+        try:
+            self.title = re.search(
+                r'Profile Title:\s+(.+)$', self.description, re.MULTILINE).group(1)
+        except AttributeError:
+            self.title = re.search(
+                r'Ansible Playbook for\s+(.+)$', self.description, re.MULTILINE).group(1)
+
+        # Fix the description format for markdown so that it looks pretty
         self.description = self.description.replace('\n', '  \n')
 
         self._update_tasks_content_if_needed()
         self._update_vars_content_if_needed()
-        self._update_readme_content_if_needed()
-        self._update_meta_content_if_needed()
+        if repo_status == "new":
+            self._update_readme_content_if_needed()
+            self._update_meta_content_if_needed()
         self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
@@ -318,7 +325,7 @@ class Role(object):
         self.remote_repo.edit(
             self.remote_repo.name,
             description=repo_description,
-            homepage="https://www.open-scap.org/",
+            homepage="https://github.com/complianceascode/content",
         )
 
 
@@ -383,16 +390,22 @@ def main():
     if github_new_repos:
         create_empty_repositories(github_new_repos, github_org)
 
-        locally_clone_and_init_repositories(args.organization, github_repositories)
+        locally_clone_and_init_repositories(args.organization, github_new_repos)
 
     # Update repositories
     for repo in sorted(github_org.get_repos(), key=lambda repo: repo.name):
+        if repo.name in github_new_repos:
+            repo_status = "new"
+        else:
+            repo_status = "update"
+
         if repo.name in selected_roles:
             corresponding_filename = os.path.join(
                 args.build_roles_dir, "ssg-" + repo.name + ".yml")
-            Role(repo, corresponding_filename).update_repository()
+            Role(repo, corresponding_filename).update_repository(repo_status)
         elif repo.name not in potential_roles:
-            print("Repo %s should be deleted, please verify and do that "
+            print("Repo '%s' is not managed by this script. "
+                  "It may need to be deleted, please verify and do that "
                   "manually!" % repo.name)
 
 
