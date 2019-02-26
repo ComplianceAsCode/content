@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'PCI-DSS v3.2.1 Control Baseline for Red Hat Enterprise Linux 8'
 
 description: |-
-    Ensures PCI-DSS v3.2.1 related security configuration settings are applied.
+    Ensures PCI-DSS v3.2.1 security configuration settings are applied.
 
 selections:
     - var_password_pam_unix_remember=4
