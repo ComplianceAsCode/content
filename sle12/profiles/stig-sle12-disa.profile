@@ -46,4 +46,5 @@ selections:
      - var_password_pam_unix_remember=5
      - accounts_password_pam_unix_remember
      - faildelay
+     - gnome_gdm_disable_automatic_login
 
