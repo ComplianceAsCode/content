@@ -64,4 +64,5 @@ selections:
      - encrypt_partitions
      - dir_perms_world_writable_sticky_bits
      - aide_periodic_cron_checking
+     - aide_scan_notification
 
