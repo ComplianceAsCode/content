@@ -50,4 +50,5 @@ selections:
      - display_login_attempts
      - package_openssh_installed
      - sshd_enable_warning_banner
+     - sshd_set_loglevel_verbose
 
