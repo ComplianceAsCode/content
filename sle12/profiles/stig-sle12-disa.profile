@@ -60,4 +60,5 @@ selections:
      - var_system_crypto_policy=fips
      - enable_fips_mode
      - grub2_password
+     - grub2_uefi_password
 
