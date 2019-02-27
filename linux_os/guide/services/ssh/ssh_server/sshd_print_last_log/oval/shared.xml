@@ -6,6 +6,7 @@
         <platform>multi_platform_rhel</platform>
         <platform>multi_platform_rhv</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Enable PrintLastLog to display user's last login time 
 and date.</description>
@@ -15,14 +16,24 @@ and date.</description>
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
         definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server removed"
         definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
       </criteria>
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
         <criterion comment="Check PrintLastLog in /etc/ssh/sshd_config"
         test_ref="test_sshd_enable_printlastlog" />
       </criteria>
