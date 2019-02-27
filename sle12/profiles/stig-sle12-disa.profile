@@ -62,4 +62,5 @@ selections:
      - grub2_password
      - grub2_uefi_password
      - encrypt_partitions
+     - dir_perms_world_writable_sticky_bits
 
