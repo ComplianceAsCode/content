@@ -48,4 +48,5 @@ selections:
      - faildelay
      - gnome_gdm_disable_automatic_login
      - display_login_attempts
+     - package_openssh_installed
 
