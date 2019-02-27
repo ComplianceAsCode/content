@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Install the OpenSSH Client and Server Package'
+
+description: |-
+    The <tt>openssh</tt> package should be installed.
+    {{{ describe_package_install(package="openssh") }}}
+
+rationale: |-
+    Without protection of the transmitted information, confidentiality, and
+    integrity may be compromised because unprotected communications can be
+    intercepted and either read or altered.
+
+severity: medium
+
+references:
+    disa: 2418,2420,2421,2422
+    nist: SC-8
+    srg: SRG-OS-000423-GPOS-00187
+    stigid@sle12: "030100"
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="openssh") }}}'
