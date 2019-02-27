@@ -66,4 +66,5 @@ selections:
      - aide_periodic_cron_checking
      - aide_scan_notification
      - aide_verify_acls
+     - aide_verify_ext_attributes
 
