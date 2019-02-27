@@ -10,9 +10,6 @@
     option: automount
     value: "false"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Automounting - automount"
   lineinfile:
@@ -20,9 +17,6 @@
     regexp: '^/org/gnome/desktop/media-handling/automount'
     line: '/org/gnome/desktop/media-handling/automount'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Disable GNOME3 Automounting - automount-open"
   ini_file:
@@ -31,9 +25,6 @@
     option: automount-open
     value: "false"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Automounting - automount-open"
   lineinfile:
@@ -41,9 +32,6 @@
     regexp: '^/org/gnome/desktop/media-handling/automount-open'
     line: '/org/gnome/desktop/media-handling/automount-open'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Disable GNOME3 Automounting - autorun-never"
   ini_file:
@@ -52,9 +40,6 @@
     option: autorun-never
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Automounting - autorun-never"
   lineinfile:
@@ -62,7 +47,4 @@
     regexp: '^/org/gnome/desktop/media-handling/autorun-never'
     line: '/org/gnome/desktop/media-handling/autorun-never'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 

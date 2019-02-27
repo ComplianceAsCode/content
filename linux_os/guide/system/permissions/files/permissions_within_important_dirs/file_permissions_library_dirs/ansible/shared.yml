@@ -9,15 +9,10 @@
   changed_when: False
   failed_when: False
   check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Disable world/group writability to library files"
   file:
     path: "{{ item }}"
     mode: "go-w"
   with_items: "{{ world_writable_library_files.stdout_lines }}"
-  when: world_writable_library_files.stdout_lines | length > 0 and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: world_writable_library_files.stdout_lines | length > 0

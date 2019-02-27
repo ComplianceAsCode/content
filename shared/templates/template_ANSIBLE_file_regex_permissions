@@ -8,8 +8,6 @@
     paths: "{{{ FILEPATH }}}"
     patterns: "{{{ FILENAME }}}"
   register: files_found
-  tags:
-    @ANSIBLE_TAGS@
 
 - name: Set permissions for {{{ FILEPATH }}} file(s)
   file:
@@ -17,7 +15,4 @@
     mode: {{{ FILEMODE }}}
   with_items:
     - "{{ files_found.files }}"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 

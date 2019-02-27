@@ -11,15 +11,10 @@
   failed_when: False
   changed_when: False
   check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Correct file permissions with RPM"
   shell: "rpm --quiet --setperms $(rpm -qf '{{ item }}')"
   args:
     warn: False # Ignore ANSIBLE0006, we can't correct permissions using rpm module
   with_items: "{{ files_with_incorrect_permissions.stdout_lines }}"
-  when: (files_with_incorrect_permissions.stdout_lines | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (files_with_incorrect_permissions.stdout_lines | length > 0)

@@ -10,9 +10,6 @@
     option: allowed-failures
     value: "3"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Login Number of Failures"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/login-screen/allowed-failures'
     line: '/org/gnome/login-screen/allowed-failures'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

@@ -9,12 +9,6 @@
     dest: /etc/default/grub
     regexp: systemd.confirm_spawn=(1|yes|true|on)
     replace: systemd.confirm_spawn=no
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Verify that Interactive Boot is Disabled (runtime)
   command: /sbin/grubby --update-kernel=ALL --remove-args="systemd.confirm_spawn"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

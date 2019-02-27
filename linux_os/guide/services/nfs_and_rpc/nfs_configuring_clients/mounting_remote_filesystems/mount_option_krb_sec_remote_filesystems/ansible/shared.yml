@@ -9,14 +9,9 @@
   register: points_register
   check_mode: no
   changed_when: False
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Add Kerberos security to mount points"
   shell: awk '$2=="{{ item }}"{$4=$4",sec=krb5:krb5i:krb5p"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
   with_items:
     - "{{ points_register.stdout_lines }}"
-  when: (points_register.stdout | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (points_register.stdout | length > 0)

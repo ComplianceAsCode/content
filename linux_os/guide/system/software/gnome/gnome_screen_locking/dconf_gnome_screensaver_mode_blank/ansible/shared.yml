@@ -10,9 +10,6 @@
     option: picture-uri
     value: string ''
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME picture-uri"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/desktop/screensaver/picture-uri'
     line: '/org/gnome/desktop/screensaver/picture-uri'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

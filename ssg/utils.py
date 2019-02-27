@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 
 import multiprocessing
+import errno
+import os
 
 
 class SSGError(RuntimeError):
@@ -83,3 +85,14 @@ def write_list_file(path, contents):
     _f.write(_contents)
     _f.flush()
     _f.close()
+
+
+# Taken from https://stackoverflow.com/a/600612/592892
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise

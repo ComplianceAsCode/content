@@ -10,25 +10,17 @@
     regexp: '^USELDAPAUTH='
     line: 'USELDAPAUTH=yes'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Test for domain group"
   shell: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   ignore_errors: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Add default domain group and use STARTTLS (if no domain there)"
   lineinfile:
     path: /etc/sssd/sssd.conf
     line: "[domain/default]\nldap_id_use_start_tls = True\n"
-  when: test_grep_domain.stdout == "" and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: test_grep_domain.stdout == ""
 
 - name: "Configure LDAP to use STARTTLS"
   lineinfile:
@@ -36,6 +28,3 @@
     regexp: '^\s*ldap_id_use_start_tls'
     insertafter: '\s*\[domain\/[^]]*]'
     line: 'ldap_id_use_start_tls = True'
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

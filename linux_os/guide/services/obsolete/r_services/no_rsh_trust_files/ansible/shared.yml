@@ -17,6 +17,4 @@
           path: "{{ item.path }}"
           state: absent
       with_items: "{{ shosts_equiv_locations.files }}"
-      when: shosts_equiv_locations and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+      when: shosts_equiv_locations

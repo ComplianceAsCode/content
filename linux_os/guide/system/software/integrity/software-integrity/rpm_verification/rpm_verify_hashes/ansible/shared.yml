@@ -6,16 +6,12 @@
 - name: "Set fact: Package manager reinstall command (dnf)"
   set_fact:
     package_manager_reinstall_cmd: dnf reinstall -y
-  when: ansible_distribution == "Fedora" and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: ansible_distribution == "Fedora"
 
 - name: "Set fact: Package manager reinstall command (yum)"
   set_fact:
     package_manager_reinstall_cmd: yum reinstall -y
-  when: (ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux") and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux")
 
 - name: "Read files with incorrect hash"
   shell: "rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | awk '{print $NF}'"
@@ -23,16 +19,12 @@
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
   register: files_with_incorrect_hash
   changed_when: False
-  when: (package_manager_reinstall_cmd is defined) and @ANSIBLE_PLATFORM_CONDITION@
+  when: (package_manager_reinstall_cmd is defined)
   check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
 
 - name: "Reinstall packages of files with incorrect hash"
   shell: "{{ package_manager_reinstall_cmd }} $(rpm -qf '{{ item }}')"
   args:
     warn: False # Ignore ANSIBLE0006, this task is flexible with regards to package manager
   with_items: "{{ files_with_incorrect_hash.stdout_lines }}"
-  when: (package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0)) and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (package_manager_reinstall_cmd is defined and (files_with_incorrect_hash.stdout_lines | length > 0))

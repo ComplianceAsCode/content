@@ -11,24 +11,17 @@
   failed_when: False
   changed_when: False
   check_mode: no
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Create list of uniq packages
   shell: "rpm -qf {{ files_with_incorrect_ownership.stdout_lines }}|sort |uniq"
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect ownership using rpm module
   register: uniq_list_of_packages
-  when: (files_with_incorrect_ownership.stdout_lines | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (files_with_incorrect_ownership.stdout_lines | length > 0)
 
 - name: "Correct file ownership with RPM"
   shell: "rpm --quiet --setugids '{{ item }}'"
   args:
     warn: False # Ignore ANSIBLE0006, we can't correct ownership using rpm module
   with_items: "{{ uniq_list_of_packages.stdout_lines }}"
-  when: (files_with_incorrect_ownership.stdout_lines | length > 0) and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: (files_with_incorrect_ownership.stdout_lines | length > 0)

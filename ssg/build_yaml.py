@@ -14,7 +14,7 @@ from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 
 from .checks import is_cce_format_valid, is_cce_value_valid
 from .yaml import open_and_expand, open_and_macro_expand
-from .utils import required_key
+from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET
 from .shims import unicode_func
@@ -813,6 +813,7 @@ class BuildLoader(DirectoryLoader):
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
+                mkdir_p(self.resolved_rules_dir)
                 with open(output_for_rule, "w") as f:
                     yaml.dump(rule.to_contents_dict(), f)
 

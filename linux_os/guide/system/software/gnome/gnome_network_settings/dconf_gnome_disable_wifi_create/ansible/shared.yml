@@ -10,9 +10,6 @@
     option: disable-wifi-create
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/nm-applet/disable-wifi-create'
     line: '/org/gnome/nm-applet/disable-wifi-create'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
