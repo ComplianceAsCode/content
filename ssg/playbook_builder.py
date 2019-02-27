@@ -158,6 +158,10 @@ class PlaybookBuilder():
                 (rule_id, snippet_path)
             )
 
+        tags = set()
+        for task in play_tasks:
+            tags |= set(task.pop("tags", []))
+
         # play should be a dictionary, but to keep a logical order of elements
         # we create the play as a list of tuples and later we convert it to
         # an OrderedDict
@@ -169,7 +173,7 @@ class PlaybookBuilder():
         if len(play_vars) > 0:
             play.append(("vars", play_vars))
         if len(tags) > 0:
-            play.append(("tags", tags))
+            play.append(("tags", list(tags)))
         play.append(("tasks", play_tasks))
         play_ordered_dict = OrderedDict(play)
 
