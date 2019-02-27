@@ -142,19 +142,10 @@ class PlaybookBuilder():
         Creates a Playbook from Ansible snippet for the given rule specified
         by rule ID, fills in the profile values and saves it into output_dir.
         """
-        tags = self.get_tags_from_comments(snippet_path)
 
-        # TODO: Remove this temporary workaround
-        # TODO: Breaks tags and platforms !!!!!!
         with open(snippet_path, "r") as snippet_file:
             snippet_str = snippet_file.read()
-        snippet_str = snippet_str.replace("@ANSIBLE_TAGS@", "- dummy_tag")
-        snippet_str = snippet_str.replace("@ANSIBLE_ENSURE_PLATFORM@", "")
-        snippet_str = snippet_str.replace("@ANSIBLE_PLATFORM_CONDITION@",
-                                          "true")
-        snippet_str = snippet_str.replace("@RULE_ID@", "rule_id")
         snippet_yaml = ssg.yaml.ordered_load(snippet_str)
-        # end of workaround
 
         play_tasks, play_vars = self.get_data_from_snippet(
             snippet_yaml, variables, refinements
