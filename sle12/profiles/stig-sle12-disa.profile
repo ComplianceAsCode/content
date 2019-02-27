@@ -47,4 +47,5 @@ selections:
      - accounts_password_pam_unix_remember
      - faildelay
      - gnome_gdm_disable_automatic_login
+     - display_login_attempts
 

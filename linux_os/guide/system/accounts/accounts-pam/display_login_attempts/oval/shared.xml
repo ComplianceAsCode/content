@@ -6,11 +6,15 @@
         <platform>multi_platform_rhel</platform>
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Configure the system to notify users of last login/access using pam_lastlog.</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="Conditions for pam_lastlog are satisfied" test_ref="test_display_login_attempts" />
+      {{%- if product == "sle12" -%}}
+      <criterion comment="silent option for pam_lastlog is set" test_ref="test_display_login_attempts_silent" />
+      {{%- endif -%}}
     </criteria>
   </definition>
 
@@ -24,6 +28,12 @@
     <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+showfailed</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
+  {{%- elif product == "sle12" -%}}
+  <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+showfailed(\s|$)</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
   {{%- else -%}}
   <ind:textfilecontent54_object id="obj_display_login_attempts" version="1">
     <!-- Read whole /etc/pam.d/postlogin as single line so we can verify form
@@ -34,4 +44,14 @@
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
   {{%- endif -%}}
+
+  <!-- on SLE12, the STIG forbids the 'silent' option -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="Forbid 'silent' option for pam_lastlog" id="test_display_login_attempts_silent" version="1">
+    <ind:object object_ref="obj_display_login_attempts_silent" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_display_login_attempts_silent" version="1">
+    <ind:filepath>/etc/pam.d/login</ind:filepath>
+    <ind:pattern operation="pattern match">^\s*session\s+(required|requisite)?\s+pam_lastlog.so[\s\w\d\=]+silent(\s|$)</ind:pattern>
+    <ind:instance datatype="int" operation="equals">1</ind:instance>
+  </ind:textfilecontent54_object>
 </def-group>
