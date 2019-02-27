@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,fedora,ol8
+prodtype: rhel8,fedora,ol8,sle12
 
 title: "Set kernel parameter 'crypto.fips_enabled' to 1"
 
@@ -38,8 +38,8 @@ warnings:
         The system needs to be rebooted for these changes to take effect.
     - regulatory: |-
         The ability to enable FIPS does not denote FIPS compliancy or certification.
-        {{% if product == "ol8" %}}
-        Oracle Linux is FIPS certified and compliant.
+        {{% if product in ["ol8", "sle12"] %}}
+        {{{ full_name }}} is FIPS certified and compliant.
         {{% else %}}
         Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant.
         {{% endif %}}

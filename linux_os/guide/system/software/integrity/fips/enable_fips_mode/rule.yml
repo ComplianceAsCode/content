@@ -1,10 +1,17 @@
 documentation_complete: true
 
-prodtype: rhel8,fedora,ol8
+prodtype: rhel8,fedora,ol8,sle12
 
 title: Enable FIPS Mode
 
 description: |-
+    {{% if product == "sle12" %}}
+    Enabling FIPS mode on a preexisting system involves a number of
+    modifications to the SUSE operating system. Refer to section 9.1, "Crypto
+    Officer Guidance", of the following document for installation guidance:
+
+    {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2435.pdf") }}}
+    {{% else %}}
     To enable FIPS mode, run the following command:
     <pre>fips-mode-setup --enable</pre>
     <br />
@@ -16,6 +23,7 @@ description: |-
     <li>Setting the system crypto policy in <tt>/etc/crypto-policies/config</tt> to <tt>FIPS</tt></li>
     <li>Loading the Dracut <tt>fips</tt> module</li>
     </ul>
+    {{% endif %}}
     Furthermore, the system running in FIPS mode should be FIPS certified by NIST.
 
 rationale: |-
@@ -29,21 +37,32 @@ severity: high
 identifiers:
     cce@rhel8: 80942-6
 
+references:
+    stigid@sle12: "010420"
+    disa: "2450"
+    nist: SC-13
+
 ocil_clause: 'FIPS mode is not enabled'
 
 ocil: |-
+    {{% if product == "sle12" %}}
+    To verify that FIPS is enabled properly, run the following command:
+    <pre># cat /proc/sys/crypto/fips_enabled</pre>
+    The output should be <tt>1</tt>.
+    {{% else %}}
     To verify that FIPS is enabled properly, run the following command:
     <pre>fips-mode-setup --check</pre>
     The output should contain the following:
     <pre>FIPS mode is enabled.</pre>
+    {{% endif %}}
 
 warnings:
     - general: |-
         The system needs to be rebooted for these changes to take effect.
     - regulatory: |-
         The ability to enable FIPS does not denote FIPS compliancy or certification.
-        {{% if product == "ol8" %}}
-        Oracle Linux is FIPS certified and compliant.
+        {{% if product in ["ol8", "sle12"] %}}
+        {{{ full_name }}} is FIPS certified and compliant.
         {{% else %}}
         Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant.
         {{% endif %}}

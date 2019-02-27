@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,rhv4
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,rhv4,sle12
 
 title: 'The Installed Operating System Is FIPS 140-2 Certified'
 
@@ -53,6 +53,13 @@ ocil: |-
     To verify that the installed operating system is supported or certified, run
     the following command:
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
+    The output should contain something similar to:
+    <pre>{{{ full_name }}}</pre>
+{{% elif product == "sle12" %}}
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
+    <pre>$ grep -i "suse" /etc/os-release</pre>
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
 {{% endif %}}
