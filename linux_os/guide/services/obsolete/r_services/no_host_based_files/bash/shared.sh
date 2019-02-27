@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_sle
 
 # Identify local mounts
 MOUNT_LIST=$(df | grep "^/dev" | awk '{ print $6 }') 
