@@ -55,4 +55,5 @@ selections:
      - sshd_disable_root_login
      - sshd_disable_empty_passwords
      - sshd_do_not_permit_user_env
+     - no_user_host_based_files
 
