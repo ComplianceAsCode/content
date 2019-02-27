@@ -59,4 +59,5 @@ selections:
      - no_host_based_files
      - var_system_crypto_policy=fips
      - enable_fips_mode
+     - grub2_password
 
