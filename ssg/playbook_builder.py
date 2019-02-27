@@ -101,20 +101,6 @@ class PlaybookBuilder():
                 tasks.append(item)
         return tasks, values
 
-    def get_tags_from_comments(self, snippet_path):
-        """
-        Adds tags based on recognized comments in the given Ansible snippet.
-        """
-        tags = []
-        remediation = ssg.build_remediations.parse_from_file_without_jinja(
-            snippet_path
-        )
-        config = remediation.config
-        for k, v in config.items():
-            if k in COMMENTS_TO_PARSE:
-                tags.append("%s_%s" % (v, k))
-        return tags
-
     def get_benchmark_variables(self):
         """
         Get all variables, their selectors and values used in a given
