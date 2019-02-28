@@ -53,4 +53,5 @@ selections:
      - sshd_set_loglevel_verbose
      - sshd_print_last_log
      - sshd_disable_root_login
+     - sshd_disable_empty_passwords
 
