@@ -82,4 +82,5 @@ selections:
      - var_sssd_memcache_timeout=1_day
      - sssd_memcache_timeout
      - sssd_offline_cred_expiration
+     - no_files_unowned_by_user
 
