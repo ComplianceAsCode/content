@@ -8,7 +8,7 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument(
         "--input-dir", required=True, dest="input_dir",
-        help="Input directory that contains all Ansible remediations"
+        help="Input directory that contains all Ansible remediations "
         "snippets for the product we are building. "
         "e.g. ~/scap-security-guide/build/fedora/fixes/ansible"
     )
@@ -25,12 +25,15 @@ def parse_args():
     )
     p.add_argument(
         "--profile",
-        help="Generate Playbooks only for given Profile ID"
+        help="Generate Playbooks only for given Profile ID. Accepts profile "
+        "ID in the short form, eg. 'ospp'. If not specified, Playbooks are "
+        "built for all available profiles."
     )
     p.add_argument(
         "--rule",
-        help="Generate Ansible Playbooks only for given rule specified by"
-             "a shortened Rule ID"
+        help="Generate Ansible Playbooks only for given rule specified by "
+             "a shortened Rule ID, eg. 'package_sendmail_removed'. "
+             "If not specified, Playbooks are built for every rule."
     )
     return p.parse_args()
 
