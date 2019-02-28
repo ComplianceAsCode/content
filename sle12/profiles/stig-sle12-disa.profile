@@ -56,6 +56,7 @@ selections:
      - sshd_disable_empty_passwords
      - sshd_do_not_permit_user_env
      - sshd_use_approved_ciphers
+     - sshd_use_approved_macs
      - no_user_host_based_files
      - no_host_based_files
      - var_system_crypto_policy=fips
