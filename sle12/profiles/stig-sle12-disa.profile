@@ -73,4 +73,5 @@ selections:
      - aide_verify_ext_attributes
      - aide_check_audit_tools
      - clean_components_post_updating
+     - service_autofs_disabled
 
