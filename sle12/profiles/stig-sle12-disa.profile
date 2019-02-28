@@ -74,4 +74,7 @@ selections:
      - aide_check_audit_tools
      - clean_components_post_updating
      - service_autofs_disabled
+     - disable_ctrlaltdel_reboot
+     - dconf_use_text_backend
+     - dconf_gnome_disable_ctrlaltdel_reboot
 
