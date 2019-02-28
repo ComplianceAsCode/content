@@ -67,4 +67,5 @@ selections:
      - aide_scan_notification
      - aide_verify_acls
      - aide_verify_ext_attributes
+     - aide_check_audit_tools
 
