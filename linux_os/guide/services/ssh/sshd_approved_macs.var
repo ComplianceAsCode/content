@@ -11,4 +11,8 @@ operator: equals
 interactive: false
 
 options:
+{{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+    default: hmac-sha2-512,hmac-sha2-256
+{{% else %}}
     default: hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-sha1-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
+{{% endif %}}
