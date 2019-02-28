@@ -78,4 +78,5 @@ selections:
      - dconf_use_text_backend
      - dconf_gnome_disable_ctrlaltdel_reboot
      - accounts_umask_interactive_users
+     - account_unique_id
 

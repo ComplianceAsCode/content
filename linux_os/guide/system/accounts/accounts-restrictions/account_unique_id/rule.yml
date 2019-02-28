@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: 'Ensure All Accounts on the System Have Unique User IDs'
+
+description: 'Change user IDs (UIDs), or delete accounts, so each has a unique name.'
+
+rationale: 'To assure accountability and prevent unauthenticated access, interactive users must be identified and authenticated to prevent potential misuse and compromise of the system.'
+
+severity: medium
+
+references:
+    stigid@sle12: "010640"
+    disa: "764"
+    nist: IA-2,IA-8
+
+ocil_clause: 'a line is returned'
+
+ocil: |-
+    Run the following command to check for duplicate account names:
+    <pre>$ awk -F ":" 'list[$3]++{print $1, $3}' /etc/passwd</pre>
+    If there are no duplicate user IDs (UIDs), no line will be returned.
