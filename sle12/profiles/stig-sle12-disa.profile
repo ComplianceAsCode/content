@@ -79,4 +79,6 @@ selections:
      - dconf_gnome_disable_ctrlaltdel_reboot
      - accounts_umask_interactive_users
      - account_unique_id
+     - var_sssd_memcache_timeout=1_day
+     - sssd_memcache_timeout
 
