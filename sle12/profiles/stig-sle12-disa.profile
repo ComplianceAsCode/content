@@ -81,4 +81,5 @@ selections:
      - account_unique_id
      - var_sssd_memcache_timeout=1_day
      - sssd_memcache_timeout
+     - sssd_offline_cred_expiration
 
