@@ -54,4 +54,5 @@ selections:
      - sshd_print_last_log
      - sshd_disable_root_login
      - sshd_disable_empty_passwords
+     - sshd_do_not_permit_user_env
 
