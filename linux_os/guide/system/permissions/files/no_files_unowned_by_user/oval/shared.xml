@@ -9,7 +9,7 @@
       <description>All files should be owned by a user</description>
     </metadata>
     <criteria>
-      <criterion comment="Check all files and make sure they are owned by a user" test_ref="no_files_unowned_by_user_test" />
+      <criterion comment="Check all files and make sure they are owned by a user" test_ref="no_files_unowned_by_user_test" negate="true" />
     </criteria>
   </definition>
 
@@ -28,12 +28,12 @@
   <unix:file_object comment="all local files" id="file_permissions_unowned_object" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" recurse_file_system="local" />
     <unix:path>/</unix:path>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filename xsi:nil="true" />
     <filter action="exclude">file_permissions_unowned_userid_list_match</filter>
   </unix:file_object>
   
   <unix:file_test xmlns:unix="http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
-  check="all" check_existence="none_exist" comment="Check user ids on all files on the system"
+  check="all" check_existence="at_least_one_exists" comment="Check user ids on all files on the system"
   id="no_files_unowned_by_user_test" version="1">
     <unix:object object_ref="file_permissions_unowned_object" />
   </unix:file_test>
