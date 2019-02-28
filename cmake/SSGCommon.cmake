@@ -91,7 +91,7 @@ endmacro()
 
 macro(ssg_build_shorthand_xml PRODUCT)
     execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" list-inputs
         OUTPUT_VARIABLE SHORTHAND_INPUTS_STR
     )
     string(REPLACE "\n" ";" SHORTHAND_INPUTS "${SHORTHAND_INPUTS_STR}")
@@ -100,7 +100,7 @@ macro(ssg_build_shorthand_xml PRODUCT)
         # The command also produces the directory with rules, but this is done before the the shorthand XML.
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${CMAKE_CURRENT_BINARY_DIR}/rules"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolve-rules-into "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash_remediation_fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/yaml_to_shorthand.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --bash-remediation-fns "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml" --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" build
         COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml" "${CMAKE_CURRENT_BINARY_DIR}/shorthand.xml"
         DEPENDS ${SHORTHAND_INPUTS}
         DEPENDS generate-internal-bash-remediation-functions.xml
@@ -232,7 +232,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
 
       add_custom_command(
           OUTPUT "${ALL_FIXES_DIR}"
-          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --resolved-rules "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation_type "${LANGUAGE}" --output_dir "${ALL_FIXES_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}"
+          COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation-type "${LANGUAGE}" --output-dir "${ALL_FIXES_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}"
           DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
           DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
           # Acutally we mean that it depends on resolved rules.
