@@ -77,4 +77,5 @@ selections:
      - disable_ctrlaltdel_reboot
      - dconf_use_text_backend
      - dconf_gnome_disable_ctrlaltdel_reboot
+     - accounts_umask_interactive_users
 

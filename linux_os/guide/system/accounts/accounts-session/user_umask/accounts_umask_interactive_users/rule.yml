@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: rhel7,rhel8,sle12
 
 title: 'Ensure the Default Umask is Set Correctly For Interactive Users'
 
@@ -23,6 +23,9 @@ references:
     disa: "1814"
     srg: SRG-OS-000480-GPOS-00227
     stigid: "021040"
+    disa@sle12: "366"
+    nist@sle12: CM-6(b)
+    stigid@sle12: "010620"
 
 ocil_clause: 'the above command returns no output, or if the umask is configured incorrectly'
 
