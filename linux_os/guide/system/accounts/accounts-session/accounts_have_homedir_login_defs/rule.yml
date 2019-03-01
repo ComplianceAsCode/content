@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: rhel7,rhel8,sle12
 
 title: 'Ensure Home Directories are Created for New Users'
 
@@ -24,6 +24,9 @@ identifiers:
 references:
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "020610"
+    disa@sle12: "366"
+    nist@sle12: CM-6(b)
+    stigid@sle12: "010720"
 
 ocil_clause: 'the value of CREATE_HOME is not set to yes, is missing, or the line is commented out'
 

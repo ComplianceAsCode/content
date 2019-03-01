@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_sle
 
 if ! grep -q ^CREATE_HOME /etc/login.defs; then
 	echo "CREATE_HOME     yes" >> /etc/login.defs

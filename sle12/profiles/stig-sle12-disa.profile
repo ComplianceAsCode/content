@@ -85,4 +85,5 @@ selections:
      - no_files_unowned_by_user
      - accounts_user_interactive_home_directory_exists
      - accounts_user_interactive_home_directory_defined
+     - accounts_have_homedir_login_defs
 
