@@ -7,6 +7,7 @@
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_rhv</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Use priviledge separation to cause the SSH process to drop
 root privileges when not needed.</description>
@@ -16,14 +17,24 @@ root privileges when not needed.</description>
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
         definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server removed"
         definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
       </criteria>
       <criteria comment="sshd is installed and configured" operator="AND">
         <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server installed"
         definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
         <criterion comment="Check UsePrivilegeSeparation in /etc/ssh/sshd_config"
         test_ref="test_sshd_use_priv_separation" />
       </criteria>
@@ -36,7 +47,11 @@ root privileges when not needed.</description>
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sshd_use_priv_separation" version="1">
     <ind:filepath>/etc/ssh/sshd_config</ind:filepath>
+    {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+    <ind:pattern operation="pattern match">^[\s]*(?i)UsePrivilegeSeparation(?-i)[\s]+yes[\s]*(?:|(?:#.*))?$</ind:pattern>
+    {{% else %}}
     <ind:pattern operation="pattern match">^[\s]*(?i)UsePrivilegeSeparation(?-i)[\s]+sandbox[\s]*(?:|(?:#.*))?$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
