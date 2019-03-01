@@ -65,6 +65,7 @@ selections:
      - sshd_enable_strictmodes
      - sshd_use_priv_separation
      - sshd_disable_compression
+     - sshd_enable_x11_forwarding
      - no_user_host_based_files
      - no_host_based_files
      - var_system_crypto_policy=fips
