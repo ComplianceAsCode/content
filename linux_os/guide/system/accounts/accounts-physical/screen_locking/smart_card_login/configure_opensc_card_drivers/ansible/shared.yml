@@ -17,6 +17,3 @@
     regexp: '(^\s+#|^)\s+card_drivers\s+=\s+.*'
     state: present
   when: opensc_conf_cd.stat.exists    
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

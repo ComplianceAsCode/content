@@ -13,12 +13,7 @@
   changed_when: True
   register: pkcsw_output
   when: pkcs11switch.stat.exists
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   command: /usr/bin/pkcs11-switch opensc
-  when: pkcs11switch.stat.exists and pkcsw_output.stdout != "opensc" and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: pkcs11switch.stat.exists and pkcsw_output.stdout != "opensc"

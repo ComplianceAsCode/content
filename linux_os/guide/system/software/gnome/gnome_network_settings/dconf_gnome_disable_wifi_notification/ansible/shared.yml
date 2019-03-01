@@ -10,9 +10,6 @@
     option: suppress-wireless-networks-available
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 disablement of WiFi"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/nm-applet/suppress-wireless-networks-available'
     line: '/org/gnome/nm-applet/suppress-wireless-networks-available'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

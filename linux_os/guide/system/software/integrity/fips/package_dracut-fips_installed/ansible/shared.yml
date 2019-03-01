@@ -7,6 +7,4 @@
   package:
     name: dracut-fips
     state: present
-  when: ansible_distribution == 'Red Hat Enterprise Linux' and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: ansible_distribution == 'Red Hat Enterprise Linux'

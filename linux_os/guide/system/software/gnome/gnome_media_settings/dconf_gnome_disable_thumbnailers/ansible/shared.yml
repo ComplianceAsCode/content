@@ -10,9 +10,6 @@
     option: disable-all
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME3 Thumbnailers"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/desktop/thumbnailers/disable-all'
     line: '/org/gnome/desktop/thumbnailers/disable-all'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

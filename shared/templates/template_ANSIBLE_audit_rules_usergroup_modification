@@ -39,9 +39,6 @@
     path: "{{ all_files[0] }}"
     line: "-w {{{ PATH }}} -p wa -k audit_rules_usergroup_modification"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
@@ -51,6 +48,3 @@
     line: "-w {{{ PATH }}} -p wa -k audit_rules_usergroup_modification"
     state: present
     dest: /etc/audit/audit.rules
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

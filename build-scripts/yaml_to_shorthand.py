@@ -18,16 +18,16 @@ def parse_args():
         "(benchmark, rules, groups) to XCCDF Shorthand Format"
     )
     parser.add_argument(
-        "--build-config-yaml", required=True, dest="build_config_yaml",
+        "--build-config-yaml", required=True,
         help="YAML file with information about the build configuration. "
         "e.g.: ~/scap-security-guide/build/build_config.yml"
     )
     parser.add_argument(
-        "--product-yaml", required=True, dest="product_yaml",
+        "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
-    parser.add_argument("--bash_remediation_fns", required=True,
+    parser.add_argument("--bash-remediation-fns", required=True,
                         help="XML with the XCCDF Group containing all bash "
                         "remediation functions stored as values."
                         "e.g.: build/bash-remediation-functions.xml")
@@ -37,7 +37,7 @@ def parse_args():
     parser.add_argument("action",
                         choices=["build", "list-inputs", "list-outputs"],
                         help="Which action to perform.")
-    parser.add_argument("--resolve-rules-into", "-l",
+    parser.add_argument("--resolved-rules-dir", "-l",
                         help="To which directory to put processed rule YAMLs.")
     return parser.parse_args()
 
@@ -64,7 +64,8 @@ def main():
 
     if args.action == "build":
         loader = ssg.build_yaml.BuildLoader(
-            profiles_root, args.bash_remediation_fns, env_yaml, args.resolve_rules_into)
+            profiles_root, args.bash_remediation_fns, env_yaml,
+            args.resolved_rules_dir)
         loader.process_directory_tree(benchmark_root)
         loader.export_group_to_file(args.output)
     elif args.action == "list-inputs":

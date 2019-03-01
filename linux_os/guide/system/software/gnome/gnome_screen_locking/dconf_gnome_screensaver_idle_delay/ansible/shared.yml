@@ -12,9 +12,6 @@
     option: idle-delay
     value: "{{ inactivity_timeout_value }}"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME idle-delay"
   lineinfile:
@@ -22,6 +19,3 @@
     regexp: '^/org/gnome/desktop/screensaver/idle-delay'
     line: '/org/gnome/desktop/screensaver/idle-delay'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

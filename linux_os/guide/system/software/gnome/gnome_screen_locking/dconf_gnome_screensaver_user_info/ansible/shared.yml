@@ -10,9 +10,6 @@
     option: show-full-name-in-top-bar
     value: "false"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME show-full-name-in-top-bar"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/desktop/screensaver/show-full-name-in-top-bar'
     line: '/org/gnome/desktop/screensaver/show-full-name-in-top-bar'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

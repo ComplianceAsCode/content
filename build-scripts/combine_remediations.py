@@ -19,23 +19,27 @@ import ssg.xml
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument(
-        "--build-config-yaml", required=True, dest="build_config_yaml",
+        "--build-config-yaml", required=True,
         help="YAML file with information about the build configuration. "
         "e.g.: ~/scap-security-guide/build/build_config.yml"
     )
     p.add_argument(
-        "--product-yaml", required=True, dest="product_yaml",
+        "--product-yaml", required=True,
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
     )
-    p.add_argument("--remediation_type", required=True,
+    p.add_argument(
+        "--resolved-rules-dir", required=True,
+        help="Directory with <rule-id>.yml resolved rule YAMLs"
+    )
+    p.add_argument("--remediation-type", required=True,
                    help="language or type of the remediations we are combining."
                    "example: ansible")
     p.add_argument(
-        "--output_dir", required=True,
+        "--output-dir", required=True,
         help="output directory where all remediations will be saved"
     )
-    p.add_argument("fixdirs", metavar="FIX_DIR", nargs="+",
+    p.add_argument("fix_dirs", metavar="FIX_DIR", nargs="+",
                    help="directory(ies) from which we will collect "
                    "remediations to combine.")
 
@@ -56,17 +60,19 @@ def main():
 
     # As fixes is continually updated, the last seen fix that is applicable for a
     # given fix_name is chosen to replace newer fix_names
+    remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
+
     fixes = dict()
-    for fixdir in args.fixdirs:
+    for fixdir in args.fix_dirs:
         if os.path.isdir(fixdir):
             for filename in os.listdir(fixdir):
                 file_path = os.path.join(fixdir, filename)
                 fix_name, _ = os.path.splitext(filename)
 
+                remediation_obj = remediation_cls(
+                    env_yaml, args.resolved_rules_dir, product, file_path, fix_name)
                 # Fixes gets updated with the contents of the fix, if it is applicable
-                remediation.process_fix(fixes, args.remediation_type,
-                                        env_yaml, product, file_path,
-                                        fix_name)
+                remediation_obj.process(fixes)
 
     # Walk the guide last, looking for rule folders as they have the highest priority
     for _dir_path in ssg.rules.find_rule_dirs(guide_dir):
@@ -76,8 +82,11 @@ def main():
         for _path in reversed(contents):
             # To be compatible with the later checks, use the rule_id
             # (i.e., the value of _dir) to create the fix_name
-            remediation.process_fix(fixes, args.remediation_type, env_yaml,
-                                    product, _path, rule_id)
+
+            remediation_obj = remediation_cls(
+                env_yaml, args.resolved_rules_dir, product, _path, rule_id)
+            # Fixes gets updated with the contents of the fix, if it is applicable
+            remediation_obj.process(fixes)
 
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
                                    args.output_dir)

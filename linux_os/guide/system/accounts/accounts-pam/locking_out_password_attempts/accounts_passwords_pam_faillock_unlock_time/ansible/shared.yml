@@ -21,9 +21,6 @@
   loop:
     - system-auth
     - password-auth
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Add unlock_time argument to pam_faillock preauth
   pamd:
@@ -38,9 +35,6 @@
   loop:
     - system-auth
     - password-auth
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Add auth pam_faillock authfail unlock_interval after pam_unix.so
   pamd:
@@ -57,9 +51,6 @@
   loop:
     - system-auth
     - password-auth
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Add unlock_time argument to auth pam_faillock authfail
   pamd:
@@ -73,9 +64,6 @@
   loop:
     - system-auth
     - password-auth
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Add account pam_faillock before pam_unix.so
   pamd:
@@ -90,6 +78,3 @@
   loop:
     - system-auth
     - password-auth
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

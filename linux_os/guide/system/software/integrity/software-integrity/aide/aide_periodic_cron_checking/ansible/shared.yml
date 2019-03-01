@@ -9,9 +9,6 @@
     state: present
   with_items:
     - aide
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "@RULE_TITLE@"
   cron:
@@ -21,6 +18,3 @@
     weekday: 0
     user: root
     job: "/usr/sbin/aide --check"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

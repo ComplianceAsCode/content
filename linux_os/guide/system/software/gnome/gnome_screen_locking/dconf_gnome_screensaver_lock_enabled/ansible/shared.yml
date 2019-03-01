@@ -10,9 +10,6 @@
     option: lock-enabled
     value: "true"
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: "Prevent user modification of GNOME lock-enabled"
   lineinfile:
@@ -20,6 +17,3 @@
     regexp: '^/org/gnome/desktop/screensaver/lock-enabled'
     line: '/org/gnome/desktop/screensaver/lock-enabled'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

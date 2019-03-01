@@ -13,6 +13,3 @@
     line: 'ClientAliveCountMax {{ var_sshd_set_keepalive }}'
     validate: /usr/sbin/sshd -t -f %s
   #notify: restart sshd
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

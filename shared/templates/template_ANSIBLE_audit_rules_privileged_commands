@@ -31,9 +31,6 @@
     path: "{{ all_files[0] }}"
     line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 # Inserts/replaces the {{{ NAME }}} rule in /etc/audit/audit.rules
 
@@ -42,6 +39,3 @@
     path: /etc/audit/audit.rules
     line: '-a always,exit -F path={{{ PATH }}} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
     create: yes
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@

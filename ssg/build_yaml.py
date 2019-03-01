@@ -12,9 +12,9 @@ from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 
-from .checks import is_cce_valid
+from .checks import is_cce_format_valid, is_cce_value_valid
 from .yaml import open_and_expand, open_and_macro_expand
-from .utils import required_key
+from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET
 from .shims import unicode_func
@@ -391,6 +391,10 @@ class Benchmark(object):
 class Group(object):
     """Represents XCCDF Group
     """
+    ATTRIBUTES_TO_PASS_ON = (
+        "platform",
+    )
+
     def __init__(self, id_):
         self.id_ = id_
         self.prodtype = "all"
@@ -471,6 +475,12 @@ class Group(object):
         if self.platform and not group.platform:
             group.platform = self.platform
         self.groups[group.id_] = group
+        self._pass_our_properties_on_to(group)
+
+    def _pass_our_properties_on_to(self, obj):
+        for attr in self.ATTRIBUTES_TO_PASS_ON:
+            if hasattr(obj, attr) and getattr(obj, attr) is None:
+                setattr(obj, attr, getattr(self, attr))
 
     def add_rule(self, rule):
         if rule is None:
@@ -478,6 +488,7 @@ class Group(object):
         if self.platform and not rule.platform:
             rule.platform = self.platform
         self.rules[rule.id_] = rule
+        self._pass_our_properties_on_to(rule)
 
     def __str__(self):
         return self.id_
@@ -582,9 +593,12 @@ class Rule(object):
                 raise ValueError("Identifiers must not be empty: %s in file %s"
                                  % (ident_type, yaml_file))
             if ident_type[0:3] == 'cce':
-                if not is_cce_valid("CCE-" + ident_val):
-                    raise ValueError("CCE Identifiers must be valid: value %s for cce %s"
-                                     " in file %s" % (ident_val, ident_type, yaml_file))
+                if not is_cce_format_valid("CCE-" + ident_val):
+                    raise ValueError("CCE Identifier format must be valid: invalid format '%s' for CEE '%s'"
+                                     " in file '%s'" % (ident_val, ident_type, yaml_file))
+                if not is_cce_value_valid("CCE-" + ident_val):
+                    raise ValueError("CCE Identifier value is not a valid checksum: invalid value '%s' for CEE '%s'"
+                                     " in file '%s'" % (ident_val, ident_type, yaml_file))
 
     def validate_references(self, yaml_file):
         if self.references is None:
@@ -795,12 +809,13 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rules:
             rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            self.loaded_group.add_rule(rule)
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
+                mkdir_p(self.resolved_rules_dir)
                 with open(output_for_rule, "w") as f:
                     yaml.dump(rule.to_contents_dict(), f)
-            self.loaded_group.add_rule(rule)
 
     def _get_new_loader(self):
         return BuildLoader(

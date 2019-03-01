@@ -50,8 +50,13 @@ def test_parse_from_file_with_jinja():
 
 
 def test_process_fix():
+    remediation_cls = sbr.REMEDIATION_TO_CLASS["bash"]
+
     fixes = {}
-    sbr.process_fix(fixes, 'bash', {}, 'rhel7', rhel_bash, 'rule_dir')
+
+    remediation_obj = remediation_cls(
+        {}, "", "rhel7", rhel_bash, "rule_dir")
+    remediation_obj.process(fixes)
 
     assert 'rule_dir' in fixes
     assert len(fixes['rule_dir']) == 2

@@ -8,9 +8,6 @@
   shell: "find / -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null | cat"
   check_mode: no
   register: find_result
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 # Inserts/replaces the rule in /etc/audit/rules.d
 
@@ -23,9 +20,6 @@
   with_items:
     - "{{ find_result.stdout_lines }}"
   register: files_result
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Overwrites the rule in rules.d
   lineinfile:
@@ -36,9 +30,6 @@
   with_subelements:
     - "{{ files_result.results }}"
     - files
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
 
 - name: Adds the rule in rules.d
   lineinfile:
@@ -47,9 +38,7 @@
     create: yes
   with_items:
     - "{{ files_result.results }}"
-  when: item.matched == 0 and @ANSIBLE_PLATFORM_CONDITION@
-  tags:
-    @ANSIBLE_TAGS@
+  when: item.matched == 0
 
 # Adds/overwrites the rule in /etc/audit/audit.rules
 
@@ -61,6 +50,3 @@
     regexp: "^.*path={{ item.item }} .*$"
   with_items:
     - "{{ files_result.results }}"
-  tags:
-    @ANSIBLE_TAGS@
-  @ANSIBLE_ENSURE_PLATFORM@
