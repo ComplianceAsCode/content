@@ -17,4 +17,8 @@ options:
     30_minutes: 1800
     5_minutes: 300
     60_minutes: 3600
+{{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+    default: 600
+{{% else %}}
     default: 300
+{{% endif %}}
