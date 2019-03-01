@@ -58,6 +58,7 @@ selections:
      - sshd_use_approved_ciphers
      - sshd_use_approved_macs
      - sshd_set_idle_timeout
+     - sshd_set_keepalive
      - no_user_host_based_files
      - no_host_based_files
      - var_system_crypto_policy=fips
