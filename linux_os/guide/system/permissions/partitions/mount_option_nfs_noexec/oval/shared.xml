@@ -1,0 +1,36 @@
+<def-group>
+  <definition class="compliance" id="mount_option_nfs_noexec" version="1">
+    <metadata>
+      <title>Add 'noexec' Option to NFS Mounts</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>The 'noexec' mount option can be used to prevent execution of setuid programs in network mounts.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check for home directories of interactive users that currently do not have a home directory assigned." test_ref="test_nfs_noexec" />
+    </criteria>
+  </definition>
+
+
+  <linux:partition_state id="state_nfs_noexec_is_nfs" version="1">
+    <linux:fs_type datatype="string" operation="pattern match">^nfs\d?$</linux:fs_type>
+  </linux:partition_state>
+
+  <linux:partition_object id="obj_nfs_noexec_mount_points" version="1">
+    <linux:mount_point operation="pattern match">^.*$</linux:mount_point>
+    <filter action="include">state_nfs_noexec_is_nfs</filter>
+  </linux:partition_object>
+
+  <linux:partition_state id="state_nfs_noexec_without_noexec" version="1">
+    <linux:mount_options datatype="string" entity_check="none satisfy" operation="equals">noexec</linux:mount_options>
+  </linux:partition_state>
+
+  <!-- the logic is a bit weird here: we're checking that no NFS mount is missing the 'noexec' option -->
+  <linux:partition_test id="test_nfs_noexec" check="none satisfy" check_existence="all_exist" comment="all nfs file systems must be mounted with 'noexec'" version="1">
+    <linux:object object_ref="obj_nfs_noexec_mount_points" />
+    <linux:state state_ref="state_nfs_noexec_without_noexec" />
+  </linux:partition_test>
+
+</def-group>
+  

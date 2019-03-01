@@ -93,4 +93,5 @@ selections:
      - mount_option_home_nosuid
      - mount_option_nosuid_removable_partitions
      - mount_option_nfs_nosuid
+     - mount_option_nfs_noexec
 
