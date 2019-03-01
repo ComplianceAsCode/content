@@ -1,0 +1,57 @@
+<def-group>
+  <definition class="compliance" id="file_permissions_home_directories" version="1">
+    <metadata>
+      <title>All Interactive User Home Directories Must Have mode 0750 Or Less Permissive</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>All Interactive Users Home Directories Must Have mode 0750 or Less Permissive.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check for home directories of interactive users with too lax permissions." test_ref="test_file_permissions_home_directories" />
+    </criteria>
+  </definition>
+
+
+  <!-- we only care about interactive users (uid >= 1000) -->
+  <unix:password_state id="state_file_permissions_home_directories_is_interactive_user" version="1">
+      <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+  </unix:password_state>
+
+  <!-- collect information about all interactive users -->
+  <unix:password_object id="obj_file_permissions_home_directories_passwd_list" version="1">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+    <filter action="include">state_file_permissions_home_directories_is_interactive_user</filter>
+  </unix:password_object>
+
+  <!-- variable with all the home directories of interactive users -->
+  <local_variable id="var_file_permissions_home_directories_home_dir_list" comment="List of home directories of interactive users." datatype="string" version="1">
+    <object_component item_field="home_dir" object_ref="obj_file_permissions_home_directories_passwd_list" />
+  </local_variable>
+
+  <!-- collect file objects for every collected home directory  -->
+  <unix:file_object comment="all home directories of interactive users exist" id="obj_file_permissions_home_directories_file_object_list" version="1">
+    <unix:path var_check="at least one" var_ref="var_file_permissions_home_directories_home_dir_list" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <!-- verify permissions -->
+  <unix:file_state id="state_file_permissions_home_directories_group_permissions" version="1">
+      <unix:gwrite datatype="boolean">false</unix:gwrite>
+  </unix:file_state>
+  <unix:file_state id="state_file_permissions_home_directories_other_permissions" version="1">
+      <unix:oread datatype="boolean">false</unix:oread>
+      <unix:owrite datatype="boolean">false</unix:owrite>
+      <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+
+  <unix:file_test
+  check="all" check_existence="all_exist" comment="Check home directory permissions of interactive users"
+  id="test_file_permissions_home_directories" version="1">
+    <unix:object object_ref="obj_file_permissions_home_directories_file_object_list" />
+    <unix:state state_ref="state_file_permissions_home_directories_group_permissions" />
+    <unix:state state_ref="state_file_permissions_home_directories_other_permissions" />
+  </unix:file_test>
+
+</def-group>
+  

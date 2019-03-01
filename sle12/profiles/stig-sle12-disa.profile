@@ -86,4 +86,5 @@ selections:
      - accounts_user_interactive_home_directory_exists
      - accounts_user_interactive_home_directory_defined
      - accounts_have_homedir_login_defs
+     - file_permissions_home_directories
 
