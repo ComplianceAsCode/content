@@ -87,5 +87,6 @@ selections:
      - accounts_user_interactive_home_directory_defined
      - accounts_have_homedir_login_defs
      - file_permissions_home_directories
+     - accounts_user_home_paths_only
      - accounts_user_dot_no_world_writable_programs
 
