@@ -1,0 +1,28 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- (xccdf-var var_selinux_state)
+- name: '@RULE_TITLE@'
+  lineinfile:
+    path: /etc/sysconfig/selinux
+    regexp: ^SELINUX=
+    line: SELINUX={{ var_selinux_state }}
+    create: true
+  when: ansible_virtualization_role != "guest" or ansible_virtualization_type != "docker"
+  tags:
+  - selinux_state
+  - high_severity
+  - restrict_strategy
+  - low_complexity
+  - low_disruption
+  - NIST-800-53-AC-3
+  - NIST-800-53-AC-3(3)
+  - NIST-800-53-AC-3(4)
+  - NIST-800-53-AC-4
+  - NIST-800-53-AC-6
+  - NIST-800-53-AU-9
+  - NIST-800-53-SI-6(a)
+  - NIST-800-171-3.1.2
+  - NIST-800-171-3.7.2
