@@ -1,0 +1,65 @@
+<def-group>
+  <definition class="compliance" id="mount_option_home_nosuid" version="1">
+    <metadata>
+      <title>Add nosuid Option to /home</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>The nosuid mount option can be used to prevent execution of setuid programs in /home.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check for home directories of interactive users that currently do not have a home directory assigned." test_ref="test_home_nosuid" />
+    </criteria>
+  </definition>
+
+
+
+
+  <!-- we only care about interactive users (uid >= 1000) -->
+  <unix:password_state id="state_home_nosuid_is_interactive_user" version="1">
+      <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+  </unix:password_state>
+
+  <!-- collect information about all interactive users -->
+  <unix:password_object id="obj_home_nosuid_interactive_users" version="1">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+    <filter action="include">state_home_nosuid_is_interactive_user</filter>
+  </unix:password_object>
+
+  <!-- variable with all the home directories of interactive users -->
+  <local_variable id="var_home_nosuid_interactive_home_dirs" comment="List of home directories of interactive users." datatype="string" version="1">
+    <object_component item_field="home_dir" object_ref="obj_home_nosuid_interactive_users" />
+  </local_variable>
+
+  <!-- for every collected home directory, create file objects up to their mount point -->
+  <unix:file_object comment="File objects for every parent directory on the same mount point as any home directory" id="obj_home_nosuid_home_directories" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="up" recurse_file_system="defined" />
+    <unix:path var_check="at least one" var_ref="var_home_nosuid_interactive_home_dirs" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+  <local_variable id="var_home_nosuid_home_directories" comment="File objects for every parent directory on the same mount point as any home directory" datatype="string" version="1">
+    <object_component item_field="path" object_ref="obj_home_nosuid_home_directories" />
+  </local_variable>
+
+  <!-- this mount point contains a home directory -->
+  <linux:partition_state id="state_home_nosuid_contains_home" version="1">
+    <linux:mount_point datatype="string" operation="equals" var_ref="var_home_nosuid_home_directories" var_check="at least one" />
+  </linux:partition_state>
+  <!-- all mount points that contain a home directory -->
+  <linux:partition_object id="obj_home_nosuid_mount_points" version="1">
+    <linux:mount_point operation="pattern match">^.*$</linux:mount_point>
+    <filter action="include">state_home_nosuid_contains_home</filter>
+  </linux:partition_object>
+
+  <!-- check for the nosuid mount option -->
+  <linux:partition_state id="state_home_nosuid_has_nosuid" version="1">
+    <linux:mount_options datatype="string" entity_check="at least one" operation="equals">nosuid</linux:mount_options>
+  </linux:partition_state>
+
+  <linux:partition_test id="test_home_nosuid" check="all" check_existence="all_exist" comment="all file systems that contain a home directory must be mounted with 'nosuid'" version="1">
+    <linux:object object_ref="obj_home_nosuid_mount_points" />
+    <linux:state state_ref="state_home_nosuid_has_nosuid" />
+  </linux:partition_test>
+
+</def-group>
+  
