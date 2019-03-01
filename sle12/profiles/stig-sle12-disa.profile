@@ -60,6 +60,7 @@ selections:
      - sshd_set_idle_timeout
      - sshd_set_keepalive
      - sshd_disable_user_known_hosts
+     - file_permissions_sshd_pub_key
      - no_user_host_based_files
      - no_host_based_files
      - var_system_crypto_policy=fips
