@@ -1,0 +1,71 @@
+<def-group>
+  <definition class="compliance" id="accounts_user_interactive_home_directory_exists" version="1">
+    <metadata>
+      <title>All Interactive Users Home Directories Must Exist</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Check for home directories of interactive users that currently do not have a home directory assigned.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check for home directories of interactive users that currently do not have a home directory assigned." test_ref="test_user_interactive_home_exists" />
+    </criteria>
+  </definition>
+
+
+  <!-- we only care about interactive users (uid >= 1000) -->
+  <unix:password_state id="state_user_interactive_home_exists_is_interactive_user" version="1">
+      <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+  </unix:password_state>
+
+  <!-- collect information about all interactive users -->
+  <unix:password_object id="obj_user_interactive_home_exists_passwd_list" version="1">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+    <filter action="include">state_user_interactive_home_exists_is_interactive_user</filter>
+  </unix:password_object>
+
+  <!-- variable with all the home directories of interactive users -->
+  <local_variable id="var_user_interactive_home_exists_home_directory_list" comment="List of home directories of interactive users." datatype="string" version="1">
+    <object_component item_field="home_dir" object_ref="obj_user_interactive_home_exists_passwd_list" />
+  </local_variable>
+
+  <!-- object for this variable that we can use in a variable_test -->
+  <ind:variable_object id="obj_user_interactive_home_exists_home_directory_list" version="1">
+      <ind:var_ref>var_user_interactive_home_exists_home_directory_list</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- home dirs must be directories -->
+  <unix:file_state id="state_user_interactive_home_exists_is_dir" version="1">
+      <unix:type>directory</unix:type>
+  </unix:file_state>
+
+  <!--
+  try to find file objects for every collected home directory.
+
+  my first attempt was to do var_check="all" and a simple <file_test> for that, but for some reason that doesn't work
+  -->
+  <unix:file_object comment="all home directories of interactive users exist" id="obj_user_interactive_home_exists_home_directories" version="1">
+    <unix:path var_check="at least one" var_ref="var_user_interactive_home_exists_home_directory_list" />
+    <unix:filename xsi:nil="true" />
+    <filter action="include">state_user_interactive_home_exists_is_dir</filter>
+  </unix:file_object>
+
+  <!-- collect the paths to all valid home directories (exists and is a dir) in another variable -->
+  <local_variable id="var_user_interactive_home_exists_file_objects" comment="List of home directories of interactive users." datatype="string" version="1">
+    <object_component item_field="path" object_ref="obj_user_interactive_home_exists_home_directories" />
+  </local_variable>
+
+  <!-- verify that every configured file directory is in the list of valid home directories -->
+  <ind:variable_state id="state_user_interactive_home_exists_each_home_has_file_object" version="1">
+    <ind:value var_ref="var_user_interactive_home_exists_file_objects" datatype="string" operation="equals" var_check="at least one" />
+  </ind:variable_state>
+
+  <ind:variable_test
+  check="all" check_existence="all_exist" comment="Check user ids on all files on the system"
+  id="test_user_interactive_home_exists" version="1">
+    <ind:object object_ref="obj_user_interactive_home_exists_home_directory_list" />
+    <ind:state state_ref="state_user_interactive_home_exists_each_home_has_file_object" />
+  </ind:variable_test>
+
+</def-group>
+  
