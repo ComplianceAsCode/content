@@ -64,6 +64,7 @@ selections:
      - file_permissions_sshd_private_key
      - sshd_enable_strictmodes
      - sshd_use_priv_separation
+     - sshd_disable_compression
      - no_user_host_based_files
      - no_host_based_files
      - var_system_crypto_policy=fips
