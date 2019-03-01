@@ -92,4 +92,5 @@ selections:
      - accounts_user_dot_no_world_writable_programs
      - mount_option_home_nosuid
      - mount_option_nosuid_removable_partitions
+     - mount_option_nfs_nosuid
 

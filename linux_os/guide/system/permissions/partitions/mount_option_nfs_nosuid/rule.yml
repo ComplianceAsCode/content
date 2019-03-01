@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Add nosuid Option to any nfs mounts'
+
+description: |-
+    The <tt>nosuid</tt> mount option can be used to prevent
+    execution of setuid programs in network mounts. The SUID and SGID permissions
+    should not be required in these user data directories.
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled.
+    This option must be used for mounting any file system not containing
+    approved <tt>setuid</tt> and <tt>setguid</tt> files. Executing files from
+    untrusted file systems increases the opportunity for unprivileged users to
+    attain unauthorized administrative access.
+
+
+severity: medium
+
+references:
+    nist: CM-6(b)
+    disa: "366"
+    stigid@sle12: "010810"
