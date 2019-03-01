@@ -59,6 +59,7 @@ selections:
      - sshd_use_approved_macs
      - sshd_set_idle_timeout
      - sshd_set_keepalive
+     - sshd_disable_user_known_hosts
      - no_user_host_based_files
      - no_host_based_files
      - var_system_crypto_policy=fips
