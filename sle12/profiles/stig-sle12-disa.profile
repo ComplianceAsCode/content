@@ -84,4 +84,5 @@ selections:
      - sssd_offline_cred_expiration
      - no_files_unowned_by_user
      - accounts_user_interactive_home_directory_exists
+     - accounts_user_interactive_home_directory_defined
 

@@ -1,0 +1,39 @@
+<def-group>
+  <definition class="compliance" id="accounts_user_interactive_home_directory_defined" version="1">
+    <metadata>
+      <title>All Interactive Users Home Directories Must be Defined</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Check for home directories of interactive users that currently do not have a home directory assigned.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="Check for home directories of interactive users that currently do not have a home directory assigned." test_ref="test_accounts_user_interactive_home_directory_defined" />
+    </criteria>
+  </definition>
+
+
+  <!-- we only care about interactive users (uid >= 1000) -->
+  <unix:password_state id="state_user_interactive_home_defined_is_interactive_user" version="1">
+      <unix:user_id datatype="int" operation="greater than or equal">1000</unix:user_id>
+  </unix:password_state>
+
+  <!-- collect information about all interactive users -->
+  <unix:password_object id="obj_user_interactive_home_defined_passwd_list" version="1">
+    <unix:username datatype="string" operation="pattern match">.*</unix:username>
+    <filter action="include">state_user_interactive_home_defined_is_interactive_user</filter>
+  </unix:password_object>
+
+  <!-- we want the home directory to be non-empty and not point to / -->
+  <unix:password_state id="state_user_interactive_home_defined_has_home_dir" version="1">
+    <unix:home_dir datatype="string" operation="pattern match">^/.</unix:home_dir>
+  </unix:password_state>
+
+  <!-- check that all interactive users have a home dir -->
+  <unix:password_test check="all" comment="all interactive users have home directories defined" id="test_accounts_user_interactive_home_directory_defined" version="1">
+    <unix:object object_ref="obj_user_interactive_home_defined_passwd_list" />
+    <unix:state state_ref="state_user_interactive_home_defined_has_home_dir" />
+  </unix:password_test>
+
+</def-group>
+  
