@@ -1,0 +1,20 @@
+<def-group>
+  <definition class="compliance" id="file_owner_grub2_config" version="1">
+    <metadata>
+      <title>Grub2 configuration file Owned By root User</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_ol</platform>
+      </affected>
+      <description>Grub2 configuration file /boot/efi/EFI/redhat/grub.cfg on UEFI systems 
+        or /boot/efi/EFI/redhat/grub.cfg on non-UEFI systems should be owned by the root user</description>
+    </metadata>
+
+    <criteria operator="OR">
+      <extend_definition comment="/boot/efi/EFI/redhat/grub.cfg owned by the root user" definition_ref="file_owner_efi_grub2_cfg" />
+      <extend_definition comment="/boot/grub2/grub.cfg owned by the root user" definition_ref="file_owner_grub2_cfg" />
+    </criteria>
+  </definition>
+</def-group>
