@@ -1,0 +1,42 @@
+documentation_complete: true
+
+title: 'Verify that local /var/log/messages is not world-readable'
+
+description: |-
+    Files containing sensitive informations should be protected by restrictive
+    permissions. Most of the time, there is no need that these files need to be read by any non-root user
+    {{{ describe_file_permissions(file="/var/log/messages", perms="0640") }}}
+
+    Check that "permissions.local" file contains the correct permissions rules with the following command:
+
+    <pre># grep -i messages /etc/permissions.local
+
+    /var/log/messages root:root 640</pre>
+
+rationale: |-
+    The <tt>/var/log/messages</tt> file contains system error messages. Only
+    authorized personnel should be aware of errors and the details of the
+    errors. Error messages are an indicator of an organization's operational
+    state or can identify the SUSE operating system or platform. Additionally,
+    Personally Identifiable Information (PII) and operational information must
+    not be revealed through error messages to unauthorized personnel or their
+    designated representatives.
+
+severity: medium
+
+references:
+    disa: "1314"
+    nist: SI-11(c)
+    stigid@rhel12: "010890"
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/var/log/messages", perms="-rw-r-----") }}}
+
+    Check that <tt>permissions.local</tt> file contains the correct permissions rules with the following command:
+
+    <pre># grep -i messages /etc/permissions.local
+
+    /var/log/messages root:root 640</pre>
+
+    If the command does not return any or different output, this is a finding.
+

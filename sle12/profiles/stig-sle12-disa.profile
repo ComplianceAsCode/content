@@ -111,4 +111,5 @@ selections:
      - partition_for_var_log_audit
      - partition_for_home
      - partition_for_var
+     - file_permissions_var_log_messages
 
