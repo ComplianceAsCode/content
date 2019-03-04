@@ -539,6 +539,8 @@ class Rule(object):
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
+        yaml_file = os.path.normpath(yaml_file)
+
         yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
@@ -621,6 +623,15 @@ class Rule(object):
             if ref_val.strip() == "":
                 raise ValueError("References must not be empty: %s in file %s"
                                  % (ref_type, yaml_file))
+
+        for ref_type, ref_val in self.references.items():
+            for ref in ref_val.split(","):
+                if ref.strip() != ref:
+                    msg = (
+                        "Comma-separated '{ref_type}' reference "
+                        "in {yaml_file} contains whitespace."
+                        .format(ref_type=ref_type, yaml_file=yaml_file))
+                    raise ValueError(msg)
 
     def to_xml_element(self):
         rule = ET.Element('Rule')
