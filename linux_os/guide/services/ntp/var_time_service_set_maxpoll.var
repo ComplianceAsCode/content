@@ -10,5 +10,10 @@ interactive: false
 
 options:
     36_hours: 17
+{{% if product == "sle12" %}}
+    default: 16
+    system_default: 16
+{{% else %}}
     default: 10
     system_default: 10
+{{% endif %}}
