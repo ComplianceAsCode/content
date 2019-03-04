@@ -113,4 +113,5 @@ selections:
      - partition_for_var
      - file_permissions_var_log_messages
      - pam_disable_automatic_configuration
+     - package_audit_installed
 
