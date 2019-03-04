@@ -10,6 +10,24 @@
       <description>Configure the maxpoll setting in /etc/ntp.conf or chrony.conf
       to continuously poll the time source servers.</description>
     </metadata>
+    {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition comment="rpm package ntp installed" definition_ref="package_ntp_installed" />
+        <criterion comment="check if maxpoll is set in /etc/ntp.conf"
+        test_ref="test_ntp_set_maxpoll" />
+        <criterion comment="check if all server entries have maxpoll set in /etc/ntp.conf"
+        test_ref="test_ntp_all_server_has_maxpoll"/>
+      </criteria>
+      <criteria operator="AND">
+        <extend_definition comment="rpm package chrony installed" definition_ref="package_chrony_installed" />
+        <criterion comment="check if maxpoll is set in /etc/chrony.conf"
+        test_ref="test_chrony_set_maxpoll" />
+        <criterion comment="check if all server entries have maxpoll set in /etc/chrony.conf"
+        test_ref="test_chrony_all_server_has_maxpoll"/>
+      </criteria>
+    </criteria>
+    {{% else %}}
     <criteria operator="OR">
       <criteria operator="AND">
         <extend_definition comment="service ntpd enabled" definition_ref="service_ntpd_enabled" />
@@ -26,6 +44,7 @@
         test_ref="test_chrony_all_server_has_maxpoll"/>
       </criteria>
     </criteria>
+    {{% endif %}}
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"

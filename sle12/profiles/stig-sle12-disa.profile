@@ -103,6 +103,8 @@ selections:
      - mount_option_nosuid_removable_partitions
      - mount_option_nfs_nosuid
      - mount_option_nfs_noexec
+     - package_ntp_installed
+     - service_ntpd_enabled
      - chronyd_or_ntpd_set_maxpoll
      - var_time_service_set_maxpoll=system_default
 
