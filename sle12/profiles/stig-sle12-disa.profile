@@ -114,4 +114,5 @@ selections:
      - file_permissions_var_log_messages
      - pam_disable_automatic_configuration
      - package_audit_installed
+     - service_auditd_enabled
 
