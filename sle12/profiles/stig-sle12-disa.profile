@@ -49,6 +49,8 @@ selections:
      - gnome_gdm_disable_automatic_login
      - display_login_attempts
      - package_openssh_installed
+     - sshd_required=yes
+     - service_sshd_enabled
      - sshd_enable_warning_banner
      - sshd_set_loglevel_verbose
      - sshd_print_last_log
