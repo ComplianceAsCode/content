@@ -180,7 +180,7 @@ class OVALFileLinker(FileLinker):
             if is_cce_format_valid(xccdfcceid) and is_cce_value_valid(xccdfcceid):
                 # Then append the <reference source="CCE" ref_id="CCE-ID" /> element right
                 # after <description> element of specific OVAL check
-                ccerefelem = ET.Element('reference', ref_id=xccdfcceid,
+                ccerefelem = ET.Element('{%s}reference' % self.CHECK_NAMESPACE, ref_id=xccdfcceid,
                                         source="CCE")
                 metadata = rule.find(".//{%s}metadata" % self.CHECK_NAMESPACE)
                 metadata.append(ccerefelem)
