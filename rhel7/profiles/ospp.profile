@@ -387,6 +387,7 @@ selections:
     - configure_opensc_nss_db
     - configure_opensc_card_drivers
     - force_opensc_card_drivers
+    - package_pcsc-lite_installed
     - service_pcscd_enabled
     - sssd_enable_smartcards
     - sssd_memcache_timeout

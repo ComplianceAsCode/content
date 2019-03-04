@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,rhv4
+
+title: 'Install the pcsc-lite package'
+
+description: |-
+    {{{ describe_package_install(package="pcsc-lite") }}}
+
+rationale: |-
+    The pcsc-lite package must be installed if it is to be available for
+    multifactor authentication using smartcards.
+
+severity: medium
+
+references:
+    disa: "1954"
+    srg: SRG-OS-000375-GPOS-00160
+    vmmsrg: SRG-OS-000377-VMM-001530
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="pcsc-lite") }}}'
