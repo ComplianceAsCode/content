@@ -108,4 +108,7 @@ selections:
      - chronyd_or_ntpd_set_maxpoll
      - var_time_service_set_maxpoll=system_default
      - service_kdump_disabled
+     - partition_for_var_log_audit
+     - partition_for_home
+     - partition_for_var
 
