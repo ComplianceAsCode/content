@@ -10,6 +10,7 @@ description: |-
     and scap-security-guide@lists.fedorahosted.org.
 
 selections:
+    - package_docker_installed
     - service_docker_enabled
     - var_selinux_policy_name=targeted
     - var_selinux_state=enforcing
