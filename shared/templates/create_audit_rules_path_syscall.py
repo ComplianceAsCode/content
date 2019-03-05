@@ -31,7 +31,7 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_BASH_audit_rules_path_syscall",
                 {
-                    "PATH":     path
+                    "PATH":     path,
                     "SYSCALL":  syscall
                 },
                 "./bash/audit_rules_{0}_{1}.sh", pathid, syscall
