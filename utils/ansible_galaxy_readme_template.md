@@ -4,7 +4,10 @@
 @DESCRIPTION@
 
 The tasks that are used in this role are generated using OpenSCAP.
-See the OpenSCAP project for more details at [https://github.com/OpenSCAP/openscap](https://github.com/OpenSCAP/openscap)
+See the OpenSCAP project for more details on Ansible playbook generation at [https://github.com/OpenSCAP/openscap](https://github.com/OpenSCAP/openscap)
+
+To submit a fix or enhancement for an Ansible task that is failing or missing,
+see the ComplianceAsCode project at [https://github.com/ComplianceAsCode/content](https://github.com/ComplianceAsCode/content)
 
 Requirements
 ------------
@@ -31,7 +34,7 @@ download and install the role. Then, you can use the following playbook snippet 
       roles:
          - { role: RedHatOfficial.@ROLE_NAME@ }
 
-Then, check the playbook using (on the localhost) the following example:
+Next, check the playbook using (on the localhost) the following example:
 
     ansible-playbook -i "localhost," -c local --check playbook.yml
 
