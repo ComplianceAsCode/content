@@ -121,4 +121,5 @@ selections:
      - rsyslog_remote_loghost
      - sysctl_net_ipv4_tcp_syncookies
      - sysctl_net_ipv4_conf_all_accept_source_route
+     - sysctl_net_ipv6_conf_all_accept_source_route
 
