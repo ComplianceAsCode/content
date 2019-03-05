@@ -124,4 +124,5 @@ selections:
      - sysctl_net_ipv6_conf_all_accept_source_route
      - sysctl_net_ipv4_conf_default_accept_source_route
      - auditd_audispd_configure_sufficiently_large_partition
+     - auditd_data_retention_space_left
 
