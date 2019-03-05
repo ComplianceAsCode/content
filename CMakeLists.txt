@@ -81,7 +81,7 @@ set(SSG_SHARED_TRANSFORMS "${SSG_SHARED}/transforms")
 set(SSG_BUILD_SCRIPTS "${CMAKE_SOURCE_DIR}/build-scripts")
 
 message(STATUS "SCAP Security Guide ${SSG_VERSION}")
-message(STATUS "(see ${CMAKE_SOURCE_DIR}/BUILD.md for build instructions)")
+message(STATUS "(see ${CMAKE_SOURCE_DIR}/docs/manual/developer_guide.adoc for build instructions)")
 message(STATUS "")
 
 # Strictly speaking in-source will work but will be very messy, let's

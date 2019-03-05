@@ -135,7 +135,7 @@ detailed instructions.
 
 If SCAP Security Guide is not packaged in your distribution or if the
 version that is packaged is too old, you need to build the content yourself
-and install it via `make install`. Please see the [BUILD.md](BUILD.md)
+and install it via `make install`. Please see the [Developer Guide](docs/manual/developer_guide.adoc)
 document for more info. We also recommend opening an issue on that distributions
 bug tracker to voice interest.
 
