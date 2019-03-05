@@ -26,6 +26,17 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
                 },
                 "./oval/audit_rules_{0}_{1}.xml", pathid, syscall
             )
+
+        elif target == "bash":
+            self.file_from_template(
+                "./template_BASH_audit_rules_path_syscall",
+                {
+                    "PATH":     path
+                    "SYSCALL":  syscall
+                },
+                "./bash/audit_rules_{0}_{1}.sh", pathid, syscall
+            )
+
         else:
             raise UnknownTargetError(target)
 
