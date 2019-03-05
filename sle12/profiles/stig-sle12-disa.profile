@@ -118,4 +118,5 @@ selections:
      - service_auditd_enabled
      - sysctl_kernel_kptr_restrict
      - sysctl_kernel_randomize_va_space
+     - rsyslog_remote_loghost
 
