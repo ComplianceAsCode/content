@@ -127,4 +127,5 @@ selections:
      - auditd_data_retention_space_left
      - auditd_data_disk_full_action
      - auditd_data_retention_action_mail_acct
+     - package_audit-audispd-plugins_installed
 
