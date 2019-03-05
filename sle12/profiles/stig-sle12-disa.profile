@@ -106,6 +106,7 @@ selections:
      - package_ntp_installed
      - service_ntpd_enabled
      - chronyd_or_ntpd_set_maxpoll
+     - ensure_rtc_utc_configuration
      - var_time_service_set_maxpoll=system_default
      - service_kdump_disabled
      - partition_for_var_log_audit
