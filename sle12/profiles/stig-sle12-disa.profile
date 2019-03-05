@@ -120,4 +120,5 @@ selections:
      - sysctl_kernel_randomize_va_space
      - rsyslog_remote_loghost
      - sysctl_net_ipv4_tcp_syncookies
+     - sysctl_net_ipv4_conf_all_accept_source_route
 
