@@ -129,4 +129,5 @@ selections:
      - auditd_data_retention_action_mail_acct
      - package_audit-audispd-plugins_installed
      - auditd_audispd_encrypt_sent_records
+     - auditd_audispd_configure_remote_server
 
