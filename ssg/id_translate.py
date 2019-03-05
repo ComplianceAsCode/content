@@ -74,7 +74,7 @@ class IDTranslator(object):
                     if metadata is None:
                         metadata = ElementTree.SubElement(element, "metadata")
                     defnam = ElementTree.Element(
-                        "reference", ref_id=idname, source=self.content_id)
+                        "{%s}reference" % oval_ns, ref_id=idname, source=self.content_id)
                     metadata.append(defnam)
 
                 # set the element to the new identifier
