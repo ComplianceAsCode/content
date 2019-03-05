@@ -3,6 +3,9 @@
 
 @DESCRIPTION@
 
+The tasks that are used in this role are generated using OpenSCAP.
+See the OpenSCAP project for more details at [https://github.com/OpenSCAP/openscap](https://github.com/OpenSCAP/openscap)
+
 Requirements
 ------------
 
@@ -18,17 +21,17 @@ Dependencies
 
 N/A
 
-Example Playbook
+Example Role Usage
 ----------------
 
 Run `ansible-galaxy install RedHatOfficial.@ROLE_NAME@` to
-download and install the role. Then you can use the following playbook snippet.
+download and install the role. Then, you can use the following playbook snippet to run the Ansible role:
 
     - hosts: all
       roles:
          - { role: RedHatOfficial.@ROLE_NAME@ }
 
-Then first check the playbook using (on the localhost):
+Then, check the playbook using (on the localhost) the following example:
 
     ansible-playbook -i "localhost," -c local --check playbook.yml
 
