@@ -200,10 +200,11 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/o:redhat:enterprise_linux:8",
     ],
     "rhosp13": [
-        "cpe:/a:redhat:openstack:13.0",
+        "cpe:/a:redhat:openstack:13",
     ],
     "rhv4": [
-        "cpe:/o:redhat:virtualization:4",
+        "cpe:/a:redhat:enterprise_virtualization_manager:4",
+        "cpe:/o:redhat:enterprise_linux:7::hypervisor",
     ],
     "sle11": [
         "cpe:/o:suse:linux_enterprise_server:11",
