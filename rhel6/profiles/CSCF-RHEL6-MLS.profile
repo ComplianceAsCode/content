@@ -207,6 +207,7 @@ selections:
     - service_ntpdate_disabled
     - service_oddjobd_disabled
     - service_portreserve_disabled
+    - package_psacct_installed
     - service_psacct_enabled
     - service_qpidd_disabled
     - service_quota_nld_disabled

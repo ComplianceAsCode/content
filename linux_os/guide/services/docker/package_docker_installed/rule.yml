@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel7
+
+title: 'Install the docker Package'
+
+description: |-
+    The docker package provides necessary software to create containers, which
+    are self-sufficient and self-contained applications using the resource
+    isolation features of the kernel.
+    {{{ describe_package_install(package="docker") }}}
+
+rationale: |-
+    To be able to run the docker service, the docker package has to be installed.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="docker") }}}'
+
+platform: machine
