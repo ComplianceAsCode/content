@@ -79,9 +79,9 @@
 
 
   <!-- if SHA_CRYPT_MAX_ROUNDS and SHA_CRYPT_MIN_ROUNDS are both unset, that's OK, too -->
-  <ind:variable_test id="test_etc_login_defs_sha_crypt_min_or_max_rounds" check="all" comment="The value of SHA_CRYPT_MAX_ROUNDS or SHA_CRYPT_MIN_ROUNDS is set in /etc/login.defs" version="1">
+  <ind:textfilecontent54_test id="test_etc_login_defs_sha_crypt_min_or_max_rounds" check="all" comment="The value of SHA_CRYPT_MAX_ROUNDS or SHA_CRYPT_MIN_ROUNDS is set in /etc/login.defs" version="1">
     <ind:object object_ref="object_last_sha_crypt_min_or_max_rounds_instance_value" />
-  </ind:variable_test>
+  </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_last_sha_crypt_min_or_max_rounds_instance_value" version="1">
     <ind:filepath>/etc/login.defs</ind:filepath>
     <ind:pattern operation="pattern match">^[^#]*SHA_CRYPT_M(IN|AX)_ROUNDS\s</ind:pattern>
