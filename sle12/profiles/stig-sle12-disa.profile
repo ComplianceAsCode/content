@@ -130,4 +130,5 @@ selections:
      - package_audit-audispd-plugins_installed
      - auditd_audispd_encrypt_sent_records
      - auditd_audispd_configure_remote_server
+     - auditd_audispd_network_failure_action
 
