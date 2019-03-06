@@ -20,6 +20,7 @@
       warn: False # Ignore ANSIBLE0006, we can't fetch mount options with mount module
     register: device_cur_mountoption
     check_mode: no
+    changed_when: False
 
   - name: get back device fstype
     shell: mount | grep ' {{ {{{ MOUNTPOINT }}} }} ' | cut -d ' ' -f 5
@@ -27,6 +28,7 @@
       warn: False # Ignore ANSIBLE0006, we can't fetch fstype with mount module
     register: device_fstype
     check_mode: no
+    changed_when: False
 
   - name: Ensure permission {{{ MOUNTOPTION }}} are set on {{{ MOUNTPOINT }}}
     mount:

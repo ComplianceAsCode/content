@@ -1,6 +1,6 @@
 # platform = multi_platform_ol
-# OL fingerprints below retrieved from "Oracle Linux Unbreakable Linux Network User's Guide"
-# https://docs.oracle.com/cd/E37670_01/E39381/html/ol_import_gpg.html
+# OL fingerprints below retrieved from Oracle Linux Yum Server "Frequently Asked Questions"
+# https://yum.oracle.com/faq.html#a10
 readonly OL_FINGERPRINT="4214 4123 FECF C55B 9086 313D 72F9 7B74 EC55 1F03"
 # Location of the key we would like to import (once it's integrity verified)
 readonly OL_RELEASE_KEY="/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle"
