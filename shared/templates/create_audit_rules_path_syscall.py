@@ -37,6 +37,16 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
                 "./bash/audit_rules_{0}_{1}.sh", pathid, syscall
             )
 
+        elif target == "ansible":
+            self.fil_from_template{
+                "./template_ANSIBLE_audit_rules_path_syscall",
+                {
+                    "PATH":     path,
+                    "SYSCALL":  syscall
+                },
+                "./ansible/audit_rules_{0}_{1}.yml", pathid, syscall
+            )
+
         else:
             raise UnknownTargetError(target)
 
