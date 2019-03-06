@@ -1,4 +1,5 @@
-<def-group>
+{{% if target_oval_version >= [5, 11.2] %}}
+<def-group oval_version="5.11.2">
   <definition class="compliance" id="auditd_audispd_configure_sufficiently_large_partition" version="1">
     <metadata>
       <title>Configure a Sufficiently Large Partition for Audit Logs</title>
@@ -36,3 +37,4 @@
   </ind:variable_state>
 
 </def-group>
+{{% endif %}}
