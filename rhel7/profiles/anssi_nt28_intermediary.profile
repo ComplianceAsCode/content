@@ -18,7 +18,6 @@ selections:
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
-    - "!rsyslog_remote_loghost"
     - ensure_logrotate_activated
     - sysctl_fs_suid_dumpable
     - sysctl_kernel_randomize_va_space
