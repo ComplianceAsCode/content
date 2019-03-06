@@ -131,4 +131,5 @@ selections:
      - auditd_audispd_encrypt_sent_records
      - auditd_audispd_configure_remote_server
      - auditd_audispd_network_failure_action
+     - auditd_audispd_disk_full_action
 
