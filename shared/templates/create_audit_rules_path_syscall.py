@@ -38,7 +38,7 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
             )
 
         elif target == "ansible":
-            self.fil_from_template{
+            self.file_from_template(
                 "./template_ANSIBLE_audit_rules_path_syscall",
                 {
                     "PATH":     path,
