@@ -37,6 +37,53 @@ class ARUFMDetailedGenerator(FilesGenerator):
                 },
                 "./oval/audit_rules_unsuccessful_file_modification_{0}_rule_order.xml", syscall
             )
+
+        elif target == "bash":
+            self.file_from_template(
+                "./template_BASH_audit_rules_unsuccessful_file_modification_o_creat",
+                {
+                    "SYSCALL":  syscall
+                },
+                "./bash/audit_rules_unsuccessful_file_modification_{0}_o_creat.sh", syscall
+            )
+            self.file_from_template(
+                "./template_BASH_audit_rules_unsuccessful_file_modification_o_trunc_write",
+                {
+                    "SYSCALL":  syscall
+                },
+                "./bash/audit_rules_unsuccessful_file_modification_{0}_o_trunc_write.sh", syscall
+            )
+            #self.file_from_template(
+            #    "./template_BASH_audit_rules_unsuccessful_file_modification_rule_order",
+            #    {
+            #        "SYSCALL":  syscall
+            #    },
+            #    "./bash/audit_rules_unsuccessful_file_modification_{0}_rule_order.sh", syscall
+            #)
+
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_unsuccessful_file_modification_o_creat",
+                {
+                    "SYSCALL":  syscall
+                },
+                "./ansible/audit_rules_unsuccessful_file_modification_{0}_o_creat.yml", syscall
+            )
+            self.file_from_template(
+                "./template_ANSIBLE_audit_rules_unsuccessful_file_modification_o_trunc_write",
+                {
+                    "SYSCALL":  syscall
+                },
+                "./ansible/audit_rules_unsuccessful_file_modification_{0}_o_trunc_write.yml", syscall
+            )
+            #self.file_from_template(
+            #    "./template_ANSIBLE_audit_rules_unsuccessful_file_modification_rule_order",
+            #    {
+            #        "SYSCALL":  syscall
+            #    },
+            #    "./ansible/audit_rules_unsuccessful_file_modification_{0}_rule_order.yml", syscall
+            #)
+
         else:
             raise UnknownTargetError(target)
 
