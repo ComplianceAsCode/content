@@ -7,7 +7,7 @@ title: 'Record Events When Privileged Executables Are Run'
 description: |-
     Verify the SUSE operating system generates an audit record when privileged functions are executed.
 
-    Find relevant setuid programs using the following command once for each local system partition, replacing "[PARTITION]" with each local system partition:
+    Find relevant setuid and setgid programs using the following command once for each local system partition, replacing "[PARTITION]" with each local system partition:
 
     <pre># sudo find [PARTITION] -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null</pre>
 
@@ -17,7 +17,7 @@ description: |-
 
     -w [SETUID_FILE_PATH] -p wa -k privilege_function</pre>
 
-    All setuid programs on the system must have a corresponding audit rule, or there must be an audit rule for the subdirectory that contains the setuid file.
+    All setuid and setgid programs on the system must have a corresponding audit rule, or there must be an audit rule for the subdirectory that contains the setuid/setgid file.
 
 rationale: |-
     Misuse of privileged functions, either intentionally or unintentionally by
@@ -42,7 +42,7 @@ warnings:
 ocil_clause: 'audit records for all privileged operations performed through suid binaries are not generated'
 
 ocil: |-
-    Find relevant setuid programs using the following command once for each local system partition, replacing "[PARTITION]" with each local system partition:
+    Find relevant setuid and setgid programs using the following command once for each local system partition, replacing "[PARTITION]" with each local system partition:
 
     <pre># sudo find [PARTITION] -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null</pre>
 
@@ -52,4 +52,4 @@ ocil: |-
 
     -w [SETUID_FILE_PATH] -p wa -k privilege_function</pre>
 
-    All setuid programs on the system must have a corresponding audit rule, or there must be an audit rule for the subdirectory that contains the setuid file.
+    All setuid and setgid programs on the system must have a corresponding audit rule, or there must be an audit rule for the subdirectory that contains the setuid/setgid file.
