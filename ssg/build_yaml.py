@@ -681,6 +681,52 @@ class Rule(object):
         rule.validate_references(yaml_file)
         return rule
 
+    def normalize(self, product):
+        self.make_items_product_specific(product)
+
+    def make_items_product_specific(self, product):
+        product_suffix = "@{0}".format(product)
+        to_set = dict(
+            identifiers=(self.identifiers, False),
+            references=(self.references, True),
+        )
+        for name, (dic, allow_overwrites) in to_set.items():
+            try:
+                new_items = self._make_items_product_specific(
+                    dic, product_suffix, allow_overwrites)
+            except ValueError as exc:
+                msg = (
+                    "Error processing {what} for rule '{rid}': {msg}"
+                    .format(what=name, rid=self.id_, msg=str(exc))
+                )
+                raise ValueError(msg)
+            dic.clear()
+            dic.update(new_items)
+
+    def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
+        new_items = dict()
+        for full_label, value in items_dict.items():
+            if "@" not in full_label and full_label not in new_items:
+                new_items[full_label] = value
+                continue
+
+            if not full_label.endswith(product_suffix):
+                continue
+
+            label = full_label.split("@")[0]
+            if label in items_dict and not allow_overwrites and value != items_dict[label]:
+                msg = (
+                    "There is a product-qualified '{item_q}' item, "
+                    "but also an unqualified '{item_u}' item "
+                    "and those two differ in value - "
+                    "'{value_q}' vs '{value_u}' respectively."
+                    .format(item_q=full_label, item_u=label,
+                            value_q=value, value_u=items_dict[label])
+                )
+                raise ValueError(msg)
+            new_items[label] = value
+        return new_items
+
     def _set_attributes_from_dict(self, yaml_contents):
         for key, default_getter in self.YAML_KEYS_DEFAULTS.items():
             if key not in yaml_contents:
@@ -970,6 +1016,7 @@ class BuildLoader(DirectoryLoader):
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
                 mkdir_p(self.resolved_rules_dir)
                 with open(output_for_rule, "w") as f:
+                    rule.normalize(self.env_yaml["product"])
                     yaml.dump(rule.to_contents_dict(), f)
 
     def _get_new_loader(self):
