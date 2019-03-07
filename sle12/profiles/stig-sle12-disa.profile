@@ -133,4 +133,5 @@ selections:
      - auditd_audispd_network_failure_action
      - auditd_audispd_disk_full_action
      - audit_rules_etc_passwd_open_write
+     - audit_rules_etc_group_open_write
 
