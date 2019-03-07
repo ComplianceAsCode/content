@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Record Events that Open Old User Passwords For Writing - /etc/security/opasswd'
+
+description: |-
+    The audit system should collect write events to /etc/security/opasswd file for all users and root.
+    Add the following lines to the <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-w /etc/security/opasswd -p wa -k account_mod</pre>
+
+rationale: |-
+    Modifying the database of old user passwords through direct edition of
+    /etc/security/opasswd could be an indicator of malicious activity on a
+    system.  Auditing these events could serve as evidence of potential system
+    compromise.
+
+severity: medium
+
+references:
+    disa: 18,172,1403,2130,2132
+    nist: AC-2(4),AU-12(c)
+    stigid: "020200"
+
+warnings:
+    - general: |-
+        Note that these rules can be configured in a
+        number of ways while still achieving the desired effect.
+
+ocil_clause: 'audit records for all old password change events that affect /etc/security/opasswd are not generated'
+
+ocil: |-
+    Check that the following line appears in the <tt>/etc/audit/audit.rules</tt> file:
+    <pre>-w /etc/security/opasswd -p wa -k account_mod</pre>
+
+    If it is missing, add it.
