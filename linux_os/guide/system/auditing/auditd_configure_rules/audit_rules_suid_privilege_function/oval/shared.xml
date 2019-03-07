@@ -1,0 +1,60 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_suid_privilege_function" version="1">
+    <metadata>
+      <title>Configure </title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>checks for an audit rule for every suid binary</description>
+    </metadata>
+    <criteria>
+        <criterion comment="checks for an audit rule for every suid binary" test_ref="test_audit_rules_suid_privilege_function" />
+    </criteria>
+  </definition>
+
+  <unix:file_object comment="only local directories" id="object_suid_binaries" version="1">
+    <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
+    <unix:path operation="equals">/</unix:path>
+    <unix:filename operation="pattern match">^</unix:filename>
+    <filter action="exclude">state_is_not_executable</filter>
+    <filter action="exclude">state_has_no_sxid_bit</filter>
+    <filter action="include">state_is_regular_file</filter>
+  </unix:file_object>
+  <unix:file_state id="state_is_not_executable" version="1" comment="checks that a file is executable">
+    <unix:uexec datatype="boolean">false</unix:uexec>
+    <unix:gexec datatype="boolean">false</unix:gexec>
+    <unix:oexec datatype="boolean">false</unix:oexec>
+  </unix:file_state>
+  <unix:file_state id="state_has_no_sxid_bit" version="1" comment="checks for set-gid on regular files">
+    <unix:suid datatype="boolean">false</unix:suid>
+    <unix:sgid datatype="boolean">false</unix:sgid>
+  </unix:file_state>
+  <unix:file_state id="state_is_regular_file" version="1" comment="checks for set-gid on regular files">
+    <unix:type>regular</unix:type>
+  </unix:file_state>
+
+
+  <unix:file_test check="all" check_existence="all_exist" version="1" comment="checks for an audit rule for every suid binary" id="test_audit_rules_suid_privilege_function">
+      <unix:object object_ref="object_suid_binaries" />
+      <unix:state state_ref="state_has_audit_rule" />
+  </unix:file_test>
+  <unix:file_state id="state_has_audit_rule" version="1" comment="checks for an audit rule for a file">
+      <unix:filepath operation="equals" var_ref="var_audit_rules_privilege_function" var_check="at least one" />
+  </unix:file_state>
+
+  <ind:textfilecontent54_object id="object_audit_rules_privilege_function" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <!--
+        The '|(.).+' part of this regex is required to prevent this textfilecontent54_object from going into an error state when there are 0 matching lines.
+        This error state would propagate up to the file_test and prevent any mitigations from running (because error != fail).
+
+        So to make sure there is at least one matching line, we force every line to be a match, but with a single-character subexpression - which is too short to actually match any file path in the file_state above.
+    -->
+    <ind:pattern operation="pattern match">^(?:\s*-w (\S+) -p xwa -k privilege_function\s*|(.).+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable id="var_audit_rules_privilege_function" version="1" datatype="string" comment="the paths for all audit rules for privilege_function">
+    <object_component item_field="subexpression" object_ref="object_audit_rules_privilege_function" />
+  </local_variable>
+
+</def-group>

@@ -136,4 +136,5 @@ selections:
      - audit_rules_etc_group_open_write
      - audit_rules_etc_shadow_open_write
      - audit_rules_etc_security_opasswd_open_write
+     - audit_rules_suid_privilege_function
 

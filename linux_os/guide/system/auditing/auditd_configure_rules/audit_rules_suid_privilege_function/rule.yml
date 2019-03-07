@@ -1,0 +1,55 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Record Events When Privileged Executables Are Run'
+
+description: |-
+    Verify the SUSE operating system generates an audit record when privileged functions are executed.
+
+    Find relevant setuid programs using the following command once for each local system partition, replacing "[PARTITION]" with each local system partition:
+
+    <pre># sudo find [PARTITION] -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null</pre>
+
+    Verify all of the programs found with the command above are listed in the audit file by running the following command for every program found, replacing "[FILE_PATH]" with each program to include the full path:
+
+    <pre># grep [FILE_PATH] /etc/audit/audit.rules
+
+    -w [SETUID_FILE_PATH] -p wa -k privilege_function</pre>
+
+    All setuid programs on the system must have a corresponding audit rule, or there must be an audit rule for the subdirectory that contains the setuid file.
+
+rationale: |-
+    Misuse of privileged functions, either intentionally or unintentionally by
+    authorized users, or by unauthorized external entities that have
+    compromised information system accounts, is a serious and ongoing concern
+    and can have significant adverse impacts on organizations. Auditing the use
+    of privileged functions is one way to detect such misuse and identify the
+    risk from insider threats and the advanced persistent threat.
+
+severity: medium
+
+references:
+    disa: 1814,1875,1877,1878,1879,1880,1881,1882,1889,1914,2234
+    nist: CM-5(1),AU-7(a),AU-7(b),AU-8(b),AU-12(3),AU-6(9)
+    stigid: "020240"
+
+warnings:
+    - general: |-
+        Note that these rules can be configured in a
+        number of ways while still achieving the desired effect.
+
+ocil_clause: 'audit records for all privileged operations performed through suid binaries are not generated'
+
+ocil: |-
+    Find relevant setuid programs using the following command once for each local system partition, replacing "[PARTITION]" with each local system partition:
+
+    <pre># sudo find [PARTITION] -xdev -type f \( -perm -4000 -o -perm -2000 \) 2>/dev/null</pre>
+
+    Verify all of the programs found with the command above are listed in the audit file by running the following command for every program found, replacing "[FILE_PATH]" with each program to include the full path:
+
+    <pre># grep [FILE_PATH] /etc/audit/audit.rules
+
+    -w [SETUID_FILE_PATH] -p wa -k privilege_function</pre>
+
+    All setuid programs on the system must have a corresponding audit rule, or there must be an audit rule for the subdirectory that contains the setuid file.
