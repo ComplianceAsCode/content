@@ -490,13 +490,25 @@
 
   <local_variable id="var_arufm_{{{ SYSCALL }}}_order_64bit_auditctl_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_auditctl" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_64bit_eacces_auditctl" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_auditctl" />
