@@ -111,7 +111,7 @@ class AnsibleRemediation(object):
         tags.insert(0, "{0}_severity".format(self.rule.severity))
         tags.insert(0, self.rule.id_)
 
-        cce_num = self._get_cce(platform)
+        cce_num = self._get_cce()
         if cce_num:
             tags.append("CCE-{0}".format(cce_num))
 
@@ -119,32 +119,30 @@ class AnsibleRemediation(object):
         tags.extend(refs)
         to_update["tags"] = tags
 
-    def _get_cce(self, platform):
-        our_cce = None
-        for cce, val in self.rule.identifiers.items():
-            if cce.endswith(platform):
-                our_cce = val
-                break
-        return our_cce
+    def _get_cce(self):
+        return self.rule.identifiers.get("cce", None)
 
     def get_references(self, platform):
         if not self.rule:
             raise RuntimeError("The Ansible snippet has no rule loaded.")
         # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
         # if you want to know how the map was constructed
-        platform_id_map = {
+        stig_platform_id_map = {
             "rhel6": "RHEL-06",
             "rhel7": "RHEL-07",
             "rhel8": "RHEL-08",
         }
-        stig_platform_id = "DISA-STIG-{id}".format(id=platform_id_map.get(platform, None))
         ref_prefix_map = {
             "nist": "NIST-800-53",
             "cui": "NIST-800-171",
             "pcidss": "PCI-DSS",
             "cjis": "CJIS",
-            "stigid@{platform}".format(platform=platform): stig_platform_id
         }
+
+        if platform in stig_platform_id_map:
+            stig_platform_id = "DISA-STIG-{id}".format(id=stig_platform_id_map[platform])
+            ref_prefix_map["stigid"] = stig_platform_id
+
         result = []
         for ref_class, prefix in ref_prefix_map.items():
             refs = self._get_rule_reference(ref_class)
