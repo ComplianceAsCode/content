@@ -40,7 +40,7 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F a2&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
+    - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
 
 - name: Inserts/replaces the {{{ SYSCALL }}} rule in rules.d when on x86_64
   lineinfile:
@@ -48,7 +48,7 @@
     line: "{{ item }}"
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F a2&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
+    - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
   when: audit_arch == 'b64'
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
@@ -59,7 +59,7 @@
     state: present
     dest: /etc/audit/audit.rules
   with_items:
-    - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F a2&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
+    - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
 
 - name: Inserts/replaces the {{{ SYSCALL }}} rule in audit.rules when on x86_64
   lineinfile:
@@ -68,5 +68,5 @@
     dest: /etc/audit/audit.rules
     create: yes
   with_items:
-    - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F a2&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
+    - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
   when: audit_arch == 'b64'

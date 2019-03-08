@@ -32,7 +32,8 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
                 "./template_BASH_audit_rules_path_syscall",
                 {
                     "PATH":     path,
-                    "SYSCALL":  syscall
+                    "SYSCALL":  syscall,
+                    "POS":      pos
                 },
                 "./bash/audit_rules_{0}_{1}.sh", pathid, syscall
             )
@@ -42,7 +43,8 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
                 "./template_ANSIBLE_audit_rules_path_syscall",
                 {
                     "PATH":     path,
-                    "SYSCALL":  syscall
+                    "SYSCALL":  syscall,
+                    "POS":      pos
                 },
                 "./ansible/audit_rules_{0}_{1}.yml", pathid, syscall
             )
