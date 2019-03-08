@@ -18,7 +18,7 @@
   find:
     paths: "/etc/audit/rules.d"
     recurse: no
-    contains: "-F key=modify$"
+    contains: ".*{{{ SYSCALL }}}(,[\\S]+)?[\\s]+-F[\\s]+{{{ POS }}}&03[\\s]+-F[\\s]+path={{{ PATH }}}.*"
     patterns: "*.rules"
   register: find_{{{ SYSCALL }}}
 
