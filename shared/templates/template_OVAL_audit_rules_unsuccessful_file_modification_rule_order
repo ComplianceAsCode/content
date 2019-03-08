@@ -73,14 +73,14 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a201003_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_head" />
-      <literal_component>(?:-F\s+a2&amp;01003)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;01003)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
@@ -96,14 +96,14 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eperm_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a201003_eperm_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_32bit_head" />
-      <literal_component>(?:-F\s+a2&amp;01003)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;01003)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
@@ -119,14 +119,14 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a20100_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a201003_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_head" />
-      <literal_component>(?:-F\s+a2&amp;01003)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;01003)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
@@ -142,14 +142,14 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a20100_eperm_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_64bit_a201003_eperm_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_64bit_head" />
-      <literal_component>(?:-F\s+a2&amp;01003)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;01003)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_tail" />
     </concat>
   </local_variable>
