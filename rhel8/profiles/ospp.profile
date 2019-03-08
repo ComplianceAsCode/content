@@ -386,6 +386,9 @@ selections:
     #### USER MODIFY (Success/Failure)
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
+    - audit_rules_etc_shadow_open
+    - audit_rules_etc_shadow_openat
+    - audit_rules_etc_shadow_open_by_handle_at
     - audit_rules_etc_passwd_open
     - audit_rules_etc_passwd_openat
     - audit_rules_etc_passwd_open_by_handle_at
@@ -408,6 +411,9 @@ selections:
     - audit_rules_privileged_commands_gpasswd
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
+    - audit_rules_etc_gshadow_open
+    - audit_rules_etc_gshadow_openat
+    - audit_rules_etc_gshadow_open_by_handle_at
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_etc_group_open
     - audit_rules_etc_group_openat
