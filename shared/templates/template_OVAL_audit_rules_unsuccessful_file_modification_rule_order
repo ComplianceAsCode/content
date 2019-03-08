@@ -64,11 +64,6 @@
     <value>[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(?:unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
   </constant_variable>
 
-  <!-- Regex to match anything between targeted rules -->
-  <constant_variable id="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" version="1" datatype="string" comment="audit rule auid and key">
-    <value>(?:[^.]|\.\s)*</value>
-  </constant_variable>
-
   <!-- 32bit EACCES rules -->
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
@@ -183,13 +178,25 @@
 
   <local_variable id="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_eacces_augenrules_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_augenrules" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eacces_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_augenrules" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_augenrules" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eacces_augenrules" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_32bit_eacces_augenrules" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eacces_augenrules" />
@@ -222,13 +229,25 @@
 
   <local_variable id="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_eperm_augenrules_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_augenrules" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eperm_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_augenrules" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_augenrules" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eperm_augenrules" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_32bit_eperm_augenrules" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eperm_augenrules" />
@@ -261,13 +280,25 @@
 
   <local_variable id="var_arufm_rule_order_64bit_{{{ SYSCALL }}}_eacces_augenrules_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_augenrules" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_augenrules" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_augenrules" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_augenrules" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_64bit_eacces_augenrules" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_augenrules" />
@@ -300,13 +331,25 @@
 
   <local_variable id="var_arufm_rule_order_64bit_{{{ SYSCALL }}}_eperm_augenrules_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_augenrules" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_augenrules" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eperm_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_augenrules" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_augenrules" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_augenrules" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eperm_augenrules" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_64bit_eperm_augenrules" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eperm_augenrules" />
@@ -339,13 +382,25 @@
 
   <local_variable id="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_auditctl_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_auditctl" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eacces_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_auditctl" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eacces_auditctl" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eacces_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eacces_auditctl" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_32bit_eacces_auditctl" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eacces_auditctl" />
@@ -379,13 +434,25 @@
   <!-- compose 32bit EPERM rule order -->
   <local_variable id="var_arufm_rule_order_32bit_{{{ SYSCALL }}}_auditctl_eperm_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_auditctl" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eperm_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_auditctl" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a201003_eperm_auditctl" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_a20100_eperm_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_32bit_eperm_auditctl" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="Test order of audit 32bit auditctl eperm rules order" id="test_arufm_{{{ SYSCALL }}}_order_32bit_eperm_auditctl" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_32bit_eperm_auditctl" />
@@ -418,13 +485,25 @@
 
   <local_variable id="var_arufm_{{{ SYSCALL }}}_order_64bit_auditctl_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eacces_auditctl" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eacces_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eacces_auditctl" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_64bit_eacces_auditctl" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eacces_auditctl" />
@@ -457,13 +536,25 @@
 
   <local_variable id="var_arufm_rule_order_64bit_{{{ SYSCALL }}}_auditctl_eperm_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
+      <!-- ^first$\n(^(?!first|third).*$\n)*^second$\n(^(?!second|first).*$\n)*^third$ -->
+      <literal_component>^</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
-      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_auditctl" />
-      <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_auditctl" />
+      <literal_component>|</literal_component>
       <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eperm_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_auditctl" />
+      <literal_component>$\n(^(?!</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a201003_eperm_auditctl" />
+      <literal_component>|</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_a20100_eperm_auditctl" />
+      <literal_component>).*$\n)*^</literal_component>
+      <object_component item_field="text" object_ref="object_arufm_{{{ SYSCALL }}}_order_nofilter_64bit_eperm_auditctl" />
+      <literal_component>$</literal_component>
     </concat>
   </local_variable>
+
   <ind:textfilecontent54_test check="all" check_existence="only_one_exists"
  comment="defined audit rule must exist" id="test_arufm_{{{ SYSCALL }}}_order_64bit_eperm_auditctl" version="1">
     <ind:object object_ref="object_arufm_{{{ SYSCALL }}}_order_64bit_eperm_auditctl" />
