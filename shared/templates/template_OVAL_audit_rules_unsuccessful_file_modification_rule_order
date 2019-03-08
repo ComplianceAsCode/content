@@ -64,11 +64,6 @@
     <value>[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(?:unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
   </constant_variable>
 
-  <!-- Regex to match anything between targeted rules -->
-  <constant_variable id="var_audit_rule_{{{ SYSCALL }}}_order_separator_regex" version="1" datatype="string" comment="audit rule auid and key">
-    <value>(?:[^.]|\.\s)*</value>
-  </constant_variable>
-
   <!-- 32bit EACCES rules -->
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_a20100_eacces_regex" version="1" datatype="string" comment="arches to audit">
     <concat>
