@@ -39,6 +39,7 @@
     path: "{{ all_files[0] }}"
     line: "{{ item }}"
     create: yes
+    regexp: "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
 
@@ -47,6 +48,7 @@
     path: "{{ all_files[0] }}"
     line: "{{ item }}"
     create: yes
+    regexp: "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
   when: audit_arch == 'b64'
@@ -58,6 +60,7 @@
     line: "{{ item }}"
     state: present
     dest: /etc/audit/audit.rules
+    regexp: "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
 
@@ -67,6 +70,7 @@
     state: present
     dest: /etc/audit/audit.rules
     create: yes
+    regexp: "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
   when: audit_arch == 'b64'
