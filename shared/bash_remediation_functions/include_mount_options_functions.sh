@@ -4,23 +4,30 @@ function include_mount_options_functions {
 
 # $1: type of filesystem
 # $2: new mount point option
+# $3: filesystem of new mount point (used when adding new entry in fstab)
+# $4: mount type of new mount point (used when adding new entry in fstab)
 function ensure_mount_option_for_vfstype {
-        local _vfstype="$1" _new_opt="$2" _vfstype_points=()
+        local _vfstype="$1" _new_opt="$2" _filesystem=$3 _type=$4 _vfstype_points=()
         _vfstype_points=($(grep -E "[[:space:]]$_vfstype[[:space:]]" /etc/fstab | awk '{print $2}'))
 
         for _vfstype_point in "${_vfstype_points[@]}"
         do
-                ensure_mount_option_in_fstab "$_vfstype_point" "$_new_opt"
+                ensure_mount_option_in_fstab "$_vfstype_point" "$_new_opt" "$_filesystem" "$_type"
         done
 }
 
 # $1: mount point
 # $2: new mount point option
+# $3: filesystem of mount point (used when adding new entry in fstab)
+# $4: mount type of mount point (used when adding new entry in fstab)
 function ensure_mount_option_in_fstab {
-	local _mount_point="$1" _new_opt="$2" _mount_point_match_regexp="" _previous_mount_opts=""
+	local _mount_point="$1" _new_opt="$2" _filesystem=$3 _type=$4
+	local _mount_point_match_regexp="" _previous_mount_opts=""
 	_mount_point_match_regexp="$(get_mount_point_regexp "$_mount_point")"
 
-	if [ $(grep "$_mount_point_match_regexp" /etc/fstab | grep -c "$_new_opt" ) -eq 0 ]; then
+	if [ $(grep -c "$_mount_point_match_regexp" /etc/fstab ) -eq 0 ]; then
+        echo "${_filesystem} ${_mount_point} ${_type} defaults,${_new_opt} 0 0" >> /etc/fstab
+	elif [ $(grep "$_mount_point_match_regexp" /etc/fstab | grep -c "$_new_opt" ) -eq 0 ]; then
 		_previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/fstab | awk '{print $4}')
 		sed -i "s|\(${_mount_point_match_regexp}.*${_previous_mount_opts}\)|\1,${_new_opt}|" /etc/fstab
 	fi
