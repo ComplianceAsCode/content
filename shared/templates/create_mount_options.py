@@ -41,7 +41,7 @@ class MountOptionTarget(object):
         self._assert_mount_exists = True
         self._output_fname = None
 
-    def process(self, mount_point, mount_option, assert_mount_exists):
+    def process(self, mount_point, mount_option, assert_mount_exists, filesystem, mount_type):
         point_id = re.sub('[-\./]', '_', mount_point).lstrip("_")
 
         try:
@@ -56,6 +56,8 @@ class MountOptionTarget(object):
                 point_id=self._point_id, mount_option=self._mount_option)
         )
         self._assert_mount_exists = assert_mount_exists
+        self.filesystem = filesystem
+        self.mount_type = mount_type
         self._process()
 
     def _process(self):
@@ -78,6 +80,8 @@ class RemediationTarget(MountOptionTarget):
                 "MOUNT_HAS_TO_EXIST": mount_has_to_exist,
                 "MOUNTPOINT": self._mount_point,
                 "MOUNTOPTION": re.sub(' ', ',', self._mount_option),
+                "FILESYSTEM": self.filesystem,
+                "TYPE": self.mount_type,
             },
             self._output_fname,
             ""
@@ -144,9 +148,13 @@ class MountOptionsGenerator(FilesGenerator):
     def generate(self, target, path_info):
         mount_point, mount_option = path_info[:2]
         mount_has_to_exist = True
+        filesystem = ""
+        mount_type = ""
         if len(path_info) > 2:
-            assert len(path_info) == 3
-            assert path_info[-1] == "create_fstab_entry_if_needed"
+            assert len(path_info) == 5
+            assert path_info[2] == "create_fstab_entry_if_needed"
+            filesystem = path_info[3]
+            mount_type = path_info[4]
             mount_has_to_exist = False
 
         assert mount_point
@@ -155,7 +163,7 @@ class MountOptionsGenerator(FilesGenerator):
         if processing_entity is None:
             raise UnknownTargetError(target)
 
-        processing_entity.process(mount_point, mount_option, mount_has_to_exist)
+        processing_entity.process(mount_point, mount_option, mount_has_to_exist, filesystem, mount_type)
 
     def csv_format(self):
         return("CSV should contains lines of the format: "
