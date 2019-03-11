@@ -164,6 +164,7 @@ selections:
     - service_ntpd_enabled
     - ntpd_specify_remote_server
     - ntpd_specify_multiple_servers
+    - package_psacct_installed
     - service_psacct_enabled
     - package_aide_installed
     - disable_prelink

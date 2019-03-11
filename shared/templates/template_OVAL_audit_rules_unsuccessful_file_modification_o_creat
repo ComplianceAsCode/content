@@ -17,16 +17,16 @@
       <!-- Test the augenrules case -->
       <criteria operator="AND">
         <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
-        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit a2&amp;0100 eacces augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eacces_augenrules" />
-        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit a2&amp;0100 eperm augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eperm_augenrules" />
+        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit {{{ POS }}}&amp;0100 eacces augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eacces_augenrules" />
+        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit {{{ POS }}}&amp;0100 eperm augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eperm_augenrules" />
 
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules-->
           <extend_definition comment="64-bit system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
           <criteria operator="AND">
-            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit a2&amp;0100 eacces augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eacces_augenrules" />
-            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit a2&amp;0100 eperm augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eperm_augenrules" />
+            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit {{{ POS }}}&amp;0100 eacces augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eacces_augenrules" />
+            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit {{{ POS }}}&amp;0100 eperm augenrules exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eperm_augenrules" />
           </criteria>
         </criteria>
       </criteria>
@@ -34,16 +34,16 @@
       <!-- OR test the auditctl case -->
       <criteria operator="AND">
         <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit a2&amp;0100 eacces auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eacces_auditctl" />
-        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit a2&amp;0100 eperm auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eperm_auditctl" />
+        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit {{{ POS }}}&amp;0100 eacces auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eacces_auditctl" />
+        <criterion comment="Verify audit rule {{{ SYSCALL }}} 32bit {{{ POS }}}&amp;0100 eperm auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_32bit_a20100_eperm_auditctl" />
 
         <criteria operator="OR">
           <!-- System either isn't 64-bit => we just check presence of the 32-bit version of the EACCES / EPERM rules -->
           <extend_definition comment="64-bit_system" definition_ref="system_info_architecture_64bit" negate="true" />
           <!-- Or system is 64-bit => in that case we also need to verify the presence of 64-bit versions of the rules -->
           <criteria operator="AND">
-            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit a2&amp;0100 eacces auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eacces_auditctl" />
-            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit a2&amp;0100 eperm auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eperm_auditctl" />
+            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit {{{ POS }}}&amp;0100 eacces auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eacces_auditctl" />
+            <criterion comment="Verify audit rule {{{ SYSCALL }}} 64bit {{{ POS }}}&amp;0100 eperm auditctl exists" test_ref="test_arufm_{{{ SYSCALL }}}_o_creat_64bit_a20100_eperm_auditctl" />
 
           </criteria>
         </criteria>
@@ -72,7 +72,7 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_o_creat_32bit_a20100_eacces_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ SYSCALL }}} O_CREAT EACCES syscall">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_32bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_tail" />
     </concat>
   </local_variable>
@@ -81,7 +81,7 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_o_creat_32bit_a20100_eperm_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ SYSCALL }}} O_CREAT EPERM syscall">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_32bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_tail" />
     </concat>
   </local_variable>
@@ -90,7 +90,7 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_o_creat_64bit_a20100_eacces_regex" version="1" datatype="string" comment="Expression to match 64bit {{{ SYSCALL }}} O_CREAT EACCES syscall">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_64bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EACCES)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_tail" />
     </concat>
   </local_variable>
@@ -99,7 +99,7 @@
   <local_variable id="var_audit_rule_{{{ SYSCALL }}}_o_creat_64bit_a20100_eperm_regex" version="1" datatype="string" comment="Expression to match 32bit {{{ SYSCALL }}} O_CREAT EPERM syscall">
     <concat>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_64bit_head" />
-      <literal_component>(?:-F\s+a2&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
+      <literal_component>(?:-F\s+{{{ POS }}}&amp;0100)[\s]+(?:-F\s+exit=-EPERM)</literal_component>
       <variable_component var_ref="var_audit_rule_{{{ SYSCALL }}}_o_creat_tail" />
     </concat>
   </local_variable>

@@ -11,7 +11,7 @@ import re
 
 class AuditRulesPathSyscallGenerator(FilesGenerator):
     def generate(self, target, args):
-        path,syscall = args[0:2]
+        path,syscall,pos = args[0:3]
         pathid = re.sub('[-\./]', '_', path)
         # remove root slash made into '_'
         pathid = pathid[1:]
@@ -21,7 +21,8 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
                 {
                     "PATH":	path,
                     "PATHID":	pathid,
-                    "SYSCALL":	syscall
+                    "SYSCALL":	syscall,
+                    "POS":	pos
                 },
                 "./oval/audit_rules_{0}_{1}.xml", pathid, syscall
             )
@@ -30,4 +31,4 @@ class AuditRulesPathSyscallGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "PATH,SYSCALL")
+               "PATH,SYSCALL,POS")

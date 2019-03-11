@@ -8,4 +8,5 @@ description: 'Draft profile for ANSSI compliance at the enhanced level. ANSSI st
 
 extends: anssi_nt28_intermediary
 
-selections: []
+selections:
+    - rsyslog_remote_loghost
