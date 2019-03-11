@@ -1,0 +1,44 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Ensure auditd Collects Information on the Use of Privileged Commands - usermod'
+
+description: |-
+    At a minimum, the audit system should collect the execution of
+    privileged commands for all users and root. If the <tt>auditd</tt> daemon is
+    configured to use the <tt>augenrules</tt> program to read audit rules during
+    daemon startup (the default), add a line of the following form to a file with
+    suffix <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
+    <pre>-a always,exit -F path=/usr/bin/usermod -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -k privileged-usermod</pre>
+    If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
+    utility to read audit rules during daemon startup, add a line of the following
+    form to <tt>/etc/audit/audit.rules</tt>:
+    <pre>-a always,exit -F path=/usr/bin/usermod -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -k privileged-usermod</pre>
+
+rationale: |-
+    Without generating audit records that are specific to the security and
+    mission needs of the organization, it would be difficult to establish,
+    correlate, and investigate the events relating to an incident or identify
+    those responsible for one.
+
+    Audit records can be generated from various components within the
+    information system (e.g., module or policy filter).
+
+severity: medium
+
+references:
+    disa: 130,169,172,2884
+    nist: AU-3,AU-12(a),AU-12(c),MA-4(1)(a)
+    stigid@sle12: "020700"
+
+
+ocil_clause: 'it is not the case'
+
+ocil: |-
+    To verify that auditing of privileged command use is configured, run the
+    following command:
+    <pre>$ sudo grep usermod /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
+    It should return a relevant line in the audit rules.
+
+platform: machine

@@ -137,5 +137,29 @@ selections:
      - audit_rules_etc_shadow_open_write
      - audit_rules_etc_security_opasswd_open_write
      - audit_rules_suid_privilege_function
-     - audit_rules_usr_bin_su_exec
+     - audit_rules_privileged_commands_su
+     - audit_rules_privileged_commands_sudo
+     - audit_rules_privileged_commands_sudoedit
+     - audit_rules_privileged_commands_chfn
+     - audit_rules_privileged_commands_ssh_keysign
+     - audit_rules_privileged_commands_insmod
+     - audit_rules_privileged_commands_rmmod
+     - audit_rules_privileged_commands_modprobe
+     - audit_rules_privileged_commands_kmod
+     - audit_rules_privileged_commands_passwd
+     - audit_rules_privileged_commands_gpasswd
+     - audit_rules_privileged_commands_newgrp
+     - audit_rules_privileged_commands_chsh
+     - audit_rules_privileged_commands_passmass
+     - audit_rules_privileged_commands_unix_chkpwd
+     - audit_rules_privileged_commands_chage
+     - audit_rules_privileged_commands_usermod
+     - audit_rules_privileged_commands_pam_timestamp_check
+     - audit_rules_execution_chmod
+     - audit_rules_execution_setfacl
+     - audit_rules_execution_chacl
+     - audit_rules_execution_chcon
+     - audit_rules_execution_rm
+     - audit_rules_execution_crontab
+     - audit_rules_execution_ssh-agent
 

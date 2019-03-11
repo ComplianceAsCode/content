@@ -8,6 +8,7 @@
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_rhv</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Audit rules about the information on the use of {{{ NAME }}} is enabled.</description>
     </metadata>
@@ -24,6 +25,13 @@
       <criteria operator="AND">
         <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
         <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_{{{ ID }}}_auditctl" />
+      </criteria>
+
+      <!-- Test the auditctl case: a file system rule -->
+      <criteria operator="AND">
+      <extend_definition comment="SLE12 OS installed" definition_ref="installed_OS_is_sle12" />
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_{{{ ID }}}_auditctl_fsrule" />
       </criteria>
     </criteria>
   </definition>
@@ -43,6 +51,15 @@
   <ind:textfilecontent54_object id="object_{{{ ID }}}_auditctl" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*-a[\s]+always,exit[\s]+-F[\s]+path={{{ PATH }}}[\s]+-F[\s]+perm=x[\s]+-F[\s]+auid>={{{ auid }}}[\s]+-F[\s]+auid!=(?:4294967295|unset)[\s]+(-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit auditctl {{{ NAME }}}" id="test_{{{ ID }}}_auditctl_fsrule" version="1">
+    <ind:object object_ref="object_{{{ ID }}}_auditctl_fsrule" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_{{{ ID }}}_auditctl_fsrule" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+{{{ PATH }}}[\s]+-p[\s]+[\S]*x[\S]*[\s]+-k[\s]+[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
