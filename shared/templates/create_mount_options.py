@@ -167,4 +167,4 @@ class MountOptionsGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: "
-               "<mount_point>,<mount_option>[,create_fstab_entry_if_needed])")
+               "<mount_point>,<mount_option>[,create_fstab_entry_if_needed,<filesystem>,<type>])")
