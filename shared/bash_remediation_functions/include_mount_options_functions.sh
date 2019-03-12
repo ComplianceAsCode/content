@@ -26,7 +26,7 @@ function ensure_mount_option_in_fstab {
 	_mount_point_match_regexp="$(get_mount_point_regexp "$_mount_point")"
 
 	if [ $(grep -c "$_mount_point_match_regexp" /etc/fstab ) -eq 0 ]; then
-        echo "${_filesystem} ${_mount_point} ${_type} defaults,${_new_opt} 0 0" >> /etc/fstab
+		echo "${_filesystem} ${_mount_point} ${_type} defaults,${_new_opt} 0 0" >> /etc/fstab
 	elif [ $(grep "$_mount_point_match_regexp" /etc/fstab | grep -c "$_new_opt" ) -eq 0 ]; then
 		_previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/fstab | awk '{print $4}')
 		sed -i "s|\(${_mount_point_match_regexp}.*${_previous_mount_opts}\)|\1,${_new_opt}|" /etc/fstab
