@@ -10,7 +10,7 @@
       used for FTP connections as well.</description>
     </metadata>
     <criteria operator="OR">
-      <extend_definition comment="vsftpd package is not installed" negate="true" definition_ref="package_vsftpd_installed" />
+      <extend_definition comment="vsftpd package is not installed" definition_ref="package_vsftpd_removed" />
       <criterion comment="Banner for FTP Users" test_ref="test_ftp_present_banner" />
     </criteria>
   </definition>
