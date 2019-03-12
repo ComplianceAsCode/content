@@ -192,4 +192,5 @@ selections:
      - package_telnet-server_removed
      - banner_etc_issue
      - ftp_present_banner
+     - banner_etc_gdm_banner
 
