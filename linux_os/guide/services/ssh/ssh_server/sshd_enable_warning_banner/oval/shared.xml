@@ -25,6 +25,8 @@
         <extend_definition comment="sshd is required or requirement is unset"
         definition_ref="sshd_required_or_unset" />
         {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="/etc/issue has banner" definition_ref="banner_etc_issue" />
+
         <extend_definition comment="rpm package openssh installed"
         definition_ref="package_openssh_installed" />
         {{% else %}}

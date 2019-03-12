@@ -190,5 +190,6 @@ selections:
      - audit_rules_kernel_module_loading_finit
      - audit_rules_kernel_module_loading_init
      - package_telnet-server_removed
+     - banner_etc_issue
      - ftp_present_banner
 
