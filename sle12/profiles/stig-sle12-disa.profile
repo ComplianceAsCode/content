@@ -162,4 +162,24 @@ selections:
      - audit_rules_execution_rm
      - audit_rules_execution_crontab
      - audit_rules_execution_ssh-agent
+     - audit_rules_dac_modification_setxattr
+     - audit_rules_dac_modification_fsetxattr
+     - audit_rules_dac_modification_removexattr
+     - audit_rules_dac_modification_lremovexattr
+     - audit_rules_dac_modification_fremovexattr
+     - audit_rules_dac_modification_chown
+     - audit_rules_dac_modification_fchown
+     - audit_rules_dac_modification_lchown
+     - audit_rules_dac_modification_fchownat
+     - audit_rules_dac_modification_chmod
+     - audit_rules_dac_modification_fchmod
+     - audit_rules_dac_modification_fchmodat
+     - audit_rules_dac_modification_mount
+     - audit_rules_dac_modification_umount
+     - audit_rules_unsuccessful_file_modification_open
+     - audit_rules_unsuccessful_file_modification_truncate
+     - audit_rules_unsuccessful_file_modification_ftruncate
+     - audit_rules_unsuccessful_file_modification_creat
+     - audit_rules_unsuccessful_file_modification_openat
+     - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
