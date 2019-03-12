@@ -186,4 +186,5 @@ selections:
      - audit_rules_login_events_tallylog
      - audit_rules_login_events_lastlog
      - audit_rules_login_events_faillog
+     - package_telnet-server_removed
 
