@@ -183,4 +183,7 @@ selections:
      - audit_rules_usergroup_modification_group
      - audit_rules_usergroup_modification_opasswd
      - audit_rules_usergroup_modification_passwd
+     - audit_rules_login_events_tallylog
+     - audit_rules_login_events_lastlog
+     - audit_rules_login_events_faillog
 
