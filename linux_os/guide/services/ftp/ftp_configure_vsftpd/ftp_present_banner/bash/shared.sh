@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux
+# platform = multi_platform_wrlinux,multi_platform_sle
 
 . /usr/share/scap-security-guide/remediation_functions
 
