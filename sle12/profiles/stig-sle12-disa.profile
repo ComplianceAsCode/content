@@ -132,10 +132,6 @@ selections:
      - auditd_audispd_configure_remote_server
      - auditd_audispd_network_failure_action
      - auditd_audispd_disk_full_action
-     - audit_rules_etc_passwd_open_write
-     - audit_rules_etc_group_open_write
-     - audit_rules_etc_shadow_open_write
-     - audit_rules_etc_security_opasswd_open_write
      - audit_rules_suid_privilege_function
      - audit_rules_privileged_commands_su
      - audit_rules_privileged_commands_sudo
@@ -182,4 +178,9 @@ selections:
      - audit_rules_unsuccessful_file_modification_creat
      - audit_rules_unsuccessful_file_modification_openat
      - audit_rules_unsuccessful_file_modification_open_by_handle_at
+     - audit_rules_usergroup_modification_gshadow
+     - audit_rules_usergroup_modification_shadow
+     - audit_rules_usergroup_modification_group
+     - audit_rules_usergroup_modification_opasswd
+     - audit_rules_usergroup_modification_passwd
 

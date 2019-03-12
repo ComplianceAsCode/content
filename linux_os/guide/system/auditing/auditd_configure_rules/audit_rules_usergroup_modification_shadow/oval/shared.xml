@@ -1,0 +1,40 @@
+<def-group>
+  <definition class="compliance" id="audit_rules_usergroup_modification_shadow" version="1">
+    <metadata>
+      <title>Audit User/Group Modification</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Audit rules should detect modification to system files that hold information about users and groups.</description>
+    </metadata>
+    <criteria operator="OR">
+      <criteria operator="AND">
+        <extend_definition comment="audit augenrules" definition_ref="audit_rules_augenrules" />
+        <criterion comment="audit /etc/shadow" test_ref="test_audit_rules_usergroup_modification_etc_shadow_augen_shadow" />
+      </criteria>
+      <criteria operator="AND">
+        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
+        <criterion comment="audit /etc/shadow" test_ref="test_audit_rules_usergroup_modification_etc_shadow_auditctl_shadow" />
+      </criteria>
+    </criteria>
+  </definition>
+
+  <ind:textfilecontent54_test check="all" comment="audit augenrules /etc/shadow" id="test_audit_rules_usergroup_modification_etc_shadow_augen_shadow" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_shadow_augen_shadow" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_shadow_augen_shadow" version="1">
+    <ind:filepath operation="pattern match">^/etc/audit/rules\.d/.*\.rules$</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/shadow[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+(-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" comment="audit /etc/shadow" id="test_audit_rules_usergroup_modification_etc_shadow_auditctl_shadow" version="1">
+    <ind:object object_ref="object_audit_rules_usergroup_modification_etc_shadow_auditctl_shadow" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_audit_rules_usergroup_modification_etc_shadow_auditctl_shadow" version="1">
+    <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^\-w[\s]+/etc/shadow[\s]+\-p[\s]+\b([rx]*w[rx]*a[rx]*|[rx]*a[rx]*w[rx]*)\b[\s]+(-k[\s]+|-F[\s]+key=)\w+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
