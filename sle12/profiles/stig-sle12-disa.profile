@@ -193,5 +193,6 @@ selections:
      - banner_etc_issue
      - ftp_present_banner
      - banner_etc_gdm_banner
+     - service_SuSEfirewall2_enabled
      - susefirewall2_ddos_protection
 
