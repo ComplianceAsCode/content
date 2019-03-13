@@ -342,6 +342,7 @@ selections:
     - var_password_pam_minclass=4
     - var_password_pam_unix_remember=5
     - account_disable_post_pw_expiration
+    - account_temp_expire_date
     - accounts_max_concurrent_login_sessions
     - accounts_maximum_age_login_defs
     - accounts_minimum_age_login_defs
