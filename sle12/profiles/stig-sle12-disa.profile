@@ -199,4 +199,5 @@ selections:
      - network_sniffer_disabled
      - wireless_disable_interfaces
      - install_smartcard_packages
+     - smartcard_auth
 

@@ -7,12 +7,15 @@
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Enable Smart Card logins</description>
     </metadata>
     <criteria comment="smart card authentication is configured" operator="AND">
-      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
+      <extend_definition comment="required packages are installed" definition_ref="install_smartcard_packages" />
       <extend_definition comment="pcscd service is enabled" definition_ref="service_pcscd_enabled" />
+      <criterion comment="cert_policy directive contains oscp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
+{{% if product != "sle12" %}}
       <criteria operator="OR">
         <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
 {{% if product == "rhel6" %}}
@@ -21,7 +24,6 @@
         <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
 {{% endif %}}
       </criteria>
-      <criterion comment="cert_policy directive contains oscp_on" test_ref="test_pam_pkcs11_cert_policy_ocsp_on" />
       <criteria comment="smart card authentication is enabled or required in system-auth" operator="OR">
           <!-- Smartcard authentication enabled, but login is allowed also by other means -->
           <criterion comment="smart card authentication is enabled in /etc/pam.d/system-auth" test_ref="test_smart_card_enabled_system_auth" />
@@ -29,6 +31,7 @@
           <criterion comment="smart card is required in /etc/pam.d/system-auth" test_ref="test_smart_card_required_system_auth" />
       </criteria>
       <criterion comment="smart card is required in /etc/pam.d/smartcard-auth" test_ref="test_smart_card_required_smartcard_auth" />
+{{% endif %}}
     </criteria>
   </definition>
 
