@@ -196,4 +196,5 @@ selections:
      - service_SuSEfirewall2_enabled
      - susefirewall2_only_required_services
      - susefirewall2_ddos_protection
+     - network_sniffer_disabled
 
