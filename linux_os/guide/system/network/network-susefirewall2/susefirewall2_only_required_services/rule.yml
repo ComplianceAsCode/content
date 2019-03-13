@@ -1,0 +1,60 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Only Allow Authorized Network Services in SuSEfirewall2'
+
+description: |-
+    Verify "SuSEfirewall2" is configured to protect the SUSE operating system against or limit the effects of DoS attacks. 
+
+    Run the following command:
+
+    <pre># grep -i fw_services_accept_ext /etc/sysconfig/SuSEfirewall2
+    FW_SERVICES_ACCEPT_EXT="0/0,tcp,22,,hitcount=3,blockseconds=60,recentname=ssh"</pre>
+
+    If the "FW_SERVICES_ACCEPT_EXT" rule does not contain both the <tt>hitcount</tt> and <tt>blockseconds</tt> parameters, this is a finding.
+
+rationale: |-
+    To prevent unauthorized connection of devices, unauthorized transfer of
+    information, or unauthorized tunneling (i.e., embedding of data types
+    within data types), organizations must disable or restrict unused or
+    unnecessary physical and logical ports/protocols on information systems.
+
+    SUSE operating systems are capable of providing a wide variety of functions
+    and services. Some of the functions and services provided by default may
+    not be necessary to support essential organizational operations.
+    Additionally, it is sometimes convenient to provide multiple services from
+    a single component (e.g., VPN and IPS); however, doing so increases risk
+    over limiting the services provided by any one component.
+
+    To support the requirements and principles of least functionality, the SUSE
+    operating system must support the organizational requirements, providing
+    only essential capabilities and limiting the use of ports, protocols,
+    and/or services to only those required, authorized, and approved to conduct
+    official business or address authorized quality-of-life issues.
+
+severity: medium
+
+ocil_clause: 'unauthorized network services can be accessed from the network'
+
+references:
+    disa: 382,2080,2314
+    nist: CM-7,CA-3(5),AC-17(1)
+    stigid@sle12: "030030"
+
+ocil: |-
+    Check the firewall configuration for any unnecessary or prohibited
+    functions, ports, protocols, and/or services by running the following command:
+
+    <pre># grep ^FW_ /etc/sysconfig/SuSEfirewall2</pre>
+
+    <p>Ask the System Administrator for the site or program PPSM Component Local
+    Services Assessment (Component Local Services Assessment (CLSA). Verify the
+    services allowed by the firewall match the PPSM CLSA.</p>
+
+    <p>If there are any additional ports, protocols, or services that are not
+    included in the PPSM CLSA, this is a findin.</p>
+
+    <p>If there are any ports, protocols, or services that are prohibited by the
+    PPSM CAL, this is a finding.</p>
+
