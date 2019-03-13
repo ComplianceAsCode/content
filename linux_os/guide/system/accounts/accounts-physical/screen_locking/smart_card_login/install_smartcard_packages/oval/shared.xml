@@ -5,13 +5,25 @@
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>SUSE Linux Enterprise 12</platform>
       </affected>
-      <description>The RPM packages esc pam_pkcs11 and authconfig-gtk must be installed.</description>
+      <description>The required RPM packages must be installed.</description>
     </metadata>
       <criteria comment="packages for smartcard use are installed">
+      {{% if product == "sle12" %}}
+      <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
+      <extend_definition comment="mozilla-nss package is installed" definition_ref="package_mozilla-nss_installed" />
+      <extend_definition comment="mozilla-nss-tools package is installed" definition_ref="package_mozilla-nss-tools_installed" />
+      <extend_definition comment="pcsc-ccid package is installed" definition_ref="package_pcsc-ccid_installed" />
+      <extend_definition comment="pcsc-lite package is installed" definition_ref="package_pcsc-lite_installed" />
+      <extend_definition comment="pcsc-tools package is installed" definition_ref="package_pcsc-tools_installed" />
+      <extend_definition comment="opensc package is installed" definition_ref="package_opensc_installed" />
+      <extend_definition comment="coolkey package is installed" definition_ref="package_coolkey_installed" />
+      {{% else %}}
       <extend_definition comment="pam_pkcs11 package is installed" definition_ref="package_pam_pkcs11_installed" />
       <extend_definition comment="esc package is installed" definition_ref="package_esc_installed" />
       <extend_definition comment="authconfig-gtk package is installed" definition_ref="package_authconfig-gtk_installed" />
+      {{% endif %}}
       </criteria>
   </definition>
 </def-group>

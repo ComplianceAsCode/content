@@ -1,13 +1,17 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: rhel7,rhel8,sle12
 
 title: 'Install Smart Card Packages For Multifactor Authentication'
 
 description: |-
     Configure the operating system to implement multifactor authentication by
     installing the required packages with the following command:
+    {{% if product == "sle12" %}}
+    {{{ describe_package_install(package="pam_pkcs11 mozilla-nss mozilla-nss-tools pcsc-ccid pcsc-lite pcsc-tools opensc coolkey") }}}
+    {{% else %}}
     {{{ describe_package_install(package="esc pam_pkcs11 authconfig-gtk") }}}
+    {{% endif %}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -30,12 +34,19 @@ references:
     disa: "1954"
     srg: SRG-OS-000375-GPOS-00160
     stigid: "041001"
+    disa@sle12: 1948,1953,1954
+    nist@sle12: IA-2(11),IA-2(12)
+    stigid@sle12: "030500"
 
 ocil_clause: 'smartcard software is not installed'
 
 ocil: |-
     To verify the operating system has the packages required for multifactor
     authentication installed, run the following command:
+    {{% if product == "sle12" %}}
+    <pre># rpm -q pam_pkcs11 mozilla-nss mozilla-nss-tools pcsc-ccid pcsc-lite pcsc-tools opensc coolkey</pre>
+    {{% else %}}
     <pre>$ sudo yum list installed esc pam_pkcs11 authconfig-gtk</pre>
+    {{% endif %}}
 
 platform: machine
