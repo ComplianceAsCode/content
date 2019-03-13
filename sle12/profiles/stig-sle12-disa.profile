@@ -193,4 +193,5 @@ selections:
      - banner_etc_issue
      - ftp_present_banner
      - banner_etc_gdm_banner
+     - susefirewall2_ddos_protection
 
