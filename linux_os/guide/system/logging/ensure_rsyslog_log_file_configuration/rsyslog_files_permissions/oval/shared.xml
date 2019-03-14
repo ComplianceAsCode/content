@@ -8,13 +8,14 @@
         <platform>Debian 8</platform>
         <platform>Ubuntu 1404</platform>
         <platform>Ubuntu 1604</platform>
+	<platform>Ubuntu 1804</platform>
         <platform>multi_platform_ol</platform>
       </affected>
       <description>File permissions for all syslog log files should be set correctly.</description>
     </metadata>
 
     <criteria operator="AND">
-      {{% if product in ["debian8", "ubuntu1404", "ubuntu1604"] %}}
+      {{% if product in ["debian8", "ubuntu1404", "ubuntu1604", "ubuntu1804"] %}}
       <extend_definition comment="rsyslog daemon is used as local logging daemon" definition_ref="package_rsyslog_installed" />
       {{% endif %}}
       <criterion comment="Check permissions of all system log files" test_ref="test_rsyslog_files_permissions" />
@@ -96,7 +97,7 @@
   <unix:file_state id="state_rsyslog_files_permissions" version="1">
     <unix:type operation="equals">regular</unix:type>
     <unix:uexec datatype="boolean">false</unix:uexec>
-    {{% if product in ["debian8", "ubuntu1404", "ubuntu1604"] %}}
+    {{% if product in ["debian8", "ubuntu1404", "ubuntu1604", "ubuntu1804"] %}}
     <unix:gread datatype="boolean">true</unix:gread>
     {{% else %}}
     <unix:gread datatype="boolean">false</unix:gread>
