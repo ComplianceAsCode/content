@@ -164,11 +164,22 @@ def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
     Drop-in replacement for yaml.dump(), but preserves order of dictionaries
     """
     class OrderedDumper(Dumper):
-        pass
+        # fix tag indentations
+        def increase_indent(self, flow=False, indentless=False):
+            return super(OrderedDumper, self).increase_indent(flow, False)
 
     def _dict_representer(dumper, data):
         return dumper.represent_mapping(
             yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
             data.items())
+
     OrderedDumper.add_representer(OrderedDict, _dict_representer)
-    return yaml.dump(data, stream, OrderedDumper, **kwds)
+
+    # Fix formatting by adding a space in between tasks
+    unformatted_yaml = yaml.dump(data, None, OrderedDumper, **kwds)
+    formatted_yaml = re.sub(r"[\n]+([\s]*)- name", r"\n\n\1- name", unformatted_yaml)
+
+    if stream is not None:
+        return stream.write(formatted_yaml)
+    else:
+        return formatted_yaml
