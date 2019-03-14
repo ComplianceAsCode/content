@@ -200,4 +200,5 @@ selections:
      - wireless_disable_interfaces
      - install_smartcard_packages
      - smartcard_configure_cert_checking
+     - smartcard_pam_enabled
 
