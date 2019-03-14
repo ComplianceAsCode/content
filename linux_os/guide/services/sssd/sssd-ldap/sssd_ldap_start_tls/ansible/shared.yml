@@ -21,6 +21,7 @@
   lineinfile:
     path: /etc/sssd/sssd.conf
     line: "[domain/default]\nldap_id_use_start_tls = True\n"
+    mode: 0600
   when: test_grep_domain.stdout == ""
 
 - name: "Configure LDAP to use STARTTLS"
@@ -29,3 +30,4 @@
     regexp: '^\s*ldap_id_use_start_tls'
     insertafter: '\s*\[domain\/[^]]*]'
     line: 'ldap_id_use_start_tls = True'
+    mode: 0600

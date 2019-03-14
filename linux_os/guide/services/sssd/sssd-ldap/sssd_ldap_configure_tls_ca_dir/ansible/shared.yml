@@ -16,6 +16,7 @@
     path: /etc/sssd/sssd.conf
     create: yes
     line: "[domain/default]\nldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}\n"
+    mode: 0600
   when: test_grep_domain.stdout == ""
 
 - name: "Configure LDAPs path to CA directory"
@@ -24,4 +25,5 @@
     regexp: '^\s*ldap_tls_cacertdir'
     insertafter: '\s*\[domain\/[^]]*]'
     line: 'ldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}'
+    mode: 0600
 
