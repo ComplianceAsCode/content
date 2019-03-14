@@ -202,4 +202,5 @@ selections:
      - smartcard_configure_cert_checking
      - smartcard_pam_enabled
      - smartcard_configure_ca
+     - sysctl_net_ipv4_ip_forward
 
