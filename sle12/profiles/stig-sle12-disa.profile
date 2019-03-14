@@ -201,4 +201,5 @@ selections:
      - install_smartcard_packages
      - smartcard_configure_cert_checking
      - smartcard_pam_enabled
+     - smartcard_configure_ca
 
