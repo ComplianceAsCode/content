@@ -203,4 +203,7 @@ selections:
      - smartcard_pam_enabled
      - smartcard_configure_ca
      - sysctl_net_ipv4_ip_forward
+     - sysctl_net_ipv4_conf_default_send_redirects
+     - sysctl_net_ipv4_conf_all_send_redirects
+     - sysctl_net_ipv6_conf_default_accept_redirects
 
