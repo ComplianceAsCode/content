@@ -1,0 +1,33 @@
+<def-group oval_version="5.10">
+  <definition class="compliance" id="blacklist_usb-storage" version="1">
+    <metadata>
+      <title>Disable the usb-storage Kernel Module</title>
+      <affected family="unix">
+        <platform>multi_platform_sle</platform>
+      </affected>
+      <description>Make sure there is a blacklist entry for the usb-storage driver.</description>
+    </metadata>
+    <criteria operator="OR">
+        <criterion comment="check for blacklist of usb-storage in /etc/modprobe.d" test_ref="test_blacklist_d_usb-storage" />
+        <criterion comment="check for blacklist of usb-storage in /etc/modprobe.conf" test_ref="test_blacklist_f_usb-storage" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check for blacklist of usb-storage" id="test_blacklist_d_usb-storage" version="1">
+    <ind:object object_ref="object_blacklist_d_usb-storage" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_blacklist_d_usb-storage" comment="blacklist of usb-storage" version="1">
+    <ind:path>/etc/modprobe.d</ind:path>
+    <ind:filename operation="pattern match">^</ind:filename>
+    <ind:pattern operation="pattern match">^blacklist usb-storage$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="check for blacklist of usb-storage" id="test_blacklist_f_usb-storage" version="1">
+    <ind:object object_ref="object_blacklist_f_usb-storage" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_blacklist_f_usb-storage" comment="blacklist of usb-storage" version="1">
+    <ind:filepath>/etc/modprobe.conf</ind:filepath>
+    <ind:pattern operation="pattern match">^blacklist usb-storage$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>

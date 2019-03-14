@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Disable the usb-storage Kernel Module'
+
+description: |-
+    To configure the system to prevent the usb-storage kernel module from
+    being loaded, add the following line to a file in the directory
+    <tt>/etc/modprobe.d</tt>:
+    <pre>blacklist usb-storage</pre>
+
+rationale: |-
+    Without identifying devices, unidentified or unknown devices may be
+    introduced, thereby facilitating malicious activity.
+
+    Peripherals include but are not limited to such devices as flash drives,
+    external storage, and printers.
+
+severity: medium
+
+references:
+    disa: "1958"
+    nist: IA-3
+    stigid@sle12: "010580"
+
+ocil_clause: 'USB mass storage devices may get auto-mounted'
+
+ocil: |-
+    Make sure that the <tt>usb-storage</tt> driver is blacklisted from being loaded through <tt>modprobe</tt>:
+    <pre># grep -R usb-storage /etc/modprobe.{conf,d}
+    blacklist usb-storage</pre>
+
+    If nothing is output from the command above, this is a finding.
