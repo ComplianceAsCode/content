@@ -35,7 +35,7 @@
 - name: "Configure LDAP to use STARTTLS"
   ini_file:
     path: /etc/sssd/sssd.conf
-    section: "{{ test_grep_domain.stdout | regex_replace('[(.*)]','\\1') }}"
+    section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
     option: ldap_id_use_start_tls
     value: true
     create: yes
