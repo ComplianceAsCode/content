@@ -5,7 +5,7 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <description>This test makes sure that /boot/grub2/grub.cfg is owned by 0.</description>
+      <description>Verify that /boot/grub2/grub.cfg is owned by uid 0.</description>
     </metadata>
     <criteria operator="OR">
       <extend_definition definition_ref="system_boot_mode_is_uefi" comment="Pass if system boot mode is UEFI" />
@@ -20,7 +20,6 @@
     <unix:user_id datatype="int">0</unix:user_id>
   </unix:file_state>
   <unix:file_object comment="/boot/grub2/grub.cfg" id="object_file_owner_grub2_cfg" version="1">
-    <unix:path>/boot/grub2</unix:path>
-    <unix:filename>grub.cfg</unix:filename>
+    <unix:filepath>/boot/grub2/grub.cfg</unix:filepath>
   </unix:file_object>
 </def-group>

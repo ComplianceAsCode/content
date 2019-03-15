@@ -11,7 +11,7 @@
       <description>File permissions for /boot/efi/EFI/redhat/grub.cfg should be set to 0700 (or stronger).</description>
     </metadata>
     <criteria operator="OR">
-      <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is legacy BIOS" />
+      <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is not UEFI" />
       <criterion test_ref="test_file_permissions_efi_grub2_cfg" />
     </criteria>
   </definition>
