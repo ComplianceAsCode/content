@@ -581,6 +581,22 @@ An alternative is adding the directory where `testoval.py` resides to your PATH.
 $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 ----
 
+
+=== Profile Statistics
+
+The `profile_stats.py` tool displays XCCDF profile statistics. It can show number of rules in the
+profile, how many of these rules have an OVAL check implemented, how many have a remediation available,
+shows rule IDs which are missing them and other useful information.
+
+To use the script, first build the content, then pass the built XCCDF (not DataStream) to the script.
+
+For example, to check which rules in RHEL8 OSPP profile are missing remediations, run this command:
+
+----
+$ ./build_product rhel8
+$ ./build-scripts/profile_stats.py --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
+----
+
 == Contributing with XCCDFs, OVALs and remediations
 
 There are three main types of content in SSG, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
