@@ -208,4 +208,6 @@ selections:
      - sysctl_net_ipv6_conf_default_accept_redirects
      - blacklist_usb-storage
      - file_permission_user_init_files
+     - permissions_local_var_log_audit
+     - permissions_local_audit_binaries
 

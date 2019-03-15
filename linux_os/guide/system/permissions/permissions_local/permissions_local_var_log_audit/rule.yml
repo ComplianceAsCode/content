@@ -1,0 +1,45 @@
+documentation_complete: true
+
+title: 'Verify that Local Logs of the audit Daemon are not World-Readable'
+
+description: |-
+    Files containing sensitive informations should be protected by restrictive
+    permissions. Most of the time, there is no need that these files need to be read by any non-root user.
+
+    Check that "permissions.local" file contains the correct permissions rules with the following command:
+
+    <pre># grep -i audit /etc/permissions.local
+
+    /var/log/audit/ root:root 600
+    /var/log/audit/audit.log root:root 600
+    /etc/audit/audit.rules root:root 640</pre>
+
+rationale: |-
+    Without the capability to restrict which roles and individuals can select
+    which events are audited, unauthorized personnel may be able to prevent the
+    auditing of critical events. Misconfigured audits may degrade the system's
+    performance by overwhelming the audit log. Misconfigured audits may also
+    make it more difficult to establish, correlate, and investigate the events
+    relating to an incident or identify those responsible for one.
+
+severity: medium
+
+references:
+    disa: 162,163,164
+    nist: AU-9
+    stigid@rhel12: "020120"
+
+ocil: |-
+    Check that <tt>permissions.local</tt> file contains the correct permissions rules with the following command:
+
+    <pre># grep -i audit /etc/permissions.local
+
+    /var/log/audit/ root:root 600
+    /var/log/audit/audit.log root:root 600
+    /etc/audit/audit.rules root:root 640</pre>
+
+    If the command does not return all the above lines, the missing ones need to be added.
+
+    Run the following command to correct the permissions after adding missing entries:
+
+    <pre># sudo chkstat --set --system</pre>
