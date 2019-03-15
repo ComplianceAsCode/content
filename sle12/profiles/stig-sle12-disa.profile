@@ -212,4 +212,5 @@ selections:
      - permissions_local_audit_binaries
      - account_emergency_admin
      - policy_temp_passwords_immediate_change
+     - file_permissions_ungroupowned
 
