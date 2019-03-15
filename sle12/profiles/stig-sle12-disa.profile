@@ -214,4 +214,5 @@ selections:
      - policy_temp_passwords_immediate_change
      - file_permissions_ungroupowned
      - dir_perms_world_writable_system_groupowned
+     - run_chkstat
 
