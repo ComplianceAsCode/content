@@ -207,4 +207,5 @@ selections:
      - sysctl_net_ipv4_conf_all_send_redirects
      - sysctl_net_ipv6_conf_default_accept_redirects
      - blacklist_usb-storage
+     - file_permission_user_init_files
 

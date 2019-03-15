@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: rhel7,rhel8,sle12
 
 title: 'Ensure All User Initialization Files Have Mode 0740 Or Less Permissive'
 
@@ -22,7 +22,10 @@ identifiers:
 references:
     disa: "366"
     srg: SRG-OS-000480-GPOS-00227
-    stigid: "020710"
+    stigid@rhel7: "020710"
+    stigid@rhel8: "020710"
+    nist@sle12: CM-6(b)
+    stigid@sle12: "010760"
 
 ocil_clause: 'they are not 0740 or more permissive'
 
