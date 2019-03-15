@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Ensure All World-Writable Directories Are Group-Owned by a System Group'
+
+description: |-
+    All directories in local partitions which are world-writable should be
+    group-owned by <tt>root</tt>, <tt>sys</tt>, <tt>bin</tt> or an application
+    group. If any world-writable directories are not group-owned by such a
+    group, this should be investigated. Following this, the files should be
+    deleted or assigned to an appropriate group.
+
+rationale: |-
+    If a world-writable directory has the sticky bit set and is not group-owned
+    by a privileged Group Identifier (GID), unauthorized users may be able to
+    modify files created by others.
+
+    The only authorized public directories are those temporary directories
+    supplied with the system or those designed to be temporary file
+    repositories. The setting is normally reserved for directories used by the
+    system and by users for temporary file storage, (e.g., <tt>/tmp</tt>), and
+    for directories requiring global read/write access.
+
+severity: medium
+
+references:
+    disa: "366"
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@sle12: "010830"
+
+ocil_clause: 'there is output'
+
+ocil: |-
+    The following command will discover and print world-writable directories that
+    are not owned by a system account, given the assumption that only system
+    groups have a uid lower than 1000.  Run it once for each local partition <i>PART</i>:
+    <pre>$ sudo find <i>PART</i> -xdev -type d -perm -0002 -gid +999 -print</pre>
