@@ -210,4 +210,5 @@ selections:
      - file_permission_user_init_files
      - permissions_local_var_log_audit
      - permissions_local_audit_binaries
+     - account_emergency_admin
 
