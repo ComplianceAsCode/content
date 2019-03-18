@@ -8,7 +8,7 @@
       <description>There should not be any shosts.equiv files on the system.</description>
     </metadata>
     <criteria>
-    	<criterion test_ref="test_no_shosts_equiv"/>
+      <criterion test_ref="test_no_shosts_equiv"/>
     </criteria>
   </definition>
   <unix:file_test check="all" check_existence="none_exist" comment="look for shosts.equiv in /" id="test_no_shosts_equiv" version="1">
@@ -17,6 +17,6 @@
   <unix:file_object comment="look for any shosts.equiv file on the system" id="object_no_shosts_equiv_files_root" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
     <unix:path operation="equals">/</unix:path>
-    <unix:filename operation="pattern match">shosts\.equiv$</unix:filename>
+    <unix:filename operation="equals">shosts.equiv</unix:filename>
   </unix:file_object>
 </def-group>

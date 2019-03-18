@@ -17,6 +17,6 @@
   <unix:file_object comment="look for any .shosts file on the system" id="object_no_shosts_files_root" version="1">
     <unix:behaviors recurse="directories" recurse_direction="down" max_depth="-1" recurse_file_system="local" />
     <unix:path operation="equals">/</unix:path>
-    <unix:filename operation="pattern match">\.shosts</unix:filename>
+    <unix:filename operation="equals">.shosts</unix:filename>
   </unix:file_object>
 </def-group>
