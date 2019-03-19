@@ -661,7 +661,7 @@ The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary
 A rule may contain those reference-type attributes:
 
 * `identifiers`: This is related to products/CCEs that the rule applies to; this is a dictionary, whose keys should be `cce` and a value. If `cce` is modified with a product (e.g., `cce@rhel6`), it restricts what products that identifiers applies to.
-* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stig`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stig@rhel6`) to restrict what products an identifiers applies to.
+* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stig`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stigid@rhel6`) to restrict what products an identifiers applies to.
 +
 When the rule is related to RHEL, it should have a CCE.
 Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
