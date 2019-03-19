@@ -7,6 +7,7 @@
         <platform>Red Hat Enterprise Linux 8</platform>
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_sle</platform>
       </affected>
       <description>Enable the GUI warning banner.</description>
     </metadata>
@@ -14,7 +15,9 @@
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
       <criteria comment="Enable GUI banner and prevent user from changing it" operator="AND">
         <extend_definition comment="dconf user profile exists" definition_ref="enable_dconf_user_profile" />
+        {{% if product != "sle12" %}}
         <criterion comment="Prevent user from changing banner" test_ref="test_prevent_user_banner_change" />
+        {{% endif %}}
         <criterion comment="Login banner is correctly set" test_ref="test_gdm_login_banner_text_setting" />
       </criteria>
     </criteria>
