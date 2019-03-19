@@ -6,6 +6,7 @@ import jinja2
 import argparse
 
 import ssg
+import ssg.yaml
 
 
 def has_empty_identifier(yaml_file, product_yaml=None):
