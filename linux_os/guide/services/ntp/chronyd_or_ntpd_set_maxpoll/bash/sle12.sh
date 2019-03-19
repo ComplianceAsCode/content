@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = SUSE Linux Enterprise 12
 . /usr/share/scap-security-guide/remediation_functions
 populate var_time_service_set_maxpoll
 

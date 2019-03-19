@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = SUSE Linux Enterprise 12
 
 if grep --silent ^solver.upgradeRemoveDroppedPackages /etc/zypp/zypp.conf ; then
         sed -i "s/^solver.upgradeRemoveDroppedPackages.*/solver.upgradeRemoveDroppedPackages=true/g" /etc/zypp/zypp.conf

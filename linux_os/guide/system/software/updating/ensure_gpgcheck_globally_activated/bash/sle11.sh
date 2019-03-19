@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel, multi_platform_ol, multi_platform_fedora
+# platform = SUSE Linux Enterprise 11
 . /usr/share/scap-security-guide/remediation_functions
 
 

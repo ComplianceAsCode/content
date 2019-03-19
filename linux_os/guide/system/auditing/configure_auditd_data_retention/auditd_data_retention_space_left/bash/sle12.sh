@@ -1,4 +1,4 @@
-# platform = multi_platform_sle
+# platform = SUSE Linux Enterprise 12
 
 
 divide_round_up() {
