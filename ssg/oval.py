@@ -98,7 +98,7 @@ def applicable_platforms(oval_file):
 
     platforms = []
     header = oval_generated_header("applicable_platforms", "5.11", "0.0.1")
-    body = process_file(oval_file, {})
+    body = process_file(oval_file, {'target_oval_version': [5, 11]})
     oval_tree = ET.fromstring(header + body + footer)
 
     element_path = "./{%s}def-group/{%s}definition/{%s}metadata/{%s}affected/{%s}platform"
