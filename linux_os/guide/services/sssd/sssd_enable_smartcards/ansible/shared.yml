@@ -3,6 +3,24 @@
 # strategy = configure
 # complexity = low
 # disruption = medium
+- name: "Test for domain group"
+  shell: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  register: test_grep_domain
+  ignore_errors: yes
+  changed_when: False
+
+- name: "Add default domain group (if no domain there)"
+  ini_file:
+    path: /etc/sssd/sssd.conf
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    create: yes
+    mode: 0600
+  with_items:
+    - { section: sssd, option: domains, value: default}
+    - { section: domain/default, option: id_provider, value: files }
+  when: test_grep_domain.stdout == ""
 - name: "Enable Smartcards in SSSD"
   ini_file:
     dest: /etc/sssd/sssd.conf
@@ -10,3 +28,4 @@
     option: pam_cert_auth
     value: true
     create: yes
+    mode: 0600

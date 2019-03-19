@@ -12,16 +12,25 @@
   changed_when: False
 
 - name: "Add default domain group and set CA directory (if no domain there)"
-  lineinfile:
+  ini_file:
     path: /etc/sssd/sssd.conf
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
     create: yes
-    line: "[domain/default]\nldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}\n"
+    mode: 0600
+  with_items:
+    - { section: sssd, option: domains, value: default}
+    - { section: domain/default, option: id_provider, value: files }
+    - { section: domain/default, option: ldap_tls_cacertdir, value: "{{ var_sssd_ldap_tls_ca_dir }}" }
   when: test_grep_domain.stdout == ""
 
 - name: "Configure LDAPs path to CA directory"
-  lineinfile:
+  ini_file:
     path: /etc/sssd/sssd.conf
-    regexp: '^\s*ldap_tls_cacertdir'
-    insertafter: '\s*\[domain\/[^]]*]'
-    line: 'ldap_tls_cacertdir = {{ var_sssd_ldap_tls_ca_dir }}'
-
+    section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
+    option: ldap_tls_cacertdir
+    value: "{{ var_sssd_ldap_tls_ca_dir }}"
+    create: yes
+    mode: 0600
+  when: test_grep_domain.stdout != ""
