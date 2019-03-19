@@ -462,10 +462,10 @@ class Group(object):
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
-        for _group in self.groups.values():
-            group.append(_group.to_xml_element())
         for _rule in self.rules.values():
             group.append(_rule.to_xml_element())
+        for _group in self.groups.values():
+            group.append(_group.to_xml_element())
 
         return group
 
