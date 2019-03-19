@@ -15,6 +15,7 @@ selections:
      - gui_login_dod_acknowledgement
      - banner_etc_motd
      - dconf_gnome_banner_enabled
+     - login_banner_text=dod_default
      - dconf_gnome_login_banner_text
      - vlock_installed
      - accounts_tmout
