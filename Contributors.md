@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2019-02-18 16:33
+Last Modified: 2019-03-19 13:07
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -56,15 +56,16 @@ The following people have contributed to the SCAP Security Guide project
 * Kai Kang <kai.kang@windriver.com>
 * Charles Kernstock <charles.kernstock@ultra-ats.com>
 * Yuli Khodorkovskiy <ykhodorkovskiy@tresys.com>
+* Lee Kinser <lee.kinser@gmail.com>
 * Peter 'Pessoft' Kolínek <github@pessoft.com>
 * Luke Kordell <luke.t.kordell@lmco.com>
+* Malte Kraus <malte.kraus@suse.com>
 * kspargur <kspargur@kspargur.csb>
 * Amit Kumar <amitkuma@redhat.com>
 * Fen Labalme <fen@civicactions.com>
 * Ian Lee <lee1001@llnl.gov>
 * Jarrett Lee <jarrettl@umd.edu>
 * Jan Lieskovsky <jlieskov@redhat.com>
-* Lee Kinser <lee.kinser@gmail.com>
 * Šimon Lukašík <slukasik@redhat.com>
 * Milan Lysonek <mlysonek@redhat.com>
 * Fredrik Lysén <fredrik@pipemore.se>
@@ -101,6 +102,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kenyon Ralph <kenyon@kenyonralph.com>
 * Rick Renshaw <Richard_Renshaw@xtoenergy.com>
 * Chris Reynolds <c.reynolds82@gmail.com>
+* rhayes <rhayes@rivierautilities.com>
 * Pat Riehecky <riehecky@fnal.gov>
 * rlucente-se-jboss <rlucente@redhat.com>
 * Joshua Roys <roysjosh@gmail.com>
