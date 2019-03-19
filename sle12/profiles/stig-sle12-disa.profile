@@ -216,4 +216,5 @@ selections:
      - file_permissions_ungroupowned
      - dir_perms_world_writable_system_groupowned
      - run_chkstat
+     - security_patches_up_to_date
 
