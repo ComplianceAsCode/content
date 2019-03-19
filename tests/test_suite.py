@@ -132,6 +132,10 @@ def parse_args():
                              dest="dont_clean",
                              action="store_true",
                              help="Do not remove html reports of successful runs")
+    parser_rule.add_argument("--scenarios",
+                             dest="scenarios_regex",
+                             default=None,
+                             help="Regular expression matching test scenarios to run")
 
     return parser.parse_args()
 
