@@ -36,16 +36,12 @@ def add_references(reference, destination):
     for rule in target_rules:
         refs = rule.findall('.//{%s}reference' % XCCDF11_NS)
         for ref in refs:
-            ref_text = ref.text
-            if ref_text.isnumeric():
-                ref_text = target_root.getroot().get('id') + '-' + ref_text
-
             if (ref.get('href').startswith(stig_refs) and
-                    ref_text in dictionary):
+                    ref.text in dictionary):
                 index = rule.getchildren().index(ref)
                 new_ref = ET.Element(
                     '{%s}reference' % XCCDF11_NS, {'href': stig_ns})
-                new_ref.text = dictionary[ref_text]
+                new_ref.text = dictionary[ref.text]
                 new_ref.tail = ref.tail
                 rule.insert(index + 1, new_ref)
 
