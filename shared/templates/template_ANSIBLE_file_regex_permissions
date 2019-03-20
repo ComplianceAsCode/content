@@ -7,6 +7,7 @@
   find:
     paths: "{{{ FILEPATH }}}"
     patterns: "{{{ FILENAME }}}"
+    use_regex: yes
   register: files_found
 
 - name: Set permissions for {{{ FILEPATH }}} file(s)
