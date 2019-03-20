@@ -53,6 +53,48 @@
       <!-- Insert benchmark source -->
       <dc:source><xsl:value-of select="$ssg-benchmark-latest-uri"/></dc:source>
     </xccdf:metadata>
+    </xsl:template>
+
+  <!-- generic string replace -->
+  <xsl:template name="string-replace">
+    <xsl:param name="subject"     select="''" />
+    <xsl:param name="search"      select="''" />
+    <xsl:param name="replacement" select="''" />
+
+    <xsl:choose>
+      <xsl:when test="contains($subject, $search)">
+        <xsl:value-of select="substring-before($subject, $search)" />
+        <xsl:value-of select="$replacement" />
+        <xsl:call-template name="string-replace">
+          <xsl:with-param name="subject"     select="substring-after($subject, $search)" />
+          <xsl:with-param name="search"      select="$search" />
+          <xsl:with-param name="replacement" select="$replacement" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$subject" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- generates a <version> tag with the concatenated STIG IDs this rule applies to
+    (this is where DISA STIG Viewer expects the STIG ID) -->
+  <xsl:template name="stig-id-version">
+    <xsl:if test="ref[@stigid][contains(@prodtype, $prod_type) or @prodtype = 'all'] or not(@prodtype)">
+      <version>
+        <xsl:for-each select="ref[contains(@prodtype, $prod_type) or @prodtype = 'all' or not(@prodtype)]/@stigid">
+          <xsl:value-of select="$os-stigid-concat"/>
+          <xsl:call-template name="string-replace">
+            <xsl:with-param name="subject" select="." />
+            <xsl:with-param name="search" select="','" />
+            <xsl:with-param name="replacement" select="concat(', ', $os-stigid-concat)" />
+          </xsl:call-template>
+          <xsl:if test="position() != last()">
+            <xsl:text>, </xsl:text>
+          </xsl:if>
+        </xsl:for-each>
+      </version>
+    </xsl:if>
   </xsl:template>
 
   <!-- hack for OpenSCAP validation quirk: must place reference after description/warning, but prior to others -->
@@ -68,6 +110,7 @@
               <xsl:value-of select="$defaultseverity" />
             </xsl:attribute>
           </xsl:if>
+          <xsl:call-template name="stig-id-version" />
           <xsl:apply-templates select="title[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="description[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
           <xsl:apply-templates select="warning[contains(@prodtype, $prod_type) or not(@prodtype)]"/>
@@ -96,6 +139,7 @@
               <xsl:value-of select="$defaultseverity" />
           </xsl:attribute>
       </xsl:if>
+      <xsl:call-template name="stig-id-version"/>
       <xsl:apply-templates select="title"/>
       <xsl:apply-templates select="description"/>
       <xsl:apply-templates select="warning"/>
@@ -172,7 +216,7 @@
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
-              <xsl:when test="name() = 'stig'">
+              <xsl:when test="name() = 'stigid'">
                 <xsl:attribute name="system">
                   <xsl:value-of select="$disa-stigs-uri" />
                 </xsl:attribute>
