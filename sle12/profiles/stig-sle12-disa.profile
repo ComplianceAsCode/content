@@ -218,4 +218,5 @@ selections:
      - dir_perms_world_writable_system_groupowned
      - run_chkstat
      - security_patches_up_to_date
+     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
 
