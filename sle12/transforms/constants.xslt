@@ -9,7 +9,7 @@
 <xsl:variable name="prod_type">sle12</xsl:variable>
 
 <!-- Define URI of official CIS Red Hat Enterprise Linux 7 Benchmark -->
-<xsl:variable name="cisuri"></xsl:variable>
+<xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/suse_linux/</xsl:variable>
 <xsl:variable name="disa-stigs-uri" select="$disa-stigs-os-unix-linux-uri"/>
 <xsl:variable name="os-stigid-concat">SLES-12-</xsl:variable>
 
