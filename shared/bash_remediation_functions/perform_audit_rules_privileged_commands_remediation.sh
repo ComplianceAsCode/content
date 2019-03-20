@@ -71,7 +71,7 @@ declare -a sbinaries_to_skip=()
 for sbinary in "${privileged_binaries[@]}"
 do
 
-	# Check if this sbinary wasn't already handled in some of the previous iterations
+	# Check if this sbinary wasn't already handled in some of the previous sbinary iterations
 	# Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
 	if [[ $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
 	then
@@ -169,9 +169,15 @@ do
 		elif [ "$tool" == "auditctl" ] || [[ "$tool" == "augenrules" && $count_of_inspected_files -eq "${#files_to_inspect[@]}" ]]
 		then
 
-			# Current audit rules file's content doesn't contain expected rule for this
-			# SUID/SGID binary yet => append it
-			echo "$expected_rule" >> "$output_audit_file"
+			# Check if this sbinary wasn't already handled in some of the previous afile iterations
+			# Return match only if whole sbinary definition matched (not in the case just prefix matched!!!)
+			if [[ ! $(sed -ne "\|${sbinary}|p" <<< "${sbinaries_to_skip[*]}") ]]
+			then
+				# Current audit rules file's content doesn't contain expected rule for this
+				# SUID/SGID binary yet => append it
+				echo "$expected_rule" >> "$output_audit_file"
+			fi
+
 			continue
 		fi
 
