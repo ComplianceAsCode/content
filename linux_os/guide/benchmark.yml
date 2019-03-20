@@ -45,8 +45,12 @@ front-matter: |
     {{{ weblink(link="https://www.open-scap.org/security-policies/scap-security-guide") }}}
 
 rear-matter: |
+    {{% if product in ["sle11", "sle12", "sle15"] %}}
+    SUSE is a registered trademark of SUSE LLC in the United States and other
+    {{% else %}}
     Red Hat and Red Hat Enterprise Linux are either registered
     trademarks or trademarks of Red Hat, Inc. in the United States and other
+    {{% endif %}}
     countries. All other names are registered trademarks or trademarks of their
     respective companies.
 
