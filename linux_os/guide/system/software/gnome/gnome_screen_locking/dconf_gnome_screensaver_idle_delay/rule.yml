@@ -1,13 +1,23 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel7,rhel8,fedora,ol7,ol8,sle12
 
 title: 'Set GNOME3 Screensaver Inactivity Timeout'
 
 description: |-
+    {{# The SLE12 STIG unfortunately only requires per-user settings, not a globally locked one, so we don't require but only suggest the latter. #}}
+    {{% if product == "sle12" %}}
+    To activate the GNOME3 lock screen after no less than 15 minutes, make sure that the GNOME <tt>idle-delay</tt> setting in <tt>org.gnome.desktop.session-delay</tt> is set to <tt>900</tt> or less for each user:
+    <pre>gsettings get org.gnome.desktop.session idle-delay
+    900</pre>
+
+    To ensure that this setting is not modified by users, set it in an appropriate configuration file in the <tt>/etc/dconf/db/local.d</tt> directory
+    and lock it in a file in the <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+    {{% else %}}
     The idle time-out value for inactivity in the GNOME3 desktop is configured via the <tt>idle-delay</tt>
-    setting must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
+    setting, which must be set under an appropriate configuration file(s) in the <tt>/etc/dconf/db/local.d</tt> directory
     and locked in <tt>/etc/dconf/db/local.d/locks</tt> directory to prevent user modification.
+    {{% endif %}}
     <br /><br />
     For example, to configure the system for a 15 minute delay, add the following to
     <tt>/etc/dconf/db/local.d/00-security-settings</tt>:
@@ -46,6 +56,7 @@ references:
     pcidss: Req-8.1.8
     srg: SRG-OS-000029-GPOS-00010
     stigid@rhel7: "010070"
+    stigid@sle12: "010080"
     isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.2,SR 1.5,SR 1.7,SR 1.8,SR 1.9'
     isa-62443-2009: 4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9
     cobit5: DSS05.04,DSS05.10,DSS06.10
@@ -58,7 +69,11 @@ ocil: |-
     To check the current idle time-out value, run the following command:
     <pre>$ gsettings get org.gnome.desktop.session idle-delay</pre>
     If properly configured, the output should be <tt>'uint32 <sub idref="inactivity_timeout_value" />'</tt>.
+    {{% if product == "sle12" %}}
+    If you want to ensure that users cannot change the screensaver inactivity timeout setting, run the following:
+    {{% else %}}
     To ensure that users cannot change the screensaver inactivity timeout setting, run the following:
+    {{% endif %}}
     <pre>$ grep idle-delay /etc/dconf/db/local.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/desktop/session/idle-delay</tt>
 

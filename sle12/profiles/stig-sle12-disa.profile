@@ -222,5 +222,8 @@ selections:
      - sysctl_net_ipv4_conf_all_accept_redirects
      - sysctl_net_ipv4_conf_default_accept_redirects
      - dconf_gnome_enable_lock_screen
+     - inactivity_timeout_value=15_minutes
+     - dconf_gnome_screensaver_idle_delay
+     - dconf_gnome_screensaver_mode_blank
      - postfix_client_configure_mail_alias
 
