@@ -219,4 +219,6 @@ selections:
      - run_chkstat
      - security_patches_up_to_date
      - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+     - sysctl_net_ipv4_conf_all_accept_redirects
+     - sysctl_net_ipv4_conf_default_accept_redirects
 
