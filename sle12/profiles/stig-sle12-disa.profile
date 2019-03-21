@@ -227,4 +227,5 @@ selections:
      - dconf_gnome_screensaver_mode_blank
      - postfix_client_configure_mail_alias
      - accounts_authorized_local_users
+     - var_accounts_authorized_local_users_regex=none
 
