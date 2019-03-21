@@ -3,6 +3,7 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+# title = Ensure SELinux State is Enforcing
 - (xccdf-var var_selinux_state)
 - name: '@RULE_TITLE@'
   lineinfile:

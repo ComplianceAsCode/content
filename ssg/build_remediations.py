@@ -25,7 +25,7 @@ REMEDIATION_TO_EXT_MAP = {
 FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 
 REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
-                           'strategy']
+                           'strategy', 'title']
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
 
 
@@ -285,7 +285,9 @@ class AnsibleRemediation(Remediation):
 
         updated_yaml_text = ssg.yaml.ordered_dump(
             remediation_obj.parsed, None, default_flow_style=False)
-        result.contents[:] = updated_yaml_text.split("\n")
+        del result.contents[:]
+        result.contents.append("# title = %s" % remediation_obj.rule.title)
+        result.contents.extend(updated_yaml_text.split("\n"))
 
         return result
 

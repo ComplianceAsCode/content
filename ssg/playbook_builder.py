@@ -148,8 +148,14 @@ class PlaybookBuilder():
         for task in play_tasks:
             tags |= set(task.pop("tags", []))
 
+        playbook_name = rule_id
+        for line in snippet_str.splitlines():
+            if line.startswith('# title ='):
+                _, v = line.split("=")
+                playbook_name = v.strip()
+
         play = OrderedDict()
-        play["name"] = rule_id
+        play["name"] = playbook_name
         play["hosts"] = "@@HOSTS@@"
         play["become"] = True
         if len(play_vars) > 0:
