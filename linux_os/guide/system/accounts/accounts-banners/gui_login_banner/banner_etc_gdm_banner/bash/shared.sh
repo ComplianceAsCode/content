@@ -8,6 +8,7 @@ formatted=$(echo "$expanded" | fold -sw 80)
 
 cat <<EOF >/etc/gdm/banner
 $formatted
+
 EOF
 
-printf "\n" >> /etc/gdm/banner
+chmod 0644 /etc/gdm/banner

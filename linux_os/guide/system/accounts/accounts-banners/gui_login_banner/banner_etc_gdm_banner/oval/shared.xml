@@ -7,8 +7,12 @@
       </affected>
       <description>The system login banner text should be set correctly.</description>
     </metadata>
-    <criteria>
-      <criterion comment="/etc/gdm/banner is set appropriately" test_ref="test_banner_etc_gdm_banner" />
+    <criteria operator="OR">
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
+      <criteria operator="AND">
+        <criterion comment="/etc/gdm/banner is set appropriately" test_ref="test_banner_etc_gdm_banner" />
+        <criterion comment="/etc/gdm/banner is world-readable" test_ref="test_banner_etc_gdm_banner_readable" />
+      </criteria>
     </criteria>
   </definition>
 
@@ -24,4 +28,16 @@
 
   <external_variable comment="warning banner text variable" datatype="string" id="login_banner_text" version="1" />
 
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/cinder/api-paste.ini mode and ownership" id="test_banner_etc_gdm_banner_readable" version="1">
+    <unix:object object_ref="object_banner_etc_gdm_banner_readable" />
+    <unix:state state_ref="state_banner_etc_gdm_banner_readable" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/gdm/banner" id="object_banner_etc_gdm_banner_readable" version="1">
+    <unix:filepath>/etc/gdm/banner</unix:filepath>
+  </unix:file_object>
+  <unix:file_state id="state_banner_etc_gdm_banner_readable" version="1">
+      <unix:uread datatype="boolean">true</unix:uread>
+      <unix:gread datatype="boolean">true</unix:gread>
+      <unix:oread datatype="boolean">true</unix:oread>
+  </unix:file_state>
 </def-group>
