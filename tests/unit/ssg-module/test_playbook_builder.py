@@ -44,10 +44,12 @@ def test_build_rule_playbook():
     assert len(real_vars) == len(expected_vars)
     assert real_vars["var_selinux_state"] == expected_vars["var_selinux_state"]
     real_tags = real_play["tags"]
-    expected_tags = real_play["tags"]
+    expected_tags = expected_play["tags"]
     assert len(real_tags) == len(expected_tags)
     for tag in expected_tags:
         assert tag in real_tags
+    for t1, t2 in zip(real_tags, expected_tags):
+        assert t1 == t2
     real_tasks = real_play["tasks"]
     expected_tasks = expected_play["tasks"]
     assert len(real_tasks) == len(expected_tasks)

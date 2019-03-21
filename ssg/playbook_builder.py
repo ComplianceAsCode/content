@@ -155,7 +155,7 @@ class PlaybookBuilder():
         if len(play_vars) > 0:
             play["vars"] = play_vars
         if len(tags) > 0:
-            play["tags"] = list(tags)
+            play["tags"] = sorted(list(tags))
         play["tasks"] = play_tasks
 
         playbook = [play]
