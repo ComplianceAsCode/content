@@ -197,35 +197,19 @@ endmacro()
 
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
-
-    execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-inputs
-        OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_DEPENDS "${LANGUAGE_REMEDIATIONS_DEPENDS_STR}")
-
-    execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-outputs
-        OUTPUT_VARIABLE LANGUAGE_REMEDIATIONS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" LANGUAGE_REMEDIATIONS_OUTPUTS "${LANGUAGE_REMEDIATIONS_OUTPUTS_STR}")
-
-
-
     add_custom_command(
-        OUTPUT ${LANGUAGE_REMEDIATIONS_OUTPUTS}
+        OUTPUT "${BUILD_REMEDIATIONS_DIR}"
         # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
         COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
         DEPENDS generate-internal-bash-remediation-functions.xml
         DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
-        DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
         DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
         COMMENT "[${PRODUCT}-content] generating all fixes: ${LANGUAGES}"
     )
     add_custom_target(
         generate-internal-language-remedations-${PRODUCT}
-        DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
+        DEPENDS "${BUILD_REMEDIATIONS_DIR}"
     )
     foreach(LANGUAGE ${LANGUAGES})
       set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
@@ -233,8 +217,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
       add_custom_command(
           OUTPUT "${ALL_FIXES_DIR}"
           COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_remediations.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --remediation-type "${LANGUAGE}" --output-dir "${ALL_FIXES_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared/${LANGUAGE}" "${BUILD_REMEDIATIONS_DIR}/${LANGUAGE}"
-          DEPENDS ${LANGUAGE_REMEDIATIONS_DEPENDS}
-          DEPENDS ${LANGUAGE_REMEDIATIONS_OUTPUTS}
+          DEPENDS "${BUILD_REMEDIATIONS_DIR}"
           # Acutally we mean that it depends on resolved rules.
           DEPENDS generate-internal-${PRODUCT}-shorthand.xml
           DEPENDS "${SSG_BUILD_SCRIPTS}/combine_remediations.py"
