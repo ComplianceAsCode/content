@@ -2,31 +2,41 @@
 
 import argparse
 import ssg.playbook_builder
+import os
 
 
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument(
-        "--input-dir", required=True, dest="input_dir",
+        "--input-dir",
         help="Input directory that contains all Ansible remediations "
         "snippets for the product we are building. "
-        "e.g. ~/scap-security-guide/build/fedora/fixes/ansible"
+        "e.g. ~/scap-security-guide/build/fedora/fixes/ansible. "
+        "If --input-dir is not specified, it is derived from --ssg-root."
     )
     p.add_argument(
-        "--output-dir", required=True, dest="output_dir",
+        "--output-dir",
         help="Output directory to which the rule-based Ansible playbooks "
         "will be generated. "
-        "e.g. ~/scap-security-guide/build/fedora/playbooks"
+        "e.g. ~/scap-security-guide/build/fedora/playbooks. "
+        "If --output-dir is not specified, it is derived from --ssg-root."
     )
     p.add_argument(
-        "--resolved-rules-dir", required=True,
+        "--resolved-rules-dir",
         help="Directory that contains preprocessed rules in YAML format "
-        "eg. ~/scap-security-guide/build/fedora/rules"
+        "eg. ~/scap-security-guide/build/fedora/rules. "
+        "If --resolved-rules-dir is not specified, it is derived from "
+        "--ssg-root."
     )
     p.add_argument(
-        "--product-yaml", required=True, dest="product_yaml",
-        help="YAML file with information about the product we are building. "
-        "e.g.: ~/scap-security-guide/rhel7/product.yml"
+        "--ssg-root", required=True,
+        help="Directory containing the source tree. "
+        "e.g. ~/scap-security-guide/"
+    )
+    p.add_argument(
+        "--product", required=True,
+        help="ID of the product for which we are building Playbooks. "
+        "e.g.: 'fedora'"
     )
     p.add_argument(
         "--profile",
@@ -45,9 +55,27 @@ def parse_args():
 
 def main():
     args = parse_args()
+    product_yaml = os.path.join(args.ssg_root, args.product, "product.yml")
+    if args.input_dir:
+        input_dir = args.input_dir
+    else:
+        input_dir = os.path.join(
+            args.ssg_root, "build", args.product, "fixes", "ansible"
+        )
+    if args.output_dir:
+        output_dir = args.output_dir
+    else:
+        output_dir = os.path.join(
+            args.ssg_root, "build", args.product, "playbooks"
+        )
+    if args.resolved_rules_dir:
+        resolved_rules_dir = args.resolved_rules_dir
+    else:
+        resolved_rules_dir = os.path.join(
+            args.ssg_root, "build", args.product, "rules"
+        )
     playbook_builder = ssg.playbook_builder.PlaybookBuilder(
-        args.product_yaml, args.input_dir, args.output_dir,
-        args.resolved_rules_dir
+        product_yaml, input_dir, output_dir, resolved_rules_dir
     )
     playbook_builder.build(args.profile, args.rule)
 

@@ -265,7 +265,7 @@ macro(ssg_build_ansible_playbooks PRODUCT)
     set(ANSIBLE_PLAYBOOKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/playbooks")
     add_custom_command(
         OUTPUT "${ANSIBLE_PLAYBOOKS_DIR}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --input-dir "${ANSIBLE_FIXES_DIR}" --output-dir "${ANSIBLE_PLAYBOOKS_DIR}" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py" --ssg-root "${CMAKE_SOURCE_DIR}" --product "${PRODUCT}"
         DEPENDS "${ANSIBLE_FIXES_DIR}"
         DEPENDS generate-internal-${PRODUCT}-ansible-all-fixes
         DEPENDS "${SSG_BUILD_SCRIPTS}/build_rule_playbooks.py"
