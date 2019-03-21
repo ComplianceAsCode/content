@@ -18,14 +18,27 @@
   changed_when: False
 
 - name: "Add default domain group and use STARTTLS (if no domain there)"
-  lineinfile:
+  ini_file:
     path: /etc/sssd/sssd.conf
-    line: "[domain/default]\nldap_id_use_start_tls = True\n"
+    section: domain/default
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    create: yes
+    mode: 0600
+  with_items:
+    - { section: sssd, option: domains, value: default}
+    - { section: domain/default, option: id_provider, value: files }
+    - { section: domain/default, option: ldap_id_use_start_tls, value: true}
   when: test_grep_domain.stdout == ""
 
 - name: "Configure LDAP to use STARTTLS"
-  lineinfile:
+  ini_file:
     path: /etc/sssd/sssd.conf
-    regexp: '^\s*ldap_id_use_start_tls'
-    insertafter: '\s*\[domain\/[^]]*]'
-    line: 'ldap_id_use_start_tls = True'
+    section: "{{ test_grep_domain.stdout | regex_replace('\\[(.*)\\]','\\1') }}"
+    option: ldap_id_use_start_tls
+    value: true
+    create: yes
+    mode: 0600
+  when: test_grep_domain.stdout != ""
+

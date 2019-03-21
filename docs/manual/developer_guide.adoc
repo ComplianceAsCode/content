@@ -352,6 +352,7 @@ sle12
 tests
 ubuntu1404
 ubuntu1604
+ubuntu1804
 utils
 wrlinux
 ----
@@ -578,6 +579,22 @@ An alternative is adding the directory where `testoval.py` resides to your PATH.
 
 ----
 $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
+----
+
+
+=== Profile Statistics
+
+The `profile_stats.py` tool displays XCCDF profile statistics. It can show number of rules in the
+profile, how many of these rules have an OVAL check implemented, how many have a remediation available,
+shows rule IDs which are missing them and other useful information.
+
+To use the script, first build the content, then pass the built XCCDF (not DataStream) to the script.
+
+For example, to check which rules in RHEL8 OSPP profile are missing remediations, run this command:
+
+----
+$ ./build_product rhel8
+$ ./build-scripts/profile_stats.py --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
 ----
 
 == Contributing with XCCDFs, OVALs and remediations
@@ -928,11 +945,14 @@ Remediations also carry metadata that should be present at the beginning of the 
 
 IMPORTANT: The minimum version of Ansible must be at the latest supported version. See https://access.redhat.com/support/policy/updates/ansible-engine for information on the supported Ansible versions.
 
-Ansible remediations are stored as yml files in directory _/template/static/ansible_ under the targeted platform. They are meant to be executed by Ansible itself when requested by openscap, so they are
-written using link:ttp://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
+Ansible remediations are either:
+- stored as `.yml` files in directory `ansible` in the rule directory
+- generated from templates
+
+They are meant to be executed by Ansible itself when requested by openscap, so they are
+written using link:http://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
 
 - The remediation content must be only the _tasks_ section of what would be a playbook
-- The _tags_ section must be present in each task as shown in the example, it'll be replaced during the building process
 - Notifications and handlers are not supported
 
 Here is an example of a Ansible remediation that ensures the SELinux is enabled in grub:
@@ -947,9 +967,15 @@ Here is an example of a Ansible remediation that ensures the SELinux is enabled 
   replace:
     dest: /etc/default/grub
     regexp: selinux=0
-  tags:
-    @ANSIBLE_TAGS@
 ----
+
+The Ansible remediation will get included by our build system to the SCAP datastream in the `fix` element of respective rule.
+
+The build system generates an Ansible Playbook from the remediation for all profiles.
+The generated Playbook is located in `/build/<product>/playbooks/<profile_id>/<rule_id>.yml`.
+
+We also build profile Playbook that contains tasks for all rules in the profile.
+The Playbook is generated in `/build/roles/ssg-<product>-role-<profile_id>.yml`.
 
 ==== Bash
 

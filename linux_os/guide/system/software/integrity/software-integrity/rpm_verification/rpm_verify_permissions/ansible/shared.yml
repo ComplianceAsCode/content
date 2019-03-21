@@ -13,7 +13,7 @@
   check_mode: no
 
 - name: "Correct file permissions with RPM"
-  shell: "rpm --quiet --setperms $(rpm -qf '{{ item }}')"
+  shell: "rpm --setperms $(rpm -qf '{{ item }}')"
   args:
     warn: False # Ignore ANSIBLE0006, we can't correct permissions using rpm module
   with_items: "{{ files_with_incorrect_permissions.stdout_lines }}"

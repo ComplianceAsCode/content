@@ -14,7 +14,7 @@ function perform_remediation {
 		assert_mount_point_in_fstab "${{{ MOUNTPOINT }}}" || { echo "Not remediating, because there is no record of ${{{ MOUNTPOINT }}} in /etc/fstab" >&2; return 1; }
 	fi
 
-	ensure_mount_option_in_fstab "${{{ MOUNTPOINT }}}" "{{{ MOUNTOPTION }}}"
+	ensure_mount_option_in_fstab "${{{ MOUNTPOINT }}}" "{{{ MOUNTOPTION }}}" "{{{ FILESYSTEM }}}" "{{{ TYPE }}}"
 
 	ensure_partition_is_mounted "${{{ MOUNTPOINT }}}"
 }

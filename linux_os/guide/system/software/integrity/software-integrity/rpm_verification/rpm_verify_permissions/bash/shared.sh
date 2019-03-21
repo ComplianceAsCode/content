@@ -28,5 +28,5 @@ SETPERMS_RPM_LIST=( $(echo "${SETPERMS_RPM_LIST[@]}" | tr ' ' '\n' | sort -u | t
 # correct values
 for RPM_PACKAGE in "${SETPERMS_RPM_LIST[@]}"
 do
-	rpm --quiet --setperms "${RPM_PACKAGE}"
+	rpm --setperms "${RPM_PACKAGE}"
 done

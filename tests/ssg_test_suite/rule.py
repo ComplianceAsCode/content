@@ -150,13 +150,20 @@ def _matches_target(rule_dir, targets):
                 return True
         return False
 
-def _get_scenarios(rule_dir, scripts, benchmark_cpes):
+def _get_scenarios(rule_dir, scripts, scenarios_regex, benchmark_cpes):
     """ Returns only valid scenario files, rest is ignored (is not meant
     to be executed directly.
     """
 
+    if scenarios_regex is not None:
+        scenarios_pattern = re.compile(scenarios_regex)
+
     scenarios = []
     for script in scripts:
+        if scenarios_regex is not None:
+            if scenarios_pattern.match(script) is None:
+                logging.debug("Skipping script %s - it did not match --scenarios regex" % script)
+                continue
         script_context = _get_script_context(script)
         if script_context is not None:
             script_params = _parse_parameters(os.path.join(rule_dir, script))
@@ -283,7 +290,7 @@ class RuleChecker(oscap.Checker):
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
         args_list = [(s, remote_rule_dir, rule.id)
-                     for s in _get_scenarios(local_rule_dir, rule.files, self.benchmark_cpes)]
+                     for s in _get_scenarios(local_rule_dir, rule.files, self.scenarios_regex, self.benchmark_cpes)]
         state.map_on_top(self._check_and_record_rule_scenario, args_list)
 
     def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id):
@@ -331,5 +338,6 @@ def perform_rule_check(options):
     checker.dont_clean = options.dont_clean
     checker.manual_debug = options.manual_debug
     checker.benchmark_cpes = options.benchmark_cpes
+    checker.scenarios_regex = options.scenarios_regex
 
     checker.test_target(options.target)
