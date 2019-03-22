@@ -190,8 +190,9 @@ def split_remediation_content_and_metadata(fix_file):
         # REMEDIATION_CONFIG_KEYS.
         remediation_contents.append(line)
 
+    contents = "\n".join(remediation_contents)
     remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(contents=remediation_contents, config=config)
+    return remediation(contents=contents, config=config)
 
 
 def parse_from_file_with_jinja(file_path, env_yaml):
@@ -285,8 +286,9 @@ class AnsibleRemediation(Remediation):
 
         updated_yaml_text = ssg.yaml.ordered_dump(
             remediation_obj.parsed, None, default_flow_style=False)
-        result.contents[:] = updated_yaml_text.split("\n")
+        result = result._replace(contents=updated_yaml_text)
 
+        fixes[self.fix_name] = result
         return result
 
 
@@ -332,8 +334,7 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
             if config[key]:
                 fix_elm.set(key, config[key])
 
-        fix_elm.text = "\n".join(fix_contents)
-        fix_elm.text += "\n"
+        fix_elm.text = fix_contents + "\n"
 
         # Expand shell variables and remediation functions
         # into corresponding XCCDF <sub> elements
@@ -360,7 +361,7 @@ def write_fixes_to_dir(fixes, remediation_type, output_dir):
         with open(fix_path, "w") as f:
             for k, v in config.items():
                 f.write("# %s = %s\n" % (k, v))
-            f.write("\n".join(fix_contents))
+            f.write(fix_contents)
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):

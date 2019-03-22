@@ -25,7 +25,6 @@ def test_is_supported_file_name():
 def do_test_contents(remediation, config):
     assert 'do_something_magical' in remediation
     assert '# a random comment' in remediation
-    assert len(remediation) == 3
 
     assert 'platform' in config
     assert 'reboot' in config

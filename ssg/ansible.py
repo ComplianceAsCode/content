@@ -88,7 +88,7 @@ class AnsibleRemediation(object):
         self.contents = contents
         self.config = config
 
-        self.parsed = yaml.ordered_load("\n".join(contents))
+        self.parsed = yaml.ordered_load(contents)
 
         self.rule = None
 
