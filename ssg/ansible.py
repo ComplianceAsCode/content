@@ -100,6 +100,8 @@ class AnsibleRemediation(object):
             tags.append("{0}_complexity".format(self.config["complexity"]))
         if "disruption" in self.config:
             tags.append("{0}_disruption".format(self.config["disruption"]))
+        if "reboot" in self.config:
+            tags.append("{0}_reboot".format(self.config["reboot"]))
         to_update["tags"] = tags
 
     def update_tags_from_rule(self, platform, to_update):
