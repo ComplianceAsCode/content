@@ -8,7 +8,7 @@
       <description>checks for an audit rule for every suid binary</description>
     </metadata>
     <criteria>
-        <criterion comment="checks for an audit rule for every suid binary" test_ref="test_audit_rules_suid_privilege_function" />
+      <criterion comment="checks for an audit rule in rules.d for every suid binary" test_ref="test_audit_rules_suid_privilege_function" />
     </criteria>
   </definition>
 
@@ -36,13 +36,17 @@
 
   <unix:file_test check="all" check_existence="all_exist" version="1" comment="checks for an audit rule for every suid binary" id="test_audit_rules_suid_privilege_function">
       <unix:object object_ref="object_suid_binaries" />
-      <unix:state state_ref="state_has_audit_rule" />
+      <unix:state state_ref="state_has_audit_rule_audit_rules" />
+      <unix:state state_ref="state_has_audit_rule_rules_d" />
   </unix:file_test>
-  <unix:file_state id="state_has_audit_rule" version="1" comment="checks for an audit rule for a file">
-      <unix:filepath operation="equals" var_ref="var_audit_rules_privilege_function" var_check="at least one" />
+  <unix:file_state id="state_has_audit_rule_audit_rules" version="1" comment="checks for an audit rule in /etc/audit/audit.rules for a file">
+      <unix:filepath operation="equals" var_ref="var_audit_rules_privilege_function_audit_rules" var_check="at least one" />
+  </unix:file_state>
+  <unix:file_state id="state_has_audit_rule_rules_d" version="1" comment="checks for an audit rule in /etc/audit/rules.d for a file">
+      <unix:filepath operation="equals" var_ref="var_audit_rules_privilege_function_rules_d" var_check="at least one" />
   </unix:file_state>
 
-  <ind:textfilecontent54_object id="object_audit_rules_privilege_function" version="1">
+  <ind:textfilecontent54_object id="object_audit_rules_privilege_function_audit_rules" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
     <!--
         The '|(.).+' part of this regex is required to prevent this textfilecontent54_object from going into an error state when there are 0 matching lines.
@@ -50,11 +54,27 @@
 
         So to make sure there is at least one matching line, we force every line to be a match, but with a single-character subexpression - which is too short to actually match any file path in the file_state above.
     -->
-    <ind:pattern operation="pattern match">^(?:\s*-w (\S+) -p xwa -k privilege_function\s*|(.).+)$</ind:pattern>
+    <ind:pattern operation="pattern match">^(?:\s*(?:-w |-F path=)(\S+) (?:-p |-F perm=)(?:xwa|wxa|wax|xaw|axw|awx) (?:-k |-F key=)\w+\s*|(.).+)$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
-  <local_variable id="var_audit_rules_privilege_function" version="1" datatype="string" comment="the paths for all audit rules for privilege_function">
-    <object_component item_field="subexpression" object_ref="object_audit_rules_privilege_function" />
+  <local_variable id="var_audit_rules_privilege_function_audit_rules" version="1" datatype="string" comment="the paths for all audit rules in audit.rules for privilege_function">
+    <object_component item_field="subexpression" object_ref="object_audit_rules_privilege_function_audit_rules" />
   </local_variable>
 
+
+  <ind:textfilecontent54_object id="object_audit_rules_privilege_function_rules_d" version="1">
+    <ind:path>/etc/audit/rules.d</ind:path>
+    <ind:filename operation="pattern match">\.rules$</ind:filename>
+    <!--
+        The '|(.).+' part of this regex is required to prevent this textfilecontent54_object from going into an error state when there are 0 matching lines.
+        This error state would propagate up to the file_test and prevent any mitigations from running (because error != fail).
+
+        So to make sure there is at least one matching line, we force every line to be a match, but with a single-character subexpression - which is too short to actually match any file path in the file_state above.
+    -->
+    <ind:pattern operation="pattern match">^(?:\s*(?:-w |-F path=)(\S+) (?:-p |-F perm=)(?:xwa|wxa|wax|xaw|axw|awx) (?:-k |-F key=)\w+\s*|(.).+)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <local_variable id="var_audit_rules_privilege_function_rules_d" version="1" datatype="string" comment="the paths for all audit rules in rules.d for privilege_function">
+    <object_component item_field="subexpression" object_ref="object_audit_rules_privilege_function_rules_d" />
+  </local_variable>
 </def-group>

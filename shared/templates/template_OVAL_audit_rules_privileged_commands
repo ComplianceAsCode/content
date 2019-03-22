@@ -29,9 +29,9 @@
 
       <!-- Test the auditctl case: a file system rule -->
       <criteria operator="AND">
-      <extend_definition comment="SLE12 OS installed" definition_ref="installed_OS_is_sle12" />
-        <extend_definition comment="audit auditctl" definition_ref="audit_rules_auditctl" />
-        <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_{{{ ID }}}_auditctl_fsrule" />
+        <extend_definition comment="SLE12 OS installed" definition_ref="installed_OS_is_sle12" />
+        <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_{{{ ID }}}_auditctl_fsrule_audit_rules" />
+        <criterion comment="audit auditctl {{{ NAME }}}" test_ref="test_{{{ ID }}}_auditctl_fsrule_rules_d" />
       </criteria>
     </criteria>
   </definition>
@@ -54,11 +54,21 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit auditctl {{{ NAME }}}" id="test_{{{ ID }}}_auditctl_fsrule" version="1">
-    <ind:object object_ref="object_{{{ ID }}}_auditctl_fsrule" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit auditctl {{{ NAME }}}" id="test_{{{ ID }}}_auditctl_fsrule_audit_rules" version="1">
+    <ind:object object_ref="object_{{{ ID }}}_auditctl_fsrule_audit_rules" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_{{{ ID }}}_auditctl_fsrule" version="1">
+  <ind:textfilecontent54_object id="object_{{{ ID }}}_auditctl_fsrule_audit_rules" version="1">
     <ind:filepath>/etc/audit/audit.rules</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*-w[\s]+{{{ PATH }}}[\s]+-p[\s]+[\S]*x[\S]*[\s]+-k[\s]+[\S]+[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="audit auditctl {{{ NAME }}}" id="test_{{{ ID }}}_auditctl_fsrule_rules_d" version="1">
+    <ind:object object_ref="object_{{{ ID }}}_auditctl_fsrule_rules_d" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_{{{ ID }}}_auditctl_fsrule_rules_d" version="1">
+    <ind:path>/etc/audit/rules.d</ind:path>
+    <ind:filename operation="pattern match">\.rules$</ind:filename>
     <ind:pattern operation="pattern match">^[\s]*-w[\s]+{{{ PATH }}}[\s]+-p[\s]+[\S]*x[\S]*[\s]+-k[\s]+[\S]+[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
