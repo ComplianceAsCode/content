@@ -168,12 +168,12 @@ def get_populate_replacement(remediation_type, text):
     sys.exit(1)
 
 
-def _split_remediation_content_and_metadata(fix_file_lines):
+def split_remediation_content_and_metadata(fix_file):
     remediation_contents = []
     config = defaultdict(lambda: None)
 
     # Assignment automatically escapes shell characters for XML
-    for line in fix_file_lines:
+    for line in fix_file.splitlines():
         if line.startswith(FILE_GENERATED_HASH_COMMENT):
             continue
 
@@ -205,8 +205,8 @@ def parse_from_file_with_jinja(file_path, env_yaml):
     update ssg.fixes.parse_platform(...).
     """
 
-    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
-    return _split_remediation_content_and_metadata(fix_file_lines)
+    fix_file = jinja_process_file(file_path, env_yaml)
+    return split_remediation_content_and_metadata(fix_file)
 
 
 def parse_from_file_without_jinja(file_path):
@@ -216,8 +216,8 @@ def parse_from_file_without_jinja(file_path):
     are already resolved.
     """
     with open(file_path, "r") as f:
-        lines = f.read().splitlines()
-        return _split_remediation_content_and_metadata(lines)
+        f_str = f.read()
+        return split_remediation_content_and_metadata(f_str)
 
 
 class Remediation(object):
