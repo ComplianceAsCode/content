@@ -103,12 +103,9 @@ class TestEnv(object):
             raise KeyError(msg)
 
     def online_scan(self, args, verbose_path):
+        os.environ["SSH_ADDITIONAL_OPTIONS"] = " ".join(common.SSH_ADDITIONAL_OPTS)
         command_list = self._oscap_ssh_base_arguments() + args
-
-        env = dict(SSH_ADDITIONAL_OPTIONS=" ".join(common.SSH_ADDITIONAL_OPTS))
-        env.update(os.environ)
-
-        return common.run_cmd_local(command_list, verbose_path, env=env)
+        return common.run_cmd_local(command_list, verbose_path)
 
     def offline_scan(self, args, verbose_path):
         raise NotImplementedError()
