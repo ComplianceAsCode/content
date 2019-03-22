@@ -131,7 +131,8 @@ class PlaybookBuilder():
 
         with open(snippet_path, "r") as snippet_file:
             snippet_str = snippet_file.read()
-        snippet_yaml = ssg.yaml.ordered_load(snippet_str)
+        fix = ssg.build_remediations.split_remediation_content_and_metadata(snippet_str)
+        snippet_yaml = ssg.yaml.ordered_load(fix.contents)
 
         play_tasks, play_vars = self.get_data_from_snippet(
             snippet_yaml, variables, refinements
@@ -161,6 +162,9 @@ class PlaybookBuilder():
         playbook = [play]
         playbook_path = os.path.join(output_dir, rule_id + ".yml")
         with open(playbook_path, "w") as playbook_file:
+            # write remediation metadata (complexity, strategy, etc.) first
+            for k, v in fix.config.items():
+                playbook_file.write("# %s = %s\n" % (k, v))
             ssg.yaml.ordered_dump(
                 playbook, playbook_file, default_flow_style=False
             )
