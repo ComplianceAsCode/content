@@ -16,9 +16,10 @@ COMMENTS_TO_PARSE = ["strategy", "complexity", "disruption"]
 
 
 class PlaybookBuilder():
-    def __init__(self, product_yaml_path, input_dir, output_dir):
+    def __init__(self, product_yaml_path, input_dir, output_dir, rules_dir):
         self.input_dir = input_dir
         self.output_dir = output_dir
+        self.rules_dir = rules_dir
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
         product_dir = os.path.dirname(product_yaml_path)
         relative_guide_dir = ssg.utils.required_key(product_yaml,
@@ -122,6 +123,11 @@ class PlaybookBuilder():
                     variables[xccdf_value.id_] = options
         return variables
 
+    def _find_rule_title(self, rule_id):
+        rule_path = os.path.join(self.rules_dir, rule_id + ".yml")
+        rule_yaml = ssg.yaml.open_raw(rule_path)
+        return rule_yaml["title"]
+
     def create_playbook(self, snippet_path, rule_id, variables,
                         refinements, output_dir):
         """
@@ -149,7 +155,7 @@ class PlaybookBuilder():
             tags |= set(task.pop("tags", []))
 
         play = OrderedDict()
-        play["name"] = rule_id
+        play["name"] = self._find_rule_title(rule_id)
         play["hosts"] = "@@HOSTS@@"
         play["become"] = True
         if len(play_vars) > 0:
