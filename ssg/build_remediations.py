@@ -168,12 +168,12 @@ def get_populate_replacement(remediation_type, text):
     sys.exit(1)
 
 
-def _split_remediation_content_and_metadata(fix_file_lines):
+def split_remediation_content_and_metadata(fix_file):
     remediation_contents = []
     config = defaultdict(lambda: None)
 
     # Assignment automatically escapes shell characters for XML
-    for line in fix_file_lines:
+    for line in fix_file.splitlines():
         if line.startswith(FILE_GENERATED_HASH_COMMENT):
             continue
 
@@ -190,8 +190,9 @@ def _split_remediation_content_and_metadata(fix_file_lines):
         # REMEDIATION_CONFIG_KEYS.
         remediation_contents.append(line)
 
+    contents = "\n".join(remediation_contents)
     remediation = namedtuple('remediation', ['contents', 'config'])
-    return remediation(contents=remediation_contents, config=config)
+    return remediation(contents=contents, config=config)
 
 
 def parse_from_file_with_jinja(file_path, env_yaml):
@@ -205,8 +206,8 @@ def parse_from_file_with_jinja(file_path, env_yaml):
     update ssg.fixes.parse_platform(...).
     """
 
-    fix_file_lines = jinja_process_file(file_path, env_yaml).splitlines()
-    return _split_remediation_content_and_metadata(fix_file_lines)
+    fix_file = jinja_process_file(file_path, env_yaml)
+    return split_remediation_content_and_metadata(fix_file)
 
 
 def parse_from_file_without_jinja(file_path):
@@ -216,8 +217,8 @@ def parse_from_file_without_jinja(file_path):
     are already resolved.
     """
     with open(file_path, "r") as f:
-        lines = f.read().splitlines()
-        return _split_remediation_content_and_metadata(lines)
+        f_str = f.read()
+        return split_remediation_content_and_metadata(f_str)
 
 
 class Remediation(object):
@@ -285,8 +286,9 @@ class AnsibleRemediation(Remediation):
 
         updated_yaml_text = ssg.yaml.ordered_dump(
             remediation_obj.parsed, None, default_flow_style=False)
-        result.contents[:] = updated_yaml_text.split("\n")
+        result = result._replace(contents=updated_yaml_text)
 
+        fixes[self.fix_name] = result
         return result
 
 
@@ -332,8 +334,7 @@ def write_fixes_to_xml(remediation_type, build_dir, output_path, fixes):
             if config[key]:
                 fix_elm.set(key, config[key])
 
-        fix_elm.text = "\n".join(fix_contents)
-        fix_elm.text += "\n"
+        fix_elm.text = fix_contents + "\n"
 
         # Expand shell variables and remediation functions
         # into corresponding XCCDF <sub> elements
@@ -360,7 +361,7 @@ def write_fixes_to_dir(fixes, remediation_type, output_dir):
         with open(fix_path, "w") as f:
             for k, v in config.items():
                 f.write("# %s = %s\n" % (k, v))
-            f.write("\n".join(fix_contents))
+            f.write(fix_contents)
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):
