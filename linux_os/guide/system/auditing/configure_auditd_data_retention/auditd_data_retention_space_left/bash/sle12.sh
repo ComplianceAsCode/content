@@ -1,7 +1,5 @@
 # platform = SUSE Linux Enterprise 12
 
-set -x
-
 divide_round_up() {
     dividend="$1"
     divisor="$2"
