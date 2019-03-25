@@ -10,7 +10,7 @@
     path: /etc/opensc-{{ ansible_architecture }}.conf
   register: opensc_conf_fcd
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   lineinfile:
     path: /etc/opensc-{{ ansible_architecture }}.conf
     line: '        force_card_driver = {{ var_smartcard_drivers }}'

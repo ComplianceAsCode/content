@@ -5,7 +5,7 @@
 # disruption = medium
 - (xccdf-var login_banner_text)
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   file:
     path: "/etc/dconf/db/{{ item }}"
     owner: root
@@ -16,7 +16,7 @@
     - gdm.d
     - gdm.d/locks
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   file:
     path: "/etc/dconf/db/gdm.d/{{ item }}"
     owner: root
@@ -27,7 +27,7 @@
     - 00-security-settings
     - locks/00-security-settings-lock
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   ini_file:
     dest: /etc/dconf/db/gdm.d/00-security-settings
     section: org/gnome/login-screen
