@@ -1,11 +1,17 @@
 function ensure_pam_module_options {
-	[ $# != 7 ] || die "$0 requires exactly six arguments"
+	if ! [ $# != 7 ] ; then
+		echo "$0 requires exactly six arguments" >&2
+		exit 1
+	fi
 	local _pamFile="$1" _type="$2" _control="$3" _module="$4" _option="$5" _valueRegex="$6" _defaultValue="$7"
 
 	# make sure that we have a line like this in ${_pamFile} (additional options are left as-is):
 	# ${_type} ${_control} ${_module} ${_option}=${_valueRegex}
 
-	[ -e "$_pamFile" ] || die "$_pamFile doesn't exist"
+	if ! [ -e "$_pamFile" ] ; then
+		echo "$_pamFile doesn't exist" >&2
+		exit 1
+	fi
 
 	# non-empty values need to be preceded by an equals sign
 	[ -n "${_valueRegex}" ] && _valueRegex="=${_valueRegex}"
