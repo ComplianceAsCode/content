@@ -8,7 +8,7 @@
       <description>Display of a standardized and approved use notification before granting access to the SUSE operating system ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.</description>
     </metadata>
     <criteria operator="OR">
-        <!--<extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />-->
+      <extend_definition comment="gdm installed" definition_ref="package_gdm_installed" negate="true" />
       <criteria comment="GUI Banner acknowledgement" operator="AND">
         <criterion comment="GUI Banner acknowledgement is active" test_ref="test_banner_gui_acknowledgement" />
         <criterion comment="/etc/gdm/Xsession world executable and owned by root" test_ref="test_banner_gui_acknowledgement_exec" />
