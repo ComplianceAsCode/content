@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Add nosuid Option to home directories'
+
+description: |-
+    The <tt>nosuid</tt> mount option can be used to prevent
+    execution of setuid programs in home directories. The SUID and SGID permissions
+    should not be required in these user data directories.
+
+    Assuming home directories in <tt>/home</tt>, {{{ describe_mount(option="nosuid", part="/home") }}}
+
+rationale: |-
+    The presence of SUID and SGID executables should be tightly controlled. Users
+    should not be able to execute SUID or SGID binaries from user home directory partitions.
+
+severity: unknown
+
+identifiers:
+    cce@rhel7: 81153-9
+
+references:
+    nist: CM-6(b)
+    disa: "366"
+    stigid@sle12: "010790"
+    srg: SRG-OS-000480-GPOS-00227
+
+platform: machine

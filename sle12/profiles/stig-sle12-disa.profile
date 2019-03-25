@@ -101,7 +101,7 @@ selections:
      - accounts_users_home_files_groupownership
      - accounts_user_home_paths_only
      - accounts_user_dot_no_world_writable_programs
-     - mount_option_home_nosuid
+     - mount_home_directories_nosuid
      - mount_option_nosuid_removable_partitions
      - mount_option_nfs_nosuid
      - mount_option_nfs_noexec
