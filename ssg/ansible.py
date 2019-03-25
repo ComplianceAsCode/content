@@ -101,7 +101,11 @@ class AnsibleRemediation(object):
         if "disruption" in self.config:
             tags.append("{0}_disruption".format(self.config["disruption"]))
         if "reboot" in self.config:
-            tags.append("{0}_reboot".format(self.config["reboot"]))
+            if self.config["reboot"] == "true":
+                reboot_tag = "reboot_required"
+            else:
+                reboot_tag = "no_reboot_needed"
+            tags.append(reboot_tag)
         to_update["tags"] = tags
 
     def update_tags_from_rule(self, platform, to_update):
