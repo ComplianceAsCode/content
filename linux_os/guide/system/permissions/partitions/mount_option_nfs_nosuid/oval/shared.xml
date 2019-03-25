@@ -7,8 +7,9 @@
       </affected>
       <description>The 'nosuid' mount option can be used to prevent execution of setuid programs in network mounts.</description>
     </metadata>
-    <criteria>
-      <criterion comment="Check for home directories of interactive users that currently do not have a home directory assigned." test_ref="test_nfs_nosuid" />
+    <criteria operator="OR">
+      <criterion comment="Check for NFS mounts." test_ref="test_nfs__mount_option_nfs_nosuid" negate="true" />
+      <criterion comment="Check for NFS mounts that currently are mounted without the nosuid option." test_ref="test_nfs_nosuid" />
     </criteria>
   </definition>
 
@@ -32,5 +33,8 @@
     <linux:state state_ref="state_nfs_nosuid_without_nosuid" />
   </linux:partition_test>
 
+  <linux:partition_test id="test_nfs__mount_option_nfs_nosuid" check="all" check_existence="all_exist" comment="nfs file systems exist" version="1">
+    <linux:object object_ref="obj_nfs_nosuid_mount_points" />
+  </linux:partition_test>
 </def-group>
   
