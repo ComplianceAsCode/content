@@ -330,18 +330,19 @@ class AnsibleRemediation(Remediation):
         # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
         # if you want to know how the map was constructed
         platform_id_map = {
-            "rhel6": "RHEL-06",
-            "rhel7": "RHEL-07",
-            "rhel8": "RHEL-08",
+            "rhel7": "DISA-STIG-RHEL-07",
+            "rhel8": "DISA-STIG-RHEL-08",
         }
-        stig_platform_id = "DISA-STIG-{id}".format(id=platform_id_map.get(product, None))
+        # RHEL6 is a special case, in our content,
+        # we have only stig IDs for RHEL6 that include the literal 'RHEL-06'
+        stig_platform_id = platform_id_map.get(product, "DISA-STIG")
 
         ref_prefix_map = {
             "nist": "NIST-800-53",
             "cui": "NIST-800-171",
             "pcidss": "PCI-DSS",
             "cjis": "CJIS",
-            "stigid".format(product=product): stig_platform_id
+            "stigid@{product}".format(product=product): stig_platform_id,
         }
         result = []
         for ref_class, prefix in ref_prefix_map.items():
