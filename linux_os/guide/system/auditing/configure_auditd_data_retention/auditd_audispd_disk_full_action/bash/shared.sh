@@ -1,5 +1,7 @@
 # platform = multi_platform_sle
 
+. /usr/share/scap-security-guide/remediation_functions
+
 {{% if product in ["rhel8", "fedora", "ol8"] %}}
 AUDITCONFIG=/etc/audit/audisp-remote.conf
 {{% else %}}
