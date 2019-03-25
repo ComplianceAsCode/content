@@ -12,6 +12,7 @@ import json
 import ssg.build_yaml
 import ssg.oval
 import ssg.build_remediations
+import ssg.products
 import ssg.rules
 import ssg.yaml
 
@@ -76,7 +77,7 @@ def handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir):
     rule_yaml = ssg.build_yaml.Rule.from_yaml(rule_file, product_yaml)
     rule_products = set()
     for product in product_list:
-        if ssg.rules.is_applicable(rule_yaml.prodtype, product):
+        if ssg.utils.is_applicable(rule_yaml.prodtype, product):
             rule_products.add(product)
 
     rule_products = sorted(rule_products)
@@ -103,7 +104,7 @@ def handle_ovals(product_list, product_yamls, rule_obj):
         oval_obj['platforms'] = platforms
         oval_obj['products'] = set()
         for product in product_list:
-            if ssg.rules.is_applicable(cs_platforms, product):
+            if ssg.utils.is_applicable(cs_platforms, product):
                 oval_products[product].add(oval_name)
                 oval_obj['products'].add(product)
 
@@ -120,7 +121,7 @@ def handle_remediations(product_list, product_yamls, rule_obj):
     r_products = defaultdict(set)
     for r_type in ssg.build_remediations.REMEDIATION_TO_EXT_MAP:
         rule_remediations[r_type] = {}
-        r_paths = ssg.rules.get_rule_dir_remediations(rule_dir, r_type)
+        r_paths = ssg.build_remediations.get_rule_dir_remediations(rule_dir, r_type)
 
         for r_path in r_paths:
             r_name = os.path.basename(r_path)
@@ -142,7 +143,7 @@ def handle_remediations(product_list, product_yamls, rule_obj):
             r_obj['platforms'] = sorted(map(lambda x: x.strip(), platforms.split(',')))
             r_obj['products'] = set()
             for product in product_list:
-                if ssg.rules.is_applicable(platforms, product):
+                if ssg.utils.is_applicable(platforms, product):
                     r_products[product].add(r_name)
                     r_obj['products'].add(product)
 

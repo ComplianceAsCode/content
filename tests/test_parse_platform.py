@@ -41,7 +41,7 @@ def main():
 
         for rule_dir in ssg.rules.find_rule_dirs(guide_dir):
             for lang in REMEDIATION_LANGS:
-                for fix in ssg.rules.get_rule_dir_remediations(rule_dir, lang):
+                for fix in ssg.build_remediations.get_rule_dir_remediations(rule_dir, lang):
                     fix_contents = ssg.utils.read_file_list(fix)
                     results = ssg.fixes.parse_platform(fix_contents)
 

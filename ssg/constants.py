@@ -378,5 +378,27 @@ XCCDF_PLATFORM_TO_CPE = {
     "container": "cpe:/a:container"
 }
 
+# _version_name_map = {
+MAKEFILE_ID_TO_PRODUCT_MAP = {
+    'chromium': 'Google Chromium Browser',
+    'fedora': 'Fedora',
+    'firefox': 'Mozilla Firefox',
+    'jre': 'Java Runtime Environment',
+    'rhosp': 'Red Hat OpenStack Platform',
+    'rhel': 'Red Hat Enterprise Linux',
+    'rhv': 'Red Hat Virtualization',
+    'debian': 'Debian',
+    'ubuntu': 'Ubuntu',
+    'eap': 'JBoss Enterprise Application Platform',
+    'fuse': 'JBoss Fuse',
+    'opensuse': 'openSUSE',
+    'sle': 'SUSE Linux Enterprise',
+    'wrlinux': 'Wind River Linux',
+    'example': 'Example Linux Content',
+    'ol': 'Oracle Linux',
+    'ocp': 'Red Hat OpenShift Container Platform',
+}
+
+
 # Application constants
 DEFAULT_UID_MIN = 1000
