@@ -19,6 +19,11 @@ def parse_args():
         "e.g. ~/scap-security-guide/build/fedora/playbooks"
     )
     p.add_argument(
+        "--resolved-rules-dir", required=True,
+        help="Directory that contains preprocessed rules in YAML format "
+        "eg. ~/scap-security-guide/build/fedora/rules"
+    )
+    p.add_argument(
         "--product-yaml", required=True, dest="product_yaml",
         help="YAML file with information about the product we are building. "
         "e.g.: ~/scap-security-guide/rhel7/product.yml"
@@ -41,7 +46,8 @@ def parse_args():
 def main():
     args = parse_args()
     playbook_builder = ssg.playbook_builder.PlaybookBuilder(
-        args.product_yaml, args.input_dir, args.output_dir
+        args.product_yaml, args.input_dir, args.output_dir,
+        args.resolved_rules_dir
     )
     playbook_builder.build(args.profile, args.rule)
 
