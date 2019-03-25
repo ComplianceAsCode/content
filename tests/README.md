@@ -47,7 +47,7 @@ according to the requirements, including configuration of a key for SSH login.
 
 Common usage looks like:
 ```
-$ ./install_vm.py --domain test-suite-fedora --distro fedora
+$ python install_vm.py --domain test-suite-fedora --distro fedora
 ```
 
 By default, the key at `~/.ssh/id_rsa.pub` is used. You can change default key used via `--ssh-pubkey` option.
