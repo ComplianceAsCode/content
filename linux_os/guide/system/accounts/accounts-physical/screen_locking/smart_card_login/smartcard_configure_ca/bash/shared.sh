@@ -6,6 +6,8 @@
 SP="[:space:]"
 PAM_PKCS11_CONF="/etc/pam_pkcs11/pam_pkcs11.conf"
 
+package_install pam_pkcs11
+
 # Ensure OCSP is turned on in $PAM_PKCS11_CONF
 # 1) First replace any occurrence of 'none' value of 'cert_policy' key setting with the correct configuration
 sed -i "s/^[$SP]*cert_policy[$SP]\+=[$SP]\+none;/\t\tcert_policy = ca, ocsp_on, signature;/g" "$PAM_PKCS11_CONF"

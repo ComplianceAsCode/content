@@ -1,6 +1,8 @@
 # platform = SUSE Linux Enterprise 12
 . /usr/share/scap-security-guide/remediation_functions
 
+package_install pam_pkcs11
+
 # Enable pcscd.socket systemd activation socket
 service_command enable pcscd.socket
 
