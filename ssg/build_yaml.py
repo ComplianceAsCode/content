@@ -439,8 +439,17 @@ class Group(object):
         if yaml_contents:
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
-
+        group.validate_prodtype(yaml_file)
         return group
+
+    def validate_prodtype(self, yaml_file):
+        for ptype in self.prodtype.split(","):
+            if ptype.strip() != ptype:
+                msg = (
+                    "Comma-separated '{prodtype}' prodtype "
+                    "in {yaml_file} contains whitespace."
+                    .format(prodtype=self.prodtype, yaml_file=yaml_file))
+                raise ValueError(msg)
 
     def to_xml_element(self):
         group = ET.Element('Group')
@@ -566,6 +575,7 @@ class Rule(object):
             raise RuntimeError("Unparsed YAML data in '%s'.\n\n%s"
                                % (yaml_file, yaml_contents))
 
+        rule.validate_prodtype(yaml_file)
         rule.validate_identifiers(yaml_file)
         rule.validate_references(yaml_file)
         return rule
@@ -632,6 +642,15 @@ class Rule(object):
                         "in {yaml_file} contains whitespace."
                         .format(ref_type=ref_type, yaml_file=yaml_file))
                     raise ValueError(msg)
+
+    def validate_prodtype(self, yaml_file):
+        for ptype in self.prodtype.split(","):
+            if ptype.strip() != ptype:
+                msg = (
+                    "Comma-separated '{prodtype}' prodtype "
+                    "in {yaml_file} contains whitespace."
+                    .format(prodtype=self.prodtype, yaml_file=yaml_file))
+                raise ValueError(msg)
 
     def to_xml_element(self):
         rule = ET.Element('Rule')

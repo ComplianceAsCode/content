@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel, multi_platform_fedora
+# platform = multi_platform_rhel,multi_platform_fedora
 for LIBDIR in /usr/lib /usr/lib64 /lib /lib64
 do
   if [ -d $LIBDIR ]
