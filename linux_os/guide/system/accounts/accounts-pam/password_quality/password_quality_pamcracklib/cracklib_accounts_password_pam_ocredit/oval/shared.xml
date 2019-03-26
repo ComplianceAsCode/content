@@ -21,7 +21,7 @@
 
   <ind:textfilecontent54_object id="object_cracklib_accounts_password_pam_ocredit" comment="Check ocredit configuration of pam_cracklib" version="1">
     <ind:filepath>/etc/pam.d/common-password</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*password(?:(?!\n)\s)+requisite(?:(?!\n)\s)+pam_cracklib.so((?!\n)\s[^\n]+)?(?!\n)\socredit=-1(\s|$)</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*password(?:(?!\n)\s)+requisite(?:(?!\n)\s)+pam_cracklib.so((?!\n)\s[^\n]+)?(?!\n)\s+ocredit=-1(\s|$)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

@@ -21,7 +21,7 @@
 
   <ind:textfilecontent54_object id="object_cracklib_accounts_password_pam_difok" comment="Check difok configuration of pam_cracklib" version="1">
     <ind:filepath>/etc/pam.d/common-password</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*password(?:(?!\n)\s)+requisite(?:(?!\n)\s)+pam_cracklib.so(?:(?!\n)\s[^\n]+)?(?!\n)\sdifok=(\d+)(?:\s|$)</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*password(?:(?!\n)\s)+requisite(?:(?!\n)\s)+pam_cracklib.so(?:(?!\n)\s[^\n]+)?(?!\n)\s+difok=(\d+)(?:\s|$)</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
