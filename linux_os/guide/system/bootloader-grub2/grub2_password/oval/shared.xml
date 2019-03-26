@@ -13,7 +13,7 @@
       <description>The grub2 boot loader should have password protection enabled.</description>
     </metadata>
     <criteria operator="OR">
-      <criterion comment="Pass if /boot/grub2/grub.cfg does not exist" test_ref="test_bootloader_grub_cfg" />
+      <criterion comment="Pass if /sys/firmware/efi exists" test_ref="test_bootloader_uefi_used" />
       {{% if product == "sle12" %}}
       <criterion comment="make sure a password is defined in /boot/grub2/grub.cfg" test_ref="test_grub2_password_grubcfg" />
       {{% else %}}
@@ -27,13 +27,6 @@
       {{% endif %}}
     </criteria>
   </definition>
-
-   <unix:file_test check="all" check_existence="none_exist" comment="/boot/grub2/grub.cfg does not exist" id="test_bootloader_grub_cfg" version="1">
-    <unix:object object_ref="object_bootloader_grub_cfg" />
-  </unix:file_test>
-  <unix:file_object id="object_bootloader_grub_cfg" version="1">
-    <unix:filepath>/boot/grub2/grub.cfg</unix:filepath>
-  </unix:file_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/grub2/grub.cfg files. Superuser is not root, admin, or administrator" id="test_bootloader_superuser" version="1">
     <ind:object object_ref="object_bootloader_superuser" />

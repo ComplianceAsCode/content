@@ -14,7 +14,7 @@
     </metadata>
 
     <criteria operator="OR">
-      <criterion comment="Pass if /boot/efi/EFI/*/grub.cfg does not exist" test_ref="test_bootloader_uefi_grub_cfg" />
+      <criterion comment="Pass if /sys/firmware/efi does not exist" test_ref="test_bootloader_uefi_used" negate="true" />
       {{% if product == "sle12" %}}
           <criterion comment="make sure a password is defined in /boot/efi/EFI/sles/grub.cfg" test_ref="test_grub2_uefi_password_grubcfg" />
       {{% else %}}
@@ -29,11 +29,12 @@
     </criteria>
   </definition>
 
-   <unix:file_test check="all" check_existence="none_exist" comment="/boot/efi/EFI/*/grub.cfg does not exist" id="test_bootloader_uefi_grub_cfg" version="1">
-    <unix:object object_ref="object_bootloader_uefi_grub_cfg" />
+   <unix:file_test check="all" check_existence="all_exist" comment="/sys/firmware/efi exists" id="test_bootloader_uefi_used" version="1">
+    <unix:object object_ref="object_bootloader_uefi_used" />
   </unix:file_test>
-  <unix:file_object id="object_bootloader_uefi_grub_cfg" version="1">
-    <unix:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora|sles)/grub.cfg$</unix:filepath>
+  <unix:file_object id="object_bootloader_uefi_used" version="1">
+      <unix:path operation="equals">/sys/firmware/efi</unix:path>
+      <unix:filename xsi:nil="true" />
   </unix:file_object>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="superuser is defined in /boot/efi/EFI/redhat/grub.cfg. Superuser is not root, admin, or administrator" id="test_bootloader_uefi_superuser" version="1">
