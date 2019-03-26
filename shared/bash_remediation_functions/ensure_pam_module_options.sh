@@ -1,5 +1,5 @@
 function ensure_pam_module_options {
-	if ! [ $# != 7 ] ; then
+	if [ $# != 7 ] ; then
 		echo "$0 requires exactly six arguments" >&2
 		exit 1
 	fi
