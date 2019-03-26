@@ -228,4 +228,5 @@ selections:
      - postfix_client_configure_mail_alias
      - accounts_authorized_local_users
      - var_accounts_authorized_local_users_regex=none
+     - var_multiple_time_servers=sles
 
