@@ -5,9 +5,9 @@ prodtype: rhel7,rhel8,sle12
 title: 'Ensure All User Initialization Files Have Mode 0740 Or Less Permissive'
 
 description: |-
-    Set the mode of the user initialization files to <tt>0740</tt> with the
+    Set the mode of the user initialization files to <tt>0740</tt> or less permissive with the
     following command:
-    <pre>$ sudo chmod 0740 /home/<i>USER</i>/.<i>INIT_FILE</i></pre>
+    <pre>$ sudo chmod g-wx,o= /home/<i>USER</i>/.<i>INIT_FILE</i></pre>
 
 rationale: |-
     Local initialization files are used to configure the user's shell environment
