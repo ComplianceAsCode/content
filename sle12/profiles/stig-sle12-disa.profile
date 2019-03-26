@@ -229,4 +229,5 @@ selections:
      - accounts_authorized_local_users
      - var_accounts_authorized_local_users_regex=none
      - var_multiple_time_servers=sles
+     - enable_dconf_user_profile
 
