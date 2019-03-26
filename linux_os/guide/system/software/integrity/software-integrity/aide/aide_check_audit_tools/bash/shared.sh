@@ -1,7 +1,7 @@
 # platform = multi_platform_rhel, multi_platform_fedora, multi_platform_sle
 . /usr/share/scap-security-guide/remediation_functions
 
-package_install aide
+package_install aide || exit 1
 
 aide_conf="/etc/aide.conf"
 
