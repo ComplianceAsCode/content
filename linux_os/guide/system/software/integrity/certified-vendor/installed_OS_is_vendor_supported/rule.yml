@@ -6,13 +6,13 @@ title: 'The Installed Operating System Is Vendor Supported'
 
 description: |-
     The installed operating system must be maintained by a vendor.
-    {{% if product in ["ol7", "ol8"] %}}
+{{% if product in ["ol7", "ol8"] %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
-    {{% else %}}
+{{% else %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for providing security patches.
-    {{% endif %}}
+{{% endif %}}
 
 
 rationale: |-
@@ -43,18 +43,13 @@ references:
 
 ocil_clause: 'the installed operating system is not supported'
 
-{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
 ocil: |-
     To verify that the installed operating system is supported, run
     the following command:
+{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
-    The output should contain something similar to:
-    <pre>{{{ full_name }}}</pre>
 {{% elif product in ["ol7", "ol8"] %}}
-ocil: |-
-    To verify that the installed operating system is supported or certified, run
-    the following command:
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
+{{% endif %}}
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
-{{% endif %}}

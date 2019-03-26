@@ -8,10 +8,10 @@ description: |-
     To enable processing of sensitive information the operating system must
     provide certified cryptographic modules compliant with FIPS 140-2
     standard.
-    {{% if product in ["rhel6", "rhel7"] %}}
+{{% if product in ["rhel6", "rhel7"] %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for maintaining government certifications and standards.
-    {{% endif %}}
+{{% endif %}}
 
 rationale: |-
     The Federal Information Processing Standard (FIPS) Publication 140-2, (FIPS
@@ -41,18 +41,13 @@ references:
 
 ocil_clause: 'the installed operating system is not FIPS 140-2 certified'
 
+ocil: |-
+    To verify that the installed operating system is supported or certified, run
+    the following command:
 {{% if product in ["rhel6", "rhel7"] %}}
-ocil: |-
-    To verify that the installed operating system is supported or certified, run
-    the following command:
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
-    The output should contain something similar to:
-    <pre>{{{ full_name }}}</pre>
 {{% elif product == "ol7" %}}
-ocil: |-
-    To verify that the installed operating system is supported or certified, run
-    the following command:
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
+{{% endif %}}
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
-{{% endif %}}
