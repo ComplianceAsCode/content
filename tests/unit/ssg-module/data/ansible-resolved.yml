@@ -1,4 +1,4 @@
-- name: Test for existence /boot/grub2/grub.cfg
+- name: Test for existence /boot/grub2/grub.cfg in name of file_owner_grub2_cfg
   stat:
     path: /boot/grub2/grub.cfg
   register: file_exists
@@ -16,7 +16,7 @@
     - PCI-DSS-Req-7.1
     - CJIS-5.5.2.2
 
-- name: Ensure owner 0 on /boot/grub2/grub.cfg
+- name: "Verify /boot/grub2/grub.cfg User Ownership: Ensure owner 0 on /boot/grub2/grub.cfg"
   file:
     path: /boot/grub2/grub.cfg
     owner: 0

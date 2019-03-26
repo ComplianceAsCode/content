@@ -10,7 +10,7 @@
   with_items:
     - aide
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   cron:
     name: "run AIDE check"
     minute: 05

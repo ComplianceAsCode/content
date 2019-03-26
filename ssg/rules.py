@@ -4,32 +4,6 @@ from __future__ import print_function
 import os
 
 
-from .build_remediations import REMEDIATION_TO_EXT_MAP as REMEDIATION_MAP
-from .build_remediations import is_applicable_for_product
-
-
-def is_applicable(platform, product):
-    """
-    Function to check if a platform is applicable for the product.
-    Handles when a platform is really a list of products, i.e., a
-    prodtype field from a rule.yml.
-
-    Returns true iff product is applicable for the platform or list
-    of products
-    """
-
-    if platform == 'all' or platform == 'multi_platform_all':
-        return True
-
-    if is_applicable_for_product(platform, product):
-        return True
-
-    if 'osp7' in product and 'osp7' in platform:
-        return True
-
-    return product in platform.split(',')
-
-
 def get_rule_dir_yaml(dir_path):
     """
     Returns the path to the yaml metadata for a rule directory,
@@ -66,7 +40,7 @@ def is_rule_dir(dir_path):
     return is_dir and has_rule_yaml
 
 
-def _applies_to_product(file_name, product):
+def applies_to_product(file_name, product):
     """
     A OVAL or fix is filtered by product iff product is Falsy, file_name is
     "shared", or file_name is product. Note that this does not filter by
@@ -100,46 +74,11 @@ def get_rule_dir_ovals(dir_path, product=None):
         file_name, ext = os.path.splitext(oval_file)
         oval_path = os.path.join(oval_dir, oval_file)
 
-        if ext == ".xml" and _applies_to_product(file_name, product):
+        if ext == ".xml" and applies_to_product(file_name, product):
             if file_name == 'shared':
                 results.append(oval_path)
             else:
                 results.insert(0, oval_path)
-
-    return results
-
-
-def get_rule_dir_remediations(dir_path, remediation_type, product=None):
-    """
-    Gets a list of remediations of type remediation_type contained in a
-    rule directory. If product is None, returns all such remediations.
-    If product is not None, returns applicable remediations in order of
-    priority:
-
-        {{{ product }}}.ext -> shared.ext
-
-    Only returns remediations which exist.
-    """
-
-    if not is_rule_dir(dir_path):
-        return []
-
-    remediations_dir = os.path.join(dir_path, remediation_type)
-    has_remediations_dir = os.path.isdir(remediations_dir)
-    ext = REMEDIATION_MAP[remediation_type]
-    if not has_remediations_dir:
-        return []
-
-    results = []
-    for remediation_file in os.listdir(remediations_dir):
-        file_name, file_ext = os.path.splitext(remediation_file)
-        remediation_path = os.path.join(remediations_dir, remediation_file)
-
-        if file_ext == ext and _applies_to_product(file_name, product):
-            if file_name == 'shared':
-                results.append(remediation_path)
-            else:
-                results.insert(0, remediation_path)
 
     return results
 

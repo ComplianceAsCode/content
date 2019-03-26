@@ -7,13 +7,8 @@ from __future__ import print_function
 
 import re
 
-from collections import OrderedDict
-
 from .constants import ansible_version_requirement_pre_task_name
 from .constants import min_ansible_version
-from ssg import build_yaml
-from ssg import build_remediations
-from ssg import yaml
 
 
 def add_minimum_version(ansible_src):
@@ -195,4 +190,3 @@ class AnsibleRemediation(object):
         parsed = build_remediations.parse_from_file_without_jinja(snippet_fname)
         result = cls(parsed.contents, parsed.config)
         return result
-

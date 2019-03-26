@@ -11,10 +11,9 @@ from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
-from .products import parse_name, map_name
 from .jinja import process_file
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
-from .utils import required_key
+from . import utils
 from .xml import ElementTree
 
 
@@ -23,7 +22,7 @@ def _check_is_applicable_for_product(oval_check_def, product):
     OVAL check is applicable for this product. Return 'True' if so, 'False'
     otherwise"""
 
-    product, product_version = parse_name(product)
+    product, product_version = utils.parse_name(product)
 
     # Define general platforms
     multi_platforms = ['<platform>multi_platform_all',
@@ -43,7 +42,7 @@ def _check_is_applicable_for_product(oval_check_def, product):
 
     for afftype in affected_type_elements:
         # Get official name for product (prefixed with content of afftype)
-        product_name = afftype + map_name(product)
+        product_name = afftype + utils.map_name(product)
         # Append the product version to the official name
         if product_version is not None:
             product_name += ' ' + product_version
@@ -75,8 +74,8 @@ def finalize_affected_platforms(xml_tree, env_yaml):
             affected.remove(product)
 
         final = ElementTree.SubElement(
-            affected, "{%s}%s" % (oval_ns, required_key(env_yaml, "type")))
-        final.text = required_key(env_yaml, "full_name")
+            affected, "{%s}%s" % (oval_ns, utils.required_key(env_yaml, "type")))
+        final.text = utils.required_key(env_yaml, "full_name")
 
     return xml_tree
 
@@ -256,13 +255,13 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
     """
 
     body = []
-    product = required_key(env_yaml, "product")
+    product = utils.required_key(env_yaml, "product")
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
     already_loaded = dict()  # filename -> oval_version
 
     product_dir = os.path.dirname(yaml_path)
-    relative_guide_dir = required_key(env_yaml, "benchmark_root")
+    relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
     guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
 
     for _dir_path in find_rule_dirs(guide_dir):

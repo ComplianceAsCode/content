@@ -10,10 +10,11 @@ from collections import defaultdict, namedtuple
 
 
 import ssg.yaml
+from . import build_yaml
+from . import rules
+from . import utils
 from .jinja import process_file as jinja_process_file
 from .xml import ElementTree
-from .products import parse_name, map_name
-from .constants import MULTI_PLATFORM_LIST
 
 REMEDIATION_TO_EXT_MAP = {
     'anaconda': '.anaconda',
@@ -27,44 +28,6 @@ FILE_GENERATED_HASH_COMMENT = '# THIS FILE IS GENERATED'
 REMEDIATION_CONFIG_KEYS = ['complexity', 'disruption', 'platform', 'reboot',
                            'strategy']
 REMEDIATION_ELM_KEYS = ['complexity', 'disruption', 'reboot', 'strategy']
-
-
-def is_applicable_for_product(platform, product):
-    """Based on the platform dict specifier of the remediation script to
-    determine if this remediation script is applicable for this product.
-    Return 'True' if so, 'False' otherwise"""
-
-    # If the platform is None, platform must not exist in the config, so exit with False.
-    if not platform:
-        return False
-
-    product, product_version = parse_name(product)
-
-    # Define general platforms
-    multi_platforms = ['multi_platform_all',
-                       'multi_platform_' + product]
-
-    # First test if platform isn't for 'multi_platform_all' or
-    # 'multi_platform_' + product
-    for _platform in multi_platforms:
-        if _platform in platform and product in MULTI_PLATFORM_LIST:
-            return True
-
-    product_name = ""
-    # Get official name for product
-    if product_version is not None:
-        product_name = map_name(product) + ' ' + product_version
-    else:
-        product_name = map_name(product)
-
-    # Test if this is for the concrete product version
-    for _name_part in platform.split(','):
-        if product_name == _name_part.strip():
-            return True
-
-    # Remediation script isn't neither a multi platform one, nor isn't
-    # applicable for this product => return False to indicate that
-    return False
 
 
 def get_available_functions(build_dir):
@@ -222,86 +185,223 @@ def parse_from_file_without_jinja(file_path):
 
 
 class Remediation(object):
-    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name, remediation_type):
-        self.env_yaml = env_yaml
-        self.resolved_rules = resolved_rules
-        self.product = product
+    def __init__(self, file_path, remediation_type):
         self.file_path = file_path
-        self.fix_name = fix_name
+        self.local_env_yaml = dict()
+
+        self.metadata = defaultdict(lambda: None)
+
         self.remediation_type = remediation_type
+        self.associated_rule = None
 
-    def process(self, fixes):
-        """
-        Process a fix, adding it to fixes iff the file is of a valid extension
-        for the remediation type and the fix is valid for the current product.
+    def load_associated_rule(self, resolved_rules_dir, rule_id):
+        rule_path = os.path.join(
+            resolved_rules_dir, rule_id + ".yml")
+        return self.load_rule_from(rule_path)
 
-        Note that platform is a required field in the contents of the fix.
-        """
+    def load_rule_from(self, rule_path):
+        if not os.path.isfile(rule_path):
+            msg = ("{lang} remediation snippet can't load the "
+                   "respective rule YML at {rule_fname}"
+                   .format(rule_fname=rule_path,
+                           lang=self.remediation_type))
+            print(msg, file=sys.stderr)
+        else:
+            self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
+            self.expand_env_yaml_from_rule()
 
-        if not is_supported_filename(self.remediation_type, self.file_path):
+    def expand_env_yaml_from_rule(self):
+        if not self.associated_rule:
             return
 
-        result = parse_from_file_with_jinja(self.file_path, self.env_yaml)
+        self.local_env_yaml["rule_title"] = self.associated_rule.title
+        self.local_env_yaml["rule_id"] = self.associated_rule.id_
 
-        if not result.config['platform']:
-            raise RuntimeError(
-                "The '%s' remediation script does not contain the "
-                "platform identifier!" % (self.file_path))
+    def parse_from_file_with_jinja(self, env_yaml):
+        return parse_from_file_with_jinja(self.file_path, env_yaml)
 
-        if is_applicable_for_product(result.config['platform'], self.product):
-            fixes[self.fix_name] = result
 
-        return result
+def process(remediation, env_yaml, fixes, rule_id):
+    """
+    Process a fix, adding it to fixes iff the file is of a valid extension
+    for the remediation type and the fix is valid for the current product.
+
+    Note that platform is a required field in the contents of the fix.
+    """
+    if not is_supported_filename(remediation.remediation_type, remediation.file_path):
+        return
+
+    result = remediation.parse_from_file_with_jinja(env_yaml)
+
+    if not result.config['platform']:
+        raise RuntimeError(
+            "The '%s' remediation script does not contain the "
+            "platform identifier!" % (remediation.file_path))
+
+    product = env_yaml["product"]
+    if utils.is_applicable_for_product(result.config['platform'], product):
+        fixes[rule_id] = result
+
+    return result
 
 
 class BashRemediation(Remediation):
-    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
-        super(BashRemediation, self).__init__(
-            env_yaml, resolved_rules, product, file_path, fix_name, "bash")
+    def __init__(self, file_path):
+        super(BashRemediation, self).__init__(file_path, "bash")
+
+    def load_associated_rule(self, resolved_rules_dir, rule_id):
+        # No point in loading rule for this remediation type as of now
+        pass
 
 
 class AnsibleRemediation(Remediation):
-    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+    def __init__(self, file_path):
         super(AnsibleRemediation, self).__init__(
-            env_yaml, resolved_rules, product, file_path, fix_name, "ansible")
+            file_path, "ansible")
 
-    def process(self, fixes):
-        result = super(AnsibleRemediation, self).process(fixes)
+        self.body = None
 
-        rule_path = os.path.join(
-            self.resolved_rules, self.fix_name + ".yml")
-        if not os.path.isfile(rule_path):
-            msg = ("Ansible snippet for rule {rule_id} "
-                   "doesn't have respective rule YML at {rule_fname}"
-                   .format(rule_id=os.path.splitext(self.fix_name)[0], rule_fname=rule_path))
-            print(msg, file=sys.stderr)
+    def parse_from_file_with_jinja(self, env_yaml):
+        self.local_env_yaml.update(env_yaml)
+        result = super(AnsibleRemediation, self).parse_from_file_with_jinja(self.local_env_yaml)
+
+        if not self.associated_rule:
             return result
 
-        import ssg.ansible
-        from ssg import build_yaml
+        parsed = ssg.yaml.ordered_load(result.contents)
 
-        remediation_obj = ssg.ansible.AnsibleRemediation(result.contents, result.config)
-        remediation_obj.rule = build_yaml.Rule.from_yaml(rule_path)
-        remediation_obj.update(self.product)
+        current_product = env_yaml.get("product")
+        if current_product:
+            self.update(parsed, result.config, current_product)
 
         updated_yaml_text = ssg.yaml.ordered_dump(
-            remediation_obj.parsed, None, default_flow_style=False)
+            parsed, None, default_flow_style=False)
         result = result._replace(contents=updated_yaml_text)
 
-        fixes[self.fix_name] = result
+        self.body = parsed
+        self.metadata = result.config
+
+        return result
+
+    def update_tags_from_config(self, to_update, config):
+        tags = to_update.get("tags", [])
+        if "strategy" in config:
+            tags.append("{0}_strategy".format(config["strategy"]))
+        if "complexity" in config:
+            tags.append("{0}_complexity".format(config["complexity"]))
+        if "disruption" in config:
+            tags.append("{0}_disruption".format(config["disruption"]))
+        if "reboot" in config:
+            if config["reboot"] == "true":
+                reboot_tag = "reboot_required"
+            else:
+                reboot_tag = "no_reboot_needed"
+            tags.append(reboot_tag)
+        to_update["tags"] = tags
+
+    def update_tags_from_rule(self, product, to_update):
+        if not self.associated_rule:
+            raise RuntimeError("The Ansible snippet has no rule loaded.")
+
+        tags = to_update.get("tags", [])
+        tags.insert(0, "{0}_severity".format(self.associated_rule.severity))
+        tags.insert(0, self.associated_rule.id_)
+
+        cce_num = self._get_cce(product)
+        if cce_num:
+            tags.append("CCE-{0}".format(cce_num))
+
+        refs = self.get_references(product)
+        tags.extend(refs)
+        to_update["tags"] = tags
+
+    def _get_cce(self, product):
+        our_cce = None
+        for cce, val in self.associated_rule.identifiers.items():
+            if cce.endswith(product):
+                our_cce = val
+                break
+        return our_cce
+        return self.associated_rule.identifiers.get("cce", None)
+
+    def get_references(self, product):
+        if not self.associated_rule:
+            raise RuntimeError("The Ansible snippet has no rule loaded.")
+        # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
+        # if you want to know how the map was constructed
+        platform_id_map = {
+            "rhel7": "DISA-STIG-RHEL-07",
+            "rhel8": "DISA-STIG-RHEL-08",
+        }
+        # RHEL6 is a special case, in our content,
+        # we have only stig IDs for RHEL6 that include the literal 'RHEL-06'
+        stig_platform_id = platform_id_map.get(product, "DISA-STIG")
+
+        ref_prefix_map = {
+            "nist": "NIST-800-53",
+            "cui": "NIST-800-171",
+            "pcidss": "PCI-DSS",
+            "cjis": "CJIS",
+            "stigid@{product}".format(product=product): stig_platform_id,
+        }
+        result = []
+        for ref_class, prefix in ref_prefix_map.items():
+            refs = self._get_rule_reference(ref_class)
+            result.extend(["{prefix}-{value}".format(prefix=prefix, value=v) for v in refs])
+        return result
+
+    def _get_rule_reference(self, ref_class):
+        refs = self.associated_rule.references.get(ref_class, "")
+        if refs:
+            return refs.split(",")
+        else:
+            return []
+
+    def update_when_from_rule(self, to_update):
+        additional_when = ""
+        if self.associated_rule.platform == "machine":
+            additional_when = ('ansible_virtualization_role != "guest" '
+                               'or ansible_virtualization_type != "docker"')
+        to_update.setdefault("when", "")
+        new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)
+        if not new_when:
+            to_update.pop("when")
+        else:
+            to_update["when"] = new_when
+
+    def update(self, parsed, config, product):
+        for p in parsed:
+            if not isinstance(p, dict):
+                continue
+            self.update_when_from_rule(p)
+            self.update_tags_from_config(p, config)
+            self.update_tags_from_rule(product, p)
+
+    @classmethod
+    def from_snippet_and_rule(cls, snippet_fname, rule_fname):
+        result = cls(snippet_fname)
+        result.load_rule_from(rule_fname)
         return result
 
 
 class AnacondaRemediation(Remediation):
-    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+    def __init__(self, file_path):
         super(AnacondaRemediation, self).__init__(
-            env_yaml, resolved_rules, product, file_path, fix_name, "anaconda")
+            file_path, "anaconda")
+
+    def load_associated_rule(self, resolved_rules_dir):
+        # No point in loading rule for this remediation type as of now
+        pass
 
 
 class PuppetRemediation(Remediation):
-    def __init__(self, env_yaml, resolved_rules, product, file_path, fix_name):
+    def __init__(self, file_path):
         super(PuppetRemediation, self).__init__(
-            env_yaml, resolved_rules, product, file_path, fix_name, "puppet")
+            file_path, "puppet")
+
+    def load_associated_rule(self, resolved_rules_dir):
+        # No point in loading rule for this remediation type as of now
+        pass
 
 
 REMEDIATION_TO_CLASS = {
@@ -362,6 +462,41 @@ def write_fixes_to_dir(fixes, remediation_type, output_dir):
             for k, v in config.items():
                 f.write("# %s = %s\n" % (k, v))
             f.write(fix_contents)
+
+
+def get_rule_dir_remediations(dir_path, remediation_type, product=None):
+    """
+    Gets a list of remediations of type remediation_type contained in a
+    rule directory. If product is None, returns all such remediations.
+    If product is not None, returns applicable remediations in order of
+    priority:
+
+        {{{ product }}}.ext -> shared.ext
+
+    Only returns remediations which exist.
+    """
+
+    if not rules.is_rule_dir(dir_path):
+        return []
+
+    remediations_dir = os.path.join(dir_path, remediation_type)
+    has_remediations_dir = os.path.isdir(remediations_dir)
+    ext = REMEDIATION_TO_EXT_MAP[remediation_type]
+    if not has_remediations_dir:
+        return []
+
+    results = []
+    for remediation_file in os.listdir(remediations_dir):
+        file_name, file_ext = os.path.splitext(remediation_file)
+        remediation_path = os.path.join(remediations_dir, remediation_file)
+
+        if file_ext == ext and rules.applies_to_product(file_name, product):
+            if file_name == 'shared':
+                results.append(remediation_path)
+            else:
+                results.insert(0, remediation_path)
+
+    return results
 
 
 def expand_xccdf_subs(fix, remediation_type, remediation_functions):

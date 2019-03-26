@@ -62,31 +62,16 @@ def main():
     # given fix_name is chosen to replace newer fix_names
     remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
 
+    rule_id_to_remediation_map = collect_fixes(
+        product, guide_dir, args.fix_dirs, args.remediation_type)
+
     fixes = dict()
-    for fixdir in args.fix_dirs:
-        if os.path.isdir(fixdir):
-            for filename in os.listdir(fixdir):
-                file_path = os.path.join(fixdir, filename)
-                fix_name, _ = os.path.splitext(filename)
-
-                remediation_obj = remediation_cls(
-                    env_yaml, args.resolved_rules_dir, product, file_path, fix_name)
-                # Fixes gets updated with the contents of the fix, if it is applicable
-                remediation_obj.process(fixes)
-
-    # Walk the guide last, looking for rule folders as they have the highest priority
-    for _dir_path in ssg.rules.find_rule_dirs(guide_dir):
-        rule_id = ssg.rules.get_rule_dir_id(_dir_path)
-
-        contents = ssg.rules.get_rule_dir_remediations(_dir_path, args.remediation_type, product)
-        for _path in reversed(contents):
-            # To be compatible with the later checks, use the rule_id
-            # (i.e., the value of _dir) to create the fix_name
-
-            remediation_obj = remediation_cls(
-                env_yaml, args.resolved_rules_dir, product, _path, rule_id)
-            # Fixes gets updated with the contents of the fix, if it is applicable
-            remediation_obj.process(fixes)
+    for rule_id, fix_path in rule_id_to_remediation_map.items():
+        remediation_obj = remediation_cls(fix_path)
+        rule_path = os.path.join(args.resolved_rules_dir, rule_id + ".yml")
+        remediation_obj.load_rule_from(rule_path)
+        # Fixes gets updated with the contents of the fix, if it is applicable
+        remediation.process(remediation_obj, env_yaml, fixes, rule_id)
 
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
                                    args.output_dir)
@@ -94,6 +79,29 @@ def main():
     sys.stderr.write("Collected %d %s remediations.\n" % (len(fixes), args.remediation_type))
 
     sys.exit(0)
+
+
+def collect_fixes(product, guide_dir, fix_dirs, remediation_type):
+    # path -> remediation
+    # rule ID -> assoc rule
+    rule_id_to_remediation_map = dict()
+    for fixdir in fix_dirs:
+        if os.path.isdir(fixdir):
+            for filename in os.listdir(fixdir):
+                file_path = os.path.join(fixdir, filename)
+                rule_id, _ = os.path.splitext(filename)
+                rule_id_to_remediation_map[rule_id] = file_path
+
+    # Walk the guide last, looking for rule folders as they have the highest priority
+    for _dir_path in ssg.rules.find_rule_dirs(guide_dir):
+        rule_id = ssg.rules.get_rule_dir_id(_dir_path)
+
+        contents = remediation.get_rule_dir_remediations(_dir_path, remediation_type, product)
+        for _path in reversed(contents):
+            # To be compatible with the later checks, use the rule_id
+            # (i.e., the value of _dir) to create the fix_name
+            rule_id_to_remediation_map[rule_id] = _path
+    return rule_id_to_remediation_map
 
 
 if __name__ == "__main__":
