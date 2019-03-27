@@ -2,6 +2,8 @@
 
 . /usr/share/scap-security-guide/remediation_functions
 
+package_install audit-audispd-plugins || exit 1
+
 {{% if product in ["rhel8", "fedora", "ol8"] %}}
 AUDITCONFIG=/etc/audit/audisp-remote.conf
 {{% else %}}
