@@ -727,8 +727,8 @@ class DirectoryLoader(object):
         self.benchmark_file = None
         self.group_file = None
         self.loaded_group = None
-        self.rules = []
-        self.values = []
+        self.rule_files = []
+        self.value_files = []
         self.subdirectories = []
 
         self.profiles_dir = profiles_dir
@@ -743,7 +743,7 @@ class DirectoryLoader(object):
             _, extension = os.path.splitext(dir_item)
 
             if extension == '.var':
-                self.values.append(dir_item_path)
+                self.value_files.append(dir_item_path)
             elif dir_item == "benchmark.yml":
                 if self.benchmark_file:
                     raise ValueError("Multiple benchmarks in one directory")
@@ -753,9 +753,9 @@ class DirectoryLoader(object):
                     raise ValueError("Multiple groups in one directory")
                 self.group_file = dir_item_path
             elif extension == '.rule':
-                self.rules.append(dir_item_path)
+                self.rule_files.append(dir_item_path)
             elif is_rule_dir(dir_item_path):
-                self.rules.append(get_rule_dir_yaml(dir_item_path))
+                self.rule_files.append(get_rule_dir_yaml(dir_item_path))
             elif dir_item != "tests":
                 if os.path.isdir(dir_item_path):
                     self.subdirectories.append(dir_item_path)
@@ -835,12 +835,12 @@ class BuildLoader(DirectoryLoader):
             os.mkdir(resolved_rules_dir)
 
     def _process_values(self):
-        for value_yaml in self.values:
+        for value_yaml in self.value_files:
             value = Value.from_yaml(value_yaml, self.env_yaml)
             self.loaded_group.add_value(value)
 
     def _process_rules(self):
-        for rule_yaml in self.rules:
+        for rule_yaml in self.rule_files:
             rule = Rule.from_yaml(rule_yaml, self.env_yaml)
             self.loaded_group.add_rule(rule)
             if self.resolved_rules_dir:
@@ -865,11 +865,11 @@ class ListInputsLoader(DirectoryLoader):
         self.action = "list-inputs"
 
     def _process_values(self):
-        for value_yaml in self.values:
+        for value_yaml in self.value_files:
             print(value_yaml)
 
     def _process_rules(self):
-        for rule_yaml in self.rules:
+        for rule_yaml in self.rule_files:
             print(rule_yaml)
 
     def _get_new_loader(self):
