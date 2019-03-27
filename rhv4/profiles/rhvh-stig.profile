@@ -116,7 +116,6 @@ selections:
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_rmdir
-    - audit_rules_file_deletion_events
     - audit_rules_file_deletion_events_unlinkat
     - audit_rules_file_deletion_events_unlink
     - audit_rules_immutable
