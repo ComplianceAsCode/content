@@ -76,7 +76,9 @@ class Profile(object):
         self.title = ""
         self.description = ""
         self.extends = None
-        self.selections = []
+        self.selected = []
+        self.unselected = []
+        self.variables = dict()
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -92,7 +94,8 @@ class Profile(object):
         profile.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
-        profile.selections = required_key(yaml_contents, "selections")
+        selection_entries = required_key(yaml_contents, "selections")
+        profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
         if yaml_contents:
@@ -100,6 +103,16 @@ class Profile(object):
                                % (yaml_file, yaml_contents))
 
         return profile
+
+    def _parse_selections(self, entries):
+        for item in entries:
+            if "=" in item:
+                varname, value = item.split("=", 1)
+                self.variables[varname] = value
+            elif item.startswith("!"):
+                self.unselected.append(item[1:])
+            else:
+                self.selected.append(item)
 
     def to_xml_element(self):
         element = ET.Element('Profile')
@@ -111,35 +124,31 @@ class Profile(object):
         desc = add_sub_element(element, "description", self.description)
         desc.set("override", "true")
 
-        for selection in self.selections:
-            if selection.startswith("!"):
-                unselect = ET.Element("select")
-                unselect.set("idref", selection[1:])
-                unselect.set("selected", "false")
-                element.append(unselect)
-            elif "=" in selection:
-                refine_value = ET.Element("refine-value")
-                value_id, selector = selection.split("=", 1)
-                refine_value.set("idref", value_id)
-                refine_value.set("selector", selector)
-                element.append(refine_value)
-            else:
-                select = ET.Element("select")
-                select.set("idref", selection)
-                select.set("selected", "true")
-                element.append(select)
+        for selection in self.selected:
+            select = ET.Element("select")
+            select.set("idref", selection)
+            select.set("selected", "true")
+            element.append(select)
+
+        for selection in self.unselected:
+            unselect = ET.Element("select")
+            unselect.set("idref", selection)
+            unselect.set("selected", "false")
+            element.append(unselect)
+
+        for value_id, selector in self.variables.items():
+            refine_value = ET.Element("refine-value")
+            refine_value.set("idref", value_id)
+            refine_value.set("selector", selector)
+            element.append(refine_value)
 
         return element
 
     def get_rule_selectors(self):
-        return list(filter(lambda x: "=" not in x, self.selections))
+        return list(self.selected + self.unselected)
 
     def get_variable_selectors(self):
-        variables = dict()
-        for var_selection in filter(lambda x: "=" in x, self.selections):
-            k, v = var_selection.split("=")
-            variables[k] = v
-        return variables
+        return self.variables
 
 
 class Value(object):
