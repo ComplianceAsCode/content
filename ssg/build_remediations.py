@@ -244,7 +244,7 @@ def process(remediation, env_yaml, fixes, rule_id):
             msg = (
                 "Comma-separated '{platform}' platforms "
                 "in '{remediation_file}' contains whitespace."
-                .format(platform=platforms, remediation_file=self.file_path))
+                .format(platform=platforms, remediation_file=remediation.file_path))
             raise ValueError(msg)
 
     product = env_yaml["product"]
