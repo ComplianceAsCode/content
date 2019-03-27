@@ -322,7 +322,11 @@ class Benchmark(object):
                 )
                 continue
 
-            self.profiles.append(Profile.from_yaml(dir_item_path, env_yaml))
+            new_profile = Profile.from_yaml(dir_item_path, env_yaml)
+            if new_profile is None:
+                continue
+
+            self.profiles.append(new_profile)
             if action == "list-inputs":
                 print(dir_item_path)
 
@@ -363,8 +367,7 @@ class Benchmark(object):
         ET.SubElement(root, "metadata")
 
         for profile in self.profiles:
-            if profile is not None:
-                root.append(profile.to_xml_element())
+            root.append(profile.to_xml_element())
 
         for value in self.values.values():
             root.append(value.to_xml_element())
