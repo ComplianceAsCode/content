@@ -150,6 +150,38 @@ class Profile(object):
     def get_variable_selectors(self):
         return self.variables
 
+    def validate_variables(self, variables):
+        variables_by_id = dict()
+        for var in variables:
+            variables_by_id[var.id_] = var
+
+        for var_id, our_val in self.variables.items():
+            if var_id not in variables_by_id:
+                all_vars_list = [" - %s" % v for v in variables_by_id.keys()]
+                msg = (
+                    "Value '{var_id}' in profile '{profile_name}' is not known. "
+                    "We know only variables:\n{var_names}"
+                    .format(
+                        var_id=var_id, profile_name=self.id_,
+                        var_names="\n".join(sorted(all_vars_list)))
+                )
+                raise ValueError(msg)
+
+            allowed_selectors = [str(s) for s in variables_by_id[var_id].options.keys()]
+            if our_val not in allowed_selectors:
+                msg = (
+                    "Value '{var_id}' in profile '{profile_name}' "
+                    "uses the selector '{our_val}'. "
+                    "This is not possible, as only selectors {all_selectors} are available. "
+                    "Either change the selector used in the profile, or "
+                    "add the selector-value pair to the variable definition."
+                    .format(
+                        var_id=var_id, profile_name=self.id_, our_val=our_val,
+                        all_selectors=allowed_selectors,
+                    )
+                )
+                raise ValueError(msg)
+
 
 class Value(object):
     """Represents XCCDF Value
@@ -731,6 +763,8 @@ class DirectoryLoader(object):
         self.value_files = []
         self.subdirectories = []
 
+        self.all_values = set()
+
         self.profiles_dir = profiles_dir
         self.bash_remediation_fns = bash_remediation_fns
         self.env_yaml = env_yaml
@@ -813,6 +847,7 @@ class DirectoryLoader(object):
             loader = self._get_new_loader()
             loader.parent_group = self.loaded_group
             loader.process_directory_tree(subdir)
+            self.all_values.update(loader.all_values)
 
     def _get_new_loader(self):
         raise NotImplementedError()
@@ -837,6 +872,7 @@ class BuildLoader(DirectoryLoader):
     def _process_values(self):
         for value_yaml in self.value_files:
             value = Value.from_yaml(value_yaml, self.env_yaml)
+            self.all_values.add(value)
             self.loaded_group.add_value(value)
 
     def _process_rules(self):

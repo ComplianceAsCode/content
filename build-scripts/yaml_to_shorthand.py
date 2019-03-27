@@ -67,6 +67,11 @@ def main():
             profiles_root, args.bash_remediation_fns, env_yaml,
             args.resolved_rules_dir)
         loader.process_directory_tree(benchmark_root)
+
+        profiles = loader.loaded_group.profiles
+        for p in profiles:
+            p.validate_variables(loader.all_values)
+
         loader.export_group_to_file(args.output)
     elif args.action == "list-inputs":
         loader = ssg.build_yaml.ListInputsLoader(
