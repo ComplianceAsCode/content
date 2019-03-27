@@ -16,11 +16,11 @@ rationale: |-
     given directory. Serving files from an intentionally-specified directory
     reduces the risk of sharing files which should remain private.
 
-{{% if product == "rhel7" %}}
-severity: medium
-{{% else %}}
-severity: high
-{{% endif %}}
+severity: {{% if product == "rhel7" -%}}
+medium
+{{%- else -%}}
+high
+{{%- endif %}}
 
 identifiers:
     cce@rhel6: 27272-4
