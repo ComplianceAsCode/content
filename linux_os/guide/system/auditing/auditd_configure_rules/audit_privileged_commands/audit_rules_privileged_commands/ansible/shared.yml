@@ -39,7 +39,7 @@
     create: yes
   with_items:
     - "{{ files_result.results }}"
-  when: item.matched == 0
+  when: files_result.results is defined and item.matched == 0
 
 # Adds/overwrites the rule in /etc/audit/audit.rules
 
