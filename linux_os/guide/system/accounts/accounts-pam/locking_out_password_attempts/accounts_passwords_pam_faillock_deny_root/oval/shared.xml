@@ -12,15 +12,14 @@
       <description>The root account should be configured to deny access after the number of defined
       failed attempts has been reached.</description>
     </metadata>
-    <criteria>
-      <criterion test_ref="test_pam_faillock_preauth_silent_system-auth"
-      comment="pam_faillock.so preauth silent set in system-auth" />
-      <criterion test_ref="test_pam_faillock_authfail_deny_root_system-auth"
-      comment="pam_faillock.so authfail deny_root value set in system-auth" />
-      <criterion test_ref="test_pam_faillock_preauth_silent_password-auth"
-      comment="pam_faillock.so preauth silent set in password-auth" />
-      <criterion test_ref="test_pam_faillock_authfail_deny_root_password-auth"
-      comment="pam_faillock.so authfail deny_root value set in password-auth" />
+    <criteria operator="OR">
+      <extend_definition comment="PAM not installed" definition_ref="package_pam_removed" />
+      <criteria>
+        <criterion test_ref="test_pam_faillock_preauth_silent_system-auth" comment="pam_faillock.so preauth silent set in system-auth" />
+        <criterion test_ref="test_pam_faillock_authfail_deny_root_system-auth" comment="pam_faillock.so authfail deny_root value set in system-auth" />
+        <criterion test_ref="test_pam_faillock_preauth_silent_password-auth" comment="pam_faillock.so preauth silent set in password-auth" />
+        <criterion test_ref="test_pam_faillock_authfail_deny_root_password-auth" comment="pam_faillock.so authfail deny_root value set in password-auth" />
+      </criteria>
     </criteria>
   </definition>
 

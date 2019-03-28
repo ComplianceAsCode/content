@@ -10,9 +10,12 @@
       </affected>
       <description>The passwords to remember should be set correctly.</description>
     </metadata>
-    <criteria comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly" operator="OR">
-      <criterion comment="remember parameter of pam_unix.so is set correctly" test_ref="test_accounts_password_pam_unix_remember" />
-      <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember" />
+    <criteria operator="OR">
+      <extend_definition comment="PAM not installed" definition_ref="package_pam_removed" />
+      <criteria comment="remember parameter of pam_unix.so or pam_pwhistory.so is set correctly" operator="OR">
+        <criterion comment="remember parameter of pam_unix.so is set correctly" test_ref="test_accounts_password_pam_unix_remember" />
+        <criterion comment="remember parameter of pam_pwhistory.so is set correctly" test_ref="test_accounts_password_pam_pwhistory_remember" />
+      </criteria>
     </criteria>
   </definition>
 

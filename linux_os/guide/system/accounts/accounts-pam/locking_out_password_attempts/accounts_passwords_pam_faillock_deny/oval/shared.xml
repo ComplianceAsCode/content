@@ -7,27 +7,22 @@
       </affected>
       <description>The number of allowed failed logins should be set correctly.</description>
     </metadata>
-    <criteria operator="AND" comment="Checks common to both scenarios">
-      <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_system-auth"
-      comment="pam_faillock.so preauth silent set in system-auth" />
-      <criterion test_ref="test_accounts_passwords_pam_faillock_account_phase_system-auth"
-      comment="pam_faillock.so set in account phase of system-auth" />
-      <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_password-auth"
-      comment="pam_faillock.so preauth silent set in password-auth" />
-      <criterion test_ref="test_accounts_passwords_pam_faillock_account_phase_password-auth"
-      comment="pam_faillock.so set in account phase of password-auth" />
-      <criteria operator="AND">
-        <criteria operator="OR" comment="system-auth">
-          <criterion test_ref="test_accounts_passwords_pam_faillock_numeric_default_check_system-auth"
-            comment="Perform check if pam_faillock authfail follows pam_unix even with lines skipped" />
-          <criterion test_ref="test_accounts_passwords_pam_faillock_authfail_deny_system-auth"
-            comment="Perform check if pam_faillock authfail follows pam_unix with either sufficient or default=ignore" />
-        </criteria>
-        <criteria operator="OR" comment="password-auth">
-          <criterion test_ref="test_accounts_passwords_pam_faillock_numeric_default_check_password-auth"
-            comment="Perform check if pam_faillock authfail follows pam_unix even with lines skipped" />
-          <criterion test_ref="test_accounts_passwords_pam_faillock_authfail_deny_password-auth"
-          comment="pam_faillock.so authfail deny value set in password-auth" />
+    <criteria operator="OR">
+      <extend_definition comment="PAM not installed" definition_ref="package_pam_removed" />
+      <criteria operator="AND" comment="Checks common to both scenarios">
+        <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_system-auth" comment="pam_faillock.so preauth silent set in system-auth" />
+        <criterion test_ref="test_accounts_passwords_pam_faillock_account_phase_system-auth" comment="pam_faillock.so set in account phase of system-auth" />
+        <criterion test_ref="test_accounts_passwords_pam_faillock_preauth_silent_password-auth" comment="pam_faillock.so preauth silent set in password-auth" />
+        <criterion test_ref="test_accounts_passwords_pam_faillock_account_phase_password-auth" comment="pam_faillock.so set in account phase of password-auth" />
+        <criteria operator="AND">
+          <criteria operator="OR" comment="system-auth">
+            <criterion test_ref="test_accounts_passwords_pam_faillock_numeric_default_check_system-auth" comment="Perform check if pam_faillock authfail follows pam_unix even with lines skipped" />
+            <criterion test_ref="test_accounts_passwords_pam_faillock_authfail_deny_system-auth" comment="Perform check if pam_faillock authfail follows pam_unix with either sufficient or default=ignore" />
+           </criteria>
+          <criteria operator="OR" comment="password-auth">
+            <criterion test_ref="test_accounts_passwords_pam_faillock_numeric_default_check_password-auth" comment="Perform check if pam_faillock authfail follows pam_unix even with lines skipped" />
+            <criterion test_ref="test_accounts_passwords_pam_faillock_authfail_deny_password-auth" comment="pam_faillock.so authfail deny value set in password-auth" />
+          </criteria>
         </criteria>
       </criteria>
     </criteria>
