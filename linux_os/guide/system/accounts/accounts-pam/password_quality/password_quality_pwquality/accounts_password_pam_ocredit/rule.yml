@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Password Strength Minimum Special Characters'
+title: 'Ensure PAM Enforces Password Strength Requirements - Minimum Special Characters'
 
 description: |-
-    The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
+    If PAM is installed, the pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
     usage of special (or "other") characters in a password. When set to a negative number,
     any password will be required to contain that many special characters.
     When set to a positive number, pam_pwquality will grant +1
@@ -45,10 +45,10 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'ocredit is not found or not equal to or less than the required value'
+ocil_clause: 'PAM is installed and ocredit is not found or not equal to or less than the required value'
 
 ocil: |-
-    To check how many special characters are required in a password, run the following command:
+    If PAM is installed, to check how many special characters are required in a password, run the following command:
     <pre>$ grep ocredit /etc/security/pwquality.conf</pre>
     The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
     The DoD and FISMA require at least one special character in a password.

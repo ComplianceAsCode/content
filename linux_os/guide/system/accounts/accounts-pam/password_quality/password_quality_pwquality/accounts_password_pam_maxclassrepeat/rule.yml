@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Password to Maximum of Consecutive Repeating Characters from Same Character Class'
+title: 'Ensure PAM Enforces Password Strength Requirements - Maximum of Consecutive Repeating Characters from Same Character Class'
 
 description: |-
-    The pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
+    If PAM is installed, the pam_pwquality module's <tt>maxclassrepeat</tt> parameter controls requirements for
     consecutive repeating characters from the same character class. When set to a positive number, it will reject passwords
     which contain more than that number of consecutive characters from the same character class. Modify the
     <tt>maxclassrepeat</tt> setting in <tt>/etc/security/pwquality.conf</tt> to equal <sub idref="var_password_pam_maxclassrepeat" />
@@ -37,9 +37,9 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'that is not the case'
+ocil_clause: 'PAM is installed and that is not the case'
 
 ocil: |-
-    To check the value for maximum consecutive repeating characters, run the following command:
+    If PAM is installed, to check the value for maximum consecutive repeating characters, run the following command:
     <pre>$ grep maxclassrepeat /etc/security/pwquality.conf</pre>
     For DoD systems, the output should show <tt>maxclassrepeat</tt>=4.

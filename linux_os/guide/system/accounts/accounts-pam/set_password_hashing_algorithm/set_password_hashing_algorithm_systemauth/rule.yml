@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: "Set PAM's Password Hashing Algorithm"
+title: "Ensure PAM Password Hashing Algorithm is Configured'
 
 description: |-
-    The PAM system service can be configured to only store encrypted
+    If PAM is installed, the PAM system service can be configured to only store encrypted
     representations of passwords. In <tt>/etc/pam.d/system-auth</tt>, the
     <tt>password</tt> section of the file controls which PAM modules execute
     during a password change. Set the <tt>pam_unix.so</tt> module in the
@@ -58,10 +58,10 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'it does not'
+ocil_clause: 'PAM is installed and it does not'
 
 ocil: |-
-    Inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt> and
+    If PAM is isntalled, inspect the <tt>password</tt> section of <tt>/etc/pam.d/system-auth</tt> and
     ensure that the <tt>pam_unix.so</tt> module includes the argument
     <tt>sha512</tt>:
     <pre>$ grep sha512 /etc/pam.d/system-auth</pre>

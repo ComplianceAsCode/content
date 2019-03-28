@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Set Password Strength Minimum Different Categories'
+title: 'Ensure PAM Enforces Password Strength Requirements - Minimum Different Character Categories'
 
 description: |-
-    The pam_pwquality module's <tt>minclass</tt> parameter controls
+    If PAM is installed, the pam_pwquality module's <tt>minclass</tt> parameter controls
     requirements for usage of different character classes, or types, of character
     that must exist in a password before it is considered valid. For example,
     setting this value to three (3) requires that any password must have characters
@@ -51,10 +51,10 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'minclass is not found or not set equal to or greater than the required value'
+ocil_clause: 'PAM is installed and minclass is not found or not set equal to or greater than the required value'
 
 ocil: |-
-    To check how many categories of characters must be used in password during a password change,
+    If PAM is installed, to check how many categories of characters must be used in password during a password change,
     run the following command:
     <pre>$ grep minclass /etc/security/pwquality.conf</pre>
     The <tt>minclass</tt> parameter will indicate how many character classes must be used. If

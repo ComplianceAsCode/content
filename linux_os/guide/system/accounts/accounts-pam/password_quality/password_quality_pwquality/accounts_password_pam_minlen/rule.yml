@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Password Minimum Length'
+title: 'Ensure PAM Enforces Password Strength Requirements - Minimum Length'
 
 description: |-
-    The pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
+    If PAM is installed, the pam_pwquality module's <tt>minlen</tt> parameter controls requirements for
     minimum characters required in a password. Add <tt>minlen=<sub idref="var_password_pam_minlen" /></tt>
     after pam_pwquality to set minimum password length requirements.
 
@@ -43,9 +43,9 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'minlen is not found, or not equal to or greater than the required value'
+ocil_clause: 'PAM is installed and minlen is not found,tor not equal to or greater than the required value'
 
 ocil: |-
-    To check how many characters are required in a password, run the following command:
+    If PAM is installed, to check how many characters are required in a password, run the following command:
     <pre>$ grep minlen /etc/security/pwquality.conf</pre>
     Your output should contain <tt>minlen = <sub idref="var_password_pam_minlen" /></tt>

@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Deny For Failed Password Attempts'
+title: 'Ensure PAM Enforces Authentication Denial After Exceeding Failed Password Attempts'
 
 description: |-
-    To configure the system to lock out accounts after a number of incorrect login
+    If PAM is installed, to configure the system to lock out accounts after a number of incorrect login
     attempts using <tt>pam_faillock.so</tt>, modify the content of both
     <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt> as follows:
     <br /><br />
@@ -50,9 +50,9 @@ references:
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
 
-ocil_clause: 'that is not the case'
+ocil_clause: 'PAM is installed and that is not the case'
 
 ocil: |-
-    To ensure the failed password attempt policy is configured correctly, run the following command:
+    If PAM is installed, to ensure the failed password attempt policy is configured correctly, run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
     The output should show <tt>deny=<sub idref="var_accounts_passwords_pam_faillock_deny" /></tt>.

@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Interval For Counting Failed Password Attempts'
+title: 'Ensure PAM Interval For Counting Failed Password Attempts is Configured'
 
 description: |-
-    Utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive
+    If PAM is installed, then utilizing <tt>pam_faillock.so</tt>, the <tt>fail_interval</tt> directive
     configures the system to lock out an account after a number of incorrect
     login attempts within a specified time period. Modify the content of both
     <tt>/etc/pam.d/system-auth</tt> and <tt>/etc/pam.d/password-auth</tt>
@@ -56,10 +56,10 @@ references:
     iso27001-2013: A.18.1.4,A.9.2.1,A.9.2.4,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16
 
-ocil_clause: 'fail_interval is less than the required value'
+ocil_clause: 'PAM is installed and fail_interval is less than the required value'
 
 ocil: |-
-    To ensure the failed password attempt policy is configured correctly,
+    If PAM is installed, to ensure the failed password attempt policy is configured correctly,
     run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth /etc/pam.d/password-auth</pre>
     For each file, the output should show <tt>fail_interval=&lt;interval-in-seconds&gt;</tt> where <tt>interval-in-seconds</tt> is <tt><sub idref="var_accounts_passwords_pam_faillock_fail_interval" /></tt> or greater.

@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Set Password Retry Prompts Permitted Per-Session'
+title: 'Ensure PAM Maximum Password Retry Prompts Permitted Per-Session is Configured'
 
 description: |-
-    To configure the number of retry prompts that are permitted per-session:
+    If PAM is installed, to configure the number of retry prompts that are permitted per-session:
     Edit the <tt>pam_pwquality.so</tt> statement in <tt>/etc/pam.d/system-auth</tt> to
     show <tt>retry=<sub idref="var_password_pam_retry" /></tt>, or a lower value if
     site policy is more restrictive.
@@ -38,10 +38,10 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,11,12,15,16,3,5,9
 
-ocil_clause: 'it is not the required value'
+ocil_clause: 'PAM is installed and it is not the required value'
 
 ocil: |-
-    To check how many retry attempts are permitted on a per-session basis, run the following command:
+    If PAM is installed, to check how many retry attempts are permitted on a per-session basis, run the following command:
     <pre>$ grep pam_pwquality /etc/pam.d/system-auth</pre>
     The <tt>retry</tt> parameter will indicate how many attempts are permitted.
     The DoD required value is less than or equal to 3.

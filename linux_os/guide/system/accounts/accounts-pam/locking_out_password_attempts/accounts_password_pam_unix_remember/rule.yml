@@ -2,12 +2,11 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Limit Password Reuse'
+title: 'Ensure PAM Enforces Password Reuse Limits'
 
 description: |-
-    Do not allow users to reuse recent passwords. This can be
-    accomplished by using the <tt>remember</tt> option for the <tt>pam_unix</tt>
-    or <tt>pam_pwhistory</tt> PAM modules.
+    If PAM is utilized on the system, the <tt>remember</tt> option for the <tt>pam_unix</tt>
+    or <tt>pam_pwhistory</tt> PAM modules can be used to ensure users do not reuse recent passwords.    
     <br /><br />
     In the file <tt>/etc/pam.d/system-auth</tt>, append <tt>remember=<sub idref="var_password_pam_unix_remember" /></tt>
     to the line which refers to the <tt>pam_unix.so</tt> or <tt>pam_pwhistory.so</tt>module, as shown below:
@@ -49,10 +48,10 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'the value of remember is not set equal to or greater than the expected setting'
+ocil_clause: 'PAM is installed and the value of remember is not set equal to or greater than the expected setting'
 
 ocil: |-
-    To verify the password reuse setting is compliant, run the following command:
+    If PAM is installed, to verify the password reuse setting is compliant, run the following command:
     <pre>$ grep remember /etc/pam.d/system-auth</pre>
     The output should show the following at the end of the line:
     <pre>remember=<sub idref="var_password_pam_unix_remember" /></pre>

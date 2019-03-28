@@ -2,10 +2,10 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Password Strength Minimum Uppercase Characters'
+title: 'Ensure PAM Enforces Password Strength Requirements - Minimum Uppercase Characters'
 
 description: |-
-    The pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
+    If PAM is installed, the pam_pwquality module's <tt>ucredit=</tt> parameter controls requirements for
     usage of uppercase letters in a password. When set to a negative number, any password will be required to
     contain that many uppercase characters. When set to a positive number, pam_pwquality will grant +1 additional
     length credit for each uppercase character. Modify the <tt>ucredit</tt> setting in
@@ -42,10 +42,10 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'ucredit is not found or not set less than or equal to the required value'
+ocil_clause: 'PAM is installed and ucredit is not found or not set less than or equal to the required value'
 
 ocil: |-
-    To check how many uppercase characters are required in a password, run the following command:
+    If PAM is installed, to check how many uppercase characters are required in a password, run the following command:
     <pre>$ grep ucredit /etc/security/pwquality.conf</pre>
     The <tt>ucredit</tt> parameter (as a negative number) will indicate how many uppercase characters are required.
     The DoD and FISMA require at least one uppercase character in a password.
