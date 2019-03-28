@@ -10,13 +10,16 @@
       </affected>
       <description>The number of allowed failed logins should be set correctly.</description>
     </metadata>
-    <criteria>
-      <criterion comment="preauth default is set to 900" test_ref="test_accounts_passwords_pam_faillock_fail_interval_system-auth" />
-      <criterion comment="authfail default is set to 900" test_ref="test_accounts_passwords_pam_faillock_authfail_fail_interval_system-auth" />
-      <criterion comment="authfail default is set to 900" test_ref="test_accounts_passwords_pam_faillock_fail_interval_password-auth" />
-      <criterion comment="preauth default is set to 900" test_ref="test_accounts_passwords_pam_faillock_preauth_fail_interval_password-auth" />
-      <criterion comment="account requires pam_faillock.so in /etc/pam.d/password-auth" test_ref="test_accounts_passwords_pam_faillock_account_requires_password-auth" />
-      <criterion comment="account requires pam_faillock.so in /etc/pam.d/system-auth" test_ref="test_accounts_passwords_pam_faillock_account_requires_system-auth" />
+    <criteria operator="OR">
+      <extend_definition comment="PAM not installed" definition_ref="package_pam_removed" />
+      <criteria>
+        <criterion comment="preauth default is set to 900" test_ref="test_accounts_passwords_pam_faillock_fail_interval_system-auth" />
+        <criterion comment="authfail default is set to 900" test_ref="test_accounts_passwords_pam_faillock_authfail_fail_interval_system-auth" />
+        <criterion comment="authfail default is set to 900" test_ref="test_accounts_passwords_pam_faillock_fail_interval_password-auth" />
+        <criterion comment="preauth default is set to 900" test_ref="test_accounts_passwords_pam_faillock_preauth_fail_interval_password-auth" />
+        <criterion comment="account requires pam_faillock.so in /etc/pam.d/password-auth" test_ref="test_accounts_passwords_pam_faillock_account_requires_password-auth" />
+        <criterion comment="account requires pam_faillock.so in /etc/pam.d/system-auth" test_ref="test_accounts_passwords_pam_faillock_account_requires_system-auth" />
+      </criteria>
     </criteria>
   </definition>
 

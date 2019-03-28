@@ -9,7 +9,8 @@
       </affected>
       <description>The password retry should meet minimum requirements</description>
     </metadata>
-    <criteria operator="AND" comment="Conditions for retry are satisfied">
+    <criteria operator="OR">
+      <extend_definition comment="PAM not installed" definition_ref="package_pam_removed" />
       <criterion comment="pam_pwquality" test_ref="test_password_pam_pwquality_retry" />
     </criteria>
   </definition>

@@ -10,11 +10,14 @@
       </affected>
       <description>The number of allowed failed logins should be set correctly.</description>
     </metadata>
-    <criteria>
-      <criterion comment="preauth default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_unlock_time_system-auth" />
-      <criterion comment="authfail default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" />
-      <criterion comment="authfail default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_unlock_time_password-auth" />
-      <criterion comment="preauth default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" />
+    <criteria operator="OR">
+      <extend_definition comment="PAM not installed" definition_ref="package_pam_removed" />
+      <criteria>
+        <criterion comment="preauth default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_unlock_time_system-auth" />
+        <criterion comment="authfail default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_authfail_unlock_time_system-auth" />
+        <criterion comment="authfail default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_unlock_time_password-auth" />
+        <criterion comment="preauth default is set to 604800" test_ref="test_accounts_passwords_pam_faillock_preauth_unlock_time_password-auth" />
+      </criteria>
     </criteria>
   </definition>
 
