@@ -174,6 +174,7 @@ selections:
      - audit_rules_dac_modification_fchmodat
      - audit_rules_dac_modification_mount
      - audit_rules_dac_modification_umount
+     - audit_rules_dac_modification_umount2
      - audit_rules_unsuccessful_file_modification_open
      - audit_rules_unsuccessful_file_modification_truncate
      - audit_rules_unsuccessful_file_modification_ftruncate
