@@ -5,9 +5,11 @@ prodtype: rhel7,rhel8,ol7,ol8
 title: 'Ensure gpgcheck Enabled for Repository Metadata'
 
 description: |-
-    Verify the operating system prevents the installation of patches,
-    service packs, device drivers, or operating system components of
-    local packages without verification of the repository metadata.
+    If {{{ pkg_system }}} is installed, verify the operating system prevents 
+    the installation of patches, service packs, device drivers, or 
+    operating system components of local packages without verification 
+    of the repository metadata. 
+
     Check that <tt>{{{ pkg_manager }}}</tt> verifies the repository
     metadata prior to install with the following command.
     This should be configured by setting <tt>repo_gpgcheck</tt> to <tt>1</tt>
@@ -47,10 +49,10 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4
     cis-csc: 11,3,9
 
-ocil_clause: 'gpgcheck is not enabled or configured correctly to verify repository metadata'
+ocil_clause: 'YUM is installed and gpgcheck is not enabled or configured correctly to verify repository metadata'
 
 ocil: |-
-    To verify that <tt>repo_gpgcheck</tt> is configured properly, run the following
+    If YUM is installed, to verify that <tt>repo_gpgcheck</tt> is configured properly, run the following
     command:
     <pre>$ grep repo_gpgcheck {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:
