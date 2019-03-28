@@ -76,7 +76,9 @@ class Profile(object):
         self.title = ""
         self.description = ""
         self.extends = None
-        self.selections = []
+        self.selected = []
+        self.unselected = []
+        self.variables = dict()
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -92,7 +94,8 @@ class Profile(object):
         profile.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
-        profile.selections = required_key(yaml_contents, "selections")
+        selection_entries = required_key(yaml_contents, "selections")
+        profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
         if yaml_contents:
@@ -100,6 +103,16 @@ class Profile(object):
                                % (yaml_file, yaml_contents))
 
         return profile
+
+    def _parse_selections(self, entries):
+        for item in entries:
+            if "=" in item:
+                varname, value = item.split("=", 1)
+                self.variables[varname] = value
+            elif item.startswith("!"):
+                self.unselected.append(item[1:])
+            else:
+                self.selected.append(item)
 
     def to_xml_element(self):
         element = ET.Element('Profile')
@@ -111,35 +124,63 @@ class Profile(object):
         desc = add_sub_element(element, "description", self.description)
         desc.set("override", "true")
 
-        for selection in self.selections:
-            if selection.startswith("!"):
-                unselect = ET.Element("select")
-                unselect.set("idref", selection[1:])
-                unselect.set("selected", "false")
-                element.append(unselect)
-            elif "=" in selection:
-                refine_value = ET.Element("refine-value")
-                value_id, selector = selection.split("=", 1)
-                refine_value.set("idref", value_id)
-                refine_value.set("selector", selector)
-                element.append(refine_value)
-            else:
-                select = ET.Element("select")
-                select.set("idref", selection)
-                select.set("selected", "true")
-                element.append(select)
+        for selection in self.selected:
+            select = ET.Element("select")
+            select.set("idref", selection)
+            select.set("selected", "true")
+            element.append(select)
+
+        for selection in self.unselected:
+            unselect = ET.Element("select")
+            unselect.set("idref", selection)
+            unselect.set("selected", "false")
+            element.append(unselect)
+
+        for value_id, selector in self.variables.items():
+            refine_value = ET.Element("refine-value")
+            refine_value.set("idref", value_id)
+            refine_value.set("selector", selector)
+            element.append(refine_value)
 
         return element
 
     def get_rule_selectors(self):
-        return list(filter(lambda x: "=" not in x, self.selections))
+        return list(self.selected + self.unselected)
 
     def get_variable_selectors(self):
-        variables = dict()
-        for var_selection in filter(lambda x: "=" in x, self.selections):
-            k, v = var_selection.split("=")
-            variables[k] = v
-        return variables
+        return self.variables
+
+    def validate_variables(self, variables):
+        variables_by_id = dict()
+        for var in variables:
+            variables_by_id[var.id_] = var
+
+        for var_id, our_val in self.variables.items():
+            if var_id not in variables_by_id:
+                all_vars_list = [" - %s" % v for v in variables_by_id.keys()]
+                msg = (
+                    "Value '{var_id}' in profile '{profile_name}' is not known. "
+                    "We know only variables:\n{var_names}"
+                    .format(
+                        var_id=var_id, profile_name=self.id_,
+                        var_names="\n".join(sorted(all_vars_list)))
+                )
+                raise ValueError(msg)
+
+            allowed_selectors = [str(s) for s in variables_by_id[var_id].options.keys()]
+            if our_val not in allowed_selectors:
+                msg = (
+                    "Value '{var_id}' in profile '{profile_name}' "
+                    "uses the selector '{our_val}'. "
+                    "This is not possible, as only selectors {all_selectors} are available. "
+                    "Either change the selector used in the profile, or "
+                    "add the selector-value pair to the variable definition."
+                    .format(
+                        var_id=var_id, profile_name=self.id_, our_val=our_val,
+                        all_selectors=allowed_selectors,
+                    )
+                )
+                raise ValueError(msg)
 
 
 class Value(object):
@@ -313,7 +354,11 @@ class Benchmark(object):
                 )
                 continue
 
-            self.profiles.append(Profile.from_yaml(dir_item_path, env_yaml))
+            new_profile = Profile.from_yaml(dir_item_path, env_yaml)
+            if new_profile is None:
+                continue
+
+            self.profiles.append(new_profile)
             if action == "list-inputs":
                 print(dir_item_path)
 
@@ -354,8 +399,7 @@ class Benchmark(object):
         ET.SubElement(root, "metadata")
 
         for profile in self.profiles:
-            if profile is not None:
-                root.append(profile.to_xml_element())
+            root.append(profile.to_xml_element())
 
         for value in self.values.values():
             root.append(value.to_xml_element())
@@ -715,9 +759,11 @@ class DirectoryLoader(object):
         self.benchmark_file = None
         self.group_file = None
         self.loaded_group = None
-        self.rules = []
-        self.values = []
+        self.rule_files = []
+        self.value_files = []
         self.subdirectories = []
+
+        self.all_values = set()
 
         self.profiles_dir = profiles_dir
         self.bash_remediation_fns = bash_remediation_fns
@@ -731,7 +777,7 @@ class DirectoryLoader(object):
             _, extension = os.path.splitext(dir_item)
 
             if extension == '.var':
-                self.values.append(dir_item_path)
+                self.value_files.append(dir_item_path)
             elif dir_item == "benchmark.yml":
                 if self.benchmark_file:
                     raise ValueError("Multiple benchmarks in one directory")
@@ -741,9 +787,9 @@ class DirectoryLoader(object):
                     raise ValueError("Multiple groups in one directory")
                 self.group_file = dir_item_path
             elif extension == '.rule':
-                self.rules.append(dir_item_path)
+                self.rule_files.append(dir_item_path)
             elif is_rule_dir(dir_item_path):
-                self.rules.append(get_rule_dir_yaml(dir_item_path))
+                self.rule_files.append(get_rule_dir_yaml(dir_item_path))
             elif dir_item != "tests":
                 if os.path.isdir(dir_item_path):
                     self.subdirectories.append(dir_item_path)
@@ -801,6 +847,7 @@ class DirectoryLoader(object):
             loader = self._get_new_loader()
             loader.parent_group = self.loaded_group
             loader.process_directory_tree(subdir)
+            self.all_values.update(loader.all_values)
 
     def _get_new_loader(self):
         raise NotImplementedError()
@@ -823,12 +870,13 @@ class BuildLoader(DirectoryLoader):
             os.mkdir(resolved_rules_dir)
 
     def _process_values(self):
-        for value_yaml in self.values:
+        for value_yaml in self.value_files:
             value = Value.from_yaml(value_yaml, self.env_yaml)
+            self.all_values.add(value)
             self.loaded_group.add_value(value)
 
     def _process_rules(self):
-        for rule_yaml in self.rules:
+        for rule_yaml in self.rule_files:
             rule = Rule.from_yaml(rule_yaml, self.env_yaml)
             self.loaded_group.add_rule(rule)
             if self.resolved_rules_dir:
@@ -853,11 +901,11 @@ class ListInputsLoader(DirectoryLoader):
         self.action = "list-inputs"
 
     def _process_values(self):
-        for value_yaml in self.values:
+        for value_yaml in self.value_files:
             print(value_yaml)
 
     def _process_rules(self):
-        for rule_yaml in self.rules:
+        for rule_yaml in self.rule_files:
             print(rule_yaml)
 
     def _get_new_loader(self):
