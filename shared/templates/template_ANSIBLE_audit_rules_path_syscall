@@ -26,13 +26,13 @@
   set_fact:
     all_files:
       - /etc/audit/rules.d/modify.rules
-  when: find_{{{ SYSCALL }}}.matched == 0
+  when: find_{{{ SYSCALL }}}.matched is defined and find_{{{ SYSCALL }}}.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
       - "{{ find_{{{ SYSCALL }}}.files | map(attribute='path') | list | first }}"
-  when: find_{{{ SYSCALL }}}.matched > 0
+  when: find_{{{ SYSCALL }}}.matched is defined and find_{{{ SYSCALL }}}.matched > 0
 
 - name: Inserts/replaces the {{{ SYSCALL }}} rule in rules.d when on x86
   lineinfile:
@@ -51,7 +51,7 @@
     regexp: "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
-  when: audit_arch == 'b64'
+  when: audit_arch is defined and audit_arch == 'b64'
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
@@ -73,4 +73,4 @@
     regexp: "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b64 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"
-  when: audit_arch == 'b64'
+  when: audit_arch is defined and audit_arch == 'b64'
