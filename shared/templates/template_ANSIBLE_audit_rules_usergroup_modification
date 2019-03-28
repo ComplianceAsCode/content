@@ -26,13 +26,13 @@
   set_fact:
     all_files:
       - /etc/audit/rules.d/privileged.rules
-  when: find_{{{ NAME }}}.matched == 0
+  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
       - "{{ find_{{{ NAME }}}.files | map(attribute='path') | list | first }}"
-  when: find_{{{ NAME }}}.matched > 0
+  when: find_{{{ NAME }}}.matched is defined and find_{{{ NAME }}}.matched > 0
 
 - name: Inserts/replaces the {{{ NAME }}} rule in rules.d when on x86
   lineinfile:

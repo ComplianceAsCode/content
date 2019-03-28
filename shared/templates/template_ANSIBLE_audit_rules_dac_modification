@@ -26,13 +26,13 @@
   set_fact:
     all_files:
       - /etc/audit/rules.d/privileged.rules
-  when: find_{{{ ATTR }}}.matched == 0
+  when: find_{{{ ATTR }}}.matched is defined and find_{{{ ATTR }}}.matched == 0
 
 - name: Use matched file as the recipient for the rule
   set_fact:
     all_files:
       - "{{ find_{{{ ATTR }}}.files | map(attribute='path') | list | first }}"
-  when: find_{{{ ATTR }}}.matched > 0
+  when: find_{{{ ATTR }}}.matched is defined and find_{{{ ATTR }}}.matched > 0
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in rules.d when on x86
   lineinfile:
@@ -45,7 +45,7 @@
     path: "{{ all_files[0] }}"
     line: "-a always,exit -F arch=b64 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
     create: yes
-  when: audit_arch == 'b64'
+  when: audit_arch is defined and audit_arch == 'b64'
 #   
 # Inserts/replaces the rule in /etc/audit/audit.rules
 #
@@ -61,4 +61,4 @@
     state: present
     dest: /etc/audit/audit.rules
     create: yes
-  when: audit_arch == 'b64'
+  when: audit_arch is defined and audit_arch == 'b64'

@@ -12,4 +12,4 @@
   file:
     path: {{{ FILEPATH }}}
     group: {{{ FILEGID }}}
-  when: file_exists.stat.exists
+  when: file_exists.stat is defined and file_exists.stat.exists
