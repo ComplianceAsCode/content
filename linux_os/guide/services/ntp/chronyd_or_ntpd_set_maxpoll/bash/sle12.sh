@@ -4,9 +4,14 @@ populate var_time_service_set_maxpoll
 
 populate var_multiple_time_servers
 
+if ! rpm -q ntp > /dev/null && ! rpm -q chrony ; then
+    package_install ntp || exit 1
+    systemctl enable ntpd
+fi
+
 remediated=0
 
-config_files="/etc/ntp.conf /etc/chrony.conf"
+config_file="/etc/ntp.conf /etc/chrony.conf"
 for config_file in $config_files ; do
     [[ -f "$config_file" ]] || continue
     remediated=1
