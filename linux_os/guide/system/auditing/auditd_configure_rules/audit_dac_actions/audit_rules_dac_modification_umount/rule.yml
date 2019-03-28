@@ -9,14 +9,10 @@ description: |-
     startup (the default), add the following line to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F arch=b32 -S umount -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-umount</pre>
-    If the system is 64 bit then also add the following line:
-    <pre>-a always,exit -F arch=b64 -S umount -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-umount</pre>
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following line to
     <tt>/etc/audit/audit.rules</tt> file:
     <pre>-a always,exit -F arch=b32 -S umount -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-umount</pre>
-    If the system is 64 bit then also add the following line:
-    <pre>-a always,exit -F arch=b64 -S umount -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-umount</pre>
 
 rationale: |-
     The changing of file permissions could indicate that a user is attempting to

@@ -5,7 +5,12 @@
 
 # First perform the remediation of the syscall rule
 # Retrieve hardware architecture of the underlying system
-[ "$(getconf LONG_BIT)" = "32" ] && RULE_ARCHS=("b32") || RULE_ARCHS=("b32" "b64")
+# the umount syscall only exists for the 32bit architecture, so only ever generate a 32bit rule for it
+if [ "$(getconf LONG_BIT)" = "32" ] || [ '{{{ ATTR }}}' = umount ] ; then
+	RULE_ARCHS=("b32")
+else
+	RULE_ARCHS=("b32" "b64")
+fi
 
 for ARCH in "${RULE_ARCHS[@]}"
 do
