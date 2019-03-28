@@ -14,10 +14,16 @@
 - name: Read signatures in GPG key
   # According to /usr/share/doc/gnupg2/DETAILS fingerprints are in "fpr" record in field 10
   {{% if product == "rhel8" -%}}
-  shell: gpg --show-key --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+  shell: |
+    set -o pipefail
+    gpg --show-key --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
   {{%- else -%}}
-  shell: gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+  shell: |
+    set -o pipefail
+    gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
   {{%- endif %}}
+  args:
+    executable: /bin/bash
   changed_when: False
   register: gpg_fingerprints
   check_mode: no
