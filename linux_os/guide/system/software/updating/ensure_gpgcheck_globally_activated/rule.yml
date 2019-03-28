@@ -5,7 +5,7 @@ prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 title: 'Ensure gpgcheck Enabled In Main {{{ pkg_manager }}} Configuration'
 
 description: |-
-    If {{{ pkg_manager }}} is installed, the <tt>gpgcheck</tt> option controls whether
+    If <tt>{{{ pkg_manager }}}</tt> is installed, the <tt>gpgcheck</tt> option controls whether
     RPM packages' signatures are always checked prior to installation.
     To configure {{{ pkg_manager }}} to check package signatures before installing
     them, ensure the following line appears in <tt>{{{ pkg_manager_config_file }}}</tt> in
@@ -60,7 +60,7 @@ references:
 ocil_clause: '{{{ pkg_manager }}} is installed and GPG checking is not enabled'
 
 ocil: |-
-    If {{{ pkg_manager }}} is installed, to determine whether <tt>{{{ pkg_manager }}}</tt>
+    If <tt>{{{ pkg_manager }}}</tt> is installed, to determine whether <tt>{{{ pkg_manager }}}</tt>
     is configured to use <tt>gpgcheck</tt>, inspect <tt>{{{ pkg_manager_config_file }}}</tt>
     and ensure the following appears in the <tt>[main]</tt> section:
     <pre>gpgcheck=1</pre>

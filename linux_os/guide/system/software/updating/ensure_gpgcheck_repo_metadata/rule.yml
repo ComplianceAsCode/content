@@ -5,7 +5,7 @@ prodtype: rhel7,rhel8,ol7,ol8
 title: 'Ensure gpgcheck Enabled for Repository Metadata'
 
 description: |-
-    If {{{ pkg_manager }}} is installed, verify the operating system prevents 
+    If <tt>{{{ pkg_manager }}}</tt> is installed, verify the operating system prevents 
     the installation of patches, service packs, device drivers, or 
     operating system components of local packages without verification 
     of the repository metadata. 
@@ -52,7 +52,7 @@ references:
 ocil_clause: '{{{ pkg_manager }}} is installed and gpgcheck is not enabled or configured correctly to verify repository metadata'
 
 ocil: |-
-    If {{{ pkg_manager }}} is installed, to verify that <tt>repo_gpgcheck</tt> is
+    If <tt>{{{ pkg_manager }}}</tt> is installed, to verify that <tt>repo_gpgcheck</tt> is
     configured properly, run the following command:
     <pre>$ grep repo_gpgcheck {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:

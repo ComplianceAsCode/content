@@ -5,7 +5,7 @@ prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 title: 'Ensure gpgcheck Enabled for Local Packages'
 
 description: |-
-    If {{{ pkg_manager }}} is installed, <tt>{{{ pkg_manager }}}</tt> should be configured to verify the signature(s) of local packages
+    If <tt>{{{ pkg_manager }}}</tt> is installed, <tt>{{{ pkg_manager }}}</tt> should be configured to verify the signature(s) of local packages
     prior to installation. To configure <tt>{{{ pkg_manager }}}</tt> to verify signatures of local
     packages, set the <tt>localpkg_gpgcheck</tt> to <tt>1</tt> in <tt>{{{ pkg_manager_config_file }}}</tt>.
 
@@ -42,7 +42,7 @@ references:
 ocil_clause: '{{{ pkg_manager }}} is installed and gpgcheck is not enabled or configured correctly to verify local packages'
 
 ocil: |-
-    If {{{ pkg_manager }}} is installed, to verify that <tt>localpkg_gpgcheck</tt>
+    If <tt>{{{ pkg_manager }}}</tt> is installed, to verify that <tt>localpkg_gpgcheck</tt>
     is configured properly, run the following command:
     <pre>$ grep localpkg_gpgcheck {{{ pkg_manager_config_file }}}</pre>
     The output should return something similar to:
