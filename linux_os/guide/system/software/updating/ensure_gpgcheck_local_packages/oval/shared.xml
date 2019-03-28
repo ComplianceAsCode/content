@@ -13,7 +13,8 @@
       of an RPM package's signature always occurs prior to its
       installation.</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="YUM not installed" definition_ref="package_yum_removed" />
       <criterion comment="check value of localpkg_gpgcheck in {{{ pkg_manager_config_file }}}" test_ref="test_yum_ensure_gpgcheck_local_packages" />
     </criteria>
   </definition>
