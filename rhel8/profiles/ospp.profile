@@ -3,9 +3,34 @@ documentation_complete: true
 title: 'Protection Profile for General Purpose Operating Systems'
 
 description: |-
-    This profile reflects mandatory configuration controls identified in the
-    NIAP Configuration Annex to the Protection Profile for General Purpose
-    Operating Systems (Protection Profile Version 4.2).
+    This compliance profile reflects the core set of security
+    related configuration settings for deployment of Red Hat Enterprise
+    Linux 8.x into U.S. Defense, Intelligence, and Civilian agencies.
+    Development partners and sponsors include the U.S. National Institute
+    of Standards and Technology (NIST), U.S. Department of Defense,
+    the National Security Agency, and Red Hat.
+
+    This baseline implements configuration requirements from the following
+    sources:
+
+    - Committee on National Security Systems Instruction No. 1253 (CNSSI 1253)
+    - NIST Controlled Unclassified Information (NIST 800-171)
+    - NIST 800-53 control selections for MODERATE impact systems (NIST 800-53)
+    - U.S. Government Configuration Baseline (USGCB)
+    - NIAP Protection Profile for General Purpose Operating Systems v4.2 (OSPP v4.2)
+    - DISA Operating System Security Requirements Guide (OS SRG)
+
+    For any differing configuration requirements, e.g. password lengths, the stricter
+    security setting was chosen. Security Requirement Traceability Guides (RTMs) and
+    sample System Security Configuration Guides are provided via the
+    scap-security-guide-docs package.
+
+    This profile reflects U.S. Government consensus content and is developed through
+    the OpenSCAP/ComplianceAsCode initiative, championed by the National
+    Security Agency. Except for differences in formatting to accommodate
+    publishing processes, this profile mirrors OpenSCAP/ComplianceAsCode
+    content as minor divergences, such as bugfixes, work through the
+    consensus and release processes.
 
 selections:
 
@@ -325,52 +350,54 @@ selections:
     #### DELETE (Unsuccessful)
     - audit_rules_unsuccessful_file_modification_unlink
     - audit_rules_unsuccessful_file_modification_unlinkat
- #   - audit_rules_file_deletion_events_renameat
- #   - audit_rules_file_deletion_events_rename
- #   - audit_rules_file_deletion_events_rmdir
- #   - audit_rules_file_deletion_events_unlinkat
- #   - audit_rules_file_deletion_events_unlink
+    - audit_rules_file_deletion_events_renameat
+    - audit_rules_file_deletion_events_rename
+    - audit_rules_file_deletion_events_rmdir
+    - audit_rules_file_deletion_events_unlinkat
+    - audit_rules_file_deletion_events_unlink
 
     #### MODIFY (Unsuccessful)
     - audit_rules_unsuccessful_file_modification_ftruncate
     - audit_rules_unsuccessful_file_modification_truncate
     - audit_rules_unsuccessful_file_modification_rename
     - audit_rules_unsuccessful_file_modification_renameat
-#   - audit_rules_privileged_commands_passwd
-#    - audit_rules_privileged_commands_unix_chkpwd
-#    - audit_rules_privileged_commands_userhelper
-#    - audit_rules_privileged_commands_usernetctl
-#    - audit_rules_privileged_commands_chage
-#    - audit_rules_privileged_commands_chsh
-#    - audit_rules_privileged_commands_pt_chown
 
     #### PERMISSION MODIFICATION (Unsuccessful)
-#    - audit_rules_dac_modification_chmod
-#    - audit_rules_dac_modification_fchmodat
-#    - audit_rules_dac_modification_fchmod
-#    - audit_rules_dac_modification_fremovexattr
-#    - audit_rules_dac_modification_fsetxattr
-#    - audit_rules_dac_modification_lremovexattr
-#    - audit_rules_dac_modification_lsetxattr
-#    - audit_rules_dac_modification_removexattr
-#    - audit_rules_dac_modification_setxattr
-#    - audit_rules_execution_chcon
-#    - audit_rules_execution_restorecon
-#    - audit_rules_execution_semanage
-#    - audit_rules_execution_seunshare
-#    - audit_rules_execution_setsebool
-#    - audit_rules_mac_modification
+    - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_fchmodat
+    - audit_rules_dac_modification_fchmod
+    - audit_rules_dac_modification_fremovexattr
+    - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lremovexattr
+    - audit_rules_dac_modification_lsetxattr
+    - audit_rules_dac_modification_removexattr
+    - audit_rules_dac_modification_setxattr
+    - audit_rules_execution_chcon
+    - audit_rules_execution_restorecon
+    - audit_rules_execution_semanage
+    - audit_rules_execution_seunshare
+    - audit_rules_execution_setsebool
+    - audit_rules_mac_modification
 
 
     #### OWNERSHIP MODIFICATION (Unsuccessful)
     - audit_rules_unsuccessful_file_modification_chown
+    - audit_rules_unsuccessful_file_modification_chmod
     - audit_rules_unsuccessful_file_modification_fchownat
     - audit_rules_unsuccessful_file_modification_fchown
     - audit_rules_unsuccessful_file_modification_lchown
-#    - audit_rules_dac_modification_chown
-#    - audit_rules_dac_modification_fchownat
-#    - audit_rules_dac_modification_fchown
-#    - audit_rules_dac_modification_lchown
+    - audit_rules_unsuccessful_file_modification_fchmod
+    - audit_rules_unsuccessful_file_modification_fchmodat
+    - audit_rules_unsuccessful_file_modification_fremovexattr
+    - audit_rules_unsuccessful_file_modification_fsetxattr
+    - audit_rules_unsuccessful_file_modification_lremovexattr
+    - audit_rules_unsuccessful_file_modification_setxattr
+    - audit_rules_unsuccessful_file_modification_lsetxattr
+    - audit_rules_unsuccessful_file_modification_removexattr
+    - audit_rules_dac_modification_chown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_lchown
 
 
 
@@ -832,6 +859,13 @@ selections:
     - audit_rules_privileged_commands_crontab
     - audit_rules_privileged_commands_mount
     - audit_rules_privileged_commands_umount
+    - audit_rules_privileged_commands_passwd
+    - audit_rules_privileged_commands_unix_chkpwd
+    - audit_rules_privileged_commands_userhelper
+    - audit_rules_privileged_commands_usernetctl
+    - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_chsh
+    - audit_rules_privileged_commands_pt_chown
     - audit_rules_sysadmin_actions
     - audit_rules_session_events
 
