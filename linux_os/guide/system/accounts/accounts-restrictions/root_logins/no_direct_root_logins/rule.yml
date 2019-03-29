@@ -3,7 +3,8 @@ documentation_complete: true
 title: 'Direct root Logins Not Allowed'
 
 description: |-
-    To further limit access to the <tt>root</tt> account, administrators
+    If the system supports TTY connections, e.g. if the <tt>setup</tt> package is installed,
+    to further limit access to the <tt>root</tt> account, administrators
     can disable root logins at the console by editing the <tt>/etc/securetty</tt> file.
     This file lists all devices the root user is allowed to login to. If the file does
     not exist at all, the root user can login through any communication device on the
@@ -43,10 +44,11 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'the /etc/securetty file is not empty'
+ocil_clause: 'the setup RPM is installed and the /etc/securetty file is not empty'
 
 ocil: |-
-    To ensure root may not directly login to the system over physical consoles,
+    If the system is capable of TTY, e.g. when the <tt>setup</tt> package is installed,
+    o ensure root may not directly login to the system over physical consoles,
     run the following command:
     <pre>cat /etc/securetty</pre>
     If any output is returned, this is a finding.
