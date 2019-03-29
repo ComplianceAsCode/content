@@ -23,6 +23,7 @@
     gpg --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
   {{%- endif %}}
   args:
+    warn: False
     executable: /bin/bash
   changed_when: False
   register: gpg_fingerprints

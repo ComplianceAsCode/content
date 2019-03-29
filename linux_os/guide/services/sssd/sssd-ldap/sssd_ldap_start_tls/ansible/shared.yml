@@ -12,7 +12,7 @@
     create: yes
 
 - name: "Test for domain group"
-  shell: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   ignore_errors: yes
   changed_when: False
@@ -30,7 +30,7 @@
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: id_provider, value: files }
     - { section: domain/default, option: ldap_id_use_start_tls, value: true}
-  when: test_grep_domain.stdout == ""
+  when: test_grep_domain.stdout | length < 1
 
 - name: "Configure LDAP to use STARTTLS"
   ini_file:
@@ -40,5 +40,5 @@
     value: true
     create: yes
     mode: 0600
-  when: test_grep_domain.stdout != ""
+  when: test_grep_domain.stdout | length > 0
 
