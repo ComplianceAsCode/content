@@ -310,7 +310,7 @@ Example of a scenario:
 ```
 #!/bin/bash
 #
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config

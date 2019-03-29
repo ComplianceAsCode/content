@@ -232,14 +232,23 @@ def process(remediation, env_yaml, fixes, rule_id):
         return
 
     result = remediation.parse_from_file_with_jinja(env_yaml)
+    platforms = result.config['platform']
 
-    if not result.config['platform']:
+    if not platforms:
         raise RuntimeError(
             "The '%s' remediation script does not contain the "
             "platform identifier!" % (remediation.file_path))
 
+    for platform in platforms.split(","):
+        if platform.strip() != platform:
+            msg = (
+                "Comma-separated '{platform}' platforms "
+                "in '{remediation_file}' contains whitespace."
+                .format(platform=platforms, remediation_file=remediation.file_path))
+            raise ValueError(msg)
+
     product = env_yaml["product"]
-    if utils.is_applicable_for_product(result.config['platform'], product):
+    if utils.is_applicable_for_product(platforms, product):
         fixes[rule_id] = result
 
     return result
