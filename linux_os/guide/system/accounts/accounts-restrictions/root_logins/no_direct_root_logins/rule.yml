@@ -48,7 +48,7 @@ ocil_clause: 'the setup RPM is installed and the /etc/securetty file is not empt
 
 ocil: |-
     If the system is capable of TTY, e.g. when the <tt>setup</tt> package is installed,
-    o ensure root may not directly login to the system over physical consoles,
+    to ensure root may not directly login to the system over physical consoles,
     run the following command:
     <pre>cat /etc/securetty</pre>
     If any output is returned, this is a finding.
