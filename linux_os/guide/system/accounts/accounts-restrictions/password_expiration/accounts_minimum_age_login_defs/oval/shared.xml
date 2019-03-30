@@ -7,8 +7,9 @@
       </affected>
       <description>The minimum password age policy should be set appropriately.</description>
     </metadata>
-    <criteria comment="The value of PASS_MIN_DAYS should be set appropriately in /etc/login.defs">
-      <criterion test_ref="test_pass_min_days" />
+    <criteria operator="OR">
+      <extend_definition comment="shadow-utils RPM is not installed" definition_ref="package_shadow-utils_removed" />
+      <criterion test_ref="test_pass_min_days" comment="The value of PASS_MIN_DAYS should be set appropriately in /etc/login.defs" />
     </criteria>
   </definition>
 

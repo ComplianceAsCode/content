@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Set Password Minimum Age'
 
 description: |-
-    To specify password minimum age for new accounts,
+    If the <tt>shadow-utils</tt> package is installed, to specify password minimum age for new accounts,
     edit the file <tt>/etc/login.defs</tt>
     and add or correct the following line:
     <pre>PASS_MIN_DAYS <sub idref="var_accounts_minimum_age_login_defs" /></pre>
@@ -44,8 +44,8 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'it is not equal to or greater than the required value'
+ocil_clause: 'the shadow-utils package is installed and PASS_MIN_DAYS in /etc/login.defs is not equal to or greater than the required value'
 
 ocil: |-
-    To check the minimum password age, run the command:
+    If <tt>shadow-utils</tt> package is installed, to check the minimum password age, run the command:
     <pre>$ grep PASS_MIN_DAYS /etc/login.defs</pre>
