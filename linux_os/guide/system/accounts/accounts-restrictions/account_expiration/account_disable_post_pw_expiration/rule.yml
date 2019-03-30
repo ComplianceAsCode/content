@@ -5,7 +5,8 @@ prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 title: 'Set Account Expiration Following Inactivity'
 
 description: |-
-    To specify the number of days after a password expires (which
+    If the <tt>shadow-utils</tt> package is installed and the system supports password-based user logins,
+    to specify the number of days after a password expires (which
     signifies inactivity) until an account is permanently disabled, add or correct
     the following lines in <tt>/etc/default/useradd</tt>, substituting
     <tt><i>NUM_DAYS</i></tt> appropriately:
@@ -53,10 +54,11 @@ references:
     iso27001-2013: A.12.4.1,A.12.4.3,A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
 
-ocil_clause: 'the value of INACTIVE is greater than the expected value'
+ocil_clause: 'shadow-utils package is installed and the value of INACTIVE is greater than the expected value'
 
 ocil: |-
-    To verify the <tt>INACTIVE</tt> setting, run the following command:
+    If the <tt>shadow-utils</tt> package is installed,
+    to verify the <tt>INACTIVE</tt> setting, run the following command:
     <pre>$ grep "INACTIVE" /etc/default/useradd</pre>
     The output should indicate the <tt>INACTIVE</tt> configuration option is set
     to an appropriate integer as shown in the example below:

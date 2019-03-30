@@ -9,9 +9,10 @@
         <platform>multi_platform_ol</platform>
       </affected>
       <description>The accounts should be configured to expire automatically following password expiration.</description>
-    </metadata>
-    <criteria comment="the value INACTIVE parameter should be set appropriately in /etc/default/useradd">
-      <criterion test_ref="test_etc_default_useradd_inactive" />
+    </metadata> 
+    <criteria operator="OR" >
+      <extend_definition comment="shadow-utils not installed" definition_ref="package_shadow-utils_removed" />
+      <criterion test_ref="test_etc_default_useradd_inactive" comment="the value INACTIVE parameter should be set appropriately in /etc/default/useradd" />
     </criteria>
   </definition>
 
