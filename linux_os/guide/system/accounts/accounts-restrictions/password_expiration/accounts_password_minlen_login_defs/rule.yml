@@ -3,7 +3,8 @@ documentation_complete: true
 title: 'Set Password Minimum Length in login.defs'
 
 description: |-
-    To specify password length requirements for new accounts, edit the file
+    If the system supports password-based authentication and <tt>shadow-utils</tt> is installed,
+    to specify password length requirements for new accounts, edit the file
     <tt>/etc/login.defs</tt> and add or correct the following line:
     <pre>PASS_MIN_LEN <sub idref="var_accounts_password_minlen_login_defs" /></pre>
     <br /><br />
@@ -45,9 +46,9 @@ references:
     iso27001-2013: A.18.1.4,A.7.1.1,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.2,A.9.4.3
     cis-csc: 1,12,15,16,5
 
-ocil_clause: 'it is not set to the required value'
+ocil_clause: 'shadow-utils is isntalled and PASS_MIN_LEN is not set to the required value in /etc/login.defs'
 
 ocil: |-
-    To check the minimum password length, run the command:
+    If <tt>shadow-utils</tt> is installed, to check the minimum password length, run the command:
     <pre>$ grep PASS_MIN_LEN /etc/login.defs</pre>
     The DoD requirement is <tt>15</tt>.

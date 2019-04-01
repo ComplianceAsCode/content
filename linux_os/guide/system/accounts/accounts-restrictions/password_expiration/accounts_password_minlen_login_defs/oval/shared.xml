@@ -8,7 +8,8 @@
       </affected>
       <description>The password minimum length should be set appropriately.</description>
     </metadata>
-    <criteria operator="AND">
+    <criteria operator="OR">
+      <extend_definition comment="shadow-utils RPM is not installed" definition_ref="package_shadow-utils_removed" />
       <criterion test_ref="test_pass_min_len" />
     </criteria>
   </definition>
