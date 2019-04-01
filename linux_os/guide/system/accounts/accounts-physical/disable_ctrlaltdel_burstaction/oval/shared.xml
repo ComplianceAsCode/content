@@ -10,9 +10,9 @@
       <description>Configure the CtrlAltDelBurstAction setting in /etc/systemd/system.conf
       to none to prevent a reboot if Ctrl-Alt-Delete is pressed more than 7 times in 2 seconds.</description>
     </metadata>
-    <criteria>
-      <criterion comment="check CtrlAltDelBurstAction is set to none"
-      test_ref="test_disable_ctrlaltdel_burstaction" />
+    <criteria operator="OR">
+      <extend_definition comment="systemd RPM is not installed" definition_ref="package_systemd_removed" />
+      <criterion comment="check CtrlAltDelBurstAction is set to none" test_ref="test_disable_ctrlaltdel_burstaction" />
     </criteria>
   </definition>
 
