@@ -11,10 +11,13 @@
       minimum requirements.</description>
     </metadata>
     <criteria operator="OR">
-      <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins" />
-      <criteria operator="AND">
-	  <criterion comment="the value maxlogins should not be set at all in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins_exists" negate="true" />
-	  <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.conf" test_ref="test_maxlogins" />
+      <extend_definition comment="pam RPM is not installed" definition_ref="package_pam_removed" />
+      <criteria operator="OR">
+        <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins" />
+        <criteria operator="AND">
+          <criterion comment="the value maxlogins should not be set at all in /etc/security/limits.d/*.conf" test_ref="test_limitsd_maxlogins_exists" negate="true" />
+          <criterion comment="the value maxlogins should be set appropriately in /etc/security/limits.conf" test_ref="test_maxlogins" />
+        </criteria>
       </criteria>
     </criteria>
   </definition>

@@ -1,12 +1,15 @@
 documentation_complete: true
 
-title: 'Limit the Number of Concurrent Login Sessions Allowed Per User'
+title: 'Ensure PAM Limits the Number of Concurrent Login Sessions Allowed Per User'
 
 description: |-
     Limiting the number of allowed users and sessions per user can limit risks related to Denial of
     Service attacks. This addresses concurrent sessions for a single account and does not address
-    concurrent sessions by a single user via multiple accounts. To set the number of concurrent
-    sessions per user add the following line in <tt>/etc/security/limits.conf</tt>:
+    concurrent sessions by a single user via multiple accounts. 
+
+    If <tt>pam</tt> is installed and the system is configured to support password-based authentication,
+    to set the number of concurrent sessions per user add the following line in 
+    <tt>/etc/security/limits.conf</tt>:
     <pre>* hard maxlogins <sub idref="var_accounts_max_concurrent_login_sessions" /></pre>
 
 rationale: |-
@@ -37,10 +40,10 @@ references:
     iso27001-2013: A.13.1.1,A.13.1.3,A.13.2.1,A.14.1.2,A.14.1.3
     cis-csc: 14,15,18,9
 
-ocil_clause: 'maxlogins is not equal to or less than the expected value'
+ocil_clause: 'PAM is installed and maxlogins is not equal to or less than the expected value'
 
 ocil: |-
-    Run the following command to ensure the <tt>maxlogins</tt> value is
+    If <tt>pam</tt> is installed, run the following command to ensure the <tt>maxlogins</tt> value is
     configured for all users on the system:
     <pre># grep "maxlogins" /etc/security/limits.conf</pre>
     You should receive output similar to the following:
