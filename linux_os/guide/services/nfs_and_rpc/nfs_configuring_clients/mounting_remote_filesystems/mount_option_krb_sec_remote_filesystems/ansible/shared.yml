@@ -10,14 +10,13 @@
     grep -E "[[:space:]]nfs[4]?[[:space:]]" /etc/fstab | grep -v "sec=krb5:krb5i:krb5p" | awk '{print $2}'
   args:
     warn: False
+    executable: /bin/bash
   register: points_register
   check_mode: no
   changed_when: False
 
 - name: "Add Kerberos security to mount points"
-  shell: |
-    set -o pipefail
-    awk '$2=="{{ item }}"{$4=$4",sec=krb5:krb5i:krb5p"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
+  shell: awk '$2=="{{ item }}"{$4=$4",sec=krb5:krb5i:krb5p"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
   args:
     warn: False
   with_items:

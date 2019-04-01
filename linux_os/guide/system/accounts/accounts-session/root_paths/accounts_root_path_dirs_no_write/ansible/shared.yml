@@ -14,6 +14,7 @@
     tr ":" "\n" <<< "$PATH" | xargs -I% find % -maxdepth 0 -type d
   args:
     warn: False
+    executable: /bin/bash
   changed_when: False
   failed_when: False
   register: root_paths

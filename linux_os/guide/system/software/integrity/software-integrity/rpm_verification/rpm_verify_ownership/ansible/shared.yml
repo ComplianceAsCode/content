@@ -21,6 +21,7 @@
     rpm -qf {{ files_with_incorrect_ownership.stdout_lines }}|sort |uniq
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect ownership using rpm module
+    executable: /bin/bash
   register: uniq_list_of_packages
   when: (files_with_incorrect_ownership.stdout_lines | length > 0)
 
