@@ -8,7 +8,8 @@
       <description>The delay between failed authentication attempts should be
       set for all users specified in /etc/login.defs</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="shadow-utils RPM is not installed" definition_ref="package_shadow-utils_removed" />
       <criterion test_ref="test_accounts_logon_fail_delay" />
     </criteria>
   </definition>
