@@ -371,7 +371,6 @@ selections:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - ensure_gpgcheck_repo_metadata
     - ensure_gpgcheck_local_packages
     - network_sniffer_disabled
     - network_ipv6_disable_rpc
