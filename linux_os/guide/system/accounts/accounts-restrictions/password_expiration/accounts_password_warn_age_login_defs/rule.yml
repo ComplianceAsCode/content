@@ -3,8 +3,8 @@ documentation_complete: true
 title: 'Set Password Warning Age'
 
 description: |-
-    To specify how many days prior to password
-    expiration that a warning will be issued to users,
+    If the system supports password-based logins, such as when the <tt>shadow-utils</tt> package is installed,
+    to specify how many days prior to password expiration that a warning will be issued to users,
     edit the file <tt>/etc/login.defs</tt> and add or correct
      the following line:
     <pre>PASS_WARN_AGE <sub idref="var_accounts_password_warn_age_login_defs" /></pre>
@@ -34,9 +34,10 @@ references:
     iso27001-2013: A.12.4.1,A.12.4.3,A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
     cis-csc: 1,12,13,14,15,16,18,3,5,7,8
 
-ocil_clause: 'it is not set to the required value'
+ocil_clause: 'shadow-utils is installed and PASS_WARN_AGE is not set to the required value in /etc/login.defs'
 
 ocil: |-
-    To check the password warning age, run the command:
+    If the system supports password-based authentication and <tt>shadow-utils</tt> is installed,
+    to check the password warning age, run the command:
     <pre>$ grep PASS_WARN_AGE /etc/login.defs</pre>
     The DoD requirement is 7.

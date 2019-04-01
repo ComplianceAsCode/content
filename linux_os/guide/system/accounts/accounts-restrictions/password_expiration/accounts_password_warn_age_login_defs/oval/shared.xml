@@ -7,7 +7,8 @@
       </affected>
       <description>The password expiration warning age should be set appropriately.</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition comment="shadow-utils RPM is not installed" definition_ref="package_shadow-utils_removed" />
       <criterion test_ref="test_pass_warn_age" />
     </criteria>
   </definition>
