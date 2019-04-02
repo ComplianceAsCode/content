@@ -1,0 +1,35 @@
+documentation_complete: true
+
+title: 'Ensure Home Directories are Located On Separate Partition'
+
+description: |-
+    If user home directories will be stored locally, create a separate partition,
+    e.g. <tt>/home</tt>, at installation time (or migrate it later using LVM). If
+    <tt>/home</tt> will be mounted from another system such as an NFS server, then
+    creating a separate partition is not necessary at installation time, and the
+    mountpoint can instead be configured later.
+
+rationale: |-
+    Ensuring that home directories are mounted on their own partition enables the
+    setting of more restrictive mount options, and also helps ensure that
+    users cannot trivially fill partitions used for log or audit data storage.
+
+severity: low
+
+references:
+    disa: '366'
+    nist: CM-6(b)
+    srg: SRG-OS-000480-GPOS-00227
+    stigid@sle12: "010850"
+
+ocil_clause: "no line is returned"
+
+ocil: |
+    Assuming that user home directories are under <tt>/home</tt>,
+    run the following command to determine if they use their own partition or
+    logical volume:
+    <pre>$ mount | grep "on /home"</pre>
+    If <code>/home</code> has
+    its own partition or volume group, a line will be returned.
+
+platform: machine

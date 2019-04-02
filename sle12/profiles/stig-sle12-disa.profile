@@ -32,6 +32,7 @@ selections:
      - cracklib_accounts_password_pam_ocredit
      - cracklib_accounts_password_pam_difok
      - set_password_hashing_algorithm_systemauth
+     - set_password_hashing_algorithm_commonauth
      - set_password_hashing_algorithm_logindefs
      - accounts_password_all_shadowed_sha512
      - no_empty_passwords
@@ -88,7 +89,6 @@ selections:
      - disable_ctrlaltdel_reboot
      - dconf_use_text_backend
      - dconf_gnome_disable_ctrlaltdel_reboot
-     - accounts_umask_interactive_users
      - account_unique_id
      - var_sssd_memcache_timeout=1_day
      - sssd_memcache_timeout
@@ -112,7 +112,7 @@ selections:
      - var_time_service_set_maxpoll=system_default
      - service_kdump_disabled
      - partition_for_var_log_audit
-     - partition_for_home
+     - partition_for_home_dirs
      - partition_for_var
      - file_permissions_var_log_messages
      - pam_disable_automatic_configuration
@@ -231,4 +231,10 @@ selections:
      - var_accounts_authorized_local_users_regex=none
      - var_multiple_time_servers=sles
      - enable_dconf_user_profile
+     - var_accounts_user_umask=077
+     - accounts_umask_etc_login_defs
+     - package_pam_apparmor_installed
+     - service_apparmor_enabled
+     - apparmor_configured
+     - audit_rules_enable_syscall_auditing
 

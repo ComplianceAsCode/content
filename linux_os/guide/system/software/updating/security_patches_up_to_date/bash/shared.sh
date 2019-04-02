@@ -5,7 +5,7 @@
 # disruption = high
 
 {{% if pkg_manager == "zypper" %}}
-zypper patch -g security -y
+zypper patch -y
 {{% else %}}
 yum -y update
 {{% endif %}}

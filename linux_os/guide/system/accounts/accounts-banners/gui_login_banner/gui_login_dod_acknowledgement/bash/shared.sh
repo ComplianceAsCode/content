@@ -1,7 +1,7 @@
 # platform = multi_platform_sle
 
 if ! [ -x /etc/gdm/Xsession ] ; then
-    echo "can only remediate if /etc/gdm/Xsession is an executabl shell script" >&2
+    echo "can only remediate if /etc/gdm/Xsession is an executable shell script" >&2
     exit 1
 fi
 

@@ -13,7 +13,11 @@ rationale: |-
     a password helps to exponentially increase the time and/or resources
     required to compromise the password.
 
+{{% if product == "sle12" %}}
+severity: medium
+{{% else %}}
 severity: unknown
+{{% endif %}}
 
 identifiers:
     cce@rhel6: 26615-5

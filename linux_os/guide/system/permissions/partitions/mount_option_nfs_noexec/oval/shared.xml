@@ -7,8 +7,7 @@
       </affected>
       <description>The 'noexec' mount option can be used to prevent execution of setuid programs in network mounts.</description>
     </metadata>
-    <criteria operator="OR">
-      <criterion comment="Check for NFS mounts." test_ref="test_nfs__mount_option_nfs_noexec" negate="true" />
+    <criteria>
       <criterion comment="Check for home directories of interactive users that currently do not have a home directory assigned." test_ref="test_nfs_noexec" />
     </criteria>
   </definition>
@@ -24,17 +23,12 @@
   </linux:partition_object>
 
   <linux:partition_state id="state_nfs_noexec_without_noexec" version="1">
-    <linux:mount_options datatype="string" entity_check="none satisfy" operation="equals">noexec</linux:mount_options>
+    <linux:mount_options datatype="string" entity_check="at least one" operation="equals">noexec</linux:mount_options>
   </linux:partition_state>
 
-  <!-- the logic is a bit weird here: we're checking that no NFS mount is missing the 'noexec' option -->
-  <linux:partition_test id="test_nfs_noexec" check="none satisfy" check_existence="all_exist" comment="all nfs file systems must be mounted with 'noexec'" version="1">
+  <linux:partition_test id="test_nfs_noexec" check="all" check_existence="any_exist" comment="all nfs file systems must be mounted with 'noexec'" version="1">
     <linux:object object_ref="obj_nfs_noexec_mount_points" />
     <linux:state state_ref="state_nfs_noexec_without_noexec" />
-  </linux:partition_test>
-
-  <linux:partition_test id="test_nfs__mount_option_nfs_noexec" check="all" check_existence="all_exist" comment="nfs file systems exist" version="1">
-    <linux:object object_ref="obj_nfs_noexec_mount_points" />
   </linux:partition_test>
 </def-group>
   

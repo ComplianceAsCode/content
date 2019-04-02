@@ -8,7 +8,17 @@ description: |-
     The SUSE operating system must lock an account after three consecutive invalid logon attempts.
 
 rationale: |-
-    By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.
+    By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.<br/><br/>
+
+    Check that the systems locks a user account after three consecutive failed login attempts with the following command:
+
+    <pre># grep pam_tally2.so /etc/pam.d/common-auth
+    auth required pam_tally2.so deny=3
+
+    # grep pam_tally2.so /etc/pam.d/common-account
+    account required pam_tally2.so deny=3</pre>
+
+    If the "deny" option in one of the files is greater than "<tt>3</tt>" or is missing, this is a finding.
 
 severity: medium
 
@@ -22,8 +32,10 @@ ocil_clause: 'that is not the case'
 ocil: |-
     Check that the systems locks a user account after three consecutive failed login attempts with the following command:
 
-    <pre># grep pam_tally2.so /etc/pam.d/login
+    <pre># grep pam_tally2.so /etc/pam.d/common-auth
+    auth required pam_tally2.so deny=3
 
-    auth required pam_tally2.so deny=3</pre>
+    # grep pam_tally2.so /etc/pam.d/common-account
+    account required pam_tally2.so deny=3</pre>
 
-    If the "deny" option is greater than "<tt>3</tt>" or is missing, this is a finding.
+    If the "deny" option in one of the files is greater than "<tt>3</tt>" or is missing, this is a finding.

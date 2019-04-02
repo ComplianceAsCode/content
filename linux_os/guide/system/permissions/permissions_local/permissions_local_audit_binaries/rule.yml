@@ -3,11 +3,11 @@ documentation_complete: true
 title: 'Verify Permissions of Local Logs of audit Tools'
 
 description: |-
+    The SUSE operating system audit tools must have the proper permissions
+    configured to protect against unauthorized access.
 
-    Files containing sensitive informations should be protected by restrictive
-    permissions. Most of the time, there is no need that these files need to be read by any non-root user.
-
-    Check that "permissions.local" file contains the correct permissions rules with the following command:
+    Check that "permissions.local" file contains the correct permissions rules
+    with the following command:
 
     <pre>grep "^/usr/sbin/au" /etc/permissions.local
 

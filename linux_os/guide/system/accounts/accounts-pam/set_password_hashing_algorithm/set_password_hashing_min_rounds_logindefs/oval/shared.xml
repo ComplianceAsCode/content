@@ -44,7 +44,7 @@
 
 
   <!-- Same stuff for MAX_ROUNDS -->
-  <ind:variable_test id="test_etc_login_defs_sha_crypt_max_rounds" check="all" comment="The value of SHA_CRYPT_MAX_ROUNDS should be set appropriately in /etc/login.defs" version="1">
+  <ind:variable_test id="test_etc_login_defs_sha_crypt_max_rounds" check_existence="any_exist" check="all" comment="The value of SHA_CRYPT_MAX_ROUNDS should be set appropriately in /etc/login.defs" version="1">
     <ind:object object_ref="object_last_sha_crypt_max_rounds_instance_value" />
     <ind:state state_ref="state_last_sha_crypt_rounds_instance_value" />
   </ind:variable_test>

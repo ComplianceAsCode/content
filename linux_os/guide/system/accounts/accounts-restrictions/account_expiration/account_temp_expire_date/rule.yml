@@ -25,7 +25,11 @@ rationale: |-
     must be set upon account creation.
     <br />
 
+{{% if product == "sle12" %}}
+severity: medium
+{{% else %}}
 severity: unknown
+{{% endif %}}
 
 identifiers:
     cce@rhel6: 27474-6

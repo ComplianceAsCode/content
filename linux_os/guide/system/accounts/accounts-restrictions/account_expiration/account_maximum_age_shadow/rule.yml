@@ -6,13 +6,19 @@ title: 'Set Account Password Maximum Lifetime'
 
 description: |-
     Configure all user accounts to enforce 24 hours/1 day or greater as the
-    maximum password age.
+    maximum password age.<br/><br/>
+
+    Check the maximum time period between password changes for each user account with the following command:
+
+    <pre># sudo awk -F':' '$5 &gt; <sub idref="var_accounts_maximum_age_login_defs" /> { print $1, $5 }' &lt; /etc/shadow
+
+    smithj 90</pre>
 
     Change the maximum time period between password changes for each
-    <tt>[USER]</tt> account to "<tt>1</tt>" day with the command, replacing
+    user account to <tt><sub idref="var_accounts_maximum_age_login_defs" /></tt> day with this command, replacing
     <tt>[USER]</tt> with the user account that must be changed:
 
-    <pre># sudo passwd -x {{{ var_accounts_maximum_age_login_defs }}} [USER]</pre>
+    <pre># sudo passwd -x <sub idref="var_accounts_maximum_age_login_defs" /> [USER]</pre>
 
 rationale: |-
     Enforcing a maximum password lifetime helps prevent repeated password
@@ -33,6 +39,6 @@ ocil_clause: 'any line appears'
 ocil: |-
     Check the maximum time period between password changes for each user account with the following command:
 
-    <pre># sudo awk -F':' '$5 &gt; {{{ var_accounts_maximum_age_login_defs|striptags }}} { print $1, $5 }' &lt; /etc/shadow
+    <pre># sudo awk -F':' '$5 &gt; <sub idref="var_accounts_maximum_age_login_defs" /> { print $1, $5 }' &lt; /etc/shadow
 
     smithj 90</pre>

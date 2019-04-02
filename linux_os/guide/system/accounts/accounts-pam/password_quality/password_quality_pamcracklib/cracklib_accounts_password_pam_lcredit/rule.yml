@@ -13,7 +13,11 @@ rationale: |-
     Requiring a minimum number of lowercase characters makes password guessing attacks
     more difficult by ensuring a larger search space.
 
+{{% if product == "sle12" %}}
+severity: medium
+{{% else %}}
 severity: unknown
+{{% endif %}}
 
 identifiers:
     cce@rhel6: 26631-2

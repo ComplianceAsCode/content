@@ -19,7 +19,11 @@ rationale: |-
     forensic analysis and investigating system events. Sources outside the
     configured acceptable allowance (drift) may be inaccurate.
 
+{{% if product == "sle12" %}}
+severity: medium
+{{% else %}}
 severity: unknown
+{{% endif %}}
 
 identifiers:
     cce@rhel7: 80439-3

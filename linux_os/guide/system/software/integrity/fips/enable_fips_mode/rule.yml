@@ -7,7 +7,11 @@ title: Enable FIPS Mode
 description: |-
     {{% if product == "sle12" %}}
     Enabling FIPS mode on a preexisting system involves a number of
-    modifications to the SUSE operating system. Refer to section 9.1, "Crypto
+    modifications to the SUSE operating system.<br/><br/>
+
+    {{{ describe_package_install(package="patterns-sles-fips") }}}
+
+    Then refer to section 9.1, "Crypto
     Officer Guidance", of the following document for installation guidance:
 
     {{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140sp/140sp2435.pdf") }}}
@@ -67,7 +71,7 @@ warnings:
         {{% else %}}
         Red Hat, Inc. and Red Hat Enterprise Linux are respectively FIPS certified and compliant.
         {{% endif %}}
-        Community projects such as CentOS, Scientific Linux, Fedora, etc. do not necessarily meet
+        Community projects such as CentOS, Scientific Linux, Fedora, openSUSE, etc. do not necessarily meet
         FIPS certification and compliancy. Therefore, non-certified vendors and/or projects do not
         meet this requirement even if technically feasible.
         <br /><br />

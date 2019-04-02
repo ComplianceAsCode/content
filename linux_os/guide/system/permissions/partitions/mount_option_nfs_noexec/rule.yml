@@ -6,15 +6,13 @@ title: 'Add noexec Option to any nfs mounts'
 
 description: |-
     The <tt>noexec</tt> mount option can be used to prevent
-    execution of setuid programs in network mounts. The SUID and SGID permissions
-    should not be required in these user data directories.
+    execution of programs in mounted file systems. This option must be used for
+    mounting any file system not containing approved binary files as they may
+    be incompatible.
 
 rationale: |-
-    The presence of SUID and SGID executables should be tightly controlled.
-    This option must be used for mounting any file system not containing
-    approved <tt>setuid</tt> and <tt>setguid</tt> files. Executing files from
-    untrusted file systems increases the opportunity for unprivileged users to
-    attain unauthorized administrative access.
+    Executing files from untrusted file systems increases the opportunity for
+    unprivileged users to attain unauthorized administrative access.
 
 
 severity: medium

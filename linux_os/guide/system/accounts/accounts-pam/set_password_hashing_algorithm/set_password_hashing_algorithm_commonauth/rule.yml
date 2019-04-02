@@ -1,0 +1,49 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: "Set PAM's Password Hashing Algorithm for Logins"
+
+description: |-
+    The PAM system service can be configured to only store encrypted
+    representations of passwords. In <tt>/etc/pam.d/common-auth</tt>, the
+    <tt>password</tt> section of the file controls which PAM modules execute
+    during a password change. Set the <tt>pam_unix.so</tt> module in the
+    <tt>password</tt> section to include the argument <tt>sha512</tt>, as shown
+    below:
+    <br />
+    <pre>auth    required    pam_unix.so sha512 <i>other arguments...</i></pre>
+    <br />
+    This will help ensure when local users change their passwords, hashes for
+    the new passwords will be generated using the SHA-512 algorithm. This is
+    the default.
+
+rationale: |-
+    Passwords need to be protected at all times, and encryption is the standard
+    method for protecting passwords. If passwords are not encrypted, they can
+    be plainly read (i.e., clear text) and easily compromised. Passwords that
+    are encrypted with a weak algorithm are no more protected than if they are
+    kepy in plain text.
+    <br /><br />
+    This setting ensures user and group account administration utilities are
+    configured to store only encrypted representations of passwords.
+    Additionally, the <tt>crypt_style</tt> configuration option ensures the use
+    of a strong hashing algorithm that makes password cracking attacks more
+    difficult.
+
+severity: medium
+
+references:
+    disa: "803"
+    nist: IA-7
+    srg: SRG-OS-000120-GPOS-00061
+    stigid@sle12: "010200"
+
+ocil_clause: 'it does not'
+
+ocil: |-
+    Inspect the contents of <tt>/etc/pam.d/common-auth</tt>
+    and ensure that the <tt>pam_unix.so</tt> module includes the argument
+    <tt>sha512</tt>:
+    <pre>$ grep sha512 /etc/pam.d/common-auth
+    auth required pam_unix.so sha512 try_first_pass</pre>

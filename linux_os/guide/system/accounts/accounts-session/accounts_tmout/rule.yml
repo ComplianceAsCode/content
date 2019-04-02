@@ -12,7 +12,12 @@ description: |-
     {{% else %}}
     setting in <tt>/etc/profile</tt> should read as follows:
     {{% endif %}}
-    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>TMOUT=<sub idref="var_accounts_tmout" />
+    {{% if product == "sle12" %}}
+    readonly TMOUT
+    export TMOUT
+    {{% endif %}}
+    </pre>
 
 rationale: |-
     Terminating an idle session within a short time period reduces
@@ -56,4 +61,9 @@ ocil: |-
     <pre>$ sudo grep TMOUT /etc/profile</pre>
     {{% endif %}}
     The output should return the following:
-    <pre>TMOUT=<sub idref="var_accounts_tmout" /></pre>
+    <pre>TMOUT=<sub idref="var_accounts_tmout" />
+    {{% if product == "sle12" %}}
+    readonly TMOUT
+    export TMOUT
+    {{% endif %}}
+    </pre>

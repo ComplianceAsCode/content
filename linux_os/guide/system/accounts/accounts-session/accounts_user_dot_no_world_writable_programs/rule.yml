@@ -7,7 +7,7 @@ title: 'User Initialization Files Must Not Run World-Writable Programs'
 description: |-
     Set the mode on files being executed by the user initialization files with the
     following command:
-    <pre>$ sudo chmod 0755 <i>FILE</i></pre>
+    <pre>$ sudo chmod g-w,o-w <i>FILE</i></pre>
 
 rationale: |-
     If user start-up files execute world-writable programs, especially in
