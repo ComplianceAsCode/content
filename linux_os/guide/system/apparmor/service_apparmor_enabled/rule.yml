@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Enable apparmor Service'
+
+description: |-
+    The <tt>apparmor</tt> service loads AppArmor profiles into the kernel.
+    {{{ describe_service_enable(service="apparmor") }}}
+
+rationale: |-
+    Protection of system integrity using AppArmor depends on this service being
+    started during boot.
+
+severity: medium
+
+ocil: '{{{ ocil_service_enabled(service="apparmor") }}}'
+
+platform: machine

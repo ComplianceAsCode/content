@@ -1,0 +1,20 @@
+documentation_complete: true
+
+prodtype: sle12
+
+title: 'Install the pam_apparmor Package'
+
+description: |-
+    {{{ describe_package_install(package="pam_apparmor") }}}
+
+rationale: |-
+    Protection of system integrity using AppArmor depends on this package being
+    installed.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="pam_apparmor") }}}'
+
+platform: machine
