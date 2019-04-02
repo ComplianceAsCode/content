@@ -13,4 +13,4 @@
     create: yes
 
 - name: Verify that Crypto Policy is Set (runtime)
-  shell: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}
+  command: /usr/bin/update-crypto-policies --set {{ var_system_crypto_policy }}

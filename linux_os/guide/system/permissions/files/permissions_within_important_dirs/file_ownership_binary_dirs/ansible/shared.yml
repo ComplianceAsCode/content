@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 - name: "Read list of system executables without root ownership"
-  shell: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
+  command: "find /bin/ /usr/bin/ /usr/local/bin/ /sbin/ /usr/sbin/ /usr/local/sbin/ /usr/libexec \\! -user root"
   register: no_root_system_executables
   changed_when: False
   failed_when: False

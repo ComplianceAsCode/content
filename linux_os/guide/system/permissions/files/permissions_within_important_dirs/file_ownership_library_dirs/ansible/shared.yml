@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 - name: "Read list libraries without root ownership"
-  shell: "find -L /usr/lib /usr/lib64 /lib /lib64 \\! -user root"
+  command: "find -L /usr/lib /usr/lib64 /lib /lib64 \\! -user root"
   register: libraries_not_owned_by_root
   changed_when: False
   failed_when: False

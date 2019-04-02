@@ -9,7 +9,12 @@
   when: ansible_user != "root"
 
 - name: "Get root paths which are not symbolic links"
-  shell: 'tr ":" "\n" <<< "$PATH" | xargs -I% find % -maxdepth 0 -type d'
+  shell: |
+    set -o pipefail
+    tr ":" "\n" <<< "$PATH" | xargs -I% find % -maxdepth 0 -type d
+  args:
+    warn: False
+    executable: /bin/bash
   changed_when: False
   failed_when: False
   register: root_paths

@@ -4,7 +4,7 @@
 # complexity = high
 # disruption = medium
 - name: "Read list of world and group writable files in libraries directories"
-  shell: "find /lib /lib64 /usr/lib /usr/lib64 -perm /022 -type f"
+  command: "find /lib /lib64 /usr/lib /usr/lib64 -perm /022 -type f"
   register: world_writable_library_files
   changed_when: False
   failed_when: False

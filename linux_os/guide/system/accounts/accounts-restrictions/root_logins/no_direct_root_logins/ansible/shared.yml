@@ -10,4 +10,6 @@
 
 - name: "Direct root Logins Not Allowed"
   shell: echo > /etc/securetty
+  args:
+    warn: False
   changed_when: securetty_empty.stat.size > 1

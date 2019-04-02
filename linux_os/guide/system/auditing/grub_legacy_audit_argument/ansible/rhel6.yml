@@ -4,4 +4,4 @@
 # complexity = low
 # disruption = low
 - name: "Enable Auditing for Processes Which Start Prior to the Audit Daemon"
-  shell: /sbin/grubby --update-kernel=ALL --args="audit=1"
+  command: /sbin/grubby --update-kernel=ALL --args="audit=1"

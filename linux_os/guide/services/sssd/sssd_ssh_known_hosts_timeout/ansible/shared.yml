@@ -6,7 +6,7 @@
 - (xccdf-var sshd_idle_timeout_value)
 
 - name: "Test for domain group"
-  shell: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
+  command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
   register: test_grep_domain
   ignore_errors: yes
   changed_when: False
@@ -22,7 +22,7 @@
   with_items:
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: id_provider, value: files }
-  when: test_grep_domain.stdout == ""
+  when: test_grep_domain.stdout | length < 1
 
 - name: "Configure SSSD to Expire SSH Known Hosts"
   ini_file:
