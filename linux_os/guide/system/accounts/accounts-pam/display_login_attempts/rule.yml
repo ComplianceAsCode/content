@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'Set Last Logon/Access Notification'
+title: 'Ensure PAM Displays Last Logon/Access Notification'
 
 description: |-
     To configure the system to notify users of last logon/access
@@ -47,3 +47,5 @@ ocil: |-
     the following command:
     <pre>$ grep pam_lastlog.so /etc/pam.d/postlogin</pre>
     The output should show output <tt>showfailed</tt>.
+
+platform: pam
