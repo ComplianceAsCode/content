@@ -3,7 +3,7 @@
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 if grep -q "^TMOUT" /etc/profile; then
-	sed -i "s/^TMOUT.*/TMOUT=100/" /etc/profile
+	sed -i "s/^TMOUT.*/TMOUT=3600/" /etc/profile
 else
-	echo "TMOUT=100" >> /etc/profile
+	echo "TMOUT=3600" >> /etc/profile
 fi
