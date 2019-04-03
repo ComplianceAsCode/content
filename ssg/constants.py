@@ -375,7 +375,8 @@ OCILREFATTR_TO_TAG = {
 
 XCCDF_PLATFORM_TO_CPE = {
     "machine": "cpe:/a:machine",
-    "container": "cpe:/a:container"
+    "container": "cpe:/a:container",
+    "shadow-utils": "cpe:/a:shadow-utils",
 }
 
 # _version_name_map = {
