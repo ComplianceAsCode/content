@@ -39,8 +39,7 @@ def parse_args():
                         required=True, help='YAML profile')
     parser.add_argument('--profile2', type=str, dest="profile_compare_to",
                         required=True,
-                        help='YAML profile, also can be a list of rules ' + \
-                            'separated by newline')
+                        help='YAML profile, also can be a list of rules separated by newline')
 
     args = parser.parse_args()
 
@@ -57,7 +56,7 @@ def main():
         profile1 = yaml.load(profile_compare_from_str)
         profile1_rules_list = profile1.get('selections')
     except Exception as e:
-        msg="A problem occurred while parsing the profile. " + \
+        msg = "A problem occurred while parsing the profile. " + \
             "Is the file '{}' a valid YAML profile?"
         print(msg.format(args.profile_compare_from))
         exit(1)
@@ -66,7 +65,10 @@ def main():
     try:
         profile2 = yaml.load(profile_compare_to_str)
         profile2_rules_list = profile2.get('selections')
-    except:
+    except Exception as e:
+        print("Warning: It is not possible to load a profile from file: {}".format(
+            args.profile_compare_to))
+        print("Interpreting as a list of rules separated by new line.")
         with open(args.profile_compare_to, 'r') as rules:
             for rule in rules:
                 rule = rule.replace(os.linesep, '')
@@ -83,14 +85,14 @@ def main():
         profile1['title'] = "EXCLUSIVE RULES compared to file: {}; {}".format(
             args.profile_compare_to, profile1['title'])
 
-        profile1_basename=os.path.splitext(
+        profile1_basename = os.path.splitext(
             os.path.basename(args.profile_compare_from))[0]
-        profile2_basename=os.path.splitext(
+        profile2_basename = os.path.splitext(
             os.path.basename(args.profile_compare_to))[0]
 
         profile_with_exclusive_rules_filename = "{}-compared_to-{}.profile".format(
             profile1_basename, profile2_basename)
-        print("Creating a new profile containing those exclusive rules: {}".format(
+        print("Creating a new profile containing the exclusive rules: {}".format(
             profile_with_exclusive_rules_filename))
         with open(profile_with_exclusive_rules_filename, 'w+') as f:
             yaml.dump(profile1, f)
