@@ -14,11 +14,11 @@ rationale: |-
     Host-based intrusion detection tools provide a system-level defense when an
     intruder gains access to a system or network.
 
-{{% if product == "rhel6" %}}
-severity: medium
-{{% else %}}
-severity: high
-{{% endif %}}
+severity: {{% if product == "rhel6" -%}}
+medium
+{{%- else -%}}
+high
+{{%- endif %}}
 
 identifiers:
     cce@rhel6: 27409-2

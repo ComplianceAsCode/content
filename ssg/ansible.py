@@ -7,13 +7,8 @@ from __future__ import print_function
 
 import re
 
-from collections import OrderedDict
-
 from .constants import ansible_version_requirement_pre_task_name
 from .constants import min_ansible_version
-from ssg import build_yaml
-from ssg import build_remediations
-from ssg import yaml
 
 
 def add_minimum_version(ansible_src):
@@ -88,7 +83,7 @@ class AnsibleRemediation(object):
         self.contents = contents
         self.config = config
 
-        self.parsed = yaml.ordered_load("\n".join(contents))
+        self.parsed = yaml.ordered_load(contents)
 
         self.rule = None
 
@@ -100,6 +95,12 @@ class AnsibleRemediation(object):
             tags.append("{0}_complexity".format(self.config["complexity"]))
         if "disruption" in self.config:
             tags.append("{0}_disruption".format(self.config["disruption"]))
+        if "reboot" in self.config:
+            if self.config["reboot"] == "true":
+                reboot_tag = "reboot_required"
+            else:
+                reboot_tag = "no_reboot_needed"
+            tags.append(reboot_tag)
         to_update["tags"] = tags
 
     def update_tags_from_rule(self, platform, to_update):
@@ -189,4 +190,3 @@ class AnsibleRemediation(object):
         parsed = build_remediations.parse_from_file_without_jinja(snippet_fname)
         result = cls(parsed.contents, parsed.config)
         return result
-

@@ -116,7 +116,6 @@ selections:
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_rmdir
-    - audit_rules_file_deletion_events
     - audit_rules_file_deletion_events_unlinkat
     - audit_rules_file_deletion_events_unlink
     - audit_rules_immutable
@@ -372,7 +371,6 @@ selections:
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - ensure_gpgcheck_repo_metadata
     - ensure_gpgcheck_local_packages
     - network_sniffer_disabled
     - network_ipv6_disable_rpc

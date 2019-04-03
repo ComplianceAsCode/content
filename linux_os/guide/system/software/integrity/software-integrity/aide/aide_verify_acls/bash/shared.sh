@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel, multi_platform_fedora, multi_platform_sle
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_sle
 . /usr/share/scap-security-guide/remediation_functions
 
 package_install aide

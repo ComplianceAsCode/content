@@ -47,7 +47,7 @@ according to the requirements, including configuration of a key for SSH login.
 
 Common usage looks like:
 ```
-$ ./install_vm.py --domain test-suite-fedora --distro fedora
+$ python install_vm.py --domain test-suite-fedora --distro fedora
 ```
 
 By default, the key at `~/.ssh/id_rsa.pub` is used. You can change default key used via `--ssh-pubkey` option.
@@ -310,7 +310,7 @@ Example of a scenario:
 ```
 #!/bin/bash
 #
-# platform = Red Hat Enterprise Linux 7, multi_platform_fedora
+# platform = Red Hat Enterprise Linux 7,multi_platform_fedora
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config

@@ -8,7 +8,7 @@
 - name: Ensure libsemanage-python installed
   package:
     name: libsemanage-python
-    state: latest
+    state: present
 
 - name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
   seboolean:

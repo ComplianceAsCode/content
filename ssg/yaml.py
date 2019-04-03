@@ -183,3 +183,28 @@ def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
         return stream.write(formatted_yaml)
     else:
         return formatted_yaml
+    return yaml.dump(data, stream, OrderedDumper, **kwds)
+
+
+def _strings_to_list(one_or_more_strings):
+    """
+    Output a list, that either contains one string, or a list of strings.
+    In Python, strings can be cast to lists without error, but with unexpected result.
+    """
+    if isinstance(one_or_more_strings, str):
+        return [one_or_more_strings]
+    else:
+        return list(one_or_more_strings)
+
+
+def update_yaml_list_or_string(current_contents, new_contents):
+    result = []
+    if current_contents:
+        result += _strings_to_list(current_contents)
+    if new_contents:
+        result += _strings_to_list(new_contents)
+    if not result:
+        result = ""
+    if len(result) == 1:
+        result = result[0]
+    return result

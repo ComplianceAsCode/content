@@ -4,18 +4,24 @@
 # complexity = high
 # disruption = medium
 - name: "Read list of files with incorrect ownership"
-  shell: "rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)==\"U\" || substr($0,7,1)==\"G\") print $NF }'"
+  shell: |
+    set -o pipefail
+    rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)==\"U\" || substr($0,7,1)==\"G\") print $NF }'
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect ownership using rpm module
+    executable: /bin/bash
   register: files_with_incorrect_ownership
   failed_when: False
   changed_when: False
   check_mode: no
 
 - name: Create list of uniq packages
-  shell: "rpm -qf {{ files_with_incorrect_ownership.stdout_lines }}|sort |uniq"
+  shell: |
+    set -o pipefail
+    rpm -qf {{ files_with_incorrect_ownership.stdout_lines }}|sort |uniq
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect ownership using rpm module
+    executable: /bin/bash
   register: uniq_list_of_packages
   when: (files_with_incorrect_ownership.stdout_lines | length > 0)
 

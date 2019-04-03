@@ -5,7 +5,7 @@
 # disruption = low
 - (xccdf-var var_selinux_state)
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   lineinfile:
     path: /etc/sysconfig/selinux
     regexp: '^SELINUX='

@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 
-- name: "@RULE_TITLE@"
+- name: "{{{ rule_title }}}"
   lineinfile:
     path: /etc/ipsec.conf
     line: "include /etc/crypto-policies/back-ends/libreswan.config"

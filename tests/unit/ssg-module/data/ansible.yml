@@ -5,12 +5,12 @@
 # strategy = configure
 # complexity = low
 # disruption = low
-- name: Test for existence /boot/grub2/grub.cfg
+- name: Test for existence /boot/grub2/grub.cfg in name of {{{ rule_id }}}
   stat:
     path: /boot/grub2/grub.cfg
   register: file_exists
 
-- name: Ensure owner 0 on /boot/grub2/grub.cfg
+- name: "{{{ rule_title }}}: Ensure owner 0 on /boot/grub2/grub.cfg"
   file:
     path: /boot/grub2/grub.cfg
     owner: 0

@@ -4,7 +4,7 @@
 # complexity = medium
 # disruption = medium
 - name: "Read list of world and group writable system executables"
-  shell: "find /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin /usr/libexec -perm /022 -type f"
+  command: "find /bin /usr/bin /usr/local/bin /sbin /usr/sbin /usr/local/sbin /usr/libexec -perm /022 -type f"
   register: world_writable_library_files
   changed_when: False
   failed_when: False

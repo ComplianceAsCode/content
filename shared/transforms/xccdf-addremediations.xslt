@@ -66,23 +66,7 @@
     </xsl:call-template>
   </xsl:variable>
 
-  <xsl:variable name="rep3">
-    <xsl:call-template name="find-and-replace">
-      <xsl:with-param name="text" select="$rep1"/>
-      <xsl:with-param name="replace" select="'@RULE_ID@'"/>
-      <xsl:with-param name="with" select="$rule/@id"/>
-    </xsl:call-template>
-  </xsl:variable>
-
-  <xsl:variable name="rep4">
-    <xsl:call-template name="find-and-replace">
-      <xsl:with-param name="text" select="$rep3"/>
-      <xsl:with-param name="replace" select="'@RULE_TITLE@'"/>
-      <xsl:with-param name="with" select="$rule/xccdf:title[1]/text()"/>
-    </xsl:call-template>
-  </xsl:variable>
-
-  <xsl:value-of select="$rep4"/>
+  <xsl:value-of select="$rep1"/>
 </xsl:template>
 
 <xsl:template match="@* | node()" mode="fix_contents">
