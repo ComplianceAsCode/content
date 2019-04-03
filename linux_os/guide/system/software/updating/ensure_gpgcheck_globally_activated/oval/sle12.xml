@@ -39,7 +39,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_ensure_gpgcheck_globally_activated" comment="gpgcheck activated in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*(1|on|yes)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*gpgcheck\s*=\s*(1|on|yes|true)\s*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -58,7 +58,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_ensure_repo_gpgcheck_globally_activated" comment="repo_gpgcheck activated in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*repo_gpgcheck\s*=\s*(1|on|yes)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*repo_gpgcheck\s*=\s*(1|on|yes|true)\s*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -77,7 +77,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_ensure_pkg_gpgcheck_globally_activated" comment="pkg_gpgcheck activated in {{{ pkg_manager_config_file }}}" version="1">
     <ind:filepath>{{{ pkg_manager_config_file }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*pkg_gpgcheck\s*=\s*(1|on|yes)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*pkg_gpgcheck\s*=\s*(1|on|yes|true)\s*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
