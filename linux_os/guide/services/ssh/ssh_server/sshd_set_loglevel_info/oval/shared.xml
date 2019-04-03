@@ -1,5 +1,7 @@
 <def-group>
+
   <definition class="compliance" id="sshd_set_loglevel_info" version="1">
+
     <metadata>
       <title>Set OpenSSH LogLevel to INFO</title>
       <affected family="unix">
@@ -7,12 +9,9 @@
       </affected>
       <description>The SSH LogLevel should be set to INFO.</description>
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met"
-    operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <criterion comment="Check LogLevel in /etc/ssh/sshd_config"
-      test_ref="test_sshd_set_loglevel_info" />
+
+    <criteria comment="SSH is configured correctly">
+      <criterion comment="Check LogLevel in /etc/ssh/sshd_config" test_ref="test_sshd_set_loglevel_info" />
     </criteria>
   </definition>
 

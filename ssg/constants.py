@@ -378,6 +378,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "container": "cpe:/a:container",
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
+    "openssh-server": "cpe:/a:openssh-server",
     "pam": "cpe:/a:pam",
     "shadow-utils": "cpe:/a:shadow-utils",
     "systemd": "cpe:/a:systemd",

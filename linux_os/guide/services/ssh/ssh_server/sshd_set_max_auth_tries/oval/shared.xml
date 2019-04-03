@@ -1,4 +1,5 @@
 <def-group>
+
   <definition class="compliance" id="sshd_set_max_auth_tries" version="1">
     <metadata>
       <title>Set OpenSSH authentication attempt limit (MaxAuthTries)</title>
@@ -8,12 +9,11 @@
       <description>The SSH MaxAuthTries should be set to an
       appropriate value.</description>
     </metadata>
-    <criteria comment="SSH is not being used or conditions are met" operator="OR">
-      <extend_definition comment="sshd service is disabled"
-      definition_ref="service_sshd_disabled" />
-      <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config"
-      test_ref="test_sshd_max_auth_tries" />
+
+    <criteria comment="SSH is configured appropriately">
+      <criterion comment="Check MaxAuthTries in /etc/ssh/sshd_config" test_ref="test_sshd_max_auth_tries" />
     </criteria>
+
   </definition>
 
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
