@@ -54,8 +54,8 @@ def main():
     profile_compare_to_str = read_file(args.profile_compare_to)
 
     try:
-        profile = yaml.load(profile_compare_from_str)
-        profile_rules_list = profile.get('selections')
+        profile1 = yaml.load(profile_compare_from_str)
+        profile1_rules_list = profile1.get('selections')
     except Exception as e:
         msg="A problem occurred while parsing the profile. " + \
             "Is the file '{}' a valid YAML profile?"
@@ -72,32 +72,32 @@ def main():
                 rule = rule.replace(os.linesep, '')
                 profile2_rules_list += [rule]
 
-    profile1_extra_rules = list(
-        set(profile_rules_list) - set(profile2_rules_list))
+    profile1_exclusive_rules = list(
+        set(profile1_rules_list) - set(profile2_rules_list))
 
-    extra_rules = len(profile1_extra_rules)
-    if extra_rules > 0:
-        print("Extra rules from profile {}: {}".format(
-            args.profile_compare_from, extra_rules))
-        profile['selections'] = profile1_extra_rules
-        profile['title'] = "ONLY EXTRA RULES compared to file: {}; {}".format(
-            args.profile_compare_to, profile['title'])
+    exclusive_rules = len(profile1_exclusive_rules)
+    if exclusive_rules > 0:
+        print("Exclusive rules from profile {}: {}".format(
+            args.profile_compare_from, exclusive_rules))
+        profile1['selections'] = profile1_exclusive_rules
+        profile1['title'] = "EXCLUSIVE RULES compared to file: {}; {}".format(
+            args.profile_compare_to, profile1['title'])
 
         profile1_basename=os.path.splitext(
             os.path.basename(args.profile_compare_from))[0]
         profile2_basename=os.path.splitext(
             os.path.basename(args.profile_compare_to))[0]
 
-        profile_with_extra_rules_filename = "{}-compared_to-{}.profile".format(
+        profile_with_exclusive_rules_filename = "{}-compared_to-{}.profile".format(
             profile1_basename, profile2_basename)
-        print("Creating a new profile containing those extra rules: {}".format(
-            profile_with_extra_rules_filename))
-        with open(profile_with_extra_rules_filename, 'w+') as f:
-            yaml.dump(profile, f)
+        print("Creating a new profile containing those exclusive rules: {}".format(
+            profile_with_exclusive_rules_filename))
+        with open(profile_with_exclusive_rules_filename, 'w+') as f:
+            yaml.dump(profile1, f)
         print("Profile {} was created successfully".format(
-            profile_with_extra_rules_filename))
+            profile_with_exclusive_rules_filename))
     else:
-        print("No extra rules in profile {} compared to profile {} were found".format(
+        print("No exclusive rules in profile {} compared to profile {} were found".format(
             args.profile_compare_from, args.profile_compare_to))
 
 
