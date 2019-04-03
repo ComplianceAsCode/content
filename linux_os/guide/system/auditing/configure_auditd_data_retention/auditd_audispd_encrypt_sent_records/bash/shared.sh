@@ -16,6 +16,3 @@ value="yes"
 {{% endif %}}
 
 replace_or_append $AUDISP_REMOTE_CONFIG "$option" "$value" "@CCENUM@"
-
-
-#TODO: delete this?

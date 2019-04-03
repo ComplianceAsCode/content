@@ -1,4 +1,5 @@
 # platform = SUSE Linux Enterprise 12
+. /usr/share/scap-security-guide/remediation_functions
 
 divide_round_up() {
     dividend="$1"
@@ -12,8 +13,4 @@ partition_size=$(df -B1M --output=size /var/log/audit | awk 'NR==2 {print $1}')
 # threshold is 1 quarter of the partition size
 space_left=$(divide_round_up "$partition_size" 4)
 
-if grep -q "^space_left[[:space:]]*=.*$" /etc/audit/auditd.conf ; then
-  sed -i "s/^space_left[[:space:]]*=.*$/space_left = $space_left/g" /etc/audit/auditd.conf
-else
-  echo "space_left = $space_left" >> /etc/audit/auditd.conf
-fi
+replace_or_append '/etc/audit/auditd.conf' '^space_left' "$space_left" '@CCENUM@'
