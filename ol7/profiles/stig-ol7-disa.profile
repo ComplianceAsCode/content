@@ -27,7 +27,6 @@ selections:
     - var_accounts_max_concurrent_login_sessions=10
     - inactivity_timeout_value=15_minutes
     - sshd_idle_timeout_value=10_minutes
-    - sshd_required=yes
     - account_disable_post_pw_expiration
     - accounts_logon_fail_delay
     - accounts_max_concurrent_login_sessions
