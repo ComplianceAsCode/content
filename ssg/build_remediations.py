@@ -13,7 +13,10 @@ import ssg.yaml
 from . import build_yaml
 from . import rules
 from . import utils
+
+from . import constants
 from .jinja import process_file_with_macros as jinja_process_file
+
 from .xml import ElementTree
 
 REMEDIATION_TO_EXT_MAP = {
@@ -263,9 +266,7 @@ class AnsibleRemediation(Remediation):
 
         parsed = ssg.yaml.ordered_load(result.contents)
 
-        current_product = env_yaml.get("product")
-        if current_product:
-            self.update(parsed, result.config, current_product)
+        self.update(parsed, result.config)
 
         updated_yaml_text = ssg.yaml.ordered_dump(
             parsed, None, default_flow_style=False)
@@ -292,7 +293,7 @@ class AnsibleRemediation(Remediation):
             tags.append(reboot_tag)
         to_update["tags"] = tags
 
-    def update_tags_from_rule(self, product, to_update):
+    def update_tags_from_rule(self, to_update):
         if not self.associated_rule:
             raise RuntimeError("The Ansible snippet has no rule loaded.")
 
@@ -300,45 +301,23 @@ class AnsibleRemediation(Remediation):
         tags.insert(0, "{0}_severity".format(self.associated_rule.severity))
         tags.insert(0, self.associated_rule.id_)
 
-        cce_num = self._get_cce(product)
+        cce_num = self._get_cce()
         if cce_num:
             tags.append("CCE-{0}".format(cce_num))
 
-        refs = self.get_references(product)
+        refs = self.get_references()
         tags.extend(refs)
         to_update["tags"] = tags
 
-    def _get_cce(self, product):
-        our_cce = None
-        for cce, val in self.associated_rule.identifiers.items():
-            if cce.endswith(product):
-                our_cce = val
-                break
-        return our_cce
+    def _get_cce(self):
         return self.associated_rule.identifiers.get("cce", None)
 
-    def get_references(self, product):
+    def get_references(self):
         if not self.associated_rule:
             raise RuntimeError("The Ansible snippet has no rule loaded.")
-        # see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
-        # if you want to know how the map was constructed
-        platform_id_map = {
-            "rhel7": "DISA-STIG-RHEL-07",
-            "rhel8": "DISA-STIG-RHEL-08",
-        }
-        # RHEL6 is a special case, in our content,
-        # we have only stig IDs for RHEL6 that include the literal 'RHEL-06'
-        stig_platform_id = platform_id_map.get(product, "DISA-STIG")
 
-        ref_prefix_map = {
-            "nist": "NIST-800-53",
-            "cui": "NIST-800-171",
-            "pcidss": "PCI-DSS",
-            "cjis": "CJIS",
-            "stigid@{product}".format(product=product): stig_platform_id,
-        }
         result = []
-        for ref_class, prefix in ref_prefix_map.items():
+        for ref_class, prefix in constants.REF_PREFIX_MAP.items():
             refs = self._get_rule_reference(ref_class)
             result.extend(["{prefix}-{value}".format(prefix=prefix, value=v) for v in refs])
         return result
@@ -362,13 +341,13 @@ class AnsibleRemediation(Remediation):
         else:
             to_update["when"] = new_when
 
-    def update(self, parsed, config, product):
+    def update(self, parsed, config):
         for p in parsed:
             if not isinstance(p, dict):
                 continue
             self.update_when_from_rule(p)
             self.update_tags_from_config(p, config)
-            self.update_tags_from_rule(product, p)
+            self.update_tags_from_rule(p)
 
     @classmethod
     def from_snippet_and_rule(cls, snippet_fname, rule_fname):

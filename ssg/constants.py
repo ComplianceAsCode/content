@@ -236,6 +236,22 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
 }
 
+STIG_PLATFORM_ID_MAP = {
+    "rhel6": "RHEL-06",
+    "rhel7": "RHEL-07",
+    "rhel8": "RHEL-08",
+}
+
+# see xccdf-addremediations.xslt <- shared_constants.xslt <- shared_shorthand2xccdf.xslt
+# if you want to know how the map was constructed
+REF_PREFIX_MAP = {
+    "nist": "NIST-800-53",
+    "cui": "NIST-800-171",
+    "pcidss": "PCI-DSS",
+    "cjis": "CJIS",
+    "stigid": "DISA-STIG",
+}
+
 MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 

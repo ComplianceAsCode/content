@@ -61,4 +61,4 @@ def test_make_items_product_specific():
         "stigid": "tralala",
     }
     rule.make_items_product_specific("rhel7")
-    assert rule.references["stigid"] == "040370"
+    assert rule.references["stigid"] == "RHEL-07-040370"

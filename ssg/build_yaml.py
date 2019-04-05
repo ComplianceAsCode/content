@@ -10,6 +10,7 @@ import yaml
 
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
+from .constants import STIG_PLATFORM_ID_MAP
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -681,10 +682,26 @@ class Rule(object):
         rule.validate_references(yaml_file)
         return rule
 
-    def normalize(self, product):
-        self.make_items_product_specific(product)
+    def _make_stigid_product_specific(self, product):
+        stig_platform_id = STIG_PLATFORM_ID_MAP.get(product, product.upper())
+        for ref, val in self.references.items():
+            if ref == "stigid":
+                if stig_platform_id and not val.startswith(stig_platform_id):
+                    self.references[ref] = "{platform_id}-{stig_id}".format(
+                        platform_id=stig_platform_id, stig_id=val,
+                    )
 
-    def make_items_product_specific(self, product):
+    def normalize(self, product):
+        try:
+            self.make_refs_and_identifiers_product_specific(product)
+        except Exception as exc:
+            msg = (
+                "Error normalizing '{rule}': {msg}"
+                .format(rule=self.id_, msg=str(exc))
+            )
+            raise RuntimeError(msg)
+
+    def make_refs_and_identifiers_product_specific(self, product):
         product_suffix = "@{0}".format(product)
         to_set = dict(
             identifiers=(self.identifiers, False),
@@ -702,6 +719,8 @@ class Rule(object):
                 raise ValueError(msg)
             dic.clear()
             dic.update(new_items)
+
+        self._make_stigid_product_specific(product)
 
     def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
         new_items = dict()
@@ -811,6 +830,7 @@ class Rule(object):
 
         main_ident = ET.Element('ident')
         for ident_type, ident_val in self.identifiers.items():
+            # This is not true if items were normalized
             if '@' in ident_type:
                 # the ident is applicable only on some product
                 # format : 'policy@product', eg. 'stigid@product'
@@ -827,6 +847,7 @@ class Rule(object):
 
         main_ref = ET.Element('ref')
         for ref_type, ref_val in self.references.items():
+            # This is not true if items were normalized
             if '@' in ref_type:
                 # the reference is applicable only on some product
                 # format : 'policy@product', eg. 'stigid@product'
