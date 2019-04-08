@@ -24,6 +24,7 @@ except ImportError:
 
 
 import ssg.ansible
+import ssg.yaml
 
 # The following code preserves ansible yaml order
 # code from arcaduf's gist
@@ -139,7 +140,7 @@ class Role(object):
         with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
             filedata = f.read()
 
-        self.role_data = yaml.load(filedata)
+        self.role_data = ssg.yaml.ordered_load(filedata)
         if "vars" in self.role_data[0]:
             self.vars_data = self.role_data[0]["vars"]
 
@@ -187,7 +188,7 @@ class Role(object):
         if "tags" not in task:
             return
         variables_to_add = {tag for tag in task["tags"] if self.tag_is_valid_variable(tag)}
-        task["when"] += ["{{{{ {varname} | bool }}}}".format(varname=v) for v in variables_to_add]
+        task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
         self.added_variables.update(variables_to_add)
 
     def add_task_variables_to_default_variables_if_needed(self):
@@ -393,7 +394,7 @@ class Role(object):
         self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
-            "{title} - Ansible role generated from ComplianceAsCode"
+            "{title} - Ansible role generated from ComplianceAsCode Project"
             .format(title=self.title))
         self.remote_repo.edit(
             self.remote_repo.name,
@@ -445,10 +446,9 @@ def locally_clone_and_init_repositories(organization, repo_list):
 def main():
     args = parse_args()
 
-    all_product_whitelist = {"%s" % p for p in PRODUCT_WHITELIST}
-    product_whitelist = set(all_product_whitelist)
+    product_whitelist = PRODUCT_WHITELIST
     if args.product:
-        selected_products = {"%s" % p for p in args.product}
+        selected_products = set(args.product)
         product_whitelist.intersection_update(selected_products)
 
     all_role_whitelist = []
@@ -458,7 +458,9 @@ def main():
 
     role_whitelist = set(all_role_whitelist)
     if args.profile:
-        selected_roles = {"%s" % p for p in args.profile}
+        selected_roles = set()
+        for profile in args.profile:
+            selected_roles.update(set([role for role in role_whitelist if profile in role]))
         role_whitelist.intersection_update(selected_roles)
 
     # the first 4 cut chars are for "ssg-"
@@ -469,18 +471,6 @@ def main():
     )
     selected_roles = available_roles.intersection(role_whitelist)
     potential_roles = available_roles.intersection(all_role_whitelist)
-
-    if not args.token:
-        print("Input your GitHub credentials:")
-        username = raw_input("username or token: ")
-        password = getpass.getpass("password (or empty for token): ")
-    else:
-        username = args.token
-        password = ""
-
-    github = Github(username, password)
-    github_org = github.get_organization(args.organization)
-    github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Fix SSG role names to be in line with ansible role naming
     corrected_roles = []
@@ -494,6 +484,18 @@ def main():
 
     # Replace selected roles with correctly named ones
     selected_roles = set(corrected_roles)
+
+    if not args.token:
+        print("Input your GitHub credentials:")
+        username = raw_input("username or token: ")
+        password = getpass.getpass("password (or empty for token): ")
+    else:
+        username = args.token
+        password = ""
+
+    github = Github(username, password)
+    github_org = github.get_organization(args.organization)
+    github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Create empty repositories
     github_new_repos = sorted(list(set(selected_roles) - set(github_repositories)))
