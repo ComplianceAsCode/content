@@ -376,7 +376,12 @@ OCILREFATTR_TO_TAG = {
 XCCDF_PLATFORM_TO_CPE = {
     "machine": "cpe:/a:machine",
     "container": "cpe:/a:container",
+    "libuser": "cpe:/a:libuser",
+    "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
+    "pam": "cpe:/a:pam",
     "shadow-utils": "cpe:/a:shadow-utils",
+    "systemd": "cpe:/a:systemd",
+    "yum": "cpe:/a:yum",
 }
 
 # _version_name_map = {
