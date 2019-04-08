@@ -6,7 +6,7 @@
 - name: get back device associated to mountpoint
   shell: |
     set -o pipefail
-    mount | grep ' {{{ MOUNTPOINT }}} ' |cut -d ' ' -f 1
+    mount | grep ' {{{ MOUNTPOINT }}} ' | cut -d ' ' -f 1
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch device name with mount module
     executable: /bin/bash
