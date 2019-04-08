@@ -21,7 +21,7 @@
       mount | grep ' {{{ MOUNTPOINT }}} ' | sed -re 's:.*\((.*)\):\1:'
     args:
       warn: False # Ignore ANSIBLE0006, we can't fetch current mount options with mount module
-    executable: /bin/bash
+      executable: /bin/bash
     register: device_cur_mountoption
     check_mode: no
     changed_when: False
@@ -32,7 +32,7 @@
       mount | grep ' {{{ MOUNTPOINT }}} ' | cut -d ' ' -f 5
     args:
       warn: False # Ignore ANSIBLE0006, we can't fetch fstype with mount module
-    executable: /bin/bash
+      executable: /bin/bash
     register: device_fstype
     check_mode: no
     changed_when: False
