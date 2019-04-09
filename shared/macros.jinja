@@ -477,15 +477,15 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 {{%- macro ocil_clause_file_permissions(file, perms) %}}
-{{{ file }}} has unix mode {{{ perms }}}
+    {{{ file }}} has unix mode {{{ perms }}}
 {{%- endmacro %}}
 
 {{%- macro ocil_clause_file_owner(file, owner) %}}
-{{{ file }}} has owner {{{ owner }}}
+    {{{ file }}} has owner {{{ owner }}}
 {{%- endmacro %}}
 
 {{%- macro ocil_clause_file_group_owner(file, group) %}}
-{{{ file }}} has group owner {{{ group }}}
+    {{{ file }}} has group owner {{{ group }}}
 {{%- endmacro %}}
 
 {{%- macro check_file_permissions(file, perms) %}}
