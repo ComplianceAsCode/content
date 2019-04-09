@@ -10,7 +10,7 @@ description: |-
     the master node(s) and set the <tt>maximumFileSizeMegabytes</tt> parameter to
     an appropriate size in MB. For example, to set it to 100 MB:
     <pre>auditConfig:
-      auditFilePath: "/var/log/audit-ocp.log"
+      auditFilePath: "/etc/origin/master/audit-ocp.log"
       enabled: true
       maximumFileRetentionDays: 30
       maximumFileSizeMegabytes: 100
@@ -26,7 +26,7 @@ rationale: |-
 severity: medium
 
 references:
-    cis: 1.1.28
+    cis: 1.1.18
 
 ocil_clause: '<tt>maximumFileSizeMegabytes</tt> is set to <tt>100</tt> or as appropriate'
 
