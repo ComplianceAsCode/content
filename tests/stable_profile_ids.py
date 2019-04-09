@@ -20,9 +20,9 @@ from collections import defaultdict
 STABLE_PROFILE_IDS = {
     "FEDORA": ["standard", "ospp", "pci-dss"],
     "RHEL-6": ["C2S", "CS2", "CSCF-RHEL6-MLS", "fisma-medium-rhel6-server",
-               "pci-dss", "rht-ccp", "stig-rhel6-disa", "usgcb-rhel6-server"],
-    "RHEL-7": ["C2S", "cjis", "hipaa", "nist-800-171-cui", "rht-ccp",
-               "ospp", "ospp42", "pci-dss", "stig-rhel7-disa"],
+               "pci-dss", "rht-ccp", "stig", "usgcb-rhel6-server"],
+    "RHEL-7": ["C2S", "cjis", "hipaa", "cui", "rht-ccp",
+               "ospp", "ospp42", "pci-dss", "stig"],
     "RHEL-8": ["ospp", "pci-dss"],
 }
 
