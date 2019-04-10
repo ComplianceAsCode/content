@@ -383,6 +383,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "shadow-utils": "cpe:/a:shadow-utils",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
+    "yum_or_zypper": "cpe:/a:yum_or_zypper",
 }
 
 # _version_name_map = {
