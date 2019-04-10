@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Password Strength Minimum Different Characters'
+title: 'Ensure PAM Enforces Password Requirements - Minimum Different Characters'
 
 description: |-
     The pam_pwquality module's <tt>difok</tt> parameter sets the number of characters
@@ -53,3 +53,5 @@ ocil: |-
     To check how many characters must differ during a password change, run the following command:
     <pre>$ grep difok /etc/security/pwquality.conf</pre>
     The <tt>difok</tt> parameter will indicate how many characters must differ.
+
+platform: pam

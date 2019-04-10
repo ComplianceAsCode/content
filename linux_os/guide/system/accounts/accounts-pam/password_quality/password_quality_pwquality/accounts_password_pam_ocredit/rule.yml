@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Set Password Strength Minimum Special Characters'
+title: 'Ensure PAM Enforces Password Requirements - Minimum Special Characters'
 
 description: |-
     The pam_pwquality module's <tt>ocredit=</tt> parameter controls requirements for
@@ -53,3 +53,5 @@ ocil: |-
     The <tt>ocredit</tt> parameter (as a negative number) will indicate how many special characters are required.
     The DoD and FISMA require at least one special character in a password.
     This would appear as <tt>ocredit = -1</tt>.
+
+platform: pam

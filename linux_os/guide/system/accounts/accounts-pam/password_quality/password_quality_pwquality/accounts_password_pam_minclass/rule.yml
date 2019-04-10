@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Set Password Strength Minimum Different Categories'
+title: 'Ensure PAM Enforces Password Requirements - Minimum Different Categories'
 
 description: |-
     The pam_pwquality module's <tt>minclass</tt> parameter controls
@@ -60,3 +60,5 @@ ocil: |-
     The <tt>minclass</tt> parameter will indicate how many character classes must be used. If
     the requirement was for the password to contain characters from three different categories,
     then this would appear as <tt>minclass = 3</tt>.
+
+platform: pam
