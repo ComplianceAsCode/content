@@ -11,14 +11,14 @@ import xml.etree.ElementTree as ET
 
 from ssg.constants import XCCDF12_NS as xccdf_ns
 
+
 def parse_args():
     script_desc = \
         "Removes all rules that don't belong to a particular profile from a datastream file."
 
     parser = argparse.ArgumentParser(description=script_desc)
-    parser.add_argument("benchmark",
-                        action="store",
-                        help="Specify DataStream file to act on. Doesn't work with plain XCCDF yet.")
+    parser.add_argument("benchmark", action="store", help="Specify DataStream file to act on. "
+                        "Doesn't work with plain XCCDF yet.")
     parser.add_argument("profile",
                         action="store",
                         help="The profile name of the rules that should be kept.")
@@ -86,7 +86,8 @@ def main():
                 group.remove(var)
 
     for parent, group in tree_walk(bench, '{{{0}}}Group'.format(xccdf_ns)):
-        child_tags = {c.tag for c in group} - {'{{{0}}}title'.format(xccdf_ns), '{{{0}}}description'.format(xccdf_ns)}
+        exceptions = {'{{{0}}}title'.format(xccdf_ns), '{{{0}}}description'.format(xccdf_ns)}
+        child_tags = {c.tag for c in group} - exceptions
         if not child_tags:
             print('removing group ' + group.get('id'))
             parent.remove(group)
