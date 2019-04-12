@@ -24,6 +24,7 @@ except ImportError:
 
 
 import ssg.ansible
+import ssg.yaml
 
 # The following code preserves ansible yaml order
 # code from arcaduf's gist
@@ -43,6 +44,13 @@ yaml.add_representer(collections.OrderedDict, dict_representer)
 yaml.add_constructor(_mapping_tag, dict_constructor)
 # End arcaduf gist
 
+PRODUCT_WHITELIST = set([
+    "rhel7",
+    "rhel8",
+    "rhv4",
+    "ocp3",
+])
+
 PROFILE_WHITELIST = set([
     "C2S",
     "cjis",
@@ -56,7 +64,7 @@ PROFILE_WHITELIST = set([
 
 
 ORGANIZATION_NAME = "RedHatOfficial"
-GIT_COMMIT_AUTHOR_NAME = "Red Hat Security Automation development team"
+GIT_COMMIT_AUTHOR_NAME = "ComplianceAsCode development team"
 GIT_COMMIT_AUTHOR_EMAIL = "scap-security-guide@lists.fedorahosted.org"
 META_TEMPLATE_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -95,6 +103,22 @@ def clone_and_init_repository(parent_dir, organization, repo):
         os.chdir("..")
 
 
+def update_repo_release(github, repo):
+    repo_tags = [tag for tag in repo.get_tags()]
+    try:
+        (majv, minv, rel) = repo_tags[0].name.split(".")
+        rel = int(rel) + 1
+    except IndexError:
+        cac = github.get_repo("ComplianceAsCode/content")
+        cac_tags = [tag for tag in cac.get_tags() if tag.name != "v0.5.0-InitialDraft"]
+        (majv, minv, rel) = cac_tags[0].name.split(".")
+
+    new_tag = ("%s.%s.%s" % (majv, minv, rel))
+    commits = repo.get_commits()
+    print("Tagging new release '%s' for repo '%s'" % (new_tag, repo.name))
+    repo.create_git_tag_and_release(new_tag, '', '', '', commits[0].sha, 'commit')
+
+
 class Role(object):
     def __init__(self, repo, local_playbook_filename):
         self.remote_repo = repo
@@ -110,12 +134,13 @@ class Role(object):
 
         self.description = None
         self.title = None
+        self.role_name = None
 
     def gather_data(self):
         with io.open(self.local_playbook_filename, 'r', encoding="utf-8") as f:
             filedata = f.read()
 
-        self.role_data = yaml.load(filedata)
+        self.role_data = ssg.yaml.ordered_load(filedata)
         if "vars" in self.role_data[0]:
             self.vars_data = self.role_data[0]["vars"]
 
@@ -163,13 +188,13 @@ class Role(object):
         if "tags" not in task:
             return
         variables_to_add = {tag for tag in task["tags"] if self.tag_is_valid_variable(tag)}
-        task["when"] += ["{{{{ {varname} | bool }}}}".format(varname=v) for v in variables_to_add]
+        task["when"] += ["{varname} | bool".format(varname=v) for v in variables_to_add]
         self.added_variables.update(variables_to_add)
 
     def add_task_variables_to_default_variables_if_needed(self):
         default_vars_to_add = sorted(self.added_variables)
         lines = [
-            "---", "# defaults file for {role_name}\n".format(role_name=self.remote_repo.name),
+            "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
         ]
         lines += ["{var_name}: true".format(var_name=var_name) for var_name in default_vars_to_add]
         lines.append("")
@@ -189,11 +214,25 @@ class Role(object):
             print("Updating defaults/main.yml in %s" % self.remote_repo.name)
 
     def _reformat_local_content(self):
+        description = ""
         # Add \n in between tasks to increase readability
         self.tasks_local_content = self.tasks_local_content.replace('\n- ', '\n\n- ')
 
         self.description = self.description.replace('# ', '')
         self.description = self.description.replace('#', '')
+
+        # Remove SCAP and Playbook examples from description as they don't belong in roles.
+        for line in self.description.split("\n"):
+            if line.startswith("Profile ID:"):
+                break
+            else:
+                description += (line + "\n")
+        self.description = description.strip("\n\n")
+
+        # Ansible prefers underscores
+        self.role_name = self.remote_repo.name.replace("-", "_")
+        # Don't include role in role_name for simplicity
+        self.role_name = self.role_name.replace('ansible_role_', '')
 
     def get_description_from_filedata(self, filedata):
         separator = "#" * 79
@@ -246,6 +285,9 @@ class Role(object):
         with io.open(README_TEMPLATE_PATH, 'r',  encoding="utf-8") as f:
             readme_template = f.read()
 
+        # This is for a role and not a playbook
+        self.description = re.sub(r'Playbook', "Role", self.description)
+
         local_readme_content = readme_template.replace(
             "@DESCRIPTION@", self.description)
         local_readme_content = local_readme_content.replace(
@@ -253,12 +295,21 @@ class Role(object):
         local_readme_content = local_readme_content.replace(
             "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
         local_readme_content = local_readme_content.replace(
-            "@ROLE_NAME@", self.remote_repo.name)
+            "@ROLE_NAME@", self.role_name)
         return local_readme_content
 
-    def _update_readme_content_if_needed(self):
+    def _update_readme_content_if_needed(self, repo_status):
         local_readme_content = self._generate_readme_content()
         remote_readme_file = self.remote_repo.get_file_contents("/README.md")
+
+        if repo_status == "update":
+            local_readme_content = remote_readme_file.decoded_content.decode("utf-8")
+            local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
+                                          "Ansible version %s" % ssg.ansible.min_ansible_version,
+                                          local_readme_content)
+            local_readme_content = re.sub(r'%s.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
+                                          "%s.%s" % (ORGANIZATION_NAME, self.role_name),
+                                          local_readme_content)
 
         if local_readme_content != remote_readme_file.decoded_content.decode("utf-8"):
             print("Updating README.md in %s" % self.remote_repo.name)
@@ -272,14 +323,38 @@ class Role(object):
                     GIT_COMMIT_AUTHOR_NAME, GIT_COMMIT_AUTHOR_EMAIL)
             )
 
-    def _update_meta_content_if_needed(self):
+    def _update_meta_content_if_needed(self, repo_status):
+        remote_meta_file = self.remote_repo.get_file_contents("/meta/main.yml")
+
         with open(META_TEMPLATE_PATH, 'r') as f:
             meta_template = f.read()
 
-        local_meta_content = meta_template.replace("@DESCRIPTION@", self.title)
-        local_meta_content = local_meta_content.replace(
-            "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
-        remote_meta_file = self.remote_repo.get_file_contents("/meta/main.yml")
+        if repo_status == "new":
+            local_meta_content = meta_template.replace("@ROLE_NAME@",
+                                                       self.role_name)
+            local_meta_content = local_meta_content.replace("@DESCRIPTION@", self.title)
+            local_meta_content = local_meta_content.replace(
+                "@MIN_ANSIBLE_VERSION@", ssg.ansible.min_ansible_version)
+        else:
+            author = re.search(r'author:.*', meta_template).group(0)
+            description = re.search(r'description:.*', meta_template).group(0)
+            issue_tracker_url = re.search(r'issue_tracker_url:.*', meta_template).group(0)
+            local_meta_content = remote_meta_file.decoded_content
+            local_meta_content = re.sub(r'role_name:.*',
+                                        "role_name: %s" % self.role_name,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'author:.*',
+                                        author,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'min_ansible_version: (\d*\.\d+|\d+)',
+                                        "min_ansible_version: %s" % ssg.ansible.min_ansible_version,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'description:.*',
+                                        "description: %s" % self.title,
+                                        local_meta_content)
+            local_meta_content = re.sub(r'issue_tracker_url:.*',
+                                        issue_tracker_url,
+                                        local_meta_content)
 
         if local_meta_content != remote_meta_file.decoded_content:
             print("Updating meta/main.yml in %s" % self.remote_repo.name)
@@ -314,13 +389,12 @@ class Role(object):
 
         self._update_tasks_content_if_needed()
         self._update_vars_content_if_needed()
-        if repo_status == "new":
-            self._update_readme_content_if_needed()
-            self._update_meta_content_if_needed()
+        self._update_readme_content_if_needed(repo_status)
+        self._update_meta_content_if_needed(repo_status)
         self.add_task_variables_to_default_variables_if_needed()
 
         repo_description = (
-            "{title} - Ansible role generated from ComplianceAsCode"
+            "{title} - Ansible role generated from ComplianceAsCode Project"
             .format(title=self.title))
         self.remote_repo.edit(
             self.remote_repo.name,
@@ -344,6 +418,16 @@ def parse_args():
         "--profile", "-p", default=[], action="append",
         metavar="PROFILE", choices=PROFILE_WHITELIST,
         help="What profiles to upload, if not specified, upload all that are applicable.")
+    parser.add_argument(
+        "--product", "-r", default=[], action="append",
+        metavar="PRODUCT", choices=PRODUCT_WHITELIST,
+        help="What products to upload, if not specified, upload all that are applicable.")
+    parser.add_argument(
+        "--tag-release", "-n", default=False, action="store_true",
+        help="Tag a new release in GitHub")
+    parser.add_argument(
+        "--token", "-t", dest="token",
+        help="GitHub token used for organization authorization")
     return parser.parse_args()
 
 
@@ -362,10 +446,21 @@ def locally_clone_and_init_repositories(organization, repo_list):
 def main():
     args = parse_args()
 
-    all_role_whitelist = {"rhel7-role-%s" % p for p in PROFILE_WHITELIST}
+    product_whitelist = PRODUCT_WHITELIST
+    if args.product:
+        selected_products = set(args.product)
+        product_whitelist.intersection_update(selected_products)
+
+    all_role_whitelist = []
+    for product in product_whitelist:
+        for p in PROFILE_WHITELIST:
+            all_role_whitelist.append("%s-role-%s" % (product, p))
+
     role_whitelist = set(all_role_whitelist)
     if args.profile:
-        selected_roles = {"rhel7-role-%s" % p for p in args.profile}
+        selected_roles = set()
+        for profile in args.profile:
+            selected_roles.update(set([role for role in role_whitelist if profile in role]))
         role_whitelist.intersection_update(selected_roles)
 
     # the first 4 cut chars are for "ssg-"
@@ -377,9 +472,26 @@ def main():
     selected_roles = available_roles.intersection(role_whitelist)
     potential_roles = available_roles.intersection(all_role_whitelist)
 
-    print("Input your GitHub credentials:")
-    username = raw_input("username or token: ")
-    password = getpass.getpass("password (or empty for token): ")
+    # Fix SSG role names to be in line with ansible role naming
+    corrected_roles = []
+    role_map = {}
+    for role in selected_roles:
+        ostype = role.split("-")[0]
+        corrected_role = role.replace(("%s-role" % ostype),
+                                      ("ansible-role-%s" % (ostype)))
+        role_map[corrected_role] = role
+        corrected_roles.append(corrected_role)
+
+    # Replace selected roles with correctly named ones
+    selected_roles = set(corrected_roles)
+
+    if not args.token:
+        print("Input your GitHub credentials:")
+        username = raw_input("username or token: ")
+        password = getpass.getpass("password (or empty for token): ")
+    else:
+        username = args.token
+        password = ""
 
     github = Github(username, password)
     github_org = github.get_organization(args.organization)
@@ -401,8 +513,10 @@ def main():
 
         if repo.name in selected_roles:
             corresponding_filename = os.path.join(
-                args.build_roles_dir, "ssg-" + repo.name + ".yml")
+                args.build_roles_dir, "ssg-" + role_map[repo.name] + ".yml")
             Role(repo, corresponding_filename).update_repository(repo_status)
+            if args.tag_release:
+                update_repo_release(github, repo)
         elif repo.name not in potential_roles:
             print("Repo '%s' is not managed by this script. "
                   "It may need to be deleted, please verify and do that "
