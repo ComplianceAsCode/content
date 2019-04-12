@@ -10,7 +10,7 @@ from .ansible import add_minimum_version, remove_multiple_blank_lines, \
 from .shims import subprocess_check_output, Queue
 from .build_guides import _is_blacklisted_profile
 from .xccdf import get_profile_short_id
-from .constants import OSCAP_PATH, OSCAP_DS_STRING
+from .constants import OSCAP_PATH, OSCAP_DS_STRING, ansible_system
 
 
 def generate_for_input_content(input_content, benchmark_id, profile_id,
@@ -34,7 +34,8 @@ def generate_for_input_content(input_content, benchmark_id, profile_id,
     return subprocess_check_output(args).decode("utf-8")
 
 
-def _get_filename(path_base, extension, profile_id, benchmark_id, benchmarks):
+def _get_filename(path_base, extension, profile_id, benchmark_id, benchmarks,
+                  template):
     """
     Returns the filename for a given role from the profile_id and
     benchmark_id.
@@ -43,20 +44,24 @@ def _get_filename(path_base, extension, profile_id, benchmark_id, benchmarks):
     benchmark_id_for_path = benchmark_id
     if benchmark_id_for_path.startswith(OSCAP_DS_STRING):
         benchmark_id_for_path = benchmark_id_for_path[len(OSCAP_DS_STRING):]
+    if template == ansible_system:
+        file_name_base = "playbook"
+    else:
+        file_name_base = "script"
 
     if len(benchmarks) == 1 or len(benchmark_id_for_path) == len("RHEL-X"):
         # treat the base RHEL benchmark as a special case to preserve
         # old guide paths and old URLs that people may be relying on
-        return "%s-role-%s.%s" % (path_base,
-                                  get_profile_short_id(profile_id_for_path),
-                                  extension)
-    return "%s-%s-role-%s.%s" % \
-           (path_base, benchmark_id_for_path,
+        return "%s-%s-%s.%s" % (path_base, file_name_base,
+                                get_profile_short_id(profile_id_for_path),
+                                extension)
+    return "%s-%s-%s-%s.%s" % \
+           (path_base, benchmark_id_for_path, file_name_base,
             get_profile_short_id(profile_id_for_path), extension)
 
 
 def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
-                     output_dir):
+                     output_dir, template):
     """
     Returns a list of output filenames for each non-blacklisted profile in
     the benchmark.
@@ -68,7 +73,7 @@ def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
             continue
 
         role_filename = _get_filename(path_base, extension, profile_id,
-                                      benchmark_id, benchmarks)
+                                      benchmark_id, benchmarks, template)
         role_path = os.path.join(output_dir, role_filename)
 
         role_paths.append(role_path)
@@ -92,7 +97,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
             continue
 
         role_filename = _get_filename(path_base, extension, profile_id,
-                                      benchmark_id, benchmarks)
+                                      benchmark_id, benchmarks, template)
         role_path = os.path.join(output_dir, role_filename)
 
         queue.put(task(benchmark_id, profile_id, input_path, extension,

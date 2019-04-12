@@ -132,7 +132,8 @@ cmake ../
 make -j4 rhel7-content  # SCAP XML files for RHEL7
 make -j4 rhel7-guides  # HTML guides for RHEL7
 make -j4 rhel7-tables  # HTML tables for RHEL7
-make -j4 rhel7-roles  # remediation roles for RHEL7
+make -j4 rhel7-profile-bash-scripts  # remediation Bash scripts for all RHEL7 profiles
+make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
 make -j4 rhel7  # everything above for RHEL7
 ```
 
@@ -975,7 +976,7 @@ The build system generates an Ansible Playbook from the remediation for all prof
 The generated Playbook is located in `/build/<product>/playbooks/<profile_id>/<rule_id>.yml`.
 
 We also build profile Playbook that contains tasks for all rules in the profile.
-The Playbook is generated in `/build/roles/ssg-<product>-role-<profile_id>.yml`.
+The Playbook is generated in `/build/playbooks/ssg-<product>-playbook-<profile_id>.yml`.
 
 ==== Bash
 

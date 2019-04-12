@@ -4,7 +4,7 @@ from __future__ import print_function
 
 """
 Takes given XCCDF or DataStream and for every profile in it it generates one
-ansible and bash remediation roles.
+Ansible Playbook and Bash script.
 
 Author: Martin Preisler <mpreisle@redhat.com>
 """
@@ -77,7 +77,8 @@ def main():
 
     if args.cmd == "list_outputs":
         role_paths = ssg.build_roles.get_output_paths(benchmarks, benchmark_profile_pairs,
-                                                      path_base, extension, output_dir)
+                                                      path_base, extension, output_dir,
+                                                      template)
 
         for role_path in role_paths:
             print(role_path)
