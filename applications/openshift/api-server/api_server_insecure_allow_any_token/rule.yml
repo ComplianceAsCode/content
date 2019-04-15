@@ -5,6 +5,7 @@ prodtype: ocp3
 title: 'Disable Insecure Tokens'
 
 description: |-
+    This check is only applicable on OpenShift 3.10 and earlier deployments.
     Insecure tokens should be forbidden. Edit the API server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s) and
     remove any instance of the <tt>insecure-allow-any-token</tt> parameter.
@@ -19,9 +20,9 @@ severity: medium
 references:
     cis: 1.1.3
 
-ocil_clause: 'insecure-allow-any-token is configured and enabled on the master node'
+ocil_clause: 'OpenShift 3.10 or earlier is installed and insecure-allow-any-token is configured and enabled on the master node'
 
 ocil: |-
-    Run the following command on the master node(s):
+    If OpenShift 3.10 or earlier is installed, run the following command on the master node(s):
     <pre>$ sudo grep insecure-allow-any-token /etc/origin/master/master-config.yaml</pre>
     The output should return no output.
