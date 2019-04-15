@@ -755,7 +755,7 @@ macro(ssg_build_product PRODUCT)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/playbooks/ssg-${PRODUCT}-playbook-*.yml\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/playbooks/${PRODUCT}-playbook-*.yml\") \n
         if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -767,7 +767,7 @@ macro(ssg_build_product PRODUCT)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash-scripts/ssg-${PRODUCT}-script-*.sh\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash-scripts/${PRODUCT}-script-*.sh\") \n
         if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -878,7 +878,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/playbooks/ssg-${DERIVATIVE}-playbook-*.yml\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/playbooks/${DERIVATIVE}-playbook-*.yml\") \n
         if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -890,7 +890,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash-scripts/ssg-${DERIVATIVE}-script-*.sh\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash-scripts/${DERIVATIVE}-script-*.sh\") \n
         if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})

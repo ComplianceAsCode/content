@@ -59,6 +59,9 @@ def main():
     extension = args.extension
     template = args.template
 
+    if path_base.startswith("ssg-"):
+        path_base = path_base[len("ssg-"):]
+
     if args.cmd == "list_inputs":
         print(input_path)
         sys.exit(0)

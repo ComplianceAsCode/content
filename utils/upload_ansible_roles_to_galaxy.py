@@ -449,8 +449,8 @@ def select_roles_to_upload(product_whitelist, profile_whitelist,
     for filename in os.listdir(build_playbooks_dir):
         root, ext = os.path.splitext(filename)
         if ext == ".yml":
-            # the format is ssg-product-playbook-profile.yml
-            _, product, _, profile = root.split("-", 3)
+            # the format is product-playbook-profile.yml
+            product, _, profile = root.split("-", 2)
             if product in product_whitelist and profile in profile_whitelist:
                 role_name = "ansible-%s-%s-role" % (product, profile)
                 selected_roles[role_name] = (product, profile)
@@ -504,7 +504,7 @@ def main():
             repo_status = "update"
 
         if repo.name in selected_roles:
-            playbook_filename = "ssg-%s-playbook-%s.yml" % selected_roles[repo.name]
+            playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
             playbook_full_path = os.path.join(
                 args.build_playbooks_dir, playbook_filename)
             Role(repo, playbook_full_path).update_repository(repo_status)
