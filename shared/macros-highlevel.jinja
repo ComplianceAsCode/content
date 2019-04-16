@@ -131,7 +131,8 @@ ocil: |-
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_complete_ocil_entry_socket_and_service_disabled(service) }}}
     {{%- else %}}
-        JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+ocil: |-
+    JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
