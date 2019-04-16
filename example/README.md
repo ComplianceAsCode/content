@@ -3,7 +3,7 @@
 This product was introduced to show a few aspects:
 
  - Serve a documentation on how to add a new product.
-    - [See commit bfe5a764](bfe5a76495973f5fc000645c68e3e6936543a09f) for the changes that were
+    - [See commit bfe5a764](https://github.com/ComplianceAsCode/content/commit/bfe5a76495973f5fc000645c68e3e6936543a09f) for the changes that were
       necessary to add a new product.
  - Create a profile that is quick to scan on RHEL-like distributions.
 
