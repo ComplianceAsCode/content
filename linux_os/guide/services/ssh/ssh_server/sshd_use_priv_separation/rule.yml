@@ -6,7 +6,11 @@ description: |-
     When enabled, SSH will create an unprivileged child process that
     has the privilege of the authenticated user. To enable privilege separation in
     SSH, add or correct the following line in the <tt>/etc/ssh/sshd_config</tt> file:
+    {{% if product == "sle12" %}}
+    <pre>UsePrivilegeSeparation yes</pre>
+    {{% else %}}
     <pre>UsePrivilegeSeparation sandbox</pre>
+    {{% endif %}}
 
 rationale: |-
     SSH daemon privilege separation causes the SSH process to drop root privileges
@@ -40,4 +44,8 @@ ocil: |-
     To check if UsePrivilegeSeparation is enabled or set correctly, run the
     following command:
     <pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
+    {{% if product == "sle12" %}}
     If configured properly, output should be <pre>sandbox</pre>
+    {{% else %}}
+    If configured properly, output should be <pre>sandbox</pre>
+    {{% endif %}}
