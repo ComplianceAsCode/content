@@ -83,7 +83,7 @@ def find_rules(directory, func):
     # a/b/c/something.rule
     #
     # The corresponding rule and contents of the product.yml are then passed
-    # into func(/path/to/rule, product_yaml_contents); if the result evalutes
+    # into func(/path/to/rule, product_yaml_contents); if the result evaluates
     # to true, the tuple (/path/to/rule, /path/to/product.yml) is saved as a
     # result.
     #
@@ -481,7 +481,7 @@ Commands:
 \tinvalid_identifiers - check and fix rules with invalid identifiers
 \tint_identifiers - check and fix rules with pseudo-integer identifiers
 \tempty_references - check and fix rules with empty references
-\tint_references - check and fix rules with pseduo-integer references
+\tint_references - check and fix rules with pseudo-integer references
                                      """)
     parser.add_argument("command", help="Which fix to perform.",
                         choices=['empty_identifiers', 'prefixed_identifiers',
