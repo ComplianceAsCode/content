@@ -1,7 +1,7 @@
 # platform = multi_platform_rhel,multi_platform_sle
 
 # Identify local mounts
-MOUNT_LIST=$(df | grep "^/dev" | awk '{ print $6 }') 
+MOUNT_LIST=$(df --local | awk '{ print $6 }')
 
 # Find file on each listed mount point
 for cur_mount in ${MOUNT_LIST}
