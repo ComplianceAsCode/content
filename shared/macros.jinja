@@ -453,7 +453,7 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
-{{%- macro ocil_file_permissions(file, perms) %}}
+{{%- macro ocil_file_permissions(file, perms) -%}}
     To check the permissions of <code>{{{ file }}}</code>, run the command:
     <pre>$ ls -l {{{ file }}}</pre>
     If properly configured, the output should indicate the following permissions:
@@ -461,7 +461,7 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
-{{%- macro ocil_file_owner(file, owner) %}}
+{{%- macro ocil_file_owner(file, owner) -%}}
     To check the ownership of <code>{{{ file }}}</code>, run the command:
     <pre>$ ls -lL {{{ file }}}</pre>
     If properly configured, the output should indicate the following owner:
@@ -469,22 +469,22 @@ ocil_clause: "{{{ sebool }}} is not enabled"
 {{%- endmacro %}}
 
 
-{{%- macro ocil_file_group_owner(file, group) %}}
+{{%- macro ocil_file_group_owner(file, group) -%}}
     To check the group ownership of <code>{{{ file }}}</code>, run the command:
     <pre>$ ls -lL {{{ file }}}</pre>
-    If properly configured, the output should indicate the following group-owner.
+    If properly configured, the output should indicate the following group-owner:
     <code>{{{ group }}}</code>
 {{%- endmacro %}}
 
-{{%- macro ocil_clause_file_permissions(file, perms) %}}
+{{%- macro ocil_clause_file_permissions(file, perms) -%}}
     {{{ file }}} has unix mode {{{ perms }}}
 {{%- endmacro %}}
 
-{{%- macro ocil_clause_file_owner(file, owner) %}}
+{{%- macro ocil_clause_file_owner(file, owner) -%}}
     {{{ file }}} has owner {{{ owner }}}
 {{%- endmacro %}}
 
-{{%- macro ocil_clause_file_group_owner(file, group) %}}
+{{%- macro ocil_clause_file_group_owner(file, group) -%}}
     {{{ file }}} has group owner {{{ group }}}
 {{%- endmacro %}}
 

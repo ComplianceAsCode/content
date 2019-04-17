@@ -5,7 +5,7 @@ prodtype: rhel7,rhel8,fedora,ol7,ol8
 title: 'Verify the UEFI Boot Loader grub.cfg User Ownership'
 
 description: |-
-{{% if product == "fedora" %}}
+{{%- if product == "fedora" %}}
     The file <tt>/boot/efi/EFI/fedora/grub.cfg</tt> should
     be owned by the <tt>root</tt> user to prevent destruction
     or modification of the file.
@@ -15,7 +15,7 @@ description: |-
     be owned by the <tt>root</tt> user to prevent destruction
     or modification of the file.
     {{{ describe_file_owner(file="/boot/efi/EFI/redhat/grub.cfg", owner="root") }}}
-{{% endif %}}
+{{%- endif %}}
 
 rationale: 'Only root should be able to modify important boot parameters.'
 
@@ -36,15 +36,15 @@ references:
     cis-csc: 12,13,14,15,16,18,3,5
 
 ocil_clause: |-
-{{% if product == "fedora" %}}
+{{%- if product == "fedora" %}}
     {{{ ocil_clause_file_owner(file="/boot/efi/EFI/fedora/grub.cfg", owner="root") }}}
 {{% else %}}
     {{{ ocil_clause_file_owner(file="/boot/efi/EFI/redhat/grub.cfg", owner="root") }}}
-{{% endif %}}
+{{%- endif %}}
 
 ocil: |-
-{{% if product == "fedora" %}}
+{{%- if product == "fedora" %}}
     {{{ ocil_file_owner(file="/boot/efi/EFI/fedora/grub.cfg", owner="root") }}}
 {{% else %}}
     {{{ ocil_file_owner(file="/boot/efi/EFI/redhat/grub.cfg", owner="root") }}}
-{{% endif %}}
+{{%- endif %}}
