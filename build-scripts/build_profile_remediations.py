@@ -16,7 +16,7 @@ import threading
 import sys
 
 import ssg.build_guides
-import ssg.build_roles
+import ssg.build_profile_remediations
 import ssg.utils
 import ssg.xml
 
@@ -26,7 +26,8 @@ def parse_args():
 
     sp = p.add_subparsers(help="actions")
 
-    make_sp = sp.add_parser("build", help="Build all the remediation roles")
+    make_sp = sp.add_parser("build",
+            help="Build all the profile remediations")
     make_sp.set_defaults(cmd="build")
 
     input_sp = sp.add_parser("list-inputs", help="Generate input list")
@@ -42,7 +43,7 @@ def parse_args():
     p.add_argument("-t", "--template", action="store", required=True,
                    help="the remediation template")
     p.add_argument("-e", "--extension", action="store", required=True,
-                   help="the extension of the roles")
+                   help="the extension of the files")
     p.add_argument("-i", "--input", action="store", required=True,
                    help="input file, can be XCCDF or Source DataStream")
     p.add_argument("-o", "--output", action="store", required=True,
@@ -59,8 +60,9 @@ def main():
     extension = args.extension
     template = args.template
 
-    if path_base.startswith("ssg-"):
-        path_base = path_base[len("ssg-"):]
+    ssg_prefix = "ssg-"
+    if path_base.startswith(ssg_prefix):
+        path_base = path_base[len(ssg_prefix):]
 
     if args.cmd == "list_inputs":
         print(input_path)
@@ -79,23 +81,26 @@ def main():
         input_tree, benchmarks)
 
     if args.cmd == "list_outputs":
-        role_paths = ssg.build_roles.get_output_paths(benchmarks, benchmark_profile_pairs,
-                                                      path_base, extension, output_dir,
-                                                      template)
+        remediation_paths = ssg.build_profile_remediations.get_output_paths(
+            benchmarks, benchmark_profile_pairs, path_base, extension,
+            output_dir, template
+        )
 
-        for role_path in role_paths:
-            print(role_path)
+        for remediation_path in role_paths:
+            print(remediation_path)
 
         sys.exit(0)
 
-    queue = ssg.build_roles.fill_queue(benchmarks, benchmark_profile_pairs, input_path,
-                                       path_base, extension, output_dir, template)
+    queue = ssg.build_profile_remediations.fill_queue(
+        benchmarks, benchmark_profile_pairs, input_path, path_base,
+        extension, output_dir, template
+    )
 
     workers = []
     for worker_id in range(args.jobs):
         worker = threading.Thread(
             name="Role generate worker #%i" % (worker_id),
-            target=lambda queue=queue: ssg.build_roles.builder(queue)
+            target=lambda queue=queue: ssg.build_profile_remediations.builder(queue)
         )
         workers.append(worker)
         worker.daemon = True
