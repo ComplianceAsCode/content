@@ -27,7 +27,7 @@ def parse_args():
     sp = p.add_subparsers(help="actions")
 
     make_sp = sp.add_parser("build",
-            help="Build all the profile remediations")
+                            help="Build all the profile remediations")
     make_sp.set_defaults(cmd="build")
 
     input_sp = sp.add_parser("list-inputs", help="Generate input list")

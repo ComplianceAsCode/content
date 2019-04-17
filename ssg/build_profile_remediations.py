@@ -73,7 +73,7 @@ def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
             continue
 
         filename = _get_filename(path_base, extension, profile_id,
-                                      benchmark_id, benchmarks, template)
+                                 benchmark_id, benchmarks, template)
         path = os.path.join(output_dir, filename)
         paths.append(path)
 
@@ -96,7 +96,7 @@ def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
             continue
 
         filename = _get_filename(path_base, extension, profile_id,
-                                      benchmark_id, benchmarks, template)
+                                 benchmark_id, benchmarks, template)
         path = os.path.join(output_dir, filename)
 
         queue.put(task(benchmark_id, profile_id, input_path, extension,
