@@ -29,8 +29,7 @@ class ServiceEnabledGenerator(FilesGenerator):
                 "./template_OVAL_service_enabled",
                 {
                     "SERVICENAME": servicename,
-                    "PACKAGENAME": packagename,
-                    "DAEMONNAME": daemonname
+                    "PACKAGENAME": packagename
                 },
                 "./oval/service_{0}_enabled.xml", servicename
             )
@@ -39,7 +38,7 @@ class ServiceEnabledGenerator(FilesGenerator):
                 "./template_BASH_service_enabled",
                 {
                     "SERVICENAME": servicename,
-                    "DAEMONNAME": daemonname
+                    "PACKAGENAME": packagename
                 },
                 "./bash/service_{0}_enabled.sh", servicename
             )
