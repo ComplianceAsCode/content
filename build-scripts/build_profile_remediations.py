@@ -99,7 +99,7 @@ def main():
     workers = []
     for worker_id in range(args.jobs):
         worker = threading.Thread(
-            name="Role generate worker #%i" % (worker_id),
+            name="Remediation generator worker #%i" % (worker_id),
             target=lambda queue=queue: ssg.build_profile_remediations.builder(queue)
         )
         workers.append(worker)

@@ -83,7 +83,7 @@ def get_output_paths(benchmarks, benchmark_profile_pairs, path_base, extension,
 def fill_queue(benchmarks, benchmark_profile_pairs, input_path, path_base,
                extension, output_dir, template):
     """
-    Returns a queue containing tasks to create each remendiation. A task is a
+    Returns a queue containing tasks to create each remediation. A task is a
     namedtuple of (benchmark_id, profile_id, input_path, extension,
     remediation_path, template).
     """
