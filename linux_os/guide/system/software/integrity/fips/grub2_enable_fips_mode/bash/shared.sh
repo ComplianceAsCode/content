@@ -7,6 +7,11 @@ disable_prelink
 
 package_install dracut-fips
 
+# Enable AESNI if supported
+if grep -q -m1 -o aes /proc/cpuinfo; then
+	package_install dracut-fips-aesni
+fi
+
 dracut -f
 
 # Correct the form of default kernel command line in  grub
@@ -26,8 +31,13 @@ if grep -q '^GRUB_CMDLINE_LINUX=".*boot=.*"'  /etc/default/grub; then
 	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)boot=[^[:space:]]*\(.*"\)/\1 boot=UUID='"${BOOT_UUID} \2/" /etc/default/ grub
 else
 	# no existing boot=arg is present, append it
-	sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)"/\1 boot=UUID='${BOOT_UUID}'"/'  /etc/default/grub
+	sed -i "s/\(^GRUB_CMDLINE_LINUX=\".*\)\"/\1 boot=UUID=${BOOT_UUID}\"/" /etc/default/grub
 fi
 
 # Correct the form of kernel command line for each installed kernel in the bootloader
 /sbin/grubby --update-kernel=ALL --args="fips=1 boot=UUID=${BOOT_UUID}"
+
+# Disable ed25519 key in SSH configuration (does not work in FIPS mode)
+if grep -q '^HostKey /etc/ssh/ssh_host_ed25519_key' /etc/ssh/sshd_config; then
+	sed -i 's|^HostKey /etc/ssh/ssh_host_ed25519_key|#HostKey /etc/ssh/ssh_host_ed25519_key|' /etc/ssh/sshd_config
+fi
