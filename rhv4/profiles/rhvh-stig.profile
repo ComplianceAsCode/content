@@ -1,4 +1,4 @@
-documentation_complete: false
+documentation_complete: true
 
 title: '[DRAFT] DISA STIG for Red Hat Virtualization Host (RHVH)'
 
