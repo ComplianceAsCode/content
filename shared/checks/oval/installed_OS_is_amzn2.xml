@@ -1,0 +1,33 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_OS_is_amzn2" version="2">
+    <metadata>
+      <title>Amazon Linux 2</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:amazon:amazon_linux:2"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Amazon Linux 2</description>
+    </metadata>
+    <criteria operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family"
+      definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Amazon Linux 2 is installed"
+      test_ref="test_amzn2" />
+    </criteria>
+  </definition>
+
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="system-release is version 2" id="test_amzn2" version="1">
+    <linux:object object_ref="obj_amzn2" />
+    <linux:state state_ref="state_amzn2" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_state id="state_amzn2" version="1">
+    <linux:version operation="pattern match">^2</linux:version>
+  </linux:rpminfo_state>
+  <linux:rpminfo_object id="obj_amzn2" version="1">
+    <linux:name>system-release</linux:name>
+  </linux:rpminfo_object>
+
+</def-group>
