@@ -6,9 +6,9 @@
 - (xccdf-var {{{ MOUNTPOINT }}})
 
 - name: get back mount information associated to mountpoint
-  command: findmnt '{{ {{{ MOUNTPOINT }}} }}'
+  command: findmnt --fstab '{{ {{{ MOUNTPOINT }}} }}'
   register: device_name
-  check_mode: no
+  failed_when: device_name.rc > 1
   changed_when: False
 
 - name: create mount_info dictionary variable
@@ -17,6 +17,9 @@
   with_together:
     - "{{ device_name.stdout_lines[0].split() | list | lower }}"
     - "{{ device_name.stdout_lines[1].split() | list }}"
+  when:
+    - device_name.stdout_lines is defined
+    - (device_name.stdout | length > 0)
 
 - name: Ensure permission {{{ MOUNTOPTION }}} are set on {{{ MOUNTPOINT }}}
   mount:
@@ -25,4 +28,6 @@
     opts: "{{ mount_info.options }},{{{ MOUNTOPTION }}}"
     state: "mounted"
     fstype: "{{ mount_info.fstype }}"
-  when: (device_name.stdout | length > 0)
+  when:
+    - device_name.stdout is defined
+    - (device_name.stdout | length > 0)
