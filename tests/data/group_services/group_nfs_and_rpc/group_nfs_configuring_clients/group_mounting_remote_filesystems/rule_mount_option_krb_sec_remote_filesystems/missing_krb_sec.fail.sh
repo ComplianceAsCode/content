@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_stig-rhel7-disa
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 cp ../fstab /etc/
 # delete sec=.. only from nfs4

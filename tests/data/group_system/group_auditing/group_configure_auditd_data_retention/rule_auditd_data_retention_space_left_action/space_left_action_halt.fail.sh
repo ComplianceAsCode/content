@@ -1,5 +1,5 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_nist-800-171-cui
+# profiles = xccdf_org.ssgproject.content_profile_cui
 # remediation = bash
 
 . ../../auditd_utils.sh

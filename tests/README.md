@@ -184,7 +184,7 @@ target domain and remediates it based on particular profile.
 
 To test RHEL7 STIG Profile on a VM:
 ```
-./test_suite.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig-rhel7-disa
+./test_suite.py profile --libvirt qemu:///session ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml stig
 ```
 
 To test Fedora Standard Profile on a Podman container:
