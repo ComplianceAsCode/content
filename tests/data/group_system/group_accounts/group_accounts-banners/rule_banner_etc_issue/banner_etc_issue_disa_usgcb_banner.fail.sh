@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig-rhel7-disa
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 # usgcb_default banner
 echo "-- WARNING -- This system is for the use of authorized users only. Individuals 

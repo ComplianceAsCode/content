@@ -55,11 +55,11 @@ PROFILE_WHITELIST = set([
     "C2S",
     "cjis",
     "hipaa",
-    "nist-800-171-cui",
+    "cui",
     "ospp",
     "pci-dss",
     "rht-ccp",
-    "stig-rhel7-disa",
+    "stig",
 ])
 
 

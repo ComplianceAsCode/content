@@ -208,7 +208,7 @@ ssg-rhel7-role-C2S.yml
 ssg-rhel7-role-cjis-rhel7-server.yml
 ssg-rhel7-role-common.yml
 ssg-rhel7-role-docker-host.yml
-ssg-rhel7-role-nist-800-171-cui.yml
+ssg-rhel7-role-cui.yml
 ...
 ```
 

@@ -7,6 +7,6 @@ description: |-
     developed under the DoD consensus model to become a STIG in
     coordination with DISA FSO.
 
-extends: stig-http-disa
+extends: http-stig
 
 selections: []

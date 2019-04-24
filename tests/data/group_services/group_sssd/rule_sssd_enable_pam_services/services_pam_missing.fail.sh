@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_stig-rhel7-disa
+# profiles = xccdf_org.ssgproject.content_profile_stig
 
 SSSD_PAM_SERVICES_REGEX="^[\s]*\[sssd]([^\n]*\n+)+?[\s]*services.*pam.*$"
 SSSD_PAM_SERVICES="[sssd]
