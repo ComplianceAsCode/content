@@ -582,9 +582,9 @@ $ export PATH=$PATH:/home/_username_/scap-security-guide/utils/
 ----
 
 
-=== Profile Statistics
+=== Profile Statistics and Utilities
 
-The `profile_stats.py` tool displays XCCDF profile statistics. It can show number of rules in the
+The `profile_tool.py` tool displays XCCDF profile statistics. It can show number of rules in the
 profile, how many of these rules have an OVAL check implemented, how many have a remediation available,
 shows rule IDs which are missing them and other useful information.
 
@@ -594,8 +594,17 @@ For example, to check which rules in RHEL8 OSPP profile are missing remediations
 
 ----
 $ ./build_product rhel8
-$ ./build-scripts/profile_stats.py --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
+$ ./build-scripts/profile_tool.py stats --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
 ----
+
+The tool also can create diff between YAML profiles and generate a new one.
+
+For example, to generate a profile diff between two profiles, run this command:
+----
+$ ./build-scripts/profile_tool.py diff --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile 
+----
+
+A new profile will be generated in the current directory with the name, in this case, ospp-compared_to-pci-dss.profile
 
 == Contributing with XCCDFs, OVALs and remediations
 
