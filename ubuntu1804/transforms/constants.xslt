@@ -6,7 +6,7 @@
 <xsl:variable name="product_short_name">Ubuntu 1804</xsl:variable>
 <xsl:variable name="product_stig_id_name">UBUNTU_BIONIC_BEAVER</xsl:variable>
 <xsl:variable name="product_guide_id_name">UBUNTU-BIONIC</xsl:variable>
-<xsl:variable name="prod_type">ubuntu</xsl:variable>
+<xsl:variable name="prod_type">ubuntu1804</xsl:variable>
 
 <!-- Define URI of official Center for Internet Security Benchmark for Ubuntu Linux v1.0 -->
 <xsl:variable name="cisuri">https://www.cisecurity.org/benchmark/ubuntu_linux/</xsl:variable>
