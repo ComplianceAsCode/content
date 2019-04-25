@@ -27,7 +27,7 @@ ssg_build_html_cce_table(${PRODUCT})
 
 ssg_build_html_srgmap_tables(${PRODUCT} ${DISA_SRG_TYPE})
 
-ssg_build_html_stig_tables(${PRODUCT} "ospp")
+#ssg_build_html_stig_tables(${PRODUCT} "ospp")
 
 if (SSG_CENTOS_DERIVATIVES_ENABLED)
     ssg_build_derivative_product(${PRODUCT} "centos" "centos8")
