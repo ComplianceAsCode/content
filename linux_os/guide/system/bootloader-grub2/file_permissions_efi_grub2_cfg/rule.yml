@@ -1,12 +1,17 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,ol7,ol8
+prodtype: rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Verify /boot/efi/EFI/redhat/grub.cfg Permissions'
+title: 'Verify the UEFI Boot Loader grub.cfg Permissions'
 
 description: |-
+{{%- if product == "fedora" %}}
+    File permissions for <tt>/boot/efi/EFI/fedora/grub.cfg</tt> should be set to 700.
+    {{{ describe_file_permissions(file="/boot/efi/EFI/fedora/grub.cfg", perms="700") }}}
+{{% else %}}
     File permissions for <tt>/boot/efi/EFI/redhat/grub.cfg</tt> should be set to 700.
     {{{ describe_file_permissions(file="/boot/efi/EFI/redhat/grub.cfg", perms="700") }}}
+{{%- endif %}}
 
 rationale: |-
     Proper permissions ensure that only the root user can modify important boot
@@ -29,8 +34,13 @@ references:
 ocil_clause: 'it does not'
 
 ocil: |-
+{{%- if product == "fedora" %}}
+    To check the permissions of /boot/efi/EFI/fedora/grub.cfg, run the command:
+    <pre>$ sudo ls -lL /boot/efi/EFI/fedora/grub.cfg</pre>
+{{% else %}}
     To check the permissions of /boot/efi/EFI/redhat/grub.cfg, run the command:
     <pre>$ sudo ls -lL /boot/efi/EFI/redhat/grub.cfg</pre>
+{{%- endif %}}
     If properly configured, the output should indicate the following
     permissions: <tt>-rwx------</tt>
 

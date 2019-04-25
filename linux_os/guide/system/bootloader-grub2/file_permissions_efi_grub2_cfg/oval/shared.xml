@@ -1,16 +1,17 @@
 <def-group>
   <definition class="compliance" id="file_permissions_efi_grub2_cfg" version="1">
     <metadata>
-      <title>File /boot/efi/EFI/redhat/grub.cfg Permissions</title>
+      <title>Verify the UEFI Boot Loader grub.cfg Permissions</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
       </affected>
-      <description>File permissions for /boot/efi/EFI/redhat/grub.cfg should be set to 0700 (or stronger).</description>
+      <description>Verify that UEFI Boot Loader grub.cfg file permissions set to 0700 (or stronger).</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
+      <extend_definition definition_ref="system_boot_mode_is_uefi" negate="true" comment="Pass if system boot mode is not UEFI" />
       <criterion test_ref="test_file_permissions_efi_grub2_cfg" />
     </criteria>
   </definition>
@@ -21,7 +22,7 @@
   </unix:file_test>
 
   <unix:file_object comment="/boot/efi/EFI/redhat/grub.cfg" id="object_file_permissions_efi_grub2_cfg" version="1">
-    <unix:filepath>/boot/efi/EFI/redhat/grub.cfg</unix:filepath>
+    <unix:filepath operation="pattern match">^/boot/efi/EFI/(redhat|fedora)/grub.cfg$</unix:filepath>
   </unix:file_object>
 
   <unix:file_state id="state_file_permissions_efi_grub2_cfg" version="1">
