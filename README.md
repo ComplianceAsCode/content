@@ -142,7 +142,7 @@ bug tracker to voice interest.
 ## Usage
 
 We assume you have installed SCAP Security Guide system-wide into a
-standard location as instructed in the previous section.
+standard location from current upstream sources as instructed in the previous section.
 
 There are several ways to consume SCAP Security Guide content, we will only
 go through a few of them here.
@@ -196,32 +196,32 @@ oscap-ssh root@192.168.1.123 22 xccdf eval --profile xccdf_org.ssgproject.conten
 
 ### Ansible
 
-To see a list of available playbooks, run:
+To see a list of available Ansible Playbooks, run:
 
 ```bash
 # ls /usr/share/scap-security-guide/ansible/
 ...
-ssg-rhel6-role-standard.yml
-ssg-rhel6-role-stig-rhel6-server-upstream.yml
-ssg-rhel6-role-usgcb-rhel6-server.yml
-ssg-rhel7-role-C2S.yml
-ssg-rhel7-role-cjis-rhel7-server.yml
-ssg-rhel7-role-common.yml
-ssg-rhel7-role-docker-host.yml
-ssg-rhel7-role-cui.yml
+rhel6-playbook-standard.yml
+rhel6-playbook-stig-rhel6-server-upstream.yml
+rhel6-playbook-usgcb-rhel6-server.yml
+rhel7-playbook-C2S.yml
+rhel7-playbook-cjis-rhel7-server.yml
+rhel7-playbook-common.yml
+rhel7-playbook-docker-host.yml
+rhel7-playbook-cui.yml
 ...
 ```
 
-These roles are generated from *SCAP* profiles available for the products.
+These Ansible Playbooks are generated from *SCAP* profiles available for the products.
 
 To apply the playbook on your local machine run:
 (*THIS WILL CHANGE CONFIGURATION OF THE MACHINE!*)
 
 ```bash
-ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/ssg-rhel7-role-rht-ccp.yml
+ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/ssg-rhel7-playbook-rht-ccp.yml
 ```
 
-Each of the Ansible playbooks contain instructions on how to deploy them. Here
+Each of the Ansible Playbooks contain instructions on how to deploy them. Here
 is a snippet of the instructions:
 
 ```YAML
