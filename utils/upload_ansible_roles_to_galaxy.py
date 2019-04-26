@@ -409,7 +409,7 @@ def parse_args():
     parser.add_argument(
         "--build-playbooks-dir", required=True,
         help="Path to directory containing the generated Ansible Playbooks. "
-        "Most likely this is going to be ./build/playbooks",
+        "Most likely this is going to be ./build/ansible",
         dest="build_playbooks_dir")
     parser.add_argument(
         "--organization", "-o", default=ORGANIZATION_NAME,

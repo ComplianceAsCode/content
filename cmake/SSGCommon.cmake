@@ -268,20 +268,20 @@ macro(ssg_build_remediations PRODUCT)
     if (ANSIBLE_PLAYBOOK_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
         add_test(
             NAME "ansible-playbook-syntax-check-${PRODUCT}"
-            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/playbooks" "${PRODUCT}"
+            COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_PLAYBOOK_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
         )
     endif()
     if (ANSIBLE_CHECKS)
         if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
                 NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/playbooks" "${PRODUCT}"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
             )
         endif()
         if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
                 NAME "ansible-playbook-yamllint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/playbooks" "${PRODUCT}" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
             )
         endif()
     endif()
@@ -594,33 +594,33 @@ endmacro()
 
 macro(ssg_build_profile_bash_scripts PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/bash-scripts/all-profile-bash-scripts-${PRODUCT}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bash-scripts"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/bash-scripts" --template "urn:xccdf:fix:script:sh" --extension "sh" build
-        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/bash-scripts/all-profile-bash-scripts-${PRODUCT}"
+        OUTPUT "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bash"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/bash" --template "urn:xccdf:fix:script:sh" --extension "sh" build
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMENT "[${PRODUCT}-bash-scripts] generating Bash remediation scripts for all profiles in ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_target(
         generate-all-profile-bash-scripts-${PRODUCT}
-        DEPENDS "${CMAKE_BINARY_DIR}/bash-scripts/all-profile-bash-scripts-${PRODUCT}"
+        DEPENDS "${CMAKE_BINARY_DIR}/bash/all-profile-bash-scripts-${PRODUCT}"
     )
 endmacro()
 
 macro(ssg_build_profile_playbooks PRODUCT)
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/playbooks/all-profile-playbooks-${PRODUCT}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/playbooks"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/playbooks" --template "urn:xccdf:fix:script:ansible" --extension "yml" build
-        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/playbooks/all-profile-playbooks-${PRODUCT}"
+        OUTPUT "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/ansible"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_profile_remediations.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml" --output "${CMAKE_BINARY_DIR}/ansible" --template "urn:xccdf:fix:script:ansible" --extension "yml" build
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         COMMENT "[${PRODUCT}-playbooks] generating Ansible Playbooks for all profiles in ssg-${PRODUCT}-xccdf.xml"
     )
     add_custom_target(
         generate-all-profile-playbooks-${PRODUCT}
-        DEPENDS "${CMAKE_BINARY_DIR}/playbooks/all-profile-playbooks-${PRODUCT}"
+        DEPENDS "${CMAKE_BINARY_DIR}/ansible/all-profile-playbooks-${PRODUCT}"
     )
 endmacro()
 
@@ -755,7 +755,7 @@ macro(ssg_build_product PRODUCT)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/playbooks/${PRODUCT}-playbook-*.yml\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/ansible/${PRODUCT}-playbook-*.yml\") \n
         if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -767,7 +767,7 @@ macro(ssg_build_product PRODUCT)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash-scripts/${PRODUCT}-script-*.sh\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash/${PRODUCT}-script-*.sh\") \n
         if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -878,7 +878,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/playbooks/${DERIVATIVE}-playbook-*.yml\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/ansible/${DERIVATIVE}-playbook-*.yml\") \n
         if(NOT IS_ABSOLUTE ${SSG_ANSIBLE_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_ANSIBLE_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -890,7 +890,7 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     )
     install(
         CODE "
-        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash-scripts/${DERIVATIVE}-script-*.sh\") \n
+        file(GLOB ROLE_FILES \"${CMAKE_BINARY_DIR}/bash/${DERIVATIVE}-script-*.sh\") \n
         if(NOT IS_ABSOLUTE ${SSG_BASH_ROLE_INSTALL_DIR})
             file(INSTALL DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${SSG_BASH_ROLE_INSTALL_DIR}\"
                 TYPE FILE FILES \${ROLE_FILES})
@@ -1138,10 +1138,10 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/rhel{6,7}/kickstart/*-ks.cfg" "zipfile/${ZIPNAME}/kickstart"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" "zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/bash-scripts"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bash-scripts/*.sh" "zipfile/${ZIPNAME}/bash-scripts"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/playbooks"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/playbooks/*.yml" "zipfile/${ZIPNAME}/playbooks"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/bash"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bash/*.sh" "zipfile/${ZIPNAME}/bash"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/ansible"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ansible/*.yml" "zipfile/${ZIPNAME}/ansible"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/guides"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/guides/*" "zipfile/${ZIPNAME}/guides"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/tables"
