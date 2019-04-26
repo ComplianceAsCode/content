@@ -254,7 +254,6 @@ RHEL_CENTOS_CPE_MAPPING = {
 RHEL_SL_CPE_MAPPING = {
     "cpe:/o:redhat:enterprise_linux:6": "cpe:/o:scientificlinux:scientificlinux:6",
     "cpe:/o:redhat:enterprise_linux:7": "cpe:/o:scientificlinux:scientificlinux:7",
-    "cpe:/o:redhat:enterprise_linux:8": "cpe:/o:scientificlinux:scientificlinux:8",
 }
 
 CENTOS_NOTICE = \
