@@ -257,6 +257,10 @@ macro(ssg_build_ansible_playbooks PRODUCT)
         generate-${PRODUCT}-ansible-playbooks
         DEPENDS "${ANSIBLE_PLAYBOOKS_DIR}"
     )
+    add_test(
+        NAME "${PRODUCT}-ansible-playbooks-generated-for-all-rules"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/ansible_playbooks_generated_for_all_rules.py" --build-dir "${CMAKE_BINARY_DIR}" --product "${PRODUCT}"
+    )
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
