@@ -70,19 +70,17 @@ def parse_args():
                         choices=["plain", "json", "csv"],
                         help="Which format to use for output.")
 
-    profile_diff_desc = \
-        "Compare selected/unselected rules from given profiles and " + \
-        "produce a new profile containing only rules from profile1 that " + \
-        "is not contained in profile2. Variables are not compared and " + \
-        "only variables from profile1 are kept. It doesn't support " + \
-        "profile inheritance, this means that only rules explicitly " + \
-        "listed in profile will be taken in account."
+    subtracted_profile_desc = \
+        "Subtract rules from profile1 based on rules present in profile2. " + \
+        "As a result, a new profile is generated. It doesn't support profile " + \
+        "inheritance, this means that only rules explicitly " + \
+        "listed in the profiles will be taken in account."
 
-    parser_diff = subparsers.add_parser("diff", description=profile_diff_desc,
-                                           help=("Create a diff between two given YAML profiles."))
-    parser_diff.add_argument('--profile1', type=str, dest="profile_compare_from",
+    parser_sub = subparsers.add_parser("sub", description=subtracted_profile_desc,
+                                           help=("Subtract rules from profile1 based on rules present in profile2."))
+    parser_sub.add_argument('--profile1', type=str, dest="profile1",
                         required=True, help='YAML profile')
-    parser_diff.add_argument('--profile2', type=str, dest="profile_compare_to",
+    parser_sub.add_argument('--profile2', type=str, dest="profile2",
                         required=True, help='YAML profile')
 
     args = parser.parse_args()
@@ -109,33 +107,31 @@ def parse_args():
 def main():
     args = parse_args()
 
-    if args.subcommand == "diff":
-        profile1 = ssg.build_yaml.Profile.from_yaml(args.profile_compare_from)
-        profile2 = ssg.build_yaml.Profile.from_yaml(args.profile_compare_to)
+    if args.subcommand == "sub":
+        profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1)
+        profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2)
 
-        profile_diff = profile1 - profile2
+        subtracted_profile = profile1 - profile2
 
-        exclusive_rules = len(profile_diff.get_rule_selectors())
+        exclusive_rules = len(subtracted_profile.get_rule_selectors())
         if exclusive_rules > 0:
-            print("Exclusive rules from profile {}: {}".format(
-                args.profile_compare_from, exclusive_rules))
+            print("{} rules were left after subtraction.".format(exclusive_rules))
 
             profile1_basename = os.path.splitext(
-                os.path.basename(args.profile_compare_from))[0]
+                os.path.basename(args.profile1))[0]
             profile2_basename = os.path.splitext(
-                os.path.basename(args.profile_compare_to))[0]
+                os.path.basename(args.profile2))[0]
 
-            profile_with_exclusive_rules_filename = "{}-compared_to-{}.profile".format(
+            subtracted_profile_filename = "{}_sub_{}.profile".format(
                 profile1_basename, profile2_basename)
             print("Creating a new profile containing the exclusive rules: {}".format(
-                profile_with_exclusive_rules_filename))
+                subtracted_profile_filename))
 
-            profile_diff.dump_yaml(profile_with_exclusive_rules_filename)
+            subtracted_profile.dump_yaml(subtracted_profile_filename)
             print("Profile {} was created successfully".format(
-                profile_with_exclusive_rules_filename))
+                subtracted_profile_filename))
         else:
-            print("No exclusive rules in profile {} compared to profile {} were found".format(
-                args.profile_compare_from, args.profile_compare_to))
+            print("Subtraction would produce an empty profile. No new profile was generated")
         exit(0)
 
     benchmark = ssg.build_profile.XCCDFBenchmark(args.benchmark)

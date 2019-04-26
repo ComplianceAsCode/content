@@ -597,14 +597,14 @@ $ ./build_product rhel8
 $ ./build-scripts/profile_stats.py stats --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
 ----
 
-The tool also can create diff between YAML profiles and generate a new one.
+The tool also can subtract rules between YAML profiles.
 
-For example, to generate a profile diff between two profiles, run this command:
+For example, to subtract selected rules from a given profile based on rules selected by another profile, run this command:
 ----
-$ ./build-scripts/profile_stats.py diff --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile 
+$ ./build-scripts/profile_stats.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile 
 ----
 
-A new profile will be generated in the current directory with the name, in this case, ospp-compared_to-pci-dss.profile
+This will result in a new YAML profile containing exclusive rules to the profile pointed by the --profile1 option.
 
 == Contributing with XCCDFs, OVALs and remediations
 
