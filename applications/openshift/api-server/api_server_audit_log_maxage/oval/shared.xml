@@ -19,11 +19,11 @@
 
   <ind:textfilecontent54_object id="object_api_server_audit_log_maxage" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*auditConfig:\:(?:[^\n]*\n+)+?[\s]*maximumFileRetentionDays\:[\s]+(\d+)[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*auditConfig:(?:[^\n]*\n+)+?[\s]*maximumFileRetentionDays\:[\s]+(\d+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_api_server_audit_log_maxage" version="1">
-    <ind:subexpression datatype="int" operation="greater than or equal">30</ind:subexpression>
+    <ind:subexpression datatype="int" operation="less than or equal">30</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
