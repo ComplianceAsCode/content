@@ -94,6 +94,7 @@ class Profile(object):
         profile.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
+        profile.documentation_complete = yaml_contents.pop("documentation_complete", False)
         selection_entries = required_key(yaml_contents, "selections")
         profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
@@ -103,6 +104,25 @@ class Profile(object):
                                % (yaml_file, yaml_contents))
 
         return profile
+
+    def dump_yaml(self, file_name, documentation_complete=True):
+        to_dump = {}
+        to_dump["documentation_complete"] = documentation_complete
+        to_dump["title"] = self.title
+        to_dump["description"] = self.description
+        if self.extends is not None:
+            to_dump["extends"] = self.extends
+
+        selections = []
+        for item in self.selected:
+            selections.append(item)
+        for item in self.unselected:
+            selections.append("!"+item)
+        for varname in self.variables.keys():
+            selections.append(varname+"="+self.variables.get(varname))
+        to_dump["selections"] = selections
+        with open(file_name, "w+") as f:
+            yaml.dump(to_dump, f, indent=4)
 
     def _parse_selections(self, entries):
         for item in entries:
@@ -181,6 +201,17 @@ class Profile(object):
                     )
                 )
                 raise ValueError(msg)
+
+    def __sub__(self, other):
+        profile = Profile(self.id_)
+        profile.documentation_complete = self.documentation_complete
+        profile.title = self.title + " subtracted by " + other.title
+        profile.description = self.description
+        profile.extends = self.extends
+        profile.selected = list(set(self.selected) - set(other.selected))
+        profile.unselected = list(set(self.unselected) - set(other.unselected))
+        profile.variables = self.variables
+        return profile
 
 
 class Value(object):
