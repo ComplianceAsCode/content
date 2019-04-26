@@ -218,7 +218,7 @@ To apply the playbook on your local machine run:
 (*THIS WILL CHANGE CONFIGURATION OF THE MACHINE!*)
 
 ```bash
-ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/ssg-rhel7-playbook-rht-ccp.yml
+ansible-playbook -i "localhost," -c local /usr/share/scap-security-guide/ansible/rhel7-playbook-rht-ccp.yml
 ```
 
 Each of the Ansible Playbooks contain instructions on how to deploy them. Here
