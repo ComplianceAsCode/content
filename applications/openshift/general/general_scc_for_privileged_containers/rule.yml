@@ -27,11 +27,11 @@ severity: medium
 ocil_clause: 'privileges are not minimized'
 
 ocil: |-
-    Determin all SCCs that allow privileged containers:
+    Determine all SCCs that allow privileged containers:
     <pre>$ oc get scc -ocustom-columns=NAME:.metadata.name,ALLOWS_PRIVILEGED:.allowPrivilegedContainer</pre>
 
     Review users and groups assigned to SCCs allowing privileged containers:
-    <pre>$ oc describe sccs <<from #1>></pre>
+    <pre>$ oc describe sccs <i>scc-id</i></pre>
 
     Adjust or assign SCCs or create custom SCCs as needed to minimize privileges.
 
