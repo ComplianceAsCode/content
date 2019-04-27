@@ -5,7 +5,7 @@
       <affected family="unix">
         <platform>multi_platform_ocp</platform>
       </affected>
-      <description>authorization-mode should be set to Webhook, or not set (default is Webhook).</description>
+      <description>If authorization-mode is configured, it should be set to Webhook.</description>
     </metadata>
     <criteria operator="OR">
       <criterion comment="authorization-mode not set, using default" test_ref="test_api_server_authorization_mode_default" />

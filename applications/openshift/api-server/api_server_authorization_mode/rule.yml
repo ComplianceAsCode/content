@@ -15,10 +15,12 @@ description: |-
         authorization-mode:
         - Webhook</pre>
 
+    NOTE: If <tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>, the node
+    systemd service (<tt>atomic-openshift-node</tt>) will not start.
+
 rationale: |-
-    If <tt>authorization-mode</tt> is configured ensure the value is set to <tt>Webhook</tt> The
-    node systemd service (<tt>atomic-openshift-node</tt>) will not start if the configuration
-    value is set to anything other than <tt>Webhook</tt>.
+    Ensuring <tt>authorization-mode</tt> is set to <tt>Webhook</tt> helps enforce that
+    unauthenticated/unauthorized users have no access to OpenShift nodes.
 
 severity: medium
 
