@@ -16,11 +16,6 @@ xccdf_ns = ssg.constants.XCCDF12_NS
 ds_ns = ssg.constants.datastream_namespace
 xlink_ns = ssg.constants.xlink_namespace
 cat_ns = ssg.constants.cat_namespace
-ns = {'oval': oval_ns,
-      'xccdf': xccdf_ns,
-      'ds': ds_ns,
-      'xlink': xlink_ns,
-      'cat': cat_ns}
 
 component_ref_prefix = "#scap_org.open-scap_cref_"
 
@@ -32,14 +27,14 @@ def mangle_path(path):
     return path
 
 def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
-    ds_checklists = datastreamtree.find(".//ds:checklists", ns)
+    ds_checklists = datastreamtree.find(".//{%s}checklists" % ds_ns)
 
     for component_ref in ds_checklists:
         component_id = component_ref.get('{%s}href' % xlink_ns)
         component_id = component_id[1:]
 
         # Locate the <xccdf:check> of the <xccdf:Rule> with id security_patches_up_to_date
-        oval_check = datastreamtree.find(".//ds:component[@id='%s']//xccdf:Rule[@id='xccdf_org.ssgproject.content_rule_security_patches_up_to_date']/xccdf:check[@system='%s']" % (component_id, oval_ns), ns )
+        oval_check = datastreamtree.find(".//{%s}component[@id='%s']//{%s}Rule[@id='xccdf_org.ssgproject.content_rule_security_patches_up_to_date']/{%s}check[@system='%s']" % (ds_ns, component_id, xccdf_ns, xccdf_ns, oval_ns))
         # SCAP 1.3 demands multi-check true if the Rules security_patches_up_to_date is
         # evaluated by multiple OVAL patch class definitinos.
         # See 3.2.4.3, SCAP 1.3 standard (NIST.SP.800-126r3)
@@ -47,7 +42,7 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
             continue
         oval_check.set('multi-check', 'true')
 
-        check_content_ref = oval_check.find('xccdf:check-content-ref', ns)
+        check_content_ref = oval_check.find('{%s}check-content-ref' % xccdf_ns)
         href_url = check_content_ref.get('href')
 
         # Use URL's path to define the component name and URI
@@ -58,8 +53,8 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         check_content_ref.set('href', component_ref_name)
 
         # Add a uri refering the component in Rule's Benchmark component-ref catalog
-        catalog = component_ref.find('cat:catalog', ns)
-        uris = catalog.findall("cat:uri[@name='%s']" % component_ref_name, ns)
+        catalog = component_ref.find('{%s}catalog' % cat_ns)
+        uris = catalog.findall("{%s}uri[@name='%s']" % (cat_ns, component_ref_name))
         if not uris:
             uri = ssg.xml.ElementTree.Element('{%s}uri' % cat_ns,
                                     attrib = {
@@ -68,8 +63,8 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
             catalog.append(uri)
 
         # Add the component-ref to list of datastreams' checks
-        ds_checks = datastreamtree.find(".//ds:checks", ns)
-        check_component_ref = ds_checks.findall("ds:component-ref[@id='%s']" % component_ref_uri[1:], ns)
+        ds_checks = datastreamtree.find(".//{%s}checks" % ds_ns)
+        check_component_ref = ds_checks.findall("{%s}component-ref[@id='%s']" % (ds_ns, component_ref_uri[1:]))
         if not check_component_ref:
             component_ref_feed = ssg.xml.ElementTree.Element('{%s}component-ref' % ds_ns,
                                     attrib = {
@@ -92,7 +87,7 @@ def main():
 
     # Set SCAP version to 1.3
     datastreamtree.set('schematron-version', '1.3')
-    datastreamtree.find('ds:data-stream', ns).set('scap-version', '1.3')
+    datastreamtree.find('{%s}data-stream' % ds_ns).set('scap-version', '1.3')
 
     # Move reference to remote OVAL content to a source data stream component
     move_patches_up_to_date_to_source_data_stream_component(datastreamtree)
