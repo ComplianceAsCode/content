@@ -43,7 +43,7 @@
     line: '-a always,exit -F arch=b64 -S delete_module -k module-change'
     state: present
     create: true
-  when: audit_arch == 'b64'
+  when: audit_arch is defined and audit_arch == 'b64'
 
 # Inserts/replaces the delete_modules rule in /etc/audit/audit.rules
 
@@ -58,4 +58,4 @@
     path: /etc/audit/audit.rules
     line: '-a always,exit -F arch=b64 -S delete_module -k module-change'
     create: true
-  when: audit_arch == 'b64'
+  when: audit_arch is defined and audit_arch == 'b64'
