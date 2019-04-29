@@ -40,10 +40,10 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         # Locate the <xccdf:check> element of an <xccdf:Rule> with id security_patches_up_to_date
         checklist_component = None
         oval_check = None
-        components = datastreamtree.findall(".//{%s}component" % ds_ns)
-        for component in components:
-            if component.get('id') == component_id:
-                checklist_component = component
+        ds_components = datastreamtree.findall(".//{%s}component" % ds_ns)
+        for ds_component in ds_components:
+            if ds_component.get('id') == component_id:
+                checklist_component = ds_component
         if checklist_component is None:
             # Something strange happened
             sys.stderr.write("Couldn't find <component> %s referenced by <component-ref> %s" %
