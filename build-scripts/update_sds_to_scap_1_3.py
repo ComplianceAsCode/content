@@ -56,20 +56,18 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         catalog = component_ref.find('{%s}catalog' % cat_ns)
         uris = catalog.findall("{%s}uri[@name='%s']" % (cat_ns, component_ref_name))
         if not uris:
-            uri = ssg.xml.ElementTree.Element('{%s}uri' % cat_ns,
-                                    attrib = {
-                                        'name' : component_ref_name,
-                                        'uri' : component_ref_uri })
+            uri = ssg.xml.ElementTree.Element('{%s}uri' % cat_ns)
+            uri.set('name', component_ref_name)
+            uri.set('uri', component_ref_uri)
             catalog.append(uri)
 
         # Add the component-ref to list of datastreams' checks
         ds_checks = datastreamtree.find(".//{%s}checks" % ds_ns)
         check_component_ref = ds_checks.findall("{%s}component-ref[@id='%s']" % (ds_ns, component_ref_uri[1:]))
         if not check_component_ref:
-            component_ref_feed = ssg.xml.ElementTree.Element('{%s}component-ref' % ds_ns,
-                                    attrib = {
-                                        'id' : component_ref_uri[1:],
-                                        '{%s}href' % xlink_ns : href_url })
+            component_ref_feed = ssg.xml.ElementTree.Element('{%s}component-ref' % ds_ns)
+            component_ref_feed.set('id', component_ref_uri[1:])
+            component_ref_feed.set('{%s}href' % xlink_ns, href_url)
             ds_checks.append(component_ref_feed)
 
 
