@@ -95,7 +95,6 @@ class Profile(object):
         profile.description = required_key(yaml_contents, "description")
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
-        profile.documentation_complete = yaml_contents.pop("documentation_complete", False)
         selection_entries = required_key(yaml_contents, "selections")
         profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
@@ -205,8 +204,7 @@ class Profile(object):
 
     def __sub__(self, other):
         profile = Profile(self.id_)
-        profile.documentation_complete = self.documentation_complete
-        profile.title = self.title + " subtracted by " + other.title
+        profile.title = self.title
         profile.description = self.description
         profile.extends = self.extends
         profile.selected = list(set(self.selected) - set(other.selected))
