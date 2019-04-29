@@ -28,6 +28,7 @@ component_ref_prefix = "#scap_org.open-scap_cref_"
 def mangle_path(path):
     path = path.replace('/', '-')
     path = path.replace('@', '-')
+    path = path.replace('~', '-')
     return path
 
 def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
