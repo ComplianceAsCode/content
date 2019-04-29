@@ -95,7 +95,6 @@ selections:
     - api_server_request_timeout
     - api_server_secure_port
     - api_server_service_account_key
-    - api_server_service_account_lookup
     - api_server_tls_cert
     - api_server_tls_cipher_suites
     - api_server_tls_private_key

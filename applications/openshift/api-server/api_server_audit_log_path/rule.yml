@@ -33,4 +33,5 @@ ocil_clause: '<tt>audit-log-path</tt> does not contain a valid audit file path'
 ocil: |-
     Run the following command on the master node(s):
     <pre>$ sudo grep auditFilePath /etc/origin/master/master-config.yaml</pre>
-    The output should return a valid audit log path.
+    The output should return a valid audit log path. The default is
+    <tt>/etc/origin/master/audit-ocp.log</tt>.
