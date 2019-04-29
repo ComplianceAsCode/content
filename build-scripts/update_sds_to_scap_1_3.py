@@ -19,6 +19,7 @@ cat_ns = ssg.constants.cat_namespace
 
 component_ref_prefix = "#scap_org.open-scap_cref_"
 
+
 # Inspired by openscap ds_sds_mangle_filepath() function
 def mangle_path(path):
     path = path.replace('/', '-')
@@ -26,20 +27,44 @@ def mangle_path(path):
     path = path.replace('~', '-')
     return path
 
+
 def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
     ds_checklists = datastreamtree.find(".//{%s}checklists" % ds_ns)
 
     for component_ref in ds_checklists:
-        component_id = component_ref.get('{%s}href' % xlink_ns)
-        component_id = component_id[1:]
+        component_ref_id = component_ref.get('id')
+        component_ref_href = component_ref.get('{%s}href' % xlink_ns)
+        component_id = component_ref_href[1:]
 
-        # Locate the <xccdf:check> of the <xccdf:Rule> with id security_patches_up_to_date
-        oval_check = datastreamtree.find(".//{%s}component[@id='%s']//{%s}Rule[@id='xccdf_org.ssgproject.content_rule_security_patches_up_to_date']/{%s}check[@system='%s']" % (ds_ns, component_id, xccdf_ns, xccdf_ns, oval_ns))
+        # Locate the <xccdf:check> element of an <xccdf:Rule> with id security_patches_up_to_date
+        component = None
+        oval_check = None
+        components = datastreamtree.findall(".//{%s}component" % ds_ns)
+        for component in components:
+            if component.get('id') == component_id:
+                component = component
+        if component is None:
+            # Something strange happened
+            sys.stderr.write("Couldn't find <component> %s referenced by <component-ref> %s" %
+                             (component_id, component_ref_id))
+            sys.exit(1)
+
+        rules = component.findall(".//{%s}Rule" % (xccdf_ns))
+        for rule in rules:
+            if rule.get('id').endswith('rule_security_patches_up_to_date'):
+                rule_checks = rule.findall("{%s}check" % xccdf_ns)
+                for check in rule_checks:
+                    if check.get('system') == oval_ns:
+                        oval_check = check
+                        break
+
+        if oval_check is None:
+            # The component doesn't have a security patches up to date rule with an OVAL check
+            continue
+
         # SCAP 1.3 demands multi-check true if the Rules security_patches_up_to_date is
         # evaluated by multiple OVAL patch class definitinos.
         # See 3.2.4.3, SCAP 1.3 standard (NIST.SP.800-126r3)
-        if oval_check is None:
-            continue
         oval_check.set('multi-check', 'true')
 
         check_content_ref = oval_check.find('{%s}check-content-ref' % xccdf_ns)
