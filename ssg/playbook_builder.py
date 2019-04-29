@@ -58,7 +58,7 @@ class PlaybookBuilder():
         """
         Determine value of variable based on profile refinements.
         """
-        if var_id in refinements:
+        if refinements and var_id in refinements:
             selector = refinements[var_id]
         else:
             selector = "default"
@@ -72,6 +72,10 @@ class PlaybookBuilder():
             if len(options.keys()) == 1:
                 # We will assume that if there is just one option that it could
                 # be selected as a default option.
+                value = list(options.values())[0]
+            elif selector == "default":
+                # If no 'default' selector is present in the XCCDF value,
+                # choose the first (consistent with oscap behavior)
                 value = list(options.values())[0]
             else:
                 raise ValueError(
@@ -194,7 +198,7 @@ class PlaybookBuilder():
             raise RuntimeError("Could not parse profile %s.\n" % profile_path)
         return profile
 
-    def create_playbooks_for_all_rules(self, profile, variables):
+    def create_playbooks_for_all_rules_in_profile(self, profile, variables):
         """
         Creates a Playbook for each rule selected in a profile from tasks
         extracted from snippets. Created Playbooks are parametrized by
@@ -233,6 +237,19 @@ class PlaybookBuilder():
             raise ValueError("Rule '%s' isn't part of profile '%s'" %
                              (rule_id, profile.id_))
 
+    def create_playbooks_for_all_rules(self, variables):
+        profile_playbooks_dir = os.path.join(self.output_dir, "all")
+        os.makedirs(profile_playbooks_dir)
+        for rule in os.listdir(self.rules_dir):
+            rule_id, _ = os.path.splitext(rule)
+            snippet_path = os.path.join(self.input_dir, rule_id + ".yml")
+            if not os.path.exists(snippet_path):
+                continue
+            self.create_playbook(
+                snippet_path, rule_id, variables,
+                None, profile_playbooks_dir
+            )
+
     def build(self, profile_id=None, rule_id=None):
         """
         Creates Playbooks for a specified profile.
@@ -249,7 +266,8 @@ class PlaybookBuilder():
                 self.create_playbook_for_single_rule(profile, rule_id,
                                                      variables)
             else:
-                self.create_playbooks_for_all_rules(profile, variables)
+                self.create_playbooks_for_all_rules_in_profile(
+                    profile, variables)
         else:
             # run for all profiles
             for profile_file in os.listdir(self.profiles_dir):
@@ -263,4 +281,8 @@ class PlaybookBuilder():
                     self.create_playbook_for_single_rule(profile, rule_id,
                                                          variables)
                 else:
-                    self.create_playbooks_for_all_rules(profile, variables)
+                    self.create_playbooks_for_all_rules_in_profile(
+                        profile, variables)
+            # build playbooks for virtual '(all)' profile
+            # this virtual profile contains all rules in the product
+            self.create_playbooks_for_all_rules(variables)

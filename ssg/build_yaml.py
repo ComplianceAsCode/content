@@ -11,6 +11,7 @@ import yaml
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
+from .rule_yaml import parse_prodtype
 
 from .checks import is_cce_format_valid, is_cce_value_valid
 from .yaml import open_and_expand, open_and_macro_expand
@@ -818,6 +819,7 @@ class DirectoryLoader(object):
         self.profiles_dir = profiles_dir
         self.bash_remediation_fns = bash_remediation_fns
         self.env_yaml = env_yaml
+        self.product = env_yaml["product"]
 
         self.parent_group = None
 
@@ -928,6 +930,9 @@ class BuildLoader(DirectoryLoader):
     def _process_rules(self):
         for rule_yaml in self.rule_files:
             rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            prodtypes = parse_prodtype(rule.prodtype)
+            if "all" not in prodtypes and self.product not in prodtypes:
+                continue
             self.loaded_group.add_rule(rule)
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
