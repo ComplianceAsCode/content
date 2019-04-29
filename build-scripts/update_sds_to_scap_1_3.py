@@ -7,15 +7,10 @@ try:
 except ImportError:
     from urlparse import urlparse
 
-import ssg.constants
 import ssg.xml
-ocil_ns = ssg.constants.ocil_namespace
+from ssg.constants import (oval_namespace, XCCDF12_NS, cat_namespace,
+                           datastream_namespace, xlink_namespace)
 
-oval_ns = ssg.constants.oval_namespace
-xccdf_ns = ssg.constants.XCCDF12_NS
-ds_ns = ssg.constants.datastream_namespace
-xlink_ns = ssg.constants.xlink_namespace
-cat_ns = ssg.constants.cat_namespace
 
 component_ref_prefix = "#scap_org.open-scap_cref_"
 
@@ -29,17 +24,17 @@ def mangle_path(path):
 
 
 def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
-    ds_checklists = datastreamtree.find(".//{%s}checklists" % ds_ns)
+    ds_checklists = datastreamtree.find(".//{%s}checklists" % datastream_namespace)
 
     for checklists_component_ref in ds_checklists:
         checklists_component_ref_id = checklists_component_ref.get('id')
         # The component ID is the component-ref href without leading '#'
-        checklists_component_id = checklists_component_ref.get('{%s}href' % xlink_ns)[1:]
+        checklists_component_id = checklists_component_ref.get('{%s}href' % xlink_namespace)[1:]
 
         # Locate the <xccdf:check> element of an <xccdf:Rule> with id security_patches_up_to_date
         checklist_component = None
         oval_check = None
-        ds_components = datastreamtree.findall(".//{%s}component" % ds_ns)
+        ds_components = datastreamtree.findall(".//{%s}component" % datastream_namespace)
         for ds_component in ds_components:
             if ds_component.get('id') == checklists_component_id:
                 checklist_component = ds_component
@@ -49,12 +44,12 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
                              (checklists_component_id, checklists_component_ref_id))
             sys.exit(1)
 
-        rules = checklist_component.findall(".//{%s}Rule" % (xccdf_ns))
+        rules = checklist_component.findall(".//{%s}Rule" % XCCDF12_NS)
         for rule in rules:
             if rule.get('id').endswith('rule_security_patches_up_to_date'):
-                rule_checks = rule.findall("{%s}check" % xccdf_ns)
+                rule_checks = rule.findall("{%s}check" % XCCDF12_NS)
                 for check in rule_checks:
-                    if check.get('system') == oval_ns:
+                    if check.get('system') == oval_namespace:
                         oval_check = check
                         break
 
@@ -67,7 +62,7 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         # See 3.2.4.3, SCAP 1.3 standard (NIST.SP.800-126r3)
         oval_check.set('multi-check', 'true')
 
-        check_content_ref = oval_check.find('{%s}check-content-ref' % xccdf_ns)
+        check_content_ref = oval_check.find('{%s}check-content-ref' % XCCDF12_NS)
         href_url = check_content_ref.get('href')
 
         # Use URL's path to define the component name and URI
@@ -82,14 +77,14 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
 
         # Add a uri refering the component in Rule's Benchmark component-ref catalog
         uri_exists = False
-        catalog = checklists_component_ref.find('{%s}catalog' % cat_ns)
-        uris = catalog.findall("{%s}uri" % (cat_ns))
+        catalog = checklists_component_ref.find('{%s}catalog' % cat_namespace)
+        uris = catalog.findall("{%s}uri" % cat_namespace)
         for uri in uris:
             if uri.get('name') == component_ref_name:
                 uri_exists = True
                 break
         if not uri_exists:
-            uri = ssg.xml.ElementTree.Element('{%s}uri' % cat_ns)
+            uri = ssg.xml.ElementTree.Element('{%s}uri' % cat_namespace)
             uri.set('name', component_ref_name)
             uri.set('uri', component_ref_uri)
             catalog.append(uri)
@@ -99,17 +94,17 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
 
         # Add the component-ref to list of datastreams' checks
         check_component_ref_exists = False
-        ds_checks = datastreamtree.find(".//{%s}checks" % ds_ns)
-        check_component_refs = ds_checks.findall("{%s}component-ref" % ds_ns)
+        ds_checks = datastreamtree.find(".//{%s}checks" % datastream_namespace)
+        check_component_refs = ds_checks.findall("{%s}component-ref" % datastream_namespace)
         for check_component_ref in check_component_refs:
             if check_component_ref.get('id') == component_ref_feed_id:
                 check_component_ref_exists = True
                 break
         if not check_component_ref_exists:
             component_ref_feed = ssg.xml.ElementTree.Element('{%s}component-ref' %
-                                                             ds_ns)
+                                                             datastream_namespace)
             component_ref_feed.set('id', component_ref_feed_id)
-            component_ref_feed.set('{%s}href' % xlink_ns, href_url)
+            component_ref_feed.set('{%s}href' % xlink_namespace, href_url)
             ds_checks.append(component_ref_feed)
 
 
@@ -127,12 +122,13 @@ def main():
 
     # Set SCAP version to 1.3
     datastreamtree.set('schematron-version', '1.3')
-    datastreamtree.find('{%s}data-stream' % ds_ns).set('scap-version', '1.3')
+    datastreamtree.find('{%s}data-stream' % datastream_namespace).set('scap-version', '1.3')
 
     # Move reference to remote OVAL content to a source data stream component
     move_patches_up_to_date_to_source_data_stream_component(datastreamtree)
 
     ssg.xml.ElementTree.ElementTree(datastreamtree).write(outdatastreamfile)
+
 
 if __name__ == "__main__":
     main()
