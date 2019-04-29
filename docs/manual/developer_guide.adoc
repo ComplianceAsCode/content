@@ -974,6 +974,11 @@ The Ansible remediation will get included by our build system to the SCAP datast
 The build system generates an Ansible Playbook from the remediation for all profiles.
 The generated Playbook is located in `/build/<product>/playbooks/<profile_id>/<rule_id>.yml`.
 
+For each rule in the given product we also generate an Ansible Playbook regardless presence of the rule in any profile.
+The generated Playbook is located in `/build/<product>/playbooks/all/<rule_id>.yml`.
+The `/build/<product>/playbooks/all/` directory represents the virtual `(all)` profile which consists of all rules in the product.
+Due to undefined XCCDF Value selectors in this pseudo-profile, these Playbooks use default values of XCCDF Values when applicable.
+
 We also build profile Playbook that contains tasks for all rules in the profile.
 The Playbook is generated in `/build/roles/ssg-<product>-role-<profile_id>.yml`.
 
