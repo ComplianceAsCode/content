@@ -8,5 +8,5 @@
   lineinfile:
     path: /etc/etcd/etcd.conf
     regexp: '^ETCD_CERT_FILE'
-    line: "ETCD_CERT_FILE /etc/etcd/server.crt"
+    line: "ETCD_CERT_FILE=/etc/etcd/server.crt"
     create: yes
