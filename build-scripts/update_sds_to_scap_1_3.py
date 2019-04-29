@@ -31,23 +31,22 @@ def mangle_path(path):
 def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
     ds_checklists = datastreamtree.find(".//{%s}checklists" % ds_ns)
 
-    for component_ref in ds_checklists:
-        component_ref_id = component_ref.get('id')
-        component_ref_href = component_ref.get('{%s}href' % xlink_ns)
+    for checklists_component_ref in ds_checklists:
+        checklists_component_ref_id = checklists_component_ref.get('id')
         # The component ID is the component-ref href without leading '#'
-        component_id = component_ref_href[1:]
+        checklists_component_id = checklists_component_ref.get('{%s}href' % xlink_ns)[1:]
 
         # Locate the <xccdf:check> element of an <xccdf:Rule> with id security_patches_up_to_date
         checklist_component = None
         oval_check = None
         ds_components = datastreamtree.findall(".//{%s}component" % ds_ns)
         for ds_component in ds_components:
-            if ds_component.get('id') == component_id:
+            if ds_component.get('id') == checklists_component_id:
                 checklist_component = ds_component
         if checklist_component is None:
             # Something strange happened
             sys.stderr.write("Couldn't find <component> %s referenced by <component-ref> %s" %
-                             (component_id, component_ref_id))
+                             (checklists_component_id, checklists_component_ref_id))
             sys.exit(1)
 
         rules = checklist_component.findall(".//{%s}Rule" % (xccdf_ns))
@@ -83,7 +82,7 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
 
         # Add a uri refering the component in Rule's Benchmark component-ref catalog
         uri_exists = False
-        catalog = checklist_component_ref.find('{%s}catalog' % cat_ns)
+        catalog = checklists_component_ref.find('{%s}catalog' % cat_ns)
         uris = catalog.findall("{%s}uri" % (cat_ns))
         for uri in uris:
             if uri.get('name') == component_ref_name:
