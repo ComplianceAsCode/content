@@ -8,5 +8,5 @@
   lineinfile:
     path: /etc/etcd/etcd.conf
     regexp: '^ETCD_PEER_KEY_FILE'
-    line: "ETCD_PEER_KEY_FILE /etc/etcd/peer.key"
+    line: "ETCD_PEER_KEY_FILE=/etc/etcd/peer.key"
     create: yes
