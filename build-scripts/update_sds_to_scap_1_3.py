@@ -34,6 +34,7 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
     for component_ref in ds_checklists:
         component_ref_id = component_ref.get('id')
         component_ref_href = component_ref.get('{%s}href' % xlink_ns)
+        # The component ID is the component-ref href without leading '#'
         component_id = component_ref_href[1:]
 
         # Locate the <xccdf:check> element of an <xccdf:Rule> with id security_patches_up_to_date
@@ -71,6 +72,9 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         href_url = check_content_ref.get('href')
 
         # Use URL's path to define the component name and URI
+        # Path attribute returned from urlparse contains a leading '/', when mangling it
+        # it will get replaced by '-'.
+        # Let's strip the '/' to avoid a sequence of "_-" in the component-ref ID.
         component_ref_name = mangle_path(urlparse(href_url).path[1:])
         component_ref_uri = component_ref_prefix + component_ref_name
 
