@@ -78,21 +78,31 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         check_content_ref.set('href', component_ref_name)
 
         # Add a uri refering the component in Rule's Benchmark component-ref catalog
+        uri_exists = False
         catalog = component_ref.find('{%s}catalog' % cat_ns)
-        uris = catalog.findall("{%s}uri[@name='%s']" % (cat_ns, component_ref_name))
-        if not uris:
+        uris = catalog.findall("{%s}uri" % (cat_ns))
+        for uri in uris:
+            if uri.get('name') == component_ref_name:
+                uri_exists = True
+                break
+        if not uri_exists:
             uri = ssg.xml.ElementTree.Element('{%s}uri' % cat_ns)
             uri.set('name', component_ref_name)
             uri.set('uri', component_ref_uri)
             catalog.append(uri)
 
-        # Add the component-ref to list of datastreams' checks
         # The component-ref ID is the catalog uri without leading '#'
         component_ref_feed_id = component_ref_uri[1:]
+
+        # Add the component-ref to list of datastreams' checks
+        check_component_ref_exists = False
         ds_checks = datastreamtree.find(".//{%s}checks" % ds_ns)
-        check_component_ref = ds_checks.findall("{%s}component-ref[@id='%s']" %
-                                                (ds_ns, component_ref_feed_id))
-        if not check_component_ref:
+        check_component_refs = ds_checks.findall("{%s}component-ref" % ds_ns)
+        for check_component_ref in check_component_refs:
+            if check_component_ref.get('id') == component_ref_feed_id:
+                check_component_ref_exists = True
+                break
+        if not check_component_ref_exists:
             component_ref_feed = ssg.xml.ElementTree.Element('{%s}component-ref' %
                                                              ds_ns)
             component_ref_feed.set('id', component_ref_feed_id)
