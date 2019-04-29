@@ -8,5 +8,5 @@
   lineinfile:
     path: /etc/etcd/etcd.conf
     regexp: '^ETCD_KEY_FILE='
-    line: "ETCD_KEY_FILE /etc/etcd/server.key"
+    line: "ETCD_KEY_FILE=/etc/etcd/server.key"
     create: yes
