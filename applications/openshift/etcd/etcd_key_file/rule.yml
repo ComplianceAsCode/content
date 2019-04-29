@@ -9,7 +9,7 @@ description: |-
     edit the <tt>etcd</tt> configuration file
     <tt>/etc/etcd/etcd.conf</tt> on the master on the master and
     adding a key file to <tt>ETCD_KEY_FILE</tt>:
-    <pre>ETCD_KEY_FILE /etc/etcd/server.key</pre>
+    <pre>ETCD_KEY_FILE=/etc/etcd/server.key</pre>
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -27,5 +27,5 @@ ocil_clause: 'the etcd client key file is not configured'
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ grep ETCD_KEY_FILE /etc/etcd/etcd.conf</pre>
+    <pre>$ grep ETCD_KEY_FILE=/etc/etcd/etcd.conf</pre>
     Verify that there is a key file configured.
