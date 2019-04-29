@@ -38,19 +38,19 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
         component_id = component_ref_href[1:]
 
         # Locate the <xccdf:check> element of an <xccdf:Rule> with id security_patches_up_to_date
-        component = None
+        checklist_component = None
         oval_check = None
         components = datastreamtree.findall(".//{%s}component" % ds_ns)
         for component in components:
             if component.get('id') == component_id:
-                component = component
-        if component is None:
+                checklist_component = component
+        if checklist_component is None:
             # Something strange happened
             sys.stderr.write("Couldn't find <component> %s referenced by <component-ref> %s" %
                              (component_id, component_ref_id))
             sys.exit(1)
 
-        rules = component.findall(".//{%s}Rule" % (xccdf_ns))
+        rules = checklist_component.findall(".//{%s}Rule" % (xccdf_ns))
         for rule in rules:
             if rule.get('id').endswith('rule_security_patches_up_to_date'):
                 rule_checks = rule.findall("{%s}check" % xccdf_ns)
@@ -83,7 +83,7 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
 
         # Add a uri refering the component in Rule's Benchmark component-ref catalog
         uri_exists = False
-        catalog = component_ref.find('{%s}catalog' % cat_ns)
+        catalog = checklist_component_ref.find('{%s}catalog' % cat_ns)
         uris = catalog.findall("{%s}uri" % (cat_ns))
         for uri in uris:
             if uri.get('name') == component_ref_name:
