@@ -127,6 +127,7 @@ def main():
             print("Creating a new profile containing the exclusive rules: {}".format(
                 subtracted_profile_filename))
 
+            subtracted_profile.title = profile1.title + " subtracted by " + profile2.title
             subtracted_profile.dump_yaml(subtracted_profile_filename)
             print("Profile {} was created successfully".format(
                 subtracted_profile_filename))
