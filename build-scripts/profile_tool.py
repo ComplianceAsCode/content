@@ -67,7 +67,7 @@ def parse_args():
                         action="store_true", dest="all",
                         help="Show all available statistics.")
     parser_stats.add_argument("--format", default="plain",
-                        choices=["plain", "json", "csv"],
+                        choices=["plain", "json", "csv", "html"],
                         help="Which format to use for output.")
 
     subtracted_profile_desc = \
@@ -149,6 +149,9 @@ def main():
 
     if args.format == "json":
         print(json.dumps(ret, indent=4))
+    if args.format == "html":
+        from json2html import json2html
+        print(json2html.convert(json = json.dumps(ret)))
     elif args.format == "csv":
         # we can assume ret has at least one element
         # CSV header

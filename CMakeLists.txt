@@ -250,6 +250,9 @@ add_subdirectory("tests")
 add_custom_target(stats)
 add_custom_target(profile-stats)
 
+add_custom_target(html-stats)
+add_custom_target(html-profile-stats)
+
 ssg_build_bash_remediation_functions()
 
 ssg_build_man_page()
