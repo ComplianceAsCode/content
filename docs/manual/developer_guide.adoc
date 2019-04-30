@@ -132,7 +132,8 @@ cmake ../
 make -j4 rhel7-content  # SCAP XML files for RHEL7
 make -j4 rhel7-guides  # HTML guides for RHEL7
 make -j4 rhel7-tables  # HTML tables for RHEL7
-make -j4 rhel7-roles  # remediation roles for RHEL7
+make -j4 rhel7-profile-bash-scripts  # remediation Bash scripts for all RHEL7 profiles
+make -j4 rhel7-profile-playbooks # Ansible Playbooks for all RHEL7 profiles
 make -j4 rhel7  # everything above for RHEL7
 ```
 
@@ -989,7 +990,7 @@ The `/build/<product>/playbooks/all/` directory represents the virtual `(all)` p
 Due to undefined XCCDF Value selectors in this pseudo-profile, these Playbooks use default values of XCCDF Values when applicable.
 
 We also build profile Playbook that contains tasks for all rules in the profile.
-The Playbook is generated in `/build/roles/ssg-<product>-role-<profile_id>.yml`.
+The Playbook is generated in `/build/ansible/<product>-playbook-<profile_id>.yml`.
 
 ==== Bash
 

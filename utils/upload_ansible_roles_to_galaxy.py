@@ -407,10 +407,10 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Updates Galaxy Ansible Roles')
     parser.add_argument(
-        "--build-roles-dir", required=True,
-        help="Path to directory containing the generated roles. Most "
-        "likely this is going to be ./build/roles",
-        dest="build_roles_dir")
+        "--build-playbooks-dir", required=True,
+        help="Path to directory containing the generated Ansible Playbooks. "
+        "Most likely this is going to be ./build/ansible",
+        dest="build_playbooks_dir")
     parser.add_argument(
         "--organization", "-o", default=ORGANIZATION_NAME,
         help="Name of the Github organization")
@@ -443,47 +443,39 @@ def locally_clone_and_init_repositories(organization, repo_list):
         shutil.rmtree(temp_dir)
 
 
+def select_roles_to_upload(product_whitelist, profile_whitelist,
+                           build_playbooks_dir):
+    selected_roles = dict()
+    for filename in os.listdir(build_playbooks_dir):
+        root, ext = os.path.splitext(filename)
+        if ext == ".yml":
+            # the format is product-playbook-profile.yml
+            product, _, profile = root.split("-", 2)
+            if product in product_whitelist and profile in profile_whitelist:
+                role_name = "ansible-%s-%s-role" % (product, profile)
+                selected_roles[role_name] = (product, profile)
+    return selected_roles
+
+
 def main():
     args = parse_args()
 
-    product_whitelist = PRODUCT_WHITELIST
+    product_whitelist = set(PRODUCT_WHITELIST)
+    profile_whitelist = set(PROFILE_WHITELIST)
+
+    potential_roles = {
+        ("ansible-%s-%s-role" % (product, profile))
+        for product in product_whitelist for profile in profile_whitelist
+    }
+
     if args.product:
-        selected_products = set(args.product)
-        product_whitelist.intersection_update(selected_products)
-
-    all_role_whitelist = []
-    for product in product_whitelist:
-        for p in PROFILE_WHITELIST:
-            all_role_whitelist.append("%s-role-%s" % (product, p))
-
-    role_whitelist = set(all_role_whitelist)
+        product_whitelist &= set(args.product)
     if args.profile:
-        selected_roles = set()
-        for profile in args.profile:
-            selected_roles.update(set([role for role in role_whitelist if profile in role]))
-        role_whitelist.intersection_update(selected_roles)
+        profile_whitelist &= set(args.profile)
 
-    # the first 4 cut chars are for "ssg-"
-    # the last 4 cut chars are for ".yml"
-    available_roles = set(
-        [f[4:-4]
-         for f in os.listdir(args.build_roles_dir) if f.endswith(".yml")]
+    selected_roles = select_roles_to_upload(
+        product_whitelist, profile_whitelist, args.build_playbooks_dir
     )
-    selected_roles = available_roles.intersection(role_whitelist)
-    potential_roles = available_roles.intersection(all_role_whitelist)
-
-    # Fix SSG role names to be in line with ansible role naming
-    corrected_roles = []
-    role_map = {}
-    for role in selected_roles:
-        ostype = role.split("-")[0]
-        corrected_role = role.replace(("%s-role" % ostype),
-                                      ("ansible-role-%s" % (ostype)))
-        role_map[corrected_role] = role
-        corrected_roles.append(corrected_role)
-
-    # Replace selected roles with correctly named ones
-    selected_roles = set(corrected_roles)
 
     if not args.token:
         print("Input your GitHub credentials:")
@@ -498,7 +490,7 @@ def main():
     github_repositories = [repo.name for repo in github_org.get_repos()]
 
     # Create empty repositories
-    github_new_repos = sorted(list(set(selected_roles) - set(github_repositories)))
+    github_new_repos = sorted(list(set(selected_roles.keys()) - set(github_repositories)))
     if github_new_repos:
         create_empty_repositories(github_new_repos, github_org)
 
@@ -512,9 +504,10 @@ def main():
             repo_status = "update"
 
         if repo.name in selected_roles:
-            corresponding_filename = os.path.join(
-                args.build_roles_dir, "ssg-" + role_map[repo.name] + ".yml")
-            Role(repo, corresponding_filename).update_repository(repo_status)
+            playbook_filename = "%s-playbook-%s.yml" % selected_roles[repo.name]
+            playbook_full_path = os.path.join(
+                args.build_playbooks_dir, playbook_filename)
+            Role(repo, playbook_full_path).update_repository(repo_status)
             if args.tag_release:
                 update_repo_release(github, repo)
         elif repo.name not in potential_roles:
