@@ -1,0 +1,38 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Enable seccomp'
+
+description: |-
+    Seccomp (secure computing mode) is used to restrict the set of system calls applications can make,
+    allowing cluster administrators greater control over the security of workloads running in
+    the OpenShift Container Platform. 
+
+    By default OpenShift is delivered with seccomp disabled, allowing all workloads to run
+    unconfined and issue all system calls.
+
+    To configure seccomp profiles, follow the instructions in the OpenShift Cluster
+    Administration documentation:
+
+    https://docs.openshift.com/container-platform/3.11/admin_guide/seccomp.html
+
+rationale: |-
+    Failure to enable seccomp will allow containers to issue any and all system calls
+    available in the environment.
+
+severity: high
+
+ocil_clause: 'they are not'
+
+ocil: |-
+    Verify that Security Context Constraints (SCCs) have been configured with seccomp:
+    <pre>$ oc get scc -ocustom-columns=NAME:.metadata.name,SECCOMP-PROFILES:.seccompProfiles</pre>
+
+# Since this is operational guidance and not a configuration check,
+# a CCE should not be assigned.
+#identifiers:
+#    cce@ocp3: 
+
+references:
+    cis: 1.6.5
