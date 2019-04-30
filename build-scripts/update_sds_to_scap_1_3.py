@@ -1,6 +1,7 @@
 
 from __future__ import print_function
 
+import argparse
 import sys
 try:
     from urllib.parse import urlparse
@@ -107,18 +108,18 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
             component_ref_feed.set('{%s}href' % xlink_namespace, href_url)
             ds_checks.append(component_ref_feed)
 
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument("--input", required=True)
+    p.add_argument("--output", required=True)
+
+    return p.parse_args()
 
 def main():
-    if len(sys.argv) < 3:
-        print("This script updates SCAP 1.2 Source DataStream to SCAP 1.3")
-        sys.exit(1)
+    args = parse_args()
 
-    # Input datastream file
-    indatastreamfile = sys.argv[1]
-    # Output datastream file
-    outdatastreamfile = sys.argv[2]
     # Datastream element tree
-    datastreamtree = ssg.xml.ElementTree.parse(indatastreamfile).getroot()
+    datastreamtree = ssg.xml.ElementTree.parse(args.input).getroot()
 
     # Set SCAP version to 1.3
     datastreamtree.set('schematron-version', '1.3')
@@ -127,7 +128,7 @@ def main():
     # Move reference to remote OVAL content to a source data stream component
     move_patches_up_to_date_to_source_data_stream_component(datastreamtree)
 
-    ssg.xml.ElementTree.ElementTree(datastreamtree).write(outdatastreamfile)
+    ssg.xml.ElementTree.ElementTree(datastreamtree).write(args.output)
 
 
 if __name__ == "__main__":
