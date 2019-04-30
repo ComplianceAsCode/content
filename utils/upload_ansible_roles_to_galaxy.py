@@ -452,7 +452,7 @@ def select_roles_to_upload(product_whitelist, profile_whitelist,
             # the format is product-playbook-profile.yml
             product, _, profile = root.split("-", 2)
             if product in product_whitelist and profile in profile_whitelist:
-                role_name = "ansible-%s-%s-role" % (product, profile)
+                role_name = "ansible-role-%s-%s" % (product, profile)
                 selected_roles[role_name] = (product, profile)
     return selected_roles
 
@@ -464,7 +464,7 @@ def main():
     profile_whitelist = set(PROFILE_WHITELIST)
 
     potential_roles = {
-        ("ansible-%s-%s-role" % (product, profile))
+        ("ansible-role-%s-%s" % (product, profile))
         for product in product_whitelist for profile in profile_whitelist
     }
 
