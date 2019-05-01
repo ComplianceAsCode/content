@@ -23,7 +23,9 @@
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: id_provider, value: files }
     - { section: domain/default, option: ldap_tls_cacertdir, value: "{{ var_sssd_ldap_tls_ca_dir }}" }
-  when: test_grep_domain.stdout | length < 1
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length < 1
 
 - name: "Configure LDAPs path to CA directory"
   ini_file:
@@ -33,4 +35,6 @@
     value: "{{ var_sssd_ldap_tls_ca_dir }}"
     create: yes
     mode: 0600
-  when: test_grep_domain.stdout | length > 0
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length > 0

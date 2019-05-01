@@ -30,7 +30,9 @@
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: id_provider, value: files }
     - { section: domain/default, option: ldap_id_use_start_tls, value: true}
-  when: test_grep_domain.stdout | length < 1
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length < 1
 
 - name: "Configure LDAP to use STARTTLS"
   ini_file:
@@ -40,5 +42,6 @@
     value: true
     create: yes
     mode: 0600
-  when: test_grep_domain.stdout | length > 0
-
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length > 0
