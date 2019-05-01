@@ -20,7 +20,9 @@
   with_items:
     - { section: sssd, option: domains, value: default}
     - { section: domain/default, option: id_provider, value: files }
-  when: test_grep_domain.stdout | length < 1
+  when:
+    - test_grep_domain.stdout is defined
+    - test_grep_domain.stdout | length < 1
 
 - name: "Configure SSD to Expire Offline Credentials"
   ini_file:
