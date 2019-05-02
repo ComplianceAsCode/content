@@ -104,6 +104,7 @@ find_python_module(yaml REQUIRED)
 find_python_module(jinja2 REQUIRED)
 find_python_module(pytest)
 find_python_module(pytest_cov)
+find_python_module(json2html)
 
 include(CMakeDependentOption)
 cmake_dependent_option(ENABLE_PYTHON_COVERAGE "Enable Python tests with coverage support" ON "PY_PYTEST_COV" OFF)

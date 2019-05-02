@@ -70,6 +70,16 @@ yum install yamllint ansible-lint
 yum install ninja-build
 ```
 
+(optional) Install the `json2html` package if you want to use generate HTML report statistics:
+
+```bash
+pip install json2html
+```
+if you are using python3:
+```bash
+pip3 install json2html
+```
+
 ### Downloading the source code
 
 Download and extract a tarball from the [list of releases](https://github.com/ComplianceAsCode/content/releases):
@@ -154,6 +164,20 @@ cd build/
 cmake -G Ninja ../
 ninja-build  # depending on the distribution just "ninja" may also work
 ```
+
+(optional) Generate statistics for products and profiles. Some of the statistics generated are: implemented OVAL, bash, ansible for rules, missing CCE, etc:
+
+```bash
+cd content/
+cd build/
+cmake ../
+make -j4 stats # create statistics for all products
+make -j4 profile-stats # create statistics for all profiles in all products
+```
+
+You can also create statistics per product, to do that just prepend the product name (e.g.: `rhel7-stats`) to the make target.
+
+If you want to go deeper into statistics, refer to <<Profile Statistics and Utilities>> section.
 
 ### Build outputs
 
@@ -597,6 +621,7 @@ For example, to check which rules in RHEL8 OSPP profile are missing remediations
 $ ./build_product rhel8
 $ ./build-scripts/profile_tool.py stats --missing-fixes --profile ospp --benchmark build/ssg-rhel8-xccdf.xml
 ----
+Note: There is an automated job which provides latest statistics from all products and all profiles, you can view it here: link:https://jenkins.complianceascode.io/job/scap-security-guide-stats/[Statistics]
 
 The tool also can subtract rules between YAML profiles.
 
