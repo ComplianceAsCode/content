@@ -29,6 +29,22 @@ rationale: |-
 warnings:
     - general: |-
         There is no remediation besides switching to a different operating system.
+    - regulatory: |-
+        The Federal Information Systems Modernization Act (FISMA), requires cryptography protecting sensitive
+        or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
+        Technology (NIST) views unvalidated cryptography as providing no protection to the information or
+        data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
+        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
+        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
+        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
+        <br /><br />
+        See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
+        for more information about the Cryptographic Validation Program.
+        <br /><br />
+        A list of FIPS validated cryptographic modules can be found at
+        <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>. The
+        validated cryptographic modules only apply to the products and companies listed in the active validation
+        list.
 
 severity: high
 
