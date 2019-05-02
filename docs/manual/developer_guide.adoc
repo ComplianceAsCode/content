@@ -177,6 +177,16 @@ make -j4 profile-stats # create statistics for all profiles in all products
 
 You can also create statistics per product, to do that just prepend the product name (e.g.: `rhel7-stats`) to the make target.
 
+It is possible to generate HTML output by triggering similar command:
+
+```bash
+cd content/
+cd build/
+cmake ../
+make -j4 html-stats # create statistics for all products, as a result <product>/stats.html file is created.
+make -j4 html-profile-stats # create statistics for all profiles in all products, as a result <product>/profile-stats.html file is created
+```
+
 If you want to go deeper into statistics, refer to <<Profile Statistics and Utilities>> section.
 
 ### Build outputs
