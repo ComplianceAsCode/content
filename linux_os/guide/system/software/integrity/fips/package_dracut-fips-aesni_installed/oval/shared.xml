@@ -1,4 +1,4 @@
-<!-- DO NOT TEMPLATE this check. dracut-fips-aesni should only be installed on 
+<!-- DO NOT TEMPLATE this check. dracut-fips-aesni should only be installed on
  certified systems, and changes to this file should be scrutinized through the
  review process.
 -->
@@ -18,7 +18,7 @@
       <criterion comment="System does not support AES instruction set" test_ref="test_processor_aes_instruction" />
       <criteria operator="AND">
         <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
-        <criterion comment="package dracut-fips-aesni is installed" 
+        <criterion comment="package dracut-fips-aesni is installed"
         test_ref="test_package_dracut-fips-aesni_installed" />
       </criteria>
     </criteria>
@@ -28,7 +28,7 @@
     <ind:object object_ref="object_processor_aes_instruction" />
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="object_processor_aes_instruction" version="1">
-    <ind:filepath>/proc/meminfo</ind:filepath>
+    <ind:filepath>/proc/cpuinfo</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*flags[\s]*:[\s]*.*aes.*$</ind:pattern>
     <ind:instance datatype="int" operation="equals">1</ind:instance>
   </ind:textfilecontent54_object>
