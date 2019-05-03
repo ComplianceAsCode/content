@@ -94,13 +94,13 @@ def main():
     print("Using SSH public key from file: {0}".format(data.ssh_pubkey))
     print("Using hypervisor: {0}".format(data.libvirt))
 
-    if not data.disk_dir:
-        if data.libvirt == "qemu:///system":
-            data.disk_dir = "/var/lib/libvirt/images/"
-        else:
-            data.disk_dir = home_dir + "/.local/share/libvirt/images/"
-    data.disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
-    print("Location of VM disk: {0}".format(data.disk_path))
+    if data.disk_dir:
+        disk_path = os.path.join(data.disk_dir, data.domain) + ".qcow2"
+        print("Location of VM disk: {0}".format(disk_path))
+        data.disk_spec = "path={0},format=qcow2,size=20".format(disk_path)
+    else:
+        data.disk_spec = "size=20,format=qcow2"
+
     data.ks_basename = os.path.basename(data.kickstart)
 
     if data.distro == "fedora":
@@ -131,7 +131,7 @@ def main():
         data.network = "default"
     else:
         data.network = "bridge=virbr0"
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --os-variant={variant} --hvm --accelerate --network {network} --disk path={disk_path},size=20,format=qcow2 --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0" --graphics=none --noautoconsole --wait=-1 --location={url}'.format(**data.__dict__)
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --os-variant={variant} --hvm --accelerate --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0" --graphics=none --noautoconsole --wait=-1 --location={url}'.format(**data.__dict__)
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
         print(command)
