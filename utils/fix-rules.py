@@ -122,7 +122,6 @@ def find_rules(directory, func):
                 or "tests/" in path:
                 continue
             try:
-                print(path)
                 if func(path, product_yaml):
                     results.append((path, product_yaml_path))
             except jinja2.exceptions.UndefinedError:
