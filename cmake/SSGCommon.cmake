@@ -523,6 +523,7 @@ macro(ssg_build_sds PRODUCT)
     if("${PRODUCT}" MATCHES "rhel(6|7)")
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             # use --skip-valid here to avoid repeatedly validating everything
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
@@ -530,8 +531,9 @@ macro(ssg_build_sds PRODUCT)
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-pcidss-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_to_scap_1_3.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_to_scap_1_3.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
             DEPENDS generate-ssg-${PRODUCT}-oval.xml
@@ -543,19 +545,21 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
             DEPENDS generate-ssg-${PRODUCT}-pcidss-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-pcidss-xccdf-1.2.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml and ssg-${PRODUCT}-ds-1.3.xml"
         )
     else()
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            OUTPUT "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
             # use --skip-valid here to avoid repeatedly validating everything
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-compose --skip-valid "ssg-${PRODUCT}-xccdf-1.2.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${SED_EXECUTABLE}" -i 's/schematron-version="[0-9].[0-9]"/schematron-version="1.2"/' "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-add --skip-valid "ssg-${PRODUCT}-cpe-dictionary.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/sds_move_ocil_to_checks.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_to_scap_1_3.py" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/update_sds_to_scap_1_3.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
             COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+            COMMAND "${XMLLINT_EXECUTABLE}" --nsclean --format --output "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
             DEPENDS generate-ssg-${PRODUCT}-xccdf-1.2.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf-1.2.xml"
             DEPENDS generate-ssg-${PRODUCT}-oval.xml
@@ -565,17 +569,22 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml and ssg-${PRODUCT}-ds-1.3.xml"
         )
     endif()
     add_custom_target(
         generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
     )
 
     add_test(
         NAME "validate-ssg-${PRODUCT}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+    )
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-ds-1.3.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
     )
 endmacro()
 
@@ -742,6 +751,8 @@ macro(ssg_build_product PRODUCT)
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.3.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
@@ -812,19 +823,27 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.3.xml"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.3.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.3.xml"
         DEPENDS generate-ssg-${ORIGINAL}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.3.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/enable_derivatives.py"
-        COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds.xml"
+        COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds.xml and ssg-${DERIVATIVE}-ds-1.3.xml"
     )
     add_custom_target(
         generate-ssg-${DERIVATIVE}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.3.xml"
     )
     add_test(
         NAME "validate-ssg-${DERIVATIVE}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+    )
+    add_test(
+        NAME "validate-ssg-${DERIVATIVE}-ds-1.3.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.3.xml"
     )
 
     add_custom_target(${DERIVATIVE} ALL)
@@ -866,6 +885,8 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.3.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time
@@ -1144,6 +1165,7 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/rhel{6,7}/kickstart/*-ks.cfg" "zipfile/${ZIPNAME}/kickstart"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds-1.3.xml" "zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/bash"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bash/*.sh" "zipfile/${ZIPNAME}/bash"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/ansible"
@@ -1168,6 +1190,7 @@ macro(ssg_build_nist_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "nist-zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-rhel{6,7}-ds.xml" "nist-zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-rhel{6,7}-ds-1.3.xml" "nist-zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E chdir "nist-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-nist.zip" --format=zip "${ZIPNAME}"
         COMMENT "Building NIST zipfile at ${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
         )
