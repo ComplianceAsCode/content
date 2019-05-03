@@ -143,12 +143,14 @@ def main():
 
     print("\nTo determine the IP address of the {0} VM use:".format(data.domain))
     if data.libvirt == "qemu:///system":
-        print("sudo virsh domifaddr {0}\n".format(data.domain))
+        print("  sudo virsh domifaddr {0}\n".format(data.domain))
     else:
-        print("arp -n | grep $(virsh -q domiflist {0} | awk '{{print $5}}')\n".format(data.domain))
-    print("To connect to the {0} VM use:\nssh {1} root@IP".format(data.domain, "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"))
-    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY' option to your ssh command")
-    print("and export the SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY' before running the SSG Test Suite.")
+        print("  arp -n | grep $(virsh -q domiflist {0} | awk '{{print $5}}')\n".format(data.domain))
+
+    print("To connect to the {0} VM use:\n  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@IP\n".format(data.domain))
+    print("To connect to the VM serial console, use:\n  virsh console {0}\n".format(data.domain))
+    print("If you have used the `--ssh-pubkey` also add '-o IdentityFile=PATH_TO_PRIVATE_KEY' option to your ssh command and export the SSH_ADDITIONAL_OPTIONS='-o IdentityFile=PATH_TO_PRIVATE_KEY' before running the SSG Test Suite.")
+
     if data.libvirt == "qemu:///system":
         print("\nIMPORTANT: When running SSG Test Suite use `sudo -E` to make sure that your SSH key is used.")
 
