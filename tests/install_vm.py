@@ -52,6 +52,11 @@ def parse_args():
         help="Number of CPU cores configured for the VM."
     )
     parser.add_argument(
+        "--network",
+        dest="network",
+        help="Network type/spec, ie. bridge=br0 or network=name."
+    )
+    parser.add_argument(
         "--url",
         dest="url",
         default=None,
@@ -119,10 +124,11 @@ def main():
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
 
-    if data.libvirt == "qemu:///system":
-        data.network = "default"
-    else:
-        data.network = "bridge=virbr0"
+    if not data.network:
+        if data.libvirt == "qemu:///system":
+            data.network = "network=default"
+        else:
+            data.network = "bridge=virbr0"
 
     # The kernel option 'net.ifnames=0' is used to disable predictable network
     # interface names, for more details see:
