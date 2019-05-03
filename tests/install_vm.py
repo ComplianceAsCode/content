@@ -1,7 +1,8 @@
+#!/usr/bin/env python2
+
 import argparse
 import os
 import sys
-
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -10,7 +11,6 @@ def parse_args():
         "--libvirt",
         dest="libvirt",
         default="qemu:///session",
-        choices=("qemu:///session", "qemu:///system"),
         help="What hypervisor should be used when installing VM."
     )
     parser.add_argument(
