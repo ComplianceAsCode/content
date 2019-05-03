@@ -50,7 +50,7 @@ def has_invalid_cce(yaml_file, product_yaml=None):
     if 'identifiers' in rule and rule['identifiers'] is not None:
         for i_type, i_value in rule['identifiers'].items():
             if i_type[0:3] == 'cce':
-                if not checks.is_cce_value_valid("CCE-" + i_value):
+                if not checks.is_cce_value_valid("CCE-" + str(i_value)):
                     return True
     return False
 
@@ -115,9 +115,14 @@ def find_rules(directory, func):
 
         for filename in files:
             path = os.path.join(root, filename)
-            if len(path) < 8 or path[-8:] != 'rule.yml' or "tests/" in path:
+            rule_filename_id = 'rule.yml'
+            rule_filename_id_len = len(rule_filename_id)
+            if len(path) < rule_filename_id_len \
+                or path[-(rule_filename_id_len):] != rule_filename_id \
+                or "tests/" in path:
                 continue
             try:
+                print(path)
                 if func(path, product_yaml):
                     results.append((path, product_yaml_path))
             except jinja2.exceptions.UndefinedError:
@@ -307,8 +312,8 @@ def fix_prefix_cce(file_contents, yaml_contents):
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
                 has_prefix = i_value[0:3].upper() == 'CCE'
-                remainder_valid = checks.is_cce_format_valid("CCE-" + i_value[3:])
-                remainder_valid |= checks.is_cce_format_valid("CCE-" + i_value[4:])
+                remainder_valid = checks.is_cce_format_valid("CCE-" + str(i_value[3:]))
+                remainder_valid |= checks.is_cce_format_valid("CCE-" + str(i_value[4:]))
                 if has_prefix and remainder_valid:
                     prefixed_identifiers.append(i_type)
 
@@ -324,7 +329,7 @@ def fix_invalid_cce(file_contents, yaml_contents):
     if yaml_contents[section] is not None:
         for i_type, i_value in yaml_contents[section].items():
             if i_type[0:3] == 'cce':
-                if not checks.is_cce_value_valid("CCE-" + i_value):
+                if not checks.is_cce_value_valid("CCE-" + str(i_value)):
                     invalid_identifiers.append(i_type)
 
     return remove_section_keys(file_contents, yaml_contents, section, invalid_identifiers)
@@ -415,7 +420,6 @@ def find_prefix_cce(directory):
 
     for result in results:
         rule_path = result[0]
-        rule_path = result[0]
         product_yaml_path = result[1]
 
         product_yaml = None
@@ -430,7 +434,6 @@ def find_invalid_cce(directory):
     print("Number of rules with invalid CCEs: %d" % len(results))
 
     for result in results:
-        rule_path = result[0]
         rule_path = result[0]
         product_yaml_path = result[1]
 
