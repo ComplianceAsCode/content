@@ -1,25 +1,40 @@
 <def-group>
   <definition class="compliance" id="api_server_authorization_mode" version="1">
     <metadata>
-      <title>Disable use of AlwaysAllow for the API Server Authorization Mode</title>
+      <title>Ensure authorization-mode is set to Webhook</title>
       <affected family="unix">
         <platform>multi_platform_ocp</platform>
       </affected>
-      <description>AlwaysAllow should not be configured for authentication on the master node.</description>
+      <description>If authorization-mode is configured, it should be set to Webhook.</description>
     </metadata>
-    <criteria operator="AND">
-      <criterion comment="AlwaysAllow does not exist" test_ref="test_api_server_authorization_mode" />
+    <criteria operator="OR">
+      <criterion comment="authorization-mode not set, using default" test_ref="test_api_server_authorization_mode_default" />
+      <criterion comment="authorization mode is set to Webhook" test_ref="test_api_server_authorization_mode_webhook" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="AlwaysAllow does not exist" id="test_api_server_authorization_mode" version="1">
-    <ind:object object_ref="object_api_server_authorization_mode" />
+  <!-- tests for default configuration value (e.g. authorization-mode not configured) -->
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="authorization-mode does not exist" id="test_api_server_authorization_mode_default" version="1">
+    <ind:object object_ref="object_api_server_authorization_mode_default" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_api_server_authorization_mode" version="1">
+  <ind:textfilecontent54_object id="object_api_server_authorization_mode_default" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*authorization-mode\:[\n]+[\s*]-[\s]+AlwaysAllow[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*authorization-mode\:*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+  <!-- end test for default configuration value -->
+
+  <!-- tests for authorization-mode to be set to Webhook -->
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="authorization-mode does not exist" id="test_api_server_authorization_mode_webhook" version="1">
+    <ind:object object_ref="object_api_server_authorization_mode_webhook" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_api_server_authorization_mode_webhook" version="1">
+    <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*authorization-mode\:[\n]+[\s*]-[\s]+Webhook[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <!-- end test for default configuration value -->
 
 </def-group>

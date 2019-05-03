@@ -2,31 +2,36 @@ documentation_complete: true
 
 prodtype: ocp3
 
-title: 'Disable use of AlwaysAllow for the API Server Authorization Mode'
+title: 'Ensure API Server authorization-mode is set to Webhook'
 
 description: |-
-    The OpenShift API server should not allow anonymous API requests.
+    By default, unauthenticated/unauthorized users have no access to OpenShift nodes
+    and the API Server <tt>authorization-mode</tt> is set to <tt>Webhook</tt>.
     To ensure that the API server requires authorization for API requests,
-    validate that <tt>AlwaysAllow</tt> is not configured for <tt>authorization-mode</tt>
+    validate that <tt>authorization-mode</tt> is configured to <tt>Webhook</tt>
     in <tt>/etc/origin/master/master-config.yaml</tt>:
     <pre>kubernetesMasterConfig:
       apiServerArguments:
         authorization-mode:
-        - AlwaysAllow</pre>
+        - Webhook</pre>
+
+warnings:
+  - functionality: |-
+      If <tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>, the node
+      systemd service (<tt>atomic-openshift-node</tt>) will not start.
 
 rationale: |-
-    The <tt>AlwaysAllow</tt> authorization mode allows all requests including
-    anonymous requests. This would grant any authenticated entity full cluster
-    access.
+    Ensuring <tt>authorization-mode</tt> is set to <tt>Webhook</tt> helps enforce that
+    unauthenticated/unauthorized users have no access to OpenShift nodes.
 
 severity: medium
 
 references:
     cis: 1.1.31
 
-ocil_clause: '<tt>authorization-mode</tt> is configured to use <tt>AlwaysAllow</tt>'
+ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
     <pre>$ sudo grep -A1 authorization-mode /etc/origin/master/master-config.yaml</pre>
-    Verify that the output does not contain <tt>AlwaysAllow</tt>.
+    Verify that there is no output, or the output is set to <tt>Webhook</tt>.
