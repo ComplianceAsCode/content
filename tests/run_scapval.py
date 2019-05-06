@@ -8,7 +8,7 @@ import os
 import xml.etree.ElementTree as ET
 import sys
 
-NS = "http://csrc.nist.gov/ns/decima/results/1.0"
+SCAPVAL_RESULTS_NS = "http://csrc.nist.gov/ns/decima/results/1.0"
 oval_unix_ns = "http://oval.mitre.org/XMLSchema/oval-definitions-5#unix"
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.2"
 
@@ -35,10 +35,11 @@ def process_results(result_path):
     ret_val = True
     tree = ET.parse(result_path)
     root = tree.getroot()
-    results = root.find("./{%s}results" % NS)
-    for base_req in results.findall("./{%s}base-requirement" % NS):
+    results = root.find("./{%s}results" % SCAPVAL_RESULTS_NS)
+    for base_req in results.findall(
+            "./{%s}base-requirement" % SCAPVAL_RESULTS_NS):
         id_ = base_req.get("id")
-        status = base_req.find("./{%s}status" % NS).text
+        status = base_req.find("./{%s}status" % SCAPVAL_RESULTS_NS).text
         if status == "FAIL":
             print("    %s: %s" % (id_, status))
             ret_val = False
