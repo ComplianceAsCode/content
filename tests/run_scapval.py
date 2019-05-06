@@ -82,7 +82,7 @@ def test_datastream(datastream_path,  scapval_path, scap_version):
             "-file", datastream_path,
             "-valresultfile", result_path
             ]
-    subprocess.call(scapval_command)
+    subprocess.check_output(scapval_command, stderr=subprocess.STDOUT)
     return process_results(result_path)
 
 
