@@ -72,7 +72,7 @@ def workaround_datastream(datastream_path):
 
 def test_datastream(datastream_path,  scapval_path, scap_version):
     result_path = datastream_path + ".result.xml"
-    report_path = datastream_path + ".report.xml"
+    report_path = datastream_path + ".report.html"
     if scap_version == "1.3":
         datastream_path = workaround_datastream(datastream_path)
     scapval_command = [
