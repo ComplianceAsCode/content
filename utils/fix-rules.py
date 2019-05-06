@@ -6,6 +6,7 @@ import jinja2
 import argparse
 
 from ssg import yaml, checks
+from ssg.shims import input_func
 import ssg
 
 
@@ -372,8 +373,7 @@ def fix_file(path, product_yaml, func):
     print("====BEGIN AFTER====")
     print_file(file_contents)
     print("====END AFTER====")
-
-    response = raw_input("Confirm writing output to %s: (y/n): " % path)
+    response = input_func("Confirm writing output to %s: (y/n): " % path)
     if response.strip() == 'y':
         f = open(path, 'w')
         for line in file_contents:
