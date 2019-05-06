@@ -23,8 +23,7 @@ def parse_args():
         "--distro",
         dest="distro",
         default="fedora",
-        choices=("fedora", "centos7", "rhel7", "rhel8"),
-        help="What type of distribution to install"
+        help="What distribution to install (URL alias for fedora/centos7)"
     )
     parser.add_argument(
         "--domain",
@@ -83,6 +82,15 @@ def main():
         pass
     home_dir = os.path.expanduser('~' + username)
 
+    if not data.url:
+        if data.distro == "fedora":
+            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/29/Everything/x86_64/os"
+        elif data.distro == "centos7":
+            data.url = "http://mirror.centos.org/centos/7/os/x86_64"
+    if not data.url:
+        sys.stderr.write("Neither --url nor a valid --distro was provided.\n")
+        return 1
+
     if not data.ssh_pubkey:
         data.ssh_pubkey = home_dir + "/.ssh/id_rsa.pub"
     if not os.path.isfile(data.ssh_pubkey):
@@ -103,19 +111,6 @@ def main():
 
     data.ks_basename = os.path.basename(data.kickstart)
 
-    if data.distro == "fedora":
-        data.variant = "fedora27" # this is for support in RHEL7, where fedora28 is not known yet
-        if not data.url:
-            data.url = "https://download.fedoraproject.org/pub/fedora/linux/releases/29/Everything/x86_64/os"
-    elif data.distro == "centos7":
-        data.variant = "centos7"
-        if not data.url:
-            data.url = "http://mirror.centos.org/centos/7/os/x86_64"
-    elif data.distro == "rhel7":
-        data.variant = "rhel7.0"
-    elif data.distro == "rhel8":
-        data.variant = "rhel8.0"
-
     tmp_kickstart = "/tmp/" + data.ks_basename
     with open(data.kickstart) as infile, open(tmp_kickstart, "w") as outfile:
         old_content = infile.read()
@@ -124,14 +119,16 @@ def main():
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
 
-    # The kernel option 'net.ifnames=0' is used to disable predictable network
-    # interface names, for more details see:
-    # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
     if data.libvirt == "qemu:///system":
         data.network = "default"
     else:
         data.network = "bridge=virbr0"
-    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --os-variant={variant} --hvm --accelerate --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0" --graphics=none --noautoconsole --wait=-1 --location={url}'.format(**data.__dict__)
+
+    # The kernel option 'net.ifnames=0' is used to disable predictable network
+    # interface names, for more details see:
+    # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
+    command = 'virt-install --connect={libvirt} --name={domain} --memory={ram} --vcpus={cpu} --hvm --accelerate --network {network} --disk {disk_spec} --initrd-inject={kickstart} --extra-args="inst.ks=file:/{ks_basename} ksdevice=eth0 net.ifnames=0" --graphics=none --noautoconsole --wait=-1 --location={url}'.format(**data.__dict__)
+
     if data.dry:
         print("\nThe following command would be used for the VM installation:")
         print(command)
