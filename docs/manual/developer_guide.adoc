@@ -99,6 +99,7 @@ To build all the security content:
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake ../
 make -j4
@@ -111,6 +112,7 @@ security content only for *Red Hat Enterprise Linux 7*:
 
    ```bash
    cd content/
+   mkdir build
    cd build/
    cmake ../
    make -j4 rhel7
@@ -127,6 +129,7 @@ security content only for *Red Hat Enterprise Linux 7*:
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake ../
 make -j4 rhel7-content  # SCAP XML files for RHEL7
@@ -141,6 +144,7 @@ make -j4 rhel7  # everything above for RHEL7
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake-gui ../
 make -j4
@@ -150,6 +154,7 @@ make -j4
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake -G Ninja ../
 ninja-build  # depending on the distribution just "ninja" may also work
@@ -209,6 +214,7 @@ running our test suite against the build output. This is done with CTest:
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake ../
 make -j4
@@ -223,6 +229,7 @@ System-wide installation:
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake ../
 make -j4
@@ -233,6 +240,7 @@ sudo make install
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake ../
 make -j4
@@ -243,6 +251,7 @@ sudo make DESTDIR=/opt/absolute/path/to/ssg/ install
 
 ```bash
 cd content/
+mkdir build
 cd build/
 cmake -G Ninja ../
 ninja-build
@@ -254,6 +263,7 @@ ninja-build install
 To build a tarball with all the source code:
 
 ```bash
+mkdir build
 cd build/
 make package_source
 ```
@@ -263,6 +273,7 @@ make package_source
 To build a package for testing purposes:
 
 ```bash
+mkdir build
 cd build/
 # disable any product you would not like to bundle in the package. For example:
 cmake -DSSG_PRODUCT_FEDORA:BOOL=OFF../
@@ -279,6 +290,7 @@ packages.
 To build a zip file with all generated source data streams and kickstarts:
 
 ```bash
+mkdir build
 cd build/
 make zipfile
 ```
@@ -321,7 +333,6 @@ For example:
 [source,bash]
 ----
 $ ls -1 scap-security-guide
-build
 build_config.yml.in
 build-scripts
 chromium
@@ -362,9 +373,6 @@ wrlinux
 
 |===
 |Directory |Description
-
-|`build`
-| Can be used to build the content using CMake.
 
 |`build-scripts`
 | Scripts used by the build system.
@@ -617,7 +625,6 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 
 ----
 *scap-security-guide/*
-├── _build_
 ├── _build-scripts_
 ├── chromium
 ├── debian8
@@ -640,7 +647,7 @@ The SSG content is primarily divided by platform and it can be seen on its direc
 ├── wrlinux
 ----
 
-Except for _build_ and _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
+Except for _docs_, each directory contains checks and remediations that are useful and make sense to be used on that platform.
 The shared directory contains checks and remediations that can be used by more than one platform.
 
 === Contributing
@@ -1092,6 +1099,7 @@ This is an example of a patch to add a new template into the templating system:
 SCAP Security Guide uses ctest to orchestrate testing upstream. To run the test suite go to the build folder and execute `ctest`:
 
 ----
+mkdir build
 cd build/
 ctest -j 4
 ----
