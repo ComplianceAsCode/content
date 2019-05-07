@@ -1,6 +1,9 @@
 function disable_prelink {
-	# Disable prelinking and don't even check
-	# whether it is installed.
+	# prelink not installed
+	if test ! -e /etc/sysconfig/prelink -a ! -e /usr/sbin/prelink; then
+		return 0
+	fi
+
 	if grep -q ^PRELINKING /etc/sysconfig/prelink
 	then
 		sed -i 's/^PRELINKING[:blank:]*=[:blank:]*[:alpha:]*/PRELINKING=no/' /etc/sysconfig/prelink
