@@ -3,8 +3,8 @@
         {{{ rpm_ocil_package(package) }}}
     {{%- elif pkg_system == "dpkg" -%}}
         {{{ dpkg_ocil_package(package) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown package system '{{{ pkg_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -14,8 +14,9 @@
         {{{ rpm_complete_ocil_entry_package(package) }}}
     {{%- elif pkg_system == "dpkg" %}}
         {{{ dpkg_complete_ocil_entry_package(package) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown package system '{{{ pkg_system }}}'.
+    {{%- else -%}}
+ocil: |-
+    JINJA MACRO ERROR - Unknown package system '{{{ pkg_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -33,8 +34,8 @@
         {{{ yum_package_install(package) }}}
     {{%- elif pkg_manager == "dnf" -%}}
         {{{ dnf_package_install(package) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown package manager '{{{ pkg_manager }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -52,8 +53,8 @@
         {{{ yum_package_remove(package) }}}
     {{%- elif pkg_manager == "dnf" -%}}
         {{{ dnf_package_remove(package) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown package manager '{{{ pkg_manager }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown package manager '{{{ pkg_manager }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -63,8 +64,8 @@
         {{{ systemd_describe_service_enable(service) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_describe_service_enable(service) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -74,8 +75,8 @@
         {{{ systemd_describe_service_disable(service) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_describe_service_disable(service) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -85,8 +86,8 @@
         {{{ systemd_ocil_service_enabled(service) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_ocil_service_enabled(service) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -96,8 +97,8 @@
         {{{ systemd_ocil_service_disabled(service) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_ocil_service_disabled(service) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -107,8 +108,8 @@
         {{{ systemd_describe_socket_enable(socket) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_describe_socket_enable(socket) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -118,8 +119,8 @@
         {{{ systemd_describe_socket_disable(socket) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_describe_socket_disable(socket) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
@@ -129,8 +130,9 @@
         {{{ systemd_complete_ocil_entry_socket_and_service_disabled(service) }}}
     {{%- elif init_system == "upstart" -%}}
         {{{ upstart_complete_ocil_entry_socket_and_service_disabled(service) }}}
-    {{%- else %}}
-        JINJA MACRO ERROR: Unknown init system '{{{ init_system }}}'.
+    {{%- else -%}}
+ocil: |-
+    JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
