@@ -12,11 +12,7 @@ description: |-
     follows:
     <pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
     The timeout <b>interval</b> is given in seconds. To have a timeout
-{{% if product in ['opensuse', 'sle11', 'sle12'] %}}
-    of 10 minutes, set <b>interval</b> to 600.
-{{% else %}}
-    of 15 minutes, set <b>interval</b> to 900.
-{{% endif %}}
+    of e.g. 10 minutes, set <b>interval</b> to 600.
     <br /><br />
     If a shorter timeout has already been set for the login
     shell, that value will preempt any SSH
