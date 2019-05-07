@@ -73,4 +73,10 @@ for p in "${all_cmake_products[@]}"; do
 done
 test "$chosen_product_encountered_among_cmake" = on || handle_wrong_argument "$chosen_product"
 
-cd build && rm -rf * && cmake .. "${cmake_disable_all_args[@]}" "$(opt_product_in $chosen_product)" && make "$chosen_product"
+cores=$(nproc 2>/dev/null) || cores=1
+
+set -e
+rm -rf build/*
+cd build
+cmake .. "${cmake_disable_all_args[@]}" "$(opt_product_in $chosen_product)"
+make "-j${cores}" "$chosen_product"
