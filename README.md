@@ -7,6 +7,7 @@
 [![CentOS CI Status](https://ci.centos.org/job/openscap-scap-security-guide/badge/icon)](https://ci.centos.org/job/openscap-scap-security-guide/)
 [![Travis CI Build Status](https://travis-ci.org/OpenSCAP/scap-security-guide.svg?branch=master)](https://travis-ci.org/OpenSCAP/scap-security-guide)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ComplianceAsCode/content/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ComplianceAsCode/content/?branch=master)
+[![Profile Statistics](https://jenkins.complianceascode.io/job/scap-security-guide-stats/badge/icon)](https://jenkins.complianceascode.io/job/scap-security-guide-stats/)
 
 <a href="docs/readme_images/report_sample.png"><img align="right" width="250" src="docs/readme_images/report_sample.png" alt="Evaluation report sample"></a>
 
