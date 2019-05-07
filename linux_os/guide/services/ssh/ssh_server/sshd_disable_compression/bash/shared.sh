@@ -3,4 +3,6 @@
 # Include source function library.
 . /usr/share/scap-security-guide/remediation_functions
 
-replace_or_append '/etc/ssh/sshd_config' '^Compression' 'no' '@CCENUM@' '%s %s'
+populate var_sshd_disable_compression
+
+replace_or_append '/etc/ssh/sshd_config' '^Compression' "$var_sshd_disable_compression" '@CCENUM@' '%s %s'

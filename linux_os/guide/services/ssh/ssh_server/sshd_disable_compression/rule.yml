@@ -9,7 +9,7 @@ description: |-
     , it should be disabled. To disable compression or delay compression until after
     a user has successfully authenticated, add or correct the following line in the
     <tt>/etc/ssh/sshd_config</tt> file:
-    <pre>Compression no</pre> or <pre>Compression delayed</pre>
+    <pre>Compression <sub idref="var_sshd_disable_compression"/></pre>
 
 rationale: |-
     If compression is allowed in an SSH connection prior to authentication,
