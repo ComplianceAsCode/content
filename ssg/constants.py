@@ -164,8 +164,6 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "fuse6": [
         "cpe:/a:redhat:jboss_fuse:6.0",
-        "cpe:/a:redhat:jboss_fuse:6.1.0",
-        "cpe:/a:redhat:jboss_fuse_service_works:6.0",
     ],
     "jre": [
         "cpe:/a:oracle:jre:",
