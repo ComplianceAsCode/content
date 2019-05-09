@@ -84,7 +84,12 @@ def test_datastream(datastream_path,  scapval_path, scap_version):
             "-valresultfile", result_path,
             "-valreportfile", report_path
             ]
-    subprocess.check_output(scapval_command, stderr=subprocess.STDOUT)
+    try:
+        subprocess.check_output(scapval_command, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        sys.stderr.write("Command '{0}' returned {1}:\n{2}\n".format(
+            " ".join(e.cmd), e.returncode, e.output.decode("utf-8")))
+        sys.exit(1)
     return process_results(result_path)
 
 
