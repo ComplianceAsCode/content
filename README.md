@@ -268,7 +268,7 @@ abstraction instead of using XCCDF for the input format.
 
 ## Further reading
 
-The SSG homepage is [https://www.open-scap.org/security-policies/scap-security-guide/](https://www.open-scap.org/security-policies/scap-security-guide/).
+Our project homepage is [https://www.open-scap.org/security-policies/scap-security-guide/](https://www.open-scap.org/security-policies/scap-security-guide/).
 
-* [SSG User Manual](docs/manual/user_guide.adoc)
-* [SSG Developer Guide](docs/manual/developer_guide.adoc)
+* [User Manual](docs/manual/user_guide.adoc)
+* [Developer Guide](docs/manual/developer_guide.adoc)
