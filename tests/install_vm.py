@@ -3,6 +3,8 @@
 import argparse
 import os
 import sys
+import subprocess
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -83,6 +85,25 @@ def parse_args():
     return parser.parse_args()
 
 
+def detect_url_os(url):
+    """Given a repository URL, guess an OS type and version."""
+    cmd = ["osinfo-detect", "-f", "env", "-t", "tree", url]
+    try:
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except OSError as e:
+        if e.errno == os.errno.ENOENT:
+            return None
+        else:
+            raise
+
+    contents = proc.stdout.read().rstrip()
+    if not contents:
+        return None
+    pairs = map(lambda x: x.split('='), contents.splitlines())
+    osinfo = dict(pairs)
+    return osinfo['OSINFO_TREE']
+
+
 def main():
     data = parse_args()
     username = ""
@@ -125,9 +146,12 @@ def main():
 
     tmp_kickstart = "/tmp/" + data.ks_basename
     with open(data.kickstart) as infile, open(tmp_kickstart, "w") as outfile:
-        old_content = infile.read()
-        new_content = old_content.replace("&&HOST_PUBLIC_KEY&&", pub_key)
-        outfile.write(new_content)
+        content = infile.read()
+        content = content.replace("&&HOST_PUBLIC_KEY&&", pub_key)
+        ostype = detect_url_os(data.url)
+        if any(filter(lambda x: x in ostype, ['centos.org', 'redhat.com'])):
+            content = content.replace("&&YUM_REPO_URL&&", data.url)
+        outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
 
