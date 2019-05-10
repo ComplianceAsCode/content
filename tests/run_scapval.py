@@ -87,9 +87,19 @@ def test_datastream(datastream_path,  scapval_path, scap_version):
     try:
         subprocess.check_output(scapval_command, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
-        sys.stderr.write("Command '{0}' returned {1}:\n{2}\n".format(
-            " ".join(e.cmd), e.returncode, e.output.decode("utf-8")))
-        sys.exit(1)
+        scapval_output = e.output.decode("utf-8")
+        # Workaround: SCAPVal 1.3.2 can't generate HTML report because
+        # it throws a NullPointerException, but we don't need the HTML
+        # report for this test, so we can ignore this error.
+        # TODO: Remove this when this is fixed in SCAPVal
+        last_line = scapval_output.splitlines()[-1]
+        if not last_line.endswith(
+                "ERROR SCAPVal has encountered a problem and cannot continue "
+                "with this validation. - java.lang.NullPointerException: "
+                "XSLTemplateExtension cannot be null"):
+            sys.stderr.write("Command '{0}' returned {1}:\n{2}\n".format(
+                " ".join(e.cmd), e.returncode, scapval_output))
+            sys.exit(1)
     return process_results(result_path)
 
 
