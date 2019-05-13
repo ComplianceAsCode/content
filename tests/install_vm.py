@@ -149,8 +149,9 @@ def main():
         content = infile.read()
         content = content.replace("&&HOST_PUBLIC_KEY&&", pub_key)
         ostype = detect_url_os(data.url)
-        if any(filter(lambda x: x in ostype, ['centos.org', 'redhat.com'])):
-            content = content.replace("&&YUM_REPO_URL&&", data.url)
+        if ostype:
+            if any(filter(lambda x: x in ostype, ['centos.org', 'redhat.com'])):
+                content = content.replace("&&YUM_REPO_URL&&", data.url)
         outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
