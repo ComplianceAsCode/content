@@ -200,13 +200,7 @@ class Remediation(object):
         return self.load_rule_from(rule_path)
 
     def load_rule_from(self, rule_path):
-        if not os.path.isfile(rule_path):
-            msg = ("{lang} remediation snippet can't load the "
-                   "respective rule YML at {rule_fname}"
-                   .format(rule_fname=rule_path,
-                           lang=self.remediation_type))
-            print(msg, file=sys.stderr)
-        else:
+        if os.path.isfile(rule_path):
             self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
             self.expand_env_yaml_from_rule()
 
