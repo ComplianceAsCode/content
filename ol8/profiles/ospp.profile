@@ -192,6 +192,7 @@ selections:
     - audit_rules_kernel_module_loading_insmod
     - audit_rules_kernel_module_loading_modprobe
     - audit_rules_kernel_module_loading_rmmod
+    - security_patches_up_to_date
     - audit_rules_etc_passwd_open
     - audit_rules_etc_passwd_openat
     - audit_rules_etc_passwd_open_by_handle_at
