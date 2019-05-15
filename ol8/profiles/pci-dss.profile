@@ -34,7 +34,9 @@ selections:
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
     - file_owner_grub2_cfg
+    - file_owner_efi_grub2_cfg
     - file_groupowner_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
     - package_libreswan_installed
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
