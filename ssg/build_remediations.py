@@ -195,9 +195,8 @@ class Remediation(object):
         self.associated_rule = None
 
     def load_rule_from(self, rule_path):
-        if os.path.isfile(rule_path):
-            self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
-            self.expand_env_yaml_from_rule()
+        self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
+        self.expand_env_yaml_from_rule()
 
     def expand_env_yaml_from_rule(self):
         if not self.associated_rule:
