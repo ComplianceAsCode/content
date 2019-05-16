@@ -74,30 +74,3 @@ oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-a
 {{# The rule will be "notchecked" #}}
 {{% endif %}}
 
-ocil_clause: 'updates are not installed'
-
-{{# TODO: What about non-rpm systems? #}}
-ocil: |-
-{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
-    If the system is joined to the Red Hat Network, a Red Hat Satellite Server, or
-    a yum server which provides updates, invoking the following command will
-    indicate if updates are available:
-    <pre>$ sudo yum check-update</pre>
-{{% elif product == "ol7" %}}
-    If the system is joined to the ULN or a yum server which provides updates,
-    invoking the following command will indicate if updates are available:
-{{% endif %}}
-    <br /><br />
-    If the system is not configured to update from one of these sources,
-    run the following command to list when each package was last updated:
-    <pre>$ rpm -qa -last</pre>
-    <br /><br />
-{{% if product in ["rhel6", "rhel7", "rhel8"] %}}
-    Compare this to Red Hat Security Advisories (RHSA) listed at
-    https://access.redhat.com/security/updates/active/
-    to determine if the system is missing applicable updates.
-{{% elif product in ["ol7", "ol8"] %}}
-    Compare this to Oracle Linux Security Advisories (ELSA) listed at
-    https://linux.oracle.com/pls/apex/f?p=105:21:::NO:RP::
-    to determine if the system is missing applicable updates.
-{{% endif %}}
