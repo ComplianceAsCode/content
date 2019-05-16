@@ -372,9 +372,10 @@ class AnsibleRemediation(Remediation):
 
     @classmethod
     def from_snippet_and_rule(cls, snippet_fname, rule_fname):
-        result = cls(snippet_fname)
-        result.load_rule_from(rule_fname)
-        return result
+        if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
+            result = cls(snippet_fname)
+            result.load_rule_from(rule_fname)
+            return result
 
 
 class AnacondaRemediation(Remediation):
