@@ -2,9 +2,8 @@
 #
 # profiles = xccdf_org.ssgproject.content_profile_pci-dss
 
-
-# Declare array to hold list of RPM packages we need to correct permissions for
-declare -a SETPERMS_RPM_LIST
+# Declare an associative array to hold list of RPM packages we need to correct permissions for
+declare -A SETPERMS_RPM_LIST
 
 # Create a list of files on the system having permissions different from what
 # is expected by the RPM database
@@ -17,15 +16,12 @@ FILES_WITH_INCORRECT_PERMS=($(rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)
 for FILE_PATH in "${FILES_WITH_INCORRECT_PERMS[@]}"
 do
 	RPM_PACKAGE=$(rpm -qf "$FILE_PATH")
-	SETPERMS_RPM_LIST=("${SETPERMS_RPM_LIST[@]}" "$RPM_PACKAGE")
+	SETPERMS_RPM_LIST["$RPM_PACKAGE"]=1
 done
-
-# Remove duplicate mention of same RPM in $SETPERMS_RPM_LIST (if any)
-SETPERMS_RPM_LIST=( $(echo "${SETPERMS_RPM_LIST[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' ') )
 
 # For each of the RPM packages left in the list -- reset its permissions to the
 # correct values
-for RPM_PACKAGE in "${SETPERMS_RPM_LIST[@]}"
+for RPM_PACKAGE in "${!SETPERMS_RPM_LIST[@]}"
 do
 	rpm --setperms "${RPM_PACKAGE}"
 done
