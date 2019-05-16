@@ -200,7 +200,6 @@ selections:
     - audit_rules_etc_group_openat
     - audit_rules_etc_group_open_by_handle_at
     - package_abrt_removed
-    - package_sendmail_removed
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
     - mount_option_dev_shm_nosuid
