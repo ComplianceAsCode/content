@@ -131,10 +131,10 @@ Putting these arguments together, a properly formatted command would be:
 
 ----
 $ sudo oscap xccdf eval --profile stig-rhel6-server \
---results /root/ssg-results.xml \
---report /root/ssg-report.xml \
---cpe /usr/share/scap/ssg/ssg-rhel6-cpe-dictionary.xml \
-/usr/share/scap/ssg/ssg-rhel6-xccdf.xml
+--results /tmp/results.xml \
+--report /tmp/report.xml \
+--cpe /usr/share/xml/scap/ssg/content/ssg-rhel6-cpe-dictionary.xml \
+/usr/share/xml/scap/ssg/content/ssg-rhel6-xccdf.xml
 ----
 
 While the scan is running, you will see output similar to the following on your screen:
@@ -163,7 +163,7 @@ Result  pass
 
 === Result Interpretation
 
-Looking at `results.xml` file, you will notice lines similar to those below:
+Looking at `/tmp/results.xml` file, you will notice lines similar to those below:
 
 ----
     <rule-result idref="ensure_gpgcheck_globally_activated" time="2013-10-22T10:03:43" severity="high" weight="1.000000">
