@@ -69,9 +69,11 @@ def main():
     for rule_id, fix_path in rule_id_to_remediation_map.items():
         remediation_obj = remediation_cls(fix_path)
         rule_path = os.path.join(args.resolved_rules_dir, rule_id + ".yml")
-        remediation_obj.load_rule_from(rule_path)
-        # Fixes gets updated with the contents of the fix, if it is applicable
-        remediation.process(remediation_obj, env_yaml, fixes, rule_id)
+        if os.path.isfile(rule_path):
+            remediation_obj.load_rule_from(rule_path)
+            # Fixes gets updated with the contents of the fix
+            # if it is applicable
+            remediation.process(remediation_obj, env_yaml, fixes, rule_id)
 
     remediation.write_fixes_to_dir(fixes, args.remediation_type,
                                    args.output_dir)

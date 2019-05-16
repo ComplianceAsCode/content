@@ -194,21 +194,9 @@ class Remediation(object):
         self.remediation_type = remediation_type
         self.associated_rule = None
 
-    def load_associated_rule(self, resolved_rules_dir, rule_id):
-        rule_path = os.path.join(
-            resolved_rules_dir, rule_id + ".yml")
-        return self.load_rule_from(rule_path)
-
     def load_rule_from(self, rule_path):
-        if not os.path.isfile(rule_path):
-            msg = ("{lang} remediation snippet can't load the "
-                   "respective rule YML at {rule_fname}"
-                   .format(rule_fname=rule_path,
-                           lang=self.remediation_type))
-            print(msg, file=sys.stderr)
-        else:
-            self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
-            self.expand_env_yaml_from_rule()
+        self.associated_rule = build_yaml.Rule.from_yaml(rule_path)
+        self.expand_env_yaml_from_rule()
 
     def expand_env_yaml_from_rule(self):
         if not self.associated_rule:
@@ -257,10 +245,6 @@ def process(remediation, env_yaml, fixes, rule_id):
 class BashRemediation(Remediation):
     def __init__(self, file_path):
         super(BashRemediation, self).__init__(file_path, "bash")
-
-    def load_associated_rule(self, resolved_rules_dir, rule_id):
-        # No point in loading rule for this remediation type as of now
-        pass
 
 
 class AnsibleRemediation(Remediation):
@@ -388,9 +372,10 @@ class AnsibleRemediation(Remediation):
 
     @classmethod
     def from_snippet_and_rule(cls, snippet_fname, rule_fname):
-        result = cls(snippet_fname)
-        result.load_rule_from(rule_fname)
-        return result
+        if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
+            result = cls(snippet_fname)
+            result.load_rule_from(rule_fname)
+            return result
 
 
 class AnacondaRemediation(Remediation):
@@ -398,19 +383,11 @@ class AnacondaRemediation(Remediation):
         super(AnacondaRemediation, self).__init__(
             file_path, "anaconda")
 
-    def load_associated_rule(self, resolved_rules_dir):
-        # No point in loading rule for this remediation type as of now
-        pass
-
 
 class PuppetRemediation(Remediation):
     def __init__(self, file_path):
         super(PuppetRemediation, self).__init__(
             file_path, "puppet")
-
-    def load_associated_rule(self, resolved_rules_dir):
-        # No point in loading rule for this remediation type as of now
-        pass
 
 
 REMEDIATION_TO_CLASS = {
