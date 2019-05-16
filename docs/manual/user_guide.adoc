@@ -86,25 +86,11 @@ $ sudo dnf -y install scap-security-guide
 ------------
 
 
-=== Building
+=== Installing content from upstream
 
-If you need to build the upstream content rather than getting it from the distribution, you can build it yourself.
-Either of the steps below will conclude with datastreams and other content built in the `build` directory.
+If you need to use upstream content rather than what is shipped in the distribution, you can build it yourself.
+Please, refer to link:https://github.com/ComplianceAsCode/content/blob/master/docs/manual/developer_guide.adoc#3-building-scap-security-guide[Building SCAP Security Guide] section, in the link:https://github.com/ComplianceAsCode/content/blob/master/docs/manual/developer_guide.adoc[Developer Guide].
 
-* Use the `build_product` script to build a single product of your choice:
-+
-------------
-$ ./build_product fedora
-$ cd build
-------------
-
-* Manual build process:
-+
-------------
-$ cd build
-$ cmake ..
-$ make fedora
-------------
 
 == Running a Scan
 
