@@ -275,7 +275,7 @@ class PlaybookBuilder():
                 try:
                     profile = self.open_profile(profile_path)
                 except RuntimeError as e:
-                    sys.stderr.write("%s. Skipping %s." % (str(e), profile_id))
+                    sys.stderr.write(str(e))
                     continue
                 if rule_id:
                     self.create_playbook_for_single_rule(profile, rule_id,
