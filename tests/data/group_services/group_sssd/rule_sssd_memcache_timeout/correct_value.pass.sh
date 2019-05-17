@@ -3,7 +3,9 @@
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
 SSSD_CONF="/etc/sssd/sssd.conf"
-TIMEOUT="86400"
+# The smallest variable value for sssd_memcache_timeout is 180 so
+# this should pass for every product which contains ospp profile
+TIMEOUT="180"
 
 dnf -y install sssd
 systemctl enable sssd

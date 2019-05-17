@@ -4,8 +4,8 @@
 
 SSSD_CONF="/etc/sssd/sssd.conf"
 
-# The rule sssd_memcache_timeout requires memcache_timeout = 86400
-# Let's put there a different value to fail
+# The highest variable value for sssd_memcache_timeout is 86400 so
+# Let's put there a higher value to fail
 TIMEOUT="99999"
 
 dnf -y install sssd
