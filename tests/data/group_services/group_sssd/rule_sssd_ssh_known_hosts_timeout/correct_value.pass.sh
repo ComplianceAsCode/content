@@ -11,4 +11,4 @@ yum -y install sssd
 systemctl enable sssd
 mkdir -p /etc/sssd
 touch $SSSD_CONF
-echo -e "[nss]\nmemcache_timeout = $TIMEOUT" >> $SSSD_CONF
+echo -e "[ssh]\nssh_known_hosts_timeout = $TIMEOUT" >> $SSSD_CONF

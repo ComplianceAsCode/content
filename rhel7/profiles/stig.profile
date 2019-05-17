@@ -18,7 +18,6 @@ description: |-
 selections:
     - login_banner_text=dod_banners
     - inactivity_timeout_value=15_minutes
-    - var_sssd_ssh_known_hosts_timeout=5_minutes
     - var_screensaver_lock_delay=5_seconds
     - sshd_idle_timeout_value=10_minutes
     - var_accounts_fail_delay=4

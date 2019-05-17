@@ -27,7 +27,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_sssd_ssh_known_hosts_timeout" version="1">
     <ind:filepath>/etc/sssd/sssd.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\[ssh]([^\n]*\n+)+?ssh_known_hosts_timeout[\s]+=[\s]+(\d+)$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*\[ssh](?:[^\n\[]*\n+)+?[\s]*ssh_known_hosts_timeout[\s]*=[\s]*(\d+)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
