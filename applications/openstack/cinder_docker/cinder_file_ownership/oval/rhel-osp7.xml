@@ -7,7 +7,7 @@
       </affected>
       <description>This test makes sure that config files in /var/lib/config-data/puppet-generated/cinder/etc/cinder/ are owned by root:cinder</description>
     </metadata>
-    <criteria>
+    <criteria operator="OR">
       <criterion test_ref="test_etc_openstack_cinder_settings_cinder_conf" />
       <criterion test_ref="test_etc_openstack_cinder_settings_api_paste_ini" />
       <criterion test_ref="test_etc_openstack_cinder_settings_policy_json" />
@@ -35,7 +35,7 @@
     <unix:state state_ref="_etc_openstack_cinder_file_owner" />
   </unix:file_test>
 
-  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/api-paste.ini" id="object_etc_openstack_cinder_settings_cinder_conf" version="1">
+  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf" id="object_etc_openstack_cinder_settings_cinder_conf" version="1">
     <unix:filepath>/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf</unix:filepath>
   </unix:file_object>
 
