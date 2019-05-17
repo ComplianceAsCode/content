@@ -138,17 +138,17 @@ security content only for *Red Hat Enterprise Linux 7*:
 * Take the manual cmake/make approach:
 
 ```bash
-   cd content/
-   cd build/
-   cmake ../
-   make -j4 rhel7
+cd content/
+cd build/
+cmake ../
+make -j4 rhel7
 ```
 
 * or use the `build_product` script that removes whatever is in the `build` directory and executes the build for you:
 
 ```bash
-   cd content/
-   ./build_product rhel7
+cd content/
+./build_product rhel7
 ```
 
 (optional) To build only specific content for one specific product:
