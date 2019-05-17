@@ -5,7 +5,7 @@
 SSSD_CONF="/etc/sssd/sssd.conf"
 TIMEOUT="180"
 
-dnf -y install sssd
+yum -y install sssd
 systemctl enable sssd
 mkdir -p /etc/sssd
 touch $SSSD_CONF

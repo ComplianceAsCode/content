@@ -8,7 +8,7 @@ SSSD_CONF="/etc/sssd/sssd.conf"
 # Let's put there a different value to fail
 TIMEOUT="99999"
 
-dnf -y install sssd
+yum -y install sssd
 systemctl enable sssd
 mkdir -p /etc/sssd
 touch $SSSD_CONF

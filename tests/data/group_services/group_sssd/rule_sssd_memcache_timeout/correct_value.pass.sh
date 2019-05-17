@@ -7,7 +7,7 @@ SSSD_CONF="/etc/sssd/sssd.conf"
 # this should pass for every product which contains ospp profile
 TIMEOUT="180"
 
-dnf -y install sssd
+yum -y install sssd
 systemctl enable sssd
 mkdir -p /etc/sssd
 touch $SSSD_CONF
