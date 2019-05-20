@@ -20,7 +20,7 @@
     <unix:filepath>/var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings</unix:filepath>
   </unix:file_object>
 
-  <ind:textfilecontent54_object id="object_etc_group_horizon" comment="GID: cinder" version="1">
+  <ind:textfilecontent54_object id="object_etc_group_horizon" comment="GID: horizon" version="1">
     <ind:path>/etc</ind:path>
     <ind:filename>group</ind:filename>
     <ind:pattern operation="pattern match">^(?!\s*#)horizon:.+:(\d+):</ind:pattern>
@@ -33,7 +33,7 @@
   </unix:file_state>
 
   <variables>
-    <local_variable id="object_etc_group_horizon_var" version="1" datatype="int" comment="GID: cinder">
+    <local_variable id="object_etc_group_horizon_var" version="1" datatype="int" comment="GID: horizon">
       <object_component object_ref="id=object_etc_group_horizon" item_field="subexpression"/>
     </local_variable>
   </variables>
