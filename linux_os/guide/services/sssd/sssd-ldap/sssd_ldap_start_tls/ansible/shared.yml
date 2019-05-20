@@ -20,7 +20,6 @@
 - name: "Add default domain group and use STARTTLS (if no domain there)"
   ini_file:
     path: /etc/sssd/sssd.conf
-    section: domain/default
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
