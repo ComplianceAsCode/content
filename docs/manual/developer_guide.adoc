@@ -10,7 +10,7 @@ toc::[]
 
 ## Introduction
 
-This document tries provides information useful for ComplianceAsCode/content project contributors.
+This document tries to provide information useful for ComplianceAsCode/content project contributors.
 We will guide you through the structure of the project.
 We will explain the directory layout, used formats and the build system.
 
@@ -368,52 +368,22 @@ docker cp scap-security-guide:/home/oscap/content/build $(pwd)/container_build
 Under the top level directory, there are directories and/or files for different products,
 shared content, documentation, READMEs, Licenses, build files/configuration, etc.
 
-For example:
-
-[source,bash]
-----
-$ ls -1 scap-security-guide
-build
-build_config.yml.in
-build-scripts
-chromium
-cmake
-CMakeLists.txt
-Contributors.md
-Contributors.xml
-debian8
-DISCLAIMER
-Dockerfile
-docs
-eap6
-fedora
-firefox
-fuse6
-jre
-LICENSE
-linux_os
-ocp3
-ol7
-opensuse
-README.md
-rhel6
-rhel7
-rhosp13
-shared
-sle11
-sle12
-tests
-ubuntu1404
-ubuntu1604
-ubuntu1804
-utils
-wrlinux
-----
-
 ===== Important Top Level Directory Descriptions
 
 |===
 |Directory |Description
+
+|`linux_os`
+| Contains security content for Linux operating systems. Contains rules, OVAL checks, Ansible tasks, Bash remeditions, ..
+
+|`applications`
+| Contains security content for applications such as OpenShift or OpenStack.
+
+|`shared`
+| Contains templates which can generate, Jinja macros, Bash remediation functions.
+
+|`tests`
+| Contains the test suite for content validation and testing, contains also unit tests.
 
 |`build`
 | Can be used to build the content using CMake.
@@ -424,15 +394,14 @@ wrlinux
 |`cmake`
 | Contains the CMake build configuration files.
 
+|`Dockerfiles`
+| Contains Dockerfiles to build content test suite container backends.
+
 |`docs`
-| Contains the Markdown Manuals, MAN pages, etc.
+| Contains the User Guide and Developer Guide, manual page template, etc.
 
-|`shared`
-| Contains content, tools and utilities, scripts, etc. that can be used for
-multiple products.
-
-|`tests`
-| Contains the test suite for content validation and testing.
+|`ssg`
+| Contains Python `ssg` module which is used by most of the scripts in this repository.
 
 |`utils`
 | Miscellaneous scripts used for development but not used by the build system.
@@ -469,6 +438,81 @@ directories.
 
 |===
 
+==== Benchmark Structure/Layout
+
+Benchmarks are directories that contain `benchmark.yml` file.
+We have multiple benchmarks in our project:
+
+|===
+| Name | Location
+| Linux OS | `/linux_os/guide`
+| Applications | `/applications` (Notice no `guide` subdirectory there!)
+| Java Runtime Environment | `/jre/guide`
+| Fuse 6 | `/fuse6/guide`
+| EAP6 | `/eap6/guide`
+| Firefox | `/firefox/guide`
+| Chromium | `/chromium/guide`
+|===
+
+The most important benchmark is *Linux OS*.
+This benchmark describes Linux Operating System in general.
+Therefore this benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1404`, `sle11` etc.
+The benchmark is located in `/linux_os/guide`.
+
+The products specify which benchmark they use as a source of content in their `product.yml` file using `benchmark_root` key. For example, `rhel7` product specifies that it uses the Linux OS benchmark.
+
+----
+$ cat rhel7/product.yml
+product: rhel7
+full_name: Red Hat Enterprise Linux 7
+type: platform
+
+benchmark_root: "../linux_os/guide"
+
+.....
+----
+
+The Benchmarks are organized into directory structure. The directories represent either groups or rules. The group directories contain `group.yml` and rule directories `rule.yml`.
+The name of the group directory is the group ID, without the prefix.
+Similarly, the name of the rule directory if the rule ID, without the prefix.
+
+For example, the Linux OS Benchmark is structured in this way:
+
+----
+.
+├── benchmark.yml
+├── intro
+│   ├── general-principles
+│   ├── group.yml
+│   └── how-to-use
+├── services
+│   ├── apt
+│   ├── avahi
+│   ├── cron_and_at
+│   ├── deprecated
+│   ├── dhcp
+│   ├── dns
+│   ├── ftp
+│   ├── group.yml
+│   ├── http
+│   ├── imap
+│   ├── ldap
+│   ├── mail
+│   ├── nfs_and_rpc
+│   .......
+│   .......
+└── system
+    ├── accounts
+    ├── auditing
+    ├── bootloader-grub2
+    ├── bootloader-grub-legacy
+    ├── entropy
+    ├── group.yml
+    ├── logging
+......
+----
+
+
 ==== Product Structure/Layout
 
 When creating a new product, use the guidelines below for the directory layout:
@@ -489,43 +533,25 @@ For example:
 [source,bash]
 ----
 $ tree -d rhel7
-
 rhel7
-├── checks
-│   └── oval
 ├── cpe
-├── fixes
-│   ├── ansible
-│   └── bash
 ├── kickstart
 ├── overlays
 ├── profiles
 ├── templates
-│   ├── csv
-├── transforms
-└── utils
+│   └── csv
+└── transforms
 
-13 directories
+7 directories
 ----
 
 ===== Product Level Directory Descriptions
 
 |===
 |Directory |Description
-
-|`checks`
-|`[red]#Required#` Contains content such as OVAL to check whether or not a
-system is configured correctly to meet government or commercial compliance
-standards. Can contain the following directories: `oval`
-
 |`cpe`
 |`[red]#Required#` Contains the Common Platform Enumeration (CPE) product
 identifier that is provided from link:https://nvd.nist.gov/products/cpe[NIST].
-
-|`fixes`
-|`[red]#Required#` Contains scripts in various languages that fixes
-configuration to meet government or commercial compliance standards. Can contain
-the following directories: `bash` `ansible` `puppet` `anaconda`
 
 |`kickstart`
 |`[red]#Optional#` Contains product kickstart or build files to be used in
@@ -542,19 +568,10 @@ government or commercial compliance standards.
 |`templates`
 |`[red]#Required#` Can contain the following directories: `csv`
 
-|`tests`
-|`[red]#Optional#` Can contain local tests to the product. The top-level
-`tests` directory is preferred over using this directory.
-
 |`transforms`
 |`[red]#Required#` Contains XSLT files and scripts that are used to
 transform the content into the expected compliance document such as XCCDF, OVAL,
 Datastream, etc.
-
-|`xccdf`
-|`[red]#Optional#` If the correct content does not exist in
-`shared/xccdf`, use this directory to create the human-readable compliance
-guide.
 |===
 
 [IMPORTANT]
