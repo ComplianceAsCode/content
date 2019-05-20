@@ -110,7 +110,13 @@ selections:
     - display_login_attempts
     - gid_passwd_group_same
     - grub2_audit_argument
-    - smartcard_auth
+    - package_opensc_installed
+    - var_smartcard_drivers=cac
+    - configure_opensc_card_drivers
+    - force_opensc_card_drivers
+    - service_pcscd_enabled
+    - sssd_enable_smartcards
+    - package_pcsc-lite_installed
     - var_multiple_time_servers=ol
     - chronyd_or_ntpd_specify_multiple_servers
     - chronyd_or_ntpd_specify_remote_server
