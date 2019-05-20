@@ -5,7 +5,7 @@ title: 'Set Maximum Inactivity Period'
 description: |-
     Keystone can be configured to disable accounts after an
     organizationally-defined time period. This is achieved by configuring the
-    <tt>disable_user_account_days_inactive</tt> setting in the 
+    <tt>disable_user_account_days_inactive</tt> setting in the
     <tt>[security_compliance]</tt> section in <tt>keystone.conf</tt>.
 
 rationale: |-
@@ -28,7 +28,7 @@ ocil: |-
     Run the following command to see what the maximum authentication
     attempts is:
     <br />
-    <pre>$ grep disable_user_account_days_inactive /etc/keystone/keystone.conf</pre>
+    <pre>$ grep disable_user_account_days_inactive /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf</pre>
     <br />
     If properly configured, the output should be:
     <pre>disable_user_account_days_inactive = <sub idref="var_keystone_disable_user_account_days_inactive" /></pre>

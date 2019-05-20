@@ -5,7 +5,7 @@ title: 'Set Maximum Number of Failed Authentication Attempts'
 description: |-
      The account lockout feature limits the number of incorrect password
      attempts. If a user fails to authenticate after the maximum number
-     of attempts, the service disables the user. 
+     of attempts, the service disables the user.
      <br />
      The maximum number of failed authentication attempts is set by the
      <tt>lockout_failure_attempts</tt> option in under the
@@ -29,8 +29,7 @@ ocil: |-
     Run the following command to see what the maximum authentication
     attempts is:
     <br />
-    <pre>$ grep lockout_failure_attempts /etc/keystone/keystone.conf</pre>
+    <pre>$ grep lockout_failure_attempts /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf</pre>
     <br />
     If properly configured, the output should be:
     <pre>lockout_failure_attempts=<sub idref="var_keystone_lockout_failure_attempts" /></pre>
-
