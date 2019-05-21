@@ -1,4 +1,4 @@
-file(GLOB CFILES ${FILES})
-FOREACH(file_to_copy ${CFILES})
-        execute_process(COMMAND "${CMAKE_COMMAND}" -E copy ${file_to_copy} "${PATH}")
+file(GLOB CSOURCE ${SOURCE})
+FOREACH(file_to_copy ${CSOURCE})
+        execute_process(COMMAND "${CMAKE_COMMAND}" -E copy ${file_to_copy} "${DEST}")
 ENDFOREACH(file_to_copy)
