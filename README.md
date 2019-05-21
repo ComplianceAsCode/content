@@ -120,7 +120,7 @@ apt install ssg-applications  # for application-oriented guides (Firefox, JBoss,
 ### From release ZIP files
 
 Download pre-built SSG zip archive from
-[the release page](https://github.com/OpenSCAP/scap-security-guide/releases/latest).
+[the release page](https://github.com/ComplianceAsCode/content/releases/latest).
 Each zip file is an archive with ready-made SCAP source datastreams.
 
 ### From COPR
@@ -134,7 +134,7 @@ detailed instructions.
 
 ### From source
 
-If SCAP Security Guide is not packaged in your distribution or if the
+If ComplianceAsCode is not packaged in your distribution (it may be present there as `scap-security-guide` package), or if the
 version that is packaged is too old, you need to build the content yourself
 and install it via `make install`. Please see the [Developer Guide](docs/manual/developer_guide.adoc)
 document for more info. We also recommend opening an issue on that distributions
@@ -142,10 +142,10 @@ bug tracker to voice interest.
 
 ## Usage
 
-We assume you have installed SCAP Security Guide system-wide into a
+We assume you have installed ComplianceAsCode system-wide into a
 standard location from current upstream sources as instructed in the previous section.
 
-There are several ways to consume SCAP Security Guide content, we will only
+There are several ways to consume ComplianceAsCode content, we will only
 go through a few of them here.
 
 ### `oscap` tool
@@ -252,7 +252,7 @@ You can also join the `#openscap` IRC channel on `chat.freenode.net`.
 This project started in 2011 as a collaboration between government agencies and
 commercial operating system vendors. The original name was SCAP Security Guide.
 The original scope was to create SCAP datastreams. Over time, it grew into the
-biggest open-source SCAP content project.
+biggest open-source beyond-SCAP content project.
 
 The next few years saw the introduction of not just government-specific security
 profiles but also commercial, such as PCI-DSS.

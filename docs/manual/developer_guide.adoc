@@ -1,4 +1,4 @@
-# SCAP Security Guide Developer Guide
+# ComplianceAsCode Developer Guide
 :imagesdir: ./images
 :templatesdir: ../../shared/templates
 :rhel7dir: ../../rhel7/templates/csv
@@ -17,7 +17,7 @@ We will explain the directory layout, used formats and the build system.
 ## Mailing List
 Join the mailing list at https://fedorahosted.org/mailman/listinfo/scap-security-guide.
 
-## Building SCAP Security Guide
+## Building ComplianceAsCode
 
 ### Installing build dependencies
  
@@ -345,7 +345,7 @@ This will take care of the build environment and all necessary setup.
 docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
 ```
 
-### Build SSG using the container image
+### Build the content using the container image
 
 To build all the content, run a container without any flags.
 
@@ -582,8 +582,8 @@ always be generated using `create-stig-overlay.py`.**
 
 To create `stig_overlay.xml`, there are two things that are required: an
 official non-draft STIG release from DISA containing a XCCDF file
-(e.g. `U_Red_Hat_Enterprise_Linux_7_STIG_V1R1_Manual-xccdf.xml` and a SSG
-generated XCCDF file (e.g. `ssg-rhel7-xccdf.xml`)
+(e.g. `U_Red_Hat_Enterprise_Linux_7_STIG_V1R1_Manual-xccdf.xml` and an XCCDF file built
+by the project (e.g. `ssg-rhel7-xccdf.xml`)
 
 Example using `create-stig-overlay.py`:
 ----
@@ -662,10 +662,10 @@ This will result in a new YAML profile containing exclusive rules to the profile
 
 == Contributing with XCCDFs, OVALs and remediations
 
-There are three main types of content in SSG, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
-SSG also has its own templating mechanism, allowing content writers to create models and use it to generate a number of checks and remediations.
+There are three main types of content in the project, they are rules, defined using the XCCDF standard, checks, usually written in link:https://oval.mitre.org/language/about/[OVAL] format, and remediations, that can be executed on ansible, bash, anaconda installer and puppet.
+ComplianceAsCode also has its own templating mechanism, allowing content writers to create models and use it to generate a number of checks and remediations.
 
-The SSG content is primarily divided by platform and it can be seen on its directory structure:
+The ComplianceAsCode content is primarily divided by platform and it can be seen on its directory structure:
 
 
 ----
@@ -919,7 +919,7 @@ This utility requires an up to date JSON tree created by `rule_dir_json.py`.
 ==== Checks
 
 Checks are used to evaluate a Rule. They are written using a custom OVAL syntax and are stored as xml files inside the _checks/oval_ directory for the desired platform.
-During the building process, SSG will transform the checks in OVAL compliant checks.
+During the building process, the system will transform the checks in OVAL compliant checks.
 
 In order to create a new check, you must create a file in the appropriate directory, and name it the same as the Rule _id_. This _id_ will also be used as the OVAL _id_ attribute.
 The content of the file should follow the OVAL specification with these exceptions:
@@ -982,8 +982,8 @@ Remediations also carry metadata that should be present at the beginning of the 
 | Field | Description | Accepted values
 
 | platform
-| CPE name, CPE applicability language expression or even SSG wildcards declaring which platforms the fix can be applied
-| link:https://github.com/OpenSCAP/openscap/blob/maint-1.2/cpe/openscap-cpe-dict.xml[Default CPE dictionary is packaged along with openscap]. Custom CPE dictionaries can be used. SSG wildcards are multi_platform_[all, oval, fedora, debian, ubuntu, linux, rhel, openstack, opensuse, rhev, sle].
+| CPE name, CPE applicability language expression or even wildcards declaring which platforms the fix can be applied
+| link:https://github.com/OpenSCAP/openscap/blob/maint-1.2/cpe/openscap-cpe-dict.xml[Default CPE dictionary is packaged along with openscap]. Custom CPE dictionaries can be used. Wildcards are multi_platform_[all, oval, fedora, debian, ubuntu, linux, rhel, openstack, opensuse, rhev, sle].
 
 | reboot
 | Whether or not a reboot is necessary after the fix
@@ -1077,7 +1077,8 @@ When writing new bash remediations content, please follow the following guidelin
 
 ==== Templating
 
-Often, a set of very related checks and/or remediations needs to be created. Instead of creating them individually, you can use the templating mechanism provided by the SSG. It supports OVAL checks and Ansible, Bash, Anaconda and Puppet remediations.
+Often, a set of very related checks and/or remediations needs to be created. Instead of creating them individually, you can use the templating mechanism provided by the ComplianceAsCode project.
+It supports OVAL checks and Ansible, Bash, Anaconda and Puppet remediations.
 In order to use this mechanism, you have to:
 
 1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>.jinja`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
@@ -1117,7 +1118,7 @@ This is the file with the generator class for the installed package template, it
 include::{templatesdir}/create_package_installed.py
 ----
 
-4) Finally, you have to ensure the SSG knows your template. To do that, you have to edit the file _ssg/build_templates.py_ and include the generator class you've just created and declare which csv file to use along with it.
+4) Finally, you have to ensure the build system knows your template. To do that, you have to edit the file _ssg/build_templates.py_ and include the generator class you've just created and declare which csv file to use along with it.
 
 This is an example of a patch to add a new template into the templating system:
 
@@ -1142,7 +1143,7 @@ This is an example of a patch to add a new template into the templating system:
 
 === Tests (ctest)
 
-SCAP Security Guide uses ctest to orchestrate testing upstream. To run the test suite go to the build folder and execute `ctest`:
+ComplianceAsCode uses ctest to orchestrate testing upstream. To run the test suite go to the build folder and execute `ctest`:
 
 ----
 cd build/
@@ -1157,7 +1158,7 @@ See some of the existing testing code in `cmake/SSGCommon.cmake`.
 
 === Contribution to infrastructure code
 
-The SSG build and templating system is mostly written in Python.
+The ComplianceAsCode build and templating system is mostly written in Python.
 
 ==== Python
 
@@ -1176,8 +1177,7 @@ describes the goal of the project.
 This git repository was created by simply renaming and moving the SCAP Security Guide (SSG)
 repository to a different GitHub organization.
 
-Due to this history, the repository contains many mentions of SCAP Security Guide.
-These legacy mentions are continuously cleaned up as the project develops.
+Due to this history, the repository contains mentions of SCAP Security Guide or `ssg`.
 Some of them are kept due to backwards compatibility.
 
 For example, the output files produced by our build system still start by `ssg-` prefix.

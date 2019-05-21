@@ -1,4 +1,4 @@
-= SCAP Security Guide User Guide
+= ComplianceAsCode User Guide
 :imagesdir: ./images
 :toc:
 :toc-placement: preamble
@@ -8,7 +8,7 @@ toc::[]
 
 == Introduction
 
-The SCAP Security Guide (SSG) project delivers security guidance, baselines and
+The ComplianceAsCode (SSG) project delivers security guidance, baselines and
 associated validation mechanisms utilizing the Security Content Automation
 Protocol (SCAP). SSG provides content for Red Hat Enterprise Linux and JBoss
 Enterprise Application Server (JBoss EAP).
@@ -35,7 +35,7 @@ information that could reasonably be expected to cause damage to U.S. National
 Security. As part of this mission, NSA develops and distributes configuration
 guidance for operating systems. These guides are currently being used
 throughout the U.S. government and by numerous entities as a security baseline
-for their systems. The SCAP Security Guide project serves as NSA's upstream
+for their systems. The ComplianceAsCode project serves as NSA's upstream
 source for https://www.nsa.gov/ia/mitigation_guidance/security_configuration_guides/operating_systems.shtml#linux2[Red Hat Enterprise Linux operating system guidance].
 
 image::logos-400x400-disa-300x300.jpg[align="left"]
@@ -44,7 +44,7 @@ The http://www.disa.mil/About/Our-Organization-Structure/OD-Field-Office/Field-S
 (DISA FSO) authors hardening guidance known as Security Technical
 Implementation Guides (http://iase.disa.mil/stigs/index.html[STIGs]). These
 documents, used throughout the U.S. military to harden systems, establish
-formal security compliance baselines. The SCAP Security Guide project serves as
+formal security compliance baselines. The ComplianceAsCode project serves as
 the usptream development source for http://iase.disa.mil/stigs/os/unix-linux/Pages/red-hat.aspx[Red Hat STIG content]
 and helps DISA FSO move towards their business objective of utilizing
 SCAP-based formats to automate security compliance across U.S. military
@@ -61,7 +61,7 @@ configuration of operating systems and applications. NCP is migrating its
 repository of checklists to conform to the Security Content Automation Protocol
 (SCAP).”
 
-The SCAP Security Guide project serves as the upstream repository for
+The ComplianceAsCode project serves as the upstream repository for
 https://nvd.nist.gov/ncp/checklist/811[Red Hat Enterprise Linux related checklists].
 
 == Installing
@@ -199,7 +199,7 @@ Looking at the `/tmp/results.xml` file, you will notice lines similar to those b
 === Remediation
 
 ==== Bash Scripts
-SCAP Security Guide embeds bash remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations.
+ComplianceAsCode embeds bash remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations.
 OpenSCAP, the CLI delivered with Fedora and Red Hat Enterprise Linux systems, contains the ability to transform XML results into an executable script. The syntax to generate a remediation script is:
 
 ----
@@ -263,8 +263,8 @@ This output could be redirected to a bash script, or built into your RHEL6 provi
 
 #### Ansible Playbooks
 
-SCAP Security Guide embeds ansible remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations. When using OpenSCAP with
-Ansible, it is advisable to use the playbooks from https://github.com/RedHatOfficial. These playbooks are generated from the SCAP Security Guide project and are also available on Ansible Galaxy.
+ComplianceAsCode embeds ansible remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations. When using OpenSCAP with
+Ansible, it is advisable to use the playbooks from https://github.com/RedHatOfficial. These playbooks are generated from the ComplianceAsCode project and are also available on Ansible Galaxy.
 
 IMPORTANT: The minimum version of Ansible must be at the latest supported version. See https://access.redhat.com/support/policy/updates/ansible-engine for information on the supported Ansible versions.
 
@@ -295,7 +295,7 @@ employee or contractor; it is not available to the general public.
 The SPAWAR SCC website is http://www.public.navy.mil/spawar/Atlantic/ProductsServices/Pages/SCAP.aspx.
 
 
-To utilize SCC with SCAP Security Guide content:
+To utilize SCC with ComplianceAsCode content:
 
 1. Import SSG content into SCC through the cscc -is command
 +
