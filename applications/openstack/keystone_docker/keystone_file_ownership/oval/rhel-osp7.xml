@@ -81,21 +81,29 @@
     <unix:filepath>/var/lib/config-data/puppet-generated/keystone/etc/keystone/ssl/certs/ca.pem</unix:filepath>
   </unix:file_object>
 
-  <ind:textfilecontent54_object id="object_etc_group_keystone" comment="GID: keystone" version="1">
-    <ind:path>/etc</ind:path>
-    <ind:filename>group</ind:filename>
+  <ind:textfilecontent54_object id="object_etc_group_keystone_gid" comment="GID: keystone" version="1">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!\s*#)keystone:.+:(\d+):</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_object id="object_etc_group_keystone_uid" comment="UID: keystone" version="1">
+    <ind:filepath>/ect/passwd</ind:filepath>
     <ind:pattern operation="pattern match">^(?!\s*#)keystone:.+:(\d+):</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <unix:file_state id="_etc_group_keystone_file_owner" version="1">
-	 <unix:group_id datatype="int" var_ref="object_etc_group_keystone_var"/>
-	 <unix:user_id datatype="int">0</unix:user_id>
+	 <unix:group_id datatype="int" var_ref="object_etc_group_keystone_gid_var"/>
+	 <unix:user_id datatype="int" var_ref="object_etc_group_keystone_uid_var"/>
   </unix:file_state>
 
   <variables>
-    <local_variable id="object_etc_group_keystone_var" version="1" datatype="int" comment="GID: keystone">
-      <object_component object_ref="id=object_etc_group_keystone" item_field="subexpression"/>
+    <local_variable id="object_etc_group_keystone_gid_var" version="1" datatype="int" comment="GID: keystone">
+      <object_component object_ref="id=object_etc_group_keystone_gid" item_field="subexpression"/>
+    </local_variable>
+    <local_variable id="object_etc_group_keystone_uid_var" version="1" datatype="int" comment="UID: keystone">
+      <object_component object_ref="id=object_etc_group_keystone_uid" item_field="subexpression"/>
     </local_variable>
   </variables>
 </def-group>
