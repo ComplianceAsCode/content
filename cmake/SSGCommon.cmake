@@ -726,12 +726,14 @@ macro(ssg_build_product PRODUCT)
         DEPENDS generate-ssg-${PRODUCT}-guide-index.html
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-guides)
+    add_dependencies(zipfile ${PRODUCT}-guides)
 
     add_custom_target(
         ${PRODUCT}-tables
         # dependencies are added later using add_dependency
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-tables)
+    add_dependencies(zipfile ${PRODUCT}-tables)
 
     add_custom_target(
         ${PRODUCT}-profile-bash-scripts
