@@ -3,7 +3,7 @@
 # strategy = unknown
 # complexity = low
 # disruption = medium
-- (xccdf-var sshd_idle_timeout_value)
+- (xccdf-var var_sssd_ssh_known_hosts_timeout)
 
 - name: "Test for domain group"
   command: grep '\s*\[domain\/[^]]*]' /etc/sssd/sssd.conf
@@ -31,6 +31,6 @@
     dest: /etc/sssd/sssd.conf
     section: ssh
     option: ssh_known_hosts_timeout
-    value: "{{ sshd_idle_timeout_value }}"
+    value: "{{ var_sssd_ssh_known_hosts_timeout }}"
     create: yes
     mode: 0600
