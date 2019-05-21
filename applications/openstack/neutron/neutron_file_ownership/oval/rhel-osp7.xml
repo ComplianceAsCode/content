@@ -1,0 +1,70 @@
+<def-group>
+  <definition class="compliance" id="neutron_file_ownership" version="1">
+    <metadata>
+      <title>Verify ownership of files in /etc/neutron/ </title>
+      <affected family="unix">
+        <platform>multi_platform_rhel</platform>
+      </affected>
+      <description>This test makes sure that config files in /etc/neutron/ are owned by root:neutron</description>
+    </metadata>
+    <criteria operator="OR">
+      <criterion test_ref="test_etc_openstack_neutron_settings_neutron_conf" />
+      <criterion test_ref="test_etc_openstack_neutron_settings_api_paste_ini" />
+      <criterion test_ref="test_etc_openstack_neutron_settings_policy_json" />
+      <criterion test_ref="test_etc_openstack_neutron_settings_rootwrap_conf" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/neutron/neutron.conf mode and ownership" id="test_etc_openstack_neutron_settings_neutron_conf" version="1">
+    <unix:object object_ref="object_etc_openstack_neutron_settings_neutron_conf" />
+    <unix:state state_ref="_etc_openstack_neutron_file_owner" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/neutron/api-paste.ini mode and ownership" id="test_etc_openstack_neutron_settings_api_paste_ini" version="1">
+    <unix:object object_ref="object_etc_openstack_neutron_settings_api_paste_ini" />
+    <unix:state state_ref="_etc_openstack_neutron_file_owner" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/neutron/policy.json mode and ownership" id="test_etc_openstack_neutron_settings_policy_json" version="1">
+    <unix:object object_ref="object_etc_openstack_neutron_settings_policy_json" />
+    <unix:state state_ref="_etc_openstack_neutron_file_owner" />
+  </unix:file_test>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/neutron/rootwrap.conf mode and ownership" id="test_etc_openstack_neutron_settings_rootwrap_conf" version="1">
+    <unix:object object_ref="object_etc_openstack_neutron_settings_rootwrap_conf" />
+    <unix:state state_ref="_etc_openstack_neutron_file_owner" />
+  </unix:file_test>
+
+  <unix:file_object comment="/etc/neutron/neutron.conf" id="object_etc_openstack_neutron_settings_neutron_conf" version="1">
+    <unix:filepath>/etc/neutron/neutron.conf</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object comment="/etc/neutron/api-paste.ini" id="object_etc_openstack_neutron_settings_api_paste_ini" version="1">
+    <unix:filepath>/etc/neutron/api-paste.ini</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object comment="/etc/neutron/policy.json" id="object_etc_openstack_neutron_settings_policy_json" version="1">
+    <unix:filepath>/etc/neutron/policy.json</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_object comment="/etc/neutron/rootwrap.conf" id="object_etc_openstack_neutron_settings_rootwrap_conf" version="1">
+    <unix:filepath>/etc/neutron/rootwrap.conf</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_object id="object_etc_group_neutron" comment="GID: neutron" version="1">
+    <ind:filepath>/etc/group</ind:filepath>
+    <ind:pattern operation="pattern match">^(?!\s*#)neutron:.+:(\d+):</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <unix:file_state id="_etc_group_neutron_file_owner" version="1">
+	 <unix:group_id datatype="int" var_ref="object_etc_group_neutron_var"/>
+	 <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+
+  <variables>
+    <local_variable id="object_etc_group_neutron_var" version="1" datatype="int" comment="GID: neutron">
+      <object_component object_ref="id=object_etc_group_neutron" item_field="subexpression"/>
+    </local_variable>
+  </variables>
+</def-group>
