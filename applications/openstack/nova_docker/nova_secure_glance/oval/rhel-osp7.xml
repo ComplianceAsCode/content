@@ -7,7 +7,7 @@
       </affected>
       <description>Is glance_api_insecure parameter set to False?</description>
     </metadata>
-    <criteria comment="Is glance_api_insecure parameter set to False?" operator="AND">
+    <criteria comment="Is glance_api_insecure parameter set to False?" operator="OR">
       <criterion comment="Check glance_api_insecure in /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf" test_ref="test_nova_glance_api_insecure" />
       <criterion comment="Check api_insecure in /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf" test_ref="test_nova_api_insecure" />
     </criteria>
