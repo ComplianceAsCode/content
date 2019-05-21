@@ -1208,7 +1208,7 @@ endmacro()
 
 macro(ssg_build_nist_zipfile ZIPNAME)
     # When SCAP1.2 zipfiles are needed no more, these custom commands can be unified
-    if("${ZIPNAME}" MATCHES "oval-5.10")
+    if("${ZIPNAME}" MATCHES "SCAP-1.2")
         # Zip only the SCAP1.2 datastream
         add_custom_command(
             OUTPUT "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
