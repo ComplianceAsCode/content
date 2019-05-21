@@ -12,13 +12,13 @@ description: |-
     Run the following commands:
     <br />
     <tt>
-    $ stat -L -c "%a" /etc/nova/nova.conf
+    $ stat -L -c "%a" /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf
     <br />
-    $ stat -L -c "%a" /etc/nova/api-paste.ini
+    $ stat -L -c "%a" /var/lib/config-data/puppet-generated/nova/etc/nova/api-paste.ini
     <br />
-    $ stat -L -c "%a" /etc/nova/policy.json
+    $ stat -L -c "%a" /var/lib/config-data/puppet-generated/nova/etc/nova/policy.json
     <br />
-    $ stat -L -c "%a" /etc/nova/rootwrap.conf
+    $ stat -L -c "%a" /var/lib/config-data/puppet-generated/nova/etc/nova/rootwrap.conf
     </tt>
     <br />
     <br />
@@ -27,7 +27,7 @@ description: |-
 
     <br />
     <tt>
-    $ getfacl --tabular -a /etc/nova/nova.conf
+    $ getfacl --tabular -a /var/lib/config-data/puppet-generated/nova/etc/nova/nova.conf
     <br />
     getfacl: Removing leading '/' from absolute path names
     <br />
