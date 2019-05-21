@@ -19,11 +19,12 @@
 
   </definition>
 
-  <!-- First obtain rsyslog's $IncludeConfig directive value -->
-  <ind:textfilecontent54_object id="object_rfo_rsyslog_include_config_value" comment="rsyslog's $IncludeConfig directive value" version="1">
+  <!-- First obtain rsyslog's $IncludeConfig directive and include() object (introduced in rsyslog v8.33.0) values.
+       To workaround empty include objects case, when FunctionGroup operations return "does not exist" result, added empty string match -->
+  <ind:textfilecontent54_object id="object_rfo_rsyslog_include_config_value" comment="rsyslog's $IncludeConfig directive and include() object values" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\$IncludeConfig[\s]+([^\s;]+)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">^(?:include\([\n\s]*file="([^\s;]+)".*|\$IncludeConfig[\s]+([^\s;]+)|())$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <!-- Turn that glob value into Perl's regex so it can be used as filepath pattern below -->
@@ -33,24 +34,14 @@
     </glob_to_regex>
   </local_variable>
 
-  <!-- Concatenate that $IncludeConfig regex value together with '/etc/rsyslog.conf'
-       path literal to obtain final list of all rsyslog's configuration files in form
-       of a string. Use '%' character as delemiter to separate items
-  -->
-  <local_variable id="var_rfo_all_log_files_as_string_regex" datatype="string" version="1" comment="Locations of all rsyslog configuration files concatenated into string">
-    <concat>
-      <variable_component var_ref="var_rfo_include_config_regex" />
-      <literal_component datatype="string">%^/etc/rsyslog.conf$</literal_component>
-    </concat>
-  </local_variable>
-
-  <!-- Split the final string by '%' delimiter to obtain OVAL variable in the
-       form of collection of items
+  <!-- Create collection of unique include_config regex values together with '/etc/rsyslog.conf'
+       path literal to obtain final list of all rsyslog's configuration files
   -->
   <local_variable id="var_rfo_all_log_files_as_collection" datatype="string" version="1" comment="Locations of all rsyslog configuration files as collection">
-    <split delimiter='%'>
-      <variable_component var_ref="var_rfo_all_log_files_as_string_regex" />
-    </split>
+    <unique>
+      <variable_component var_ref="var_rfo_include_config_regex" />
+      <literal_component datatype="string">^/etc/rsyslog.conf$</literal_component>
+    </unique>
   </local_variable>
 
   <!-- For each item from that collection (particular rsyslog's configuration file path) search
