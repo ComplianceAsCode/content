@@ -1198,6 +1198,8 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
         COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
         )
+endmacro()
+macro(ssg_build_zipfile_target ZIPNAME)
     add_custom_target(
         zipfile
         DEPENDS "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"

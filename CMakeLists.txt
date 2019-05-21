@@ -247,6 +247,11 @@ add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
+if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
+    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
+else()
+    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
+endif()
 
 add_custom_target(stats)
 add_custom_target(profile-stats)
@@ -257,16 +262,6 @@ add_custom_target(html-profile-stats)
 ssg_build_bash_remediation_functions()
 
 ssg_build_man_page()
-
-# ZIP only contains source datastreams and kickstarts, people who
-# want sources to build from should get the tarball instead.
-if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}")
-else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-${SSG_TARGET_OVAL_VERSION}")
-endif()
 
 if (SSG_PRODUCT_CHROMIUM)
     add_subdirectory("chromium")
@@ -336,6 +331,16 @@ if (SSG_PRODUCT_UBUNTU1804)
 endif()
 if (SSG_PRODUCT_WRLINUX)
     add_subdirectory("wrlinux")
+endif()
+
+# ZIP only contains source datastreams and kickstarts, people who
+# want sources to build from should get the tarball instead.
+if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
+    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}")
+else()
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
+    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-${SSG_TARGET_OVAL_VERSION}")
 endif()
 
 ssg_define_guide_and_table_tests()
