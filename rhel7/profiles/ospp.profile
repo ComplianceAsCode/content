@@ -401,7 +401,8 @@ selections:
     - network_sniffer_disabled
     - network_ipv6_disable_rpc
     - network_ipv6_privacy_extensions
-    - dconf_use_text_backend
+    - dconf_use_text_backend_user_profile
+    - dconf_use_text_backend_gdm_profile
     - dconf_gnome_banner_enabled
     - dconf_gnome_disable_automount
     - dconf_gnome_disable_ctrlaltdel_reboot
@@ -426,6 +427,7 @@ selections:
     - dconf_gnome_screensaver_user_locks
     - dconf_gnome_session_idle_user_locks
     - enable_dconf_user_profile
+    - enable_dconf_gdm_profile
     - sshd_enable_x11_forwarding
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login

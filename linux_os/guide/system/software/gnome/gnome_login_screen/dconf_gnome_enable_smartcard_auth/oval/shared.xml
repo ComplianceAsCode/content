@@ -27,8 +27,8 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_enable_gnome_smartcard"
   version="1">
-    <ind:path>/etc/dconf/db/gdm.d/</ind:path>
-    <ind:filename operation="pattern match">^.*$</ind:filename>
+    <ind:path>/var/lib/gdm/.config/dconf/</ind:path>
+    <ind:filename operation="pattern match">user.txt</ind:filename>
     <ind:pattern operation="pattern match">^\[org/gnome/login-screen]([^\n]*\n+)+?enable-smartcard-authentication=true$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
@@ -40,7 +40,7 @@
   </ind:textfilecontent54_test>
   <ind:textfilecontent54_object id="obj_prevent_user_disable_smartcard"
   version="1">
-    <ind:path>/etc/dconf/db/gdm.d/locks/</ind:path>
+    <ind:path>/etc/dconf/db/gdm.d/locks</ind:path>
     <ind:filename operation="pattern match">^.*$</ind:filename>
     <ind:pattern operation="pattern match">^/org/gnome/login-screen/enable-smartcard-authentication$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
