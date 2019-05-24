@@ -374,10 +374,10 @@ shared content, documentation, READMEs, Licenses, build files/configuration, etc
 |Directory |Description
 
 |`linux_os`
-| Contains security content for Linux operating systems. Contains rules, OVAL checks, Ansible tasks, Bash remeditions, ..
+| Contains security content for Linux operating systems. Contains rules, OVAL checks, Ansible tasks, Bash remediations, etc.
 
 |`applications`
-| Contains security content for applications such as OpenShift or OpenStack.
+| Contains security content for applications such as OpenShift or OpenStack. Contains rules, OVAL checks, Ansible tasks, Bash remediations, etc.
 
 |`shared`
 | Contains templates which can generate, Jinja macros, Bash remediation functions.
@@ -454,9 +454,8 @@ We have multiple benchmarks in our project:
 | Chromium | `/chromium/guide`
 |===
 
-The most important benchmark is *Linux OS*.
-This benchmark describes Linux Operating System in general.
-Therefore this benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1404`, `sle11` etc.
+The *Linux OS* benchmark describes Linux Operating System in general.
+This benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1404`, `sle11` etc.
 The benchmark is located in `/linux_os/guide`.
 
 The products specify which benchmark they use as a source of content in their `product.yml` file using `benchmark_root` key. For example, `rhel7` product specifies that it uses the Linux OS benchmark.
