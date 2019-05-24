@@ -126,6 +126,7 @@ class Role(object):
 
         self.role_data = None
         self.vars_data = []
+        self.default_vars_data = []
         self.tasks_data = []
         self.pre_tasks_data = []
         self.added_variables = set()
@@ -142,7 +143,7 @@ class Role(object):
 
         self.role_data = ssg.yaml.ordered_load(filedata)
         if "vars" in self.role_data[0]:
-            self.vars_data = self.role_data[0]["vars"]
+            self.default_vars_data = self.role_data[0]["vars"]
 
         if "tasks" in self.role_data[0]:
             self.tasks_data = self.role_data[0]["tasks"]
@@ -192,7 +193,7 @@ class Role(object):
         self.added_variables.update(variables_to_add)
 
     def add_task_variables_to_default_variables_if_needed(self):
-        default_vars_to_add = sorted(self.added_variables)
+        default_vars_to_add = sorted(self.default_vars_data) + sorted(self.added_variables)
         lines = [
             "---", "# defaults file for {role_name}\n".format(role_name=self.role_name),
         ]
@@ -264,9 +265,13 @@ class Role(object):
             print("Updating tasks/main.yml in %s" % self.remote_repo.name)
 
     def _update_vars_content_if_needed(self):
+        if len(self.vars_data) < 1:
+            vars_local_content = "---\n# defaults file for {role_name}\n".format(role_name=self.role_name)
+        else:
+             vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
+                                            default_flow_style=False)
+
         vars_remote_content = self.remote_repo.get_file_contents("/vars/main.yml")
-        vars_local_content = yaml.dump(self.vars_data, width=120, indent=4,
-                                       default_flow_style=False)
 
         if vars_local_content != vars_remote_content.decoded_content and \
            vars_local_content.splitlines()[0] != "null":
