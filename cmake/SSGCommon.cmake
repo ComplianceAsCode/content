@@ -726,12 +726,14 @@ macro(ssg_build_product PRODUCT)
         DEPENDS generate-ssg-${PRODUCT}-guide-index.html
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-guides)
+    add_dependencies(zipfile ${PRODUCT}-guides)
 
     add_custom_target(
         ${PRODUCT}-tables
         # dependencies are added later using add_dependency
     )
     add_dependencies(${PRODUCT} ${PRODUCT}-tables)
+    add_dependencies(zipfile ${PRODUCT}-tables)
 
     add_custom_target(
         ${PRODUCT}-profile-bash-scripts
@@ -1182,20 +1184,22 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/Contributors.md" "zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "zipfile/${ZIPNAME}"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/rhel{6,7}/kickstart/*-ks.cfg" "zipfile/${ZIPNAME}/kickstart"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds.xml" "zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-*-ds-1.3.xml" "zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_SOURCE_DIR}/rhel*/kickstart/*-ks.cfg" -DDEST="zipfile/${ZIPNAME}/kickstart" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-*-ds.xml" -DDEST="zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-*-ds-1.3.xml" -DDEST="zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/bash"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/bash/*.sh" "zipfile/${ZIPNAME}/bash"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/*.sh" -DDEST="zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/ansible"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ansible/*.yml" "zipfile/${ZIPNAME}/ansible"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/*.yml" -DDEST="zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/guides"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/guides/*" "zipfile/${ZIPNAME}/guides"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/*" -DDEST="zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/tables"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/tables/*" "zipfile/${ZIPNAME}/tables"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/*" -DDEST="zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E chdir "zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}.zip" --format=zip "${ZIPNAME}"
         COMMENT "Building zipfile at ${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
         )
+endmacro()
+macro(ssg_build_zipfile_target ZIPNAME)
     add_custom_target(
         zipfile
         DEPENDS "${CMAKE_BINARY_DIR}/zipfile/${ZIPNAME}.zip"
@@ -1203,16 +1207,68 @@ macro(ssg_build_zipfile ZIPNAME)
 endmacro()
 
 macro(ssg_build_nist_zipfile ZIPNAME)
-    add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
-        COMMAND ${CMAKE_COMMAND} -E remove_directory "nist-zipfile/"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "nist-zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-rhel{6,7}-ds.xml" "nist-zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/ssg-rhel{6,7}-ds-1.3.xml" "nist-zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E chdir "nist-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-nist.zip" --format=zip "${ZIPNAME}"
-        COMMENT "Building NIST zipfile at ${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
-        )
+    # When SCAP1.2 zipfiles are needed no more, these custom commands can be unified
+    if("${ZIPNAME}" MATCHES "SCAP-1.2")
+        # Zip only the SCAP1.2 datastream
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+            COMMAND ${CMAKE_COMMAND} -E remove_directory "nist-zipfile/"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "nist-zipfile/${ZIPNAME}"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-rh*-ds.xml" -DDEST="nist-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-ocp*-ds.xml" -DDEST="nist-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/bash"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-rh*.sh" -DDEST="nist-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-ocp*.sh" -DDEST="nist-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/ansible"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-rh*.yml" -DDEST="nist-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-ocp*.yml" -DDEST="nist-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/guides"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-rh*" -DDEST="nist-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-ocp*" -DDEST="nist-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/tables"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-rh*" -DDEST="nist-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-ocp*" -DDEST="nist-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E chdir "nist-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-nist.zip" --format=zip "${ZIPNAME}"
+            COMMENT "Building NIST zipfile at ${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+            DEPENDS ocp3
+            DEPENDS rhel6
+            DEPENDS rhel7
+            DEPENDS rhel8
+            DEPENDS rhosp13
+            DEPENDS rhv4
+            )
+    else()
+        # Zip only the SCAP 1.3 datastream
+        add_custom_command(
+            OUTPUT "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+            COMMAND ${CMAKE_COMMAND} -E remove_directory "nist-zipfile/"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}"
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "nist-zipfile/${ZIPNAME}"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-rh*-ds-1.3.xml" -DDEST="nist-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-ocp*-ds-1.3.xml" -DDEST="nist-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/bash"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-rh*.sh" -DDEST="nist-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-ocp*.sh" -DDEST="nist-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/ansible"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-rh*.yml" -DDEST="nist-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-ocp*.yml" -DDEST="nist-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/guides"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-rh*" -DDEST="nist-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-ocp*" -DDEST="nist-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/tables"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-rh*" -DDEST="nist-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-ocp*" -DDEST="nist-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+            COMMAND ${CMAKE_COMMAND} -E chdir "nist-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-nist.zip" --format=zip "${ZIPNAME}"
+            COMMENT "Building NIST zipfile at ${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+            DEPENDS ocp3
+            DEPENDS rhel6
+            DEPENDS rhel7
+            DEPENDS rhel8
+            DEPENDS rhosp13
+            DEPENDS rhv4
+            )
+    endif()
     add_custom_target(
         nist-zipfile
         DEPENDS "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
