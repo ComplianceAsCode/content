@@ -6,14 +6,15 @@ description: |-
     This profile contains configuration checks that align to the
     DISA STIG for Red Hat Enterprise Linux V1R4.
 
-    In addition to being applicable to RHEL7, DISA recognizes this
+    In addition to being applicable to Red Hat Enterprise Linux 7, DISA recognizes this
     configuration baseline as applicable to the operating system tier of
-    Red Hat technologies that are based off RHEL7, such as:
+    Red Hat technologies that are based off Red Hat Enterprise Linux 7, such as:
 
     - Red Hat Enterprise Linux Server
     - Red Hat Enterprise Linux Workstation and Desktop
     - Red Hat Enterprise Linux for HPC
     - Red Hat Storage
+    - Red Hat Containers with a Red Hat Enterprise Linux 7 image
 
 selections:
     - login_banner_text=dod_banners
