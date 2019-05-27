@@ -28,7 +28,6 @@ selections:
     - service_debug-shell_disabled
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
-    - dconf_use_text_backend
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption
     - sshd_disable_empty_passwords

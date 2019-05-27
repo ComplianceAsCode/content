@@ -98,7 +98,6 @@ selections:
     - account_disable_post_pw_expiration
     - accounts_passwords_pam_faillock_deny
     - accounts_passwords_pam_faillock_unlock_time
-    - dconf_use_text_backend
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
