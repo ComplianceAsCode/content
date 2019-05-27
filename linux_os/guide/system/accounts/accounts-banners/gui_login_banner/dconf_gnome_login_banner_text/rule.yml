@@ -50,9 +50,6 @@ references:
 ocil_clause: 'it does not'
 
 ocil: |-
-    To ensure the login warning banner text is properly set, run the following:
-    <pre>$ grep banner-message-text /etc/dconf/db/gdm.d/*</pre>
-    If properly configured, the proper banner text will appear.
     To ensure the login warning banner text is locked and cannot be changed by a user, run the following:
     <pre>$ grep banner-message-text /etc/dconf/db/gdm.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-text</tt>.

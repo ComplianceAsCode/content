@@ -58,10 +58,5 @@ ocil: |-
     If properly configured, the output for <tt>automount</tt> should be <tt>false</tt>.
     If properly configured, the output for <tt>automount-open</tt>should be <tt>false</tt>.
     If properly configured, the output for <tt>autorun-never</tt> should be <tt>true</tt>.
-    To ensure that users cannot enable automount and autorun in GNOME3, run the following:
-    <pre>$ grep 'automount\|autorun' /etc/dconf/db/local.d/locks/*</pre>
-    If properly configured, the output for <tt>automount</tt> should be <tt>/org/gnome/desktop/media-handling/automount</tt>
-    If properly configured, the output for <tt>automount-open</tt> should be <tt>/org/gnome/desktop/media-handling/auto-open</tt>
-    If properly configured, the output for <tt>autorun-never</tt> should be <tt>/org/gnome/desktop/media-handling/autorun-never</tt>
 
 platform: machine

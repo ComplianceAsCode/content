@@ -39,12 +39,9 @@ references:
     srg: SRG-OS-000375-GPOS-00160
     stigid: "010061"
 
-ocil_clause: 'enable-smartcard-authentication has not been configured or is disabled'
+ocil_clause: 'enable-smartcard-authentication is disabled'
 
 ocil: |-
-    To ensure smart card authentication on the login screen is enabled, run the following command:
-    <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/*</pre>
-    The output should be <tt>true</tt>.
     To ensure that users cannot disable smart card authentication on the login screen, run the following:
     <pre>$ grep enable-smartcard-authentication /etc/dconf/db/gdm.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/enable-smartcard-authentication</tt>

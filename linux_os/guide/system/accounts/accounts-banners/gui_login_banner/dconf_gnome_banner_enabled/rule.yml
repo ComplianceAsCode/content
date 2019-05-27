@@ -52,9 +52,6 @@ references:
 ocil_clause: 'it is not'
 
 ocil: |-
-    To ensure a login warning banner is enabled, run the following:
-    <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/*</pre>
-    If properly configured, the output should be <tt>true</tt>.
     To ensure a login warning banner is locked and cannot be changed by a user, run the following:
     <pre>$ grep banner-message-enable /etc/dconf/db/gdm.d/locks/*</pre>
     If properly configured, the output should be <tt>/org/gnome/login-screen/banner-message-enable</tt>.

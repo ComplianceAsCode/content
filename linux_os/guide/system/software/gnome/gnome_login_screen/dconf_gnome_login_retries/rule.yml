@@ -42,10 +42,6 @@ references:
 ocil_clause: 'allowed-failures is not equal to or less than the expected value'
 
 ocil: |-
-    To ensure the login screen resets after a specified number of failures,
-    run the following command:
-    <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/*</pre>
-    The output should be <tt>3</tt> or less.
     To ensure that users cannot change or configure the resets after a specified
     number of failures on the login screen, run the following:
     <pre>$ grep allowed-failures /etc/dconf/db/gdm.d/locks/*</pre>
