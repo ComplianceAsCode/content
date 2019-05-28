@@ -10,16 +10,16 @@
     </metadata>
     <criteria operator="AND">
       <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
-      <criterion comment="fedora-release RPM package is installed" test_ref="test_fedora_release_rpm" />
+      <criterion comment="fedora-release RPM packages are installed" test_ref="test_fedora_release_rpm" />
       <criterion comment="CPE vendor is 'fedoraproject' and product is 'fedora'" test_ref="test_fedora_vendor_product" />
     </criteria>
   </definition>
 
-  <linux:rpminfo_test check="all" check_existence="only_one_exists" comment="fedora-release RPM package is installed" id="test_fedora_release_rpm" version="1">
+  <linux:rpminfo_test check="all" check_existence="at_least_one_exists" comment="fedora-release RPM packages are installed" id="test_fedora_release_rpm" version="1">
     <linux:object object_ref="object_fedora_release_rpm" />
   </linux:rpminfo_test>
   <linux:rpminfo_object id="object_fedora_release_rpm" version="1">
-    <linux:name>fedora-release</linux:name>
+    <linux:name operation="pattern match">fedora-release.*</linux:name>
   </linux:rpminfo_object>
 
   <ind:textfilecontent54_test check="all" comment="CPE vendor is 'fedoraproject' and 'product' is fedora" id="test_fedora_vendor_product" version="1">
