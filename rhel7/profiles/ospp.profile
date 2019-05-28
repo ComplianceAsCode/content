@@ -401,7 +401,6 @@ selections:
     - network_sniffer_disabled
     - network_ipv6_disable_rpc
     - network_ipv6_privacy_extensions
-    - dconf_use_text_backend
     - dconf_gnome_banner_enabled
     - dconf_gnome_disable_automount
     - dconf_gnome_disable_ctrlaltdel_reboot
