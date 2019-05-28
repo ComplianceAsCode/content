@@ -82,7 +82,9 @@ selections:
     - file_groupowner_etc_passwd
     - file_permissions_etc_passwd
     - file_owner_grub2_cfg
+    - file_owner_efi_grub2_cfg
     - file_groupowner_grub2_cfg
+    - file_groupowner_efi_grub2_cfg
     - var_password_pam_retry=5
     - var_accounts_passwords_pam_faillock_deny=5
     - var_accounts_passwords_pam_faillock_unlock_time=600
