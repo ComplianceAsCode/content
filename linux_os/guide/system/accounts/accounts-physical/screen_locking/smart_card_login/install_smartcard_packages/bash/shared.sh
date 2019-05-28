@@ -3,4 +3,3 @@
 
 package_install esc
 package_install pam_pkcs11
-package_install authconfig-gtk

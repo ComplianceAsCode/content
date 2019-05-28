@@ -7,7 +7,7 @@ title: 'Install Smart Card Packages For Multifactor Authentication'
 description: |-
     Configure the operating system to implement multifactor authentication by
     installing the required packages with the following command:
-    {{{ describe_package_install(package="esc pam_pkcs11 authconfig-gtk") }}}
+    {{{ describe_package_install(package="esc pam_pkcs11") }}}
 
 rationale: |-
     Using an authentication device, such as a CAC or token that is separate from
@@ -36,4 +36,4 @@ ocil_clause: 'smartcard software is not installed'
 ocil: |-
     To verify the operating system has the packages required for multifactor
     authentication installed, run the following command:
-    <pre>$ sudo yum list installed esc pam_pkcs11 authconfig-gtk</pre>
+    <pre>$ sudo yum list installed esc pam_pkcs11</pre>
