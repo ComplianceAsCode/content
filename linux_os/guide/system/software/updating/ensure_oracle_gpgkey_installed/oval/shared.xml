@@ -8,13 +8,18 @@
       <description>The Oracle Linux key packages are required to be installed.</description>
     </metadata>
     <criteria comment="Vendor GPG keys" operator="OR">
-      <criteria comment="Oracle Vendor Keys" operator="AND">
-        <criteria comment="Oracle Installed" operator="OR">
+      <criteria comment="Oracle Vendor GPG Keys" operator="AND">
+        <criteria comment="Oracle Linux Release Installed" operator="OR">
           <extend_definition comment="Oracle Linux 6 installed" definition_ref="installed_OS_is_ol6_family" />
           <extend_definition comment="Oracle Linux 7 installed" definition_ref="installed_OS_is_ol7_family" />
+          <extend_definition comment="Oracle Linux 8 installed" definition_ref="installed_OS_is_ol8_family" />
         </criteria>
-        <criterion comment="package gpg-pubkey-ec551f03-53619141 is installed"
-        test_ref="test_package_gpgkey-ec551f03-53619141_installed" />
+        <criteria comment="Oracle GPG Key Installed" operator="OR">
+            <criterion comment="package gpg-pubkey-ec551f03-53619141 is installed"
+            test_ref="test_package_gpgkey-ec551f03-53619141_installed" />
+            <criterion comment="package gpg-pubkey-ad986da3-5cabf60d is installed"
+            test_ref="test_package_gpgkey-ad986da3-5cabf60d_installed" />
+        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -24,6 +29,7 @@
     <linux:name>gpg-pubkey</linux:name>
   </linux:rpminfo_object>
 
+  <!-- Test for OL6 and OL7 key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
   id="test_package_gpgkey-ec551f03-53619141_installed" version="1"
   comment="Oracle Linux key package is installed">
@@ -34,6 +40,19 @@
   <linux:rpminfo_state id="state_package_gpg-pubkey-ec551f03-53619141" version="1">
     <linux:release>53619141</linux:release>
     <linux:version>ec551f03</linux:version>
+  </linux:rpminfo_state>
+
+  <!-- Test for OL8 key -->
+  <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
+  id="test_package_gpgkey-ad986da3-5cabf60d_installed" version="1"
+  comment="Oracle Linux 8 key package is installed">
+    <linux:object object_ref="object_package_gpg-pubkey" />
+    <linux:state state_ref="state_package_gpg-pubkey-ad986da3-5cabf60d" />
+  </linux:rpminfo_test>
+
+  <linux:rpminfo_state id="state_package_gpg-pubkey-ad986da3-5cabf60d" version="1">
+    <linux:release>5cabf60d</linux:release>
+    <linux:version>ad986da3</linux:version>
   </linux:rpminfo_state>
 
 </def-group>
