@@ -189,7 +189,6 @@ selections:
 
     # Firewalld
     - service_firewalld_enabled
-    - set_firewalld_default_zone
 
     # abrt
     - package_abrt_removed
