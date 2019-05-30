@@ -4,6 +4,11 @@ clean_dconf_settings(){
 	rm -rf /etc/dconf/db/*
 }
 
+# Wipes out dconf db files
+remove_dconf_databases(){
+	rm -f /etc/dconf/db/*
+}
+
 # Adds a new dconf setting
 # $1 _path
 # $2 _setting
@@ -12,7 +17,7 @@ clean_dconf_settings(){
 # $5 _settingFile
 add_dconf_setting() {
 	local _path=$1 _setting=$2 _value=$3 _db=$4 _settingFile=$5
-	mkdir /etc/dconf/db/${_db}
+	mkdir -p /etc/dconf/db/${_db} || true
 	echo "[${_path}]" > /etc/dconf/db/${_db}/${_settingFile}
 	echo "${_setting}=${_value}" >> /etc/dconf/db/${_db}/${_settingFile}
 }
