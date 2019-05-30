@@ -219,6 +219,7 @@ selections:
     ### FMT_MOF_EXT.1 / AC-11(a)
     ### Enable Screen Lock
     - package_tmux_installed
+    - dconf_db_up_to_date
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_delay
     - dconf_gnome_screensaver_lock_delay
