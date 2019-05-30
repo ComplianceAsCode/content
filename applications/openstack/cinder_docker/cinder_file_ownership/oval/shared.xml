@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="cinder_file_ownership" version="1">
+  <definition class="compliance" id="container_cinder_file_ownership" version="1">
     <metadata>
       <title>Verify ownership of files in /var/lib/config-data/puppet-generated/cinder/etc/cinder/ </title>
       <affected family="unix">
@@ -8,63 +8,63 @@
       <description>This test makes sure that config files in /var/lib/config-data/puppet-generated/cinder/etc/cinder/ are owned by root:cinder</description>
     </metadata>
     <criteria operator="OR">
-      <criterion test_ref="test_etc_openstack_cinder_settings_cinder_conf" />
-      <criterion test_ref="test_etc_openstack_cinder_settings_api_paste_ini" />
-      <criterion test_ref="test_etc_openstack_cinder_settings_policy_json" />
-      <criterion test_ref="test_etc_openstack_cinder_settings_rootwrap_conf" />
+      <criterion test_ref="test_etc_openstack_container_cinder_settings_cinder_conf" />
+      <criterion test_ref="test_etc_openstack_container_cinder_settings_api_paste_ini" />
+      <criterion test_ref="test_etc_openstack_container_cinder_settings_policy_json" />
+      <criterion test_ref="test_etc_openstack_container_cinder_settings_rootwrap_conf" />
     </criteria>
   </definition>
 
-  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf mode and ownership" id="test_etc_openstack_cinder_settings_cinder_conf" version="1">
-    <unix:object object_ref="object_etc_openstack_cinder_settings_cinder_conf" />
-    <unix:state state_ref="_etc_openstack_cinder_file_owner" />
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf mode and ownership" id="test_etc_openstack_container_cinder_settings_cinder_conf" version="1">
+    <unix:object object_ref="object_etc_openstack_container_cinder_settings_cinder_conf" />
+    <unix:state state_ref="_etc_openstack_container_cinder_file_owner" />
   </unix:file_test>
 
-  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/api-paste.ini mode and ownership" id="test_etc_openstack_cinder_settings_api_paste_ini" version="1">
-    <unix:object object_ref="object_etc_openstack_cinder_settings_api_paste_ini" />
-    <unix:state state_ref="_etc_openstack_cinder_file_owner" />
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/api-paste.ini mode and ownership" id="test_etc_openstack_container_cinder_settings_api_paste_ini" version="1">
+    <unix:object object_ref="object_etc_openstack_container_cinder_settings_api_paste_ini" />
+    <unix:state state_ref="_etc_openstack_container_cinder_file_owner" />
   </unix:file_test>
 
-  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/policy.json mode and ownership" id="test_etc_openstack_cinder_settings_policy_json" version="1">
-    <unix:object object_ref="object_etc_openstack_cinder_settings_policy_json" />
-    <unix:state state_ref="_etc_openstack_cinder_file_owner" />
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/policy.json mode and ownership" id="test_etc_openstack_container_cinder_settings_policy_json" version="1">
+    <unix:object object_ref="object_etc_openstack_container_cinder_settings_policy_json" />
+    <unix:state state_ref="_etc_openstack_container_cinder_file_owner" />
   </unix:file_test>
 
-  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/rootwrap.conf mode and ownership" id="test_etc_openstack_cinder_settings_rootwrap_conf" version="1">
-    <unix:object object_ref="object_etc_openstack_cinder_settings_rootwrap_conf" />
-    <unix:state state_ref="_etc_openstack_cinder_file_owner" />
+  <unix:file_test check="all" check_existence="all_exist" comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/rootwrap.conf mode and ownership" id="test_etc_openstack_container_cinder_settings_rootwrap_conf" version="1">
+    <unix:object object_ref="object_etc_openstack_container_cinder_settings_rootwrap_conf" />
+    <unix:state state_ref="_etc_openstack_container_cinder_file_owner" />
   </unix:file_test>
 
-  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf" id="object_etc_openstack_cinder_settings_cinder_conf" version="1">
+  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf" id="object_etc_openstack_container_cinder_settings_cinder_conf" version="1">
     <unix:filepath>/var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf</unix:filepath>
   </unix:file_object>
 
-  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/api-paste.ini" id="object_etc_openstack_cinder_settings_api_paste_ini" version="1">
+  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/api-paste.ini" id="object_etc_openstack_container_cinder_settings_api_paste_ini" version="1">
     <unix:filepath>/var/lib/config-data/puppet-generated/cinder/etc/cinder/api-paste.ini</unix:filepath>
   </unix:file_object>
 
-  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/policy.json" id="object_etc_openstack_cinder_settings_policy_json" version="1">
+  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/policy.json" id="object_etc_openstack_container_cinder_settings_policy_json" version="1">
     <unix:filepath>/var/lib/config-data/puppet-generated/cinder/etc/cinder/policy.json</unix:filepath>
   </unix:file_object>
 
-  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/rootwrap.conf" id="object_etc_openstack_cinder_settings_rootwrap_conf" version="1">
+  <unix:file_object comment="/var/lib/config-data/puppet-generated/cinder/etc/cinder/rootwrap.conf" id="object_etc_openstack_container_cinder_settings_rootwrap_conf" version="1">
     <unix:filepath>/var/lib/config-data/puppet-generated/cinder/etc/cinder/rootwrap.conf</unix:filepath>
   </unix:file_object>
 
-  <ind:textfilecontent54_object id="object_etc_group_cinder" comment="GID: cinder" version="1">
+  <ind:textfilecontent54_object id="object_etc_group_container_cinder" comment="GID: cinder" version="1">
     <ind:filepath>/etc/group</ind:filepath>
     <ind:pattern operation="pattern match">^(?!\s*#)cinder:.+:(\d+):</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <unix:file_state id="_etc_group_cinder_file_owner" version="1">
-	 <unix:group_id datatype="int" var_ref="object_etc_group_cinder_var"/>
+  <unix:file_state id="_etc_group_container_cinder_file_owner" version="1">
+	 <unix:group_id datatype="int" var_ref="object_etc_group_container_cinder_var"/>
 	 <unix:user_id datatype="int">0</unix:user_id>
   </unix:file_state>
 
   <variables>
-    <local_variable id="object_etc_group_cinder_var" version="1" datatype="int" comment="GID: cinder">
-      <object_component object_ref="id=object_etc_group_cinder" item_field="subexpression"/>
+    <local_variable id="object_etc_group_container_cinder_var" version="1" datatype="int" comment="GID: cinder">
+      <object_component object_ref="id=object_etc_group_container_cinder" item_field="subexpression"/>
     </local_variable>
   </variables>
 </def-group>
