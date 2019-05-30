@@ -3,13 +3,7 @@
 
 . ../../../../group_software/group_gnome/dconf_test_functions.sh
 
-if ! rpm -q dconf; then
-    yum -y install dconf
-fi
-
-if ! rpm -q gdm; then
-    yum -y install gdm
-fi
+install_dconf_and_gdm_if_needed
 
 login_banner_text="Wrong Banner Text"
 expanded=$(echo "$login_banner_text" | sed 's/(\\\\\x27)\*/\\\x27/g;s/(\\\x27)\*//g;s/(\\\\\x27)/tamere/g;s/(\^\(.*\)\$|.*$/\1/g;s/\[\\s\\n\][+*]/ /g;s/\\//g;s/(n)\*/\\n/g;s/\x27/\\\x27/g;')

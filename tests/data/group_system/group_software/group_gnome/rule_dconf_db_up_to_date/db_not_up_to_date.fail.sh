@@ -3,13 +3,7 @@
 
 . ../dconf_test_functions.sh
 
-if ! rpm -q dconf; then
-    yum -y install dconf
-fi
-
-if ! rpm -q gdm; then
-    yum -y install gdm
-fi
+install_dconf_and_gdm_if_needed
 
 clean_dconf_settings
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "gdm.d" "00-security-settings"
@@ -20,7 +14,9 @@ add_dconf_lock "org/gnome/login-screen" "banner-message-enable" "local.d" "00-se
 
 dconf update
 
-sleep 3
+# ensure that the modification happens a reasonable amount of time after running dconf update
+sleep 5
 
-# make static files newer than the database
+# make static keyfiles newer than the database
 add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "gdm.d" "00-security-settings"
+add_dconf_setting "org/gnome/login-screen" "banner-message-enabled" "true" "local.d" "00-security-settings"

@@ -3,13 +3,7 @@
 
 . ../../dconf_test_functions.sh
 
-if ! rpm -q dconf; then
-    yum -y install dconf
-fi
-
-if ! rpm -q gdm; then
-    yum -y install gdm
-fi
+install_dconf_and_gdm_if_needed
 
 clean_dconf_settings
 add_dconf_setting "org/gnome/login-screen" "disable-user-list" "false" "gdm.d" "00-security-settings"
