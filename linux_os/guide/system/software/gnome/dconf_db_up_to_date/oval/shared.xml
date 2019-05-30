@@ -37,6 +37,10 @@
   </ind:variable_state>
   {{% endmacro %}}
 
+  {{% macro check_db_criterion(db_name) %}}
+      <criterion comment="{{{ db_name }}} database is up-to-date wrt keyfiles" test_ref="test_dconf_{{{ db_name }}}_up_to_date" />
+  {{% endmacro %}}
+
   <definition class="compliance" id="dconf_db_up_to_date" version="2">
     <metadata>
       <title>Configure the GNOME3 GUI Screen locking</title>
@@ -50,14 +54,18 @@
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
-      <criteria comment="check screensaver idle delay and prevent user from changing it" operator="AND">
-        <criterion comment="local database is up-to-date wrt keyfiles" test_ref="test_dconf_local_up_to_date" />
-        <criterion comment="gdm database is up-to-date wrt keyfiles" test_ref="test_dconf_gdm_up_to_date" />
+      <criteria comment="check that all DBs in question are up-to-date" operator="AND">
+        {{% if product != 'fedora' %}}
+          {{{ check_db_criterion("gdm") }}}
+        {{% endif %}}
+        {{{ check_db_criterion("local") }}}
       </criteria>
     </criteria>
   </definition>
 
+  {{% if product != 'fedora' %}}
+    {{{ check_db_is_up_to_date("gdm") }}}
+  {{% endif %}}
   {{{ check_db_is_up_to_date("local") }}}
-  {{{ check_db_is_up_to_date("gdm") }}}
 
 </def-group>
