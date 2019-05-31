@@ -43,14 +43,14 @@
 
   <definition class="compliance" id="dconf_db_up_to_date" version="2">
     <metadata>
-      <title>Configure the GNOME3 GUI Screen locking</title>
+      <title>The dconf databases are up-to-date.</title>
       <affected family="unix">
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
       </affected>
-      <description>The allowed period of inactivity before the screensaver is activated.</description>
+      <description>Make sure that the dconf databases are up-to-date with regards to respective keyfiles.</description>
     </metadata>
     <criteria operator="OR">
       <extend_definition comment="dconf installed" definition_ref="package_dconf_installed" negate="true" />
