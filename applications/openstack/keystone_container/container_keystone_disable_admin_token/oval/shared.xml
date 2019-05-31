@@ -9,7 +9,7 @@
     </metadata>
     <criteria comment="Is admin_token parameter set to disabled?" operator="AND">
       <criterion comment="Check admin_token in /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone-paste.ini" test_ref="test_container_keystone_admin_token" />
-      <criterion comment="Check AdminTokenAuthMiddleware does not exist in /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone-paste.ini" />
+      <criterion comment="Check AdminTokenAuthMiddleware does not exist in /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone-paste.ini" test_ref="test_container_keystone_admin_token_auth_middleware" />
     </criteria>
   </definition>
 
@@ -19,7 +19,7 @@
     <ind:object object_ref="obj_container_keystone_admin_token" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_test check="all" check_existence="exist"
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
   comment="Tests the value of the admin_token[\s]*(&lt;:nocomment:&gt;*) setting in the /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone-paste.ini file"
   id="test_container_keystone_admin_token_auth_middleware" version="1">
     <ind:object object_ref="obj_container_keystone_admin_token_auth_middleware" />
