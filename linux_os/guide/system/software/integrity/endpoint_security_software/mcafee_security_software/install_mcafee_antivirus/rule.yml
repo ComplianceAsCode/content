@@ -2,12 +2,19 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,rhv4
 
-title: 'Install McAfee Virus Scanning Software'
+title: 'Install Virus Scanning Software'
 
 description: |-
-    Install McAfee VirusScan Enterprise for Linux antivirus software
-    which is provided for DoD systems and uses signatures to search for the
-    presence of viruses on the filesystem.
+    Virus scanning software can be used to protect a system from penetration from
+    computer viruses and to limit their spread through intermediate systems.
+
+    The virus scanning software should be configured to perform scans dynamically
+    on accessed files. If this capability is not available, the system must be
+    configured to scan, at a minimum, all altered files on the system on a daily
+    basis.
+
+    If the system processes inbound SMTP mail, the virus scanner must be configured
+    to scan all received mail.
 
 rationale: |-
     Virus scanning software can be used to detect if a system has been compromised by
@@ -30,17 +37,19 @@ references:
     iso27001-2013: A.12.2.1,A.14.2.8,A.8.2.3
     cis-csc: 12,13,14,4,7,8
 
-ocil_clause: 'virus scanning software is not installed or running'
+ocil_clause: 'there is no anti-virus solution installed on the system'
 
 ocil: |-
-    To verify that McAfee VirusScan Enterprise for Linux is installed
-    and running, run the following command(s):
-    <pre>$ sudo systemctl status nails</pre>
-    <pre>$ rpm -q McAfeeVSEForLinux</pre>
+    Verify an anti-virus solution is installed on the system. The anti-virus solution may be
+    bundled with an approved host-based security solution.
 
 warnings:
     - general: |-
-        Due to McAfee HIPS being 3rd party software, automated
-        remediation is not available for this configuration check.
+        In DoD environments, supplemental intrusion detection and antivirus tools,
+        such as the McAfee Host-based Security System, are available to integrate with
+        existing infrastructure. Per DISA guidance, when these supplemental tools interfere
+        with proper functioning of SELinux, SELinux takes precedence. Should further
+        clarification be required, DISA contact information is published publicly at
+        https://iase.disa.mil/stigs/Pages/contact.aspx.
 
 platform: machine
