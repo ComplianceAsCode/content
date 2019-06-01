@@ -8,12 +8,9 @@ description: |-
     Similar to the previous check, it is recommended to set strict access permissions for such configuration files.
 
     <br />
-    <br />
     Run the following commands:
 
-    <br />
-    <br />
-    <tt>
+    <pre>
     $ stat -L -c "%a" /var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf
     <br />
     $ stat -L -c "%a" /var/lib/config-data/puppet-generated/neutron/etc/neutron/api-paste.ini
@@ -21,13 +18,17 @@ description: |-
     $ stat -L -c "%a" /var/lib/config-data/puppet-generated/neutron/etc/neutron/policy.json
     <br />
     $ stat -L -c "%a" /var/lib/config-data/puppet-generated/neutron/etc/neutron/rootwrap.conf
-    </tt>
+    </pre>
+    <br />
+    Pass: If permissions are set to 640 or stricter. The permissions of 640 translates
+    into owner r/w, group r, and no rights to others i.e. &#8220;u=rw,g=r,o=&#8221;.
+    Note that with Check-Neutron-01: Is user/group ownership of config files set to root/neutron?
+    and permissions set to 640, root has read/write access and neutron has read access to these
+    configuration files. The access rights can also be validated using the following command.
+    This command will only be available on your system if it supports ACLs.
     <br />
     <br />
-    Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into owner r/w, group r, and no rights to others i.e. &#8220;u=rw,g=r,o=&#8221;. Note that with Check-Neutron-01: Is user/group ownership of config files set to root/neutron? and permissions set to 640, root has read/write access and neutron has read access to these configuration files. The access rights can also be validated using the following command. This command will only be available on your system if it supports ACLs.
-    <br />
-    <br />
-    <tt>
+    <pre>
     $ getfacl --tabular -a /var/lib/config-data/puppet-generated/neutron/etc/neutron/neutron.conf
     <br />
     getfacl: Removing leading '/' from absolute path names
@@ -42,11 +43,14 @@ description: |-
     mask            r--
     <br />
     other           ---
-    </tt>
+    </pre>
     <br />
     <br />
     Fail: If permissions are not set to at least 640.
 
 rationale: ""
 
-severity: unknown
+severity: medium
+
+references:
+    nist: AC-6
