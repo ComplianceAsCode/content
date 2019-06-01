@@ -5,7 +5,8 @@ prodtype: rhosp13
 title: 'Check-Dashboard-02: Are strict permissions set for horizon configuration files?'
 
 description: |-
-    Similar to the previous check, it is recommended to set strict access permissions for such configuration files.
+    Similar to the previous check, it is recommended to set strict access permissions
+    for such configuration files.
     <br />
     <br />
 
@@ -16,11 +17,16 @@ description: |-
     </tt>
     <br />
     <br />
-    Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into owner r/w, group r, and no rights to others i.e. &#8220;u=rw,g=r,o=&#8221;. Note that with Check-Dashboard-01: Is user/group of config files set to root/horizon? and permissions set to 640, root has read/write access and horizon has read access to these configuration files. The access rights can also be validated using the following command. This command will only be available on your system if it supports ACLs.
+    Pass: If permissions are set to 640 or stricter. The permissions of 640 translates into
+    owner r/w, group r, and no rights to others i.e. &#8220;u=rw,g=r,o=&#8221;. Note that
+    with <tt>Check-Dashboard-01: Is user/group of config files set to root/horizon?</tt>
+    and permissions set to 640, root has read/write access and horizon has read access
+    to these configuration files. The access rights can also be validated using the
+    following command. This command will only be available on your system if it supports ACLs.
 
     <br />
     <br />
-    <tt>
+    <pre>
     $ getfacl --tabular -a /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings
     <br />
     getfacl: Removing leading '/' from absolute path names
@@ -34,11 +40,14 @@ description: |-
     mask            r--
     <br />
     other           ---
-    </tt>
+    </pre>
     <br />
     <br />
     Fail: If permissions are not set to at least 640.
 
 rationale: ""
 
-severity: unknown
+severity: medium
+
+references:
+    nist: AC-6

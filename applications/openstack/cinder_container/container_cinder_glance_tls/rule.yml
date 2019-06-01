@@ -5,19 +5,22 @@ prodtype: rhosp13
 title: 'Check-Block-06: Does cinder communicates with glance over TLS?'
 
 description: |-
-    Similar to previous check (Check-Block-05: Does cinder communicates with nova over TLS?), it is recommended all the components must communicate with each other using a secured communication protocol.
+    Similar to previous check (<tt>Check-Block-05: Does cinder communicates with nova over TLS?</tt>),
+    it is recommended all the components must communicate with each other using a secured communication protocol.
 
     <br />
     <br />
-    Pass: If value of parameter glance_api_insecure under [DEFAULT] section in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to False.
+    Pass: If value of parameter glance_api_insecure under [DEFAULT] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to False.
 
     <br />
     <br />
-    Fail: If value of parameter glance_api_insecure under [DEFAULT] section in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to True.
+    Fail: If value of parameter glance_api_insecure under [DEFAULT] section in
+    /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to True.
 
 rationale: ""
 
-severity: unknown
+severity: high
 
 references:
-    nist: FOO-1(a)
+    nist: SC-8,SC-8(1)

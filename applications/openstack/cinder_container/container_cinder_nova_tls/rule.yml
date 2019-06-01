@@ -5,7 +5,10 @@ prodtype: rhosp13
 title: 'Check-Block-05: Does cinder communicates with nova over TLS?'
 
 description: |-
-    OpenStack components communicate with each other using various protocols and the communication might involve sensitive / confidential data. An attacker may try to eavesdrop on the channel in order to get access to sensitive information. Thus all the components must communicate with each other using a secured communication protocol.
+    OpenStack components communicate with each other using various protocols and the communication
+    might involve sensitive / confidential data. An attacker may try to eavesdrop on the
+    channel in order to get access to sensitive information. Thus all the components
+    must communicate with each other using a secured communication protocol.
 
     <br />
     <br />
@@ -17,7 +20,7 @@ description: |-
 
 rationale: ""
 
-severity: unknown
+severity: high
 
 references:
-    nist: FOO-1(a)
+    nist: SC-8,SC-8(1)
