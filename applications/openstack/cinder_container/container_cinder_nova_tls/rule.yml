@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Block-05: Does cinder communicates with nova over TLS?'
+
+description: |-
+    OpenStack components communicate with each other using various protocols and the communication
+    might involve sensitive / confidential data. An attacker may try to eavesdrop on the
+    channel in order to get access to sensitive information. Thus all the components
+    must communicate with each other using a secured communication protocol.
+
+    <br />
+    <br />
+    Pass: If value of parameter nova_api_insecure under [DEFAULT] section in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to False.
+
+    <br />
+    <br />
+    Fail: If value of parameter nova_api_insecure under [DEFAULT] section in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to True.
+
+rationale: ""
+
+severity: high
+
+references:
+    nist: SC-8,SC-8(1)

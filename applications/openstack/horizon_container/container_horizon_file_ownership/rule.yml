@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Dashboard-01: Is user/group of config files set to root/horizon?'
+
+description: |-
+    Configuration files contain critical parameters and information required for
+    smooth functioning of the component. If an unprivileged user, either intentionally
+    or accidentally modifies or deletes any of the parameters or the file itself then
+    it would cause severe availability issues causing a denial of service to the other
+    end users. Thus user ownership of such critical configuration files must be set to
+    root and group ownership must be set to horizon.
+    <br />
+    <br />
+    Run the following commands:
+
+    <br />
+    <pre>
+    $ stat -L -c "%U %G"  /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings | egrep "root horizon"
+    </pre>
+    <br />
+    <br />
+    Pass: If user and group ownership of the config file is set to root and horizon
+    respectively. The above commands show output of root horizon.
+
+    <br />
+    <br />
+    Fail: If the above commands does not return any output as the user and group
+    ownership might have set to any user other than root or any group other than horizon.
+
+rationale: ""
+
+severity: medium
+
+references:
+    nist: AC-6

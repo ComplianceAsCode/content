@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Dashboard-05: Is SESSION_COOKIE_SECURE parameter set to True?'
+
+description: |-
+    The “SECURE” cookie attribute instructs web browsers to only send the cookie through an
+    encrypted HTTPS (SSL/TLS) connection. This session protection mechanism is mandatory to
+    prevent the disclosure of the session ID through MitM (Man-in-the-Middle) attacks. It
+    ensures that an attacker cannot simply capture the session ID from web browser traffic.
+    <br />
+    <br />
+    Pass: If value of parameter SESSION_COOKIE_SECURE in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to True.
+
+    <br />
+    <br />
+    Fail: If value of parameter SESSION_COOKIE_SECURE in
+    /var/lib/config-data/puppet-generated/horizon/etc/openstack-dashboard/local_settings is set to False.
+
+rationale: ""
+
+severity: high
+
+references:
+    nist: SC-8,SC-8(1)

@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Block-08: Is max size for the body of a request set to default (114688)?'
+
+description: |-
+    If the maximum body size per request is not defined, the attacker can craft an arbitrary
+    osapi request of large size causing the service to crash and finally resulting in
+    Denial Of Service attack. Assigning the maximum value ensures that any malicious oversized
+    request gets blocked ensuring continued availability of the service.
+
+    <br />
+    <br />
+    Pass: If value of parameter osapi_max_request_body_size under [DEFAULT] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to <tt>114688</tt>
+    or if value of parameter max_request_body_size under [oslo_middleware] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is set to <tt>114688</tt>.
+
+    <br />
+    <br />
+    Fail: If value of parameter osapi_max_request_body_size under [DEFAULT] section
+    in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is not set to
+    <tt>114688</tt> or if value of parameter max_request_body_size under [oslo_middleware]
+    section in /var/lib/config-data/puppet-generated/cinder/etc/cinder/cinder.conf is not set to <tt>114688</tt>.
+
+rationale: ""
+
+severity: medium
+
+references:
+    nist: SC-5,SC-5(2)

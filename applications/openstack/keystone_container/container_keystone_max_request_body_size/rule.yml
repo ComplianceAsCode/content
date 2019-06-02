@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Identity-05: Is max_request_body_size set to default (114688)?'
+
+description: |-
+    The parameter max_request_body_size defines the maximum body size per request in bytes.
+    If the maximum size is not defined, the attacker could craft an arbitrary request of
+    large size causing the service to crash and finally resulting in Denial Of Service attack.
+    Assigning the maximum value ensures that any malicious oversized request gets blocked
+    ensuring continued availability of the component.
+
+    <br />
+    <br />
+    Pass: If value of parameter max_request_body_size in
+    /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf
+    is set to default (114688) or some reasonable value based on your environment.
+
+    <br />
+    <br />
+    Fail: If value of parameter max_request_body_size is not set.
+
+rationale: ""
+
+severity: medium
+
+references:
+    nist: SC-5,SC-5(2)

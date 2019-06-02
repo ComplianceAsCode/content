@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhosp13
+
+title: 'Check-Identity-04: Does Identity use strong hashing algorithms for PKI tokens?'
+
+description: |-
+    MD5 is a weak and depreciated hashing algorithm. It can be cracked using brute force
+    attack. Identity tokens are sensitive and need to be protected with a stronger
+    hashing algorithm to prevent unauthorized disclosure and subsequent access.
+
+    <br />
+    <br />
+    Pass: If value of parameter hash_algorithm under [token] section in
+    /var/lib/config-data/puppet-generated/keystone/etc/keystone/keystone.conf is set to SHA256.
+    <br />
+    <br />
+
+    Fail: If value of parameter hash_algorithm under [token]section is set to MD5.
+
+rationale: ""
+
+severity: medium
+
+references:
+    nist: SC-13
