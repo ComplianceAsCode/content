@@ -1,0 +1,14 @@
+# platform=multi_platform_rhosp
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Enable CSRF_COOKIE_SECURE
+  shell: |
+    openstack-config --set /etc/openstack-dashboard/local_settings DEFAULT CSRF_COOKIE_SECURE True
+  args:
+    warn: False
+    executable: /bin/bash
+  changed_when: False
+  check_mode: no
