@@ -8,4 +8,12 @@ description: 'Draft profile for ANSSI compliance at the high level. ANSSI stands
 
 extends: anssi_nt28_enhanced
 
-selections: []
+selections:
+    - var_selinux_policy_name=targeted
+    - selinux_policytype
+    - package_setroubleshoot_removed
+    - package_aide_installed
+    - aide_periodic_cron_checking
+    - aide_scan_notification
+    - aide_verify_acls
+    - aide_verify_ext_attributes

@@ -9,4 +9,6 @@ description: 'Draft profile for ANSSI compliance at the enhanced level. ANSSI st
 extends: anssi_nt28_intermediary
 
 selections:
+    - file_permissions_unauthorized_suid
+    - file_permissions_unauthorized_sgid
     - rsyslog_remote_loghost
