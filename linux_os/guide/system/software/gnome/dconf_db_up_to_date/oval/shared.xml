@@ -12,8 +12,7 @@
   </local_variable>
 
   <unix:file_object id="obj_dconf_{{{ db_name }}}_config" comment="The dconf keyfile with '{{{ db_name }}}' settings" version="1">
-    <unix:path>/etc/dconf/db/{{{ db_name }}}.d/</unix:path>
-    <unix:filename operation="pattern match">.*</unix:filename>
+    <unix:filepath operation="pattern match">^/etc/dconf/db/{{{ db_name }}}.d/.*</unix:filepath>
   </unix:file_object>
 
   <local_variable id="var_dconf_{{{ db_name }}}_keyfiles_modified_time" datatype="int" version="1" comment="When dconf keyfiles in the '{{{ db_name }}}' tree have been modified">
@@ -35,10 +34,17 @@
   <ind:variable_state id="state_{{{ db_name }}}_db_is_up_to_date" version="1">
     <ind:value datatype="int" operation="less than or equal" var_check="all" var_ref="var_dconf_{{{ db_name }}}_keyfiles_modified_time" />
   </ind:variable_state>
+
+  <unix:file_test id="test_dconf_{{{ db_name }}}_no_keyfiles" check="all" check_existence="none_exist" comment="no keyfiles applicable to the {{{ db_name }}} database" version="1">
+    <unix:object object_ref="obj_dconf_{{{ db_name }}}_config" />
+  </unix:file_test>
   {{% endmacro %}}
 
   {{% macro check_db_criterion(db_name) %}}
-      <criterion comment="{{{ db_name }}} database is up-to-date wrt keyfiles" test_ref="test_dconf_{{{ db_name }}}_up_to_date" />
+      <criteria comment="check that all DBs in question are up-to-date" operator="OR">
+        <criterion comment="{{{ db_name }}} database is up-to-date wrt keyfiles" test_ref="test_dconf_{{{ db_name }}}_up_to_date" />
+	<criterion comment="no keyfiles applicable to the {{{ db_name }}} database" test_ref="test_dconf_{{{ db_name }}}_no_keyfiles" />
+      </criteria>
   {{% endmacro %}}
 
   <definition class="compliance" id="dconf_db_up_to_date" version="2">
