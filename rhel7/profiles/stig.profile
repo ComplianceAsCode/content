@@ -57,6 +57,7 @@ selections:
     - rpm_verify_permissions
     - rpm_verify_ownership
     - rpm_verify_hashes
+    - dconf_db_up_to_date
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
     - banner_etc_issue

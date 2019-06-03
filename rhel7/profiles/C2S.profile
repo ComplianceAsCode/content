@@ -70,6 +70,7 @@ selections:
     - selinux_confinement_of_daemons
     - banner_etc_issue
     - login_banner_text=usgcb_default
+    - dconf_db_up_to_date
     - dconf_gnome_login_banner_text
     - dconf_gnome_banner_enabled
     - security_patches_up_to_date
