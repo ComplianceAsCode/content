@@ -156,7 +156,7 @@ def main():
         if not os.path.exists(args.output):
             os.mkdir(args.output)
         from json2html import json2html
-        ret2 = []
+        filtered_output = []
         output_path = "./"
         if args.output:
             output_path = args.output
@@ -164,52 +164,35 @@ def main():
         if not os.path.exists(os.path.join(args.output, "missing_content")):
             os.mkdir(os.path.join(args.output, "missing_content"))
 
-        for profile in ret:
-            link="""<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
-            missing_stig_ids_file = "{}_missing_stig_ids.txt".format(profile['profile_id'])
-            missing_ovals_file = "{}_missing_ovals.txt".format(profile['profile_id'])
-            missing_bash_fixes_file = "{}_missing_bash_fixes.txt".format(profile['profile_id'])
-            missing_ansible_fixes_file = "{}_missing_ansible_fixes.txt".format(profile['profile_id'])
-            missing_puppet_fixes_file = "{}_missing_puppet_fixes.txt".format(profile['profile_id'])
-            missing_anaconda_fixes_file = "{}_missing_anaconda_fixes.txt".format(profile['profile_id'])
-            missing_missing_cces_file = "{}_missing_missing_cces.txt".format(profile['profile_id'])
-            
-            profile['missing_stig_ids_count'] = link.format(os.path.join("missing_content", missing_stig_ids_file), len(profile['missing_stig_ids']))
-            profile['missing_ovals_count'] = link.format(os.path.join("missing_content", missing_ovals_file), len(profile['missing_ovals']))
-            profile['missing_bash_fixes_count'] = link.format(os.path.join("missing_content", missing_bash_fixes_file), len(profile['missing_bash_fixes']))
-            profile['missing_ansible_fixes_count'] = link.format(os.path.join("missing_content", missing_ansible_fixes_file), len(profile['missing_ansible_fixes']))
-            profile['missing_puppet_fixes_count'] = link.format(os.path.join("missing_content", missing_puppet_fixes_file), len(profile['missing_puppet_fixes']))
-            profile['missing_anaconda_fixes_count'] = link.format(os.path.join("missing_content", missing_anaconda_fixes_file), len(profile['missing_anaconda_fixes']))
-            profile['missing_cces_count'] = link.format(os.path.join("missing_content", missing_missing_cces_file), len(profile['missing_cces']))
-            
-            if args.output:
-                with open(os.path.join(output_path, "missing_content", missing_stig_ids_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_stig_ids']))
-                with open(os.path.join(output_path, "missing_content", missing_ovals_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_ovals']))
-                with open(os.path.join(output_path, "missing_content", missing_bash_fixes_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_bash_fixes']))
-                with open(os.path.join(output_path, "missing_content", missing_ansible_fixes_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_ansible_fixes']))
-                with open(os.path.join(output_path, "missing_content", missing_puppet_fixes_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_puppet_fixes']))
-                with open(os.path.join(output_path, "missing_content", missing_anaconda_fixes_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_anaconda_fixes']))
-                with open(os.path.join(output_path, "missing_content", missing_missing_cces_file), 'w+') as f:
-                    f.write('\n'.join(profile['missing_cces']))
+        missing_content_list = [
+            'missing_stig_ids',
+            'missing_ovals',
+            'missing_bash_fixes',
+            'missing_ansible_fixes',
+            'missing_puppet_fixes',
+            'missing_anaconda_fixes',
+            'missing_cces'
+            ]
+        link="""<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
-            del profile['missing_stig_ids']
-            del profile['missing_ovals']
-            del profile['missing_bash_fixes']
-            del profile['missing_ansible_fixes']
-            del profile['missing_puppet_fixes']
-            del profile['missing_anaconda_fixes']
-            del profile['missing_cces']
-            ret2.append(profile)
+        for profile in ret:
+            for missing_content in missing_content_list:
+                missing_content_file = "{}_{}.txt".format(profile['profile_id'], missing_content)
+                if len(profile[missing_content]) > 0:
+                    profile['{}_count'.format(missing_content)] = link.format(os.path.join("missing_content", missing_content_file), len(profile[missing_content]))
+                else:
+                    profile['{}_count'.format(missing_content)] = 0
+
+                if args.output:
+                    with open(os.path.join(output_path, "missing_content", missing_content_file), 'w+') as f:
+                        f.write('\n'.join(profile[missing_content]))
+
+                del profile[missing_content]
+            filtered_output.append(profile)
 
         if args.output:
             with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
-                f.write(json2html.convert(json = json.dumps(ret2), escape=False))
+                f.write(json2html.convert(json = json.dumps(filtered_output), escape=False))
 
     elif args.format == "csv":
         # we can assume ret has at least one element
