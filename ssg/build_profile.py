@@ -72,6 +72,7 @@ class XCCDFBenchmark(object):
         profile_stats = {
             'profile_id': "",
             'ssg_version': 0,
+            'rules': [],
             'rules_count': 0,
             'implemented_ovals': [],
             'implemented_ovals_pct': 0,
@@ -156,6 +157,9 @@ class XCCDFBenchmark(object):
             sys.exit(1)
 
         rule_stats.sort(key=lambda r: r.dict['id'])
+
+        for rule in rule_stats:
+            profile_stats['rules'].append(rule.dict['id'])
 
         profile_stats['profile_id'] = profile
         if ssg_version_elem is not None:
@@ -426,6 +430,8 @@ class XCCDFBenchmark(object):
                 del profile_stats['implemented_anaconda_fixes']
             if not options.assigned_cces:
                 del profile_stats['assigned_cces']
+
+            del profile_stats['rules']
 
             return profile_stats
 

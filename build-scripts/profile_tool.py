@@ -165,6 +165,7 @@ def main():
             os.mkdir(os.path.join(args.output, "missing_content"))
 
         missing_content_list = [
+            'rules',
             'missing_stig_ids',
             'missing_ovals',
             'missing_bash_fixes',
