@@ -152,19 +152,19 @@ def main():
     if args.format == "json":
         print(json.dumps(ret, indent=4))
     if args.format == "html":
-
-        if not os.path.exists(args.output):
-            os.mkdir(args.output)
         from json2html import json2html
         filtered_output = []
         output_path = "./"
         if args.output:
             output_path = args.output
+            if not os.path.exists(output_path):
+                os.mkdir(output_path)
 
-        if not os.path.exists(os.path.join(args.output, "missing_content")):
-            os.mkdir(os.path.join(args.output, "missing_content"))
+        content_path = os.path.join(output_path, "content")
+        if not os.path.exists(content_path):
+            os.mkdir(content_path)
 
-        missing_content_list = [
+        content_list = [
             'rules',
             'missing_stig_ids',
             'missing_ovals',
@@ -177,23 +177,21 @@ def main():
         link="""<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
         for profile in ret:
-            for missing_content in missing_content_list:
-                missing_content_file = "{}_{}.txt".format(profile['profile_id'], missing_content)
-                if len(profile[missing_content]) > 0:
-                    profile['{}_count'.format(missing_content)] = link.format(os.path.join("missing_content", missing_content_file), len(profile[missing_content]))
+            for content in content_list:
+                content_file = "{}_{}.txt".format(profile['profile_id'], content)
+                if len(profile[content]) > 0:
+                    profile['{}_count'.format(content)] = link.format(os.path.join("content", content_file), len(profile[content]))
                 else:
-                    profile['{}_count'.format(missing_content)] = 0
+                    profile['{}_count'.format(content)] = 0
 
-                if args.output:
-                    with open(os.path.join(output_path, "missing_content", missing_content_file), 'w+') as f:
-                        f.write('\n'.join(profile[missing_content]))
+                with open(os.path.join(content_path, content_file), 'w+') as f:
+                    f.write('\n'.join(profile[content]))
 
-                del profile[missing_content]
+                del profile[content]
             filtered_output.append(profile)
 
-        if args.output:
-            with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
-                f.write(json2html.convert(json = json.dumps(filtered_output), escape=False))
+        with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
+            f.write(json2html.convert(json = json.dumps(filtered_output), escape=False))
 
     elif args.format == "csv":
         # we can assume ret has at least one element
