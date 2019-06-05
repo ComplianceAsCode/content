@@ -181,11 +181,10 @@ def main():
                 content_file = "{}_{}.txt".format(profile['profile_id'], content)
                 if len(profile[content]) > 0:
                     profile['{}_count'.format(content)] = link.format(os.path.join("content", content_file), len(profile[content]))
+                    with open(os.path.join(content_path, content_file), 'w+') as f:
+                        f.write('\n'.join(profile[content]))
                 else:
                     profile['{}_count'.format(content)] = 0
-
-                with open(os.path.join(content_path, content_file), 'w+') as f:
-                    f.write('\n'.join(profile[content]))
 
                 del profile[content]
             filtered_output.append(profile)
