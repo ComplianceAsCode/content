@@ -174,23 +174,26 @@ def main():
             'missing_anaconda_fixes',
             'missing_cces'
             ]
-        link="""<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
+        link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
 
         for profile in ret:
             for content in content_list:
                 content_file = "{}_{}.txt".format(profile['profile_id'], content)
-                if len(profile[content]) > 0:
-                    profile['{}_count'.format(content)] = link.format(os.path.join("content", content_file), len(profile[content]))
+                content_filepath = os.path.join("content", content_file)
+                count = len(profile[content])
+                if count > 0:
+                    count_href_element = link.format(content_filepath, count)
+                    profile['{}_count'.format(content)] = count_href_element
                     with open(os.path.join(content_path, content_file), 'w+') as f:
                         f.write('\n'.join(profile[content]))
                 else:
-                    profile['{}_count'.format(content)] = 0
+                    profile['{}_count'.format(content)] = count
 
                 del profile[content]
             filtered_output.append(profile)
 
         with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
-            f.write(json2html.convert(json = json.dumps(filtered_output), escape=False))
+            f.write(json2html.convert(json=json.dumps(filtered_output), escape=False))
 
     elif args.format == "csv":
         # we can assume ret has at least one element

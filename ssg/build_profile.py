@@ -382,7 +382,7 @@ class XCCDFBenchmark(object):
             del profile_stats['implemented_puppet_fixes']
             del profile_stats['implemented_anaconda_fixes']
             del profile_stats['assigned_cces']
-            
+
             profile_stats['missing_stig_ids_count'] = missing_stig_ids_count
             profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
             profile_stats['missing_bash_fixes_count'] = len(profile_stats['missing_bash_fixes'])
