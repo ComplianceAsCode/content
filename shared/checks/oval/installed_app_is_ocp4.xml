@@ -1,0 +1,28 @@
+<def-group>
+  <definition class="inventory"
+  id="installed_app_is_ocp4" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container Platform</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:openshift_container_platform:4" source="CPE" />
+      <description>The application installed installed on the system is
+      OpenShift 4.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="OpenShift Node is installed" test_ref="test_ocp4" />
+    </criteria>
+  </definition>
+
+  <ind:variable_test check="all" comment="always pass" id="test_ocp4" version="1">
+    <ind:object object_ref="obj_ocp4"/>
+  </ind:variable_test>
+  <ind:variable_object id="obj_ocp4" version="1" comment="x">
+    <ind:var_ref>var_ocp4</ind:var_ref>
+  </ind:variable_object>
+  <ind:constant_variable id="var_ocp4" version="1" comment="x" datatype="string">
+    <ind:value>x</ind:value>
+  </ind:constant_variable>
+
+</def-group>
