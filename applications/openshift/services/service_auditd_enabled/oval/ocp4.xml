@@ -1,0 +1,28 @@
+<def-group>
+
+  <definition class="compliance" id="service_auditd_enabled" version="1">
+    <metadata>
+      <title>Service auditd Enabled</title>
+      <affected family="unix">
+        <platform>Red Hat OpenShift Container Platform 4</platform>
+      </affected>
+      <description>The auditd service should be enabled.</description>
+    </metadata>
+    <criteria comment="service auditd is enabled" operator="AND">
+      <criterion comment="auditd is running" test_ref="test_service_running_auditd" />
+    </criteria>
+  </definition>
+
+  <openshiftservice_test id="test_service_running_auditd" check="at least one" check_existence="at_least_one_exists" comment="Test that the auditd service is running" version="1">
+    <object object_ref="obj_service_running_auditd"/>
+    <state state_ref="state_service_running_auditd"/>
+  </openshiftservice_test>
+  <openshiftservice_object id="obj_service_running_auditd" comment="Retrieve the ActiveState property of auditd" version="1">
+    <unit operation="equals">auditd.service</unit>
+    <property>ActiveState</property>
+  </openshiftservice_object>
+  <openshiftservice_state id="state_service_running_auditd" version="1" comment="auditd is running">
+      <value>active</value>
+  </openshiftservice_state>
+
+</def-group>
