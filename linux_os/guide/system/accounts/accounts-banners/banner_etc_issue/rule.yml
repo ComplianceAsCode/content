@@ -72,3 +72,13 @@ ocil: |-
     To check if the system login banner is compliant,
     run the following command:
     <pre>$ cat /etc/issue</pre>
+
+warnings:
+    - general: |-
+        The DoD "Policy on Use of Department of Defense (DoD) Information
+        Systems - Standard Consent Banner and User Agreement" requires
+        an exact text match, including line breaks and spaces, of the
+        DoD-provided banner text. For this reason the provided
+        evaluation content in this guide will only pass when banner
+        text is evaluated as an exact match. Extra line breaks or spaces
+        will cause the evaluation to fail.
