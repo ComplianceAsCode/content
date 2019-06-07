@@ -69,6 +69,8 @@ def parse_args():
     parser_stats.add_argument("--format", default="plain",
                         choices=["plain", "json", "csv", "html"],
                         help="Which format to use for output.")
+    parser_stats.add_argument("--output",
+                        help="If defined, statistics will be stored under this directory.")
 
     subtracted_profile_desc = \
         "Subtract rules from profile1 based on rules present in profile2. " + \
@@ -151,7 +153,48 @@ def main():
         print(json.dumps(ret, indent=4))
     if args.format == "html":
         from json2html import json2html
-        print(json2html.convert(json = json.dumps(ret)))
+        filtered_output = []
+        output_path = "./"
+        if args.output:
+            output_path = args.output
+            if not os.path.exists(output_path):
+                os.mkdir(output_path)
+
+        content_path = os.path.join(output_path, "content")
+        if not os.path.exists(content_path):
+            os.mkdir(content_path)
+
+        content_list = [
+            'rules',
+            'missing_stig_ids',
+            'missing_ovals',
+            'missing_bash_fixes',
+            'missing_ansible_fixes',
+            'missing_puppet_fixes',
+            'missing_anaconda_fixes',
+            'missing_cces'
+            ]
+        link = """<a href="{}"><div style="height:100%;width:100%">{}</div></a>"""
+
+        for profile in ret:
+            for content in content_list:
+                content_file = "{}_{}.txt".format(profile['profile_id'], content)
+                content_filepath = os.path.join("content", content_file)
+                count = len(profile[content])
+                if count > 0:
+                    count_href_element = link.format(content_filepath, count)
+                    profile['{}_count'.format(content)] = count_href_element
+                    with open(os.path.join(content_path, content_file), 'w+') as f:
+                        f.write('\n'.join(profile[content]))
+                else:
+                    profile['{}_count'.format(content)] = count
+
+                del profile[content]
+            filtered_output.append(profile)
+
+        with open(os.path.join(output_path, "statistics.html"), 'w+') as f:
+            f.write(json2html.convert(json=json.dumps(filtered_output), escape=False))
+
     elif args.format == "csv":
         # we can assume ret has at least one element
         # CSV header

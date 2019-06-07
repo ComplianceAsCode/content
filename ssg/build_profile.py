@@ -72,6 +72,7 @@ class XCCDFBenchmark(object):
         profile_stats = {
             'profile_id': "",
             'ssg_version': 0,
+            'rules': [],
             'rules_count': 0,
             'implemented_ovals': [],
             'implemented_ovals_pct': 0,
@@ -156,6 +157,9 @@ class XCCDFBenchmark(object):
             sys.exit(1)
 
         rule_stats.sort(key=lambda r: r.dict['id'])
+
+        for rule in rule_stats:
+            profile_stats['rules'].append(rule.dict['id'])
 
         profile_stats['profile_id'] = profile
         if ssg_version_elem is not None:
@@ -371,6 +375,31 @@ class XCCDFBenchmark(object):
                 self.console_print(profile_stats['missing_cces'],
                                    console_width)
 
+        elif options.format == "html":
+            del profile_stats['implemented_ovals']
+            del profile_stats['implemented_bash_fixes']
+            del profile_stats['implemented_ansible_fixes']
+            del profile_stats['implemented_puppet_fixes']
+            del profile_stats['implemented_anaconda_fixes']
+            del profile_stats['assigned_cces']
+
+            profile_stats['missing_stig_ids_count'] = missing_stig_ids_count
+            profile_stats['missing_ovals_count'] = len(profile_stats['missing_ovals'])
+            profile_stats['missing_bash_fixes_count'] = len(profile_stats['missing_bash_fixes'])
+            profile_stats['missing_ansible_fixes_count'] = len(profile_stats['missing_ansible_fixes'])
+            profile_stats['missing_puppet_fixes_count'] = len(profile_stats['missing_puppet_fixes'])
+            profile_stats['missing_anaconda_fixes_count'] = len(profile_stats['missing_anaconda_fixes'])
+            profile_stats['missing_cces_count'] = len(profile_stats['missing_cces'])
+
+            del profile_stats['implemented_ovals_pct']
+            del profile_stats['implemented_bash_fixes_pct']
+            del profile_stats['implemented_ansible_fixes_pct']
+            del profile_stats['implemented_puppet_fixes_pct']
+            del profile_stats['implemented_anaconda_fixes_pct']
+            del profile_stats['assigned_cces_pct']
+            del profile_stats['ssg_version']
+
+            return profile_stats
         else:
             # First delete the not requested information
             if not options.missing_ovals:
@@ -392,6 +421,8 @@ class XCCDFBenchmark(object):
                 del profile_stats['implemented_anaconda_fixes']
             if not options.assigned_cces:
                 del profile_stats['assigned_cces']
+
+            del profile_stats['rules']
 
             return profile_stats
 
