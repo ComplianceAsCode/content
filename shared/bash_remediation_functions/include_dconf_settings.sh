@@ -70,5 +70,7 @@ function dconf_lock {
 	then
 		echo "/${_key}/${_setting}" >> "/etc/dconf/db/${_db}/locks/${_lockFile}"
 	fi
+
+	dconf update
 }
 
