@@ -13,9 +13,9 @@ ET = ssg.xml.ElementTree
 
 
 owner = "disastig"
-stig_ns = ["http://iase.disa.mil/stigs/os/unix-linux/Pages/index.aspx",
-           "http://iase.disa.mil/stigs/os/general/Pages/index.aspx",
-           "http://iase.disa.mil/stigs/app-security/app-servers/Pages/index.aspx"]
+stig_ns = ["https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux",
+           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cgeneral-purpose-os",
+           "https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Capplication-servers"]
 xccdf_ns = "http://checklists.nist.gov/xccdf/1.1"
 dc_ns = "http://purl.org/dc/elements/1.1/"
 outfile = "stig_overlay.xml"
