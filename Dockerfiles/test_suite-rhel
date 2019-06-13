@@ -6,7 +6,7 @@ ENV AUTH_KEYS=/root/.ssh/authorized_keys
 ARG CLIENT_PUBLIC_KEY
 ARG ADDITIONAL_PACKAGES
 
-# Insall Python so Ansible remediations can work
+# Install Python so Ansible remediations can work
 # Don't clean all, as the test scenario may require package install.
 RUN true \
         && yum install -y openssh-clients openssh-server openscap-scanner \
@@ -15,7 +15,7 @@ RUN true \
         && true
 
 RUN true \
-        && for key_type in rsa ecdsa ed25519; do ssh-keygen -N '' -t $key_type -f /etc/ssh/ssh_host_${key_type}_key; done \
+        && for key_type in rsa ecdsa; do ssh-keygen -N '' -t $key_type -f /etc/ssh/ssh_host_${key_type}_key; done \
         && mkdir -p /root/.ssh \
         && printf "%s\n" "$CLIENT_PUBLIC_KEY" >> "$AUTH_KEYS" \
         && chmod og-rw /root/.ssh "$AUTH_KEYS" \
