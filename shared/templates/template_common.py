@@ -143,7 +143,7 @@ class FilesGenerator(object):
 
         CSV lines can look like:
             col1, col2 # comment
-            col3, col4 # only-for: bash, oval
+            col3, col4 # except-for: bash, oval
         """
 
         with open(filename, "r") as csv_file:
