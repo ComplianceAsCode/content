@@ -65,8 +65,6 @@ selections:
     - sshd_disable_root_login
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
-    - sssd_offline_cred_expiration
-    - sssd_memcache_timeout
     - disable_host_auth
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth

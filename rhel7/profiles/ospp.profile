@@ -390,8 +390,6 @@ selections:
     - package_pcsc-lite_installed
     - service_pcscd_enabled
     - sssd_enable_smartcards
-    - sssd_memcache_timeout
-    - sssd_offline_cred_expiration
     - sssd_ssh_known_hosts_timeout
     - encrypt_partitions
     - ensure_redhat_gpgkey_installed
