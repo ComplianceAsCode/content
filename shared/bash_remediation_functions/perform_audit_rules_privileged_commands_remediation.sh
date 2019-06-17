@@ -125,13 +125,13 @@ do
 			concrete_rule=$base_search
 
 			# Select all other SUID/SGID binaries possibly also present in the found rule
-			IFS=$'\n'
-			handled_sbinaries=($(grep -o -e "-F path=[^[:space:]]\+" <<< "$concrete_rule"))
-			IFS=$' '
+
+			readarray handled_sbinaries < <(grep -o -e "-F path=[^[:space:]]\+" <<< "$concrete_rule")
+
 			handled_sbinaries=(${handled_sbinaries[@]//-F path=/})
 
 			# Merge the list of such SUID/SGID binaries found in this iteration with global list ignoring duplicates
-			sbinaries_to_skip=($(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du))
+			readarray sbinaries_to_skip < <(for i in "${sbinaries_to_skip[@]}" "${handled_sbinaries[@]}"; do echo "$i"; done | sort -du)
 
 			# Separate concrete_rule into three sections using hash '#'
 			# sign as a delimiter around rule's permission section borders

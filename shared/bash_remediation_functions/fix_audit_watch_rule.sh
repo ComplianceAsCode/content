@@ -42,6 +42,7 @@ fi
 # 	augenrules		|          No		|  /etc/audit/rules.d/$key.rules  |
 # -----------------------------------------------------------------------------------------
 declare -a files_to_inspect
+files_to_inspect=()
 
 # Check sanity of the specified audit tool
 if [ "$tool" != 'auditctl' ] && [ "$tool" != 'augenrules' ]
@@ -53,20 +54,13 @@ then
 # into the list of files to be inspected
 elif [ "$tool" == 'auditctl' ]
 then
-	files_to_inspect=("${files_to_inspect[@]}" '/etc/audit/audit.rules')
+	files_to_inspect+=('/etc/audit/audit.rules')
 # If the audit is 'augenrules', then check if rule is already defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to list of files for inspection.
 # If rule isn't defined, add '/etc/audit/rules.d/$key.rules' to list of files for inspection.
 elif [ "$tool" == 'augenrules' ]
 then
-	# Backup IFS value
-	IFS_BKP="$IFS"
-	# Case when particular audit rule is already defined in some of /etc/audit/rules.d/*.rules file
-	# Get pair -- filepath : matching_row into @matches array
-	IFS=$'\n'
-	matches=($(grep -P "[\s]*-w[\s]+$path" /etc/audit/rules.d/*.rules))
-	# Reset IFS back to default
-	IFS="$IFS_BKP"
+	readarray matches < <(grep -P "[\s]*-w[\s]+$path" /etc/audit/rules.d/*.rules)
 
 	# For each of the matched entries
 	for match in "${matches[@]}"
@@ -74,19 +68,21 @@ then
 		# Extract filepath from the match
 		rulesd_audit_file=$(echo $match | cut -f1 -d ':')
 		# Append that path into list of files for inspection
-		files_to_inspect=("${files_to_inspect[@]}" "$rulesd_audit_file")
+		files_to_inspect+=("$rulesd_audit_file")
 	done
 	# Case when particular audit rule isn't defined yet
-	if [ ${#files_to_inspect[@]} -eq "0" ]
+	if [ "${#files_to_inspect[@]}" -eq "0" ]
 	then
 		# Append '/etc/audit/rules.d/$key.rules' into list of files for inspection
-		files_to_inspect="/etc/audit/rules.d/$key.rules"
+		local key_rule_file="/etc/audit/rules.d/$key.rules"
 		# If the $key.rules file doesn't exist yet, create it with correct permissions
-		if [ ! -e "$files_to_inspect" ]
+		if [ ! -e "$key_rule_file" ]
 		then
-			touch "$files_to_inspect"
-			chmod 0640 "$files_to_inspect"
+			touch "$key_rule_file"
+			chmod 0640 "$key_rule_file"
 		fi
+
+		files_to_inspect+=("$key_rule_file")
 	fi
 fi
 

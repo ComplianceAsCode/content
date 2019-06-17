@@ -82,16 +82,11 @@ elif [ "$tool" == 'augenrules' ]
 then
 	# Extract audit $key from audit rule so we can use it later
 	key=$(expr "$full_rule" : '.*-k[[:space:]]\([^[:space:]]\+\)' '|' "$full_rule" : '.*-F[[:space:]]key=\([^[:space:]]\+\)')
-	IFS_BKP="$IFS"
-	# Check if particular audit rule is already defined
-	IFS=$'\n'
-	matches=($(sed -s -n -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d;F" /etc/audit/rules.d/*.rules))
+	readarray matches < <(sed -s -n -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d;F" /etc/audit/rules.d/*.rules)
 	if [ $? -ne 0 ]
 	then
 		retval=1
 	fi
-	# Reset IFS back to default
-	IFS="$IFS_BKP"
 	for match in "${matches[@]}"
 	do
 		files_to_inspect=("${files_to_inspect[@]}" "${match}")
@@ -120,14 +115,11 @@ do
 	# * follow the rule pattern, and
 	# * meet the hardware architecture requirement, and
 	# * are current syscall group specific
-	IFS=$'\n'
-	existing_rules=($(sed -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d"  "$audit_file"))
+	readarray existing_rules < <(sed -e "\;${pattern};!d" -e "/${arch}/!d" -e "/${group}/!d"  "$audit_file")
 	if [ $? -ne 0 ]
 	then
 		retval=1
 	fi
-	# Reset IFS back to default
-	IFS="$IFS_BKP"
 
 	# Process rules found case-by-case
 	for rule in "${existing_rules[@]}"

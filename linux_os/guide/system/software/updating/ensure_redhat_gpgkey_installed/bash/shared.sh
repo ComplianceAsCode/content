@@ -15,9 +15,9 @@ then
   # Backup IFS value
   IFS_BKP=$IFS
 {{% if product == "rhel8" %}}
-  IFS=$'\n' GPG_OUT=($(gpg --show-key --with-colons "$REDHAT_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10))
+  readarray GPG_OUT < <(gpg --show-key --with-colons "$REDHAT_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
 {{% else %}}
-  IFS=$'\n' GPG_OUT=($(gpg --with-fingerprint --with-colons "$REDHAT_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10))
+  readarray GPG_OUT < <(gpg --with-fingerprint --with-colons "$REDHAT_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
 {{% endif %}}
   GPG_RESULT=$?
   # Reset IFS back to default
