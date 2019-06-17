@@ -90,29 +90,18 @@ To use Podman backend, you need to have:
 *NOTE*: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
 
 ##### Building podman base image
-The root user needs to log in to the container via SSH, so lets setup a key without passphrase, so it can happen without any additional interaction.
-Root user typically doesn't have a SSH key, or it has one without a passphrase.
-Use this test to find out whether it has a key:
+The user running the test needs to log in to the container via SSH as root, so lets setup a key without passphrase, so it can happen without any additional interaction.
+Let's create pair of SSH keys without passphrase:
 
 ```
-sudo test -f /root/.ssh/id_rsa && echo "Root user already has an id_rsa key" || echo "Root user has no id_rsa key"
+ssh-keygen -f ~/.ssh/test_suite_rsa -N ""
 ```
 
-If there is no key, it is safe to create one:
+Now let's use this SSH key in the test suite container. Go into the `Dockerfiles` directory of the project, and execute the following:
 
 ```
-ssh-keygen -f id_rsa -N ""
-sudo mkdir -p /root/.ssh
-sudo chmod go-rwx /root/.ssh
-sudo mv id_rsa* /root/.ssh
-```
-
-In any case, `root` now has an `id_rsa` key without passphrase, so let's build the container.
-Go into the `Dockerfiles` directory of the project, and execute the following:
-
-```
-public_key="$(sudo cat /root/.ssh/id_rsa.pub)"
-podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
+public_key="$(cat ~/.ssh/test_suite_rsa.pub)"
+sudo podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
 ```
 
 #### Docker
