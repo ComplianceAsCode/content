@@ -17,8 +17,6 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - service_debug-shell_disabled
-    - service_kdump_disabled
-    - service_autofs_disabled
 
     # Partitioning
     - mount_option_home_nodev
@@ -36,8 +34,8 @@ selections:
     ### Kernel Config
 
     # Boot prompt
-    - package_dracut-fips_installed
-    - grub2_enable_fips_mode
+    - enable_dracut_fips_module
+    - enable_fips_mode
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_slub_debug_argument
@@ -81,10 +79,8 @@ selections:
     - sysctl_net_ipv4_tcp_syncookies
 
     # Module blacklist
-    - kernel_module_usb-storage_disabled
     - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled
-    - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
 
     ### Audit
@@ -179,13 +175,8 @@ selections:
     - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_disable_rhosts_rsa
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
 
     # ssh client settings
-
-    # rpcbind
-    - service_rpcbind_disabled
 
     # Firewalld
     - service_firewalld_enabled
@@ -250,7 +241,7 @@ selections:
     - accounts_umask_etc_csh_cshrc
 
     # Console Screen Lock
-    - package_screen_installed
+    - package_tmux_installed
 
     # Remote session timeout
     - sshd_idle_timeout_value=10_minutes
