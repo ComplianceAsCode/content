@@ -1,0 +1,15 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = configure
+# complexity = low
+# disruption = low
+
+- name: enable syslog plugin
+  lineinfile:
+    {{% if product in ["rhel8", "fedora", "ol8"] -%}}
+    dest: /etc/audit/plugins.d/syslog.conf
+    {{%- else -%}}
+    dest: /etc/audisp/plugins.d/syslog.conf
+    {{%- endif %}}
+    regexp: "^active"
+    line: active = yes
