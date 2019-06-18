@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import json
 import argparse
+import jinja2
 import os
 import os.path
 import sys
@@ -110,8 +111,12 @@ def main():
     args = parse_args()
 
     if args.subcommand == "sub":
-        profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1)
-        profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2)
+        try:
+            profile1 = ssg.build_yaml.Profile.from_yaml(args.profile1)
+            profile2 = ssg.build_yaml.Profile.from_yaml(args.profile2)
+        except jinja2.exceptions.TemplateNotFound as e:
+            print("Error: Profile {} could not be found.".format(str(e)))
+            exit(1)
 
         subtracted_profile = profile1 - profile2
 
