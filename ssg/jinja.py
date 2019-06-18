@@ -4,6 +4,8 @@ from __future__ import print_function
 import os.path
 import jinja2
 
+from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
+                        JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
 from .utils import required_key
 
 
@@ -85,6 +87,43 @@ def extract_substitutions_dict_from_template(filename, substitutions_dict):
 
 
 def process_file(filepath, substitutions_dict):
+    """
+    Process the jinja file at the given path with the specified
+    substitutions. Return the result as a string. Note that this will not
+    load the project macros; use process_file_with_macros(...) for that.
+    """
     filepath = os.path.abspath(filepath)
     template = _get_jinja_environment(substitutions_dict).get_template(filepath)
     return template.render(substitutions_dict)
+
+
+def load_macros(substitutions_dict):
+    """
+    Augment the substitutions_dict dict with project Jinja macros in /shared/.
+    """
+    if substitutions_dict is None:
+        substitutions_dict = dict()
+
+    try:
+        macro_definitions = extract_substitutions_dict_from_template(
+            JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
+        macro_definitions.update(extract_substitutions_dict_from_template(
+            JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict))
+    except Exception as exc:
+        msg = ("Error extracting macro definitions: {0}"
+               .format(str(exc)))
+        raise RuntimeError(msg)
+
+    substitutions_dict.update(macro_definitions)
+    return substitutions_dict
+
+
+def process_file_with_macros(filepath, substitutions_dict):
+    """
+    Process the file with jinja macros at the given path with the specified
+    substitutions. Return the result as a string.
+
+    See also: process_file
+    """
+    substitutions_dict = load_macros(substitutions_dict)
+    return process_file(filepath, substitutions_dict)
