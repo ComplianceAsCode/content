@@ -13,7 +13,7 @@ import ssg.yaml
 from . import build_yaml
 from . import rules
 from . import utils
-from .jinja import process_file as jinja_process_file
+from .jinja import process_file_with_macros as jinja_process_file
 from .xml import ElementTree
 
 REMEDIATION_TO_EXT_MAP = {
