@@ -32,11 +32,11 @@
         definition_ref="package_openssh-server_installed" />
         {{% endif %}}
         <criterion comment="Check PermitRootLogin in /etc/ssh/sshd_config"
-        negate="true" test_ref="test_sshd_permitrootlogin_no" />
+        test_ref="test_sshd_permitrootlogin_no" />
       </criteria>
     </criteria>
   </definition>
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Tests the value of the PermitRootLogin[\s]*(&lt;:nocomment:&gt;*) setting in the /etc/ssh/sshd_config file"
   id="test_sshd_permitrootlogin_no" version="1">
     <ind:object object_ref="obj_sshd_permitrootlogin_no" />
