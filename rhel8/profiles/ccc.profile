@@ -236,6 +236,7 @@ selections:
     - accounts_password_pam_maxclassrepeat
 
     # umask
+    - var_accounts_user_umask=027
     - accounts_umask_etc_profile
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_csh_cshrc
