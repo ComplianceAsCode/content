@@ -10,7 +10,18 @@ to_lowercase() {
 
 opt_product_in() {
 	switch="-DSSG_PRODUCT_$(to_uppercase "$1")=ON"
-	printf "%s" "$switch"
+	echo "$switch"
+}
+
+is_product() {
+	local candidate="$1"
+	for cmake_product in "${all_cmake_products[@]}"; do
+		if test "$(to_uppercase "$candidate")" = "$cmake_product"; then
+			return 0
+		fi
+	done
+
+	return 1
 }
 
 handle_wrong_argument() {
@@ -19,18 +30,18 @@ handle_wrong_argument() {
 		all_cmake_lowercase+=("$(to_lowercase "$p")")
 	done
 	possible_products=$'\n'"$(printf ' * %s\n' "${all_cmake_lowercase[@]}")"
-	printf "Wipes out contents of the 'build' directory and builds only and only the given product."
+	printf "Wipes out contents of the 'build' directory and builds only and only the given products."
 	echo
 	echo
 	printf 'Usage:\n'
-	printf '\tbuild-product <product name>\n'
+	printf '\tbuild-product <product-name> [<product-name> ...]\n'
 	echo
 	if test -n "$1"; then
 		printf "The argument '%s' is not supported.\\n" "$1"
 	else
-		printf 'Supply product name as first argument to the script.\n'
+		printf 'Supply product names as arguments to this script.\n'
 	fi
-	printf 'Choose one of product names from the list: %s' "$possible_products"
+	printf 'Choose one or more product names from the list: %s' "$possible_products"
 	echo
 	exit 1
 }
@@ -61,17 +72,18 @@ all_cmake_products=(
 	WRLINUX
 )
 
-chosen_product=$1
+if (( $# == 0 )); then
+	handle_wrong_argument
+fi
 
-chosen_product_encountered_among_cmake=off
-cmake_disable_all_args=()
-for p in "${all_cmake_products[@]}"; do
-	cmake_disable_all_args+=(-DSSG_PRODUCT_$p=OFF)
-	if test "$(to_uppercase "$chosen_product")" = "$p"; then
-		chosen_product_encountered_among_cmake=on
+cmake_enable_args=()
+for chosen_product in "$@"; do
+	if is_product "$chosen_product"; then
+		cmake_enable_args+=("$(opt_product_in "$chosen_product")")
+	else
+		handle_wrong_argument "$chosen_product"
 	fi
 done
-test "$chosen_product_encountered_among_cmake" = on || handle_wrong_argument "$chosen_product"
 
 cores=$(nproc 2>/dev/null) || cores=1
 
@@ -86,5 +98,5 @@ fi
 set -e
 rm -rf build/*
 cd build
-cmake .. "${cmake_disable_all_args[@]}" "$(opt_product_in $chosen_product)" -G "$cmake_generator"
-$build_command "-j${cores}" "$chosen_product"
+cmake .. -DSSG_PRODUCT_DEFAULT=OFF "${cmake_enable_args[@]}" -G "$cmake_generator"
+$build_command "-j${cores}"
