@@ -8,11 +8,9 @@ import re
 
 from collections import OrderedDict
 
-from .jinja import extract_substitutions_dict_from_template, process_file
+from .jinja import load_macros, process_file
 from .constants import (PKG_MANAGER_TO_SYSTEM,
-                        PKG_MANAGER_TO_CONFIG_FILE,
-                        JINJA_MACROS_BASE_DEFINITIONS,
-                        JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
+                        PKG_MANAGER_TO_CONFIG_FILE)
 from .constants import DEFAULT_UID_MIN
 
 try:
@@ -108,19 +106,7 @@ def open_and_macro_expand(yaml_file, substitutions_dict=None):
     Do the same as open_and_expand, but load definitions of macros
     so they can be expanded in the template.
     """
-    if substitutions_dict is None:
-        substitutions_dict = dict()
-
-    try:
-        macro_definitions = extract_substitutions_dict_from_template(
-            JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
-        macro_definitions.update(extract_substitutions_dict_from_template(
-            JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict))
-    except Exception as exc:
-        msg = ("Error extracting macro definitions: {0}"
-               .format(str(exc)))
-        raise RuntimeError(msg)
-    substitutions_dict.update(macro_definitions)
+    substitutions_dict = load_macros(substitutions_dict)
     return open_and_expand(yaml_file, substitutions_dict)
 
 
