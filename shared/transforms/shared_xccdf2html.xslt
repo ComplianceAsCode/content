@@ -553,6 +553,9 @@
               <xsl:choose>
                 <xsl:when test='. != ""'>
                   <xsl:choose>
+                    <xsl:when test='./@href = "https://public.cyber.mil/stigs/cci/"'>
+                      <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
+                    </xsl:when>
                     <xsl:when test='./@href = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"'>
                       <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
                     </xsl:when>
@@ -661,6 +664,9 @@
               <xsl:choose>
                 <xsl:when test='. != ""'>
                   <xsl:choose>
+                    <xsl:when test='./@href = "https://public.cyber.mil/stigs/cci/"'>
+                      <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
+                    </xsl:when>
                     <xsl:when test='./@href = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"'>
                       <a href="{@href}">DISA CCI-<xsl:value-of select="text()"/></a>
                     </xsl:when>

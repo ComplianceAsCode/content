@@ -8,7 +8,7 @@ description: |-
 
     As a result of the upstream/downstream relationship between the SCAP Security Guide project
     and the official DISA FSO STIG baseline, users should expect variance between SSG and DISA FSO content.
-    For official DISA FSO STIG content, refer to http://iase.disa.mil/stigs/app-security/browser-guidance/Pages/index.aspx.
+    For official DISA FSO STIG content, refer to https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=app-security%2Cbrowser-guidance.
 
     While this profile is packaged by Red Hat as part of the SCAP Security Guide package, please note
     that commercial support of this SCAP content is NOT available. This profile is provided as example

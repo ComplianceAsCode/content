@@ -31,10 +31,9 @@ ansible_system = "urn:xccdf:fix:script:ansible"
 puppet_system = "urn:xccdf:fix:script:puppet"
 anaconda_system = "urn:redhat:anaconda:pre"
 cce_uri = "https://nvd.nist.gov/cce/index.cfm"
-stig_ns = "http://iase.disa.mil/stigs/Pages/stig-viewing-guidance.aspx"
-stig_refs = 'http://iase.disa.mil/stigs/'
-disa_cciuri = "http://iase.disa.mil/stigs/cci/Pages/index.aspx"
-disa_srguri = "http://iase.disa.mil/stigs/srgs/Pages/index.aspx"
+stig_ns = "https://public.cyber.mil/stigs/srg-stig-tools/"
+stig_refs = 'https://public.cyber.mil/stigs/'
+disa_cciuri = "https://public.cyber.mil/stigs/cci/"
 ssg_version_uri = \
     "https://github.com/OpenSCAP/scap-security-guide/releases/latest"
 OSCAP_VENDOR = "org.ssgproject"
