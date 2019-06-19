@@ -75,8 +75,16 @@ test "$chosen_product_encountered_among_cmake" = on || handle_wrong_argument "$c
 
 cores=$(nproc 2>/dev/null) || cores=1
 
+if which ninja &>/dev/null ; then
+    cmake_generator="Ninja"
+    build_command="ninja"
+else
+    cmake_generator="Unix Makefiles"
+    build_command="make"
+fi
+
 set -e
 rm -rf build/*
 cd build
-cmake .. "${cmake_disable_all_args[@]}" "$(opt_product_in $chosen_product)"
-make "-j${cores}" "$chosen_product"
+cmake .. "${cmake_disable_all_args[@]}" "$(opt_product_in $chosen_product)" -G "$cmake_generator"
+$build_command "-j${cores}" "$chosen_product"
