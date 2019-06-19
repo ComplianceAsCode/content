@@ -208,6 +208,7 @@ class Profile(object):
         profile.description = self.description
         profile.extends = self.extends
         profile.selected = list(set(self.selected) - set(other.selected))
+        profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
         profile.variables = self.variables
         return profile
