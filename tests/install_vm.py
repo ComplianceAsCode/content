@@ -96,7 +96,7 @@ def detect_url_os(url):
         else:
             raise
 
-    contents = proc.stdout.read().rstrip()
+    contents = proc.stdout.read().rstrip().decode()
     if not contents:
         return None
     pairs = map(lambda x: x.split('='), contents.splitlines())
