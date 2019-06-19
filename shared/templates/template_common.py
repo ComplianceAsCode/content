@@ -98,8 +98,8 @@ class FilesGenerator(object):
 
         try:
             jinja_dict = ssg.utils.merge_dicts(self.env_yaml, constants)
-            filled_template = ssg.jinja.process_file(template_filepath,
-                                                     jinja_dict)
+            filled_template = ssg.jinja.process_file_with_macros(template_filepath,
+                                                                 jinja_dict)
 
             with open(output_filepath, "w") as f:
                 f.write(filled_template)

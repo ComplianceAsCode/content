@@ -13,7 +13,7 @@ from .constants import oval_namespace as ovalns
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from .xml import ElementTree as ET
 from .xml import oval_generated_header
-from .yaml import process_file
+from .jinja import process_file_with_macros
 from .id_translate import IDTranslator
 
 SHARED_OVAL = re.sub(r'ssg/.*', 'shared', __file__) + '/checks/oval/'
@@ -98,7 +98,7 @@ def applicable_platforms(oval_file):
 
     platforms = []
     header = oval_generated_header("applicable_platforms", "5.11", "0.0.1")
-    body = process_file(oval_file, {})
+    body = process_file_with_macros(oval_file, {})
     oval_tree = ET.fromstring(header + body + footer)
 
     element_path = "./{%s}def-group/{%s}definition/{%s}metadata/{%s}affected/{%s}platform"
