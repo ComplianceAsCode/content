@@ -4,7 +4,7 @@
 
 service_file="/usr/lib/systemd/system/rescue.service"
 
-{{% if product == "fedora" -%}}
+{{% if product in ["fedora", "rhel8"] -%}}
 sulogin="/usr/lib/systemd/systemd-sulogin-shell"
 {{%- else -%}}
 sulogin="/sbin/sulogin"
