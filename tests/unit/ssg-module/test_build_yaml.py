@@ -33,7 +33,7 @@ def test_make_items_product_specific():
         "cce@rhel7": "27445-6",
         "cce@rhel8": "80901-2",
     }
-    rule.make_items_product_specific("rhel7")
+    rule.make_refs_and_identifiers_product_specific("rhel7")
     assert "cce@rhel7" not in rule.identifiers
     assert "cce@rhel8" not in rule.identifiers
     assert rule.identifiers["cce"] == "27445-6"
@@ -43,7 +43,7 @@ def test_make_items_product_specific():
         "cce@rhel7": "27445-6",
     }
     with pytest.raises(Exception) as exc:
-        rule.make_items_product_specific("rhel7")
+        rule.make_refs_and_identifiers_product_specific("rhel7")
     assert "'cce'" in str(exc)
     assert "identifiers" in str(exc)
 
@@ -51,7 +51,7 @@ def test_make_items_product_specific():
         "cce@rhel7": "27445-6",
         "cce": "27445-6",
     }
-    rule.make_items_product_specific("rhel7")
+    rule.make_refs_and_identifiers_product_specific("rhel7")
     assert "cce@rhel7" not in rule.identifiers
     assert rule.identifiers["cce"] == "27445-6"
 
@@ -60,5 +60,20 @@ def test_make_items_product_specific():
         "stigid@rhel7": "040370",
         "stigid": "tralala",
     }
-    rule.make_items_product_specific("rhel7")
+    with pytest.raises(ValueError) as exc:
+        rule.make_refs_and_identifiers_product_specific("rhel7")
+    assert "stigid" in str(exc)
+
+    rule.references = {
+        "stigid@rhel6": "RHEL-06-000237",
+        "stigid@rhel7": "040370",
+    }
+    rule.make_refs_and_identifiers_product_specific("rhel7")
     assert rule.references["stigid"] == "RHEL-07-040370"
+
+    rule.references = {
+        "stigid@rhel6": "RHEL-06-000237",
+        "stigid@rhel7": "040370",
+    }
+    rule.make_refs_and_identifiers_product_specific("rhel6")
+    assert rule.references["stigid"] == "RHEL-06-000237"

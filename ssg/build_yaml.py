@@ -701,11 +701,30 @@ class Rule(object):
             )
             raise RuntimeError(msg)
 
+    def _get_product_only_references(self):
+        PRODUCT_REFERENCES = ("stigid",)
+
+        product_references = dict()
+
+        for ref in PRODUCT_REFERENCES:
+            start = "{0}@".format(ref)
+            for gref, gval in self.references.items():
+                if ref == gref or gref.startswith(start):
+                    product_references[gref] = gval
+        return product_references
+
     def make_refs_and_identifiers_product_specific(self, product):
         product_suffix = "@{0}".format(product)
+
+        product_references = self._get_product_only_references()
+        general_references = self.references.copy()
+        for todel in product_references:
+            general_references.pop(todel)
+
         to_set = dict(
             identifiers=(self.identifiers, False),
-            references=(self.references, True),
+            general_references=(general_references, True),
+            product_references=(product_references, False),
         )
         for name, (dic, allow_overwrites) in to_set.items():
             try:
@@ -719,6 +738,9 @@ class Rule(object):
                 raise ValueError(msg)
             dic.clear()
             dic.update(new_items)
+
+        self.references.update(general_references)
+        self.references.update(product_references)
 
         self._make_stigid_product_specific(product)
 
