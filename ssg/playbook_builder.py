@@ -43,8 +43,12 @@ class PlaybookBuilder():
         if profile.extends:
             extended_profile_path = os.path.join(
                 self.profiles_dir, profile.extends + ".profile")
-            extended_profile = ssg.build_yaml.Profile.from_yaml(
-                extended_profile_path)
+            try:
+                extended_profile = ssg.build_yaml.Profile.from_yaml(
+                    extended_profile_path)
+            except ssg.yaml.DocumentationNotComplete:
+                sys.stderr.write("Skipping incomplete profile %s.\n" % extended_profile_path)
+                return None
             if not profile:
                 sys.stderr.write(
                     "Could not parse profile %s.\n" % extended_profile_path)
@@ -274,6 +278,11 @@ class PlaybookBuilder():
                 profile_path = os.path.join(self.profiles_dir, profile_file)
                 try:
                     profile = self.open_profile(profile_path)
+                except ssg.yaml.DocumentationNotComplete as e:
+                    msg = "Skipping incomplete profile {0}. To include incomplete " + \
+                          "profiles, build in debug mode.\n"
+                    sys.stderr.write(msg.format(profile_path))
+                    continue
                 except RuntimeError as e:
                     sys.stderr.write(str(e))
                     continue
