@@ -70,6 +70,12 @@ def parse_args():
         help="URL to an installation tree on a remote server."
     )
     parser.add_argument(
+        "--extra-repo",
+        dest="extra_repo",
+        default=None,
+        help="URL to an extra repository to be used during installation (e.g. AppStream)."
+    )
+    parser.add_argument(
         "--dry",
         dest="dry",
         action="store_true",
@@ -152,6 +158,13 @@ def main():
         if ostype:
             if any(filter(lambda x: x in ostype, ['centos.org', 'redhat.com'])):
                 content = content.replace("&&YUM_REPO_URL&&", data.url)
+                if data.extra_repo:
+                    # extra repository
+                    repo_cmd = "repo --name=extra-repository --baseurl={}".format(data.extra_repo)
+                    content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
+                    content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
+                else:
+                    content = content.replace("&&YUM_EXTRA_REPO&&", "")
         outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
