@@ -27,6 +27,10 @@ def _bool_constructor(self, node):
 yaml_SafeLoader.add_constructor(u'tag:yaml.org,2002:bool', _bool_constructor)
 
 
+class DocumentationNotComplete(Exception):
+    pass
+
+
 def _save_rename(result, stem, prefix):
     result["{0}_{1}".format(prefix, stem)] = stem
 
@@ -45,9 +49,11 @@ def _open_yaml(stream, original_file=None, substitutions_dict={}):
 
         if yaml_contents.pop("documentation_complete", "true") == "false" and \
                 substitutions_dict.get("cmake_build_type") != "Debug":
-            return None
+            raise DocumentationNotComplete("documentation not complete and not a debug build")
 
         return yaml_contents
+    except DocumentationNotComplete as e:
+        raise e
     except Exception as e:
         count = 0
         _file = original_file

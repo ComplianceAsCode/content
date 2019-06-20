@@ -14,7 +14,7 @@ from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
 from .checks import is_cce_format_valid, is_cce_value_valid
-from .yaml import open_and_expand, open_and_macro_expand
+from .yaml import DocumentationNotComplete, open_and_expand, open_and_macro_expand
 from .utils import required_key, mkdir_p
 
 from .xml import ElementTree as ET
@@ -385,7 +385,10 @@ class Benchmark(object):
                 )
                 continue
 
-            new_profile = Profile.from_yaml(dir_item_path, env_yaml)
+            try:
+                new_profile = Profile.from_yaml(dir_item_path, env_yaml)
+            except DocumentationNotComplete:
+                continue
             if new_profile is None:
                 continue
 
