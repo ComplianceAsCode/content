@@ -28,7 +28,8 @@ def load_xml(file_name):
     try:
         it = ET.iterparse(file_name)
         for _, el in it:
-            el.tag = el.tag.split('}', 1)[1]  # strip all namespaces
+            if '}'in el.tag:
+                el.tag = el.tag.split('}', 1)[1]  # strip all namespaces
         root = it.root
         return root
     except:
@@ -59,24 +60,28 @@ def find_oval_objects(oval_refs):
                 tests.append(test_ref)
 
     # find references to objects in tests
-    for test in tests:
-        test_element = None
-        for t in oval_root.findall("tests/*"):
-            if t.attrib.get('id') == test:
-                test_element = t
-                break
-        if test_element is not None:
-            for object_element in test_element.findall(".//*"):
-                if 'object_ref' in object_element.attrib:
-                    object_ref = object_element.attrib['object_ref']
-                    object_refs.append(object_ref)
+    for key in oval_files:
+        oval_root = oval_files[key]
+        for test in tests:
+            test_element = None
+            for t in oval_root.findall("tests/*"):
+                if t.attrib.get('id') == test:
+                    test_element = t
+                    break
+            if test_element is not None:
+                for object_element in test_element.findall(".//*"):
+                    if 'object_ref' in object_element.attrib:
+                        object_ref = object_element.attrib['object_ref']
+                        object_refs.append(object_ref)
 
     # find objects
-    for r in object_refs:
-        for obj in oval_root.findall("objects/*"):
-            if obj.attrib.get('id') == r:
-                objects.append(obj.tag)
-                break
+    for key in oval_files:
+        oval_root = oval_files[key]
+        for r in object_refs:
+            for obj in oval_root.findall("objects/*"):
+                if obj.attrib.get('id') == r:
+                    objects.append(obj.tag)
+                    break
 
     return set(objects)
 
