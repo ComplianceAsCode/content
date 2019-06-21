@@ -12,3 +12,7 @@ selections:
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_sgid
     - rsyslog_remote_loghost
+
+    # R29 User session timeout
+    - accounts_tmout
+    - sshd_set_idle_timeout
