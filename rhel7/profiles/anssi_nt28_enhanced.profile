@@ -9,8 +9,11 @@ description: 'Draft profile for ANSSI compliance at the enhanced level. ANSSI st
 extends: anssi_nt28_intermediary
 
 selections:
+    # ==============================================
+    # R38 - Executable setuid root
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_sgid
+
     - rsyslog_remote_loghost
 
     # R17 Boot loader password
