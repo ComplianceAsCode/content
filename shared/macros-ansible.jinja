@@ -1,0 +1,152 @@
+{{#
+  A wrapper over the Ansible lineinfile module. This handles the most common
+  options for us. regex is optional and when blank, it won't be included in
+  the Ansible script; this allows arbitrary additions to files. new_line will
+  only be passed when state is present. with_items will be specified only if
+  non-empty, allowing for iterating through a variable of content (with the
+  appropriate macro-based path). register will be specified only if non-empty,
+  allowing for saving the output of this lineinfile module.
+
+  Note that all string-like parameters are single quoted in the YAML.
+#}}
+{{%- macro ansible_lineinfile(msg='', path='', regex='', new_line='', create='no', state='present', with_items='', register='', when='', validate='', insert_after='', insert_before='') -%}}
+- name: "{{{ msg or rule_title }}}"
+  lineinfile:
+    path: '{{{ path }}}'
+    create: {{{ create }}}
+    {{%- if regex %}}
+    regexp: '{{{ regex }}}'
+    {{%- endif %}}
+    {{%- if state == 'present' %}}
+    line: '{{{ new_line }}}'
+    state: present
+    {{%- if insert_after %}}
+    insertafter: '{{{ insert_after }}}'
+    {{%- elif insert_before %}}
+    insertbefore: '{{{ insert_before }}}'
+    {{%- endif %}}
+    {{% else %}}
+    state: '{{{ state }}}'
+    {{%- endif %}}
+    {{%- if validate %}}
+    validate: '{{{ validate }}}'
+    {{%- endif %}}
+  {{%- if with_items %}}
+  with_items: '{{{ with_items }}}'
+  {{%- endif %}}
+  {{%- if register %}}
+  register: '{{{ register }}}'
+  {{%- endif %}}
+  {{%- if when %}}
+  when: '{{{ when }}}'
+  {{%- endif %}}
+{{%- endmacro %}}
+
+{{#
+  Check the file system status of an object. Not a full implementation.
+#}}
+{{%- macro ansible_stat(msg='', path='', register='') %}}
+- name: '{{{ msg or rule_title }}}'
+  stat:
+    path: '{{{ path }}}'
+  {{%- if register %}}
+  register: '{{{ register }}}'
+  {{%- endif %}}
+{{%- endmacro %}}
+
+{{#
+  Find files matching a particular value. Not a full implementation.
+#}}
+{{%- macro ansible_find(msg='', paths='', recurse='yes', follow='no', contains='', register='', when='') %}}
+- name: '{{{ msg or rule_title }}}'
+  find:
+    paths: '{{{ paths }}}'
+    recurse: '{{{ recurse }}}'
+    follow: '{{{ follow }}}'
+    {{%- if contains %}}
+    contains: '{{{ contains }}}'
+    {{%- endif %}}
+  {{%- if register %}}
+  register: '{{{ register }}}'
+  {{%- endif %}}
+  {{%- if when %}}
+  when: '{{{ when }}}'
+  {{%- endif %}}
+{{%- endmacro %}}
+
+{{#
+  A wrapper for adding one, unique line to a file. A regex must be specified
+  to tell if the line is unique. This is helpful in configuration files where
+  a single configuration parameter might have multiple values, but only one
+  value is approved. All lines matching the regex are first removed and then
+  the new line is appended to the file.
+#}}
+{{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, create='no', block=False, validate='', insert_after='', insert_before='') -%}}
+{{%- if block %}}
+- name: "{{{ msg or rule_title }}}"
+  block:
+    {{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent')|indent }}}
+    {{{ ansible_lineinfile("Insert correct line to " + path, path, regex=None, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+{{%- else %}}
+{{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent') }}}
+{{{ ansible_lineinfile("Insert correct line into " + path, path, regex=None, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
+{{%- endif %}}
+{{%- endmacro %}}
+
+{{#
+  Ensure the configuration is set in a file. Note this handles generic
+  key-seperator-value files with no sense of structure. In particular,
+  ini configuration files are best served with the ini Ansible module
+  instead of lineinfile-based solutions.
+#}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
+{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
+{{%- endmacro %}}
+
+{{#
+  Ensure the configuration is set in a file and not conflicted by a
+  configuration in a directory. Note this handles generic key-separator-value
+  files with no sense of structure. In particular, ini configuration files are
+  best served with the ini Ansible module instead of lineinfile-based
+  solutions.
+#}}
+{{%- macro ansible_set_config_file_dir(msg, config_file, config_dir, set_file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
+{{%- set var_dir = config_dir | replace("/", "_") | replace("-", "_") | replace(".", "_") -%}}
+{{%- set dir_exists = var_dir + "_exists" -%}}
+{{%- set dir_parameter = var_dir + "_has_parameter" -%}}
+{{%- set line_regex = prefix_regex + parameter + separator_regex -%}}
+{{%- set find_when = dir_exists + ".stat.isdir is defined and " + dir_exists + ".stat.isdir" -%}}
+{{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
+{{%- set lineinfile_when = dir_parameter + ".matched" -%}}
+{{%- set new_line = parameter + separator + value -%}}
+- name: '{{{ msg or rule_title }}}'
+  block:
+    {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, create='no', state='absent')|indent }}}
+    {{{ ansible_stat("Check if " + config_dir + " exists", path=config_dir, register=dir_exists)|indent }}}
+    {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
+    {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
+    {{{ ansible_lineinfile("Insert correct line to " + set_file, set_file, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+{{%- endmacro %}}
+
+{{#
+  High level macro to set a value in the ssh daemon configuration file. This
+  takes three values: msg (the name for the Ansible task), a parameter to set
+  in the configuration file, and the value to set it to. We specify a case
+  insensitive comparison in the prefix since this is used to deduplicate since
+  sshd_config has case-insensitive parameters (but case-sensitive values).
+  We also specify the validation program here; -t specifies test and -f allows
+  Ansible to pass a file at a different path.
+#}}
+{{%- macro ansible_sshd_set(msg='', parameter='', value='') %}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^Match") }}}
+{{%- endmacro %}}
+
+{{#
+  High level macro to set a value in /etc/profile (and /etc/profile.d) bash
+  files. Note this is only suitable for calling a single command once with the
+  correct arguments and not for calling the same command multiple times with
+  different arguments. This includes setting an environment variable once.
+#}}
+{{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
+{{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
+{{%- endmacro %}}
