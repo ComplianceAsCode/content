@@ -10,6 +10,13 @@ selections:
     # R08 Regular updates
     - security_patches_up_to_date
 
+    # ==============================================
+    # R32 - Protection of stored passwords
+    # In the file /etc/login.defs:
+    # ENCRYPT_METHOD SHA512
+    - set_password_hashing_algorithm_logindefs
+    # SHA_CRYPT_MIN_ROUNDS 65536
+
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
