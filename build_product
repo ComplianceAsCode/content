@@ -34,13 +34,15 @@ handle_wrong_argument() {
 	echo
 	echo
 	printf 'Usage:\n'
-	printf '\tbuild-product <product-name> [<product-name> ...]\n'
+	printf '\tbuild-product [--debug] <product-name> [<product-name> ...]\n'
 	echo
 	if test -n "$1"; then
 		printf "The argument '%s' is not supported.\\n" "$1"
 	else
 		printf 'Supply product names as arguments to this script.\n'
 	fi
+	printf 'Option --debug can be used to build draft profiles\n'
+
 	printf 'Choose one or more product names from the list: %s' "$possible_products"
 	echo
 	exit 1
@@ -76,6 +78,14 @@ if (( $# == 0 )); then
 	handle_wrong_argument
 fi
 
+if [[ "$1" == "--debug" ]]; then
+    debug="-DCMAKE_BUILD_TYPE=Debug"
+    shift
+else
+    debug="-DCMAKE_BUILD_TYPE=Release"
+fi
+
+
 cmake_enable_args=()
 for chosen_product in "$@"; do
 	if is_product "$chosen_product"; then
@@ -98,5 +108,5 @@ fi
 set -e
 rm -rf build/*
 cd build
-cmake .. -DSSG_PRODUCT_DEFAULT=OFF "${cmake_enable_args[@]}" -G "$cmake_generator"
+cmake .. "${debug}" -DSSG_PRODUCT_DEFAULT=OFF "${cmake_enable_args[@]}" -G "$cmake_generator"
 $build_command "-j${cores}"
