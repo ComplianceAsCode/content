@@ -23,6 +23,16 @@ selections:
     - sysctl_kernel_randomize_va_space
 
     # ==============================================
+    # R19  - Accountability of administration
+    # Each administrator must have a dedicated account (local or remote), and not use the root
+    # account as the access account for system administration.
+    #
+    # Change of privilege operations must be based on executables to monitor the activities
+    # performed (for example sudo).
+    - no_direct_root_logins
+    - sshd_disable_root_login
+
+    # ==============================================
     # R22 - Setting up network sysctl
     # These sysctl are given for a typical host "server" that does not perform routing and
     # having a minimal IPv6 configuration (static addressing). When IPv6 is not used it should
