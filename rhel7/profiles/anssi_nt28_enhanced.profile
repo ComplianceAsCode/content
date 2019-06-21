@@ -17,6 +17,9 @@ selections:
     - grub2_password
     - grub2_uefi_password
 
+    # R25 Yama module sysctl configuration
+    - sysctl_kernel_yama_ptrace_scope
+
     # R29 User session timeout
     - accounts_tmout
     - sshd_set_idle_timeout
