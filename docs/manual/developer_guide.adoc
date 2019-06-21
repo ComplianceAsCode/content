@@ -20,7 +20,7 @@ Join the mailing list at https://fedorahosted.org/mailman/listinfo/scap-security
 ## Building ComplianceAsCode
 
 ### Installing build dependencies
- 
+
 On *Red Hat Enterprise Linux 6/7* make sure the packages `cmake`, `openscap-utils`,
 `PyYAML`, `python-jinja2` and their dependencies are installed:
 
@@ -672,7 +672,7 @@ The tool also can subtract rules between YAML profiles.
 
 For example, to subtract selected rules from a given profile based on rules selected by another profile, run this command:
 ----
-$ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile 
+$ ./build-scripts/profile_tool.py sub --profile1 rhel7/profiles/ospp.profile --profile2 rhel7/profiles/pci-dss.profile
 ----
 
 This will result in a new YAML profile containing exclusive rules to the profile pointed by the --profile1 option.
@@ -997,11 +997,14 @@ IMPORTANT: The minimum version of Ansible must be at the latest supported versio
 Ansible remediations are either:
 - stored as `.yml` files in directory `ansible` in the rule directory
 - generated from templates
+- generated using jinja2 macros
 
 They are meant to be executed by Ansible itself when requested by openscap, so they are
 written using link:http://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
 
 - The remediation content must be only the _tasks_ section of what would be a playbook
+    - Tasks can include blocks for grouping related tasks.
+    - The `when` clause will get augmented in certain scenarios.
 - Notifications and handlers are not supported
 
 Here is an example of a Ansible remediation that ensures the SELinux is enabled in grub:
@@ -1030,6 +1033,25 @@ Due to undefined XCCDF Value selectors in this pseudo-profile, these Playbooks u
 
 We also build profile Playbook that contains tasks for all rules in the profile.
 The Playbook is generated in `/build/ansible/<product>-playbook-<profile_id>.yml`.
+
+Jinja macros for Ansible content are located in `/shared/macros-ansible.jinja`.
+
+These currently include the following high-level macros:
+ - `ansible_sshd_set` -- set a parameter in the sshd configuration
+ - `ansible_etc_profile_set` -- ensure a command gets execuded or a variable gets set in /etc/profile or /etc/profile.d
+
+They also include several low-level macros:
+ - `ansible_lineinfile` -- ensure a line is in a given file
+ - `ansible_stat` -- check the status of a path on the file system
+ - `ansible_find` -- find all files with matched content
+ - `ansible_only_lineinfile` -- ensure that no lines matching the regex are present and add the given line
+ - `ansible_set_config_file` -- for configuration files; set the given configuration value and ensure no conflicting values
+ - `ansible_set_config_file_dir` -- for configuration files and files in configuration directories; set the given configuration value and ensure no conflicting values
+
+When `msg` is absent from any of the above macros, rule title will be substituted instead.
+
+Whenever possible, please reuse the macros and form high-level simplifications.
+This ensures consistent, high quality remediations that we can edit in one place and reuse in many places.
 
 ==== Bash
 
