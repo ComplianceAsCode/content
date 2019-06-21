@@ -24,3 +24,16 @@ selections:
     # during startup in addition to those already present in the configuration
     # files of the bootloader (/boot/grub/menu.lst or  /etc/default/grub).
     - grub2_enable_iommu_force
+
+    # ==============================================
+    # R67 - Setting SELinux booleans
+    # It is recommended to set the following Boolean values to ​​off:
+    # allow_execheap        if off, forbid processes to make their heap executable (heap);
+    # allow_execmem         if off, forbid processes to have a memory area with rights w (write) and x (execute);
+    # allow_execstack       if off, forbid processes to make their stack (stack) executable;
+
+    # secure_mode_insmod    if off, prohibits dynamic loading of modules by any process;
+    - sebool_secure_mode_insmod
+
+    # ssh_sysadm_login      if off, forbid SSH logins to connect directly in sysadmin role.
+    - sebool_ssh_sysadm_login
