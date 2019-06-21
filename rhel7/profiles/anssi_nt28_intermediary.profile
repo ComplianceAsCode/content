@@ -9,11 +9,24 @@ description: 'Draft profile for ANSSI compliance at the intermediary level. ANSS
 extends: anssi_nt28_minimal
 
 selections:
+
+    # ==============================================
+    # R12 Partitioning
     - partition_for_tmp
+    - mount_option_tmp_nosuid
+    - mount_option_tmp_nodev
+    - mount_option_tmp_noexec
     - partition_for_var
+    - partition_for_var_tmp
+    - mount_option_var_tmp_nosuid
+    - mount_option_var_tmp_nodev
+    - mount_option_var_tmp_noexec
     - partition_for_var_log
     - partition_for_var_log_audit
     - partition_for_home
+    - mount_option_home_nosuid
+    - mount_option_home_nodev
+
     - sshd_idle_timeout_value=5_minutes
     - rsyslog_files_ownership
     - rsyslog_files_groupownership
