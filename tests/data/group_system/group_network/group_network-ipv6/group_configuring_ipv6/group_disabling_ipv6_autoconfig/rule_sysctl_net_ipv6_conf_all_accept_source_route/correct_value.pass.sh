@@ -7,3 +7,5 @@ if grep -q "^net.ipv6.conf.all.accept_source_route" /etc/sysctl.conf; then
 else
 	echo "net.ipv6.conf.all.accept_source_route = 0" >> /etc/sysctl.conf
 fi
+
+sysctl -w net.ipv6.conf.all.accept_source_route=0
