@@ -1,0 +1,27 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
+# reboot = true
+# strategy = restrict
+# complexity = medium
+# disruption = low
+
+- name: check {{{ ARG_NAME }}} argument exists
+  command: grep 'GRUB_CMDLINE_LINUX.*{{{ ARG_NAME }}}=' /etc/default/grub
+  failed_when: False
+  register: argcheck
+
+- name: replace existing {{{ ARG_NAME }}} argument
+  replace:
+      path: /etc/default/grub
+      regexp: '{{{ ARG_NAME }}}=.'
+      replace: '{{{ ARG_NAME_VALUE }}}'
+  when: argcheck.rc == 0
+
+- name: add {{{ ARG_NAME }}} argument
+  replace:
+      path: /etc/default/grub
+      regexp: '(GRUB_CMDLINE_LINUX=.*)"'
+      replace: '\1 {{{ ARG_NAME_VALUE }}}"'
+  when: argcheck.rc != 0
+
+- name: update bootloader menu
+  command: /sbin/grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
