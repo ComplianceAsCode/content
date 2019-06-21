@@ -13,6 +13,10 @@ selections:
     - file_permissions_unauthorized_sgid
     - rsyslog_remote_loghost
 
+    # R17 Boot loader password
+    - grub2_password
+    - grub2_uefi_password
+
     # R29 User session timeout
     - accounts_tmout
     - sshd_set_idle_timeout
