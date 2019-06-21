@@ -5,12 +5,4 @@
 # disruption = low
 - (xccdf-var sshd_approved_macs)
 
-- name: "Use Only Approved MACs"
-  lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^MACs
-    line: "MACs {{ sshd_approved_macs }}"
-    validate: /usr/sbin/sshd -t -f %s
-  #notify: restart sshd
-
+{{{ ansible_sshd_set(parameter="MACs", value="{{ sshd_approved_macs }}") }}}

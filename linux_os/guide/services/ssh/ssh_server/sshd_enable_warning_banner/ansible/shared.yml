@@ -3,10 +3,4 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Enable SSH Warning Banner
-  lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^Banner
-    line: Banner /etc/issue
-    validate: /usr/sbin/sshd -t -f %s
+{{{ ansible_sshd_set(parameter="Banner", value="/etc/issue") }}}

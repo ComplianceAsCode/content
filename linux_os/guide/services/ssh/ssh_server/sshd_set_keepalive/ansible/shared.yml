@@ -5,11 +5,4 @@
 # disruption = low
 - (xccdf-var var_sshd_set_keepalive)
 
-- name: Set SSH Client Alive Count
-  lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^ClientAliveCountMax
-    line: 'ClientAliveCountMax {{ var_sshd_set_keepalive }}'
-    validate: /usr/sbin/sshd -t -f %s
-  #notify: restart sshd
+{{{ ansible_sshd_set(parameter="ClientAliveCountMax", value="{{ var_sshd_set_keepalive }}") }}}
