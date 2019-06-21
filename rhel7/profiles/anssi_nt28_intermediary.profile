@@ -147,3 +147,39 @@ selections:
     # Maximum number of autoconfigured addresses per interface
     # net.ipv6.conf.all.max_addresses = 1
     # net.ipv6.conf.default.max_addresses = 1
+
+    # ==============================================
+    #  R23 - Setting system sysctl
+    # Here is a list of recommended system sysctl (in the format /etc/sysctl.conf):
+    # Disabling SysReq
+    # kernel. sysrq = 0
+
+    # No core dump of executable setuid
+    - sysctl_fs_suid_dumpable
+
+    # Prohibit links to find links to files
+    # the current user is not the owner
+    # Can prevent some programs from working properly
+    - sysctl_fs_protected_symlinks
+    - sysctl_fs_protected_hardlinks
+
+    # Activation of the ASLR
+    - sysctl_kernel_randomize_va_space
+
+    # Prohibit mapping of memory in low addresses (0)
+    # vm.mmap_min_addr = 65536
+
+    # Larger choice space for PID values
+    # kernel.pid_max = 65536
+
+    # Obfuscation of addresses memory kernel
+    - sysctl_kernel_kptr_restrict
+
+    # Access restriction to the dmesg buffer
+    - sysctl_kernel_dmesg_restrict
+
+    # Restricts the use of the perf system
+    # kernel.perf_event_paranoid = 2
+    # kernel.perf_event_max_sample_rate = 1
+    # kernel.perf_cpu_time_max_percent = 1
+
