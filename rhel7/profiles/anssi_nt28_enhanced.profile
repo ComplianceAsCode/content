@@ -16,3 +16,7 @@ selections:
     # R29 User session timeout
     - accounts_tmout
     - sshd_set_idle_timeout
+
+    # R35 umask value
+    - accounts_umask_etc_login_defs
+    - accounts_umask_etc_profile
