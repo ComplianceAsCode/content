@@ -17,3 +17,10 @@ selections:
     - aide_scan_notification
     - aide_verify_acls
     - aide_verify_ext_attributes
+
+    # ==============================================
+    # R11 - IOMMU Configuration Guidelines
+    # The iommu = force directive must be added to the list of kernel parameters
+    # during startup in addition to those already present in the configuration
+    # files of the bootloader (/boot/grub/menu.lst or  /etc/default/grub).
+    - grub2_enable_iommu_force
