@@ -7,6 +7,9 @@ description: 'Draft profile for ANSSI compliance at the minimal level. ANSSI sta
     systèmes d''information. Based on https://www.ssi.gouv.fr/.'
 
 selections:
+    # R08 Regular updates
+    - security_patches_up_to_date
+
     - sudo_remove_nopasswd
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
