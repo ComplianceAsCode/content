@@ -16,6 +16,11 @@ selections:
 
     - rsyslog_remote_loghost
 
+    # R13 - Access restricions on System.map files
+    # When the /boot partition cannot be dismounted (or it does not exist),
+    # the file(s) System.map must be read restricted to root only.
+    - file_permissions_systemmap
+
     # R17 Boot loader password
     - grub2_password
     - grub2_uefi_password
