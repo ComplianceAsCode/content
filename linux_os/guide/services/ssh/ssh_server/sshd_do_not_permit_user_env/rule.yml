@@ -4,7 +4,7 @@ title: 'Do Not Allow SSH Environment Options'
 
 description: |-
     To ensure users are not able to override environment
-    options to the SSH daemon, add or correct the following line
+    variables of the SSH daemon, add or correct the following line
     in <tt>/etc/ssh/sshd_config</tt>:
     <pre>PermitUserEnvironment no</pre>
 
@@ -43,7 +43,7 @@ references:
 ocil_clause: 'PermitUserEnvironment is not disabled'
 
 ocil: |-
-    To ensure users are not able to present environment daemons, run the following command:
+    To ensure users are not able to send environment variables, run the following command:
     <pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
     If properly configured, output should be:
     <pre>PermitUserEnvironment no</pre>
