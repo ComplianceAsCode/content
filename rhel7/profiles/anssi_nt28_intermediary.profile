@@ -183,3 +183,13 @@ selections:
     # kernel.perf_event_max_sample_rate = 1
     # kernel.perf_cpu_time_max_percent = 1
 
+    # ==============================================
+    # R36 - Rights to access sensitive content files
+    # Sensitive content files should only be readable by users with strict need to know.
+    - file_owner_etc_shadow
+    - file_permissions_etc_shadow
+    - file_owner_etc_gshadow
+    - file_permissions_etc_gshadow
+    - file_permissions_etc_passwd
+    - file_permissions_etc_group
+

@@ -21,7 +21,3 @@ selections:
     - sudo_remove_no_authenticate
     - package_rsyslog_installed
     - service_rsyslog_enabled
-    - file_permissions_etc_shadow
-    - file_permissions_etc_gshadow
-    - file_permissions_etc_passwd
-    - file_permissions_etc_group
