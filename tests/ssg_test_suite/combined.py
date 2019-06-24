@@ -44,7 +44,7 @@ class CombinedChecker(rule.RuleChecker):
         with open(script, 'r') as script_file:
             script_content = script_file.read()
             for parameter in params:
-                found = re.search('^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
+                found = re.search(r'^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
                                   script_content,
                                   re.MULTILINE)
                 if found is None:
@@ -66,7 +66,6 @@ class CombinedChecker(rule.RuleChecker):
             if rule_dir.endswith("rule_"+target):
                 return True, target
         return False, None
-
 
     def _test_target(self, target):
         try:

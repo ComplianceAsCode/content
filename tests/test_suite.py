@@ -139,23 +139,23 @@ def parse_args():
                              help="Regular expression matching test scenarios to run")
 
     parser_combined = subparsers.add_parser("combined",
-                                         help=("Tests all rules in a profile evaluating them "
-                                               "against their test scenarios."),
-                                         parents=[common_parser])
+                                            help=("Tests all rules in a profile evaluating them "
+                                                  "against their test scenarios."),
+                                            parents=[common_parser])
     parser_combined.set_defaults(func=ssg_test_suite.combined.perform_combined_check)
     parser_combined.add_argument("--dontclean",
-                             dest="dont_clean",
-                             action="store_true",
-                             help="Do not remove html reports of successful runs")
+                                 dest="dont_clean",
+                                 action="store_true",
+                                 help="Do not remove html reports of successful runs")
     parser_combined.add_argument("--scenarios",
-                             dest="scenarios_regex",
-                             default=None,
-                             help="Regular expression matching test scenarios to run")
+                                 dest="scenarios_regex",
+                                 default=None,
+                                 help="Regular expression matching test scenarios to run")
     parser_combined.add_argument("target",
-                             metavar="TARGET",
-                             help=("Profile whose rules are to be tested. Each rule selected "
-                                   "in the profile will be evaluated against all its test "
-                                   "scenarios."))
+                                 metavar="TARGET",
+                                 help=("Profile whose rules are to be tested. Each rule selected "
+                                       "in the profile will be evaluated against all its test "
+                                       "scenarios."))
 
     return parser.parse_args()
 

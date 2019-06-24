@@ -203,7 +203,7 @@ class RuleChecker(oscap.Checker):
         with open(script, 'r') as script_file:
             script_content = script_file.read()
             for parameter in params:
-                found = re.search('^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
+                found = re.search(r'^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
                                   script_content,
                                   re.MULTILINE)
                 if found is None:
@@ -224,7 +224,8 @@ class RuleChecker(oscap.Checker):
         for script in scripts:
             if scenarios_regex is not None:
                 if scenarios_pattern.match(script) is None:
-                    logging.debug("Skipping script %s - it did not match --scenarios regex" % script)
+                    logging.debug("Skipping script %s - it did not match "
+                                  "--scenarios regex" % script)
                     continue
             script_context = _get_script_context(script)
             if script_context is not None:
