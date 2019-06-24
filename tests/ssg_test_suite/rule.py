@@ -95,16 +95,6 @@ def _get_script_context(script):
     return result.group(1)
 
 
-def _matches_target(rule_dir, targets):
-    if 'ALL' in targets:
-        # we want to have them all
-        return True
-    else:
-        for target in targets:
-            if target in rule_dir:
-                return True
-        return False
-
 def _get_scenarios(rule_dir, scripts, scenarios_regex, benchmark_cpes):
     """ Returns only valid scenario files, rest is ignored (is not meant
     to be executed directly.
@@ -217,6 +207,16 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
+    def _matches_target(self, rule_dir, targets):
+        if 'ALL' in targets:
+            # we want to have them all
+            return True
+        else:
+            for target in targets:
+                if target in rule_dir:
+                    return True
+            return False
+
     def _test_target(self, target):
         try:
             remote_dir = common.send_scripts(self.test_env.domain_ip)
@@ -228,7 +228,7 @@ class RuleChecker(oscap.Checker):
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in data.iterate_over_rules():
-                if not _matches_target(rule.directory, target):
+                if not self._matches_target(rule.directory, target):
                     continue
                 self._matching_rule_found = True
                 self._check_rule(rule, remote_dir, state)

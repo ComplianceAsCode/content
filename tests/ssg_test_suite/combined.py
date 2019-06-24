@@ -11,17 +11,6 @@ from ssg_test_suite import test_env
 import data
 
 
-# Check if a rule matches any of the targets to be tested
-# In CombinedChecker, we are looking for exact matches between rule and target
-def _matches_target(rule_dir, targets):
-    for target in targets:
-        # By prepending 'rule_', and match using endswith(), we should avoid
-        # matching rules that are different by just a prefix of suffix
-        if rule_dir.endswith("rule_"+target):
-            return True, target
-    return False, None
-
-
 class CombinedChecker(rule.RuleChecker):
     """
     Rule checks generally work like this -
@@ -47,6 +36,17 @@ class CombinedChecker(rule.RuleChecker):
         self._current_result = None
 
 
+    # Check if a rule matches any of the targets to be tested
+    # In CombinedChecker, we are looking for exact matches between rule and target
+    def _matches_target(self, rule_dir, targets):
+        for target in targets:
+            # By prepending 'rule_', and match using endswith(), we should avoid
+            # matching rules that are different by just a prefix of suffix
+            if rule_dir.endswith("rule_"+target):
+                return True, target
+        return False, None
+
+
     def _test_target(self, target):
         try:
             remote_dir = send_scripts(self.test_env.domain_ip)
@@ -58,7 +58,7 @@ class CombinedChecker(rule.RuleChecker):
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in data.iterate_over_rules():
-                matched, target_matched = _matches_target(rule.directory, target)
+                matched, target_matched = self._matches_target(rule.directory, target)
                 if not matched:
                     continue
                 # In combined mode there is no expectations of matching substrings,
