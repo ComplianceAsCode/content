@@ -14,6 +14,7 @@ from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
+from ssg.constants import OSCAP_PROFILE
 import data
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
@@ -341,3 +342,31 @@ def perform_rule_check(options):
     checker.scenarios_regex = options.scenarios_regex
 
     checker.test_target(options.target)
+
+
+def perform_combined_check(options):
+    checker = RuleChecker(options.test_env)
+
+    checker.datastream = options.datastream
+    checker.benchmark_id = options.benchmark_id
+    checker.remediate_using = options.remediate_using
+    checker.dont_clean = options.dont_clean
+    # No debug option is provided for combined mode
+    checker.manual_debug = False
+    checker.benchmark_cpes = options.benchmark_cpes
+    checker.scenarios_regex = options.scenarios_regex
+
+    profile = options.target
+    # check if target is a complete profile ID, if not prepend profile prefix
+    if not profile.startswith(OSCAP_PROFILE):
+        profile = OSCAP_PROFILE+profile
+    logging.info("Performing combined test using profile: {0}".format(profile))
+
+    # Fetch target list from rules selected in profile
+    target_rules = xml_operations.get_all_rule_ids_in_profile(
+            options.datastream, options.benchmark_id,
+            profile, logging)
+    logging.debug("Profile {0} expanded to following list of "
+                  "rules: {1}".format(profile, target_rules))
+
+    checker.test_target(target_rules)
