@@ -2,6 +2,7 @@
 from __future__ import print_function
 
 import logging
+import re
 
 from ssg.constants import OSCAP_PROFILE
 from ssg_test_suite.common import send_scripts
@@ -35,6 +36,26 @@ class CombinedChecker(rule.RuleChecker):
         self.results = list()
         self._current_result = None
 
+    def _parse_parameters(self, script):
+        """Parse parameters from script header"""
+        params = {'templates': [],
+                  'platform': ['multi_platform_all'],
+                  'remediation': ['all']}
+        with open(script, 'r') as script_file:
+            script_content = script_file.read()
+            for parameter in params:
+                found = re.search('^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
+                                  script_content,
+                                  re.MULTILINE)
+                if found is None:
+                    continue
+                splitted = found.group(1).split(',')
+                params[parameter] = [value.strip() for value in splitted]
+
+            # Override any metadata in test scenario, wrt to profile to test
+            # We already know that all target rules are part of the target profile
+            params['profiles'] = [self.profile]
+        return params
 
     # Check if a rule matches any of the targets to be tested
     # In CombinedChecker, we are looking for exact matches between rule and target
@@ -82,6 +103,8 @@ def perform_combined_check(options):
     checker.manual_debug = False
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
+    # Let's keep track of originaly targeted profile
+    checker.profile = options.target
 
     profile = options.target
     # check if target is a complete profile ID, if not prepend profile prefix
