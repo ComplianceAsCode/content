@@ -37,7 +37,7 @@ def load_xml(file_name):
         exit(-1)
 
 
-def get_ext_def_tests(oval_root,def_refs):
+def get_ext_def_tests(oval_root, def_refs):
     t = []
     for d in oval_root.findall(".//definition"):
         if d.attrib.get('id') == def_refs:
@@ -49,9 +49,9 @@ def get_ext_def_tests(oval_root,def_refs):
             t.append(test_ref)
         for extend_def in definition.findall(".//extend_definition"):
             extend_ref = extend_def.attrib["definition_ref"]
-            t = t + (get_ext_def_tests(oval_root,extend_ref))
+            t = t + (get_ext_def_tests(oval_root, extend_ref))
     return t
-        
+
 
 def find_oval_objects(oval_refs):
     ''' Finds OVAL objects according to definitions ID '''
@@ -77,9 +77,8 @@ def find_oval_objects(oval_refs):
                 tests.append(test_ref)
             for extend_def in definition.findall(".//extend_definition"):
                 extend_ref = extend_def.attrib["definition_ref"]
-                #extend_refs.append(extend_ref)
-                t = get_ext_def_tests(oval_root,extend_ref)
-                tests += t 
+                t = get_ext_def_tests(oval_root, extend_ref)
+                tests += t
 
     # find references to objects in tests
     for key in oval_files:
