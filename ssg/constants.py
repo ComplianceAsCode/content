@@ -383,6 +383,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
     "pam": "cpe:/a:pam",
     "shadow-utils": "cpe:/a:shadow-utils",
+    "sssd": "cpe:/a:sssd",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
 }
