@@ -3,6 +3,8 @@ import xml.etree.cElementTree as ET
 
 import logging
 
+from ssg.constants import OSCAP_RULE
+
 NAMESPACES = {
     'xccdf': "http://checklists.nist.gov/xccdf/1.2",
     'ds': "http://scap.nist.gov/schema/scap/source/1.2",
@@ -68,6 +70,24 @@ def get_all_profiles_in_benchmark(datastream, benchmark_id, logging=None):
     benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
     all_profiles = benchmark_node.findall('xccdf:Profile', NAMESPACES)
     return all_profiles
+
+
+def get_all_rule_selections_in_profile(datastream, benchmark_id, profile_id, logging=None):
+    benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
+    profile = benchmark_node.find("xccdf:Profile[@id='{0}']".format(profile_id), NAMESPACES)
+    rule_selections = profile.findall("xccdf:select[@selected='true']", NAMESPACES)
+    return rule_selections
+
+
+def get_all_rule_ids_in_profile(datastream, benchmark_id, profile_id, logging=None):
+    rule_selections = get_all_rule_selections_in_profile(datastream, benchmark_id,
+                                                         profile_id, logging=None)
+    rule_ids = [select.get("idref") for select in rule_selections]
+
+    # Strip xccdf 1.2 prefixes from rule ids
+    # Necessary to search for the rules within test scenarios tree
+    prefix_len = len(OSCAP_RULE)
+    return [rule[prefix_len:] for rule in rule_ids]
 
 
 def benchmark_get_applicable_platforms(datastream, benchmark_id, logging=None):
