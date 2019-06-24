@@ -185,6 +185,8 @@ selections:
 
     ### disable network management of chrony daemon
     - chronyd_no_chronyc_network
+    ### disable chronyd acting as NTP server
+    - chronyd_client_only
 
     ### FMT_SMF_EXT.1.1: https://www.niap-ccevs.org/MMO/PP/-424-/#FMT_SMF_EXT.1.1
     ### The OS shall be capable of performing the following
