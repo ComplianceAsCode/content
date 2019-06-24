@@ -89,7 +89,10 @@ class CombinedChecker(rule.RuleChecker):
                 self._check_rule(rule, remote_dir, state)
 
         if len(target) != 0:
-            logging.info("The following rule were not tested '{0}'".format(target))
+            target.sort()
+            logging.info("The following rule(s) were not tested:")
+            for rule in target:
+                logging.info("{0}".format(rule))
 
 
 def perform_combined_check(options):
