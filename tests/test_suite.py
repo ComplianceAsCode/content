@@ -16,6 +16,7 @@ import ssg_test_suite.oscap
 import ssg_test_suite.test_env
 import ssg_test_suite.profile
 import ssg_test_suite.rule
+import ssg_test_suite.combined
 from ssg_test_suite import xml_operations
 
 
@@ -141,7 +142,7 @@ def parse_args():
                                          help=("Tests all rules in a profile evaluating them "
                                                "against their test scenarios."),
                                          parents=[common_parser])
-    parser_combined.set_defaults(func=ssg_test_suite.rule.perform_combined_check)
+    parser_combined.set_defaults(func=ssg_test_suite.combined.perform_combined_check)
     parser_combined.add_argument("--dontclean",
                              dest="dont_clean",
                              action="store_true",
