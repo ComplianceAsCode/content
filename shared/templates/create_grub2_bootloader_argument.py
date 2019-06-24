@@ -32,6 +32,15 @@ class GRUB2BootloaderArgumentGenerator(FilesGenerator):
                 },
                 "./oval/grub2_{0}_argument.xml", arg_name
             )
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_grub2_bootloader_argument",
+                {
+                    "ARG_NAME": arg_name,
+                    "ARG_NAME_VALUE": arg_name_value
+                },
+                "./ansible/grub2_{0}_argument.yml", arg_name
+            )
         else:
             raise UnknownTargetError(target)
 
