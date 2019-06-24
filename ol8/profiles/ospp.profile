@@ -209,3 +209,4 @@ selections:
     - configure_libreswan_crypto_policy
     - configure_ssh_crypto_policy
     - configure_kerberos_crypto_policy
+    - chronyd_no_chronyc_network
