@@ -6,6 +6,8 @@ import functools
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import PRODUCT_TO_CPE_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
+from ssg_test_suite.log import LogHelper
+import data
 
 Scenario_run = namedtuple(
     "Scenario_run",
@@ -175,3 +177,48 @@ def matches_platform(scenario_platforms, benchmark_cpes):
     for p in scenario_platforms:
         scenario_cpes |= _get_platform_cpes(p)
     return len(scenario_cpes & benchmark_cpes) > 0
+
+
+def run_with_stdout_logging(command, args, log_file):
+    log_file.write("{0} {1}\n".format(command, " ".join(args)))
+    subprocess.check_call(
+        (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
+
+
+def send_scripts(domain_ip):
+    remote_dir = './ssgts'
+    archive_file = data.create_tarball('.')
+    remote_archive_file = os.path.join(remote_dir, archive_file)
+    machine = "root@{0}".format(domain_ip)
+    logging.debug("Uploading scripts.")
+    log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
+
+    with open(log_file_name, 'a') as log_file:
+        args = SSH_ADDITIONAL_OPTS + (machine, "mkdir", "-p", remote_dir)
+        try:
+            run_with_stdout_logging("ssh", args, log_file)
+        except Exception:
+            msg = "Cannot create directory {0}.".format(remote_dir)
+            logging.error(msg)
+            raise RuntimeError(msg)
+
+        args = (SSH_ADDITIONAL_OPTS
+                + (archive_file, "{0}:{1}".format(machine, remote_dir)))
+        try:
+            run_with_stdout_logging("scp", args, log_file)
+        except Exception:
+            msg = ("Cannot copy archive {0} to the target machine's directory {1}."
+                   .format(archive_file, remote_dir))
+            logging.error(msg)
+            raise RuntimeError(msg)
+
+        args = (SSH_ADDITIONAL_OPTS
+                + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
+        try:
+            run_with_stdout_logging("ssh", args, log_file)
+        except Exception:
+            msg = "Cannot extract data tarball {0}.".format(remote_archive_file)
+            logging.error(msg)
+            raise RuntimeError(msg)
+
+    return remote_dir

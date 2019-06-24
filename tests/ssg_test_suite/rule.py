@@ -64,51 +64,6 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     return valid_profiles
 
 
-def _run_with_stdout_logging(command, args, log_file):
-    log_file.write("{0} {1}\n".format(command, " ".join(args)))
-    subprocess.check_call(
-        (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
-
-
-def _send_scripts(domain_ip):
-    remote_dir = './ssgts'
-    archive_file = data.create_tarball('.')
-    remote_archive_file = os.path.join(remote_dir, archive_file)
-    machine = "root@{0}".format(domain_ip)
-    logging.debug("Uploading scripts.")
-    log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
-
-    with open(log_file_name, 'a') as log_file:
-        args = common.SSH_ADDITIONAL_OPTS + (machine, "mkdir", "-p", remote_dir)
-        try:
-            _run_with_stdout_logging("ssh", args, log_file)
-        except Exception:
-            msg = "Cannot create directory {0}.".format(remote_dir)
-            logging.error(msg)
-            raise RuntimeError(msg)
-
-        args = (common.SSH_ADDITIONAL_OPTS
-                + (archive_file, "{0}:{1}".format(machine, remote_dir)))
-        try:
-            _run_with_stdout_logging("scp", args, log_file)
-        except Exception:
-            msg = ("Cannot copy archive {0} to the target machine's directory {1}."
-                   .format(archive_file, remote_dir))
-            logging.error(msg)
-            raise RuntimeError(msg)
-
-        args = (common.SSH_ADDITIONAL_OPTS
-                + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
-        try:
-            _run_with_stdout_logging("ssh", args, log_file)
-        except Exception:
-            msg = "Cannot extract data tarball {0}.".format(remote_archive_file)
-            logging.error(msg)
-            raise RuntimeError(msg)
-
-    return remote_dir
-
-
 def _apply_script(rule_dir, domain_ip, script):
     """Run particular test script on VM and log it's output."""
     machine = "root@{0}".format(domain_ip)
@@ -124,7 +79,7 @@ def _apply_script(rule_dir, domain_ip, script):
         args = common.SSH_ADDITIONAL_OPTS + (machine, command)
 
         try:
-            _run_with_stdout_logging("ssh", args, log_file)
+            common.run_with_stdout_logging("ssh", args, log_file)
         except subprocess.CalledProcessError as exc:
             logging.error("Rule testing script {script} failed with exit code {rc}"
                           .format(script=script, rc=exc.returncode))
@@ -264,7 +219,7 @@ class RuleChecker(oscap.Checker):
 
     def _test_target(self, target):
         try:
-            remote_dir = _send_scripts(self.test_env.domain_ip)
+            remote_dir = common.send_scripts(self.test_env.domain_ip)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
