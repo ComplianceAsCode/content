@@ -32,8 +32,6 @@ selections:
     - rsyslog_files_groupownership
     - rsyslog_files_permissions
     - ensure_logrotate_activated
-    - sysctl_fs_suid_dumpable
-    - sysctl_kernel_randomize_va_space
 
     # ==============================================
     # R19  - Accountability of administration
