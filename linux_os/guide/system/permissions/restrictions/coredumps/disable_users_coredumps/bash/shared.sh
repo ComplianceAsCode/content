@@ -1,2 +1,8 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
-echo "*     hard   core    0" >> /etc/security/limits.conf
+# platform = multi_platform_rhel
+SECURITY_LIMITS_FILE="/etc/security/limits.conf"
+
+if grep -qE '\*\s+hard\s+core' $SECURITY_LIMITS_FILE; then
+        sed -ri 's/(hard\s+core\s+)[[:digit:]]+/\1 0/' $SECURITY_LIMITS_FILE
+else
+        echo "*     hard   core    0" >> $SECURITY_LIMITS_FILE
+fi
