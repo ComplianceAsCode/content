@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# profiles = xccdf_org.ssgproject.content_profile_C2S
+# profiles = xccdf_org.ssgproject.content_profile_ospp
 #
 # remediation = none
 # Remediation for accounts_passwords_pam_faillock_deny cannot remediate this scenario
