@@ -16,6 +16,9 @@ from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 import data
 
+
+ALL_PROFILE_ID = "(all)"
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
@@ -32,7 +35,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     all_profiles_elements = xml_operations.get_all_profiles_in_benchmark(
         datastream, benchmark, logging)
     all_profiles = [el.attrib["id"] for el in all_profiles_elements]
-    all_profiles.append("(all)")
+    all_profiles.append(ALL_PROFILE_ID)
 
     for ds_profile in all_profiles:
         if 'ALL' in selected_profiles:
@@ -236,6 +239,12 @@ class RuleChecker(oscap.Checker):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
                     logging.info("Script %s is not applicable on given platform" % script)
+
+                if not script_params["profiles"]:
+                    script_params["profiles"].append(ALL_PROFILE_ID)
+                    logging.debug(
+                        "Added the {0} profile to the list of available profiles for {1}"
+                        .format(ALL_PROFILE_ID, script))
         return scenarios
 
     def _check_rule(self, rule, remote_dir, state):
