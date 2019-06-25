@@ -16,12 +16,14 @@ from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 import data
 
+
+ALL_PROFILE_ID = "(all)"
+
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 
 Scenario = collections.namedtuple(
     "Scenario", ["script", "context", "script_params"])
-
 
 
 def get_viable_profiles(selected_profiles, datastream, benchmark):
@@ -30,16 +32,19 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     """
 
     valid_profiles = []
-    all_profiles = xml_operations.get_all_profiles_in_benchmark(
+    all_profiles_elements = xml_operations.get_all_profiles_in_benchmark(
         datastream, benchmark, logging)
-    for ds_profile_element in all_profiles:
-        ds_profile = ds_profile_element.attrib['id']
+    all_profiles = [el.attrib["id"] for el in all_profiles_elements]
+    all_profiles.append(ALL_PROFILE_ID)
+
+    for ds_profile in all_profiles:
         if 'ALL' in selected_profiles:
             valid_profiles += [ds_profile]
             continue
         for sel_profile in selected_profiles:
             if ds_profile.endswith(sel_profile):
                 valid_profiles += [ds_profile]
+
     if not valid_profiles:
         logging.error('No profile ends with "{0}"'
                       .format(", ".join(selected_profiles)))
@@ -71,7 +76,7 @@ def _apply_script(rule_dir, domain_ip, script):
 
 def _get_script_context(script):
     """Return context of the script."""
-    result = re.search('.*\.([^.]*)\.[^.]*$', script)
+    result = re.search(r'.*\.([^.]*)\.[^.]*$', script)
     if result is None:
         return None
     return result.group(1)
@@ -203,7 +208,7 @@ class RuleChecker(oscap.Checker):
         with open(script, 'r') as script_file:
             script_content = script_file.read()
             for parameter in params:
-                found = re.search(r'^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
+                found = re.search(r'^# {0} = ([ ,_\.\-\w\(\)]*)$'.format(parameter),
                                   script_content,
                                   re.MULTILINE)
                 if found is None:
@@ -234,6 +239,12 @@ class RuleChecker(oscap.Checker):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
                     logging.info("Script %s is not applicable on given platform" % script)
+
+                if not script_params["profiles"]:
+                    script_params["profiles"].append(ALL_PROFILE_ID)
+                    logging.debug(
+                        "Added the {0} profile to the list of available profiles for {1}"
+                        .format(ALL_PROFILE_ID, script))
         return scenarios
 
     def _check_rule(self, rule, remote_dir, state):
