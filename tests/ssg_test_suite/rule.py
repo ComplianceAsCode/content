@@ -23,24 +23,6 @@ Scenario = collections.namedtuple(
     "Scenario", ["script", "context", "script_params"])
 
 
-def _parse_parameters(script):
-    """Parse parameters from script header"""
-    params = {'profiles': [],
-              'templates': [],
-              'platform': ['multi_platform_all'],
-              'remediation': ['all']}
-    with open(script, 'r') as script_file:
-        script_content = script_file.read()
-        for parameter in params:
-            found = re.search('^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
-                              script_content,
-                              re.MULTILINE)
-            if found is None:
-                continue
-            splitted = found.group(1).split(',')
-            params[parameter] = [value.strip() for value in splitted]
-    return params
-
 
 def get_viable_profiles(selected_profiles, datastream, benchmark):
     """Read datastream, and return set intersection of profiles of given
@@ -64,51 +46,6 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     return valid_profiles
 
 
-def _run_with_stdout_logging(command, args, log_file):
-    log_file.write("{0} {1}\n".format(command, " ".join(args)))
-    subprocess.check_call(
-        (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
-
-
-def _send_scripts(domain_ip):
-    remote_dir = './ssgts'
-    archive_file = data.create_tarball('.')
-    remote_archive_file = os.path.join(remote_dir, archive_file)
-    machine = "root@{0}".format(domain_ip)
-    logging.debug("Uploading scripts.")
-    log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
-
-    with open(log_file_name, 'a') as log_file:
-        args = common.SSH_ADDITIONAL_OPTS + (machine, "mkdir", "-p", remote_dir)
-        try:
-            _run_with_stdout_logging("ssh", args, log_file)
-        except Exception:
-            msg = "Cannot create directory {0}.".format(remote_dir)
-            logging.error(msg)
-            raise RuntimeError(msg)
-
-        args = (common.SSH_ADDITIONAL_OPTS
-                + (archive_file, "{0}:{1}".format(machine, remote_dir)))
-        try:
-            _run_with_stdout_logging("scp", args, log_file)
-        except Exception:
-            msg = ("Cannot copy archive {0} to the target machine's directory {1}."
-                   .format(archive_file, remote_dir))
-            logging.error(msg)
-            raise RuntimeError(msg)
-
-        args = (common.SSH_ADDITIONAL_OPTS
-                + (machine, "tar xf {0} -C {1}".format(remote_archive_file, remote_dir)))
-        try:
-            _run_with_stdout_logging("ssh", args, log_file)
-        except Exception:
-            msg = "Cannot extract data tarball {0}.".format(remote_archive_file)
-            logging.error(msg)
-            raise RuntimeError(msg)
-
-    return remote_dir
-
-
 def _apply_script(rule_dir, domain_ip, script):
     """Run particular test script on VM and log it's output."""
     machine = "root@{0}".format(domain_ip)
@@ -124,7 +61,7 @@ def _apply_script(rule_dir, domain_ip, script):
         args = common.SSH_ADDITIONAL_OPTS + (machine, command)
 
         try:
-            _run_with_stdout_logging("ssh", args, log_file)
+            common.run_with_stdout_logging("ssh", args, log_file)
         except subprocess.CalledProcessError as exc:
             logging.error("Rule testing script {script} failed with exit code {rc}"
                           .format(script=script, rc=exc.returncode))
@@ -138,40 +75,6 @@ def _get_script_context(script):
     if result is None:
         return None
     return result.group(1)
-
-
-def _matches_target(rule_dir, targets):
-    if 'ALL' in targets:
-        # we want to have them all
-        return True
-    else:
-        for target in targets:
-            if target in rule_dir:
-                return True
-        return False
-
-def _get_scenarios(rule_dir, scripts, scenarios_regex, benchmark_cpes):
-    """ Returns only valid scenario files, rest is ignored (is not meant
-    to be executed directly.
-    """
-
-    if scenarios_regex is not None:
-        scenarios_pattern = re.compile(scenarios_regex)
-
-    scenarios = []
-    for script in scripts:
-        if scenarios_regex is not None:
-            if scenarios_pattern.match(script) is None:
-                logging.debug("Skipping script %s - it did not match --scenarios regex" % script)
-                continue
-        script_context = _get_script_context(script)
-        if script_context is not None:
-            script_params = _parse_parameters(os.path.join(rule_dir, script))
-            if common.matches_platform(script_params["platform"], benchmark_cpes):
-                scenarios += [Scenario(script, script_context, script_params)]
-            else:
-                logging.info("Script %s is not applicable on given platform" % script)
-    return scenarios
 
 
 class RuleChecker(oscap.Checker):
@@ -262,9 +165,19 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
+    def _matches_target(self, rule_dir, targets):
+        if 'ALL' in targets:
+            # we want to have them all
+            return True
+        else:
+            for target in targets:
+                if target in rule_dir:
+                    return True
+            return False
+
     def _test_target(self, target):
         try:
-            remote_dir = _send_scripts(self.test_env.domain_ip)
+            remote_dir = common.send_scripts(self.test_env.domain_ip)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
@@ -273,13 +186,55 @@ class RuleChecker(oscap.Checker):
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
             for rule in data.iterate_over_rules():
-                if not _matches_target(rule.directory, target):
+                if not self._matches_target(rule.directory, target):
                     continue
                 self._matching_rule_found = True
                 self._check_rule(rule, remote_dir, state)
 
         if not self._matching_rule_found:
             logging.error("No matching rule ID found for '{0}'".format(target))
+
+    def _parse_parameters(self, script):
+        """Parse parameters from script header"""
+        params = {'profiles': [],
+                  'templates': [],
+                  'platform': ['multi_platform_all'],
+                  'remediation': ['all']}
+        with open(script, 'r') as script_file:
+            script_content = script_file.read()
+            for parameter in params:
+                found = re.search(r'^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
+                                  script_content,
+                                  re.MULTILINE)
+                if found is None:
+                    continue
+                splitted = found.group(1).split(',')
+                params[parameter] = [value.strip() for value in splitted]
+        return params
+
+    def _get_scenarios(self, rule_dir, scripts, scenarios_regex, benchmark_cpes):
+        """ Returns only valid scenario files, rest is ignored (is not meant
+        to be executed directly.
+        """
+
+        if scenarios_regex is not None:
+            scenarios_pattern = re.compile(scenarios_regex)
+
+        scenarios = []
+        for script in scripts:
+            if scenarios_regex is not None:
+                if scenarios_pattern.match(script) is None:
+                    logging.debug("Skipping script %s - it did not match "
+                                  "--scenarios regex" % script)
+                    continue
+            script_context = _get_script_context(script)
+            if script_context is not None:
+                script_params = self._parse_parameters(os.path.join(rule_dir, script))
+                if common.matches_platform(script_params["platform"], benchmark_cpes):
+                    scenarios += [Scenario(script, script_context, script_params)]
+                else:
+                    logging.info("Script %s is not applicable on given platform" % script)
+        return scenarios
 
     def _check_rule(self, rule, remote_dir, state):
         remote_rule_dir = os.path.join(remote_dir, rule.directory)
@@ -290,7 +245,7 @@ class RuleChecker(oscap.Checker):
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
         args_list = [(s, remote_rule_dir, rule.id)
-                     for s in _get_scenarios(local_rule_dir, rule.files, self.scenarios_regex, self.benchmark_cpes)]
+                     for s in self._get_scenarios(local_rule_dir, rule.files, self.scenarios_regex, self.benchmark_cpes)]
         state.map_on_top(self._check_and_record_rule_scenario, args_list)
 
     def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id):
