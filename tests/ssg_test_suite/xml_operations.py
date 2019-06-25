@@ -98,3 +98,12 @@ def benchmark_get_applicable_platforms(datastream, benchmark_id, logging=None):
     platform_elements = benchmark_node.findall('xccdf:platform', NAMESPACES)
     cpes = {platform_el.get("idref") for platform_el in platform_elements}
     return cpes
+
+
+def find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging=None):
+    """
+    Returns rule node from the given benchmark.
+    """
+    benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
+    rule = benchmark_node.find(".//xccdf:Rule[@id='{0}']".format(rule_id), NAMESPACES)
+    return rule
