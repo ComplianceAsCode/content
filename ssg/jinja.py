@@ -5,7 +5,8 @@ import os.path
 import jinja2
 
 from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
-                        JINJA_MACROS_HIGHLEVEL_DEFINITIONS)
+                        JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
+                        JINJA_MACROS_ANSIBLE_DEFINITIONS)
 from .utils import required_key
 
 
@@ -109,6 +110,8 @@ def load_macros(substitutions_dict):
             JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
         macro_definitions.update(extract_substitutions_dict_from_template(
             JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict))
+        macro_definitions.update(extract_substitutions_dict_from_template(
+            JINJA_MACROS_ANSIBLE_DEFINITIONS, substitutions_dict))
     except Exception as exc:
         msg = ("Error extracting macro definitions: {0}"
                .format(str(exc)))
@@ -126,4 +129,5 @@ def process_file_with_macros(filepath, substitutions_dict):
     See also: process_file
     """
     substitutions_dict = load_macros(substitutions_dict)
+    assert 'indent' not in substitutions_dict
     return process_file(filepath, substitutions_dict)

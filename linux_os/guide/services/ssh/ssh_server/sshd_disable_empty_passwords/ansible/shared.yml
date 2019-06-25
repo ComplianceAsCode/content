@@ -3,10 +3,4 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Disable SSH Access via Empty Passwords
-  lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^PermitEmptyPasswords
-    line: PermitEmptyPasswords no
-    validate: /usr/sbin/sshd -t -f %s
+{{{ ansible_sshd_set(parameter="PermitEmptyPasswords", value="no") }}}

@@ -5,11 +5,4 @@
 # disruption = low
 - (xccdf-var sshd_idle_timeout_value)
 
-- name: Set SSH Idle Timeout Interval
-  lineinfile:
-    create: yes
-    dest: /etc/ssh/sshd_config
-    regexp: ^ClientAliveInterval
-    line: "ClientAliveInterval {{ sshd_idle_timeout_value }}"
-    validate: /usr/sbin/sshd -t -f %s
-  #notify: restart sshd
+{{{ ansible_sshd_set(parameter="ClientAliveInterval", value="{{ sshd_idle_timeout_value }}") }}}
