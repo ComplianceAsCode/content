@@ -4,7 +4,7 @@
 # platform = multi_platform_fedora,Red Hat Enterprise Linux 8
 
 if grep -q "^PASS_MIN_LEN" /etc/login.defs; then
-	sed -i "s/^PASS_MIN_LEN.*/PASS_MIN_LEN 12/" /etc/login.defs
+	sed -i "s/^PASS_MIN_LEN.*/PASS_MIN_LEN 15/" /etc/login.defs
 else
-	echo "PASS_MIN_LEN 12" >> /etc/login.defs
+	echo "PASS_MIN_LEN 15" >> /etc/login.defs
 fi
