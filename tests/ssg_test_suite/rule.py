@@ -194,6 +194,12 @@ class RuleChecker(oscap.Checker):
                 if not self._matches_target(rule.directory, target):
                     continue
                 self._matching_rule_found = True
+                if not xml_operations.find_rule_in_benchmark(
+                        self.datastream, self.benchmark_id, rule.id):
+                    logging.error(
+                        "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
+                        .format(rule.id, self.benchmark_id, self.datastream))
+                    return
                 self._check_rule(rule, remote_dir, state)
 
         if not self._matching_rule_found:
