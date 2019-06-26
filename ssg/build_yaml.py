@@ -202,6 +202,17 @@ class Profile(object):
                 )
                 raise ValueError(msg)
 
+    def validate_rules(self, rules):
+        existing_rule_ids = [r.id_ for r in rules]
+        rule_selectors = self.get_rule_selectors()
+        for rule_id in rule_selectors:
+            if rule_id not in existing_rule_ids:
+                msg = (
+                    "Rule '{rule_id}' from profile '{profile_id}' was not found."
+                    .format(rule_id=rule_id, profile_id=self.id_)
+                )
+                raise ValueError(msg)
+
     def __sub__(self, other):
         profile = Profile(self.id_)
         profile.title = self.title
@@ -817,6 +828,7 @@ class DirectoryLoader(object):
         self.subdirectories = []
 
         self.all_values = set()
+        self.all_rules = set()
 
         self.profiles_dir = profiles_dir
         self.bash_remediation_fns = bash_remediation_fns
@@ -902,6 +914,7 @@ class DirectoryLoader(object):
             loader.parent_group = self.loaded_group
             loader.process_directory_tree(subdir)
             self.all_values.update(loader.all_values)
+            self.all_rules.update(loader.all_rules)
 
     def _get_new_loader(self):
         raise NotImplementedError()
@@ -935,6 +948,7 @@ class BuildLoader(DirectoryLoader):
             prodtypes = parse_prodtype(rule.prodtype)
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
+            self.all_rules.add(rule)
             self.loaded_group.add_rule(rule)
             if self.resolved_rules_dir:
                 output_for_rule = os.path.join(
