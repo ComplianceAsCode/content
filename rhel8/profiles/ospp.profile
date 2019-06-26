@@ -250,6 +250,7 @@ selections:
     - sshd_disable_root_login
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
+    - sssd_run_as_sssd_user
     - sssd_offline_cred_expiration
     - sssd_memcache_timeout
     - var_sssd_memcache_timeout=1_day
