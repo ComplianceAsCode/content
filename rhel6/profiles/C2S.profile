@@ -149,7 +149,6 @@ selections:
     - audit_rules_mac_modification
     - audit_rules_login_events
     - audit_rules_session_events
-    - audit_dac_actions
     - audit_rules_unsuccessful_file_modification
     - audit_rules_privileged_commands
     - audit_rules_media_export
@@ -169,8 +168,6 @@ selections:
     - sshd_set_idle_timeout
     - sshd_limit_user_access
     - sshd_enable_warning_banner
-    - set_password_hashing_algorithm
-    - password_quality_pamcracklib
     - accounts_passwords_pam_faillock_deny
     - accounts_password_pam_unix_remember
     - no_direct_root_logins

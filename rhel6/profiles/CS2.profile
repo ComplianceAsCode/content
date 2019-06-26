@@ -73,7 +73,6 @@ selections:
     - set_password_hashing_algorithm_systemauth
     - set_password_hashing_algorithm_logindefs
     - set_password_hashing_algorithm_libuserconf
-    - root_paths
     - accounts_root_path_dirs_no_write
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_login_defs
@@ -195,7 +194,6 @@ selections:
     - network_ipv6_static_address
     - network_ipv6_privacy_extensions
     - network_ipv6_default_gateway
-    - network_ipv6_limit_requests
     - sysctl_net_ipv6_conf_default_accept_ra
     - sysctl_net_ipv6_conf_default_accept_redirects
     - network_sniffer_disabled

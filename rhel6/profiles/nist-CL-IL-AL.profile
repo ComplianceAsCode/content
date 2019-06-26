@@ -233,5 +233,4 @@ selections:
     - service_sysstat_disabled
     - service_httpd_disabled
     - package_httpd_removed
-    - disabling_vsftpd
     - package_vsftpd_removed
