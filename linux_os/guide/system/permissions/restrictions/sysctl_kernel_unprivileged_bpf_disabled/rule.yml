@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Disable access to network bpf() syscall from unprivileged processes'
+
+description: '{{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}'
+
+rationale: |-
+    Loading and accessing the packet filters programs and maps using the bpf()
+    syscall has the potential of revealing sensitive information about the kernel state.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82974-7
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}
+
+platform: machine
