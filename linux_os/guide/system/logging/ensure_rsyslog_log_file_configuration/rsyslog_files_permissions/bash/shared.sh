@@ -5,7 +5,7 @@
 RSYSLOG_ETC_CONFIG="/etc/rsyslog.conf"
 # * And also the log file paths listed after rsyslog's $IncludeConfig directive
 #   (store the result into array for the case there's shell glob used as value of IncludeConfig)
-RSYSLOG_INCLUDE_CONFIG=($(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2))
+readarray RSYSLOG_INCLUDE_CONFIG < <(grep -e "\$IncludeConfig[[:space:]]\+[^[:space:];]\+" /etc/rsyslog.conf | cut -d ' ' -f 2)
 # Declare an array to hold the final list of different log file paths
 declare -a LOG_FILE_PATHS
 
@@ -29,7 +29,7 @@ do
 		readarray -t ARRAY_FOR_LOG_FILE <<< "$MATCHED_ITEMS"
 		# Concatenate the two arrays - previous content of $LOG_FILE_PATHS array with
 		# items from newly created array for this log file
-		LOG_FILE_PATHS=("${LOG_FILE_PATHS[@]}" "${ARRAY_FOR_LOG_FILE[@]}")
+		LOG_FILE_PATHS+=("${ARRAY_FOR_LOG_FILE[@]}")
 		# Delete the temporary array
 		unset ARRAY_FOR_LOG_FILE
 	fi

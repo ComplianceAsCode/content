@@ -12,17 +12,15 @@ IFS_BKP="$IFS"
 
 # Load /etc/fstab's content with LABEL= and UUID= tags expanded to real
 # device names into FSTAB_REAL_DEVICES array splitting items by newline
-IFS=$'\n'
-FSTAB_REAL_DEVICES=($(findmnt --fstab --evaluate --noheadings))
+readarray FSTAB_REAL_DEVICES < <(findmnt --fstab --evaluate --noheadings)
 
-for line in ${FSTAB_REAL_DEVICES[@]}
+for line in "${FSTAB_REAL_DEVICES[@]}"
 do
     # For each line:
     # * squeeze multiple space characters into one,
     # * split line content info four columns (target, source, fstype, and
     #   mount options) by space delimiter
-    IFS=$' '
-    read TARGET SOURCE FSTYPE MOUNT_OPTIONS <<< "$(echo $line | tr -s ' ')"
+    read TARGET SOURCE FSTYPE MOUNT_OPTIONS <<< "$(echo "$line" | tr -s ' ')"
 
     # Filter the targets according to the following criteria:
     # * don't include record for root partition,
@@ -65,10 +63,8 @@ do
             # Replace old mount options for particular /etc/fstab's row (for this target
             # and fstype) with new mount options
             sed -i "s#${TARGET_HEAD}\(.*\)${TARGET_TAIL}#${TARGET_HEAD}${MOUNT_OPTIONS}${TARGET_TAIL}#" /etc/fstab
-
+            # Reset IFS back to default
+            IFS="$IFS_BKP"
         fi
     fi
 done
-
-# Reset IFS back to default
-IFS="$IFS_BKP"

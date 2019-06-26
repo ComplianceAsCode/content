@@ -20,7 +20,9 @@ function dconf_settings {
 	fi
 
 	# Check for setting in any of the DConf db directories
-	SETTINGSFILES=($(grep -r "\[${_path}]" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1))
+	# If files contain ibus or distro, ignore them.
+	# The assignment assumes that individual filenames don't contain :
+	readarray SETTINGSFILES < <(grep -r "\[${_path}]" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1)
 	DCONFFILE="/etc/dconf/db/${_db}/${_settingFile}"
 	DBDIR="/etc/dconf/db/${_db}"
 
@@ -32,11 +34,11 @@ function dconf_settings {
 		echo "[${_path}]" >> ${DCONFFILE}
 		echo "${_key}=${_value}" >> ${DCONFFILE}
 	else
-		if grep -q "^(?!#)${_key}" ${SETTINGSFILES[@]}
+		if grep -q "^(?!#)${_key}" "${SETTINGSFILES[@]}"
 		then
-			sed -i "s/${_key}\s*=\s*.*/${_key}=${_value}/g" ${SETTINGSFILES[@]}
+			sed -i "s/${_key}\s*=\s*.*/${_key}=${_value}/g" "${SETTINGSFILES[@]}"
 		else
-			sed -i "\|\[${_path}]|a\\${_key}=${_value}" ${SETTINGSFILES[@]}
+			sed -i "\|\[${_path}]|a\\${_key}=${_value}" "${SETTINGSFILES[@]}"
 		fi
 	fi
 
