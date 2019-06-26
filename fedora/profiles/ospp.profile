@@ -217,3 +217,4 @@ selections:
     - configure_bind_crypto_policy
     - configure_crypto_policy
     - chronyd_no_chronyc_network
+    - chronyd_client_only
