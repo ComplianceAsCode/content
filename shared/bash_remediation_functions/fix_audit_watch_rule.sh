@@ -60,7 +60,7 @@ then
 # If rule isn't defined, add '/etc/audit/rules.d/$key.rules' to list of files for inspection.
 elif [ "$tool" == 'augenrules' ]
 then
-	readarray matches < <(grep -P "[\s]*-w[\s]+$path" /etc/audit/rules.d/*.rules)
+	readarray -t matches < <(grep -P "[\s]*-w[\s]+$path" /etc/audit/rules.d/*.rules)
 
 	# For each of the matched entries
 	for match in "${matches[@]}"

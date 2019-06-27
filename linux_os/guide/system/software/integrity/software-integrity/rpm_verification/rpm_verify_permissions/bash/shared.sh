@@ -9,7 +9,7 @@ declare -A SETPERMS_RPM_DICT
 
 # Create a list of files on the system having permissions different from what
 # is expected by the RPM database
-readarray FILES_WITH_INCORRECT_PERMS < <(rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)=="M") print $NF }')
+readarray -t FILES_WITH_INCORRECT_PERMS < <(rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)=="M") print $NF }')
 
 for FILE_PATH in "${FILES_WITH_INCORRECT_PERMS[@]}"
 do
