@@ -22,23 +22,24 @@ function dconf_settings {
 	# Check for setting in any of the DConf db directories
 	# If files contain ibus or distro, ignore them.
 	# The assignment assumes that individual filenames don't contain :
-	readarray SETTINGSFILES < <(grep -r "\[${_path}]" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1)
+	readarray -t SETTINGSFILES < <(grep -r "\\[${_path}\\]" "/etc/dconf/db/" | grep -v "distro\\|ibus" | cut -d":" -f1)
 	DCONFFILE="/etc/dconf/db/${_db}/${_settingFile}"
 	DBDIR="/etc/dconf/db/${_db}"
 
 	mkdir -p "${DBDIR}"
 
-	if [[ -z "${SETTINGSFILES[@]}" ]]
+	if [ ${#SETTINGSFILES[@]} -eq 0 ]
 	then
 		[ ! -z ${DCONFFILE} ] || $(echo "" >> ${DCONFFILE})
-		echo "[${_path}]" >> ${DCONFFILE}
-		echo "${_key}=${_value}" >> ${DCONFFILE}
+		printf '%s\n' "[${_path}]" >> ${DCONFFILE}
+		printf '%s=%s\n' "${_key}" "${_value}" >> ${DCONFFILE}
 	else
-		if grep -q "^(?!#)${_key}" "${SETTINGSFILES[@]}"
+		escaped_value="$(sed -e 's/\\/\\\\/g' <<< "$_value")"
+		if grep -q "^\\s*${_key}" "${SETTINGSFILES[@]}"
 		then
-			sed -i "s/${_key}\s*=\s*.*/${_key}=${_value}/g" "${SETTINGSFILES[@]}"
+			sed -i "s/\\s*${_key}\\s*=\\s*.*/${_key}=${escaped_value}/g" "${SETTINGSFILES[@]}"
 		else
-			sed -i "\|\[${_path}]|a\\${_key}=${_value}" "${SETTINGSFILES[@]}"
+			sed -i "\\|\\[${_path}\\]|a\\${_key}=${escaped_value}" "${SETTINGSFILES[@]}"
 		fi
 	fi
 
@@ -63,7 +64,7 @@ function dconf_lock {
 	fi
 
 	# Check for setting in any of the DConf db directories
-	LOCKFILES=$(grep -r "^/${_key}/${_setting}$" "/etc/dconf/db/" | grep -v "distro\|ibus" | cut -d":" -f1)
+	LOCKFILES=$(grep -r "^/${_key}/${_setting}$" "/etc/dconf/db/" | grep -v "distro\\|ibus" | cut -d":" -f1)
 	LOCKSFOLDER="/etc/dconf/db/${_db}/locks"
 
 	mkdir -p "${LOCKSFOLDER}"
@@ -75,4 +76,3 @@ function dconf_lock {
 
 	dconf update
 }
-
