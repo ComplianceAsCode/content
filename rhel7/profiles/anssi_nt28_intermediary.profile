@@ -176,6 +176,9 @@ selections:
     # Access restriction to the dmesg buffer
     - sysctl_kernel_dmesg_restrict
 
+    # Disallow kernel profiling by unprivileged users
+    - sysctl_kernel_perf_event_paranoid
+
     # Restricts the use of the perf system
     # kernel.perf_event_paranoid = 2
     # kernel.perf_event_max_sample_rate = 1

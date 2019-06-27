@@ -42,6 +42,7 @@ selections:
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_kexec_load_disabled
     - sysctl_kernel_dmesg_restrict
+    - sysctl_kernel_perf_event_paranoid
     - dconf_db_up_to_date
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_delay
