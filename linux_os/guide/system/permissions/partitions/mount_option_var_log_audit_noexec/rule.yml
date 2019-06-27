@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Add noexec Option to /var/log/audit'
+
+description: |-
+    The <tt>noexec</tt> mount option can be used to prevent binaries
+    from being executed out of <tt>/var/log/audit</tt>.
+    {{{ describe_mount(option="noexec", part="/var/log/audit") }}}
+
+rationale: |-
+    Allowing users to execute binaries from directories containing audit log files
+    such as <tt>/var/log/audit</tt> should never be necessary in normal operation and
+    can expose the system to potential compromise.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82975-4
+
+references:
+    nist: CM-7
+    nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
+
+platform: machine
