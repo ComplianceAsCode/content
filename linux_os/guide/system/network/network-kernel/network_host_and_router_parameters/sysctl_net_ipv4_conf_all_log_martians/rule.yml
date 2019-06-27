@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Configure Kernel Parameter to Log Martian Packets'
+title: 'Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.conf.all.log_martians", value="1") }}}'
 
@@ -17,6 +17,7 @@ severity: unknown
 identifiers:
     cce@rhel6: 27066-0
     cce@rhel7: 80160-5
+    cce@rhel8: 81018-4
 
 references:
     anssi: NT28(R22)

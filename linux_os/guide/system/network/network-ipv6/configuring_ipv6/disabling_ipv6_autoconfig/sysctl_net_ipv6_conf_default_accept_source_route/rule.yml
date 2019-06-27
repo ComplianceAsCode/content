@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,rhv4
 
-title: 'Configure Kernel Parameter for Accepting Source-Routed Packets for Interfaces By Default'
+title: 'Disable Kernel Parameter for Accepting Source-Routed Packets on IPv6 Interfaces by Default'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_source_route", value="0") }}}'
 
@@ -19,7 +19,9 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 81014-3
     cce@rhel7: 80355-1
+    cce@rhel8: 81015-0
 
 references:
     anssi: NT28(R22)

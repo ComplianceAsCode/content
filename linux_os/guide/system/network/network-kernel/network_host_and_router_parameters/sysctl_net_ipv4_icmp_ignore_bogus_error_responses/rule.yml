@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Configure Kernel Parameter to Ignore Bogus ICMP Error Responses'
+title: 'Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.icmp_ignore_bogus_error_responses", value="1") }}}'
 
@@ -15,6 +15,7 @@ severity: unknown
 identifiers:
     cce@rhel6: 26993-6
     cce@rhel7: 80166-2
+    cce@rhel8: 81023-4
 
 references:
     anssi: NT28(R22)

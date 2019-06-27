@@ -1,15 +1,21 @@
 documentation_complete: true
 
-title: 'Disallow creating hardlinks to a file you not own'
+title: 'Enable Kernel Parameter to Enforce DAC on Hardlinks'
 
 description: '{{{ describe_sysctl_option_value(sysctl="fs.protected_hardlinks", value="1") }}}'
 
 rationale: |-
-    Disallowing such hardlink mitigate vulnerabilities based on insecure file system
-    accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of
-    <tt>open()</tt> or <tt>creat()</tt>.
+    By enabling this kernel parameter, users can no longer create soft or hard links to
+    files which they do not own. Disallowing such hardlinks mitigate vulnerabilities
+    based on insecure file system accessed by privileged programs, avoiding an
+    exploitation vector exploiting unsafe use of <tt>open()</tt> or <tt>creat()</tt>.
 
 severity: unknown
+
+references:
+   cce@rhel6: 81025-9
+   cce@rhel7: 81026-7
+   cce@rhel8: 81027-5
 
 references:
     anssi: NT28(R23)

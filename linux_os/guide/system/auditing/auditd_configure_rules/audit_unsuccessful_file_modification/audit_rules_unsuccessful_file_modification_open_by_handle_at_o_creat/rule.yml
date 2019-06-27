@@ -1,20 +1,23 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Record Unauthorized Creation Attempts to Files - open_by_handle_at O_CREAT'
+title: 'Record Unsuccessful Creation Attempts to Files - open_by_handle_at O_CREAT'
 
 
 description: |-
     The audit system should collect unauthorized file accesses for
     all users and root. The <tt>open_by_handle_at</tt> syscall can be used to create new files
     when O_CREAT flag is specified.
+
     The following auidt rules will asure that unsuccessful attempts to create a
     file via <tt>open_by_handle_at</tt> syscall are collected.
+
     If the <tt>auditd</tt> daemon is configured to use the <tt>augenrules</tt>
     program to read audit rules during daemon startup (the default), add the
     rules below to a file with suffix <tt>.rules</tt> in the directory
     <tt>/etc/audit/rules.d</tt>.
+
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the rules below to
     <tt>/etc/audit/audit.rules</tt> file.
@@ -22,6 +25,7 @@ description: |-
     -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
     -a always,exit -F arch=b32 -S open_by_handle_at -F a2&amp;0100 -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
     </pre>
+
     If the system is 64 bit then also add the following lines:
     <pre>
     -a always,exit -F arch=b64 -S open_by_handle_at -F a2&amp;0100 -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-create
@@ -35,6 +39,8 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 81116-6
+    cce@rhel7: 81117-4
     cce@rhel8: 80965-7
 
 references:

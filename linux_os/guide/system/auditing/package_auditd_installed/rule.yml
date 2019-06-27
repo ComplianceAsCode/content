@@ -1,12 +1,17 @@
 documentation_complete: true
 
-title: 'install the auditd service'
+title: 'Ensure the audit Subsystem is Installed'
 
 description: 'The auditd service should be installed.'
 
 rationale: 'The auditd service is an access monitoring and accounting daemon, watching system calls to audit any access, in comparision with potential local access control policy such as SELinux policy.'
 
 severity: medium
+
+identifiers:
+    cce@rhel6: 81041-6
+    cce@rhel7: 81042-4
+    cce@rhel8: 81043-2
 
 references:
     anssi: NT28(R50)

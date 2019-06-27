@@ -10,12 +10,18 @@ description: |-
     the Red Hat GPG key must properly be installed. To install the Red Hat GPG
     key, run:
     <pre>$ sudo subscription-manager register</pre>
+
     If the system is not connected to the Internet or an RHN Satellite, then
     install the Red Hat GPG key from trusted media such as the Red Hat
     installation CD-ROM or DVD. Assuming the disc is mounted in
     <tt>/media/cdrom</tt>, use the following command as the root user to import
     it into the keyring:
     <pre>$ sudo rpm --import /media/cdrom/RPM-GPG-KEY</pre>
+
+    Alternatively, the key may be pre-loaded during the RHEL installation. In
+    such cases, the key can be installed by running the following command:
+    <pre>sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-key-redhat-release</pre>
+
 
 rationale: |-
     Changes to software components can have significant effects on the overall
