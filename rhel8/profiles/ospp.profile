@@ -8,101 +8,126 @@ description: |-
     Operating Systems (Protection Profile Version 4.2).
 
 selections:
-
-    #
-    # Set the system's root password (required)
-    # Plaintext password is: server
-    # Refer to https://pykickstart.readthedocs.io/en/latest/commands.html#rootpw
-    # to see how to create an encrypted password for a different plaintext password
-    #rootpw --iscrypted $6$rhel6usgcb$aS6oPGXcPKp3OtFArSrhRwu6sN8q2.yEGY7AIwDOQd23YCtiz9c5mXbid1BzX9bmXTEZi.hCzTEXFosVBI5ng0
-
-    # This profile will restrict root login. Add a user that can login and
-    # change to root.
-    # Plaintext password is: admin123
-    #user --name=admin --groups=wheel --password=$6$Ga6ZnIlytrWpuCzO$q0LqT1USHpahzUafQM9jyHCY9BiE5/ahXLNWUMiVQnFGblu0WWGZ1e6icTaCGO4GNgZNtspp1Let/qpM7FMVB0 --iscrypted
-
-
-    #################################################################
-    ## SELinux Configuration
-    #################################################################
-
-    ## RHEL 8 CCE-80869-1: Ensure SELinux is Enforcing
-    - var_selinux_state=enforcing
-    - selinux_state
-
-    ## RHEL 8 CCE-80868-3: Configure SELinux Policy
-    - var_selinux_policy_name=targeted
-    - selinux_policytype
-
-
     #################################################################
     ## Bootloader Configuration
     #################################################################
 
-    ## TO DO:  GRUB SETTINGS
+    ## RHEL 8 CCE-80829-5: Set the UEFI Boot Loader Password
+    - grub2_uefi_password
 
-    # Specify how the bootloader should be installed (required)
-    # Plaintext password is: password  username is: root
-    # Refer to grub2-mkpasswd-pbkdf2 man page to see how to create an
-    # encrypted password for a different plaintext password.
-    #
-    # NOTE: If you plan to use containers from older distributions, you MAY
-    # remove vsyscall=none from the --append command since older glibc depends
-    # on having vsyscalls available.
-    #bootloader --location=mbr --append="boot=/dev/vda1 fips=1 audit=1 audit_backlog_limit=8192 slub_debug=P page_poison=1 pti=on vsyscall=none" --iscrypted --password=grub.pbkdf2.sha512.10000.3A8BA0AB351ADA8FAD49BC54A8730AD53F67EA1762E99DF4881FD2FF9CD2A361623DB0AA6FF31A8C0E9731EB60ACA8AE7B2E870BE5D2B9E2CA7DE2EC2A013B3D.4161020F9952809D4F0BF6E0B40795283673769E869B74C52EF2FBFE751A5B0F2B149B409922D6EB1073ABEC531696F92AA8B8A5A7CA2F575D3BBBDA0BFC1A98
+    #################################################################
+    ## Systemd Items
+    #################################################################
 
-    # Create primary system partitions (required for installs)
+    ## RHEL 8 CCE-80855-0: Require Authentication for Single User Mode
+    - require_singleuser_auth
+
+    ## RHEL 8 CCE-80826-1: Verify that Interactive Boot is Disabled
+    - grub2_disable_interactive_boot
+
+    ## RHEL 8 CCE-80785-9: Disable Ctrl-Alt-Del Reboot Activation
+    - disable_ctrlaltdel_reboot
+
+    ## RHEL 8 CCE-80784-2: Disable Ctrl-Alt-Del Burst Action
+    - disable_ctrlaltdel_burstaction
+
+    ## RHEL 8 CCE-80876-6: Disable debug-shell SystemD Service
+    - service_debug-shell_disabled
+
+    # TODO: Storage=none in /etc/systemd/coredump.conf
+    # TODO: ProcessSizeMax=0 in  /etc/systemd/coredump.conf
+    # TODO: systemctl mask systemd-coredump.socket
+
+    #################################################################
+    ## Partitioning
+    #################################################################
+
     #part /boot --fstype=xfs --size=512 --fsoptions="nodev,nosuid"
 
+    ## RHEL 8 CCE-82941-6: Add nodev Option to /boot
+    - mount_option_boot_nodev
+
+    ## RHEL 8 CCE-81033-3: Add nosuid Option to /boot
+    - mount_option_boot_nosuid
+
+    #logvol /home --fstype=xfs --name=home --vgname=VolGroup --size=1024 --fsoptions="nodev,nosuid"
+
     ## RHEL 8 CCE-81044-0: Ensure /home Located On Separate Partition
-    ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4484
-    ##  unclear if partition requirements still relevant
     - partition_for_home
 
-    ## RHEL 8 CCE-81050-7: Add nosuide Option to /home
+    ## RHEL 8 CCE-81048-1: Add nodev Option to /home
+    - mount_option_home_nodev
+
+    ## RHEL 8 CCE-81050-7: Add nosuid Option to /home
     - mount_option_home_nosuid
 
-    ## RHEL 8 CCE-80852-7: Ensure /var Located on Separate Partition
-    ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4486
-    ##  unclear if partition requirements still exist
+    ## RHEL 8 CCE-81126-5: Add nodev Option to /tmp
+    - mount_option_tmp_nodev
+
+    ## RHEL 8 CCE-81127-3: Add noexec Option to /tmp
+    - mount_option_tmp_noexec
+
+    ## RHEL 8 CCE-81128-1: Add nosuid Option to /tmp
+    - mount_option_tmp_nosuid
+
+    # logvol /var --fstype=xfs --name=var --vgname=VolGroup --size=2048 --fsoptions="nodev"
+
+    ## RHEL 8 CCE-80852-7: Ensure /var Located On Separate Partition
     - partition_for_var
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4489
-    #logvol /var --fstype=xfs --name=var --vgname=VolGroup --size=2048 --fsoptions="nodev"
+    ## RHEL 8 CCE-81013-5: Add nodev Option to /var
+    - mount_option_var_nodev
 
-    ## RHEL 8 CCE-80853-5: Ensure /var/log Located on Separate Partition
+    # logvol /var/log --fstype=xfs --name=log --vgname=VolGroup --size=1024 --fsoptions="nodev,nosuid,noexec"
+
+    ## RHEL 8 CCE-80853-5: Ensure /var/log Located On Separate Partition
     - partition_for_var_log
 
-    ## /var/log nosuid
-    ## /var/log noexec
+    ## RHEL 8 CCE-81079-6: Add nodev Option to /var/log
+    - mount_option_var_log_nodev
 
-    ## RHEL 8 CCE-80854-3: Ensure /var/log/audit Located on Separate Partition
+    ## RHEL 8 CCE-82008-4: Add noexec Option to /var/log
+    - mount_option_var_log_noexec
+
+    ## RHEL 8 CCE-81016-8: Add nosuid Option to /var/log
+    - mount_option_var_log_nosuid
+
+    # logvol /var/log/audit --fstype=xfs --name=audit --vgname=VolGroup --size=512 --fsoptions="nodev,nosuid,noexec"
+
+    ## RHEL 8 CCE-80854-3: Ensure /var/log/audit Located On Separate Partition
     - partition_for_var_log_audit
 
-    # audit nosuid
-    # audit noexec
+    ## RHEL 8 CCE-81095-2: Add nodev Option to /var/log/audit
+    - mount_option_var_log_audit_nodev
+
+    ## RHEL 8 CCE-82975-4: Add noexec Option to /var/log/audit
+    - mount_option_var_log_audit_noexec
+
+    ## RHEL 8 CCE-82921-8: Add nosuid Option to /var/log/audit
+    - mount_option_var_log_audit_nosuid
+
+    # logvol /var/tmp --fstype=xfs --name=vartmp --vgname=VolGroup --size=1024 --fsoptions="nodev,nosuid,noexec"
+
+    ## RHEL 8 CCE-82846-7: Ensure /var/tmp Located On Separate Partition
+    - partition_for_var_tmp
 
     ## RHEL 8 CCE-81053-1: Add nodev Option to /var/tmp
     - mount_option_var_tmp_nodev
 
-    ## audit nosuid
-    ## audit noexec
+    ## RHEL 8 CCE-81129-9: Add noexec Option to /var/tmp
+    - mount_option_var_tmp_noexec
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4490
-    ##  do we need a swap partition (for security reasons)?
-    #logvol swap --name=lv_swap --vgname=VolGroup --size=2016
+    ## RHEL 8 CCE-81131-5: Add nosuid Option to /var/tmp
+    - mount_option_var_tmp_nosuid
 
-    ## RHEL 8 CCE-81054-9: Add nodev Option to Non-Root Local Partitions
-    - mount_option_nodev_nonroot_local_partitions
+    ## RHEL 8 CCE-80837-8: Add nodev Option to /dev/shm
+    - mount_option_dev_shm_nodev
 
+    ## RHEL 8 CCE-80838-6: Add noexec Option to /dev/shm
+    - mount_option_dev_shm_noexec
 
-    ## Setup a couple mountpoints by hand to ensure correctness
-    #touch /etc/fstab
-    ## CCE-26435-8: Ensure /tmp Located On Separate Partition
-    #echo -e "tmpfs\t/tmp\t\t\t\ttmpfs\tdefaults,mode=1777,noexec,nosuid,nodev,strictatime,size=512M\t0 0" >> /etc/fstab
-
-    ## Make sure /dev/shm is restricted
-    #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,noexec,nosuid,nodev,strictatime\t0 0" >> /etc/fstab
+    ## RHEL 8 CCE-80839-4: Add nosuid Option to /dev/shm
+    - mount_option_dev_shm_nosuid
 
 
     ################################################
@@ -784,25 +809,6 @@ selections:
     
     # TO DO: https://github.com/ComplianceAsCode/content/issues/4458
     ## echo -e "install ticp /bin/true" >> $CONFIG
-
-    #################################################################
-    ## Systemd Items
-    #################################################################
-
-    ## RHEL 8 CCE-80785-9: Disable Ctrl-Alt-Del Reboot Activation
-    - disable_ctrlaltdel_reboot
-
-    ## RHEL 8 CCE-80784-2: Disable Ctrl-Alt-Del Burst Action
-    - disable_ctrlaltdel_burstaction
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4459
-    ## systemctl mask debug-shell.service
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4460
-    # sed -i "/^#SystemMaxUse/s/#SystemMaxUse=/SystemMaxUse=200/" /etc/systemd/journald.conf
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4461
-    # systemctl mask systemd-resolved.service
 
     #################################################################
     ## Configure Hostname
