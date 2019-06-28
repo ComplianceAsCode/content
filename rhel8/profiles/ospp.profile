@@ -770,8 +770,8 @@ selections:
     ## RHEL 8 CCE-81031-7: Disable Mounting of cramfs
     - kernel_module_cramfs_disabled
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4456
-    ## echo -e "install atm /bin/true" >> $CONFIG
+    ## Disable ATM Support
+    - kernel_module_atm_disabled
 
     ## RHEL 8 CCE-80832-9: Disable Bluetooth Kernel Module
     - kernel_module_bluetooth_disabled
