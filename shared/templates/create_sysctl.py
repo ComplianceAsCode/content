@@ -1,6 +1,6 @@
 import re
 
-from template_common import FilesGenerator, UnknownTargetError
+from template_common import FilesGenerator, UnknownTargetError, CSVLineError
 
 
 class SysctlGenerator(FilesGenerator):
@@ -44,6 +44,8 @@ class SysctlGenerator(FilesGenerator):
             data_type = "int"
         elif len(serviceinfo) == 3:
             sysctl_var, sysctl_val, data_type = serviceinfo
+        else:
+            raise CSVLineError()
 
         # convert variable name to a format suitable for 'id' tags
         sysctl_var_id = re.sub('[-\.]', '_', sysctl_var)

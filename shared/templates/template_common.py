@@ -19,6 +19,10 @@ class ActionType:
     BUILD = 3
 
 
+class CSVLineError(Exception):
+    pass
+
+
 class UnknownTargetError(ValueError):
     def __init__(self, lang):
         super(UnknownTargetError, self).__init__(
@@ -163,6 +167,11 @@ class FilesGenerator(object):
                     # target is invalid.
                     if e.lang not in TEMPLATED_LANGUAGES:
                         sys.stderr.write(str(e) + "\n")
+            except CSVLineError as e:
+                sys.stderr.write("Unexpected CSV line format in "
+                                 "file {}: \"{}\"\n".format(filename, ",".join(csv_line)))
+
+
 
     @abstractmethod
     def csv_format(self):
