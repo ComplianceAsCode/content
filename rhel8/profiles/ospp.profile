@@ -307,6 +307,239 @@ selections:
     ## echo -e "install ticp /bin/true" >> $CONFIG
 
 
+    #################################################################
+    ## Audit
+    #################################################################
+
+    ## RHEL 8 CCE-80872-5: Enable auditd Service
+    - service_auditd_enabled
+
+    #################################################################
+    ## 10-base-config.rules
+    #################################################################
+
+    # TODO: -D
+
+    # TODO: -b 8192
+
+    # TODO: --backlog_wait_time 60000
+
+    # TODO: -f 1
+
+    #################################################################
+    ## 11-loginuid.rules
+    #################################################################
+
+    # TODO: --loginuid-immutable
+
+    #################################################################
+    ## 30-ospp-v42.rules
+    #################################################################
+
+    ## RHEL 8 CCE-80962-4: Record Unsuccessful Creation Attempts to Files - openat O_CREAT
+    - audit_rules_unsuccessful_file_modification_openat_o_creat
+
+    ## RHEL 8 CCE-80965-7: Record Unsuccessful Creation Attempts to Files - open_by_handle_at O_CREAT
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
+
+    ## RHEL 8 CCE-80968-1: Record Unsuccessful Creation Attempts to Files - open O_CREAT
+    - audit_rules_unsuccessful_file_modification_open_o_creat
+
+    ## RHEL 8 CCE-80751-1: Record Unsuccessful Access Attempts to Files - creat
+    - audit_rules_unsuccessful_file_modification_creat
+
+    ## RHEL 8 CCE-80963-2: Record Unsuccessful Modification Attempts to Files - openat O_TRUNC
+    - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
+
+    ## RHEL 8 CCE-80966-5: Record Unsuccessful Modification Attempts to Files - open_by_handle_at O_TRUNC
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
+
+    ## RHEL 8 CCE-80969-9: Record Unsuccessful Modification Attempts to Files - open O_TRUNC
+    - audit_rules_unsuccessful_file_modification_open_o_trunc_write
+
+    ## RHEL 8 CCE-80756-0: Record Unsuccessful Access Attempts to Files - truncate
+    - audit_rules_unsuccessful_file_modification_truncate
+
+    ## RHEL 8 CCE-80752-9: Record Unsuccessful Access Attempts to Files - ftruncate
+    - audit_rules_unsuccessful_file_modification_ftruncate
+
+    ## RHEL 8 CCE-80753-7: Record Unsuccessful Access Attempts to Files - open
+    - audit_rules_unsuccessful_file_modification_open
+
+    ## RHEL 8 CCE-80754-5: Record Unsuccessful Access Attempts to Files - openat
+    - audit_rules_unsuccessful_file_modification_openat
+
+    ## RHEL 8 CCE-80755-2: Record Unsuccessful Access Attempts to Files - open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+
+    ## RHEL 8 CCE-80971-5: Record Unsuccessful Delete Attempts to Files - unlink
+    - audit_rules_unsuccessful_file_modification_unlink
+
+    ## RHEL 8 CCE-80972-3: Record Unsuccessful Delete Attempts to Files - unlinkat
+    - audit_rules_unsuccessful_file_modification_unlinkat
+
+    ## RHEL 8 CCE-80973-1: Record Unsuccessful Delete Attempts to Files - rename
+    - audit_rules_unsuccessful_file_modification_rename
+
+    ## RHEL 8 CCE-80974-9: Record Unsuccessful Delete Attempts to Files - renameat
+    - audit_rules_unsuccessful_file_modification_renameat
+
+    ## RHEL 8 CCE-80975-6: Record Unsuccessul Permission Changes to Files - chmod
+    - audit_rules_unsuccessful_file_modification_chmod
+
+    ## RHEL 8 CCE-80977-2: Record Unsuccessul Permission Changes to Files - fchmod
+    - audit_rules_unsuccessful_file_modification_fchmod
+
+    ## RHEL 8 CCE-80976-4: Record Unsuccessul Permission Changes to Files - fchmodat
+    - audit_rules_unsuccessful_file_modification_fchmodat
+
+    ## RHEL 8 CCE-80983-0: Record Unsuccessul Permission Changes to Files - setxattr
+    - audit_rules_unsuccessful_file_modification_setxattr
+
+    ## RHEL 8 CCE-80981-4: Record Unsuccessul Permission Changes to Files - lsetxattr
+    - audit_rules_unsuccessful_file_modification_lsetxattr
+
+    ## RHEL 8 CCE-80979-8: Record Unsuccessul Permission Changes to Files - fsetxattr
+    - audit_rules_unsuccessful_file_modification_fsetxattr
+
+    ## RHEL 8 CCE-80982-2: Record Unsuccessul Permission Changes to Files - removexattr
+    - audit_rules_unsuccessful_file_modification_removexattr
+
+    ## RHEL 8 CCE-80980-6: Record Unsuccessul Permission Changes to Files - lremovexattr
+    - audit_rules_unsuccessful_file_modification_lremovexattr
+
+    ## RHEL 8 CCE-80978-0: Record Unsuccessul Permission Changes to Files - fremovexattr
+    - audit_rules_unsuccessful_file_modification_fremovexattr
+
+    ## RHEL 8 CCE-80987-1: Record Unsuccessul Ownership Changes to Files - lchown
+    - audit_rules_unsuccessful_file_modification_lchown
+
+    ## RHEL 8 CCE-80986-3: Record Unsuccessul Ownership Changes to Files - fchown
+    - audit_rules_unsuccessful_file_modification_fchown
+
+    ## RHEL 8 CCE-80984-8: Record Unsuccessul Ownership Changes to Files - chown
+    - audit_rules_unsuccessful_file_modification_chown
+
+    ## RHEL 8 CCE-80985-5: Record Unsuccessul Ownership Changes to Files - fchownat
+    - audit_rules_unsuccessful_file_modification_fchownat
+
+    ## RHEL 8 CCE-80931-9: Record Events that Modify User/Group Information via openat syscall - /etc/passwd
+    - audit_rules_etc_passwd_openat
+
+    ## RHEL 8 CCE-80932-7: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/passwd
+    - audit_rules_etc_passwd_open_by_handle_at
+    
+    ## RHEL 8 CCE-80930-1: Record Events that Modify User/Group Information via open syscall - /etc/passwd
+    - audit_rules_etc_passwd_open
+
+    ## RHEL 8 CCE-80958-2: Record Events that Modify User/Group Information via openat syscall - /etc/shadow
+    - audit_rules_etc_shadow_openat
+    
+    ## RHEL 8 CCE-80957-4: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/shadow
+    - audit_rules_etc_shadow_open_by_handle_at
+
+    ## RHEL 8 CCE-80956-6: Record Events that Modify User/Group Information via open syscall - /etc/shadow
+    - audit_rules_etc_shadow_open
+
+    ## RHEL 8 CCE-80928-5: Record Events that Modify User/Group Information via openat syscall - /etc/group
+    - audit_rules_etc_group_openat
+
+    ## RHEL 8 CCE-80929-3: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/group
+    - audit_rules_etc_group_open_by_handle_at
+
+    ## RHEL 8 CCE-80927-7: Record Events that Modify User/Group Information via open syscall - /etc/group
+    - audit_rules_etc_group_open
+
+    ## RHEL 8 CCE-80961-6: Record Events that Modify User/Group Information via openat syscall - /etc/gshadow
+    - audit_rules_etc_gshadow_openat
+
+    ## RHEL 8 CCE-80960-8: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/gshadow
+    - audit_rules_etc_gshadow_open_by_handle_at
+
+    ## RHEL 8 CCE-80959-0: Record Events that Modify User/Group Information via open syscall - /etc/gshadow
+    - audit_rules_etc_gshadow_open
+
+    ## RHEL 8 CCE-80740-4" Ensure auditd Collects Information on the Use of Privileged Commands - unix_chkpwd
+    - audit_rules_privileged_commands_unix_chkpwd
+
+    ## RHEL 8 CCE-80990-5: Ensure auditd Collects Information on the Use of Privileged Commands - usernetctl
+    - audit_rules_privileged_commands_usernetctl
+
+    ## RHEL 8 CCE-80741-2: Ensure auditd Collects Information on the Use of Privileged Commands - userhelper
+    - audit_rules_privileged_commands_userhelper
+
+    ## RHEL 8 CCE-80933-5: Record Any Attempts to Run seunshare
+    - audit_rules_execution_seunshare
+
+    ## RHEL 8 CCE-80989-7: Ensure auditd Collects Information on the Use of Privileged Commands - mount
+    - audit_rules_privileged_commands_mount
+
+    ## RHEL 8 CCE-80729-7: Ensure auditd Collects Information on the Use of Privileged Commands - newgrp
+    - audit_rules_privileged_commands_newgrp
+
+    ## RHEL 8 CCE-80992-1: Ensure auditd Collects Information on the Use of Privileged Commands - newuidmap
+    - audit_rules_privileged_commands_newuidmap
+
+    ## RHEL 8 CCE-80728-9: Ensure auditd Collects Information on the Use of Privileged Commands - gpasswd
+    - audit_rules_privileged_commands_gpasswd
+
+    ## RHEL 8 CCE-80991-3: Ensure auditd Collects Information on the Use of Privileged Commands - newgidmap
+    - audit_rules_privileged_commands_newgidmap
+
+    ## RHEL 8 CCE-80739-6: Ensure auditd Collects Information on the Use of Privileged Commands - umount
+    - audit_rules_privileged_commands_umount
+
+    ## RHEL 8 CCE-80731-3: Ensure auditd Collects Information on the Use of Privileged Commands - passwd
+    - audit_rules_privileged_commands_passwd
+
+    ## RHEL 8 CCE-80727-1: Ensure auditd Collects Information on the Use of Privileged Commands - crontab
+    - audit_rules_privileged_commands_crontab
+
+    ## RHEL 8 CCE-80988-9: Ensure auditd Collects Information on the Use of Privileged Commands - at
+    - audit_rules_privileged_commands_at
+
+    ## RHEL 8 CCE-80941-8: Record Access Events to Audit Log Directory
+    - directory_access_var_log_audit
+
+    #################################################################
+    ## 43-module-load.rules
+    #################################################################
+
+    ## RHEL 8 CCE-80713-1: Ensure auditd Collects Information on Kernel Module Loading - init_module
+    - audit_rules_kernel_module_loading_init
+
+    ## RHEL 8 CCE-80712-3: Ensure auditd Collects Information on Kernel Module Loading - finit_module
+    - audit_rules_kernel_module_loading_finit
+
+    ## RHEL 8 CCE-80711-5: Ensure auditd Collects Information on Kernel Module Loading - delete_module
+    - audit_rules_kernel_module_loading_delete
+
+    #################################################################
+    ## Audit Configuration
+    #################################################################
+
+    # TODO: local_events=YES
+
+    # TODO: write_logs=YES
+
+    # TODO: log_format=ENRICHED
+
+    ## RHEL 8 CCE-80680-2: Configure auditd flush priority
+    - auditd_data_retention_flush
+    - var_auditd_flush=incremental_async
+
+    # TODO: freq=50
+
+    # TODO: name_format=HOSTNAME
+
+    #################################################################
+    ## Audispd plugins
+    #################################################################
+
+    ## RHEL 8 CCE-80677-8: Configure auditd to use audispd's syslog plugin
+    - auditd_audispd_syslog_plugin_activated
+
+
     ################################################
     ## MUST INSTALL PACKAGES IN BASE MODE
 
@@ -389,420 +622,6 @@ selections:
     #PATH=/bin:/usr/bin:/sbin:/usr/sbin:$PATH
 
 
-    #################################################################
-    ##
-    ## Audit Successful/Unsuccessful File Creation
-    ## (open with O_CREAT)
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80962-4: Record Unsuccessful Creation Attempts to Files - openat O_CREAT
-    - audit_rules_unsuccessful_file_modification_openat_o_creat
-
-    ## TO DO: Record Successful Creation Attempts to Files - openat O_CREAT
-    ##  https://github.com/ComplianceAsCode/content/issues/4557
-    #-a always,exit -F arch=b32 -S openat -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-    #-a always,exit -F arch=b64 -S openat -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-
-    ## RHEL 8 CCE-80965-7: Record Unsuccessful Creation Attempts to Files - open_by_handle_at O_CREAT
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
-
-    ## TO DO: Record Successful Creation Attempts to Files - open_by_handle_at O_CREAT
-    ##  https://github.com/ComplianceAsCode/content/issues/4558
-    #-a always,exit -F arch=b32 -S open_by_handle_at -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-    #-a always,exit -F arch=b64 -S open_by_handle_at -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-
-    ## RHEL 8 CCE-80968-1: Record Unsuccessful Creation Attempts to Files - open O_CREAT
-    - audit_rules_unsuccessful_file_modification_open_o_creat
-
-    ## TO DO: Record Successful Creation Attempts to Files - open O_CREAT
-    ##  https://github.com/ComplianceAsCode/content/issues/4559
-    #-a always,exit -F arch=b32 -S open -F a1&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-    #-a always,exit -F arch=b64 -S open -F a1&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-
-    #################################################################
-    ##
-    ## Audit Successful/Unsuccessful File Modifications
-    ## (open for write or truncate with O_TRUNC_WRITE)
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80963-2: Record Unsuccessful Modification Attempts to Files - openat O_TRUNC
-    - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
-
-    ## TO DO: Record Successful Modification Attempts to Files - openat O_TRUNC
-    ##  https://github.com/ComplianceAsCode/content/issues/4561
-    #-a always,exit -F arch=b32 -S openat -F a2&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-    #-a always,exit -F arch=b64 -S openat -F a2&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-
-    ## RHEL 8 CCE-80966-5: Record Unsuccessful Modification Attempts to Files - open_by_handle_at O_TRUNC
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
-
-    ## TO DO: Record Successful Modification Attempts to Files - open_by_handle_at O_TRUNC
-    ##  https://github.com/ComplianceAsCode/content/issues/4562
-    #-a always,exit -F arch=b32 -S open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    #-a always,exit -F arch=b64 -S open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-
-    ## RHEL 8 CCE-80969-9: Record Unsuccessful Modification Attempts to Files - open O_TRUNC
-    - audit_rules_unsuccessful_file_modification_open_o_trunc_write
-
-    ## TO DO: Record Successful Modification Attempts to Files - open O_TRUNC
-    ##  https://github.com/ComplianceAsCode/content/issues/4560
-    #-a always,exit -F arch=b32 -S open -F a1&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-    #-a always,exit -F arch=b64 -S open -F a1&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-
-
-    #################################################################
-    ##
-    ## Audit Successful/Unsuccessful File Access
-    ## (any other opens)
-    ##
-    ## This has to go last.
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80753-7: Record Unsuccessful Access Attempts to Files - open
-    - audit_rules_unsuccessful_file_modification_open
-
-    ## TO DO: Record Successful Access Attempts to Files - open
-    ##  https://github.com/ComplianceAsCode/content/issues/4549
-    #-a always,exit -F arch=b32 -S open -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S open -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-
-    ## RHEL 8 CCE-80751-1: Record Unsuccessful Access Attempts to Files - creat
-    - audit_rules_unsuccessful_file_modification_creat
-
-    ## TO DO: Record Successful Access Attempts to Files - creat
-    ##  https://github.com/ComplianceAsCode/content/issues/4552
-    #-a always,exit -F arch=b32 -S creat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S creat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-
-    ## RHEL 8 CCE-80756-0: Record Unsuccessful Access Attempts to Files - truncate
-    - audit_rules_unsuccessful_file_modification_truncate
-
-    ## TO DO: Record Successful Access Attempts to Files - truncate
-    ##  https://github.com/ComplianceAsCode/content/issues/4553
-    #-a always,exit -F arch=b32 -S truncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S truncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-
-    ## RHEL 8 CCE-80752-9: Record Unsuccessful Access Attempts to Files - ftruncate
-    - audit_rules_unsuccessful_file_modification_ftruncate
-
-    ## TO DO: Record Successful Access Attempts to Files - ftruncate
-    ##  https://github.com/ComplianceAsCode/content/issues/4554
-    #-a always,exit -F arch=b32 -S ftruncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S ftruncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-
-    ## RHEL 8 CCE-80754-5: Record Unsuccessful Access Attempts to Files - openat
-    - audit_rules_unsuccessful_file_modification_openat
-
-    ## TO DO: Record Successful Access Attempts to Files - openat
-    ##  https://github.com/ComplianceAsCode/content/issues/4555
-    #-a always,exit -F arch=b32 -S openat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S openat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-
-    ## RHEL 8 CCE-80755-2: Record Unsuccessful Access Attempts to Files - open_by_handle_at
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at
-
-    ## TO DO: Record Successful Access Attempts to Files - open_by_handle_at
-    ##  https://github.com/ComplianceAsCode/content/issues/4556
-    #-a always,exit -F arch=b32 -S open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-
-    #################################################################
-    ##
-    ## Audit Successful/Unsuccessful File Delete
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80971-5: Record Unsuccessful Delete Attempts to Files - unlink
-    - audit_rules_unsuccessful_file_modification_unlink
-
-    ## TO DO: Record Successful Delete Attempts to Files - unlink
-    ##  https://github.com/ComplianceAsCode/content/issues/4549
-    #-a always,exit -F arch=b32 -S unlink -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S unlink -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-
-    ## RHEL 8 CCE-80972-3: Record Unsuccessful Delete Attempts to Files - unlinkat
-    - audit_rules_unsuccessful_file_modification_unlinkat
-
-    ## TO DO: Record Successful Delete Attempts to Files - unlinkat
-    ##  https://github.com/ComplianceAsCode/content/issues/4548
-    #-a always,exit -F arch=b32 -S unlinkat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S unlinkat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-
-    ## RHEL 8 CCE-80973-1: Record Unsuccessful Delete Attempts to Files - rename
-    - audit_rules_unsuccessful_file_modification_rename
-
-    ## TO DO: Record Successful Delete Attempts to Files - rename
-    ##  https://github.com/ComplianceAsCode/content/issues/4550
-    #-a always,exit -F arch=b32 -S rename -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S rename -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-
-    ## RHEL 8 CCE-80974-9: Record Unsuccessful Delete Attempts to Files - renameat
-    - audit_rules_unsuccessful_file_modification_renameat
-
-    ## TO DO: Record Successful Delete Attempts to Files - renameat
-    ##  https://github.com/ComplianceAsCode/content/issues/4551
-    #-a always,exit -F arch=b32 -S renameat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S renameat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-
-    #################################################################
-    ##
-    ## Audit Successful/Unsuccessful Permission Change
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80975-6: Record Unsuccessul Permission Changes to Files - chmod
-    - audit_rules_unsuccessful_file_modification_chmod
-
-    ## TO DO: Record Successful Permission Changes to Files - chmod
-    ##  https://github.com/ComplianceAsCode/content/issues/4533
-    #-a always,exit -F arch=b32 -S chmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S chmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80977-2: Record Unsuccessul Permission Changes to Files - fchmod
-    - audit_rules_unsuccessful_file_modification_fchmod
-
-    ## TO DO: Record Successful Permission Changes to Files - fchmod
-    ##  https://github.com/ComplianceAsCode/content/issues/4534
-    #-a always,exit -F arch=b32 -S fchmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80976-4: Record Unsuccessul Permission Changes to Files - fchmodat
-    - audit_rules_unsuccessful_file_modification_fchmodat
-
-    ## TO DO: Record Successful Permission Changes ot Files - fchmodat
-    ##  https://github.com/ComplianceAsCode/content/issues/4535
-    #-a always,exit -F arch=b32 -S fchmodat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchmodat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80983-0: Record Unsuccessul Permission Changes to Files - setxattr
-    - audit_rules_unsuccessful_file_modification_setxattr
-
-    ## TO DO: Record Successful Permission Changes ot Files - setxattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4536
-    #-a always,exit -F arch=b32 -S setxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S setxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80981-4: Record Unsuccessul Permission Changes to Files - lsetxattr
-    - audit_rules_unsuccessful_file_modification_lsetxattr
-
-    ## TO DO: Record Successful Permission Changes ot Files - lsetxattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4537
-    #-a always,exit -F arch=b32 -S lsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S lsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80979-8: Record Unsuccessul Permission Changes to Files - fsetxattr
-    - audit_rules_unsuccessful_file_modification_fsetxattr
-
-    ## TO DO: Record Successful Permission Changes ot Files - fsetxattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4538
-    #-a always,exit -F arch=b32 -S fsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80982-2: Record Unsuccessul Permission Changes to Files - removexattr
-    - audit_rules_unsuccessful_file_modification_removexattr
-
-    ## TO DO: Record Successful Permission Changes ot Files - removexattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4538
-    #-a always,exit -F arch=b32 -S removexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S removexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80980-6: Record Unsuccessul Permission Changes to Files - lremovexattr
-    - audit_rules_unsuccessful_file_modification_lremovexattr
-
-    ## TO DO: Record Successful Permission Changes ot Files - lremovexattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4539
-    #-a always,exit -F arch=b32 -S lremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S lremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80978-0: Record Unsuccessul Permission Changes to Files - fremovexattr
-    - audit_rules_unsuccessful_file_modification_fremovexattr
-
-    ## TO DO: Record Successful Permission Changes ot Files - fremovexattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4540
-    #-a always,exit -F arch=b32 -S fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    #################################################################
-    ##
-    ## Audit Successful/Unsuccessful Ownership Change
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80987-1: Record Unsuccessul Ownership Changes to Files - lchown
-    - audit_rules_unsuccessful_file_modification_lchown
-
-    ## TO DO: Record Successful Ownership Changes to Files - lchown
-    ##  https://github.com/ComplianceAsCode/content/issues/4519
-    #-a always,exit -F arch=b32 -S lchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S lchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80986-3: Record Unsuccessul Ownership Changes to Files - fchown
-    - audit_rules_unsuccessful_file_modification_fchown
-
-    ## TO DO: Record Successful Ownership Changes to Files - fchown
-    ##  https://github.com/ComplianceAsCode/content/issues/4521
-    #-a always,exit -F arch=b32 -S fchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80984-8: Record Unsuccessul Ownership Changes to Files - chown
-    - audit_rules_unsuccessful_file_modification_chown
-
-    ## TO DO: Record Successful Ownership Changes to Files - chown
-    ##  https://github.com/ComplianceAsCode/content/issues/4522
-    #-a always,exit -F arch=b32 -S chown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S chown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-    ## RHEL 8 CCE-80985-5: Record Unsuccessul Ownership Changes to Files - fchownat
-    - audit_rules_unsuccessful_file_modification_fchownat
-
-    ## TO DO: Record Successful Ownership Changes to Files - fchownat
-    ##  https://github.com/ComplianceAsCode/content/issues/4523
-    #-a always,exit -F arch=b32 -S fchownat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchownat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
-
-    #################################################################
-    ##
-    ## Audit User Add, Delete, Modify
-    ##
-    ## This is covered by PAM. However, someone could open a file
-    ## and directly create of modify a user, so we'll watch
-    ## passwd and shadow for writes.
-    ##
-    #################################################################
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4517
-    ## User add delete modify. This is covered by pam. However, someone could
-    ## open a file and directly create or modify a user, so we'll watch passwd and
-    ## shadow for writes
-    #-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&03 -F path=/etc/passwd -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&03 -F path=/etc/passwd -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b32 -S open -F a1&03 -F path=/etc/passwd -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b64 -S open -F a1&03 -F path=/etc/passwd -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b32 -S open -F a1&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
-    #-a always,exit -F arch=b64 -S open -F a1&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
-
-    #################################################################
-    ##
-    ## Audit User Enable and Disable
-    ##
-    ## These events are covered by PAM. No special audit rules
-    ## are required.
-    ##
-    #################################################################
-    
-
-    #################################################################
-    ##
-    ## Audit Group Add, Delete, and Modify
-    ##
-    ## These events are covered by PAM. However, someone could
-    ## open a file and directly create or modify a user or group, so
-    ## we'll watch the files directly for write activity.
-    ##
-    #################################################################
-    
-    ## RHEL 8 CCE-80758-6: Record Events that Modify User/Group Information - /etc/group
-    - audit_rules_usergroup_modification_group
-
-    ## RHEL 8 CCE-80759-4: Record Events that Modify User/Group Information - /etc/gshadow
-    - audit_rules_usergroup_modification_gshadow
-
-    ## RHEL 8 CCE-80761-0: Record Events that Modify User/Group Information - /etc/passwd
-    - audit_rules_usergroup_modification_passwd
-
-    ## RHEL 8 CCE-80762-8: Record Events that Modify User/Group Information - /etc/shadow
-    - audit_rules_usergroup_modification_shadow
-
-    #################################################################
-    ##
-    ## Audit Privileged Commands
-    ##
-    ## Use of special rights for config changes. This would be use
-    ## of setuid programs that relate to user accounts. This is not
-    ## all setuid apps because requirements are only for the ones
-    ## that affect system configuration.
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80988-9: Ensure auditd Collects Information on the Use of Privileged Commands - at
-    - audit_rules_privileged_commands_at
-
-    ## RHEL 8 CCE-80727-1: Ensure auditd Collects Information on the Use of Privileged Commands - crontab
-    - audit_rules_privileged_commands_crontab
-
-    ## RHEL 8 CCE-80728-9: Ensure auditd Collects Information on the Use of Privileged Commands - gpasswd
-    - audit_rules_privileged_commands_gpasswd
-
-    ## RHEL 8 CCE-80989-7: Ensure auditd Collects Information on the Use of Privileged Commands - mount
-    - audit_rules_privileged_commands_mount
-
-    ## RHEL 8 CCE-80991-3: Ensure auditd Collects Information on the Use of Privileged Commands - newgidmap
-    - audit_rules_privileged_commands_newgidmap
-
-    ## RHEL 8 CCE-80729-7: Ensure auditd Collects Information on the Use of Privileged Commands - newgrp
-    - audit_rules_privileged_commands_newgrp
-
-    ## RHEL 8 CCE-80992-1: Ensure auditd Collects Information on the Use of Privileged Commands - newuidmap
-    - audit_rules_privileged_commands_newuidmap
-
-    ## RHEL 8 CCE-80731-3: Ensure auditd Collects Information on the Use of Privileged Commands - passwd
-    - audit_rules_privileged_commands_passwd
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4513
-    #-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
-    
-    ## RHEL 8 CCE-80739-6: Ensure auditd Collects Information on the Use of Privileged Commands - umount
-    - audit_rules_privileged_commands_umount
-
-    ## RHEL 8 CCE-80740-4: Ensure auditd Collects Information on the Use of Privileged Commands - unix_chkpwd
-    - audit_rules_privileged_commands_unix_chkpwd
-
-    ## RHEL 8 CCE-80741-2: Ensure auditd Collects Information on the Use of Privileged Commands - userhelper
-    - audit_rules_privileged_commands_userhelper
-
-    ## RHEL 8 CCE-80990-5: Ensure auditd Collects Information on the Use of Privileged Commands - usernetctl
-    - audit_rules_privileged_commands_usernetctl
-
-
-    #################################################################
-    ##
-    ## Audit Attempts to Alter Logging Data
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80941-8: Record Access Events to Audit Log Directory
-    - directory_access_var_log_audit
-
-
-    #################################################################
-    ##
-    ## Audit Attempts to Alter Process & Session Ininitiation
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80742-0: Record Attempts to Alter Process and Session Initiation Information
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4505
-    ##  known bug, need to breakout OVAL into independent checks:
-    #   -a always,exit -F path=/var/log/wtmp -F perm=wa -F auid>=1000 -F auid!=unset -F key=session
-    #   -a always,exit -F path=/var/run/utmp -F perm=wa -F auid>=1000 -F auid!=unset -F key=session
-    #   -a always,exit -F path=/var/log/btmp -F perm=wa -F auid>=1000 -F auid!=unset -F key=session
-    - audit_rules_session_events
-
-    #################################################################
-    ##
-    ## Audit Attempts to Alter MAC Controls
-    ##
-    #################################################################
-
-    ## RHEL 8 CCE-80721-4: Record Events that Modify the System's Mandatory Access Controls
-    ##  TO DO: known but about syntax
-    ##          https://github.com/ComplianceAsCode/content/issues/4504
-    - audit_rules_mac_modification
 
     #################################################################
     ## Harden USB Guard
