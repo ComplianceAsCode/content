@@ -32,7 +32,7 @@
     dest: /etc/dconf/db/gdm.d/00-security-settings
     section: org/gnome/login-screen
     option: banner-message-text
-    value: string '{{ login_banner_text }}'
+    value: '{{ login_banner_text }}'
     create: yes
 
 - name: "Prevent user modification of the GNOME3 Login Warning Banner Text"
