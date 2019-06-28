@@ -9,11 +9,12 @@ description: |-
 
 selections:
     #################################################################
-    ## Bootloader Configuration
+    ## BOOT
     #################################################################
 
     ## RHEL 8 CCE-80829-5: Set the UEFI Boot Loader Password
     - grub2_uefi_password
+
 
     #################################################################
     ## Systemd Items
@@ -37,6 +38,7 @@ selections:
     # TODO: Storage=none in /etc/systemd/coredump.conf
     # TODO: ProcessSizeMax=0 in  /etc/systemd/coredump.conf
     # TODO: systemctl mask systemd-coredump.socket
+
 
     #################################################################
     ## Partitioning
@@ -129,8 +131,9 @@ selections:
     ## RHEL 8 CCE-80839-4: Add nosuid Option to /dev/shm
     - mount_option_dev_shm_nosuid
 
+
     #################################################################
-    ## Kernel Configuration
+    ## KERNEL CONFIGURATION
     #################################################################
 
     #################################################################
@@ -164,6 +167,7 @@ selections:
     # TODO:
     # boot=/dev/something
 
+
     #################################################################
     ## Kernel Security Settings
     #################################################################
@@ -195,6 +199,7 @@ selections:
     ## RHEL 8 CCE-82934-1: Harden the operation of the BPF just-in-time compiler
     - sysctl_net_core_bpf_jit_harden
 
+
     #################################################################
     ## File System Settings
     #################################################################
@@ -207,6 +212,7 @@ selections:
 
     # TODO:
     # echo "kernel.core_pattern=|/bin/false" >> $CONFIG
+
 
     #################################################################
     ## Network Settings
@@ -278,6 +284,7 @@ selections:
     ## RHEL 8 CCE-80923-6: Enable Kernel Parameter to Use TCP Syncookies on IPv4 Interfaces
     - sysctl_net_ipv4_tcp_syncookies
 
+
     #################################################################
     ## Blacklist Risky Kernel Modules
     #################################################################
@@ -305,11 +312,12 @@ selections:
 
 
     #################################################################
-    ## Audit
+    ## AUDIT
     #################################################################
 
     ## RHEL 8 CCE-80872-5: Enable auditd Service
     - service_auditd_enabled
+
 
     #################################################################
     ## 10-base-config.rules
@@ -323,11 +331,13 @@ selections:
 
     # TODO: -f 1
 
+
     #################################################################
     ## 11-loginuid.rules
     #################################################################
 
     # TODO: --loginuid-immutable
+
 
     #################################################################
     ## 30-ospp-v42.rules
@@ -425,13 +435,13 @@ selections:
 
     ## RHEL 8 CCE-80932-7: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/passwd
     - audit_rules_etc_passwd_open_by_handle_at
-    
+
     ## RHEL 8 CCE-80930-1: Record Events that Modify User/Group Information via open syscall - /etc/passwd
     - audit_rules_etc_passwd_open
 
     ## RHEL 8 CCE-80958-2: Record Events that Modify User/Group Information via openat syscall - /etc/shadow
     - audit_rules_etc_shadow_openat
-    
+
     ## RHEL 8 CCE-80957-4: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/shadow
     - audit_rules_etc_shadow_open_by_handle_at
 
@@ -498,6 +508,7 @@ selections:
     ## RHEL 8 CCE-80941-8: Record Access Events to Audit Log Directory
     - directory_access_var_log_audit
 
+
     #################################################################
     ## 43-module-load.rules
     #################################################################
@@ -510,6 +521,7 @@ selections:
 
     ## RHEL 8 CCE-80711-5: Ensure auditd Collects Information on Kernel Module Loading - delete_module
     - audit_rules_kernel_module_loading_delete
+
 
     #################################################################
     ## Audit Configuration
@@ -529,6 +541,7 @@ selections:
 
     # TODO: name_format=HOSTNAME
 
+
     #################################################################
     ## Audispd plugins
     #################################################################
@@ -538,7 +551,11 @@ selections:
 
 
     #################################################################
-    ## Setup SSH Server
+    ## SERVICES
+    #################################################################
+
+    #################################################################
+    ## SSH Server
     #################################################################
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4466
@@ -637,7 +654,7 @@ selections:
 
 
     #################################################################
-    ## Harden chrony (time server)
+    ## Chrony (time server)
     #################################################################
 
     ## RHEL 8 CCE-82988-7: Disable chrony daemon from acting as server
@@ -690,7 +707,7 @@ selections:
     #################################################################
     ## Application Whitelisting
     #################################################################
-    
+
     # TODO: fapolicyd installed
 
     # TODO: fapolicyd enabled
