@@ -764,8 +764,8 @@ selections:
     ## Blacklist Risky Kernel Modules
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4455
-    ## echo -e "install firewire-core /bin/true" >> $CONFIG
+    ## Disable IEEE 1394 (FireWire) Support
+    - kernel_module_firewire-core_disabled
 
     ## RHEL 8 CCE-81031-7: Disable Mounting of cramfs
     - kernel_module_cramfs_disabled

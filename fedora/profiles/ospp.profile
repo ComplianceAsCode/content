@@ -219,3 +219,4 @@ selections:
     - chronyd_no_chronyc_network
     - chronyd_client_only
     - kernel_module_can_disabled
+    - kernel_module_firewire-core_disabled
