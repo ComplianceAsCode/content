@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Disable ATM Support'
+
+description: |-
+    The Asynchronous Transfer Mode (ATM) is a protocol operating on
+    network, data link, and physical layers, based on virtual circuits
+    and virtual paths.
+    {{{ describe_module_disable(module="atm") }}}
+
+rationale: |-
+    Disabling ATM protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82028-2
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+{{{ complete_ocil_entry_module_disable(module="atm") }}}
+
+platform: machine
