@@ -272,9 +272,6 @@ selections:
     ## RHEL 8 CCE-80922-8: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
 
-    # TODO:
-    # net.ipv6.icmp.echo_ignore_all = 0
-
     ## RHEL 8 CCE-81024-2: Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces
     - sysctl_net_ipv4_ip_forward
 
@@ -540,6 +537,197 @@ selections:
     - auditd_audispd_syslog_plugin_activated
 
 
+    #################################################################
+    ## Setup SSH Server
+    #################################################################
+
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4466
+    #sed -i "/ed25519/s/HostKey/#HostKey/" $CONFIG
+
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4467
+    #sed -i "s/#RekeyLimit default none/RekeyLimit 512M/" $CONFIG
+
+    ## RHEL 8 CCE-80901-2: Disable SSH Root Login
+    - sshd_disable_root_login
+
+    ## RHEL 8 CCE-80904-6: Enable Use of Strict Mode Checking
+    - sshd_enable_strictmodes
+
+    ## RHEL 8 CCE-80786-7: Disable Host-Based Authentication
+    - disable_host_auth
+
+    ## RHEL 8 CCE-80902-0: Disable SSH Support for User Known Hosts
+    - sshd_disable_user_known_hosts
+
+    ## RHEL 8 CCE-80899-8: Disable SSH Support for .rhosts Files
+    - sshd_disable_rhosts
+
+    ## RHEL 8 CCE-80896-4: Disable SSH Access via Empty Passwords
+    - sshd_disable_empty_passwords
+
+    ## RHEL 8 CCE-80898-0: Disable Kerberos Authentication
+    - sshd_disable_kerb_auth
+
+    ## RHE 8 CCE-80897-2: Disable GSSAPI Authentication
+    - sshd_disable_gssapi_auth
+
+    ## RHEL 8 CCE-80906-1: Set SSH Idle Timeout Interval
+    - sshd_idle_timeout_value=10_minutes
+    - sshd_set_idle_timeout
+
+    ## RHEL 8 CCE-80907-9: Set SSH Client Alive Max Count
+    - var_sshd_set_keepalive=0
+    - sshd_set_keepalive
+
+    ## RHEL 8 CCE-80905-3: Enable SSH Warning Banner
+    # - sshd_enable_warning_banner
+    ## TO DO - Needs customization of path
+    #echo -e "\nReplace this with your organization-defined system use notification message or banner\n" > /etc/issue
+    #cp /etc/issue /etc/issue.net
+    #sed -i "s/#Banner none/Banner \/etc\/issue.net/" $CONFIG
+
+    # TODO: Ciphers aes128-ctr,aes256-ctr,aes128-cbc,aes256-cbc
+    # TODO: PubkeyAcceptedKeyTypes ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384
+    # TODO: MACs hmac-sha2-256,hmac-sha2-512
+    # TODO: KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521
+    # - configure_ssh_crypto_policy
+    # - var_system_crypto_policy=<POLICY>
+
+
+    #################################################################
+    ## SSH Client
+    #################################################################
+
+    # TODO: HostbasedAuthentication no
+
+    # TODO: GSSAPIAuthentication no
+
+    # TODO: RekeyLimit 512M 1h
+
+    # TODO: Ciphers aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc
+    # should be handled by crypto-policies
+
+    # TODO: PubkeyAcceptedKeyTypes ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256
+    # should be handled by crypto-policies
+
+    # TODO: MACs hmac-sha2-512,hmac-sha2-256 <- order matters
+    # should be handled by crypto-policies
+
+    # TODO: KexAlgorithms ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1
+    # should be handled by crypto-policies
+
+
+    #################################################################
+    ## Firewall
+    #################################################################
+
+    ## RHEL 8 CCE-82883-0: Install firewalld
+    - package_firewalld_installed
+
+    ## RHEL 8 CCE-80877-4: Verify firewalld Enabled
+    - service_firewalld_enabled
+
+
+    #################################################################
+    ## abrt
+    #################################################################
+
+    ## RHEL 8 CCE-80948-3: Uninstall Automatic Bug Reporting Tool (abrt)
+    - package_abrt_removed
+
+
+    #################################################################
+    ## Harden chrony (time server)
+    #################################################################
+
+    ## RHEL 8 CCE-82988-7: Disable chrony daemon from acting as server
+    - chronyd_client_only
+
+    ## RHEL 8 CCE-82840-0: Disable network management of chrony daemon
+    - chronyd_no_chronyc_network
+
+
+    #################################################################
+    ## Enable rngd Service
+    #################################################################
+
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4472
+    #sysctl enable rngd.service
+
+
+    #################################################################
+    ## sssd Settings
+    #################################################################
+
+    ## RHEL 8 CCE-82940-8: Install the SSSD Package
+    - package_sssd_installed
+
+    ## RHEL 8 CCE-81062-2: Configure SSSD to run as user sssd
+    - sssd_run_as_sssd_user
+
+    # - sssd_memcache_timeout - removed, because non-security
+
+    # - sssd_offline_cred_expiration - removed, because non-security
+
+    # TODO:  Set system name that manages settings
+
+    #################################################################
+    ## Crypto settings
+    #################################################################
+
+
+    #################################################################
+    ## Libreswan Setup
+    #################################################################
+
+    ## RHEL 8 CCE-80845-1: Install libreswan Package
+    - package_libreswan_installed
+
+    # FIXME: Need to talk to Paul about generic server/client setups
+    # And for servers, need to punch holes in firewall
+
+
+    #################################################################
+    ## Application Whitelisting
+    #################################################################
+    
+    # TODO: fapolicyd installed
+
+    # TODO: fapolicyd enabled
+
+    # TODO: System default policy (no changes)
+
+
+    #################################################################
+    ## Harden USB Guard
+    #################################################################
+
+    # TODO: usbguard installed
+
+    # TODO: usbguard enabled
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4474
+    #systemctl enable usbguard
+
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4473
+    #sed -i "/AuditBackend/s/FileAudit/LinuxAudit/" /etc/usbguard/usbguard-daemon.conf
+
+
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4496
+    #cat << EOF > /tmp/rules.conf
+    #allow with-interface equals { 09:00:* }
+    #allow with-interface equals { 03:*:* }
+    #allow with-interface equals { 03:*:* 03:*:* }
+    #EOF
+    #}
+
+    #setup_usbguard () {
+    #    chmod 0600 /tmp/rules.conf
+    #    mv /tmp/rules.conf /etc/usbguard/
+    #    restorecon -R /etc/usbguard/
+    #}
+
+
+
     ################################################
     ## MUST INSTALL PACKAGES IN BASE MODE
 
@@ -567,8 +755,6 @@ selections:
     ## RHEL 8 CCE-81043-2: Ensure the audit Subsystem is Installed
     - package_auditd_installed
 
-    ## RHEL 8 CCE-80845-1: Install libreswan Package
-    - package_libreswan_installed
 
     ## RHEL 8 CCE-80847-7: Ensure rsyslog is Installed
     - package_rsyslog_installed
@@ -614,8 +800,6 @@ selections:
     #-abrt-cli
     #-tuned
 
-    ## RHEL 8 CCE-80948-3: Uninstall Automatic Bug Reporting Tool (abrt)
-    - package_abrt_removed
 
 
     ## TO DO
@@ -689,128 +873,7 @@ selections:
     #sed -i "/#queue/s/^#//" $CONFIG
     #sed -i "/#Target/s/^#//" $CONFIG
 
-    #################################################################
-    ## Firewall & Network Manager
-    #################################################################
 
-    ## RHEL 8 CCE-80877-4
-    - service_firewalld_enabled
-
-    #################################################################
-    ## Harden chrony (time server)
-    #################################################################
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4465
-    #echo -e "port 0" >> $CONFIG
-
-    ## RHEL 8 CCE-82840-0: Disable network management of chrony daemon
-    - chronyd_no_chronyc_network
-
-    #################################################################
-    ## Setup SSH Server
-    #################################################################
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4466
-    #sed -i "/ed25519/s/HostKey/#HostKey/" $CONFIG
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4467
-    #sed -i "s/#RekeyLimit default none/RekeyLimit 512M/" $CONFIG
-
-    ## RHEL 8 CCE-80901-2: Disable SSH Root Login
-    - sshd_disable_root_login
-
-    ## RHEL 8 CCE-80904-6: Enable Use of Strict Mode Checking
-    - sshd_enable_strictmodes
-
-    ## RHEL 8 CCE-80786-7: Disable Host-Based Authentication
-    - disable_host_auth
-
-    ## RHEL 8 CCE-80902-0: Disable SSH Support for User Known Hosts
-    - sshd_disable_user_known_hosts
-
-    ## RHEL 8 CCE-80899-8: Disable SSH Support for .rhosts Files
-    - sshd_disable_rhosts
-
-    ## RHEL 8 CCE-80896-4: Disable SSH Access via Empty Passwords
-    - sshd_disable_empty_passwords
-
-    ## RHEL 8 CCE-80898-0: Disable Kerberos Authentication
-    - sshd_disable_kerb_auth
-
-    ## RHE 8 CCE-80897-2: Disable GSSAPI Authentication
-    - sshd_disable_gssapi_auth
-
-    ## RHEL 8 CCE-80906-1: Set SSH Idle Timeout Interval
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_idle_timeout
-
-    ## RHEL 8 CCE-80907-9: Set SSH Client Alive Max Count
-    - var_sshd_set_keepalive=3
-    - sshd_set_keepalive
-
-    ## TO DO --
-    #echo -e "\nReplace this with your organization-defined system use notification message or banner\n" > /etc/issue
-    #cp /etc/issue /etc/issue.net
-    #sed -i "s/#Banner none/Banner \/etc\/issue.net/" $CONFIG
-
-    ## RHEL 8 CCE-81032-5: Use Only FIPS 140-2 Validated Ciphers
-    - sshd_use_approved_ciphers
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4469
-    #echo -e "PubkeyAcceptedKeyTypes ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384" >> $CONFIG
-
-    ## RHEL 8 CCE-81034-1: Use Only FIPS 140-2 Validated MACs
-    ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4470
-    - sshd_use_approved_macs
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4471
-    #echo -e "KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" >> $CONFIG
-
-    #################################################################
-    ## Enable rngd Service
-    #################################################################
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4472
-    #sysctl enable rngd.service
-
-    #################################################################
-    ## sssd Settings
-    #################################################################
-    ## TO DO -- entire section
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4501
-    ## sssd settings
-    ## FIXME: We need to point this to a remote LDAP policy server
-    #CONFIG="/etc/sssd/conf.d/ospp.conf"
-    #touch $CONFIG
-    #chmod 600 $CONFIG
-    #echo -e "[sssd]" >> $CONFIG
-    #echo -e "user = sssd\n" >> $CONFIG
-
-    #################################################################
-    ## Enable / Configure USB Guard
-    #################################################################
-    
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4473
-    #sed -i "/AuditBackend/s/FileAudit/LinuxAudit/" /etc/usbguard/usbguard-daemon.conf
-
-    ## TO DO: HOW TO HANDLE??
-    #setup_usbguard
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4474
-    #systemctl enable usbguard
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4500
-    # - sysctl_crypto_fips_enabled
-    # - etc_system_fips_exists
-
-    #################################################################
-    ## Libreswan Setup
-    #################################################################
-    
-    ## libreswan setup
-    # FIXME: Need to talk to Paul about generic server/client setups
-    # And for servers, need to punch holes in firewall
 
     #################################################################
     ## Account & Password Settings
