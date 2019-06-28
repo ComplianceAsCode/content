@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,rhv4
 
-title: 'Configure Accepting IPv6 Router Advertisements by Default'
+title: 'Disable Accepting Router Advertisements on all IPv6 Interfaces by Default'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_ra", value="0") }}}'
 
@@ -13,6 +13,7 @@ severity: unknown
 identifiers:
     cce@rhel6: 27164-3
     cce@rhel7: 80181-1
+    cce@rhel8: 81007-7
 
 references:
     cis@rhel6: 4.4.1.1

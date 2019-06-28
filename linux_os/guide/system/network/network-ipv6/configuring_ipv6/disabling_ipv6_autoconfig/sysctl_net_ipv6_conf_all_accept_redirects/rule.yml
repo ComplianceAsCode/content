@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,rhv4
 
-title: 'Configure Accepting IPv6 Redirects on All Interfaces'
+title: 'Disable Accepting ICMP Redirects for All IPv6 Interfaces'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_redirects", value="0") }}}'
 
@@ -11,7 +11,9 @@ rationale: 'An illicit ICMP redirect message could result in a man-in-the-middle
 severity: medium
 
 identifiers:
+    cce@rhel6: 81008-5
     cce@rhel7: 80182-9
+    cce@rhel8: 81009-3
 
 references:
     anssi: NT28(R22)

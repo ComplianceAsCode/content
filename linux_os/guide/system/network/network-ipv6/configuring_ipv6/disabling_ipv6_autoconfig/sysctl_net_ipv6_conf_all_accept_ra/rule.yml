@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,rhv4
 
-title: 'Configure Accepting IPv6 Router Advertisements on All Interfaces'
+title: 'Configure Accepting Router Advertisements on All IPv6 Interfaces'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.all.accept_ra", value="0") }}}'
 
@@ -11,7 +11,9 @@ rationale: 'An illicit router advertisement message could result in a man-in-the
 severity: unknown
 
 identifiers:
+    cce@rhel6: 81005-1
     cce@rhel7: 80180-3
+    cce@rhel8: 81006-9
 
 references:
     cis@rhel6: 4.4.1.1

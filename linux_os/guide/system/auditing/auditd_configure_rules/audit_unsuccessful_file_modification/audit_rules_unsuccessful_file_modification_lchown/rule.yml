@@ -1,21 +1,25 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Record Unsuccessul Ownership Changes to Files - lchown'
 
 description: |-
     The audit system should collect unsuccessful file ownership change
     attempts for all users and root.
+
     If the <tt>auditd</tt> daemon is configured
     to use the <tt>augenrules</tt> program to read audit rules during daemon
     startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file.
+
     <pre>-a always,exit -F arch=b32 -S lchown -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change
     -a always,exit -F arch=b32 -S lchown -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change</pre>
+
     If the system is 64 bit then also add the following lines:
     <pre>-a always,exit -F arch=b64 -S lchown -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change
     -a always,exit -F arch=b64 -S lchown -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change</pre>
@@ -28,6 +32,8 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 81077-0
+    cce@rhel7: 81078-8
     cce@rhel8: 80987-1
 
 references:

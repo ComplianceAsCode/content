@@ -1,15 +1,23 @@
 documentation_complete: true
 
-title: 'Disallow creating symlinks to a file you not own'
+title: 'Enable Kernel Parameter to Enforce DAC on Symlinks'
 
 description: '{{{ describe_sysctl_option_value(sysctl="fs.protected_symlinks", value="1") }}}'
 
 rationale: |-
-    Disallowing such symlink mitigate vulnerabilities based on insecure file system
+    By enabling this kernel parameter, symbolic links are permitted to be followed
+    only when outside a sticky world-writable directory, or when the UID of the
+    link and follower match, or when the directory owner matches the symlink's owner.
+    Disallowing such symlinks helps mitigate vulnerabilities based on insecure file system
     accessed by privileged programs, avoiding an exploitation vector exploiting unsafe use of
     <tt>open()</tt> or <tt>creat()</tt>.
 
 severity: unknown
+
+identifiers:
+    cce@rhel6: 81028-3
+    cce@rhel7: 81029-1
+    cce@rhel8: 81030-9
 
 references:
     anssi: NT28(R23)

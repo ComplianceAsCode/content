@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Disable kernel image loading'
+title: 'Disable Kernel Image Loading'
 
 description: '{{{ describe_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}'
 
@@ -13,6 +13,8 @@ rationale: |
 severity: medium
 
 identifiers:
+    cce@rhel6: 81055-6
+    cce@rhel7: 81056-4
     cce@rhel8: 80952-5
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}

@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Disable Kernel Parameter for IP Forwarding'
+title: 'Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces'
 
 description: '{{{ describe_sysctl_option_value(sysctl="net.ipv4.ip_forward", value="0") }}}'
 
@@ -17,6 +17,7 @@ severity: medium
 identifiers:
     cce@rhel6: 26866-4
     cce@rhel7: 80157-1
+    cce@rhel8: 81024-2
 
 references:
     anssi: NT28(R22)

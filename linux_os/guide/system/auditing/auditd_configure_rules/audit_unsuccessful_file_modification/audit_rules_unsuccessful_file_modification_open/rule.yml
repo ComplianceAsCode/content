@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Record Unauthorized Access Attempts to Files (unsuccessful) - open'
+title: 'Record Unsuccessful Access Attempts to Files - open'
 
 description: |-
     At a minimum, the audit system should collect unauthorized file
@@ -12,15 +12,18 @@ description: |-
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
     <pre>-a always,exit -F arch=b32 -S open -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
     -a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+
     If the system is 64 bit then also add the following lines:
     <pre>
     -a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
     -a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file:
     <pre>-a always,exit -F arch=b32 -S open -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
     -a always,exit -F arch=b32 -S open -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access</pre>
+
     If the system is 64 bit then also add the following lines:
     <pre>
     -a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=access
@@ -33,6 +36,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 81109-1
     cce@rhel7: 80386-6
     cce@rhel8: 80753-7
 

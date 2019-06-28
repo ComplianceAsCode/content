@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
 
-title: 'Record Unauthorized Modification Attempts to Files - open O_TRUNC'
+title: 'Record Unsuccessful Modification Attempts to Files - open O_TRUNC'
 
 description: |-
     The audit system should collect detailed unauthorized file accesses for
@@ -34,6 +34,8 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 81120-8
+    cce@rhel7: 81121-6
     cce@rhel8: 80969-9
 
 references:

@@ -30,7 +30,7 @@
 - name: Overwrites the rule in rules.d
   lineinfile:
     path: "{{ item.1.path }}"
-    line: '-a always,exit -F path={{ item.0.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{ item.0.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=special-config-changes'
     create: no
     regexp: "^.*path={{ item.0.item }} .*$"
   with_subelements:
@@ -40,7 +40,7 @@
 - name: Adds the rule in rules.d
   lineinfile:
     path: /etc/audit/rules.d/privileged.rules
-    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=special-config-changes'
     create: yes
   with_items:
     - "{{ files_result.results }}"
@@ -51,7 +51,7 @@
 - name: Inserts/replaces the rule in audit.rules
   lineinfile:
     path: /etc/audit/audit.rules
-    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=privileged'
+    line: '-a always,exit -F path={{ item.item }} -F perm=x -F auid>={{{ auid }}} -F auid!=unset -F key=special-config-changes'
     create: yes
     regexp: "^.*path={{ item.item }} .*$"
   with_items:

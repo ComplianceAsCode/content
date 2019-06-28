@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
 
 title: 'Record Unsuccessul Delete Attempts to Files - unlink'
 
@@ -10,11 +10,13 @@ description: |-
     to use the <tt>augenrules</tt> program to read audit rules during daemon
     startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>.
+
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file.
     <pre>-a always,exit -F arch=b32 -S unlink -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-delete
     -a always,exit -F arch=b32 -S unlink -F exit=-EPERM -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-delete</pre>
+
     If the system is 64 bit then also add the following lines:
     <pre>
     -a always,exit -F arch=b64 -S unlink -F exit=-EACCES -F auid&gt;={{{ auid }}} -F auid!=unset -F key=unsuccessful-delete
@@ -27,6 +29,8 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel6: 81105-9
+    cce@rhel7: 81106-7
     cce@rhel8: 80971-5
 
 references:
