@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Disable CAN Support'
+
+description: |-
+    The Controller Area Network (CAN) is a serial communications
+    protocol which was initially developed for automotive and
+    is now also used in marine, industrial, and medical applications.
+    {{{ describe_module_disable(module="can") }}}
+
+rationale: |-
+    Disabling CAN protects the system against exploitation of any
+    flaws in its implementation.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82059-7
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+{{{ complete_ocil_entry_module_disable(module="can") }}}
+
+platform: machine

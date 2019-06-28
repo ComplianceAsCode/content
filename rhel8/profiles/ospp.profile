@@ -776,8 +776,8 @@ selections:
     ## RHEL 8 CCE-80832-9: Disable Bluetooth Kernel Module
     - kernel_module_bluetooth_disabled
     
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4457
-    ## echo -e "install can /bin/true" >> $CONFIG
+    ## Disable CAN Support
+    - kernel_module_can_disabled
 
     ## RHEL 8 CCE-80834-5: Disable SCTP Support
     - kernel_module_sctp_disabled

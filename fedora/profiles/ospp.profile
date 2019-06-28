@@ -218,3 +218,4 @@ selections:
     - configure_crypto_policy
     - chronyd_no_chronyc_network
     - chronyd_client_only
+    - kernel_module_can_disabled
