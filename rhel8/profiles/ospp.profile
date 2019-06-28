@@ -828,6 +828,7 @@ selections:
     - sysctl_kernel_kexec_load_disabled
     - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_perf_event_paranoid
+    - sysctl_kernel_unprivileged_bpf_disabled
     - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
