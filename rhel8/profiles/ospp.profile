@@ -129,6 +129,183 @@ selections:
     ## RHEL 8 CCE-80839-4: Add nosuid Option to /dev/shm
     - mount_option_dev_shm_nosuid
 
+    #################################################################
+    ## Kernel Configuration
+    #################################################################
+
+    #################################################################
+    ## Boot Prompt Configuration
+    #################################################################
+
+    ## RHEL 8 CCE-81132-3: Enable Dracut FIPS Module
+    - enable_dracut_fips_module
+
+    ## RHEL 8 CCE-80942-6: Enable FIPS Mode
+    - enable_fips_mode
+
+    ## RHEL 8 CCE-80825-3: Enable Auditing for Processes Which Start Prior to the Audit Daemon
+    - grub2_audit_argument
+
+    ## RHEL 8 CCE-80825-3: Extend Audit Backlog Limit for the Audit Daemon
+    - grub2_audit_backlog_limit_argument
+
+    ## RHEL 8 CCE-80945-9: Enable SLUB/SLAB allocator poisoning
+    - grub2_slub_debug_argument
+
+    ## RHEL 8 CCE-80944-2: Enable page allocator poisoning
+    - grub2_page_poison_argument
+
+    # TODO:
+    # - grub2_pti_argument
+
+    ## RHEL 8 CCE-80946-7: Disable vsyscalls
+    - grub2_vsyscall_argument
+
+    # TODO:
+    # boot=/dev/something
+
+    #################################################################
+    ## Kernel Security Settings
+    #################################################################
+
+    ## RHEL 8 CCE-80915-2: Restrict Exposed Kernel Pointer Addresses Access
+    - sysctl_kernel_kptr_restrict
+
+    ## RHEL 8 CCE-80913-7: Restrict Access to Kernel Message Buffer
+    - sysctl_kernel_dmesg_restrict
+
+    ## RHEL 8 CCE-81054-9: Disallow kernel profiling by unprivileged users
+    - sysctl_kernel_perf_event_paranoid
+
+    ## RHEL 8 CCE-80952-5: Disable Kernel Image Loading
+    - sysctl_kernel_kexec_load_disabled
+
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4492
+    #echo "# If you know you are have containers that need user namespaces," >> $CONFIG
+    #echo "# you MAY comment out the next line." >> $CONFIG
+    #echo "user.max_user_namespaces = 0" >> $CONFIG
+    #- sysctl_user_max_user_namespaces
+
+    ## RHEL 8 CCE-80953-3: Restrict Usage of ptrace To Descendant Processes
+    - sysctl_kernel_yama_ptrace_scope
+
+    ## RHEL 8 CCE-82974-7: Disable access to network bpf() syscall from unprivileged processes
+    - sysctl_kernel_unprivileged_bpf_disabled
+
+    ## RHEL 8 CCE-82934-1: Harden the operation of the BPF just-in-time compiler
+    - sysctl_net_core_bpf_jit_harden
+
+    #################################################################
+    ## File System Settings
+    #################################################################
+
+    ## RHEL 8 CCE-81027-5: Enable Kernel Parameter to Enforce DAC on Hardlinks
+    - sysctl_fs_protected_hardlinks
+
+    ## RHEL 8 CCE-81030-9: Enable Kernel Parameter to Enforce DAC on Symlinks
+    - sysctl_fs_protected_symlinks
+
+    # TODO:
+    # echo "kernel.core_pattern=|/bin/false" >> $CONFIG
+
+    #################################################################
+    ## Network Settings
+    #################################################################
+
+    ## RHEL 8 CCE-81006-9: Disable Accepting Router Advertisements on All IPv6 Interfaces
+    - sysctl_net_ipv6_conf_all_accept_ra
+
+    ## RHEL 8 CCE-81007-7: Disable Accepting Router Advertisements on All IPv6 Interfaces by Default
+    - sysctl_net_ipv6_conf_default_accept_ra
+
+    ## RHEL 8 CCE-80917-8: Disable Accepting ICMP Redirects for All IPv4 Interfaces
+    - sysctl_net_ipv4_conf_all_accept_redirects
+
+    ## RHEL 8 CCE-80919-4: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv4 Interfaces
+    - sysctl_net_ipv4_conf_default_accept_redirects
+
+    ## RHEL 8 CCE-81009-3: Disable Accepting ICMP Redirects for All IPv6 Interfaces
+    - sysctl_net_ipv6_conf_all_accept_redirects
+
+    ## RHEL 8 CCE-81010-1: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv6 Interfaces
+    - sysctl_net_ipv6_conf_default_accept_redirects
+
+    ## RHEL 8 CCE-81011-9: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv4 Interfaces
+    - sysctl_net_ipv4_conf_all_accept_source_route
+
+    ## RHEL 8 CCE-80920-2: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
+    - sysctl_net_ipv4_conf_default_accept_source_route
+
+    ## RHEL 8 CCE-81013-5: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces
+    - sysctl_net_ipv6_conf_all_accept_source_route
+
+    ## RHEL 8 CCE-81015-0: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
+    - sysctl_net_ipv6_conf_default_accept_source_route
+
+    ## RHEL 8 CCE-81016-8: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces
+    - sysctl_net_ipv4_conf_all_secure_redirects
+
+    ## RHEL 8 CCE-81017-6: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces by Default
+    - sysctl_net_ipv4_conf_default_secure_redirects
+
+    ## RHEL 8 CCE-80918-6: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4  Interfaces
+    - sysctl_net_ipv4_conf_all_send_redirects
+
+    ## RHEL 8 CCE-80921-0: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces by Default
+    - sysctl_net_ipv4_conf_default_send_redirects
+
+    ## RHEL 8 CCE-81018-4: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces
+    - sysctl_net_ipv4_conf_all_log_martians
+
+    ## RHEL 8 CCE-81020-0: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default
+    - sysctl_net_ipv4_conf_default_log_martians
+
+    ## RHEL 8 CCE-81021-8: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces
+    - sysctl_net_ipv4_conf_all_rp_filter
+
+    ## RHEL 8 CCE-81022-6: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces by Default
+    - sysctl_net_ipv4_conf_default_rp_filter
+
+    ## RHEL 8 CCE-81023-4: Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces
+    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
+
+    ## RHEL 8 CCE-80922-8: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
+    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
+
+    # TODO:
+    # net.ipv6.icmp.echo_ignore_all = 0
+
+    ## RHEL 8 CCE-81024-2: Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces
+    - sysctl_net_ipv4_ip_forward
+
+    ## RHEL 8 CCE-80923-6: Enable Kernel Parameter to Use TCP Syncookies on IPv4 Interfaces
+    - sysctl_net_ipv4_tcp_syncookies
+
+    #################################################################
+    ## Blacklist Risky Kernel Modules
+    #################################################################
+
+    ## RHEL 8 CCE-82005-0: Disable IEEE 1394 (FireWire) Support
+    - kernel_module_firewire-core_disabled
+
+    ## RHEL 8 CCE-81031-7: Disable Mounting of cramfs
+    - kernel_module_cramfs_disabled
+
+    ## RHEL 8 CCE-82028-2: Disable ATM Support
+    - kernel_module_atm_disabled
+
+    ## RHEL 8 CCE-80832-9: Disable Bluetooth Kernel Module
+    - kernel_module_bluetooth_disabled
+
+    ## RHEL 8 CCE-82059-7: Disable CAN Support
+    - kernel_module_can_disabled
+
+    ## RHEL 8 CCE-80834-5: Disable SCTP Support
+    - kernel_module_sctp_disabled
+
+    # TO DO: https://github.com/ComplianceAsCode/content/issues/4458
+    ## echo -e "install ticp /bin/true" >> $CONFIG
+
 
     ################################################
     ## MUST INSTALL PACKAGES IN BASE MODE
@@ -658,157 +835,13 @@ selections:
     - ensure_redhat_gpgkey_installed
 
     #################################################################
-    ## Kernel Security Settings
-    #################################################################
-
-    ## RHEL 8 CCE-80915-2: Restrict Exposed Kernel Pointer Addresses Access
-    - sysctl_kernel_kptr_restrict
-
-    ## RHEL 8 CCE-80913-7: Restrict Access to Kernel Message Buffer
-    - sysctl_kernel_dmesg_restrict
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4491
-    #echo "kernel.perf_event_paranoid = 2" >> $CONFIG
-
-    ## RHEL 8 CCE-80952-5: Disable Kernel Image Loading
-    - sysctl_kernel_kexec_load_disabled
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4492
-    #echo "# If you know you are have containers that need user namespaces," >> $CONFIG
-    #echo "# you MAY comment out the next line." >> $CONFIG
-    #echo "user.max_user_namespaces = 0" >> $CONFIG
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4493
-    #echo "kernel.unprivileged_bpf_disabled = 1" >> $CONFIG
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4494
-    #echo "net.core.bpf_jit_harden = 2" >> $CONFIG
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4495
-    #cp -f /usr/lib/sysctl.d/10-default-yama-scope.conf /etc/sysctl.d/
-
-    ## RHEL 8 CCE-80953-3: Restrict Usage of ptrace To Descendant Processes
-    - sysctl_kernel_yama_ptrace_scope
-
-    #################################################################
-    ## Network Settings
-    #################################################################
-
-    ## RHEL 8 CCE-81006-9: Disable Accepting Router Advertisements on All IPv6 Interfaces
-    - sysctl_net_ipv6_conf_all_accept_ra
-
-    ## RHEL 8 CCE-81007-7: Disable Accepting Router Advertisements on All IPv6 Interfaces by Default
-    - sysctl_net_ipv6_conf_default_accept_ra
-
-    ## RHEL 8 CCE-80917-8: Disable Accepting ICMP Redirects for All IPv4 Interfaces
-    - sysctl_net_ipv4_conf_all_accept_redirects
-
-    ## RHEL 8 CCE-81009-3: Disable Accepting ICMP Redirects for All IPv6 Interfaces
-    - sysctl_net_ipv6_conf_all_accept_redirects
-
-    ## RHEL 8 CCE-80919-4: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv4 Interfaces
-    - sysctl_net_ipv4_conf_default_accept_redirects
-
-    ## RHEL 8 CCE-81010-1: Disable Kernel Parameter for Accepting ICMP Redirects by Default on IPv6 Interfaces
-    - sysctl_net_ipv6_conf_default_accept_redirects
-
-    ## RHEL 8 CCE-81011-9: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv4 Interfaces
-    - sysctl_net_ipv4_conf_all_accept_source_route
-
-    ## RHEL 8 CCE-81013-5: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces
-    - sysctl_net_ipv6_conf_all_accept_source_route
-
-    ## RHEL 8 CCE-80920-2: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
-    - sysctl_net_ipv4_conf_default_accept_source_route
-
-    ## RHEL 8 CCE-81015-0: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
-    - sysctl_net_ipv6_conf_default_accept_source_route
-
-    ## RHEL 8 CCE-81016-8: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces
-    - sysctl_net_ipv4_conf_all_secure_redirects
-
-    ## RHEL 8 CCE-81017-6: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces by Default
-    - sysctl_net_ipv4_conf_default_secure_redirects
-
-    ## RHEL 8 CCE-80918-6: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4  Interfaces 
-    - sysctl_net_ipv4_conf_all_send_redirects
-
-    ## RHEL 8 CCE-80921-0: Disable Kernel Parameter for Sending ICMP Redirects on all IPv4 Interfaces by Default
-    - sysctl_net_ipv4_conf_default_send_redirects
-
-    ## RHEL 8 CCE-81018-4: Enable Kernel Parameter to Log Martian Packets on all IPv4 Interfaces
-    - sysctl_net_ipv4_conf_all_log_martians
-
-    ## RHEL 8 CCE-81020-0: Enable Kernel Paremeter to Log Martian Packets on all IPv4 Interfaces by Default
-    - sysctl_net_ipv4_conf_default_log_martians
-
-    ## RHEL 8 CCE-81021-8: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces
-    - sysctl_net_ipv4_conf_all_rp_filter
-
-    ## RHEL 8 CCE-81022-6: Enable Kernel Parameter to Use Reverse Path Filtering on all IPv4 Interfaces by Default
-    - sysctl_net_ipv4_conf_default_rp_filter
-
-    ## RHEL 8 CCE-81023-4: Enable Kernel Parameter to Ignore Bogus ICMP Error Responses on IPv4 Interfaces
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-
-    ## RHEL 8 CCE-80922-8: Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-
-    ## TO DO: NEED SCAP RULE
-    #echo "net.ipv6.icmp.echo_ignore_all = 0" >> $CONFIG
-
-    ## RHEL 8 CCE-81024-2: Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces
-    - sysctl_net_ipv4_ip_forward
-
-    ## RHEL 8 CCE-80923-6: Enable Kernel Parameter to Use TCP Syncookies on IPv4 Interfaces
-    - sysctl_net_ipv4_tcp_syncookies
-
-    #################################################################
-    ## File System Settings
-    #################################################################
-
-    ## RHEL 8 CCE-81027-5: Enable Kernel Parameter to Enforce DAC on Hardlinks
-    - sysctl_fs_protected_hardlinks
-
-    ## RHEL 8 CCE-81030-9: Enable Kernel Parameter to Enforce DAC on Symlinks
-    - sysctl_fs_protected_symlinks
-
-
-    #################################################################
     ## Disable Core Dumps
     #################################################################
     
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4502
-    #echo "kernel.core_pattern=|/bin/false" >> $CONFIG
     #sed -i "/^#Storage/s/#Storage=external/Storage=none/" /etc/systemd/coredump.conf
     #sed -i "/^#ProcessSize/s/#ProcessSizeMax=2G/ProcessSizeMax=0/" /etc/systemd/coredump.conf
     #systemctl mask systemd-coredump.socket
     #systemctl mask kdump.service
-
-    #################################################################
-    ## Blacklist Risky Kernel Modules
-    #################################################################
-
-    ## Disable IEEE 1394 (FireWire) Support
-    - kernel_module_firewire-core_disabled
-
-    ## RHEL 8 CCE-81031-7: Disable Mounting of cramfs
-    - kernel_module_cramfs_disabled
-
-    ## Disable ATM Support
-    - kernel_module_atm_disabled
-
-    ## RHEL 8 CCE-80832-9: Disable Bluetooth Kernel Module
-    - kernel_module_bluetooth_disabled
-    
-    ## Disable CAN Support
-    - kernel_module_can_disabled
-
-    ## RHEL 8 CCE-80834-5: Disable SCTP Support
-    - kernel_module_sctp_disabled
-    
-    # TO DO: https://github.com/ComplianceAsCode/content/issues/4458
-    ## echo -e "install ticp /bin/true" >> $CONFIG
 
     #################################################################
     ## Configure Hostname
@@ -948,12 +981,8 @@ selections:
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4474
     #systemctl enable usbguard
 
-    ## RHEL 8 CCE-80942-6: Enable FIPS Mode
-    - enable_fips_mode
-
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4500
     # - sysctl_crypto_fips_enabled
-    # - enable_dracut_fips_module
     # - etc_system_fips_exists
 
     #################################################################
