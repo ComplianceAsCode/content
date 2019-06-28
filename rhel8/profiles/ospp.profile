@@ -720,10 +720,8 @@ selections:
     ## RHEL 8 CCE-80952-5: Disable Kernel Image Loading
     - sysctl_kernel_kexec_load_disabled
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4492
-    #echo "# If you know you are have containers that need user namespaces," >> $CONFIG
-    #echo "# you MAY comment out the next line." >> $CONFIG
-    #echo "user.max_user_namespaces = 0" >> $CONFIG
+    ## Disable the use of user namespaces
+    - sysctl_user_max_user_namespaces
 
     ## RHEL 8 CCE-82203-1: Disable Access to Network bpf() Syscall From Unprivileged Processes
     - sysctl_kernel_unprivileged_bpf_disabled
