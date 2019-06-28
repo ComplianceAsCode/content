@@ -25,7 +25,8 @@ def parse_args():
         "--distro",
         dest="distro",
         required=True,
-        help="What distribution to install (URL alias for fedora/rhel7/centos7/rhel8)"
+        choices=['fedora', 'rhel7', 'centos7', 'rhel8'],
+        help="What distribution to install."
     )
     parser.add_argument(
         "--domain",
