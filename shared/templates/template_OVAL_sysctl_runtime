@@ -22,6 +22,6 @@
   </unix:sysctl_object>
 
   <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
-    <unix:value datatype="int" operation="equals">{{{ SYSCTLVAL }}}</unix:value>
+    <unix:value datatype="{{{ DATATYPE }}}" operation="equals">{{{ SYSCTLVAL }}}</unix:value>
   </unix:sysctl_state>
 </def-group>
