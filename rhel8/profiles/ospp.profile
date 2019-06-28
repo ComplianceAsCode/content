@@ -727,181 +727,82 @@ selections:
     #}
 
 
+    #################################################################
+    ## USER SESSIONS
+    #################################################################
 
-    ################################################
-    ## MUST INSTALL PACKAGES IN BASE MODE
+    #################################################################
+    ## Login
+    #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4483
-    #cryptsetup-luks
-    #sssd-ipa
-    #aide
-    #binutils
-    #dnf-automatic
-    #firewalld
-    #iptables
-    #libcap-ng-utils
-    #openscap-scanner
-    #policycoreutils
-    #python-rhsm
-    #rng-tools
-    #sudo
-    #tar
-    #tmux
-    #usbguard
-    #vim
-    #audispd-plugins
-    #scap-security-guide
+    ## RHEL 8 CCE-80841-0: Prevent Login to Accounts With Empty Password
+    - no_empty_passwords
 
-    ## RHEL 8 CCE-81043-2: Ensure the audit Subsystem is Installed
-    - package_auditd_installed
+    ## RHEL 8 CCE-80667-9: Set Deny For Failed Password Attempts
+    - var_accounts_passwords_pam_faillock_deny=3
+    - accounts_passwords_pam_faillock_deny
 
+    ## RHEL 8 CCE-80669-5: Set Interval For Counting Failed Password Attempts
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - accounts_passwords_pam_faillock_interval
 
-    ## RHEL 8 CCE-80847-7: Ensure rsyslog is Installed
-    - package_rsyslog_installed
+    ## RHEL 8 CCE-80670-3: Set Lockout Time for Failed Password Attempts
+    - var_accounts_passwords_pam_faillock_unlock_time=never
+    - accounts_passwords_pam_faillock_unlock_time
 
+    ## RHEL 8 CCE-80768-5: Enable GNOME3 Login Warning Banner
+    - dconf_gnome_banner_enabled
 
+    ## RHEL 8 CCE-80770-1: Set the GNOME3 Login Warning Banner Text
+    - login_banner_text=usgcb_default
+    - dconf_gnome_login_banner_text
 
-    ################################################
-    ## MUST INSTALL PACKAGES IN MLS MODE
-    #cups
-    #foomatic
-    #ghostscript
-    #ghostscript-fonts
-    #checkpolicy
-    #mcstrans
-    #policycoreutils-newrole
-    #selinux-policy-devel
-    ##xinetd
-    #iproute
-    #iputils
-    #netlabel_tools
+    ## RHEL 8 CCE-81038-2: Disable Core Dumps for All Users
+    - disable_users_coredumps
+
+    ## RHEL 8 CCE-80955-8: Limit the Number of Concurrent Login Sessions Allowed Per User
+    - var_accounts_max_concurrent_login_sessions=10
+    - accounts_max_concurrent_login_sessions
+
+    ## RHEL 8 CCE-80666-1: Limit Password Reuse
+    - accounts_password_pam_unix_remember
+    - var_password_pam_unix_remember=5
 
 
     #################################################################
-    ## Remove Prohibited Packages
+    ## Password
     #################################################################
 
-    ## RHEL 8 CCE-81039-0: Uninstall Sendmail Package
-    - package_sendmail_removed
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4482
-    #-iprutils
-    #-gssproxy
-    #-geolite2-city
-    #-geolite2-country
-    #-nfs-utils
-    #-krb5-workstation
-    #-abrt-addon-kerneloops
-    #-abrt-addon-python
-    #-abrt-addon-ccpp
-    #-abrt-plugin-rhtsupport
-    #-abrt-plugin-logger
-    #-abrt-plugin-sosreport
-    #-abrt-cli
-    #-tuned
-
-
-
-    ## TO DO
-    #PATH=/bin:/usr/bin:/sbin:/usr/sbin:$PATH
-
-
-
-    #################################################################
-    ## Harden USB Guard
-    #################################################################
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4498
-    #set -g lock-after-time 900
-
-    ## RHEL 8 CCE-80940-0: Configure the tmux Lock Command
-    - configure_tmux_lock_command
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4499
-    #set -g status off
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4496
-    #cat << EOF > /tmp/rules.conf
-    #allow with-interface equals { 09:00:* }
-    #allow with-interface equals { 03:*:* }
-    #allow with-interface equals { 03:*:* 03:*:* }
-    #EOF
-    #}
-
-    #setup_usbguard () {
-    #    chmod 0600 /tmp/rules.conf
-    #    mv /tmp/rules.conf /etc/usbguard/
-    #    restorecon -R /etc/usbguard/
-    #}
-
-    ## RHEL 8 CCE-80795-8: Ensure Red Hat GPG Key Installed
-    - ensure_redhat_gpgkey_installed
-
-    #################################################################
-    ## Disable Core Dumps
-    #################################################################
-    
-    #sed -i "/^#Storage/s/#Storage=external/Storage=none/" /etc/systemd/coredump.conf
-    #sed -i "/^#ProcessSize/s/#ProcessSizeMax=2G/ProcessSizeMax=0/" /etc/systemd/coredump.conf
-    #systemctl mask systemd-coredump.socket
-    #systemctl mask kdump.service
-
-    #################################################################
-    ## Configure Hostname
-    #################################################################
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4462
-    ## echo "ospp" > /etc/hostname
-    ## sed -i "s/localhost\.localdomain/ospp/g" /etc/hosts
-
-    #################################################################
-    ## Audit Daemon Configuration
-    #################################################################
-
-    #chmod -R 640 "$RULES/*"
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4463
-    #sed -i "/name_format/s/NONE/HOSTNAME/" /etc/audit/auditd.conf
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4464
-    #sed -i "/^active/s/no/yes/" /etc/audit/plugins.d/syslog.conf
-
-    ## Point rsyslog to a remote system to collect logs. This will need
-    ## remote_host and port corrected on the Target line.
-    #CONFIG="/etc/rsyslog.conf"
-    #sed -i "/#action/s/^#//" $CONFIG
-    #sed -i "/#queue/s/^#//" $CONFIG
-    #sed -i "/#Target/s/^#//" $CONFIG
-
-
-
-    #################################################################
-    ## Account & Password Settings
-    #################################################################
+    ## RHEL 8 CCE-80841-0: Prevent Login to Accounts With Empty Password
+    # - no_empty_passwords - duplicate
 
     ## RHEL 8 CCE-80652-1: Set Password Minimum Length in login.defs
     - var_accounts_password_minlen_login_defs=12
     - accounts_password_minlen_login_defs
 
-    ## RHEL 8 CCE-80654-7: Ensure PAM Enforces Password Requirements - Minimum Different Characters
-    - var_password_pam_difok=4
-    - accounts_password_pam_difok
-
     ## RHEL 8 CCE-80656-2: Ensure PAM Enforces Password Requirements - Minimum Length
     - var_password_pam_minlen=12
     - accounts_password_pam_minlen
 
+    ## RHEL 8 CCE-80663-8: Ensure PAM Enforces Password Requirements - Minimum Special Characters
+    - var_password_pam_ocredit=1
+    - accounts_password_pam_ocredit
+
     ## RHEL 8 CCE-80653-9: Minimum Digit Characters
+    - var_password_pam_dcredit=1
     - accounts_password_pam_dcredit
 
     ## RHEL 8 CCE-80665-3: Ensure PAM Enforces Password Requirements - Minimum Uppercase Characters
+    - var_password_pam_ucredit=1
     - accounts_password_pam_ucredit
 
     ## RHEL 8 CCE-80655-4: Ensure PAM Enforces Password Requirements - Minimum Lowercase Characters
+    - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
 
-    ## RHEL 8 CCE-80663-8: Ensure PAM Enforces Password Requirements - Minimum Special Characters
-    - accounts_password_pam_ocredit
+    ## RHEL 8 CCE-80654-7: Ensure PAM Enforces Password Requirements - Minimum Different Characters
+    - var_password_pam_difok=4
+    - accounts_password_pam_difok
 
     ## RHEL 8 CCE-81034-1: Set Password Maximum Consecutive Repeating Characters
     - var_password_pam_maxrepeat=3
@@ -910,6 +811,11 @@ selections:
     ## RHEL 8 CCE-81034-1: Ensure PAM Enforces Password Requirements - Maximum Consecutive Repeating Characters from Same Character Class
     - var_password_pam_maxclassrepeat=4
     - accounts_password_pam_maxclassrepeat
+
+
+    #################################################################
+    ## umask
+    #################################################################
 
     ## Set umask Variable for next few rules
     - var_accounts_user_umask=027
@@ -923,51 +829,48 @@ selections:
     ## RHEL 8 CCE-81037-4: Ensure the Default C Shell Umask is Set Correctly
     - accounts_umask_etc_csh_cshrc
 
-    ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4475
-    # - accounts_umask_etc_login_defs
 
     #################################################################
-    ## PAM Setup
+    ## Console Screen Lock
     #################################################################
 
-    ## RHEL 8 CCE-81038-2: Disable Core Dumps for All Users
-    - disable_users_coredumps
+    ## RHEL 8 CCE-80644-8: Install the tmux Package
+    - package_tmux_installed
 
-    ## RHEL 8 CCE-80955-8: Limit the Number of Concurrent Login Sessions Allowed Per User
-    - var_accounts_max_concurrent_login_sessions=10
-    - accounts_max_concurrent_login_sessions
+    # TODO: "/etc/bashrc has [[ $TERM != ""screen"" ]] && exec tmux"
 
-    ## RANDOM TO DO
-    #sed -i "6s/^#//" /etc/pam.d/su
-    #sed -i "8iauth        required      pam_faillock.so preauth silent deny=3 unlock_time=never fail_interval=900" /etc/pam.d/system-auth
-    #sed -i "8iauth        required      pam_faillock.so preauth silent deny=3 unlock_time=never fail_interval=900" /etc/pam.d/password-auth
-    #sed -i "/pam_unix/s/$/ remember=5/" /etc/pam.d/system-auth
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4498
+    #set -g lock-after-time 900
 
-    ## RHEL 8 CCE-80841-0: Prevent Login to Accounts With Empty Password
-    - no_empty_passwords
+    ## RHEL 8 CCE-80940-0: Configure the tmux Lock Command
+    - configure_tmux_lock_command
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4480
-    #sed -i 's/nullok//' /etc/pam.d/system-auth
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4499
+    #set -g status off
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4481
-    #sed -i 's/nullok//' /etc/pam.d/sssd-shadowutils
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4479
-    ## setup tmux
-    #mv /tmp/tmux.conf /etc/tmux.conf
-    #restorecon /etc/tmux.conf
-    #sed -i 's/^fi/  if [ "$PS1" ]; then\n    [[ $TERM != "screen" ]] \&\& exec tmux\n  fi\nfi/' /etc/bashrc
-    #sed -i '/tmux$/d' /etc/shells
 
     #################################################################
-    ## Enable Automatic Software Updates
+    ## Software Updates
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4476
-    #sed -i "/upgrade_type/s/default/security/" /etc/dnf/automatic.conf
+    ## TODO: dnf-automatic installed
+
+    ## TODO: dnf-automatic enabled
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4477
     #sed -i "/apply_updates/s/no/yes/" /etc/dnf/automatic.conf
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4478
     #systemctl enable --now dnf-automatic.timer
+
+    ## RHEL 8 CCE-80795-8: Ensure Red Hat GPG Key Installed
+    - ensure_redhat_gpgkey_installed
+
+    ## RHEL 8 CCE-80790-9: Ensure gpgcheck Enabled In Main yum Configuration
+    - ensure_gpgcheck_globally_activated
+
+    ## RHEL 8 CCE-80791-7: Ensure gpgcheck Enabled for Local Packages
+    - ensure_gpgcheck_local_packages
+
+    ## RHEL 8 CCE-80792-5: Ensure gpgcheck Enabled for All yum Package Repositories
+    - ensure_gpgcheck_never_disabled
