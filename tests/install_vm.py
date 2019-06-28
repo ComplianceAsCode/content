@@ -24,8 +24,8 @@ def parse_args():
     parser.add_argument(
         "--distro",
         dest="distro",
-        default="fedora",
-        help="What distribution to install (URL alias for fedora/centos7)"
+        required=True,
+        help="What distribution to install (URL alias for fedora/rhel7/centos7/rhel8)"
     )
     parser.add_argument(
         "--domain",
@@ -91,25 +91,6 @@ def parse_args():
     return parser.parse_args()
 
 
-def detect_url_os(url):
-    """Given a repository URL, guess an OS type and version."""
-    cmd = ["osinfo-detect", "-f", "env", "-t", "tree", url]
-    try:
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    except OSError as e:
-        if e.errno == os.errno.ENOENT:
-            return None
-        else:
-            raise
-
-    contents = proc.stdout.read().rstrip().decode()
-    if not contents:
-        return None
-    pairs = map(lambda x: x.split('='), contents.splitlines())
-    osinfo = dict(pairs)
-    return osinfo['OSINFO_TREE']
-
-
 def main():
     data = parse_args()
     username = ""
@@ -125,7 +106,7 @@ def main():
         elif data.distro == "centos7":
             data.url = "http://mirror.centos.org/centos/7/os/x86_64"
     if not data.url:
-        sys.stderr.write("Neither --url nor a valid --distro was provided.\n")
+        sys.stderr.write("For the '{}' distro the `--url` option needs to be provided.\n".format(data.distro))
         return 1
 
     if not data.ssh_pubkey:
@@ -154,17 +135,15 @@ def main():
     with open(data.kickstart) as infile, open(tmp_kickstart, "w") as outfile:
         content = infile.read()
         content = content.replace("&&HOST_PUBLIC_KEY&&", pub_key)
-        ostype = detect_url_os(data.url)
-        if ostype:
-            if any(filter(lambda x: x in ostype, ['centos.org', 'redhat.com'])):
-                content = content.replace("&&YUM_REPO_URL&&", data.url)
-                if data.extra_repo:
-                    # extra repository
-                    repo_cmd = "repo --name=extra-repository --baseurl={}".format(data.extra_repo)
-                    content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
-                    content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
-                else:
-                    content = content.replace("&&YUM_EXTRA_REPO&&", "")
+        if not data.distro == "fedora":
+            content = content.replace("&&YUM_REPO_URL&&", data.url)
+        if data.extra_repo:
+            # extra repository
+            repo_cmd = "repo --name=extra-repository --baseurl={}".format(data.extra_repo)
+            content = content.replace("&&YUM_EXTRA_REPO&&", repo_cmd)
+            content = content.replace("&&YUM_EXTRA_REPO_URL&&", data.extra_repo)
+        else:
+            content = content.replace("&&YUM_EXTRA_REPO&&", "")
         outfile.write(content)
     data.kickstart = tmp_kickstart
     print("Using kickstart file: {0}".format(data.kickstart))
