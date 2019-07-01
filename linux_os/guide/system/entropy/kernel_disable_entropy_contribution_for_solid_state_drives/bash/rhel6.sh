@@ -7,7 +7,7 @@
 # -a		Display all devices (including empty ones) in the list
 # -d		Don't print device holders or slaves information
 # -n		Suppress printing of introductory heading line in the list
-readarray SYSTEM_BLOCK_DEVICES < <(/bin/lsblk -o NAME -a -d -n)
+readarray -t SYSTEM_BLOCK_DEVICES < <(/bin/lsblk -o NAME -a -d -n)
 
 # For each SSD block device from that list
 # (device where /sys/block/DEVICE/queue/rotation == 0)

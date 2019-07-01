@@ -109,8 +109,6 @@ local append_expected_rule=0
 
 for audit_file in "${files_to_inspect[@]}"
 do
-
-	IFS_BKP="$IFS"
 	# Filter existing $audit_file rules' definitions to select those that:
 	# * follow the rule pattern, and
 	# * meet the hardware architecture requirement, and
@@ -162,13 +160,16 @@ do
 				then
 					retval=1
 				fi
-				IFS_BKP="$IFS"
+
 				# 2) Delete syscalls for this group, but keep those from other groups
 				# Convert current rule syscall's string into array splitting by '-S' delimiter
+				IFS_BKP="$IFS"
 				IFS=$'-S'
 				read -a rule_syscalls_as_array <<< "$rule_syscalls"
 				# Reset IFS back to default
 				IFS="$IFS_BKP"
+				# Splitting by "-S" can't be replaced by the readarray functionality easily
+
 				# Declare new empty string to hold '-S syscall' arguments from other groups
 				new_syscalls_for_rule=''
 				# Walk through existing '-S syscall' arguments

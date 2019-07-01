@@ -14,7 +14,7 @@ if [ "${RPM_GPG_DIR_PERMS}" -le "755" ]
 then
   # If they are safe, try to obtain fingerprints from the key file
   # (to ensure there won't be e.g. CRC error)
-  readarray GPG_OUT < <(gpg --with-fingerprint --with-colons "$OL_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
+  readarray -t GPG_OUT < <(gpg --with-fingerprint --with-colons "$OL_RELEASE_KEY" | grep "^fpr" | cut -d ":" -f 10)
   GPG_RESULT=$?
   # No CRC error, safe to proceed
   if [ "${GPG_RESULT}" -eq "0" ]
