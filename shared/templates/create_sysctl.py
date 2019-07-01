@@ -1,6 +1,6 @@
 import re
 
-from template_common import FilesGenerator, UnknownTargetError
+from template_common import FilesGenerator, UnknownTargetError, CSVLineError
 
 
 class SysctlGenerator(FilesGenerator):
@@ -33,8 +33,20 @@ class SysctlGenerator(FilesGenerator):
         }
 
     def generate(self, target, serviceinfo):
+
         # get the items out of the list
-        sysctl_var, sysctl_val = serviceinfo
+        # items can be in format
+        # <sysctl_parameter_name, value> or
+        # <sysctl_parameter_name, value, type>
+        if len(serviceinfo) == 2:
+            sysctl_var, sysctl_val = serviceinfo
+            # Default data type for sysctl is int
+            data_type = "int"
+        elif len(serviceinfo) == 3:
+            sysctl_var, sysctl_val, data_type = serviceinfo
+        else:
+            raise CSVLineError()
+
         # convert variable name to a format suitable for 'id' tags
         sysctl_var_id = re.sub('[-\.]', '_', sysctl_var)
 
@@ -95,6 +107,7 @@ class SysctlGenerator(FilesGenerator):
                         {
                             "SYSCTLID":  sysctl_var_id,
                             "SYSCTLVAR": sysctl_var,
+                            "DATATYPE": data_type,
                         },
                         "./oval/{0}.xml", prefix + sysctl_var_id
                     )
@@ -107,7 +120,8 @@ class SysctlGenerator(FilesGenerator):
                         {
                             "SYSCTLID":  sysctl_var_id,
                             "SYSCTLVAR": sysctl_var,
-                            "SYSCTLVAL": sysctl_val
+                            "SYSCTLVAL": sysctl_val,
+                            "DATATYPE": data_type,
                         },
                         "./oval/{0}.xml", prefix + sysctl_var_id
                     )
@@ -117,4 +131,4 @@ class SysctlGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "sysctlvariable,sysctlvalue")
+               "sysctlvariable,sysctlvalue[,<datatype>]")

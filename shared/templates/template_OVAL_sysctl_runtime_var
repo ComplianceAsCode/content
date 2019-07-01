@@ -22,8 +22,8 @@
   </unix:sysctl_object>
 
   <unix:sysctl_state id="state_sysctl_runtime_{{{ SYSCTLID }}}" version="1">
-    <unix:value datatype="int" operation="equals" var_ref="sysctl_{{{ SYSCTLID }}}_value" />
+    <unix:value datatype="{{{ DATATYPE }}}" operation="equals" var_ref="sysctl_{{{ SYSCTLID }}}_value" />
   </unix:sysctl_state>
 
-  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="int" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
+  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
 </def-group>

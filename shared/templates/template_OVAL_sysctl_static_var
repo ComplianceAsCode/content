@@ -71,7 +71,7 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
-    <ind:subexpression operation="equals"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="int" />
+    <ind:subexpression operation="equals"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="{{{ DATATYPE }}}" />
   </ind:textfilecontent54_state>
 
   <!-- Check the /etc/sysctl.conf configuration -->
@@ -100,7 +100,7 @@
     <ind:object object_ref="object_static_sysctld_{{{ SYSCTLID }}}" />
   </ind:textfilecontent54_test>
 
-  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="int" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
+  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
 {{% else %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="{{{ SYSCTLVAR }}} static configuration" id="test_static_sysctl_{{{ SYSCTLID }}}" version="1">
     <ind:object object_ref="object_static_sysctl_{{{ SYSCTLID }}}" />
@@ -150,9 +150,9 @@
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_state id="state_static_sysctld_{{{ SYSCTLID }}}" version="1">
-    <ind:subexpression operation="equals"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="int" />
+    <ind:subexpression operation="equals"  var_ref="sysctl_{{{ SYSCTLID }}}_value" datatype="{{{ DATATYPE }}}" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="int" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
+  <external_variable comment="External variable for {{{ SYSCTLVAR }}}" datatype="{{{ DATATYPE }}}" id="sysctl_{{{ SYSCTLID }}}_value" version="1" />
 {{% endif %}}
 </def-group>
