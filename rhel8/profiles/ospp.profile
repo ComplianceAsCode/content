@@ -248,7 +248,7 @@ selections:
     ## RHEL 8 CCE-81015-0: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
     - sysctl_net_ipv6_conf_default_accept_source_route
 
-    ## RHEL 8 CCE-81016-8: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces
+    ## RHEL 8 CCE-82465-6: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces
     - sysctl_net_ipv4_conf_all_secure_redirects
 
     ## RHEL 8 CCE-81017-6: Disable Kernel Parameter for Accepting Secure ICMP Redirects on all IPv4 Interfaces by Default
