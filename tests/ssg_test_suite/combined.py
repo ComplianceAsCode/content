@@ -36,25 +36,10 @@ class CombinedChecker(rule.RuleChecker):
         self.results = list()
         self._current_result = None
 
-    def _parse_parameters(self, script):
-        """Parse parameters from script header"""
-        params = {'templates': [],
-                  'platform': ['multi_platform_all'],
-                  'remediation': ['all']}
-        with open(script, 'r') as script_file:
-            script_content = script_file.read()
-            for parameter in params:
-                found = re.search(r'^# {0} = ([ ,_\.\-\w]*)$'.format(parameter),
-                                  script_content,
-                                  re.MULTILINE)
-                if found is None:
-                    continue
-                splitted = found.group(1).split(',')
-                params[parameter] = [value.strip() for value in splitted]
-
-            # Override any metadata in test scenario, wrt to profile to test
-            # We already know that all target rules are part of the target profile
-            params['profiles'] = [self.profile]
+    def _modify_parameters(self, params):
+        # Override any metadata in test scenario, wrt to profile to test
+        # We already know that all target rules are part of the target profile
+        params['profiles'] = [self.profile]
         return params
 
     # Check if a rule matches any of the targets to be tested
