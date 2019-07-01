@@ -1178,6 +1178,10 @@ macro(ssg_define_guide_and_table_tests)
                 COMMAND "${GREP_EXECUTABLE}" "-zv" "</thead>[[:space:]]*</table>" "${TABLE_FILE}"
             )
         endforeach()
+        add_test(
+            NAME "unique-cces"
+	    COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/tests/assert_cces_unique.sh"
+        )
     endif()
 endmacro()
 
