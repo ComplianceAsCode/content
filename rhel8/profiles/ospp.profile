@@ -242,7 +242,7 @@ selections:
     ## RHEL 8 CCE-80920-2: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
     - sysctl_net_ipv4_conf_default_accept_source_route
 
-    ## RHEL 8 CCE-81013-5: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces
+    ## RHEL 8 CCE-82182-7: Disable Kernel Parameter for Accepting Source-Routed Packets on all IPv6 Interfaces
     - sysctl_net_ipv6_conf_all_accept_source_route
 
     ## RHEL 8 CCE-81015-0: Disable Kernel Parameter for Accepting Source-Routed Packets on IPv4 Interfaces by Default
