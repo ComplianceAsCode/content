@@ -210,6 +210,11 @@ class RuleChecker(oscap.Checker):
         if self.scenarios_profile:
             params['profiles'] = [self.scenarios_profile]
 
+        if not params["profiles"]:
+            params["profiles"].append(ALL_PROFILE_ID)
+            logging.debug(
+                "Added the {0} profile to the list of available profiles for {1}"
+                .format(ALL_PROFILE_ID, script))
         return params
 
     def _parse_parameters(self, script):
@@ -254,11 +259,6 @@ class RuleChecker(oscap.Checker):
                 else:
                     logging.info("Script %s is not applicable on given platform" % script)
 
-                if not script_params["profiles"]:
-                    script_params["profiles"].append(ALL_PROFILE_ID)
-                    logging.debug(
-                        "Added the {0} profile to the list of available profiles for {1}"
-                        .format(ALL_PROFILE_ID, script))
         return scenarios
 
     def _check_rule(self, rule, remote_dir, state):
