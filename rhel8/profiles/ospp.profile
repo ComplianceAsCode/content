@@ -149,7 +149,7 @@ selections:
     ## RHEL 8 CCE-80825-3: Enable Auditing for Processes Which Start Prior to the Audit Daemon
     - grub2_audit_argument
 
-    ## RHEL 8 CCE-80825-3: Extend Audit Backlog Limit for the Audit Daemon
+    ## RHEL 8 CCE-80943-4: Extend Audit Backlog Limit for the Audit Daemon
     - grub2_audit_backlog_limit_argument
 
     ## RHEL 8 CCE-80945-9: Enable SLUB/SLAB allocator poisoning
