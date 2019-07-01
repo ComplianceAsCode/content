@@ -137,6 +137,13 @@ def parse_args():
                              dest="scenarios_regex",
                              default=None,
                              help="Regular expression matching test scenarios to run")
+    parser_rule.add_argument("--profile",
+                             dest="scenarios_profile",
+                             default=None,
+                             help="Override the profile used for test scenarios."
+                                  " Variable selections will be done according "
+                                  "to this profile.")
+
 
     parser_combined = subparsers.add_parser("combined",
                                             help=("Tests all rules in a profile evaluating them "

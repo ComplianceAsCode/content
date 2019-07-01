@@ -9,6 +9,7 @@ import subprocess
 import collections
 import json
 
+from ssg.constants import OSCAP_PROFILE
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
@@ -206,6 +207,9 @@ class RuleChecker(oscap.Checker):
             logging.error("No matching rule ID found for '{0}'".format(target))
 
     def _modify_parameters(self, params):
+        if self.scenarios_profile:
+            params['profiles'] = [self.scenarios_profile]
+
         return params
 
     def _parse_parameters(self, script):
@@ -244,7 +248,7 @@ class RuleChecker(oscap.Checker):
             script_context = _get_script_context(script)
             if script_context is not None:
                 script_params = self._parse_parameters(os.path.join(rule_dir, script))
-                script_params = _modify_parameters(script_params)
+                script_params = self._modify_parameters(script_params)
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
@@ -315,5 +319,11 @@ def perform_rule_check(options):
     checker.manual_debug = options.manual_debug
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
+
+    checker.scenarios_profile = options.scenarios_profile
+    # check if target is a complete profile ID, if not prepend profile prefix
+    if (checker.scenarios_profile is not None and
+            not checker.scenarios_profile.startswith(OSCAP_PROFILE)):
+        checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
 
     checker.test_target(options.target)
