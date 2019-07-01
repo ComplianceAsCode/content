@@ -825,7 +825,7 @@ selections:
     - var_password_pam_maxrepeat=3
     - accounts_password_pam_maxrepeat
 
-    ## RHEL 8 CCE-81034-1: Ensure PAM Enforces Password Requirements - Maximum Consecutive Repeating Characters from Same Character Class
+    ## RHEL 8 CCE-82837-6: Ensure PAM Enforces Password Requirements - Maximum Consecutive Repeating Characters from Same Character Class
     - var_password_pam_maxclassrepeat=4
     - accounts_password_pam_maxclassrepeat
 
