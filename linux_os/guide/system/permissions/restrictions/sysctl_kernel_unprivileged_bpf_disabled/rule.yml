@@ -1,8 +1,8 @@
 documentation_complete: true
 
-prodtype: rhel8,fedora,ol8
+prodtype: rhel7,rhel8,fedora,ol8
 
-title: 'Disable access to network bpf() syscall from unprivileged processes'
+title: 'Disable Access to Network bpf() Syscall From Unprivileged Processes'
 
 description: '{{{ describe_sysctl_option_value(sysctl="kernel.unprivileged_bpf_disabled", value="1") }}}'
 
@@ -13,6 +13,7 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: 82203-1
     cce@rhel8: 82974-7
 
 references:

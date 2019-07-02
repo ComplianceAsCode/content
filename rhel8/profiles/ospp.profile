@@ -653,8 +653,8 @@ selections:
     #echo "# you MAY comment out the next line." >> $CONFIG
     #echo "user.max_user_namespaces = 0" >> $CONFIG
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4493
-    #echo "kernel.unprivileged_bpf_disabled = 1" >> $CONFIG
+    RHEL 8 CCE-82203-1: Disable Access to Network bpf() Syscall From Unprivileged Processes
+    - sysctl_kernel_unprivileged_bpf_disabled
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4494
     #echo "net.core.bpf_jit_harden = 2" >> $CONFIG
