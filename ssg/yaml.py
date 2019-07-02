@@ -165,7 +165,15 @@ def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
             yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
             data.items())
 
+    def _str_representer(dumper, data):
+        if '\n' in data:
+            return dumper.represent_scalar(u'tag:yaml.org,2002:str', data,
+                                           style='|')
+        else:
+            return dumper.represent_str(data)
+
     OrderedDumper.add_representer(OrderedDict, _dict_representer)
+    OrderedDumper.add_representer(str, _str_representer)
 
     # Fix formatting by adding a space in between tasks
     unformatted_yaml = yaml.dump(data, None, OrderedDumper, **kwds)
