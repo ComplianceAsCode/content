@@ -105,29 +105,66 @@ selections:
     #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,noexec,nosuid,nodev,strictatime\t0 0" >> /etc/fstab
 
 
-    ################################################
-    ## MUST INSTALL PACKAGES IN BASE MODE
+    #################################################################
+    ## Required Packages
+    #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4483
-    #cryptsetup-luks
-    #sssd-ipa
-    #aide
-    #binutils
-    #dnf-automatic
-    #firewalld
-    #iptables
-    #libcap-ng-utils
-    #openscap-scanner
-    #policycoreutils
-    #python-rhsm
-    #rng-tools
-    #sudo
-    #tar
-    #tmux
-    #usbguard
-    #vim
-    #audispd-plugins
-    #scap-security-guide
+    ## RHEL 8 CCE-82995-2: Install cryptsetup-luks Package
+    - package_cryptsetup-luks_installed
+
+    ## RHEL 8 CCE-82994-5: Install sssd-ipa Package
+    - package_sssd-ipa_installed
+
+    ## RHEL 8 CCE-80844-4: Install aide Package
+    - package_aide_installed
+
+    ## RHEL 8 CCE-82989-5: Install binutils Package
+    - package_binutils_installed
+
+    ## RHEL 8 CCE-82985-3: Install dnf-automatic Package
+    - package_dnf-automatic_installed
+
+    ## RHEL 8 CCE-82998-6: Install firewalld Package
+    - package_firewalld_installed
+
+    ## RHEL 8 CCE-82982-0: Install iptables Package
+    - package_iptables_installed
+
+    ## RHEL 8 CCE-82979-6: Install libcap-ng-utils Package
+    - package_libcap-ng-utils_installed
+
+    ## RHEL 8 CCE-82976-2: Install openscap-scanner Package
+    - package_openscap-scanner_installed
+
+    ## RHEL 8 CCE-82976-2: Install policycoreutils Package
+    - package_policycoreutils_installed
+
+    ## RHEL 8 CCE-82973-9: Install python-rhsm Package
+    - package_python-rhsm_installed
+
+    ## RHEL 8 CCE-82968-9: Install rng-tools Package
+    - package_rng-tools_installed
+
+    ## RHEL 8 CCE-82965-5: Install sudo Package
+    - package_sudo_installed
+
+    ## RHEL 8 CCE-82965-5: Install tar Package
+    - package_tar_installed
+
+    ## RHEL 8 CCE-82962-2: Install tmux Package
+    - package_tmux_installed
+
+    ## RHEL 8 CCE-82959-8: Install usbguard Package
+    - package_usbguard_installed
+
+    ## RHEL 8 CCE-82956-4: Install vim Package
+    - package_vim_installed
+
+    ### RHEL 8 CCE-82953-1: Install audispd-plugins Package
+    - package_audispd-plugins_installed
+
+    ## RHEL 8 CCE-81950-7: Install scap-security-guide Package
+    - package_scap-security-guide_installed
 
     ## RHEL 8 CCE-81043-2: Ensure the audit Subsystem is Installed
     - package_auditd_installed
@@ -137,24 +174,6 @@ selections:
 
     ## RHEL 8 CCE-80847-7: Ensure rsyslog is Installed
     - package_rsyslog_installed
-
-
-
-    ################################################
-    ## MUST INSTALL PACKAGES IN MLS MODE
-    #cups
-    #foomatic
-    #ghostscript
-    #ghostscript-fonts
-    #checkpolicy
-    #mcstrans
-    #policycoreutils-newrole
-    #selinux-policy-devel
-    ##xinetd
-    #iproute
-    #iputils
-    #netlabel_tools
-
 
     #################################################################
     ## Remove Prohibited Packages
@@ -182,10 +201,8 @@ selections:
     ## RHEL 8 CCE-80948-3: Uninstall Automatic Bug Reporting Tool (abrt)
     - package_abrt_removed
 
-
     ## TO DO
     #PATH=/bin:/usr/bin:/sbin:/usr/sbin:$PATH
-
 
     #################################################################
     ##

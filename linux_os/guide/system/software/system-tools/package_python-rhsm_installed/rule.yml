@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,rhv4
+
+title: 'Install python-rhsm Package'
+
+description: |-
+    {{{ describe_package_install(package="python-rhsm") }}}
+
+rationale: |-
+    <tt>python-rhsm</tt> is a small library for communicating with the REST
+    interface of a Red Hat Unified Entitlement Platform. This interface is used
+    for the management of system entitlements, certificates, and access to
+    content.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82971-3
+    cce@rhel7: 82972-1
+    cce@rhel8: 82973-9
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="python-rhsm") }}}'
