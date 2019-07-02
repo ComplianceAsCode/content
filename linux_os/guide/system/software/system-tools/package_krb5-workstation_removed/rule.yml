@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Uninstall krb5-workstation Package
+
+description: |-
+    {{{ describe_package_remove(package="krb5-workstation") }}}
+
+rationale: |-
+    Kerberos is a network authentication system. The <tt>krb5-workstation</tt> package contains the basic
+    Kerberos programs (<tt>kinit</tt>, <tt>klist</tt>, <tt>kdestroy</tt>, <tt>kpasswd</tt>).
+
+    Currently, Kerberos does not utilize FIPS 140-2 cryptography and is not permitted on Government networks,
+    nor is it permitted in many regulatory environments such as HIPAA.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82929-1
+    cce@rhel7: 82930-9
+    cce@rhel8: 82931-7
+
+{{{ complete_ocil_entry_package(package="krb5-workstation") }}}

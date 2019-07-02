@@ -1,0 +1,21 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Uninstall abrt-addon-kerneloops Package
+
+description: |-
+    {{{ describe_package_remove(package="abrt-addon-kerneloops") }}}
+
+rationale: |-
+    <tt>abrt-addon-kerneloops</tt> contains plugins for collecting kernel crash information and
+    reporter plugin which sends this information to a specified server, usually to kerneloops.org.
+
+severity: low
+
+identifiers:
+    cce@rhel6: 82928-3
+    cce@rhel7: 82927-5
+    cce@rhel8: 82926-7
+
+{{{ complete_ocil_entry_package(package="abrt-addon-kerneloops") }}}

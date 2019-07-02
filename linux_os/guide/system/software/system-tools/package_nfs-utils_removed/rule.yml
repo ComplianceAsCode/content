@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Uninstall nfs-utils Package
+
+description: |-
+    {{{ describe_package_remove(package="nfs-utils") }}}
+
+rationale: |-
+    <tt>nfs-utils</tt> provides a daemon for the kernel NFS server and related tools. This
+    package also contains the <tt>showmount</tt> program. <tt>showmount</tt> queries the mount
+    daemon on a remote host for information about the Network File System (NFS) server on the
+    remote host. For example, <tt>showmount</tt> can display the clients which are mounted on
+    that host.
+
+severity: low
+
+identifiers:
+    cce@rhel6: 82935-8
+    cce@rhel7: 82933-3
+    cce@rhel8: 82932-5
+
+{{{ complete_ocil_entry_package(package="nfs-utils") }}}

@@ -183,23 +183,57 @@ selections:
     - package_sendmail_removed
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4482
-    #-iprutils
-    #-gssproxy
-    #-geolite2-city
-    #-geolite2-country
-    #-nfs-utils
-    #-krb5-workstation
-    #-abrt-addon-kerneloops
-    #-abrt-addon-python
-    #-abrt-addon-ccpp
-    #-abrt-plugin-rhtsupport
-    #-abrt-plugin-logger
-    #-abrt-plugin-sosreport
-    #-abrt-cli
-    #-tuned
+
+    ## RHEL 8 CCE-82946-5: Uninstall iprutils Package
+    - package_iprutils_removed
+
+    ## RHEL 8 CCE-82943-2: Uninstall gssproxy Package
+    - package_gssproxy_removed
+
+    ## RHEL 8 CCE-82939-0: Uninstall geolite2-city Package
+    - package_geolite2-city_removed
+
+    ## RHEL 8 CCE-82936-6: Uninstall geolite2-country Package
+    - package_geolite2-country_removed
+
+    ## RHEL 8 CCE-82932-5: Uninstall nfs-utils Package
+    - package_nfs-utils_removed
+
+    ## RHEL 8 CCE-82931-7: Uninstall krb5-workstation Package
+    - package_krb5-workstation_removed
+
+    ## RHEL 8 CCE-82926-7: Uninstall abrt-addon-kerneloops Package
+    - package_abrt-addon-kerneloops_removed
+
+    ## RHEL 8 CCE-82923-4: Uninstall abrt-addon-python Package
+    - package_abrt-addon-python_removed
+
+    ## RHEL 8 CCE-82919-2: Uninstall abrt-addon-ccpp Package
+    - package_abrt-addon-ccpp_removed
+
+    ## RHEL 8 CCE-82916-8: Uninstall abrt-plugin-rhtsupport Package
+    - package_abrt-plugin-rhtsupport_removed
+
+    ## RHEL 8 CCE-82946-5: Uninstall abrt-plugin-logger Package
+    - package_abrt-plugin-logger_removed
+
+    ## RHEL 8 CCE-82910-1: Uninstall abrt-plugin-sosreport Package
+    - package_abrt-plugin-sosreport_removed
+
+    ## RHEL 8 CCE-82907-7: Uninstall abrt-cli Package
+    - package_abrt-cli_removed
+
+    ## RHEL 8 CCE-82904-4: Uninstall tuned Package
+    - package_tuned_removed
 
     ## RHEL 8 CCE-80948-3: Uninstall Automatic Bug Reporting Tool (abrt)
     - package_abrt_removed
+
+    #################################################################
+    ##
+    ## Set PATH correctly
+    ##
+    #################################################################
 
     ## TO DO
     #PATH=/bin:/usr/bin:/sbin:/usr/sbin:$PATH

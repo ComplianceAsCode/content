@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Uninstall tuned Package
+
+description: |-
+    {{{ describe_package_remove(package="tuned") }}}
+
+rationale: |-
+    <tt>tuned</tt> contains a daemon that tunes the system settings dynamically.
+    It does so by monitoring the usage of several system components periodically. Based
+    on that information, components will then be put into lower or higher power savings
+    modes to adapt to the current usage.
+
+severity: low
+
+identifiers:
+    cce@rhel6: 82906-9
+    cce@rhel7: 82905-1
+    cce@rhel8: 82904-4
+
+{{{ complete_ocil_entry_package(package="tuned") }}}
