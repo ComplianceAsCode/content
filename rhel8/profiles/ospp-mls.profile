@@ -1,6 +1,6 @@
 documentation_complete: false
 
-title: 'Protection Profile for General Purpose Operating Systems - MLS Mode
+title: 'Protection Profile for General Purpose Operating Systems - MLS Mode'
 
 description: |-
     Placeholder to put MLS specific rules
