@@ -261,6 +261,12 @@ macro(ssg_build_ansible_playbooks PRODUCT)
         NAME "${PRODUCT}-ansible-playbooks-generated-for-all-rules"
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tests/ansible_playbooks_generated_for_all_rules.py" --build-dir "${CMAKE_BINARY_DIR}" --product "${PRODUCT}"
     )
+    if("${PRODUCT}" MATCHES "rhel")
+        add_test(
+            NAME "${PRODUCT}-ansible-assert-playbooks-schema"
+            COMMAND sh -c "${PYTHON_EXECUTABLE} $@" _ "${CMAKE_SOURCE_DIR}/tests/assert_ansible_schema.py" ${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks/all/*
+        )
+    endif()
 endmacro()
 
 macro(ssg_build_remediations PRODUCT)
