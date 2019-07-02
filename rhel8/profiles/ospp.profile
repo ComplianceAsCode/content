@@ -151,7 +151,7 @@ selections:
     ## RHEL 8 CCE-82965-5: Install tar Package
     - package_tar_installed
 
-    ## RHEL 8 CCE-82962-2: Install tmux Package
+    ## RHEL 8 CCE-80644-8: Install tmux Package
     - package_tmux_installed
 
     ## RHEL 8 CCE-82959-8: Install usbguard Package
