@@ -163,7 +163,7 @@ selections:
     ### RHEL 8 CCE-82953-1: Install audispd-plugins Package
     - package_audispd-plugins_installed
 
-    ## RHEL 8 CCE-81950-7: Install scap-security-guide Package
+    ## RHEL 8 CCE-82949-9: Install scap-security-guide Package
     - package_scap-security-guide_installed
 
     ## RHEL 8 CCE-81043-2: Ensure the audit Subsystem is Installed
