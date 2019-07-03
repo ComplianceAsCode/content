@@ -9,19 +9,6 @@ description: |-
 
 selections:
 
-    #
-    # Set the system's root password (required)
-    # Plaintext password is: server
-    # Refer to https://pykickstart.readthedocs.io/en/latest/commands.html#rootpw
-    # to see how to create an encrypted password for a different plaintext password
-    #rootpw --iscrypted $6$rhel6usgcb$aS6oPGXcPKp3OtFArSrhRwu6sN8q2.yEGY7AIwDOQd23YCtiz9c5mXbid1BzX9bmXTEZi.hCzTEXFosVBI5ng0
-
-    # This profile will restrict root login. Add a user that can login and
-    # change to root.
-    # Plaintext password is: admin123
-    #user --name=admin --groups=wheel --password=$6$Ga6ZnIlytrWpuCzO$q0LqT1USHpahzUafQM9jyHCY9BiE5/ahXLNWUMiVQnFGblu0WWGZ1e6icTaCGO4GNgZNtspp1Let/qpM7FMVB0 --iscrypted
-
-
     #################################################################
     ## SELinux Configuration
     #################################################################
@@ -38,21 +25,51 @@ selections:
     #################################################################
     ## Bootloader Configuration
     #################################################################
+    #TO DO: bootloader --location=mbr --append="boot=/dev/vda1 fips=1 "
 
-    ## TO DO:  GRUB SETTINGS
+    ## RHEL 8 CCE-80829-5: Set the UEFI Boot Loader Password
+    - grub2_uefi_password
 
-    # Specify how the bootloader should be installed (required)
-    # Plaintext password is: password  username is: root
-    # Refer to grub2-mkpasswd-pbkdf2 man page to see how to create an
-    # encrypted password for a different plaintext password.
-    #
-    # NOTE: If you plan to use containers from older distributions, you MAY
-    # remove vsyscall=none from the --append command since older glibc depends
-    # on having vsyscalls available.
-    #bootloader --location=mbr --append="boot=/dev/vda1 fips=1 audit=1 audit_backlog_limit=8192 slub_debug=P page_poison=1 pti=on vsyscall=none" --iscrypted --password=grub.pbkdf2.sha512.10000.3A8BA0AB351ADA8FAD49BC54A8730AD53F67EA1762E99DF4881FD2FF9CD2A361623DB0AA6FF31A8C0E9731EB60ACA8AE7B2E870BE5D2B9E2CA7DE2EC2A013B3D.4161020F9952809D4F0BF6E0B40795283673769E869B74C52EF2FBFE751A5B0F2B149B409922D6EB1073ABEC531696F92AA8B8A5A7CA2F575D3BBBDA0BFC1A98
+    ## RHEL 8 CCE-80855-0: Require Authentication for Single User Mode
+    - require_singleuser_auth
 
-    # Create primary system partitions (required for installs)
-    #part /boot --fstype=xfs --size=512 --fsoptions="nodev,nosuid"
+    ## RHEL 8 CCE-80825-3: Enable Auditing for Processes Which Start Prior to the Audit Daemon
+    - grub2_audit_argument
+
+    ## RHEL 8 CCE-80943-4: Extend Audit Backlog Limit for the Audit Daemon
+    - grub2_audit_backlog_limit_argument
+
+    ## RHEL 8 CCE-80945-9: Enable SLUB/SLAB allocator poisoning
+    - grub2_slub_debug_argument
+
+    ## RHEL 8 CCE-80944-2: Enable page allocator poisoning
+    - grub2_page_poison_argument
+
+    ## TO DO: New rule for "pti=on"
+    ##  https://github.com/ComplianceAsCode/content/issues/4588
+
+    ## RHEL 8 CCE-80946-7: Disable vsyscalls
+    - grub2_vsyscall_argument
+
+
+    #################################################################
+    ## Partitioning Configuration
+    #################################################################
+
+    ###########
+    ## /boot
+    ###########
+    # TO DO: /boot on its own partition?!
+
+    ## RHEL 8 CCE-82941-6: Add nodev Option to /boot
+    - mount_option_boot_nodev
+
+    ## RHEL 8 CCE-81033-3: Add nosuid Option to /boot
+    - mount_option_boot_nosuid
+
+    ###########
+    ## /home
+    ###########
 
     ## RHEL 8 CCE-81044-0: Ensure /home Located On Separate Partition
     ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4484
@@ -62,48 +79,104 @@ selections:
     ## RHEL 8 CCE-81050-7: Add nosuide Option to /home
     - mount_option_home_nosuid
 
+    ###########
+    ## /var
+    ###########
+
     ## RHEL 8 CCE-80852-7: Ensure /var Located on Separate Partition
     ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4486
     ##  unclear if partition requirements still exist
     - partition_for_var
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4489
-    #logvol /var --fstype=xfs --name=var --vgname=VolGroup --size=2048 --fsoptions="nodev"
+    ## RHEL 8 CCE-82062-1: Add nodev Option to /var
+    - mount_option_var_nodev
+
+    ###########
+    ## /var/log
+    ###########
 
     ## RHEL 8 CCE-80853-5: Ensure /var/log Located on Separate Partition
     - partition_for_var_log
 
-    ## /var/log nosuid
-    ## /var/log noexec
+    ## RHEL 8 CCE-82077-9: Add nodev Option to /var/log
+    - mount_option_var_log_nodev
 
+    ## RHEL 8 CCE-82065-4: Add nosuid Option to /var/log
+    - mount_option_var_log_nosuid
+
+    ## RHEL 8 CCE-82008-4: Add noexec Option to /var/log
+    - mount_option_var_log_noexec
+
+    ###########
+    ## /var/log/audit
+    ###########
     ## RHEL 8 CCE-80854-3: Ensure /var/log/audit Located on Separate Partition
     - partition_for_var_log_audit
 
-    # audit nosuid
-    # audit noexec
+    ## RHEL 8 CCE-82080-3: Add nodev Option to /var/log/audit
+    - mount_option_var_log_audit_nodev
+
+    ## RHEL 8 CCE-82921-8: Add nosuid Option to /var/log/audit
+    - mount_option_var_log_audit_nosuid
+
+    ## RHEL 8 CCE-82975-4: Add noexec Option to /var/log/audit
+    - mount_option_var_log_audit_noexec
+
+    ###########
+    ## /var/tmp
+    ###########
 
     ## RHEL 8 CCE-81053-1: Add nodev Option to /var/tmp
     - mount_option_var_tmp_nodev
 
-    ## audit nosuid
-    ## audit noexec
+    ## RHEL 8 CCE-82154-6: Add nosuid Option to /var/tmp
+    - mount_option_var_tmp_nosuid
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4490
-    ##  do we need a swap partition (for security reasons)?
-    #logvol swap --name=lv_swap --vgname=VolGroup --size=2016
+    ## RHEL 8 CCE-82151-2: Add noexec Option to /var/tmp
+    - mount_option_var_tmp_noexec
 
-    ## RHEL 8 CCE-81054-9: Add nodev Option to Non-Root Local Partitions
-    - mount_option_nodev_nonroot_local_partitions
-
+    ###########
+    ## /tmp
+    ###########
 
     ## Setup a couple mountpoints by hand to ensure correctness
     #touch /etc/fstab
     ## CCE-26435-8: Ensure /tmp Located On Separate Partition
-    #echo -e "tmpfs\t/tmp\t\t\t\ttmpfs\tdefaults,mode=1777,noexec,nosuid,nodev,strictatime,size=512M\t0 0" >> /etc/fstab
+    #echo -e "tmpfs\t/tmp\t\t\t\ttmpfs\tdefaults,mode=1777,,,nodev,strictatime,size=512M\t0 0" >> /etc/fstab
 
+    ## RHEL 8 CCE-82139-7: Add noexec Option to /tmp
+    - mount_option_tmp_noexec
+
+    ## RHEL 8 CCE-82140-5: Add nosuid Option to /tmp
+    - mount_option_tmp_nosuid
+
+    ###########
+    ## /swap
+    ###########
+    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4490
+    ##  do we need a swap partition (for security reasons)?
+    #logvol swap --name=lv_swap --vgname=VolGroup --size=2016
+
+    ###########
+    ## /dev/shm
+    ###########
     ## Make sure /dev/shm is restricted
-    #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,noexec,nosuid,nodev,strictatime\t0 0" >> /etc/fstab
+    #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,,,strictatime\t0 0" >> /etc/fstab
 
+    ## RHEL 8 CCE-aaa-8: Add nodev Option to /dev/shm
+    - mount_option_dev_shm_nodev
+
+    ## RHEL 8 CCE-80838-6: Add noexec Option to /dev/shm
+    - mount_option_dev_shm_noexec
+
+    ## RHEL 8 CCE-80839-4: Add nosuid Option to /dev/shm
+    - mount_option_dev_shm_nosuid
+
+    ###########
+    ## Misc Partitioning
+    ###########
+    ## RHEL 8 CCE-81054-9: Add nodev Option to Non-Root Local Partitions
+    - mount_option_nodev_nonroot_local_partitions
 
     #################################################################
     ## Required Packages
@@ -238,6 +311,16 @@ selections:
 
     #################################################################
     ##
+    ## Configure Audit Daemon
+    ##
+    #################################################################
+
+    ## RHEL 8 CCE-80872-5: Enable auditd Service
+    - service_auditd_enabled
+
+
+    #################################################################
+    ##
     ## Audit Successful/Unsuccessful File Creation
     ## (open with O_CREAT)
     ##
@@ -343,33 +426,23 @@ selections:
     ## TO DO: Record Successful Delete Attempts to Files - unlink
     - audit_rules_successful_file_modification_unlink
 
-    ##  https://github.com/ComplianceAsCode/content/issues/4549
-    #-a always,exit -F arch=b32 -S unlink -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S unlink -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-
     ## RHEL 8 CCE-80972-3: Record Unsuccessful Delete Attempts to Files - unlinkat
     - audit_rules_unsuccessful_file_modification_unlinkat
 
     ## TO DO: Record Successful Delete Attempts to Files - unlinkat
-    ##  https://github.com/ComplianceAsCode/content/issues/4548
-    #-a always,exit -F arch=b32 -S unlinkat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S unlinkat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
+    - audit_rules_successful_file_modification_unlinkat
 
     ## RHEL 8 CCE-80973-1: Record Unsuccessful Delete Attempts to Files - rename
     - audit_rules_unsuccessful_file_modification_rename
 
     ## TO DO: Record Successful Delete Attempts to Files - rename
-    ##  https://github.com/ComplianceAsCode/content/issues/4550
-    #-a always,exit -F arch=b32 -S rename -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S rename -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
+    - audit_rules_successful_file_modification_rename
 
     ## RHEL 8 CCE-80974-9: Record Unsuccessful Delete Attempts to Files - renameat
     - audit_rules_unsuccessful_file_modification_renameat
 
     ## TO DO: Record Successful Delete Attempts to Files - renameat
-    ##  https://github.com/ComplianceAsCode/content/issues/4551
-    #-a always,exit -F arch=b32 -S renameat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
-    #-a always,exit -F arch=b64 -S renameat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
+    - audit_rules_successful_file_modification_renameat
 
     #################################################################
     ##
@@ -380,74 +453,56 @@ selections:
     ## RHEL 8 CCE-80975-6: Record Unsuccessul Permission Changes to Files - chmod
     - audit_rules_unsuccessful_file_modification_chmod
 
-    ## TO DO: Record Successful Permission Changes to Files - chmod
-    ##  https://github.com/ComplianceAsCode/content/issues/4533
-    #-a always,exit -F arch=b32 -S chmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S chmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE:82098-5: Record Successful Permission Changes to Files - chmod
+    - audit_rules_successful_file_modification_chmod
 
     ## RHEL 8 CCE-80977-2: Record Unsuccessul Permission Changes to Files - fchmod
     - audit_rules_unsuccessful_file_modification_fchmod
 
-    ## TO DO: Record Successful Permission Changes to Files - fchmod
-    ##  https://github.com/ComplianceAsCode/content/issues/4534
-    #-a always,exit -F arch=b32 -S fchmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchmod -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82101-7: Record Successful Permission Changes to Files - fchmod
+    - audit_rules_successful_file_modification_fchmod
 
     ## RHEL 8 CCE-80976-4: Record Unsuccessul Permission Changes to Files - fchmodat
     - audit_rules_unsuccessful_file_modification_fchmodat
 
-    ## TO DO: Record Successful Permission Changes ot Files - fchmodat
-    ##  https://github.com/ComplianceAsCode/content/issues/4535
-    #-a always,exit -F arch=b32 -S fchmodat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchmodat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82104-1: Record Successful Permission Changes ot Files - fchmodat
+    - audit_rules_successful_file_modification_fchmodat
 
     ## RHEL 8 CCE-80983-0: Record Unsuccessul Permission Changes to Files - setxattr
     - audit_rules_unsuccessful_file_modification_setxattr
 
-    ## TO DO: Record Successful Permission Changes ot Files - setxattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4536
-    #-a always,exit -F arch=b32 -S setxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S setxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82107-4: Record Successful Permission Changes ot Files - setxattr
+    - audit_rules_successful_file_modification_setxattr
 
     ## RHEL 8 CCE-80981-4: Record Unsuccessul Permission Changes to Files - lsetxattr
     - audit_rules_unsuccessful_file_modification_lsetxattr
 
-    ## TO DO: Record Successful Permission Changes ot Files - lsetxattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4537
-    #-a always,exit -F arch=b32 -S lsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S lsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82110-8: Record Successful Permission Changes ot Files - lsetxattr
+    - audit_rules_successful_file_modification_lsetxattr
 
     ## RHEL 8 CCE-80979-8: Record Unsuccessul Permission Changes to Files - fsetxattr
     - audit_rules_unsuccessful_file_modification_fsetxattr
 
-    ## TO DO: Record Successful Permission Changes ot Files - fsetxattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4538
-    #-a always,exit -F arch=b32 -S fsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fsetxattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82113-2: Record Successful Permission Changes ot Files - fsetxattr
+    - audit_rules_successful_file_modification_fsetxattr
 
     ## RHEL 8 CCE-80982-2: Record Unsuccessul Permission Changes to Files - removexattr
     - audit_rules_unsuccessful_file_modification_removexattr
 
-    ## TO DO: Record Successful Permission Changes ot Files - removexattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4538
-    #-a always,exit -F arch=b32 -S removexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S removexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82116-5: Record Successful Permission Changes ot Files - removexattr
+    - audit_rules_successful_file_modification_removexattr
 
     ## RHEL 8 CCE-80980-6: Record Unsuccessul Permission Changes to Files - lremovexattr
     - audit_rules_unsuccessful_file_modification_lremovexattr
 
-    ## TO DO: Record Successful Permission Changes ot Files - lremovexattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4539
-    #-a always,exit -F arch=b32 -S lremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S lremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82119-9: Record Successful Permission Changes ot Files - lremovexattr
+    - audit_rules_successful_file_modification_lremovexattr
 
     ## RHEL 8 CCE-80978-0: Record Unsuccessul Permission Changes to Files - fremovexattr
     - audit_rules_unsuccessful_file_modification_fremovexattr
 
-    ## TO DO: Record Successful Permission Changes ot Files - fremovexattr
-    ##  https://github.com/ComplianceAsCode/content/issues/4540
-    #-a always,exit -F arch=b32 -S fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fremovexattr -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82122-3: Record Successful Permission Changes ot Files - fremovexattr
+    - audit_rules_successful_file_modification_fremovexattr
 
     #################################################################
     ##
@@ -458,35 +513,26 @@ selections:
     ## RHEL 8 CCE-80987-1: Record Unsuccessul Ownership Changes to Files - lchown
     - audit_rules_unsuccessful_file_modification_lchown
 
-    ## TO DO: Record Successful Ownership Changes to Files - lchown
-    ##  https://github.com/ComplianceAsCode/content/issues/4519
-    #-a always,exit -F arch=b32 -S lchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S lchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-32125-6: Record Successful Ownership Changes to Files - lchown
+    - audit_rules_successful_file_modification_lchown
 
     ## RHEL 8 CCE-80986-3: Record Unsuccessul Ownership Changes to Files - fchown
     - audit_rules_unsuccessful_file_modification_fchown
 
-    ## TO DO: Record Successful Ownership Changes to Files - fchown
-    ##  https://github.com/ComplianceAsCode/content/issues/4521
-    #-a always,exit -F arch=b32 -S fchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82128-0: Record Successful Ownership Changes to Files - fchown
+    - audit_rules_successful_file_modification_fchown
 
     ## RHEL 8 CCE-80984-8: Record Unsuccessul Ownership Changes to Files - chown
     - audit_rules_unsuccessful_file_modification_chown
 
-    ## TO DO: Record Successful Ownership Changes to Files - chown
-    ##  https://github.com/ComplianceAsCode/content/issues/4522
-    #-a always,exit -F arch=b32 -S chown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S chown -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
+    ## RHEL 8 CCE-82131-4: Record Successful Ownership Changes to Files - chown
+    - audit_rules_successful_file_modification_chown
 
     ## RHEL 8 CCE-80985-5: Record Unsuccessul Ownership Changes to Files - fchownat
     - audit_rules_unsuccessful_file_modification_fchownat
 
-    ## TO DO: Record Successful Ownership Changes to Files - fchownat
-    ##  https://github.com/ComplianceAsCode/content/issues/4523
-    #-a always,exit -F arch=b32 -S fchownat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-    #-a always,exit -F arch=b64 -S fchownat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-perm-change
-
+    ## RHEL 8 CCE-82134-8: Record Successful Ownership Changes to Files - fchownat
+    - audit_rules_successful_file_modification_fchownat
 
     #################################################################
     ##
@@ -577,9 +623,9 @@ selections:
     ## RHEL 8 CCE-80731-3: Ensure auditd Collects Information on the Use of Privileged Commands - passwd
     - audit_rules_privileged_commands_passwd
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4513
-    #-a always,exit -F path=/usr/sbin/seunshare -F perm=x -F auid>=1000 -F auid!=unset -F key=special-config-changes
-    
+    ## RHEL 8 CCE-80933-5: Record Any Attempts to Run seunshare
+    - audit_rules_execution_seunshare
+
     ## RHEL 8 CCE-80739-6: Ensure auditd Collects Information on the Use of Privileged Commands - umount
     - audit_rules_privileged_commands_umount
 
@@ -668,8 +714,8 @@ selections:
     ## RHEL 8 CCE-80913-7: Restrict Access to Kernel Message Buffer
     - sysctl_kernel_dmesg_restrict
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4491
-    #echo "kernel.perf_event_paranoid = 2" >> $CONFIG
+    ## RHEL 8 CCE-81054-9: Disallow kernel profiling by unprivileged users
+    - sysctl_kernel_perf_event_paranoid
 
     ## RHEL 8 CCE-80952-5: Disable Kernel Image Loading
     - sysctl_kernel_kexec_load_disabled
@@ -682,8 +728,8 @@ selections:
     ## RHEL 8 CCE-82203-1: Disable Access to Network bpf() Syscall From Unprivileged Processes
     - sysctl_kernel_unprivileged_bpf_disabled
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4494
-    #echo "net.core.bpf_jit_harden = 2" >> $CONFIG
+    ## RHEL 8 CCE-82934-1: Harden the operation of the BPF just-in-time compiler
+    - sysctl_net_core_bpf_jit_harden
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4495
     #cp -f /usr/lib/sysctl.d/10-default-yama-scope.conf /etc/sysctl.d/
@@ -790,19 +836,19 @@ selections:
     ## Blacklist Risky Kernel Modules
     #################################################################
 
-    ## Disable IEEE 1394 (FireWire) Support
+    ## RHEL 8 CCE-82005-0: Disable IEEE 1394 (FireWire) Support
     - kernel_module_firewire-core_disabled
 
     ## RHEL 8 CCE-81031-7: Disable Mounting of cramfs
     - kernel_module_cramfs_disabled
 
-    ## Disable ATM Support
+    ## RHEL 8 CCE-82028-2: Disable ATM Support
     - kernel_module_atm_disabled
 
     ## RHEL 8 CCE-80832-9: Disable Bluetooth Kernel Module
     - kernel_module_bluetooth_disabled
     
-    ## Disable CAN Support
+    ## RHEL 8 CCE-82059-7: Disable CAN Support
     - kernel_module_can_disabled
 
     ## RHEL 8 CCE-80834-5: Disable SCTP Support
@@ -955,6 +1001,9 @@ selections:
     #echo -e "[sssd]" >> $CONFIG
     #echo -e "user = sssd\n" >> $CONFIG
 
+    ## RHEL 8 CCE-81062-2: Configure SSSD to run as user sssd
+    - sssd_run_as_sssd_user
+
     #################################################################
     ## Enable / Configure USB Guard
     #################################################################
@@ -968,12 +1017,19 @@ selections:
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4474
     #systemctl enable usbguard
 
+    #################################################################
+    ## Enable / Configure FIPS
+    #################################################################
+    
     ## RHEL 8 CCE-80942-6: Enable FIPS Mode
     - enable_fips_mode
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4500
     # - sysctl_crypto_fips_enabled
-    # - enable_dracut_fips_module
+
+    ## RHEL 8 CCE-82155-3: Enable Dracut FIPS Module
+    - enable_dracut_fips_module
+
     # - etc_system_fips_exists
 
     #################################################################
@@ -1001,15 +1057,19 @@ selections:
     - accounts_password_pam_minlen
 
     ## RHEL 8 CCE-80653-9: Minimum Digit Characters
+    - var_password_pam_dcredit=1
     - accounts_password_pam_dcredit
 
     ## RHEL 8 CCE-80665-3: Ensure PAM Enforces Password Requirements - Minimum Uppercase Characters
+    - var_password_pam_ucredit=1
     - accounts_password_pam_ucredit
 
     ## RHEL 8 CCE-80655-4: Ensure PAM Enforces Password Requirements - Minimum Lowercase Characters
+    - var_password_pam_lcredit=1
     - accounts_password_pam_lcredit
 
     ## RHEL 8 CCE-80663-8: Ensure PAM Enforces Password Requirements - Minimum Special Characters
+    - var_password_pam_ocredit=1
     - accounts_password_pam_ocredit
 
     ## RHEL 8 CCE-81034-1: Set Password Maximum Consecutive Repeating Characters
@@ -1048,9 +1108,22 @@ selections:
 
     ## RANDOM TO DO
     #sed -i "6s/^#//" /etc/pam.d/su
-    #sed -i "8iauth        required      pam_faillock.so preauth silent deny=3 unlock_time=never fail_interval=900" /etc/pam.d/system-auth
-    #sed -i "8iauth        required      pam_faillock.so preauth silent deny=3 unlock_time=never fail_interval=900" /etc/pam.d/password-auth
+    #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/system-auth
+    #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/password-auth
     #sed -i "/pam_unix/s/$/ remember=5/" /etc/pam.d/system-auth
+
+    ## RHEL 8 CCE-80667-9: Set Deny For Failed Password Attempts
+    - var_accounts_passwords_pam_faillock_deny=3
+    - accounts_passwords_pam_faillock_deny
+
+    ## RHEL 8 CCE-80669-5: Set Interval For Counting Failed Password Attempts
+    - var_accounts_passwords_pam_faillock_fail_interval=900
+    - accounts_passwords_pam_faillock_interval
+
+    ## RHEL 8 CCE-80670-3: Set Lockout Time for Failed Password Attempts
+    - var_accounts_passwords_pam_faillock_unlock_time=never
+    - accounts_passwords_pam_faillock_unlock_time
+
 
     ## RHEL 8 CCE-80841-0: Prevent Login to Accounts With Empty Password
     - no_empty_passwords

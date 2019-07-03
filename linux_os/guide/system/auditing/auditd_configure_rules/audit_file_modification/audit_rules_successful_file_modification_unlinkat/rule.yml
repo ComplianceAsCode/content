@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 
-title: 'Record Successful Delete Attempts to Files - unlink'
+title: 'Record Successful Delete Attempts to Files - unlinkat'
 
 description: |-
     At a minimum, the audit system should collect file
@@ -11,18 +11,18 @@ description: |-
     startup (the default), add the following lines to a file with suffix
     <tt>.rules</tt> in the directory <tt>/etc/audit/rules.d</tt>:
 
-    <pre>-a always,exit -F arch=b32 -S unlink -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
+    <pre>-a always,exit -F arch=b32 -S unlinkat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
 
     If the system is 64 bit then also add the following lines:
-    <pre>-a always,exit -F arch=b64 -S unlink -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
+    <pre>-a always,exit -F arch=b64 -S unlinkat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
 
     If the <tt>auditd</tt> daemon is configured to use the <tt>auditctl</tt>
     utility to read audit rules during daemon startup, add the following lines to
     <tt>/etc/audit/audit.rules</tt> file:
-    <pre>-a always,exit -F arch=b32 -S unlink -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
+    <pre>-a always,exit -F arch=b32 -S unlinkat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
 
     If the system is 64 bit then also add the following lines:
-    <pre>-a always,exit -F arch=b64 -S unlink -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
+    <pre>-a always,exit -F arch=b64 -S unlinkat -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-delete</pre>
 
 rationale: |-
     File deletion attempts could be an indicator of malicious activity on a system. Auditing
@@ -31,11 +31,11 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel6: 82084-5
-    cce@rhel7: 82085-2
-    cce@rhel8: 82086-0
+    cce@rhel6: 82087-8
+    cce@rhel7: 82088-6
+    cce@rhel8: 82089-4
 
-{{{ complete_ocil_entry_audit_successful_syscall(syscall="unlink") }}}
+{{{ complete_ocil_entry_audit_successful_syscall(syscall="unlinkat") }}}
 
 warnings:
     - general: |-
