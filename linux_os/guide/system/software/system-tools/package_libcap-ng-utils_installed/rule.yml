@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install libcap-ng-utils Package'
+
+description: |-
+    {{{ describe_package_install(package="libcap-ng-utils") }}}
+
+rationale: |-
+    <tt>libcap-ng-utils</tt> contains applications to analyze the posix
+    posix capabilities of all the programs running on a system.
+    <tt>libcap-ng-utils</tt> also lets system operators set the file
+    system based capabilities.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82981-2
+    cce@rhel7: 82980-4
+    cce@rhel8: 82979-6
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="libcap-ng-utils") }}}'

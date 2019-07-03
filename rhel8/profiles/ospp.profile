@@ -105,29 +105,66 @@ selections:
     #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,noexec,nosuid,nodev,strictatime\t0 0" >> /etc/fstab
 
 
-    ################################################
-    ## MUST INSTALL PACKAGES IN BASE MODE
+    #################################################################
+    ## Required Packages
+    #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4483
-    #cryptsetup-luks
-    #sssd-ipa
-    #aide
-    #binutils
-    #dnf-automatic
-    #firewalld
-    #iptables
-    #libcap-ng-utils
-    #openscap-scanner
-    #policycoreutils
-    #python-rhsm
-    #rng-tools
-    #sudo
-    #tar
-    #tmux
-    #usbguard
-    #vim
-    #audispd-plugins
-    #scap-security-guide
+    ## RHEL 8 CCE-82995-2: Install cryptsetup-luks Package
+    - package_cryptsetup-luks_installed
+
+    ## RHEL 8 CCE-82994-5: Install sssd-ipa Package
+    - package_sssd-ipa_installed
+
+    ## RHEL 8 CCE-80844-4: Install aide Package
+    - package_aide_installed
+
+    ## RHEL 8 CCE-82989-5: Install binutils Package
+    - package_binutils_installed
+
+    ## RHEL 8 CCE-82985-3: Install dnf-automatic Package
+    - package_dnf-automatic_installed
+
+    ## RHEL 8 CCE-82998-6: Install firewalld Package
+    - package_firewalld_installed
+
+    ## RHEL 8 CCE-82982-0: Install iptables Package
+    - package_iptables_installed
+
+    ## RHEL 8 CCE-82979-6: Install libcap-ng-utils Package
+    - package_libcap-ng-utils_installed
+
+    ## RHEL 8 CCE-82976-2: Install openscap-scanner Package
+    - package_openscap-scanner_installed
+
+    ## RHEL 8 CCE-82976-2: Install policycoreutils Package
+    - package_policycoreutils_installed
+
+    ## RHEL 8 CCE-82973-9: Install python-rhsm Package
+    - package_python-rhsm_installed
+
+    ## RHEL 8 CCE-82968-9: Install rng-tools Package
+    - package_rng-tools_installed
+
+    ## RHEL 8 CCE-82965-5: Install sudo Package
+    - package_sudo_installed
+
+    ## RHEL 8 CCE-82965-5: Install tar Package
+    - package_tar_installed
+
+    ## RHEL 8 CCE-80644-8: Install tmux Package
+    - package_tmux_installed
+
+    ## RHEL 8 CCE-82959-8: Install usbguard Package
+    - package_usbguard_installed
+
+    ## RHEL 8 CCE-82956-4: Install vim Package
+    - package_vim_installed
+
+    ### RHEL 8 CCE-82953-1: Install audispd-plugins Package
+    - package_audispd-plugins_installed
+
+    ## RHEL 8 CCE-82949-9: Install scap-security-guide Package
+    - package_scap-security-guide_installed
 
     ## RHEL 8 CCE-81043-2: Ensure the audit Subsystem is Installed
     - package_auditd_installed
@@ -138,24 +175,6 @@ selections:
     ## RHEL 8 CCE-80847-7: Ensure rsyslog is Installed
     - package_rsyslog_installed
 
-
-
-    ################################################
-    ## MUST INSTALL PACKAGES IN MLS MODE
-    #cups
-    #foomatic
-    #ghostscript
-    #ghostscript-fonts
-    #checkpolicy
-    #mcstrans
-    #policycoreutils-newrole
-    #selinux-policy-devel
-    ##xinetd
-    #iproute
-    #iputils
-    #netlabel_tools
-
-
     #################################################################
     ## Remove Prohibited Packages
     #################################################################
@@ -163,29 +182,59 @@ selections:
     ## RHEL 8 CCE-81039-0: Uninstall Sendmail Package
     - package_sendmail_removed
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4482
-    #-iprutils
-    #-gssproxy
-    #-geolite2-city
-    #-geolite2-country
-    #-nfs-utils
-    #-krb5-workstation
-    #-abrt-addon-kerneloops
-    #-abrt-addon-python
-    #-abrt-addon-ccpp
-    #-abrt-plugin-rhtsupport
-    #-abrt-plugin-logger
-    #-abrt-plugin-sosreport
-    #-abrt-cli
-    #-tuned
+    ## RHEL 8 CCE-82946-5: Uninstall iprutils Package
+    - package_iprutils_removed
+
+    ## RHEL 8 CCE-82943-2: Uninstall gssproxy Package
+    - package_gssproxy_removed
+
+    ## RHEL 8 CCE-82939-0: Uninstall geolite2-city Package
+    - package_geolite2-city_removed
+
+    ## RHEL 8 CCE-82936-6: Uninstall geolite2-country Package
+    - package_geolite2-country_removed
+
+    ## RHEL 8 CCE-82932-5: Uninstall nfs-utils Package
+    - package_nfs-utils_removed
+
+    ## RHEL 8 CCE-82931-7: Uninstall krb5-workstation Package
+    - package_krb5-workstation_removed
+
+    ## RHEL 8 CCE-82926-7: Uninstall abrt-addon-kerneloops Package
+    - package_abrt-addon-kerneloops_removed
+
+    ## RHEL 8 CCE-82923-4: Uninstall abrt-addon-python Package
+    - package_abrt-addon-python_removed
+
+    ## RHEL 8 CCE-82919-2: Uninstall abrt-addon-ccpp Package
+    - package_abrt-addon-ccpp_removed
+
+    ## RHEL 8 CCE-82916-8: Uninstall abrt-plugin-rhtsupport Package
+    - package_abrt-plugin-rhtsupport_removed
+
+    ## RHEL 8 CCE-82946-5: Uninstall abrt-plugin-logger Package
+    - package_abrt-plugin-logger_removed
+
+    ## RHEL 8 CCE-82910-1: Uninstall abrt-plugin-sosreport Package
+    - package_abrt-plugin-sosreport_removed
+
+    ## RHEL 8 CCE-82907-7: Uninstall abrt-cli Package
+    - package_abrt-cli_removed
+
+    ## RHEL 8 CCE-82904-4: Uninstall tuned Package
+    - package_tuned_removed
 
     ## RHEL 8 CCE-80948-3: Uninstall Automatic Bug Reporting Tool (abrt)
     - package_abrt_removed
 
+    #################################################################
+    ##
+    ## Set PATH correctly
+    ##
+    #################################################################
 
     ## TO DO
     #PATH=/bin:/usr/bin:/sbin:/usr/sbin:$PATH
-
 
     #################################################################
     ##
@@ -197,26 +246,20 @@ selections:
     ## RHEL 8 CCE-80962-4: Record Unsuccessful Creation Attempts to Files - openat O_CREAT
     - audit_rules_unsuccessful_file_modification_openat_o_creat
 
-    ## TO DO: Record Successful Creation Attempts to Files - openat O_CREAT
-    ##  https://github.com/ComplianceAsCode/content/issues/4557
-    #-a always,exit -F arch=b32 -S openat -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-    #-a always,exit -F arch=b64 -S openat -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
+    ## RHEL 8 CCE-81128-1: Record Successful Creation Attempts to Files - opanat O_CREAT
+    - audit_rules_successful_file_modification_openat_o_creat
 
     ## RHEL 8 CCE-80965-7: Record Unsuccessful Creation Attempts to Files - open_by_handle_at O_CREAT
     - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
 
-    ## TO DO: Record Successful Creation Attempts to Files - open_by_handle_at O_CREAT
-    ##  https://github.com/ComplianceAsCode/content/issues/4558
-    #-a always,exit -F arch=b32 -S open_by_handle_at -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-    #-a always,exit -F arch=b64 -S open_by_handle_at -F a2&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
+    ## RHEL 8 CCE-81132-3: Record Successful Creation Attempts to Files - open_by_handle_at O_CREAT
+    - audit_rules_successful_file_modification_open_by_handle_at_o_creat
 
     ## RHEL 8 CCE-80968-1: Record Unsuccessful Creation Attempts to Files - open O_CREAT
     - audit_rules_unsuccessful_file_modification_open_o_creat
 
-    ## TO DO: Record Successful Creation Attempts to Files - open O_CREAT
-    ##  https://github.com/ComplianceAsCode/content/issues/4559
-    #-a always,exit -F arch=b32 -S open -F a1&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
-    #-a always,exit -F arch=b64 -S open -F a1&0100 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-create
+    ## RHEL 8 CCE-81135-6: Record Successful Creation Attempts to Files - open O_CREAT
+    - audit_rules_successful_file_modification_open_o_creat
 
     #################################################################
     ##
@@ -225,30 +268,23 @@ selections:
     ##
     #################################################################
 
-    ## RHEL 8 CCE-80963-2: Record Unsuccessful Modification Attempts to Files - openat O_TRUNC
+    ## RHEL 8 CCE-80963-2: Record Unsuccessful Modification Attempts to Files - openat O_TRUNC_WRITE
     - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
 
-    ## TO DO: Record Successful Modification Attempts to Files - openat O_TRUNC
-    ##  https://github.com/ComplianceAsCode/content/issues/4561
-    #-a always,exit -F arch=b32 -S openat -F a2&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-    #-a always,exit -F arch=b64 -S openat -F a2&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
+    ## RHEL 8 CCE-81138-0: Record Successful Modification Attempts to Files - openat O_TRUNC_WRITE
+    - audit_rules_successful_file_modification_openat_o_trunc_write
 
-    ## RHEL 8 CCE-80966-5: Record Unsuccessful Modification Attempts to Files - open_by_handle_at O_TRUNC
+    ## RHEL 8 CCE-80966-5: Record Unsuccessful Modification Attempts to Files - open_by_handle_at O_TRUNC_WRITE
     - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
 
-    ## TO DO: Record Successful Modification Attempts to Files - open_by_handle_at O_TRUNC
-    ##  https://github.com/ComplianceAsCode/content/issues/4562
-    #-a always,exit -F arch=b32 -S open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    #-a always,exit -F arch=b64 -S open_by_handle_at -F a2&01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
+    ## RHEL 8 CCE-81141-4: Record Successful Modification Attempts to Files - open_by_handle_at O_TRUNC_WRITE
+    - audit_rules_successful_file_modification_open_by_handle_at_o_trunc_write
 
-    ## RHEL 8 CCE-80969-9: Record Unsuccessful Modification Attempts to Files - open O_TRUNC
+    ## RHEL 8 CCE-80969-9: Record Unsuccessful Modification Attempts to Files - open O_TRUNC_WRITE
     - audit_rules_unsuccessful_file_modification_open_o_trunc_write
 
-    ## TO DO: Record Successful Modification Attempts to Files - open O_TRUNC
-    ##  https://github.com/ComplianceAsCode/content/issues/4560
-    #-a always,exit -F arch=b32 -S open -F a1&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-    #-a always,exit -F arch=b64 -S open -F a1&01003 -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-modification
-
+    ## RHEL 8 CCE-81144-8: Record Successful Modification Attempts to Files - open O_TRUNC_WRITE
+    - audit_rules_successful_file_modification_open_o_trunc_write
 
     #################################################################
     ##
@@ -262,50 +298,38 @@ selections:
     ## RHEL 8 CCE-80753-7: Record Unsuccessful Access Attempts to Files - open
     - audit_rules_unsuccessful_file_modification_open
 
-    ## TO DO: Record Successful Access Attempts to Files - open
-    ##  https://github.com/ComplianceAsCode/content/issues/4549
-    #-a always,exit -F arch=b32 -S open -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S open -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    ## RHEL 8 CCE-81147-1: Record Successful Access Attempts to Files - open
+    - audit_rules_successful_file_modification_open
 
     ## RHEL 8 CCE-80751-1: Record Unsuccessful Access Attempts to Files - creat
     - audit_rules_unsuccessful_file_modification_creat
 
-    ## TO DO: Record Successful Access Attempts to Files - creat
-    ##  https://github.com/ComplianceAsCode/content/issues/4552
-    #-a always,exit -F arch=b32 -S creat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S creat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    ## RHEL 8 CCE-81150-5: Record Successful Access Attempts to Files - creat
+    - audit_rules_successful_file_modification_creat
 
     ## RHEL 8 CCE-80756-0: Record Unsuccessful Access Attempts to Files - truncate
     - audit_rules_unsuccessful_file_modification_truncate
 
-    ## TO DO: Record Successful Access Attempts to Files - truncate
-    ##  https://github.com/ComplianceAsCode/content/issues/4553
-    #-a always,exit -F arch=b32 -S truncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S truncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    ## RHEL 8 CCE-82002-7: Record Successful Access Attempts to Files - truncate
+    - audit_rules_successful_file_modification_truncate
 
     ## RHEL 8 CCE-80752-9: Record Unsuccessful Access Attempts to Files - ftruncate
     - audit_rules_unsuccessful_file_modification_ftruncate
 
-    ## TO DO: Record Successful Access Attempts to Files - ftruncate
-    ##  https://github.com/ComplianceAsCode/content/issues/4554
-    #-a always,exit -F arch=b32 -S ftruncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S ftruncate -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    ## RHEL 8 CCE-82006-8: Record Successful Access Attempts to Files - ftruncate
+    - audit_rules_successful_file_modification_ftruncate
 
     ## RHEL 8 CCE-80754-5: Record Unsuccessful Access Attempts to Files - openat
     - audit_rules_unsuccessful_file_modification_openat
 
-    ## TO DO: Record Successful Access Attempts to Files - openat
-    ##  https://github.com/ComplianceAsCode/content/issues/4555
-    #-a always,exit -F arch=b32 -S openat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S openat -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    ## RHEL 8 CCE-82010-0: Record Successful Access Attempts to Files - openat
+    - audit_rules_successful_file_modification_openat
 
     ## RHEL 8 CCE-80755-2: Record Unsuccessful Access Attempts to Files - open_by_handle_at
     - audit_rules_unsuccessful_file_modification_open_by_handle_at
 
-    ## TO DO: Record Successful Access Attempts to Files - open_by_handle_at
-    ##  https://github.com/ComplianceAsCode/content/issues/4556
-    #-a always,exit -F arch=b32 -S open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    #-a always,exit -F arch=b64 -S open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    ## RHEL 8 CCE-82013-4: Record Successful Access Attempts to Files - open_by_handle_at
+    - audit_rules_successful_file_modification_open_by_handle_at
 
     #################################################################
     ##
@@ -317,6 +341,8 @@ selections:
     - audit_rules_unsuccessful_file_modification_unlink
 
     ## TO DO: Record Successful Delete Attempts to Files - unlink
+    - audit_rules_successful_file_modification_unlink
+
     ##  https://github.com/ComplianceAsCode/content/issues/4549
     #-a always,exit -F arch=b32 -S unlink -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
     #-a always,exit -F arch=b64 -S unlink -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-delete
@@ -653,8 +679,8 @@ selections:
     #echo "# you MAY comment out the next line." >> $CONFIG
     #echo "user.max_user_namespaces = 0" >> $CONFIG
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4493
-    #echo "kernel.unprivileged_bpf_disabled = 1" >> $CONFIG
+    ## RHEL 8 CCE-82203-1: Disable Access to Network bpf() Syscall From Unprivileged Processes
+    - sysctl_kernel_unprivileged_bpf_disabled
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4494
     #echo "net.core.bpf_jit_harden = 2" >> $CONFIG

@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install rng-tools Package'
+
+description: |-
+    {{{ describe_package_install(package="rng-tools") }}}
+
+rationale: |-
+    <tt>rng-tools</tt> provides hardware random number generator tools,
+    such as those used in the formation of x509/PKI certificates.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82970-5
+    cce@rhel7: 82969-7
+    cce@rhel8: 82968-9
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="rng-tools") }}}'

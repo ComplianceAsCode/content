@@ -2,7 +2,7 @@ documentation_complete: true
 
 prodtype: rhel7,rhel8,ol7,ol8
 
-title: 'Install firewalld'
+title: 'Install firewalld Package'
 
 description: |-
     {{{ describe_package_install(package="firewalld") }}}
@@ -10,6 +10,10 @@ description: |-
 rationale: 'The firewalld package should be installed to provide access control methods.'
 
 severity: medium
+
+identifiers:
+    cce@rhel7: 82999-4
+    cce@rhel8: 82998-6
 
 ocil_clause: 'the package is not installed'
 
