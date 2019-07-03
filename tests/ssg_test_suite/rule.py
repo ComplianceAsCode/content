@@ -9,6 +9,7 @@ import subprocess
 import collections
 import json
 
+from ssg.constants import OSCAP_PROFILE
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
@@ -205,6 +206,17 @@ class RuleChecker(oscap.Checker):
         if not self._matching_rule_found:
             logging.error("No matching rule ID found for '{0}'".format(target))
 
+    def _modify_parameters(self, params):
+        if self.scenarios_profile:
+            params['profiles'] = [self.scenarios_profile]
+
+        if not params["profiles"]:
+            params["profiles"].append(ALL_PROFILE_ID)
+            logging.debug(
+                "Added the {0} profile to the list of available profiles for {1}"
+                .format(ALL_PROFILE_ID, script))
+        return params
+
     def _parse_parameters(self, script):
         """Parse parameters from script header"""
         params = {'profiles': [],
@@ -241,16 +253,12 @@ class RuleChecker(oscap.Checker):
             script_context = _get_script_context(script)
             if script_context is not None:
                 script_params = self._parse_parameters(os.path.join(rule_dir, script))
+                script_params = self._modify_parameters(script_params)
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
                     logging.info("Script %s is not applicable on given platform" % script)
 
-                if not script_params["profiles"]:
-                    script_params["profiles"].append(ALL_PROFILE_ID)
-                    logging.debug(
-                        "Added the {0} profile to the list of available profiles for {1}"
-                        .format(ALL_PROFILE_ID, script))
         return scenarios
 
     def _check_rule(self, rule, remote_dir, state):
@@ -311,5 +319,11 @@ def perform_rule_check(options):
     checker.manual_debug = options.manual_debug
     checker.benchmark_cpes = options.benchmark_cpes
     checker.scenarios_regex = options.scenarios_regex
+
+    checker.scenarios_profile = options.scenarios_profile
+    # check if target is a complete profile ID, if not prepend profile prefix
+    if (checker.scenarios_profile is not None and
+            not checker.scenarios_profile.startswith(OSCAP_PROFILE)):
+        checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
 
     checker.test_target(options.target)
