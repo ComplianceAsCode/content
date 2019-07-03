@@ -891,3 +891,16 @@ selections:
 
     ## RHEL 8 CCE-80792-5: Ensure gpgcheck Enabled for All yum Package Repositories
     - ensure_gpgcheck_never_disabled
+
+
+    #################################################################
+    ## SELinux Configuration
+    #################################################################
+
+    ## RHEL 8 CCE-80869-1: Ensure SELinux is Enforcing
+    - var_selinux_state=enforcing
+    - selinux_state
+
+    ## RHEL 8 CCE-80868-3: Configure SELinux Policy
+    - var_selinux_policy_name=targeted
+    - selinux_policytype
