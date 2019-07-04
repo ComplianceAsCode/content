@@ -1,0 +1,64 @@
+{{%- macro oval_lineinfile(msg='', path='', parameter='', value='', default='', application='', rpm_package='') -%}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>{{{ msg or rule_title }}}</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>{{{ rule_title }}}</description>
+    </metadata>
+    <criteria comment="{{{ application }}} is configured correctly or is not installed"
+    operator="OR">
+      <criteria comment="{{{ application }}} is not installed" operator="AND">
+        <extend_definition comment="{{{ application }}} is not required or requirement is unset"
+        definition_ref="{{{ application }}}_not_required_or_unset" />
+        <extend_definition comment="rpm package {{{ rpm_package }}} removed"
+        definition_ref="package_{{{ rpm_package }}}_removed" />
+      </criteria>
+      <criteria comment="{{{ application }}} is installed and configured" operator="AND">
+        <extend_definition comment="{{{ application }}} is required or requirement is unset"
+        definition_ref="{{{ application }}}_required_or_unset" />
+        <extend_definition comment="rpm package {{{ rpm_package }}} installed"
+        definition_ref="package_{{{ rpm_package }}}_installed" />
+        {{%- if default %}}
+        <criteria comment="{{{ application }}} is configured or has default value" operator="OR">
+        {{%- endif %}}
+          <criterion comment="Check {{{ parameter }}} in {{{ path }}}"
+          test_ref="test_{{{ rule_id }}}" />
+        {{%- if default %}}
+          <criterion comment="Check for default value of {{{ parameter }}} in {{{ path }}}"
+          test_ref="test_default_value_{{{ rule_id }}}" />
+        </criteria>
+        {{%- endif %}}
+      </criteria>
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="tests the value of {{{ parameter }}} setting in the {{{ path }}} file"
+  id="test_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i){{{ parameter }}}(?-i)[\s]+{{{ value }}}[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  {{%- if default %}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="tests for default value of {{{ parameter }}} setting in the {{{ path }}} file"
+  id="test_default_value_{{{ rule_id }}}" version="1">
+    <ind:object object_ref="obj_default_value_{{{ rule_id }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_default_value_{{{ rule_id }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*(?i){{{ parameter }}}[\s](?-i)</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+</def-group>
+  {{%- endif %}}
+{{%- endmacro %}}
+
+{{%- macro oval_sshd_config(msg='', parameter='', value='', default='') %}}
+{{{ oval_lineinfile(msg, "/etc/ssh/sshd_config", parameter, value, default, application="sshd", rpm_package='openssh-server') }}}
+{{%- endmacro %}}
