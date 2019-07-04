@@ -81,6 +81,7 @@ option(SSG_PRODUCT_UBUNTU1404 "If enabled, the Ubuntu 14.04 SCAP content will be
 option(SSG_PRODUCT_UBUNTU1604 "If enabled, the Ubuntu 16.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_UBUNTU1804 "If enabled, the Ubuntu 18.04 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 option(SSG_PRODUCT_WRLINUX8 "If enabled, the WRLinux SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
+option(SSG_PRODUCT_WRLINUX1019 "If enabled, the WRLinux SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
@@ -242,6 +243,7 @@ message(STATUS "Ubuntu 14.04: ${SSG_PRODUCT_UBUNTU1404}")
 message(STATUS "Ubuntu 16.04: ${SSG_PRODUCT_UBUNTU1604}")
 message(STATUS "Ubuntu 18.04: ${SSG_PRODUCT_UBUNTU1804}")
 message(STATUS "WRLinux 8: ${SSG_PRODUCT_WRLINUX8}")
+message(STATUS "WRLinux 1019: ${SSG_PRODUCT_WRLINUX1019}")
 
 message(STATUS " ")
 
@@ -341,6 +343,9 @@ if (SSG_PRODUCT_UBUNTU1804)
 endif()
 if (SSG_PRODUCT_WRLINUX8)
     add_subdirectory("wrlinux8")
+endif()
+if (SSG_PRODUCT_WRLINUX1019)
+    add_subdirectory("wrlinux1019")
 endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
