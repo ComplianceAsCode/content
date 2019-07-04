@@ -721,12 +721,13 @@ The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placi
 * `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
 +
 The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
+* `platform`: Defines applicability of a rule. For example, if a rule is not applicable to containers, this should be set to `machine`, which means it will be evaluated only if the targeted scan environment is either bare-metal or virtual machine. Also, it can restrict applicability on higher software layers. By setting to `shadow-utils`, the rule will have its applicability restricted to only environments which have `shadow-utils` package installed. The available options can be found in the file <product>/cpe/<product>-cpe-dictionary.xml (e.g.: rhel8/cpe/rhel8-cpe-dictionary.xml). In order to support a new value, an OVAL check (of `inventory` class) must be created under `shared/checks/oval/` and referenced in the dictionary file.
 * `ocil`: Defines asserting statements to check whether or not the rule is valid.
-* `ocil_clause` attribute contains the statement which describes how to determine whether the statement is true or false. Check out `encrypt_partitions.rule` in `linux_os/guide/system/software/disk_partitioning/`: this contains a `partitions do not have a type of crypto_LUKS` value for `ocil_clause`. This clause is prefixed with the phrase "It is the case that".
+* `ocil_clause`: This attribute contains the statement which describes how to determine whether the statement is true or false. Check out `encrypt_partitions.rule` in `linux_os/guide/system/software/disk_partitioning/`: this contains a `partitions do not have a type of crypto_LUKS` value for `ocil_clause`. This clause is prefixed with the phrase "It is the case that".
 
 A rule may contain those reference-type attributes:
 
-* `identifiers`: This is related to products/CCEs that the rule applies to; this is a dictionary, whose keys should be `cce` and a value. If `cce` is modified with a product (e.g., `cce@rhel6`), it restricts what products that identifiers applies to.
+* `identifiers`: This is related to products/CCEs that the rule applies to; this is a dictionary, whose keys should be `cce` and a value. If `cce` is modified with a product (e.g., `cce@rhel6`), it restricts which products those identifiers applies to.
 * `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stig`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stig@rhel6`) to restrict what products an identifiers applies to.
 +
 When the rule is related to RHEL, it should have a CCE.
