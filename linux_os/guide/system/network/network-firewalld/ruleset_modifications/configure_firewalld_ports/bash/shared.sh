@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora
+# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora
 # reboot = false
 # complexity = low
 # strategy = configure

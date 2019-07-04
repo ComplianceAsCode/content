@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol
+# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol
 . /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_tmout
 
