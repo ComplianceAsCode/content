@@ -6,7 +6,7 @@ import os.path
 
 product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
                        'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
-                       'ubuntu1604', 'ubuntu1804', 'wrlinux', 'rhosp13',
+                       'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'rhosp13',
                        'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
                        'example']
 
@@ -107,7 +107,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Ubuntu 14.04": "ubuntu1404",
     "Ubuntu 16.04": "ubuntu1604",
     "Ubuntu 18.04": "ubuntu1804",
-    "WRLinux": "wrlinux",
+    "WRLinux 8": "wrlinux8",
 }
 
 PRODUCT_TO_CPE_MAPPING = {
@@ -225,7 +225,7 @@ PRODUCT_TO_CPE_MAPPING = {
     "ubuntu1804": [
         "cpe:/o:canonical:ubuntu_linux:18.04",
     ],
-    "wrlinux": [
+    "wrlinux8": [
         "cpe:/o:windriver:wrlinux:8",
     ],
 }
@@ -245,7 +245,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle11", "sle12"],
     "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
-    "multi_platform_wrlinux": ["wrlinux"],
+    "multi_platform_wrlinux": ["wrlinux8"],
 }
 
 RHEL_CENTOS_CPE_MAPPING = {
