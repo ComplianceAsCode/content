@@ -25,7 +25,7 @@ description: |-
     <pre>-a always,exit -F arch=b64 -S chmod -F success=1 -F auid&gt;={{{ auid }}} -F auid!=unset -F key=successful-perm-change</pre>
 
 rationale: |-
-    File deletion attempts could be an indicator of malicious activity on a system. Auditing
+    File permission changes could be an indicator of malicious activity on a system. Auditing
     these events could serve as evidence of potential system compromise.
 
 severity: medium
