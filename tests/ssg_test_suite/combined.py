@@ -14,8 +14,8 @@ import data
 
 class CombinedChecker(rule.RuleChecker):
     """
-    Rule checks generally work like this -
-    for every profile that supports that rule:
+    Combined mode works like pretty much like the Rule mode -
+    for every rule selected in a profile:
 
     - Alter the system.
     - Run the scan, check that the result meets expectations.
@@ -28,6 +28,9 @@ class CombinedChecker(rule.RuleChecker):
     - If there are no remediations, return True.
     - Run remediation, return False if it failed.
     - Return result of the final scan of remediated system.
+
+    If a rule doesn't have any test scenario, it is skipped.
+    Skipped rules are reported at the end.
     """
     def __init__(self, test_env):
         super(CombinedChecker, self).__init__(test_env)
@@ -47,7 +50,7 @@ class CombinedChecker(rule.RuleChecker):
     def _matches_target(self, rule_dir, targets):
         for target in targets:
             # By prepending 'rule_', and match using endswith(), we should avoid
-            # matching rules that are different by just a prefix of suffix
+            # matching rules that are different by just a prefix or suffix
             if rule_dir.endswith("rule_"+target):
                 return True, target
         return False, None

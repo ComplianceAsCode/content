@@ -138,7 +138,8 @@ The Test Suite can test a whole profile or just a specific rule within a profile
 
 Mode of operation, specify one of the following commands;
 - `profile`: Evaluate, remediate and evalute again using selected profile
-- `rule`: Evaluate a rule, remediate, and evalute again in context of test scenarios.
+- `rule`: Evaluate a rule, remediate, and evaluate again in context of test scenarios.
+- `combined`: Evaluate, remediate, and evaluate again the rules from a profile in context of test scenarios.
 
 Specify backend and image to use:
 - To use VM backend, use the following option on the command line:
@@ -290,6 +291,20 @@ expects evaluation to pass.
 
 Support files, these are available to the scenarios during their runtime. Can
 be used as common libraries.
+
+### Combined testing mode
+
+In this mode, you are testing the rules selected by a profile, using the contexts provided by each rule's test scenarios.
+This mode provides an easy way of performing rule-based testing on all rules that are part of a profile.
+
+Any `# profiles` metadata in the test scenarios will be ignored, the Test Suite will assume that the test scenarios apply for the Profile, since the rule is selected by the profile.
+
+If a rule doesn't have any test scenario, it will be skipped and a `INFO` message printed at the end.
+
+If you would like to test all profile's rules against their test scenarios:
+```
+./test_suite.py combined --libvirt qemu:///system ssg-test-suite-rhel8 --datastream ../build/ssg-rhel8-ds.xml ospp
+```
 
 ## How to write new test scenarios
 
