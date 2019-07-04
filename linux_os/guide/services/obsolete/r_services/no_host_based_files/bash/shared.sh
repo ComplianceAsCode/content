@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_sle
+# platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_sle
 
 # Identify local mounts
 MOUNT_LIST=$(df --local | awk '{ print $6 }')

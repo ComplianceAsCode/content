@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Oracle Linux 7,multi_platform_rhv
+# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Oracle Linux 7,multi_platform_rhv
 
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions

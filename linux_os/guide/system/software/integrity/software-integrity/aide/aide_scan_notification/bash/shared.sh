@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 . /usr/share/scap-security-guide/remediation_functions
 
 package_install aide
