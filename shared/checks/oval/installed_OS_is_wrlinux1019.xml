@@ -1,0 +1,50 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_wrlinux1019" version="1">
+    <metadata>
+      <title>WRLinux 1019</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:windriver:wrlinux"
+      source="CPE" />
+      <description>The operating system installed on the system is
+      Wind River Linux 1019</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="Installed operating system is part of the unix family" test_ref="test_unix_wrlinux1019" />
+      <criterion comment="Produce name is WRLinux" test_ref="test_wrlinux1019_name" />
+      <criterion comment="WRLinux version is 1019" test_ref="test_wrlinux1019_version" />
+    </criteria>
+  </definition>
+  
+
+  <ind:family_test check="all" check_existence="at_least_one_exists" comment="installed OS part of unix family" id="test_unix_wrlinux1019" version="1">
+    <ind:object object_ref="obj_unix_wrlinux1019" />
+    <ind:state state_ref="state_unix_wrlinux1019" />
+  </ind:family_test>
+
+  <ind:family_state id="state_unix_wrlinux1019" version="1">
+    <ind:family>unix</ind:family>
+  </ind:family_state>
+
+  <ind:family_object id="obj_unix_wrlinux1019" version="1" />
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check WRLinux10.19 version" id="test_wrlinux1019_name" version="1">
+    <ind:object object_ref="obj_name_wrlinux1019" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_name_wrlinux1019" version="1" comment="Check WRLinux1019 produce name">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^NAME=.Wind[\s]+River[\s]+Linux.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check WRLinux10.19 version" id="test_wrlinux1019_version" version="1">
+    <ind:object object_ref="obj_version_wrlinux1019" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_version_wrlinux1019" version="1" comment="Check WRLinux1019 version">
+    <ind:filepath>/etc/os-release</ind:filepath>
+    <ind:pattern operation="pattern match">^VERSION=.10\.19.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
