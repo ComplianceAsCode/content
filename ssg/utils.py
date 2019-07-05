@@ -7,7 +7,10 @@ import os
 import re
 from collections import namedtuple
 
-from .constants import MULTI_PLATFORM_LIST, MAKEFILE_ID_TO_PRODUCT_MAP
+from .constants import (FULL_NAME_TO_PRODUCT_MAPPING,
+                        MAKEFILE_ID_TO_PRODUCT_MAP,
+                        MULTI_PLATFORM_LIST,
+                        MULTI_PLATFORM_MAPPING)
 
 
 class SSGError(RuntimeError):
@@ -38,6 +41,38 @@ def map_name(version):
 
     raise RuntimeError("Can't map version '%s' to any known product!"
                        % (version))
+
+
+def to_name(prod):
+    """
+    Converts a vaguely-prodtype-like thing into one or more full product names.
+    """
+    for name, prod_type in FULL_NAME_TO_PRODUCT_MAPPING.items():
+        if prod == prod_type:
+            return name
+    if prod in MULTI_PLATFORM_LIST or prod == 'all':
+        return "multi_platform_" + prod
+    raise RuntimeError("Unknown product name: %s" % prod)
+
+
+def to_platform(names):
+    """
+    Converts one or more full names to a string containing one or more
+    <platform> elements.
+    """
+    if isinstance(names, str):
+        return "<platform>%s</platform>" % names
+    return "\n".join(map(to_platform, names))
+
+
+def prodtype_to_platform(prods):
+    """
+    Converts one or more prodtypes into a string with one or more <platform>
+    elements.
+    """
+    if isinstance(prods, str):
+        return to_platform(to_name(prods))
+    return "\n".join(map(prodtype_to_platform, prods))
 
 
 def parse_name(product):

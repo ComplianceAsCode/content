@@ -8,7 +8,7 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
                         JINJA_MACROS_ANSIBLE_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS)
-from .utils import required_key
+from .utils import required_key, to_name, to_platform, prodtype_to_platform
 
 
 class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
@@ -98,6 +98,12 @@ def process_file(filepath, substitutions_dict):
     return template.render(substitutions_dict)
 
 
+def add_python_functions(substitutions_dict):
+    substitutions_dict['prodtype_to_name'] = to_name
+    substitutions_dict['name_to_platform'] = to_platform
+    substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
+
+
 def load_macros(substitutions_dict):
     """
     Augment the substitutions_dict dict with project Jinja macros in /shared/.
@@ -105,6 +111,7 @@ def load_macros(substitutions_dict):
     if substitutions_dict is None:
         substitutions_dict = dict()
 
+    add_python_functions(substitutions_dict)
     try:
         update_substitutions_dict(JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
         update_substitutions_dict(JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict)
