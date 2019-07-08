@@ -1,4 +1,7 @@
-{{%- macro oval_lineinfile(msg='', path='', parameter='', value='', default='', application='', rpm_package='') -%}}
+{{%- macro oval_check_config_file(msg='', path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default='', application='', exact_match='') -%}}
+{{%- if default %}}
+{{%- set none_exist = "_none_exist" -%}}
+{{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
@@ -6,59 +9,80 @@
       <affected family="unix">
         <platform>multi_platform_all</platform>
       </affected>
-      <description>{{{ rule_title }}}</description>
+      <description>{{{ msg or rule_title }}}</description>
     </metadata>
-    <criteria comment="{{{ application }}} is configured correctly or is not installed"
+    <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-      <criteria comment="{{{ application }}} is not installed" operator="AND">
-        <extend_definition comment="{{{ application }}} is not required or requirement is unset"
-        definition_ref="{{{ application }}}_not_required_or_unset" />
-        <extend_definition comment="rpm package {{{ rpm_package }}} removed"
-        definition_ref="package_{{{ rpm_package }}}_removed" />
-      </criteria>
-      <criteria comment="{{{ application }}} is installed and configured" operator="AND">
-        <extend_definition comment="{{{ application }}} is required or requirement is unset"
-        definition_ref="{{{ application }}}_required_or_unset" />
-        <extend_definition comment="rpm package {{{ rpm_package }}} installed"
-        definition_ref="package_{{{ rpm_package }}}_installed" />
-        {{%- if default %}}
-        <criteria comment="{{{ application }}} is configured or has default value" operator="OR">
+        {{{ oval_line_in_file_criteria(path, parameter) }}}
+        {{%- if none_exist %}}
+        {{{ oval_line_in_file_criteria(path, parameter, none_exist) }}}
         {{%- endif %}}
-          <criterion comment="Check {{{ parameter }}} in {{{ path }}}"
-          test_ref="test_{{{ rule_id }}}" />
-        {{%- if default %}}
-          <criterion comment="Check for default value of {{{ parameter }}} in {{{ path }}}"
-          test_ref="test_default_value_{{{ rule_id }}}" />
-        </criteria>
-        {{%- endif %}}
-      </criteria>
     </criteria>
   </definition>
+
+  {{{ oval_line_in_file_test(path, parameter) }}}
+  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, value) }}}
+  {{{ oval_line_in_file_state(value, exact_match) }}}
+  {{%- if none_exist %}}
+  {{{ oval_line_in_file_test(path, parameter, none_exist) }}}
+  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, value, none_exist) }}}
+  {{%- endif %}}
+
+</def-group>
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_file_criteria(path='', parameter='', none_exist='') -%}}
+{{%- if none_exist %}}
+<criterion comment="Check absence of {{{ parameter }}} in {{{ path }}}"
+{{%- else %}}
+<criterion comment="Check {{{ parameter }}} in {{{ path }}}"
+{{%- endif %}}
+  test_ref="test_{{{ rule_id }}}{{{ none_exist }}}" />
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_file_test(path='', parameter='', none_exist='') -%}}
+  {{%- if none_exist %}}
+  <ind:textfilecontent54_test check="all" check_existence="none_exist"
+  comment="tests the absence of {{{ parameter }}} setting in the {{{ path }}} file"
+  {{%- else %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="tests the value of {{{ parameter }}} setting in the {{{ path }}} file"
-  id="test_{{{ rule_id }}}" version="1">
-    <ind:object object_ref="obj_{{{ rule_id }}}" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}" version="1">
-    <ind:filepath>{{{ path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i){{{ parameter }}}(?-i)[\s]+{{{ value }}}[\s]*(?:|(?:#.*))?$</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  {{%- if default %}}
-  <ind:textfilecontent54_test check="all" check_existence="none_exist"
-  comment="tests for default value of {{{ parameter }}} setting in the {{{ path }}} file"
-  id="test_default_value_{{{ rule_id }}}" version="1">
-    <ind:object object_ref="obj_default_value_{{{ rule_id }}}" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_default_value_{{{ rule_id }}}" version="1">
-    <ind:filepath>{{{ path }}}</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i){{{ parameter }}}[\s](?-i)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-</def-group>
   {{%- endif %}}
+  id="test_{{{ rule_id }}}{{{ none_exist }}}" version="1">
+  <ind:object object_ref="obj_{{{ rule_id }}}{{{ none_exist }}}" />
+  {{%- if not none_exist %}}
+  <ind:state state_ref="state_{{{ rule_id }}}" />
+  {{%- endif %}}
+  </ind:textfilecontent54_test>
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', value='', none_exist='') -%}}
+  <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ none_exist }}}" version="1">
+    <ind:filepath>{{{ path }}}</ind:filepath>
+    {{%- if none_exist %}}
+    <ind:pattern operation="pattern match">{{{ prefix_regex }}}{{{ parameter }}}{{{ separator_regex }}}</ind:pattern>
+    {{%- else %}}
+    <ind:pattern operation="pattern match">{{{ prefix_regex }}}{{{ parameter }}}{{{ separator_regex }}}(.*)[\s]*(?:|(?:#.*))?$</ind:pattern>
+    {{%- endif %}}
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{%- endmacro %}}
+
+{{%- macro oval_line_in_file_state(value='', exact_match='') -%}}
+{{%- if exact_match %}}
+{{%- set regex = value -%}}
+{{%- else %}}
+{{%- set regex = "^.*"+value+".*$" -%}}
+{{%- endif %}}
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
+</ind:textfilecontent54_state>
 {{%- endmacro %}}
 
 {{%- macro oval_sshd_config(msg='', parameter='', value='', default='') %}}
-{{{ oval_lineinfile(msg, "/etc/ssh/sshd_config", parameter, value, default, application="sshd", rpm_package='openssh-server') }}}
+{{{ oval_check_config_file(msg, "/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default=default, application="sshd", exact_match='true') }}}
+{{%- endmacro %}}
+
+{{%- macro oval_grub_config(msg='', parameter='', value='', default='') %}}
+{{{ oval_check_config_file(msg, "/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default=default, application="grub") }}}
 {{%- endmacro %}}
