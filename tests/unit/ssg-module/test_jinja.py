@@ -10,8 +10,8 @@ def get_definitions_with_substitution(subs_dict=None):
         subs_dict = dict()
 
     definitions = os.path.join(os.path.dirname(__file__), "data", "definitions.jinja")
-    defs = ssg.jinja.extract_substitutions_dict_from_template(definitions, subs_dict)
-    return defs
+    ssg.jinja.update_substitutions_dict(definitions, subs_dict)
+    return subs_dict
 
 
 def test_macro_presence():

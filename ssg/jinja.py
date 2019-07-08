@@ -71,20 +71,19 @@ def _get_jinja_environment(substitutions_dict):
 _get_jinja_environment.env = None
 
 
-def extract_substitutions_dict_from_template(filename, substitutions_dict):
+def update_substitutions_dict(filename, substitutions_dict):
     """
     Treat the given filename as a jinja2 file containing macro definitions,
-    and export definitions that don't start with _ as a name->macro dictionary.
-    During macro compilation, symbols from substitutions_dict may be used in those definitions.
+    and export definitions that don't start with _ into the substitutions_dict,
+    a name->macro dictionary. During macro compilation, symbols already
+    existing in substitutions_dict may be used by those definitions.
     """
     template = _get_jinja_environment(substitutions_dict).get_template(filename)
     all_symbols = template.make_module(substitutions_dict).__dict__
-    symbols_to_export = dict()
     for name, symbol in all_symbols.items():
         if name.startswith("_"):
             continue
-        symbols_to_export[name] = symbol
-    return symbols_to_export
+        substitutions_dict[name] = symbol
 
 
 def process_file(filepath, substitutions_dict):
@@ -106,18 +105,14 @@ def load_macros(substitutions_dict):
         substitutions_dict = dict()
 
     try:
-        macro_definitions = extract_substitutions_dict_from_template(
-            JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
-        macro_definitions.update(extract_substitutions_dict_from_template(
-            JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict))
-        macro_definitions.update(extract_substitutions_dict_from_template(
-            JINJA_MACROS_ANSIBLE_DEFINITIONS, substitutions_dict))
+        update_substitutions_dict(JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
+        update_substitutions_dict(JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict)
+        update_substitutions_dict(JINJA_MACROS_ANSIBLE_DEFINITIONS, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions: {0}"
                .format(str(exc)))
         raise RuntimeError(msg)
 
-    substitutions_dict.update(macro_definitions)
     return substitutions_dict
 
 
