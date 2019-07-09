@@ -33,6 +33,9 @@ selections:
     ## RHEL 8 CCE-80855-0: Require Authentication for Single User Mode
     - require_singleuser_auth
 
+    ## RHEL 8 CCE-80826-1: Verify that Interactive Boot is Disabled
+    - grub2_disable_interactive_boot
+
     ## RHEL 8 CCE-80825-3: Enable Auditing for Processes Which Start Prior to the Audit Daemon
     - grub2_audit_argument
 
@@ -76,7 +79,10 @@ selections:
     ##  unclear if partition requirements still relevant
     - partition_for_home
 
-    ## RHEL 8 CCE-81050-7: Add nosuide Option to /home
+    ## RHEL 8 CCE-81048-1: Add nodev Option to /home
+    - mount_option_home_nodev
+
+    ## RHEL 8 CCE-81050-7: Add nosuid Option to /home
     - mount_option_home_nosuid
 
     ###########
@@ -144,6 +150,9 @@ selections:
     ## CCE-26435-8: Ensure /tmp Located On Separate Partition
     #echo -e "tmpfs\t/tmp\t\t\t\ttmpfs\tdefaults,mode=1777,,,nodev,strictatime,size=512M\t0 0" >> /etc/fstab
 
+    ## RHEL 8 CCE-82623-0: Add nodev Option to /tmp
+    - mount_option_tmp_nodev
+
     ## RHEL 8 CCE-82139-7: Add noexec Option to /tmp
     - mount_option_tmp_noexec
 
@@ -163,7 +172,7 @@ selections:
     ## Make sure /dev/shm is restricted
     #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,,,strictatime\t0 0" >> /etc/fstab
 
-    ## RHEL 8 CCE-aaa-8: Add nodev Option to /dev/shm
+    ## RHEL 8 CCE-80837-8: Add nodev Option to /dev/shm
     - mount_option_dev_shm_nodev
 
     ## RHEL 8 CCE-80838-6: Add noexec Option to /dev/shm
@@ -543,7 +552,6 @@ selections:
     ## passwd and shadow for writes.
     ##
     #################################################################
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4517
     ## User add delete modify. This is covered by pam. However, someone could
     ## open a file and directly create or modify a user, so we'll watch passwd and
     ## shadow for writes
@@ -555,6 +563,24 @@ selections:
     #-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
     #-a always,exit -F arch=b32 -S open -F a1&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
     #-a always,exit -F arch=b64 -S open -F a1&03 -F path=/etc/shadow -F auid>=1000 -F auid!=unset -F key=user-modify
+
+    ## RHEL 8 CCE-80931-9: Record Events that Modify User/Group Information via openat syscall - /etc/passwd
+    - audit_rules_etc_passwd_openat
+
+    ## RHEL 8 CCE-80932-7: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/passwd
+    - audit_rules_etc_passwd_open_by_handle_at
+
+    ## RHEL 8 CCE-80930-1: Record Events that Modify User/Group Information via open syscall - /etc/passwd
+    - audit_rules_etc_passwd_open
+
+    ## RHEL 8 CCE-80958-2: Record Events that Modify User/Group Information via openat syscall - /etc/shadow
+    - audit_rules_etc_shadow_openat
+
+    ## RHEL 8 CCE-80957-4: Record Events that Modify User/Group Information via open_by_handle_at syscall - /etc/shadow
+    - audit_rules_etc_shadow_open_by_handle_at
+
+    ## RHEL 8 CCE-80956-6: Record Events that Modify User/Group Information via open syscall - /etc/shadow
+    - audit_rules_etc_shadow_open
 
     #################################################################
     ##
@@ -648,6 +674,21 @@ selections:
     ## RHEL 8 CCE-80941-8: Record Access Events to Audit Log Directory
     - directory_access_var_log_audit
 
+    #################################################################
+    ##
+    ## Audit Loading Kernel Modules
+    ##
+    #################################################################
+
+    ## RHEL 8 CCE-80713-1: Ensure auditd Collects Information on Kernel Module Loading - init_module
+    - audit_rules_kernel_module_loading_init
+
+    ## RHEL 8 CCE-80712-3: Ensure auditd Collects Information on Kernel Module Loading - finit_module
+    - audit_rules_kernel_module_loading_finit
+
+    ## RHEL 8 CCE-80711-5: Ensure auditd Collects Information on Kernel Module Unloading - delete_module
+    - audit_rules_kernel_module_loading_delete
+
 
     #################################################################
     ##
@@ -673,6 +714,33 @@ selections:
     ##  TO DO: known but about syntax
     ##          https://github.com/ComplianceAsCode/content/issues/4504
     - audit_rules_mac_modification
+
+
+    #################################################################
+    ## Audit Configuration
+    #################################################################
+
+    # TODO: local_events=YES
+
+    # TODO: write_logs=YES
+
+    # TODO: log_format=ENRICHED
+
+    ## RHEL 8 CCE-80680-2: Configure auditd flush priority
+    - auditd_data_retention_flush
+    - var_auditd_flush=incremental_async
+
+    # TODO: freq=50
+
+    # TODO: name_format=HOSTNAME
+
+
+    #################################################################
+    ## Audispd plugins
+    #################################################################
+
+    ## RHEL 8 CCE-80677-8: Configure auditd to use audispd's syslog plugin
+    - auditd_audispd_syslog_plugin_activated
 
     #################################################################
     ## Harden USB Guard
@@ -701,8 +769,22 @@ selections:
     #    restorecon -R /etc/usbguard/
     #}
 
+    #################################################################
+    ## Software update
+    #################################################################
+
     ## RHEL 8 CCE-80795-8: Ensure Red Hat GPG Key Installed
     - ensure_redhat_gpgkey_installed
+
+    ## RHEL 8 CCE-80790-9: Ensure gpgcheck Enabled In Main yum Configuration
+    - ensure_gpgcheck_globally_activated
+
+    ## RHEL 8 CCE-80791-7: Ensure gpgcheck Enabled for Local Packages
+    - ensure_gpgcheck_local_packages
+
+    ## RHEL 8 CCE-80792-5: Ensure gpgcheck Enabled for All yum Package Repositories
+    - ensure_gpgcheck_never_disabled
+
 
     #################################################################
     ## Kernel Security Settings
@@ -867,8 +949,8 @@ selections:
     ## RHEL 8 CCE-80784-2: Disable Ctrl-Alt-Del Burst Action
     - disable_ctrlaltdel_burstaction
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4459
-    ## systemctl mask debug-shell.service
+    ## RHEL 8 CCE-80876-6: Disable debug-shell SystemD Service
+    - service_debug-shell_disabled
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4460
     # sed -i "/^#SystemMaxUse/s/#SystemMaxUse=/SystemMaxUse=200/" /etc/systemd/journald.conf
@@ -914,8 +996,8 @@ selections:
     ## Harden chrony (time server)
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4465
-    #echo -e "port 0" >> $CONFIG
+    ## RHEL 8 CCE-82988-7: Disable chrony daemon from acting as server
+    - chronyd_client_only
 
     ## RHEL 8 CCE-82840-0: Disable network management of chrony daemon
     - chronyd_no_chronyc_network
@@ -1110,7 +1192,10 @@ selections:
     #sed -i "6s/^#//" /etc/pam.d/su
     #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/system-auth
     #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/password-auth
-    #sed -i "/pam_unix/s/$/ remember=5/" /etc/pam.d/system-auth
+
+    ## RHEL 8 CCE-80666-1: Limit Password Reuse
+    - accounts_password_pam_unix_remember
+    - var_password_pam_unix_remember=5
 
     ## RHEL 8 CCE-80667-9: Set Deny For Failed Password Attempts
     - var_accounts_passwords_pam_faillock_deny=3
