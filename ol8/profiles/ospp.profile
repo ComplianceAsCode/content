@@ -62,6 +62,7 @@ selections:
     - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
+    - grub2_pti_argument
     - no_empty_passwords
     - require_singleuser_auth
     - service_debug-shell_disabled

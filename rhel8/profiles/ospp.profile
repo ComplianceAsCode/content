@@ -45,8 +45,8 @@ selections:
     ## RHEL 8 CCE-80944-2: Enable page allocator poisoning
     - grub2_page_poison_argument
 
-    ## TO DO: New rule for "pti=on"
-    ##  https://github.com/ComplianceAsCode/content/issues/4588
+    ## Enable Kernel Page-Table Isolation (KPTI)
+    - grub2_pti_argument
 
     ## RHEL 8 CCE-80946-7: Disable vsyscalls
     - grub2_vsyscall_argument
