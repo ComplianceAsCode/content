@@ -1,5 +1,5 @@
-{{%- macro oval_check_config_file(msg='', path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default='', application='', exact_match='') -%}}
-{{%- if default %}}
+{{%- macro oval_check_config_file(msg='', path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', match_whole_word='') -%}}
+{{%- if default_pass %}}
 {{%- set none_exist = "_none_exist" -%}}
 {{%- else %}}
 {{%- set none_exist = "" -%}}
@@ -15,31 +15,29 @@
     </metadata>
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-        {{{ oval_line_in_file_criteria(path, parameter) }}}
+        {{{- oval_line_in_file_criteria(path, parameter) }}}
         {{%- if none_exist %}}
-        {{{ oval_line_in_file_criteria(path, parameter, none_exist) }}}
+        {{{- oval_line_in_file_criteria(path, parameter, none_exist) }}}
         {{%- endif %}}
     </criteria>
   </definition>
-
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, value) }}}
-  {{{ oval_line_in_file_state(value, exact_match) }}}
+  {{{ oval_line_in_file_state(value, match_whole_word) }}}
   {{%- if none_exist %}}
   {{{ oval_line_in_file_test(path, parameter, none_exist) }}}
   {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, value, none_exist) }}}
   {{%- endif %}}
-
 </def-group>
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_file_criteria(path='', parameter='', none_exist='') -%}}
 {{%- if none_exist %}}
-<criterion comment="Check absence of {{{ parameter }}} in {{{ path }}}"
+      <criterion comment="Check absence of {{{ parameter }}} in {{{ path }}}"
 {{%- else %}}
-<criterion comment="Check {{{ parameter }}} in {{{ path }}}"
+      <criterion comment="Check {{{ parameter }}} in {{{ path }}}"
 {{%- endif %}}
-  test_ref="test_{{{ rule_id }}}{{{ none_exist }}}" />
+      test_ref="test_{{{ rule_id }}}{{{ none_exist }}}" />
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_file_test(path='', parameter='', none_exist='') -%}}
@@ -59,32 +57,33 @@
 {{%- endmacro %}}
 
 {{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', value='', none_exist='') -%}}
+{{%- set regex = prefix_regex+parameter+separator_regex -%}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ none_exist }}}" version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
     {{%- if none_exist %}}
-    <ind:pattern operation="pattern match">{{{ prefix_regex }}}{{{ parameter }}}{{{ separator_regex }}}</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ regex }}}</ind:pattern>
     {{%- else %}}
-    <ind:pattern operation="pattern match">{{{ prefix_regex }}}{{{ parameter }}}{{{ separator_regex }}}(.*)[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">{{{ regex }}}(.*)[\s]*(?:|(?:#.*))?$</ind:pattern>
     {{%- endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
-{{%- macro oval_line_in_file_state(value='', exact_match='') -%}}
-{{%- if exact_match %}}
-{{%- set regex = value -%}}
+{{%- macro oval_line_in_file_state(value='', match_whole_word='') -%}}
+{{%- if match_whole_word %}}
+{{%- set regex = "^("+value+")[\s]*$" -%}}
 {{%- else %}}
 {{%- set regex = "^.*"+value+".*$" -%}}
 {{%- endif %}}
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
     <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
-</ind:textfilecontent54_state>
+  </ind:textfilecontent54_state>
 {{%- endmacro %}}
 
-{{%- macro oval_sshd_config(msg='', parameter='', value='', default='') %}}
-{{{ oval_check_config_file(msg, "/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default=default, application="sshd", exact_match='true') }}}
+{{%- macro oval_sshd_config(msg='', parameter='', value='', default_pass='', match_whole_word='true') %}}
+{{{ oval_check_config_file(msg, "/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", match_whole_word=match_whole_word) }}}
 {{%- endmacro %}}
 
-{{%- macro oval_grub_config(msg='', parameter='', value='', default='') %}}
-{{{ oval_check_config_file(msg, "/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default=default, application="grub") }}}
+{{%- macro oval_grub_config(msg='', parameter='', value='', default_pass='', match_whole_word='') %}}
+{{{ oval_check_config_file(msg, "/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", match_whole_word=match_whole_word) }}}
 {{%- endmacro %}}

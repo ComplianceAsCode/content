@@ -30,8 +30,6 @@ def main():
 
     guide_dirs = set()
     for product in ssg.constants.product_directories:
-
-
         product_dir = os.path.join(ssg_root, product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
