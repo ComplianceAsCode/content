@@ -232,7 +232,8 @@ class Profile(object):
         profile.selected = list(set(self.selected) - set(other.selected))
         profile.selected.sort()
         profile.unselected = list(set(self.unselected) - set(other.unselected))
-        profile.variables = self.variables
+        profile.variables = {k: v for k, v in self.variables.items()
+                             if k not in other.variables or v != other.variables[k]}
         return profile
 
 
