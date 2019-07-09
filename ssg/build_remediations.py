@@ -724,6 +724,8 @@ def expand_xccdf_subs(fix, remediation_type, remediation_functions):
             if child is not None and child.text is not None:
                 modfix.append(child.text)
         modfixtext = "".join(modfix)
+        # Don't perform sanity check at bash comments because they are not substituted
+        modfixtext = re.sub(r'#.*', '', modfixtext)
         for func in remediation_functions:
             # Then efine expected XCCDF sub element form for this function
             funcxccdfsub = "<sub idref=\"function_%s\"" % func
