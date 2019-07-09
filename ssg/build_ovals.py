@@ -3,10 +3,12 @@ from __future__ import print_function
 
 import os
 import os.path
+import re
 import sys
 from copy import deepcopy
 import collections
 
+from .build_yaml import Rule
 from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
@@ -268,7 +270,13 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
 
     for _dir_path in find_rule_dirs(guide_dir):
         rule_id = get_rule_dir_id(_dir_path)
-        local_env_yaml["rule_id"] = rule_id
+
+        rule_path = os.path.join(_dir_path, "rule.yml")
+        rule = Rule.from_yaml(rule_path, env_yaml)
+
+        local_env_yaml['rule_id'] = rule.id_
+        local_env_yaml['rule_title'] = rule.title
+        local_env_yaml['rule_description'] = re.sub('<.*?>', '', rule.description)
 
         for _path in get_rule_dir_ovals(_dir_path, product):
             # To be compatible with the later checks, use the rule_id
