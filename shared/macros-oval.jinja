@@ -1,6 +1,8 @@
 {{%- macro oval_check_config_file(msg='', path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default='', application='', exact_match='') -%}}
 {{%- if default %}}
 {{%- set none_exist = "_none_exist" -%}}
+{{%- else %}}
+{{%- set none_exist = "" -%}}
 {{%- endif %}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
