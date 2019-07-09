@@ -22,11 +22,11 @@
     </criteria>
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, value) }}}
+  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex) }}}
   {{{ oval_line_in_file_state(value, match_whole_word) }}}
   {{%- if none_exist %}}
   {{{ oval_line_in_file_test(path, parameter, none_exist) }}}
-  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, value, none_exist) }}}
+  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, none_exist) }}}
   {{%- endif %}}
 </def-group>
 {{%- endmacro %}}
@@ -56,7 +56,7 @@
   </ind:textfilecontent54_test>
 {{%- endmacro %}}
 
-{{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', value='', none_exist='') -%}}
+{{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', none_exist='') -%}}
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ none_exist }}}" version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
