@@ -178,10 +178,8 @@ def read_file_list(path):
     Reads the given file path and returns the contents as a list.
     """
 
-    file_contents = open(path, 'r').read().split("\n")
-    if file_contents[-1] == '':
-        file_contents = file_contents[:-1]
-    return file_contents
+    with open(path, 'r') as f:
+        return split_string_content(f.read())
 
 def split_string_content(content):
     """
