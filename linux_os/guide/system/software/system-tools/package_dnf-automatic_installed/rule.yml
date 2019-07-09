@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install dnf-automatic Package'
+
+description: |-
+    {{{ describe_package_install(package="dnf-automatic") }}}
+
+rationale: |-
+    <tt>dnf-automatic</tt> is an alternative command line interface (CLI)
+    to <tt>dnf upgrade</tt> suitable for automatic, regular execution.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82987-9 
+    cce@rhel7: 82986-1
+    cce@rhel8: 82985-3
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="dnf-automatic") }}}'

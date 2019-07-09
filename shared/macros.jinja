@@ -71,7 +71,7 @@ ocil_clause: "no line is returned"
 {{% macro ocil_audit_syscall(syscall) -%}}
     To determine if the system is configured to audit calls to the
     <code>{{{ syscall }}}</code> system call, run the following command:
-    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit/audit.rules</pre>
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit/audit.*</pre>
     If the system is configured to audit this activity, it will return a line.
 {{%- endmacro %}}
 
@@ -84,6 +84,21 @@ ocil_clause: "no line is returned"
 {{% macro complete_ocil_entry_audit_syscall(syscall) -%}}
 ocil: |
     {{{ ocil_audit_syscall(syscall) }}}
+
+{{{ ocil_clause_entry_audit_syscall() }}}
+{{%- endmacro %}}
+
+
+{{% macro ocil_audit_successful_syscall(syscall) -%}}
+    To determine if the system is configured to audit successful calls
+    to the <code>{{{ syscall }}}</code> system call, run the following command:
+    <pre space="preserve">$ sudo grep "{{{ syscall }}}" /etc/audit.*</pre>
+    If the system is configured to audit this activity, it will return a line.
+{{%- endmacro %}}
+
+{{% macro complete_ocil_entry_audit_successful_syscall(syscall) -%}}
+ocil: |
+    {{{ ocil_audit_successful_syscall(syscall) }}}
 
 {{{ ocil_clause_entry_audit_syscall() }}}
 {{%- endmacro %}}

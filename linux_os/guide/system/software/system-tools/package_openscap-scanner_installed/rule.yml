@@ -1,0 +1,24 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install openscap-scanner Package'
+
+description: |-
+    {{{ describe_package_install(package="openscap-scanner") }}}
+
+rationale: |-
+    <tt>openscap-scanner</tt> contains the <tt>oscap</tt> command line tool. This tool is a
+    configuration and vulnerability scanner, capable of performing compliance checking using
+    SCAP content.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82978-8
+    cce@rhel7: 82977-0
+    cce@rhel8: 82976-2
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="openscap-scanner") }}}'

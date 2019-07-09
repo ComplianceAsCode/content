@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install sudo Package'
+
+description: |-
+    {{{ describe_package_install(package="sudo") }}}
+
+rationale: |-
+    <tt>sudo</tt> is a program designed to allow a system administrator to give
+    limited root privileges to users and log root activity. The basic philosophy
+    is to give as few privileges as possible but still allow system users to
+    get their work done.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82967-1
+    cce@rhel7: 82966-3
+    cce@rhel8: 82965-5
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="sudo") }}}'

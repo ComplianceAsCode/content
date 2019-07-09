@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: rhel6,rhel7,rhel8
 
 title: 'Add nosuid Option to /var/tmp'
 
@@ -15,6 +15,11 @@ rationale: |-
     should not be able to execute SUID or SGID binaries from temporary storage partitions.
 
 severity: unknown
+
+identifiers:
+    cce@rhel6: 82152-0
+    cce@rhel7: 82153-8
+    cce@rhel8: 82154-6
 
 references:
     cis: 1.1.9

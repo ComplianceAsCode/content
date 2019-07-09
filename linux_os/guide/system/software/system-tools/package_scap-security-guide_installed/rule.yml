@@ -1,0 +1,30 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+
+title: 'Install scap-security-guide Package'
+
+description: |-
+    {{{ describe_package_install(package="scap-security-guide") }}}
+
+rationale: |-
+    The <tt>scap-security-guide</tt> package provides a guide for configuration of the system
+    from the final system's security point of view. The guidance is specified in the Security
+    Content Automation Protocol (SCAP) format and constitutes a catalog of practical hardening
+    advice, linked to government requirements where applicable. The SCAP Security Guide project
+    bridges the gap between generalized policy requirements and specific implementation guidelines.
+    A system administrator can use the <tt>oscap</tt> CLI tool from the <tt>openscap-scanner</tt>
+    package, or the SCAP Workbench GUI tool from the <tt>scap-workbench</tt> package, to verify
+    that the system conforms to provided guidelines. Refer to the scap-security-guide(8) manual
+    page for futher information.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82952-3
+    cce@rhel7: 82951-5
+    cce@rhel8: 82949-9
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="scap-security-guide") }}}'
