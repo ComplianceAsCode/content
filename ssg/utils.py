@@ -183,6 +183,16 @@ def read_file_list(path):
         file_contents = file_contents[:-1]
     return file_contents
 
+def split_string_content(content):
+    """
+    Split the string content and returns as a list.
+    """
+
+    file_contents = content.split("\n")
+    if file_contents[-1] == '':
+        file_contents = file_contents[:-1]
+    return file_contents
+
 
 def write_list_file(path, contents):
     """

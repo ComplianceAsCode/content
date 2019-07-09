@@ -9,23 +9,23 @@
         <platform>multi_platform_rhel</platform>
         <platform>multi_platform_fedora</platform>
       </affected>
-      {{%- if init_system == "systemd" -%}}
+      {{%- if init_system == "systemd" %}}
       <description>Checks /etc/systemd/system/default.target to ensure that the default runlevel target is set to multi-user.target.</description>
-      {{%- else -%}}
+      {{%- else %}}
       <description>Checks /etc/inittab to ensure that default runlevel is set to 3.</description>
-      {{%- endif -%}}
+      {{%- endif %}}
     </metadata>
-    {{%- if init_system == "systemd" -%}}
+    {{%- if init_system == "systemd" %}}
     <criteria>
       <criterion comment="default.target systemd softlink exists" test_ref="test_disable_xwindows_runlevel" />
     </criteria>
-    {{%- else -%}}
+    {{%- else %}}
     <criteria>
       <criterion comment="default runlevel is 3" test_ref="test_etc_inittab_default_runlevel" />
     </criteria>
-    {{%- endif -%}}
+    {{%- endif %}}
   </definition>
-  {{%- if init_system == "systemd" -%}}
+  {{%- if init_system == "systemd" %}}
   <unix:symlink_test check="all" check_existence="all_exist" comment="default.target systemd softlink exists" id="test_disable_xwindows_runlevel" version="1">
     <unix:object object_ref="object_disable_xwindows_runlevel" />
     <unix:state state_ref="state_disable_xwindows_runlevel" />
@@ -37,7 +37,7 @@
     <unix:filepath>/etc/systemd/system/default.target</unix:filepath>
     <unix:canonical_path operation="pattern match">^/lib/systemd/system/multi-user.target$</unix:canonical_path>
   </unix:symlink_state>
-  {{%- else -%}}
+  {{%- else %}}
   <ind:textfilecontent54_test check="all" comment="default runlevel is 3" id="test_etc_inittab_default_runlevel" version="1">
     <ind:object object_ref="object_etc_inittab_default_runlevel" />
   </ind:textfilecontent54_test>
@@ -46,7 +46,7 @@
     <ind:pattern operation="pattern match">^[\s]*id:3:initdefault:[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-  {{%- endif -%}}
+  {{%- endif %}}
 </def-group>
 {{%- endif -%}}
 
