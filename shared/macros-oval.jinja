@@ -1,4 +1,16 @@
-{{%- macro oval_check_config_file(msg='', path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', match_whole_word='') -%}}
+{{#
+  High level macro which checks for a particular set of parameter plus value in a configuration file.
+  This function can take eight values:
+    - path (String): Path to the configuration file to be checked.
+    - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+    - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file.
+    - default_pass (Any String): If set, it allows the check to pass when the default configuration value is acceptable.
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
+    - multi_value (Any String): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+#}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', multi_value='') -%}}
 {{%- if default_pass %}}
 {{%- set none_exist = "_none_exist" -%}}
 {{%- else %}}
@@ -23,7 +35,7 @@
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex) }}}
-  {{{ oval_line_in_file_state(value, match_whole_word) }}}
+  {{{ oval_line_in_file_state(value, multi_value) }}}
   {{%- if none_exist %}}
   {{{ oval_line_in_file_test(path, parameter, none_exist) }}}
   {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, none_exist) }}}
@@ -31,6 +43,13 @@
 </def-group>
 {{%- endmacro %}}
 
+{{#
+  Macro to define the criteria of the OVAL check (Criteria definition).
+  This function can take three values:
+    - path (String): Path to the configuration file to be checked.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - none_exist (Any String): If set, the expanded OVAL check will check for the absence of a parameter in a configuration file.
+#}}
 {{%- macro oval_line_in_file_criteria(path='', parameter='', none_exist='') -%}}
 {{%- if none_exist %}}
       <criterion comment="Check absence of {{{ parameter }}} in {{{ path }}}"
@@ -40,6 +59,13 @@
       test_ref="test_{{{ rule_id }}}{{{ none_exist }}}" />
 {{%- endmacro %}}
 
+{{#
+  Macro to define the OVAL object to be constructed (Test definition).
+  This function can take three values:
+    - path (String): Path to the configuration file to be checked.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - none_exist (Any String): If set, the expanded OVAL check will check for the absence of a parameter in a configuration file.
+#}}
 {{%- macro oval_line_in_file_test(path='', parameter='', none_exist='') -%}}
   {{%- if none_exist %}}
   <ind:textfilecontent54_test check="all" check_existence="none_exist"
@@ -56,6 +82,15 @@
   </ind:textfilecontent54_test>
 {{%- endmacro %}}
 
+{{#
+  Macro to check if a parameter in a configuration file is set (Object definition).
+  This function can take five values:
+    - path (String): Path to the configuration file to be checked.
+    - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
+    - parameter (String): The parameter to be checked in the configuration file.
+    - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file.
+    - none_exist (Any String): If set, the expanded OVAL check will check for the absence of a parameter in a configuration file.
+#}}
 {{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', none_exist='') -%}}
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ none_exist }}}" version="1">
@@ -69,21 +104,46 @@
   </ind:textfilecontent54_object>
 {{%- endmacro %}}
 
-{{%- macro oval_line_in_file_state(value='', match_whole_word='') -%}}
-{{%- if match_whole_word %}}
-{{%- set regex = "^("+value+")[\s]*$" -%}}
-{{%- else %}}
+{{#
+  Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
+  This function can take twi values:
+    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+    - multi_value (Any String): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+#}}
+{{%- macro oval_line_in_file_state(value='', multi_value='') -%}}
+{{%- if multi_value %}}
 {{%- set regex = "^.*"+value+".*$" -%}}
+{{%- else %}}
+{{%- set regex = "^("+value+")[\s]*$" -%}}
 {{%- endif %}}
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
     <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{%- endmacro %}}
 
-{{%- macro oval_sshd_config(msg='', parameter='', value='', default_pass='', match_whole_word='true') %}}
-{{{ oval_check_config_file(msg, "/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", match_whole_word=match_whole_word) }}}
+{{#
+  High level macro to check if a parameter and value in the ssh daemon configuration file are set.
+  This function can take four values:
+    - parameter (String): The parameter to be checked in the configuration file.
+    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+    - default_pass (Any String): If set, it allows the check to pass when the default configuration value is acceptable.
+    - multi_value (Any String): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+
+  We specify a case insensitive comparison in the prefix because
+  sshd_config has case-insensitive parameters (but case-sensitive values).
+#}}
+{{%- macro oval_sshd_config(parameter='', value='', default_pass='', multi_value='') %}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", multi_value=multi_value) }}}
 {{%- endmacro %}}
 
-{{%- macro oval_grub_config(msg='', parameter='', value='', default_pass='', match_whole_word='') %}}
-{{{ oval_check_config_file(msg, "/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", match_whole_word=match_whole_word) }}}
+{{#
+  High level macro to check if a parameter and value in the grub configuration file are set.
+  This function can take four values:
+    - parameter (String): The parameter to be checked in the configuration file.
+    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+    - default_pass (Any String): If set, it allows the check to pass when the default configuration value is acceptable.
+    - multi_value (Any String): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+#}}
+{{%- macro oval_grub_config(parameter='', value='', default_pass='', multi_value='true') %}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", multi_value=multi_value) }}}
 {{%- endmacro %}}
