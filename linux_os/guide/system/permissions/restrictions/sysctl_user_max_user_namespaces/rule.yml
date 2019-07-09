@@ -1,0 +1,33 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Disable the use of user namespaces'
+
+description: |-
+    {{{ describe_sysctl_option_value(sysctl="user.max_user_namespaces", value="0") }}}
+    When containers are deployed on the machine, the value should be set
+    to large non-zero value.
+
+rationale: |-
+    User namespaces are used primarily for Linux containers. The value 0
+    disallows the use of user namespaces.
+
+warnings:
+    - general: |-
+       This configuration baseline was created to deploy the base operating system for general purpose
+       workloads. When the operating system is configured for certain purposes, such as to host Linux Containers,
+       it is expected that <tt>user.max_user_namespaces</tt> will be enabled.
+
+severity: low
+
+identifiers:
+    cce@rhel8: 82211-4
+
+references:
+    ospp: FMT_SMF_EXT.1
+    nist: SC-39
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="user.max_user_namespaces", value="0") }}}
+
+platform: machine
