@@ -8,7 +8,7 @@
     - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
-    - multi_value (boolean): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
 {{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', multi_value='') -%}}
 <def-group>
@@ -111,7 +111,7 @@
   Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
   This function can take two parameters:
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
-    - multi_value (boolean): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
 {{%- macro oval_line_in_file_state(value='', multi_value='') -%}}
 {{%- if multi_value %}}
@@ -130,7 +130,7 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
-    - multi_value (boolean): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 
   We specify a case insensitive comparison in the prefix because
   sshd_config has case-insensitive parameters (but case-sensitive values).
@@ -145,7 +145,7 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
-    - multi_value (boolean): If set, multiple values can be present for the parameter (e.g: parameter="value1 value2 value3").
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
 {{%- macro oval_grub_config(parameter='', value='', default_pass=false, multi_value=true) %}}
 {{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", multi_value=multi_value) }}}
