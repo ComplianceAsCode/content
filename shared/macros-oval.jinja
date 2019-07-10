@@ -1,6 +1,6 @@
 {{#
   High level macro which checks if a particular combination of parameter and value in a configuration file is set.
-  This function can take eight parameters:
+  This function can take nine parameters:
     - path (String): Path to the configuration file to be checked.
     - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
     - parameter (String): The parameter to be checked in the configuration file.
@@ -9,8 +9,9 @@
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', multi_value='') -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', multi_value='', missing_config_file_fail=false) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
@@ -20,13 +21,21 @@
       </affected>
       <description>{{{ rule_description }}}</description>
     </metadata>
+    {{%- if missing_config_file_fail %}}
+    <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
+    operator="AND">
+    {{%- endif %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-        {{{- oval_line_in_file_criteria(path, parameter) }}}
+        {{{- oval_line_in_file_criterion(path, parameter) }}}
         {{%- if default_pass %}}
-        {{{- oval_line_in_file_criteria(path, parameter, default_pass) }}}
+        {{{- oval_line_in_file_criterion(path, parameter, default_pass) }}}
         {{%- endif %}}
     </criteria>
+    {{%- if missing_config_file_fail %}}
+        {{{- oval_config_file_exists_criterion(path) }}}
+    </criteria>
+    {{%- endif %}}
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
   {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex) }}}
@@ -35,17 +44,22 @@
   {{{ oval_line_in_file_test(path, parameter, default_pass) }}}
   {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, default_pass) }}}
   {{%- endif %}}
+  {{%- if missing_config_file_fail %}}
+  {{{ oval_config_file_exists_test(path) }}}
+  {{{ oval_config_file_exists_object(path) }}}
+  {{%- endif %}}
+
 </def-group>
 {{%- endmacro %}}
 
 {{#
-  Macro to define the criteria of the OVAL check (Criteria definition).
+  Macro to define the criterion of the OVAL check (Criterion definition).
   This function can take three parameters:
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
 #}}
-{{%- macro oval_line_in_file_criteria(path='', parameter='', default_pass=false) -%}}
+{{%- macro oval_line_in_file_criterion(path='', parameter='', default_pass=false) -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if default_pass %}}
@@ -57,7 +71,7 @@
 {{%- endmacro %}}
 
 {{#
-  Macro to define the OVAL object to be constructed (Test definition).
+  Macro to define the OVAL test to be constructed (Test definition).
   This function can take three parameters:
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
@@ -125,28 +139,61 @@
 {{%- endmacro %}}
 
 {{#
+  Macro to define the OVAL criterion to check if the configuration file exists (Criterion definition).
+  This function can take one parameters:
+    - path (String): Path to the configuration file to be checked.
+#}}
+{{%- macro oval_config_file_exists_criterion(path='') -%}}
+	<criterion comment="test if configuration file {{{ path }}} exists for {{{ rule_id }}}" test_ref="test_{{{ rule_id }}}_config_file_exists" />
+{{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL test to check if the configuration file exists (Test definition).
+  This function can take one parameter:
+    - path (String): Path to the configuration file to be checked.
+#}}
+{{%- macro oval_config_file_exists_test(path='') -%}}
+  <unix:file_test id="test_{{{ rule_id }}}_config_file_exists" check="all" check_existence="all_exist" comment="The configuration file {{{ path }}} exists for {{{ rule_id }}}" version="1">
+    <unix:object object_ref="obj_{{{ rule_id }}}_config_file" />
+  </unix:file_test>
+{{%- endmacro %}}
+
+{{#
+  Macro to define the OVAL object to check if the configuration file exists (Object definition).
+  This function can take one parameters:
+    - path (String): Path to the configuration file to be checked.
+#}}
+{{%- macro oval_config_file_exists_object(path='') -%}}
+  <unix:file_object id="obj_{{{ rule_id }}}_config_file" comment="The configuration file {{{ path }}} for {{{ rule_id }}}" version="1">
+    <unix:filepath operation="pattern match">^{{{ path }}}</unix:filepath>
+  </unix:file_object>
+{{%- endmacro %}}
+
+{{#
   High level macro to check if a particular combination of parameter and value in the ssh daemon configuration file is set.
-  This function can take four parameters:
+  This function can take five parameters:
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 
   We specify a case insensitive comparison in the prefix because
   sshd_config has case-insensitive parameters (but case-sensitive values).
 #}}
-{{%- macro oval_sshd_config(parameter='', value='', default_pass=false, multi_value=false) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", multi_value=multi_value) }}}
+{{%- macro oval_sshd_config(parameter='', value='', default_pass=false, multi_value=false, missing_config_file_fail=false) %}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
   High level macro to check if a particular combination of parameter and value in the grub configuration file is set.
-  This function can take four parameters:
+  This function can take five parameters:
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
-{{%- macro oval_grub_config(parameter='', value='', default_pass=false, multi_value=true) %}}
-{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", multi_value=multi_value) }}}
+{{%- macro oval_grub_config(parameter='', value='', default_pass=false, multi_value=true, missing_config_file_fail=false) %}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
