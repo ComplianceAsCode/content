@@ -215,7 +215,7 @@ selections:
     ## RHEL 8 CCE-82979-6: Install libcap-ng-utils Package
     - package_libcap-ng-utils_installed
 
-    ## RHEL 8 CCE-82976-2: Install openscap-scanner Package
+    ## RHEL 8 CCE-82220-5: Install openscap-scanner Package
     - package_openscap-scanner_installed
 
     ## RHEL 8 CCE-82976-2: Install policycoreutils Package
@@ -227,7 +227,7 @@ selections:
     ## RHEL 8 CCE-82968-9: Install rng-tools Package
     - package_rng-tools_installed
 
-    ## RHEL 8 CCE-82965-5: Install sudo Package
+    ## RHEL 8 CCE-82214-8: Install sudo Package
     - package_sudo_installed
 
     ## RHEL 8 CCE-82965-5: Install tar Package
