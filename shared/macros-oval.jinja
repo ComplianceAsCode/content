@@ -131,7 +131,7 @@
 {{%- if multi_value %}}
 {{%- set regex = "^.*"+value+".*$" -%}}
 {{%- else %}}
-{{%- set regex = "^("+value+")[\s]*$" -%}}
+{{%- set regex = "^"+value+"[\s]*$" -%}}
 {{%- endif %}}
   <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
     <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
