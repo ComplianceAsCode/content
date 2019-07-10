@@ -109,6 +109,11 @@
 {{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', default_pass='') -%}}
 {{%- if default_pass %}}
 {{%- set suffix_id = "_default_pass" -%}}
+{{#
+  There is no need for having a regular expression with a capture
+  group "(.*)" when checking if the line in file is not present in
+  the configuration file.
+#}}
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
 {{%- else %}}
 {{%- set suffix_id = "" -%}}
