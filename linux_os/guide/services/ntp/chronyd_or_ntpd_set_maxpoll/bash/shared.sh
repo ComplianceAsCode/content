@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = multi_platform_wrlinux,multi_platform_rhel
 . /usr/share/scap-security-guide/remediation_functions
 populate var_time_service_set_maxpoll
 

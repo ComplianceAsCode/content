@@ -1,4 +1,4 @@
-# platform = multi_platform_all
+# platform = multi_platform_wrlinux,multi_platform_all
 
 grep -q ^Banner /etc/ssh/sshd_config && \
   sed -i "s/Banner.*/Banner \/etc\/issue/g" /etc/ssh/sshd_config

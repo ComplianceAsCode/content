@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = multi_platform_wrlinux,Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 
 if ! grep -q ^CREATE_HOME /etc/login.defs; then
 	echo "CREATE_HOME     yes" >> /etc/login.defs

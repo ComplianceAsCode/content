@@ -1,5 +1,5 @@
 #!/bin/bash
-# platform = multi_platform_all
+# platform = multi_platform_wrlinux,multi_platform_all
 
 . /usr/share/scap-security-guide/remediation_functions
 include_mount_options_functions
