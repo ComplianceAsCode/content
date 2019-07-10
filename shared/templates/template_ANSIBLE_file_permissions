@@ -5,11 +5,11 @@
 # disruption = low
 - name: Test for existence {{{ FILEPATH }}}
   stat:
-    path: {{{ FILEPATH }}}
+    path: "{{{ FILEPATH }}}"
   register: file_exists
   
 - name: Ensure permission {{{ FILEMODE }}} on {{{ FILEPATH }}}
   file:
-    path: {{{ FILEPATH }}}
-    mode: {{{ FILEMODE }}}
+    path: "{{{ FILEPATH }}}"
+    mode: "{{{ FILEMODE }}}"
   when: file_exists.stat is defined and file_exists.stat.exists

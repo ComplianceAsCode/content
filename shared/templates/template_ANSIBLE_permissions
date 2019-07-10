@@ -5,13 +5,13 @@
 # disruption = low
 - name: Ensure permission {{{ FILEMODE }}}, owner {{{ FILEUID }}}, and group {{{ FILEGID }}} on {{{ FILEPATH }}}
   file:
-    path: {{{ FILEPATH }}}
+    path: "{{{ FILEPATH }}}"
     {{% if FILEMODE != "" %}}
-    mode: {{{ FILEMODE }}}
+    mode: "{{{ FILEMODE }}}"
     {{% endif %}}
     {{% if FILEUID != "" %}}
-    owner: {{{ FILEUID }}}
+    owner: "{{{ FILEUID }}}"
     {{% endif %}}
     {{% if FILEGID != "" %}}
-    group: {{{ FILEGID }}}
+    group: "{{{ FILEGID }}}"
     {{% endif %}}

@@ -5,11 +5,11 @@
 # disruption = low
 - name: Test for existence {{{ FILEPATH }}}
   stat:
-    path: {{{ FILEPATH }}}
+    path: "{{{ FILEPATH }}}"
   register: file_exists
 
 - name: Ensure group owner {{{ FILEGID }}} on {{{ FILEPATH }}}
   file:
-    path: {{{ FILEPATH }}}
-    group: {{{ FILEGID }}}
+    path: "{{{ FILEPATH }}}"
+    group: "{{{ FILEGID }}}"
   when: file_exists.stat is defined and file_exists.stat.exists

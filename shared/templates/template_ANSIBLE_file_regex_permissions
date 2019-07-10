@@ -13,7 +13,7 @@
 - name: Set permissions for {{{ FILEPATH }}} file(s)
   file:
     path: "{{ item.path }}"
-    mode: {{{ FILEMODE }}}
+    mode: "{{{ FILEMODE }}}"
   with_items:
     - "{{ files_found.files }}"
 

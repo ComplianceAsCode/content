@@ -5,7 +5,7 @@
 # disruption = low
 - name: Disable service {{{ SERVICENAME }}}
   service:
-    name: {{{ DAEMONNAME }}}
+    name: "{{{ DAEMONNAME }}}"
     enabled: "no"
     state: "stopped"
   register: service_result
@@ -14,7 +14,7 @@
 {{% if init_system == "systemd" %}}
 - name: Disable socket of service {{{ SERVICENAME }}} if applicable
   service:
-    name: {{{ DAEMONNAME }}}.socket
+    name: "{{{ DAEMONNAME }}}.socket"
     enabled: "no"
     state: "stopped"
   register: socket_result
