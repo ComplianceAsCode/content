@@ -10,14 +10,21 @@
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
+    - supported_platforms (String List): List of supported platforms the OVAL will applicable to. (e.g.: ['rhel7', 'rhel8', 'fedora'])
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', multi_value='', missing_config_file_fail=false) -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', default_pass='', application='', multi_value='', missing_config_file_fail=false, supported_platforms=['all']) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
       <title>{{{ rule_title }}}</title>
       <affected family="unix">
-        <platform>multi_platform_all</platform>
+{{#-
+  Use macro oval_affected(products) when it is available
+#}}
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_fedora</platform>
+        <platform>multi_platform_rhv</platform>
+        <platform>multi_platform_ol</platform>
       </affected>
       <description>{{{ rule_description }}}</description>
     </metadata>
@@ -25,8 +32,14 @@
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
     operator="AND">
     {{%- endif %}}
+    {{%- if application == "sshd" %}}
+    <criteria comment="{{{ application }}} is configured correctly or is not installed"
+    operator="OR">
+        {{{- application_not_required_or_requirement_unset() }}}
+    {{%- else %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
+    {{%- endif %}}
         {{{- oval_line_in_file_criterion(path, parameter) }}}
         {{%- if default_pass %}}
         {{{- oval_line_in_file_criterion(path, parameter, default_pass) }}}
@@ -186,8 +199,8 @@
   We specify a case insensitive comparison in the prefix because
   sshd_config has case-insensitive parameters (but case-sensitive values).
 #}}
-{{%- macro oval_sshd_config(parameter='', value='', default_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{%- macro oval_sshd_config(parameter='', value='', default_pass=false, multi_value=false, missing_config_file_fail=false, supported_platforms=['all']) %}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, default_pass=default_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, supported_platforms=supported_platforms) }}}
 {{%- endmacro %}}
 
 {{#
@@ -198,7 +211,20 @@
     - default_pass (boolean): Implies that the value for the parameter is the default value. If set, the check will pass even if the parameter is not set in the configuration file.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
+    - supported_platforms (String List): List of supported platforms the OVAL will applicable to. (e.g.: ['rhel7', 'rhel8', 'fedora'])
 #}}
-{{%- macro oval_grub_config(parameter='', value='', default_pass=false, multi_value=true, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{%- macro oval_grub_config(parameter='', value='', default_pass=false, multi_value=true, missing_config_file_fail=false, supported_platforms=['all']) %}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, default_pass=default_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, supported_platforms=supported_platforms) }}}
+{{%- endmacro %}}
+
+{{#
+  To be removed macro. Prevents regression on sshd configuration rules.
+#}}
+{{%- macro application_not_required_or_requirement_unset() -%}}
+      <criteria comment="sshd is not installed" operator="AND">
+        <extend_definition comment="sshd is not required or requirement is unset"
+        definition_ref="sshd_not_required_or_unset" />
+        <extend_definition comment="rpm package openssh-server removed"
+        definition_ref="package_openssh-server_removed" />
+      </criteria>
 {{%- endmacro %}}

@@ -1,1 +1,26 @@
-{{{ oval_grub_config(parameter="GRUB_CMDLINE_LINUX", value="nousb") }}}
+{{# Enable this line when supported_platforms option is available
+{{{ oval_grub_config(parameter="GRUB_CMDLINE_LINUX", value="nousb", supported_platforms=['rhel7', 'rhel8', 'fedora']) }}}
+#}}
+{{% set path = "/etc/default/grub" %}}
+{{% set parameter = "GRUB_CMDLINE_LINUX" %}}
+{{% set value = "nousb" %}}
+<def-group>
+  <definition class="compliance" id="{{{ rule_id }}}" version="1">
+    <metadata>
+      <title>{{{ rule_title }}}</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>{{{ rule_description }}}</description>
+    </metadata>
+    <criteria comment="grub is configured correctly"
+    operator="OR">
+        {{{- oval_line_in_file_criterion(path, parameter) }}}
+    </criteria>
+  </definition>
+  {{{ oval_line_in_file_test(path, parameter) }}}
+  {{{ oval_line_in_file_object(path, "^[\s]*", parameter, "=") }}}
+  {{{ oval_line_in_file_state(value, true) }}}
+</def-group>
