@@ -239,6 +239,21 @@ is a snippet of the instructions:
 ...
 ```
 
+### Bash
+To see a list of available Bash scripts, run:
+
+```bash
+# ls /usr/share/scap-security-guide/bash/
+...
+rhel7-script-hipaa.sh
+rhel7-script-ospp.sh
+rhel7-script-pci-dss.sh
+...
+```
+
+These Bash scripts are generated from *SCAP* profiles available for the products.
+Similar to Ansible Playbooks, each of the Bash scripts contain instructions on how to deploy them.
+
 ## Support
 
 The SSG mailing list can be found at [https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide](https://lists.fedorahosted.org/mailman/listinfo/scap-security-guide).
