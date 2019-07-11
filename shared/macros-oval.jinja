@@ -1,6 +1,6 @@
 
 {{#
-  Constants
+  Constants.
 #}}
 {{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
 
@@ -86,6 +86,7 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- set suffix_id = "" -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
@@ -103,6 +104,7 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false) -%}}
+{{%- set suffix_id = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
 {{%- set prefix_text = "value" -%}}
@@ -131,6 +133,7 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
+{{%- set suffix_id = "" -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{#
