@@ -74,13 +74,14 @@ def parse_args():
                         help="If defined, statistics will be stored under this directory.")
 
     subtracted_profile_desc = \
-        "Subtract rules from profile1 based on rules present in profile2. " + \
-        "As a result, a new profile is generated. It doesn't support profile " + \
+        "Subtract rules and variable selections from profile1 based on rules present in " + \
+        "profile2. As a result, a new profile is generated. It doesn't support profile " + \
         "inheritance, this means that only rules explicitly " + \
         "listed in the profiles will be taken in account."
 
     parser_sub = subparsers.add_parser("sub", description=subtracted_profile_desc,
-                                           help=("Subtract rules from profile1 based on rules present in profile2."))
+                                       help=("Subtract rules and variables from profile1 "
+                                             "based on selections present in profile2."))
     parser_sub.add_argument('--profile1', type=str, dest="profile1",
                         required=True, help='YAML profile')
     parser_sub.add_argument('--profile2', type=str, dest="profile2",
@@ -121,9 +122,13 @@ def main():
         subtracted_profile = profile1 - profile2
 
         exclusive_rules = len(subtracted_profile.get_rule_selectors())
+        exclusive_vars = len(subtracted_profile.get_variable_selectors())
         if exclusive_rules > 0:
             print("{} rules were left after subtraction.".format(exclusive_rules))
+        if  exclusive_vars > 0:
+            print("{} variables were left after subtraction.".format(exclusive_vars))
 
+        if exclusive_rules > 0 or exclusive_vars > 0:
             profile1_basename = os.path.splitext(
                 os.path.basename(args.profile1))[0]
             profile2_basename = os.path.splitext(
@@ -131,7 +136,7 @@ def main():
 
             subtracted_profile_filename = "{}_sub_{}.profile".format(
                 profile1_basename, profile2_basename)
-            print("Creating a new profile containing the exclusive rules: {}".format(
+            print("Creating a new profile containing the exclusive selections: {}".format(
                 subtracted_profile_filename))
 
             subtracted_profile.title = profile1.title + " subtracted by " + profile2.title
