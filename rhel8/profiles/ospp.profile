@@ -1042,10 +1042,8 @@ selections:
     - var_sshd_set_keepalive=3
     - sshd_set_keepalive
 
-    ## TO DO --
-    #echo -e "\nReplace this with your organization-defined system use notification message or banner\n" > /etc/issue
-    #cp /etc/issue /etc/issue.net
-    #sed -i "s/#Banner none/Banner \/etc\/issue.net/" $CONFIG
+    ## RHEL8 CCE-80905-3: Enable SSH Warning Banner
+    - sshd_enable_warning_banner
 
     ## RHEL 8 CCE-81032-5: Use Only FIPS 140-2 Validated Ciphers
     - sshd_use_approved_ciphers
