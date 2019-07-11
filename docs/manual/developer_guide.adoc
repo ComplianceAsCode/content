@@ -710,9 +710,28 @@ A rule YAML file has one implied attribute:
 
 A rule itself contains these attributes:
 
-* `severity`: Can be `unknown`, `low`, `medium`, or `high`.
+* `severity`: Is used for metrics and tracking. It can have one of the following values: `unknown`, `info`, `low`, `medium`, or `high`.
++
+[cols="2", options="header"]
+|===
+|Level | Description
+|`unknown`
+|Severity not defined (default)
 
-A rule must contain these attributes:
+|`info`
+|Rule is informational only. Failing the rule doesn't imply failure to conform to the security guidance of the benchmark.
+
+|`low`
+|Not a serious problem
+
+|`medium`
+|Fairly serious problem
+
+|`high`
+|Grave or critical problem
+|===
++
+The severity of the rule can be overridden by a profile with `refine-rule` selector.
 
 * `title`: Human-readable title of the rule.
 * `rationale`: Human-readable HTML description of the reason why the rule exists and why it is important from the technical point of view. For example, rationale of the `partition_for_tmp` rule states that:
