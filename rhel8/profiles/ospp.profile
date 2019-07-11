@@ -934,8 +934,8 @@ selections:
     ## RHEL 8 CCE-80834-5: Disable SCTP Support
     - kernel_module_sctp_disabled
     
-    # TO DO: https://github.com/ComplianceAsCode/content/issues/4458
-    ## echo -e "install ticp /bin/true" >> $CONFIG
+    ## Disable Transparent Inter Process Communication Support
+    - kernel_module_tipc_disabled
 
     #################################################################
     ## Systemd Items
