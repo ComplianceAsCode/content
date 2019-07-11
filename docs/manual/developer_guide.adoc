@@ -996,19 +996,21 @@ Remediations also carry metadata that should be present at the beginning of the 
 IMPORTANT: The minimum version of Ansible must be at the latest supported version. See https://access.redhat.com/support/policy/updates/ansible-engine for information on the supported Ansible versions.
 
 Ansible remediations are either:
-- stored as `.yml` files in directory `ansible` in the rule directory
-- generated from templates
-- generated using jinja2 macros
+
+- Stored as `.yml` files in directory `ansible` in the rule directory.
+- Generated from templates.
+- Generated using jinja2 macros.
 
 They are meant to be executed by Ansible itself when requested by openscap, so they are
 written using link:http://docs.ansible.com/ansible/latest/intro.html[Ansible's own language] with the following exceptions:
 
-- The remediation content must be only the _tasks_ section of what would be a playbook
-    - Tasks can include blocks for grouping related tasks.
-    - The `when` clause will get augmented in certain scenarios.
-- Notifications and handlers are not supported
+* The remediation content must be only the _tasks_ section of what would be a playbook.
+    ** Tasks can include blocks for grouping related tasks.
+    ** The `when` clause will get augmented in certain scenarios.
+* Notifications and handlers are not supported.
+* Tags are not necessary, because they are automatically generated during build of content.
 
-Here is an example of a Ansible remediation that ensures the SELinux is enabled in grub:
+Here is an example of an Ansible remediation that ensures the SELinux is enabled in grub:
 
 ----
 # platform = multi_platform_rhel,multi_platform_fedora
@@ -1030,24 +1032,24 @@ The generated Playbook is located in `/build/<product>/playbooks/<profile_id>/<r
 For each rule in the given product we also generate an Ansible Playbook regardless presence of the rule in any profile.
 The generated Playbook is located in `/build/<product>/playbooks/all/<rule_id>.yml`.
 The `/build/<product>/playbooks/all/` directory represents the virtual `(all)` profile which consists of all rules in the product.
-Due to undefined XCCDF Value selectors in this pseudo-profile, these Playbooks use default values of XCCDF Values when applicable.
+Due to undefined XCCDF Value selectors in this pseudo-profile, these Playbooks use defaults of XCCDF Values when applicable.
 
 We also build profile Playbook that contains tasks for all rules in the profile.
 The Playbook is generated in `/build/ansible/<product>-playbook-<profile_id>.yml`.
 
-Jinja macros for Ansible content are located in `/shared/macros-ansible.jinja`.
+Jinja macros for Ansible content are located in `/shared/macros-ansible.jinja`. These currently include the following high-level macros:
 
-These currently include the following high-level macros:
- - `ansible_sshd_set` -- set a parameter in the sshd configuration
- - `ansible_etc_profile_set` -- ensure a command gets execuded or a variable gets set in /etc/profile or /etc/profile.d
+- `ansible_sshd_set` -- set a parameter in the sshd configuration
+- `ansible_etc_profile_set` -- ensure a command gets execuded or a variable gets set in /etc/profile or /etc/profile.d
 
 They also include several low-level macros:
- - `ansible_lineinfile` -- ensure a line is in a given file
- - `ansible_stat` -- check the status of a path on the file system
- - `ansible_find` -- find all files with matched content
- - `ansible_only_lineinfile` -- ensure that no lines matching the regex are present and add the given line
- - `ansible_set_config_file` -- for configuration files; set the given configuration value and ensure no conflicting values
- - `ansible_set_config_file_dir` -- for configuration files and files in configuration directories; set the given configuration value and ensure no conflicting values
+
+- `ansible_lineinfile` -- ensure a line is in a given file
+- `ansible_stat` -- check the status of a path on the file system
+- `ansible_find` -- find all files with matched content
+- `ansible_only_lineinfile` -- ensure that no lines matching the regex are present and add the given line
+- `ansible_set_config_file` -- for configuration files; set the given configuration value and ensure no conflicting values
+- `ansible_set_config_file_dir` -- for configuration files and files in configuration directories; set the given configuration value and ensure no conflicting values
 
 When `msg` is absent from any of the above macros, rule title will be substituted instead.
 
