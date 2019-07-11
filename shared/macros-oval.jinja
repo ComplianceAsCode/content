@@ -33,6 +33,12 @@
     operator="AND">
     {{%- endif %}}
     {{%- if application == "sshd" %}}
+{{#-
+    This condition is here to avoid regression in sshd configuration rules.
+    The OVAL checks for sshd configuration test if the package is installed
+    and if it is required or not by the profile. When rule applicability is
+    done for these rules, it can be removed.
+#}}
     <criteria comment="{{{ application }}} is configured correctly or is not installed"
     operator="OR">
         {{{- application_not_required_or_requirement_unset() }}}
