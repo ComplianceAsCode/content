@@ -201,9 +201,10 @@ Looking at the `/tmp/results.xml` file, you will notice lines similar to those b
 
 ==== Bash Scripts
 
-ComplianceAsCode embeds bash remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations.
+A Bash remediation script for each profile is shipped in `scap-security-guide` package.
+The scripts can be found in `/usr/share/scap-security-guide/bash/` or if you build the project from source in `./build/bash`.
 
-A pregenerated Bash remediation script for each profile can be found in `/usr/share/scap-security-guide/bash/` or if you build the project from source in `./build/bash`.
+Moreover, ComplianceAsCode embeds bash remediation scripts into the SCAP content. This allows for SCAP compatible tools to extract these remediation scripts to aide in potential remediation of system misconfigurations.
 
 OpenSCAP, the CLI delivered with Fedora and Red Hat Enterprise Linux systems, contains the ability to transform XML results into an executable script. The syntax to generate a remediation script is:
 
