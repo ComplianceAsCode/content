@@ -136,6 +136,21 @@ ocil: |-
     {{%- endif -%}}
 {{%- endmacro %}}
 
+{{% macro describe_timer_enable(timer) -%}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_describe_timer_enable(timer) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+{{%- endmacro %}}
+
+{{% macro ocil_timer_enabled(timer) -%}}
+    {{%- if init_system == "systemd" -%}}
+        {{{ systemd_ocil_timer_enabled(timer) }}}
+    {{%- else -%}}
+JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
+    {{%- endif -%}}
+{{%- endmacro %}}
 
 {{% macro body_of_dconf_warning_about_dependent_rule() -%}}
 	{{{ body_of_warning_about_dependent_rule(

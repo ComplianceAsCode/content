@@ -365,6 +365,17 @@ ocil_clause: "the package is installed"
     <pre>$ sudo chkconfig --level 2345 {{{ service }}} on</pre>
 {{%- endmacro %}}
 
+{{%- macro systemd_describe_timer_enable(timer) %}}
+    The <code>{{{ timer }}}</code> timer can be enabled with the following command:
+    <pre>$ sudo systemctl enable {{{ timer }}}.timer</pre>
+{{%- endmacro %}}
+
+{{%- macro systemd_ocil_timer_enabled(timer) %}}
+    Run the following command to determine the current status of the
+    <code>{{{ timer }}}</code> timer:
+    <pre>$ systemctl is-active {{{ timer }}}.timer</pre>
+    If the timer is running, it should return the following: <pre>active</pre>
+{{%- endmacro %}}
 
 {{%- macro describe_sebool_check_disabled(sebool) %}}
     Run the following command to determine if the <code>{{{ sebool }}}</code> SELinux boolean is disabled:
