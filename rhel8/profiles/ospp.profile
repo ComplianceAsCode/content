@@ -1222,5 +1222,5 @@ selections:
     ## Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4478
-    #systemctl enable --now dnf-automatic.timer
+    ## RHEL 8 CCE-82360-9: Enable dnf-automatic Timer
+    - timer_dnf-automatic_enabled
