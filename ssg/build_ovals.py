@@ -13,6 +13,7 @@ from .constants import oval_footer
 from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
 from .jinja import process_file_with_macros
+from .rule_yaml import parse_prodtype
 from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
 from . import utils
 from .xml import ElementTree
@@ -272,9 +273,11 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
 
         rule_path = os.path.join(_dir_path, "rule.yml")
         rule = Rule.from_yaml(rule_path, env_yaml)
+        prodtypes = parse_prodtype(rule.prodtype)
 
         local_env_yaml['rule_id'] = rule.id_
         local_env_yaml['rule_title'] = rule.title
+        local_env_yaml['products'] = prodtypes # default is all
 
         for _path in get_rule_dir_ovals(_dir_path, product):
             # To be compatible with the later checks, use the rule_id

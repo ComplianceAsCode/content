@@ -16,23 +16,13 @@
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
-    - supported_platforms (String List): List of supported platforms the OVAL will applicable to. (e.g.: ['rhel7', 'rhel8', 'fedora'])
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', missing_parameter_pass=false, application='', multi_value='', missing_config_file_fail=false, supported_platforms=['all']) -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', missing_parameter_pass=false, application='', multi_value='', missing_config_file_fail=false) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
       <title>{{{ rule_title }}}</title>
-      <affected family="unix">
-{{#-
-  Use macro oval_affected(products) when it is available
-#}}
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Look for parameter '{{{ parameter }}}' with value '{{{ value }}}' in '{{{ path }}}'</description>
     </metadata>
     {{%- if missing_config_file_fail %}}
@@ -213,7 +203,7 @@
   sshd_config has case-insensitive parameters (but case-sensitive values).
 #}}
 {{%- macro oval_sshd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, supported_platforms=['all']) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, supported_platforms=supported_platforms) }}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
@@ -224,10 +214,9 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
-    - supported_platforms (String List): List of supported platforms the OVAL will applicable to. (e.g.: ['rhel7', 'rhel8', 'fedora'])
 #}}
 {{%- macro oval_grub_config(parameter='', value='', missing_parameter_pass=false, multi_value=true, missing_config_file_fail=false, supported_platforms=['all']) %}}
-{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, supported_platforms=supported_platforms) }}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fails) }}}
 {{%- endmacro %}}
 
 {{#
