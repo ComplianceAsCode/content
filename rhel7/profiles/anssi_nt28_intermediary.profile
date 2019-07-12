@@ -58,11 +58,6 @@ selections:
     - mount_option_var_tmp_noexec
 
     - sshd_idle_timeout_value=5_minutes
-    - rsyslog_files_ownership
-    - rsyslog_files_groupownership
-    - rsyslog_files_permissions
-    - ensure_logrotate_activated
-
     # ==============================================
     # R14 - Installation of packages reduced to the bare necessities
     # The choice of packets should lead to an installation as small as possible,
@@ -279,6 +274,11 @@ selections:
     # associated with this server. The configuration of the service must be performed
     # according to the Security Recommendations for the implementation of a logging
     # system accessible on the site of ANSSI.
+    - rsyslog_files_ownership
+    - rsyslog_files_groupownership
+    - rsyslog_files_permissions
+    - ensure_logrotate_activated
+    - rsyslog_remote_loghost
 
     # ==============================================
     # R44 - Partitioning the syslog service by chroot

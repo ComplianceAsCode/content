@@ -13,8 +13,6 @@ selections:
     - file_permissions_unauthorized_suid
     - file_permissions_unauthorized_sgid
 
-    - rsyslog_remote_loghost
-
     # R13 - Access restricions on System.map files
     # When the /boot partition cannot be dismounted (or it does not exist),
     # the file(s) System.map must be read restricted to root only.
