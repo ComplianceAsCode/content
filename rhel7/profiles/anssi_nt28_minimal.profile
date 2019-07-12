@@ -40,6 +40,11 @@ selections:
 
     # ==============================================
     # R15 - Package repositories selection
+    # Only up-to-date official repositories of the distribution must be used.
+    - ensure_redhat_gpgkey_installed
+    - ensure_gpgcheck_never_disabled
+    - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_local_packages
 
     # ==============================================
     # R18 - Administrator password robustness
