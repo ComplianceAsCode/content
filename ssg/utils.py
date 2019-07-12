@@ -43,7 +43,7 @@ def map_name(version):
                        % (version))
 
 
-def to_name(prod):
+def prodtype_to_name(prod):
     """
     Converts a vaguely-prodtype-like thing into one or more full product names.
     """
@@ -55,14 +55,14 @@ def to_name(prod):
     raise RuntimeError("Unknown product name: %s" % prod)
 
 
-def to_platform(names):
+def name_to_platform(names):
     """
     Converts one or more full names to a string containing one or more
     <platform> elements.
     """
     if isinstance(names, str):
         return "<platform>%s</platform>" % names
-    return "\n".join(map(to_platform, names))
+    return "\n".join(map(name_to_platform, names))
 
 
 def prodtype_to_platform(prods):
@@ -71,7 +71,7 @@ def prodtype_to_platform(prods):
     elements.
     """
     if isinstance(prods, str):
-        return to_platform(to_name(prods))
+        return name_to_platform(prodtype_to_name(prods))
     return "\n".join(map(prodtype_to_platform, prods))
 
 

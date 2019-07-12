@@ -8,7 +8,7 @@ from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
                         JINJA_MACROS_ANSIBLE_DEFINITIONS,
                         JINJA_MACROS_OVAL_DEFINITIONS)
-from .utils import required_key, to_name, to_platform, prodtype_to_platform
+from .utils import required_key, prodtype_to_name, name_to_platform, prodtype_to_platform
 
 
 class AbsolutePathFileSystemLoader(jinja2.BaseLoader):
@@ -99,8 +99,8 @@ def process_file(filepath, substitutions_dict):
 
 
 def add_python_functions(substitutions_dict):
-    substitutions_dict['prodtype_to_name'] = to_name
-    substitutions_dict['name_to_platform'] = to_platform
+    substitutions_dict['prodtype_to_name'] = prodtype_to_name
+    substitutions_dict['name_to_platform'] = name_to_platform
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
 
 
