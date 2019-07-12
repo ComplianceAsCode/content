@@ -13,6 +13,8 @@ selections:
     # It is recommended to use the mandatory access control (MAC) features in
     # addition to the traditional Unix user model (DAC), or possibly combine
     # them with partitioning mechanisms.
+    - selinux_state
+    - var_selinux_state=enforcing
 
     # ==============================================
     # R11 - IOMMU Configuration Guidelines
