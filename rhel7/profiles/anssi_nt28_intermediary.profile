@@ -32,27 +32,30 @@ selections:
     # /boot nosuid, nodev, noexec (optional noauto) Contains the kernel and the bootloader. No access required once the boot finished (except update)
     # /opt nosuid, nodev (optional ro) Additional packages to the system.  Read-only editing if not used
     # /tmp nosuid, nodev, noexec Temporary files. Must contain only non-executable elements. Cleaned after reboot
-    # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
-    # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
-    # /proc hidepid = 1 Contains process information and the system
-    # /usr nodev Contains the majority of utilities and system files
-    # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
-    # /var/log nosuid, nodev, noexec Contains system logs
-    # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
     - partition_for_tmp
     - mount_option_tmp_nosuid
     - mount_option_tmp_nodev
     - mount_option_tmp_noexec
+
+    # /srv nosuid, nodev (noexec, optional ro) Contains files served by a service type web, ftp, etc
+    # /home nosuid, nodev, noexec Contains the HOME users.  Read-only editing if not in use
+    - partition_for_home
+    - mount_option_home_nosuid
+    - mount_option_home_nodev
+
+    # /proc hidepid = 1 Contains process information and the system
+    # /usr nodev Contains the majority of utilities and system files
+    # /var nosuid, nodev, noexec Partition containing variable files during the life of the system (mails, PID files, databases of a service)
     - partition_for_var
+
+    # /var/log nosuid, nodev, noexec Contains system logs
+    - partition_for_var_log
+
+    # /var/tmp nosuid, nodev, noexec Temporary files kept after extinction
     - partition_for_var_tmp
     - mount_option_var_tmp_nosuid
     - mount_option_var_tmp_nodev
     - mount_option_var_tmp_noexec
-    - partition_for_var_log
-    - partition_for_var_log_audit
-    - partition_for_home
-    - mount_option_home_nosuid
-    - mount_option_home_nodev
 
     - sshd_idle_timeout_value=5_minutes
     - rsyslog_files_ownership
