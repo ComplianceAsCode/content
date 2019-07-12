@@ -8,6 +8,15 @@ description: 'Draft profile for ANSSI compliance at the minimal level. ANSSI sta
 selections:
     # ==============================================
     # R1 - Minimization of installed services
+    # Only the components strictly necessary to the service provided by the system
+    # should be installed.
+    # Any service (especially in active listening on the network) is a sensitive
+    # element. Only those known and required for the operation and the maintenance
+    # must be resident. Those whose presence can not be justified should be disabled,
+    # removed or deleted.
+    - package_dhcp_removed
+    - package_sendmail_removed
+    - package_telnetd_removed
 
     # ==============================================
     # R5 - In-depth defense principle
