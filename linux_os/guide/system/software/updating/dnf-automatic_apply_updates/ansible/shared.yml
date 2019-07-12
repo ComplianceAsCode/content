@@ -1,0 +1,12 @@
+# platform = multi_platform_fedora,Red Hat Enterprise Linux 8,Oracle Linux 8
+# reboot = false
+# strategy = unknown
+# complexity = low
+# disruption = medium
+- name: Configure dnf-automatic to Install Available Updates Automatically
+  ini_file:
+    dest: /etc/dnf/automatic.conf
+    section: commands
+    option: apply_updates
+    value: "yes"
+    create: True
