@@ -6,7 +6,8 @@ import jinja2
 
 from .constants import (JINJA_MACROS_BASE_DEFINITIONS,
                         JINJA_MACROS_HIGHLEVEL_DEFINITIONS,
-                        JINJA_MACROS_ANSIBLE_DEFINITIONS)
+                        JINJA_MACROS_ANSIBLE_DEFINITIONS,
+                        JINJA_MACROS_OVAL_DEFINITIONS)
 from .utils import required_key
 
 
@@ -108,6 +109,7 @@ def load_macros(substitutions_dict):
         update_substitutions_dict(JINJA_MACROS_BASE_DEFINITIONS, substitutions_dict)
         update_substitutions_dict(JINJA_MACROS_HIGHLEVEL_DEFINITIONS, substitutions_dict)
         update_substitutions_dict(JINJA_MACROS_ANSIBLE_DEFINITIONS, substitutions_dict)
+        update_substitutions_dict(JINJA_MACROS_OVAL_DEFINITIONS, substitutions_dict)
     except Exception as exc:
         msg = ("Error extracting macro definitions: {0}"
                .format(str(exc)))

@@ -7,6 +7,7 @@ import sys
 from copy import deepcopy
 import collections
 
+from .build_yaml import Rule
 from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
@@ -259,6 +260,8 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
     included_checks_count = 0
     reversed_dirs = oval_dirs[::-1]  # earlier directory has higher priority
     already_loaded = dict()  # filename -> oval_version
+    local_env_yaml = dict()
+    local_env_yaml.update(env_yaml)
 
     product_dir = os.path.dirname(yaml_path)
     relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
@@ -267,13 +270,19 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
     for _dir_path in find_rule_dirs(guide_dir):
         rule_id = get_rule_dir_id(_dir_path)
 
+        rule_path = os.path.join(_dir_path, "rule.yml")
+        rule = Rule.from_yaml(rule_path, env_yaml)
+
+        local_env_yaml['rule_id'] = rule.id_
+        local_env_yaml['rule_title'] = rule.title
+
         for _path in get_rule_dir_ovals(_dir_path, product):
             # To be compatible with the later checks, use the rule_id
             # (i.e., the value of _dir) to recreate the expected filename if
             # this OVAL was in a rule directory.
             filename = "%s.xml" % rule_id
 
-            xml_content = process_file_with_macros(_path, env_yaml)
+            xml_content = process_file_with_macros(_path, local_env_yaml)
 
             if not _check_is_applicable_for_product(xml_content, product):
                 continue
