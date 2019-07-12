@@ -35,6 +35,7 @@ selections:
     # This includes: directories containing executables, libraries,
     # configuration files, as well as any files that may contain sensitive
     # elements (cryptographic keys, passwords, confidential data).
+    - package_aide_installed
     - aide_build_database
     - aide_periodic_cron_checking
     - aide_scan_notification
