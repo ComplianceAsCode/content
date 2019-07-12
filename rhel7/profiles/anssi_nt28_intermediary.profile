@@ -57,7 +57,6 @@ selections:
     - mount_option_var_tmp_nodev
     - mount_option_var_tmp_noexec
 
-    - sshd_idle_timeout_value=5_minutes
     # ==============================================
     # R14 - Installation of packages reduced to the bare necessities
     # The choice of packets should lead to an installation as small as possible,
