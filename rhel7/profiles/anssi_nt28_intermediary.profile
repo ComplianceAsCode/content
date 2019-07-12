@@ -1,5 +1,5 @@
 # Don't forget to enable build of tables in rhel7CMakeLists.txt when setting to true
-documentation_complete: false
+documentation_complete: true
 
 title: 'DRAFT - ANSSI DAT-NT28 (intermediary)'
 
