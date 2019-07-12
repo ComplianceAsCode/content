@@ -5,8 +5,8 @@
 # disruption = medium
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
   sysctl:
-    name: {{{ SYSCTLVAR }}}
-    value: {{{ SYSCTLVAL }}}
+    name: "{{{ SYSCTLVAR }}}"
+    value: "{{{ SYSCTLVAL }}}"
     state: present
     reload: yes
 

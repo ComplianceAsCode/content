@@ -7,7 +7,7 @@
 
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set
   sysctl:
-    name: {{{ SYSCTLVAR }}}
+    name: "{{{ SYSCTLVAR }}}"
     value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
     state: present
     reload: yes
