@@ -11,7 +11,6 @@ rationale: |-
     The <tt>dnf-automatic</tt> is an alternative command line interface (CLI) to <tt>dnf upgrade</tt> with specific facilities to make it suitable to be executed automatically and regularly from systemd timers, cron jobs and similar.
     The tool is controlled by <tt>dnf-automatic.timer</tt> SystemD timer.
 
-
 severity: medium
 
 identifiers:
@@ -23,4 +22,4 @@ references:
 
 ocil_clause: 'the dnf-automatic.timer is not enabled'
 
-ocil: '{{{ ocil_timer_enabled(timer="dnf-automatic") }}}'
+ocil: "{{{ ocil_timer_enabled(timer='dnf-automatic') }}}"
