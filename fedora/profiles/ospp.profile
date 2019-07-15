@@ -226,3 +226,4 @@ selections:
     - kernel_module_firewire-core_disabled
     - kernel_module_tipc_disabled
     - dnf-automatic_apply_updates
+    - package_fapolicyd_installed
