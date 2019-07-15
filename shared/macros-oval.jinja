@@ -216,7 +216,7 @@
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
 {{%- macro oval_grub_config(parameter='', value='', missing_parameter_pass=false, multi_value=true, missing_config_file_fail=false, supported_platforms=['all']) %}}
-{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fails) }}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
