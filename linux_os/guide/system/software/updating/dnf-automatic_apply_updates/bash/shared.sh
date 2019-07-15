@@ -12,6 +12,5 @@ elif grep -qs $COMMANDS_REGEX $CONF; then
     sed -i "/$COMMANDS_REGEX/a apply_updates = yes" $CONF
 else
     mkdir -p /etc/dnf
-    touch $CONF
     echo -e "[commands]\napply_updates = yes" >> $CONF
 fi
