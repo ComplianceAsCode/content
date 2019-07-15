@@ -11,6 +11,8 @@ import ssg.oval
 import ssg.rules
 import ssg.utils
 import ssg.yaml
+import ssg.build_yaml
+import ssg.rule_yaml
 
 
 def main():
@@ -35,14 +37,21 @@ def main():
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
         env_yaml = ssg.yaml.open_environment(ssg_build_config_yaml, product_yaml_path)
+        ssg.jinja.add_python_functions(env_yaml)
 
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
         if guide_dir in guide_dirs:
             continue
 
         for rule_dir in ssg.rules.find_rule_dirs(guide_dir):
-            rule_id = ssg.rules.get_rule_dir_id(rule_dir)
-            env_yaml['rule_id'] = rule_id
+            rule_path = os.path.join(rule_dir, "rule.yml")
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
+            prodtypes = ssg.rule_yaml.parse_prodtype(rule.prodtype)
+
+            env_yaml['rule_id'] = rule.id_
+            env_yaml['rule_title'] = rule.title
+            env_yaml['products'] = prodtypes # default is all
+
             for oval in ssg.rules.get_rule_dir_ovals(rule_dir):
                 xml_content = ssg.jinja.process_file_with_macros(oval, env_yaml)
                 oval_contents = ssg.utils.split_string_content(xml_content)
