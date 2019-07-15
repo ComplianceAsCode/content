@@ -1094,8 +1094,8 @@ selections:
     ## TO DO: HOW TO HANDLE??
     #setup_usbguard
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4474
-    #systemctl enable usbguard
+    ## Enable the USBGuard Service
+    - service_usbguard_enabled
 
     #################################################################
     ## Enable / Configure FIPS
