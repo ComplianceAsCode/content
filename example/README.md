@@ -23,7 +23,7 @@ testing purposes.
 
 Follow these steps to create a new product in the project:
 
-1. Create a new folder in the root directory which will holds the files related to your new product. To illustrate the process we will use the name `custom6` which basically means that the product is called `custom` and the major version is `6`.
+1. Create a new folder in the root directory which will hold the files related to your new product. To illustrate the process we will use the name `custom6` which basically means that the product is called `custom` and the major version is `6`.
 <pre>
 cd content
 mkdir custom6
@@ -48,7 +48,7 @@ message(STATUS "JBoss EAP 6: ${SSG_PRODUCT_EAP6}")
 if (SSG_PRODUCT_DEBIAN8)
     add_subdirectory("debian8")
 endif()
-<b>if (SSG_PRODUCT_CUSTOM6
+<b>if (SSG_PRODUCT_CUSTOM6)
       add_subdirectory("custom6")
 endif()</b>
 if (SSG_PRODUCT_EAP6)
