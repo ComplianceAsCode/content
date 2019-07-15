@@ -1189,6 +1189,9 @@ selections:
     #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/system-auth
     #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/password-auth
 
+    # securetty is disabled by default in RHEL8, but it can be enabled just by editing a few files
+    - securetty_root_login_console_only
+
     ## RHEL 8 CCE-80666-1: Limit Password Reuse
     - accounts_password_pam_unix_remember
     - var_password_pam_unix_remember=5
