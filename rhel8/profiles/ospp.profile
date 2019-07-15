@@ -746,6 +746,7 @@ selections:
     ## Application Whitelisting
     #################################################################
     - package_fapolicyd_installed
+    - service_fapolicyd_enabled
 
     #################################################################
     ## Harden USB Guard
