@@ -905,8 +905,8 @@ selections:
     ## Disable Core Dumps
     #################################################################
     
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4502
-    #echo "kernel.core_pattern=|/bin/false" >> $CONFIG
+    ## Disable storing core dumps
+    - sysctl_kernel_core_pattern
     #sed -i "/^#Storage/s/#Storage=external/Storage=none/" /etc/systemd/coredump.conf
     #sed -i "/^#ProcessSize/s/#ProcessSizeMax=2G/ProcessSizeMax=0/" /etc/systemd/coredump.conf
     #systemctl mask systemd-coredump.socket
