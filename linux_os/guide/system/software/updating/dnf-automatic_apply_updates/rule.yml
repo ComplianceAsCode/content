@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: Configure dnf-automatic to Install Available Updates Automatically
+
+description: |-
+    To ensure that the packages comprising the available updates will be automatically installed by <tt>dnf-automatic</tt>, set <tt>apply_updates</tt> to <tt>yes</tt> under <tt>[commands]</tt> section in <tt>/etc/dnf/automatic.conf</tt>.
+
+rationale: |-
+    Installing software updates is a fundamental mitigation against
+    the exploitation of publicly-known vulnerabilities. If the most
+    recent security patches and updates are not installed, unauthorized
+    users may take advantage of weaknesses in the unpatched software. The
+    lack of prompt attention to patching could result in a system compromise.
+    The automated installation of updates ensures that recent security patches
+    are applied in a timely manner.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82494-6
+
+references:
+    ospp: FMT_SMF_EXT.1
+    nist: SI-2(5)
+
+ocil_clause: 'apply_updates is not set to yes'
+
+ocil: |-
+    To verify that packages comprising the available updates will be automatically installed by dnf-automatic, run the following command:
+    <pre>$ sudo grep apply_updates /etc/dnf/automatic.conf</pre>
+    The output should return the following:
+    <pre>apply_updates = yes</pre>

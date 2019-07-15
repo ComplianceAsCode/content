@@ -1231,8 +1231,8 @@ selections:
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4476
     #sed -i "/upgrade_type/s/default/security/" /etc/dnf/automatic.conf
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4477
-    #sed -i "/apply_updates/s/no/yes/" /etc/dnf/automatic.conf
+    ## RHEL 8 CCE-82494-6: Configure dnf-automatic to Install Available Updates Automatically
+    - dnf-automatic_apply_updates
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4478
     #systemctl enable --now dnf-automatic.timer

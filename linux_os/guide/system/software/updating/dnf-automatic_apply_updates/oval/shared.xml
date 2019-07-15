@@ -1,0 +1,14 @@
+{{{
+oval_check_config_file(
+    path="/etc/dnf/automatic.conf",
+    prefix_regex="^[\s]*\[commands](?:[^\\n\[]*\\n+)+?[\s]*",
+    parameter="apply_updates",
+    value="yes",
+    separator_regex="[\s]*=[\s]*",
+    missing_parameter_pass=false,
+    application="dnf-automatic",
+    multi_value=false,
+    missing_config_file_fail=true,
+    supported_platforms=["rhel8","ol8","fedora"]
+)
+}}}

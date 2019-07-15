@@ -224,3 +224,4 @@ selections:
     - kernel_module_can_disabled
     - kernel_module_firewire-core_disabled
     - kernel_module_tipc_disabled
+    - dnf-automatic_apply_updates
