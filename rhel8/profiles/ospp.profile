@@ -1217,8 +1217,8 @@ selections:
     ## Enable Automatic Software Updates
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4476
-    #sed -i "/upgrade_type/s/default/security/" /etc/dnf/automatic.conf
+    ## RHEL 8 CCE-82267-6: Configure dnf-automatic to Install Only Security Updates
+    - dnf-automatic_security_updates_only
 
     ## RHEL 8 CCE-82494-6: Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates

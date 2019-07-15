@@ -227,3 +227,4 @@ selections:
     - kernel_module_tipc_disabled
     - dnf-automatic_apply_updates
     - package_fapolicyd_installed
+    - dnf-automatic_security_updates_only
