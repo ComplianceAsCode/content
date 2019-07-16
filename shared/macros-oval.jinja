@@ -25,9 +25,7 @@
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
       <description>Look for parameter '{{{ parameter }}}' with value '{{{ value }}}'
-        {{%- if section -%}}
-          in section '{{{ section }}}'
-        {{%- endif -%}}
+        {{%- if section %}} in section '{{{ section }}}' {{% endif -%}}
         in '{{{ path }}}'</description>
     </metadata>
     {{%- if missing_config_file_fail %}}
