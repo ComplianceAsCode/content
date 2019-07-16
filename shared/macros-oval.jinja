@@ -131,7 +131,16 @@
 {{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
 {{%- set suffix_id = "" -%}}
 {{%- if section %}}
-{{%- set regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex+"(\S*)[\s]*(?:|(?:#.*))?$" -%}}
+{{%- if missing_parameter_pass %}}
+{{#
+  There is no need for having a regular expression with a capture
+  group "(\S*)" when checking if the parameter is not present in
+  the configuration file.
+#}}
+{{%- set regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex+"\S*\s*(?:|(?:#.*))?$" -%}}
+{{%- else %}}
+{{%- set regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex+"(\S*)\s*(?:|(?:#.*))?$" -%}}
+{{%- endif %}}
 {{%- else %}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
