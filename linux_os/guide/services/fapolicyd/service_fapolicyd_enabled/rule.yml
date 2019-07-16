@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Enable the File Access Policy Service'
+
+description: |-
+    The File Access Policy service should be enabled.
+    {{{ describe_service_enable(service="fapolicyd") }}}
+
+rationale: |-
+    The <tt>fapolicyd</tt> service (File Access Policy Daemon)
+    implements application whitelisting to decide file access rights.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82249-4
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'the service is not enabled'
+
+ocil: '{{{ ocil_service_enabled(service="fapolicyd") }}}'
