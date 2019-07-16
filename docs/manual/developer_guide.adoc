@@ -1,4 +1,5 @@
 # ComplianceAsCode Developer Guide
+:rootdir: ../..
 :imagesdir: ./images
 :templatesdir: ../../shared/templates
 :rhel7dir: ../../rhel7/templates/csv
@@ -969,6 +970,40 @@ This is an example of a check, written using the custom OVAL syntax, that checks
   </unix:file_object>
 ----
 
+===== Macros
+* See the  for more
+
+Jinja macros for OVAL checks are located in link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja]. These currently include the following high-level macros:
+
+- `oval_sshd_config` -- check a parameter and value in the sshd configuration file
+- `oval_grub_config` -- check a parameter and value in the grub configuration file
+- `oval_check_config_file` -- check a parameter and value in a given configuration file
+
+Always consider reusing `oval_check_config_file` when creating new macros, it has some logic that will save you some time (e.g.: platform applicability).
+
+They also include several low-level macros which are used to build the high level macros:
+
+- set of low-level macros to build the OVAL checks for line in file:
+```
+oval_line_in_file_criterion
+oval_line_in_file_test
+oval_line_in_file_object
+oval_line_in_file_state
+```
+
+- set of low-level macros to build the OVAL checks to test if a file exists:
+```
+oval_config_file_exists_criterion
+oval_config_file_exists_test
+oval_config_file_exists_object
+```
+
+====== Platform applicability
+Platform applicability is given by the `prodtype` property in the rule.yml file. If you are using `oval_check_config_file` macro directly or indirectly, it should be enough to define `prodtype`. Default is `all` platforms. If you intend to define your own OVAL check please consider using `oval_affected` macro from link:{rootdir}/shared/macros.jinja[macros.jinja].
+
+Whenever possible, please reuse the macros and form high-level simplifications.
+This ensures consistent, high quality OVAL checks that we can edit in one place and reuse in many places. For more details on which parameters are accepted by the macros, please refer to the inline documentation in the link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja] file.
+
 === Remediations
 
 Remediations, also called fixes, are used to change the state of the machine, so that previously non-passing rules can pass. There can be multiple versions of the same remediation meant to be executed by different applications, more specifically Ansible, Bash, Anaconda and Puppet.
@@ -1059,7 +1094,7 @@ The Playbook is generated in `/build/ansible/<product>-playbook-<profile_id>.yml
 Jinja macros for Ansible content are located in `/shared/macros-ansible.jinja`. These currently include the following high-level macros:
 
 - `ansible_sshd_set` -- set a parameter in the sshd configuration
-- `ansible_etc_profile_set` -- ensure a command gets execuded or a variable gets set in /etc/profile or /etc/profile.d
+- `ansible_etc_profile_set` -- ensure a command gets executed or a variable gets set in /etc/profile or /etc/profile.d
 
 They also include several low-level macros:
 
