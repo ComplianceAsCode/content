@@ -6,7 +6,7 @@
 
 {{#
   High level macro which checks if a particular combination of parameter and value in a configuration file is set.
-  This function can take nine parameters:
+  This macro can take ten parameters:
     - path (String): Path to the configuration file to be checked.
     - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
     - parameter (String): The parameter to be checked in the configuration file.
@@ -16,14 +16,19 @@
     - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
+    - section (String): If set, the parameter will be checked only within the given section defined by [section].
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='\s+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false) -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='\s+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='') -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
       <title>{{{ rule_title }}}</title>
       {{{- oval_affected(products) }}}
-      <description>Look for parameter '{{{ parameter }}}' with value '{{{ value }}}' in '{{{ path }}}'</description>
+      <description>Look for parameter '{{{ parameter }}}' with value '{{{ value }}}'
+        {{%- if section -%}}
+          in section '{{{ section }}}'
+        {{%- endif -%}}
+        in '{{{ path }}}'</description>
     </metadata>
     {{%- if missing_config_file_fail %}}
     <criteria comment="{{{ application }}} is configured correctly and configuration file exists"
@@ -54,11 +59,11 @@
     {{%- endif %}}
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex) }}}
   {{{ oval_line_in_file_state(value, multi_value) }}}
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_file_object(path, prefix_regex, parameter, separator_regex, missing_parameter_pass) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass) }}}
   {{%- endif %}}
   {{%- if missing_config_file_fail %}}
   {{{ oval_config_file_exists_test(path) }}}
@@ -115,15 +120,19 @@
 
 {{#
   Macro to check if a parameter in a configuration file is set (Object definition).
-  This function can take five parameters:
+  This macro can take six parameters:
     - path (String): Path to the configuration file to be checked.
+    - section (String): If set, the parameter will be checked only within the given section defined by [section].
     - prefix_regex (String): Regular expression to be used in the beginning of the OVAL text file content check.
     - parameter (String): The parameter to be checked in the configuration file.
     - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
-{{%- macro oval_line_in_file_object(path='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
 {{%- set suffix_id = "" -%}}
+{{%- if section %}}
+{{%- set regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex+"(\S*)[\s]*(?:|(?:#.*))?$" -%}}
+{{%- else %}}
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = suffix_id_default_not_overriden -%}}
 {{#
@@ -134,6 +143,7 @@
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
 {{%- else %}}
 {{%- set regex = prefix_regex+parameter+separator_regex+"(.*)[\s]*(?:|(?:#.*))?$" -%}}
+{{%- endif %}}
 {{%- endif %}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
     <ind:filepath>{{{ path }}}</ind:filepath>
@@ -229,4 +239,20 @@
         <extend_definition comment="rpm package openssh-server removed"
         definition_ref="package_openssh-server_removed" />
       </criteria>
+{{%- endmacro %}}
+
+{{#
+  High level macro which checks configuration in an INI file.
+  This macro can take eight parameters:
+    - path (String): Path to the configuration file to be checked.
+    - section (String): The parameter will be checked only within the given section defined by [section].
+    - parameter (String): The parameter to be checked in the configuration file.
+    - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
+    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
+#}}
+{{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=true, missing_config_file_fail=false) %}}
+{{{ oval_check_config_file(path=path, prefix_regex="\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
 {{%- endmacro %}}
