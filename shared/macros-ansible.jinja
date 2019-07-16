@@ -99,8 +99,8 @@
   ini configuration files are best served with the ini Ansible module
   instead of lineinfile-based solutions.
 #}}
-{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
-{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
+{{%- macro ansible_set_config_file(msg, file, parameter, separator=' ', separator_regex='\s+', value='', value_regex='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
+{{{ ansible_only_lineinfile(msg, file, prefix_regex + parameter + separator_regex + value_regex, parameter + separator + value, create=create, block=True, validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
 {{%- endmacro %}}
 
 {{#
@@ -110,11 +110,11 @@
   best served with the ini Ansible module instead of lineinfile-based
   solutions.
 #}}
-{{%- macro ansible_set_config_file_dir(msg, config_file, config_dir, set_file, parameter, separator=' ', separator_regex='\s+', value='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
+{{%- macro ansible_set_config_file_dir(msg, config_file, config_dir, set_file, parameter, separator=' ', separator_regex='\s+', value='', value_regex='', prefix_regex='^\s*', create='no', validate='', insert_after='', insert_before='') %}}
 {{%- set var_dir = config_dir | replace("/", "_") | replace("-", "_") | replace(".", "_") -%}}
 {{%- set dir_exists = var_dir + "_exists" -%}}
 {{%- set dir_parameter = var_dir + "_has_parameter" -%}}
-{{%- set line_regex = prefix_regex + parameter + separator_regex -%}}
+{{%- set line_regex = prefix_regex + parameter + separator_regex + value_regex -%}}
 {{%- set find_when = dir_exists + ".stat.isdir is defined and " + dir_exists + ".stat.isdir" -%}}
 {{%- set lineinfile_items = "{{ " + dir_parameter + ".files }}" -%}}
 {{%- set lineinfile_when = dir_parameter + ".matched" -%}}
@@ -138,7 +138,7 @@
   Ansible to pass a file at a different path.
 #}}
 {{%- macro ansible_sshd_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^Match") }}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, value_regex='(?!' + value + '$).*', create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^Match") }}}
 {{%- endmacro %}}
 
 {{#
@@ -159,6 +159,6 @@
   correct arguments and not for calling the same command multiple times with
   different arguments. This includes setting an environment variable once.
 #}}
-{{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
+{{%- macro ansible_etc_profile_set_variable(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
 {{%- endmacro %}}

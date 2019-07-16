@@ -5,4 +5,4 @@
 # disruption = low
 - (xccdf-var var_accounts_tmout)
 
-{{{ ansible_etc_profile_set(parameter='TMOUT', value='{{ var_accounts_tmout }}') }}}
+{{{ ansible_etc_profile_set_variable(parameter='TMOUT', value='{{ var_accounts_tmout }}') }}}
