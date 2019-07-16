@@ -1,4 +1,5 @@
 # ComplianceAsCode Developer Guide
+:rootdir: ../..
 :imagesdir: ./images
 :templatesdir: ../../shared/templates
 :rhel7dir: ../../rhel7/templates/csv
@@ -970,11 +971,12 @@ This is an example of a check, written using the custom OVAL syntax, that checks
 ----
 
 ===== Macros
+* See the  for more
 
-Jinja macros for OVAL checks are located in `/shared/macros-oval.jinja`. These currently include the following high-level macros:
+Jinja macros for OVAL checks are located in link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja]. These currently include the following high-level macros:
 
-- `oval_sshd_config` -- check a parameter and value in the sshd configuration
-- `oval_grub_config` -- check a parameter and value in the grub configuration
+- `oval_sshd_config` -- check a parameter and value in the sshd configuration file
+- `oval_grub_config` -- check a parameter and value in the grub configuration file
 - `oval_check_config_file` -- check a parameter and value in a given configuration file
 
 Always consider reusing `oval_check_config_file` when creating new macros, it has some logic that will save you some time (e.g.: platform applicability).
@@ -997,10 +999,10 @@ oval_config_file_exists_object
 ```
 
 ====== Platform applicability
-Platform applicability is given by the `prodtype` property in the rule.yml file. If you are using `oval_check_config_file` macro directly or indirectly, it should be enough to define `prodtype`. Default is `all` platforms. If you intend to define your own OVAL check structure please consider using `oval_affected` macro from `/shared/macros.jinja`.
+Platform applicability is given by the `prodtype` property in the rule.yml file. If you are using `oval_check_config_file` macro directly or indirectly, it should be enough to define `prodtype`. Default is `all` platforms. If you intend to define your own OVAL check please consider using `oval_affected` macro from link:{rootdir}/shared/macros.jinja[macros.jinja].
 
 Whenever possible, please reuse the macros and form high-level simplifications.
-This ensures consistent, high quality OVAL checks that we can edit in one place and reuse in many places. For more details on which parameters are accepted by the macros, please refer to the inline documentation in the `/shared/macros-oval.jinja` file.
+This ensures consistent, high quality OVAL checks that we can edit in one place and reuse in many places. For more details on which parameters are accepted by the macros, please refer to the inline documentation in the link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja] file.
 
 === Remediations
 
