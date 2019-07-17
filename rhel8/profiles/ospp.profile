@@ -191,17 +191,11 @@ selections:
     ## Required Packages
     #################################################################
 
-    ## RHEL 8 CCE-82995-2: Install cryptsetup-luks Package
-    - package_cryptsetup-luks_installed
-
     ## RHEL 8 CCE-82994-5: Install sssd-ipa Package
     - package_sssd-ipa_installed
 
     ## RHEL 8 CCE-80844-4: Install aide Package
     - package_aide_installed
-
-    ## RHEL 8 CCE-82989-5: Install binutils Package
-    - package_binutils_installed
 
     ## RHEL 8 CCE-82985-3: Install dnf-automatic Package
     - package_dnf-automatic_installed
@@ -230,17 +224,11 @@ selections:
     ## RHEL 8 CCE-82214-8: Install sudo Package
     - package_sudo_installed
 
-    ## RHEL 8 CCE-82965-5: Install tar Package
-    - package_tar_installed
-
     ## RHEL 8 CCE-80644-8: Install tmux Package
     - package_tmux_installed
 
     ## RHEL 8 CCE-82959-8: Install usbguard Package
     - package_usbguard_installed
-
-    ## RHEL 8 CCE-82956-4: Install vim Package
-    - package_vim_installed
 
     ### RHEL 8 CCE-82953-1: Install audispd-plugins Package
     - package_audispd-plugins_installed
@@ -269,12 +257,6 @@ selections:
 
     ## RHEL 8 CCE-82943-2: Uninstall gssproxy Package
     - package_gssproxy_removed
-
-    ## RHEL 8 CCE-82939-0: Uninstall geolite2-city Package
-    - package_geolite2-city_removed
-
-    ## RHEL 8 CCE-82936-6: Uninstall geolite2-country Package
-    - package_geolite2-country_removed
 
     ## RHEL 8 CCE-82932-5: Uninstall nfs-utils Package
     - package_nfs-utils_removed
