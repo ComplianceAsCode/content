@@ -73,7 +73,7 @@
 
 {{#
   Macro to define the criterion of the OVAL check (Criterion definition).
-  This function can take three parameters:
+  This macro can take three parameters:
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
@@ -91,7 +91,7 @@
 
 {{#
   Macro to define the OVAL test to be constructed (Test definition).
-  This function can take three parameters:
+  This macro can take three parameters:
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
@@ -161,7 +161,7 @@
 
 {{#
   Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
-  This function can take two parameters:
+  This macro can take two parameters:
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
@@ -178,7 +178,7 @@
 
 {{#
   Macro to define the OVAL criterion to check if the configuration file exists (Criterion definition).
-  This function can take one parameters:
+  This macro can take one parameter:
     - path (String): Path to the configuration file to be checked.
 #}}
 {{%- macro oval_config_file_exists_criterion(path='') -%}}
@@ -187,7 +187,7 @@
 
 {{#
   Macro to define the OVAL test to check if the configuration file exists (Test definition).
-  This function can take one parameter:
+  This macro can take one parameter:
     - path (String): Path to the configuration file to be checked.
 #}}
 {{%- macro oval_config_file_exists_test(path='') -%}}
@@ -198,7 +198,7 @@
 
 {{#
   Macro to define the OVAL object to check if the configuration file exists (Object definition).
-  This function can take one parameters:
+  This macro can take one parameter:
     - path (String): Path to the configuration file to be checked.
 #}}
 {{%- macro oval_config_file_exists_object(path='') -%}}
@@ -209,7 +209,7 @@
 
 {{#
   High level macro to check if a particular combination of parameter and value in the ssh daemon configuration file is set.
-  This function can take five parameters:
+  This macro can take five parameters:
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
@@ -225,7 +225,7 @@
 
 {{#
   High level macro to check if a particular combination of parameter and value in the grub configuration file is set.
-  This function can take five parameters:
+  This macro can take five parameters:
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
