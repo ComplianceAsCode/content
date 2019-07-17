@@ -1048,10 +1048,8 @@ selections:
     - var_sshd_set_keepalive=3
     - sshd_set_keepalive
 
-    ## TO DO --
-    #echo -e "\nReplace this with your organization-defined system use notification message or banner\n" > /etc/issue
-    #cp /etc/issue /etc/issue.net
-    #sed -i "s/#Banner none/Banner \/etc\/issue.net/" $CONFIG
+    ## RHEL8 CCE-80905-3: Enable SSH Warning Banner
+    - sshd_enable_warning_banner
 
     ## RHEL 8 CCE-81032-5: Use Only FIPS 140-2 Validated Ciphers
     - sshd_use_approved_ciphers
@@ -1196,6 +1194,9 @@ selections:
     #sed -i "6s/^#//" /etc/pam.d/su
     #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/system-auth
     #sed -i "8iauth        required      pam_faillock.so preauth silent " /etc/pam.d/password-auth
+
+    # securetty is disabled by default in RHEL8, but it can be enabled just by editing a few files
+    - securetty_root_login_console_only
 
     ## RHEL 8 CCE-80666-1: Limit Password Reuse
     - accounts_password_pam_unix_remember
