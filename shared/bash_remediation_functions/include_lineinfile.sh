@@ -143,3 +143,10 @@ function sshd_config_set() {
 
     set_config_file "/etc/ssh/sshd_config" "$parameter" "$value" "yes" '' '^Match' 'true'
 }
+
+function tmux_config_set() {
+    local parameter="$1"
+    local value="$2"
+
+    set_config_file "/etc/tmux.conf" "set -g $parameter" "$value" "yes"
+}

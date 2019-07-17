@@ -752,8 +752,8 @@ selections:
     ## Harden USB Guard
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4498
-    #set -g lock-after-time 900
+    ## RHEL 8 CCE-82613-1: Disable the tmux Status Line
+    - disable_tmux_status_line
 
     ## RHEL 8 CCE-80940-0: Configure the tmux Lock Command
     - configure_tmux_lock_command

@@ -227,3 +227,6 @@ selections:
     - kernel_module_tipc_disabled
     - dnf-automatic_apply_updates
     - package_fapolicyd_installed
+    - package_tmux_installed
+    - configure_tmux_lock_command
+    - disable_tmux_status_line

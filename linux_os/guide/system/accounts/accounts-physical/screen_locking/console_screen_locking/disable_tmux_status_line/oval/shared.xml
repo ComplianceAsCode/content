@@ -1,0 +1,9 @@
+{{{
+oval_check_config_file(
+    path="/etc/tmux.conf",
+    parameter="set -g status",
+    value="off",
+    application="tmux",
+    missing_config_file_fail=true
+)
+}}}

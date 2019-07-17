@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Disable the tmux Status Line'
+
+description: |-
+    To disable the status line in <tt>tmux</tt> terminal multiplexer,
+    the <tt>status</tt> option must be turned off.
+    Add the following line to <tt>/etc/tmux.conf</tt>:
+    <pre>set -g status off</pre>.
+
+rationale: |-
+    The status line displays the current session name, window title, date and time.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82613-1
+
+references:
+    disa: 56,58
+    nist: AC-11(a),AC-11(b)
+    vmmsrg: SRG-OS-000028-VMM-000090,SRG-OS-000030-VMM-000110
+
+ocil_clause: 'status line is turned on'
+
+ocil: |-
+    To verify that status line in tmux is disabled, run the following command:
+    <pre>$ grep status /etc/tmux.conf</pre>
+    The output should return the following:
+    <pre>set -g status off</pre>
+
+platform: machine
