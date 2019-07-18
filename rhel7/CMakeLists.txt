@@ -20,11 +20,11 @@ ssg_build_html_nistrefs_table(${PRODUCT} "ospp")
 ssg_build_html_nistrefs_table(${PRODUCT} "C2S")
 ssg_build_html_nistrefs_table(${PRODUCT} "stig")
 
-# Uncomment when anssi profiles are marked documentation_complete: true
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_minimal")
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_intermediary")
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_enhanced")
-#ssg_build_html_anssirefs_table(${PRODUCT} "nt28_high")
+# The macro below prepends "anssi_" to profile ID
+ssg_build_html_anssirefs_table(${PRODUCT} "nt28_minimal")
+ssg_build_html_anssirefs_table(${PRODUCT} "nt28_intermediary")
+ssg_build_html_anssirefs_table(${PRODUCT} "nt28_enhanced")
+ssg_build_html_anssirefs_table(${PRODUCT} "nt28_high")
 
 ssg_build_html_cce_table(${PRODUCT})
 
