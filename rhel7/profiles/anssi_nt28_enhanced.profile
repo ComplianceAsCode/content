@@ -89,6 +89,7 @@ selections:
     # only be read by the user and his group, and be editable only by his owner).
     # The umask for users must be set to 0077 (any file created by a user is
     # readable and editable only by him).
+    - var_accounts_user_umask=077
     - accounts_umask_etc_login_defs
     - accounts_umask_etc_profile
 
