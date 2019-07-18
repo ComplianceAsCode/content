@@ -141,5 +141,5 @@ function sshd_config_set() {
     local parameter="$1"
     local value="$2"
 
-    set_config_file "/etc/ssh/sshd_config" "$parameter" "$value" "yes" '' '^Match' 'true'
+    set_config_file "/etc/ssh/sshd_config" "$parameter" "$value" "true" '' '^Match' 'true'
 }
