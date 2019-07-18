@@ -59,7 +59,7 @@ selections:
 
     # ==============================================
     # R14 - Installation of packages reduced to the bare necessities
-    # The choice of packets should lead to an installation as small as possible,
+    # The choice of packages should lead to an installation as small as possible,
     # limiting itself to select only what is required as needed.
 
     # ==============================================
@@ -332,7 +332,7 @@ selections:
     # requiretty            require the user to have a tty  login;
     # use_pty               using a pseudo-tty when a command is executed;
     # umask = 0027          force umask to a more restrictive mask;
-    # ignore_dot            ignores ithe ‘.’ in $ PATH;
+    # ignore_dot            ignores the ‘.’ in $ PATH;
     # env_reset             reset the environment variables;
     # passwd_timeout = 1    allocate 1 minute to enter its password.
 
