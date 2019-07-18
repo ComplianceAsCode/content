@@ -21,9 +21,9 @@ function lineinfile_absent() {
     local insensitive="${8:-true}"
 
     if [ "$insensitive" == "true" ]; then
-        LC_ALL=C sed "/$regex/Id" "$path"
+        LC_ALL=C sed -i "/$regex/Id" "$path"
     else
-        LC_ALL=C sed "/$regex/d" "$path"
+        LC_ALL=C sed -i "/$regex/d" "$path"
     fi
 }
 
@@ -134,7 +134,7 @@ function set_config_file() {
     local separator_regex="${9:-\s\+}"
     local prefix_regex="${10:-^\s*}"
 
-    only_lineinfile "$path" "$prefix_regex$parameter$separator_regex" "$parameter$separator$value" "$create" "$insert_after" "$insert_before"
+    only_lineinfile "$path" "$prefix_regex$parameter$separator_regex" "$parameter$separator$value" "$create" "$insert_after" "$insert_before" "$insensitive"
 }
 
 function sshd_config_set() {
