@@ -17,7 +17,7 @@
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='(?-i)[\s]+', value='', missing_parameter_pass=false, application='', multi_value='', missing_config_file_fail=false) -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='\s+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false) -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
@@ -203,7 +203,7 @@
   sshd_config has case-insensitive parameters (but case-sensitive values).
 #}}
 {{%- macro oval_sshd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, supported_platforms=['all']) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="^[\s]*(?i)", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
