@@ -73,7 +73,6 @@ class Builder(object):
             "audit_rules_login_events.csv":  AuditRulesLoginEventsGenerator(),
             "audit_rules_privileged_commands.csv":  AuditRulesPrivilegedCommandsGenerator(),
             "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
-            "audit_rules_usergroup_modification.csv":  AuditRulesUserGroupModificationGenerator(),
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
             "audit_rules_path_syscall.csv":        AuditRulesPathSyscallGenerator(),
             "grub2_bootloader_argument.csv":        GRUB2BootloaderArgumentGenerator(),

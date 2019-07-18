@@ -8,6 +8,9 @@
     name: "{{{ DAEMONNAME }}}"
     enabled: "no"
     state: "stopped"
+    {{%- if MASK_SERVICE %}}
+    masked: "yes"
+    {{%- endif %}}
   register: service_result
   failed_when: "service_result is failed and ('Could not find the requested service' not in service_result.msg)"
 
@@ -17,6 +20,9 @@
     name: "{{{ DAEMONNAME }}}.socket"
     enabled: "no"
     state: "stopped"
+    {{%- if MASK_SERVICE %}}
+    masked: "yes"
+    {{%- endif %}}
   register: socket_result
   failed_when: "socket_result is failed and ('Could not find the requested service' not in socket_result.msg)"
 {{% endif %}}

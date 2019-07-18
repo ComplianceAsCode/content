@@ -1,4 +1,4 @@
-# service_name, package_name, daemon_name (as recognized by chkconfig / systemd. To be used when daemon_name differs from service_name)
-sshd,openssh-server,
-sssd,,
-debug-shell,systemd,
+# <service_name, package_name, daemon_name[, mask_service]> (as recognized by chkconfig / systemd. To be used when daemon_name differs from service_name) (if mask_service is set the service will be masked, can be any string)
+sshd,openssh-server,,mask_service
+sssd,,,mask_service
+debug-shell,systemd,,mask_service

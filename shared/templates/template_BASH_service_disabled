@@ -5,11 +5,15 @@
 # disruption = low
 {{%- if init_system == "systemd" %}}
 
+
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
 "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'
+{{%- if MASK_SERVICE %}}
+"$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.service'
+{{%- endif %}}
 # Disable socket activation if we have a unit file for it
-"$SYSTEMCTL_EXEC" list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket\>' && "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.socket'
+"$SYSTEMCTL_EXEC" list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket' && "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.socket' {{%- if MASK_SERVICE %}} && "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.socket' {{%- endif %}}
 # The service may not be running because it has been started and failed,
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
@@ -17,6 +21,9 @@ SYSTEMCTL_EXEC='/usr/bin/systemctl'
 {{% elif init_system == "upstart" %}}
 
 /sbin/service '{{{ DAEMONNAME }}}' disable
+{{%- if MASK_SERVICE %}}
+/sbin/service '{{{ DAEMONNAME }}}' mask
+{{%- endif %}}
 /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
 {{% else %}}
 
