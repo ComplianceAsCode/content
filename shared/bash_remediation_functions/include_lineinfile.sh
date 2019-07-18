@@ -143,3 +143,10 @@ function sshd_config_set() {
 
     set_config_file "/etc/ssh/sshd_config" "$parameter" "$value" "yes" '' '^Match' 'true'
 }
+
+function auditd_config_set() {
+    local parameter="$1"
+    local value="$2"
+
+    set_config_file "/etc/audit/auditd.conf" "$parameter" "$value" "true" "" "" "true" " = " "\s*=\s*"
+}

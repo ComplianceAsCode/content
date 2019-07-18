@@ -162,3 +162,14 @@
 {{%- macro ansible_etc_profile_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file_dir(msg, "/etc/profile", "/etc/profile.d", "/etc/profile", parameter, separator='=', separator_regex='=', value=value, create='yes', validate="bash -n %s") }}}
 {{%- endmacro %}}
+
+{{#
+  High level macro to set a command in auditd configuration file /etc/audit/auditd.conf.
+  Parameters:
+  - msg: the name for the Ansible task
+  - parameter: parameter to be set in the configuration file
+  - value: value of the parameter
+#}}
+{{%- macro ansible_auditd_set(msg='', parameter='', value='') %}}
+{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", separator=" = ", separator_regex="\s*=\s*") }}}
+{{%- endmacro %}}
