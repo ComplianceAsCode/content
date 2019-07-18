@@ -971,13 +971,13 @@ This is an example of a check, written using the custom OVAL syntax, that checks
 ----
 
 ===== Macros
-* See the  for more
 
 Jinja macros for OVAL checks are located in link:{rootdir}/shared/macros-oval.jinja[macros-oval.jinja]. These currently include the following high-level macros:
 
 - `oval_sshd_config` -- check a parameter and value in the sshd configuration file
 - `oval_grub_config` -- check a parameter and value in the grub configuration file
 - `oval_check_config_file` -- check a parameter and value in a given configuration file
+- `oval_check_ini_file` -- check a parameter and value in a given section of a given configuration file in "INI" format
 
 Always consider reusing `oval_check_config_file` when creating new macros, it has some logic that will save you some time (e.g.: platform applicability).
 
