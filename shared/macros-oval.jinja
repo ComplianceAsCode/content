@@ -203,7 +203,7 @@
   sshd_config has case-insensitive parameters (but case-sensitive values).
 #}}
 {{%- macro oval_sshd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false, supported_platforms=['all']) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="(?i)^[\s]*", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="^[\s]*(?i)", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
