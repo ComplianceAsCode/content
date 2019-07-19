@@ -6,3 +6,4 @@ yum -y install avahi
 
 systemctl disable avahi-daemon.service
 systemctl enable avahi-daemon.socket
+systemctl unmask avahi-daemon
