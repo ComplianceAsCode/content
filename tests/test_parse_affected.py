@@ -54,13 +54,24 @@ def main():
 
             for oval in ssg.rules.get_rule_dir_ovals(rule_dir):
                 xml_content = ssg.jinja.process_file_with_macros(oval, env_yaml)
+                # Some OVAL definitions may render to an empty definition
+                # when building OVAL 5.10 only content
+                if not xml_content:
+                    continue
+
                 oval_contents = ssg.utils.split_string_content(xml_content)
 
-                results = ssg.oval.parse_affected(oval_contents)
+                try:
+                    results = ssg.oval.parse_affected(oval_contents)
 
-                assert len(results) == 3
-                assert isinstance(results[0], int)
-                assert isinstance(results[1], int)
+                    assert len(results) == 3
+                    assert isinstance(results[0], int)
+                    assert isinstance(results[1], int)
+
+                except ValueError as e:
+                    print("No <affected> element found in file {}".format(oval))
+                    raise e
+
 
         guide_dirs.add(guide_dir)
 
