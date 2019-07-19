@@ -261,6 +261,6 @@
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
-{{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false) %}}
+{{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=true) %}}
 {{{ oval_check_config_file(path=path, prefix_regex="\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
 {{%- endmacro %}}
