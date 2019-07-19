@@ -29,7 +29,8 @@ class ServiceDisabledGenerator(FilesGenerator):
                 packagename = servicename
         except ValueError as e:
             print("\tEntry: %s\n" % serviceinfo)
-            print("\tError unpacking servicename, packagename, daemonname and dont_mask_service: " + str(e))
+            print("\tError unpacking servicename, packagename, daemonname " +
+                  "and dont_mask_service: " + str(e))
             sys.exit(1)
 
         if not daemonname:
