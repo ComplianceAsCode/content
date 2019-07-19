@@ -10,25 +10,26 @@ from template_common import FilesGenerator, UnknownTargetError, CSVLineError
 class ServiceDisabledGenerator(FilesGenerator):
     def generate(self, target, serviceinfo):
         try:
+            # mask service by default
+            mask_service = True
 
-        # get the items out of the list
+            # get the items out of the list
             # items can be in format
             # <service_name, package_name, daemon_name> or
-            # <service_name, package_name, daemon_name, mask_service>
-            mask_service = False
+            # <service_name, package_name, daemon_name, dont_mask_service>
             if len(serviceinfo) == 3:
                 servicename, packagename, daemonname = serviceinfo
             elif len(serviceinfo) == 4:
-                servicename, packagename, daemonname, mask_service = serviceinfo
+                servicename, packagename, daemonname, dont_mask_service = serviceinfo
                 # use boolean instead of any string that came from csv file
-                mask_service = True
+                mask_service = False if dont_mask_service != "" else True
             else:
                 raise CSVLineError()
             if not packagename:
                 packagename = servicename
         except ValueError as e:
             print("\tEntry: %s\n" % serviceinfo)
-            print("\tError unpacking servicename, packagename, daemonname and mask_service: " + str(e))
+            print("\tError unpacking servicename, packagename, daemonname and dont_mask_service: " + str(e))
             sys.exit(1)
 
         if not daemonname:
@@ -83,4 +84,4 @@ class ServiceDisabledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "servicename,packagename,daemonname[,mask_service]")
+               "servicename,packagename,daemonname[,dont_mask_service]")

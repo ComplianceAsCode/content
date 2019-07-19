@@ -280,13 +280,23 @@ ocil_clause: "the package is installed"
     <pre>$ systemctl is-enabled <code>{{{ service }}}</code></pre>
     Output should indicate the <code>{{{ service }}}</code> service has either not been installed,
     or has been disabled at all runlevels, as shown in the example below:
-    <pre>$ systemctl is-enabled <code>{{{ service }}}</code><br/>disabled</pre>
+    <pre>$ systemctl is-enabled <code>{{{ service }}}</code><br/> disabled</pre>
 
     Run the following command to verify <code>{{{ service }}}</code> is not active (i.e. not running) through current runtime configuration:
     <pre>$ systemctl is-active {{{ service }}}</pre>
 
     If the service is not running the command will return the following output:
     <pre>inactive</pre>
+
+    By default the service will also be masked, to check that the <code>{{{ service }}}</code> is masked, run the following command:
+    <pre>$ systemctl show <code>{{{ service }}}</code> | grep "LoadState\|UnitFileState"</pre>
+
+    If the service is masked the command will return the following outputs:
+
+    <pre>LoadState=masked</pre>
+
+    <pre>UnitFileState=masked</pre>
+
 {{%- endmacro %}}
 
 
@@ -345,6 +355,8 @@ ocil_clause: "the package is installed"
 {{%- macro systemd_describe_service_disable(service) %}}
     The <code>{{{ service }}}</code> service can be disabled with the following command:
     <pre>$ sudo systemctl disable {{{ service }}}.service</pre>
+    The <code>{{{ service }}}</code> service can be masked with the following command:
+    <pre>$ sudo systemctl mask {{{ service }}}.service</pre>
 {{%- endmacro %}}
 
 

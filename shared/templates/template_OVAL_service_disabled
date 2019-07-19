@@ -18,7 +18,8 @@
         <criterion comment="{{{ SERVICENAME }}} not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_not_wanted_by_multi_user_target" />
         <criterion comment="{{{ SERVICENAME }}} socket not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_socket_not_wanted_by_multi_user_target" />
         {{%- if MASK_SERVICE %}}
-        <criterion comment="{{{ SERVICENAME }}} is masked" test_ref="test_service_is_masked_{{{ SERVICENAME }}}" />
+        <criterion comment="{{{ SERVICENAME }}} is masked" test_ref="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" />
+        <criterion comment="{{{ SERVICENAME }}} is masked" test_ref="test_service_unitfilestate_is_masked_{{{ SERVICENAME }}}" />
         {{%- endif %}}
       </criteria>
     </criteria>
@@ -58,15 +59,27 @@
       <linux:value>inactive</linux:value>
   </linux:systemdunitproperty_state>
 {{%- if MASK_SERVICE %}}
-  <linux:systemdunitproperty_test id="test_service_is_masked_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the {{{ SERVICENAME }}} service is masked" version="1">
-    <linux:object object_ref="obj_service_is_masked_{{{ SERVICENAME }}}"/>
-    <linux:state state_ref="state_service_is_masked_{{{ SERVICENAME }}}"/>
+  <linux:systemdunitproperty_test id="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the property LoadState from the service {{{ SERVICENAME }}} is masked" version="1">
+    <linux:object object_ref="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
+    <linux:state state_ref="state_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
   </linux:systemdunitproperty_test>
-  <linux:systemdunitproperty_object id="obj_service_is_masked_{{{ SERVICENAME }}}" comment="Retrieve the LoadState property of {{{ SERVICENAME }}}" version="1">
+  <linux:systemdunitproperty_object id="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}" comment="Retrieve the LoadState property of {{{ SERVICENAME }}}" version="1">
     <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(service|socket)</linux:unit>
     <linux:property>LoadState</linux:property>
   </linux:systemdunitproperty_object>
-  <linux:systemdunitproperty_state id="state_service_is_masked_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is not running">
+  <linux:systemdunitproperty_state id="state_service_loadstate_is_masked_{{{ SERVICENAME }}}" version="1" comment="LoadState is set to masked">
+      <linux:value>masked</linux:value>
+  </linux:systemdunitproperty_state>
+
+  <linux:systemdunitproperty_test id="test_service_unitfilestate_is_masked_{{{ SERVICENAME }}}" check="all" check_existence="any_exist" comment="Test that the property UnitFileState from the service {{{ SERVICENAME }}} is masked" version="1">
+    <linux:object object_ref="obj_service_unitfilestate_is_masked_{{{ SERVICENAME }}}"/>
+    <linux:state state_ref="state_service_unitfilestate_is_masked_{{{ SERVICENAME }}}"/>
+  </linux:systemdunitproperty_test>
+  <linux:systemdunitproperty_object id="obj_service_unitfilestate_is_masked_{{{ SERVICENAME }}}" comment="Retrieve the UnitFileState property of {{{ SERVICENAME }}}" version="1">
+    <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(service|socket)</linux:unit>
+    <linux:property>UnitFileState</linux:property>
+  </linux:systemdunitproperty_object>
+  <linux:systemdunitproperty_state id="state_service_unitfilestate_is_masked_{{{ SERVICENAME }}}" version="1" comment="UnitFileState is set to masked">
       <linux:value>masked</linux:value>
   </linux:systemdunitproperty_state>
 {{%- endif %}}
