@@ -16,21 +16,27 @@ class ServiceDisabledGenerator(FilesGenerator):
             # get the items out of the list
             # items can be in format
             # <service_name, package_name, daemon_name> or
-            # <service_name, package_name, daemon_name, dont_mask_service>
+            # <service_name, package_name, daemon_name, mask_service>
             if len(serviceinfo) == 3:
                 servicename, packagename, daemonname = serviceinfo
             elif len(serviceinfo) == 4:
-                servicename, packagename, daemonname, dont_mask_service = serviceinfo
+                servicename, packagename, daemonname, mask_service = serviceinfo
                 # use boolean instead of any string that came from csv file
-                mask_service = False if dont_mask_service != "" else True
+                if mask_service == "true":
+                    mask_service = True
+                elif mask_service == "false":
+                    mask_service = False
+                else:
+                    raise ValueError("Unrecognized option for mask_service parameter ({}). ".format(mask_service) +
+                                     "Possible values are: true or false.")
             else:
                 raise CSVLineError()
             if not packagename:
                 packagename = servicename
         except ValueError as e:
-            print("\tEntry: %s\n" % serviceinfo)
             print("\tError unpacking servicename, packagename, daemonname " +
-                  "and dont_mask_service: " + str(e))
+                  "and mask_service: " + str(e))
+            print("\tEntry: %s\n" % serviceinfo)
             sys.exit(1)
 
         if not daemonname:
@@ -85,4 +91,4 @@ class ServiceDisabledGenerator(FilesGenerator):
 
     def csv_format(self):
         return("CSV should contains lines of the format: " +
-               "servicename,packagename,daemonname[,dont_mask_service]")
+               "servicename,packagename,daemonname[,mask_service]")

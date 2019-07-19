@@ -20,10 +20,7 @@ SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" reset-failed '{{{ DAEMONNAME }}}.service'
 {{% elif init_system == "upstart" %}}
 
-/sbin/service '{{{ DAEMONNAME }}}' disable
-{{%- if MASK_SERVICE %}}
-/sbin/service '{{{ DAEMONNAME }}}' mask
-{{%- endif %}}
+/sbin/service '{{{ DAEMONNAME }}}' stop
 /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
 {{% else %}}
 

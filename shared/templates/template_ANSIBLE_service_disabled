@@ -4,7 +4,7 @@
 # complexity = low
 # disruption = low
 - name: Disable service {{{ SERVICENAME }}}
-  service:
+  systemd:
     name: "{{{ DAEMONNAME }}}"
     enabled: "no"
     state: "stopped"
@@ -16,7 +16,7 @@
 
 {{% if init_system == "systemd" %}}
 - name: Disable socket of service {{{ SERVICENAME }}} if applicable
-  service:
+  systemd:
     name: "{{{ DAEMONNAME }}}.socket"
     enabled: "no"
     state: "stopped"
