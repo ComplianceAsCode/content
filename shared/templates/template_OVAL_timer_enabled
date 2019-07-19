@@ -1,6 +1,6 @@
 <def-group>
 
-{{% if init_system == "systemd" and target_oval_version >= [5, 11] %}}
+{{% if target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
     <metadata>
@@ -41,6 +41,40 @@
   <linux:systemdunitproperty_state id="state_timer_running_{{{ TIMERNAME }}}" version="1" comment="{{{ TIMERNAME }}} is running">
       <linux:value>active</linux:value>
   </linux:systemdunitproperty_state>
+
+{{% else %}}
+
+{{# fallback if we are using systemd but can't use the new systemd features of OVAL 5.11 #}}
+
+  <definition class="compliance" id="timer_{{{ TIMERNAME }}}_enabled" version="1">
+    <metadata>
+      <title>Timer {{{ TIMERNAME }}} Enabled</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The {{{ TIMERNAME }}} timer should be enabled if possible.</description>
+    </metadata>
+    <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is  configured to start" operator="AND">
+      <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
+      <criterion comment="{{{ TIMERNAME }}} enabled in multi-user.target" test_ref="test_{{{ TIMERNAME }}}_enabled_multi_user_target" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist"
+   comment="look for {{{ TIMERNAME }}}.timer in /etc/systemd/system/multi-user.target.wants"
+   id="test_{{{ TIMERNAME }}}_enabled_multi_user_target" version="1">
+    <unix:object object_ref="object_{{{ TIMERNAME }}}_enabled_multi_user_target" />
+  </unix:file_test>
+
+  <unix:file_object comment="look for {{{ TIMERNAME }}}.timer in /etc/systemd/system/multi-user.target.wants"
+   id="object_{{{ TIMERNAME }}}_enabled_multi_user_target" version="1">
+    <unix:filepath>/etc/systemd/system/multi-user.target.wants/{{{ TIMERNAME }}}.timer</unix:filepath>
+    <filter action="include">unit_{{{ TIMERNAME }}}_state_symlink</filter>
+  </unix:file_object>
+
+  <unix:file_state id="unit_{{{ TIMERNAME }}}_state_symlink" version="1">
+    <unix:type operation="equals">symbolic link</unix:type>
+  </unix:file_state>
 
 {{% endif %}}
 
