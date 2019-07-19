@@ -56,11 +56,17 @@ def main():
                 xml_content = ssg.jinja.process_file_with_macros(oval, env_yaml)
                 oval_contents = ssg.utils.split_string_content(xml_content)
 
-                results = ssg.oval.parse_affected(oval_contents)
+                try:
+                    results = ssg.oval.parse_affected(oval_contents)
 
-                assert len(results) == 3
-                assert isinstance(results[0], int)
-                assert isinstance(results[1], int)
+                    assert len(results) == 3
+                    assert isinstance(results[0], int)
+                    assert isinstance(results[1], int)
+
+                except ValueError as e:
+                    print("No <affected> element found in file {}".format(oval))
+                    raise e
+
 
         guide_dirs.add(guide_dir)
 
