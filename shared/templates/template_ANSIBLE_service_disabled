@@ -4,31 +4,18 @@
 # complexity = low
 # disruption = low
 - name: Disable service {{{ SERVICENAME }}}
-  service:
-    name: "{{{ DAEMONNAME }}}"
+  systemd:
+    name: "{{{ DAEMONNAME }}}.{{ item }}"
     enabled: "no"
     state: "stopped"
-  register: disable_service_result
-  failed_when: "disable_service_result is failed and ('Could not find the requested service' not in disable_service_result.msg)"
-
 {{%- if MASK_SERVICE %}}
-- name: Mask service {{{ SERVICENAME }}}
-  systemd:
-    name: "{{{ DAEMONNAME }}}"
     masked: "yes"
-  register: mask_service_result
-  failed_when: "mask_service_result is failed and ('Could not find the requested service' not in mask_service_result.msg)"
+{{%- endif %}}
+  register: service_result
+  failed_when: "service_result is failed and ('Could not find the requested service' not in result.msg)"
+  with_items:
+    - service
+{{%- if init_system == "systemd" %}}
+    - socket
 {{%- endif %}}
 
-{{% if init_system == "systemd" %}}
-- name: Disable socket of service {{{ SERVICENAME }}} if applicable
-  systemd:
-    name: "{{{ DAEMONNAME }}}.socket"
-    enabled: "no"
-    state: "stopped"
-    {{%- if MASK_SERVICE %}}
-    masked: "yes"
-    {{%- endif %}}
-  register: socket_result
-  failed_when: "socket_result is failed and ('Could not find the requested service' not in socket_result.msg)"
-{{% endif %}}
