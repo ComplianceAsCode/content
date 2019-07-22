@@ -217,7 +217,7 @@
 
 #}}
 {{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^\s*", parameter=parameter, separator_regex='\s*=\s*', value=value, missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^\s*(?i)", parameter=parameter, separator_regex='(?-i)\s*=\s*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
