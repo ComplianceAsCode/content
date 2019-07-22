@@ -1216,11 +1216,11 @@ selections:
     ## Enable Automatic Software Updates
     #################################################################
 
-    ## RHEL 8 CCE-82267-6: Configure dnf-automatic to Install Only Security Updates
+    ## Configure dnf-automatic to Install Only Security Updates
     - dnf-automatic_security_updates_only
 
     ## Configure dnf-automatic to Install Available Updates Automatically
     - dnf-automatic_apply_updates
 
-    ## RHEL 8 CCE-82360-9: Enable dnf-automatic Timer
+    ## Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
