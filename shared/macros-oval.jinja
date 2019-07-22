@@ -244,8 +244,13 @@
       <criteria comment="sshd is not installed" operator="AND">
         <extend_definition comment="sshd is not required or requirement is unset"
         definition_ref="sshd_not_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh removed"
+        definition_ref="package_openssh_removed" />
+        {{% else %}}
         <extend_definition comment="rpm package openssh-server removed"
         definition_ref="package_openssh-server_removed" />
+        {{% endif %}}
       </criteria>
 {{%- endmacro %}}
 
