@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2019-05-03 14:39
+Last Modified: 2019-07-22 16:31
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -50,7 +50,10 @@ The following people have contributed to the SCAP Security Guide project
 * Henning Henkel <henning.henkel@helvetia.ch>
 * hex2a <hex2a@users.noreply.github.com>
 * John Hooks <jhooks@starscream.pa.jhbcomputers.com>
+* De Huo <De.Huo@windriver.com>
 * Robin Price II <robin@redhat.com>
+* Jiri Jaburek <jjaburek@redhat.com>
+* Keith Jackson <keithkjackson@gmail.com>
 * Jeremiah Jahn <jeremiah@goodinassociates.com>
 * Stephan Joerrens <Stephan.Joerrens@fiduciagad.de>
 * Jono <jono@ubuntu-18.localdomain>
@@ -91,6 +94,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kaustubh Padegaonkar <theTuxRacer@gmail.com>
 * Michael Palmiotto <mpalmiotto@tresys.com>
 * Max R.D. Parmer <maxp@trystero.is>
+* Jan Pazdziora <jpazdziora@redhat.com>
 * pcactr <paul.c.arnold4.ctr@mail.mil>
 * Kenneth Peeples <kennethwpeeples@gmail.com>
 * Nathan Peters <Nathaniel.Peters@ca.com>
@@ -122,6 +126,7 @@ The following people have contributed to the SCAP Security Guide project
 * Kevin Spargur <kspargur@redhat.com>
 * Kenneth Stailey <kstailey.lists@gmail.com>
 * Leland Steinke <leland.j.steinke.ctr@mail.mil>
+* Justin Stephenson <jstephen@redhat.com>
 * Brian Stinson <brian@bstinson.com>
 * Philippe Thierry <phil@reseau-libre.net>
 * Paul Tittle <ptittle@cmf.nrl.navy.mil>
