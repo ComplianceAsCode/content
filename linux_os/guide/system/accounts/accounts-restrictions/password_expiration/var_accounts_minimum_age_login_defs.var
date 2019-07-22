@@ -1,8 +1,8 @@
 documentation_complete: true
 
-title: 'minimum password age'
+title: 'Minimum Password Age (in days)'
 
-description: 'Minimum age of password in days'
+description: 'Defines the minimum password age (in days) for local accounts.'
 
 type: number
 
@@ -14,7 +14,7 @@ options:
     2: 2
     5: 5
     7: 7
-    default: 7
+    default: 1
 
 warnings:
-    - general: 'This will only apply to newly created accounts'
+    - general: 'This setting will only be enforced on accounts or passwords created AFTER this configuration setting has been enabled.'

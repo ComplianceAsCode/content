@@ -5,9 +5,10 @@ prodtype: wrlinux1019,rhel7,rhel8,rhv4
 title: 'Set Existing Passwords Minimum Age'
 
 description: |-
-    Configure non-compliant accounts to enforce a 24 hours/1 day minimum password
-    lifetime by running the following command:
-    <pre>$ sudo chage -m 1 <i>USER</i></pre>
+    Configure non-compliant accounts to enforce minimum password age of
+    <tt><sub idref="var_accounts_minimum_age_login_defs" /></tt> days
+    by running the following command:
+    <pre>$ sudo chage -m <sub idref="var_accounts_minimum_age_login_defs" /> <i>USER</i></pre>
 
 rationale: |-
     Enforcing a minimum password lifetime helps to prevent repeated password
@@ -20,17 +21,22 @@ severity: medium
 
 identifiers:
     cce@rhel7: 80521-8
+    cce@rhel8: 82903-6
 
 references:
-    nist: IA-5(1)(d)
+    disacci: 198
+    nist: IA-5(f),IA-5(1)(d)
+    ossrg: SRG-OS-000075-GPOS-00043
     stigid: "010240"
 
 ocil_clause: 'existing passwords are not configured correctly'
 
 ocil: |-
     Check whether the minimum time period between password changes for each
-    user account is one day or greater by running the following command for
-    each user:
+    user account is <tt><sub idref="var_accounts_minimum_age_login_defs" /></tt>
+    day(s) or greater by running the following command for each user:
+
     <pre>$ sudo chage -l <i>USER</i> | grep Minimum</pre>
+
     The output for each user should return something similary to the following:
-    <pre>Minimum number of days between password change\t\t: 1</pre>
+    <pre>Minimum number of days between password change\t\t: <sub idref="var_accounts_minimum_age_login_defs" /></pre>
