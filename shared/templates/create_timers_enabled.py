@@ -6,7 +6,7 @@
 
 import sys
 
-from template_common import FilesGenerator, UnknownTargetError
+from template_common import FilesGenerator, UnknownTargetError, CSVLineError
 
 
 class TimerEnabledGenerator(FilesGenerator):
@@ -19,7 +19,7 @@ class TimerEnabledGenerator(FilesGenerator):
         except ValueError as e:
             print("\tEntry: %s\n" % timerinfo)
             print("\tError unpacking timername and packagename: " + str(e))
-            sys.exit(1)
+            raise CSVLineError()
 
         if target == "oval":
             self.file_from_template(
