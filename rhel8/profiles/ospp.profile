@@ -702,7 +702,7 @@ selections:
     ## Audit Configuration
     #################################################################
 
-    ## RHEL 8 CCE-82233-8: Include Local Events in Audit Logs
+    ## Include Local Events in Audit Logs
     - auditd_local_events
 
     # TODO: write_logs=YES
