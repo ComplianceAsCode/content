@@ -14,6 +14,7 @@ SYSTEMCTL_EXEC='/usr/bin/systemctl'
 {{%- endif %}}
 # Disable socket activation if we have a unit file for it
 if "$SYSTEMCTL_EXEC" list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'; then
+    "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.socket'
     "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.socket'
 {{%- if MASK_SERVICE %}}
     "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.socket'

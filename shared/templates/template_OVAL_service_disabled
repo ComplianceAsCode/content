@@ -15,12 +15,13 @@
     <criteria comment="package {{{ PACKAGENAME }}} removed or service {{{ SERVICENAME }}} is not configured to start" operator="OR">
       <extend_definition comment="{{{ PACKAGENAME }}} removed" definition_ref="package_{{{ PACKAGENAME }}}_removed" />
       <criteria operator="AND" comment="service {{{ SERVICENAME }}} is not configured to start">
-        <criterion comment="{{{ SERVICENAME }}} not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_not_wanted_by_multi_user_target" />
-        <criterion comment="{{{ SERVICENAME }}} socket not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_socket_not_wanted_by_multi_user_target" />
         <criterion comment="{{{ SERVICENAME }}} is not running" test_ref="test_service_not_running_{{{ SERVICENAME }}}" />
         {{%- if MASK_SERVICE %}}
         <criterion comment="Property LoadState of service {{{ SERVICENAME }}} is masked" test_ref="test_service_loadstate_is_masked_{{{ SERVICENAME }}}" />
         <criterion comment="Property UnitFileState of service {{{ SERVICENAME }}} is masked" test_ref="test_service_unitfilestate_is_masked_{{{ SERVICENAME }}}" />
+        {{%- else %}}
+        <criterion comment="{{{ SERVICENAME }}} not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_not_wanted_by_multi_user_target" />
+        <criterion comment="{{{ SERVICENAME }}} socket not wanted by multi-user.target" test_ref="test_{{{ SERVICENAME }}}_socket_not_wanted_by_multi_user_target" />
         {{%- endif %}}
       </criteria>
     </criteria>
