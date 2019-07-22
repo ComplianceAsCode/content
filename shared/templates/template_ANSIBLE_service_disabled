@@ -12,7 +12,7 @@
     masked: "yes"
 {{%- endif %}}
   register: service_result
-  failed_when: "service_result is failed and ('Could not find the requested service' not in result.msg)"
+  failed_when: "service_result is failed and ('Could not find the requested service' not in service_result.msg) and ('Unit file {{{ DAEMONNAME }}}.{{ item }} does not exist' not in service_result.msg)"
   with_items:
     - service
 {{%- if init_system == "systemd" %}}
