@@ -97,12 +97,18 @@ function lineinfile() {
     local insert_before="$7"
     local insensitive="${8:-true}"
 
-    [ ! -e "$path" ] && [ "$create" != "true" ] && die "Path '$path' wasn't found on this system and not creating. Refusing to continue."
-    [ ! -e "$path" ] && [ "$create" == "true" ] && touch "$path"
-
-    if [ "$state" == "absent" ]; then
-        lineinfile_absent "$path" "$regex" "$insensitive"
+    if [ "$state" == "absent" ] ; then
+        if [ -e "$path" ] ; then
+            lineinfile_absent "$path" "$regex" "$insensitive"
+        fi
     elif [ "$state" == "present" ]; then
+        if [ ! -e "$path" ] ; then
+            if [ "$create" == "true" ] ; then
+                touch "$path"
+            else
+                die "Path '$path' wasn't found on this system and option 'create' is set to '$create'. Refusing to continue."
+            fi
+        fi
         lineinfile_present "$path" "$regex" "$line" "$insert_after" "$insert_before" "$insensitive"
     fi
 }
@@ -141,5 +147,5 @@ function sshd_config_set() {
     local parameter="$1"
     local value="$2"
 
-    set_config_file "/etc/ssh/sshd_config" "$parameter" "$value" "yes" '' '^Match' 'true'
+    set_config_file "/etc/ssh/sshd_config" "$parameter" "$value" "true" '' '^Match' 'true'
 }
