@@ -702,7 +702,8 @@ selections:
     ## Audit Configuration
     #################################################################
 
-    # TODO: local_events=YES
+    ## Include Local Events in Audit Logs
+    - auditd_local_events
 
     # TODO: write_logs=YES
 

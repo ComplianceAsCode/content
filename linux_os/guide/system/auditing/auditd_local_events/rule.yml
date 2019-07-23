@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Include Local Events in Audit Logs'
+
+description: |-
+    To configure Audit daemon to include local events in Audit logs, set
+    <tt>local_events</tt> to <tt>yes</tt> in <tt>/etc/audit/auditd.conf</tt>.
+    This is the default setting.
+
+rationale: |-
+    If local <tt>local_events</tt> isn't set to <tt>yes</tt> only events from
+    network will be aggregated.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82233-8
+
+references:
+    ospp: FAU_GEN.1.1.c
+
+ocil_clause: local_events isn't set to yes
+
+ocil: |-
+    To verify that Audit Daemon is configured to include local events, run the
+    following command:
+    <pre>$ sudo grep local_events /etc/audit/auditd.conf</pre>
+    The output should return the follwoing:
+    <pre>local_events = yes</pre>
