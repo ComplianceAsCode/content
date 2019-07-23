@@ -10,8 +10,8 @@ SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" enable '{{{ DAEMONNAME }}}.service'
 {{% elif init_system == "upstart" %}}
 
-/sbin/service '{{{ DAEMONNAME }}}' disable
-/sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
+/sbin/service '{{{ DAEMONNAME }}}' start
+/sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' on
 {{% else %}}
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}
