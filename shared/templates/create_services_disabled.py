@@ -37,7 +37,7 @@ class ServiceDisabledGenerator(FilesGenerator):
             print("\tError unpacking servicename, packagename, daemonname " +
                   "and mask_service: " + str(e))
             print("\tEntry: %s\n" % serviceinfo)
-            sys.exit(1)
+            raise CSVLineError()
 
         if not daemonname:
             daemonname = servicename
