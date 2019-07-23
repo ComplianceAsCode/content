@@ -150,7 +150,7 @@
 #}}
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
 {{%- else %}}
-{{%- set regex = prefix_regex+parameter+separator_regex+"(.*)[\s]*(?:|(?:#.*))?$" -%}}
+{{%- set regex = ".*(?:\\n\s*[^[\s].*)*\s*"+prefix_regex+parameter+separator_regex+"(.*)[\s]*(?:|(?:#.*))?$" -%}}
 {{%- endif %}}
 {{%- endif %}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
