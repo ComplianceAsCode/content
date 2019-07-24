@@ -705,7 +705,8 @@ selections:
     ## Include Local Events in Audit Logs
     - auditd_local_events
 
-    # TODO: write_logs=YES
+    ## Write Audit Logs to the Disk
+    - auditd_write_logs
 
     # TODO: log_format=ENRICHED
 
