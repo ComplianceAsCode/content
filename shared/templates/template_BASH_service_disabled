@@ -1,6 +1,6 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = false
-# strategy = enable
+# strategy = disable
 # complexity = low
 # disruption = low
 {{%- if init_system == "systemd" %}}
@@ -28,7 +28,7 @@ fi
 
 /sbin/service '{{{ DAEMONNAME }}}' stop
 /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
-{{% else %}}
+{{%- else %}}
 
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}
