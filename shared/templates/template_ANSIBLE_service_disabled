@@ -5,10 +5,11 @@
 # disruption = low
 {{%- if init_system == "systemd" %}}
 - name: "Unit Service Exists"
-  command: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.service'
+  shell: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.service'
   register: service_file_exists
+  ignore_errors: True
 
-- name: Disable {{{ SERVICENAME }}}
+- name: Disable service {{{ SERVICENAME }}}
   systemd:
     name: "{{{ DAEMONNAME }}}.service"
     enabled: "no"
@@ -16,12 +17,12 @@
 {{%- if MASK_SERVICE %}}
     masked: "yes"
 {{%- endif %}}
-  register: service_result
   when: service_file_exists.rc == 0
 
 - name: "Unit Socket Exists"
-  command: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'
+  shell: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'
   register: socket_file_exists
+  ignore_errors: True
 
 - name: Disable socket {{{ SERVICENAME }}}
   systemd:
@@ -31,7 +32,6 @@
 {{%- if MASK_SERVICE %}}
     masked: "yes"
 {{%- endif %}}
-  register: socket_result
   when: socket_file_exists.rc == 0
 
 {{% elif init_system == "upstart" %}}
