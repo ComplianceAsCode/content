@@ -54,7 +54,7 @@
       </affected>
       <description>The {{{ TIMERNAME }}} timer should be enabled if possible.</description>
     </metadata>
-    <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is  configured to start" operator="AND">
+    <criteria comment="package {{{ PACKAGENAME }}} installed and timer {{{ TIMERNAME }}} is configured to start" operator="AND">
       <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
       <criterion comment="{{{ TIMERNAME }}} enabled in multi-user.target" test_ref="test_{{{ TIMERNAME }}}_enabled_multi_user_target" />
     </criteria>
