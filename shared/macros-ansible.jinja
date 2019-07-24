@@ -173,3 +173,14 @@
 {{%- macro ansible_auditd_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", separator=" = ", separator_regex="\s*=\s*") }}}
 {{%- endmacro %}}
+
+{{#
+  High level macro to set a parameter in /etc/systemd/coredump.conf.
+  Parameters:
+  - msg: the name for the Ansible task
+  - parameter: parameter to be set in the configuration file
+  - value: value of the parameter
+#}}
+{{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
+{{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="yes", separator="=", separator_regex="\s*=\s*") }}}
+{{%- endmacro %}}

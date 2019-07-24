@@ -896,8 +896,8 @@ selections:
     
     ## Disable storing core dumps
     - sysctl_kernel_core_pattern
-    #sed -i "/^#Storage/s/#Storage=external/Storage=none/" /etc/systemd/coredump.conf
-    #sed -i "/^#ProcessSize/s/#ProcessSizeMax=2G/ProcessSizeMax=0/" /etc/systemd/coredump.conf
+    - coredump_disable_storage
+    - coredump_disable_backtraces
     #systemctl mask systemd-coredump.socket
     #systemctl mask kdump.service
 
