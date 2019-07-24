@@ -18,7 +18,6 @@
 {{%- endif %}}
   register: service_result
   when: service_file_exists.rc == 0
-  failed_when: "service_result is failed and ('Could not find the requested service' not in service_result.msg)"
 
 - name: "Unit Socket Exists"
   command: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'
@@ -34,7 +33,6 @@
 {{%- endif %}}
   register: socket_result
   when: socket_file_exists.rc == 0
-  failed_when: "socket_result is failed and ('Could not find the requested service' not in socket_result.msg)"
 
 {{% elif init_system == "upstart" %}}
 - name: Stop {{{ SERVICENAME }}}
