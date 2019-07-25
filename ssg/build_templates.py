@@ -18,6 +18,7 @@ from create_permissions import PermissionGenerator
 from create_selinux_booleans import SEBoolGenerator
 from create_services_disabled import ServiceDisabledGenerator
 from create_services_enabled import ServiceEnabledGenerator
+from create_timers_enabled import TimerEnabledGenerator
 from create_sysctl import SysctlGenerator
 from create_audit_rules_dac_modification import AuditRulesDacModificationGenerator
 from create_audit_rules_unsuccessful_file_modification import AuditRulesUnsuccessfulFileModificationGenerator
@@ -58,6 +59,7 @@ class Builder(object):
             "sysctl_values.csv":                SysctlGenerator(),
             "services_disabled.csv":            ServiceDisabledGenerator(),
             "services_enabled.csv":             ServiceEnabledGenerator(),
+            "timers_enabled.csv":               TimerEnabledGenerator(),
             "packages_installed.csv":           PackageInstalledGenerator(),
             "packages_removed.csv":             PackageRemovedGenerator(),
             "kernel_modules_disabled.csv":      KernelModulesDisabledGenerator(),
