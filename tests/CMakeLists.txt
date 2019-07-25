@@ -48,3 +48,10 @@ add_test(
     NAME "machine-only-rules"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_machine_only_rules.py" --source_dir "${CMAKE_SOURCE_DIR}" --build_dir "${CMAKE_BINARY_DIR}"
 )
+
+if(NOT BATS_EXECUTABLE_NOTFOUND)
+    add_test(
+        NAME "bash-set-config-file"
+        COMMAND "${BATS_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_lineinfile_remediation.bats"
+    )
+endif()
