@@ -1,24 +1,34 @@
 # platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_sle
 # reboot = false
-# strategy = enable
+# strategy = disable
 # complexity = low
 # disruption = low
 {{%- if init_system == "systemd" %}}
 
+
 SYSTEMCTL_EXEC='/usr/bin/systemctl'
 "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.service'
 "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.service'
+{{%- if MASK_SERVICE %}}
+"$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.service'
+{{%- endif %}}
 # Disable socket activation if we have a unit file for it
-"$SYSTEMCTL_EXEC" list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket\>' && "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.socket'
+if "$SYSTEMCTL_EXEC" list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'; then
+    "$SYSTEMCTL_EXEC" stop '{{{ DAEMONNAME }}}.socket'
+    "$SYSTEMCTL_EXEC" disable '{{{ DAEMONNAME }}}.socket'
+{{%- if MASK_SERVICE %}}
+    "$SYSTEMCTL_EXEC" mask '{{{ DAEMONNAME }}}.socket'
+{{%- endif %}}
+fi
 # The service may not be running because it has been started and failed,
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
-"$SYSTEMCTL_EXEC" reset-failed '{{{ DAEMONNAME }}}.service'
+"$SYSTEMCTL_EXEC" reset-failed '{{{ DAEMONNAME }}}.service' || true
 {{% elif init_system == "upstart" %}}
 
-/sbin/service '{{{ DAEMONNAME }}}' disable
+/sbin/service '{{{ DAEMONNAME }}}' stop
 /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
-{{% else %}}
+{{%- else %}}
 
 JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
 {{%- endif %}}

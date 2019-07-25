@@ -1,2 +1,2 @@
-# service_name, package_name, daemon_name (as recognized by chkconfig / systemd. To be used when daemon_name differs from service_name)
+# <service_name, package_name, daemon_name[, mask_service]> (as recognized by chkconfig / systemd. To be used when daemon_name differs from service_name) (mask_service: mask the service. Acceptable values are: true or false. Default value is true.)
 sshd,openssh-server,ssh

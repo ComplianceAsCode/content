@@ -3,20 +3,44 @@
 # strategy = disable
 # complexity = low
 # disruption = low
+{{%- if init_system == "systemd" %}}
+- name: "Unit Service Exists"
+  shell: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.service'
+  register: service_file_exists
+  ignore_errors: True
+
 - name: Disable service {{{ SERVICENAME }}}
-  service:
-    name: "{{{ DAEMONNAME }}}"
+  systemd:
+    name: "{{{ DAEMONNAME }}}.service"
     enabled: "no"
     state: "stopped"
-  register: service_result
-  failed_when: "service_result is failed and ('Could not find the requested service' not in service_result.msg)"
+{{%- if MASK_SERVICE %}}
+    masked: "yes"
+{{%- endif %}}
+  when: service_file_exists.rc == 0
 
-{{% if init_system == "systemd" %}}
-- name: Disable socket of service {{{ SERVICENAME }}} if applicable
-  service:
+- name: "Unit Socket Exists"
+  shell: systemctl list-unit-files | grep -q '^{{{ DAEMONNAME }}}.socket'
+  register: socket_file_exists
+  ignore_errors: True
+
+- name: Disable socket {{{ SERVICENAME }}}
+  systemd:
     name: "{{{ DAEMONNAME }}}.socket"
     enabled: "no"
     state: "stopped"
-  register: socket_result
-  failed_when: "socket_result is failed and ('Could not find the requested service' not in socket_result.msg)"
-{{% endif %}}
+{{%- if MASK_SERVICE %}}
+    masked: "yes"
+{{%- endif %}}
+  when: socket_file_exists.rc == 0
+
+{{% elif init_system == "upstart" %}}
+- name: Stop {{{ SERVICENAME }}}
+  command: /sbin/service '{{{ DAEMONNAME }}}' stop
+- name: Switch off {{{ SERVICENAME }}}
+  command: /sbin/chkconfig --level 0123456 '{{{ DAEMONNAME }}}' off
+
+{{%- else %}}
+
+JINJA TEMPLATE ERROR: Unknown init system '{{{ init_system }}}'
+{{%- endif %}}
