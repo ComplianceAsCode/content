@@ -49,6 +49,7 @@ selections:
     - sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
+    - service_systemd-coredump_disabled
     - dconf_db_up_to_date
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_idle_delay

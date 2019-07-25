@@ -898,7 +898,7 @@ selections:
     - sysctl_kernel_core_pattern
     - coredump_disable_storage
     - coredump_disable_backtraces
-    #systemctl mask systemd-coredump.socket
+    - service_systemd-coredump_disabled
     #systemctl mask kdump.service
 
     #################################################################
