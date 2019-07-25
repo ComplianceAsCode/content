@@ -140,7 +140,7 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
                            '/' + formatting['output_file']):
         return False
     command = (
-        'ansible-playbook',  '-i', '{0},'.format(formatting['domain_ip']),
+        'ansible-playbook', '-v', '-i', '{0},'.format(formatting['domain_ip']),
         '-u' 'root', formatting['playbook'])
     command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
@@ -170,7 +170,7 @@ def run_stage_remediation_bash(run_type, formatting, verbose_path):
                            '/' + formatting['output_file']):
         return False
 
-    command_string = '/bin/bash /{output_file}'.format(** formatting)
+    command_string = '/bin/bash -x /{output_file}'.format(** formatting)
     returncode, output = common.run_cmd_remote(
         command_string, formatting['domain_ip'], verbose_path)
     # Appends output of script execution to the verbose_path file.
