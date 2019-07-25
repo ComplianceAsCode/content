@@ -1,9 +1,12 @@
 import argparse
 import jenkins
+import json
+import sys
 
 
 class JenkinsCI(object):
     JENKINS_URL="https://jenkins.complianceascode.io/"
+    build_ids_file = ".jenkins_builds"
 
     green_job_names = ['scap-security-guide',
                        'scap-security-guide-scapval-scap-1.2',
@@ -11,8 +14,25 @@ class JenkinsCI(object):
                        'scap-security-guide-nightly-zip',
                        'scap-security-guide-nightly-oval510-zip']
 
+    build_job_names = ['scap-security-guide-docs',
+                       'scap-security-guide-nightly-zip',
+                       'scap-security-guide-nightly-oval510-zip']
+
+    def _load_build_ids(self):
+        try:
+            with open(self.build_ids_file, "r") as queue_file:
+                self.build_ids = json.loads(queue_file.read())
+        except FileNotFoundError:
+            self.build_ids = {}
+
+    def _save_build_ids(self):
+        with open(self.build_ids_file, "w") as queue_file:
+            queue_file.write(json.dumps(self.build_ids))
+
     def __init__(self,username, password):
         self.server = jenkins.Jenkins(self.JENKINS_URL, username=username, password=password)
+
+        self._load_build_ids()
 
     def _get_last_build_status(self, job_name):
         last_build_number = self.server.get_job_info(job_name)['lastBuild']['number']
@@ -30,6 +50,54 @@ class JenkinsCI(object):
                 print("Job {} is passing".format(job_name))
         return all_green
 
+    def _trigger_build_job(self, job_name):
+        next_build_number = self.server.get_job_info(job_name)['nextBuildNumber']
+        self.server.build_job(job_name)
+        self.build_ids[job_name] = next_build_number
+        self._save_build_ids()
+
+    def _get_build_status(self, job_name, build_number):
+        try:
+            build_info = self.server.get_build_info(job_name, build_number)
+            if build_info['building']:
+                return 'building'
+            else:
+                return 'built'
+        except jenkins.NotFoundException:
+            return 'not found'
+
+    def build_jobs_for_release(self):
+        queue = self.server.get_queue_info()
+        all_built = True
+
+        for job_name in self.build_job_names:
+            build_number = self.build_ids.get(job_name)
+
+            if build_number is None:
+                # Trigger build
+                self._trigger_build_job(job_name)
+                print("Building job {}".format(job_name))
+                all_built = False
+            else:
+                build_status = self._get_build_status(job_name, build_number)
+                if build_status == 'building':
+                    print("Build for {} is still running".format(job_name))
+                    all_built = False
+                elif build_status == 'built':
+                    print("Build for {} is finished".format(job_name))
+                elif build_status == 'not found':
+                    all_built = False
+                    found = False
+                    for queue_item in queue:
+                        if queue_item['task']['name'] == job_name:
+                            print("Build for {} is in the queue".format(job_name))
+                            print("\t" + queue_item['why'])
+                            found = True
+                            break
+                    if not found:
+                        print("Build for {} is in unknown state".format(job_name))
+        return all_built
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--jenkins-user', dest='user',
@@ -40,7 +108,7 @@ def create_parser():
                               "personal configuration page")
     parser.add_argument('--version', 
                         help="version to use when downloading assets")
-    parser.add_argument('action', choices=['check'],
+    parser.add_argument('action', choices=['check', 'build'],
                         help="Command to perform")
     return parser.parse_args()
 
@@ -51,3 +119,8 @@ if __name__ == "__main__":
 
     if parser.action == 'check':
         all_green = jenkins_ci.check_all_green()
+
+    # Builds the zip files and static docs
+    if parser.action == 'build':
+        if not jenkins_ci.build_jobs_for_release():
+            sys.exit(1)
