@@ -55,7 +55,10 @@ By default, the key at `~/.ssh/id_rsa.pub` is used. You can change default key u
 By default, the VM will be created on the user hypervisor, i.e. `qemu:///session`.
 For Test Suite this should be enough, in case you need the VM to reside under `qemu:///system`, use the install script with `--libvirt qemu:///system`.
 
-When installing a RHEL VM, you will still need to subscribe it.
+When installing a RHEL VM, you will still need to subscribe it. You can also run installation and provide custom URLs pointing to your repositories:
+```
+$ python install_vm.py --domain test-suite-rhel8 --distro rhel8 --url http://baseos_repo_addr --extra-repo http://appstream_repo_addr
+```
 
 *TIP*: Create a snapshot as soon as your VM is setup. This way, you can manually revert
 in case the test suite breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\
