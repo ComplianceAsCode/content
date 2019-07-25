@@ -218,8 +218,9 @@ def auto_select_xccdf_id(datastream, bench_number):
 
 def get_datastreams():
     ds_glob = "ssg-*-ds.xml"
-    build_dir_path = [os.path.dirname(__file__), "..", "build"]
-    datastreams = glob(os.path.sep.join(build_dir_path + [ds_glob]))
+    build_dir_path = [os.path.dirname(__file__) or ".", "..", "build"]
+    glob_pattern = os.path.sep.join(build_dir_path + [ds_glob])
+    datastreams = [os.path.normpath(p) for p in glob(glob_pattern)]
     return datastreams
 
 
@@ -227,12 +228,13 @@ def get_unique_datastream():
     datastreams = get_datastreams()
     if len(datastreams) == 1:
         return datastreams[0]
-    msg = ("Unable to auto-detect the datastream, "
-           "expected to find a single one in the build dir, but")
+    msg = ("Autodetection of the datastream file is possible only when there is "
+           "a single one in the build dir, but")
     if not datastreams:
-        raise RuntimeError(msg + " found none.")
+        raise RuntimeError(msg + " there is none.")
     raise RuntimeError(
-        msg + " found multiple ones: {0}".format(datastreams))
+        msg + " there are {0} of them. Use the --datastream option to select "
+        "e.g. {1}".format(len(datastreams), datastreams))
 
 
 def normalize_passed_arguments(options):
