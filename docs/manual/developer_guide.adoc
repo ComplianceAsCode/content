@@ -265,6 +265,41 @@ tables/table-rhel7-stig.html
 ...
 ```
 
+#### Ansible Playbooks
+
+##### Profile Ansible Playbooks
+These Playboks contains the remediations for a profile.
+```bash
+$ ls -1 ansible/rhel7-playbook-*.yml
+ansible/rhel7-playbook-C2S.yml
+ansible/rhel7-playbook-ospp.yml
+ansible/rhel7-playbook-pci-dss.yml
+...
+```
+
+##### Rule Ansible Playbooks
+These Playboks contains just the remediation for a rule, in the context of a profile.
+```bash
+$ ls -1 ansible/rhel7-playbook-*.yml
+$ ls -1 rhel7/playbooks/pci-dss/*.yml
+rhel7/playbooks/pci-dss/account_disable_post_pw_expiration.yml
+rhel7/playbooks/pci-dss/accounts_maximum_age_login_defs.yml
+rhel7/playbooks/pci-dss/accounts_password_pam_dcredit.yml
+rhel7/playbooks/pci-dss/accounts_password_pam_lcredit.yml
+...
+```
+
+#### Profile Bash Scripts
+These Bash Scripts contains the remediations for a profile.
+```bash
+$ ls -1 bash/rhel7-script-*.sh
+bash/rhel7-script-C2S.sh
+...
+bash/rhel7-script-ospp.sh
+bash/rhel7-script-pci-dss.sh
+...
+```
+
 ### Testing
 
 To ensure validity of built artifacts prior to installation, we recommend
