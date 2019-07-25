@@ -272,9 +272,31 @@ The Test Suite will pause its execution, and you will be able to SSH into the en
 
 #### How rule validation scenarios work
 
-In directory `data` are directories mirroring `group/group/.../rule`
-structure of datastream. In reality, only name of the rule directory needs to be
-correct, group structure is currently not used.
+In directory `/tests/data` there are directories mirroring tree structure of
+Benchmark.
+
+The difference between Benchmark tree structure (eg. `/linux_os/guide/`) and
+the test scenario tree is that the group directories have added `group_` prefix
+in their name and rule directories have added `rule_` prefix in their name.
+
+For example, the rule `accounts_tmout` is located in
+`linux_os/guide/system/accounts/accounts-session/accounts_tmout`, and test
+scenarios for this rule are located in
+`/tests/data/group_system/group_accounts/group_accounts-session/rule_accounts_tmout`.
+
+In reality, only name of the rule directory needs to be correct, group
+structure is not currently used.
+
+To quickly find the tests, add a similar function to your `.bashrc`:
+
+```
+function find_tests() {
+    rule_id="$1"
+    ssg_root="/path/to/your/content/git/repository"
+    tests_dir=$(find $ssg_root/tests/data/ -name rule_$rule_id)
+    [ -n "$tests_dir" ] && cd $tests_dir
+}
+```
 
 Scenarios are currently supported only in `bash`. And type of scenario is
 defined by its file name.
