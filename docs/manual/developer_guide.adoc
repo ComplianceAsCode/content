@@ -214,6 +214,7 @@ When the build has completed, the output will be in the build folder.
 That can be any folder you choose but if you followed the examples above
 it will be the `content/build` folder.
 
+#### SCAP XML files
 The SCAP XML files will be called `ssg-${PRODUCT}-${TYPE}.xml`. For example
 `ssg-rhel7-ds.xml` is the *Red Hat Enterprise Linux 7* **source datastream**.
 We recommend using **source datastream** if you have a choice but the build
@@ -234,12 +235,21 @@ ssg-rhel7-xccdf.xml
 These can be ingested by any SCAP-compatible scanning tool, to enable automated
 checking.
 
+#### HTML Guides
 The human readable HTML guide index files will be called
 `ssg-${PRODUCT}-guide-index.html`. For example `ssg-rhel7-guide-index.html`.
 This file will let the user browse all profiles available for that product.
 The prose guide HTML contains practical, actionable information for auditors
-and administrators.
+and administrators. They are placed in the guides folder.
+```bash
+$ ls -1 guides/ssg-rhel7-*.html
+guides/ssg-rhel7-guide-ospp42.html
+guides/ssg-rhel7-guide-ospp.html
+guides/ssg-rhel7-guide-pci-dss.html
+...
+```
 
+#### HTML Reference Tables
 Spreadsheet HTML tables - potentially useful as the basis for a
 *Security Requirements Traceability Matrix (SRTM) document*:
 
