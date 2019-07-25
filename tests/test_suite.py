@@ -7,6 +7,7 @@ import os
 import os.path
 import time
 import sys
+from glob import glob
 
 ssg_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(ssg_dir)
@@ -43,7 +44,6 @@ def parse_args():
     common_parser.add_argument("--datastream",
                                dest="datastream",
                                metavar="DATASTREAM",
-                               required=True,
                                help=("Path to the Source DataStream on this "
                                      "machine which is going to be tested"))
     benchmarks = common_parser.add_mutually_exclusive_group()
@@ -216,9 +216,31 @@ def auto_select_xccdf_id(datastream, bench_number):
     return xccdf_ids[bench_number]
 
 
+def get_datastreams():
+    ds_glob = "ssg-*-ds.xml"
+    build_dir_path = [os.path.dirname(__file__), "..", "build"]
+    datastreams = glob(os.path.sep.join(build_dir_path + [ds_glob]))
+    return datastreams
+
+
+def get_unique_datastream():
+    datastreams = get_datastreams()
+    if len(datastreams) == 1:
+        return datastreams[0]
+    msg = ("Unable to auto-detect the datastream, "
+           "expected to find a single one in the build dir, but")
+    if not datastreams:
+        raise RuntimeError(msg + " found none.")
+    raise RuntimeError(
+        msg + " found multiple ones: {0}".format(datastreams))
+
+
 def normalize_passed_arguments(options):
     if 'ALL' in options.target:
         options.target = ['ALL']
+
+    if not options.datastream:
+        options.datastream = get_unique_datastream()
 
     if options.xccdf_id is None:
         options.xccdf_id = auto_select_xccdf_id(options.datastream,
