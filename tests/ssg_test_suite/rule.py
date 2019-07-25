@@ -206,7 +206,7 @@ class RuleChecker(oscap.Checker):
         if not self._matching_rule_found:
             logging.error("No matching rule ID found for '{0}'".format(target))
 
-    def _modify_parameters(self, params):
+    def _modify_parameters(self, script, params):
         if self.scenarios_profile:
             params['profiles'] = [self.scenarios_profile]
 
@@ -253,7 +253,7 @@ class RuleChecker(oscap.Checker):
             script_context = _get_script_context(script)
             if script_context is not None:
                 script_params = self._parse_parameters(os.path.join(rule_dir, script))
-                script_params = self._modify_parameters(script_params)
+                script_params = self._modify_parameters(script, script_params)
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
