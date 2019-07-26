@@ -1226,3 +1226,5 @@ selections:
 
     ## Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
+
+    - harden_sshd_crypto_policy
