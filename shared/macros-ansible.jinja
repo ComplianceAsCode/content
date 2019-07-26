@@ -171,5 +171,5 @@
   - value: value of the parameter
 #}}
 {{%- macro ansible_auditd_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", separator=" = ", separator_regex="\s*=\s*") }}}
+{{{ ansible_set_config_file(msg, "/etc/audit/auditd.conf", parameter=parameter, value=value, create="yes", prefix_regex='(?i)^\s*', separator=" = ", separator_regex="\s*=\s*") }}}
 {{%- endmacro %}}
