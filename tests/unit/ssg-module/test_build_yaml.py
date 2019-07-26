@@ -77,3 +77,4 @@ def test_make_items_product_specific():
     }
     rule.make_refs_and_identifiers_product_specific("rhel6")
     assert rule.references["stigid"] == "RHEL-06-000237"
+    assert "stigid@rhel6" not in rule.references

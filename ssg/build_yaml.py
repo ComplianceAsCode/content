@@ -739,7 +739,7 @@ class Rule(object):
             dic.clear()
             dic.update(new_items)
 
-        self.references.update(general_references)
+        self.references = general_references
         self.references.update(product_references)
 
         self._make_stigid_product_specific(product)
