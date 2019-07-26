@@ -41,7 +41,7 @@ class SSHDLineinfileGenerator(FilesGenerator):
                 "./template_OVAL_sshd_lineinfile",
                 {
                     "products": "all",
-                    "rule_title" : "Rule title of {}".format(rule_id),
+                    "rule_title" : "Rule title of " + rule_id,
                     "rule_id": rule_id,
                     "PARAMETER": parameter,
                     "VALUE": value,
@@ -63,7 +63,7 @@ class SSHDLineinfileGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_sshd_lineinfile",
                 {
-                    "rule_title" : "Rule title of {}".format(rule_id),
+                    "rule_title" : "Rule title of " + rule_id,
                     "PARAMETER": parameter,
                     "VALUE": value
                 },
