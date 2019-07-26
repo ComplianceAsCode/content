@@ -871,9 +871,6 @@ selections:
     ## Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
 
-    ## TO DO: NEED SCAP RULE
-    #echo "net.ipv6.icmp.echo_ignore_all = 0" >> $CONFIG
-
     ## Disable Kernel Parameter for IP Forwarding on IPv4 Interfaces
     - sysctl_net_ipv4_ip_forward
 
