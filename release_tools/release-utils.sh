@@ -91,3 +91,8 @@ build_release()
     check_jenkins_credentials
     build_jenkins_jobs
 }
+
+generate_release_notes()
+{
+    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version rn
+}
