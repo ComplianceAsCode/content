@@ -154,13 +154,6 @@ selections:
     - mount_option_tmp_nosuid
 
     ###########
-    ## /swap
-    ###########
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4490
-    ##  do we need a swap partition (for security reasons)?
-    #logvol swap --name=lv_swap --vgname=VolGroup --size=2016
-
-    ###########
     ## /dev/shm
     ###########
     ## Add nodev Option to /dev/shm
