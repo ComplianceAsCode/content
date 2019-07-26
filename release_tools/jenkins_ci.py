@@ -1,12 +1,15 @@
 import argparse
 import jenkins
 import json
+import os
 import sys
+import urllib.request
 
 
 class JenkinsCI(object):
     JENKINS_URL="https://jenkins.complianceascode.io/"
     build_ids_file = ".jenkins_builds"
+    artifacts_dir = "artifacts/"
 
     green_job_names = ['scap-security-guide',
                        'scap-security-guide-scapval-scap-1.2',
@@ -98,6 +101,32 @@ class JenkinsCI(object):
                         print("Build for {} is in unknown state".format(job_name))
         return all_built
 
+    def _download_artifact(self, build_info, version):
+        filename = build_info['artifacts'][0]['fileName']
+        save_filename = filename.replace('nightly', version)
+        url = build_info['url'] +'artifact/' + filename
+        print(f"Downloading {filename} to {self.artifacts_dir}{save_filename}")
+        urllib.request.urlretrieve(url, self.artifacts_dir + save_filename)
+
+    def _download_job_artifact(self, job_name, build_number, version):
+        build_info = self.server.get_build_info(job_name, build_number)
+        self._download_artifact(build_info, version)
+
+    def download_release_artifacts(self, version):
+        try:
+            os.mkdir(self.artifacts_dir)
+        except FileExistsError:
+            pass
+
+        for job_name in self.build_ids:
+            build_number = self.build_ids.get(job_name)
+            build_status = self._get_build_status(job_name, build_number)
+            if build_status == 'built':
+                self._download_job_artifact(job_name, build_number, version)
+            else:
+                print("Build for {} is not fininished".format(job_name))
+                print("\tRun 'build' action to check status of {}".format(job_name))
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--jenkins-user', dest='user',
@@ -108,7 +137,7 @@ def create_parser():
                               "personal configuration page")
     parser.add_argument('--version', 
                         help="version to use when downloading assets")
-    parser.add_argument('action', choices=['check', 'build'],
+    parser.add_argument('action', choices=['check', 'build', 'download'],
                         help="Command to perform")
     return parser.parse_args()
 
@@ -124,3 +153,6 @@ if __name__ == "__main__":
     if parser.action == 'build':
         if not jenkins_ci.build_jobs_for_release():
             sys.exit(1)
+
+    if parser.action == 'download':
+        jenkins_ci.download_release_artifacts(parser.version)

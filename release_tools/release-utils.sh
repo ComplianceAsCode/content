@@ -103,3 +103,9 @@ move_on_to_next_milestone()
 {
     python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version move_milestone $next_version || die
 }
+
+download_release_assets()
+{
+    check_jenkins_credentials
+    python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN --version $version download || die
+}
