@@ -109,3 +109,11 @@ download_release_assets()
     check_jenkins_credentials
     python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN --version $version download || die
 }
+
+create_new_release()
+{
+    echo Creating release for version $version
+    commit=$(git show --format=%H HEAD)
+    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version release $commit || die
+    echo :: Review Release $version in GitHub and publish it
+}
