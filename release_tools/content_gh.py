@@ -44,6 +44,31 @@ def get_milestone(repo, name):
     else:
         return matches[0]
 
+def create_new_milestone(repo, name):
+    try:
+        print(f"Creating milestone {name}")
+        return repo.create_milestone(name, "open")
+    except github.GithubException as e:
+        print(f"Failed to create milesone {name}: {e.data['errors']}")
+        sys.exit(1)
+
+
+def transfer_open_issues_and_prs_to_new_milestone(repo, old_milestone, new_milestone):
+    old_milestone_issues = repo.get_issues(milestone=old_milestone, state="open")
+
+    n_issues = old_milestone_issues.totalCount
+    # totalCount doesn't seem to work
+    #print(f"Moving {n_issues} to new milesone")
+    print(f"Moving issues to milestone {new_milestone.title}")
+    for issue in old_milestone_issues:
+        issue.edit(milestone=new_milestone)
+
+
+def close_milestone(milestone):
+    print(f"Closing milestone {milestone.title}")
+    milestone.edit(milestone.title, state="closed")
+
+
 def get_closed_prs(repo, milestone):
     issues_and_prs = repo.get_issues(milestone=milestone, state="closed", sort="updated")
     prs_only = [i for i in issues_and_prs if i.pull_request is not None]
@@ -115,6 +140,13 @@ def check_release(repo, args):
         print(f"Release v{version} doesn't exist, good to go")
         sys.exit(0)
 
+def move_milestone(repo, args):
+    milestone = get_milestone(repo, args.version)
+    next_milestone = create_new_milestone(repo, args.next_version)
+
+    transfer_open_issues_and_prs_to_new_milestone(repo, milestone, next_milestone)
+    close_milestone(milestone)
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--owner",default="ComplianceAscode")
@@ -122,14 +154,19 @@ def create_parser():
     parser.add_argument("auth_token")
     parser.add_argument("version", type=version_type)
     subparsers = parser.add_subparsers(dest="subparser_name",
-                                       help="Subcommands: check, rn")
+                                       help="Subcommands: check, rn, move_milestone")
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
     check_parser.set_defaults(func=check_release)
 
+    milestone_parser = subparsers.add_parser("move_milestone")
+    milestone_parser.set_defaults(func=move_milestone)
+    milestone_parser.add_argument("next_version", type=version_type)
+
     rn_parser = subparsers.add_parser("rn")
     rn_parser.set_defaults(func=generate_release_notes)
+
     return parser.parse_args()
 
 
