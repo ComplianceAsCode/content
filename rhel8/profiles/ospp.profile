@@ -1003,15 +1003,8 @@ selections:
     ## Enable SSH Warning Banner
     - sshd_enable_warning_banner
 
-    ## Use Only FIPS 140-2 Validated Ciphers
-    - sshd_use_approved_ciphers
-
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4469
     #echo -e "PubkeyAcceptedKeyTypes ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384" >> $CONFIG
-
-    ## Use Only FIPS 140-2 Validated MACs
-    ## SEE ALSO: https://github.com/ComplianceAsCode/content/issues/4470
-    - sshd_use_approved_macs
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4471
     #echo -e "KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521" >> $CONFIG
@@ -1059,6 +1052,10 @@ selections:
     
     ## Enable FIPS Mode
     - enable_fips_mode
+
+    ## Set up Crypto policy
+    - var_system_crypto_policy=fips
+    - configure_crypto_policy
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4500
     # - sysctl_crypto_fips_enabled
