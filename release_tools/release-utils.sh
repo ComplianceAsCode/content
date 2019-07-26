@@ -10,6 +10,8 @@ MINOR_VERSION=$(awk '/SSG_MINOR_VERSION /{print substr($2, 1, length($2)-1)}' $C
 PATCH_VERSION=$(awk '/SSG_PATCH_VERSION /{print substr($2, 1, length($2)-1)}' $CMAKE_FILE)
 
 version=$MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
+let PATCH_VERSION++
+next_version=$MAJOR_VERSION.$MINOR_VERSION.$PATCH_VERSION
 
 die()
 {
@@ -95,4 +97,9 @@ build_release()
 generate_release_notes()
 {
     python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version rn
+}
+
+move_on_to_next_milestone()
+{
+    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version move_milestone $next_version || die
 }
