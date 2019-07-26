@@ -717,9 +717,6 @@ selections:
     ## Configure the tmux Lock Command
     - configure_tmux_lock_command
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4499
-    #set -g status off
-
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4496
     #cat << EOF > /tmp/rules.conf
     #allow with-interface equals { 09:00:* }
