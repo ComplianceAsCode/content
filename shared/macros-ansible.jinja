@@ -182,5 +182,5 @@
   - value: value of the parameter
 #}}
 {{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="yes", separator="=", separator_regex="\s*=\s*") }}}
+{{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="no", separator="=", separator_regex="\s*=\s*") }}}
 {{%- endmacro %}}

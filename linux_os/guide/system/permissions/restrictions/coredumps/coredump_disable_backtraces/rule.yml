@@ -3,7 +3,8 @@ documentation_complete: true
 title: 'Disable core dump backtraces'
 
 description: |-
-    The <tt>ProcessSizeMax</tt> option in <tt>/etc/systemd/coredump.conf</tt>
+    The <tt>ProcessSizeMax</tt> option in <tt>[Coredump]</tt> section
+    of <tt>/etc/systemd/coredump.conf</tt>
     specifies the maximum size in bytes of a core which will be processed.
     Core dumps exceeding this size may be stored, but the backtrace will not
     be generated.
@@ -29,3 +30,9 @@ ocil: |-
     <pre>$ grep ProcessSizeMax /etc/systemd/coredump.conf</pre>
     The output should be:
     <pre>ProcessSizeMax=0</pre>
+
+warnings:
+    - general: |-
+        If the <tt>/etc/systemd/coredump.conf</tt> file
+        does not already contain the <tt>[Coredump]</tt> section,
+        the value will not be configured correctly.

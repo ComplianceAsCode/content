@@ -161,5 +161,5 @@ function coredump_config_set() {
     local parameter="$1"
     local value="$2"
 
-    set_config_file "/etc/systemd/coredump.conf" "$parameter" "$value" "true" "" "" "true" "=" "\s*=\s*"
+    set_config_file "/etc/systemd/coredump.conf" "$parameter" "$value" "false" "" "" "true" "=" "\s*=\s*"
 }

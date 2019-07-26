@@ -3,7 +3,8 @@ documentation_complete: true
 title: 'Disable storing core dump'
 
 description: |-
-    The <tt>Storage</tt> option in <tt>/etc/systemd/coredump.conf</tt>
+    The <tt>Storage</tt> option in <tt>[Coredump]</tt> section
+    of <tt>/etc/systemd/coredump.conf</tt>
     can be set to <tt>none</tt> to disable storing core dumps permanently.
 
 rationale: |-
@@ -26,3 +27,9 @@ ocil: |-
     <pre>$ grep Storage /etc/systemd/coredump.conf</pre>
     The output should be:
     <pre>Storage=none</pre>
+
+warnings:
+    - general: |-
+        If the <tt>/etc/systemd/coredump.conf</tt> file
+        does not already contain the <tt>[Coredump]</tt> section,
+        the value will not be configured correctly.
