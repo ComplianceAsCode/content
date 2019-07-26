@@ -46,6 +46,7 @@ option(SSG_LINKCHECKER_VALIDATION_ENABLED "If enabled, linkchecker will be used 
 option(SSG_SVG_IN_XCCDF_ENABLED "If enabled, the built XCCDFs will include the SVG SCAP Security Guide logo." TRUE)
 option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, XCCDF, CPE dict, ...) will be installed alongside the source data-streams" TRUE)
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
+option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products
@@ -172,6 +173,7 @@ endif()
 
 find_program(SHELLCHECK_EXECUTABLE NAMES shellcheck)
 find_program(LINKCHECKER_EXECUTABLE NAMES linkchecker)
+find_program(BATS_EXECUTABLE NAMES bats)
 find_program(GREP_EXECUTABLE NAMES grep)
 find_program(ANSIBLE_PLAYBOOK_EXECUTABLE NAMES ansible-playbook)
 find_program(ANSIBLE_LINT_EXECUTABLE NAMES ansible-lint)
@@ -202,6 +204,7 @@ message(STATUS "python pytest module (optional): ${PY_PYTEST}")
 message(STATUS "ansible-playbook module (optional): ${ANSIBLE_PLAYBOOK_EXECUTABLE}")
 message(STATUS "ansible-lint module (optional): ${ANSIBLE_LINT_EXECUTABLE}")
 message(STATUS "yamllint module (optional): ${YAMLLINT_EXECUTABLE}")
+message(STATUS "BATS framework (optional): ${BATS_EXECUTABLE}")
 message(STATUS " ")
 
 message(STATUS "Build options:")
