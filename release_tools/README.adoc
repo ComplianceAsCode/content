@@ -1,0 +1,92 @@
+= How to perform a semi-automatic release =
+
+=== Prerequisities ===
+
+* System with `python3.6` or greater, installed https://pypi.python.org/pypi/PyGithub/1.35[PyGithub] module.
+* A GitHub token - get one on https://github.com/settings/tokens. Choose `repo` scope.
+* Your Jenkins user - your User ID should be the same as your GitHub handle, to be sure, check your profile page in Jenkins.
+* A Jenkins token - gnerate a token on Configure page in Jenkins
+
+=== Prep ===
+
+* Clone a clean `content` repository:
+
+   git clone https://github.com/ComplianceAsCode/content.git
+
+* Create `.env` file
++
+Create an `.env` file in the `release_tools` directory (i.e. where the release scripts are). +
+This will contain sensitive information, s.a. GitHub access tokens. +
+Put your GitHub token in the `.env` file, so it contains the following line: +
+
+   GITHUB_TOKEN='<your github token here>'
+   JENKINS_USER='<you jenkins user ID>'
+   JENKINS_TOKEN='<you jenkins token here>'
+
+[NOTE]
+====
+You can also use your own fork of the project to test and debug the release tools, define in `.env` file the owner and name of the repo to use.
+
+   OWNER="--owner <owner of repo>"
+   REPO="--repo <name of repo>"
+
+====
+
+=== Check Phase ===
+
+* Make sure version in `CMakeLists.txt` is correct
+* Run `$ PYTHONPATH=. utils/generate_contributors.py` to update the contributors list.
++
+Make a commit and PR it.
+* Run `$ check.sh`.
++
+It will check state of your repo for the release; +
+Verify the status of link:https://jenkins.complianceascode.io/job/scap-security-guide/[Build],
+link:https://jenkins.complianceascode.io/job/scap-security-guide-scapval-scap-1.2/[SCAPVal 1.2],
+link:https://jenkins.complianceascode.io/job/scap-security-guide-scapval-scap-1.3/[SCAPVal 1.3],
+link:https://jenkins.complianceascode.io/job/scap-security-guide-nightly-zip/[Nightly zip],
+https://jenkins.complianceascode.io/job/scap-security-guide-nightly-oval510-zip/[Nightly OVAl 5.10 zip]
+Jobs; +
+And run check for missing STIG IDs in STIG profiles for RHEL6 and RHEL7. +
+**Review the status** of missing STIG IDs in `rhel6-stig-ids.log` and `rhel7-stig-ids.log` files, fix if necessary. +
+If everything seems fine, continue to build phase.
+
+=== Build Phase ===
+
+
+* Run `build.sh`.
++
+It will generate the source tarball and trigger build of the zipfile and docs in Jenkins. +
+You can run `build.sh` again to check status of the builds. +
+Continue to next section when told so. +
+NOTE: As of July-20th 2019, the builds takes about 44 minutes to finish.
+
+* Run `release-notes.sh`
++
+It will go though the milestone and output release notes into `release-notes.txt`. +
+**Review it** and make changes if necessary.
+
+=== Release ===
+
+* Run `release.sh`
++
+It will create the next milestone, move in open issues and PRs from current milestone and close it. +
+The assets and the release notes will be used to create the git release. +
+**Review the Git Release** and publish it
+
+=== Clean up and bump version ===
+
+* Run `cleanup.sh`
++
+It will cleanup the release process, remove the artifacts and bump version for next release. +
+**Commit** the bump and make a PR out of it.
+
+=== Announce it ===
+* Announce on link:https://lists.fedorahosted.org/admin/lists/scap-security-guide.lists.fedorahosted.org/[scap-security-guide] and link:https://www.redhat.com/mailman/listinfo/open-scap-list[open-scap] mailing lists.
+* Announce on twitter via link:https://twitter.com/openscap[@OpenSCAP]
+
+=== Fedora and Copr builds ===
+* Submit Fedora updates, check:
+     * the link:https://fedoraproject.org/wiki/Package_maintenance_guide[Package Maintenance Guide]
+     * and link:https://fedoraproject.org/wiki/Package_update_HOWTO[Package Update How To]
+* Do build for COPR repository: https://copr.fedorainfracloud.org/coprs/openscapmaint/openscap-latest/builds/
