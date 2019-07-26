@@ -32,6 +32,7 @@ from create_audit_rules_path_syscall import AuditRulesPathSyscallGenerator
 from create_grub2_bootloader_argument import GRUB2BootloaderArgumentGenerator
 from create_ocp_service_runtime_config import OCPServiceRuntimeConfigGenerator
 from create_sshd_lineinfile import SSHDLineinfileGenerator
+from create_auditd_lineinfile import AuditdLineinfileGenerator
 
 
 class Builder(object):
@@ -81,6 +82,7 @@ class Builder(object):
             "grub2_bootloader_argument.csv":        GRUB2BootloaderArgumentGenerator(),
             "ocp_service_runtime_config.csv":        OCPServiceRuntimeConfigGenerator(),
             "sshd_lineinfile.csv":        SSHDLineinfileGenerator(),
+            "auditd_lineinfile.csv":        AuditdLineinfileGenerator(),
         }
         self.langs = TEMPLATED_LANGUAGES
         utils_dir = os.path.dirname(os.path.realpath(__file__))
