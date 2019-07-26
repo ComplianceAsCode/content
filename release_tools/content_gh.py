@@ -147,6 +147,33 @@ def move_milestone(repo, args):
     transfer_open_issues_and_prs_to_new_milestone(repo, milestone, next_milestone)
     close_milestone(milestone)
 
+def upload_files(release, file_paths):
+
+    for file_path in file_paths:
+        asset = release.upload_asset(file_path)
+        print(f"Uploaded {asset.name} to Release {release.tag_name}")
+
+def upload_assets(release, args):
+    release = repo.get_latest_release()
+    upload_files(args.files)
+
+def create_release(repo, args):
+    version = args.version
+    commit = args.commit
+    git_commit = repo.get_git_commit(commit)
+
+    gtag = repo.create_git_tag(f"v{version}", f"v{version}", commit, "commit")
+    with open(rn_file, "r") as rn:
+        message = rn.read()
+
+    release = repo.create_git_release(f"v{version}", f"Content {version}", message,
+                                      True, False, git_commit)
+    assets = [f"artifacts/scap-security-guide-{version}.zip",
+              f"artifacts/scap-security-guide-{version}-oval-510.zip",
+              f"artifacts/scap-security-guide-{version}.tar.bz2"]
+
+    upload_files(release, assets)
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--owner",default="ComplianceAscode")
@@ -154,7 +181,7 @@ def create_parser():
     parser.add_argument("auth_token")
     parser.add_argument("version", type=version_type)
     subparsers = parser.add_subparsers(dest="subparser_name",
-                                       help="Subcommands: check, rn, move_milestone")
+                                       help="Subcommands: check, move_milestone, rn, release")
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
@@ -166,6 +193,10 @@ def create_parser():
 
     rn_parser = subparsers.add_parser("rn")
     rn_parser.set_defaults(func=generate_release_notes)
+
+    release = subparsers.add_parser("release")
+    release.set_defaults(func=create_release)
+    release.add_argument("commit")
 
     return parser.parse_args()
 
