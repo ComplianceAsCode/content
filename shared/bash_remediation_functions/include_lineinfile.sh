@@ -18,7 +18,7 @@ function die {
 function lineinfile_absent() {
     local path="$1"
     local regex="$2"
-    local insensitive="${8:-true}"
+    local insensitive="${3:-true}"
 
     if [ "$insensitive" == "true" ]; then
         LC_ALL=C sed -i "/$regex/Id" "$path"

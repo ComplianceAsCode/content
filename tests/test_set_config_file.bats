@@ -110,7 +110,8 @@
 
     set_config_file "$tmp_file" "Compression" "no" "" "" "" "false"
 
-    run diff "$tmp_file" <(printf "$expected_output")
+    run diff -U2 "$tmp_file" <(printf "$expected_output")
+    echo "$output"
     [ "$status" -eq 0 ]
 
     rm "$tmp_file"
