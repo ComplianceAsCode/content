@@ -25,7 +25,6 @@ selections:
     #################################################################
     ## Bootloader Configuration
     #################################################################
-    #TO DO: bootloader --location=mbr --append="boot=/dev/vda1 fips=1 "
 
     ## Set the UEFI Boot Loader Password
     - grub2_uefi_password
