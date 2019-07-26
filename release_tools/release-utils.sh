@@ -117,3 +117,27 @@ create_new_release()
     python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version release $commit || die
     echo :: Review Release $version in GitHub and publish it
 }
+
+bump_release_in_cmake()
+{
+    local _version_triplet=($(echo "$next_version" | tr "." "\n"))
+    local _version_names=(SSG_MAJOR_VERSION SSG_MINOR_VERSION SSG_PATCH_VERSION)
+    for i in 0 1 2
+    do
+        sed -i "s/set(\s*${_version_names[$i]}\s\+[0-9]\+\s*)/set(${_version_names[$i]} ${_version_triplet[$i]})/" $CMAKE_FILE
+    done
+}
+
+bump_release()
+{
+    bump_release_in_cmake
+    git diff
+    git add "$CMAKE_FILE"
+    echo :: Run "'git commit -m \"Version bump after release\" -m \"Next release will be $next_version\"'"
+    echo :: Make a PR to bump the version
+}
+
+cleanup_release()
+{
+    python3 jenkins_ci.py clean
+}

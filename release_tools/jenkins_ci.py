@@ -2,6 +2,7 @@ import argparse
 import jenkins
 import json
 import os
+import shutil
 import sys
 import urllib.request
 
@@ -127,6 +128,15 @@ class JenkinsCI(object):
                 print("Build for {} is not fininished".format(job_name))
                 print("\tRun 'build' action to check status of {}".format(job_name))
 
+    def forget_release_builds(self):
+        print("Forgetting release builds ids")
+        try:
+            os.unlink(self.build_ids_file)
+        except FileNotFoundError:
+            pass
+        print("Deleting build artifacts")
+        shutil.rmtree(self.artifacts_dir, ignore_errors=True)
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--jenkins-user', dest='user',
@@ -137,7 +147,7 @@ def create_parser():
                               "personal configuration page")
     parser.add_argument('--version', 
                         help="version to use when downloading assets")
-    parser.add_argument('action', choices=['check', 'build', 'download'],
+    parser.add_argument('action', choices=['check', 'build', 'download', 'clean'],
                         help="Command to perform")
     return parser.parse_args()
 
@@ -156,3 +166,6 @@ if __name__ == "__main__":
 
     if parser.action == 'download':
         jenkins_ci.download_release_artifacts(parser.version)
+
+    if parser.action == 'clean':
+        jenkins_ci.forget_release_builds()
