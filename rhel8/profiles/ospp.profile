@@ -144,11 +144,6 @@ selections:
     ## /tmp
     ###########
 
-    ## Setup a couple mountpoints by hand to ensure correctness
-    #touch /etc/fstab
-    ## Ensure /tmp Located On Separate Partition
-    #echo -e "tmpfs\t/tmp\t\t\t\ttmpfs\tdefaults,mode=1777,,,nodev,strictatime,size=512M\t0 0" >> /etc/fstab
-
     ## Add nodev Option to /tmp
     - mount_option_tmp_nodev
 
@@ -168,9 +163,6 @@ selections:
     ###########
     ## /dev/shm
     ###########
-    ## Make sure /dev/shm is restricted
-    #echo -e "tmpfs\t/dev/shm\t\t\t\ttmpfs\tdefaults,mode=1777,,,strictatime\t0 0" >> /etc/fstab
-
     ## Add nodev Option to /dev/shm
     - mount_option_dev_shm_nodev
 
