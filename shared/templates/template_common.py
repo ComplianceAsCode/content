@@ -170,6 +170,7 @@ class FilesGenerator(object):
             except CSVLineError as e:
                 sys.stderr.write("Unexpected CSV line format in "
                                  "file {}: \"{}\"\n".format(filename, ",".join(csv_line)))
+                sys.exit(1)
 
 
 
