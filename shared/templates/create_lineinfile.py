@@ -1,15 +1,17 @@
-#!/usr/bin/env python2
 
 #
-# create_auditd_lineinfile.py
-#   automatically generate checks for auditd line in file configuration
+# create_lineinfile.py
+#   automatically generate checks for line in file configuration
 
 import sys
 
 from template_common import FilesGenerator, UnknownTargetError, CSVLineError
 
+class LineinfileGenerator(FilesGenerator):
+    def __init__(self, type=None):
+        super(LineinfileGenerator, self).__init__()
+        self.type = 'generic' if type is None else type
 
-class AuditdLineinfileGenerator(FilesGenerator):
     def generate(self, target, lineinfileinfo):
         try:            
             # missing parameter pass is false by default
@@ -38,7 +40,7 @@ class AuditdLineinfileGenerator(FilesGenerator):
 
         if target == "oval":
             self.file_from_template(
-                "./template_OVAL_auditd_lineinfile",
+                "./template_OVAL_%s_lineinfile" % self.type,
                 {
                     "products": "all",
                     "rule_title" : "Rule title of " + rule_id,
@@ -51,7 +53,7 @@ class AuditdLineinfileGenerator(FilesGenerator):
             )
         elif target == "bash":
             self.file_from_template(
-                "./template_BASH_auditd_lineinfile",
+                "./template_BASH_%s_lineinfile" % self.type,
                 {
                     "PARAMETER": parameter,
                     "VALUE": value
@@ -61,7 +63,7 @@ class AuditdLineinfileGenerator(FilesGenerator):
 
         elif target == "ansible":
             self.file_from_template(
-                "./template_ANSIBLE_auditd_lineinfile",
+                "./template_ANSIBLE_%s_lineinfile" % self.type,
                 {
                     "rule_title" : "Rule title of " + rule_id,
                     "PARAMETER": parameter,
@@ -76,3 +78,13 @@ class AuditdLineinfileGenerator(FilesGenerator):
     def csv_format(self):
         return("CSV should contains lines of the format: " +
                "rule_id,parameter,value<, missing_parameter_pass>")
+
+
+class AuditdLineinfileGenerator(LineinfileGenerator):
+    def __init__(self):
+        super(AuditdLineinfileGenerator, self).__init__('auditd')
+
+
+class SSHDLineinfileGenerator(LineinfileGenerator):
+    def __init__(self):
+        super(SSHDLineinfileGenerator, self).__init__('sshd')
