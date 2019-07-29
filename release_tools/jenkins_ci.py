@@ -8,7 +8,7 @@ import urllib.request
 
 
 class JenkinsCI(object):
-    JENKINS_URL="https://jenkins.complianceascode.io/"
+    JENKINS_URL = "https://jenkins.complianceascode.io/"
     build_ids_file = ".jenkins_builds"
     artifacts_dir = "artifacts/"
 
@@ -33,14 +33,14 @@ class JenkinsCI(object):
         with open(self.build_ids_file, "w") as queue_file:
             queue_file.write(json.dumps(self.build_ids))
 
-    def __init__(self,username, password):
+    def __init__(self, username, password):
         self.server = jenkins.Jenkins(self.JENKINS_URL, username=username, password=password)
 
         self._load_build_ids()
 
     def _get_last_build_status(self, job_name):
         last_build_number = self.server.get_job_info(job_name)['lastBuild']['number']
-        last_build = self.server.get_build_info(job_name,last_build_number)
+        last_build = self.server.get_build_info(job_name, last_build_number)
         return last_build['result']
 
     def check_all_green(self):
@@ -105,7 +105,7 @@ class JenkinsCI(object):
     def _download_artifact(self, build_info, version):
         filename = build_info['artifacts'][0]['fileName']
         save_filename = filename.replace('nightly', version)
-        url = build_info['url'] +'artifact/' + filename
+        url = build_info['url'] + 'artifact/' + filename
         print(f"Downloading {filename} to {self.artifacts_dir}{save_filename}")
         urllib.request.urlretrieve(url, self.artifacts_dir + save_filename)
 
@@ -137,19 +137,21 @@ class JenkinsCI(object):
         print("Deleting build artifacts")
         shutil.rmtree(self.artifacts_dir, ignore_errors=True)
 
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--jenkins-user', dest='user',
                         help="Jenkins user ID, this is available in your"
-                              "personal profile page")
+                             "personal profile page")
     parser.add_argument('--jenkins-token', dest='token',
                         help="Jenkins token, this token is available in your"
-                              "personal configuration page")
-    parser.add_argument('--version', 
+                             "personal configuration page")
+    parser.add_argument('--version',
                         help="version to use when downloading assets")
     parser.add_argument('action', choices=['check', 'build', 'download', 'clean'],
                         help="Command to perform")
     return parser.parse_args()
+
 
 if __name__ == "__main__":
     parser = create_parser()
