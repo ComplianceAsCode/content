@@ -1,4 +1,3 @@
-
 #
 # create_lineinfile.py
 #   automatically generate checks for line in file configuration
