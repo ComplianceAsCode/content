@@ -39,7 +39,7 @@ class CombinedChecker(rule.RuleChecker):
         self.results = list()
         self._current_result = None
 
-    def _modify_parameters(self, params):
+    def _modify_parameters(self, script, params):
         # Override any metadata in test scenario, wrt to profile to test
         # We already know that all target rules are part of the target profile
         params['profiles'] = [self.profile]
