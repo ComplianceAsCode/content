@@ -6,7 +6,8 @@ import github
 import re
 import sys
 
-rn_file="release_notes.txt"
+rn_file = "release_notes.txt"
+
 
 def version_type(string):
     components = string.split(".")
@@ -19,10 +20,12 @@ def version_type(string):
         raise argparse.ArgumentTypeError(msg)
     return string
 
+
 CHANGELOG = {"profiles": 1,
              "rules": 3,
              "tests": 2,
-             "nosection":0,}
+             "nosection": 0}
+
 
 def get_repo(gh, owner, repo_name):
     try:
@@ -34,6 +37,7 @@ def get_repo(gh, owner, repo_name):
         print(f"Repo '{owner}/{repo_name}' not found")
         sys.exit(0)
 
+
 def get_milestone(repo, name):
     milestones = repo.get_milestones(state="all")
     matches = [m for m in milestones if m.title == name]
@@ -43,6 +47,7 @@ def get_milestone(repo, name):
         return None
     else:
         return matches[0]
+
 
 def create_new_milestone(repo, name):
     try:
@@ -58,7 +63,7 @@ def transfer_open_issues_and_prs_to_new_milestone(repo, old_milestone, new_miles
 
     n_issues = old_milestone_issues.totalCount
     # totalCount doesn't seem to work
-    #print(f"Moving {n_issues} to new milesone")
+    # print(f"Moving {n_issues} to new milesone")
     print(f"Moving issues to milestone {new_milestone.title}")
     for issue in old_milestone_issues:
         issue.edit(milestone=new_milestone)
@@ -105,7 +110,7 @@ def generate_release_notes(repo, args):
             if "rule.yml" in changed_filename:
                 # A PR that changed any rule.yml file will be in Rules section
                 # Often, changes to infrastructure are done together with changes content
-                    section = "rules"
+                section = "rules"
             elif "tests/" in changed_filename:
                 if CHANGELOG["tests"] > CHANGELOG[section]:
                     section = "tests"
@@ -129,6 +134,7 @@ def generate_release_notes(repo, args):
                 rn.write(entry)
     print(f"Review release notes in '{rn_file}'")
 
+
 def check_release(repo, args):
     version = args.version
     try:
@@ -140,6 +146,7 @@ def check_release(repo, args):
         print(f"Release v{version} doesn't exist, good to go")
         sys.exit(0)
 
+
 def move_milestone(repo, args):
     milestone = get_milestone(repo, args.version)
     next_milestone = create_new_milestone(repo, args.next_version)
@@ -147,15 +154,18 @@ def move_milestone(repo, args):
     transfer_open_issues_and_prs_to_new_milestone(repo, milestone, next_milestone)
     close_milestone(milestone)
 
+
 def upload_files(release, file_paths):
 
     for file_path in file_paths:
         asset = release.upload_asset(file_path)
         print(f"Uploaded {asset.name} to Release {release.tag_name}")
 
+
 def upload_assets(release, args):
     release = repo.get_latest_release()
     upload_files(args.files)
+
 
 def create_release(repo, args):
     version = args.version
@@ -174,9 +184,10 @@ def create_release(repo, args):
 
     upload_files(release, assets)
 
+
 def create_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--owner",default="ComplianceAscode")
+    parser.add_argument("--owner", default="ComplianceAscode")
     parser.add_argument("--repo", default="content")
     parser.add_argument("auth_token")
     parser.add_argument("version", type=version_type)
