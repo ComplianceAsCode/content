@@ -423,7 +423,6 @@ selections:
     - auditd_audispd_disk_full_action
     - auditd_data_retention_space_left
     - audit_rules_execution_setfiles
-    - audit_rules_kernel_module_loading_create
     - audit_rules_kernel_module_loading_finit
     - install_mcafee_antivirus
     - configure_firewalld_ports

@@ -16,7 +16,6 @@
       <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
       <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />
 {{% if product != "rhel6" %}}
-      <extend_definition comment="audit create_module" definition_ref="audit_rules_kernel_module_loading_create" />
       <extend_definition comment="audit finit_module" definition_ref="audit_rules_kernel_module_loading_finit" />
 {{% endif %}}
     </criteria>
