@@ -6,5 +6,5 @@ file=/etc/crypto-policies/local.d/opensshserver-ospp.config
 
 #blank line at the begining to ease later readibility
 echo '' > $file
-echo $CP >> $file
+echo $cp >> $file
 update-crypto-policies
