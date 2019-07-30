@@ -48,3 +48,10 @@ add_test(
     NAME "machine-only-rules"
     COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/test_machine_only_rules.py" --source_dir "${CMAKE_SOURCE_DIR}" --build_dir "${CMAKE_BINARY_DIR}"
 )
+
+if (SSG_BATS_TESTS_ENABLED AND BATS_EXECUTABLE)
+    add_test(
+        NAME "bash-unit-tests"
+        COMMAND "${BATS_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/"
+    )
+endif()
