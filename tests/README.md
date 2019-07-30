@@ -290,11 +290,16 @@ currently used.
 To quickly open the tests for a rule with ID, add a similar function to your `.bashrc`:
 
 ```
-function open_tests() {
+function find_tests() {
     rule_id="$1"
     ssg_root="/path/to/your/content/git/repository"
-    tests_dir=$(find $ssg_root/tests/data/ -name *$rule_id*)
-    [ -n "$tests_dir" ] && cd $tests_dir
+    test_dir=$(find $ssg_root/tests/data/ -type d -name *$rule_id*)
+
+    if [ ! -z "$test_dir" ]; then
+        printf "Test scenarios for rules their name contains \"$rule_id\" can be found at:\n$test_dir\n"
+    else
+        printf "No test scenarios for rules containing \"$rule_id\".\n"
+    fi
 }
 ```
 
