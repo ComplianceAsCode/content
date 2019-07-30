@@ -287,7 +287,7 @@ scenarios for this rule are located in
 In reality, only ID of the rule needs to be correct, group structure is not
 currently used.
 
-To quickly open the tests for a rule with ID, add a similar function to your `.bashrc`:
+To quickly find the tests for a rule with ID, add a similar function to your `.bashrc`:
 
 ```
 function find_tests() {
@@ -306,7 +306,7 @@ function find_tests() {
 The directory with the tests for a rule with given ID can be opened this way:
 
 ```
-open_tests <rule_ID>
+find_tests <rule_ID>
 ```
 
 Scenarios are currently supported only in `bash`. And type of scenario is
