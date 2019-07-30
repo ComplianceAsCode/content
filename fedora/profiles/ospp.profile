@@ -196,8 +196,7 @@ selections:
     - ensure_gpgcheck_local_packages
     - audit_rules_privileged_commands_ssh_keysign
     - rsyslog_cron_logging
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading
     - audit_rules_etc_passwd_open
     - audit_rules_etc_passwd_openat
     - audit_rules_etc_passwd_open_by_handle_at

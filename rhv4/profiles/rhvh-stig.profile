@@ -119,8 +119,7 @@ selections:
     - audit_rules_file_deletion_events_unlinkat
     - audit_rules_file_deletion_events_unlink
     - audit_rules_immutable
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog
@@ -420,7 +419,6 @@ selections:
     - auditd_audispd_disk_full_action
     - auditd_data_retention_space_left
     - audit_rules_execution_setfiles
-    - audit_rules_kernel_module_loading_finit
     - install_mcafee_antivirus
     - configure_firewalld_ports
     - package_openssh-server_installed

@@ -98,9 +98,7 @@ selections:
     - audit_rules_file_deletion_events_unlinkat
     - audit_rules_sysadmin_actions
     - audit_rules_immutable
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_finit
-    - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading
     - ensure_logrotate_activated
     - sshd_idle_timeout_value=15_minutes
     - sshd_set_idle_timeout

@@ -148,9 +148,7 @@ selections:
 #    - audit_rules_session_events
 #    - audit_rules_privileged_commands_at
     - directory_access_var_log_audit
-#    - audit_rules_kernel_module_loading_init
-#    - audit_rules_kernel_module_loading_finit
-#    - audit_rules_kernel_module_loading_delete
+#    - audit_rules_kernel_module_loading
 
     # Configuration (all are defaults)
 #    - var_auditd_data_retention=incremental_async  # typo? var_auditd_flush used instead

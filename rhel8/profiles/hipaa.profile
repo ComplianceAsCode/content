@@ -116,8 +116,7 @@ selections:
     - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_unlinkat
     - audit_rules_file_deletion_events_unlink
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_kernel_module_loading_init
+    - audit_rules_kernel_module_loading
     - audit_rules_login_events_faillock
     - audit_rules_login_events_lastlog
     - audit_rules_login_events_tallylog

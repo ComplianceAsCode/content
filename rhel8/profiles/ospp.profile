@@ -662,14 +662,8 @@ selections:
     ##
     #################################################################
 
-    ## Ensure auditd Collects Information on Kernel Module Loading - init_module
-    - audit_rules_kernel_module_loading_init
-
-    ## Ensure auditd Collects Information on Kernel Module Loading - finit_module
-    - audit_rules_kernel_module_loading_finit
-
-    ## Ensure auditd Collects Information on Kernel Module Unloading - delete_module
-    - audit_rules_kernel_module_loading_delete
+    ## Ensure auditd Collects Information on Kernel Module Loading
+    - audit_rules_kernel_module_loading
 
 
     #################################################################
