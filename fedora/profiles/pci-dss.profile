@@ -70,9 +70,6 @@ selections:
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
-    - audit_rules_kernel_module_loading_insmod
-    - audit_rules_kernel_module_loading_modprobe
-    - audit_rules_kernel_module_loading_rmmod
     - audit_rules_immutable
     - var_multiple_time_servers=rhel
     - service_chronyd_or_ntpd_enabled
