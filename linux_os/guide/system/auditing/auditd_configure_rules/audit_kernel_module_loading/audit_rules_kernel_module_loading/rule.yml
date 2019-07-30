@@ -12,7 +12,7 @@ description: |-
 {{% if product == "rhel6" %}}
     -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
 {{% else %}}
-    -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,create_module,delete_module -F key=modules
+    -a always,exit -F arch=<i>ARCH</i> -S init_module,finit_module,delete_module -F key=modules
 {{% endif %}}
     </pre>
 
