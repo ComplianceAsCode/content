@@ -10,9 +10,6 @@
       <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="audit insmod" definition_ref="audit_rules_kernel_module_loading_insmod" />
-      <extend_definition comment="audit rmmod" definition_ref="audit_rules_kernel_module_loading_rmmod" />
-      <extend_definition comment="audit modprobe" definition_ref="audit_rules_kernel_module_loading_modprobe" />
       <extend_definition comment="audit init_module" definition_ref="audit_rules_kernel_module_loading_init" />
       <extend_definition comment="audit delete_module" definition_ref="audit_rules_kernel_module_loading_delete" />
 {{% if product != "rhel6" %}}

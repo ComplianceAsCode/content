@@ -6,9 +6,6 @@ description: |-
     To capture kernel module loading and unloading events, use following lines, setting ARCH to
     either b32 for 32-bit system, or having two lines for both b32 and b64 in case your system is 64-bit:
     <pre>
-    -w /usr/sbin/insmod -p x -k modules
-    -w /usr/sbin/rmmod -p x -k modules
-    -w /usr/sbin/modprobe -p x -k modules
 {{% if product == "rhel6" %}}
     -a always,exit -F arch=<i>ARCH</i> -S init_module,delete_module -F key=modules
 {{% else %}}
@@ -59,15 +56,3 @@ ocil: |-
     {{{ ocil_audit_syscall(syscall="delete_module") }}}
 
 {{{ ocil_clause_entry_audit_syscall() }}}
-
-warnings:
-    - general: |-
-        This rule checks for multiple syscalls related to kernel module loading and unloading;
-        it was written with DISA STIG in mind. Other policies should use a
-        separate rule for each syscall that needs to be checked. For example:
-        <ul>
-        <li><tt>audit_rules_kernel_module_loading_insmod</tt></li>
-        <li><tt>audit_rules_kernel_module_loading_rmmod</tt></li>
-        <li><tt>audit_rules_kernel_module_loading_modprobe</tt></li>
-        </ul>
-
