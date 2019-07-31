@@ -293,17 +293,17 @@ To quickly find the tests for a rule with ID, add a similar function to your `.b
 function find_tests() {
     rule_id="$1"
     ssg_root="/path/to/your/content/git/repository"
-    test_dir=$(find $ssg_root/tests/data/ -type d -name *$rule_id*)
+    test_dir=$(find $ssg_root/tests/data/ -type d -name "*$rule_id*")
 
     if [ ! -z "$test_dir" ]; then
-        printf "Test scenarios for rules their name contains \"$rule_id\" can be found at:\n$test_dir\n"
+        printf "Test scenarios for \"$rule_id\" rules can be found at:\n$test_dir\n"
     else
         printf "No test scenarios for rules containing \"$rule_id\".\n"
     fi
 }
 ```
 
-The directory with the tests for a rule with given ID can be opened this way:
+The directory with the tests for a rule with given ID can be found this way:
 
 ```
 find_tests <rule_ID>
