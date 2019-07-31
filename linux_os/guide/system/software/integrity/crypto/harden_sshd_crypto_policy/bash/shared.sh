@@ -5,6 +5,6 @@ cp="CRYPTO_POLICY='-oCiphers=aes128-ctr,aes256-ctr,aes128-cbc,aes256-cbc -oMACs=
 file=/etc/crypto-policies/local.d/opensshserver-ospp.config
 
 #blank line at the begining to ease later readibility
-echo '' > $file
-echo $cp >> $file
+echo '' > "$file"
+echo "$cp" >> "$file"
 update-crypto-policies
