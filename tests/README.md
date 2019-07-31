@@ -64,34 +64,6 @@ $ python install_vm.py --domain test-suite-rhel8 --distro rhel8 --url http://bas
 in case the test suite breaks something and fails to revert. Do not use snapshot names starting with `ssg_`.\
 You can create a snapshot using `virsh` or `virt-manager`.
 
-*TIP*: It might happen, especially while using other distros than Fedora or RHEL (for example Arch), that you encounter the following error:
-
-```
-libvirt: QEMU Driver error : operation failed Failed to take snapshot: Error: Nested VMX virtualization does not support live migration yet
-```
-
-This error might be followed by Python tracebacks where the above message is repeated. First make sure that you are running the test suite on the physical machine and that you really DO NOT use nested virtualization by running VM in VM.
-
-If you pass this requirement, it might happen that nested virtualization is enabled for your KVM kernel module. Libvirt will refuse to do live migration in this case. You can check this by running:
-
-```
-$ systool -m kvm_intel -v | grep nested
-```
-
-If you see:
-
-```
-    nested              = "Y"
-```
-
-then the nested virtualization is enabled for the KVM kernel module and it needs to be disabled. In Arch Linux this can be done by putting 
-
-```
-options kvm_intel nested=1
-```
-
-into /etc/modprobe.d/modprobe.conf.
-
 ### Container backends
 
 There are 2 container backends supported, Podman and Docker.
@@ -177,6 +149,35 @@ Specify backend and image to use:
     - `hypervisor`: Typically, you will use the `qemu:///session`, or `qemu:///system`.
        It depends on where your VM resides.
     - `domain`: `libvirt` domain, which is basically name of the virtual machine.
+
+*NOTE*: It might happen, especially while using other distros than Fedora or RHEL (for example Arch), that you encounter the following error:
+
+```
+libvirt: QEMU Driver error : operation failed Failed to take snapshot: Error: Nested VMX virtualization does not support live migration yet
+```
+
+This error might be followed by Python tracebacks where the above message is repeated. First make sure that you are running the test suite on the physical machine and that you really DO NOT use nested virtualization by running VM in VM.
+
+If you pass this requirement, it might happen that nested virtualization is enabled for your KVM kernel module. Libvirt will refuse to do live migration in this case. You can check this by running:
+
+```
+$ systool -m kvm_intel -v | grep nested
+```
+
+If you see:
+
+```
+    nested              = "Y"
+```
+
+then the nested virtualization is enabled for the KVM kernel module and it needs to be disabled. In Arch Linux this can be done by putting 
+
+```
+options kvm_intel nested=1
+```
+
+into /etc/modprobe.d/modprobe.conf.
+
 - To use container backends, use the following options on the command line:
   - Podman - `--container <base image name>`
   - Docker - `--docker <base image name>`
