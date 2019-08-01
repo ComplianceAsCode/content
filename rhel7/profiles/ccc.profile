@@ -160,9 +160,6 @@ selections:
     - var_auditd_flush=incremental_async
     - auditd_data_retention_flush
 
-    # audispd plugins
-    - auditd_audispd_syslog_plugin_activated
-
     ### Services
 
     # sshd
