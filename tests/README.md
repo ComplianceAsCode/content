@@ -173,7 +173,7 @@ If you see:
 then the nested virtualization is enabled for the KVM kernel module and it needs to be disabled. In Arch Linux this can be done by putting 
 
 ```
-options kvm_intel nested=1
+options kvm_intel nested=0
 ```
 
 into /etc/modprobe.d/modprobe.conf.
