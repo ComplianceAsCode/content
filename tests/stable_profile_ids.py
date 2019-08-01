@@ -15,14 +15,14 @@ from collections import defaultdict
 # in said benchmarks. Delete the predictable prefix of each benchmark ID to get
 # the shortened ID. For example xccdf_org.ssgproject.content_benchmark_RHEL-7
 # becomes just RHEL-7. Apply the same to profile IDs:
-# xccdf_org.ssgproject.content_profile_ospp42 becomes ospp42
+# xccdf_org.ssgproject.content_profile_ospp becomes ospp
 
 STABLE_PROFILE_IDS = {
     "FEDORA": ["standard", "ospp", "pci-dss"],
     "RHEL-6": ["C2S", "CS2", "CSCF-RHEL6-MLS", "fisma-medium-rhel6-server",
                "pci-dss", "rht-ccp", "stig", "usgcb-rhel6-server"],
     "RHEL-7": ["C2S", "cjis", "hipaa", "cui", "rht-ccp",
-               "ospp", "ospp42", "pci-dss", "stig"],
+               "ospp", "pci-dss", "stig"],
     "RHEL-8": ["ospp", "pci-dss"],
 }
 
