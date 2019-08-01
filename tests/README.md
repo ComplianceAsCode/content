@@ -161,22 +161,23 @@ This error might be followed by Python tracebacks where the above message is rep
 If you pass this requirement, it might happen that nested virtualization is enabled for your KVM kernel module. Libvirt will refuse to do live migration in this case. You can check this by running:
 
 ```
-$ systool -m kvm_intel -v | grep nested
+$ cat /sys/modules/kvm_intel/parameters/nested
 ```
 
-If you see:
+If you see "Y" then the nested virtualization is enabled for the KVM kernel module and it needs to be disabled. This can be done temporarily by running:
 
 ```
-    nested              = "Y"
+# modprobe -r kvm_intel
+# modprobe kvm_intel nested=0
 ```
 
-then the nested virtualization is enabled for the KVM kernel module and it needs to be disabled. In Arch Linux this can be done by putting 
+or permanently by putting
 
 ```
 options kvm_intel nested=0
 ```
 
-into /etc/modprobe.d/modprobe.conf.
+into a file ending with .conf and placed into the /etc/modprobe.d/ directory.
 
 - To use container backends, use the following options on the command line:
   - Podman - `--container <base image name>`
