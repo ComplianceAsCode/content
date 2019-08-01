@@ -1,3 +1,16 @@
 # <rule_id, parameter, value[, missing_parameter_pass]> (missing_parameter_pass: If set, the OVAL check will also pass if the parameter is not present in the configuration file. Values can be true or false. Default value is false.)
-# example of usage:
-# sshd_enable_strictmodes,StrictModes,yes,true
+disable_host_auth,HostbasedAuthentication,no,true
+sshd_allow_only_protocol2,Protocol,2,false
+sshd_disable_empty_passwords,PermitEmptyPasswords,no,true
+sshd_disable_gssapi_auth,GSSAPIAuthentication,no,true
+sshd_disable_kerb_auth,KerberosAuthentication,no,true
+sshd_disable_rhosts,IgnoreRhosts,yes,true
+sshd_disable_root_login,PermitRootLogin,no,false
+sshd_disable_user_known_hosts,IgnoreUserKnownHosts,yes,false
+sshd_do_not_permit_user_env,PermitUserEnvironment,yes,false
+sshd_enable_strictmodes,StrictModes,yes,true
+sshd_enable_warning_banner,Banner,/etc/issue,false
+sshd_enable_x11_forwarding,X11Forwarding,yes,false
+sshd_print_last_log,PrintLastLog,yes,true
+sshd_set_loglevel_info,LogLevel,INFO,true
+sshd_use_priv_separation,UsePrivilegeSeparation,sandbox,false
