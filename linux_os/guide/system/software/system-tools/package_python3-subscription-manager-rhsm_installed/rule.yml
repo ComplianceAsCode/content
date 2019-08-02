@@ -1,0 +1,23 @@
+documentation_complete: true
+
+prodtype: rhel8,rhv4
+
+title: 'Install python3-subscription-manager-rhsm Package'
+
+description: |-
+    {{{ describe_package_install(package="python3-subscription-manager-rhsm") }}}
+
+rationale: |-
+    <tt>python3-subscription-manager-rhsm</tt> is a small library for communicating
+    with the REST interface of a Red Hat Unified Entitlement Platform. This
+    interface is used for the management of system entitlements, certificates, and access to
+    content.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82243-7
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="python3-subscription-manager-rhsm") }}}'

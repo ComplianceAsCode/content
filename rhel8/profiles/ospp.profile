@@ -215,8 +215,8 @@ selections:
     ## Install policycoreutils Package
     - package_policycoreutils_installed
 
-    ## Install python-rhsm Package
-    - package_python-rhsm_installed
+    ## Install python3-subscription-manager-rhsm Package
+    - package_python3-subscription-manager-rhsm_installed
 
     ## Install rng-tools Package
     - package_rng-tools_installed
