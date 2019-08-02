@@ -141,7 +141,8 @@ def run_stage_remediation_ansible(run_type, formatting, verbose_path):
         return False
     command = (
         'ansible-playbook', '-v', '-i', '{0},'.format(formatting['domain_ip']),
-        '-u' 'root', formatting['playbook'])
+        '-u' 'root', '--ssh-common-args={0}'.format(' '.join(list(common.SSH_ADDITIONAL_OPTS))),
+        formatting['playbook'])
     command_string = ' '.join(command)
     returncode, output = common.run_cmd_local(command, verbose_path)
     # Appends output of ansible-playbook to the verbose_path file.
