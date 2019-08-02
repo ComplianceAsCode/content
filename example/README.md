@@ -170,3 +170,58 @@ cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
 </xsl:stylesheet>
 EOF
 ```
+
+9. Create a new file under `transforms` directory called `shorthand2xccdf.xslt`:
+```
+cat << EOF >> $NEW_PRODUCT/transforms/shorthand2xccdf.xslt
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:import href="../../shared/transforms/shared_shorthand2xccdf.xslt"/>
+
+<xsl:include href="constants.xslt"/>
+<xsl:param name="ssg_version">unknown</xsl:param>
+<xsl:variable name="ovalfile">unlinked-${CAPITAL_NAME}-oval.xml</xsl:variable>
+
+</xsl:stylesheet>
+EOF
+```
+
+10. Create a new file under `shared/checks/oval` directory called `installed_OS_is_$NEW_PRODUCT.xml`:
+```
+cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
+<def-group>
+  <definition class="inventory" id="installed_OS_is_$NEW_PRODUCT" version="3">
+    <metadata>
+      <title>Custom OS</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/o:$NAME:$VERSION" source="CPE" />
+      <description>The operating system installed on the system is $FULL_NAME</description>
+    </metadata>
+    <criteria comment="current OS is $VERSION" operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="$CAMEL_CASE_NAME is installed" test_ref="test_$NAME" />
+      <criterion comment="FULL_NAME  is installed" test_ref="test_$NEW_PRODUCT" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/$NAME exists" id="test_$NEW_PRODUCT" version="1">
+    <unix:object object_ref="obj_$NAME" />
+  </unix:file_test>
+  <unix:file_object comment="check /etc/$NAME file" id="obj_$NAME" version="1">
+    <unix:filepath>/etc/$NAME</unix:filepath>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check Custom OS version" id="test_$NEW_PRODUCT" version="1">
+    <ind:object object_ref="obj_$NEW_PRODUCT" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_$NEW_PRODUCT" version="1" comment="Check $CAMEL_CASE_NAME version">
+    <ind:filepath>/etc/$NAME</ind:filepath>
+    <ind:pattern operation="pattern match">^${VERSION}.[0-9]+$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+</def-group>
+EOF
+```
