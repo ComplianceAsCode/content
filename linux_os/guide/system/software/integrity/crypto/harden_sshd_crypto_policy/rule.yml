@@ -9,7 +9,7 @@ description: |-
     Changes are propagated into <tt>/etc/crypto-policies/back-ends/opensshserver.config</tt>. This rule checks if this file contains predefined <tt>CRYPTO_POLICY</tt> environment variable configured with predefined value.
 
 rationale: |-
-    The Common Criteria requirements specify that certain parameters for OpenSSH Server are configured e.g. supported ciphers, accepted host key algorithms, public key types, key exchange algorithms, HMACs and GSSAPI key exchange is disabled. Currently particular requirements specified by CC are stricter compared to any current Crypto Policy.
+    The Common Criteria requirements specify that certain parameters for OpenSSH Server are configured e.g. supported ciphers, accepted host key algorithms, public key types, key exchange algorithms, HMACs and GSSAPI key exchange is disabled. Currently particular requirements specified by CC are stricter compared to any existing Crypto Policy.
 
 severity: medium
 
@@ -23,6 +23,6 @@ ocil_clause: 'Crypto Policy for OpenSSH Server is not configured according to CC
 
 ocil: |-
     To verify if the OpenSSH server uses defined Crypto Policy, run:
-    <pre>$ grep 'CRYPTO_POLICY' /etc/crypto-policies/back-ends/opensshserver.txt | tail -n 1</pre>
+    <pre>$ grep 'CRYPTO_POLICY' /etc/crypto-policies/back-ends/opensshserver.config | tail -n 1</pre>
     and verify that the line matches
     <pre>CRYPTO_POLICY", value="'-oCiphers=aes128-ctr,aes256-ctr,aes128-cbc,aes256-cbc -oMACs=hmac-sha2-256,hmac-sha2-512 -oGSSAPIKeyExchange=no -oKexAlgorithms=diffie-hellman-group14-sha1,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521 -oHostKeyAlgorithms=rsa-sha2-256,ecdsa-sha2-nistp256,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384,ecdsa-sha2-nistp384-cert-v01@openssh.com,rsa-sha2-512,ecdsa-sha2-nistp521,ecdsa-sha2-nistp521-cert-v01@openssh.com -oPubkeyAcceptedKeyTypes=ssh-rsa,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384'</pre>
