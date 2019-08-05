@@ -309,6 +309,7 @@ selections:
     ## Enable auditd Service
     - service_auditd_enabled
 
+    - audit_rules_for_ospp
 
     #################################################################
     ##
