@@ -1,0 +1,74 @@
+{{% macro file_hash_criterion(file_id) %}}
+      <criterion comment="check {{{ file_id }}} file" test_ref="test_{{{ file_id }}}" />
+{{% endmacro %}}
+
+{{% macro file_hash_test(file_path, file_id, hash_type, file_sum) %}}
+    <ind:filehash58_test check="all" comment="test rules from {{{ file_id }}}" id="test_{{{ file_id }}}" version="1">
+    <ind:object object_ref="object_{{{ file_id }}}_hash" />
+    <ind:state state_ref="state_{{{ file_id }}}_hash" />
+  </ind:filehash58_test>
+  <ind:filehash58_object id="object_{{{ file_id }}}_hash" version="1">
+    <ind:filepath>{{{ file_path }}}</ind:filepath>
+    <ind:hash_type>{{{ hash_type }}}</ind:hash_type>
+  </ind:filehash58_object>
+  <ind:filehash58_state id="state_{{{ file_id }}}_hash" version="1">
+      <ind:hash>{{{ file_sum }}}</ind:hash>
+  </ind:filehash58_state>
+{{% endmacro %}}
+
+<def-group>
+  <definition class="compliance" id="audit_rules_for_ospp" version="1">
+    <metadata>
+      <title>Check audit rules for OSPP</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 7</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+      </affected>
+      <description>Check for hashes of the files containing the audit rules</description>
+    </metadata>
+
+    <criteria operator="AND">
+      {{{- file_hash_criterion("base_config") -}}}
+      {{{- file_hash_criterion("loginuid") -}}}
+      {{{- file_hash_criterion("ospp") -}}}
+      {{{- file_hash_criterion("module_load") -}}}
+    </criteria>
+  </definition>
+
+{{% if product == "rhel8" %}}
+    {{{ file_hash_test("/etc/audit/rules.d/10-base-config.rules",
+                     "base_config",
+                     "SHA-256",
+                     "54c2cebdaadfb928f7327cc066218e38743f0ff94d02fe162a7a415e148d23a8") }}}
+    {{{ file_hash_test("/etc/audit/rules.d/11-loginuid.rules",
+                     "loginuid",
+                     "SHA-256",
+                     "5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f") }}}
+    {{{ file_hash_test("/etc/audit/rules.d/30-ospp-v42.rules",
+                     "ospp",
+                     "SHA-256",
+                     "88959791c10b9b7d3cafa2cb4ff4970ead862b31a276aa05431c3e18d5a0d3aa") }}}
+    {{{ file_hash_test("/etc/audit/rules.d/43-module-load.rules",
+                     "module_load",
+                     "SHA-256",
+                     "88fe75a3bcb807fad74cd020e6e04347f7dbd3ef16de314c0c6a976cdde0dda0") }}}
+{{% elif product == "rhel7" %}}
+    {{{ file_hash_test("/etc/audit/rules.d/10-base-config.rules",
+                     "base_config",
+                     "SHA-256",
+                     "f98498bccc91176d17c4682e0fe32d36e6ce986c94fef342a3edf152d8dfa027") }}}
+    {{{ file_hash_test("/etc/audit/rules.d/11-loginuid.rules",
+                     "loginuid",
+                     "SHA-256",
+                     "5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f") }}}
+    {{{ file_hash_test("/etc/audit/rules.d/30-ospp-v42.rules",
+                     "ospp",
+                     "SHA-256",
+                     "38bf9ec49c29d876d8b5864722fb731ecee51a0ba68094342e0a66259bbf1ce9") }}}
+    {{{ file_hash_test("/etc/audit/rules.d/43-module-load.rules",
+                     "module_load",
+                     "SHA-256",
+                     "847a2222e407fb27aef5cc113f6fcffa60b9a9c5d36a1fffb2f3b6f268c2c134") }}}
+{{% endif %}}
+
+</def-group>
