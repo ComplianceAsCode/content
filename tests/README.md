@@ -161,7 +161,7 @@ This error might be followed by Python tracebacks where the above message is rep
 If you pass this requirement, it might happen that nested virtualization is enabled for your KVM kernel module. Libvirt will refuse to do live migration in this case. You can check this by running:
 
 ```
-$ cat /sys/modules/kvm_intel/parameters/nested
+$ cat /sys/module/kvm_intel/parameters/nested
 ```
 
 If you see "Y" then the nested virtualization is enabled for the KVM kernel module and it needs to be disabled. This can be done temporarily by running:
