@@ -289,10 +289,9 @@ EOF
 }
 {{% endif %}}
 
+{{% set audit_dir="audit" %}}
 {{# in rhel7, docs dir are versioned #}}
-{{% if product == "rhel8" %}}
-  {{% set audit_dir="audit" %}}
-{{% elif product == "rhel7" %}}
+{{% if product == "rhel7" %}}
   {{% set audit_dir="audit-2.8.4" %}}
 {{% endif %}}
 
