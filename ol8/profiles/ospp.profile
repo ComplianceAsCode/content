@@ -205,6 +205,12 @@ selections:
     - audit_rules_etc_group_open
     - audit_rules_etc_group_openat
     - audit_rules_etc_group_open_by_handle_at
+    - audit_rules_etc_shadow_open
+    - audit_rules_etc_shadow_openat
+    - audit_rules_etc_shadow_open_by_handle_at
+    - audit_rules_etc_gshadow_open
+    - audit_rules_etc_gshadow_openat
+    - audit_rules_etc_gshadow_open_by_handle_at
     - package_abrt_removed
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
