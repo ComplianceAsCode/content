@@ -195,3 +195,4 @@ selections:
     - var_selinux_policy_name=targeted
     - selinux_policytype
 
+    - audit_rules_for_ospp
