@@ -1,1 +1,3 @@
-{{{ oval_check_config_file(path="/etc/ssh/ssh_config.d/02-ospp.conf", parameter="Ciphers", value="aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc", separator_regex=" ") }}}
+{{{ oval_check_config_file(path="/etc/ssh/ssh_config.d/02-ospp.conf", parameter="Ciphers", value="aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc", separator_regex=" ", missing_config_file_fail=true) }}}
+
+{{{ oval_check_config_file(path="/etc/ssh/ssh_config.d/02-ospp.conf", parameter="PubkeyAcceptedKeyTypes", value="ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256", separator_regex=" ", missing_config_file_fail=true) }}}
