@@ -7,10 +7,10 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
-{{%- set suffix_id = parameter -%}}
+{{%- set suffix_id = "_" ~ parameter -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- if missing_parameter_pass %}}
-{{%- set suffix_id = parameter ~ "_default_not_overriden" -%}}
+{{%- set suffix_id = "_" ~ parameter ~ "_default_not_overriden" -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
 {{%- endif %}}
       <criterion comment="{{{ prefix_text }}} {{{ parameter }}} in {{{ path }}}"
@@ -26,11 +26,11 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false) -%}}
-{{%- set suffix_id = parameter -%}}
+{{%- set suffix_id = "_" ~ parameter -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
 {{%- set prefix_text = "value" -%}}
-{{%- set suffix_id = parameter ~ "_default_not_overriden" -%}}
+{{%- set suffix_id = "_" ~ parameter ~ "_default_not_overriden" -%}}
 {{%- else %}}
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "absence" -%}}
@@ -57,7 +57,7 @@
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
-{{%- set suffix_id = parameter -%}}
+{{%- set suffix_id = "_" ~ parameter -%}}
 {{%- if section %}}
 {{%- set common_regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex -%}}
 {{%- if missing_parameter_pass %}}
@@ -72,7 +72,7 @@
 {{%- endif %}}
 {{%- else %}}
 {{%- if missing_parameter_pass %}}
-{{%- set suffix_id = parameter ~ "_default_not_overriden" -%}}
+{{%- set suffix_id = "_" ~ parameter ~ "_default_not_overriden" -%}}
 {{#
   There is no need for having a regular expression with a capture
   group "(.*)" when checking if the parameter is not present in
@@ -92,17 +92,20 @@
 
 {{#
   Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
-  This macro can take two parameters:
+  Based on macro defined in shared/macros-oval.jinja, but it uses parameter to derive a suffix therefore allowing to create more entities of state in one file.
+  Note that the number of parameters has increased from two to three compared to the original macro.
+  This macro can take three parameters:
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - parameter (String) - specifies the parameter checked, it is not used in the checking process but to create the identifier for the state.
 #}}
-{{%- macro oval_line_in_file_state(value='', multi_value='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', parameter='') -%}}
 {{%- if multi_value %}}
 {{%- set regex = "^.*"+value+".*$" -%}}
 {{%- else %}}
 {{%- set regex = "^"+value+"$" -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+  <ind:textfilecontent54_state id="state_{{{ rule_id  ~ "_" ~ parameter }}}" version="1">
     <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{%- endmacro %}}
@@ -127,5 +130,5 @@
   </definition>
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', missing_parameter_pass=false) }}}
   {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_state(value='aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc') }}}
+  {{{ oval_line_in_file_state(value='aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc', parameter='Ciphers') }}}
 </def-group>
