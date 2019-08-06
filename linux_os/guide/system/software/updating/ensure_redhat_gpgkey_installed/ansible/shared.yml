@@ -16,7 +16,7 @@
   {{% if product == "rhel8" -%}}
   shell: |
     set -o pipefail
-    gpg --show-key --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+    gpg --dry-run --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
   {{%- else -%}}
   shell: |
     set -o pipefail
@@ -31,7 +31,7 @@
 
 - name: Set Fact - Valid fingerprints
   set_fact:
-     gpg_valid_fingerprints: ("567E347AD0044ADE55BA8A5F199E2F91FD431D51" "43A6E49C4A38F4BE9ABF2A5345689C882FA658E0")
+     gpg_valid_fingerprints: ("{{{ release_key_fingerprint }}}" "{{{ auxiliary_key_fingerprint }}}")
 
 - name: Import RedHat GPG key
   rpm_key:
