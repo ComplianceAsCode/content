@@ -17,7 +17,7 @@ description: |-
     - NIST Controlled Unclassified Information (NIST 800-171)
     - NIST 800-53 control selections for MODERATE impact systems (NIST 800-53)
     - U.S. Government Configuration Baseline (USGCB)
-    - NIAP Protection Profile for General Purpose Operating Systems v4.0 (OSPP v4.0)
+    - NIAP Protection Profile for General Purpose Operating Systems v4.2.1 (OSPP v4.2.1)
     - DISA Operating System Security Requirements Guide (OS SRG)
 
     For any differing configuration requirements, e.g. password lengths, the stricter
