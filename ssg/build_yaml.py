@@ -10,6 +10,7 @@ import yaml
 
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
+from .constants import STIG_PLATFORM_ID_MAP
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -681,6 +682,92 @@ class Rule(object):
         rule.validate_references(yaml_file)
         return rule
 
+    def _make_stigid_product_specific(self, product):
+        stig_platform_id = STIG_PLATFORM_ID_MAP.get(product, product.upper())
+        for ref, val in self.references.items():
+            if ref == "stigid":
+                if stig_platform_id and not val.startswith(stig_platform_id):
+                    self.references[ref] = "{platform_id}-{stig_id}".format(
+                        platform_id=stig_platform_id, stig_id=val,
+                    )
+
+    def normalize(self, product):
+        try:
+            self.make_refs_and_identifiers_product_specific(product)
+        except Exception as exc:
+            msg = (
+                "Error normalizing '{rule}': {msg}"
+                .format(rule=self.id_, msg=str(exc))
+            )
+            raise RuntimeError(msg)
+
+    def _get_product_only_references(self):
+        PRODUCT_REFERENCES = ("stigid",)
+
+        product_references = dict()
+
+        for ref in PRODUCT_REFERENCES:
+            start = "{0}@".format(ref)
+            for gref, gval in self.references.items():
+                if ref == gref or gref.startswith(start):
+                    product_references[gref] = gval
+        return product_references
+
+    def make_refs_and_identifiers_product_specific(self, product):
+        product_suffix = "@{0}".format(product)
+
+        product_references = self._get_product_only_references()
+        general_references = self.references.copy()
+        for todel in product_references:
+            general_references.pop(todel)
+
+        to_set = dict(
+            identifiers=(self.identifiers, False),
+            general_references=(general_references, True),
+            product_references=(product_references, False),
+        )
+        for name, (dic, allow_overwrites) in to_set.items():
+            try:
+                new_items = self._make_items_product_specific(
+                    dic, product_suffix, allow_overwrites)
+            except ValueError as exc:
+                msg = (
+                    "Error processing {what} for rule '{rid}': {msg}"
+                    .format(what=name, rid=self.id_, msg=str(exc))
+                )
+                raise ValueError(msg)
+            dic.clear()
+            dic.update(new_items)
+
+        self.references = general_references
+        self.references.update(product_references)
+
+        self._make_stigid_product_specific(product)
+
+    def _make_items_product_specific(self, items_dict, product_suffix, allow_overwrites=False):
+        new_items = dict()
+        for full_label, value in items_dict.items():
+            if "@" not in full_label and full_label not in new_items:
+                new_items[full_label] = value
+                continue
+
+            if not full_label.endswith(product_suffix):
+                continue
+
+            label = full_label.split("@")[0]
+            if label in items_dict and not allow_overwrites and value != items_dict[label]:
+                msg = (
+                    "There is a product-qualified '{item_q}' item, "
+                    "but also an unqualified '{item_u}' item "
+                    "and those two differ in value - "
+                    "'{value_q}' vs '{value_u}' respectively."
+                    .format(item_q=full_label, item_u=label,
+                            value_q=value, value_u=items_dict[label])
+                )
+                raise ValueError(msg)
+            new_items[label] = value
+        return new_items
+
     def _set_attributes_from_dict(self, yaml_contents):
         for key, default_getter in self.YAML_KEYS_DEFAULTS.items():
             if key not in yaml_contents:
@@ -765,6 +852,7 @@ class Rule(object):
 
         main_ident = ET.Element('ident')
         for ident_type, ident_val in self.identifiers.items():
+            # This is not true if items were normalized
             if '@' in ident_type:
                 # the ident is applicable only on some product
                 # format : 'policy@product', eg. 'stigid@product'
@@ -781,6 +869,7 @@ class Rule(object):
 
         main_ref = ET.Element('ref')
         for ref_type, ref_val in self.references.items():
+            # This is not true if items were normalized
             if '@' in ref_type:
                 # the reference is applicable only on some product
                 # format : 'policy@product', eg. 'stigid@product'
@@ -970,6 +1059,7 @@ class BuildLoader(DirectoryLoader):
                     self.resolved_rules_dir, "{id_}.yml".format(id_=rule.id_))
                 mkdir_p(self.resolved_rules_dir)
                 with open(output_for_rule, "w") as f:
+                    rule.normalize(self.env_yaml["product"])
                     yaml.dump(rule.to_contents_dict(), f)
 
     def _get_new_loader(self):
