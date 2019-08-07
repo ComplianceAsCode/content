@@ -59,8 +59,9 @@ selections:
     - dconf_gnome_screensaver_user_info
     - dconf_gnome_screensaver_user_locks
     - dconf_gnome_session_idle_user_locks
+    - dconf_gnome_disable_user_admin
     - accounts_tmout
-    - var_accounts_tmout=10_min
+    - var_accounts_tmout=30_min
     - grub2_password
     - grub2_uefi_password
     - grub2_disable_interactive_boot
