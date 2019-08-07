@@ -1185,6 +1185,16 @@ When writing new bash remediations content, please follow the following guidelin
 * Run `shellcheck` over your remediation script. Make sure that you fix all warnings that are applicable. If you are not sure, mention those warnings in the pull request description.
 * Use POSIX syntax in regular expressions, so prefer `grep '^[[:space:]]*something'` over `grep '^\s*something'`.
 
+Jinja macros that generate Bash remediations can be found in `shared/macros-bash.jinja`.
+
+Available high-level Jinja macros to generate Bash remediations:
+- `bash_sshd_config_set` - Set SSH Daemon configuration option in `/etc/ssh/sshd_config`.
+- `bash_auditd_config_set` - Set Audit Daemon option in `/etc/audit/auditd.conf`.
+- `bash_coredump_config_set` -  Set Coredump configuration in `/etc/systemd/coredump.conf`
+
+Available low-level Jinja macros that can be used in Bash remediations:
+- `die` - Function to terminate the remediation
+- `set_config_file` - Add an entry to a text configuration file
 
 ==== Templating
 
