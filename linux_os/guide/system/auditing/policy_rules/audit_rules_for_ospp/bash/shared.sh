@@ -1,8 +1,5 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
 
-# let's start with a clean slate
-rm -f /etc/audit/rules.d/*
-
 {{% if product == "rhel8" %}}
 # This is needed for RHEL8 until the file is updated
 dump_ospp_rules(){
