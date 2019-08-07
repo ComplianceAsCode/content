@@ -16,7 +16,7 @@
   {{% if product == "rhel8" -%}}
   shell: |
     set -o pipefail
-    gpg --dry-run --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep "^fpr" | cut -d ":" -f 10
+    gpg --show-keys --with-fingerprint --with-colons "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release" | grep -A1 "^pub" | grep "^fpr" | cut -d ":" -f 10
   {{%- else -%}}
   shell: |
     set -o pipefail
