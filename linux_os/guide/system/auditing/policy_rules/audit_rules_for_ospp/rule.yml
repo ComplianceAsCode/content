@@ -23,6 +23,11 @@ description: |-
     <li>43-module-load.rules</li>
     </ul>
 
+    Copy the files from <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> to <tt>/etc/audit/rules.d</tt>:
+    <pre>
+    cp /usr/share/doc/{{{ audit_dir }}}/rules/{10-base-config,11-loginuid,30-ospp-v42,43-module-load}.rules /etc/audit/rules.d/
+    </pre>
+
 rationale: |-
     The audit rules defined in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> are the recommended way to meet compliance with OSPP v4.2.
 
