@@ -1,17 +1,7 @@
 # Functions which minic Ansible's lineinfile module.
-# dependencies: die.sh
 
 function include_lineinfile() {
     :
-}
-
-# Print a message to stderr and exit the shell
-# $1: The message to print.
-# $2: The error code (optional, default is 1)
-function die {
-	local _message="$1" _rc="${2:-1}"
-	printf '%s\n' "$_message" >&2
-	exit "$_rc"
 }
 
 # Internal helper function to remove a line, if it is present.
@@ -106,7 +96,7 @@ function lineinfile() {
             if [ "$create" == "true" ] ; then
                 touch "$path"
             else
-                die "Path '$path' wasn't found on this system and option 'create' is set to '$create'. Refusing to continue."
+                {{{ die("Path '$path' wasn't found on this system and option 'create' is set to '$create'. Refusing to continue.") }}}
             fi
         fi
         lineinfile_present "$path" "$regex" "$line" "$insert_after" "$insert_before" "$insensitive"

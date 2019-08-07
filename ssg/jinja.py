@@ -106,7 +106,7 @@ def add_python_functions(substitutions_dict):
     substitutions_dict['prodtype_to_platform'] = prodtype_to_platform
 
 
-def load_macros(substitutions_dict):
+def load_macros(substitutions_dict=None):
     """
     Augment the substitutions_dict dict with project Jinja macros in /shared/.
     """
