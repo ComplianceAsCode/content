@@ -18,6 +18,8 @@ JINJA_MACROS_ANSIBLE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-ansible.jinja")
 JINJA_MACROS_OVAL_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros-oval.jinja")
+JINJA_MACROS_BASH_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
+    __file__)), "shared", "macros-bash.jinja")
 
 xml_version = """<?xml version="1.0" encoding="UTF-8"?>"""
 
