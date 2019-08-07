@@ -4,11 +4,18 @@ prodtype: rhel7,rhel8
 
 title: 'Configure audit according to OSPP requirements'
 
+{{% set audit_dir="audit" %}}
+{{# in rhel7, docs dir are versioned #}}
+{{% if product == "rhel7" %}}
+  {{% set audit_dir="audit-2.8.4" %}}
+{{% endif %}}
+
 description: |-
     Configure audit to meet requirements for Operating System Protection Profile (OSPP) v4.2.
 
-    Audit defines groups of rules in <tt>/usr/share/doc/audit-VERSION/rules</tt> to satisifay specific policies.
-    To satisfy the requirements for compliance with OSPP v4.2, the following files are necessary:
+    Audit defines groups of rules in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> to satisfy specific policies.
+
+    To fulfill requirements for compliance with OSPP v4.2, the following files are necessary:
     <ul>
     <li>10-base-config.rules</li>
     <li>11-loginuid.rules</li>
@@ -17,7 +24,7 @@ description: |-
     </ul>
 
 rationale: |-
-    The audit rules defined in <tt>/usr/share/doc/audit-VERSION/rules</tt> are the recommended way to meet compliance with OSPP v4.2.
+    The audit rules defined in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> are the recommended way to meet compliance with OSPP v4.2.
 
 severity: medium
 
