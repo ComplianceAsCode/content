@@ -150,6 +150,7 @@ cat << EOF > /etc/audit/rules.d/30-ospp-v42.rules
 EOF
 }
 {{% elif product == "rhel7" %}}
+# This is needed for RHEL7 until the file is updated
 dump_ospp_rules(){
 cat << EOF > /etc/audit/rules.d/30-ospp-v42.rules
 ## The purpose of these rules is to meet the requirements for Operating
