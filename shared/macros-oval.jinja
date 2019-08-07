@@ -18,7 +18,7 @@
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
     - section (String): If set, the parameter will be checked only within the given section defined by [section].
 #}}
-{{%- macro oval_check_config_file(path='', prefix_regex='^\s*', parameter='', separator_regex='\s+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='') -%}}
+{{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='') -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
@@ -55,11 +55,11 @@
     {{%- endif %}}
   </definition>
   {{{ oval_line_in_file_test(path, parameter) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, false, multi_value) }}}
   {{{ oval_line_in_file_state(value, multi_value) }}}
   {{%- if missing_parameter_pass %}}
   {{{ oval_line_in_file_test(path, parameter, missing_parameter_pass) }}}
-  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass) }}}
+  {{{ oval_line_in_file_object(path, section, prefix_regex, parameter, separator_regex, missing_parameter_pass, multi_value) }}}
   {{%- endif %}}
   {{%- if missing_config_file_fail %}}
   {{{ oval_config_file_exists_test(path) }}}
@@ -123,9 +123,15 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
-{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
 {{%- set suffix_id = "" -%}}
+{{%- if multi_value -%}}
+{{%- set group_regex = "([^#]*).*$" -%}}
+{{%- else -%}}
+{{%- set group_regex = "(\S*)[ \\t]*(?:|(?:#.*))?$" -%}}
+{{%- endif -%}}
 {{%- if section %}}
 {{%- set common_regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex -%}}
 {{%- if missing_parameter_pass %}}
@@ -136,7 +142,7 @@
 #}}
 {{%- set regex = common_regex -%}}
 {{%- else %}}
-{{%- set regex = common_regex+"(\S*)\s*(?:|(?:#.*))?$" -%}}
+{{%- set regex = common_regex+group_regex -%}}
 {{%- endif %}}
 {{%- else %}}
 {{%- if missing_parameter_pass %}}
@@ -148,7 +154,7 @@
 #}}
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
 {{%- else %}}
-{{%- set regex = prefix_regex+parameter+separator_regex+"(.*)[\s]*(?:|(?:#.*))?$" -%}}
+{{%- set regex = prefix_regex+parameter+separator_regex+group_regex -%}}
 {{%- endif %}}
 {{%- endif %}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
@@ -166,7 +172,7 @@
 #}}
 {{%- macro oval_line_in_file_state(value='', multi_value='') -%}}
 {{%- if multi_value %}}
-{{%- set regex = "^.*"+value+".*$" -%}}
+{{%- set regex = "^.*\\b"+value+"\\b.*$" -%}}
 {{%- else %}}
 {{%- set regex = "^"+value+"$" -%}}
 {{%- endif %}}
@@ -219,7 +225,7 @@
   sshd_config has case-insensitive parameters (but case-sensitive values).
 #}}
 {{%- macro oval_sshd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="^[\s]*(?i)", parameter=parameter, separator_regex='(?-i)[\s]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{{ oval_check_config_file("/etc/ssh/sshd_config", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]+', value=value, missing_parameter_pass=missing_parameter_pass, application="sshd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
@@ -233,7 +239,7 @@
 
 #}}
 {{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^\s*(?i)", parameter=parameter, separator_regex='(?-i)\s*=\s*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
@@ -247,7 +253,7 @@
 
 #}}
 {{%- macro oval_coredump_config_set(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/systemd/coredump.conf", prefix_regex="^\s*(?i)", parameter=parameter, separator_regex='(?-i)\s*=\s*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="systemd-coredump", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section="Coredump") }}}
+{{{ oval_check_config_file("/etc/systemd/coredump.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="systemd-coredump", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section="Coredump") }}}
 {{%- endmacro %}}
 
 {{#
@@ -260,7 +266,7 @@
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
 {{%- macro oval_grub_config(parameter='', value='', missing_parameter_pass=false, multi_value=true, missing_config_file_fail=false) %}}
-{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[\s]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
+{{{ oval_check_config_file("/etc/default/grub", prefix_regex="^[ \\t]*", parameter=parameter, separator_regex='=', value=value, missing_parameter_pass=missing_parameter_pass, application="grub", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
 {{%- endmacro %}}
 
 {{#
@@ -293,5 +299,5 @@
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
 {{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=true) %}}
-{{{ oval_check_config_file(path=path, prefix_regex="\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
+{{{ oval_check_config_file(path=path, prefix_regex="^\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
 {{%- endmacro %}}
