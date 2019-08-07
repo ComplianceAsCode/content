@@ -1,10 +1,18 @@
 #!/usr/bin/python3
 
+import argparse
+
 import oval_tester
 
 
 def main():
-    tester = oval_tester.OVALTester()
+    parser = argparse.ArgumentParser(
+        description="Test Jinja macros that Generate OVAL")
+    parser.add_argument(
+        "--verbose", action="store_true", default=False,
+        help="Show results of each test case")
+    args = parser.parse_args()
+    tester = oval_tester.OVALTester(args.verbose)
 
     #######################################################
     # Test cases for whitespace separated files

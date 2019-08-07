@@ -22,9 +22,10 @@ import ssg.id_translate
 
 
 class OVALTester(object):
-    def __init__(self):
+    def __init__(self, verbose):
         self.mock_env_yaml = {"rule_id": "test"}
         self.result = True
+        self.verbose = verbose
 
     def _expand_shorthand(self, shorthand_path, oval_path, env_yaml):
         shorthand_file_content = ssg.jinja.process_file_with_macros(
@@ -133,11 +134,13 @@ class OVALTester(object):
             msg = ("OVAL Definition was evaluated as %s, but expected result "
                    "is %s.") % (result, expected_result)
             assert result == expected_result, msg
-            print("Test: %s: PASS" % (description))
+            if self.verbose:
+                print("Test: %s: PASS" % (description))
             self.result = self.result and True
         except AssertionError as e:
-            print("Test: %s: FAIL" % (description))
-            print("    " + str(e))
+            if self.verbose:
+                print("Test: %s: FAIL" % (description))
+                print("    " + str(e))
             self.result = False
         finally:
             shutil.rmtree(tmp_dir)
