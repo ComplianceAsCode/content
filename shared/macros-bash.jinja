@@ -53,8 +53,8 @@
 # rc: The error code (optional, default is 1)
 # action: What to do (optional, default is 'exit', can be also 'return' or anything else)
 #}}
-{{% macro die(message, rc=1, action="exit") -%}}
-printf '%s\n' '{{{ message }}}' >&2
+{{% macro die(message, rc=1, action="exit") %}}
+printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 {{{ action }}} {{{ rc }}}
 {{%- endmacro %}}
 
@@ -71,7 +71,7 @@ printf '%s\n' '{{{ message }}}' >&2
 # separator_regex: regular expression that describes the separator and surrounding whitespace
 # prefix_regex: regular expression describing allowed leading characters at each line
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive, separator, separator_regex, prefix_regex) -%}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=True, separator=" ", separator_regex="\s\+", prefix_regex="^\s*") -%}}
     {{%- set line_regex = prefix_regex+parameter+separator_regex -%}}
     {{%- set new_line = parameter+separator+value -%}}
 if [ -e "{{{ path }}}" ] ; then
@@ -80,7 +80,7 @@ else
     {{%- if create %}}
     touch "{{{ path }}}"
     {{%- else -%}}
-        {{{ die("Path " + path + " wasn't found on this system. Refusing to continue.") | indent(4) }}}
+    {{{ die("Path '" + path + "' wasn't found on this system. Refusing to continue.", action="return") | indent(4) }}}
     {{%- endif %}}
 fi
 {{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive) }}}
@@ -101,34 +101,31 @@ LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
     {{%- else -%}}
         {{%- set grep_args="-q -m 1" -%}}
     {{%- endif -%}}
-    {{% if (insert_after == "" and insert_before == "")  or insert_after == "EOF" -%}}
-# Insert at the end of the file
 cp "{{{ path }}}" "{{{ path }}}.bak"
+    {{% if not (insert_after or insert_before)  or insert_after == "EOF" -%}}
+# Insert at the end of the file
 printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
     {{%- elif insert_before == "BOF" -%}}
 # Insert at the beginning of the file
-cp "{{{ path }}}" "{{{ path }}}.bak"
 printf '%s\n' "{{{ line }}}" > "{{{ path }}}"
 cat "{{{ path }}}.bak" >> "{{{ path }}}"
-    {{%- elif insert_after != "" -%}}
-# Insert after the line matching the regex {{{ insert_after }}}
-cp "{{{ path }}}" "{{{ path }}}.bak"
+    {{%- elif insert_after -%}}
+# Insert after the line matching the regex '{{{ insert_after }}}'
 local line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
 if [ -z "$line_number" ]; then
-    # There was no match of {{{ insert_after }}}, insert at
+    # There was no match of '{{{ insert_after }}}', insert at
     # the end of the file.
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
 else
-    head -n "$(( line_number ))" ".bak" > "{{{ path }}}"
+    head -n "$(( line_number ))" "{{{ path }}}.bak" > "{{{ path }}}"
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
     tail -n "+$(( line_number + 1 ))" "{{{ path }}}.bak" >> "{{{ path }}}"
 fi
-    {{%- elif insert_before != "" -%}}
-# Insert before the line matching the regex {{{ insert_before }}}.
-cp "{{{ path }}}" "{{{ path }}}.bak"
+    {{%- elif insert_before -%}}
+# Insert before the line matching the regex '{{{ insert_before }}}'.
 local line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
 if [ -z "$line_number" ]; then
-    # There was no match of {{{ insert_before }}}, insert at
+    # There was no match of '{{{ insert_before }}}', insert at
     # the end of the file.
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
 else
@@ -136,6 +133,8 @@ else
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
     tail -n "+$(( line_number ))" "{{{ path }}}.bak" >> "{{{ path }}}"
 fi
+    {{%- else -%}}
+{{{ die("This remediation has been generated incorrectly.") }}}
     {{%- endif %}}
 # Clean up after ourselves.
 rm "{{{ path }}}.bak"
