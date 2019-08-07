@@ -152,12 +152,6 @@ JINJA MACRO ERROR - Unknown init system '{{{ init_system }}}'.
     {{%- endif -%}}
 {{%- endmacro %}}
 
-{{% macro body_of_dconf_warning_about_dependent_rule() -%}}
-	{{{ body_of_warning_about_dependent_rule(
-		rule_id="dconf_use_text_backend",
-		why="<code>dconf</code>-related rules can't be checked by <code>OVAL</code> if <code>dconf</code> is using a binary database as it's data backend. <code>dconf</code> has to be forced to use config files directly as backend, as those config files are checked by <code>OVAL</code> probes.") }}}
-{{%- endmacro %}}
-
 {{%- macro oval_affected(products) %}}
 <affected family="unix">
 {{{ prodtype_to_platform(products)|indent(2) }}}
