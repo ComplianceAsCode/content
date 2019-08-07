@@ -1087,6 +1087,11 @@ selections:
     ## Set up Crypto policy
     - var_system_crypto_policy=fips
     - configure_crypto_policy
+    - harden_sshd_crypto_policy
+    - configure_bind_crypto_policy
+    - configure_openssl_crypto_policy
+    - configure_libreswan_crypto_policy
+    - configure_kerberos_crypto_policy
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4500
     # - sysctl_crypto_fips_enabled
@@ -1223,5 +1228,3 @@ selections:
 
     ## Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
-
-    - harden_sshd_crypto_policy
