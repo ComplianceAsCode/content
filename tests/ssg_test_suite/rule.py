@@ -47,7 +47,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:
-        logging.error('No profile ends with "{0}"'
+        logging.warning('No profile ends with "{0}"'
                       .format(", ".join(selected_profiles)))
     return valid_profiles
 
@@ -257,7 +257,7 @@ class RuleChecker(oscap.Checker):
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
-                    logging.info("Script %s is not applicable on given platform" % script)
+                    logging.warning("Script %s is not applicable on given platform" % script)
 
         return scenarios
 
