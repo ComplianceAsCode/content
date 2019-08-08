@@ -257,7 +257,7 @@ class RuleChecker(oscap.Checker):
                 if common.matches_platform(script_params["platform"], benchmark_cpes):
                     scenarios += [Scenario(script, script_context, script_params)]
                 else:
-                    logging.info("Script %s is not applicable on given platform" % script)
+                    logging.warning("Script %s is not applicable on given platform" % script)
 
         return scenarios
 
