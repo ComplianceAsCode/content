@@ -1,11 +1,11 @@
 documentation_complete: true
 
-title: 'DRAFT - Common Criteria Certification profile using OSPP'
+title: 'Protection Profile for Common Criteria Certification using NIAP OSPP'
 
 description: |-
-    This profile is a draft for a future CC certification of RHEL, based on the
-    OSPP (NIAP) requirements. It includes functionality (rules) beyond the OSPP
-    scope itself.
+    This profile reflects mandatory configuration controls identified in the
+    NIAP Configuration Annex to the Protection Profile for General Purpose
+    Operating Systems (Protection Profile Version 4.2.1).
 
 selections:
     ### Boot
