@@ -1,0 +1,9 @@
+{{#
+# Print a message to stderr and exit the shell
+# message: The message to print.
+# rc: The error code (optional, default is 1)
+# action: What to do (optional, default is 'exit', can be also 'return' or anything else)
+#}}
+{{% macro die(message, rc=1, action="exit") -%}}
+{ printf '%s\n' '{{{ message }}}' >&2; {{{ action }}} {{{ rc }}}; }
+{{%- endmacro %}}
