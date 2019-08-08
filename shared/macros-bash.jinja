@@ -74,25 +74,16 @@ printf '%s\n' '{{{ message }}}' >&2
 {{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive, separator, separator_regex, prefix_regex) -%}}
     {{%- set line_regex = prefix_regex+parameter+separator_regex -%}}
     {{%- set new_line = parameter+separator+value -%}}
-    {{{- lineinfile(path, line_regex, "", false, false, "", "", insensitive) }}}
-    {{{- lineinfile(path, "", new_line, create, true, insert_after, insert_before, insensitive) }}}
-{{%- endmacro -%}}
-
-{{%- macro lineinfile(path, regex, line, create=false, present=true, insert_after="", insert_before="", insensitive=true) -%}}
-    {{%- if not present -%}}
 if [ -e "{{{ path }}}" ] ; then
-{{{ lineinfile_absent(path, regex, insensitive) | indent(4, True) }}}
-fi
-    {{%- else %}}
-if [ ! -e "{{{ path }}}" ] ; then
-            {{%- if create %}}
+{{{ lineinfile_absent(path, line_regex, insensitive) | indent(4, True) }}}
+else
+    {{%- if create %}}
     touch "{{{ path }}}"
-            {{%- else -%}}
+    {{%- else -%}}
 {{{ die("Path " + path + " wasn't found on this system. Refusing to continue.") | indent(4, True) }}}
-            {{%- endif %}}
+    {{%- endif %}}
 fi
-{{{ lineinfile_present(path, line, insert_after, insert_before, insensitive) }}}
-    {{%- endif -%}}
+{{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive) }}}
 {{%- endmacro -%}}
 
 {{%- macro lineinfile_absent(path, regex, insensitive=true) -%}}
