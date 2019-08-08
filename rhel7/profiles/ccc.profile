@@ -1,11 +1,11 @@
 documentation_complete: true
 
-title: 'DRAFT - Common Criteria Certification profile using OSPP'
+title: 'Protection Profile for Common Criteria Certification using NIAP OSPP'
 
 description: |-
-    This profile is a draft for a future CC certification of RHEL, based on the
-    OSPP (NIAP) requirements. It includes functionality (rules) beyond the OSPP
-    scope itself.
+    This profile reflects mandatory configuration controls identified in the
+    NIAP Configuration Annex to the Protection Profile for General Purpose
+    Operating Systems (Protection Profile Version 4.2.1).
 
 selections:
     ### Boot
@@ -43,8 +43,6 @@ selections:
     - grub2_slub_debug_argument
     - grub2_page_poison_argument
     - grub2_vsyscall_argument
-
-    # Sysctls
 
     # Security Settings
     - sysctl_kernel_kptr_restrict
@@ -91,77 +89,14 @@ selections:
     - service_auditd_enabled
 
     # Rules.d
-#    - audit_rules_unsuccessful_file_modification_openat_o_creat
-#    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
-#    - audit_rules_unsuccessful_file_modification_open_o_creat
-#    - audit_rules_unsuccessful_file_modification_creat
-#    - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
-#    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
-#    - audit_rules_unsuccessful_file_modification_open_o_trunc_write
-#    - audit_rules_unsuccessful_file_modification_truncate
-#    - audit_rules_unsuccessful_file_modification_ftruncate
-#    - audit_rules_unsuccessful_file_modification_open
-#    - audit_rules_unsuccessful_file_modification_openat
-#    - audit_rules_unsuccessful_file_modification_open_by_handle_at
-#    - audit_rules_unsuccessful_file_modification_unlink
-#    - audit_rules_unsuccessful_file_modification_unlinkat
-#    - audit_rules_unsuccessful_file_modification_rename
-#    - audit_rules_unsuccessful_file_modification_renameat
-#    - audit_rules_unsuccessful_file_modification_chmod
-#    - audit_rules_unsuccessful_file_modification_fchmod
-#    - audit_rules_unsuccessful_file_modification_fchmodat
-#    - audit_rules_unsuccessful_file_modification_setxattr
-#    - audit_rules_unsuccessful_file_modification_lsetxattr
-#    - audit_rules_unsuccessful_file_modification_fsetxattr
-#    - audit_rules_unsuccessful_file_modification_removexattr
-#    - audit_rules_unsuccessful_file_modification_lremovexattr
-#    - audit_rules_unsuccessful_file_modification_fremovexattr
-#    - audit_rules_unsuccessful_file_modification_lchown
-#    - audit_rules_unsuccessful_file_modification_fchown
-#    - audit_rules_unsuccessful_file_modification_chown
-#    - audit_rules_unsuccessful_file_modification_fchownat
-#    - audit_rules_etc_passwd_openat
-#    - audit_rules_etc_passwd_open_by_handle_at
-#    - audit_rules_etc_passwd_open
-#    - audit_rules_etc_shadow_openat
-#    - audit_rules_etc_shadow_open_by_handle_at
-#    - audit_rules_etc_shadow_open
-#    - audit_rules_etc_group_openat
-#    - audit_rules_etc_group_open_by_handle_at
-#    - audit_rules_etc_group_open
-#    - audit_rules_etc_gshadow_openat
-#    - audit_rules_etc_gshadow_open_by_handle_at
-#    - audit_rules_etc_gshadow_open
-#    - audit_rules_privileged_commands_unix_chkpwd
-#    - audit_rules_privileged_commands_userhelper
-#    - audit_rules_privileged_commands_usernetctl
-#    - audit_rules_execution_seunshare
-#    - audit_rules_privileged_commands_mount
-#    - audit_rules_privileged_commands_newgrp
-#    - audit_rules_privileged_commands_newuidmap
-#    - audit_rules_privileged_commands_gpasswd
-#    - audit_rules_privileged_commands_newgidmap
-#    - audit_rules_privileged_commands_umount
-#    - audit_rules_privileged_commands_passwd
-#    - audit_rules_privileged_commands_crontab
-#    - audit_rules_mac_modification
-#    - audit_rules_session_events
-#    - audit_rules_privileged_commands_at
     - directory_access_var_log_audit
-#    - audit_rules_kernel_module_loading_insmod
-#    - audit_rules_kernel_module_loading_rmmod
-#    - audit_rules_kernel_module_loading_modprobe
-#    - audit_rules_kernel_module_loading_init
-#    - audit_rules_kernel_module_loading_finit
-#    - audit_rules_kernel_module_loading_delete
 
     # Configuration (all are defaults)
-#    - var_auditd_data_retention=incremental_async  # typo? var_auditd_flush used instead
     - var_auditd_flush=incremental_async
     - auditd_data_retention_flush
 
-    # audispd plugins
-    - auditd_audispd_syslog_plugin_activated
+    # TODO: check that auditd has rules configured according to
+    #       Configuration Annex for OSPP 4.2.1
 
     ### Services
 
@@ -175,14 +110,11 @@ selections:
     - sshd_disable_kerb_auth
     - sshd_disable_gssapi_auth
     - sshd_idle_timeout_value=10_minutes
-#    - sshd_set_idle_timeout  # duplicate, see below
     - sshd_set_keepalive
     - sshd_enable_warning_banner
     - sshd_disable_rhosts_rsa
     - sshd_use_approved_ciphers
     - sshd_use_approved_macs
-
-    # ssh client settings
 
     # rpcbind
     - service_rpcbind_disabled
@@ -192,16 +124,6 @@ selections:
 
     # abrt
     - package_abrt_removed
-
-    # Chrony
-
-    # rngd
-
-    # SSSD
-
-    # Crypto settings
-
-    # Libreswan
 
     ### User sessions
 
@@ -224,7 +146,6 @@ selections:
     - accounts_password_pam_unix_remember
 
     # Password
-#    - no_empty_passwords   # duplicate in Login
     - var_accounts_password_minlen_login_defs=12
     - accounts_password_minlen_login_defs
     - var_password_pam_minlen=12
@@ -258,13 +179,8 @@ selections:
 
     ### General Config
 
-    # cron files
-
     # Software update
     - ensure_redhat_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_local_packages
     - ensure_gpgcheck_never_disabled
-
-    # PolicyKit
-
