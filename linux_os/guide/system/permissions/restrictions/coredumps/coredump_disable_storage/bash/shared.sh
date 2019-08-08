@@ -3,7 +3,4 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-. /usr/share/scap-security-guide/remediation_functions
-include_lineinfile
-
 {{{ bash_coredump_config_set("Storage", "none") }}}
