@@ -29,11 +29,11 @@ title: 'Configure audit according to OSPP requirements'
 {{% endmacro %}}
 
 description: |-
-    Configure audit to meet requirements for Operating System Protection Profile (OSPP) v4.2.
+    Configure audit to meet requirements for Operating System Protection Profile (OSPP) v4.2.1.
 
     Audit defines groups of rules in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> to satisfy specific policies.
 
-    To fulfill requirements for compliance with OSPP v4.2, the following files are necessary:
+    To fulfill requirements for compliance with OSPP v4.2.1, the following files are necessary:
     <ul>
     <li>10-base-config.rules</li>
     <li>11-loginuid.rules</li>
@@ -50,7 +50,7 @@ description: |-
     {{{ ospp_hashes() }}}
 
 rationale: |-
-    The audit rules defined in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> are the recommended way to meet compliance with OSPP v4.2.
+    The audit rules defined in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> are the recommended way to meet compliance with OSPP v4.2.1.
 
 severity: medium
 
@@ -64,7 +64,7 @@ references:
 ocil_clause: 'the files are not there or differ'
 
 ocil: |-
-    To verify that audit is configured for OSPP v4.2, run the following commands:
+    To verify that audit is configured for OSPP v4.2.1, run the following commands:
     <pre>sha256sum /etc/audit/rules.d/{10-base,11-login,30-ospp,43-module}*.rules</pre><br/>
 
     If the system is configure properly, the following lines should be returned:
