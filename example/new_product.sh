@@ -1,31 +1,4 @@
-# Example Product
-
-This product was introduced to show a few aspects:
-
- - Serve a documentation on how to add a new product.
-    - [See commit bfe5a764](https://github.com/ComplianceAsCode/content/commit/bfe5a76495973f5fc000645c68e3e6936543a09f) for the changes that were
-      necessary to add a new product.
- - Create a profile that is quick to scan on RHEL-like distributions.
-
-To build this system, follow the steps for building regularly, but
-pass `-DSSG_PRODUCT_EXAMPLE=ON` to the CMake command:
-
-    cd content/build
-    cmake -DSSG_PRODUCT_EXAMPLE=ON ..
-    make example
-
-This will build only the example profile; this can then be used
-with [OpenSCAP](https://github.com/OpenSCAP/openscap) or
-[scap-workbench](https://github.com/OpenSCAP/scap-workbench) for
-testing purposes.
-
-## Creating a new Product
-
-Follow these steps to create a new product in the project:
-
-1. Create a new folder in the root directory which will hold the files related to your new product. To illustrate the process we will use the name `custom6` which basically means that the product is called `custom` and the major version is `6`. For more details in the naming conventions and directory structure, check the `Product/Structure Layout` section in the [Developer Guide](../docs/manual/developer_guide.adoc). You can use the following commands to create the basic directory structure, `content` is the root directory of the project:
-<pre>
-cd content
+#!/bin/bash
 export SHORTNAME="C"
 export NAME="custom"
 export CAMEL_CASE_NAME="Custom"
@@ -41,117 +14,7 @@ mkdir $NEW_PRODUCT \
         $NEW_PRODUCT/templates \
         $NEW_PRODUCT/templates/csv \
         $NEW_PRODUCT/transforms
-</pre>
-2. Add the product to [CMakeLists.txt](../CMakeLists.txt) by adding the following lines:
-<pre>
-...
-option(SSG_PRODUCT_DEBIAN8 "If enabled, the Debian 8 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-<b>option(SSG_PRODUCT_CUSTOM6 "If enabled, the Custom 6 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})</b>
-option(SSG_PRODUCT_EAP6 "If enabled, the JBoss EAP6 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
-...
-</pre>
-<pre>
-...
-message(STATUS "Debian 8: ${SSG_PRODUCT_DEBIAN8}")
-<b>message(STATUS "Custom 6: ${SSG_PRODUCT_CUSTOM6}")</b>
-message(STATUS "JBoss EAP 6: ${SSG_PRODUCT_EAP6}")
-...
-</pre>
-<pre>
-...
-if (SSG_PRODUCT_DEBIAN8)
-    add_subdirectory("debian8")
-endif()
-<b>if (SSG_PRODUCT_CUSTOM6)
-      add_subdirectory("custom6")
-endif()</b>
-if (SSG_PRODUCT_EAP6)
-    add_subdirectory("eap6")
-endif()
-...
-</pre>
 
-3. Add the product to [build_product](../build_product) script:
-<pre>
-...
-all_cmake_products=(
-	CHROMIUM
-	DEBIAN8
-        <b>CUSTOM6</b>
-	EAP6
-...
-</pre>
-
-4. Add the product to [constants.py](../ssg/constants.py) file:
-<pre>
-...
-product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
-                       'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
-                       'ubuntu1604', 'ubuntu1804', 'wrlinux', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
-                       'example'<b>, 'custom6'</b>]
-...
-</pre>
-<pre>
-...
-FULL_NAME_TO_PRODUCT_MAPPING = {
-    "Chromium": "chromium",
-    "Debian 8": "debian8",
-    "Custom 6": "custom6",
-    "JBoss EAP 6": "eap6",
-    "Example": "example",
-    <b>"Custom 6": "custom6",</b>
-    "Fedora": "fedora",
-...
-</pre>
-<pre>
-...
-PRODUCT_TO_CPE_MAPPING = {
-    "chromium": [
-        "cpe:/a:google:chromium-browser",
-    ],
-    <b>"custom6": [
-        "cpe:/o:custom:6",
-    ],</b>
-    "debian8": [
-        "cpe:/o:debianproject:debian:8",
-    ],
-...
-</pre>
-<pre>
-...
-MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
-                       "wrlinux", "opensuse", "sle", "ol", "ocp", "example"<b>, "custom"</b>]
-...
-</pre>
-<pre>
-...
-MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8"],
-    "multi_platform_example": ["example"],
-    <b>"multi_platform_custom": ["custom6"],</b>
-    "multi_platform_fedora": ["fedora"],
-...
-</pre>
-<pre>
-...
-MAKEFILE_ID_TO_PRODUCT_MAP = {
-    'chromium': 'Google Chromium Browser',
-    'fedora': 'Fedora',
-    'firefox': 'Mozilla Firefox',
-    'jre': 'Java Runtime Environment',
-    'rhosp': 'Red Hat OpenStack Platform',
-    'rhel': 'Red Hat Enterprise Linux',
-    'rhv': 'Red Hat Virtualization',
-    'debian': 'Debian',
-    <b>'custom': 'Custom',</b>
-    'ubuntu': 'Ubuntu',
-...
-</pre>
-
-
-5. Create a new file in the product directory called `CMakeLists.txt`:
-```
 cat << EOF >> $NEW_PRODUCT/CMakeLists.txt
 # Sometimes our users will try to do: "cd $NEW_PRODUCT; cmake ." That needs to error in a nice way.
 if ("\${CMAKE_SOURCE_DIR}" STREQUAL "\${CMAKE_CURRENT_SOURCE_DIR}")
@@ -160,9 +23,7 @@ endif()
 
 ssg_build_product("$NEW_PRODUCT")
 EOF
-```
-6. Create a new file under `cpe` directory called `custom6-cpe-dictionary.xml`:
-```
+
 cat << EOF >> $NEW_PRODUCT/cpe/$NEW_PRODUCT-cpe-dictionary.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <cpe-list xmlns="http://cpe.mitre.org/dictionary/2.0"
@@ -175,10 +36,7 @@ cat << EOF >> $NEW_PRODUCT/cpe/$NEW_PRODUCT-cpe-dictionary.xml
       </cpe-item>
 </cpe-list>
 EOF
-```
 
-7. Create a new file in the product directory called `product.yml` (note: you may want to change the `pkg_manager` attribute):
-```
 cat << EOF >> $NEW_PRODUCT/product.yml
 product: $NEW_PRODUCT
 full_name: $FULL_NAME
@@ -192,10 +50,7 @@ pkg_manager: "yum"
 
 init_system: "systemd"
 EOF
-```
 
-8. Create a draft profile under `profiles` directory called `standard.profile`:
-```
 cat << EOF >> $NEW_PRODUCT/profiles/standard.profile
 documentation_complete: true
 
@@ -209,10 +64,7 @@ description: |-
 selections:
     - accounts_password_minlen_login_defs
 EOF
-```
 
-9. Create a new file under `transforms` directory called `constants.xslt` (you may want to review the links below):
-```
 cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -237,10 +89,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/constants.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-10. Create a new file under `transforms` directory called `shorthand2xccdf.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/shorthand2xccdf.xslt
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -251,10 +100,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/shorthand2xccdf.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-11. Create a new file under `transforms` directory called `table-style.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -262,10 +108,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/table-style.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-12. Create a new file under `transforms` directory called `table-srgmap.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/table-srgmap.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -279,10 +122,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/table-srgmap.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-13. Create a new file under `transforms` directory called `xccdf-apply-overlay-stig.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://checklists.nist.gov/xccdf/1.1" xmlns:xccdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" exclude-result-prefixes="xccdf">
@@ -293,10 +133,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf-apply-overlay-stig.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-14. Create a new file under `transforms` directory called `xccdf2table-byref.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -308,10 +145,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-byref.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-15. Create a new file under `transforms` directory called `xccdf2table-cce.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cce="http://cce.mitre.org" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -323,10 +157,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-cce.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-16. Create a new file under `transforms` directory called `xccdf2table-profileanssirefs.xslt `:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt 
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -441,10 +272,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileanssirefs.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-17. Create a new file under `transforms` directory called `xccdf2table-profileccirefs.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:cci="http://iase.disa.mil/cci" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ovalns="http://oval.mitre.org/XMLSchema/oval-definitions-5">
@@ -459,10 +287,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profileccirefs.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-18. Create a new file under `transforms` directory called `xccdf2table-profilecisrefs.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -474,10 +299,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilecisrefs.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-19. Create a new file under `transforms` directory called `xccdf2table-profilenistrefs.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -488,10 +310,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-profilenistrefs.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-20. Create a new file under `transforms` directory called `xccdf2table-stig.xslt`:
-```
 cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -503,10 +322,7 @@ cat << EOF >> $NEW_PRODUCT/transforms/xccdf2table-stig.xslt
 
 </xsl:stylesheet>
 EOF
-```
 
-21. Create a new file under `shared/checks/oval` directory called `installed_OS_is_custom6.xml`:
-```
 cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 <def-group>
   <definition class="inventory" id="installed_OS_is_$NEW_PRODUCT" version="3">
@@ -543,4 +359,3 @@ cat << EOF >> shared/checks/oval/installed_OS_is_$NEW_PRODUCT.xml
 
 </def-group>
 EOF
-```
