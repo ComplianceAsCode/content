@@ -47,7 +47,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
                 valid_profiles += [ds_profile]
 
     if not valid_profiles:
-        logging.error('No profile ends with "{0}"'
+        logging.warning('No profile ends with "{0}"'
                       .format(", ".join(selected_profiles)))
     return valid_profiles
 
