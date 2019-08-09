@@ -1,3 +1,52 @@
+{{# ##### High level macros ##### #}}
+
+{{%- macro bash_sshd_config_set(parameter, value) -%}}
+{{{ set_config_file(
+        path="/etc/ssh/sshd_config",
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="^Match",
+        insensitive=true,
+        separator=" ",
+        separator_regex="\s\+",
+        prefix_regex="^\s*")
+    }}}
+{{%- endmacro -%}}
+
+{{%- macro bash_auditd_config_set(parameter, value) -%}}
+{{{ set_config_file(
+        path="/etc/audit/auditd.conf",
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="",
+        insensitive=true,
+        separator=" = ",
+        separator_regex="\s*=\s*",
+        prefix_regex="^\s*")
+    }}}
+{{%- endmacro -%}}
+
+{{%- macro bash_coredump_config_set(parameter, value) -%}}
+{{{ set_config_file(
+        path="/etc/systemd/coredump.conf",
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="",
+        insensitive=true,
+        separator="=",
+        separator_regex="\s*=\s*",
+        prefix_regex="^\s*")
+    }}}
+{{%- endmacro -%}}
+
+{{# ##### Low level macros ##### #}}
+
 {{#
 # Print a message to stderr and exit the shell
 # message: The message to print.
@@ -5,5 +54,89 @@
 # action: What to do (optional, default is 'exit', can be also 'return' or anything else)
 #}}
 {{% macro die(message, rc=1, action="exit") -%}}
-{ printf '%s\n' '{{{ message }}}' >&2; {{{ action }}} {{{ rc }}}; }
+printf '%s\n' '{{{ message }}}' >&2
+{{{ action }}} {{{ rc }}}
 {{%- endmacro %}}
+
+{{#
+# Add an entry to a text configuration file
+# path: path of the configuration file
+# parameter: the paramenter to be set in the configuration file
+# value: the value of the parameter to be set in the configuration file
+# create: whether create the file specified by path if the file does not exits
+# insert_after: inserts the entry right after first line that matches regular expression specified by this argument, set to EOF to insert at the end of the file
+# insert_before: inserts the entry right before first line that matches regular expression specified by this argument, set to BOF to insert at the beginning of the file
+# insensitive: ignore case
+# separator: separates parameter from the value (literal)
+# separator_regex: regular expression that describes the separator and surrounding whitespace
+# prefix_regex: regular expression describing allowed leading characters at each line
+#}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive, separator, separator_regex, prefix_regex) -%}}
+    {{%- set line_regex = prefix_regex+parameter+separator_regex -%}}
+    {{%- set new_line = parameter+separator+value -%}}
+if [ -e "{{{ path }}}" ] ; then
+{{{ lineinfile_absent(path, line_regex, insensitive) | indent(4, True) }}}
+else
+    {{%- if create %}}
+    touch "{{{ path }}}"
+    {{%- else -%}}
+{{{ die("Path " + path + " wasn't found on this system. Refusing to continue.") | indent(4, True) }}}
+    {{%- endif %}}
+fi
+{{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive) }}}
+{{%- endmacro -%}}
+
+{{%- macro lineinfile_absent(path, regex, insensitive=true) -%}}
+    {{%- if insensitive -%}}
+        {{%- set modifier="Id" -%}}
+    {{%- else -%}}
+        {{%- set modifier="d" -%}}
+    {{%- endif -%}}
+LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
+{{%- endmacro -%}}
+
+{{%- macro lineinfile_present(path, line, insert_after="", insert_before="", insensitive=true) -%}}
+    {{%- if insensitive -%}}
+        {{%- set grep_args="-q -m 1 -i" -%}}
+    {{%- else -%}}
+        {{%- set grep_args="-q -m 1" -%}}
+    {{%- endif -%}}
+    {{% if (insert_after == "" and insert_before == "")  or insert_after == "EOF" -%}}
+# Insert at the end of the file
+cp "{{{ path }}}" "{{{ path }}}.bak"
+printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
+    {{%- elif insert_before == "BOF" -%}}
+# Insert at the beginning of the file
+cp "{{{ path }}}" "{{{ path }}}.bak"
+printf '%s\n' "{{{ line }}}" > "{{{ path }}}"
+cat "{{{ path }}}.bak" >> "{{{ path }}}"
+    {{%- elif insert_after != "" -%}}
+# Insert after the line matching the regex {{{ insert_after }}}
+cp "{{{ path }}}" "{{{ path }}}.bak"
+local line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
+if [ -z "$line_number" ]; then
+    # There was no match of {{{ insert_after }}}, insert at
+    # the end of the file.
+    printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
+else
+    head -n "$(( line_number ))" ".bak" > "{{{ path }}}"
+    printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
+    tail -n "+$(( line_number + 1 ))" "{{{ path }}}.bak" >> "{{{ path }}}"
+fi
+    {{%- elif insert_before != "" -%}}
+# Insert before the line matching the regex {{{ insert_before }}}.
+cp "{{{ path }}}" "{{{ path }}}.bak"
+local line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
+if [ -z "$line_number" ]; then
+    # There was no match of {{{ insert_before }}}, insert at
+    # the end of the file.
+    printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
+else
+    head -n "$(( line_number - 1 ))" "{{{ path }}}.bak" > "{{{ path }}}"
+    printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
+    tail -n "+$(( line_number ))" "{{{ path }}}.bak" >> "{{{ path }}}"
+fi
+    {{%- endif %}}
+# Clean up after ourselves.
+rm "{{{ path }}}.bak"
+{{%- endmacro -%}}
