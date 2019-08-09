@@ -97,6 +97,7 @@ selections:
     - auditd_audispd_syslog_plugin_activated
     - auditd_audispd_configure_remote_server
     - auditd_local_events
+    - auditd_log_format
     - auditd_write_logs
     - rsyslog_remote_loghost
     - auditd_audispd_encrypt_sent_records
