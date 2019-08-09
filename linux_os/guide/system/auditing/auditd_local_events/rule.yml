@@ -8,7 +8,7 @@ description: |-
     This is the default setting.
 
 rationale: |-
-    If local <tt>local_events</tt> isn't set to <tt>yes</tt> only events from
+    If option <tt>local_events</tt> isn't set to <tt>yes</tt> only events from
     network will be aggregated.
 
 severity: medium
@@ -25,5 +25,5 @@ ocil: |-
     To verify that Audit Daemon is configured to include local events, run the
     following command:
     <pre>$ sudo grep local_events /etc/audit/auditd.conf</pre>
-    The output should return the follwoing:
+    The output should return the following:
     <pre>local_events = yes</pre>
