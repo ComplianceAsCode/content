@@ -715,7 +715,8 @@ selections:
     - auditd_data_retention_flush
     - var_auditd_flush=incremental_async
 
-    # TODO: freq=50
+    # Set number of records to cause an explicit flush to audit logs
+    - auditd_freq
 
     ## Set hostname as computer node name in audit logs
     - auditd_name_format

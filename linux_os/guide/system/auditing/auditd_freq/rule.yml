@@ -1,0 +1,30 @@
+documentation_complete: true
+
+title: 'Set number of records to cause an explicit flush to audit logs'
+
+description: |-
+    To configure Audit daemon to issue an explicit flush to disk command
+    after writing 50 records, set <tt>freq</tt> to <tt>50</tt>
+    in <tt>/etc/audit/auditd.conf</tt>.
+
+rationale: |-
+    If option <tt>freq</tt> isn't set to <tt>50</tt>, the flush to disk
+    may happen after higher number of records, increasing the danger
+    of audit loss.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82258-5
+
+references:
+    ospp: FAU_GEN.1
+
+ocil_clause: freq isn't set to 50
+
+ocil: |-
+    To verify that Audit Daemon is configured to flush to disk after
+    every 50 records, run the following command:
+    <pre>$ sudo grep freq /etc/audit/auditd.conf</pre>
+    The output should return the following:
+    <pre>freq = 50</pre>
