@@ -110,6 +110,7 @@ def move_patches_up_to_date_to_source_data_stream_component(datastreamtree):
 
 def parse_args():
     p = argparse.ArgumentParser()
+    p.add_argument("--version", required=True)
     p.add_argument("--input", required=True)
     p.add_argument("--output", required=True)
 
@@ -121,12 +122,13 @@ def main():
     # Datastream element tree
     datastreamtree = ssg.xml.ElementTree.parse(args.input).getroot()
 
-    # Set SCAP version to 1.3
-    datastreamtree.set('schematron-version', '1.3')
-    datastreamtree.find('{%s}data-stream' % datastream_namespace).set('scap-version', '1.3')
+    if args.version == "1.3":
+        # Set SCAP version to 1.3
+        datastreamtree.set('schematron-version', '1.3')
+        datastreamtree.find('{%s}data-stream' % datastream_namespace).set('scap-version', '1.3')
 
-    # Move reference to remote OVAL content to a source data stream component
-    move_patches_up_to_date_to_source_data_stream_component(datastreamtree)
+        # Move reference to remote OVAL content to a source data stream component
+        move_patches_up_to_date_to_source_data_stream_component(datastreamtree)
 
     ssg.xml.ElementTree.ElementTree(datastreamtree).write(args.output)
 
