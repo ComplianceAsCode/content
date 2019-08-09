@@ -352,7 +352,7 @@ class PodmanTestEnv(ContainerTestEnv):
         except subprocess.CalledProcessError as e:
             msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
             raise RuntimeError(msg)
-        ip_address = podman_output.decode("utf-8")
+        ip_address = podman_output.decode("utf-8").strip()
         return ip_address
 
     def _terminate_current_running_container_if_applicable(self):
