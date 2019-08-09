@@ -1,0 +1,31 @@
+documentation_complete: true
+
+title: 'Set hostname as computer node name in audit logs'
+
+description: |-
+    To configure Audit daemon to use value returned by gethostname
+    syscall as computer node name in the audit events,
+    set <tt>name_format</tt> to <tt>hostname</tt>
+    in <tt>/etc/audit/auditd.conf</tt>.
+
+rationale: |-
+    If option <tt>name_format</tt> is left at its default value of
+    <tt>none</tt>, audit events from different computers may be hard
+    to distinguish.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82897-0
+
+references:
+    ospp: FAU_GEN.1
+
+ocil_clause: name_format isn't set to hostname
+
+ocil: |-
+    To verify that Audit Daemon is configured to record the hostname
+    in audit events, run the following command:
+    <pre>$ sudo grep name_format /etc/audit/auditd.conf</pre>
+    The output should return the following:
+    <pre>name_format = hostname</pre>
