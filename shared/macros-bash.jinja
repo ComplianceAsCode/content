@@ -75,12 +75,12 @@ printf '%s\n' '{{{ message }}}' >&2
     {{%- set line_regex = prefix_regex+parameter+separator_regex -%}}
     {{%- set new_line = parameter+separator+value -%}}
 if [ -e "{{{ path }}}" ] ; then
-{{{ lineinfile_absent(path, line_regex, insensitive) | indent(4, True) }}}
+    {{{ lineinfile_absent(path, line_regex, insensitive) | indent(4) }}}
 else
     {{%- if create %}}
     touch "{{{ path }}}"
     {{%- else -%}}
-{{{ die("Path " + path + " wasn't found on this system. Refusing to continue.") | indent(4, True) }}}
+        {{{ die("Path " + path + " wasn't found on this system. Refusing to continue.") | indent(4) }}}
     {{%- endif %}}
 fi
 {{{ lineinfile_present(path, new_line, insert_after, insert_before, insensitive) }}}

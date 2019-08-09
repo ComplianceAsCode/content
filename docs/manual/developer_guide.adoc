@@ -1176,7 +1176,11 @@ fi
 
 When writing new bash remediations content, please follow the following guidelins:
 
-* Use tabs for indentation rather than spaces.
+* Use four spaces for indentation rather than tabs.
+* You can use macros from `shared/macros-bash.jinja` in the remediation content.
+If the macro is used from a nested block, use the `indent` jinja2 filter assuming the 4-space indentation.
+Typically, you want to call the macro with the intended indentation, and as `indent` doesn't indent the first line by default, you just pass the number of spaces as the only argument.
+See the remediation for rule `ensure_fedora_gpgkey_installed` for reference.
 * Prefer to use `sed` rather than `awk`.
 * Try to keep expressions simple, avoid double negations. Use link:http://tldp.org/LDP/abs/html/list-cons.html[compound lists] with moderation and only link:https://mywiki.wooledge.org/BashPitfalls#cmd1_.26.26_cmd2_.7C.7C_cmd3[if you understand them].
 * Test your script in the "strict mode" with `set -e -o pipefail` specified at the top of it. Make sure that the script doesn't end prematurely in the strict mode.
@@ -1188,11 +1192,13 @@ When writing new bash remediations content, please follow the following guidelin
 Jinja macros that generate Bash remediations can be found in `shared/macros-bash.jinja`.
 
 Available high-level Jinja macros to generate Bash remediations:
+
 - `bash_sshd_config_set` - Set SSH Daemon configuration option in `/etc/ssh/sshd_config`.
 - `bash_auditd_config_set` - Set Audit Daemon option in `/etc/audit/auditd.conf`.
 - `bash_coredump_config_set` -  Set Coredump configuration in `/etc/systemd/coredump.conf`
 
 Available low-level Jinja macros that can be used in Bash remediations:
+
 - `die` - Function to terminate the remediation
 - `set_config_file` - Add an entry to a text configuration file
 
