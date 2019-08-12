@@ -30,7 +30,7 @@ function dconf_settings {
 
 	if [ ${#SETTINGSFILES[@]} -eq 0 ]
 	then
-		[ ! -z ${DCONFFILE} ] || $(echo "" >> ${DCONFFILE})
+		[ ! -z ${DCONFFILE} ] || echo "" >> ${DCONFFILE}
 		printf '%s\n' "[${_path}]" >> ${DCONFFILE}
 		printf '%s=%s\n' "${_key}" "${_value}" >> ${DCONFFILE}
 	else

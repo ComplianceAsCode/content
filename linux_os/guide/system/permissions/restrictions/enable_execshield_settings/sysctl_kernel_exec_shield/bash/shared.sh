@@ -2,7 +2,7 @@
 . /usr/share/scap-security-guide/remediation_functions
 
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_rhv
-if [ $(getconf LONG_BIT) = "32" ] ; then
+if [ "$(getconf LONG_BIT)" = "32" ] ; then
   #
   # Set runtime for kernel.exec-shield
   #
@@ -15,11 +15,11 @@ if [ $(getconf LONG_BIT) = "32" ] ; then
   replace_or_append '/etc/sysctl.conf' '^kernel.exec-shield' '1' '@CCENUM@'
 fi
 
-if [ $(getconf LONG_BIT) = "64" ] ; then
+if [ "$(getconf LONG_BIT)" = "64" ] ; then
   if grep --silent noexec /boot/grub2/grub*.cfg ; then 
         sed -i "s/noexec.*//g" /etc/default/grub
         sed -i "s/noexec.*//g" /etc/grub.d/*
         GRUBCFG=`ls | grep '.cfg$'`
-        grub2-mkconfig -o /boot/grub2/$GRUBCFG
+        grub2-mkconfig -o "/boot/grub2/$GRUBCFG"
   fi
 fi

@@ -4,10 +4,8 @@
 # complexity = low
 # disruption = low
 
-. /usr/share/scap-security-guide/remediation_functions
-
 PKCSSW=$(/usr/bin/pkcs11-switch)
 
-if ! [[ ${PKCSSW} -eq "opensc" ]] ; then
+if [ ${PKCSSW} != "opensc" ] ; then
     ${PKCSSW} opensc
 fi
