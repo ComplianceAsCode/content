@@ -1027,8 +1027,8 @@ selections:
     - sshd_idle_timeout_value=10_minutes
     - sshd_set_idle_timeout
 
-    ## Set SSH Client Alive Max Count
-    - var_sshd_set_keepalive=3
+    ## Disable SSH Client Alive Messages
+    - var_sshd_set_keepalive=0
     - sshd_set_keepalive
 
     ## Enable SSH Warning Banner
