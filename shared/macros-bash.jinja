@@ -53,7 +53,7 @@
 # rc: The error code (optional, default is 1)
 # action: What to do (optional, default is 'exit', can be also 'return' or anything else)
 #}}
-{{% macro die(message, rc=1, action="exit") %}}
+{{% macro die(message, rc=1, action="exit") -%}}
 printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 {{{ action }}} {{{ rc }}}
 {{%- endmacro %}}
@@ -79,7 +79,7 @@ if [ -e "{{{ path }}}" ] ; then
 else
     {{%- if create %}}
     touch "{{{ path }}}"
-    {{%- else -%}}
+    {{%- else %}}
     {{{ die("Path '" + path + "' wasn't found on this system. Refusing to continue.", action="return") | indent(4) }}}
     {{%- endif %}}
 fi
@@ -102,14 +102,14 @@ LC_ALL=C sed -i "/{{{ regex }}}/{{{ modifier }}}" "{{{ path }}}"
         {{%- set grep_args="-q -m 1" -%}}
     {{%- endif -%}}
 cp "{{{ path }}}" "{{{ path }}}.bak"
-    {{% if not (insert_after or insert_before)  or insert_after == "EOF" -%}}
+    {{%- if not (insert_after or insert_before)  or insert_after == "EOF" %}}
 # Insert at the end of the file
 printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
-    {{%- elif insert_before == "BOF" -%}}
+    {{%- elif insert_before == "BOF" %}}
 # Insert at the beginning of the file
 printf '%s\n' "{{{ line }}}" > "{{{ path }}}"
 cat "{{{ path }}}.bak" >> "{{{ path }}}"
-    {{%- elif insert_after -%}}
+    {{%- elif insert_after %}}
 # Insert after the line matching the regex '{{{ insert_after }}}'
 local line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
 if [ -z "$line_number" ]; then
@@ -121,7 +121,7 @@ else
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
     tail -n "+$(( line_number + 1 ))" "{{{ path }}}.bak" >> "{{{ path }}}"
 fi
-    {{%- elif insert_before -%}}
+    {{%- elif insert_before %}}
 # Insert before the line matching the regex '{{{ insert_before }}}'.
 local line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
 if [ -z "$line_number" ]; then
@@ -133,7 +133,7 @@ else
     printf '%s\n' "{{{ line }}}" >> "{{{ path }}}"
     tail -n "+$(( line_number ))" "{{{ path }}}.bak" >> "{{{ path }}}"
 fi
-    {{%- else -%}}
+    {{%- else %}}
 {{{ die("This remediation has been generated incorrectly.") }}}
     {{%- endif %}}
 # Clean up after ourselves.
