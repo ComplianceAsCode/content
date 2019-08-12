@@ -183,7 +183,6 @@ def ordered_dump(data, stream=None, Dumper=yaml.Dumper, **kwds):
         return stream.write(formatted_yaml)
     else:
         return formatted_yaml
-    return yaml.dump(data, stream, OrderedDumper, **kwds)
 
 
 def _strings_to_list(one_or_more_strings):
