@@ -71,7 +71,7 @@ printf '%s\n' "{{{ message | replace('"', '\\"') }}}" >&2
 # separator_regex: regular expression that describes the separator and surrounding whitespace
 # prefix_regex: regular expression describing allowed leading characters at each line
 #}}
-{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=True, separator=" ", separator_regex="\s\+", prefix_regex="^\s*") -%}}
+{{%- macro set_config_file(path, parameter, value, create, insert_after, insert_before, insensitive=true, separator=" ", separator_regex="\s\+", prefix_regex="^\s*") -%}}
     {{%- set line_regex = prefix_regex+parameter+separator_regex -%}}
     {{%- set new_line = parameter+separator+value -%}}
 if [ -e "{{{ path }}}" ] ; then
