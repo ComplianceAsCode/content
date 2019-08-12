@@ -52,7 +52,7 @@ add_test(
 if (SSG_BATS_TESTS_ENABLED AND BATS_EXECUTABLE)
     add_test(
         NAME "bash-unit-tests"
-        COMMAND "${BATS_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/"
+        COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/unit/bash/execute_tests.sh" "${PYTHON_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/unit/bash" "${CMAKE_BINARY_DIR}/tests"
     )
 endif()
 add_test(

@@ -7,12 +7,11 @@ import argparse
 import codecs
 
 import ssg.xml
+import ssg.jinja
 
 
-def preprocess_source(filepath):
-    raw = ""
-    with codecs.open(filepath, "r", encoding="utf-8") as f:
-        raw = f.read()
+def preprocess_source(context, filepath):
+    raw = ssg.jinja.process_file(filepath, context)
 
     source = ""
     for line in raw.splitlines(True):
@@ -49,6 +48,7 @@ def main():
     description.text = "XCCDF form of the various remediation functions as " \
         "used by remediation scripts from the SCAP Security Guide Project."
 
+    context = ssg.jinja.load_macros()
     for file_ in os.listdir(args.input_dir):
         if not file_.endswith(".sh"):
             sys.stderr.write(
@@ -59,7 +59,7 @@ def main():
 
         filename, ext = os.path.splitext(file_)
 
-        source = preprocess_source(os.path.join(args.input_dir, file_))
+        source = preprocess_source(context, os.path.join(args.input_dir, file_))
 
         value_element = ssg.xml.ElementTree.SubElement(root, "Value")
         value_element.set("id", "function_%s" % (filename))

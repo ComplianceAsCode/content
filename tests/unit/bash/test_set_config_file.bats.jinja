@@ -1,5 +1,14 @@
-# Source set_config_file function
-. $BATS_TEST_DIRNAME/../shared/bash_remediation_functions/include_lineinfile.sh
+#!/bin/bash
+
+
+function call_set_config_file_create_false {
+    {{{ set_config_file("$1", "Compression", "no", False) | indent(4) }}}
+}
+
+
+function call_set_config_file {
+    {{{ set_config_file("$1", "Compression", "no", True) | indent(4) }}}
+}
 
 
 @test "Basic value remediation" {
@@ -7,7 +16,7 @@
     printf "%s\n" "Compression yes" > "$tmp_file"
     expected_output="Compression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -20,7 +29,7 @@
     printf "%s\n" "Compression no" > "$tmp_file"
     expected_output="Compression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -33,7 +42,7 @@
     printf "%s\n" "Protocol 2" "Compression yes" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -46,7 +55,7 @@
     printf "%s\n" "Protocol 2" "# Compression yes" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\n# Compression yes\nPort 22\nCompression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -59,7 +68,7 @@
     printf "%s\n" "Protocol 2" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -72,7 +81,7 @@
     rm "$tmp_file"
     expected_output="Compression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no" "true"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -84,7 +93,8 @@
     tmp_file="$(mktemp)"
     rm "$tmp_file"
 
-    run set_config_file "$tmp_file" "Compression" "no" "false"
+    run call_set_config_file_create_false "$tmp_file"
+
     [ "$status" -eq 1 ]
     [[ "$output" =~ "Path '$tmp_file' wasn't found" ]]
 }
@@ -95,7 +105,7 @@
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nPort 22\nCompression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no"
+    call_set_config_file "$tmp_file"
 
     run diff "$tmp_file" <(printf "$expected_output")
     [ "$status" -eq 0 ]
@@ -108,7 +118,7 @@
     printf "%s\n" "Protocol 2" "COMPRESSION YES" "Port 22" > "$tmp_file"
     expected_output="Protocol 2\nCOMPRESSION YES\nPort 22\nCompression no\n"
 
-    set_config_file "$tmp_file" "Compression" "no" "" "" "" "false"
+    {{{ set_config_file("$tmp_file", "Compression", "no", True, "", "", False) | indent(4) }}}
 
     run diff -U2 "$tmp_file" <(printf "$expected_output")
     echo "$output"
