@@ -3,7 +3,5 @@
 # strategy = enable
 # complexity = low
 # disruption = low
-# Include source function library.
-. /usr/share/scap-security-guide/remediation_functions
 
-package_install {{{ PKGNAME }}}
+{{{ bash_package_install(package=PKGNAME) }}}
