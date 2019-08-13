@@ -107,3 +107,25 @@ def find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging=None):
     benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
     rule = benchmark_node.find(".//xccdf:Rule[@id='{0}']".format(rule_id), NAMESPACES)
     return rule
+
+def find_fix_in_benchmark(datastream, benchmark_id, rule_id, fix_type='bash', logging=None):
+    """
+    Return fix from benchmark. None if not found.
+    """
+    rule = find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging)
+    if rule is None:
+        return None
+
+    if fix_type == "bash":
+        system_attribute = "urn:xccdf:fix:script:sh"
+    elif fix_type == "ansible":
+        system_attribute = "urn:xccdf:fix:script:ansible"
+    elif fix_type == "puppet":
+        system_attribute = "urn:xccdf:fix:script:puppet"
+    elif fix_type == "anaconda":
+        system_attribute = "urn:xccdf:fix:script:anaconda"
+    else:
+        system_attribute = "urn:xccdf:fix:script:sh"
+
+    fix = rule.find("xccdf:fix[@system='{0}']".format(system_attribute), NAMESPACES)
+    return fix
