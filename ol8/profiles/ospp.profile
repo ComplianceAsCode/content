@@ -79,8 +79,6 @@ selections:
     - disable_host_auth
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
-    - sshd_disable_rhosts
-    - sshd_disable_user_known_hosts
     - var_accounts_passwords_pam_faillock_deny=3
     - var_accounts_passwords_pam_faillock_fail_interval=900
     - var_accounts_passwords_pam_faillock_unlock_time=never

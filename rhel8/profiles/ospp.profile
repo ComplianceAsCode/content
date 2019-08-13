@@ -1008,12 +1008,6 @@ selections:
     ## Disable Host-Based Authentication
     - disable_host_auth
 
-    ## Disable SSH Support for User Known Hosts
-    - sshd_disable_user_known_hosts
-
-    ## Disable SSH Support for .rhosts Files
-    - sshd_disable_rhosts
-
     ## Disable SSH Access via Empty Passwords
     - sshd_disable_empty_passwords
 

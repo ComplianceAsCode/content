@@ -160,7 +160,6 @@ selections:
     - service_crond_enabled
     - service_atd_disabled
     - sshd_allow_only_protocol2
-    - sshd_disable_rhosts
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords
