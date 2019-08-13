@@ -717,7 +717,8 @@ selections:
 
     # TODO: freq=50
 
-    # TODO: name_format=HOSTNAME
+    ## Set hostname as computer node name in audit logs
+    - auditd_name_format
 
 
     #################################################################
