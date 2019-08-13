@@ -1,0 +1,32 @@
+documentation_complete: true
+
+title: 'Force frequent session key renegotiation'
+
+description: |-
+    The <tt>RekeyLimit</tt> parameter specifies how often
+    the session key of the is renegotiated, both in terms of
+    amount of data that may be transmitted and the time
+    elapsed. To decrease the default limits, put line
+    <tt>RekeyLimit 512M 1h</tt> to file <tt>/etc/ssh/sshd_config</tt>.
+
+rationale: |-
+    By decreasing the limit based on the amount of data and enabling
+    time-based limit, effects of potential attacks against
+    encryption keys are limited.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82177-7
+
+references:
+    ospp: FCS_SSHS_EXT.1
+
+ocil_clause: 'it is commented out or is not set'
+
+ocil: |-
+    To check if RekeyLimit is set correctly, run the
+    following command:
+    <pre>$ sudo grep RekeyLimit /etc/ssh/sshd_config</pre>
+    If configured properly, output should be
+    <pre>RekeyLimit 512M 1h</pre>

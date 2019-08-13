@@ -104,6 +104,7 @@ selections:
     - login_banner_text=usgcb_default
     - sshd_enable_warning_banner
     - banner_etc_issue
+    - sshd_rekey_limit
     - dconf_gnome_banner_enabled
     - dconf_gnome_login_banner_text
     - audit_rules_login_events_faillock

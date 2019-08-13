@@ -997,8 +997,8 @@ selections:
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4466
     #sed -i "/ed25519/s/HostKey/#HostKey/" $CONFIG
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4467
-    #sed -i "s/#RekeyLimit default none/RekeyLimit 512M/" $CONFIG
+    ## Force frequent session key renegotiation
+    - sshd_rekey_limit
 
     ## Disable SSH Root Login
     - sshd_disable_root_login

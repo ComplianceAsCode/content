@@ -130,7 +130,7 @@
 {{%- if multi_value -%}}
 {{%- set group_regex = "([^#]*).*$" -%}}
 {{%- else -%}}
-{{%- set group_regex = "(\S*)[ \\t]*(?:|(?:#.*))?$" -%}}
+{{%- set group_regex = "(.+?)[ \\t]*(?:$|#)" -%}}
 {{%- endif -%}}
 {{%- if section %}}
 {{%- set common_regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex -%}}
