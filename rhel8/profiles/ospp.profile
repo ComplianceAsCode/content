@@ -708,7 +708,8 @@ selections:
     ## Write Audit Logs to the Disk
     - auditd_write_logs
 
-    # TODO: log_format=ENRICHED
+    # Resolve information before writing to audit logs
+    - auditd_log_format
 
     ## Configure auditd flush priority
     - auditd_data_retention_flush
