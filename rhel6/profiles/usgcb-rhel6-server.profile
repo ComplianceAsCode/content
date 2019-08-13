@@ -216,7 +216,6 @@ selections:
     - service_atd_disabled
     - sshd_set_keepalive
     - sshd_set_idle_timeout
-    - sshd_disable_rhosts
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords

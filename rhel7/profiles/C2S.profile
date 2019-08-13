@@ -190,7 +190,6 @@ selections:
     - sshd_set_loglevel_info
     - sshd_enable_x11_forwarding
     - sshd_set_max_auth_tries
-    - sshd_disable_rhosts
     - disable_host_auth
     - sshd_disable_root_login
     - sshd_disable_empty_passwords

@@ -103,9 +103,7 @@ selections:
     - network_configure_name_resolution
     - no_user_host_based_files
     - no_host_based_files
-    - sshd_disable_user_known_hosts
     - sshd_disable_rhosts_rsa
-    - sshd_disable_rhosts
     - sysctl_net_ipv4_conf_all_accept_source_route
     - sysctl_net_ipv4_conf_default_accept_source_route
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts

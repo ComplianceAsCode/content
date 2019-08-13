@@ -59,8 +59,6 @@ selections:
     - sshd_disable_gssapi_auth
     - sshd_disable_kerb_auth
     - sshd_disable_rhosts_rsa
-    - sshd_disable_rhosts
-    - sshd_disable_user_known_hosts
     - sshd_do_not_permit_user_env
     - sshd_enable_strictmodes
     - sshd_enable_warning_banner
