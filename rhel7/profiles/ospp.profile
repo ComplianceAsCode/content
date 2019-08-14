@@ -1,11 +1,16 @@
 documentation_complete: true
 
-title: 'Protection Profile for Common Criteria Certification using NIAP OSPP'
+title: 'OSPP - Protection Profile for General Purpose Operating Systems v. 4.2.1'
 
 description: |-
     This profile reflects mandatory configuration controls identified in the
     NIAP Configuration Annex to the Protection Profile for General Purpose
     Operating Systems (Protection Profile Version 4.2.1).
+
+    This Annex is consistent with CNSSI-1253, which requires US National Security
+    Systems to adhere to certain configuration parameters. Accordingly, configuration
+    guidance produced according to the requirements of this Annex is suitable for use
+    in US National Security Systems.
 
 selections:
     ### Boot
