@@ -684,12 +684,16 @@ class Rule(object):
 
     def _make_stigid_product_specific(self, product):
         stig_platform_id = STIG_PLATFORM_ID_MAP.get(product, product.upper())
-        for ref, val in self.references.items():
-            if ref == "stigid":
-                if stig_platform_id and not val.startswith(stig_platform_id):
-                    self.references[ref] = "{platform_id}-{stig_id}".format(
+        stig_ids = self.references.get("stigid", None)
+        if stig_ids:
+            references = []
+            for val in stig_ids.split(","):
+                references.append(
+                    "{platform_id}-{stig_id}".format(
                         platform_id=stig_platform_id, stig_id=val,
                     )
+                )
+            self.references["stigid"] = ",".join(references)
 
     def normalize(self, product):
         try:
