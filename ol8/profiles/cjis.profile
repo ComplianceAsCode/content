@@ -92,6 +92,7 @@ selections:
     - dconf_gnome_screensaver_idle_activation_enabled
     - dconf_gnome_screensaver_lock_enabled
     - dconf_gnome_screensaver_mode_blank
+    - dconf_db_up_to_date
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
     - sshd_set_keepalive
@@ -129,3 +130,6 @@ selections:
     - ensure_gpgcheck_never_disabled
     - security_patches_up_to_date
     - kernel_module_bluetooth_disabled
+    - configure_crypto_policy
+    - configure_ssh_crypto_policy
+    - var_system_crypto_policy=fips
