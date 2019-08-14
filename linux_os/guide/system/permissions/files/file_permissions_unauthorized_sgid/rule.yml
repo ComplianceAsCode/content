@@ -8,7 +8,7 @@ description: |-
     unauthorized SGID files is determine if any were not installed as part of an
     RPM package, which is cryptographically verified. Investigate the origin
     of any unpackaged SGID files.
-    This configuration check whitelists SGID files which were installed via RPM.
+    This configuration check considers authorized SGID files which were installed via RPM.
     It is assumed that when an individual has sudo access to install an RPM
     and all packages are signed with an organizationally-recognized GPG key,
     the software should be considered an approved package on the system.
