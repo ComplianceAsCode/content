@@ -22,7 +22,7 @@ STABLE_PROFILE_IDS = {
     "RHEL-6": ["C2S", "CS2", "CSCF-RHEL6-MLS", "fisma-medium-rhel6-server",
                "pci-dss", "rht-ccp", "stig", "usgcb-rhel6-server"],
     "RHEL-7": ["C2S", "cjis", "hipaa", "cui", "rht-ccp",
-               "ospp", "ospp42", "pci-dss", "stig"],
+               "ospp", "ncp", "pci-dss", "stig"],
     "RHEL-8": ["ospp", "pci-dss"],
 }
 
