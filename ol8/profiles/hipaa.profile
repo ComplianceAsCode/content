@@ -31,6 +31,7 @@ selections:
     - service_debug-shell_disabled
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
+    - dconf_db_up_to_date
     - dconf_gnome_remote_access_credential_prompt
     - dconf_gnome_remote_access_encryption
     - sshd_disable_empty_passwords
@@ -82,7 +83,6 @@ selections:
     - ensure_oracle_gpgkey_installed
     - ensure_gpgcheck_globally_activated
     - ensure_gpgcheck_never_disabled
-    - ensure_gpgcheck_repo_metadata
     - ensure_gpgcheck_local_packages
     - grub2_audit_argument
     - service_auditd_enabled
