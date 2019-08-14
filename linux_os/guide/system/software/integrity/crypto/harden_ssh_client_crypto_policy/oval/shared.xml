@@ -134,4 +134,10 @@
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', missing_parameter_pass=false) }}}
   {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', separator_regex='[\s]+', missing_parameter_pass=false) }}}
   {{{ oval_line_in_file_state(parameter='PubkeyAcceptedKeyTypes', value='ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256') }}}
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_state(parameter='MACs', value='hmac-sha2-512,hmac-sha2-256') }}}
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_state(parameter='KexAlgorithms', value='ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1') }}}
 </def-group>
