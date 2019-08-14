@@ -138,9 +138,6 @@ selections:
     - accounts_passwords_pam_faillock_interval
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - accounts_passwords_pam_faillock_unlock_time
-    - dconf_gnome_banner_enabled
-    - login_banner_text=usgcb_default
-    - dconf_gnome_login_banner_text
     - disable_users_coredumps
     - var_accounts_max_concurrent_login_sessions=10
     - accounts_max_concurrent_login_sessions
