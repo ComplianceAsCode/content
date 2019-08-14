@@ -59,8 +59,9 @@ selections:
     - dconf_gnome_screensaver_user_info
     - dconf_gnome_screensaver_user_locks
     - dconf_gnome_session_idle_user_locks
+    - dconf_gnome_disable_user_admin
     - accounts_tmout
-    - var_accounts_tmout=10_min
+    - var_accounts_tmout=30_min
     - grub2_password
     - grub2_uefi_password
     - grub2_disable_interactive_boot
@@ -204,6 +205,12 @@ selections:
     - audit_rules_etc_group_open
     - audit_rules_etc_group_openat
     - audit_rules_etc_group_open_by_handle_at
+    - audit_rules_etc_shadow_open
+    - audit_rules_etc_shadow_openat
+    - audit_rules_etc_shadow_open_by_handle_at
+    - audit_rules_etc_gshadow_open
+    - audit_rules_etc_gshadow_openat
+    - audit_rules_etc_gshadow_open_by_handle_at
     - package_abrt_removed
     - mount_option_dev_shm_nodev
     - mount_option_dev_shm_noexec
