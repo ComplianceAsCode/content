@@ -996,9 +996,6 @@ selections:
     ## Setup SSH Server
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4466
-    #sed -i "/ed25519/s/HostKey/#HostKey/" $CONFIG
-
     ## Force frequent session key renegotiation
     - sshd_rekey_limit
 
