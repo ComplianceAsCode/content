@@ -74,7 +74,7 @@ then
 # file to the list of files to be inspected
 elif [ "$tool" == 'auditctl' ]
 then
-	files_to_inspect=("${files_to_inspect[@]}" '/etc/audit/audit.rules' )
+	files_to_inspect+=('/etc/audit/audit.rules' )
 # If audit tool is 'augenrules', then check if the audit rule is defined
 # If rule is defined, add '/etc/audit/rules.d/*.rules' to the list for inspection
 # If rule isn't defined yet, add '/etc/audit/rules.d/$key.rules' to the list for inspection
@@ -89,16 +89,17 @@ then
 	fi
 	for match in "${matches[@]}"
 	do
-		files_to_inspect=("${files_to_inspect[@]}" "${match}")
+		files_to_inspect+=("${match}")
 	done
 	# Case when particular rule isn't defined in /etc/audit/rules.d/*.rules yet
 	if [ ${#files_to_inspect[@]} -eq "0" ]
 	then
-		files_to_inspect="/etc/audit/rules.d/$key.rules"
-		if [ ! -e "$files_to_inspect" ]
+		file_to_inspect="/etc/audit/rules.d/$key.rules"
+		files_to_inspect=("$files_to_inspect")
+		if [ ! -e "$file_to_inspect" ]
 		then
-			touch "$files_to_inspect"
-			chmod 0640 "$files_to_inspect"
+			touch "$file_to_inspect"
+			chmod 0640 "$file_to_inspect"
 		fi
 	fi
 fi
