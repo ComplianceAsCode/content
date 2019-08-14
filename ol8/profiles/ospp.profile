@@ -224,3 +224,4 @@ selections:
     - package_fapolicyd_installed
     - auditd_log_format
     - auditd_name_format
+    - auditd_freq

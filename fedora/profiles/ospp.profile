@@ -98,6 +98,7 @@ selections:
     - auditd_log_format
     - auditd_write_logs
     - auditd_name_format
+    - auditd_freq
     - rsyslog_remote_loghost
     - auditd_audispd_encrypt_sent_records
     - login_banner_text=usgcb_default
