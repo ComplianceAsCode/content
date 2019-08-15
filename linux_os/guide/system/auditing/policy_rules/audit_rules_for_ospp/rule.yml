@@ -10,24 +10,6 @@ title: 'Configure audit according to OSPP requirements'
   {{% set audit_dir="audit-2.8.4" %}}
 {{% endif %}}
 
-{{% macro ospp_hashes() %}}
-{{% if product == "rhel8" %}}
-    <pre>
-    54c2cebdaadfb928f7327cc066218e38743f0ff94d02fe162a7a415e148d23a8  /etc/audit/rules.d/10-base-config.rules
-    5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f  /etc/audit/rules.d/11-loginuid.rules
-    88959791c10b9b7d3cafa2cb4ff4970ead862b31a276aa05431c3e18d5a0d3aa  /etc/audit/rules.d/30-ospp-v42.rules
-    88fe75a3bcb807fad74cd020e6e04347f7dbd3ef16de314c0c6a976cdde0dda0  /etc/audit/rules.d/43-module-load.rules
-    </pre>
-{{% elif product == "rhel7" %}}
-    <pre>
-    f98498bccc91176d17c4682e0fe32d36e6ce986c94fef342a3edf152d8dfa027  /etc/audit/rules.d/10-base-config.rules
-    5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f  /etc/audit/rules.d/11-loginuid.rules
-    38bf9ec49c29d876d8b5864722fb731ecee51a0ba68094342e0a66259bbf1ce9  /etc/audit/rules.d/30-ospp-v42.rules
-    847a2222e407fb27aef5cc113f6fcffa60b9a9c5d36a1fffb2f3b6f268c2c134  /etc/audit/rules.d/43-module-load.rules
-    </pre>
-{{% endif %}}
-{{% endmacro %}}
-
 description: |-
     Configure audit to meet requirements for Operating System Protection Profile (OSPP) v4.2.1.
 
@@ -35,19 +17,16 @@ description: |-
 
     To fulfill requirements for compliance with OSPP v4.2.1, the following files are necessary:
     <ul>
-    <li>10-base-config.rules</li>
-    <li>11-loginuid.rules</li>
-    <li>30-ospp-v42.rules</li>
-    <li>43-module-load.rules</li>
+    <li>/usr/share/doc/{{{ audit_dir }}}/rules/10-base-config.rules</li>
+    <li>/usr/share/doc/{{{ audit_dir }}}/rules/11-loginuid.rules</li>
+    <li>/usr/share/doc/{{{ audit_dir }}}/rules/30-ospp-v42.rules</li>
+    <li>/usr/share/doc/{{{ audit_dir }}}/rules/43-module-load.rules</li>
     </ul>
 
     Copy the files from <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> to <tt>/etc/audit/rules.d</tt>:
     <pre>
     cp /usr/share/doc/{{{ audit_dir }}}/rules/{10-base-config,11-loginuid,30-ospp-v42,43-module-load}.rules /etc/audit/rules.d/
     </pre>
-
-    The files copied to <tt>/etc/audit/rules.d</tt> should have the following hashes:
-    {{{ ospp_hashes() }}}
 
 rationale: |-
     The audit rules defined in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> are the recommended way to meet compliance with OSPP v4.2.1.
@@ -65,7 +44,6 @@ ocil_clause: 'the files are not there or differ'
 
 ocil: |-
     To verify that audit is configured for OSPP v4.2.1, run the following commands:
-    <pre>sha256sum /etc/audit/rules.d/{10-base,11-login,30-ospp,43-module}*.rules</pre><br/>
+    <pre>for file in "10-base-config" "11-loginuid" "30-ospp-v42" "43-module-load";do diff /etc/{{{ audit_dir }}}/rules.d/$file.rules /usr/share/doc/{{{ audit_dir }}}/rules/$file.rules; done</pre>
 
-    If the system is configure properly, the following lines should be returned:
-    {{{ ospp_hashes() }}}
+    If the system is configured properly, no lines should be returned.
