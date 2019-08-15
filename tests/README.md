@@ -424,3 +424,13 @@ The tool will print some general statistics and it will give you more detailed i
 scenarios that yielded different results.
 Sometimes, different results may have been caused by different test environments, whereas sometimes
 the security content is different, and those scans can be identified by respective scanning dates only.
+
+## Known issues
+
+1 - Test suite fails to test rule with the message:
+
+```
+Rule <rule_id> has not been evaluated! Wrong profile selected in test scenario?
+```
+
+If you are using SCAP 1.3 content (which is built by default) and you are sure that you have selected the rule in the particular profile, it might be that the target scan environment has an OpenSCAP version contains a bug with SCAP 1.3 content. To solve this issue you can either update the OpenSCAP package in the target scan environment to the latest version or build SCAP 1.2 content. To build SCAP 1.2 content check the [SSG Developer Guide](../docs/manual/developer_guide.adoc)
