@@ -232,3 +232,4 @@ selections:
     - auditd_log_format
     - auditd_name_format
     - auditd_freq
+    - service_rngd_enabled
