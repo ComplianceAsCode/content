@@ -3,7 +3,7 @@
 # include remediation functions library
 . /usr/share/scap-security-guide/remediation_functions
 
-disable_prelink
+{{{ disable_prelink() }}}
 
 if grep -q -m1 -o aes /proc/cpuinfo; then
 	{{{ bash_package_install("dracut-fips-aesni") }}}
