@@ -43,8 +43,8 @@ set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL
 
 # If targetting SCAP 1.2, target OVAL version is 5.10
 if (SSG_TARGET_SCAP_VERSION VERSION_EQUAL "1.2")
-    set(SSG_TARGET_OVAL_MAJOR_VERSION "5")
-    set(SSG_TARGET_OVAL_MINOR_VERSION "10")
+    set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
+    set(SSG_TARGET_OVAL_MINOR_VERSION "10" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
 endif()
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
