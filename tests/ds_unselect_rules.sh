@@ -16,7 +16,7 @@ DS="/tmp/$(basename $DS)"
 
 printf "Unselecting rules listed in the $UNSELECT_LIST from the $DS\n"
 for rule in $(cat $UNSELECT_LIST); do
-	sed -i "/<Rule id=\"$rule/s/selected=\"true\"/selected=\"false\"/g" $DS || exit 1
-	sed -i "/<select idref=\"$rule/s/selected=\"true\"/selected=\"false\"/g" $DS || exit 1
+	sed -i "/<.*Rule id=\"$rule/s/selected=\"true\"/selected=\"false\"/g" $DS || exit 1
+	sed -i "/<.*select idref=\"$rule/s/selected=\"true\"/selected=\"false\"/g" $DS || exit 1
 done
 printf "Done\n"
