@@ -127,35 +127,23 @@ git checkout master
 To build all the security content:
 
 ```bash
-cd content/
 cd build/
 cmake ../
+# To build all security content
 make -j4
-```
-
-(optional) To build everything only for one specific product - for example all
-security content only for *Red Hat Enterprise Linux 7*:
-
-* Take the manual cmake/make approach:
-
-```bash
-cd content/
-cd build/
-cmake ../
+# To build security content for one specific product, for example for *Red Hat Enterprise Linux 7*
 make -j4 rhel7
 ```
 
-* or use the `build_product` script that removes whatever is in the `build` directory and executes the build for you:
+Or use the `build_product` script from base directory that removes whatever is in the `build` directory and builds specific product:
 
 ```bash
-cd content/
 ./build_product rhel7
 ```
 
 (optional) To build only specific content for one specific product:
 
 ```bash
-cd content/
 cd build/
 cmake ../
 make -j4 rhel7-content  # SCAP XML files for RHEL7
@@ -169,7 +157,6 @@ make -j4 rhel7  # everything above for RHEL7
 (optional) Configure options before building using a GUI tool:
 
 ```bash
-cd content/
 cd build/
 cmake-gui ../
 make -j4
@@ -178,7 +165,6 @@ make -j4
 (optional) Use the `ninja` build system (requires the `ninja-build` package):
 
 ```bash
-cd content/
 cd build/
 cmake -G Ninja ../
 ninja-build  # depending on the distribution just "ninja" may also work
@@ -187,7 +173,6 @@ ninja-build  # depending on the distribution just "ninja" may also work
 (optional) Generate statistics for products and profiles. Some of the statistics generated are: implemented OVAL, bash, ansible for rules, missing CCE, etc:
 
 ```bash
-cd content/
 cd build/
 cmake ../
 make -j4 stats # create statistics for all products
@@ -199,7 +184,6 @@ You can also create statistics per product, to do that just prepend the product 
 It is possible to generate HTML output by triggering similar command:
 
 ```bash
-cd content/
 cd build/
 cmake ../
 make -j4 html-stats # create statistics for all products, as a result <product>/stats.html file is created.
