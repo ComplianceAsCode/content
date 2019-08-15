@@ -128,6 +128,15 @@
         {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes') }}}
     </criteria>
   </definition>
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_state(parameter='Match', value='final all') }}}
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_state(parameter='RekeyLimit', value='512M 1h') }}}
+  {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', separator_regex='[\s]+', missing_parameter_pass=false) }}}
+  {{{ oval_line_in_file_state(parameter='GSSAPIAuthentication', value='no') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', missing_parameter_pass=false) }}}
   {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false) }}}
   {{{ oval_line_in_file_state(parameter='Ciphers', value='aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc') }}}
