@@ -192,6 +192,32 @@ make -j4 html-profile-stats # create statistics for all profiles in all products
 
 If you want to go deeper into statistics, refer to <<Profile Statistics and Utilities>> section.
 
+#### Building SCAP 1.2 content
+
+By default, the build system builds SCAP content conforming to SCAP version 1.3. It is possible to build SCAP 1.2 content instead.
+
+If you use `build_product` script, pass `--scap12` option to build SCAP 1.2 content:
+
+```bash
+./build_product --scap12 <product-name>
+```
+
+If you use `cmake` command, pass `-DSSG_TARGET_SCAP_VERSION:STRING=1.2` option to build SCAP 1.2 content:
+
+```bash
+cd build/
+cmake -DSSG_TARGET_SCAP_VERSION:STRING=1.2 ../
+make
+```
+
+As of SCAP specification, SCAP 1.3 content contains OVAL 5.11 and SCAP 1.2 content content contains OVAL 5.10 checks.
+You can change the OVAL version using CMake variables `SSG_TARGET_OVAL_MAJOR_VERSION` and `SSG_TARGET_OVAL_MINOR_VERSION`.
+For example, to build a non-standard SCAP 1.2 datastream which would contain OVAL 5.11 checks, modify the `cmake` command in the following way:
+
+```bash
+cmake -DSSG_TARGET_OVAL_MINOR_VERSION:STRING=11 -DSSG_TARGET_SCAP_VERSION:STRING=1.2 ../
+```
+
 ### Build outputs
 
 When the build has completed, the output will be in the build folder.
