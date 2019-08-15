@@ -1228,7 +1228,7 @@ selections:
     #################################################################
 
     ## Login banner text
-    - login_banner_text=usgcb_default
+    - login_banner_text=dod_default
 
     ## Set login banner text to /etc/issue file
     - banner_etc_issue
