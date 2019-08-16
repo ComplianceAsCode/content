@@ -142,8 +142,13 @@
     </metadata>
     <criteria comment="SSH client is configured correctly"
     operator="AND">
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication') }}}
         {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers') }}}
         {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs') }}}
+        {{{ oval_line_in_file_criterion(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms') }}}
     </criteria>
   </definition>
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', missing_parameter_pass=false) }}}
