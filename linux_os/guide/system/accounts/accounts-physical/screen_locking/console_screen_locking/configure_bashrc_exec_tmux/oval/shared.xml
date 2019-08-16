@@ -1,0 +1,32 @@
+<def-group>
+  <definition class="compliance" id="configure_bashrc_exec_tmux" version="1">
+    <metadata>
+      <title>Check exec tmux configured at the end of bashrc</title>
+      <affected family="unix">
+        <platform>multi_platform_fedora</platform>
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>Oracle Linux 8</platform>
+      </affected>
+      <description>Check if tmux is configured to exec at the end of bashrc.</description>
+    </metadata>
+    <criteria comment="Check exec tmux configured at the end of bashrc" operator="AND">
+      <criterion comment="check tmux is configured to exec on the last line of /etc/bashrc"
+        test_ref="test_configure_bashrc_exec_tmux" />
+    </criteria>
+  </definition>
+  <ind:textfilecontent54_test check="only one" check_existence="only_one_exists"
+    comment="check tmux is configured to exec on the last line of /etc/bashrc"
+    id="test_configure_bashrc_exec_tmux" version="1">
+    <ind:object object_ref="obj_configure_bashrc_exec_tmux" />
+    <ind:state state_ref="state_configure_bashrc_exec_tmux" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_configure_bashrc_exec_tmux" version="1">
+    <ind:behaviors singleline="true" multiline="false" />
+    <ind:filepath>/etc/bashrc</ind:filepath>
+    <ind:pattern operation="pattern match">([^\n]+)\s*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_configure_bashrc_exec_tmux" version="1">
+    <ind:subexpression datatype="string" operation="equals">[ -n "$PS1" -a -z "$TMUX" ] &amp;&amp; exec tmux</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>

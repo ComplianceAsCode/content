@@ -38,6 +38,7 @@ selections:
     - accounts_password_pam_lcredit
     - package_tmux_installed
     - configure_tmux_lock_command
+    - configure_bashrc_exec_tmux
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_kexec_load_disabled
