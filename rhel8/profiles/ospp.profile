@@ -736,7 +736,7 @@ selections:
     - service_fapolicyd_enabled
 
     #################################################################
-    ## Harden USB Guard
+    ## Implement locking session after period of inactivity
     #################################################################
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4498
@@ -747,6 +747,16 @@ selections:
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4499
     #set -g status off
+
+    ## setup tmux
+    #mv /tmp/tmux.conf /etc/tmux.conf
+    #restorecon /etc/tmux.conf
+    #sed -i 's/^fi/  if [ "$PS1" ]; then\n    [[ $TERM != "screen" ]] \&\& exec tmux\n  fi\nfi/' /etc/bashrc
+    #sed -i '/tmux$/d' /etc/shells
+
+    #################################################################
+    ## Harden USB Guard
+    #################################################################
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4496
     #cat << EOF > /tmp/rules.conf
@@ -1202,13 +1212,6 @@ selections:
 
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4481
     #sed -i 's/nullok//' /etc/pam.d/sssd-shadowutils
-
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4479
-    ## setup tmux
-    #mv /tmp/tmux.conf /etc/tmux.conf
-    #restorecon /etc/tmux.conf
-    #sed -i 's/^fi/  if [ "$PS1" ]; then\n    [[ $TERM != "screen" ]] \&\& exec tmux\n  fi\nfi/' /etc/bashrc
-    #sed -i '/tmux$/d' /etc/shells
 
     #################################################################
     ## Enable Automatic Software Updates
