@@ -1048,8 +1048,8 @@ selections:
     ## Enable rngd Service
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4472
-    #sysctl enable rngd.service
+    ## Enable the Hardware RNG Entropy Gatherer Service
+    - service_rngd_enabled
 
     #################################################################
     ## sssd Settings
