@@ -3,7 +3,6 @@
 # strategy = disable
 # complexity = low
 # disruption = low
-# Include source function library.
 
 # CAUTION: This remediation script will remove {{{ PKGNAME }}}
 #	   from the system, and may remove any packages
@@ -11,6 +10,4 @@
 #	   remediation AFTER testing on a non-production
 #	   system!
 
-. /usr/share/scap-security-guide/remediation_functions
-
-package_remove {{{ PKGNAME }}}
+{{{ bash_package_remove(package=PKGNAME) }}}

@@ -45,6 +45,48 @@
     }}}
 {{%- endmacro -%}}
 
+{{#
+# Install a package
+# Uses the right command based on pkg_manger proprerty defined in product.yaml.
+# package: name of the package
+#}}
+{{%- macro bash_package_install(package) -%}}
+{{%- if pkg_manager is defined -%}}
+{{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
+if ! rpm -q --quiet "{{{ package }}}" ; then
+    {{{ pkg_manager }}} install -y "{{{ package }}}"
+fi
+{{%- elif pkg_manager == "apt_get" -%}}
+apt-get install -y "{{{ package }}}"
+{{%- else -%}}
+{{{ die("Can't generate a remediation for " + pkg_manager) }}}
+{{%- endif -%}}
+{{%- else -%}}
+{{{ die("Can't generate a remediation for product " + product + ", because there is no pkg_manager set in product.yml") }}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+{{#
+# Remove a package
+# Uses the right command based on pkg_manger proprerty defined in product.yaml.
+# package: name of the package
+#}}
+{{%- macro bash_package_remove(package) -%}}
+{{%- if pkg_manager is defined -%}}
+{{%- if pkg_manager == "yum" or pkg_manager == "dnf" -%}}
+if rpm -q --quiet "{{{ package }}}" ; then
+    {{{ pkg_manager }}} remove -y "{{{ package }}}"
+fi
+{{%- elif pkg_manager == "apt_get" -%}}
+apt-get remove -y "{{{ package }}}"
+{{%- else -%}}
+{{{ die("Can't generate a remediation for " + pkg_manager) }}}
+{{%- endif -%}}
+{{%- else -%}}
+{{{ die("Can't generate a remediation for product " + product + ", because there is no pkg_manager set in product.yml") }}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
 {{# ##### Low level macros ##### #}}
 
 {{#

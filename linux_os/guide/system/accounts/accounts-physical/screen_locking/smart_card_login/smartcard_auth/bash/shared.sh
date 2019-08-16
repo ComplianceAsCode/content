@@ -2,8 +2,8 @@
 . /usr/share/scap-security-guide/remediation_functions
 
 # Install required packages
-package_install esc
-package_install pam_pkcs11
+{{{ bash_package_install("esc") }}}
+{{{ bash_package_install("pam_pkcs11") }}}
 
 # Enable pcscd.socket systemd activation socket
 service_command enable pcscd.socket
