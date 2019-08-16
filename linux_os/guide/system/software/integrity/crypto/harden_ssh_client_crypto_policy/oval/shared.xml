@@ -1,16 +1,24 @@
+
+{{#
+  Constants.
+#}}
+{{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
+
+
+
 {{#
   Macro to define the criterion of the OVAL check (Criterion definition).
-  Based on macro defined in shared/macros-oval.jinja, but it uses parameter to derive a suffix therefore allowing to create more entities of criterium in one file.
+  Based on macro from shared/macros-oval.jinja, but made criterion name unique by appending the parameter
   This macro can take three parameters:
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_criterion(path='', parameter='', missing_parameter_pass=false) -%}}
-{{%- set suffix_id = parameter -%}}
+{{%- set suffix_id = "_"~parameter -%}}
 {{%- set prefix_text = "Check the" -%}}
 {{%- if missing_parameter_pass %}}
-{{%- set suffix_id = parameter ~ "_default_not_overriden" -%}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
 {{%- set prefix_text = prefix_text + " absence of" -%}}
 {{%- endif %}}
       <criterion comment="{{{ prefix_text }}} {{{ parameter }}} in {{{ path }}}"
@@ -19,18 +27,18 @@
 
 {{#
   Macro to define the OVAL test to be constructed (Test definition).
-  Based on macro defined in shared/macros-oval.jinja, but it uses parameter to derive a suffix therefore allowing to create more entities tests in one file.
+  Based on macro in shared/macros-oval.jinja, but the test name is unique by embedding parameter.
   This macro can take three parameters:
     - path (String): Path to the configuration file to be checked.
     - parameter (String): The parameter to be checked in the configuration file.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
 #}}
 {{%- macro oval_line_in_file_test(path='', parameter='', missing_parameter_pass=false) -%}}
-{{%- set suffix_id = parameter -%}}
+{{%- set suffix_id = "_"~parameter -%}}
 {{%- if missing_parameter_pass %}}
 {{%- set check_existence = "none_exist" -%}}
 {{%- set prefix_text = "value" -%}}
-{{%- set suffix_id = parameter ~ "_default_not_overriden" -%}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
 {{%- else %}}
 {{%- set check_existence = "all_exist" -%}}
 {{%- set prefix_text = "absence" -%}}
@@ -47,7 +55,7 @@
 
 {{#
   Macro to check if a parameter in a configuration file is set (Object definition).
-  Based on macro defined in shared/macros-oval.jinja, but it uses parameter to derive a suffix therefore allowing to create more entities of object in one file.
+  Based on shared/macros-oval-jinja, but support for tests with unique names was added by using the parameter, viz above.
   This macro can take six parameters:
     - path (String): Path to the configuration file to be checked.
     - section (String): If set, the parameter will be checked only within the given section defined by [section].
@@ -55,9 +63,15 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
+    - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
 #}}
-{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[\s]*', parameter='', separator_regex='[\s]+', missing_parameter_pass=false) -%}}
-{{%- set suffix_id = parameter -%}}
+{{%- macro oval_line_in_file_object(path='', section='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', missing_parameter_pass=false, multi_value=false) -%}}
+{{%- set suffix_id = "_"~parameter -%}}
+{{%- if multi_value -%}}
+{{%- set group_regex = "([^#]*).*$" -%}}
+{{%- else -%}}
+{{%- set group_regex = "(.+?)[ \\t]*(?:$|#)" -%}}
+{{%- endif -%}}
 {{%- if section %}}
 {{%- set common_regex = "^\s*\["+section+"\].*(?:\\n\s*[^[\s].*)*\\n"+prefix_regex+parameter+separator_regex -%}}
 {{%- if missing_parameter_pass %}}
@@ -68,11 +82,11 @@
 #}}
 {{%- set regex = common_regex -%}}
 {{%- else %}}
-{{%- set regex = common_regex+"(\S*)\s*(?:|(?:#.*))?$" -%}}
+{{%- set regex = common_regex+group_regex -%}}
 {{%- endif %}}
 {{%- else %}}
 {{%- if missing_parameter_pass %}}
-{{%- set suffix_id = parameter ~ "_default_not_overriden" -%}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
 {{#
   There is no need for having a regular expression with a capture
   group "(.*)" when checking if the parameter is not present in
@@ -80,7 +94,7 @@
 #}}
 {{%- set regex = prefix_regex+parameter+separator_regex -%}}
 {{%- else %}}
-{{%- set regex = prefix_regex+parameter+separator_regex+"(.*)[\s]*(?:|(?:#.*))?$" -%}}
+{{%- set regex = prefix_regex+parameter+separator_regex+group_regex -%}}
 {{%- endif %}}
 {{%- endif %}}
   <ind:textfilecontent54_object id="obj_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
@@ -92,23 +106,27 @@
 
 {{#
   Macro to check if a expected value can be found in the extracted information of an OVAL object (State definition).
-  Based on macro defined in shared/macros-oval.jinja, but it uses parameter to derive a suffix therefore allowing to create more entities of criterium in one file.
-  This macro can take two parameters:
-    - parameter (String) - not used in the actual check, it is there for creating a unique name for the check
+  Based on shared/macros-oval.jinja, but support for unique test names was added. If this should be supported, additional parameters called "parameter" and "missing_parameter_pass" have to be supplied.
+  This macro can take three parameters:
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
+    - parameter (String): The parameter to be checked in the configuration file. Not used in the actual state definition, but only to connect the state to the test.
+    - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied). Not used in the actual state definition, but only to connect the state to the test.
 #}}
-{{%- macro oval_line_in_file_state(parameter='', value='', multi_value='') -%}}
+{{%- macro oval_line_in_file_state(value='', multi_value='', parameter='', missing_parameter_pass=false) -%}}
 {{%- if multi_value %}}
-{{%- set regex = "^.*"+value+".*$" -%}}
+{{%- set regex = "^.*\\b"+value+"\\b.*$" -%}}
 {{%- else %}}
 {{%- set regex = "^"+value+"$" -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}{{{ parameter }}}" version="1">
+{{%- set suffix_id = "_"~parameter -%}}
+{{%- if missing_parameter_pass %}}
+{{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
+{{%- endif %}}
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
     <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{%- endmacro %}}
-
 
 <def-group>
   <definition class="compliance" id="harden_ssh_client_crypto_policy" version="3">
