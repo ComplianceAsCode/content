@@ -123,7 +123,7 @@
 {{%- if missing_parameter_pass %}}
 {{%- set suffix_id = "_"~parameter~suffix_id_default_not_overriden -%}}
 {{%- endif %}}
-  <ind:textfilecontent54_state id="state_{{{ rule_id }}}" version="1">
+  <ind:textfilecontent54_state id="state_{{{ rule_id }}}{{{ suffix_id }}}" version="1">
     <ind:subexpression datatype="string" operation="pattern match">{{{ regex }}}</ind:subexpression>
   </ind:textfilecontent54_state>
 {{%- endmacro %}}
