@@ -237,7 +237,7 @@ selections:
     - package_scap-security-guide_installed
 
     ## Ensure the audit Subsystem is Installed
-    - package_auditd_installed
+    - package_audit_installed
 
     ## Install libreswan Package
     - package_libreswan_installed

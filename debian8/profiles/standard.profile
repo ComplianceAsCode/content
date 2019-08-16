@@ -13,7 +13,7 @@ selections:
     - partition_for_var_log
     - partition_for_var_log_audit
     - partition_for_home
-    - package_auditd_installed
+    - package_audit_installed
     - package_cron_installed
     - package_ntp_installed
     - package_rsyslog_installed
