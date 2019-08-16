@@ -237,3 +237,4 @@ selections:
     - dnf-automatic_security_updates_only
     - package_dnf-automatic_installed
     - timer_dnf-automatic_enabled
+    - service_rngd_enabled

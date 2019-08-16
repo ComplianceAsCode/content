@@ -542,3 +542,19 @@ selections:
     # Enable dnf-automatic Timer
     #- timer_dnf-automatic_enabled
 
+    # Software update
+    - ensure_redhat_gpgkey_installed
+    - ensure_gpgcheck_globally_activated
+    - ensure_gpgcheck_local_packages
+    - ensure_gpgcheck_never_disabled
+
+    ###  SELinux Configuration
+
+    # Ensure SELinux is Enforcing
+    - var_selinux_state=enforcing
+    - selinux_state
+
+    # Configure SELinux Policy
+    - var_selinux_policy_name=targeted
+    - selinux_policytype
+    

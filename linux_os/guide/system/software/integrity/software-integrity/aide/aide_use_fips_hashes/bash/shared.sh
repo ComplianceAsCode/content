@@ -1,7 +1,6 @@
 # platform = multi_platform_rhel,multi_platform_fedora
-. /usr/share/scap-security-guide/remediation_functions
 
-package_install aide
+{{{ bash_package_install("aide") }}}
 
 aide_conf="/etc/aide.conf"
 forbidden_hashes=(sha1 rmd160 sha256 whirlpool tiger haval gost crc32)

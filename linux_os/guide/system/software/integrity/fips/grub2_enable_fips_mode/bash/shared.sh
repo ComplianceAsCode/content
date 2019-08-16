@@ -6,9 +6,9 @@
 disable_prelink
 
 if grep -q -m1 -o aes /proc/cpuinfo; then
-	package_install dracut-fips-aesni
+	{{{ bash_package_install("dracut-fips-aesni") }}}
 fi
-package_install dracut-fips
+{{{ bash_package_install("dracut-fips") }}}
 
 dracut -f
 
