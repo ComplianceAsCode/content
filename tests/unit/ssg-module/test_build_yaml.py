@@ -78,3 +78,10 @@ def test_make_items_product_specific():
     rule.make_refs_and_identifiers_product_specific("rhel6")
     assert rule.references["stigid"] == "RHEL-06-000237"
     assert "stigid@rhel6" not in rule.references
+
+    rule.references = {
+        "stigid@rhel6": "000237",
+        "stigid@rhel7": "040370,057364",
+    }
+    with pytest.raises(ValueError, match="Rules can not have multiple STIG IDs."):
+        rule.make_refs_and_identifiers_product_specific("rhel7")
