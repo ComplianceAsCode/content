@@ -95,9 +95,6 @@ selections:
     - audit_rules_kernel_module_loading_delete
     - audit_rules_kernel_module_loading_finit
     - audit_rules_kernel_module_loading_init
-    - audit_rules_kernel_module_loading_insmod
-    - audit_rules_kernel_module_loading_modprobe
-    - audit_rules_kernel_module_loading_rmmod
     - audit_rules_usergroup_modification
     - ensure_logrotate_activated
     - sshd_idle_timeout_value=15_minutes
