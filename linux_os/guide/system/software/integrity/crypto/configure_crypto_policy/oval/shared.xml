@@ -32,15 +32,15 @@
     <unix:canonical_path operation="pattern match" var_ref="var_crypto_policy_{{{ library }}}_path"/>
   </unix:symlink_state>
 
-  <file_test id="test_{{{ library }}}_dropin_file"
+  <unix:file_test id="test_{{{ library }}}_dropin_file"
   comment="Checks if a file exists in /etc/crypto-policies/local.d/ which could be a drop in  file for one of libraries"
   check_existence="all_exist" version="1">
-    <object object_ref="object_crypto_policy_{{{ library }}}_dropin_file" />
-  </file_test>
+    <unix:object object_ref="object_crypto_policy_{{{ library }}}_dropin_file" />
+  </unix:file_test>
 
-  <file_object id="object_crypto_policy_{{{ library }}}_dropin_file" version="1">
-    <path>^/etc/crypto-policies/local.d/.*{{{ library }}}.*\.config$</path>
-  </file_object>
+  <unix:file_object id="object_crypto_policy_{{{ library }}}_dropin_file" version="1">
+    <unix:path>^/etc/crypto-policies/local.d/.*{{{ library }}}.*\.config$</unix:path>
+  </unix:file_object>
 
 {{%- endmacro %}}
 
