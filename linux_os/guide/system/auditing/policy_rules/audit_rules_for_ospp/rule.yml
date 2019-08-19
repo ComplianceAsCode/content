@@ -4,32 +4,35 @@ prodtype: rhel7,rhel8
 
 title: 'Configure audit according to OSPP requirements'
 
-{{% set audit_dir="audit" %}}
+{{% set docs_dir="" %}}
 {{# in rhel7, docs dir are versioned #}}
 {{% if product == "rhel7" %}}
-  {{% set audit_dir="audit-2.8.4" %}}
+  {{% set docs_dir="-VERSION" %}}
 {{% endif %}}
+
 
 description: |-
     Configure audit to meet requirements for Operating System Protection Profile (OSPP) v4.2.1.
 
-    Audit defines groups of rules in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> to satisfy specific policies.
+    Audit defines groups of rules in <tt>/usr/share/doc/audit/rules</tt> to satisfy specific policies.
 
     To fulfill requirements for compliance with OSPP v4.2.1, the following files are necessary:
     <ul>
-    <li>/usr/share/doc/{{{ audit_dir }}}/rules/10-base-config.rules</li>
-    <li>/usr/share/doc/{{{ audit_dir }}}/rules/11-loginuid.rules</li>
-    <li>/usr/share/doc/{{{ audit_dir }}}/rules/30-ospp-v42.rules</li>
-    <li>/usr/share/doc/{{{ audit_dir }}}/rules/43-module-load.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/10-base-config.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/11-loginuid.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/30-ospp-v42.rules</li>
+    <li>/usr/share/doc/audit{{{ docs_dir }}}/rules/43-module-load.rules</li>
     </ul>
 
-    Copy the files from <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> to <tt>/etc/audit/rules.d</tt>:
+    Copy the files from <tt>/usr/share/doc/audit/rules</tt> to <tt>/etc/audit/rules.d</tt>:
     <pre>
-    cp /usr/share/doc/{{{ audit_dir }}}/rules/{10-base-config,11-loginuid,30-ospp-v42,43-module-load}.rules /etc/audit/rules.d/
+    cp /usr/share/doc/audit*/rules/{10-base-config,11-loginuid,30-ospp-v42,43-module-load}.rules /etc/audit/rules.d/
     </pre>
 
+
+
 rationale: |-
-    The audit rules defined in <tt>/usr/share/doc/{{{ audit_dir }}}/rules</tt> are the recommended way to meet compliance with OSPP v4.2.1.
+    The audit rules defined in <tt>/usr/share/doc/audit/rules</tt> are the recommended way to meet compliance with OSPP v4.2.1.
 
 severity: medium
 
@@ -44,6 +47,6 @@ ocil_clause: 'the files are not there or differ'
 
 ocil: |-
     To verify that audit is configured for OSPP v4.2.1, run the following commands:
-    <pre>for file in "10-base-config" "11-loginuid" "30-ospp-v42" "43-module-load";do diff /etc/{{{ audit_dir }}}/rules.d/$file.rules /usr/share/doc/{{{ audit_dir }}}/rules/$file.rules; done</pre>
+    <pre>for file in "10-base-config" "11-loginuid" "30-ospp-v42" "43-module-load";do diff /etc/audit/rules.d/$file.rules /usr/share/doc/audit*/rules/$file.rules; done</pre>
 
     If the system is configured properly, no lines should be returned.
