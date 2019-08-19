@@ -745,13 +745,15 @@ selections:
     ## Configure the tmux Lock Command
     - configure_tmux_lock_command
 
+    ## Ensure tmux is started for bash sessions
+    - configure_bashrc_exec_tmux
+
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4499
     #set -g status off
 
     ## setup tmux
     #mv /tmp/tmux.conf /etc/tmux.conf
     #restorecon /etc/tmux.conf
-    #sed -i 's/^fi/  if [ "$PS1" ]; then\n    [[ $TERM != "screen" ]] \&\& exec tmux\n  fi\nfi/' /etc/bashrc
     #sed -i '/tmux$/d' /etc/shells
 
     #################################################################
