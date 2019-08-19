@@ -1,7 +1,10 @@
 {{%- if target_oval_version == [5, 11] -%}}
 {{# there is no good alternative for symlink_test for OVAL 5.10 #}}
 {{%- macro crypto_policy_symlink_criterion(library) %}}
-      <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
+      <criteria operator="OR">
+        <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
+        <criterion comment="In case the file /etc/crypto-policies/back-ends/{{{ library }}}.config is not a symlink, it checks that the appropriate file exists in the /etc/crypto-policies/local.d and its contents are appended to /etc/crypto-policies/back-ends/{{{ library }}}.config", test_ref="test_{{{ library }}}_file">
+      </criteria>
 {{%- endmacro %}}
 
 {{%- macro crypto_policy_symlink_check(library) %}}
@@ -9,6 +12,13 @@
     <concat>
       <literal_component>^/usr/share/crypto-policies/</literal_component>
       <variable_component var_ref="var_system_crypto_policy"/>
+      <literal_component>/{{{ library }}}.txt$</literal_component>
+    </concat>
+  </local_variable>
+
+  <local_variable id="var_crypto_policy_{{{ library }}}_dropin_path" datatype="string" comment="Regex variable for canonical path to possible dropin file for {{{ library }}} policy" version="1">
+    <concat>
+      <literal_component>^/etc/crypto-policies/local.d/.*/</literal_component>
       <literal_component>/{{{ library }}}.txt$</literal_component>
     </concat>
   </local_variable>
