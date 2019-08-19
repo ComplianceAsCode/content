@@ -287,22 +287,16 @@ EOF
 }
 {{% endif %}}
 
-{{% set audit_dir="audit" %}}
-{{# in rhel7, docs dir are versioned #}}
-{{% if product == "rhel7" %}}
-  {{% set audit_dir="audit-2.8.4" %}}
-{{% endif %}}
-
-cp /usr/share/doc/{{{ audit_dir }}}/rules/10-base-config.rules /etc/audit/rules.d
-cp /usr/share/doc/{{{ audit_dir }}}/rules/11-loginuid.rules /etc/audit/rules.d
+cp /usr/share/doc/audit*/rules/10-base-config.rules /etc/audit/rules.d
+cp /usr/share/doc/audit*/rules/11-loginuid.rules /etc/audit/rules.d
 
 {{% if product == "rhel8" %}}
-# cp /usr/share/doc/{{{ audit_dir }}}/rules/30-ospp-v42.rules /etc/audit/rules.d
+# cp /usr/share/doc/audit*/rules/30-ospp-v42.rules /etc/audit/rules.d
 dump_ospp_rules
 {{% elif product == "rhel7" %}}
 dump_ospp_rules
 {{% endif %}}
 
-cp /usr/share/doc/{{{ audit_dir }}}/rules/43-module-load.rules /etc/audit/rules.d
+cp /usr/share/doc/audit*/rules/43-module-load.rules /etc/audit/rules.d
 
 augenrules --load
