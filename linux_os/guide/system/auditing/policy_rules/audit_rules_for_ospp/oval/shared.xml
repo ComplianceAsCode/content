@@ -1,19 +1,33 @@
-{{% macro file_hash_criterion(file_id) %}}
-      <criterion comment="check {{{ file_id }}} file" test_ref="test_{{{ file_id }}}" />
+{{% macro audit_file_compare_criterion(file_id) %}}
+      <criterion comment="check {{{ file_id }}}.rules file" test_ref="test_compare_{{{ file_id }}}" />
 {{% endmacro %}}
 
-{{% macro file_hash_test(file_path, file_id, hash_type, file_sum) %}}
-    <ind:filehash58_test check="all" comment="test rules from {{{ file_id }}}" id="test_{{{ file_id }}}" version="1">
-    <ind:object object_ref="object_{{{ file_id }}}_hash" />
-    <ind:state state_ref="state_{{{ file_id }}}_hash" />
-  </ind:filehash58_test>
-  <ind:filehash58_object id="object_{{{ file_id }}}_hash" version="1">
-    <ind:filepath>{{{ file_path }}}</ind:filepath>
-    <ind:hash_type>{{{ hash_type }}}</ind:hash_type>
-  </ind:filehash58_object>
-  <ind:filehash58_state id="state_{{{ file_id }}}_hash" version="1">
-      <ind:hash>{{{ file_sum }}}</ind:hash>
-  </ind:filehash58_state>
+{{% macro audit_file_compare_test(file_id) %}}
+  <ind:textfilecontent54_test check="all" check_existence="all_exist"
+  comment="Compare {{{ file_id }}}.rules file in /etc/audit/rules.d against file in /usr/share/doc/audit/"
+  id="test_compare_{{{ file_id }}}" version="1">
+    <ind:object object_ref="object_etc_{{{ file_id }}}" />
+    <ind:state state_ref="state_doc_{{{ file_id }}}" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="object_etc_{{{ file_id }}}" version="1">
+    <ind:filepath>/etc/audit/rules.d/{{{ file_id }}}.rules</ind:filepath>
+    <ind:pattern operation="pattern match">(?:.*\n)*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_doc_{{{ file_id }}}" version="1">
+    <ind:text operation="equals" var_check="all"
+    var_ref="var_doc_{{{ file_id }}}" />
+  </ind:textfilecontent54_state>
+  <local_variable datatype="string"
+  comment="Contents of reference file in /usr/share/doc/{{{ file_id }}}.rules"
+  id="var_doc_{{{ file_id }}}" version="1">
+    <object_component item_field="text" object_ref="object_doc_{{{ file_id }}}" />
+  </local_variable>
+  <ind:textfilecontent54_object id="object_doc_{{{ file_id }}}" version="1">
+    <ind:filepath operation="pattern match">^/usr/share/doc/audit(?:-\d.\d.\d)?/rules/{{{ file_id }}}.rules</ind:filepath>
+    <ind:pattern operation="pattern match">(?:.*\n)*</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
 {{% endmacro %}}
 
 <def-group>
@@ -24,51 +38,20 @@
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
       </affected>
-      <description>Check for hashes of the files containing the audit rules</description>
+      <description>Compare configure audit rules againd the recommended pre-configured files</description>
     </metadata>
 
     <criteria operator="AND">
-      {{{- file_hash_criterion("base_config") -}}}
-      {{{- file_hash_criterion("loginuid") -}}}
-      {{{- file_hash_criterion("ospp") -}}}
-      {{{- file_hash_criterion("module_load") -}}}
+      {{{- audit_file_compare_criterion("10-base-config") -}}}
+      {{{- audit_file_compare_criterion("11-loginuid") -}}}
+      {{{- audit_file_compare_criterion("30-ospp-v42") -}}}
+      {{{- audit_file_compare_criterion("43-module-load") -}}}
     </criteria>
   </definition>
 
-{{% if product == "rhel8" %}}
-    {{{ file_hash_test("/etc/audit/rules.d/10-base-config.rules",
-                     "base_config",
-                     "SHA-256",
-                     "54c2cebdaadfb928f7327cc066218e38743f0ff94d02fe162a7a415e148d23a8") }}}
-    {{{ file_hash_test("/etc/audit/rules.d/11-loginuid.rules",
-                     "loginuid",
-                     "SHA-256",
-                     "5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f") }}}
-    {{{ file_hash_test("/etc/audit/rules.d/30-ospp-v42.rules",
-                     "ospp",
-                     "SHA-256",
-                     "88959791c10b9b7d3cafa2cb4ff4970ead862b31a276aa05431c3e18d5a0d3aa") }}}
-    {{{ file_hash_test("/etc/audit/rules.d/43-module-load.rules",
-                     "module_load",
-                     "SHA-256",
-                     "88fe75a3bcb807fad74cd020e6e04347f7dbd3ef16de314c0c6a976cdde0dda0") }}}
-{{% elif product == "rhel7" %}}
-    {{{ file_hash_test("/etc/audit/rules.d/10-base-config.rules",
-                     "base_config",
-                     "SHA-256",
-                     "f98498bccc91176d17c4682e0fe32d36e6ce986c94fef342a3edf152d8dfa027") }}}
-    {{{ file_hash_test("/etc/audit/rules.d/11-loginuid.rules",
-                     "loginuid",
-                     "SHA-256",
-                     "5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f") }}}
-    {{{ file_hash_test("/etc/audit/rules.d/30-ospp-v42.rules",
-                     "ospp",
-                     "SHA-256",
-                     "38bf9ec49c29d876d8b5864722fb731ecee51a0ba68094342e0a66259bbf1ce9") }}}
-    {{{ file_hash_test("/etc/audit/rules.d/43-module-load.rules",
-                     "module_load",
-                     "SHA-256",
-                     "847a2222e407fb27aef5cc113f6fcffa60b9a9c5d36a1fffb2f3b6f268c2c134") }}}
-{{% endif %}}
+    {{{ audit_file_compare_test("10-base-config") }}}
+    {{{ audit_file_compare_test("11-loginuid") }}}
+    {{{ audit_file_compare_test("30-ospp-v42") }}}
+    {{{ audit_file_compare_test("43-module-load") }}}
 
 </def-group>
