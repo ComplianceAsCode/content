@@ -739,8 +739,8 @@ selections:
     ## Implement locking session after period of inactivity
     #################################################################
 
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4498
-    #set -g lock-after-time 900
+    ## Configure tmux to lock session after inactivity
+    - configure_tmux_lock_after_time
 
     ## Configure the tmux Lock Command
     - configure_tmux_lock_command
