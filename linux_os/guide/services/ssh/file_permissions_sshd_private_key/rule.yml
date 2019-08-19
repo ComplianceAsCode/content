@@ -2,7 +2,12 @@ documentation_complete: true
 
 title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
-description: '{{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0640") }}}'
+description: |-
+    {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0600") }}}
+    {{% else %}}
+    {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0640") }}}
+    {{% endif %}}
 
 rationale: |-
     If an unauthorized user obtains the private SSH host key file, the host could be
@@ -20,6 +25,7 @@ references:
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040420"
+    stigid@sle12: "030220"
     isa-62443-2013: 'SR 2.1,SR 5.2'
     isa-62443-2009: 4.3.3.7.3
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02

@@ -342,7 +342,7 @@
         </xsl:attribute>
         <xsl:choose>
           <xsl:when test="name() = 'stigid'">
-            <xsl:value-of select="normalize-space(concat(stigid-concat, .))" />
+            <xsl:value-of select="normalize-space(concat(stigid-concat, $refitem))" />
           </xsl:when>
           <xsl:otherwise>
             <xsl:choose>
