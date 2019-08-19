@@ -3,7 +3,7 @@
 {{%- macro crypto_policy_symlink_criterion(library) %}}
       <criteria operator="OR">
         <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
-        <criterion comment="In case the file /etc/crypto-policies/back-ends/{{{ library }}}.config is not a symlink, it checks that the appropriate file exists in the /etc/crypto-policies/local.d and its contents are appended to /etc/crypto-policies/back-ends/{{{ library }}}.config", test_ref="test_{{{ library }}}_file">
+        <criterion comment="In case the file /etc/crypto-policies/back-ends/{{{ library }}}.config is not a symlink, it checks that the appropriate file exists in the /etc/crypto-policies/local.d and its contents are appended to /etc/crypto-policies/back-ends/{{{ library }}}.config" test_ref="test_{{{ library }}}_dropin_file" />
       </criteria>
 {{%- endmacro %}}
 
@@ -12,13 +12,6 @@
     <concat>
       <literal_component>^/usr/share/crypto-policies/</literal_component>
       <variable_component var_ref="var_system_crypto_policy"/>
-      <literal_component>/{{{ library }}}.txt$</literal_component>
-    </concat>
-  </local_variable>
-
-  <local_variable id="var_crypto_policy_{{{ library }}}_dropin_path" datatype="string" comment="Regex variable for canonical path to possible dropin file for {{{ library }}} policy" version="1">
-    <concat>
-      <literal_component>^/etc/crypto-policies/local.d/.*/</literal_component>
       <literal_component>/{{{ library }}}.txt$</literal_component>
     </concat>
   </local_variable>
@@ -38,6 +31,17 @@
     <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
     <unix:canonical_path operation="pattern match" var_ref="var_crypto_policy_{{{ library }}}_path"/>
   </unix:symlink_state>
+
+  <file_test id="test_{{{ library }}}_dropin_file"
+  comment="Checks if a file exists in /etc/crypto-policies/local.d/ which could be a drop in  file for one of libraries"
+  check_existence="all_exist" version="1">
+    <object object_ref="object_crypto_policy_{{{ library }}}_dropin_file" />
+  </file_test>
+
+  <file_object id="object_crypto_policy_{{{ library }}}_dropin_file" version="1">
+    <path>^/etc/crypto-policies/local.d/.*{{{ library }}}.*\.config$</path>
+  </file_object>
+
 {{%- endmacro %}}
 
 {{% endif %}}
