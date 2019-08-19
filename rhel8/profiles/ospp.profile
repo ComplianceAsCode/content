@@ -748,13 +748,15 @@ selections:
     ## Ensure tmux is started for bash sessions
     - configure_bashrc_exec_tmux
 
+    ## Prevent user from disabling the screen lock
+    - no_tmux_in_shells
+
     ## TO DO: https://github.com/ComplianceAsCode/content/issues/4499
     #set -g status off
 
     ## setup tmux
     #mv /tmp/tmux.conf /etc/tmux.conf
     #restorecon /etc/tmux.conf
-    #sed -i '/tmux$/d' /etc/shells
 
     #################################################################
     ## Harden USB Guard

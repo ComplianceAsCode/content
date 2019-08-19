@@ -40,6 +40,7 @@ selections:
     - configure_tmux_lock_after_time
     - configure_tmux_lock_command
     - configure_bashrc_exec_tmux
+    - no_tmux_in_shells
     - sysctl_kernel_yama_ptrace_scope
     - sysctl_kernel_kptr_restrict
     - sysctl_kernel_kexec_load_disabled
