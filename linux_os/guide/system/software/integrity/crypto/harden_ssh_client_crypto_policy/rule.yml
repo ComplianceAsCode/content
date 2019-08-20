@@ -5,11 +5,13 @@ title: 'Harden SSH client Crypto Policy'
 description: |-
     Crypto Policies are means of enforcing certain cryptographic settings for selected applications including OpenSSH server.
     The SSH client is by default configured to modify its configuration based on currently configured Crypto-Policy. However, in certain cases it might be needed to override the Crypto Policy specific to OpenSSH Client and leave rest of the Crypto Policy intact.
-    This is unfortunately not possible through the Crypto Policy mechanism directly due to the way in which the SSH Client parses configuration files. It is needed to apply Crypto Policy modifications by dropping a file into the <tt>/etc/ssh/ssh_config.d/</tt> directory. The file needs to be named in a way such that it is parsed by SSH client before the actual Crypto Policy.
+    This is unfortunately not possible through the Crypto Policy mechanism directly due to the way in which the SSH Client parses configuration files. During the parsing process, as soon as the client parses some configuration option and its value, it remembers it and ignores any subsequent overides. The mechanism of crypto policies appends eventual customizations at the end of the system wide crypto policy. Therefore customizations will be ignored by the client.
+    Considering supported platforms, the default configuration file in <tt>/etc/ssh_ssh_config</tt> includes files matching the pattern <tt>/etc/ssh_ssh_config.d/*.conf</tt>. Currently, by default, there is present only one file called <tt>05-redhat.conf</tt>. This file subsequently includes the actual system-wide crypto policy placed in <tt>/etc/crypto-policies/back-ends/openssh.config</tt>.
+    To overide the system wide crypto policy, it is needed to place a file in the <tt>/etc/ssh/ssh_config.d/</tt> so that it is loaded before the <tt>05-redhat.conf</tt>. In this case it is file named <tt>05-ospp.conf</tt> containing parameters wchich need to be changed with respect to the crypto policy.
     This rule checks if the file exists and if it contains required parameters and values which modify the Crypto Policy.
 
 rationale: |-
-    The Common Criteria requirements specify that certain parameters for OpenSSH Client are configured. Specificaly  supported ciphers, public key types, key exchange algorithms, HMACs, RekeyLimit and GSSAPIAuthentication. Currently particular requirements specified by CC are stricter compared to any existing Crypto Policy.
+    The Common Criteria requirements specify how certain parameters for OpenSSH Client are configured. Particular parameters are RekeyLimit, GSSAPIAuthentication, Ciphers, PubkeyAcceptedKeyTypes, MACs and KexAlgorithms. Currently particular requirements specified by CC are stricter compared to any existing Crypto Policy.
 
 severity: medium
 
