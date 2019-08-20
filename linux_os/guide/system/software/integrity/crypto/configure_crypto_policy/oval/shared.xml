@@ -34,7 +34,7 @@
 
   <unix:file_test id="test_{{{ library }}}_dropin_file"
   comment="Checks if a file exists in /etc/crypto-policies/local.d/ which could be a drop in  file for one of libraries"
-  check_existence="all_exist" version="1">
+  check="all" check_existence="all_exist" version="1">
     <unix:object object_ref="object_crypto_policy_{{{ library }}}_dropin_file" />
   </unix:file_test>
 
