@@ -226,6 +226,7 @@ selections:
     ### Configure USBGuard
     - service_usbguard_enabled
     - configure_usbguard_auditbackend
+    - usbguard_allow_hub
 
     ### Enable / Configure FIPS
     - enable_fips_mode
