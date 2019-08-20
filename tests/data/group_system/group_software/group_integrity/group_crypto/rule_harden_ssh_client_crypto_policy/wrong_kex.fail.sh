@@ -9,4 +9,4 @@ GSSAPIAuthentication no\n\
 Ciphers aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc\n\
 PubkeyAcceptedKeyTypes ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256\n\
 MACs hmac-sha2-512,hmac-sha2-256\n\
-KexAlgorithms ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256\n" > "$file"
+KexAlgorithms ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1,malicious_kex_algo\n" > "$file"
