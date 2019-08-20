@@ -3,6 +3,7 @@
   Constants.
 #}}
 {{%- set suffix_id_default_not_overriden = "_default_not_overriden" -%}}
+{{%- set common_prefix_regex = "^Match final all(?:.*\n)*?\s*" -%}}
 
 
 
@@ -155,21 +156,21 @@
   {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Match', separator_regex='[\s]+', missing_parameter_pass=false) }}}
   {{{ oval_line_in_file_state(parameter='Match', value='final all') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex='^Match final all(?:.*\n)*\s*') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='RekeyLimit', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ oval_line_in_file_state(parameter='RekeyLimit', value='512M 1h') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex='^Match final all(?:.*\n)*\s*') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='GSSAPIAuthentication', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ oval_line_in_file_state(parameter='GSSAPIAuthentication', value='no') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex='^Match final all(?:.*\n)*\s*') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='Ciphers', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ oval_line_in_file_state(parameter='Ciphers', value='aes256-ctr,aes256-cbc,aes128-ctr,aes128-cbc') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex='^Match final all(?:.*\n)*\s*') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='PubkeyAcceptedKeyTypes', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ oval_line_in_file_state(parameter='PubkeyAcceptedKeyTypes', value='ssh-rsa,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex='^Match final all(?:.*\n)*\s*') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='MACs', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ oval_line_in_file_state(parameter='MACs', value='hmac-sha2-512,hmac-sha2-256') }}}
   {{{ oval_line_in_file_test(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', missing_parameter_pass=false) }}}
-  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex='^Match final all(?:.*\n)*\s*') }}}
+  {{{ oval_line_in_file_object(path='/etc/ssh/ssh_config.d/02-ospp.conf', parameter='KexAlgorithms', separator_regex='[\s]+', missing_parameter_pass=false, prefix_regex=common_prefix_regex) }}}
   {{{ oval_line_in_file_state(parameter='KexAlgorithms', value='ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group14-sha1') }}}
 </def-group>
