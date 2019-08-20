@@ -358,6 +358,8 @@ SL_NOTICE = \
     ".</p>" \
     "</div>"
 
+XCCDF_REFINABLE_PROPERTIES = ["weight", "severity", "role", "selector"]
+
 OVAL_TO_XCCDF_DATATYPE_CONSTRAINTS = {
     'int': 'number',
     'float': 'number',

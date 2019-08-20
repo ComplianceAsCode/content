@@ -12,6 +12,7 @@ import yaml
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .constants import STIG_PLATFORM_ID_MAP
+from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -132,6 +133,14 @@ class Profile(object):
             if "." in item:
                 rule, refinement = item.split(".", 1)
                 property_, value = refinement.split("=", 1)
+                if property_ not in XCCDF_REFINABLE_PROPERTIES:
+                    msg = ("Property '{property_}' cannot be refined. "
+                           "Rule properties that can be refined are {refinables}. "
+                           "Fix refinement '{rule_id}.{property_}={value}' in profile '{profile}'."
+                           .format(property_=property_, refinables=XCCDF_REFINABLE_PROPERTIES,
+                                   rule_id=rule, value=value, profile=self.id_)
+                           )
+                    raise ValueError(msg)
                 self.refine_rules[rule].append((property_, value))
             elif "=" in item:
                 varname, value = item.split("=", 1)
