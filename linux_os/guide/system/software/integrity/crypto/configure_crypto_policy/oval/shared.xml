@@ -39,7 +39,7 @@
   </unix:file_test>
 
   <unix:file_object id="object_crypto_policy_{{{ library }}}_dropin_file" version="1">
-    <unix:path>^/etc/crypto-policies/local.d/.*{{{ library }}}.*\.config$</unix:path>
+    <unix:filepath operation="pattern match">^/etc/crypto-policies/local.d/{{{ library }}}.*\.config$</unix:filepath>
   </unix:file_object>
 
 {{%- endmacro %}}
