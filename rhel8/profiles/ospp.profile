@@ -698,8 +698,8 @@ selections:
     ## Enable / Configure USB Guard
     #################################################################
     
-    ## TO DO: https://github.com/ComplianceAsCode/content/issues/4473
-    #sed -i "/AuditBackend/s/FileAudit/LinuxAudit/" /etc/usbguard/usbguard-daemon.conf
+    ## Log USBGuard daemon audit events using Linux Audit
+    - configure_usbguard_auditbackend
 
     ## TO DO: HOW TO HANDLE??
     #setup_usbguard
