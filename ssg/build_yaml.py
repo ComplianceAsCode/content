@@ -184,6 +184,24 @@ class Profile(object):
     def get_variable_selectors(self):
         return self.variables
 
+    def validate_refine_rules(self, rules):
+        existing_rule_ids = [r.id_ for r in rules]
+        for refine_rule, refinement_list in self.refine_rules.items():
+            if refine_rule not in existing_rule_ids:
+                # Take first refinement to ilustrate where the error is
+                # all refinements in list are invalid, so it doesn't really matter
+                a_refinement = refinement_list[0]
+                msg = (
+                    "You are trying to refine a rule that doesn't exist. "
+                    "Rule '{rule_id}' was not found in the benchmark. "
+                    "Please check all rule refinements for rule: '{rule_id}', for example: "
+                    "- {rule_id}.{property_}={value}' in profile {profile_id}."
+                    .format(rule_id=refine_rule, profile_id=self.id_,
+                            property_=a_refinement[0], value=a_refinement[1])
+
+                )
+                raise ValueError(msg)
+
     def validate_variables(self, variables):
         variables_by_id = dict()
         for var in variables:
