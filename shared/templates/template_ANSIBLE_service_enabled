@@ -4,8 +4,18 @@
 # complexity = low
 # disruption = low
 - name: Enable service {{{ SERVICENAME }}}
-  service:
-    name: "{{{ DAEMONNAME }}}"
-    enabled: "yes"
-    state: "started"
+  block:
+  - name: Check if {{{ PACKAGENAME }}} is installed
+    package:
+      name: {{{ PACKAGENAME }}}
+      state: present
+    check_mode: true
+    register: pkg
+  - name: Enable service {{{ SERVICENAME }}}
+    service:
+      name: "{{{ DAEMONNAME }}}"
+      enabled: "yes"
+      state: "started"
+    # package would be installed if package module was not run in check mode
+    when: not pkg.changed
 
