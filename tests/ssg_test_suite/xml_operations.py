@@ -123,6 +123,7 @@ def find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging=None):
     rule = benchmark_node.find(".//xccdf:Rule[@id='{0}']".format(rule_id), NAMESPACES)
     return rule
 
+
 def find_fix_in_benchmark(datastream, benchmark_id, rule_id, fix_type='bash', logging=None):
     """
     Return fix from benchmark. None if not found.

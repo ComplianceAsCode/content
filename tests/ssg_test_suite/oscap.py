@@ -12,7 +12,6 @@ import datetime
 from ssg_test_suite.log import LogHelper
 from ssg_test_suite import test_env
 from ssg_test_suite import common
-from ssg_test_suite import xml_operations
 
 from ssg.shims import input_func
 
@@ -402,10 +401,6 @@ class RuleRunner(GenericRunner):
 
         self._oscap_output = ''
 
-    @property
-    def remediation_type(self):
-        raise NotImplementedError()
-
     def _get_arf_file(self):
         return '{0}-initial-arf.xml'.format(self.rule_id)
 
@@ -485,23 +480,6 @@ class RuleRunner(GenericRunner):
         self.context = context
         return self.run_stage(stage)
 
-    def perform_remediation(self):
-        raise NotImplementedError()
-
-    def remediation(self):
-        if not self.is_remediation_available():
-            return False
-        self.perform_remediation()
-
-    def is_remediation_available(self):
-        fix = xml_operations.find_fix_in_benchmark(self.datastream, self.benchmark_id, self.rule_id, self.remediation_type)
-        if fix is None:
-            msg = (
-                'NO remediation was found for rule {}'.format(self.rule_id))
-            LogHelper.preload_log(logging.WARNING, msg, 'fail')
-            return False
-        return True
-
 
 class OscapProfileRunner(ProfileRunner):
     def remediation(self):
@@ -514,7 +492,7 @@ class AnsibleProfileRunner(ProfileRunner):
         self.command_options += ['--results-arf', self.arf_path]
         return super(AnsibleProfileRunner, self).initial()
 
-    def perform_remediation(self):
+    def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.profile)
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
@@ -530,7 +508,7 @@ class BashProfileRunner(ProfileRunner):
         self.command_options += ['--results-arf', self.arf_path]
         return super(BashProfileRunner, self).initial()
 
-    def perform_remediation(self):
+    def remediation(self):
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.profile)
 
@@ -538,11 +516,7 @@ class BashProfileRunner(ProfileRunner):
 
 
 class OscapRuleRunner(RuleRunner):
-    @property
-    def remediation_type(self):
-        return "bash"
-
-    def perform_remediation(self):
+    def remediation(self):
         self.command_options += ['--remediate']
         return self.make_oscap_call()
 
@@ -553,15 +527,11 @@ class OscapRuleRunner(RuleRunner):
 
 
 class BashRuleRunner(RuleRunner):
-    @property
-    def remediation_type(self):
-        return "bash"
-
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
         return super(BashRuleRunner, self).initial()
 
-    def perform_remediation(self):
+    def remediation(self):
 
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.rule_id)
@@ -571,18 +541,11 @@ class BashRuleRunner(RuleRunner):
 
 
 class AnsibleRuleRunner(RuleRunner):
-    @property
-    def remediation_type(self):
-        return "ansible"
-
     def initial(self):
         self.command_options += ['--results-arf', self.arf_path]
         return super(AnsibleRuleRunner, self).initial()
 
     def remediation(self):
-        if not self.is_remediation_available():
-            return False
-
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.yml'.format(self.rule_id)
         formatting['playbook'] = os.path.join(LogHelper.LOG_DIR,
@@ -623,9 +586,6 @@ class Checker(object):
                 state.map_on_top(self._run_test, args_list)
         elif profiles:
             self._run_test(profiles[0], test_data)
-
-    def _run_test(profile, test_data):
-        raise NotImplementedError()
 
     def _test_target(self, target):
         raise NotImplementedError()
