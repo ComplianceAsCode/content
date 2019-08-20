@@ -81,6 +81,7 @@ class Profile(object):
         self.selected = []
         self.unselected = []
         self.variables = dict()
+        self.refine_rules = dict()
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -127,7 +128,11 @@ class Profile(object):
 
     def _parse_selections(self, entries):
         for item in entries:
-            if "=" in item:
+            if "." in item:
+                rule, refinement = item.split(".", 1)
+                property_, value = refinement.split("=", 1)
+                self.refine_rules[rule] = (property_, value)
+            elif "=" in item:
                 varname, value = item.split("=", 1)
                 self.variables[varname] = value
             elif item.startswith("!"):
@@ -162,6 +167,12 @@ class Profile(object):
             refine_value.set("idref", value_id)
             refine_value.set("selector", selector)
             element.append(refine_value)
+
+        for refined_rule, refinement in self.refine_rules.items():
+            refine_rule = ET.Element("refine-rule")
+            refine_rule.set("idref", refined_rule)
+            refine_rule.set(refinement[0], refinement[1])
+            element.append(refine_rule)
 
         return element
 

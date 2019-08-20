@@ -433,6 +433,7 @@ selections:
 
     ## Disable the use of user namespaces
     - sysctl_user_max_user_namespaces
+    - sysctl_user_max_user_namespaces.role=unscored
 
     ## Disable Access to Network bpf() Syscall From Unprivileged Processes
     - sysctl_kernel_unprivileged_bpf_disabled
