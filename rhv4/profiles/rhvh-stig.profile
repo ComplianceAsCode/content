@@ -419,7 +419,6 @@ selections:
     - auditd_data_retention_space_left
     - audit_rules_execution_setfiles
     - audit_rules_kernel_module_loading_finit
-    - install_mcafee_antivirus
     - configure_firewalld_ports
     - package_openssh-server_installed
     - sshd_print_last_log
