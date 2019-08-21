@@ -11,4 +11,5 @@
     regexp: '^\s*max_log_file\s*=\s*.*$'
     line: "max_log_file = {{ var_auditd_max_log_file }}"
     state: present
+    create: yes
   #notify: reload auditd

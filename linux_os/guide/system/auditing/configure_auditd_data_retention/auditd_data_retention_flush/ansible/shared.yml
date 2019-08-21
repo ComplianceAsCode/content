@@ -11,4 +11,5 @@
     regexp: '^\s*flush\s*=\s*.*$'
     line: "flush = {{ var_auditd_flush }}"
     state: present
+    create: yes
   #notify: reload auditd
