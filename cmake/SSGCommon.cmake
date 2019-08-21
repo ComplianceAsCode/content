@@ -585,6 +585,10 @@ macro(ssg_build_sds PRODUCT)
         NAME "validate-ssg-${PRODUCT}-ds.xml"
         COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
     )
+    add_test(
+        NAME "validate-ssg-${PRODUCT}-ds-1.2.xml"
+        COMMAND "${OPENSCAP_OSCAP_EXECUTABLE}" ds sds-validate "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
+    )
 endmacro()
 
 macro(ssg_build_html_guides PRODUCT)
