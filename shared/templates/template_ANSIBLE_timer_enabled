@@ -4,8 +4,15 @@
 # complexity = low
 # disruption = low
 - name: Enable timer {{{ TIMERNAME }}}
-  systemd:
-    name: "{{{ TIMERNAME }}}.timer"
-    enabled: "yes"
-    state: "started"
+  block:
+  - name: Gather the rpm package facts
+    package_facts:
+      manager: auto
+  - name: Enable timer {{{ TIMERNAME }}}
+    systemd:
+      name: "{{{ TIMERNAME }}}.timer"
+      enabled: "yes"
+      state: "started"
+    when: |-
+      '{{{ PACKAGENAME }}}' in ansible_facts.packages
 

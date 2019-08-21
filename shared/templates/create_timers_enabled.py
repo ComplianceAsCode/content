@@ -43,7 +43,8 @@ class TimerEnabledGenerator(FilesGenerator):
             self.file_from_template(
                 "./template_ANSIBLE_timer_enabled",
                 {
-                    "TIMERNAME": timername
+                    "TIMERNAME": timername,
+                    "PACKAGENAME": packagename
                 },
                 "./ansible/timer_{0}_enabled.yml", timername
             )
