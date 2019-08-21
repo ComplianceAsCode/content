@@ -57,9 +57,6 @@ selections:
     - var_sshd_set_keepalive=0
     - sshd_set_keepalive
     - sshd_enable_warning_banner
-    #- sshd_disable_rhosts_rsa
-    #- sshd_use_approved_ciphers
-    #- sshd_use_approved_macs
     - sshd_rekey_limit
 
     # Time Server
@@ -94,15 +91,12 @@ selections:
     - disable_ctrlaltdel_reboot
     - disable_ctrlaltdel_burstaction
     - service_debug-shell_disabled
-    #- service_kdump_disabled
-    #- service_autofs_disabled
 
     ### umask
     - var_accounts_user_umask=027
     - accounts_umask_etc_profile
     - accounts_umask_etc_bashrc
     - accounts_umask_etc_csh_cshrc
-    #- accounts_umask_etc_login_defs
 
     ### Software update
     - ensure_redhat_gpgkey_installed
@@ -120,7 +114,6 @@ selections:
 
     ### Kernel Config
     ## Boot prompt
-    #- package_dracut-fips_installed
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_slub_debug_argument
@@ -157,10 +150,8 @@ selections:
     - auditd_name_format
 
     ### Module Blacklist
-    #- kernel_module_usb-storage_disabled
     - kernel_module_cramfs_disabled
     - kernel_module_bluetooth_disabled
-    #- kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
     - kernel_module_firewire-core_disabled
     - kernel_module_atm_disabled
@@ -168,7 +159,6 @@ selections:
     - kernel_module_tipc_disabled
 
     ### rpcbind
-    #- service_rpcbind_disabled
 
     ### Install Required Packages
     - package_sssd-ipa_installed
@@ -238,7 +228,6 @@ selections:
     - configure_usbguard_auditbackend
 
     ### Enable / Configure FIPS
-    #- grub2_enable_fips_mode
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
@@ -248,9 +237,7 @@ selections:
     - configure_openssl_crypto_policy
     - configure_libreswan_crypto_policy
     - configure_kerberos_crypto_policy
-    #- sysctl_crypto_fips_enabled
     - enable_dracut_fips_module
-    #- etc_system_fips_exists
 
     #######################################################
     ### CONFIGURATION ANNEX TO THE PROTECTION PROFILE
