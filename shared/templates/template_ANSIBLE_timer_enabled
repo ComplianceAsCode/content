@@ -5,7 +5,7 @@
 # disruption = low
 - name: Enable timer {{{ TIMERNAME }}}
   block:
-  - name: Gather the rpm package facts
+  - name: Gather the package facts
     package_facts:
       manager: auto
   - name: Enable timer {{{ TIMERNAME }}}
