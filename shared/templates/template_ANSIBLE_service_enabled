@@ -5,17 +5,14 @@
 # disruption = low
 - name: Enable service {{{ SERVICENAME }}}
   block:
-  - name: Check if {{{ PACKAGENAME }}} is installed
-    package:
-      name: {{{ PACKAGENAME }}}
-      state: present
-    check_mode: true
-    register: pkg
+  - name: Gather the rpm package facts
+    package_facts:
+      manager: auto
+
   - name: Enable service {{{ SERVICENAME }}}
     service:
       name: "{{{ DAEMONNAME }}}"
       enabled: "yes"
       state: "started"
-    # package would be installed if package module was not run in check mode
-    when: not pkg.changed
-
+    when: |-
+      '{{{ PACKAGENAME }}}' in ansible_facts.packages
