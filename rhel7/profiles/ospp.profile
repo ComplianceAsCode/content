@@ -101,7 +101,6 @@ selections:
     ### Kernel Config
     ## Boot prompt
     - package_dracut-fips_installed
-    - grub2_enable_fips_mode
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_slub_debug_argument
