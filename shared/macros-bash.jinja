@@ -114,7 +114,7 @@ fi
 # Check for setting in any of the DConf db directories
 # If files contain ibus or distro, ignore them.
 # The assignment assumes that individual filenames don't contain :
-readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" | grep -v "distro\\|ibus" | cut -d":" -f1)
+readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
 DCONFFILE="/etc/dconf/db/{{{ db }}}/{{{ setting_file }}}"
 DBDIR="/etc/dconf/db/{{{ db }}}"
 
@@ -143,7 +143,7 @@ dconf update
 #}}
 {{%- macro dconf_lock(key, setting, db, lock_file) -%}}
 # Check for setting in any of the DConf db directories
-LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" | grep -v "distro\\|ibus" | cut -d":" -f1)
+LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
 LOCKSFOLDER="/etc/dconf/db/{{{ db }}}/locks"
 
 mkdir -p "${LOCKSFOLDER}"
