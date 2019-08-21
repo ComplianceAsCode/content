@@ -5,9 +5,10 @@ prodtype: fedora,rhel8,ol8
 title: 'Configure System Cryptography Policy'
 
 description: |-
-    To configure the system cyptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
+    To configure the system cryptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
     policy, run the following command:
     <pre>$ sudo update-crypto-policies --set <sub idref="var_system_crypto_policy" /></pre>
+    The rule checks if an appropriate crypto policy is configured. Configuration files in the <tt>/etc/crypto-policies/back-ends</tt> are either symlinks to correct files provided by Crypto-policies package or thei are regular files in case crypto policy customizations are applied.
 
 rationale: |-
     Centralized cryptographic policies simplify applying secure ciphers across an operating system and
