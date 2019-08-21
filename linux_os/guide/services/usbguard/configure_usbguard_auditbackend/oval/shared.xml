@@ -1,0 +1,13 @@
+{{{
+oval_check_config_file(
+	"/etc/usbguard/usbguard-daemon.conf",
+	prefix_regex="^[ \\t]*",
+	parameter="AuditBackend",
+	separator_regex='=',
+	value="LinuxAudit",
+	missing_parameter_pass=false,
+	application="usbguard",
+	multi_value=false,
+	missing_config_file_fail=true
+	)
+}}}
