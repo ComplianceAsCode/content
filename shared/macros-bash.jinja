@@ -120,7 +120,7 @@ DBDIR="/etc/dconf/db/{{{ db }}}"
 
 mkdir -p "${DBDIR}"
 
-if [ ${#SETTINGSFILES[@]} -eq 0 ]
+if [ "${#SETTINGSFILES[@]}" -eq 0 ]
 then
     [ ! -z ${DCONFFILE} ] || echo "" >> ${DCONFFILE}
     printf '%s\n' "[{{{ path }}}]" >> ${DCONFFILE}
