@@ -176,7 +176,7 @@
                 <xsl:attribute name="system">
                   <xsl:value-of select="$disa-stigs-uri" />
                 </xsl:attribute>
-                <xsl:value-of select="concat(stigid-concat, .)" />
+                <xsl:value-of select="." />
               </xsl:when>
               <xsl:when test="name() = 'custom-cce'">
                 <xsl:attribute name="system">
@@ -341,18 +341,11 @@
           </xsl:if>
         </xsl:attribute>
         <xsl:choose>
-          <xsl:when test="name() = 'stigid'">
-            <xsl:value-of select="normalize-space(concat(stigid-concat, $refitem))" />
+          <xsl:when test="name() = 'disa'">
+            <xsl:value-of select='format-number($refitem, "CCI-000000")' />
           </xsl:when>
           <xsl:otherwise>
-            <xsl:choose>
-              <xsl:when test="name() = 'disa'">
-                <xsl:value-of select='format-number($refitem, "CCI-000000")' />
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="normalize-space($refitem)" />
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="normalize-space($refitem)" />
           </xsl:otherwise>
         </xsl:choose>
       </reference>

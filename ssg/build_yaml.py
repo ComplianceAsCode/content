@@ -683,13 +683,15 @@ class Rule(object):
         return rule
 
     def _make_stigid_product_specific(self, product):
+        stig_id = self.references.get("stigid", None)
+        if not stig_id:
+            return
+        if "," in stig_id:
+            raise ValueError("Rules can not have multiple STIG IDs.")
         stig_platform_id = STIG_PLATFORM_ID_MAP.get(product, product.upper())
-        for ref, val in self.references.items():
-            if ref == "stigid":
-                if stig_platform_id and not val.startswith(stig_platform_id):
-                    self.references[ref] = "{platform_id}-{stig_id}".format(
-                        platform_id=stig_platform_id, stig_id=val,
-                    )
+        product_specific_stig_id = "{platform_id}-{stig_id}".format(
+            platform_id=stig_platform_id, stig_id=stig_id)
+        self.references["stigid"] = product_specific_stig_id
 
     def normalize(self, product):
         try:
