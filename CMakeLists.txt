@@ -36,16 +36,8 @@ set(SSG_VERSION "${SSG_MAJOR_VERSION}.${SSG_MINOR_VERSION}.${SSG_PATCH_VERSION}"
 
 set(SSG_VENDOR "ssgproject" CACHE STRING "Specify the XCCDF 1.2 vendor string.")
 
-set(SSG_TARGET_SCAP_VERSION "1.3" CACHE STRING "Which SCAP version we are targetting. Possible choices are 1.3 and 1.2")
-
 set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
 set(SSG_TARGET_OVAL_MINOR_VERSION "11" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
-
-# If targetting SCAP 1.2, target OVAL version is 5.10
-if (SSG_TARGET_SCAP_VERSION VERSION_EQUAL "1.2")
-    set(SSG_TARGET_OVAL_MAJOR_VERSION "5" CACHE STRING "Which major version of OVAL are we targetting. Only 5 is supported at the moment.")
-    set(SSG_TARGET_OVAL_MINOR_VERSION "10" CACHE STRING "Which minor version of OVAL are we targetting. Possible choices are 10 or 11.")
-endif()
 
 set(SSG_TARGET_OVAL_VERSION "${SSG_TARGET_OVAL_MAJOR_VERSION}.${SSG_TARGET_OVAL_MINOR_VERSION}")
 
@@ -140,10 +132,6 @@ if (NOT SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.10" AND NOT SSG_TARGET_OVAL_VER
     message(WARNING "You are targetting OVAL version ${SSG_TARGET_OVAL_VERSION}. In SSG we support/test 5.10 and 5.11 only!")
 endif()
 
-if (NOT SSG_TARGET_SCAP_VERSION VERSION_EQUAL "1.3" AND NOT SSG_TARGET_SCAP_VERSION VERSION_EQUAL "1.2")
-    message(WARNING "You are targetting SCAP version ${SSG_TARGET_SCAP_VERSION}. In SSG we support/test 1.3 and 1.2 only!")
-endif()
-
 execute_process(
     COMMAND "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/oscap_svg_support.py" "${OPENSCAP_OSCAP_EXECUTABLE}"
     RESULT_VARIABLE OSCAP_SVG_SUPPORT_RESULT
@@ -222,7 +210,6 @@ message(STATUS " ")
 
 message(STATUS "Build options:")
 message(STATUS "SSG vendor string: ${SSG_VENDOR}")
-message(STATUS "Target SCAP version: ${SSG_TARGET_SCAP_VERSION}")
 message(STATUS "Target OVAL version: ${SSG_TARGET_OVAL_VERSION}")
 message(STATUS "OVAL schematron validation: ${SSG_OVAL_SCHEMATRON_VALIDATION_ENABLED}")
 message(STATUS "shellcheck bash fixes validation: ${SSG_SHELLCHECK_BASH_FIXES_VALIDATION_ENABLED}")
@@ -276,10 +263,10 @@ add_subdirectory("tests")
 
 # Targets 'stats', 'profile-stats' and 'zipfile' need to be added
 # before any product because they will receive dependencies from products added
-if(SSG_TARGET_SCAP_VERSION VERSION_EQUAL "1.3")
+if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}")
 else()
-    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
+    ssg_build_zipfile_target("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
 endif()
 
 add_custom_target(stats)
@@ -367,12 +354,12 @@ endif()
 
 # ZIP only contains source datastreams and kickstarts, people who
 # want sources to build from should get the tarball instead.
-if(SSG_TARGET_SCAP_VERSION VERSION_EQUAL "1.3")
+if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.3")
+    ssg_build_vendor_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.3")
 else()
-    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
+    ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
+    ssg_build_vendor_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
 endif()
 
 ssg_define_guide_and_table_tests()

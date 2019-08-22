@@ -34,7 +34,7 @@ handle_wrong_argument() {
 	echo
 	echo
 	printf 'Usage:\n'
-	printf '\tbuild-product [--debug] [--scap12] <product-name> [<product-name> ...]\n'
+	printf '\tbuild-product [--debug] [--oval510] <product-name> [<product-name> ...]\n'
 	echo
 	if test -n "$1"; then
 		printf "The argument '%s' is not supported.\\n" "$1"
@@ -42,7 +42,7 @@ handle_wrong_argument() {
 		printf 'Supply product names as arguments to this script.\n'
 	fi
 	printf 'Option --debug can be used to build draft profiles\n'
-	printf 'Option --scap12 can be used to build SCAP 1.2 Content (Default is 1.3)\n'
+	printf 'Option --oval510 can be used to build Content with OVAL 5.10 (Default is 5.11)\n'
 
 	printf 'Choose one or more product names from the list: %s' "$possible_products"
 	echo
@@ -80,7 +80,7 @@ if (( $# == 0 )); then
 	handle_wrong_argument
 fi
 
-scap_version="-DSSG_TARGET_SCAP_VERSION:STRING=1.3"
+oval_minor_version="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=11"
 build_type="-DCMAKE_BUILD_TYPE=Release"
 
 # currently only two modifier options are available
@@ -89,8 +89,8 @@ for i in {1..2}; do
 		build_type="-DCMAKE_BUILD_TYPE=Debug"
 		shift
 	else
-		if [[ "$1" == "--scap12" ]]; then
-			scap_version="-DSSG_TARGET_SCAP_VERSION:STRING=1.2"
+		if [[ "$1" == "--oval510" ]]; then
+			oval_minor_version="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=10"
 			shift
 		fi
 	fi
@@ -118,5 +118,5 @@ fi
 set -e
 rm -rf build/*
 cd build
-cmake .. "${build_type}" "${scap_version}" -DSSG_PRODUCT_DEFAULT=OFF "${cmake_enable_args[@]}" -G "$cmake_generator"
+cmake .. "${build_type}" "${oval_minor_version}" -DSSG_PRODUCT_DEFAULT=OFF "${cmake_enable_args[@]}" -G "$cmake_generator"
 $build_command "-j${cores}"
