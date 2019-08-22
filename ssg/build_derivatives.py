@@ -108,7 +108,7 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
                 fix.text = re.sub(r"CCE-[0-9]*-[0-9]*", "", fix.text)
 
 
-def remove_cce_reference(tree_root, namespace, prod="RHEL"):
+def remove_cce_reference(tree_root, namespace):
     """
     Remove CCE identifiers from OVAL checks in XML tree
     """
