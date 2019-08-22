@@ -1251,6 +1251,6 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
         redhat-zipfile
         DEPENDS "${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
     )
-    add_custom_target(vendor-zipfile ALL)
+    add_custom_target(vendor-zipfile)
     add_dependencies(vendor-zipfile redhat-zipfile)
 endmacro()
