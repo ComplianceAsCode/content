@@ -8,7 +8,7 @@ description: |-
 
     In addition to being applicable to RHEL6, DISA recognizes this
     configuration baseline as applicable to the operating system
-    tier of Red Hat technologies that are based off RHEL6, such as RHEL
+    tier of Red Hat technologies that are based on RHEL6, such as RHEL
     Server,  RHV-H, RHEL for HPC, RHEL Workstation, and Red Hat
     Storage deployments.
 
