@@ -1217,6 +1217,8 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
     else()
         set(SCAP_DS_VERSION_SUFFIX  "-1.2")
     endif()
+
+    # Red Hat zipfile
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
         COMMAND ${CMAKE_COMMAND} -E remove_directory "vendor-zipfile/"
@@ -1246,7 +1248,9 @@ macro(ssg_build_vendor_zipfile ZIPNAME)
         DEPENDS rhv4
         )
     add_custom_target(
-        vendor-zipfile
+        redhat-zipfile
         DEPENDS "${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
     )
+    add_custom_target(vendor-zipfile ALL)
+    add_dependencies(vendor-zipfile redhat-zipfile)
 endmacro()
