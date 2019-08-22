@@ -14,5 +14,5 @@
       name: "{{{ DAEMONNAME }}}"
       enabled: "yes"
       state: "started"
-    when: |-
-      '{{{ PACKAGENAME }}}' in ansible_facts.packages
+    when:
+    - '"{{{ PACKAGENAME }}}" in ansible_facts.packages'
