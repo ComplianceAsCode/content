@@ -107,9 +107,9 @@ def main():
     overall_result = True
     args = parse_args()
     if args.scap_version == "1.2":
-        ds_suffix = "-ds.xml"
+        ds_suffix = "-ds-1.2.xml"
     elif args.scap_version == "1.3":
-        ds_suffix = "-ds-1.3.xml"
+        ds_suffix = "-ds.xml"
     for filename in os.listdir(args.build_dir):
         if filename.endswith(ds_suffix):
             print("Testing %s ..." % filename)
