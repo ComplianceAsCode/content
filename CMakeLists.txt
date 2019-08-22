@@ -356,10 +356,10 @@ endif()
 # want sources to build from should get the tarball instead.
 if(SSG_TARGET_OVAL_VERSION VERSION_EQUAL "5.11")
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.3")
+    ssg_build_vendor_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.3")
 else()
     ssg_build_zipfile("scap-security-guide-${SSG_VERSION}-oval-${SSG_TARGET_OVAL_VERSION}")
-    ssg_build_nist_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
+    ssg_build_vendor_zipfile("scap-security-guide-${SSG_VERSION}-SCAP-1.2")
 endif()
 
 ssg_define_guide_and_table_tests()

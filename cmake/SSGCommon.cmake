@@ -1210,7 +1210,7 @@ macro(ssg_build_zipfile_target ZIPNAME)
     )
 endmacro()
 
-macro(ssg_build_nist_zipfile ZIPNAME)
+macro(ssg_build_vendor_zipfile ZIPNAME)
     # When SCAP1.2 content is no longer built along with 1.3 content, remove the if below
     if("${ZIPNAME}" MATCHES "SCAP-1.3")
         set(SCAP_DS_VERSION_SUFFIX  "")
@@ -1218,26 +1218,26 @@ macro(ssg_build_nist_zipfile ZIPNAME)
         set(SCAP_DS_VERSION_SUFFIX  "-1.2")
     endif()
     add_custom_command(
-        OUTPUT "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
-        COMMAND ${CMAKE_COMMAND} -E remove_directory "nist-zipfile/"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "nist-zipfile/${ZIPNAME}"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-rh*-ds${SCAP_DS_VERSION_SUFFIX}.xml" -DDEST="nist-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-ocp*-ds${SCAP_DS_VERSION_SUFFIX}.xml" -DDEST="nist-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/bash"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-rh*.sh" -DDEST="nist-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-ocp*.sh" -DDEST="nist-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/ansible"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-rh*.yml" -DDEST="nist-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-ocp*.yml" -DDEST="nist-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/guides"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-rh*" -DDEST="nist-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-ocp*" -DDEST="nist-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -E make_directory "nist-zipfile/${ZIPNAME}/tables"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-rh*" -DDEST="nist-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-ocp*" -DDEST="nist-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
-        COMMAND ${CMAKE_COMMAND} -E chdir "nist-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-nist.zip" --format=zip "${ZIPNAME}"
-        COMMENT "Building NIST zipfile at ${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+        OUTPUT "${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "vendor-zipfile/"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "vendor-zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE" "vendor-zipfile/${ZIPNAME}"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-rh*-ds${SCAP_DS_VERSION_SUFFIX}.xml" -DDEST="vendor-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-ocp*-ds${SCAP_DS_VERSION_SUFFIX}.xml" -DDEST="vendor-zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "vendor-zipfile/${ZIPNAME}/bash"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-rh*.sh" -DDEST="vendor-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/ssg-ocp*.sh" -DDEST="vendor-zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "vendor-zipfile/${ZIPNAME}/ansible"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-rh*.yml" -DDEST="vendor-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ansible/ssg-ocp*.yml" -DDEST="vendor-zipfile/${ZIPNAME}/ansible" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "vendor-zipfile/${ZIPNAME}/guides"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-rh*" -DDEST="vendor-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/guides/ssg-ocp*" -DDEST="vendor-zipfile/${ZIPNAME}/guides" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "vendor-zipfile/${ZIPNAME}/tables"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-rh*" -DDEST="vendor-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/tables/table-ocp*" -DDEST="vendor-zipfile/${ZIPNAME}/tables" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -E chdir "vendor-zipfile" ${CMAKE_COMMAND} -E tar "cvf" "${ZIPNAME}-RedHat.zip" --format=zip "${ZIPNAME}"
+        COMMENT "Building Red Hat zipfile at ${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
         DEPENDS ocp3
         DEPENDS rhel6
         DEPENDS rhel7
@@ -1246,7 +1246,7 @@ macro(ssg_build_nist_zipfile ZIPNAME)
         DEPENDS rhv4
         )
     add_custom_target(
-        nist-zipfile
-        DEPENDS "${CMAKE_BINARY_DIR}/nist-zipfile/${ZIPNAME}-nist.zip"
+        vendor-zipfile
+        DEPENDS "${CMAKE_BINARY_DIR}/vendor-zipfile/${ZIPNAME}-RedHat.zip"
     )
 endmacro()
