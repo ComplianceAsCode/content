@@ -577,7 +577,7 @@ macro(ssg_build_sds PRODUCT)
             DEPENDS generate-ssg-${PRODUCT}-cpe-dictionary.xml
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-dictionary.xml"
             DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-cpe-oval.xml"
-            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xm and ssg-${PRODUCT}-ds-1.2.xml"
+            COMMENT "[${PRODUCT}-content] generating ssg-${PRODUCT}-ds.xml and ssg-${PRODUCT}-ds-1.2.xml"
         )
     endif()
     add_custom_target(
