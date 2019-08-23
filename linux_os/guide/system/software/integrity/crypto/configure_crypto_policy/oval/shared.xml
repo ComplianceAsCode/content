@@ -2,8 +2,14 @@
 {{# there is no good alternative for symlink_test for OVAL 5.10 #}}
 {{%- macro crypto_policy_symlink_criterion(library) %}}
       <criteria operator="OR">
-        <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
-        <criterion comment="In case the file /etc/crypto-policies/back-ends/{{{ library }}}.config is not a symlink, it checks that the appropriate file exists in the /etc/crypto-policies/local.d and its contents are appended to /etc/crypto-policies/back-ends/{{{ library }}}.config" test_ref="test_{{{ library }}}_dropin_file" />
+        <criteria operator="AND">
+          <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
+          <criterion comment="Checks if there is NOT a drop in file in /etc/crypto-policies/local.d associated with {{{ library }}}." test_ref="test_{{{ library }}}_dropin_file" negate="true" />
+        </criteria>
+        <criteria operator="AND">
+          <criterion comment="checks if the /etc/crypto-policies/back-ends/{{{ library }}}.config file is a regular file." test_ref="test_{{{ library }}}_regular_file"/>
+          <criterion comment="In case the file /etc/crypto-policies/back-ends/{{{ library }}}.config is a regular file, it checks that the appropriate file exists in the /etc/crypto-policies/local.d." test_ref="test_{{{ library }}}_dropin_file" />
+        </criteria>
       </criteria>
 {{%- endmacro %}}
 
@@ -31,6 +37,22 @@
     <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
     <unix:canonical_path operation="pattern match" var_ref="var_crypto_policy_{{{ library }}}_path"/>
   </unix:symlink_state>
+
+  <unix:file_test id="test_{{{ library }}}_regular_file"
+  comment="Checks if a file in /etc/crypto-policies/back-ends/{{{ library }}}.config is a regular file"
+  check="all" check_existence="all_exist" version="1">
+    <unix:object object_ref="object_crypto_policy_{{{ library }}}_regular_file" />
+    <unix:state state_ref="state_crypto_policy_{{{ library }}}_regular_file" />
+  </unix:file_test>
+
+  <unix:file_object id="object_crypto_policy_{{{ library }}}_regular_file" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
+  </unix:file_object>
+
+  <unix:file_state id="state_crypto_policy_{{{ library }}}_regular_file" version="1">
+    <unix:filepath>/etc/crypto-policies/back-ends/{{{ library }}}.config</unix:filepath>
+    <unix:type>regular</unix:type>
+  </unix:file_state>
 
   <unix:file_test id="test_{{{ library }}}_dropin_file"
   comment="Checks if a file exists in /etc/crypto-policies/local.d/ which could be a drop in  file for one of libraries"

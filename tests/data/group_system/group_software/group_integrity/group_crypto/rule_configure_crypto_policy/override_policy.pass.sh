@@ -5,8 +5,6 @@
 #using openssh server as example
 CRYPTO_POLICY_OVERRIDE_FILE="/etc/crypto-policies/local.d/opensshserver-test.config"
 
-update-crypto-policies --set "FIPS"
-
 cat "CRYPTO_POLICY=test" > "$CRYPTO_POLICY_OVERRIDE_FILE"
 
 update-crypto-policies --set "FIPS"
