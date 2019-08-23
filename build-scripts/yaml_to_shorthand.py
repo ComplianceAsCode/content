@@ -72,6 +72,7 @@ def main():
         for p in profiles:
             p.validate_variables(loader.all_values)
             p.validate_rules(loader.all_rules, loader.all_groups)
+            p.validate_refine_rules(loader.all_rules)
 
         loader.export_group_to_file(args.output)
     elif args.action == "list-inputs":

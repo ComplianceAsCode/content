@@ -3,6 +3,7 @@ from __future__ import print_function
 
 import os
 import os.path
+from collections import defaultdict
 import datetime
 import sys
 
@@ -11,6 +12,7 @@ import yaml
 from .constants import XCCDF_PLATFORM_TO_CPE
 from .constants import PRODUCT_TO_CPE_MAPPING
 from .constants import STIG_PLATFORM_ID_MAP
+from .constants import XCCDF_REFINABLE_PROPERTIES
 from .rules import get_rule_dir_id, get_rule_dir_yaml, is_rule_dir
 from .rule_yaml import parse_prodtype
 
@@ -81,6 +83,7 @@ class Profile(object):
         self.selected = []
         self.unselected = []
         self.variables = dict()
+        self.refine_rules = defaultdict(list)
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
@@ -127,7 +130,19 @@ class Profile(object):
 
     def _parse_selections(self, entries):
         for item in entries:
-            if "=" in item:
+            if "." in item:
+                rule, refinement = item.split(".", 1)
+                property_, value = refinement.split("=", 1)
+                if property_ not in XCCDF_REFINABLE_PROPERTIES:
+                    msg = ("Property '{property_}' cannot be refined. "
+                           "Rule properties that can be refined are {refinables}. "
+                           "Fix refinement '{rule_id}.{property_}={value}' in profile '{profile}'."
+                           .format(property_=property_, refinables=XCCDF_REFINABLE_PROPERTIES,
+                                   rule_id=rule, value=value, profile=self.id_)
+                           )
+                    raise ValueError(msg)
+                self.refine_rules[rule].append((property_, value))
+            elif "=" in item:
                 varname, value = item.split("=", 1)
                 self.variables[varname] = value
             elif item.startswith("!"):
@@ -163,6 +178,13 @@ class Profile(object):
             refine_value.set("selector", selector)
             element.append(refine_value)
 
+        for refined_rule, refinement_list in self.refine_rules.items():
+            refine_rule = ET.Element("refine-rule")
+            refine_rule.set("idref", refined_rule)
+            for refinement in refinement_list:
+                refine_rule.set(refinement[0], refinement[1])
+            element.append(refine_rule)
+
         return element
 
     def get_rule_selectors(self):
@@ -170,6 +192,33 @@ class Profile(object):
 
     def get_variable_selectors(self):
         return self.variables
+
+    def validate_refine_rules(self, rules):
+        existing_rule_ids = [r.id_ for r in rules]
+        for refine_rule, refinement_list in self.refine_rules.items():
+            # Take first refinement to ilustrate where the error is
+            # all refinements in list are invalid, so it doesn't really matter
+            a_refinement = refinement_list[0]
+
+            if refine_rule not in existing_rule_ids:
+                msg = (
+                    "You are trying to refine a rule that doesn't exist. "
+                    "Rule '{rule_id}' was not found in the benchmark. "
+                    "Please check all rule refinements for rule: '{rule_id}', for example: "
+                    "- {rule_id}.{property_}={value}' in profile {profile_id}."
+                    .format(rule_id=refine_rule, profile_id=self.id_,
+                            property_=a_refinement[0], value=a_refinement[1])
+                    )
+                raise ValueError(msg)
+
+            if refine_rule not in self.get_rule_selectors():
+                msg = ("- {rule_id}.{property_}={value}' in profile '{profile_id}' is refining "
+                       "a rule that is not selected by it. The refinement will not have any "
+                       "noticeable effect. Either select the rule or remove the rule refinement."
+                       .format(rule_id=refine_rule, property_=a_refinement[0],
+                               value=a_refinement[1], profile_id=self.id_)
+                       )
+                raise ValueError(msg)
 
     def validate_variables(self, variables):
         variables_by_id = dict()
