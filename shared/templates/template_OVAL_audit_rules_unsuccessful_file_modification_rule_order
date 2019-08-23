@@ -55,10 +55,10 @@
 
   <!-- General rule boiler plate -->
   <constant_variable id="var_audit_rule_{{{ SYSCALL }}}_order_32bit_head" version="1" datatype="string" comment="audit rule arch and syscal">
-      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b32[\s]+)(?:-S[\s]+(?:|(?:[\S]+,)+)({{{ SYSCALL }}})(?:|(?:,[\S]+)+))[\s]+</value>
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b32[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ SYSCALL }}})(?:,[\S]+)*)[\s]+</value>
   </constant_variable>
   <constant_variable id="var_audit_rule_{{{ SYSCALL }}}_order_64bit_head" version="1" datatype="string" comment="audit rule arch and syscal">
-      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:-S[\s]+(?:|(?:[\S]+,)+)({{{ SYSCALL }}})(?:|(?:,[\S]+)+))[\s]+</value>
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ SYSCALL }}})(?:,[\S]+)*)[\s]+</value>
   </constant_variable>
   <constant_variable id="var_audit_rule_{{{ SYSCALL }}}_order_tail" version="1" datatype="string" comment="audit rule auid and key">
     <value>[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(?:unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
