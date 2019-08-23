@@ -53,6 +53,8 @@ selections:
 
     ## Disable vsyscalls
     - grub2_vsyscall_argument
+    - grub2_vsyscall_argument.role=unscored
+    - grub2_vsyscall_argument.severity=info
 
 
     #################################################################
