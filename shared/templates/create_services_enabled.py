@@ -49,6 +49,7 @@ class ServiceEnabledGenerator(FilesGenerator):
                 "./template_ANSIBLE_service_enabled",
                 {
                     "SERVICENAME": servicename,
+                    "PACKAGENAME": packagename,
                     "DAEMONNAME": daemonname
                 },
                 "./ansible/service_{0}_enabled.yml", servicename
