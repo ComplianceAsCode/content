@@ -532,6 +532,7 @@ class BashRuleRunner(RuleRunner):
         return super(BashRuleRunner, self).initial()
 
     def remediation(self):
+
         formatting = self._get_formatting_dict_for_remediation()
         formatting['output_file'] = '{0}.sh'.format(self.rule_id)
 
@@ -585,9 +586,6 @@ class Checker(object):
                 state.map_on_top(self._run_test, args_list)
         elif profiles:
             self._run_test(profiles[0], test_data)
-
-    def _run_test(profile, test_data):
-        raise NotImplementedError()
 
     def _test_target(self, target):
         raise NotImplementedError()

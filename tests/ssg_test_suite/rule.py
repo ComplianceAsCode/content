@@ -110,6 +110,7 @@ class RuleChecker(oscap.Checker):
     def _run_test(self, profile, test_data):
         scenario = test_data["scenario"]
         rule_id = test_data["rule_id"]
+        remediation_available = test_data["remediation_available"]
 
         LogHelper.preload_log(
             logging.INFO, "Script {0} using profile {1} OK".format(scenario.script, profile),
@@ -131,10 +132,16 @@ class RuleChecker(oscap.Checker):
                 or not supported_and_available_remediations):
             return True
 
-        if not self._remediation_went_ok(runner, rule_id):
-            return False
+        if remediation_available:
+            if not self._remediation_went_ok(runner, rule_id):
+                return False
 
-        return self._final_scan_went_ok(runner, rule_id)
+            return self._final_scan_went_ok(runner, rule_id)
+        else:
+            msg = ("No remediation is available for rule '{}'."
+                   .format(rule_id))
+            logging.warning(msg)
+            return False
 
     def _initial_scan_went_ok(self, runner, rule_id, context):
         success = runner.run_stage_with_context("initial", context)
@@ -160,6 +167,7 @@ class RuleChecker(oscap.Checker):
             msg = ("The remediation failed for rule '{}'."
                    .format(rule_id))
             logging.error(msg)
+
         return success
 
     def _final_scan_went_ok(self, runner, rule_id):
@@ -201,7 +209,13 @@ class RuleChecker(oscap.Checker):
                         "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
                         .format(rule.id, self.benchmark_id, self.datastream))
                     return
-                self._check_rule(rule, remote_dir, state)
+
+                remediation_available = True
+                if xml_operations.find_fix_in_benchmark(
+                        self.datastream, self.benchmark_id, rule.id, self.remediate_using) is None:
+                    remediation_available = False
+
+                self._check_rule(rule, remote_dir, state, remediation_available)
 
         if not self._matching_rule_found:
             logging.error("No matching rule ID found for '{0}'".format(target))
@@ -261,7 +275,7 @@ class RuleChecker(oscap.Checker):
 
         return scenarios
 
-    def _check_rule(self, rule, remote_dir, state):
+    def _check_rule(self, rule, remote_dir, state, remediation_available):
         remote_rule_dir = os.path.join(remote_dir, rule.directory)
         local_rule_dir = os.path.join(data.DATA_DIR, rule.directory)
 
@@ -269,11 +283,11 @@ class RuleChecker(oscap.Checker):
 
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
-        args_list = [(s, remote_rule_dir, rule.id)
+        args_list = [(s, remote_rule_dir, rule.id, remediation_available)
                      for s in self._get_scenarios(local_rule_dir, rule.files, self.scenarios_regex, self.benchmark_cpes)]
         state.map_on_top(self._check_and_record_rule_scenario, args_list)
 
-    def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id):
+    def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
         self._current_result = common.RuleResult()
 
         self._current_result.conditions = common.Scenario_conditions(
@@ -282,10 +296,10 @@ class RuleChecker(oscap.Checker):
         self._current_result.scenario = common.Scenario_run(rule_id, scenario.script)
         self._current_result.when = self.test_timestamp_str
 
-        self._check_rule_scenario(scenario, remote_rule_dir, rule_id)
+        self._check_rule_scenario(scenario, remote_rule_dir, rule_id, remediation_available)
         self.results.append(self._current_result.save_to_dict())
 
-    def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id):
+    def _check_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
         if not _apply_script(
                 remote_rule_dir, self.test_env.domain_ip, scenario.script):
             logging.error("Environment failed to prepare, skipping test")
@@ -298,7 +312,9 @@ class RuleChecker(oscap.Checker):
 
         profiles = get_viable_profiles(
             scenario.script_params['profiles'], self.datastream, self.benchmark_id)
-        test_data = dict(scenario=scenario, rule_id=rule_id)
+        test_data = dict(scenario=scenario,
+                         rule_id=rule_id,
+                         remediation_available=remediation_available)
         self.run_test_for_all_profiles(profiles, test_data)
 
         self.executed_tests += 1

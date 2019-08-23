@@ -4,11 +4,26 @@ import xml.etree.cElementTree as ET
 import logging
 
 from ssg.constants import OSCAP_RULE
+from ssg.constants import XCCDF12_NS as xccdf_ns
+from ssg.constants import datastream_namespace
+from ssg.constants import xlink_namespace
+from ssg.constants import oval_namespace as oval_ns
+from ssg.constants import bash_system as bash_rem_system
+from ssg.constants import ansible_system as ansible_rem_system
+from ssg.constants import puppet_system as puppet_rem_system
+from ssg.constants import anaconda_system as anaconda_rem_system
+
+SYSTEM_ATTRIBUTE = {
+    'bash': bash_rem_system,
+    'ansible': ansible_rem_system,
+    'puppet': puppet_rem_system,
+    'anaconda': anaconda_rem_system,
+}
 
 NAMESPACES = {
-    'xccdf': "http://checklists.nist.gov/xccdf/1.2",
-    'ds': "http://scap.nist.gov/schema/scap/source/1.2",
-    'xlink': "http://www.w3.org/1999/xlink",
+    'xccdf': xccdf_ns,
+    'ds': datastream_namespace,
+    'xlink': xlink_namespace,
 }
 
 
@@ -107,3 +122,17 @@ def find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging=None):
     benchmark_node = _get_benchmark_node(datastream, benchmark_id, logging)
     rule = benchmark_node.find(".//xccdf:Rule[@id='{0}']".format(rule_id), NAMESPACES)
     return rule
+
+
+def find_fix_in_benchmark(datastream, benchmark_id, rule_id, fix_type='bash', logging=None):
+    """
+    Return fix from benchmark. None if not found.
+    """
+    rule = find_rule_in_benchmark(datastream, benchmark_id, rule_id, logging)
+    if rule is None:
+        return None
+
+    system_attribute = SYSTEM_ATTRIBUTE.get(fix_type, bash_rem_system)
+
+    fix = rule.find("xccdf:fix[@system='{0}']".format(system_attribute), NAMESPACES)
+    return fix
