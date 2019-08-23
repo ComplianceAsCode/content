@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'United States Government Configuration Baseline'
+title: 'NIST National Checklist Program Security Guide'
 
 description: |-
     This compliance profile reflects the core set of security
