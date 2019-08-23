@@ -5,6 +5,7 @@
 # using example of opensshserver
 DROPIN_FILE="/etc/crypto-policies/local.d/opensshserver-test.config"
 
-update-crypto-policies --set "FIPS"
+update-crypto-policies --set FIPS
 
-echo "testing testing" > "$DROPIN_FILE"
+echo "" > "$DROPIN_FILE"
+echo "CRYPTO_POLICY=" >> "$DROPIN_FILE"
