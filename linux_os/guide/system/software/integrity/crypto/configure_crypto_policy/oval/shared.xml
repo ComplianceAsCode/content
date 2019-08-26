@@ -1,14 +1,14 @@
 {{%- if target_oval_version == [5, 11] -%}}
 {{# there is no good alternative for symlink_test for OVAL 5.10 #}}
 {{%- macro crypto_policy_symlink_criterion(library) %}}
-      <criteria operator="OR">
+      <criteria operator="OR" comment="checks if /etc/crypto-policies/back-ends/{{{ library }}}.config is either a symlink and in that case a drop in file in /etc/crypto-policies/local.d must not exist or /etc/crypto-policies/back-ends/{{{ library }}}.config is a regular file and the drop in file must exist">
         <criteria operator="AND">
           <criterion comment="Check if /etc/crypto-policies/back-ends/{{{ library }}}.config is linked to /usr/share/crypto-policies/POLICY/{{{ library }}}.txt" test_ref="test_crypto_policy_{{{ library }}}_symlink" />
           <criterion comment="Checks if there is NOT a drop in file in /etc/crypto-policies/local.d associated with {{{ library }}}." test_ref="test_{{{ library }}}_dropin_file" negate="true" />
         </criteria>
         <criteria operator="AND">
           <criterion comment="checks if the /etc/crypto-policies/back-ends/{{{ library }}}.config file is a regular file." test_ref="test_{{{ library }}}_regular_file"/>
-          <criterion comment="In case the file /etc/crypto-policies/back-ends/{{{ library }}}.config is a regular file, it checks that the appropriate file exists in the /etc/crypto-policies/local.d." test_ref="test_{{{ library }}}_dropin_file" />
+          <criterion comment="Checks if there is a drop in file in /etc/crypto-policies/local.d associated with {{{ library }}}." test_ref="test_{{{ library }}}_dropin_file" />
         </criteria>
       </criteria>
 {{%- endmacro %}}

@@ -8,7 +8,7 @@ description: |-
     To configure the system cryptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
     policy, run the following command:
     <pre>$ sudo update-crypto-policies --set <sub idref="var_system_crypto_policy" /></pre>
-    The rule checks if an appropriate crypto policy is configured. Configuration files in the <tt>/etc/crypto-policies/back-ends</tt> are either symlinks to correct files provided by Crypto-policies package or thei are regular files in case crypto policy customizations are applied.
+    The rule checks if settings for selected crypto policy are configured as expected. Configuration files in the <tt>/etc/crypto-policies/back-ends</tt> are either symlinks to correct files provided by Crypto-policies package or they are regular files in case crypto policy customizations are applied.
 
 rationale: |-
     Centralized cryptographic policies simplify applying secure ciphers across an operating system and
@@ -27,6 +27,10 @@ ocil: |-
     following command:
     <pre>$ update-crypto-policies --show</pre>
     The output should return <pre><sub idref="var_system_crypto_policy" /></pre>.
+    Moreover, check if crypto policy customizations are applied correctly.
+    <pre>$ ls -l /etc/crypto-policies/back-ends/</pre>
+    For every file, check if it is a symbolic link or a regular file. If it is a symbolic link, verify that the target resides in the <pre>/usr/share/crypto-policies/<sub idref="var_system_crypto_policy" />/</pre> directory. If it is a regular file, check that there exists a drop in file in the <pre>/etc/crypto-policies/local.d</pre>. The file name of a drop in file must be formed as <pre>LIBRARY_NAME-ARBITRARY_ID.config</pre>.
+    For example, the drop in file for Openssh server can be named <pre>opensshserver-ospp.config</pre>.
 
 warnings:
     - general: |-
