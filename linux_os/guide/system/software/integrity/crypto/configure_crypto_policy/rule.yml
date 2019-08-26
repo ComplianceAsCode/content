@@ -5,9 +5,10 @@ prodtype: fedora,rhel8,ol8
 title: 'Configure System Cryptography Policy'
 
 description: |-
-    To configure the system cyptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
+    To configure the system cryptography policy to use ciphers only from the <tt><sub idref="var_system_crypto_policy" /></tt>
     policy, run the following command:
     <pre>$ sudo update-crypto-policies --set <sub idref="var_system_crypto_policy" /></pre>
+    The rule checks if settings for selected crypto policy are configured as expected. Configuration files in the <tt>/etc/crypto-policies/back-ends</tt> are either symlinks to correct files provided by Crypto-policies package or they are regular files in case crypto policy customizations are applied.
 
 rationale: |-
     Centralized cryptographic policies simplify applying secure ciphers across an operating system and
@@ -26,6 +27,18 @@ ocil: |-
     following command:
     <pre>$ update-crypto-policies --show</pre>
     The output should return <pre><sub idref="var_system_crypto_policy" /></pre>.
+    Run the command to check if the policy is correctly applied:
+    <pre>$ update-crypto-policies --is-applied</pre>
+    The output should be <pre>The configured policy is applied</pre>.
+    Moreover, check if settings for selected crypto policy are as expected.
+    List all libraries for which it holds that their crypto policies do not have symbolic link in <pre>/etc/crypto-policies/back-ends</pre>.
+    <pre>$ ls -l /etc/crypto-policies/back-ends/ | grep '^[^l]' | tail -n +2 | awk -F' ' '{print $NF}' | awk -F'.' '{print $1}' | sort</pre>
+    Subsequently, check if matching libraries have drop in files in the <pre>/etc/crypto-policies/local.d</pre> directory.
+    <pre>$ ls /etc/crypto-policies/local.d/ | awk -F'-' '{print $1}' | uniq | sort</pre>
+    Outputs of two previous commands should match.
+    Now check if all symbolic links from the <pre>/etc/crypto-policies/back-ends/</pre> are pointing into the <pre>/usr/share/crypto-policies/<sub idref="var_system_crypto_policy" /></pre> directory.
+    <pre>$ find /etc/crypto-policies/back-ends/ -type l -ls | grep -v '/usr/share/crypto-policies/<sub idref="var_system_crypto_policy" />'</pre>
+    No output is expected.
 
 warnings:
     - general: |-
