@@ -60,6 +60,7 @@
     line: "{{ item }}"
     state: present
     dest: /etc/audit/audit.rules
+    create: yes
   with_items:
     - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=access"
     - "-a always,exit -F arch=b32 -S {{{ NAME }}} -F exit=-EPERM -F auid>={{{ auid }}} -F auid!=unset -F key=access"

@@ -54,6 +54,7 @@
     line: "-a always,exit -F arch=b32 -S {{{ NAME }}} -F auid>={{{ auid }}} -F auid!=unset -F key=delete"
     state: present
     dest: /etc/audit/audit.rules
+    create: yes
 
 - name: Inserts/replaces the {{{ NAME }}} rule in audit.rules when on x86_64
   lineinfile:
