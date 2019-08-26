@@ -27,10 +27,18 @@ ocil: |-
     following command:
     <pre>$ update-crypto-policies --show</pre>
     The output should return <pre><sub idref="var_system_crypto_policy" /></pre>.
-    Moreover, check if crypto policy customizations are applied correctly.
-    <pre>$ ls -l /etc/crypto-policies/back-ends/</pre>
-    For every file, check if it is a symbolic link or a regular file. If it is a symbolic link, verify that the target resides in the <pre>/usr/share/crypto-policies/<sub idref="var_system_crypto_policy" />/</pre> directory. If it is a regular file, check that there exists a drop in file in the <pre>/etc/crypto-policies/local.d</pre>. The file name of a drop in file must be formed as <pre>LIBRARY_NAME-ARBITRARY_ID.config</pre>.
-    For example, the drop in file for Openssh server can be named <pre>opensshserver-ospp.config</pre>.
+    Run the command to check if the policy is correctly applied:
+    <pre>$ update-crypto-policies --is-applied</pre>
+    The output should be <pre>The configured policy is applied</pre>.
+    Moreover, check if settings for selected crypto policy are as expected.
+    List all libraries for which it holds that their crypto policies do not have symbolic link in <pre>/etc/crypto-policies/back-ends</pre>.
+    <pre>$ ls -l /etc/crypto-policies/back-ends/ | grep '^[^l]' | tail -n +2 | awk -F' ' '{print $NF}' | awk -F'.' '{print $1}' | sort</pre>
+    Subsequently, check if matching libraries have drop in files in the <pre>/etc/crypto-policies/local.d</pre> directory.
+    <pre>$ ls /etc/crypto-policies/local.d/ | awk -F'-' '{print $1}' | uniq | sort</pre>
+    Outputs of two previous commands should match.
+    Now check if all symbolic links from the <pre>/etc/crypto-policies/back-ends/</pre> are pointing into the <pre>/usr/share/crypto-policies/<sub idref="var_system_crypto_policy" /></pre> directory.
+    <pre>$ find /etc/crypto-policies/back-ends/ -type l -ls | grep -v '/usr/share/crypto-policies/<sub idref="var_system_crypto_policy" />'</pre>
+    No output is expected.
 
 warnings:
     - general: |-
