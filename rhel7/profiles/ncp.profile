@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'United States Government Configuration Baseline'
+title: 'NIST National Checklist Program Security Guide'
 
 description: |-
     This compliance profile reflects the core set of security
@@ -17,7 +17,7 @@ description: |-
     - NIST Controlled Unclassified Information (NIST 800-171)
     - NIST 800-53 control selections for MODERATE impact systems (NIST 800-53)
     - U.S. Government Configuration Baseline (USGCB)
-    - NIAP Protection Profile for General Purpose Operating Systems v4.0 (OSPP v4.0)
+    - NIAP Protection Profile for General Purpose Operating Systems v4.2.1 (OSPP v4.2.1)
     - DISA Operating System Security Requirements Guide (OS SRG)
 
     For any differing configuration requirements, e.g. password lengths, the stricter
@@ -32,79 +32,31 @@ description: |-
     content as minor divergences, such as bugfixes, work through the
     consensus and release processes.
 
+extends: ospp
+
 selections:
     - installed_OS_is_vendor_supported
     - login_banner_text=usgcb_default
     - inactivity_timeout_value=15_minutes
     - var_password_pam_minlen=15
-    - accounts_password_pam_minlen
-    - accounts_password_minlen_login_defs
-    - var_password_pam_ocredit=1
-    - accounts_password_pam_ocredit
-    - var_password_pam_dcredit=1
-    - accounts_password_pam_dcredit
-    - var_password_pam_ucredit=1
-    - accounts_password_pam_ucredit
-    - var_password_pam_lcredit=1
-    - accounts_password_pam_lcredit
-    - package_screen_installed
-    - sshd_idle_timeout_value=10_minutes
-    - sshd_set_idle_timeout
     - accounts_password_all_shadowed
     - grub2_password
-    - grub2_uefi_password
-    - grub2_disable_interactive_boot
     - no_direct_root_logins
-    - no_empty_passwords
-    - require_singleuser_auth
     - restrict_serial_port_logins
-    - securetty_root_login_console_only
-    - service_debug-shell_disabled
-    - sshd_disable_empty_passwords
-    - sshd_disable_root_login
     - var_accounts_fail_delay=4
-    - var_accounts_passwords_pam_faillock_deny=3
-    - var_accounts_passwords_pam_faillock_fail_interval=900
-    - var_accounts_passwords_pam_faillock_unlock_time=never
     - var_password_pam_retry=3
     - accounts_logon_fail_delay
     - accounts_password_pam_retry
     - accounts_passwords_pam_faillock_deny_root
-    - accounts_passwords_pam_faillock_deny
-    - accounts_passwords_pam_faillock_interval
-    - accounts_passwords_pam_faillock_unlock_time
     - sysctl_net_ipv4_conf_all_accept_redirects_value=disabled
     - sysctl_net_ipv4_conf_default_accept_redirects_value=disabled
     - sysctl_net_ipv4_conf_default_accept_source_route_value=disabled
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts_value=enabled
     - sysctl_net_ipv4_tcp_syncookies_value=enabled
-    - service_firewalld_enabled
     - set_firewalld_default_zone
     - firewalld_sshd_port_enabled
     - sysctl_net_ipv6_conf_all_disable_ipv6
-    - sysctl_net_ipv4_conf_all_accept_redirects
-    - sysctl_net_ipv4_conf_all_accept_source_route
-    - sysctl_net_ipv4_conf_all_log_martians
-    - sysctl_net_ipv4_conf_all_rp_filter
-    - sysctl_net_ipv4_conf_all_secure_redirects
-    - sysctl_net_ipv4_conf_all_send_redirects
-    - sysctl_net_ipv4_conf_default_accept_redirects
-    - sysctl_net_ipv4_conf_default_accept_source_route
-    - sysctl_net_ipv4_conf_default_log_martians
-    - sysctl_net_ipv4_conf_default_rp_filter
-    - sysctl_net_ipv4_conf_default_secure_redirects
-    - sysctl_net_ipv4_conf_default_send_redirects
-    - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
-    - sysctl_net_ipv4_ip_forward
-    - sysctl_net_ipv4_tcp_syncookies
-    - sysctl_net_ipv6_conf_all_accept_ra
-    - sysctl_net_ipv6_conf_all_accept_redirects
-    - sysctl_net_ipv6_conf_all_accept_source_route
     - sysctl_net_ipv6_conf_all_forwarding
-    - sysctl_net_ipv6_conf_default_accept_ra
-    - sysctl_net_ipv6_conf_default_accept_redirects
-    - sysctl_net_ipv6_conf_default_accept_source_route
     - auditd_audispd_syslog_plugin_activated
     - rsyslog_remote_loghost
     - var_auditd_action_mail_acct=root
@@ -121,7 +73,6 @@ selections:
     - auditd_data_retention_num_logs
     - auditd_data_retention_space_left_action
     - file_permissions_var_log_audit
-    - auditd_data_retention_flush
     - audit_rules_dac_modification_chmod
     - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchmodat
@@ -190,22 +141,15 @@ selections:
     - audit_rules_usergroup_modification_opasswd
     - audit_rules_usergroup_modification_passwd
     - audit_rules_usergroup_modification_shadow
-    - grub2_audit_argument
     - rsyslog_cron_logging
     - rsyslog_nolisten
-    - service_auditd_enabled
     - var_multiple_time_servers=rhel
     - chronyd_or_ntpd_specify_remote_server
     - chronyd_or_ntpd_specify_multiple_servers
     - service_chronyd_or_ntpd_enabled
     - security_patches_up_to_date
     - wireless_disable_interfaces
-    - kernel_module_bluetooth_disabled
     - service_bluetooth_disabled
-    - kernel_module_usb-storage_disabled
-    - service_autofs_disabled
-    - disable_ctrlaltdel_reboot
-    - disable_ctrlaltdel_burstaction
     - libreswan_approved_tunnels
     - no_rsh_trust_files
     - package_rsh_removed
@@ -228,22 +172,11 @@ selections:
     - service_ypbind_disabled
     - service_zebra_disabled
     - use_kerberos_security_all_exports
-    - disable_host_auth
     - sshd_allow_only_protocol2
     - sshd_disable_compression
-    - sshd_disable_gssapi_auth
-    - sshd_disable_kerb_auth
-    - sshd_disable_rhosts_rsa
     - sshd_do_not_permit_user_env
-    - sshd_enable_strictmodes
-    - sshd_enable_warning_banner
-    - sshd_set_keepalive
-    - sshd_use_approved_ciphers
-    - sshd_use_approved_macs
     - sshd_use_priv_separation
     - var_accounts_user_umask=077
-    - var_selinux_policy_name=targeted
-    - var_selinux_state=enforcing
     - accounts_no_uid_except_zero
     - accounts_umask_etc_login_defs
     - dir_perms_world_writable_system_owned
@@ -329,8 +262,6 @@ selections:
     - sebool_xserver_object_manager
     - selinux_all_devicefiles_labeled
     - selinux_confinement_of_daemons
-    - selinux_policytype
-    - selinux_state
     - aide_build_database
     - aide_periodic_cron_checking
     - aide_scan_notification
@@ -338,38 +269,27 @@ selections:
     - aide_verify_acls
     - aide_verify_ext_attributes
     - disable_prelink
-    - grub2_enable_fips_mode
     - install_antivirus
     - install_hids
     - ldap_client_start_tls
     - package_aide_installed
-    - package_dracut-fips_installed
     - rpm_verify_hashes
     - install_PAE_kernel_on_x86-32
-    - service_kdump_disabled
     - sysctl_fs_suid_dumpable
-    - sysctl_kernel_dmesg_restrict
     - sysctl_kernel_exec_shield
     - sysctl_kernel_randomize_va_space
     - var_account_disable_post_pw_expiration=35
-    - var_accounts_max_concurrent_login_sessions=10
     - var_accounts_maximum_age_login_defs=60
     - var_accounts_minimum_age_login_defs=7
     - var_accounts_password_minlen_login_defs=6
     - var_accounts_password_warn_age_login_defs=7
     - var_accounts_tmout=10_min
     - var_password_pam_difok=8
-    - var_password_pam_maxclassrepeat=4
     - var_password_pam_minclass=4
-    - var_password_pam_unix_remember=5
     - account_disable_post_pw_expiration
-    - accounts_max_concurrent_login_sessions
     - accounts_maximum_age_login_defs
     - accounts_minimum_age_login_defs
-    - accounts_password_pam_difok
-    - accounts_password_pam_maxclassrepeat
     - accounts_password_pam_minclass
-    - accounts_password_pam_unix_remember
     - accounts_password_warn_age_login_defs
     - accounts_tmout
     - banner_etc_issue
@@ -387,10 +307,6 @@ selections:
     - sssd_enable_smartcards
     - sssd_ssh_known_hosts_timeout
     - encrypt_partitions
-    - ensure_redhat_gpgkey_installed
-    - ensure_gpgcheck_globally_activated
-    - ensure_gpgcheck_never_disabled
-    - ensure_gpgcheck_local_packages
     - network_sniffer_disabled
     - network_ipv6_disable_rpc
     - network_ipv6_privacy_extensions
@@ -423,11 +339,8 @@ selections:
     - gnome_gdm_disable_automatic_login
     - gnome_gdm_disable_guest_login
     - clean_components_post_updating
-    - kernel_module_cramfs_disabled
-    - kernel_module_dccp_disabled
     - kernel_module_freevxfs_disabled
     - kernel_module_hfs_disabled
     - kernel_module_hfsplus_disabled
     - kernel_module_jffs2_disabled
-    - kernel_module_sctp_disabled
     - kernel_module_squashfs_disabled
