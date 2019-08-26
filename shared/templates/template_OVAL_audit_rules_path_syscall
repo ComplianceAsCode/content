@@ -46,11 +46,11 @@
 
   <!-- Access to /var/log/audit rule regex-->
   <constant_variable id="var_audit_rule_32bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" version="1" datatype="string" comment="audit rule arch and syscal">
-      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b32[\s]+)(?:-S[\s]+(?:|(?:[\S]+,)+)({{{ SYSCALL }}})(?:|(?:,[\S]+)+))[\s]+(?:-F[\s]+{{{ POS }}}&amp;03)[\s]+(?:-F[\s]+path={{{ PATH }}})[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b32[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ SYSCALL }}})(?:,[\S]+)*)[\s]+(?:-F[\s]+{{{ POS }}}&amp;03)[\s]+(?:-F[\s]+path={{{ PATH }}})[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
   </constant_variable>
 
   <constant_variable id="var_audit_rule_64bit_{{{ SYSCALL }}}_write_{{{ PATHID }}}_regex" version="1" datatype="string" comment="audit rule arch and syscal">
-      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:-S[\s]+(?:|(?:[\S]+,)+)({{{ SYSCALL }}})(?:|(?:,[\S]+)+))[\s]+(?:-F[\s]+{{{ POS }}}&amp;03)[\s]+(?:-F[\s]+path={{{ PATH }}})[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
+      <value>^[\s]*-a[\s]+always,exit[\s]+(?:-F[\s]+arch=b64[\s]+)(?:-S[\s]+(?:[\S]+,)*({{{ SYSCALL }}})(?:,[\S]+)*)[\s]+(?:-F[\s]+{{{ POS }}}&amp;03)[\s]+(?:-F[\s]+path={{{ PATH }}})[\s]+(?:-F\s+auid>={{{ auid }}}[\s]+)(?:-F\s+auid!=(unset|4294967295)[\s]+)(?:-k[\s]+|-F[\s]+key=)[\S]+[\s]*$</value>
   </constant_variable>
 
   <!-- directory access {{{ PATH }}} augenrule -->

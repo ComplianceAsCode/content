@@ -25,7 +25,7 @@
   <ind:textfilecontent54_object id="object_configure_libreswan_crypto_policy"
   version="1">
     <ind:filepath>/etc/ipsec.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*include\s+/etc/crypto-policies/back-ends/libreswan.config\s*(?:|(?:#.*))$</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*include\s+/etc/crypto-policies/back-ends/libreswan.config\s*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>

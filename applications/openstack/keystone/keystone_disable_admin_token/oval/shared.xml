@@ -27,13 +27,13 @@
 
   <ind:textfilecontent54_object id="obj_keystone_admin_token" version="2">
     <ind:filepath>/etc/keystone/keystone-paste.ini</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)admin_token(?-i)[\s]+disabled[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)admin_token(?-i)[\s]+disabled[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <ind:textfilecontent54_object id="obj_keystone_admin_token_auth_middleware" version="2">
     <ind:filepath>/etc/keystone/keystone-paste.ini</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*(?i)AdminTokenAuthMiddleware(?-i)[\s]*(?:|(?:#.*))?$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*(?i)AdminTokenAuthMiddleware(?-i)[\s]*(?:#.*)?$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
