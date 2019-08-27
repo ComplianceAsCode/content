@@ -40,6 +40,7 @@
     <criteria comment="{{{ application }}} is configured correctly or is not installed"
     operator="OR">
         {{{- application_not_required_or_requirement_unset() }}}
+        {{{- application_required_or_requirement_unset() }}}
     {{%- endif %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
@@ -49,6 +50,7 @@
         {{%- endif %}}
     </criteria>
     {{%- if application == "sshd" %}}
+    </criteria> {{# close criteria left open in application_required_or_requirement_unset #}}
     </criteria>
     {{%- endif %}}
     {{%- if missing_config_file_fail %}}
