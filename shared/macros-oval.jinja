@@ -40,15 +40,17 @@
     <criteria comment="{{{ application }}} is configured correctly or is not installed"
     operator="OR">
         {{{- application_not_required_or_requirement_unset() }}}
-    {{%- else %}}
+    {{%- endif %}}
     <criteria comment="{{{ application }}} is configured correctly"
     operator="OR">
-    {{%- endif %}}
         {{{- oval_line_in_file_criterion(path, parameter) }}}
         {{%- if missing_parameter_pass %}}
         {{{- oval_line_in_file_criterion(path, parameter, missing_parameter_pass) }}}
         {{%- endif %}}
     </criteria>
+    {{%- if application == "sshd" %}}
+    </criteria>
+    {{%- endif %}}
     {{%- if missing_config_file_fail %}}
         {{{- oval_config_file_exists_criterion(path) }}}
     </criteria>
