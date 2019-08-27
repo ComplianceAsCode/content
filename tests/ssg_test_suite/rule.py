@@ -152,6 +152,14 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
+    def _is_remediation_available(self, rule):
+        if xml_operations.find_fix_in_benchmark(
+                self.datastream, self.benchmark_id, rule.id, self.remediate_using) is None:
+            return False
+        else:
+            return True
+
+
     def _get_available_remediations(self, scenario):
         is_supported = set(['all'])
         is_supported.add(
@@ -209,11 +217,7 @@ class RuleChecker(oscap.Checker):
                         "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
                         .format(rule.id, self.benchmark_id, self.datastream))
                     return
-
-                remediation_available = True
-                if xml_operations.find_fix_in_benchmark(
-                        self.datastream, self.benchmark_id, rule.id, self.remediate_using) is None:
-                    remediation_available = False
+                remediation_available = self._is_remediation_available(rule)
 
                 self._check_rule(rule, remote_dir, state, remediation_available)
 

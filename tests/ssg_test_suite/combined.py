@@ -73,7 +73,9 @@ class CombinedChecker(rule.RuleChecker):
                 # every entry in the target is expected to be unique.
                 # Let's remove matched targets, so we can track rules not tested
                 target.remove(target_matched)
-                self._check_rule(rule, remote_dir, state)
+                remediation_available = self._is_remediation_available(rule)
+
+                self._check_rule(rule, remote_dir, state, remediation_available)
 
         if len(target) != 0:
             target.sort()
