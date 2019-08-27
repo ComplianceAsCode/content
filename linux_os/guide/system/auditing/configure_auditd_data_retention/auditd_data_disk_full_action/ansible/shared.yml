@@ -11,4 +11,5 @@
     line: "disk_full_action = {{ var_auditd_disk_full_action }}"
     regexp: '^\s*disk_full_action\s*=\s*.*$'
     state: present
+    create: yes
   #notify: reload auditd

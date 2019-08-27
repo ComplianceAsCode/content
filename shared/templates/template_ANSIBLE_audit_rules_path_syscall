@@ -60,6 +60,7 @@
     line: "{{ item }}"
     state: present
     dest: /etc/audit/audit.rules
+    create: yes
     regexp: "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=[\\S]+"
   with_items:
     - "-a always,exit -F arch=b32 -S {{{ SYSCALL }}} -F {{{ POS }}}&03 -F path={{{ PATH }}} -F auid>={{{ auid }}} -F auid!=unset -F key=modify"

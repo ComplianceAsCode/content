@@ -11,4 +11,5 @@
     line: "num_logs = {{ var_auditd_num_logs }}"
     regexp: '^\s*num_logs\s*=\s*.*$'
     state: present
+    create: yes
   #notify: reload auditd

@@ -54,6 +54,7 @@
     line: "-a always,exit -F arch=b32 -S {{{ ATTR }}} -F auid>={{{ auid }}} -F auid!=unset -F key=perm_mod"
     state: present
     dest: /etc/audit/audit.rules
+    create: yes
 
 - name: Inserts/replaces the {{{ ATTR }}} rule in audit.rules when on x86_64
   lineinfile:
