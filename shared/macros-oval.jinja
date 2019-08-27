@@ -285,6 +285,22 @@
         {{% endif %}}
       </criteria>
 {{%- endmacro %}}
+{{#
+  To be removed macro. Prevents regression on sshd configuration rules.
+#}}
+{{%- macro application_required_or_requirement_unset() -%}}
+      <criteria comment="sshd is installed and configured" operator="AND">
+        <extend_definition comment="sshd is required or requirement is unset"
+        definition_ref="sshd_required_or_unset" />
+        {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+        <extend_definition comment="rpm package openssh installed"
+        definition_ref="package_openssh_installed" />
+        {{% else %}}
+        <extend_definition comment="rpm package openssh-server installed"
+        definition_ref="package_openssh-server_installed" />
+        {{% endif %}}
+      {{# Note that a criteria was left open #}}
+{{%- endmacro %}}
 
 {{#
   High level macro which checks configuration in an INI file.
