@@ -36,7 +36,7 @@
           		If <xsl:value-of select="xccdf:check[@system='ocil-transitional']/xccdf:check-export/@export-name" />, this is a finding.
           		</check-content>
           	</check>
-		  	<ident system="http://iase.disa.mil/cci"><xsl:value-of select="concat('CCI-', format-number($overlay_ref,'000000'))" /></ident>
+		  	<ident system="https://public.cyber.mil/stigs/cci"><xsl:value-of select="concat('CCI-', format-number($overlay_ref,'000000'))" /></ident>
           	<fixtext><xsl:copy-of select="xccdf:description/node()" /></fixtext>
           </Rule> 
           </Group>

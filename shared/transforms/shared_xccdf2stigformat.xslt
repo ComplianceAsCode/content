@@ -16,12 +16,12 @@ xmlns="http://checklists.nist.gov/xccdf/1.1" id="{$product_stig_id_name}" xml:la
 xsi:schemaLocation="http://checklists.nist.gov/xccdf/1.1 http://nvd.nist.gov/schema/xccdf-1.1.4.xsd http://cpe.mitre.org/dictionary/2.0 http://cpe.mitre.org/files/cpe-dictionary_2.1.xsd">
 	<status date="2012-10-01">draft</status>
 	<title>Pre-Draft <xsl:value-of select="$product_long_name" /> Security Technical Implementation Guide</title>
-	<description>The <xsl:value-of select="$product_long_name" /> Security Technical Implementation Guide (STIG) is published as a tool to improve the security of Department of Defense (DoD) information systems. Comments or proposed revisions to this document should be sent via e-mail to the following address: fso_spt@disa.mil.</description>
+	<description>The <xsl:value-of select="$product_long_name" /> Security Technical Implementation Guide (STIG) is published as a tool to improve the security of Department of Defense (DoD) information systems. Comments or proposed revisions to this document should be sent via e-mail to the following address: disa.stig@mail.mil.</description>
 	<notice id="terms-of-use" xml:lang="en" />
-	<reference href="http://iase.disa.mil">
+	<reference href="https://public.cyber.mil">
 	<!-- this is here as a placeholder, prior to any publication.  this is PRE-DRAFT, NON-RELEASE material. -->
          <dc:publisher>DISA, Field Security Operations</dc:publisher>
-         <dc:source>iase.disa.mil</dc:source>
+         <dc:source>public.cyber.mil</dc:source>
 	</reference>
 	<version>0.7</version>
 

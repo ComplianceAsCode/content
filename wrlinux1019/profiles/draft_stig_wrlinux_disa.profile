@@ -16,7 +16,7 @@ description: |-
     Note that changes are expected before approval is granted, and those changes
     will be made available in future Wind River Linux Security Profile 1019 RCPL releases.
     More information, including the following, is available from the DISA FAQs
-    at http://iase.disa.mil/stigs/Pages/faqs.aspx#STIG"
+    at https://public.cyber.mil/stigs/faqs/
 
 selections:
     - var_accounts_max_concurrent_login_sessions=10
