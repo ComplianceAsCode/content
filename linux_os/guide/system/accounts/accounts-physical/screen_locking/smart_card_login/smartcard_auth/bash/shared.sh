@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Enterprise Linux 8,Oracle Linux 7
+# platform = Red Hat Enterprise Linux 7,Oracle Linux 7
 . /usr/share/scap-security-guide/remediation_functions
 
 # Install required packages
