@@ -108,6 +108,17 @@ def remove_idents(tree_root, namespace, prod="RHEL"):
                 fix.text = re.sub(r"CCE-[0-9]*-[0-9]*", "", fix.text)
 
 
+def remove_cce_reference(tree_root, namespace):
+    """
+    Remove CCE identifiers from OVAL checks in XML tree
+    """
+    for definition in tree_root.findall(".//{%s}definition" % (namespace)):
+        for metadata in definition.findall(".//{%s}metadata" % (namespace)):
+            for ref in metadata.findall(".//{%s}reference" % (namespace)):
+                if (re.search(r'CCE-*', ref.get("ref_id"))):
+                    metadata.remove(ref)
+
+
 def profile_handling(tree_root, namespace):
     ns_profiles = []
     for i in standard_profiles:

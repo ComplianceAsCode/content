@@ -90,6 +90,7 @@ def main():
     # the vendor/OS.
     ssg.build_derivatives.remove_idents(root, XCCDF11_NS)
     ssg.build_derivatives.remove_idents(root, XCCDF12_NS)
+    ssg.build_derivatives.remove_cce_reference(root, oval_ns)
 
     if len(benchmarks) == 0:
         raise RuntimeError("No Benchmark found!")
