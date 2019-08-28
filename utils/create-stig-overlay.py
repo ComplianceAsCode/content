@@ -159,11 +159,11 @@ def main():
         ssg_xccdftree = ET.parse(args.ssg_xccdf_filename)
         ssg = ssg_xccdftree.find(".//{%s}publisher" % dc_ns).text
         if ssg != "SCAP Security Guide Project":
-            sys.exit("%s is not a valid SSG generated XCCDF file." % ssg_xccdf_filename)
+            sys.exit("%s is not a valid SSG generated XCCDF file." % args.ssg_xccdf_filename)
 
     disa = disa_xccdftree.find(".//{%s}source" % dc_ns).text
     if disa != "STIG.DOD.MIL":
-        sys.exit("%s is not a valid DISA generated manual XCCDF file." % disa_xccdf_filename)
+        sys.exit("%s is not a valid DISA generated manual XCCDF file." % args.disa_xccdf_filename)
 
     new_stig_overlay(disa_xccdftree, ssg_xccdftree, args.output_file)
 
