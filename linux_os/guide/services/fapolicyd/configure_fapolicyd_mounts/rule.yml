@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Enable fapolicyd to watch all system mountpoints'
+
+description: |-
+    Configure the <tt>fapolicyd</tt> (File Access Policy Daemon)
+    to watch on all system filesystem mountpoints
+    in <tt>/etc/fapolicyd/fapolicyd.mounts</tt>.
+
+rationale: |-
+    To control file access for all possible rules, all system
+    mountpoints need to be listed.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82271-8
+
+references:
+    ospp: FPT_SRP_EXT.1
+
+ocil_clause: 'not all system mountpoints are listed'
+
+ocil: |-
+    To verify that all system mountpoints are configured to be
+    watched by <tt>fapolicyd</tt>, run the following command:
+    <pre>$ mount | egrep '^tmpfs| ext4| ext3| xfs' | awk '{ print $3 }'</pre>
+    Check the output against <tt>/etc/fapolicyd/fapolicyd.mounts</tt>
+    and make sure that all relevant partitions are listed.
