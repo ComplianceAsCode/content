@@ -28,18 +28,14 @@
       </criteria>
       {{%- if product == "rhel6" %}}
       <criteria comment="CentOS Vendor Keys" operator="AND">
-        <criteria comment="CentOS Installed" operator="OR">
-          <extend_definition comment="CentOS6 installed" definition_ref="installed_OS_is_centos6" />
-        </criteria>
+        <extend_definition comment="CentOS6 installed" definition_ref="installed_OS_is_centos6" />
         <criterion comment="package gpg-pubkey-c105b9de-4e0fd3a3 is installed"
         test_ref="test_package_gpgkey-c105b9de-4e0fd3a3_installed" />
       </criteria>
       {{%- endif %}}
       {{%- if product == "rhel7" or product == "rhv4" %}}
       <criteria comment="CentOS Vendor Keys" operator="AND">
-        <criteria comment="CentOS Installed" operator="OR">
-          <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
-        </criteria>
+        <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
         <criterion comment="package gpg-pubkey-f4a80eb5-53a7ff4b is installed"
         test_ref="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" />
       </criteria>
