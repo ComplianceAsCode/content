@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Authorize Human Interface Devices in USBGuard daemon'
+
+description: |-
+    To allow authorization of Human Interface Devices (keyboard, mouse)
+    by USBGuard daemon,
+    add lines
+    <tt>allow with-interface equals { 03:*:* }</tt>
+    and
+    <tt>allow with-interface equals { 03:*:* 03:*:* }</tt>
+    to <tt>/etc/usbguard/rules.conf</tt>.
+
+rationale: |-
+    Without allowing Human Interface Devices, it might not be possible
+    to interact with the system.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82274-2
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'USB devices of class 3 are not authorized'
+
+ocil: |-
+    To verify that USB Human Interface Devices will be authorized by the USBGuard daemon,
+    run the following command:
+    <pre>$ sudo grep allow /etc/usbguard/rules.conf</pre>
+    The output lines should include
+    <pre>allow with-interface equals { 03:*:* }
+    allow with-interface equals { 03:*:* 03:*:* }</pre>
