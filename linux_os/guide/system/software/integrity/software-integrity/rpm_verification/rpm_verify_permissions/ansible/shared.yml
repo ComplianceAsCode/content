@@ -5,7 +5,7 @@
 # disruption = medium
 - name: "Read list of files with incorrect permissions"
   shell: |
-    set -o pipefail
+    # Do not set 'set -o pipefail' - 'rpm -Va' returns non-zero value because non-empty list of files
     rpm -Va --nofiledigest | awk '{ if (substr($0,2,1)=="M") print $NF }'
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect permissions using rpm module
