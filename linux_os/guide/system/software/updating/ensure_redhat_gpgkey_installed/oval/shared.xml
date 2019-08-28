@@ -11,11 +11,13 @@
     <criteria comment="Vendor GPG keys" operator="OR">
       <criteria comment="Red Hat Vendor Keys" operator="AND">
         <criteria comment="Red Hat Installed" operator="OR">
-          <extend_definition comment="RHEL6 installed" definition_ref="installed_OS_is_rhel6" />
-          <extend_definition comment="RHEL7 installed" definition_ref="installed_OS_is_rhel7" />
-          <extend_definition comment="RHEL8 installed" definition_ref="installed_OS_is_rhel8" />
+        {{%- if product == "rhel6" %}}
           <extend_definition comment="SL6 installed" definition_ref="installed_OS_is_sl6" />
+        {{%- endif %}}
+        {{%- if product == "rhel7" or product == "rhv4" %}}
           <extend_definition comment="SL7 installed" definition_ref="installed_OS_is_sl7" />
+        {{%- endif %}}
+          <extend_definition comment="{{{ product }}} installed" definition_ref="installed_OS_is_{{{ product }}}" />
         </criteria>
         <criterion comment="package gpg-pubkey-{{{ pkg_version }}}-{{{ pkg_release }}} is installed"
         test_ref="test_package_gpgkey-{{{ pkg_version }}}-{{{ pkg_release }}}_installed" />
@@ -24,16 +26,20 @@
           test_ref="test_package_gpgkey-{{{ aux_pkg_version }}}-{{{ aux_pkg_release }}}_installed" />
         </criteria>
       </criteria>
-      <criteria comment="CentOS Vendor Keys" operator="OR">
-        <criteria comment="CentOS Installed" operator="OR">
-          <extend_definition comment="CentOS6 installed" definition_ref="installed_OS_is_centos6" />
-          <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
-        </criteria>
-        <criterion comment="package gpg-pubkey-f4a80eb5-53a7ff4b is installed"
-        test_ref="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" />
+      {{%- if product == "rhel6" %}}
+      <criteria comment="CentOS Vendor Keys" operator="AND">
+        <extend_definition comment="CentOS6 installed" definition_ref="installed_OS_is_centos6" />
         <criterion comment="package gpg-pubkey-c105b9de-4e0fd3a3 is installed"
         test_ref="test_package_gpgkey-c105b9de-4e0fd3a3_installed" />
       </criteria>
+      {{%- endif %}}
+      {{%- if product == "rhel7" or product == "rhv4" %}}
+      <criteria comment="CentOS Vendor Keys" operator="AND">
+        <extend_definition comment="CentOS7 installed" definition_ref="installed_OS_is_centos7" />
+        <criterion comment="package gpg-pubkey-f4a80eb5-53a7ff4b is installed"
+        test_ref="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" />
+      </criteria>
+      {{%- endif %}}
     </criteria>
   </definition>
 
@@ -69,6 +75,7 @@
     <linux:version>{{{ aux_pkg_version }}}</linux:version>
   </linux:rpminfo_state>
 
+  {{%- if product == "rhel7" or product == "rhv4" %}}
   <!-- Test for CentOS7 key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
   id="test_package_gpgkey-f4a80eb5-53a7ff4b_installed" version="1"
@@ -81,7 +88,9 @@
     <linux:release>53a7ff4b</linux:release>
     <linux:version>f4a80eb5</linux:version>
   </linux:rpminfo_state>
+  {{%- endif %}}
 
+  {{%- if product == "rhel6" %}}
   <!-- Test for CentOS6 key -->
   <linux:rpminfo_test check="only one" check_existence="at_least_one_exists"
   id="test_package_gpgkey-c105b9de-4e0fd3a3_installed" version="1"
@@ -94,5 +103,6 @@
     <linux:release>4e0fd3a3</linux:release>
     <linux:version>c105b9de</linux:version>
   </linux:rpminfo_state>
+  {{%- endif %}}
 
 </def-group>
