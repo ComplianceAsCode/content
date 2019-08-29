@@ -10,5 +10,10 @@ fi
 # removing the parameter from the no recovery kernel parameters as well
 sed -i 's/\(^GRUB_CMDLINE_LINUX=".*\)audit=[^[:space:]]*\(.*"\)/\1 \2/'  '/etc/default/grub'
 
-# enabling recovery
-sed -i 's/\(^.*GRUB_DISABLE_RECOVERY=\).*/\1false/' '/etc/default/grub'
+# disabling recovery
+sed -i 's/\(^.*GRUB_DISABLE_RECOVERY=\).*/\1true/' '/etc/default/grub'
+
+#if the line is not present at all, add it
+if ! grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=.*$' '/etc/default/grub'; then
+	echo 'GRUB_CMDLINE_LINUX_DEFAULT=""' >> /etc/default/grub
+fi
