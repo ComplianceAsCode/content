@@ -178,6 +178,7 @@ selections:
     - package_audit_installed
     - package_libreswan_installed
     - package_rsyslog_installed
+    - package_rsyslog-gnutls_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed

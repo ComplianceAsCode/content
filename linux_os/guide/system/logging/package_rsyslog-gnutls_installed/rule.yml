@@ -1,0 +1,23 @@
+documentation_complete: true
+
+title: 'Ensure rsyslog-gnutls is installed'
+
+description: |-
+    TLS protocol support for rsyslog is installed.
+    {{{ describe_package_install(package="rsyslog-gnutls") }}}
+
+rationale: |-
+    The rsyslog-gnutls package provides Transport Layer Security (TLS) support
+    for the rsyslog daemon, which enables secure remote logging.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82859-0
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="rsyslog-gnutls") }}}'
