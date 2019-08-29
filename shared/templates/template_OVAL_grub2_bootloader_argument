@@ -11,14 +11,22 @@
       </affected>
       <description>Look for argument {{{ ARG_NAME_VALUE }}} in the kernel line in /etc/default/grub.</description>
     </metadata>
-    <criteria operator="OR">
-      <criterion test_ref="test_grub2_{{{ ARG_NAME }}}_argument"
-      comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
-      <criteria operator="AND">
-        <criterion test_ref="test_grub2_{{{ ARG_NAME }}}_argument_default"
-        comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
-        <extend_definition definition_ref="bootloader_disable_recovery_set_to_true"
-        comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
+    <criteria operator="AND">
+      <criteria operator="OR">
+        <criterion test_ref="test_grub2_{{{ ARG_NAME }}}_argument_grub_cfg"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the boot parameters in the /boot/grub2/grub.cfg for all kernels" />
+        <criterion test_ref="test_grub2_{{{ ARG_NAME }}}_argument_grub_env"
+        comment="Check if {{{ ARG_NAME_VALUE }}} is present in the Grub2 environment variable block in /boot/grub2/grubenv" />
+      </criteria>
+      <criteria operator="OR">
+        <criterion test_ref="test_grub2_{{{ ARG_NAME }}}_argument"
+        comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX" />
+        <criteria operator="AND">
+          <criterion test_ref="test_grub2_{{{ ARG_NAME }}}_argument_default"
+          comment="check for {{{ ARG_NAME_VALUE }}} in /etc/default/grub via GRUB_CMDLINE_LINUX_DEFAULT" />
+          <extend_definition definition_ref="bootloader_disable_recovery_set_to_true"
+          comment="Check GRUB_DISABLE_RECOVERY=true in /etc/default/grub" />
+        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -49,6 +57,39 @@
     <ind:pattern operation="pattern match">^\s*GRUB_CMDLINE_LINUX_DEFAULT="(.*)"$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME }}}_argument_grub_cfg"
+  comment="check kernel command line parameters for {{{ ARG_NAME_VALUE }}} in /boot/grub2/grub.cfg for all kernels"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_grub2_{{{ ARG_NAME }}}_argument_grub_cfg" />
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME }}}_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_grub2_{{{ ARG_NAME }}}_argument_grub_cfg"
+  version="1">
+    <ind:filepath>/boot/grub2/grub.cfg</ind:filepath>
+    {{% if product == "rhel7" %}}
+      <ind:pattern operation="pattern match">^.*/vmlinuz.*(root=.*)$</ind:pattern>
+    {{% else %}}
+      <ind:pattern operation="pattern match">^set default_kernelopts=(.*)$</ind:pattern>
+    {{% endif %}}
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_test id="test_grub2_{{{ ARG_NAME }}}_argument_grub_env"
+  comment="check forkernel command line parameters {{{ ARG_NAME_VALUE }}} in /boot/grub2/grubenv for all kernels"
+  check="all" check_existence="all_exist" version="1">
+    <ind:object object_ref="object_grub2_{{{ ARG_NAME }}}_argument_grub_env" />
+    <ind:state state_ref="state_grub2_{{{ ARG_NAME }}}_argument" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_grub2_{{{ ARG_NAME }}}_argument_grub_env"
+  version="1">
+    <ind:filepath>/boot/grub2/grubenv</ind:filepath>
+    <ind:pattern operation="pattern match">^kernelopts=(.*)$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
+  </ind:textfilecontent54_object>
+
 
   <ind:textfilecontent54_state id="state_grub2_{{{ ARG_NAME }}}_argument"
   version="1">
