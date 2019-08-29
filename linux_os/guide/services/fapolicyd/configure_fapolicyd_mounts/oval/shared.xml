@@ -10,9 +10,18 @@
       <description>Check that all system mountpoint are listed in fapolicyd.mounts</description>
     </metadata>
     <criteria comment="Check that fapolicyd is configured to watch all system mountpoints" operator="AND">
+      <criterion comment="The fapolicyd.mounts file exists" test_ref="test_configure_fapolicyd_mounts_exists" />
       <criterion comment="Check that all system mountpoint are listed in fapolicyd.mounts" test_ref="test_configure_fapolicyd_mounts" />
     </criteria>
   </definition>
+
+  <unix:file_object id="obj_configure_fapolicyd_mounts_exists" version="1" comment="fapolicyd.mounts">
+    <unix:filepath operation="equals">/etc/fapolicyd/fapolicyd.mounts</unix:filepath>
+  </unix:file_object>
+  <unix:file_test id="test_configure_fapolicyd_mounts_exists" check="at least one" version="1"
+    comment="Ensure the fapolicyd.mounts file exists">
+    <unix:object object_ref="obj_configure_fapolicyd_mounts_exists"/>
+  </unix:file_test>
 
   <ind:textfilecontent54_object id="obj_configure_fapolicyd_mounts" version="1">
     <ind:filepath>/etc/fapolicyd/fapolicyd.mounts</ind:filepath>
