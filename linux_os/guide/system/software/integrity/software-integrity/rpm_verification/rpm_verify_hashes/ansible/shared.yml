@@ -22,6 +22,7 @@
     executable: /bin/bash
   register: files_with_incorrect_hash
   changed_when: False
+  failed_when: files_with_incorrect_hash.rc > 1
   when: (package_manager_reinstall_cmd is defined)
   check_mode: no
 
