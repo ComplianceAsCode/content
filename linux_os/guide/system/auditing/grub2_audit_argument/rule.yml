@@ -8,8 +8,13 @@ description: |-
     To ensure all processes can be audited, even those which start
     prior to the audit daemon, add the argument <tt>audit=1</tt> to the default
     GRUB 2 command line for the Linux operating system in
+{{% if product == "rhel7" %}}
     <tt>/etc/default/grub</tt>, in the manner below:
-    <pre>GRUB_CMDLINE_LINUX="crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 audit=1"</pre>
+    <pre>kernelopts="...crashkernel=auto rd.lvm.lv=VolGroup/LogVol06 rd.lvm.lv=VolGroup/lv_swap rhgb quiet rd.shell=0 audit=1"</pre>
+{{% else %}}
+    <tt>/boot/grub2/grubenv</tt>, in the manner below:
+    <pre>grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"</pre>
+{{% endif %}}
 
 rationale: |-
     Each process on the system carries an "auditable" flag which indicates whether
@@ -42,6 +47,7 @@ references:
 ocil_clause: 'auditing is not enabled at boot time'
 
 ocil: |-
+{{% if product == "rhel7" %}}
     Inspect the form of default GRUB 2 command line for the Linux operating system
     in <tt>/etc/default/grub</tt>. If they include <tt>audit=1</tt>, then auditing
     is enabled at boot time.
@@ -51,7 +57,19 @@ ocil: |-
     <br />
     <pre>$ sudo /sbin/grubby --update-kernel=ALL --args="audit=1"</pre>
     <br />
+{{% else %}}
+    Inspect the form of default GRUB 2 command line for the Linux operating system
+    in <tt>/boot/grub2/grubenv</tt>. If they include <tt>audit=1</tt>, then auditing
+    is enabled at boot time.
+    <br /><br />
+    To ensure <tt>audit=1</tt> is configured on all installed kernels, the
+    following command may be used:
+    <br />
+    <pre>$ sudo grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"</pre>
+    <br />
+{{% endif %}}
 
+{{% if product == "rhel7" %}}
 warnings:
     - management: |-
         The GRUB 2 configuration file, <tt>grub.cfg</tt>,
@@ -69,4 +87,4 @@ warnings:
         <pre>~]# grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg</pre></li>
 {{% endif %}}
         </ul>
-
+{{% endif %}}
