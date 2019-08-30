@@ -780,6 +780,9 @@ macro(ssg_build_product PRODUCT)
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
     install(
@@ -909,6 +912,9 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time
