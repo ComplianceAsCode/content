@@ -4,8 +4,5 @@
 # complexity = low
 # disruption = low
 
-PKCSSW=$(/usr/bin/pkcs11-switch)
-
-if [ ${PKCSSW} != "opensc" ] ; then
-    ${PKCSSW} opensc
-fi
+modutil -delete "CoolKey PKCS #11 Module" -dbdir sql:/etc/pki/nssdb/ -force || true # ignore errors
+modutil -add "OpenSC PKCS #11 Module" -dbdir sql:/etc/pki/nssdb/ -libfile opensc-pkcs11.so -force

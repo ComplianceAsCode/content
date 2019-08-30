@@ -9,7 +9,7 @@ description: |-
     <tt>Coolkey PKCS#11</tt> module in the NSS database. To configure the
     NSS database ot use the <tt>opensc</tt> module, run the following
     command:
-    <pre>$ sudo pkcs11-switch opensc</pre>
+    <pre>$ sudo modutil -add "OpenSC PKCS {{ '#' }}11 Module" -dbdir sql:/etc/pki/nssdb/ -libfile opensc-pkcs11.so</pre>
 
 rationale: |-
     Smart card login provides two-factor authentication stronger than
@@ -39,5 +39,5 @@ ocil_clause: 'opensc is not in use by the nss database'
 ocil: |-
     To verify that <tt>opensc</tt> is configured in the NSS database,
     run the following command:
-    <pre>$ pkcs11-switch</pre>
+    <pre>$ modutil -rawlist -dbdir sql:/etc/pki/nssdb/ | grep "^library=\"opensc-pkcs11.so\""</pre>
     The output should return <pre>opensc</pre>

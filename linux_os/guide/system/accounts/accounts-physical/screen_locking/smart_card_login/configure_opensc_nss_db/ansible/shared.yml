@@ -3,17 +3,16 @@
 # strategy = configure
 # complexity = low
 # disruption = low
--   name: Check existence of pkcs11-switch
-    stat:
-        path: /usr/bin/pkcs11-switch
-    register: pkcs11switch
+- name: Check existence of modutil
+  stat:
+    path: /usr/bin/modutil
+  register: modutil_bin
 
-- name: Get NSS database smart card configuration
-  command: /usr/bin/pkcs11-switch
-  changed_when: True
-  register: pkcsw_output
-  when: pkcs11switch.stat.exists
+- name: Remove coolkey module if exists
+  command: modutil -delete "CoolKey PKCS {{ '#' }}11 Module" -dbdir sql:/etc/pki/nssdb/ -force
+  when: modutil_bin.stat.exists
+  ignore_errors: True
 
 - name: "{{{ rule_title }}}"
-  command: /usr/bin/pkcs11-switch opensc
-  when: pkcs11switch.stat.exists and pkcsw_output.stdout != "opensc"
+  command: /usr/bin/modutil -add "OpenSC PKCS {{ '#' }}11 Module" -dbdir sql:/etc/pki/nssdb/ -libfile opensc-pkcs11.so -force
+  when: modutil_bin.stat.exists
