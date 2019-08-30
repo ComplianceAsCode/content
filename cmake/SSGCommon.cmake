@@ -583,6 +583,7 @@ macro(ssg_build_sds PRODUCT)
     add_custom_target(
         generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
     )
 
     add_test(
@@ -602,6 +603,7 @@ macro(ssg_build_html_guides PRODUCT)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_all_guides.py" --input "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml" --output "${CMAKE_BINARY_DIR}/guides" build
         DEPENDS generate-ssg-${PRODUCT}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
         COMMENT "[${PRODUCT}-guides] generating HTML guides for all profiles in ssg-${PRODUCT}-ds.xml"
     )
     add_custom_target(
@@ -780,6 +782,9 @@ macro(ssg_build_product PRODUCT)
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-ds-1.2.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+
     # This is a common cmake trick, we need the globbing to happen at build time
     # and not configure time.
     install(
@@ -854,12 +859,14 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         DEPENDS generate-ssg-${ORIGINAL}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/enable_derivatives.py"
         COMMENT "[${DERIVATIVE}-content] generating ssg-${DERIVATIVE}-ds.xml and ssg-${DERIVATIVE}-ds-1.2.xml"
     )
     add_custom_target(
         generate-ssg-${DERIVATIVE}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        DEPENDS "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
     )
     add_test(
         NAME "validate-ssg-${DERIVATIVE}-ds.xml"
@@ -909,6 +916,9 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     endif()
 
     install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
+
+    install(FILES "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
         DESTINATION "${SSG_CONTENT_INSTALL_DIR}")
 
     # This is a common cmake trick, we need the globbing to happen at build time
@@ -1191,6 +1201,7 @@ macro(ssg_build_zipfile ZIPNAME)
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/kickstart"
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_SOURCE_DIR}/rhel*/kickstart/*-ks.cfg" -DDEST="zipfile/${ZIPNAME}/kickstart" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-*-ds.xml" -DDEST="zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
+        COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/ssg-*-ds-1.2.xml" -DDEST="zipfile/${ZIPNAME}" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/bash"
         COMMAND ${CMAKE_COMMAND} -DSOURCE="${CMAKE_BINARY_DIR}/bash/*.sh" -DDEST="zipfile/${ZIPNAME}/bash" -P "${CMAKE_SOURCE_DIR}/cmake/CopyFiles.cmake"
         COMMAND ${CMAKE_COMMAND} -E make_directory "zipfile/${ZIPNAME}/ansible"
