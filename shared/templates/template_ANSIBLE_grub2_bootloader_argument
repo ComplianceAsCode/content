@@ -4,6 +4,7 @@
 # complexity = medium
 # disruption = low
 
+{{% if product == "rhel7" %}}
 - name: check {{{ ARG_NAME }}} argument exists
   command: grep 'GRUB_CMDLINE_LINUX.*{{{ ARG_NAME }}}=' /etc/default/grub
   failed_when: False
@@ -25,3 +26,10 @@
 
 - name: update bootloader menu
   command: /sbin/grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+
+{{% else %}}
+
+- name: update bootloader menu
+  command: /usr/bin/grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"
+
+{{% endif %}}
