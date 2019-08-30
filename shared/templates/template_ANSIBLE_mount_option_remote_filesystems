@@ -5,7 +5,7 @@
 # disruption = medium
 
 - name: "Get nfs and nfs4 mount points, that don't have {{{ MOUNTOPTION }}}"
-  command: findmnt --fstab --types nfs,nfs4 -O no{{{ MOUNTOPTION }} -n
+  command: findmnt --fstab --types nfs,nfs4 -O no{{{ MOUNTOPTION }}} -n
   register: points_register
   check_mode: no
   changed_when: False
