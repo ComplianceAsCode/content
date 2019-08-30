@@ -3,13 +3,13 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-- name: Test for existence /etc/cron.allow
+- name: Test for existence of /etc/securetty
   stat:
     path: /etc/securetty
   register: securetty_empty
 
 - name: "Direct root Logins Not Allowed"
-  shell: echo > /etc/securetty
-  args:
-    warn: False
-  changed_when: securetty_empty.stat.size > 1
+  copy:
+    dest: /etc/securetty
+    content: ""
+  when: securetty_empty.stat.size > 1

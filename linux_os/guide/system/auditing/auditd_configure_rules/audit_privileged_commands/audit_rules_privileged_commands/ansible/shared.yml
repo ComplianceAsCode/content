@@ -5,9 +5,7 @@
 # disruption = low
 
 - name: Search for privileged commands
-  shell: |
-    set -o pipefail
-    find / -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null | cat
+  shell: find / -xdev -type f -perm -4000 -o -type f -perm -2000 2>/dev/null
   args:
     warn: False
     executable: /bin/bash
