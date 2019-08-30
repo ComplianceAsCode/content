@@ -1,5 +1,6 @@
 # platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,multi_platform_fedora,multi_platform_ol,multi_platform_rhv
 
+{{% if product == "rhel7" %}}
 # Correct the form of default kernel command line in GRUB
 if grep -q '^GRUB_CMDLINE_LINUX=.*{{{ ARG_NAME }}}=.*"'  '/etc/default/grub' ; then
 	# modify the GRUB command-line if an {{{ ARG_NAME }}}= arg already exists
@@ -11,3 +12,7 @@ fi
 
 # Correct the form of kernel command line for each installed kernel in the bootloader
 grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
+{{% else %}}
+#in later versions of rhel grub2-editenv is used
+grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"
+{{% endif %}}
