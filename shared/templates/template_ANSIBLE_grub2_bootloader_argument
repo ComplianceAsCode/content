@@ -30,6 +30,6 @@
 {{% else %}}
 
 - name: update bootloader menu
-  command: /usr/bin/grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"
+  shell: '/usr/bin/grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"'
 
 {{% endif %}}
