@@ -11,7 +11,7 @@
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect ownership using rpm module
     executable: /bin/bash
   register: files_with_incorrect_ownership
-  failed_when: False
+  failed_when: files_with_incorrect_ownership.rc > 1
   changed_when: False
   check_mode: no
 
