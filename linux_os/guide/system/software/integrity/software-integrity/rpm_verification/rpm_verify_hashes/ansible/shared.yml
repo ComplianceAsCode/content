@@ -15,7 +15,7 @@
 
 - name: "Read files with incorrect hash"
   shell: |
-    # Do not set 'set -o pipefail' - 'rpm -Va' returns non-zero value because non-empty list of files
+    set -o pipefail
     rpm -Va | grep -E '^..5.* /(bin|sbin|lib|lib64|usr)/' | awk '{print $NF}'
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch files with incorrect hash using rpm module
