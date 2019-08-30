@@ -112,7 +112,6 @@ selections:
     - security_patches_up_to_date
     - package_opensc_installed
     - var_smartcard_drivers=cac
-    - configure_opensc_nss_db
     - configure_opensc_card_drivers
     - force_opensc_card_drivers
     - package_pcsc-lite_installed
