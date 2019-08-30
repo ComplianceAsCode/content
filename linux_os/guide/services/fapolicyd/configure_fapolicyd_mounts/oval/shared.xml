@@ -37,7 +37,7 @@
     <linux:fs_type operation="pattern match">^(tmpfs|ext4|ext3|xfs)$</linux:fs_type>
   </linux:partition_state>
   <linux:partition_object id="obj_configure_fapolicyd_active_mounts" version="1">
-    <linux:mount_point operation="pattern match">.*</linux:mount_point>
+    <linux:mount_point operation="pattern match">^(?!/sys|/run$).*</linux:mount_point>
     <filter action="include">state_configure_fapolicyd_mounts_types</filter>
   </linux:partition_object>
   <local_variable id="var_configure_fapolicyd_active_mounts" version="1" datatype="string"
