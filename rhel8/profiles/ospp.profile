@@ -367,6 +367,10 @@ selections:
     ##  CNSSI 1253 Value or DoD-specific Values:
     ##      - Privilege/Role escalation (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
+    ## Audit All Audit and Log Data Accesses (Success/Failure)
+    ##  CNSSI 1253 Value or DoD-specific Values:
+    ##      - Audit and log data access (Success/Failure)
+    ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Cryptographic Verification of Software (Success/Failure)
     ##  CNSSI 1253 Value or DoD-specific Values:
     ##      - Applications (e.g. Firefox, Internet Explorer, MS Office Suite,
@@ -375,12 +379,6 @@ selections:
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
     - audit_rules_for_ospp
-
-    ## Audit All Audit and Log Data Accesses (Success/Failure)
-    ##  CNSSI 1253 Value or DoD-specific Values:
-    ##      - Audit and log data access (Success/Failure)
-    ## AU-2(a) / FAU_GEN.1.1.c
-    - directory_access_var_log_audit
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
