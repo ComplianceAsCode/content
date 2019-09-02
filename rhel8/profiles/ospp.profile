@@ -391,3 +391,6 @@ selections:
     # Enable dnf-automatic Timer
     - timer_dnf-automatic_enabled
 
+    # Configure TLS for remote logging
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert

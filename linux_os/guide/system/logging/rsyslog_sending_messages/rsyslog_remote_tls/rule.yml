@@ -1,0 +1,37 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Configure TLS for rsyslog remote logging'
+
+description: |-
+    Configure <tt>rsyslog</tt> to use Transport Layer
+    Security (TLS) support for logging to remote server
+    for the Forwarding Output Module in <tt>/etc/rsyslog.conf</tt>
+    using action
+    <pre>action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
+        StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name")
+    </pre>
+
+rationale: |-
+    For protection of data being logged, the connection to the
+    remote logging server needs to be authenticated and encrypted.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82457-3
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'omfwd is not configured with gtls and AuthMode'
+
+ocil: |-
+    To verify that rsyslog's Forwarding Output Module is configured
+    to use TLS for logging to remote server, run the following command:
+    <pre>$ grep omfwd /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
+    The output should include record similar to
+    <pre>action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
+        StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name")
+    </pre>

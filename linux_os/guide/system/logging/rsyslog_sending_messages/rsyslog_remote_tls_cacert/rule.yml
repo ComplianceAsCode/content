@@ -1,0 +1,34 @@
+documentation_complete: true
+
+prodtype: rhel8,fedora,ol8
+
+title: 'Configure CA certificate for rsyslog remote logging'
+
+description: |-
+    Configure CA certificate for <tt>rsyslog</tt> logging
+    to remote server using Transport Layer Security (TLS)
+    using correct path for the <tt>DefaultNetstreamDriverCAFile</tt>
+    global option in <tt>/etc/rsyslog.conf</tt>, for example
+    <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem") *.*</pre>
+
+rationale: |-
+    The CA certificate needs to be set or <tt>rsyslog.service</tt>
+    fails to start with
+    <pre>error: ca certificate is not set, cannot continue</pre>
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82458-1
+
+references:
+    ospp: FMT_SMF_EXT.1
+
+ocil_clause: 'CA certificate for rsyslog remote logging via TLS is not set'
+
+ocil: |-
+    To verify that rsyslog's Forwarding Output Module has CA certificate
+    configured for its TLS connections to remote server, run the following command:
+    <pre>$ grep DefaultNetstreamDriverCAFile /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
+    The output should include record similar to
+    <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem") *.*</pre>
