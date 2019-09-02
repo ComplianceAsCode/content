@@ -1,5 +1,5 @@
 <!---This file is generated using the contributors.py script. DO NOT MANUALLY EDIT!!!!
-Last Modified: 2019-07-22 16:31
+Last Modified: 2019-08-28 16:53
 --->
 
 The following people have contributed to the SCAP Security Guide project
@@ -100,6 +100,7 @@ The following people have contributed to the SCAP Security Guide project
 * Nathan Peters <Nathaniel.Peters@ca.com>
 * Frank Lin PIAT <fpiat@klabs.be>
 * Stefan Pietsch <mail.ipv4v6+gh@gmail.com>
+* Vojtech Polasek <vpolasek@redhat.com>
 * Martin Preisler <mpreisle@redhat.com>
 * Wesley Ceraso Prudencio <wcerasop@redhat.com>
 * Raphael Sanchez Prudencio <rsprudencio@redhat.com>
