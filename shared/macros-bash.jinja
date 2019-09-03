@@ -173,7 +173,7 @@ printf '%s\n' "{{{ line }}}" > "{{{ path }}}"
 cat "{{{ path }}}.bak" >> "{{{ path }}}"
     {{%- elif insert_after %}}
 # Insert after the line matching the regex '{{{ insert_after }}}'
-local line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
+line_number="$(LC_ALL=C grep -n "{{{ insert_after }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
 if [ -z "$line_number" ]; then
     # There was no match of '{{{ insert_after }}}', insert at
     # the end of the file.
@@ -185,7 +185,7 @@ else
 fi
     {{%- elif insert_before %}}
 # Insert before the line matching the regex '{{{ insert_before }}}'.
-local line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
+line_number="$(LC_ALL=C grep -n "{{{ insert_before }}}" "{{{ path }}}.bak" | LC_ALL=C sed 's/:.*//g')"
 if [ -z "$line_number" ]; then
     # There was no match of '{{{ insert_before }}}', insert at
     # the end of the file.

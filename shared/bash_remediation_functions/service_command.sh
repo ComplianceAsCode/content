@@ -13,7 +13,9 @@ function service_command {
 # Load function arguments into local variables
 local service_state=$1
 local service=$2
-local xinetd=$(echo $3 | cut -d'=' -f2)
+local xinetd
+
+xinetd=$(echo $3 | cut -d = -f 2)
 
 # Check sanity of the input
 if [ $# -lt "2" ]

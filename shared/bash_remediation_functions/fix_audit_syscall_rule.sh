@@ -95,7 +95,7 @@ then
 	if [ ${#files_to_inspect[@]} -eq "0" ]
 	then
 		file_to_inspect="/etc/audit/rules.d/$key.rules"
-		files_to_inspect=("$files_to_inspect")
+		files_to_inspect=("$file_to_inspect")
 		if [ ! -e "$file_to_inspect" ]
 		then
 			touch "$file_to_inspect"
