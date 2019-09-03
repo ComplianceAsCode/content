@@ -144,7 +144,6 @@ def parse_args():
                                   " Variable selections will be done according "
                                   "to this profile.")
 
-
     parser_combined = subparsers.add_parser("combined",
                                             help=("Tests all rules in a profile evaluating them "
                                                   "against their test scenarios."),
