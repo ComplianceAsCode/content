@@ -5,6 +5,7 @@ import sys
 import os
 import time
 import subprocess
+import json
 
 import ssg_test_suite
 from ssg_test_suite import common
@@ -60,6 +61,7 @@ class TestEnv(object):
 
         self.scanning_mode = scanning_mode
         self.backend = None
+        self.ssh_port = 22
 
     def start(self):
         """
@@ -91,7 +93,7 @@ class TestEnv(object):
 
     def _oscap_ssh_base_arguments(self):
         full_hostname = 'root@{}'.format(self.domain_ip)
-        return ['oscap-ssh', full_hostname, '22', 'xccdf', 'eval']
+        return ['oscap-ssh', full_hostname, "{}".format(self.ssh_port), 'xccdf', 'eval']
 
     def scan(self, args, verbose_path):
         if self.scanning_mode == "online":
@@ -180,6 +182,7 @@ class ContainerTestEnv(TestEnv):
         self.created_images = []
         self.containers = []
         self.domain_ip = None
+        self.internal_ssh_port = 22222
 
     def start(self):
         self.run_container(self.base_image)
@@ -221,7 +224,10 @@ class ContainerTestEnv(TestEnv):
         # Get the container time to fully start its service
         time.sleep(0.2)
 
-        self.domain_ip = self._get_container_ip(new_container)
+        self.domain_ip = self._get_container_ip(new_container) or 'localhost'
+        ports = self._get_container_ports(new_container)
+        if self.internal_ssh_port in ports:
+            self.ssh_port = ports[self.internal_ssh_port]
         return new_container
 
     def reset_state_to(self, state_name, new_running_state_name):
@@ -253,6 +259,9 @@ class ContainerTestEnv(TestEnv):
         raise NotImplementedError
 
     def _get_container_ip(self, container):
+        raise NotImplementedError
+
+    def _get_container_ports(self, container):
         raise NotImplementedError
 
     def _terminate_current_running_container_if_applicable(self):
@@ -291,8 +300,9 @@ class DockerTestEnv(ContainerTestEnv):
     def _new_container_from_image(self, image_name, container_name):
         img = self.client.images.get(image_name)
         result = self.client.containers.run(
-            img, "/usr/sbin/sshd -D",
-            name="{0}_{1}".format(self._name_stem, container_name), ports={"22": None},
+            img, "/usr/sbin/sshd -p {} -D".format(self.internal_ssh_port),
+            name="{0}_{1}".format(self._name_stem, container_name),
+            ports={"{}".format(self.internal_ssh_port): None},
             detach=True)
         return result
 
@@ -335,8 +345,8 @@ class PodmanTestEnv(ContainerTestEnv):
     def _new_container_from_image(self, image_name, container_name):
         long_name = "{0}_{1}".format(self._name_stem, container_name)
         podman_cmd = ["podman", "run", "--name", long_name,
-                      "--publish", "22", "--detach", image_name,
-                      "/usr/sbin/sshd", "-D"]
+                      "--publish", "{}".format(self.internal_ssh_port), "--detach", image_name,
+                      "/usr/sbin/sshd", "-p", "{}".format(self.internal_ssh_port), "-D"]
         try:
             podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
@@ -354,6 +364,18 @@ class PodmanTestEnv(ContainerTestEnv):
             raise RuntimeError(msg)
         ip_address = podman_output.decode("utf-8").strip()
         return ip_address
+
+    def _get_container_ports(self, container):
+        podman_cmd = ["podman", "inspect", container, "--format", "{{json .NetworkSettings.Ports}}"]
+        try:
+            podman_output = subprocess.check_output(podman_cmd, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            msg = "Command '{0}' returned {1}:\n{2}".format(" ".join(e.cmd), e.returncode, e.output.decode("utf-8"))
+            raise RuntimeError(msg)
+        ports = {}
+        for pb in json.loads(podman_output):
+            ports[pb['containerPort']] = pb['hostPort']
+        return ports
 
     def _terminate_current_running_container_if_applicable(self):
         if self.containers:
