@@ -3,11 +3,14 @@ import logging
 import subprocess
 from collections import namedtuple
 import functools
+import tarfile
+import tempfile
+
 from ssg.constants import MULTI_PLATFORM_MAPPING
 from ssg.constants import PRODUCT_TO_CPE_MAPPING
 from ssg.constants import FULL_NAME_TO_PRODUCT_MAPPING
+from ssg.constants import OSCAP_RULE
 from ssg_test_suite.log import LogHelper
-import data
 
 Scenario_run = namedtuple(
     "Scenario_run",
@@ -15,7 +18,15 @@ Scenario_run = namedtuple(
 Scenario_conditions = namedtuple(
     "Scenario_conditions",
     ("backend", "scanning_mode", "remediated_by", "datastream"))
+Rule = namedtuple(
+    "Rule", ["directory", "id", "short_id", "files"])
 
+_BENCHMARK_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../linux_os/guide'))
+_SHARED_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../shared'))
+
+REMOTE_USER = "root"
+REMOTE_USER_HOME_DIRECTORY = "/root"
+REMOTE_TEST_SCENARIOS_DIRECTORY = os.path.join(REMOTE_USER_HOME_DIRECTORY, "ssgts")
 
 try:
     SSH_ADDITIONAL_OPTS = tuple(os.environ.get('SSH_ADDITIONAL_OPTIONS').split())
@@ -124,7 +135,7 @@ def run_cmd_local(command, verbose_path, env=None):
 
 
 def run_cmd_remote(command_string, domain_ip, verbose_path, env=None):
-    machine = 'root@{0}'.format(domain_ip)
+    machine = '{0}@{1}'.format(REMOTE_USER, domain_ip)
     remote_cmd = ['ssh'] + list(SSH_ADDITIONAL_OPTS) + [machine, command_string]
     logging.debug('Running {}'.format(command_string))
     returncode, output = _run_cmd(remote_cmd, verbose_path, env)
@@ -185,11 +196,41 @@ def run_with_stdout_logging(command, args, log_file):
         (command,) + args, stdout=log_file, stderr=subprocess.STDOUT)
 
 
+def _exclude_garbage(tarinfo):
+    file_name = tarinfo.name
+    if file_name.endswith('pyc'):
+        return None
+    if file_name.endswith('swp'):
+        return None
+    return tarinfo
+
+
+def create_tarball():
+    """Create a tarball which contains all test scenarios for every rule.
+    Tarball contains directories with the test scenarios. The name of the
+    directories is the same as short rule ID. There is no tree structure.
+    """
+    with tempfile.NamedTemporaryFile(
+            "wb", suffix=".tar.gz", delete=False) as fp:
+        with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
+            tarball.add(_SHARED_DIR, arcname="shared")
+            for dirpath, dirnames, _ in os.walk(_BENCHMARK_DIR):
+                rule_id = os.path.basename(dirpath)
+                if "tests" in dirnames:
+                    tests_dir_path = os.path.join(dirpath, "tests")
+                    tarball.add(
+                        tests_dir_path,
+                        arcname=rule_id, filter=_exclude_garbage
+                    )
+        return fp.name
+
+
 def send_scripts(domain_ip):
-    remote_dir = './ssgts'
-    archive_file = data.create_tarball('.')
-    remote_archive_file = os.path.join(remote_dir, archive_file)
-    machine = "root@{0}".format(domain_ip)
+    remote_dir = REMOTE_TEST_SCENARIOS_DIRECTORY
+    archive_file = create_tarball()
+    archive_file_basename = os.path.basename(archive_file)
+    remote_archive_file = os.path.join(remote_dir, archive_file_basename)
+    machine = "{0}@{1}".format(REMOTE_USER, domain_ip)
     logging.debug("Uploading scripts.")
     log_file_name = os.path.join(LogHelper.LOG_DIR, "data.upload.log")
 
@@ -220,5 +261,31 @@ def send_scripts(domain_ip):
             msg = "Cannot extract data tarball {0}.".format(remote_archive_file)
             logging.error(msg)
             raise RuntimeError(msg)
-
+    os.unlink(archive_file)
     return remote_dir
+
+
+def iterate_over_rules():
+    """Iterate over rule directories which have test scnearios".
+
+    Returns:
+        Named tuple Rule having these fields:
+            directory -- absolute path to the rule "tests" subdirectory
+                         containing the test scenarios in Bash
+            id -- full rule id as it is present in datastream
+            short_id -- short rule ID, the same as basename of the
+            files -- list of executable .sh files in the
+            directory containing the test scenarios in Bash
+    """
+    for dirpath, dirnames, filenames in os.walk(_BENCHMARK_DIR):
+        if "rule.yml" in filenames and "tests" in dirnames:
+            short_rule_id = os.path.basename(dirpath)
+            tests_dir = os.path.join(dirpath, "tests")
+            tests_dir_files = os.listdir(tests_dir)
+            # Filter out everything except the shell test scenarios.
+            # Other files in rule directories are editor swap files
+            # or other content than a test case.
+            scripts = filter(lambda x: x.endswith(".sh"), tests_dir_files)
+            full_rule_id = OSCAP_RULE + short_rule_id
+            result = Rule(tests_dir, full_rule_id, short_rule_id, scripts)
+            yield result

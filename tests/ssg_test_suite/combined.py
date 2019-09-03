@@ -5,11 +5,10 @@ import logging
 import re
 
 from ssg.constants import OSCAP_PROFILE
-from ssg_test_suite.common import send_scripts
+from ssg_test_suite import common
 from ssg_test_suite import rule
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
-import data
 
 
 class CombinedChecker(rule.RuleChecker):
@@ -45,19 +44,9 @@ class CombinedChecker(rule.RuleChecker):
         params['profiles'] = [self.profile]
         return params
 
-    # Check if a rule matches any of the targets to be tested
-    # In CombinedChecker, we are looking for exact matches between rule and target
-    def _matches_target(self, rule_dir, targets):
-        for target in targets:
-            # By prepending 'rule_', and match using endswith(), we should avoid
-            # matching rules that are different by just a prefix or suffix
-            if rule_dir.endswith("rule_"+target):
-                return True, target
-        return False, None
-
     def _test_target(self, target):
         try:
-            remote_dir = send_scripts(self.test_env.domain_ip)
+            remote_dir = common.send_scripts(self.test_env.domain_ip)
         except RuntimeError as exc:
             msg = "Unable to upload test scripts: {more_info}".format(more_info=str(exc))
             raise RuntimeError(msg)
@@ -65,16 +54,14 @@ class CombinedChecker(rule.RuleChecker):
         self._matching_rule_found = False
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
-            for rule in data.iterate_over_rules():
-                matched, target_matched = self._matches_target(rule.directory, target)
-                if not matched:
+            for rule in common.iterate_over_rules():
+                if rule.short_id not in target:
                     continue
                 # In combined mode there is no expectations of matching substrings,
                 # every entry in the target is expected to be unique.
                 # Let's remove matched targets, so we can track rules not tested
-                target.remove(target_matched)
+                target.remove(rule.short_id)
                 remediation_available = self._is_remediation_available(rule)
-
                 self._check_rule(rule, remote_dir, state, remediation_available)
 
         if len(target) != 0:
