@@ -107,6 +107,55 @@ if test -x /usr/sbin/prelink; then
 fi
 {{%- endmacro -%}}
 
+{{#
+# Macro to configure DConf settings for RHEL and Fedora systems.
+#}}
+{{%- macro bash_dconf_settings(path, key, value, db, setting_file) -%}}
+# Check for setting in any of the DConf db directories
+# If files contain ibus or distro, ignore them.
+# The assignment assumes that individual filenames don't contain :
+readarray -t SETTINGSFILES < <(grep -r "\\[{{{ path }}}\\]" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
+DCONFFILE="/etc/dconf/db/{{{ db }}}/{{{ setting_file }}}"
+DBDIR="/etc/dconf/db/{{{ db }}}"
+
+mkdir -p "${DBDIR}"
+
+if [ "${#SETTINGSFILES[@]}" -eq 0 ]
+then
+    [ ! -z ${DCONFFILE} ] || echo "" >> ${DCONFFILE}
+    printf '%s\n' "[{{{ path }}}]" >> ${DCONFFILE}
+    printf '%s=%s\n' "{{{ key }}}" "{{{ value }}}" >> ${DCONFFILE}
+else
+    escaped_value="$(sed -e 's/\\/\\\\/g' <<< "{{{ value }}}")"
+    if grep -q "^\\s*{{{ key }}}" "${SETTINGSFILES[@]}"
+    then
+        sed -i "s/\\s*{{{ key }}}\\s*=\\s*.*/{{{ key }}}=${escaped_value}/g" "${SETTINGSFILES[@]}"
+    else
+        sed -i "\\|\\[{{{ path }}}\\]|a\\{{{ key }}}=${escaped_value}" "${SETTINGSFILES[@]}"
+    fi
+fi
+
+dconf update
+{{%- endmacro -%}}
+
+{{#
+# Macro to configure DConf locks for RHEL and Fedora systems.
+#}}
+{{%- macro bash_dconf_lock(key, setting, db, lock_file) -%}}
+# Check for setting in any of the DConf db directories
+LOCKFILES=$(grep -r "^/{{{ key }}}/{{{ setting }}}$" "/etc/dconf/db/" | grep -v 'distro\|ibus' | cut -d":" -f1)
+LOCKSFOLDER="/etc/dconf/db/{{{ db }}}/locks"
+
+mkdir -p "${LOCKSFOLDER}"
+
+if [[ -z "${LOCKFILES}" ]]
+then
+    echo "/{{{ key }}}/{{{ setting }}}" >> "/etc/dconf/db/{{{ db }}}/locks/{{{ lock_file }}}"
+fi
+
+dconf update
+{{%- endmacro -%}}
+
 {{# ##### Low level macros ##### #}}
 
 {{#
