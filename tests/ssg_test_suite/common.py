@@ -266,16 +266,16 @@ def send_scripts(domain_ip):
 
 
 def iterate_over_rules():
-    """Iterate over rule directories which have test scnearios".
+    """Iterate over rule directories which have test scenarios".
 
     Returns:
         Named tuple Rule having these fields:
             directory -- absolute path to the rule "tests" subdirectory
                          containing the test scenarios in Bash
             id -- full rule id as it is present in datastream
-            short_id -- short rule ID, the same as basename of the
-            files -- list of executable .sh files in the
-            directory containing the test scenarios in Bash
+            short_id -- short rule ID, the same as basename of the directory
+                        containing the test scenarios in Bash
+            files -- list of executable .sh files in the "tests" directory
     """
     for dirpath, dirnames, filenames in os.walk(_BENCHMARK_DIR):
         if "rule.yml" in filenames and "tests" in dirnames:
