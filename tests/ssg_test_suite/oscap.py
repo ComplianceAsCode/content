@@ -241,6 +241,8 @@ def process_profile_id(profile):
             return "'{}'".format(profile)
         else:
             return profile
+    else:
+        return profile
 
 
 class GenericRunner(object):
