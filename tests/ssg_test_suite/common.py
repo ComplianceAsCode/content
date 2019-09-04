@@ -287,5 +287,7 @@ def iterate_over_rules():
             # or other content than a test case.
             scripts = filter(lambda x: x.endswith(".sh"), tests_dir_files)
             full_rule_id = OSCAP_RULE + short_rule_id
-            result = Rule(tests_dir, full_rule_id, short_rule_id, scripts)
+            result = Rule(
+                directory=tests_dir, id=full_rule_id, short_id=short_rule_id,
+                files=scripts)
             yield result
