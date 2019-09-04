@@ -30,9 +30,8 @@ _ANSIBLE_TEMPLATE = 'urn:xccdf:fix:script:ansible'
 _BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
 _XCCDF_NS = 'http://checklists.nist.gov/xccdf/1.2'
 
-# TODO: set this variable to false when the oscap-ssh bug fix is
-# released and available, see: https://github.com/OpenSCAP/openscap/pull/1366
-PROFILE_ALL_ID_SINGLE_QUOTED = True
+
+PROFILE_ALL_ID_SINGLE_QUOTED = False
 
 
 def analysis_to_serializable(analysis):
