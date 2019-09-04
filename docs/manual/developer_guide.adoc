@@ -812,12 +812,103 @@ The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary
 
 A rule may contain those reference-type attributes:
 
-* `identifiers`: This is related to products/CCEs that the rule applies to; this is a dictionary, whose keys should be `cce` and a value. If `cce` is modified with a product (e.g., `cce@rhel6`), it restricts which products those identifiers applies to.
-* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stig`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stig@rhel6`) to restrict what products an identifiers applies to.
+* `identifiers`: This is related to products that the rule applies to; this is a dictionary. Currently, only the Common Configuration Enumeration or CCE identifier is supported. Other identifiers can be added as well. Contributions to add these other identifiers are welcomed. The table below shows a list of common identifiers and their current support in a rule:
 +
-When the rule is related to RHEL, it should have a CCE.
+[cols="3*", options="header"]
+|===
+|URI |Supported |Identifier Value Description
+|http://cce.mitre.org
+|Yes
+|Common Configuration Enumeration (CCE) – the identifier value MUST be a CCE version 5 number
+
+|http://cpe.mitre.org
+|No
+|CPE –the identifier value MUST be a CPE version 2.0 or 2.3 name
+
+|http://cve.mitre.org
+|No
+|CVE –the identifier value MUST be a CVE number
+
+|http://www.cert.org
+|No
+|CERT Coordination Center – the identifier value SHOULD be a CERT advisory identifier (e.g., “CA-2004-02”)
+
+|http://www.kb.cert.org
+|No
+|US-CERT vulnerability notes database – the identifier value SHOULD be a vulnerability note number (e.g., “709220”)
+
+|http://www.us-cert.gov/cas/techalerts
+|No
+|US-CERT technical cyber security alerts –the identifier value SHOULD be a technical cyber security alert ID (e.g., “TA05-189A”)
+|===
++
+When the rule is related to RHEL, it should have a CCE. A CEE (e.g. cce@rhel7: 80328-8) is used as a global identifier that maps the rule to the product over the lifetime of a rule. There should only be one CCE mapped to a rule as a global identifier. Any other usage of CCE is no longer considered a best practice. CCEs are also product dependent which means that a different CCE must be used for each different product and product version. For example if `cce@rhel7: 80328-8` exists in a rule, that CCE cannot be used for another product or version (e.g. rhel6), and the CCE MUST be retired with the rule.
 Available CCEs that can be assigned to new rules are listed in the `shared/references/cce-rhel-avail.txt` file.
-See `linux_os/guide/system/software/disk_partitioning/encrypt_partitions.rule` for an example of reference-type attributes.
++
+* `references`: This is related to the compliance document line items that the rule applies to. These can be attributes such as `stigid`, `srg`, `nist`, etc., whose keys may be modified with a product (e.g., `stigid@rhel6`) to restrict what products a reference identifier applies to. Depending on the type of reference (e.g. catalog, rulei, etc.) will depend on how many can be added to a single rule. In addition, certain references in a rule such as `stigid` only apply to a certain product and product version; they cannot be used for multiple products and versions
++
+[cols="4*", options="header"]
+|===
+|Key |Reference Type |Mapping to Rule|Example Format
+|cis
+|Center for Internet Security (catalog identifier)
+|0-to-many, 0-to-1 is preferred
+|5.2.5
+
+|cjis
+|Criminal Justice Information System (catalog identifier)
+|0-to-1
+|5.4.1.1
+
+|cui
+|Controlled Unclassified Information (catalog identifier)
+|0-to-many, 0-to-1 is preferred
+|3.1.7
+
+|disa
+|DISA Control Correlation Identifiers (catalog identifier)
+|0-to-many
+|18,172,1403
+
+|srg, vmmsrg, etc.
+|DISA Security Requirements Guide (catalog identifier)
+|0-to-many
+|SRG-OS-000003-GPOS-00004
+
+|stigid@<product><product_version>
+|DISA STIG identifier (rule identifier)
+|0-to-1
+|030874
+
+|hipaa
+|Health Insurance Portability and Accountability Act of 1996 (HIPAA) (catalog identifier)
+|0-to-many
+|164.308(a)(1)(ii)(D),164.308(a)(3)(ii)(A)
+
+|nist
+|National Institute for Standards and Technology 800-53 (catalog identifier)
+|0-to-many
+|AC-2(4),AC-17(7),AU-1(b)
+
+|nist-csf
+|National Institute for Standards and Technology Cybersecurity Framework (catalog identifier)
+|0-to-many
+|DE.AE-3,DE.AE-5,DE.CM-1
+
+|ospp
+|National Information Assurance Partnership (selected control identifier)
+|0-to-1
+|FMT_MOF_EXT.1
+
+|pcidss
+|Payment Card Industry Data Security Standard
+|0-to-many, 0-to-1 is preferred
+|Req-8.7.c
+
+|And many others
+|===
++
+See `linux_os/guide/system/software/disk_partitioning/encrypt_partitions/rule.yml` for an example of reference-type attributes as there are others that are not referenced above.
 
 Some of existing rule definitions contain attributes that use macros.
 There are two implementations of macros:
