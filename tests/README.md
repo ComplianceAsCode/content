@@ -377,6 +377,23 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 ```
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
 
+## Sharing code among test scenarios
+
+Test scenarios can use files from `/tests/shared` directory. This directory
+and its contents is copied to the target VM or container together with the
+test scenarios. The path to the directory is accessible in Bash using `$SHARED`
+variable.
+
+For example, script `/tests/shared/setup_config_files.sh` can be sourced in
+the following way:
+
+```
+. $SHARED/setup_config_files.sh
+```
+
+If you happen to have many similar test scenarios, consider extracting the
+common code to the shared directory.
+
 ## Analysis of results
 
 The rule tests results are saved as `results.json` into the corresponding log directory.
