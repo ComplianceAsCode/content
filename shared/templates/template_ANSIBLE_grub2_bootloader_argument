@@ -29,7 +29,14 @@
 
 {{% else %}}
 
-- name: update bootloader menu
-  shell: '/usr/bin/grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"'
+- name: get current kernel parameters
+  command: 'grep kernelopts `/usr/bin/grub2-editenv - list`'
+  register: kernelopts
+
+- set_fact:
+  kerneloptsfact: "{{ kernelopts.stdout }}"
+
+- name: Update the bootloader menu
+  command: '/usr/bin/grub2-editenv - set {{ kerneloptsfact }} {{{ ARG_NAME_VALUE }}}'
 
 {{% endif %}}

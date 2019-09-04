@@ -50,9 +50,9 @@ ocil_clause: 'auditing is not enabled at boot time'
 ocil: |-
 {{% if product == "rhel7" %}}
     Inspect the form of default GRUB 2 command line for the Linux operating system
-    in <tt>/etc/default/grub</tt>. If they include <tt>audit=1</tt>, then auditing
+    in <tt>/etc/default/grub</tt>. If it includes <tt>audit=1</tt>, then auditing
     is enabled at boot time.
-    First check if the Grub recovery is enabled:
+    First check if the GRUB recovery is enabled:
     <pre>$ grep 'GRUB_DISABLE_RECOVERY' /etc/default/grub</pre>
     If this option is set to true, then check that the line produced by
     <pre>$ grep 'GRUB_CMDLINE_LINUX_DEFAULT.*audit=1.*' /etc/default/grub</pre>
