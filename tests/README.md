@@ -301,42 +301,8 @@ The Test Suite will pause its execution, and you will be able to SSH into the en
 
 #### How rule validation scenarios work
 
-In directory `data/` there are directories mirroring tree structure of
-Benchmark.
+The test scenarios for a rule are located in `tests` subdirectory in rule directory.
 
-The difference between Benchmark tree structure (eg. `/linux_os/guide/`) and
-the test scenario tree is that the group directories have added `group_` prefix
-in their name and rule directories have added `rule_` prefix in their name.
-
-For example, the rule `accounts_tmout` is located in
-`linux_os/guide/system/accounts/accounts-session/accounts_tmout`, and test
-scenarios for this rule are located in
-`/tests/data/group_system/group_accounts/group_accounts-session/rule_accounts_tmout`.
-
-In reality, only ID of the rule needs to be correct, group structure is not
-currently used.
-
-To quickly find the tests for a rule with ID, add a similar function to your `.bashrc`:
-
-```
-function find_tests() {
-    rule_id="$1"
-    ssg_root="/path/to/your/content/git/repository"
-    test_dir=$(find $ssg_root/tests/data/ -type d -name "*$rule_id*")
-
-    if [ ! -z "$test_dir" ]; then
-        printf "Test scenarios for \"$rule_id\" rules can be found at:\n$test_dir\n"
-    else
-        printf "No test scenarios for rules containing \"$rule_id\".\n"
-    fi
-}
-```
-
-The directory with the tests for a rule with given ID can be found this way:
-
-```
-find_tests <rule_ID>
-```
 
 Scenarios are currently supported only in `bash`. And type of scenario is
 defined by its file name.
@@ -400,8 +366,8 @@ echo "KerberosAuthentication yes" >> /etc/ssh/sshd_config
 
 Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 
-1. Create appropriate directory within `data/` directory tree (in this case
-  `data/group_system/group_accounts/group_accounts-restrictions/group_password_expiration/rule_accounts_password_minlen_login_defs` further referenced as *DIR*).
+1. Create `tests` directory within rule directory (in this case
+  `/linux_os/guide/system/accounts/accounts-restrictions/password_expiration/accounts_password_minlen_login_defs/tests` further referenced as *DIR*).
 1. write a few fail scripts - for example removing the line, commenting it, wrong value, etc.
  into *DIR*
 1. write a pass script into *DIR* - (some rules can have more than one pass scenario)
@@ -410,6 +376,23 @@ Let's add test scenarios for rule `accounts_password_minlen_login_defs`
 ./test_suite.py rule --libvirt qemu:///session ssg-test-suite-fedora --datastream ../build/ssg-fedora-ds.xml accounts_password_minlen_login_defs
 ```
 Example of test scenarios for this rule can be found at: [#3697](https://github.com/ComplianceAsCode/content/pull/3697)
+
+## Sharing code among test scenarios
+
+Test scenarios can use files from `/tests/shared` directory. This directory
+and its contents is copied to the target VM or container together with the
+test scenarios. The path to the directory is accessible in Bash using `$SHARED`
+variable.
+
+For example, script `/tests/shared/setup_config_files.sh` can be sourced in
+the following way:
+
+```
+. $SHARED/setup_config_files.sh
+```
+
+If you happen to have many similar test scenarios, consider extracting the
+common code to the shared directory.
 
 ## Analysis of results
 

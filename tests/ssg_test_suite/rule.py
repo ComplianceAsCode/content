@@ -15,7 +15,6 @@ from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
-import data
 
 
 ALL_PROFILE_ID = "(all)"
@@ -54,7 +53,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
 
 def _apply_script(rule_dir, domain_ip, script):
     """Run particular test script on VM and log it's output."""
-    machine = "root@{0}".format(domain_ip)
+    machine = "{0}@{1}".format(common.REMOTE_USER, domain_ip)
     logging.debug("Applying script {0}".format(script))
     rule_name = os.path.basename(rule_dir)
     log_file_name = os.path.join(
@@ -62,8 +61,8 @@ def _apply_script(rule_dir, domain_ip, script):
 
     with open(log_file_name, 'a') as log_file:
         log_file.write('##### {0} / {1} #####\n'.format(rule_name, script))
-
-        command = "cd {0}; bash -x {1}".format(rule_dir, script)
+        shared_dir = os.path.join(common.REMOTE_TEST_SCENARIOS_DIRECTORY, "shared")
+        command = "cd {0}; SHARED={1} bash -x {2}".format(rule_dir, shared_dir, script)
         args = common.SSH_ADDITIONAL_OPTS + (machine, command)
 
         try:
@@ -187,13 +186,13 @@ class RuleChecker(oscap.Checker):
             logging.error(msg)
         return success
 
-    def _matches_target(self, rule_dir, targets):
-        if 'ALL' in targets:
-            # we want to have them all
+    def _rule_should_be_tested(self, rule_id, rules_to_be_tested):
+        if 'ALL' in rules_to_be_tested:
             return True
         else:
-            for target in targets:
-                if target in rule_dir:
+            for rule_to_be_tested in rules_to_be_tested:
+                # we check for a substring
+                if rule_to_be_tested in rule_id:
                     return True
             return False
 
@@ -207,8 +206,8 @@ class RuleChecker(oscap.Checker):
         self._matching_rule_found = False
 
         with test_env.SavedState.create_from_environment(self.test_env, "tests_uploaded") as state:
-            for rule in data.iterate_over_rules():
-                if not self._matches_target(rule.directory, target):
+            for rule in common.iterate_over_rules():
+                if not self._rule_should_be_tested(rule.id, target):
                     continue
                 self._matching_rule_found = True
                 if not xml_operations.find_rule_in_benchmark(
@@ -280,15 +279,17 @@ class RuleChecker(oscap.Checker):
         return scenarios
 
     def _check_rule(self, rule, remote_dir, state, remediation_available):
-        remote_rule_dir = os.path.join(remote_dir, rule.directory)
-        local_rule_dir = os.path.join(data.DATA_DIR, rule.directory)
-
+        remote_rule_dir = os.path.join(remote_dir, rule.short_id)
         logging.info(rule.id)
 
         logging.debug("Testing rule directory {0}".format(rule.directory))
 
-        args_list = [(s, remote_rule_dir, rule.id, remediation_available)
-                     for s in self._get_scenarios(local_rule_dir, rule.files, self.scenarios_regex, self.benchmark_cpes)]
+        args_list = [
+            (s, remote_rule_dir, rule.id, remediation_available)
+            for s in self._get_scenarios(
+                rule.directory, rule.files, self.scenarios_regex,
+                self.benchmark_cpes)
+        ]
         state.map_on_top(self._check_and_record_rule_scenario, args_list)
 
     def _check_and_record_rule_scenario(self, scenario, remote_rule_dir, rule_id, remediation_available):
