@@ -228,6 +228,7 @@ class ContainerTestEnv(TestEnv):
         ports = self._get_container_ports(new_container)
         if self.internal_ssh_port in ports:
             self.ssh_port = ports[self.internal_ssh_port]
+            common.SSH_ADDITIONAL_OPTS = ('-o', 'Port={}'.format(self.ssh_port), ) + common.SSH_ADDITIONAL_OPTS
         return new_container
 
     def reset_state_to(self, state_name, new_running_state_name):
