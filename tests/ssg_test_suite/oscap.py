@@ -123,12 +123,12 @@ def generate_fixes_remotely(formatting, verbose_path):
     ]
     command_operands = ['/{arf_file}'.format(** formatting)]
     if 'result_id' in formatting:
-        result_id = formatting['result_id']
-        for char in "()":
-            # sanitize id because when using "(all)" profile the parenthesis
-            # can cause some bash trouble
-            result_id = result_id.replace(char, "")
-        command_options.extend(['--result-id', result_id])
+        """ result_id has no effect when the arf file has only TestResult,
+            which is the case here, but we need at least to provide an empty string
+            so the functionality doesn't break. This also covers the case where using (all)
+            profile causes bash syntax error because of parenthesis.
+        """
+        command_options.extend(['--result-id', '""'])
 
     command_string = ' '.join(command_base + command_options + command_operands)
     rc, stdout = common.run_cmd_remote(
