@@ -1,0 +1,29 @@
+documentation_complete: true
+
+title: 'Disable Kerberos by removing host keytab'
+
+description: |-
+    Kerberos is not an approved key distribution method for
+    Common Criteria. To prevent using Kerberos by system daemons,
+    remove the Kerberos keytab files, especially
+    <tt>/etc/krb5.keytab</tt>.
+
+rationale: |-
+    The key derivation function (KDF) in Kerberos is not FIPS compatible.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82175-1
+
+references:
+    ospp: FCS_CKM.1
+
+ocil_clause: 'it is present on the system'
+
+ocil: |-
+    Run the following command to see if there are some keytabs
+    that would potentially allow the use of Kerberos by system daemons.
+    <pre>$ ls -la /etc/*.keytab</pre>
+    The expected result is
+    <pre>ls: cannot access '/etc/*.keytab': No such file or directory</pre>

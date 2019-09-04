@@ -394,3 +394,6 @@ selections:
     # Configure TLS for remote logging
     - rsyslog_remote_tls
     - rsyslog_remote_tls_cacert
+
+    # Prevent Kerberos use by system daemons
+    - kerberos_disable_no_keytab
