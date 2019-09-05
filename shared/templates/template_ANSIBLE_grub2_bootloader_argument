@@ -30,13 +30,15 @@
 {{% else %}}
 
 - name: get current kernel parameters
-  command: 'grep kernelopts `/usr/bin/grub2-editenv - list`'
+  command: '/usr/bin/grub2-editenv - list'
   register: kernelopts
-
-- set_fact:
-  kerneloptsfact: "{{ kernelopts.stdout }}"
+  changed_when: False
 
 - name: Update the bootloader menu
-  command: '/usr/bin/grub2-editenv - set {{ kerneloptsfact }} {{{ ARG_NAME_VALUE }}}'
+  command: /usr/bin/grub2-editenv - set "{{ item }} {{{ ARG_NAME_VALUE }}}"
+  with_items: "{{ kernelopts.stdout_lines | select('match', '^kernelopts.*') | list }}"
+  when:
+    - kernelopts.stdout_lines is defined
+    - kernelopts.stdout_lines | length > 0
 
 {{% endif %}}
