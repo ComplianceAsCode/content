@@ -197,17 +197,30 @@ def compare_remediations(old_rule, new_rule, remediation_type, show_diffs):
                     remediation_type, rule_id, diff))
 
 
+def get_rules_to_compare(benchmark, rule_id):
+    if rule_id:
+        if not rule_id.startswith(ssg.constants.OSCAP_RULE):
+            rule_id = ssg.constants.OSCAP_RULE + rule_id
+        rules = benchmark.findall(
+            ".//xccdf:Rule[@id='%s']" % (rule_id), ns)
+    else:
+        rules = benchmark.findall(".//xccdf:Rule", ns)
+    return rules
+
+
+def compare_rules(
+        old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs):
+    compare_ovals(
+        old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs)
+    for remediation_type in remediation_type_to_uri.keys():
+        compare_remediations(old_rule, new_rule, remediation_type, show_diffs)
+
+
 def process_benchmarks(
         old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
         rule_id, show_diffs):
     missing_rules = []
-    if rule_id:
-        if not rule_id.startswith(ssg.constants.OSCAP_RULE):
-            rule_id = ssg.constants.OSCAP_RULE + rule_id
-        rules_in_old_benchmark = old_benchmark.findall(
-            ".//xccdf:Rule[@id='%s']" % (rule_id), ns)
-    else:
-        rules_in_old_benchmark = old_benchmark.findall(".//xccdf:Rule", ns)
+    rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
     for old_rule in rules_in_old_benchmark:
         rule_id = old_rule.get("id")
         new_rule = new_benchmark.find(
@@ -216,12 +229,8 @@ def process_benchmarks(
             missing_rules.append(rule_id)
             print("%s is missing in new datastream." % (rule_id))
             continue
-
-        compare_ovals(
+        compare_rules(
             old_rule, new_rule, old_oval_defs, new_oval_defs, show_diffs)
-        for remediation_type in remediation_type_to_uri.keys():
-            compare_remediations(
-                old_rule, new_rule, remediation_type, show_diffs)
 
 
 def find_all_oval_defs(root):
