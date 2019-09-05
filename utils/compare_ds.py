@@ -27,10 +27,10 @@ def parse_args():
         description="Compares two datastreams with regards to presence of"
         "OVAL checks and all remediations")
     parser.add_argument(
-        "--old", required=True, metavar="PATH",
+        "old", metavar="OLD_DS_PATH",
         help="Path to the old datastream")
     parser.add_argument(
-        "--new", required=True, metavar="PATH",
+        "new", metavar="NEW_DS_PATH",
         help="Path to the new datastream")
     parser.add_argument(
         "--rule", metavar="RULE_ID",
