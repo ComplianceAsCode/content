@@ -224,11 +224,15 @@ class ContainerTestEnv(TestEnv):
         # Get the container time to fully start its service
         time.sleep(0.2)
 
-        self.domain_ip = self._get_container_ip(new_container) or 'localhost'
-        ports = self._get_container_ports(new_container)
-        if self.internal_ssh_port in ports:
-            self.ssh_port = ports[self.internal_ssh_port]
-            common.SSH_ADDITIONAL_OPTS = ('-o', 'Port={}'.format(self.ssh_port), ) + common.SSH_ADDITIONAL_OPTS
+        self.domain_ip = self._get_container_ip(new_container)
+        if not self.domain_ip:
+            self.domain_ip = 'localhost'
+            ports = self._get_container_ports(new_container)
+            if self.internal_ssh_port in ports:
+                self.ssh_port = ports[self.internal_ssh_port]
+        else:
+            self.ssh_port = self.internal_ssh_port
+        common.SSH_ADDITIONAL_OPTS = ('-o', 'Port={}'.format(self.ssh_port), ) + common.SSH_ADDITIONAL_OPTS
         return new_container
 
     def reset_state_to(self, state_name, new_running_state_name):
