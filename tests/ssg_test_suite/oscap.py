@@ -113,6 +113,13 @@ def get_result_id_from_arf(arf_path, verbose_path):
     return res_id
 
 
+def single_quote_string(input):
+    result = input
+    for char in "\"'":
+        result = result.replace(char, "")
+    return "'{}'".format(result)
+
+
 def generate_fixes_remotely(formatting, verbose_path):
     command_base = ['oscap', 'xccdf', 'generate', 'fix']
     command_options = [
@@ -123,14 +130,10 @@ def generate_fixes_remotely(formatting, verbose_path):
     ]
     command_operands = ['/{arf_file}'.format(** formatting)]
     if 'result_id' in formatting:
-        """ result_id has no effect when the arf file has only TestResult,
-            which is the case here, but we need at least to provide an empty string
-            so the functionality doesn't break. This also covers the case where using (all)
-            profile causes bash syntax error because of parenthesis.
-        """
-        command_options.extend(['--result-id', '""'])
+        command_options.extend(['--result-id', formatting['result_id']])
 
-    command_string = ' '.join(command_base + command_options + command_operands)
+    command_components = command_base + command_options + command_operands
+    command_string = ' '.join([single_quote_string(c) for c in command_components])
     rc, stdout = common.run_cmd_remote(
         command_string, formatting['domain_ip'], verbose_path)
     if rc != 0:
