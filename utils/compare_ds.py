@@ -170,6 +170,23 @@ def compare_remediation_contents(old_r, new_r):
     return None
 
 
+def compare_fix_elements(
+        old_fix, new_fix, remediation_type, rule_id, show_diffs):
+    old_fix_id = old_fix.get("id")
+    new_fix_id = new_fix.get("id")
+    if old_fix_id != new_fix_id:
+        print(
+            "%s remediation ID for rule '%s' has changed from "
+            "'%s' to '%s'." % (
+                remediation_type, rule_id, old_fix_id, new_fix_id)
+        )
+    if show_diffs:
+        diff = compare_remediation_contents(old_fix.text, new_fix.text)
+        if diff:
+            print("%s remediation for rule '%s' differs:\n%s" % (
+                remediation_type, rule_id, diff))
+
+
 def compare_remediations(old_rule, new_rule, remediation_type, show_diffs):
     system = remediation_type_to_uri[remediation_type]
     old_fix = old_rule.find("xccdf:fix[@system='%s']" % (system), ns)
@@ -182,19 +199,8 @@ def compare_remediations(old_rule, new_rule, remediation_type, show_diffs):
         print("New datastream is missing %s remediation for rule '%s'." % (
             remediation_type, rule_id))
     elif (old_fix is not None and new_fix is not None):
-        old_fix_id = old_fix.get("id")
-        new_fix_id = new_fix.get("id")
-        if old_fix_id != new_fix_id:
-            print(
-                "%s remediation ID for rule '%s' has changed from "
-                "'%s' to '%s'." % (
-                    remediation_type, rule_id, old_fix_id, new_fix_id)
-            )
-        if show_diffs:
-            diff = compare_remediation_contents(old_fix.text, new_fix.text)
-            if diff:
-                print("%s remediation for rule '%s' differs:\n%s" % (
-                    remediation_type, rule_id, diff))
+        compare_fix_elements(
+            old_fix, new_fix, remediation_type, rule_id, show_diffs)
 
 
 def get_rules_to_compare(benchmark, rule_id):
