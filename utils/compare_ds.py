@@ -8,17 +8,17 @@ import difflib
 import ssg.constants
 
 ns = {
-    "ds": "http://scap.nist.gov/schema/scap/source/1.2",
-    "xccdf": "http://checklists.nist.gov/xccdf/1.2",
-    "oval": "http://oval.mitre.org/XMLSchema/oval-definitions-5",
-    "catalog": "urn:oasis:names:tc:entity:xmlns:xml:catalog",
-    "xlink": "http://www.w3.org/1999/xlink",
+    "ds": ssg.constants.datastream_namespace,
+    "xccdf": ssg.constants.XCCDF12_NS,
+    "oval": ssg.constants.oval_namespace,
+    "catalog": ssg.constants.cat_namespace,
+    "xlink": ssg.constants.xlink_namespace,
 }
 remediation_type_to_uri = {
-    "bash": "urn:xccdf:fix:script:sh",
-    "ansible": "urn:xccdf:fix:script:ansible",
-    "puppet": "urn:xccdf:fix:script:puppet",
-    "anaconda": "urn:redhat:anaconda:pre",
+    "bash": ssg.constants.bash_system,
+    "ansible": ssg.constants.ansible_system,
+    "puppet": ssg.constants.puppet_system,
+    "anaconda": ssg.constants.anaconda_system,
 }
 
 
