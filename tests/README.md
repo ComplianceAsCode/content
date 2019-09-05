@@ -88,34 +88,23 @@ To use Podman backend, you need to have:
 
 - `podman` package installed
 
-<!--- try slirp4netns --->
-*NOTE*: With Podman, you have to run all the operations as root. Podman supports rootless containers, but the test suite internally uses a container exposing a TCP port. As of Podman version 0.12.1.2, port bindings are not yet supported by rootless containers.
-
 ##### Building podman base image
-The root user needs to log in to the container via SSH, so lets setup a key without passphrase, so it can happen without any additional interaction.
-Root user typically doesn't have a SSH key, or it has one without a passphrase.
-Use this test to find out whether it has a key:
+The Test Suite will log in to the container via SSH, so, if you don't have an SSH key pair, lets setup a key without passphrase, so the procedure could happen without any additional interaction. You can skip this step if you already have an SSH key pair.
 
 ```
-sudo test -f /root/.ssh/id_rsa && echo "Root user already has an id_rsa key" || echo "Root user has no id_rsa key"
+ssh-keygen -N ""
 ```
 
-If there is no key, it is safe to create one:
+*NOTE*: With Podman you don't have to be root in order to run tests and manage containers. But if you prefer to set up your test containers as superuser do keep in mind that root user typically doesn't have an SSH key and you have to create it with *sudo ssh-keygen -N ""* command before moving forward. You can check if your root user has the key with a command like this: *sudo test -f /root/.ssh/id_rsa && echo "Root user already has an id_rsa key" || echo "Root user has no id_rsa key"*
+
+Now when we all set with SSH keys let's build the container. Go into the `Dockerfiles` directory of the project, and execute the following:
 
 ```
-ssh-keygen -f id_rsa -N ""
-sudo mkdir -p /root/.ssh
-sudo chmod go-rwx /root/.ssh
-sudo mv id_rsa* /root/.ssh
-```
-
-In any case, `root` now has an `id_rsa` key without passphrase, so let's build the container.
-Go into the `Dockerfiles` directory of the project, and execute the following:
-
-```
-public_key="$(sudo cat /root/.ssh/id_rsa.pub)"
+public_key="$(cat ~/.ssh/id_rsa.pub)"
 podman build --build-arg CLIENT_PUBLIC_KEY="$public_key" -t ssg_test_suite -f test_suite-rhel .
 ```
+
+*NOTE*: If you are setting up the suite as superuser (i.e. *sudo podman build ...*) use *public_key="$(sudo cat /root/.ssh/id_rsa.pub)"* instead of the first command.
 
 #### Docker
 
@@ -129,7 +118,7 @@ To use Docker backend, you need to have:
 
 ##### Building docker base image
 
-The procedure is same as using Podman, you just swap the `podman` call with `docker`.
+The procedure is same as using Podman, you just swap the `podman` call with `docker`. But since Docker does not support rootless containers you will have to take superuser route of the guide.
 
 ## How to run the tests
 
