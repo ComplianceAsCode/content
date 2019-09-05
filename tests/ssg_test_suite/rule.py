@@ -9,15 +9,13 @@ import subprocess
 import collections
 import json
 
-from ssg.constants import OSCAP_PROFILE
+from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
 from ssg_test_suite import common
 from ssg_test_suite.log import LogHelper
 
-
-ALL_PROFILE_ID = "(all)"
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -35,7 +33,7 @@ def get_viable_profiles(selected_profiles, datastream, benchmark):
     all_profiles_elements = xml_operations.get_all_profiles_in_benchmark(
         datastream, benchmark, logging)
     all_profiles = [el.attrib["id"] for el in all_profiles_elements]
-    all_profiles.append(ALL_PROFILE_ID)
+    all_profiles.append(OSCAP_PROFILE_ALL_ID)
 
     for ds_profile in all_profiles:
         if 'ALL' in selected_profiles:
@@ -121,7 +119,7 @@ class RuleChecker(oscap.Checker):
 
         runner_cls = oscap.REMEDIATION_RULE_RUNNERS[self.remediate_using]
         runner = runner_cls(
-            self.test_env, profile, self.datastream, self.benchmark_id,
+            self.test_env, oscap.process_profile_id(profile), self.datastream, self.benchmark_id,
             rule_id, scenario.script, self.dont_clean, self.manual_debug)
         if not self._initial_scan_went_ok(runner, rule_id, scenario.context):
             return False
@@ -228,10 +226,10 @@ class RuleChecker(oscap.Checker):
             params['profiles'] = [self.scenarios_profile]
 
         if not params["profiles"]:
-            params["profiles"].append(ALL_PROFILE_ID)
+            params["profiles"].append(OSCAP_PROFILE_ALL_ID)
             logging.debug(
                 "Added the {0} profile to the list of available profiles for {1}"
-                .format(ALL_PROFILE_ID, script))
+                .format(OSCAP_PROFILE_ALL_ID, script))
         return params
 
     def _parse_parameters(self, script):
@@ -344,7 +342,8 @@ def perform_rule_check(options):
     checker.scenarios_profile = options.scenarios_profile
     # check if target is a complete profile ID, if not prepend profile prefix
     if (checker.scenarios_profile is not None and
-            not checker.scenarios_profile.startswith(OSCAP_PROFILE)):
+            not checker.scenarios_profile.startswith(OSCAP_PROFILE) and
+            not oscap.is_virtual_oscap_profile(checker.scenarios_profile)):
         checker.scenarios_profile = OSCAP_PROFILE+options.scenarios_profile
 
     checker.test_target(options.target)

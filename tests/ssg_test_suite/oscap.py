@@ -9,6 +9,9 @@ import xml.etree.ElementTree
 import json
 import datetime
 
+
+from ssg.constants import OSCAP_PROFILE_ALL_ID
+
 from ssg_test_suite.log import LogHelper
 from ssg_test_suite import test_env
 from ssg_test_suite import common
@@ -26,6 +29,9 @@ _CONTEXT_RETURN_CODES = {'pass': 0,
 _ANSIBLE_TEMPLATE = 'urn:xccdf:fix:script:ansible'
 _BASH_TEMPLATE = 'urn:xccdf:fix:script:sh'
 _XCCDF_NS = 'http://checklists.nist.gov/xccdf/1.2'
+
+
+PROFILE_ALL_ID_SINGLE_QUOTED = False
 
 
 def analysis_to_serializable(analysis):
@@ -107,6 +113,13 @@ def get_result_id_from_arf(arf_path, verbose_path):
     return res_id
 
 
+def single_quote_string(input):
+    result = input
+    for char in "\"'":
+        result = result.replace(char, "")
+    return "'{}'".format(result)
+
+
 def generate_fixes_remotely(formatting, verbose_path):
     command_base = ['oscap', 'xccdf', 'generate', 'fix']
     command_options = [
@@ -119,7 +132,8 @@ def generate_fixes_remotely(formatting, verbose_path):
     if 'result_id' in formatting:
         command_options.extend(['--result-id', formatting['result_id']])
 
-    command_string = ' '.join(command_base + command_options + command_operands)
+    command_components = command_base + command_options + command_operands
+    command_string = ' '.join([single_quote_string(c) for c in command_components])
     rc, stdout = common.run_cmd_remote(
         command_string, formatting['domain_ip'], verbose_path)
     if rc != 0:
@@ -206,6 +220,32 @@ def send_arf_to_remote_machine_and_generate_remediations_there(
     except Exception as exc:
         logging.error(str(exc))
         return False
+
+
+def is_virtual_oscap_profile(profile):
+    """ Test if the profile belongs to the so called category virtual
+        from OpenSCAP available profiles. It can be (all) or other id we
+        might come up in the future, it just needs to be encapsulated
+        with parenthesis for example "(custom_profile)".
+    """
+    if profile is not None:
+        if profile == OSCAP_PROFILE_ALL_ID:
+            return True
+        else:
+            if "(" == profile[:1] and ")" == profile[-1:]:
+                return True
+    return False
+
+
+def process_profile_id(profile):
+    # Detect if the profile is virtual and include single quotes if needed.
+    if is_virtual_oscap_profile(profile):
+        if PROFILE_ALL_ID_SINGLE_QUOTED:
+            return "'{}'".format(profile)
+        else:
+            return profile
+    else:
+        return profile
 
 
 class GenericRunner(object):
