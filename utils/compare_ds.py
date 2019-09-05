@@ -161,7 +161,7 @@ def compare_ovals(
                 new_oval_def_id)
 
 
-def compare_remediation_contents(old_r, new_r):
+def compare_fix_texts(old_r, new_r):
     if old_r != new_r:
         diff = "".join(difflib.unified_diff(
             old_r.splitlines(keepends=True), new_r.splitlines(keepends=True),
@@ -181,7 +181,7 @@ def compare_fix_elements(
                 remediation_type, rule_id, old_fix_id, new_fix_id)
         )
     if show_diffs:
-        diff = compare_remediation_contents(old_fix.text, new_fix.text)
+        diff = compare_fix_texts(old_fix.text, new_fix.text)
         if diff:
             print("%s remediation for rule '%s' differs:\n%s" % (
                 remediation_type, rule_id, diff))
