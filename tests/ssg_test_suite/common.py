@@ -205,6 +205,13 @@ def _exclude_garbage(tarinfo):
     return tarinfo
 
 
+def _make_file_root_owned(tarinfo):
+    if tarinfo:
+        tarinfo.uid = 0
+        tarinfo.gid = 0
+    return tarinfo
+
+
 def create_tarball():
     """Create a tarball which contains all test scenarios for every rule.
     Tarball contains directories with the test scenarios. The name of the
@@ -213,14 +220,14 @@ def create_tarball():
     with tempfile.NamedTemporaryFile(
             "wb", suffix=".tar.gz", delete=False) as fp:
         with tarfile.TarFile.open(fileobj=fp, mode="w") as tarball:
-            tarball.add(_SHARED_DIR, arcname="shared")
+            tarball.add(_SHARED_DIR, arcname="shared", filter=_make_file_root_owned)
             for dirpath, dirnames, _ in os.walk(_BENCHMARK_DIR):
                 rule_id = os.path.basename(dirpath)
                 if "tests" in dirnames:
                     tests_dir_path = os.path.join(dirpath, "tests")
                     tarball.add(
-                        tests_dir_path,
-                        arcname=rule_id, filter=_exclude_garbage
+                        tests_dir_path, arcname=rule_id,
+                        filter=lambda tinfo: _exclude_garbage(_make_file_root_owned(tinfo))
                     )
         return fp.name
 
