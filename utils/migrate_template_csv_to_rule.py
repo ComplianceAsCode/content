@@ -159,6 +159,25 @@ def kernel_modules_disabled_csv_to_dict(csv_line):
     kernel_modules_disabled["KERNMODULE"] = kernmod
     return [rule_id], kernel_modules_disabled
 
+def lineinfile_csv_to_dict(csv_line):
+    lineinfile = {}
+
+    rule_id = csv_line[0]
+    parameter = csv_line[1]
+    value = csv_line[2]
+    if len(csv_line) == 4:
+        missing_parameter_pass = csv_line[3]
+    else:
+        missing_paramteter_pass = "false"
+
+    lineinfile["products"] = "all"
+    lineinfile["rule_title"] = f"Rule title of {rule_id}"
+    lineinfile["rule_id"] = rule_id
+    lineinfile["PARAMETER"] = parameter
+    lineinfile["VALUE"] = value
+    lineinfile["MISSING_PARAMETER_PASS"] = missing_parameter_pass
+    return [rule_id], lineinfile
+
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
 
@@ -201,6 +220,8 @@ class ProductCSVData(object):
             "audit_rules_usergroup_modification": audit_rules_usergroup_modification_csv_to_dict,
             "grub2_bootloader_argument": grub2_bootloader_argument_csv_to_dict,
             "kernel_modules_disabled": kernel_modules_disabled_csv_to_dict,
+            "auditd_lineinfile": lineinfile_csv_to_dict,
+            "sshd_lineinfile": lineinfile_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
