@@ -2,9 +2,13 @@ import argparse
 import csv
 import os
 import pprint
+import re
 
 from ssg.constants import product_directories
 
+
+def escape_path(path):
+    return re.sub('[-\./]', '_', path)
 
 def accounts_password_csv_to_dict(csv_line):
     accounts_password = {}
@@ -21,6 +25,38 @@ def accounts_password_csv_to_dict(csv_line):
     accounts_password["OPERATION"] = operation
     accounts_password["SIGN"] = sign
     return rule_id, accounts_password
+
+def audit_rules_execution_csv_to_dict(csv_line):
+    audit_rules_execution = {}
+
+    path = csv_line[0]
+    name = escape_path(os.path.basename(path))
+    rule_id = f"audit_rules_execution_{name}"
+
+    # create_audit_rules_execution.py escapes the '/' when generating the OVAL
+    # This is not actually necessary
+    audit_rules_execution["PATH"] = path
+    audit_rules_execution["NAME"] = name
+
+    audit_rules_execution["ID"] = f"audit_rules_execution_{name}"
+    audit_rules_execution["TITLE"] = f"Record Any Attempts to Run {name}"
+    return rule_id, audit_rules_execution
+
+def audit_rules_privileged_commands_csv_to_dict(csv_line):
+    audit_rules_privileged_commands = {}
+
+    path = csv_line[0]
+    name = escape_path(os.path.basename(path))
+    rule_id = f"audit_rules_privileged_commands_{name}"
+
+    # create_audit_rules_privileged_commands.py escapes the '/' when generating the OVAL
+    # This is not actually necessary
+    audit_rules_privileged_commands["PATH"] = path
+    audit_rules_privileged_commands["NAME"] = name
+
+    audit_rules_privileged_commands["ID"] = f"audit_rules_privileged_commands_{name}"
+    audit_rules_privileged_commands["TITLE"] = f"Ensure auditd Collects Information on the Use of Privileged Commands - {name}"
+    return rule_id, audit_rules_privileged_commands
 
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
@@ -53,6 +89,8 @@ def packages_removed_csv_to_dict(csv_line):
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password": accounts_password_csv_to_dict,
+            "audit_rules_execution": audit_rules_execution_csv_to_dict,
+            "audit_rules_privileged_commands": audit_rules_privileged_commands_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
