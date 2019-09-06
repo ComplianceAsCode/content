@@ -5,6 +5,7 @@ import pprint
 
 from ssg.constants import product_directories
 
+
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
 
@@ -27,7 +28,7 @@ class ProductCSVData(object):
 
     def __init__(self, product, ssg_root):
         self.product = product
-        self.ssg_root = ssg_root # Needed?
+        self.ssg_root = ssg_root  # Needed?
 
         self.csv_dir = os.path.join(ssg_root, product, "templates/csv")
         self.csv_files = self._identify_csv_files(self.csv_dir)
@@ -37,7 +38,8 @@ class ProductCSVData(object):
     def _identify_csv_files(self, csv_dir):
         try:
             # get all CSV files
-            product_csvs = [ csv_filename for csv_filename in os.listdir(csv_dir) if csv_filename.endswith(".csv") ]
+            product_csvs = [csv_filename for csv_filename in os.listdir(csv_dir)
+                            if csv_filename.endswith(".csv")]
         except FileNotFoundError as not_found:
             product_csvs = []
             # double check that exception is on templates/csv directory
@@ -48,7 +50,7 @@ class ProductCSVData(object):
     def _load_csv_files(self, csv_files):
         csv_data = {}
         for csv_filename in csv_files:
-            template_name = csv_filename.replace(".csv","")
+            template_name = csv_filename.replace(".csv", "")
 
             # Only load CSV for which we know the format
             if template_name not in self.TEMPLATE_TO_CSV_FORMAT_MAP:
@@ -71,11 +73,13 @@ class ProductCSVData(object):
             template_data[rule_id] = line_data_dict
         return template_data
 
+
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("ssg_root", help="Path to root of ssg git directory")
 
     return p.parse_args()
+
 
 def main():
     args = parse_args()
@@ -95,6 +99,7 @@ def main():
     # Normalize loaded CSV Data
 
     # Walk through benchmark and add data into rule.yml
+
 
 if __name__ == "__main__":
     main()
