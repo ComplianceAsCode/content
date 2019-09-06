@@ -6,6 +6,22 @@ import pprint
 from ssg.constants import product_directories
 
 
+def accounts_password_csv_to_dict(csv_line):
+    accounts_password = {}
+
+    variable = csv_line[0]
+    rule_id = f"accounts_password_pam_{variable}"
+
+    operation = csv_line[1]
+
+    # Only credit related variables allow negative values
+    sign = "-?" if variable.endswith("credit") else ""
+
+    accounts_password["VARIABLE"] = variable
+    accounts_password["OPERATION"] = operation
+    accounts_password["SIGN"] = sign
+    return rule_id, accounts_password
+
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
 
@@ -36,6 +52,7 @@ def packages_removed_csv_to_dict(csv_line):
 
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
+            "accounts_password": accounts_password_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
