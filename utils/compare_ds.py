@@ -102,6 +102,7 @@ def compare_oval_definitions(
             if x[0] == y[0] and x[1] == y[1]:
                 old_els.remove(x)
                 new_els.remove(y)
+                break
     if old_els or new_els:
         print("OVAL definition %s differs:" % (old_oval_def_id))
         print("--- old datastream")
