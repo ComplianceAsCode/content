@@ -182,7 +182,9 @@ def compare_fix_elements(
                 remediation_type, rule_id, old_fix_id, new_fix_id)
         )
     if show_diffs:
-        diff = compare_fix_texts(old_fix.text, new_fix.text)
+        old_fix_text = "".join(old_fix.itertext())
+        new_fix_text = "".join(new_fix.itertext())
+        diff = compare_fix_texts(old_fix_text, new_fix_text)
         if diff:
             print("%s remediation for rule '%s' differs:\n%s" % (
                 remediation_type, rule_id, diff))
