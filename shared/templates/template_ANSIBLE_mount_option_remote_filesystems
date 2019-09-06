@@ -5,19 +5,16 @@
 # disruption = medium
 
 - name: "Get nfs and nfs4 mount points, that don't have {{{ MOUNTOPTION }}}"
-  shell: |
-    set -o pipefail
-    grep -E "[[:space:]]nfs[4]?[[:space:]]" /etc/fstab | grep -v "{{{ MOUNTOPTION }}}" | awk '{print $2}'
-  args:
-    executable: /bin/bash
+  command: findmnt --fstab --types nfs,nfs4 -O no{{{ MOUNTOPTION }}} -n
   register: points_register
   check_mode: no
   changed_when: False
 
-- name: "Add {{{ MOUNTOPTION }}} to mount points"
-  shell: awk '$2=="{{ item }}"{$4=$4",{{{ MOUNTOPTION }}}"}1' /etc/fstab > fstab.tmp && mv fstab.tmp /etc/fstab
-  args:
-    executable: /bin/bash
-  with_items:
-    - "{{ points_register.stdout_lines }}"
+- name: "Add {{{ MOUNTOPTION }}} to nfs and nfs4 mount points"
+  mount:
+    path: "{{ item.split()[0] }}"
+    src: "{{ item.split()[1] }}"
+    fstype: "{{ item.split()[2] }}"
+    state: mounted
+    opts: "{{ item.split()[3] }},{{{ MOUNTOPTION }}}"
   when: (points_register.stdout | length > 0)
