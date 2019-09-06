@@ -49,6 +49,7 @@ option(SSG_SEPARATE_SCAP_FILES_ENABLED "If enabled, separate SCAP files (OVAL, X
 option(SSG_JINJA2_CACHE_ENABLED "If enabled, the jinja2 templating files will be cached into bytecode. Also see SSG_JINJA2_CACHE_DIR." TRUE)
 option(SSG_BATS_TESTS_ENABLED "If enabled, bats will be used to run unit-tests of bash remediations." TRUE)
 set(SSG_JINJA2_CACHE_DIR "${CMAKE_BINARY_DIR}/jinja2_cache" CACHE PATH "Where the jinja2 cached bytecode should be stored. This speeds up builds at the expense of disk space. You can use one location for multiple SSG builds for performance improvements.")
+option(SSG_NEW_TEMPLATING "If enabled, the new templating system that generates templated content from rule.yml will be used instead of templating system based on CSV files" FALSE)
 
 # SSG_PRODUCT_DEFAULT modifies the behavior of all other options. Products
 # which should be built by default should use the value ${SSG_PRODUCT_DEFAULT}
@@ -221,6 +222,7 @@ if (SSG_JINJA2_CACHE_ENABLED)
 else()
     message(STATUS "jinja2 cache: disabled")
 endif()
+message(STATUS "New templating system: ${SSG_NEW_TEMPLATING}")
 message(STATUS " ")
 
 message(STATUS "Products:")

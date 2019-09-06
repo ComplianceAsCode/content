@@ -1,0 +1,16 @@
+documentation_complete: true
+
+title: Ensure GCC compiler is installed
+
+description: The gcc package should be installed.
+
+rationale: GCC can compile programs to binary executables
+
+template: package_installed
+template_data:
+    PKGNAME: gcc
+    EVR: 0:9.2.1-1
+template_backends:
+    bash: off
+
+severity: low

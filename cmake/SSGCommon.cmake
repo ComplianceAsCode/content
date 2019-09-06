@@ -195,22 +195,42 @@ macro(ssg_build_ocil_unlinked PRODUCT)
     )
 endmacro()
 
-macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
+macro(ssg_build_templated_content PRODUCT)
+    set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
     set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
     add_custom_command(
-        OUTPUT "${BUILD_REMEDIATIONS_DIR}"
-        # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
-        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
-        DEPENDS generate-internal-bash-remediation-functions.xml
-        DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/build_templated_content.py" --resolved-rules-dir "${CMAKE_CURRENT_BINARY_DIR}/rules" --templates-dir "${SSG_SHARED}/templates" --checks-dir "${BUILD_CHECKS_DIR}" --remediations-dir "${BUILD_REMEDIATIONS_DIR}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml"
+        COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
+        # Actually we mean that it depends on resolved rules.
+        DEPENDS generate-internal-${PRODUCT}-shorthand.xml
         DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
-        COMMENT "[${PRODUCT}-content] generating all fixes: ${LANGUAGES}"
+        COMMENT "[${PRODUCT}-content] generating templated content"
     )
     add_custom_target(
-        generate-internal-language-remedations-${PRODUCT}
-        DEPENDS "${BUILD_REMEDIATIONS_DIR}"
+        generate-internal-templated-content-${PRODUCT}
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
     )
+endmacro()
+
+macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
+    if(NOT SSG_NEW_TEMPLATING)
+        set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
+        add_custom_command(
+            OUTPUT "${BUILD_REMEDIATIONS_DIR}"
+            # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
+            DEPENDS generate-internal-bash-remediation-functions.xml
+            DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
+            DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
+            COMMENT "[${PRODUCT}-content] generating all fixes: ${LANGUAGES}"
+        )
+        add_custom_target(
+            generate-internal-language-remedations-${PRODUCT}
+            DEPENDS "${BUILD_REMEDIATIONS_DIR}"
+        )
+    endif()
     foreach(LANGUAGE ${LANGUAGES})
       set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
 
@@ -220,13 +240,17 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
           # Acutally we mean that it depends on resolved rules.
           DEPENDS generate-internal-${PRODUCT}-shorthand.xml
           DEPENDS "${SSG_BUILD_SCRIPTS}/combine_remediations.py"
-          DEPENDS generate-internal-language-remedations-${PRODUCT}
           COMMENT "[${PRODUCT}-content] collecting all ${LANGUAGE} fixes"
       )
       add_custom_target(
           generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
           DEPENDS "${ALL_FIXES_DIR}"
       )
+      if(SSG_NEW_TEMPLATING)
+          add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-templated-content-${PRODUCT})
+      else()
+          add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-language-remedations-${PRODUCT})
+      endif()
 
       add_custom_command(
           OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
@@ -342,23 +366,33 @@ macro(ssg_build_oval_unlinked PRODUCT)
     string(REPLACE "\n" ";" OVAL_CHECKS_OUTPUTS "${OVAL_CHECKS_OUTPUTS_STR}")
 
     set(OVAL_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
-
-    add_custom_command(
-        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-        OUTPUT ${OVAL_CHECKS_OUTPUTS}
-        # We have to remove all old checks in case the user removed something from the CSV files
-        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
-        COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
-        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-        DEPENDS ${OVAL_CHECKS_DEPENDS}
-        DEPENDS ${EXTRA_OVAL_DEPS}
-        DEPENDS ${EXTRA_SHARED_OVAL_DEPS}
-        DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
-        DEPENDS "${SSG_BUILD_SCRIPTS}/combine_ovals.py"
-        COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
-    )
+    if(SSG_NEW_TEMPLATING)
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
+            COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            DEPENDS generate-internal-templated-content-${PRODUCT}
+            DEPENDS "${SSG_BUILD_SCRIPTS}/combine_ovals.py"
+            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
+        )
+    else()
+        add_custom_command(
+            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            OUTPUT ${OVAL_CHECKS_OUTPUTS}
+            # We have to remove all old checks in case the user removed something from the CSV files
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
+            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
+            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
+            COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+            DEPENDS ${OVAL_CHECKS_DEPENDS}
+            DEPENDS ${EXTRA_OVAL_DEPS}
+            DEPENDS ${EXTRA_SHARED_OVAL_DEPS}
+            DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
+            DEPENDS "${SSG_BUILD_SCRIPTS}/combine_ovals.py"
+            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
+        )
+    endif()
     add_custom_target(
         generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
@@ -694,6 +728,9 @@ macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
 
     ssg_build_shorthand_xml(${PRODUCT})
+    if(SSG_NEW_TEMPLATING)
+        ssg_build_templated_content(${PRODUCT})
+    endif()
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
