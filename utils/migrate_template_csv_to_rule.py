@@ -127,6 +127,17 @@ def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line):
 
     return rule_ids, audit_rules_unsuccessful_file_modification_detailed
 
+def audit_rules_usergroup_modification_csv_to_dict(csv_line):
+    user_group_modification = {}
+
+    path = csv_line[0]
+    name = escape_path(os.path.basename(path))
+    rule_id = f"audit_rules_usergroup_modification_{name}"
+
+    user_group_modification["NAME"] = name
+    user_group_modification["PATH"] = path
+    return [rule_id], user_group_modification
+
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
 
@@ -166,6 +177,7 @@ class ProductCSVData(object):
             "audit_rules_path_syscall": audit_rules_path_syscall_csv_to_dict,
             "audit_rules_unsuccessful_file_modification": audit_rules_unsuccessful_file_modification_csv_to_dict,
             "audit_rules_unsuccessful_file_modification_detailed": audit_rules_unsuccessful_file_modification_detailed_csv_to_dict,
+            "audit_rules_usergroup_modification": audit_rules_usergroup_modification_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
