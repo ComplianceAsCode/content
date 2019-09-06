@@ -76,6 +76,17 @@ def audit_rules_file_deletion_events_csv_to_dict(csv_line):
     audit_rules_file_deletion_events["NAME"] = name
     return rule_id, audit_rules_file_deletion_events
 
+def audit_rules_login_events_csv_to_dict(csv_line):
+    audit_rules_login_events = {}
+
+    path = csv_line[0]
+    name = escape_path(os.path.basename(path))
+    rule_id = f"audit_rules_login_events_{name}"
+
+    audit_rules_login_events["PATH"] = path
+    audit_rules_login_events["NAME"] = name
+    return rule_id, audit_rules_login_events
+
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
 
@@ -111,6 +122,7 @@ class ProductCSVData(object):
             "audit_rules_privileged_commands": audit_rules_privileged_commands_csv_to_dict,
             "audit_rules_dac_modification": audit_rules_dac_modification_csv_to_dict,
             "audit_rules_file_deletion_events": audit_rules_file_deletion_events_csv_to_dict,
+            "audit_rules_login_events": audit_rules_login_events_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
