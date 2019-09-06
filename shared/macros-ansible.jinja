@@ -84,11 +84,8 @@
 {{%- macro ansible_only_lineinfile(msg, path, line_regex, new_line, create='no', block=False, validate='', insert_after='', insert_before='') -%}}
 {{%- if block %}}
 - name: "{{{ msg or rule_title }}}"
-  block:
-    {{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent')|indent }}}
-    {{{ ansible_lineinfile("Insert correct line to " + path, path, regex=None, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
+  {{{ ansible_lineinfile("Insert correct line to " + path, path, regex=None, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before)|indent }}}
 {{%- else %}}
-{{{ ansible_lineinfile("Deduplicate values from " + path, path, regex=line_regex, new_line=None, create='no', state='absent') }}}
 {{{ ansible_lineinfile("Insert correct line into " + path, path, regex=None, new_line=new_line, create=create, state='present', validate=validate, insert_after=insert_after, insert_before=insert_before) }}}
 {{%- endif %}}
 {{%- endmacro %}}
@@ -121,7 +118,6 @@
 {{%- set new_line = parameter + separator + value -%}}
 - name: '{{{ msg or rule_title }}}'
   block:
-    {{{ ansible_lineinfile("Deduplicate values from " + config_file, config_file, regex=line_regex, create='no', state='absent')|indent }}}
     {{{ ansible_stat("Check if " + config_dir + " exists", path=config_dir, register=dir_exists)|indent }}}
     {{{ ansible_find("Check if the parameter " + parameter + " is present in " + config_dir, paths=config_dir, contains=line_regex, register=dir_parameter, when=find_when)|indent }}}
     {{{ ansible_lineinfile("Remove parameter from files in " + config_dir, path="{{ item.path }}", regex=line_regex, state="absent", with_items=lineinfile_items, when=lineinfile_when)|indent }}}
