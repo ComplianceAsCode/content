@@ -79,6 +79,10 @@ class ProductCSVData(object):
         template_csv_parser = self.TEMPLATE_TO_CSV_FORMAT_MAP[template_name]
 
         for line in csv.reader(csv_f):
+            # Skip empty lines
+            if len(line) == 0:
+                continue
+
             # Skip all comment lines
             if len(line) >= 1 and line[0].startswith('#'):
                 continue
