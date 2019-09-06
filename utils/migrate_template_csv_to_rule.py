@@ -50,8 +50,8 @@ class ProductCSVData(object):
         for csv_filename in csv_files:
             template_name = csv_filename.replace(".csv","")
 
-            # For now, parse only packages_installed
-            if template_name != "packages_installed":
+            # Only load CSV for which we know the format
+            if template_name not in self.TEMPLATE_TO_CSV_FORMAT_MAP:
                 continue
 
             with open(os.path.join(self.csv_dir, csv_filename), "r") as csv_f:
