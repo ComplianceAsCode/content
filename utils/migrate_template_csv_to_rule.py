@@ -24,7 +24,7 @@ def accounts_password_csv_to_dict(csv_line):
     accounts_password["VARIABLE"] = variable
     accounts_password["OPERATION"] = operation
     accounts_password["SIGN"] = sign
-    return rule_id, accounts_password
+    return [rule_id], accounts_password
 
 def audit_rules_execution_csv_to_dict(csv_line):
     audit_rules_execution = {}
@@ -40,7 +40,7 @@ def audit_rules_execution_csv_to_dict(csv_line):
 
     audit_rules_execution["ID"] = f"audit_rules_execution_{name}"
     audit_rules_execution["TITLE"] = f"Record Any Attempts to Run {name}"
-    return rule_id, audit_rules_execution
+    return [rule_id], audit_rules_execution
 
 def audit_rules_privileged_commands_csv_to_dict(csv_line):
     audit_rules_privileged_commands = {}
@@ -56,7 +56,7 @@ def audit_rules_privileged_commands_csv_to_dict(csv_line):
 
     audit_rules_privileged_commands["ID"] = f"audit_rules_privileged_commands_{name}"
     audit_rules_privileged_commands["TITLE"] = f"Ensure auditd Collects Information on the Use of Privileged Commands - {name}"
-    return rule_id, audit_rules_privileged_commands
+    return [rule_id], audit_rules_privileged_commands
 
 def audit_rules_dac_modification_csv_to_dict(csv_line):
     audit_rules_dac_modification = {}
@@ -65,7 +65,7 @@ def audit_rules_dac_modification_csv_to_dict(csv_line):
     rule_id = f"audit_rules_dac_modification_{attr}"
 
     audit_rules_dac_modification["ATTR"] = attr
-    return rule_id, audit_rules_dac_modification
+    return [rule_id], audit_rules_dac_modification
 
 def audit_rules_file_deletion_events_csv_to_dict(csv_line):
     audit_rules_file_deletion_events = {}
@@ -74,7 +74,7 @@ def audit_rules_file_deletion_events_csv_to_dict(csv_line):
     rule_id = f"audit_rules_file_deletion_events_{name}"
 
     audit_rules_file_deletion_events["NAME"] = name
-    return rule_id, audit_rules_file_deletion_events
+    return [rule_id], audit_rules_file_deletion_events
 
 def audit_rules_login_events_csv_to_dict(csv_line):
     audit_rules_login_events = {}
@@ -85,7 +85,7 @@ def audit_rules_login_events_csv_to_dict(csv_line):
 
     audit_rules_login_events["PATH"] = path
     audit_rules_login_events["NAME"] = name
-    return rule_id, audit_rules_login_events
+    return [rule_id], audit_rules_login_events
 
 def audit_rules_path_syscall_csv_to_dict(csv_line):
     audit_rules_path_syscall = {}
@@ -101,7 +101,7 @@ def audit_rules_path_syscall_csv_to_dict(csv_line):
     audit_rules_path_syscall["PATHID"] = path_id
     audit_rules_path_syscall["SYSCALL"] = syscall
     audit_rules_path_syscall["POS"] = arg_pos
-    return rule_id, audit_rules_path_syscall
+    return [rule_id], audit_rules_path_syscall
 
 def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line):
     audit_rules_unsuccessful_file_modification  = {}
@@ -110,7 +110,22 @@ def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line):
     rule_id = f"audit_rules_unsuccessful_file_modification_{name}"
 
     audit_rules_unsuccessful_file_modification ["NAME"] = name
-    return rule_id, audit_rules_unsuccessful_file_modification
+    return [rule_id], audit_rules_unsuccessful_file_modification
+
+def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line):
+    audit_rules_unsuccessful_file_modification_detailed = {}
+
+    syscall = csv_line[0]
+    arg_pos = csv_line[1]
+
+    rule_ids = [f"audit_rules_unsuccessful_file_modification_{syscall}_o_creat",
+                f"audit_rules_unsuccessful_file_modification_{syscall}_o_trunc_write",
+                f"audit_rules_unsuccessful_file_modification_{syscall}_rule_order",
+                ]
+    audit_rules_unsuccessful_file_modification_detailed["SYSCALL"] = syscall
+    audit_rules_unsuccessful_file_modification_detailed["POS"] = arg_pos
+
+    return rule_ids, audit_rules_unsuccessful_file_modification_detailed
 
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
@@ -125,7 +140,7 @@ def packages_installed_csv_to_dict(csv_line):
 
     package_installed["PKGNAME"] = pkgname
     package_installed["EVR"] = evr
-    return rule_id, package_installed
+    return [rule_id], package_installed
 
 def packages_removed_csv_to_dict(csv_line):
     package_removed = {}
@@ -138,7 +153,7 @@ def packages_removed_csv_to_dict(csv_line):
     # So just ignore it as well
 
     package_removed["PKGNAME"] = pkgname
-    return rule_id, package_removed
+    return [rule_id], package_removed
 
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
@@ -150,6 +165,7 @@ class ProductCSVData(object):
             "audit_rules_login_events": audit_rules_login_events_csv_to_dict,
             "audit_rules_path_syscall": audit_rules_path_syscall_csv_to_dict,
             "audit_rules_unsuccessful_file_modification": audit_rules_unsuccessful_file_modification_csv_to_dict,
+            "audit_rules_unsuccessful_file_modification_detailed": audit_rules_unsuccessful_file_modification_detailed_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
@@ -201,8 +217,9 @@ class ProductCSVData(object):
             if len(line) >= 1 and line[0].startswith('#'):
                 continue
 
-            rule_id, line_data_dict = template_csv_parser(line)
-            template_data[rule_id] = line_data_dict
+            rule_ids, line_data_dict = template_csv_parser(line)
+            for rule_id in rule_ids:
+                template_data[rule_id] = line_data_dict
         return template_data
 
 
