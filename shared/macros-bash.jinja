@@ -87,7 +87,7 @@ apt-get remove -y "{{{ package }}}"
 {{%- endif -%}}
 {{%- endmacro -%}}
 
-{{%- macro disable_prelink() -%}}
+{{%- macro bash_disable_prelink() -%}}
 # prelink not installed
 if test ! -e /etc/sysconfig/prelink -a ! -e /usr/sbin/prelink; then
     return 0
