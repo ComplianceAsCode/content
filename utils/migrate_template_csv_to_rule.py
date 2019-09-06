@@ -128,6 +128,12 @@ def main():
         templated_content[product_name] = product.csv_data
         show_data[product_name] = product.csv_data
 
+    # Load shared CSV Data as if it were a Product
+    product_name = "shared"
+    product = ProductCSVData(product_name, args.ssg_root)
+    templated_content[product_name] = product.csv_data
+    show_data[product_name] = product.csv_data
+
     # Ilustrate DataStructure
     pprint.pprint(show_data)
 
