@@ -21,9 +21,23 @@ def packages_installed_csv_to_dict(csv_line):
     package_installed["EVR"] = evr
     return rule_id, package_installed
 
+def packages_removed_csv_to_dict(csv_line):
+    package_removed = {}
+
+    pkgname = csv_line[0]
+    rule_id = f"package_{pkgname}_removed"
+
+    # Some CSVs have two fields for packages_removed, but
+    # create_package_removed.py doesn't use the second field.
+    # So just ignore it as well
+
+    package_removed["PKGNAME"] = pkgname
+    return rule_id, package_removed
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
-            "packages_installed": packages_installed_csv_to_dict
+            "packages_installed": packages_installed_csv_to_dict,
+            "packages_removed": packages_removed_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
