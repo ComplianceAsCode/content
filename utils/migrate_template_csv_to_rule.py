@@ -150,6 +150,15 @@ def grub2_bootloader_argument_csv_to_dict(csv_line):
     grub2_bootloader_argument["ARG_NAME_VALUE"] = arg_name_value
     return [rule_id], grub2_bootloader_argument
 
+def kernel_modules_disabled_csv_to_dict(csv_line):
+    kernel_modules_disabled = {}
+
+    kernmod = csv_line[0]
+    rule_id = f"kernel_module_{kernmod}_disabled"
+
+    kernel_modules_disabled["KERNMODULE"] = kernmod
+    return [rule_id], kernel_modules_disabled
+
 def packages_installed_csv_to_dict(csv_line):
     package_installed = {}
 
@@ -191,6 +200,7 @@ class ProductCSVData(object):
             "audit_rules_unsuccessful_file_modification_detailed": audit_rules_unsuccessful_file_modification_detailed_csv_to_dict,
             "audit_rules_usergroup_modification": audit_rules_usergroup_modification_csv_to_dict,
             "grub2_bootloader_argument": grub2_bootloader_argument_csv_to_dict,
+            "kernel_modules_disabled": kernel_modules_disabled_csv_to_dict,
             "packages_installed": packages_installed_csv_to_dict,
             "packages_removed": packages_removed_csv_to_dict,
             }
