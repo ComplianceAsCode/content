@@ -15,7 +15,7 @@
   command: rpm -qf "{{ item }}"
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect permissions using rpm module
-  with_items: "{{ files_with_incorrect_permissions.stdout_lines | map('regex_findall', '^[.]+[M]+.* (\/.*)', '\\1') | map('join') | select('match', '(\/.*)') | list | unique }}"
+  with_items: "{{ files_with_incorrect_permissions.stdout_lines | map('regex_findall', '^[.]+[M]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
   when: (files_with_incorrect_permissions.stdout_lines | length > 0)

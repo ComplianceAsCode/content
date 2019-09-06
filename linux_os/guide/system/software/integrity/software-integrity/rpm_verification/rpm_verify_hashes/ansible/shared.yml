@@ -26,7 +26,7 @@
   command: rpm -qf "{{ item }}"
   args:
     warn: False # Ignore ANSIBLE0006, we can't fetch packages with files with incorrect hash using rpm module
-  with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\/.*)', '\\1') | map('join') | select('match', '(\/.*)') | list | unique }}"
+  with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
   when:
