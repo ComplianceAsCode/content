@@ -138,7 +138,7 @@
   Ansible to pass a file at a different path.
 #}}
 {{%- macro ansible_sshd_set(msg='', parameter='', value='') %}}
-{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^Match") }}}
+{{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
 {{%- endmacro %}}
 
 {{#
