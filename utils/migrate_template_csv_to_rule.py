@@ -12,21 +12,24 @@ def escape_path(path):
 
 def accounts_password_csv_to_dict(csv_line, csv_data):
     accounts_password = {}
-    accounts_password["template"] = "package_installed"
+    data_accounts_password = {}
+    accounts_password["name"] = "package_installed"
 
     variable = csv_line[0]
     rule_id = f"accounts_password_pam_{variable}"
 
     operation = csv_line[1]
 
-    accounts_password["VARIABLE"] = variable
-    accounts_password["OPERATION"] = operation
+    data_accounts_password["VARIABLE"] = variable
+    data_accounts_password["OPERATION"] = operation
+    accounts_password["vars"] = data_accounts_password
     csv_data[rule_id] = accounts_password
     return accounts_password
 
 def audit_rules_execution_csv_to_dict(csv_line, csv_data):
     audit_rules_execution = {}
-    audit_rules_execution["template"] = "audit_rules_privileged_commands"
+    data_audit_rules_execution = {}
+    audit_rules_execution["name"] = "audit_rules_privileged_commands"
 
     path = csv_line[0]
     name = escape_path(os.path.basename(path))
@@ -34,14 +37,16 @@ def audit_rules_execution_csv_to_dict(csv_line, csv_data):
 
     # create_audit_rules_execution.py escapes the '/' when generating the OVAL
     # This is not actually necessary
-    audit_rules_execution["PATH"] = path
+    data_audit_rules_execution["PATH"] = path
+    audit_rules_execution["vars"] = data_audit_rules_execution
 
     csv_data[rule_id] = audit_rules_execution
     return audit_rules_execution
 
 def audit_rules_privileged_commands_csv_to_dict(csv_line, csv_data):
     audit_rules_privileged_commands = {}
-    audit_rules_privileged_commands["template"] = "audit_rules_privileged_commands"
+    data_audit_rules_privileged_commands = {}
+    audit_rules_privileged_commands["name"] = "audit_rules_privileged_commands"
 
     path = csv_line[0]
     name = escape_path(os.path.basename(path))
@@ -49,48 +54,59 @@ def audit_rules_privileged_commands_csv_to_dict(csv_line, csv_data):
 
     # create_audit_rules_privileged_commands.py escapes the '/' when generating the OVAL
     # This is not actually necessary
-    audit_rules_privileged_commands["PATH"] = path
+    data_audit_rules_privileged_commands["PATH"] = path
+    audit_rules_privileged_commands["vars"] = data_audit_rules_privileged_commands
 
     csv_data[rule_id] = audit_rules_privileged_commands
     return audit_rules_privileged_commands
 
 def audit_rules_dac_modification_csv_to_dict(csv_line, csv_data):
     audit_rules_dac_modification = {}
-    audit_rules_dac_modification["template"] = "audit_rules_dac_modification"
+    data_audit_rules_dac_modification = {}
+    audit_rules_dac_modification["name"] = "audit_rules_dac_modification"
 
     attr = csv_line[0]
     rule_id = f"audit_rules_dac_modification_{attr}"
 
-    audit_rules_dac_modification["ATTR"] = attr
+    data_audit_rules_dac_modification["ATTR"] = attr
+    audit_rules_dac_modification["vars"] = data_audit_rules_dac_modification
+
     csv_data[rule_id] = audit_rules_dac_modification
     return audit_rules_dac_modification
 
 def audit_rules_file_deletion_events_csv_to_dict(csv_line, csv_data):
     audit_rules_file_deletion_events = {}
-    audit_rules_file_deletion_events["template"] = "audit_rules_file_deletion_events"
+    data_audit_rules_file_deletion_events = {}
+    audit_rules_file_deletion_events["name"] = "audit_rules_file_deletion_events"
 
     name = csv_line[0]
     rule_id = f"audit_rules_file_deletion_events_{name}"
 
-    audit_rules_file_deletion_events["NAME"] = name
+    data_audit_rules_file_deletion_events["NAME"] = name
+    audit_rules_file_deletion_events["vars"] = data_audit_rules_file_deletion_events
+
     csv_data[rule_id] = audit_rules_file_deletion_events
     return audit_rules_file_deletion_events
 
 def audit_rules_login_events_csv_to_dict(csv_line, csv_data):
     audit_rules_login_events = {}
-    audit_rules_login_events["template"] = "audit_rules_login_events"
+    data_audit_rules_login_events = {}
+    audit_rules_login_events["name"] = "audit_rules_login_events"
 
     path = csv_line[0]
     name = escape_path(os.path.basename(path))
     rule_id = f"audit_rules_login_events_{name}"
 
-    audit_rules_login_events["PATH"] = path
+    data_audit_rules_login_events["PATH"] = path
+    audit_rules_login_events["vars"] = data_audit_rules_login_events
+
     csv_data[rule_id] = audit_rules_login_events
     return audit_rules_login_events
 
 def audit_rules_path_syscall_csv_to_dict(csv_line, csv_data):
     audit_rules_path_syscall = {}
-    audit_rules_path_syscall["template"] = "audit_rules_path_syscall"
+    data_audit_rules_path_syscall = {}
+    audit_rules_path_syscall["name"] = "audit_rules_path_syscall"
 
     path = csv_line[0]
     syscall = csv_line[1]
@@ -99,25 +115,31 @@ def audit_rules_path_syscall_csv_to_dict(csv_line, csv_data):
     path_id = escape_path(path)[1:]
     rule_id = f"audit_rules_{path_id}_{syscall}"
 
-    audit_rules_path_syscall["PATH"] = path
-    audit_rules_path_syscall["SYSCALL"] = syscall
-    audit_rules_path_syscall["POS"] = arg_pos
+    data_audit_rules_path_syscall["PATH"] = path
+    data_audit_rules_path_syscall["SYSCALL"] = syscall
+    data_audit_rules_path_syscall["POS"] = arg_pos
+    audit_rules_path_syscall["vars"] = data_audit_rules_path_syscall
+
     csv_data[rule_id] = audit_rules_path_syscall
     return audit_rules_path_syscall
 
 def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line, csv_data):
     audit_rules_unsuccessful_file_modification  = {}
-    audit_rules_unsuccessful_file_modification["template"] = "audit_rules_unsuccessful_file_modification"
+    data_audit_rules_unsuccessful_file_modification  = {}
+    audit_rules_unsuccessful_file_modification["name"] = "audit_rules_unsuccessful_file_modification"
 
     name = csv_line[0]
     rule_id = f"audit_rules_unsuccessful_file_modification_{name}"
 
-    audit_rules_unsuccessful_file_modification ["NAME"] = name
+    data_audit_rules_unsuccessful_file_modification ["NAME"] = name
+    audit_rules_unsuccessful_file_modification ["vars"] = data_audit_rules_unsuccessful_file_modification
+
     csv_data[rule_id] = audit_rules_unsuccessful_file_modification
     return audit_rules_unsuccessful_file_modification
 
 def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line, csv_data):
     audit_rules_unsuccessful_file_modification_detailed = {}
+    data_audit_rules_unsuccessful_file_modification_detailed = {}
 
     syscall = csv_line[0]
     arg_pos = csv_line[1]
@@ -128,11 +150,12 @@ def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line, cs
                 "rule_order",
                 ]
 
-    audit_rules_unsuccessful_file_modification_detailed["SYSCALL"] = syscall
-    audit_rules_unsuccessful_file_modification_detailed["POS"] = arg_pos
+    data_audit_rules_unsuccessful_file_modification_detailed["SYSCALL"] = syscall
+    data_audit_rules_unsuccessful_file_modification_detailed["POS"] = arg_pos
+    audit_rules_unsuccessful_file_modification_detailed["vars"] = data_audit_rules_unsuccessful_file_modification_detailed
 
     for suffix in template_suffixes:
-        audit_rules_unsuccessful_file_modification_detailed["template"] = f"{template_base}{suffix}"
+        audit_rules_unsuccessful_file_modification_detailed["name"] = f"{template_base}{suffix}"
         rule_id = f"{template_base}{syscall}_{suffix}"
         # If a csv line has except-for, it won't be handled correctly
         csv_data[rule_id] = audit_rules_unsuccessful_file_modification_detailed.copy()
@@ -141,44 +164,54 @@ def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line, cs
 
 def audit_rules_usergroup_modification_csv_to_dict(csv_line, csv_data):
     user_group_modification = {}
-    user_group_modification["template"] = "audit_rules_usergroup_modification"
+    data_user_group_modification = {}
+    user_group_modification["name"] = "audit_rules_usergroup_modification"
 
     path = csv_line[0]
     name = escape_path(os.path.basename(path))
     rule_id = f"audit_rules_usergroup_modification_{name}"
 
-    user_group_modification["PATH"] = path
+    data_user_group_modification["PATH"] = path
+    user_group_modification["vars"] = data_user_group_modification
+
     csv_data[rule_id] = user_group_modification
     return user_group_modification
 
 def grub2_bootloader_argument_csv_to_dict(csv_line, csv_data):
     grub2_bootloader_argument = {}
-    grub2_bootloader_argument["template"] = "grub2_bootloader_argument"
+    data_grub2_bootloader_argument = {}
+    grub2_bootloader_argument["name"] = "grub2_bootloader_argument"
 
     arg_name= csv_line[0]
     arg_value = csv_line[1]
     rule_id = f"grub2_{arg_name}_argument"
 
     arg_name_value = f"{arg_name}={arg_value}"
-    grub2_bootloader_argument["ARG_NAME"] = arg_name
-    grub2_bootloader_argument["ARG_NAME_VALUE"] = arg_name_value
+    data_grub2_bootloader_argument["ARG_NAME"] = arg_name
+    data_grub2_bootloader_argument["ARG_VALUE"] = arg_value
+    grub2_bootloader_argument["vars"] = data_grub2_bootloader_argument
+
     csv_data[rule_id] = grub2_bootloader_argument
     return grub2_bootloader_argument
 
 def kernel_modules_disabled_csv_to_dict(csv_line, csv_data):
     kernel_modules_disabled = {}
-    kernel_modules_disabled["template"] = "kernel_module_disabled"
+    data_kernel_modules_disabled = {}
+    kernel_modules_disabled["name"] = "kernel_module_disabled"
 
     kernmod = csv_line[0]
     rule_id = f"kernel_module_{kernmod}_disabled"
 
-    kernel_modules_disabled["KERNMODULE"] = kernmod
+    data_kernel_modules_disabled["KERNMODULE"] = kernmod
+    kernel_modules_disabled["vars"] = data_kernel_modules_disabled
+
     csv_data[rule_id] = kernel_modules_disabled
     return kernel_modules_disabled
 
 def lineinfile_csv_to_dict(csv_line, csv_data, _type):
     lineinfile = {}
-    lineinfile["template"] = "{_type}_lineinfile"
+    data_lineinfile = {}
+    lineinfile["name"] = "{_type}_lineinfile"
 
     rule_id = csv_line[0]
     parameter = csv_line[1]
@@ -188,10 +221,12 @@ def lineinfile_csv_to_dict(csv_line, csv_data, _type):
     else:
         missing_paramteter_pass = "false"
 
-    lineinfile["rule_id"] = rule_id
-    lineinfile["PARAMETER"] = parameter
-    lineinfile["VALUE"] = value
-    lineinfile["MISSING_PARAMETER_PASS"] = missing_parameter_pass
+    data_lineinfile["rule_id"] = rule_id
+    data_lineinfile["PARAMETER"] = parameter
+    data_lineinfile["VALUE"] = value
+    data_lineinfile["MISSING_PARAMETER_PASS"] = missing_parameter_pass
+    lineinfile["vars"] = data_lineinfile
+
     csv_data[rule_id] = lineinfile
     return lineinfile
 
@@ -203,6 +238,8 @@ def sshd_lineinfile_csv_to_dict(csv_line, csv_data):
 
 def mount_options_csv_to_dict(csv_line, csv_data):
     mount_options = {}
+    data_mount_options = {}
+
     mount_point = csv_line[0]
     mount_option = csv_line[1]
 
@@ -221,42 +258,48 @@ def mount_options_csv_to_dict(csv_line, csv_data):
         # var_removable_partition -> removable_partitions
         point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
         rule_id = f"mount_option_{mount_option}_{point_id}"
-        mount_options["template"] = f"{template_base}_{point_id}"
+        mount_options["name"] = f"{template_base}_{point_id}"
     elif mount_point.startswith("/"):
         point_id = escape_path(mount_point)[1:]
         rule_id = f"mount_option_{point_id}_{mount_option}"
-        mount_options["template"] = template_base
+        mount_options["name"] = template_base
     else:
         point_id = mount_point
         rule_id = f"mount_option_{mount_option}_{point_id}"
-        mount_options["template"] = f"{template_base}_{point_id}"
+        mount_options["name"] = f"{template_base}_{point_id}"
 
     # Not all fields will be used by all templates, this is fine,
     # they will just be ignored
-    mount_options["MOUNT_HAS_TO_EXIST"] = mount_has_to_exist
-    mount_options["FILESYSTEM"] = filesystem
-    mount_options["TYPE"] = mount_point_type
-    mount_options["MOUNTPOINT"] = mount_point
-    mount_options["MOUNTOPTION"] = mount_option
+    data_mount_options["MOUNT_HAS_TO_EXIST"] = mount_has_to_exist
+    data_mount_options["FILESYSTEM"] = filesystem
+    data_mount_options["TYPE"] = mount_point_type
+    data_mount_options["MOUNTPOINT"] = mount_point
+    data_mount_options["MOUNTOPTION"] = mount_option
+    mount_options["vars"] = data_mount_options
+
     csv_data[rule_id] = mount_options
     return mount_options
 
 def mounts_csv_to_dict(csv_line, csv_data):
     mounts = {}
-    mounts["template"] = "mount"
+    data_mounts = {}
+    mounts["name"] = "mount"
 
     mountpoint = csv_line[0]
     point_id = escape_path(mountpoint)
     rule_id = f"partition_for{point_id}"
 
-    mounts["MOUNTPOINT"] = mountpoint
+    data_mounts["MOUNTPOINT"] = mountpoint
+    mounts["vars"] = data_mounts
+
     csv_data[rule_id] = mounts
     return mounts
 
 # It seems there are no rules for these templated content
 def ocp_service_runtime_config_csv_to_dict(csv_line, csv_data):
     ocp_service = {}
-    ocp_service["template"] = "ocp_service_config"
+    data_ocp_service = {}
+    ocp_service["name"] = "ocp_service_config"
 
     process_cmd = csv_line[0]
     process_cmd_option = csv_line[1]
@@ -268,16 +311,19 @@ def ocp_service_runtime_config_csv_to_dict(csv_line, csv_data):
 
     rule_id = f"ocp_service_runtime_config_{ocp_proc_id}"
 
-    ocp_service["OCPCMDOPTIONID"] = process_cmd
-    ocp_service["OCPPROCESS"] = process_cmd
-    ocp_service["OCPCMDOPTION"] = process_cmd_option
-    ocp_service["OCPCMDVAL"] = process_cmd_val
+    data_ocp_service["OCPCMDOPTIONID"] = process_cmd
+    data_ocp_service["OCPPROCESS"] = process_cmd
+    data_ocp_service["OCPCMDOPTION"] = process_cmd_option
+    data_ocp_service["OCPCMDVAL"] = process_cmd_val
+    ocp_service["vars"] = data_ocp_service
+
     csv_data[rule_id] = ocp_service
     return ocp_service
 
 def packages_installed_csv_to_dict(csv_line, csv_data):
     package_installed = {}
-    package_installed["template"] = "package_installed"
+    data_package_installed = {}
+    package_installed["name"] = "package_installed"
 
     pkgname = csv_line[0]
     rule_id = f"package_{pkgname}_installed"
@@ -287,14 +333,17 @@ def packages_installed_csv_to_dict(csv_line, csv_data):
     else:
         evr = ""
 
-    package_installed["PKGNAME"] = pkgname
-    package_installed["EVR"] = evr
+    data_package_installed["PKGNAME"] = pkgname
+    data_package_installed["EVR"] = evr
+    package_installed["vars"] = data_package_installed
+
     csv_data[rule_id] = package_installed
     return package_installed
 
 def packages_removed_csv_to_dict(csv_line, csv_data):
     package_removed = {}
-    package_removed["template"] = "package_removed"
+    data_package_removed = {}
+    package_removed["name"] = "package_removed"
 
     pkgname = csv_line[0]
     rule_id = f"package_{pkgname}_removed"
@@ -303,15 +352,21 @@ def packages_removed_csv_to_dict(csv_line, csv_data):
     # create_package_removed.py doesn't use the second field.
     # So just ignore it as well
 
-    package_removed["PKGNAME"] = pkgname
+    data_package_removed["PKGNAME"] = pkgname
+    package_removed["vars"] = data_package_removed
+
     csv_data[rule_id] = package_removed
     return package_removed
 
 def permissions_csv_to_dict(csv_line, csv_data):
     permissions = {}
+    data_permissions = {}
     owner = {}
+    data_owner = {}
     groupowner= {}
+    data_groupowner= {}
     file_permissions = {}
+    data_file_permissions = {}
 
     dir_path = csv_line[0]
     file_name = csv_line[1]
@@ -348,36 +403,41 @@ def permissions_csv_to_dict(csv_line, csv_data):
     if not re.match(r'\^.*\$', file_name, 0):
         if mode:
             rule_id = f"file_permissions{path_id}"
-            file_permissions["template"] = f"file_permissions"
-            file_permissions["FILEPATH"] = full_path
-            file_permissions["FILEMODE"] = mode
+            file_permissions["name"] = f"file_permissions"
+            data_file_permissions["FILEPATH"] = full_path
+            data_file_permissions["FILEMODE"] = mode
+            file_permissions["vars"] = data_file_permissions
             csv_data[rule_id] = file_permissions
         if uid:
             rule_id = f"file_owner{path_id}"
-            owner["template"] = f"file_owner"
-            owner["FILEPATH"] = full_path
-            owner["FILEUID"] = uid
+            owner["name"] = f"file_owner"
+            data_owner["FILEPATH"] = full_path
+            data_owner["FILEUID"] = uid
+            owner["vars"] = data_owner
             csv_data[rule_id] = owner
         if gid:
             rule_id = f"file_groupowner{path_id}"
-            groupowner["template"] = f"file_groupowner"
-            groupowner["FILEPATH"] = full_path
-            groupowner["FILEGID"] = gid
+            groupowner["name"] = f"file_groupowner"
+            data_groupowner["FILEPATH"] = full_path
+            data_groupowner["FILEGID"] = gid
+            groupowner["vars"] = data_groupowner
             csv_data[rule_id] = groupowner
 
         rule_id = f"permissions{path_id}"
-        permissions["template"] = f"permissions"
-        permissions["FILEPATH"] = full_path
-        permissions["FILEMODE"] = mode
-        permissions["FILEUID"] = uid
-        permissions["FILEGID"] = gid
+        permissions["name"] = f"permissions"
+        data_permissions["FILEPATH"] = full_path
+        data_permissions["FILEMODE"] = mode
+        data_permissions["FILEUID"] = uid
+        data_permissions["FILEGID"] = gid
+        permissions["vars"] = data_permissions
         csv_data[rule_id] = permissions
     else:
         rule_id = f"file_permissions{path_id}"
-        file_permissions["template"] = f"file_regex_permissions"
-        file_permissions["FILENAME"] = file_name
-        file_permissions["FILEPATH"] = dir_path
-        file_permissions["FILEMODE"] = mode
+        file_permissions["name"] = f"file_regex_permissions"
+        data_file_permissions["FILENAME"] = file_name
+        data_file_permissions["FILEPATH"] = dir_path
+        data_file_permissions["FILEMODE"] = mode
+        file_permissions["vars"] = data_file_permissions
         csv_data[rule_id] = file_permissions
 
     # Fields FILEID, STATEMODE, UNIX_DIR, UNIX_FILENAME will be translated into rule.yml
@@ -388,6 +448,7 @@ def permissions_csv_to_dict(csv_line, csv_data):
 
 def selinux_booleans_csv_to_dict(csv_line, csv_data):
     selinux_boolean = {}
+    data_selinux_boolean = {}
 
     sebool_name = csv_line[0]
     sebool_id = escape_path(sebool_name)
@@ -399,12 +460,13 @@ def selinux_booleans_csv_to_dict(csv_line, csv_data):
     elif sebool_state == "off" or sebool_state == "disable":
         sebool_bool = "false"
 
-    selinux_boolean["SEBOOLID"] = sebool_id
+    data_selinux_boolean["SEBOOLID"] = sebool_id
     if sebool_state == "use_var":
-        selinux_boolean["template"] = "sebool_var"
+        selinux_boolean["name"] = "sebool_var"
     else:
-        selinux_boolean["template"] = "sebool"
-        selinux_boolean["SEBOOL_BOOL"] = sebool_bool
+        selinux_boolean["name"] = "sebool"
+        data_selinux_boolean["SEBOOL_BOOL"] = sebool_bool
+    selinux_boolean["vars"] = data_selinux_boolean
 
     csv_data[rule_id] = selinux_boolean
     return selinux_boolean
@@ -412,7 +474,8 @@ def selinux_booleans_csv_to_dict(csv_line, csv_data):
 
 def services_disabled_csv_to_dict(csv_line, csv_data):
     service_disabled = {}
-    service_disabled["template"] = "service_disabled"
+    data_service_disabled = {}
+    service_disabled["name"] = "service_disabled"
 
     service_name = csv_line[0]
     package_name = csv_line[1]
@@ -423,17 +486,20 @@ def services_disabled_csv_to_dict(csv_line, csv_data):
 
     rule_id = f"service_{service_name}_disabled"
 
-    service_disabled["SERVICENAME"] = service_name
-    service_disabled["PACKAGENAME"] = package_name
-    service_disabled["DAEMONNAME"] = daemon_name
-    service_disabled["MASK_SERVICE"] = mask_service
+    data_service_disabled["SERVICENAME"] = service_name
+    data_service_disabled["PACKAGENAME"] = package_name
+    data_service_disabled["DAEMONNAME"] = daemon_name
+    data_service_disabled["MASK_SERVICE"] = mask_service
+    service_disabled["vars"] = data_service_disabled
+
     csv_data[rule_id] = service_disabled
     return service_disabled
 
 
 def services_enabled_csv_to_dict(csv_line, csv_data):
     service_enabled = {}
-    service_enabled["template"] = "service_enabled"
+    data_service_enabled = {}
+    service_enabled["name"] = "service_enabled"
 
     service_name = csv_line[0]
     package_name = csv_line[1]
@@ -445,15 +511,18 @@ def services_enabled_csv_to_dict(csv_line, csv_data):
 
     rule_id = f"service_{service_name}_enabled"
 
-    service_enabled["SERVICENAME"] = service_name
-    service_enabled["PACKAGENAME"] = package_name
-    service_enabled["DAEMONNAME"] = daemon_name
+    data_service_enabled["SERVICENAME"] = service_name
+    data_service_enabled["PACKAGENAME"] = package_name
+    data_service_enabled["DAEMONNAME"] = daemon_name
+    service_enabled["vars"] = data_service_enabled
+
     csv_data[rule_id] = service_enabled
     return service_enabled
 
 
 def sysctl_values_csv_to_dict(csv_line, csv_data):
     sysctl_value = {}
+    data_sysctl_value = {}
 
     sysctl_var = csv_line[0]
     sysctl_val = csv_line[1]
@@ -465,19 +534,22 @@ def sysctl_values_csv_to_dict(csv_line, csv_data):
     rule_id = f"sysctl_{sysctl_var_id}"
 
     if not sysctl_val.strip():
-        sysctl_value["template"] = "sysctl_var"
+        sysctl_value["name"] = "sysctl_var"
     else:
-        sysctl_value["template"] = "sysctl"
+        sysctl_value["name"] = "sysctl"
 
-    sysctl_value["SYSCTLVAR"] = sysctl_var
-    sysctl_value["SYSCTLVAL"] = sysctl_val
-    sysctl_value["DATATYPE"] = data_type
+    data_sysctl_value["SYSCTLVAR"] = sysctl_var
+    data_sysctl_value["SYSCTLVAL"] = sysctl_val
+    data_sysctl_value["DATATYPE"] = data_type
+    sysctl_value["vars"] = data_sysctl_value
+
     csv_data[rule_id] = sysctl_value
     return sysctl_value
 
 def timers_enabled_csv_to_dict(csv_line, csv_data):
     timer_enabled = {}
-    timer_enabled["template"] = "timer_enabled"
+    data_timer_enabled = {}
+    timer_enabled["name"] = "timer_enabled"
 
     timer_name = csv_line[0]
     package_name = csv_line[1]
@@ -485,8 +557,10 @@ def timers_enabled_csv_to_dict(csv_line, csv_data):
         package_name = timer_name
     rule_id = f"timer_{timer_name}_enabled"
 
-    timer_enabled["TIMERNAME"] = timer_name
-    timer_enabled["PACKAGE_NAME"] = package_name
+    data_timer_enabled["TIMERNAME"] = timer_name
+    data_timer_enabled["PACKAGE_NAME"] = package_name
+    timer_enabled["vars"] = data_timer_enabled
+
     csv_data[rule_id] = timer_enabled
     return timer_enabled
 
