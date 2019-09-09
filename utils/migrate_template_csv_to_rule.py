@@ -426,6 +426,27 @@ def selinux_booleans_csv_to_dict(csv_line, csv_data):
     return selinux_boolean
 
 
+def services_disabled_csv_to_dict(csv_line, csv_data):
+    service_disabled = {}
+    service_disabled["template"] = "service_disabled"
+
+    service_name = csv_line[0]
+    package_name = csv_line[1]
+    daemon_name = csv_line[2]
+    mask_service = "true"
+    if len(csv_line) == 4:
+        mask_service = csv_line[3]
+
+    rule_id = f"service_{service_name}_disabled"
+
+    service_disabled["SERVICENAME"] = service_name
+    service_disabled["PACKAGENAME"] = package_name
+    service_disabled["DAEMONNAME"] = daemon_name
+    service_disabled["MASK_SERVICE"] = mask_service
+    csv_data[rule_id] = service_disabled
+    return service_disabled
+
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password.csv": accounts_password_csv_to_dict,
@@ -449,6 +470,7 @@ class ProductCSVData(object):
             "packages_removed.csv": packages_removed_csv_to_dict,
             "file_dir_permissions.csv": permissions_csv_to_dict,
             "selinux_booleans.csv": selinux_booleans_csv_to_dict,
+            "services_disabled.csv": services_disabled_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
