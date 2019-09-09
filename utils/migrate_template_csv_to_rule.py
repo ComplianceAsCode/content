@@ -269,6 +269,28 @@ def mounts_csv_to_dict(csv_line, csv_data):
     csv_data[rule_id] = mounts
     return mounts
 
+# It seems there are no rules for these templated content
+def ocp_service_runtime_config_csv_to_dict(csv_line, csv_data):
+    ocp_service = {}
+    ocp_service["template"] = "ocp_service_config"
+
+    process_cmd = csv_line[0]
+    process_cmd_option = csv_line[1]
+    process_cmd_val = csv_line[2]
+
+    ocp_proc_id = re.sub(r'[-._]', '_', process_cmd_option.strip("--="))
+    if len(csv_line) == 4:
+        ocp_proc_id = csv_line[3]
+
+    rule_id = f"ocp_service_runtime_config_{ocp_proc_id}"
+
+    ocp_service["OCPCMDOPTIONID"] = process_cmd
+    ocp_service["OCPPROCESS"] = process_cmd
+    ocp_service["OCPCMDOPTION"] = process_cmd_option
+    ocp_service["OCPCMDVAL"] = process_cmd_val
+    csv_data[rule_id] = ocp_service
+    return ocp_service
+
 def packages_installed_csv_to_dict(csv_line, csv_data):
     package_installed = {}
     package_installed["template"] = "package_installed"
@@ -319,6 +341,7 @@ class ProductCSVData(object):
             "sshd_lineinfile.csv": auditd_lineinfile_csv_to_dict,
             "mount_options.csv": mount_options_csv_to_dict,
             "mounts.csv": mounts_csv_to_dict,
+            "ocp_service_runtime_config.csv": ocp_service_runtime_config_csv_to_dict,
             "packages_installed.csv": packages_installed_csv_to_dict,
             "packages_removed.csv": packages_removed_csv_to_dict,
             }
