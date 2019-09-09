@@ -10,7 +10,7 @@ from ssg.constants import product_directories
 def escape_path(path):
     return re.sub('[-\./]', '_', path)
 
-def accounts_password_csv_to_dict(csv_line):
+def accounts_password_csv_to_dict(csv_line, csv_data):
     accounts_password = {}
 
     variable = csv_line[0]
@@ -24,9 +24,10 @@ def accounts_password_csv_to_dict(csv_line):
     accounts_password["VARIABLE"] = variable
     accounts_password["OPERATION"] = operation
     accounts_password["SIGN"] = sign
-    return [rule_id], accounts_password
+    csv_data[rule_id] = accounts_password
+    return accounts_password
 
-def audit_rules_execution_csv_to_dict(csv_line):
+def audit_rules_execution_csv_to_dict(csv_line, csv_data):
     audit_rules_execution = {}
 
     path = csv_line[0]
@@ -40,9 +41,10 @@ def audit_rules_execution_csv_to_dict(csv_line):
 
     audit_rules_execution["ID"] = f"audit_rules_execution_{name}"
     audit_rules_execution["TITLE"] = f"Record Any Attempts to Run {name}"
-    return [rule_id], audit_rules_execution
+    csv_data[rule_id] = audit_rules_execution
+    return audit_rules_execution
 
-def audit_rules_privileged_commands_csv_to_dict(csv_line):
+def audit_rules_privileged_commands_csv_to_dict(csv_line, csv_data):
     audit_rules_privileged_commands = {}
 
     path = csv_line[0]
@@ -56,27 +58,30 @@ def audit_rules_privileged_commands_csv_to_dict(csv_line):
 
     audit_rules_privileged_commands["ID"] = f"audit_rules_privileged_commands_{name}"
     audit_rules_privileged_commands["TITLE"] = f"Ensure auditd Collects Information on the Use of Privileged Commands - {name}"
-    return [rule_id], audit_rules_privileged_commands
+    csv_data[rule_id] = audit_rules_privileged_commands
+    return audit_rules_privileged_commands
 
-def audit_rules_dac_modification_csv_to_dict(csv_line):
+def audit_rules_dac_modification_csv_to_dict(csv_line, csv_data):
     audit_rules_dac_modification = {}
 
     attr = csv_line[0]
     rule_id = f"audit_rules_dac_modification_{attr}"
 
     audit_rules_dac_modification["ATTR"] = attr
-    return [rule_id], audit_rules_dac_modification
+    csv_data[rule_id] = audit_rules_dac_modification
+    return audit_rules_dac_modification
 
-def audit_rules_file_deletion_events_csv_to_dict(csv_line):
+def audit_rules_file_deletion_events_csv_to_dict(csv_line, csv_data):
     audit_rules_file_deletion_events = {}
 
     name = csv_line[0]
     rule_id = f"audit_rules_file_deletion_events_{name}"
 
     audit_rules_file_deletion_events["NAME"] = name
-    return [rule_id], audit_rules_file_deletion_events
+    csv_data[rule_id] = audit_rules_file_deletion_events
+    return audit_rules_file_deletion_events
 
-def audit_rules_login_events_csv_to_dict(csv_line):
+def audit_rules_login_events_csv_to_dict(csv_line, csv_data):
     audit_rules_login_events = {}
 
     path = csv_line[0]
@@ -85,9 +90,10 @@ def audit_rules_login_events_csv_to_dict(csv_line):
 
     audit_rules_login_events["PATH"] = path
     audit_rules_login_events["NAME"] = name
-    return [rule_id], audit_rules_login_events
+    csv_data[rule_id] = audit_rules_login_events
+    return audit_rules_login_events
 
-def audit_rules_path_syscall_csv_to_dict(csv_line):
+def audit_rules_path_syscall_csv_to_dict(csv_line, csv_data):
     audit_rules_path_syscall = {}
 
     path = csv_line[0]
@@ -101,18 +107,20 @@ def audit_rules_path_syscall_csv_to_dict(csv_line):
     audit_rules_path_syscall["PATHID"] = path_id
     audit_rules_path_syscall["SYSCALL"] = syscall
     audit_rules_path_syscall["POS"] = arg_pos
-    return [rule_id], audit_rules_path_syscall
+    csv_data[rule_id] = audit_rules_path_syscall
+    return audit_rules_path_syscall
 
-def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line):
+def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line, csv_data):
     audit_rules_unsuccessful_file_modification  = {}
 
     name = csv_line[0]
     rule_id = f"audit_rules_unsuccessful_file_modification_{name}"
 
     audit_rules_unsuccessful_file_modification ["NAME"] = name
-    return [rule_id], audit_rules_unsuccessful_file_modification
+    csv_data[rule_id] = audit_rules_unsuccessful_file_modification
+    return audit_rules_unsuccessful_file_modification
 
-def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line):
+def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line, csv_data):
     audit_rules_unsuccessful_file_modification_detailed = {}
 
     syscall = csv_line[0]
@@ -125,9 +133,11 @@ def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line):
     audit_rules_unsuccessful_file_modification_detailed["SYSCALL"] = syscall
     audit_rules_unsuccessful_file_modification_detailed["POS"] = arg_pos
 
-    return rule_ids, audit_rules_unsuccessful_file_modification_detailed
+    for rule_id in rule_ids:
+        csv_data[rule_id] = audit_rules_unsuccessful_file_modification_detailed
+    return audit_rules_unsuccessful_file_modification_detailed
 
-def audit_rules_usergroup_modification_csv_to_dict(csv_line):
+def audit_rules_usergroup_modification_csv_to_dict(csv_line, csv_data):
     user_group_modification = {}
 
     path = csv_line[0]
@@ -136,9 +146,10 @@ def audit_rules_usergroup_modification_csv_to_dict(csv_line):
 
     user_group_modification["NAME"] = name
     user_group_modification["PATH"] = path
-    return [rule_id], user_group_modification
+    csv_data[rule_id] = user_group_modification
+    return user_group_modification
 
-def grub2_bootloader_argument_csv_to_dict(csv_line):
+def grub2_bootloader_argument_csv_to_dict(csv_line, csv_data):
     grub2_bootloader_argument = {}
 
     arg_name= csv_line[0]
@@ -148,18 +159,20 @@ def grub2_bootloader_argument_csv_to_dict(csv_line):
     arg_name_value = f"{arg_name}={arg_value}"
     grub2_bootloader_argument["ARG_NAME"] = arg_name
     grub2_bootloader_argument["ARG_NAME_VALUE"] = arg_name_value
-    return [rule_id], grub2_bootloader_argument
+    csv_data[rule_id] = grub2_bootloader_argument
+    return grub2_bootloader_argument
 
-def kernel_modules_disabled_csv_to_dict(csv_line):
+def kernel_modules_disabled_csv_to_dict(csv_line, csv_data):
     kernel_modules_disabled = {}
 
     kernmod = csv_line[0]
     rule_id = f"kernel_module_{kernmod}_disabled"
 
     kernel_modules_disabled["KERNMODULE"] = kernmod
-    return [rule_id], kernel_modules_disabled
+    csv_data[rule_id] = kernel_modules_disabled
+    return kernel_modules_disabled
 
-def lineinfile_csv_to_dict(csv_line):
+def lineinfile_csv_to_dict(csv_line, csv_data):
     lineinfile = {}
 
     rule_id = csv_line[0]
@@ -176,9 +189,11 @@ def lineinfile_csv_to_dict(csv_line):
     lineinfile["PARAMETER"] = parameter
     lineinfile["VALUE"] = value
     lineinfile["MISSING_PARAMETER_PASS"] = missing_parameter_pass
-    return [rule_id], lineinfile
+    csv_data[rule_id] = lineinfile
+    return lineinfile
 
-def packages_installed_csv_to_dict(csv_line):
+
+def packages_installed_csv_to_dict(csv_line, csv_data):
     package_installed = {}
 
     pkgname = csv_line[0]
@@ -191,9 +206,10 @@ def packages_installed_csv_to_dict(csv_line):
 
     package_installed["PKGNAME"] = pkgname
     package_installed["EVR"] = evr
-    return [rule_id], package_installed
+    csv_data[rule_id] = package_installed
+    return package_installed
 
-def packages_removed_csv_to_dict(csv_line):
+def packages_removed_csv_to_dict(csv_line, csv_data):
     package_removed = {}
 
     pkgname = csv_line[0]
@@ -204,7 +220,8 @@ def packages_removed_csv_to_dict(csv_line):
     # So just ignore it as well
 
     package_removed["PKGNAME"] = pkgname
-    return [rule_id], package_removed
+    csv_data[rule_id] = package_removed
+    return package_removed
 
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
@@ -250,32 +267,45 @@ class ProductCSVData(object):
     def _load_csv_files(self, csv_files):
         csv_data = {}
         for csv_filename in csv_files:
-            template_name = csv_filename.replace(".csv", "")
-
-            # Only load CSV for which we know the format
-            if template_name not in self.TEMPLATE_TO_CSV_FORMAT_MAP:
-                continue
-
-            with open(os.path.join(self.csv_dir, csv_filename), "r") as csv_f:
-                self._load_csv(template_name, csv_f, csv_data)
+            self._load_csv(csv_filename, csv_data)
         return csv_data
 
-    def _load_csv(self, template_name, csv_f, csv_data):
-        template_csv_parser = self.TEMPLATE_TO_CSV_FORMAT_MAP[template_name]
+    def _load_csv(self, csv_filename, csv_data):
+        # Only load CSV for which we know the format
+        template_name = csv_filename.replace(".csv", "")
+        template_csv_parser = self.TEMPLATE_TO_CSV_FORMAT_MAP.get(template_name, None)
+        if not template_csv_parser:
+            return
 
-        for line in csv.reader(csv_f):
-            # Skip empty lines
-            if len(line) == 0:
-                continue
+        with open(os.path.join(self.csv_dir, csv_filename), "r") as csv_f:
+            for line in csv.reader(csv_f):
+                # Skip empty lines
+                if len(line) == 0:
+                    continue
 
-            # Skip all comment lines
-            if len(line) >= 1 and line[0].startswith('#'):
-                continue
+                # Skip all comment lines
+                if len(line) >= 1 and line[0].startswith('#'):
+                    continue
 
-            rule_ids, line_data_dict = template_csv_parser(line)
-            line_data_dict["template"] = template_name
-            for rule_id in rule_ids:
-                csv_data[rule_id] = line_data_dict
+                except_for_language = None
+                if "#except-for:" in line[-1]:
+                    line[-1], except_for_clause = line[-1].split('#')
+                    # There are no cases of except-for for multiple languagues
+                    _, except_for_language = except_for_clause.split(':')
+
+                try:
+                    # Each CSV file is particular to its template, as a single CSV line can:
+                    # - contain data for multiple rules in diferent templates
+                    #   (audit_rules_unsuccessful_file_modification_detailed);
+                    # We let the CSV specific parser add the data
+                    line_data_dict = template_csv_parser(line, csv_data)
+                    line_data_dict["template"] = template_name
+
+                    if except_for_language:
+                        line_data_dict["except_for"] = except_for_language
+                except IndexError as e:
+                    print(f"line:{line} in file: {csv_f}")
+                    raise e
 
 
 def parse_args():
