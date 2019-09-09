@@ -19,7 +19,7 @@ lang_to_ext_map = {
 # Callback functions for processing template parameters and/or validating them
 
 
-def package_installed(data):
+def package_installed(data, lang):
     if "EVR" in data:
         evr = data["EVR"]
         if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
@@ -104,21 +104,20 @@ class Builder(object):
             dir_ = os.path.join(output_dir, lang)
             self.output_dirs[lang] = dir_
 
-    def preprocess_data(self, template, raw_parameters):
+    def preprocess_data(self, template, lang, raw_parameters):
         """
         Processes template data using a callback before the data will be
         substituted into the Jinja template.
         """
         template_func = templates[template]
         if template_func is not None:
-            return template_func(raw_parameters)
+            return template_func(raw_parameters, lang)
         else:
             return raw_parameters
 
-    def build_lang(self, rule, lang, jinja_dict):
+    def build_lang(self, rule, lang):
         """
-        Builds templated content for a given rule for a given language,
-        based on parameters obtained from template_data key in rule.yml.
+        Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
         template_file_name = "template_{0}_{1}".format(
@@ -132,6 +131,9 @@ class Builder(object):
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
 
+        template_parameters = self.preprocess_data(
+            rule.template, lang, rule.template_data)
+        jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
         with open(output_filepath, "w") as f:
@@ -170,12 +172,9 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule.id_, rule.template))
-        template_parameters = self.preprocess_data(
-            rule.template, rule.template_data)
-        jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)
         langs_to_generate = self.get_langs_to_generate(rule)
         for lang in langs_to_generate:
-            self.build_lang(rule, lang, jinja_dict)
+            self.build_lang(rule, lang)
 
     def build(self):
         """
