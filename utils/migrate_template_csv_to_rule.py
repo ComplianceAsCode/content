@@ -257,6 +257,17 @@ def mount_options_csv_to_dict(csv_line, csv_data):
     csv_data[rule_id] = mount_options
     return mount_options
 
+def mounts_csv_to_dict(csv_line, csv_data):
+    mounts = {}
+    mounts["template"] = "mount"
+
+    mountpoint = csv_line[0]
+    point_id = escape_path(mountpoint)
+    rule_id = f"partition_for{point_id}"
+
+    mounts["MOUNTPOINT"] = mountpoint
+    csv_data[rule_id] = mounts
+    return mounts
 
 def packages_installed_csv_to_dict(csv_line, csv_data):
     package_installed = {}
@@ -307,6 +318,7 @@ class ProductCSVData(object):
             "auditd_lineinfile.csv": sshd_lineinfile_csv_to_dict,
             "sshd_lineinfile.csv": auditd_lineinfile_csv_to_dict,
             "mount_options.csv": mount_options_csv_to_dict,
+            "mounts.csv": mounts_csv_to_dict,
             "packages_installed.csv": packages_installed_csv_to_dict,
             "packages_removed.csv": packages_removed_csv_to_dict,
             }
