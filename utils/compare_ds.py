@@ -102,6 +102,7 @@ def compare_oval_definitions(
             if x[0] == y[0] and x[1] == y[1]:
                 old_els.remove(x)
                 new_els.remove(y)
+                break
     if old_els or new_els:
         print("OVAL definition %s differs:" % (old_oval_def_id))
         print("--- old datastream")
@@ -181,7 +182,9 @@ def compare_fix_elements(
                 remediation_type, rule_id, old_fix_id, new_fix_id)
         )
     if show_diffs:
-        diff = compare_fix_texts(old_fix.text, new_fix.text)
+        old_fix_text = "".join(old_fix.itertext())
+        new_fix_text = "".join(new_fix.itertext())
+        diff = compare_fix_texts(old_fix_text, new_fix_text)
         if diff:
             print("%s remediation for rule '%s' differs:\n%s" % (
                 remediation_type, rule_id, diff))
