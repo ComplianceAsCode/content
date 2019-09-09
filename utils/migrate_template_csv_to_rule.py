@@ -19,12 +19,8 @@ def accounts_password_csv_to_dict(csv_line, csv_data):
 
     operation = csv_line[1]
 
-    # Only credit related variables allow negative values
-    sign = "-?" if variable.endswith("credit") else ""
-
     accounts_password["VARIABLE"] = variable
     accounts_password["OPERATION"] = operation
-    accounts_password["SIGN"] = sign
     csv_data[rule_id] = accounts_password
     return accounts_password
 
@@ -39,10 +35,7 @@ def audit_rules_execution_csv_to_dict(csv_line, csv_data):
     # create_audit_rules_execution.py escapes the '/' when generating the OVAL
     # This is not actually necessary
     audit_rules_execution["PATH"] = path
-    audit_rules_execution["NAME"] = name
 
-    audit_rules_execution["ID"] = f"audit_rules_execution_{name}"
-    audit_rules_execution["TITLE"] = f"Record Any Attempts to Run {name}"
     csv_data[rule_id] = audit_rules_execution
     return audit_rules_execution
 
@@ -57,10 +50,7 @@ def audit_rules_privileged_commands_csv_to_dict(csv_line, csv_data):
     # create_audit_rules_privileged_commands.py escapes the '/' when generating the OVAL
     # This is not actually necessary
     audit_rules_privileged_commands["PATH"] = path
-    audit_rules_privileged_commands["NAME"] = name
 
-    audit_rules_privileged_commands["ID"] = f"audit_rules_privileged_commands_{name}"
-    audit_rules_privileged_commands["TITLE"] = f"Ensure auditd Collects Information on the Use of Privileged Commands - {name}"
     csv_data[rule_id] = audit_rules_privileged_commands
     return audit_rules_privileged_commands
 
@@ -95,7 +85,6 @@ def audit_rules_login_events_csv_to_dict(csv_line, csv_data):
     rule_id = f"audit_rules_login_events_{name}"
 
     audit_rules_login_events["PATH"] = path
-    audit_rules_login_events["NAME"] = name
     csv_data[rule_id] = audit_rules_login_events
     return audit_rules_login_events
 
@@ -111,7 +100,6 @@ def audit_rules_path_syscall_csv_to_dict(csv_line, csv_data):
     rule_id = f"audit_rules_{path_id}_{syscall}"
 
     audit_rules_path_syscall["PATH"] = path
-    audit_rules_path_syscall["PATHID"] = path_id
     audit_rules_path_syscall["SYSCALL"] = syscall
     audit_rules_path_syscall["POS"] = arg_pos
     csv_data[rule_id] = audit_rules_path_syscall
@@ -159,7 +147,6 @@ def audit_rules_usergroup_modification_csv_to_dict(csv_line, csv_data):
     name = escape_path(os.path.basename(path))
     rule_id = f"audit_rules_usergroup_modification_{name}"
 
-    user_group_modification["NAME"] = name
     user_group_modification["PATH"] = path
     csv_data[rule_id] = user_group_modification
     return user_group_modification
@@ -201,8 +188,6 @@ def lineinfile_csv_to_dict(csv_line, csv_data, _type):
     else:
         missing_paramteter_pass = "false"
 
-    lineinfile["products"] = "all"
-    lineinfile["rule_title"] = f"Rule title of {rule_id}"
     lineinfile["rule_id"] = rule_id
     lineinfile["PARAMETER"] = parameter
     lineinfile["VALUE"] = value
@@ -253,7 +238,6 @@ def mount_options_csv_to_dict(csv_line, csv_data):
     mount_options["TYPE"] = mount_point_type
     mount_options["MOUNTPOINT"] = mount_point
     mount_options["MOUNTOPTION"] = mount_option
-    mount_options["POINTID"] = point_id
     csv_data[rule_id] = mount_options
     return mount_options
 
@@ -485,7 +469,6 @@ def sysctl_values_csv_to_dict(csv_line, csv_data):
     else:
         sysctl_value["template"] = "sysctl"
 
-    sysctl_value["SYSCTLID"] = sysctl_var_id
     sysctl_value["SYSCTLVAR"] = sysctl_var
     sysctl_value["SYSCTLVAL"] = sysctl_val
     sysctl_value["DATATYPE"] = data_type
