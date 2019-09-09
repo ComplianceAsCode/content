@@ -401,6 +401,31 @@ def permissions_csv_to_dict(csv_line, csv_data):
 
     return permissions
 
+
+def selinux_booleans_csv_to_dict(csv_line, csv_data):
+    selinux_boolean = {}
+
+    sebool_name = csv_line[0]
+    sebool_id = escape_path(sebool_name)
+    rule_id = f"sebool_{sebool_id}"
+
+    sebool_state = csv_line[1]
+    if sebool_state == "on" or sebool_state == "enable":
+        sebool_bool = "true"
+    elif sebool_state == "off" or sebool_state == "disable":
+        sebool_bool = "false"
+
+    selinux_boolean["SEBOOLID"] = sebool_id
+    if sebool_state == "use_var":
+        selinux_boolean["template"] = "sebool_var"
+    else:
+        selinux_boolean["template"] = "sebool"
+        selinux_boolean["SEBOOL_BOOL"] = sebool_bool
+
+    csv_data[rule_id] = selinux_boolean
+    return selinux_boolean
+
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password.csv": accounts_password_csv_to_dict,
@@ -423,6 +448,7 @@ class ProductCSVData(object):
             "packages_installed.csv": packages_installed_csv_to_dict,
             "packages_removed.csv": packages_removed_csv_to_dict,
             "file_dir_permissions.csv": permissions_csv_to_dict,
+            "selinux_booleans.csv": selinux_booleans_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
