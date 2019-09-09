@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Group Who Owns SSH Server config file'
 
 description: |-
-    {{{ describe_file_group_owner(file="/etc/ssh/sshd_config", owner="root") }}}
+    {{{ describe_file_group_owner(file="/etc/ssh/sshd_config", group="root") }}}
 
 rationale: |-
     The /etc/ssh/sshd_config file needs to be protected from unauthorized changes by
