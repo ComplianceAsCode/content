@@ -492,6 +492,21 @@ def sysctl_values_csv_to_dict(csv_line, csv_data):
     csv_data[rule_id] = sysctl_value
     return sysctl_value
 
+def timers_enabled_csv_to_dict(csv_line, csv_data):
+    timer_enabled = {}
+    timer_enabled["template"] = "timer_enabled"
+
+    timer_name = csv_line[0]
+    package_name = csv_line[1]
+    if not package_name:
+        package_name = timer_name
+    rule_id = f"timer_{timer_name}_enabled"
+
+    timer_enabled["TIMERNAME"] = timer_name
+    timer_enabled["PACKAGE_NAME"] = package_name
+    csv_data[rule_id] = timer_enabled
+    return timer_enabled
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password.csv": accounts_password_csv_to_dict,
@@ -518,6 +533,7 @@ class ProductCSVData(object):
             "services_disabled.csv": services_disabled_csv_to_dict,
             "services_enabled.csv": services_enabled_csv_to_dict,
             "sysctl_values.csv": sysctl_values_csv_to_dict,
+            "timers_enabled.csv": timers_enabled_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
