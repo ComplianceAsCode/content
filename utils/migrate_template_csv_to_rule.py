@@ -323,6 +323,84 @@ def packages_removed_csv_to_dict(csv_line, csv_data):
     csv_data[rule_id] = package_removed
     return package_removed
 
+def permissions_csv_to_dict(csv_line, csv_data):
+    permissions = {}
+    owner = {}
+    groupowner= {}
+    file_permissions = {}
+
+    dir_path = csv_line[0]
+    file_name = csv_line[1]
+    uid = csv_line[2]
+    gid = csv_line[3]
+    mode = csv_line[4]
+
+    template_list = []
+
+    # The following few lines were extracted from create_permissions.py
+    if len(csv_line) == 6:
+        path_id = f"_{csv_line[5]}"
+    elif file_name == '[NULL]':
+        path_id = re.sub('[-\./]', '_', dir_path)
+    elif re.match(r'\^.*\$', file_name, 0):
+        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\\\./^$*(){}|]',
+                                                                 '_', file_name)
+        # cleaning trailing end multiple underscores, make sure id is lowercase
+        path_id = re.sub(r'_+', '_', path_id)
+        path_id = re.sub(r'_$', '', path_id)
+        path_id = path_id.lower()
+    else:
+        path_id = re.sub('[-\./]', '_', dir_path) + '_' + re.sub('[-\./]',
+                                                                 '_', file_name)
+        path_id = path_id.lower()
+
+    # build a string that contains the full path to the file
+    # full_path maps to FILEPATH in the template
+    if file_name == '[NULL]' or file_name == '':
+        full_path = dir_path
+    else:
+        full_path = dir_path + '/' + file_name
+
+    if not re.match(r'\^.*\$', file_name, 0):
+        if mode:
+            rule_id = f"file_permissions{path_id}"
+            file_permissions["template"] = f"file_permissions"
+            file_permissions["FILEPATH"] = full_path
+            file_permissions["FILEMODE"] = mode
+            csv_data[rule_id] = file_permissions
+        if uid:
+            rule_id = f"file_owner{path_id}"
+            owner["template"] = f"file_owner"
+            owner["FILEPATH"] = full_path
+            owner["FILEUID"] = uid
+            csv_data[rule_id] = owner
+        if gid:
+            rule_id = f"file_groupowner{path_id}"
+            groupowner["template"] = f"file_groupowner"
+            groupowner["FILEPATH"] = full_path
+            groupowner["FILEGID"] = gid
+            csv_data[rule_id] = groupowner
+
+        rule_id = f"permissions{path_id}"
+        permissions["template"] = f"permissions"
+        permissions["FILEPATH"] = full_path
+        permissions["FILEMODE"] = mode
+        permissions["FILEUID"] = uid
+        permissions["FILEGID"] = gid
+        csv_data[rule_id] = permissions
+    else:
+        rule_id = f"file_permissions{path_id}"
+        file_permissions["template"] = f"file_regex_permissions"
+        file_permissions["FILENAME"] = file_name
+        file_permissions["FILEPATH"] = dir_path
+        file_permissions["FILEMODE"] = mode
+        csv_data[rule_id] = file_permissions
+
+    # Fields FILEID, STATEMODE, UNIX_DIR, UNIX_FILENAME will be translated into rule.yml
+    # They will be generated from data above during templated content generation
+
+    return permissions
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password.csv": accounts_password_csv_to_dict,
@@ -344,6 +422,7 @@ class ProductCSVData(object):
             "ocp_service_runtime_config.csv": ocp_service_runtime_config_csv_to_dict,
             "packages_installed.csv": packages_installed_csv_to_dict,
             "packages_removed.csv": packages_removed_csv_to_dict,
+            "file_dir_permissions.csv": permissions_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
