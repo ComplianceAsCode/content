@@ -156,6 +156,53 @@ fi
 dconf update
 {{%- endmacro -%}}
 
+{{#
+# Macro to enable or disable a particular service.
+#
+# Examples:
+#
+# bash_service_command("enable", "bluetooth")
+# bash_service_command("disable", "bluetooth.service")
+# bash_service_command("disable", "rsh.socket", xinetd="rsh")
+#}}
+{{%- macro bash_service_command(service_state, service, xinetd="") -%}}
+{{#
+# If systemctl is installed, use systemctl command; otherwise, use the
+# service/chkconfig commands
+#}}
+{{%- if init_system == "systemd" -%}}
+  {{%- if service_state == "disable" -%}}
+/usr/bin/systemctl stop "{{{ service }}}"
+/usr/bin/systemctl disable "{{{ service }}}"
+  {{%- else -%}}
+/usr/bin/systemctl enable "{{{ service }}}"
+/usr/bin/systemctl start "{{{ service }}}"
+  {{%- endif -%}}
+
+# The service may not be running because it has been started and failed,
+# so let's reset the state so OVAL checks pass.
+# Service should be 'inactive', not 'failed' after reboot though.
+/usr/bin/systemctl reset-failed "$service"
+{{%- elif init_system == "upstart" -%}}
+  {{%- if service_state == "disable" -%}}
+/sbin/service "{{{ service }}}" disable
+/sbin/chkconfig --level 0123456 "{{{ service }}}" off
+  {{%- else -%}}
+/sbin/service "{{{ service }}}" enable
+/sbin/chkconfig --level 0123456 "{{{ service }}}" on
+  {{%- endif -%}}
+{{%- endif -%}}
+
+{{%- if xinetd != "" -%}}
+grep -qi disable "/etc/xinetd.d/$xinetd" && \
+  {{%- if service_state == "disable" -%}}
+sed -i "s/disable.*/disable         = no/gI" "/etc/xinetd.d/$xinetd"
+  {{%- else -%}}
+sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
+  {{%- endif -%}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
 {{# ##### Low level macros ##### #}}
 
 {{#
