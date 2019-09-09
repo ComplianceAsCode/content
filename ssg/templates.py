@@ -109,19 +109,22 @@ class Builder(object):
         Processes template data using a callback before the data will be
         substituted into the Jinja template.
         """
+        # TODO: Remove this right after the variables in templates are renamed
+        # to lowercase
+        raw_parameters = {k.upper(): v for k, v in raw_parameters.items()}
         template_func = templates[template]
         if template_func is not None:
             return template_func(raw_parameters, lang)
         else:
             return raw_parameters
 
-    def build_lang(self, rule, lang):
+    def build_lang(self, rule, template_name, lang):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
         template_file_name = "template_{0}_{1}".format(
-            lang.upper(), rule.template)
+            lang.upper(), template_name)
         template_file_path = os.path.join(
             self.templates_dir, template_file_name)
         if not os.path.exists(template_file_path):
@@ -131,8 +134,14 @@ class Builder(object):
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
 
+        try:
+            template_vars = rule.template["vars"]
+        except KeyError:
+            raise ValueError(
+                "Rule {0} does not contain mandatory 'vars:' key under "
+                "'template:' key.".format(rule.id_))
         template_parameters = self.preprocess_data(
-            rule.template, lang, rule.template_data)
+            template_name, lang, template_vars)
         jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
@@ -144,8 +153,9 @@ class Builder(object):
         For a given rule returns list of languages that should be generated
         from templates. This is controlled by "template_backends" in rule.yml.
         """
-        if rule.template_backends:
-            for lang in rule.template_backends:
+        if "backends" in rule.template:
+            backends = rule.template["backends"]
+            for lang in backends:
                 if lang not in languages:
                     raise RuntimeError(
                         "Rule {0} wants to generate unknown language '{1}"
@@ -153,7 +163,7 @@ class Builder(object):
                     )
             langs_to_generate = []
             for lang in languages:
-                backend = rule.template_backends.get(lang, "on")
+                backend = backends.get(lang, "on")
                 if backend == "on":
                     langs_to_generate.append(lang)
             return langs_to_generate
@@ -168,13 +178,19 @@ class Builder(object):
         if rule.template is None:
             # rule is not templated, skipping
             return
-        if rule.template not in templates:
+        try:
+            template_name = rule.template["name"]
+        except KeyError:
+            raise ValueError(
+                "Rule {0} is missing template name under template key".format(
+                    rule.id_))
+        if template_name not in templates:
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
-                    rule.id_, rule.template))
+                    rule.id_, template_name))
         langs_to_generate = self.get_langs_to_generate(rule)
         for lang in langs_to_generate:
-            self.build_lang(rule, lang)
+            self.build_lang(rule, template_name, lang)
 
     def build(self):
         """
