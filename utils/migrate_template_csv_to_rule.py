@@ -216,6 +216,47 @@ def auditd_lineinfile_csv_to_dict(csv_line, csv_data):
 def sshd_lineinfile_csv_to_dict(csv_line, csv_data):
     return lineinfile_csv_to_dict(csv_line, csv_data, "sshd")
 
+def mount_options_csv_to_dict(csv_line, csv_data):
+    mount_options = {}
+    mount_point = csv_line[0]
+    mount_option = csv_line[1]
+
+    template_base = "mount_option"
+    mount_has_to_exist = "yes"
+    filesystem = ""
+    mount_point_type = ""
+    if len(csv_line) > 2:
+        # When create_fstab_entry_if_needed is in CSV file, load next two values
+        mount_has_to_exist = "no"
+        filesystem = csv_line[3]
+        mount_point_type = csv_line[4]
+
+    point_id = f"{mount_point}"
+    if mount_point.startswith("var_"):
+        # var_removable_partition -> removable_partitions
+        point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
+        rule_id = f"mount_option_{mount_option}_{point_id}"
+        mount_options["template"] = f"{template_base}_{point_id}"
+    elif mount_point.startswith("/"):
+        point_id = escape_path(mount_point)[1:]
+        rule_id = f"mount_option_{point_id}_{mount_option}"
+        mount_options["template"] = template_base
+    else:
+        point_id = mount_point
+        rule_id = f"mount_option_{mount_option}_{point_id}"
+        mount_options["template"] = f"{template_base}_{point_id}"
+
+    # Not all fields will be used by all templates, this is fine,
+    # they will just be ignored
+    mount_options["MOUNT_HAS_TO_EXIST"] = mount_has_to_exist
+    mount_options["FILESYSTEM"] = filesystem
+    mount_options["TYPE"] = mount_point_type
+    mount_options["MOUNTPOINT"] = mount_point
+    mount_options["MOUNTOPTION"] = mount_option
+    mount_options["POINTID"] = point_id
+    csv_data[rule_id] = mount_options
+    return mount_options
+
 
 def packages_installed_csv_to_dict(csv_line, csv_data):
     package_installed = {}
@@ -265,6 +306,7 @@ class ProductCSVData(object):
             "kernel_modules_disabled.csv": kernel_modules_disabled_csv_to_dict,
             "auditd_lineinfile.csv": sshd_lineinfile_csv_to_dict,
             "sshd_lineinfile.csv": auditd_lineinfile_csv_to_dict,
+            "mount_options.csv": mount_options_csv_to_dict,
             "packages_installed.csv": packages_installed_csv_to_dict,
             "packages_removed.csv": packages_removed_csv_to_dict,
             }
@@ -322,6 +364,8 @@ class ProductCSVData(object):
                     # Each CSV file is particular to its template, as a single CSV line can:
                     # - contain data for multiple rules in diferent templates
                     #   (audit_rules_unsuccessful_file_modification_detailed);
+                    # A single CSV file can:
+                    # - contain data for varying templates (mount_options).
                     # We let the CSV specific parser add the data
                     line_data_dict = csv_parser(line, csv_data)
 
