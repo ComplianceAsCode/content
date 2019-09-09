@@ -447,6 +447,27 @@ def services_disabled_csv_to_dict(csv_line, csv_data):
     return service_disabled
 
 
+def services_enabled_csv_to_dict(csv_line, csv_data):
+    service_enabled = {}
+    service_enabled["template"] = "service_enabled"
+
+    service_name = csv_line[0]
+    package_name = csv_line[1]
+    if not package_name:
+        package_name = service_name
+    daemon_name = csv_line[2]
+    if not daemon_name:
+        daemon_name = service_name
+
+    rule_id = f"service_{service_name}_enabled"
+
+    service_enabled["SERVICENAME"] = service_name
+    service_enabled["PACKAGENAME"] = package_name
+    service_enabled["DAEMONNAME"] = daemon_name
+    csv_data[rule_id] = service_enabled
+    return service_enabled
+
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password.csv": accounts_password_csv_to_dict,
@@ -471,6 +492,7 @@ class ProductCSVData(object):
             "file_dir_permissions.csv": permissions_csv_to_dict,
             "selinux_booleans.csv": selinux_booleans_csv_to_dict,
             "services_disabled.csv": services_disabled_csv_to_dict,
+            "services_enabled.csv": services_enabled_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
