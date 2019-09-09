@@ -257,11 +257,10 @@ class ProductCSVData(object):
                 continue
 
             with open(os.path.join(self.csv_dir, csv_filename), "r") as csv_f:
-                csv_data[template_name] = self._load_csv(template_name, csv_f)
+                self._load_csv(template_name, csv_f, csv_data)
         return csv_data
 
-    def _load_csv(self, template_name, csv_f):
-        template_data = {}
+    def _load_csv(self, template_name, csv_f, csv_data):
         template_csv_parser = self.TEMPLATE_TO_CSV_FORMAT_MAP[template_name]
 
         for line in csv.reader(csv_f):
@@ -274,9 +273,9 @@ class ProductCSVData(object):
                 continue
 
             rule_ids, line_data_dict = template_csv_parser(line)
+            line_data_dict["template"] = template_name
             for rule_id in rule_ids:
-                template_data[rule_id] = line_data_dict
-        return template_data
+                csv_data[rule_id] = line_data_dict
 
 
 def parse_args():
