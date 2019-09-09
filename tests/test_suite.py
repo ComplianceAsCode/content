@@ -8,6 +8,7 @@ import os.path
 import time
 import sys
 from glob import glob
+import re
 
 ssg_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(ssg_dir)
@@ -37,9 +38,10 @@ def parse_args():
         help="Use container test environment with this base image.")
 
     backends.add_argument(
-        "--libvirt", dest="libvirt", metavar="HYPERVISOR DOMAIN", nargs=2,
-        help="libvirt hypervisor and domain name. "
-        "Example of a hypervisor domain name tuple: qemu:///system ssg-test-suite")
+        "--libvirt", dest="libvirt", metavar=("HYPERVISOR", "DOMAIN"), nargs=2,
+        help="libvirt hypervisor and domain name. When the leading URI driver protocol "
+        "is omitted from the hypervisor, qemu:/// protocol is assumed. "
+        "Example of a hypervisor domain name tuple: system ssg-test-suite")
 
     common_parser.add_argument("--datastream",
                                dest="datastream",
@@ -186,10 +188,12 @@ def get_logging_dir(options):
 
     return logging_dir
 
+
 def _print_available_benchmarks(xccdf_ids, n_xccdf_ids):
     logging.info("The DataStream contains {0} Benchmarks".format(n_xccdf_ids))
     for i in range(0, n_xccdf_ids):
         logging.info("{0} - {1}".format(i, xccdf_ids[i]))
+
 
 def auto_select_xccdf_id(datastream, bench_number):
     xccdf_ids = xml_operations.get_all_xccdf_ids_in_datastream(datastream)
@@ -269,6 +273,9 @@ def normalize_passed_arguments(options):
             "choosing Podman-based test environment.")
     else:
         hypervisor, domain_name = options.libvirt
+        # Possible hypervisor spec we have to catch: qemu+unix:///session
+        if not re.match(r"[\w\+]+:///", hypervisor):
+            hypervisor = "qemu:///" + hypervisor
         options.test_env = ssg_test_suite.test_env.VMTestEnv(
             options.scanning_mode, hypervisor, domain_name)
         logging.info(
