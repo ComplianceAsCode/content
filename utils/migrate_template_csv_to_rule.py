@@ -468,6 +468,30 @@ def services_enabled_csv_to_dict(csv_line, csv_data):
     return service_enabled
 
 
+def sysctl_values_csv_to_dict(csv_line, csv_data):
+    sysctl_value = {}
+
+    sysctl_var = csv_line[0]
+    sysctl_val = csv_line[1]
+    # Default data type for sysctl is int
+    data_type = "int"
+    if len(csv_line) == 3:
+        data_type = csv_line[2]
+    sysctl_var_id = escape_path(sysctl_var)
+    rule_id = f"sysctl_{sysctl_var_id}"
+
+    if not sysctl_val.strip():
+        sysctl_value["template"] = "sysctl_var"
+    else:
+        sysctl_value["template"] = "sysctl"
+
+    sysctl_value["SYSCTLID"] = sysctl_var_id
+    sysctl_value["SYSCTLVAR"] = sysctl_var
+    sysctl_value["SYSCTLVAL"] = sysctl_val
+    sysctl_value["DATATYPE"] = data_type
+    csv_data[rule_id] = sysctl_value
+    return sysctl_value
+
 class ProductCSVData(object):
     TEMPLATE_TO_CSV_FORMAT_MAP = {
             "accounts_password.csv": accounts_password_csv_to_dict,
@@ -493,6 +517,7 @@ class ProductCSVData(object):
             "selinux_booleans.csv": selinux_booleans_csv_to_dict,
             "services_disabled.csv": services_disabled_csv_to_dict,
             "services_enabled.csv": services_enabled_csv_to_dict,
+            "sysctl_values.csv": sysctl_values_csv_to_dict,
             }
 
     def __init__(self, product, ssg_root):
