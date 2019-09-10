@@ -6,8 +6,9 @@ description: |-
     {{{ describe_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}
 
 rationale: |-
-    The /etc/ssh/sshd_config file needs to be protected from unauthorized changes by
-    non-privileged users.
+    Service configuration files enable or disable features of their respective services that if configured incorrectly
+    can lead to insecure and vulnerable configurations. Therefore, service configuration files should be owned by the
+    correct group to prevent unauthorized changes.
 
 severity: medium
 
@@ -16,7 +17,6 @@ references:
     nist: AC-6,AC-17
     nist-csf: PR.AC-4,PR.DS-5
     srg: SRG-OS-000480-GPOS-00227
-    stigid@rhel7: "010010"
     isa-62443-2013: 'SR 2.1,SR 5.2'
     isa-62443-2009: 4.3.3.7.3
     cobit5: APO01.06,DSS05.04,DSS05.07,DSS06.02
