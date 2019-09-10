@@ -54,6 +54,15 @@ def audit_rules_privileged_commands(data, lang):
     return data
 
 
+def audit_rules_usergroup_modification(data, lang):
+    path = data["path"]
+    name = re.sub(r'[-\./]', '_', os.path.basename(path))
+    data["name"] = name
+    if lang == "oval":
+        data["path"] = path.replace("/", "\\/")
+    return data
+
+
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -88,7 +97,7 @@ templates = {
     "audit_rules_unsuccessful_file_modification_o_creat": None,
     "audit_rules_unsuccessful_file_modification_o_trunc_write": None,
     "audit_rules_unsuccessful_file_modification_rule_order": None,
-    "audit_rules_usergroup_modification": None,
+    "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
     "file_groupowner": None,
     "file_owner": None,
     "file_permissions": None,
