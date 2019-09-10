@@ -25,6 +25,17 @@ def accounts_password(data, lang):
     return data
 
 
+def audit_rules_privileged_commands(data, lang):
+    path = data["path"]
+    name = re.sub(r"[-\./]", "_", os.path.basename(path))
+    data["name"] = name
+    if lang == "oval":
+        data["id"] = "audit_rules_execution_" + name
+        data["title"] = "Record Any Attempts to Run " + name
+        data["path"] = path.replace("/", "\\/")
+    return data
+
+
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -54,7 +65,7 @@ templates = {
     "audit_rules_file_deletion_events": None,
     "audit_rules_login_events": None,
     "audit_rules_path_syscall": None,
-    "audit_rules_privileged_commands": None,
+    "audit_rules_privileged_commands": audit_rules_privileged_commands,
     "audit_rules_unsuccessful_file_modification": None,
     "audit_rules_unsuccessful_file_modification_o_creat": None,
     "audit_rules_unsuccessful_file_modification_o_trunc_write": None,
