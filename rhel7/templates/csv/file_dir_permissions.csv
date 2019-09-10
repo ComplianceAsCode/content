@@ -7,6 +7,7 @@
 /etc/httpd/conf,^.*$,,,0640,httpd_server_conf_files
 /etc/ssh,^.*.pub$,,,0644,sshd_pub_key
 /etc/ssh,^.*_key$,,,0640,sshd_private_key
+/etc/ssh,sshd_config,0,0,0600,sshd_config
 /etc/httpd/conf.modules.d,^.*$,,,0640,https_server_modules_files
 /boot/grub2,grub.cfg,0,0,0600,grub2_cfg
 /boot/efi/EFI/redhat,grub.cfg,0,0,0700,efi_grub2_cfg
