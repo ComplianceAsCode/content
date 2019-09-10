@@ -19,14 +19,9 @@ lang_to_ext_map = {
 # Callback functions for processing template parameters and/or validating them
 
 
-def sysctl(data, lang):
-    data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
-    if not data.get("sysctlval"):
-        data["sysctlval"] = ""
-    ipv6_flag = "P"
-    if data["sysctlid"].find("ipv6") >= 0:
-        ipv6_flag = "I"
-    data["flags"] = "SR" + ipv6_flag
+def accounts_password(data, lang):
+    if lang == "oval":
+        data["sign"] = "-?" if data["variable"].endswith("credit") else ""
     return data
 
 
@@ -41,8 +36,19 @@ def package_installed(data, lang):
     return data
 
 
+def sysctl(data, lang):
+    data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
+    if not data.get("sysctlval"):
+        data["sysctlval"] = ""
+    ipv6_flag = "P"
+    if data["sysctlid"].find("ipv6") >= 0:
+        ipv6_flag = "I"
+    data["flags"] = "SR" + ipv6_flag
+    return data
+
+
 templates = {
-    "accounts_password": None,
+    "accounts_password": accounts_password,
     "auditd_lineinfile": None,
     "audit_rules_dac_modification": None,
     "audit_rules_file_deletion_events": None,
