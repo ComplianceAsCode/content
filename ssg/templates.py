@@ -25,6 +25,15 @@ def accounts_password(data, lang):
     return data
 
 
+def audit_rules_login_events(data, lang):
+    path = data["path"]
+    name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
+    data["name"] = name
+    if lang == "oval":
+        data["path"] = path.replace("/", "\\/")
+    return data
+
+
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
@@ -63,7 +72,7 @@ templates = {
     "auditd_lineinfile": None,
     "audit_rules_dac_modification": None,
     "audit_rules_file_deletion_events": None,
-    "audit_rules_login_events": None,
+    "audit_rules_login_events": audit_rules_login_events,
     "audit_rules_path_syscall": None,
     "audit_rules_privileged_commands": audit_rules_privileged_commands,
     "audit_rules_unsuccessful_file_modification": None,
