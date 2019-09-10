@@ -241,7 +241,7 @@ def mount_options_csv_to_dict(csv_line, csv_data):
     data_mount_options = {}
 
     mount_point = csv_line[0]
-    mount_option = csv_line[1]
+    mount_option = csv_line[1].strip()
 
     template_base = "mount_option"
     mount_has_to_exist = "yes"
