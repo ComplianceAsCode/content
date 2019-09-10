@@ -213,7 +213,7 @@ class RuleChecker(oscap.Checker):
                     logging.error(
                         "Rule '{0}' isn't present in benchmark '{1}' in '{2}'"
                         .format(rule.id, self.benchmark_id, self.datastream))
-                    return
+                    continue
                 remediation_available = self._is_remediation_available(rule)
 
                 self._check_rule(rule, remote_dir, state, remediation_available)
