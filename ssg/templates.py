@@ -20,15 +20,14 @@ lang_to_ext_map = {
 
 
 def package_installed(data, lang):
-    if "EVR" in data:
-        evr = data["EVR"]
+    if "evr" in data:
+        evr = data["evr"]
         if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
             raise RuntimeError(
-                "ERROR: input violation: EVR key should be in "
+                "ERROR: input violation: evr key should be in "
                 "epoch:version-release format, but package {0} has set "
-                "EVR to {1}".format(data["PKGNAME"], evr))
+                "evr to {1}".format(data["pkgname"], evr))
     return data
-
 
 templates = {
     "accounts_password": None,
@@ -109,14 +108,15 @@ class Builder(object):
         Processes template data using a callback before the data will be
         substituted into the Jinja template.
         """
-        # TODO: Remove this right after the variables in templates are renamed
-        # to lowercase
-        raw_parameters = {k.upper(): v for k, v in raw_parameters.items()}
         template_func = templates[template]
         if template_func is not None:
-            return template_func(raw_parameters, lang)
+            parameters = template_func(raw_parameters, lang)
         else:
-            return raw_parameters
+            parameters = raw_parameters
+        # TODO: Remove this right after the variables in templates are renamed
+        # to lowercase
+        parameters = {k.upper(): v for k, v in parameters.items()}
+        return parameters
 
     def build_lang(self, rule, template_name, lang):
         """
