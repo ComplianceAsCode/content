@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on shadow File'
 
 description:  |-
-    {{{ describe_file_permissions(file="/etc/shadow", perms="0640") }}}
+    {{{ describe_file_permissions(file="/etc/shadow", perms="0000") }}}
 
 rationale: |-
     The <tt>/etc/shadow</tt> file contains the list of local
@@ -38,4 +38,4 @@ references:
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow", perms="----------") }}}'
 
 ocil: |-
-    {{{ ocil_file_permissions(file="/etc/shadow", perms="-rw-r-----") }}}
+    {{{ ocil_file_permissions(file="/etc/shadow", perms="----------") }}}
