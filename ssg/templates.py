@@ -34,6 +34,15 @@ def audit_rules_login_events(data, lang):
     return data
 
 
+def audit_rules_path_syscall(data, lang):
+    if lang == "oval":
+        pathid = re.sub(r'[-\./]', '_', data["path"])
+        # remove root slash made into '_'
+        pathid = pathid[1:]
+        data["pathid"] = pathid
+    return data
+
+
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
@@ -73,7 +82,7 @@ templates = {
     "audit_rules_dac_modification": None,
     "audit_rules_file_deletion_events": None,
     "audit_rules_login_events": audit_rules_login_events,
-    "audit_rules_path_syscall": None,
+    "audit_rules_path_syscall": audit_rules_path_syscall,
     "audit_rules_privileged_commands": audit_rules_privileged_commands,
     "audit_rules_unsuccessful_file_modification": None,
     "audit_rules_unsuccessful_file_modification_o_creat": None,
