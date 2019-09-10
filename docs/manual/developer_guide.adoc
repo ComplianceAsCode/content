@@ -776,6 +776,13 @@ A rule YAML file has one implied attribute:
 
 A rule itself contains these attributes:
 
+* `title`: Human-readable title of the rule.
+* `rationale`: Human-readable HTML description of the reason why the rule exists and why it is important from the technical point of view. For example, rationale of the `partition_for_tmp` rule states that:
++
+The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
+* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
++
+The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
 * `severity`: Is used for metrics and tracking. It can have one of the following values: `unknown`, `info`, `low`, `medium`, or `high`.
 +
 [cols="2", options="header"]
@@ -797,15 +804,24 @@ A rule itself contains these attributes:
 |Grave or critical problem
 |===
 +
-The severity of the rule can be overridden by a profile with `refine-rule` selector.
+When deciding on severity levels, it is best to follow the following guidelines:
+.Table Vulnerability Severity Category Code Definitions
+|===
+|Severity| DISA Category | Category Code Guidelines
+|`high`
+|`CAT I`
+|Any vulnerability, the exploitation of which will directly and immediately result in loss of Confidentiality, Availability, or Integrity.
 
-* `title`: Human-readable title of the rule.
-* `rationale`: Human-readable HTML description of the reason why the rule exists and why it is important from the technical point of view. For example, rationale of the `partition_for_tmp` rule states that:
+|`medium`
+|`CAT II`
+|Any vulnerability, the exploitation of which has a potential to result in loss of Confidentiality, Availability, or Integrity.
+
+|`low`
+|`CAT III`
+|Any vulnerability, the existence of which degrades measures to protect againstloss of Confidentiality, Availability, or Integrity.
+|===
 +
-The <tt>/tmp</tt> partition is used as temporary storage by many programs. Placing <tt>/tmp</tt> in its own partition enables the setting of more restrictive mount options, which can help protect programs which use it.
-* `description`: Human-readable HTML description, which provides broader context for non-experts than the rationale. For example, description of the `partition_for_tmp` rule states that:
-+
-The <tt>/var/tmp</tt> directory is a world-writable directory used for temporary file storage. Ensure it has its own partition or logical volume at installation time, or migrate it using LVM.
+The severity of the rule can be overridden by a profile with `refine-rule` selector.
 * `platform`: Defines applicability of a rule. For example, if a rule is not applicable to containers, this should be set to `machine`, which means it will be evaluated only if the targeted scan environment is either bare-metal or virtual machine. Also, it can restrict applicability on higher software layers. By setting to `shadow-utils`, the rule will have its applicability restricted to only environments which have `shadow-utils` package installed. The available options can be found in the file <product>/cpe/<product>-cpe-dictionary.xml (e.g.: rhel8/cpe/rhel8-cpe-dictionary.xml). In order to support a new value, an OVAL check (of `inventory` class) must be created under `shared/checks/oval/` and referenced in the dictionary file.
 * `ocil`: Defines asserting statements to check whether or not the rule is valid.
 * `ocil_clause`: This attribute contains the statement which describes how to determine whether the statement is true or false. Check out `encrypt_partitions.rule` in `linux_os/guide/system/software/disk_partitioning/`: this contains a `partitions do not have a type of crypto_LUKS` value for `ocil_clause`. This clause is prefixed with the phrase "It is the case that".
