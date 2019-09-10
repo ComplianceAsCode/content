@@ -17,6 +17,7 @@ description: |-
     <li> add the following line immediately <tt>before</tt> the <tt>pam_unix.so</tt> statement in the <tt>ACCOUNT</tt> section:
     <pre>account required pam_faillock.so</pre></li>
     </ul>
+    If <tt>unlock_time</tt> is set to <tt>0</tt>, manual intervention by an administrator is required to unlock a user.
 
 rationale: |-
     Locking out user accounts after a number of incorrect attempts
@@ -58,6 +59,6 @@ ocil_clause: 'unlock_time is less than the expected value'
 ocil: |-
     To ensure the failed password attempt policy is configured correctly, run the following command:
     <pre>$ grep pam_faillock /etc/pam.d/system-auth</pre>
-    The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt> or <tt>never</tt>.
+    The output should show <tt>unlock_time=&lt;some-large-number&gt;</tt> or <tt>0</tt> for <tt>never</tt>.
 
 platform: pam
