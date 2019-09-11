@@ -1,5 +1,6 @@
 import argparse
 import csv
+from collections import defaultdict
 import os
 import pprint
 import re
@@ -658,6 +659,90 @@ class ProductCSVData(object):
                     raise e
 
 
+    def merge_product_csv_data(self, product):
+        """
+        Each rule present in 'product' is incorporated into own csv_data.
+
+        The added rule's CSV values, are changed from string to a dictionary of lists.
+        The dictionary counts the occurences of a value, while keeping track of the
+        products that use the value.
+        """
+
+        # Readability variables
+        product_b = product.product
+        data_a = self.csv_data
+        data_b = product.csv_data
+
+        for rule_id in data_b:
+            rule_b = data_b[rule_id]
+            rule_b_vars = rule_b["vars"]
+
+            if rule_id in data_a:
+                rule_a = data_a[rule_id]
+                rule_a_vars = rule_a["vars"]
+                for var in rule_b_vars:
+                    new_value = rule_b_vars[var]
+                    if type(rule_a_vars[var]) == defaultdict:
+                        value_counter = rule_a_vars[var]
+                        value_counter[new_value].append(product_b)
+                    else:
+                        # We substitute the string value for a dict where
+                        # each 'key' is the template value, and
+                        # each 'value' is a list of products that have it
+                        value_counter = defaultdict(list)
+                        value_counter[new_value].append(product_b)
+                        rule_a_vars[var] = value_counter
+            else:
+                # Rule is new in the product
+                # Add the rule with its values already in dictionary
+                data_a[rule_id] = {"name": rule_b["name"]}
+                data_a[rule_id]["vars"] = {}
+                for var in rule_b_vars:
+                    value_counter = defaultdict(list)
+                    new_value = rule_b_vars[var]
+                    value_counter[new_value].append(product_b)
+                    data_a[rule_id]["vars"][var] = value_counter
+
+
+    def resolve_csv_data(self):
+        """
+        Go over its own rules, resolving the rules CSV data.
+
+        For each rule that has a dictionary instead of a string as the value of a
+        template parameter, it counts the most popular value, and makes it the shared one.
+        The other values are made product specific with 'param@product' notation.
+        """
+        for rule_id in self.csv_data:
+            rule = self.csv_data[rule_id]
+            rule_vars = rule["vars"]
+            # We need a list to be able to iterate over the keys and change the dictionary
+            for var in list(rule_vars):
+                value_counter = rule_vars[var]
+                if type(value_counter) == defaultdict:
+                    if len(value_counter) == 1:
+                        # there was only one value
+                        rule_vars[var] = list(value_counter.keys())[0]
+                    else:
+
+                        # Determine which value has most products backing it
+                        most_popular = 0
+                        most_popular_value = ""
+                        for value in value_counter.keys():
+                            count = len(value_counter[value])
+                            if count > most_popular:
+                                most_popular = count
+                                most_popular_value = value
+
+                        for value in value_counter.keys():
+                            if value == most_popular_value:
+                                # The value with more products will be the shared one
+                                rule_vars[var] = most_popular_value
+                            else:
+                                # other values are added with @product
+                                for product in value_counter[value]:
+                                    product_var = f"{var}@{product}"
+                                    rule_vars[product_var] = value
+
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("ssg_root", help="Path to root of ssg git directory")
@@ -693,7 +778,15 @@ def main():
         with open(os.path.join(args.dump, f"shared.dump"), "w") as dump_f:
             pprint.pprint(shared_product.csv_data, dump_f)
 
-    # Normalize loaded CSV Data
+    # Resolve loaded CSV Data
+    # Use shared "product" as the base reference
+    for product in templated_content:
+        shared_product.merge_product_csv_data(templated_content[product])
+
+    shared_product.resolve_csv_data()
+    if args.dump:
+        with open(os.path.join(args.dump, f"shared_resolved.dump"), "w") as dump_f:
+            pprint.pprint(shared_product.csv_data, dump_f)
 
     # Walk through benchmark and add data into rule.yml
 
