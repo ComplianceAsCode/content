@@ -63,6 +63,11 @@ def audit_rules_usergroup_modification(data, lang):
     return data
 
 
+def grub2_bootloader_argument(data, lang):
+    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+    return data
+
+
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -102,7 +107,7 @@ templates = {
     "file_owner": None,
     "file_permissions": None,
     "file_regex_permissions": None,
-    "grub2_bootloader_argument": None,
+    "grub2_bootloader_argument": grub2_bootloader_argument,
     "kernel_module_disabled": None,
     "mount": None,
     "mount_option": None,
