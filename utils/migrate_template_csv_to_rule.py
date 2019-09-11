@@ -725,6 +725,8 @@ class ProductCSVData(object):
                     if len(value_counter) == 1:
                         # there was only one value
                         rule_vars[var] = list(value_counter.keys())[0]
+                        if rule_vars[var] == '':
+                            rule_vars.pop(var)
                     else:
 
                         # Determine which value has most products backing it
@@ -736,15 +738,21 @@ class ProductCSVData(object):
                                 most_popular = count
                                 most_popular_value = value
 
-                        for value in value_counter.keys():
+                        for value in list(value_counter.keys()):
                             if value == most_popular_value:
                                 # The value with more products will be the shared one
-                                rule_vars[var] = most_popular_value
+                                if value == '':
+                                    rule_vars.pop(var)
+                                else:
+                                    rule_vars[var] = most_popular_value
                             else:
                                 # other values are added with @product
                                 for product in value_counter[value]:
                                     product_var = f"{var}@{product}"
                                     rule_vars[product_var] = value
+                else:
+                    if rule_vars[var] == '':
+                        rule_vars.pop(var)
 
 def walk_benchmarks(benchmark_dir, product, override_template=False):
     csv_data = product.csv_data
