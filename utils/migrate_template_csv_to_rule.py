@@ -653,7 +653,7 @@ class ProductCSVData(object):
                     line_data_dict = csv_parser(line, csv_data)
 
                     if except_for_language:
-                        line_data_dict["except_for"] = except_for_language
+                        line_data_dict[except_for_language] = "off"
                 except IndexError as e:
                     print(f"line:{line} in file: {csv_f}")
                     raise e
