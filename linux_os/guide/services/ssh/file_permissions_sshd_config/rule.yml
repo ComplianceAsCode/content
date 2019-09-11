@@ -1,5 +1,7 @@
 documentation_complete: true
 
+prodtype: rhel6,rhel7,rhel8,rhv4
+
 title: 'Verify Permissions on SSH Server config file'
 
 description: |-
@@ -11,6 +13,11 @@ rationale: |-
     correct group to prevent unauthorized changes.
 
 severity: medium
+
+identifiers:
+    cce@rhel6: 82896-2
+    cce@rhel7: 82895-4
+    cce@rhel8: 82894-7
 
 references:
     cis: 5.2.1
