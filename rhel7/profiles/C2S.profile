@@ -243,3 +243,6 @@ selections:
     - file_permissions_unauthorized_sgid
     - accounts_no_uid_except_zero
     - no_rsh_trust_files
+    - file_groupowner_sshd_config
+    - file_owner_sshd_config
+    - file_permissions_sshd_config

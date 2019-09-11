@@ -206,3 +206,6 @@ selections:
     - gid_passwd_group_same
     - account_unique_name
     - no_netrc_files
+    - file_groupowner_sshd_config
+    - file_owner_sshd_config
+    - file_permissions_sshd_config
