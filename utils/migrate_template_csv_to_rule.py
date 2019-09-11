@@ -4,8 +4,11 @@ from collections import defaultdict
 import os
 import pprint
 import re
+import yaml
 
 from ssg.constants import product_directories
+import ssg.utils
+import ssg.rule_yaml
 
 
 def escape_path(path):
@@ -743,10 +746,43 @@ class ProductCSVData(object):
                                     product_var = f"{var}@{product}"
                                     rule_vars[product_var] = value
 
+def walk_benchmarks(benchmark_dir, product, override_template=False):
+    csv_data = product.csv_data
+
+    for root, dirs, files in os.walk(benchmark_dir):
+        rule_id = os.path.basename(root)
+        if rule_id in ["oval", "bash", "ansible", "tests"]:
+            continue
+        if rule_id in csv_data:
+            rule_path = os.path.join(root,"rule.yml")
+            rule_contents = ssg.utils.read_file_list(rule_path)
+
+            # Check if rule already has template key (or section)
+            template_key = ssg.rule_yaml.get_section_lines(rule_path, rule_contents, "template")
+            if template_key != None:
+                if override_template:
+                    # Erase current template key (or section)
+                    rule_contents = ssg.rule_yaml.remove_lines(rule_contents, template_key)
+                else:
+                    continue
+
+            # make sure there is blank line at the end, so that template_data is appended nicely
+            if rule_contents[-1] != "":
+                rule_contents.extend([""])
+
+            # Add template key
+            template_dict = {}
+            template_dict["template"] = csv_data[rule_id]
+
+            template_contents = ssg.utils.split_string_content(yaml.dump(template_dict, indent=4))
+            ssg.utils.write_list_file(rule_path, rule_contents + template_contents)
+
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("ssg_root", help="Path to root of ssg git directory")
     p.add_argument("--dump", help="Directory to dump collected CSV data")
+    p.add_argument("--override", action="store_true",
+                   help="If set, template data in the rules will be overriden")
 
     return p.parse_args()
 
@@ -789,6 +825,9 @@ def main():
             pprint.pprint(shared_product.csv_data, dump_f)
 
     # Walk through benchmark and add data into rule.yml
+    benchmarks_list = ["linux_os", "applications"]
+    for benchmark_name in benchmarks_list:
+        walk_benchmarks(os.path.join(args.ssg_root, benchmark_name), shared_product, args.override)
 
 
 if __name__ == "__main__":
