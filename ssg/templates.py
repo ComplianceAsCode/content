@@ -29,6 +29,7 @@ def package_installed(data, lang):
                 "evr to {1}".format(data["pkgname"], evr))
     return data
 
+
 templates = {
     "accounts_password": None,
     "auditd_lineinfile": None,
