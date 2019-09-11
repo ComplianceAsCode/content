@@ -11,7 +11,7 @@ description: |-
     file <tt>/etc/origin/node/node-config.yaml</tt>
     on the kubelet node(s) and set the below parameter:
     <pre>kubeletArguments:
-      streaming-connection-timeout:
+      streaming-connection-idle-timeout:
       - '<sub idref="var_streaming_connection_timeouts"/>'</pre>
 
 rationale: |-
@@ -25,7 +25,7 @@ ocil_clause: 'the streaming connection timeouts are not disabled'
 
 ocil: |-
     Run the following command on the kubelet node(s):
-    <pre>$ sudo grep -A1 streaming-connection-timeout /etc/origin/node/node-config.yaml</pre>
+    <pre>$ sudo grep -A1 streaming-connection-idle-timeout /etc/origin/node/node-config.yaml</pre>
     The output should return <tt><sub idref="var_streaming_connection_timeouts"/></tt>.
 
 identifiers:
