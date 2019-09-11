@@ -20,6 +20,6 @@
     <unix:pid datatype="int" operation="greater than">0</unix:pid>
   </unix:process58_object>
   <unix:process58_state id="state_ocp_runtime_{{{ OCPCMDOPTIONID }}}" version="1">
-    <unix:command_line operation="pattern match">^.*[\s]+{{{ OCPCMDOPTION }}}={{{ OCPCMDVAL }}}([\s]+.*$|$)</unix:command_line>
+    <unix:command_line operation="pattern match">^.*[\s]+{{{ OCPCMDOPTION }}}=.*({{{ OCPCMDVAL }}}).*([\s]+.*$|$)</unix:command_line>
   </unix:process58_state>
 </def-group>
