@@ -1,7 +1,7 @@
 <def-group>
   <definition class="compliance" id="api_server_insecure_port" version="1">
     <metadata>
-      <title>Disable Insecure Port Access</title>
+      <title>Prevent Insecure Port Access</title>
       <affected family="unix">
         <platform>multi_platform_ocp</platform>
       </affected>
@@ -9,13 +9,12 @@
     authenticate themselves, and be authorized to use the API.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="insecure-port is configured" test_ref="test_api_server_insecure_port" />
+      <criterion comment="insecure-port does not exist" test_ref="test_api_server_insecure_port" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="insecure-port is configured" id="test_api_server_insecure_port" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="none_exist" comment="insecure-port does not exist" id="test_api_server_insecure_port" version="1">
     <ind:object object_ref="object_api_server_insecure_port" />
-    <ind:state state_ref="state_api_server_insecure_port" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_api_server_insecure_port" version="1">
@@ -23,8 +22,4 @@
     <ind:pattern operation="pattern match">^[\s]*kubernetesMasterConfig\:(?:[^\n]*\n+)+?[\s]*apiServerArguments\:(?:[^\n]*\n+)+?[\s]*insecure-port\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
-
-  <ind:textfilecontent54_state id="state_api_server_insecure_port" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^0$</ind:subexpression>
-  </ind:textfilecontent54_state>
 </def-group>
