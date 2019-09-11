@@ -10,11 +10,11 @@
     </metadata>
     <criteria operator="AND">
       <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_streaming_connection_timeout" />
-      <criterion comment="streaming-connection-timeout is configured" test_ref="test_kubelet_enable_streaming_connections" />
+      <criterion comment="streaming-connection-idle-timeout is configured" test_ref="test_kubelet_enable_streaming_connections" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="streaming-connection-timeout is configured" id="test_kubelet_enable_streaming_connections" version="1">
+  <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="streaming-connection-idle-timeout is configured" id="test_kubelet_enable_streaming_connections" version="1">
     <ind:object object_ref="object_kubelet_enable_streaming_connections" />
     <ind:state state_ref="state_kubelet_enable_streaming_connections" />
     <ind:state state_ref="state_kubelet_enable_streaming_connections_nonzero" />
@@ -22,7 +22,7 @@
 
   <ind:textfilecontent54_object id="object_kubelet_enable_streaming_connections" version="1">
     <ind:filepath>/etc/origin/node/node-config.yaml</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*streaming-connection-timeout\:[\s]*[\n]+[\s]*-[\s]+'(\S+)'[\s]*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*streaming-connection-idle-timeout\:[\s]*[\n]+[\s]*-[\s]+'(\S+)'[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
@@ -34,7 +34,7 @@
     <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_streaming_connection_timeouts" />
   </ind:textfilecontent54_state>
 
-  <external_variable comment="external variable for streaming-connection-timeout"
+  <external_variable comment="external variable for streaming-connection-idle-timeout"
   datatype="string" id="var_streaming_connection_timeouts" version="1" />
 </def-group>
 
