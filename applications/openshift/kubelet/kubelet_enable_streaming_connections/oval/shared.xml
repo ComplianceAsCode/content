@@ -17,6 +17,7 @@
   <ind:textfilecontent54_test check="all" check_existence="any_exist" comment="streaming-connection-timeout is configured" id="test_kubelet_enable_streaming_connections" version="1">
     <ind:object object_ref="object_kubelet_enable_streaming_connections" />
     <ind:state state_ref="state_kubelet_enable_streaming_connections" />
+    <ind:state state_ref="state_kubelet_enable_streaming_connections_nonzero" />
   </ind:textfilecontent54_test>
 
   <ind:textfilecontent54_object id="object_kubelet_enable_streaming_connections" version="1">
@@ -24,6 +25,10 @@
     <ind:pattern operation="pattern match">^[\s]*kubeletArguments\:(?:[^\n]*\n+)+?[\s]*streaming-connection-timeout\:[\s]*[\n]+[\s]*-[\s]+'(\S+)'[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_kubelet_enable_streaming_connections_nonzero" version="1">
+    <ind:subexpression datatype="string" operation="not equal">0</ind:subexpression>
+  </ind:textfilecontent54_state>
 
   <ind:textfilecontent54_state id="state_kubelet_enable_streaming_connections" version="1">
     <ind:subexpression datatype="string" operation="equals" var_check="all" var_ref="var_streaming_connection_timeouts" />
