@@ -661,6 +661,7 @@ class ProductCSVData(object):
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("ssg_root", help="Path to root of ssg git directory")
+    p.add_argument("--dump", help="Directory to dump collected CSV data")
 
     return p.parse_args()
 
@@ -668,23 +669,29 @@ def parse_args():
 def main():
     args = parse_args()
 
+    if args.dump:
+        try:
+            os.mkdir(args.dump)
+        except FileExistsError:
+            pass
+
     show_data = {}
     templated_content = {}
 
     # Load all product's CSV data
     for product_name in product_directories:
         product = ProductCSVData(product_name, args.ssg_root)
-        templated_content[product_name] = product.csv_data
-        show_data[product_name] = product.csv_data
+        if args.dump:
+            with open(os.path.join(args.dump, f"{product_name}.dump"), "w") as dump_f:
+                pprint.pprint(product.csv_data, dump_f)
+        templated_content[product_name] = product
 
     # Load shared CSV Data as if it were a Product
     product_name = "shared"
-    product = ProductCSVData(product_name, args.ssg_root)
-    templated_content[product_name] = product.csv_data
-    show_data[product_name] = product.csv_data
-
-    # Ilustrate DataStructure
-    pprint.pprint(show_data)
+    shared_product = ProductCSVData(product_name, args.ssg_root)
+    if args.dump:
+        with open(os.path.join(args.dump, f"shared.dump"), "w") as dump_f:
+            pprint.pprint(shared_product.csv_data, dump_f)
 
     # Normalize loaded CSV Data
 
