@@ -212,7 +212,7 @@ def kernel_modules_disabled_csv_to_dict(csv_line, csv_data):
 def lineinfile_csv_to_dict(csv_line, csv_data, _type):
     lineinfile = {}
     data_lineinfile = {}
-    lineinfile["name"] = "{_type}_lineinfile"
+    lineinfile["name"] = f"{_type}_lineinfile"
 
     rule_id = csv_line[0]
     parameter = csv_line[1]
