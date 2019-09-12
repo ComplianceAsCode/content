@@ -45,6 +45,9 @@ selections:
     - file_permissions_master_openshift_kubeconfig
     - file_permissions_master_scheduler_conf
     - file_permissions_var_lib_etcd
+    - file_groupowner_master_openvswitch
+    - file_owner_master_openvswitch
+    - file_permissions_master_openvswitch
     - scheduler_profiling_argument
     - controller_bind_address
     - controller_disable_profiling

@@ -1,0 +1,27 @@
+documentation_complete: true
+
+prodtype: ocp3
+
+title: 'Verify Permissions on the OpenShift Open vSwitch Files'
+
+description: |-
+    {{{ describe_file_permissions(file="/etc/origin/openvswitch/*", perms="0644") }}}
+
+rationale: |-
+    CNI (Container Network Interface) files consist of a specification and libraries for
+    writing plugins to configure network interfaces in Linux containers, along with a number
+    of supported plugins. Allowing writeable access to the files could allow an attacker to modify
+    the networking configuration potentially adding a rouge network connection.
+
+severity: medium
+
+identifiers:
+    cce@ocp3: 82173-6
+
+references:
+    cis: 1.4.9
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/openvswitch/*", perms="-rw-r--r--") }}}'
+
+ocil: |-
+    {{{ ocil_file_permissions(file="/etc/origin/openvswitch/*", perms="-rw-r--r--") }}}
