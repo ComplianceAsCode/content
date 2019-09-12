@@ -1,21 +1,21 @@
 import argparse
 import csv
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 import os
 import pprint
 import re
-import yaml
 
 from ssg.constants import product_directories
 import ssg.utils
 import ssg.rule_yaml
+import ssg.yaml
 
 
 def escape_path(path):
     return re.sub('[-\./]', '_', path)
 
 def accounts_password_csv_to_dict(csv_line, csv_data):
-    accounts_password = {}
+    accounts_password = OrderedDict()
     data_accounts_password = {}
     accounts_password["name"] = "package_installed"
 
@@ -31,7 +31,7 @@ def accounts_password_csv_to_dict(csv_line, csv_data):
     return accounts_password
 
 def audit_rules_execution_csv_to_dict(csv_line, csv_data):
-    audit_rules_execution = {}
+    audit_rules_execution = OrderedDict()
     data_audit_rules_execution = {}
     audit_rules_execution["name"] = "audit_rules_privileged_commands"
 
@@ -48,7 +48,7 @@ def audit_rules_execution_csv_to_dict(csv_line, csv_data):
     return audit_rules_execution
 
 def audit_rules_privileged_commands_csv_to_dict(csv_line, csv_data):
-    audit_rules_privileged_commands = {}
+    audit_rules_privileged_commands = OrderedDict()
     data_audit_rules_privileged_commands = {}
     audit_rules_privileged_commands["name"] = "audit_rules_privileged_commands"
 
@@ -65,7 +65,7 @@ def audit_rules_privileged_commands_csv_to_dict(csv_line, csv_data):
     return audit_rules_privileged_commands
 
 def audit_rules_dac_modification_csv_to_dict(csv_line, csv_data):
-    audit_rules_dac_modification = {}
+    audit_rules_dac_modification = OrderedDict()
     data_audit_rules_dac_modification = {}
     audit_rules_dac_modification["name"] = "audit_rules_dac_modification"
 
@@ -79,7 +79,7 @@ def audit_rules_dac_modification_csv_to_dict(csv_line, csv_data):
     return audit_rules_dac_modification
 
 def audit_rules_file_deletion_events_csv_to_dict(csv_line, csv_data):
-    audit_rules_file_deletion_events = {}
+    audit_rules_file_deletion_events = OrderedDict()
     data_audit_rules_file_deletion_events = {}
     audit_rules_file_deletion_events["name"] = "audit_rules_file_deletion_events"
 
@@ -93,7 +93,7 @@ def audit_rules_file_deletion_events_csv_to_dict(csv_line, csv_data):
     return audit_rules_file_deletion_events
 
 def audit_rules_login_events_csv_to_dict(csv_line, csv_data):
-    audit_rules_login_events = {}
+    audit_rules_login_events = OrderedDict()
     data_audit_rules_login_events = {}
     audit_rules_login_events["name"] = "audit_rules_login_events"
 
@@ -108,7 +108,7 @@ def audit_rules_login_events_csv_to_dict(csv_line, csv_data):
     return audit_rules_login_events
 
 def audit_rules_path_syscall_csv_to_dict(csv_line, csv_data):
-    audit_rules_path_syscall = {}
+    audit_rules_path_syscall = OrderedDict()
     data_audit_rules_path_syscall = {}
     audit_rules_path_syscall["name"] = "audit_rules_path_syscall"
 
@@ -128,7 +128,7 @@ def audit_rules_path_syscall_csv_to_dict(csv_line, csv_data):
     return audit_rules_path_syscall
 
 def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line, csv_data):
-    audit_rules_unsuccessful_file_modification  = {}
+    audit_rules_unsuccessful_file_modification  = OrderedDict()
     data_audit_rules_unsuccessful_file_modification  = {}
     audit_rules_unsuccessful_file_modification["name"] = "audit_rules_unsuccessful_file_modification"
 
@@ -142,7 +142,7 @@ def audit_rules_unsuccessful_file_modification_csv_to_dict(csv_line, csv_data):
     return audit_rules_unsuccessful_file_modification
 
 def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line, csv_data):
-    audit_rules_unsuccessful_file_modification_detailed = {}
+    audit_rules_unsuccessful_file_modification_detailed = OrderedDict()
     data_audit_rules_unsuccessful_file_modification_detailed = {}
 
     syscall = csv_line[0]
@@ -167,7 +167,7 @@ def audit_rules_unsuccessful_file_modification_detailed_csv_to_dict(csv_line, cs
     return audit_rules_unsuccessful_file_modification_detailed
 
 def audit_rules_usergroup_modification_csv_to_dict(csv_line, csv_data):
-    user_group_modification = {}
+    user_group_modification = OrderedDict()
     data_user_group_modification = {}
     user_group_modification["name"] = "audit_rules_usergroup_modification"
 
@@ -182,7 +182,7 @@ def audit_rules_usergroup_modification_csv_to_dict(csv_line, csv_data):
     return user_group_modification
 
 def grub2_bootloader_argument_csv_to_dict(csv_line, csv_data):
-    grub2_bootloader_argument = {}
+    grub2_bootloader_argument = OrderedDict()
     data_grub2_bootloader_argument = {}
     grub2_bootloader_argument["name"] = "grub2_bootloader_argument"
 
@@ -199,7 +199,7 @@ def grub2_bootloader_argument_csv_to_dict(csv_line, csv_data):
     return grub2_bootloader_argument
 
 def kernel_modules_disabled_csv_to_dict(csv_line, csv_data):
-    kernel_modules_disabled = {}
+    kernel_modules_disabled = OrderedDict()
     data_kernel_modules_disabled = {}
     kernel_modules_disabled["name"] = "kernel_module_disabled"
 
@@ -213,7 +213,7 @@ def kernel_modules_disabled_csv_to_dict(csv_line, csv_data):
     return kernel_modules_disabled
 
 def lineinfile_csv_to_dict(csv_line, csv_data, _type):
-    lineinfile = {}
+    lineinfile = OrderedDict()
     data_lineinfile = {}
     lineinfile["name"] = f"{_type}_lineinfile"
 
@@ -241,7 +241,7 @@ def sshd_lineinfile_csv_to_dict(csv_line, csv_data):
     return lineinfile_csv_to_dict(csv_line, csv_data, "sshd")
 
 def mount_options_csv_to_dict(csv_line, csv_data):
-    mount_options = {}
+    mount_options = OrderedDict()
     data_mount_options = {}
 
     mount_point = csv_line[0]
@@ -285,7 +285,7 @@ def mount_options_csv_to_dict(csv_line, csv_data):
     return mount_options
 
 def mounts_csv_to_dict(csv_line, csv_data):
-    mounts = {}
+    mounts = OrderedDict()
     data_mounts = {}
     mounts["name"] = "mount"
 
@@ -301,7 +301,7 @@ def mounts_csv_to_dict(csv_line, csv_data):
 
 # It seems there are no rules for these templated content
 def ocp_service_runtime_config_csv_to_dict(csv_line, csv_data):
-    ocp_service = {}
+    ocp_service = OrderedDict()
     data_ocp_service = {}
     ocp_service["name"] = "ocp_service_config"
 
@@ -325,7 +325,7 @@ def ocp_service_runtime_config_csv_to_dict(csv_line, csv_data):
     return ocp_service
 
 def packages_installed_csv_to_dict(csv_line, csv_data):
-    package_installed = {}
+    package_installed = OrderedDict()
     data_package_installed = {}
     package_installed["name"] = "package_installed"
 
@@ -345,7 +345,7 @@ def packages_installed_csv_to_dict(csv_line, csv_data):
     return package_installed
 
 def packages_removed_csv_to_dict(csv_line, csv_data):
-    package_removed = {}
+    package_removed = OrderedDict()
     data_package_removed = {}
     package_removed["name"] = "package_removed"
 
@@ -363,13 +363,13 @@ def packages_removed_csv_to_dict(csv_line, csv_data):
     return package_removed
 
 def permissions_csv_to_dict(csv_line, csv_data):
-    permissions = {}
+    permissions = OrderedDict()
     data_permissions = {}
-    owner = {}
+    owner = OrderedDict()
     data_owner = {}
-    groupowner= {}
+    groupowner = OrderedDict()
     data_groupowner= {}
-    file_permissions = {}
+    file_permissions = OrderedDict()
     data_file_permissions = {}
 
     dir_path = csv_line[0]
@@ -451,7 +451,7 @@ def permissions_csv_to_dict(csv_line, csv_data):
 
 
 def selinux_booleans_csv_to_dict(csv_line, csv_data):
-    selinux_boolean = {}
+    selinux_boolean = OrderedDict()
     data_selinux_boolean = {}
 
     sebool_name = csv_line[0]
@@ -477,7 +477,7 @@ def selinux_booleans_csv_to_dict(csv_line, csv_data):
 
 
 def services_disabled_csv_to_dict(csv_line, csv_data):
-    service_disabled = {}
+    service_disabled = OrderedDict()
     data_service_disabled = {}
     service_disabled["name"] = "service_disabled"
 
@@ -501,7 +501,7 @@ def services_disabled_csv_to_dict(csv_line, csv_data):
 
 
 def services_enabled_csv_to_dict(csv_line, csv_data):
-    service_enabled = {}
+    service_enabled = OrderedDict()
     data_service_enabled = {}
     service_enabled["name"] = "service_enabled"
 
@@ -525,7 +525,7 @@ def services_enabled_csv_to_dict(csv_line, csv_data):
 
 
 def sysctl_values_csv_to_dict(csv_line, csv_data):
-    sysctl_value = {}
+    sysctl_value = OrderedDict()
     data_sysctl_value = {}
 
     sysctl_var = csv_line[0]
@@ -551,7 +551,7 @@ def sysctl_values_csv_to_dict(csv_line, csv_data):
     return sysctl_value
 
 def timers_enabled_csv_to_dict(csv_line, csv_data):
-    timer_enabled = {}
+    timer_enabled = OrderedDict()
     data_timer_enabled = {}
     timer_enabled["name"] = "timer_enabled"
 
@@ -698,7 +698,7 @@ class ProductCSVData(object):
             else:
                 # Rule is new in the product
                 # Add the rule with its values already in dictionary
-                data_a[rule_id] = {"name": rule_b["name"]}
+                data_a[rule_id] = OrderedDict({"name": rule_b["name"]})
                 data_a[rule_id]["vars"] = {}
                 for var in rule_b_vars:
                     value_counter = defaultdict(list)
@@ -782,7 +782,7 @@ def walk_benchmarks(benchmark_dir, product, override_template=False):
             template_dict = {}
             template_dict["template"] = csv_data[rule_id]
 
-            template_contents = ssg.utils.split_string_content(yaml.dump(template_dict, indent=4))
+            template_contents = ssg.utils.split_string_content(ssg.yaml.ordered_dump(template_dict, indent=4, default_flow_style=False))
             ssg.utils.write_list_file(rule_path, rule_contents + template_contents)
 
 def parse_args():
