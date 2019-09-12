@@ -4,10 +4,4 @@
 # complexity = low
 # disruption = low
 
-- name: Ensure mail transfer agent is configured for local-only mode
-  lineinfile:
-    state: present
-    regexp: '^inet_interfaces\s*=\s.*'
-    path: /etc/postfix/main.cf
-    insertafter: '^#inet_interfaces\s*=.*'
-    line: 'inet_interfaces = loopback-only'
+{{{ ansible_lineinfile(msg='Ensure mail transfer agent is configured for local-only mode', path='/etc/postfix/main.cf', regex='^inet_interfaces\s*=\s.*', new_line='inet_interfaces = loopback-only', create='no', state='present', insert_after='^inet_interfaces\s*=\s.*') }}}
