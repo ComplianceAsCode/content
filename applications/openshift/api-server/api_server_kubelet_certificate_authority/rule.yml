@@ -21,7 +21,7 @@ rationale: |-
     Connections from the API Server to the kubelet are used for fetching logs
     for pods, attaching (through kubectl) to running pods, and using the kubelet
     port-forwarding functionality. These connections terminate at the kubelet
-    HTTPS endpoint. By default, teh API Server does not verify the kubelet serving
+    HTTPS endpoint. By default, the API Server does not verify the kubelet serving
     certificate, which makes the connection subject to man-in-the-middle attacks,
     and unsafe to run over untrusted and/or public networks.
 

@@ -2,19 +2,18 @@ documentation_complete: true
 
 prodtype: ocp3
 
-title: 'Configure the Service Account Public Key for the API Server'
+title: 'Configure the Service Account Private Key for the API Server'
 
 description: |-
     To ensure the API Server utilizes its own key pair, edit the
     API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
-    and set the <tt>publicKeyFiles</tt> parameter to the public
+    and set the <tt>privateKeyFile</tt> parameter to the public
     key file for service accounts:
     <pre>serviceAccountConfig:
-      masterCA: ca-bundle.crt
+    ...
       privateKeyFile: serviceaccounts.private.key
-      publicKeyFiles:
-      - serviceaccounts.public.key</pre>
+    ...</pre>
 
 rationale: |-
     By default, if no <tt>privateKeyFile</tt> is specified to the
@@ -29,14 +28,10 @@ severity: medium
 references:
     cis: 1.3.4
 
-ocil_clause: '<tt>publicKeyFiles</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>'
+ocil_clause: '<tt>privateKeyFile</tt> is not set as appropriate for <tt>serviceAccountConfig</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
     <pre>$ sudo grep -A9 serviceAccountConfig /etc/origin/master/master-config.yaml</pre>
-    The output should contain something similar to:
-    <pre>serviceAccountConfig:
-      masterCA: ca-bundle.crt
-      privateKeyFile: serviceaccounts.private.key
-      publicKeyFiles:
-      - serviceaccounts.public.key</pre>
+    The output should contain a line similar to:
+    <pre>privateKeyFile: serviceaccounts.private.key</pre>
