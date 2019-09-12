@@ -29,3 +29,11 @@ ocil: |-
     <pre>$ sudo grep log_format /etc/audit/auditd.conf</pre>
     The output should return the following:
     <pre>log_format = ENRICHED</pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: log_format
+        rule_id: auditd_log_format
+        value: ENRICHED

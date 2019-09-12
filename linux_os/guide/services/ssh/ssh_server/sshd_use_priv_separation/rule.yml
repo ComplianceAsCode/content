@@ -41,3 +41,11 @@ ocil: |-
     following command:
     <pre>$ sudo grep UsePrivilegeSeparation /etc/ssh/sshd_config</pre>
     If configured properly, output should be <tt><sub idref="var_sshd_priv_separation" /></tt>.
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: UsePrivilegeSeparation
+        rule_id: sshd_use_priv_separation
+        value: sandbox

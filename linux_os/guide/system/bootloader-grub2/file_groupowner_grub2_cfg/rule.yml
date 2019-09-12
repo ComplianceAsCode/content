@@ -38,3 +38,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/boot/grub2/grub.cfg", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/boot/grub2/grub.cfg", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /boot/grub2/grub.cfg

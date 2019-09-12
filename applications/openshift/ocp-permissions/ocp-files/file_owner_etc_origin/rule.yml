@@ -13,3 +13,9 @@ severity: medium
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/origin/", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/origin/", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/origin
+        fileuid: '0'

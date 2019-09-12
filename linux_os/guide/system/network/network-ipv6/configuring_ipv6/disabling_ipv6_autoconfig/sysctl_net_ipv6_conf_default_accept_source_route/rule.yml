@@ -38,3 +38,9 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_source_route", value="0") }}}
 
 platform: machine
+
+template:
+    name: sysctl_var
+    vars:
+        datatype: int
+        sysctlvar: net.ipv6.conf.default.accept_source_route

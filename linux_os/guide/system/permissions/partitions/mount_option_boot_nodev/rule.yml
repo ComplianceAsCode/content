@@ -28,3 +28,10 @@ references:
     nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
 
 platform: machine
+
+template:
+    name: mount_option
+    vars:
+        mount_has_to_exist: 'yes'
+        mountoption: nodev
+        mountpoint: /boot

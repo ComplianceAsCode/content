@@ -48,3 +48,8 @@ ocil: |-
     following command:
     <pre>$ sudo grep mount /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     It should return a relevant line in the audit rules.
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/bin/mount

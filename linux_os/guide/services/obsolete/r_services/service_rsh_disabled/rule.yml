@@ -41,3 +41,9 @@ references:
 {{{ complete_ocil_entry_socket_and_service_disabled("rsh") }}}
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        servicename: rsh

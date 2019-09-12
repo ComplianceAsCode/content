@@ -33,3 +33,9 @@ references:
 ocil_clause: 'the pcscd service is not enabled'
 
 ocil: '{{{ ocil_service_enabled(service="pcscd") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        packagename: pcsc-lite
+        servicename: pcscd

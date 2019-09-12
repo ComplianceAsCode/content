@@ -15,3 +15,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/", perms="-rwx-
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/origin/", perms="-rwx------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0700'
+        filepath: /etc/origin

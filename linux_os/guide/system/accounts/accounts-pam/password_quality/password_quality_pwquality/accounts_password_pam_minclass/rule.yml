@@ -63,3 +63,9 @@ ocil: |-
     then this would appear as <tt>minclass = 3</tt>.
 
 platform: pam
+
+template:
+    name: package_installed
+    vars:
+        operation: greater than or equal
+        variable: minclass

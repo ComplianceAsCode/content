@@ -36,3 +36,9 @@ references:
     cis-csc: 1,14,15,16,3,5,6
 
 ocil: '{{{ ocil_service_enabled(service="ntpd") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        packagename: ntp
+        servicename: ntpd

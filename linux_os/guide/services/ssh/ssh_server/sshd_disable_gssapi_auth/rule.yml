@@ -42,3 +42,11 @@ ocil: |-
     command:
     <pre>$ sudo grep GSSAPIAuthentication /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>no</pre>
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: GSSAPIAuthentication
+        rule_id: sshd_disable_gssapi_auth
+        value: 'no'

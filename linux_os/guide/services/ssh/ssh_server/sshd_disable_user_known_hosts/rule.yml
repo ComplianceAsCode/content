@@ -38,3 +38,11 @@ references:
     cis-csc: 11,3,9
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="IgnoreUserKnownHosts", value="yes") }}}
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: IgnoreUserKnownHosts
+        rule_id: sshd_disable_user_known_hosts
+        value: 'yes'

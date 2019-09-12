@@ -43,3 +43,12 @@ ocil: |-
     in the output are not removable media.
 
 platform: machine
+
+template:
+    name: mount_option_removable_partitions
+    vars:
+        mount_has_to_exist: 'yes'
+        mountoption: noexec
+        mountpoint: var_removable_partition
+    template_backends:
+        anaconda: 'off'

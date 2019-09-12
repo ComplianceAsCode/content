@@ -40,3 +40,10 @@ ocil: |-
     permissions: <tt>-rw-------</tt>
 
 platform: machine
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0600'
+        filemode@rhel8: '600'
+        filepath: /boot/grub2/grub.cfg

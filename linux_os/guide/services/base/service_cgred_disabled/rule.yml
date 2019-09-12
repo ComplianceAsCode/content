@@ -31,3 +31,11 @@ references:
 ocil: '{{{ ocil_service_disabled(service="cgred") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        packagename: libcgroup-tools
+        packagename@rhel6: libcgroup
+        servicename: cgred

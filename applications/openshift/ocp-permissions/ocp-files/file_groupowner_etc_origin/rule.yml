@@ -13,3 +13,9 @@ severity: medium
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/origin/", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/origin/", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/origin

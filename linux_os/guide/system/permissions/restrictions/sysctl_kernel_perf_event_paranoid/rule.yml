@@ -22,3 +22,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        datatype: int
+        sysctlval: '2'
+        sysctlvar: kernel.perf_event_paranoid

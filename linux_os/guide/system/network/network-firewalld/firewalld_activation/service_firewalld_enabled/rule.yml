@@ -33,3 +33,10 @@ references:
     cis-csc: 11,3,9
 
 ocil: '{{{ ocil_service_enabled(service="firewalld") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        servicename: firewalld
+    template_backends:
+        ansible: 'off'

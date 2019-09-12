@@ -22,3 +22,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/origin/node/pods/controller.yaml", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/origin/node/pods/controller.yaml", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/origin/node/pods/controller.yaml

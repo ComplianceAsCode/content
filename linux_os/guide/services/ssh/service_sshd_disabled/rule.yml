@@ -20,3 +20,17 @@ severity: unknown
 identifiers:
     cce@rhel6: 27054-6
     cce@rhel7: 80217-3
+
+template:
+    name: service_disabled
+    vars:
+        daemonname@debian8: ssh
+        daemonname@ubuntu1404: ssh
+        daemonname@ubuntu1604: ssh
+        daemonname@ubuntu1804: ssh
+        mask_service: 'true'
+        packagename: openssh-server
+        packagename@opensuse: openssh
+        packagename@sle11: openssh
+        packagename@sle12: openssh
+        servicename: sshd

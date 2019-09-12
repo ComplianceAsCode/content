@@ -39,3 +39,10 @@ warnings:
         have been placed independent of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
         <pre>-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;03 -F path=/etc/group -F auid>={{{ auid }}} -F auid!=unset -F key=modify</pre>
+
+template:
+    name: audit_rules_path_syscall
+    vars:
+        path: /etc/group
+        pos: a2
+        syscall: openat

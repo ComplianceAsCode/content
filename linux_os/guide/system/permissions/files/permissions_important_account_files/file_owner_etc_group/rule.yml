@@ -32,3 +32,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/group", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/group", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/group
+        fileuid: '0'

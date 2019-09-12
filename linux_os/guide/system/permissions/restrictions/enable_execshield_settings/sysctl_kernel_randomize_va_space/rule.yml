@@ -34,3 +34,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.randomize_va_space", value="2") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        datatype: int
+        sysctlval: '2'
+        sysctlvar: kernel.randomize_va_space

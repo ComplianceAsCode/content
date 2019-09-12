@@ -29,3 +29,9 @@ ocil: |-
     If IPv6 is disabled, this is not applicable.
     <br /><br />
     {{{ ocil_service_enabled(service="ip6tables") }}}
+
+template:
+    name: service_enabled
+    vars:
+        packagename: iptables-ipv6
+        servicename: ip6tables

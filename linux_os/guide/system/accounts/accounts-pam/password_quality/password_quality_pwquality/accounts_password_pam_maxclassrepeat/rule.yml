@@ -46,3 +46,9 @@ ocil: |-
     For DoD systems, the output should show <tt>maxclassrepeat</tt>=4.
 
 platform: pam
+
+template:
+    name: package_installed
+    vars:
+        operation: less than or equal
+        variable: maxclassrepeat

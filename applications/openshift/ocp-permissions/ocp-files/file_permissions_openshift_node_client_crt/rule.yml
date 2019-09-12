@@ -25,3 +25,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/node/client-ca.
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/origin/node/client-ca.crt", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0600'
+        filepath: /etc/origin/node/client-ca.crt

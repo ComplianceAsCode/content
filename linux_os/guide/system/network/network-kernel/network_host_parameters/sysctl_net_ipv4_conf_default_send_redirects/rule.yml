@@ -42,3 +42,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.default.send_redirects", value="0") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        datatype: int
+        sysctlval: '0'
+        sysctlvar: net.ipv4.conf.default.send_redirects

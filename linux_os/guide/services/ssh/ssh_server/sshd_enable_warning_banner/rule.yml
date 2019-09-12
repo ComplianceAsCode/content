@@ -44,3 +44,11 @@ references:
     cis-csc: 1,12,15,16
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue") }}}
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: Banner
+        rule_id: sshd_enable_warning_banner
+        value: /etc/issue

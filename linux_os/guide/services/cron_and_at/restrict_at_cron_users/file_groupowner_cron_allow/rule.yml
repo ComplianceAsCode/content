@@ -32,3 +32,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/cron.allow", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/cron.allow", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/cron.allow

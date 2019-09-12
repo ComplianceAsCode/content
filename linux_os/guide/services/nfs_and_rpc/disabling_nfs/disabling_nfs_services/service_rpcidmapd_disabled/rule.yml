@@ -17,3 +17,10 @@ severity: unknown
 identifiers:
     cce@rhel6: 26870-6
     cce@rhel7: 80231-4
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        packagename: nfs-utils
+        servicename: rpcidmapd

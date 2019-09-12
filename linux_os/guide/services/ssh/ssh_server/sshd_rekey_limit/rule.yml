@@ -30,3 +30,11 @@ ocil: |-
     <pre>$ sudo grep RekeyLimit /etc/ssh/sshd_config</pre>
     If configured properly, output should be
     <pre>RekeyLimit 512M 1h</pre>
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: RekeyLimit
+        rule_id: sshd_rekey_limit
+        value: 512M 1h

@@ -33,3 +33,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/ssh/sshd_config", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/ssh/sshd_config
+        fileuid: '0'

@@ -47,3 +47,11 @@ references:
     cis-csc: 11,12,13,14,15,16,18,3,5,9
 
 {{{ complete_ocil_entry_sshd_option(default="yes", option="PermitEmptyPasswords", value="no") }}}
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: PermitEmptyPasswords
+        rule_id: sshd_disable_empty_passwords
+        value: 'no'

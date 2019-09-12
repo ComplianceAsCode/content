@@ -46,3 +46,8 @@ warnings:
         system call independently of other system calls. Grouping system calls related
         to the same event is more efficient. See the following example:
         <pre>-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr -F exit=-EACCES -F auid>={{{ auid }}} -F auid!=unset -F key=unsuccesful-perm-change</pre>
+
+template:
+    name: audit_rules_unsuccessful_file_modification
+    vars:
+        name: setxattr

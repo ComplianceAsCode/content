@@ -36,3 +36,10 @@ ocil: |-
     <pre>$ mount | grep nfs</pre>
     All NFS mounts should show the <tt>noexec</tt> setting in parentheses.  This is not applicable if NFS is
     not implemented.
+
+template:
+    name: mount_option_remote_filesystems
+    vars:
+        mount_has_to_exist: 'yes'
+        mountoption: noexec
+        mountpoint: remote_filesystems

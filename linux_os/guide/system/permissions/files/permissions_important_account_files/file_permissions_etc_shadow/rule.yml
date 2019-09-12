@@ -39,3 +39,13 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/shadow", perms="------
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/shadow", perms="----------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0000'
+        filemode@debian8: '0640'
+        filemode@ubuntu1404: '0640'
+        filemode@ubuntu1604: '0640'
+        filemode@ubuntu1804: '0640'
+        filepath: /etc/shadow
