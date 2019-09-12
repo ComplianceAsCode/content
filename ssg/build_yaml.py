@@ -680,6 +680,7 @@ class Rule(object):
         "oval_external_content": lambda: None,
         "warnings": lambda: list(),
         "platform": lambda: None,
+        "template": lambda: None,
     }
 
     def __init__(self, id_):
@@ -696,6 +697,7 @@ class Rule(object):
         self.oval_external_content = None
         self.warnings = []
         self.platform = None
+        self.template = None
 
     @staticmethod
     def from_yaml(yaml_file, env_yaml=None):
