@@ -804,6 +804,14 @@ class ProductCSVData(object):
                 if daemon_name == service_name:
                     rule_vars.pop("daemonname")
 
+                # if after cleanup, any product specific key is about a data
+                # that was removed, also remove it
+                for var in list(rule_vars.keys()):
+                    if '@' in var and rule_vars[var] == '':
+                        v, product = var.split('@')
+                        if v not in rule_vars:
+                            rule_vars.pop(var)
+
 
 def walk_benchmarks(benchmark_dir, product, override_template=False):
     csv_data = product.csv_data
