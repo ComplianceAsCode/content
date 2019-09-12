@@ -214,7 +214,7 @@ macro(ssg_build_templated_content PRODUCT)
 endmacro()
 
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
-    if(NOT SSG_NEW_TEMPLATING)
+    if(NOT SSG_NEW_TEMPLATING_ENABLED)
         set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
         add_custom_command(
             OUTPUT "${BUILD_REMEDIATIONS_DIR}"
@@ -246,7 +246,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
           generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
           DEPENDS "${ALL_FIXES_DIR}"
       )
-      if(SSG_NEW_TEMPLATING)
+      if(SSG_NEW_TEMPLATING_ENABLED)
           add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-templated-content-${PRODUCT})
       else()
           add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-language-remedations-${PRODUCT})
@@ -366,7 +366,7 @@ macro(ssg_build_oval_unlinked PRODUCT)
     string(REPLACE "\n" ";" OVAL_CHECKS_OUTPUTS "${OVAL_CHECKS_OUTPUTS_STR}")
 
     set(OVAL_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
-    if(SSG_NEW_TEMPLATING)
+    if(SSG_NEW_TEMPLATING_ENABLED)
         add_custom_command(
             OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
             COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
@@ -728,7 +728,7 @@ macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
 
     ssg_build_shorthand_xml(${PRODUCT})
-    if(SSG_NEW_TEMPLATING)
+    if(SSG_NEW_TEMPLATING_ENABLED)
         ssg_build_templated_content(${PRODUCT})
     endif()
     ssg_build_xccdf_unlinked(${PRODUCT})
