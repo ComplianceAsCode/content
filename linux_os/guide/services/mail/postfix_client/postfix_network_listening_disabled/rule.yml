@@ -7,7 +7,11 @@ title: 'Disable Postfix Network Listening'
 description: |-
     Edit the file <tt>/etc/postfix/main.cf</tt> to ensure that only the following
     <tt>inet_interfaces</tt> line appears:
-    <pre>inet_interfaces = localhost</pre>
+    <pre>inet_interfaces = loopback-only</pre>
+    {{% if product == "rhel6" %}}
+    <pre>inet_interfaces = localhost</pre> is also acceptable for RHEL6.
+    {{% endif %}}
+
 
 rationale: |-
     This ensures <tt>postfix</tt> accepts mail messages
@@ -19,6 +23,7 @@ severity: medium
 identifiers:
     cce@rhel6: 26780-7
     cce@rhel7: 80289-2
+    cce@rhel8: 82171-0
 
 references:
     stigid@rhel6: "000249"
@@ -38,4 +43,5 @@ ocil_clause: 'it does not'
 ocil: |-
     Run the following command to ensure postfix accepts mail messages from only the local system:
     <pre>$ grep inet_interfaces /etc/postfix/main.cf</pre>
-    If properly configured, the output should show only <tt>localhost</tt>.
+    If properly configured, the output should show only <tt>loopback-only</tt>.
+

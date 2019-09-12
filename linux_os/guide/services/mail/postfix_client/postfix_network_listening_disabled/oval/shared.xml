@@ -22,7 +22,11 @@
 
   <ind:textfilecontent54_object id="obj_postfix_network_listening_disabled" comment="inet_interfaces in /etc/postfix/main.cf should be set correctly" version="1">
     <ind:filepath>/etc/postfix/main.cf</ind:filepath>
-    <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*localhost[\s]*$</ind:pattern>
+    {{% if product == "rhel6" %}}
+    <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*(localhost|loopback-only)[\s]*$</ind:pattern>
+    {{% else %}}
+    <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*loopback-only[\s]*$</ind:pattern>
+    {{% endif %}}
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 

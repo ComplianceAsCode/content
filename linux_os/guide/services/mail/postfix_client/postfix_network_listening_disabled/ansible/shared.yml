@@ -1,0 +1,13 @@
+# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: Ensure mail transfer agent is configured for local-only mode
+  lineinfile:
+    state: present
+    regexp: '^inet_interfaces\s*=\s.*'
+    path: /etc/postfix/main.cf
+    insertafter: '^#inet_interfaces\s*=.*'
+    line: 'inet_interfaces = loopback-only'
