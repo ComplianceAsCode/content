@@ -731,6 +731,17 @@ class ProductCSVData(object):
                     value_counter[new_value].append(product_b)
                     data_a[rule_id]["vars"][var] = value_counter
 
+            # Also merge template_backends
+            # As backends are turned on/off content wide, idependently of product
+            # Just merge them together
+            if "template_backends" in rule_b:
+                if "template_backends" in rule_a:
+                    rule_a["template_backends"] = ssg.utils.merge_dicts(
+                            rule_a["template_backends"],
+                            rule_b["template_backends"])
+                else:
+                    rule_a["template_backends"] = rule_b["template_backends"]
+
     def resolve_csv_data(self):
         """
         Go over its own rules, resolving the rules CSV data.
