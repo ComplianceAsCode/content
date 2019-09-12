@@ -789,6 +789,21 @@ class ProductCSVData(object):
                     if rule_vars[var] == '':
                         rule_vars.pop(var)
 
+        # after merging all product specific vars, consolidate a few data
+        for rule_id in self.csv_data:
+            if re.match(r"^service_.*abled$", rule_id):
+                rule_vars = self.csv_data[rule_id]["vars"]
+                # - services_enabled templates can have redundant data
+                # - services_disabled templates can have redundant data
+                rule = self.csv_data[rule_id]
+                service_name = rule_vars.get("servicename")
+                package_name = rule_vars.get("packagename", None)
+                daemon_name = rule_vars.get("daemonname", None)
+                if package_name == service_name:
+                    rule_vars.pop("packagename")
+                if daemon_name == service_name:
+                    rule_vars.pop("daemonname")
+
 
 def walk_benchmarks(benchmark_dir, product, override_template=False):
     csv_data = product.csv_data
