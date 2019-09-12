@@ -643,6 +643,7 @@ class ProductCSVData(object):
                 except_for_language = None
                 if "#except-for:" in line[-1]:
                     line[-1], except_for_clause = line[-1].split('#')
+                    line[-1] = line[-1].strip()
                     # There are no cases of except-for for multiple languagues
                     _, except_for_language = except_for_clause.split(':')
 
