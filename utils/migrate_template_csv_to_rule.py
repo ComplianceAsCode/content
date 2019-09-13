@@ -584,7 +584,7 @@ def timers_enabled_csv_to_dict(csv_line, csv_data):
     rule_id = f"timer_{timer_name}_enabled"
 
     data_timer_enabled["timername"] = timer_name
-    data_timer_enabled["package_name"] = package_name
+    data_timer_enabled["packagename"] = package_name
     timer_enabled["vars"] = data_timer_enabled
 
     csv_data[rule_id] = timer_enabled
