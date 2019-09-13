@@ -18,7 +18,7 @@ def escape_path(path):
 def accounts_password_csv_to_dict(csv_line, csv_data):
     accounts_password = OrderedDict()
     data_accounts_password = {}
-    accounts_password["name"] = "package_installed"
+    accounts_password["name"] = "accounts_password"
 
     variable = csv_line[0]
     rule_id = f"accounts_password_pam_{variable}"
