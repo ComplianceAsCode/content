@@ -92,37 +92,22 @@ class SysctlGenerator(FilesGenerator):
                 )
 
         elif target == "oval":
-            # if the sysctl value is not present, use the variable template
             if not sysctl_val.strip():
+                sysctl_val = ""
 
-                # open the template files and perform the conversions
-                for stem, ttype in self.get_files_for_id(sysctl_var_id).items():
-                    self.file_from_template(
-                        "template_OVAL_sysctl",
-                        {
-                            "FLAGS": ttype,
-                            "SYSCTLID":  sysctl_var_id,
-                            "SYSCTLVAR": sysctl_var,
-                            "SYSCTLVAL": "",
-                            "DATATYPE": data_type,
-                        },
-                        "./oval/sysctl_{0}{1}.xml", stem, sysctl_var_id
-                    )
-
-            else:
-                # open the template files and perform the conversions
-                for stem, ttype in self.get_files_for_id(sysctl_var_id).items():
-                    self.file_from_template(
-                        "template_OVAL_sysctl",
-                        {
-                            "FLAGS": ttype,
-                            "SYSCTLID":  sysctl_var_id,
-                            "SYSCTLVAR": sysctl_var,
-                            "SYSCTLVAL": sysctl_val,
-                            "DATATYPE": data_type,
-                        },
-                        "./oval/sysctl_{0}{1}.xml", stem, sysctl_var_id
-                    )
+            # open the template files and perform the conversions
+            for stem, ttype in self.get_files_for_id(sysctl_var_id).items():
+                self.file_from_template(
+                    "template_OVAL_sysctl",
+                    {
+                        "FLAGS": ttype,
+                        "SYSCTLID":  sysctl_var_id,
+                        "SYSCTLVAR": sysctl_var,
+                        "SYSCTLVAL": sysctl_val,
+                        "DATATYPE": data_type,
+                    },
+                    "./oval/sysctl_{0}{1}.xml", stem, sysctl_var_id
+                )
 
         else:
             raise UnknownTargetError(target)
