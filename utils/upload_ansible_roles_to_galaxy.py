@@ -60,6 +60,8 @@ PROFILE_WHITELIST = set([
     "pci-dss",
     "rht-ccp",
     "stig",
+    "rhvh-stig",
+    "rhvh-vpp",
 ])
 
 
@@ -111,7 +113,7 @@ def update_repo_release(github, repo):
     except IndexError:
         cac = github.get_repo("ComplianceAsCode/content")
         cac_tags = [tag for tag in cac.get_tags() if tag.name != "v0.5.0-InitialDraft"]
-        (majv, minv, rel) = cac_tags[0].name.split(".")
+        (majv, minv, rel) = cac_tags[0].name.strip("v").split(".")
 
     new_tag = ("%s.%s.%s" % (majv, minv, rel))
     commits = repo.get_commits()
@@ -312,7 +314,7 @@ class Role(object):
             local_readme_content = re.sub(r'Ansible version (\d*\.\d+|\d+)',
                                           "Ansible version %s" % ssg.ansible.min_ansible_version,
                                           local_readme_content)
-            local_readme_content = re.sub(r'%s.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
+            local_readme_content = re.sub(r'%s\.[a-zA-Z0-9\-_]+' % ORGANIZATION_NAME,
                                           "%s.%s" % (ORGANIZATION_NAME, self.role_name),
                                           local_readme_content)
 
