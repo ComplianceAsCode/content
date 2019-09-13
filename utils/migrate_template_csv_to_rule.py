@@ -807,10 +807,16 @@ class ProductCSVData(object):
                 # if after cleanup, any product specific key is about a data
                 # that was removed, also remove it
                 for var in list(rule_vars.keys()):
-                    if '@' in var and rule_vars[var] == '':
+                    if '@' in var:
                         v, product = var.split('@')
+                        # When shared var doesn't exist, there is no need for
+                        # empty product specific var, nor
+                        # product specific var equal to another var
                         if v not in rule_vars:
-                            rule_vars.pop(var)
+                            if rule_vars[var] == "":
+                                rule_vars.pop(var)
+                            elif rule_vars[var] == rule_vars.get("servicename"):
+                                rule_vars.pop(var)
 
 
 def walk_benchmarks(benchmark_dir, product, override_template=False):
