@@ -734,7 +734,8 @@ class ProductCSVData(object):
             # Also merge backends
             # As backends are turned on/off content wide, idependently of product
             # Just merge them together
-            if "backends" in rule_b:
+            if "backends" in rule_b and rule_id in data_a:
+                rule_a = data_a[rule_id]
                 if "backends" in rule_a:
                     rule_a["backends"] = ssg.utils.merge_dicts(
                             rule_a["backends"],
