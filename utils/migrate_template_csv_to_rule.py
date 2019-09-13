@@ -682,7 +682,7 @@ class ProductCSVData(object):
                     line_data_dict = csv_parser(line, csv_data)
 
                     if except_for_language:
-                        line_data_dict["template_backends"] = {except_for_language: "off"}
+                        line_data_dict["backends"] = {except_for_language: "off"}
                 except IndexError as e:
                     print(f"line:{line} in file: {csv_f}")
                     raise e
@@ -731,16 +731,16 @@ class ProductCSVData(object):
                     value_counter[new_value].append(product_b)
                     data_a[rule_id]["vars"][var] = value_counter
 
-            # Also merge template_backends
+            # Also merge backends
             # As backends are turned on/off content wide, idependently of product
             # Just merge them together
-            if "template_backends" in rule_b:
-                if "template_backends" in rule_a:
-                    rule_a["template_backends"] = ssg.utils.merge_dicts(
-                            rule_a["template_backends"],
-                            rule_b["template_backends"])
+            if "backends" in rule_b:
+                if "backends" in rule_a:
+                    rule_a["backends"] = ssg.utils.merge_dicts(
+                            rule_a["backends"],
+                            rule_b["backends"])
                 else:
-                    rule_a["template_backends"] = rule_b["template_backends"]
+                    rule_a["backends"] = rule_b["backends"]
 
     def resolve_csv_data(self):
         """
