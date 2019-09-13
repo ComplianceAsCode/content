@@ -57,3 +57,7 @@ ocil: |-
     <pre>$ sudo grep pam_timestamp_check /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     It should return a relevant line in the audit rules.
 
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/sbin/pam_timestamp_check

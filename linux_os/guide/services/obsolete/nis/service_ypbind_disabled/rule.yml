@@ -36,3 +36,9 @@ references:
 ocil: '{{{ ocil_service_disabled(service="ypbind") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        servicename: ypbind

@@ -19,3 +19,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/var/lib/etcd", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/var/lib/etcd", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /var/lib/etcd
+        fileuid: '0'

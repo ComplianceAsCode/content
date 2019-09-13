@@ -33,3 +33,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/passwd", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/passwd", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/passwd

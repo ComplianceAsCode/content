@@ -35,3 +35,10 @@ references:
 ocil: '{{{ ocil_service_disabled(service="rhsmcertd") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        packagename: subscription-manager
+        servicename: rhsmcertd

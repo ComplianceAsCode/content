@@ -25,3 +25,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/master/openshif
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/origin/master/openshift-master.kubeconfig", perms="-rw-------") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0600'
+        filepath: /etc/origin/master/openshift-master.kubeconfig

@@ -22,3 +22,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/origin/node/client-ca.crt", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/origin/node/client-ca.crt", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/origin/node/client-ca.crt

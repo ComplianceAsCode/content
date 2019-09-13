@@ -38,3 +38,10 @@ references:
     cis-csc: 13,14
 
 ocil: '{{{ ocil_service_enabled(service="sshd") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        packagename: openssh-server
+        packagename@sle12: openssh
+        servicename: sshd

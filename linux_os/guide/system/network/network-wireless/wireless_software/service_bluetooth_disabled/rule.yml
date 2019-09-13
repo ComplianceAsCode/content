@@ -36,3 +36,10 @@ references:
 ocil: '{{{ ocil_service_disabled(service="bluetooth") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        packagename: bluez
+        servicename: bluetooth

@@ -18,3 +18,10 @@ severity: unknown
 identifiers:
     cce@rhel6: 26864-9
     cce@rhel7: 80229-8
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        packagename: nfs-utils
+        servicename: rpcgssd

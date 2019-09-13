@@ -55,3 +55,9 @@ ocil: |-
     The <tt>difok</tt> parameter will indicate how many characters must differ.
 
 platform: pam
+
+template:
+    name: package_installed
+    vars:
+        operation: greater than or equal
+        variable: difok

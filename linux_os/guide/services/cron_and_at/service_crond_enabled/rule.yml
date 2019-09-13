@@ -35,3 +35,9 @@ references:
     cis-csc: 11,14,3,9
 
 ocil: '{{{ ocil_service_enabled(service="crond") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        packagename: cronie
+        servicename: crond

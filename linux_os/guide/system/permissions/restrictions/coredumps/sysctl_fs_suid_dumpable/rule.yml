@@ -27,3 +27,10 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.suid_dumpable", value="0") }}}
 
 platform: machine
+
+template:
+    name: sysctl
+    vars:
+        datatype: int
+        sysctlval: '0'
+        sysctlvar: fs.suid_dumpable

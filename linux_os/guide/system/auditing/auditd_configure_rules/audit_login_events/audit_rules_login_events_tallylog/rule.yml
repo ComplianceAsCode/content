@@ -52,3 +52,7 @@ ocil: |-
     To verify that auditing is configured for system administrator actions, run the following command:
     <pre>$ sudo auditctl -l | grep "watch=/var/log/tallylog\|-w /var/log/tallylog"</pre>
 
+template:
+    name: audit_rules_login_events
+    vars:
+        path: /var/log/tallylog

@@ -54,3 +54,9 @@ ocil: |-
     The DoD requires at least one digit in a password. This would appear as <tt>dcredit = -1</tt>.
 
 platform: pam
+
+template:
+    name: package_installed
+    vars:
+        operation: less than or equal
+        variable: dcredit

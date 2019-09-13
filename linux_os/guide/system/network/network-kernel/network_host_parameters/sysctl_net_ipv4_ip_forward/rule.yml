@@ -41,3 +41,14 @@ ocil: |-
     The ability to forward packets is only appropriate for routers.
 
 platform: machine
+
+template:
+    name: sysctl_var
+    vars:
+        datatype: int
+        sysctlval: '0'
+        sysctlval@debian8: ''
+        sysctlval@ubuntu1404: ''
+        sysctlval@ubuntu1604: ''
+        sysctlval@ubuntu1804: ''
+        sysctlvar: net.ipv4.ip_forward

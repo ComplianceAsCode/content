@@ -25,3 +25,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cni/net.d/*", perms="-
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/cni/net.d/*", perms="-rw-r--r--") }}}
+
+template:
+    name: file_regex_permissions
+    vars:
+        filemode: '0644'
+        filename: ^.*$
+        filepath: /etc/cni/net.d

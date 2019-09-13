@@ -47,3 +47,11 @@ ocil: |-
     <pre>$ sudo grep PermitUserEnvironment /etc/ssh/sshd_config</pre>
     If properly configured, output should be:
     <pre>PermitUserEnvironment no</pre>
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: PermitUserEnvironment
+        rule_id: sshd_do_not_permit_user_env
+        value: 'yes'

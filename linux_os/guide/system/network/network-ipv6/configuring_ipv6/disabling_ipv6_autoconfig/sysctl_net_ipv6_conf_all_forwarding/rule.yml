@@ -32,3 +32,9 @@ ocil: |-
     The ability to forward packets is only appropriate for routers.
 
 platform: machine
+
+template:
+    name: sysctl_var
+    vars:
+        datatype: int
+        sysctlvar: net.ipv6.conf.all.forwarding

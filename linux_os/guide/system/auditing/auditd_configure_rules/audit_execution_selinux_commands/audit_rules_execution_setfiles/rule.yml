@@ -45,3 +45,8 @@ ocil: |-
     <pre>$ sudo grep "path=/usr/sbin/setfiles" /etc/audit/audit.rules /etc/audit/rules.d/*</pre>
     The output should return something similar to:
     <pre>-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid&gt;={{{ auid }}} -F auid!=unset -F key=privileged-priv_change</pre>
+
+template:
+    name: audit_rules_privileged_commands
+    vars:
+        path: /usr/sbin/setfiles

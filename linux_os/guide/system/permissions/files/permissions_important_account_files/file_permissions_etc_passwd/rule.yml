@@ -37,3 +37,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/passwd", perms="-rw-r-
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/passwd", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0644'
+        filepath: /etc/passwd

@@ -48,3 +48,11 @@ references:
     anssi: NT28(R19)
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="PermitRootLogin", value="no") }}}
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: PermitRootLogin
+        rule_id: sshd_disable_root_login
+        value: 'no'

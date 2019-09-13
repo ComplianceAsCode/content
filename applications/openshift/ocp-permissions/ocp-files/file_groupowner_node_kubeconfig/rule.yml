@@ -21,3 +21,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/origin/node/node.kubeconfig", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/origin/node/node.kubeconfig", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/origin/node/node.kubeconfig

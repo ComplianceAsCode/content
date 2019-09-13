@@ -36,3 +36,9 @@ references:
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv4.conf.all.secure_redirects", value="0") }}}
 
 platform: machine
+
+template:
+    name: sysctl_var
+    vars:
+        datatype: int
+        sysctlvar: net.ipv4.conf.all.secure_redirects

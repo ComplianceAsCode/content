@@ -23,3 +23,10 @@ references:
 ocil: '{{{ ocil_service_disabled(service="snmpd") }}}'
 
 platform: machine
+
+template:
+    name: service_disabled
+    vars:
+        mask_service: 'true'
+        packagename: net-snmp
+        servicename: snmpd

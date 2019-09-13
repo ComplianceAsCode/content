@@ -22,3 +22,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_group_owner(file="/etc/systemd/system/atomic-openshift-node.service", group="root") }}}'
 
 ocil: '{{{ ocil_file_group_owner(file="/etc/systemd/system/atomic-openshift-node.service", group="root") }}}'
+
+template:
+    name: file_groupowner
+    vars:
+        filegid: '0'
+        filepath: /etc/systemd/system/atomic-openshift-node.service

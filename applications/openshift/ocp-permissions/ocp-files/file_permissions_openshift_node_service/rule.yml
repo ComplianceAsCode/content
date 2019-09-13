@@ -25,3 +25,9 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/systemd/system/atomic-
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/systemd/system/atomic-openshift-node.service", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0644'
+        filepath: /etc/systemd/system/atomic-openshift-node.service

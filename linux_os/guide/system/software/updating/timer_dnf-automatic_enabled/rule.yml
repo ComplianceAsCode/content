@@ -23,3 +23,9 @@ references:
 ocil_clause: 'the dnf-automatic.timer is not enabled'
 
 ocil: "{{{ ocil_timer_enabled(timer='dnf-automatic') }}}"
+
+template:
+    name: timer_enabled
+    vars:
+        packagename: dnf-automatic
+        timername: dnf-automatic

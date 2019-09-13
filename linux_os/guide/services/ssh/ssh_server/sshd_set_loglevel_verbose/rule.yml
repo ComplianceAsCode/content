@@ -32,3 +32,11 @@ ocil: |-
     following command:
     <pre>$ sudo grep "^LogLevel" /etc/ssh/sshd_config</pre>
     If configured properly, output should be <pre>LogLevel VERBOSE</pre>
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: LogLevel
+        rule_id: sshd_set_loglevel_verbose
+        value: VERBOSE

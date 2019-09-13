@@ -33,3 +33,9 @@ references:
 ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}'
 
 ocil: '{{{ ocil_file_permissions(file="/etc/ssh/sshd_config", perms="-rw-------") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filemode: '0600'
+        filepath: /etc/ssh/sshd_config

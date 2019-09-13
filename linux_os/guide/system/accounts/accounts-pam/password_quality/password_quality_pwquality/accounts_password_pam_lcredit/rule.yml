@@ -53,3 +53,9 @@ ocil: |-
     The DoD and FISMA require at least one lowercase character in a password. This would appear as <tt>lcredit = -1</tt>.
 
 platform: pam
+
+template:
+    name: package_installed
+    vars:
+        operation: less than or equal
+        variable: lcredit

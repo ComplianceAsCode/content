@@ -36,3 +36,11 @@ references:
     cis-csc: 1,11,12,13,15,16,18,20,3,4,6,9
 
 {{{ complete_ocil_entry_sshd_option(default="no", option="X11Forwarding", value="yes") }}}
+
+template:
+    name: auditd_lineinfile
+    vars:
+        missing_parameter_pass: 'false'
+        parameter: X11Forwarding
+        rule_id: sshd_enable_x11_forwarding
+        value: 'yes'
