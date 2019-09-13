@@ -747,6 +747,7 @@ class Rule(object):
     def normalize(self, product):
         try:
             self.make_refs_and_identifiers_product_specific(product)
+            self.make_template_product_specific(product)
         except Exception as exc:
             msg = (
                 "Error normalizing '{rule}': {msg}"
@@ -765,6 +766,22 @@ class Rule(object):
                 if ref == gref or gref.startswith(start):
                     product_references[gref] = gval
         return product_references
+
+    def make_template_product_specific(self, product):
+        product_suffix = "@{0}".format(product)
+
+        if not self.template:
+            return
+
+        not_specific_vars = self.template.get("vars", dict())
+        specific_vars = self._make_items_product_specific(
+            not_specific_vars, product_suffix, True)
+        self.template["vars"] = specific_vars
+
+        not_specific_backends = self.template.get("backends", dict())
+        specific_backends = self._make_items_product_specific(
+            not_specific_backends, product_suffix, True)
+        self.template["backends"] = specific_backends
 
     def make_refs_and_identifiers_product_specific(self, product):
         product_suffix = "@{0}".format(product)
