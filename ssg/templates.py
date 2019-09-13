@@ -101,6 +101,14 @@ def mount(data, lang):
     return data
 
 
+def mount_option(data, lang):
+    if lang == "oval":
+        data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
+    else:
+        data["mountoption"] = re.sub(" ", ",", data["mountoption"])
+    return data
+
+
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -175,10 +183,9 @@ templates = {
     "grub2_bootloader_argument": grub2_bootloader_argument,
     "kernel_module_disabled": kernel_module_disabled,
     "mount": mount,
-    "mount_option": None,
-    "mount_option_remote_filesystems": None,
-    "mount_option_removable_partitions": None,
-    "mount_option_var": None,
+    "mount_option": mount_option,
+    "mount_option_remote_filesystems": mount_option,
+    "mount_option_removable_partitions": mount_option,
     "ocp_service_runtime_config": None,
     "package_installed": package_installed,
     "package_removed": package_removed,
