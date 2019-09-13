@@ -189,6 +189,12 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule.id_, template_name))
+        if templates[template_name] is None:
+            sys.stderr.write(
+                "The template {0} has not been completely implemented, no "
+                "content will be generated for rule {1}.\n".format(
+                    template_name, rule.id_))
+            return
         langs_to_generate = self.get_langs_to_generate(rule)
         for lang in langs_to_generate:
             self.build_lang(rule, template_name, lang)
