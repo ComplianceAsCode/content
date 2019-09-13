@@ -68,6 +68,11 @@ def grub2_bootloader_argument(data, lang):
     return data
 
 
+def mount(data, lang):
+    data["pointid"] = re.sub(r'[-\./]', '_', data["mountpoint"])
+    return data
+
+
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -109,7 +114,7 @@ templates = {
     "file_regex_permissions": None,
     "grub2_bootloader_argument": grub2_bootloader_argument,
     "kernel_module_disabled": None,
-    "mount": None,
+    "mount": mount,
     "mount_option": None,
     "mount_option_remote_filesystems": None,
     "mount_option_removable_partitions": None,
