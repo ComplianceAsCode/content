@@ -1,12 +1,11 @@
 # platform = Red Hat Enterprise Linux 7,Oracle Linux 7
-. /usr/share/scap-security-guide/remediation_functions
 
 # Install required packages
 {{{ bash_package_install("esc") }}}
 {{{ bash_package_install("pam_pkcs11") }}}
 
 # Enable pcscd.socket systemd activation socket
-service_command enable pcscd.socket
+{{{ bash_service_command("enable", "pcscd.socket") }}}
 
 # Configure the expected /etc/pam.d/system-auth{,-ac} settings directly
 #
