@@ -3,5 +3,6 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
+- (xccdf-var var_postfix_inet_interfaces)
 
-{{{ ansible_lineinfile(msg='Ensure mail transfer agent is configured for local-only mode', path='/etc/postfix/main.cf', regex='^inet_interfaces\s*=\s.*', new_line='inet_interfaces = loopback-only', create='no', state='present', insert_after='^inet_interfaces\s*=\s.*') }}}
+{{{ ansible_lineinfile(msg='Ensure mail transfer agent is configured for local-only mode', path='/etc/postfix/main.cf', regex='^inet_interfaces\s*=\s.*', new_line='inet_interfaces = {{ var_postfix_inet_interfaces }}', create='no', state='present', insert_after='^inet_interfaces\s*=\s.*') }}}

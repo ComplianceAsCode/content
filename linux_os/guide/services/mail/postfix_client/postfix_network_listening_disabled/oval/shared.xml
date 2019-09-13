@@ -22,12 +22,14 @@
 
   <ind:textfilecontent54_object id="obj_postfix_network_listening_disabled" comment="inet_interfaces in /etc/postfix/main.cf should be set correctly" version="1">
     <ind:filepath>/etc/postfix/main.cf</ind:filepath>
-    {{% if product == "rhel6" %}}
-    <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*(localhost|loopback-only)[\s]*$</ind:pattern>
-    {{% else %}}
-    <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*loopback-only[\s]*$</ind:pattern>
-    {{% endif %}}
+    <ind:pattern operation="pattern match">^[\s]*inet_interfaces[\s]*=[\s]*(.*)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_postfix_network_listening_disabled" version="1">
+    <ind:subexpression operation="equals" var_ref="var_postfix_inet_interfaces" />
+  </ind:textfilecontent54_state>
+
+  <external_variable comment="external variable for postfix inet_interfaces" datatype="string" id="var_postfix_inet_interfaces" version="1" />
 
 </def-group>
