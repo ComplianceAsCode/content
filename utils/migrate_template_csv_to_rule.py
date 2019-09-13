@@ -720,6 +720,15 @@ class ProductCSVData(object):
                         value_counter = defaultdict(list)
                         value_counter[new_value].append(product_b)
                         rule_a_vars[var] = value_counter
+                if "backends" in rule_b:
+                    if "backends" in rule_a:
+                        # As backends are turned on/off content wide, idependently of product
+                        # Just merge them together
+                        rule_a["backends"] = ssg.utils.merge_dicts(
+                                rule_a["backends"],
+                                rule_b["backends"])
+                    else:
+                        rule_a["backends"] = rule_b["backends"]
             else:
                 # Rule is new in the product
                 # Add the rule with its values already in dictionary
@@ -730,18 +739,8 @@ class ProductCSVData(object):
                     new_value = rule_b_vars[var]
                     value_counter[new_value].append(product_b)
                     data_a[rule_id]["vars"][var] = value_counter
-
-            # Also merge backends
-            # As backends are turned on/off content wide, idependently of product
-            # Just merge them together
-            if "backends" in rule_b and rule_id in data_a:
-                rule_a = data_a[rule_id]
-                if "backends" in rule_a:
-                    rule_a["backends"] = ssg.utils.merge_dicts(
-                            rule_a["backends"],
-                            rule_b["backends"])
-                else:
-                    rule_a["backends"] = rule_b["backends"]
+                if "backends" in rule_b:
+                    data_a[rule_id]["backends"] = rule_b["backends"]
 
     def resolve_csv_data(self):
         """
