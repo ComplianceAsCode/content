@@ -10,6 +10,7 @@ description: |-
     using correct path for the <tt>DefaultNetstreamDriverCAFile</tt>
     global option in <tt>/etc/rsyslog.conf</tt>, for example
     <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem") *.*</pre>
+    Replace the <tt>/etc/pki/tls/cert.pem</tt> in the configuration line above with the path to the file with CA certificate generated for the purpose of remote logging.
 
 rationale: |-
     The CA certificate needs to be set or <tt>rsyslog.service</tt>
@@ -32,3 +33,4 @@ ocil: |-
     <pre>$ grep DefaultNetstreamDriverCAFile /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
     The output should include record similar to
     <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem") *.*</pre>
+    where the path to the CA file (<tt>/etc/pki/tls/cert.pem</tt> in case above) must point to the correct CA certificate.
