@@ -137,6 +137,14 @@ def service_disabled(data, lang):
     return data
 
 
+def service_enabled(data, lang):
+    if "packagename" not in data:
+        data["packagename"] = data["servicename"]
+    if "daemonname" not in data:
+        data["daemonname"] = data["servicename"]
+    return data
+
+
 templates = {
     "accounts_password": accounts_password,
     "auditd_lineinfile": None,
@@ -168,7 +176,7 @@ templates = {
     "sebool": None,
     "sebool_var": None,
     "service_disabled": service_disabled,
-    "service_enabled": None,
+    "service_enabled": service_enabled,
     "sshd_lineinfile": None,
     "sysctl": sysctl,
     "timer_enabled": None,
