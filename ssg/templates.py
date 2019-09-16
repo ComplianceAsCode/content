@@ -92,6 +92,10 @@ def grub2_bootloader_argument(data, lang):
     return data
 
 
+def kernel_module_disabled(data, lang):
+    return data
+
+
 def mount(data, lang):
     data["pointid"] = re.sub(r'[-\./]', '_', data["mountpoint"])
     return data
@@ -137,7 +141,7 @@ templates = {
     "file_permissions": None,
     "file_regex_permissions": None,
     "grub2_bootloader_argument": grub2_bootloader_argument,
-    "kernel_module_disabled": None,
+    "kernel_module_disabled": kernel_module_disabled,
     "mount": mount,
     "mount_option": None,
     "mount_option_remote_filesystems": None,
