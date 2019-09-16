@@ -62,6 +62,10 @@ def audit_rules_privileged_commands(data, lang):
     return data
 
 
+def audit_rules_unsuccessful_file_modification(data, lang):
+    return data
+
+
 def audit_rules_unsuccessful_file_modification_o_creat(data, lang):
     return data
 
@@ -123,7 +127,7 @@ templates = {
     "audit_rules_login_events": audit_rules_login_events,
     "audit_rules_path_syscall": audit_rules_path_syscall,
     "audit_rules_privileged_commands": audit_rules_privileged_commands,
-    "audit_rules_unsuccessful_file_modification": None,
+    "audit_rules_unsuccessful_file_modification": audit_rules_unsuccessful_file_modification,
     "audit_rules_unsuccessful_file_modification_o_creat": audit_rules_unsuccessful_file_modification_o_creat,
     "audit_rules_unsuccessful_file_modification_o_trunc_write": audit_rules_unsuccessful_file_modification_o_trunc_write,
     "audit_rules_unsuccessful_file_modification_rule_order": audit_rules_unsuccessful_file_modification_rule_order,
