@@ -29,6 +29,10 @@ def audit_rules_dac_modification(data, lang):
     return data
 
 
+def audit_rules_file_deletion_events(data, lang):
+    return data
+
+
 def audit_rules_login_events(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
@@ -103,7 +107,7 @@ templates = {
     "accounts_password": accounts_password,
     "auditd_lineinfile": None,
     "audit_rules_dac_modification": audit_rules_dac_modification,
-    "audit_rules_file_deletion_events": None,
+    "audit_rules_file_deletion_events": audit_rules_file_deletion_events,
     "audit_rules_login_events": audit_rules_login_events,
     "audit_rules_path_syscall": audit_rules_path_syscall,
     "audit_rules_privileged_commands": audit_rules_privileged_commands,
