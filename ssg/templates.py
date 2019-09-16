@@ -159,10 +159,14 @@ templates = {
     "audit_rules_login_events": audit_rules_login_events,
     "audit_rules_path_syscall": audit_rules_path_syscall,
     "audit_rules_privileged_commands": audit_rules_privileged_commands,
-    "audit_rules_unsuccessful_file_modification": audit_rules_unsuccessful_file_modification,
-    "audit_rules_unsuccessful_file_modification_o_creat": audit_rules_unsuccessful_file_modification_o_creat,
-    "audit_rules_unsuccessful_file_modification_o_trunc_write": audit_rules_unsuccessful_file_modification_o_trunc_write,
-    "audit_rules_unsuccessful_file_modification_rule_order": audit_rules_unsuccessful_file_modification_rule_order,
+    "audit_rules_unsuccessful_file_modification":
+        audit_rules_unsuccessful_file_modification,
+    "audit_rules_unsuccessful_file_modification_o_creat":
+        audit_rules_unsuccessful_file_modification_o_creat,
+    "audit_rules_unsuccessful_file_modification_o_trunc_write":
+        audit_rules_unsuccessful_file_modification_o_trunc_write,
+    "audit_rules_unsuccessful_file_modification_rule_order":
+        audit_rules_unsuccessful_file_modification_rule_order,
     "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
     "file_groupowner": None,
     "file_owner": None,
