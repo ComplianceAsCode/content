@@ -8,10 +8,11 @@ description: |-
     Configure <tt>rsyslog</tt> to use Transport Layer
     Security (TLS) support for logging to remote server
     for the Forwarding Output Module in <tt>/etc/rsyslog.conf</tt>
-    using action
-    <pre>action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
-        StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name")
+    using action. You can use the following command:
+    <pre>echo 'action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
+        StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name")' >> /etc/rsyslog.conf
     </pre>
+    Replace the <tt>&lt;remote system></tt> in the above command with an IP address or a host name of the remote logging server.
 
 rationale: |-
     For protection of data being logged, the connection to the
@@ -35,3 +36,4 @@ ocil: |-
     <pre>action(type="omfwd" protocol="tcp" Target="&lt;remote system>" port="6514"
         StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name")
     </pre>
+    where the <tt>&lt;remote system></tt> present in the configuration line above must be a valid IP address or a host name of the remote logging server.
