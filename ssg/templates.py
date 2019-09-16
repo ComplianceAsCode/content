@@ -62,6 +62,18 @@ def audit_rules_privileged_commands(data, lang):
     return data
 
 
+def audit_rules_unsuccessful_file_modification_o_creat(data, lang):
+    return data
+
+
+def audit_rules_unsuccessful_file_modification_o_trunc_write(data, lang):
+    return data
+
+
+def audit_rules_unsuccessful_file_modification_rule_order(data, lang):
+    return data
+
+
 def audit_rules_usergroup_modification(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(path))
@@ -112,9 +124,9 @@ templates = {
     "audit_rules_path_syscall": audit_rules_path_syscall,
     "audit_rules_privileged_commands": audit_rules_privileged_commands,
     "audit_rules_unsuccessful_file_modification": None,
-    "audit_rules_unsuccessful_file_modification_o_creat": None,
-    "audit_rules_unsuccessful_file_modification_o_trunc_write": None,
-    "audit_rules_unsuccessful_file_modification_rule_order": None,
+    "audit_rules_unsuccessful_file_modification_o_creat": audit_rules_unsuccessful_file_modification_o_creat,
+    "audit_rules_unsuccessful_file_modification_o_trunc_write": audit_rules_unsuccessful_file_modification_o_trunc_write,
+    "audit_rules_unsuccessful_file_modification_rule_order": audit_rules_unsuccessful_file_modification_rule_order,
     "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
     "file_groupowner": None,
     "file_owner": None,
