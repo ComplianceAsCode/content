@@ -145,6 +145,12 @@ def service_enabled(data, lang):
     return data
 
 
+def timer_enabled(data, lang):
+    if "packagename" not in data:
+        data["packagename"] = data["timername"]
+    return data
+
+
 templates = {
     "accounts_password": accounts_password,
     "auditd_lineinfile": None,
@@ -179,7 +185,7 @@ templates = {
     "service_enabled": service_enabled,
     "sshd_lineinfile": None,
     "sysctl": sysctl,
-    "timer_enabled": None,
+    "timer_enabled": timer_enabled,
 }
 
 
