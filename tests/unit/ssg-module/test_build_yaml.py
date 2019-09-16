@@ -25,6 +25,18 @@ def test_serialize_rule():
     assert rule_as_dict == reloaded_dict
 
 
+TEST_TEMPLATE_DICT = {
+    "backends": {
+        "anaconda": True,
+        "anaconda@rhel7": False,
+    },
+    "vars": {
+        "filesystem": "tmpfs",
+        "filesystem@rhel7": ""
+    },
+}
+
+
 def test_make_items_product_specific():
     rule = ssg.build_yaml.Rule("something")
 
@@ -33,17 +45,25 @@ def test_make_items_product_specific():
         "cce@rhel7": "27445-6",
         "cce@rhel8": "80901-2",
     }
-    rule.make_refs_and_identifiers_product_specific("rhel7")
+
+    rule.template = TEST_TEMPLATE_DICT.copy()
+
+    rule.normalize("rhel7")
     assert "cce@rhel7" not in rule.identifiers
     assert "cce@rhel8" not in rule.identifiers
     assert rule.identifiers["cce"] == "27445-6"
+
+    assert "filesystem@rhel7" not in rule.template["vars"]
+    assert rule.template["vars"]["filesystem"] == ""
+    assert "anaconda@rhel7" not in rule.template["backends"]
+    assert not rule.template["backends"]["anaconda"]
 
     rule.identifiers = {
         "cce": "27100-7",
         "cce@rhel7": "27445-6",
     }
     with pytest.raises(Exception) as exc:
-        rule.make_refs_and_identifiers_product_specific("rhel7")
+        rule.normalize("rhel7")
     assert "'cce'" in str(exc)
     assert "identifiers" in str(exc)
 
@@ -51,7 +71,7 @@ def test_make_items_product_specific():
         "cce@rhel7": "27445-6",
         "cce": "27445-6",
     }
-    rule.make_refs_and_identifiers_product_specific("rhel7")
+    rule.normalize("rhel7")
     assert "cce@rhel7" not in rule.identifiers
     assert rule.identifiers["cce"] == "27445-6"
 
@@ -68,16 +88,24 @@ def test_make_items_product_specific():
         "stigid@rhel6": "000237",
         "stigid@rhel7": "040370",
     }
-    rule.make_refs_and_identifiers_product_specific("rhel7")
+    rule.normalize("rhel7")
     assert rule.references["stigid"] == "RHEL-07-040370"
 
     rule.references = {
         "stigid@rhel6": "000237",
         "stigid@rhel7": "040370",
     }
-    rule.make_refs_and_identifiers_product_specific("rhel6")
+    rule.template = TEST_TEMPLATE_DICT.copy()
+
+    rule.normalize("rhel6")
     assert rule.references["stigid"] == "RHEL-06-000237"
     assert "stigid@rhel6" not in rule.references
+    assert rule.identifiers["cce"] == "27445-6"
+
+    assert "filesystem@rhel7" not in rule.template["vars"]
+    assert rule.template["vars"]["filesystem"] == "tmpfs"
+    assert "anaconda@rhel7" not in rule.template["backends"]
+    assert rule.template["backends"]["anaconda"]
 
     rule.references = {
         "stigid@rhel6": "000237",
