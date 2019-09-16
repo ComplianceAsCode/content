@@ -123,6 +123,10 @@ def sysctl(data, lang):
     return data
 
 
+def package_removed(data, lang):
+    return data
+
+
 templates = {
     "accounts_password": accounts_password,
     "auditd_lineinfile": None,
@@ -149,7 +153,7 @@ templates = {
     "mount_option_var": None,
     "ocp_service_runtime_config": None,
     "package_installed": package_installed,
-    "package_removed": None,
+    "package_removed": package_removed,
     "permissions": None,
     "sebool": None,
     "sebool_var": None,
