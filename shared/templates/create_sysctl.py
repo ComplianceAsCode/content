@@ -3,34 +3,29 @@ import re
 from template_common import FilesGenerator, UnknownTargetError, CSVLineError
 
 
+ONE_FILE_OVAL_OUTPUT = False
+
+
 class SysctlGenerator(FilesGenerator):
     def is_ipv6_id(self, var_id):
         return var_id.find("ipv6") >= 0
 
-    def get_files_var_for_id(self, var_id):
-
-        if self.is_ipv6_id(var_id):
-            template_name = 'template_OVAL_sysctl_ipv6'
-        else:
-            template_name = 'template_OVAL_sysctl'
-
-        return {
-            'template_OVAL_sysctl_static_var': 'sysctl_static_',
-            'template_OVAL_sysctl_runtime_var': 'sysctl_runtime_',
-            template_name: 'sysctl_'
-        }
-
     def get_files_for_id(self, var_id):
-        if self.is_ipv6_id(var_id):
-            template_name = 'template_OVAL_sysctl_ipv6'
-        else:
-            template_name = 'template_OVAL_sysctl'
 
-        return {
-            'template_OVAL_sysctl_static': 'sysctl_static_',
-            'template_OVAL_sysctl_runtime': 'sysctl_runtime_',
-            template_name: 'sysctl_'
-        }
+        if self.is_ipv6_id(var_id):
+            template_type = 'I'  # I = ipv6
+        else:
+            template_type = 'P'  # P = plain
+
+        if ONE_FILE_OVAL_OUTPUT:
+            ret = {"": template_type + "SR"}
+        else:
+            ret = {
+                "static_": "S",
+                "runtime_": "R",
+                "": template_type,
+            }
+        return ret
 
     def generate(self, target, serviceinfo):
 
@@ -97,34 +92,22 @@ class SysctlGenerator(FilesGenerator):
                 )
 
         elif target == "oval":
-            # if the sysctl value is not present, use the variable template
             if not sysctl_val.strip():
+                sysctl_val = ""
 
-                # open the template files and perform the conversions
-                for sysctlfile, prefix in self.get_files_var_for_id(sysctl_var_id).items():
-                    self.file_from_template(
-                        sysctlfile,
-                        {
-                            "SYSCTLID":  sysctl_var_id,
-                            "SYSCTLVAR": sysctl_var,
-                            "DATATYPE": data_type,
-                        },
-                        "./oval/{0}.xml", prefix + sysctl_var_id
-                    )
-
-            else:
-                # open the template files and perform the conversions
-                for sysctlfile, prefix in self.get_files_for_id(sysctl_var_id).items():
-                    self.file_from_template(
-                        sysctlfile,
-                        {
-                            "SYSCTLID":  sysctl_var_id,
-                            "SYSCTLVAR": sysctl_var,
-                            "SYSCTLVAL": sysctl_val,
-                            "DATATYPE": data_type,
-                        },
-                        "./oval/{0}.xml", prefix + sysctl_var_id
-                    )
+            # open the template files and perform the conversions
+            for stem, ttype in self.get_files_for_id(sysctl_var_id).items():
+                self.file_from_template(
+                    "template_OVAL_sysctl",
+                    {
+                        "FLAGS": ttype,
+                        "SYSCTLID":  sysctl_var_id,
+                        "SYSCTLVAR": sysctl_var,
+                        "SYSCTLVAL": sysctl_val,
+                        "DATATYPE": data_type,
+                    },
+                    "./oval/sysctl_{0}{1}.xml", stem, sysctl_var_id
+                )
 
         else:
             raise UnknownTargetError(target)
