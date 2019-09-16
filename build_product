@@ -2,14 +2,14 @@
 
 # Created by argbash-init v2.8.1
 # Rearrange the order of options below according to what you would like to see in the help message.
-# ARG_OPTIONAL_SINGLE([oval],[o],[OVAL minor version],[auto])
+# ARG_OPTIONAL_SINGLE([oval],[o],[OVAL version],[auto])
 # ARG_OPTIONAL_SINGLE([builder],[b],[Builder engine],[auto])
 # ARG_OPTIONAL_SINGLE([jobs],[j],[Count of simultaneous jobs],[auto])
 # ARG_OPTIONAL_BOOLEAN([debug],[],[Make a debug build with draft profiles],[off])
 # ARG_OPTIONAL_BOOLEAN([derivatives],[],[Also build derivatives of products if applicable],[off])
 # ARG_POSITIONAL_INF([product],[Products to build],[1])
 # ARG_DEFAULTS_POS([])
-# ARG_TYPE_GROUP_SET([oval_ver],[VERSION],[oval],[10,11,auto])
+# ARG_TYPE_GROUP_SET([oval_ver],[VERSION],[oval],[5.10,5.11,auto])
 # ARG_TYPE_GROUP_SET([builder_type],[BUILDER],[builder],[make,ninja,auto])
 # ARG_HELP([Wipes out contents of the 'build' directory and builds only and only the given products.])
 # ARGBASH_GO()
@@ -32,12 +32,12 @@ die()
 
 oval_ver()
 {
-	local _allowed=("10" "11" "auto") _seeking="$1"
+	local _allowed=("5.10" "5.11" "auto") _seeking="$1"
 	for element in "${_allowed[@]}"
 	do
 		test "$element" = "$_seeking" && echo "$element" && return 0
 	done
-	die "Value '$_seeking' (of argument '$2') doesn't match the list of allowed values: '10', '11' and 'auto'" 4
+	die "Value '$_seeking' (of argument '$2') doesn't match the list of allowed values: '5.10', '5.11' and 'auto'" 4
 }
 
 
@@ -75,7 +75,7 @@ print_help()
 	printf '%s\n' "Wipes out contents of the 'build' directory and builds only and only the given products."
 	printf 'Usage: %s [-o|--oval <VERSION>] [-b|--builder <BUILDER>] [-j|--jobs <arg>] [--(no-)debug] [--(no-)derivatives] [-h|--help] <product-1> [<product-2>] ... [<product-n>] ...\n' "$0"
 	printf '\t%s\n' "<product>: Products to build"
-	printf '\t%s\n' "-o, --oval: OVAL minor version. Can be one of: '10', '11' and 'auto' (default: 'auto')"
+	printf '\t%s\n' "-o, --oval: OVAL version. Can be one of: '5.10', '5.11' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-b, --builder: Builder engine. Can be one of: 'make', 'ninja' and 'auto' (default: 'auto')"
 	printf '\t%s\n' "-j, --jobs: Count of simultaneous jobs (default: 'auto')"
 	printf '\t%s\n' "--debug, --no-debug: Make a debug build with draft profiles (off by default)"
@@ -243,6 +243,16 @@ handle_wrong_products() {
 	exit 1
 }
 
+set_no_derivatives_options() {
+	test "$_arg_derivatives" = on && return
+	if grep -q 'rhel' <<< "${_arg_product[*]}"; then
+		CMAKE_OPTIONS+=("-DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=OFF")
+	fi
+	if grep -q 'rhel\(6\|7\)' <<< "${_arg_product[*]}"; then
+		CMAKE_OPTIONS+=("-DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF")
+	fi
+}
+
 all_cmake_products=(
 	CHROMIUM
 	DEBIAN8
@@ -270,17 +280,22 @@ all_cmake_products=(
 	WRLINUX1019
 )
 
-NO_DERIVATIVES_OPTIONS=('-DSSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED:BOOL=OFF' '-DSSG_CENTOS_DERIVATIVES_ENABLED:BOOL=OFF')
-
+DEFAULT_OVAL_MAJOR_VERSION=5
 DEFAULT_OVAL_MINOR_VERSION=11
 
 build_type_option="-DCMAKE_BUILD_TYPE=Release"
 
 cores=$(nproc 2>/dev/null) || cores=1
 
-oval_minor_version_option="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=$_arg_oval"
 
-test "$_arg_oval" = auto && oval_minor_version_option="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=$DEFAULT_OVAL_MINOR_VERSION"
+if test "$_arg_oval" = auto; then
+	oval_major_version_option="-DSSG_TARGET_OVAL_MAJOR_VERSION:STRING=$DEFAULT_OVAL_MAJOR_VERSION"
+	oval_minor_version_option="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=$DEFAULT_OVAL_MINOR_VERSION"
+else
+	oval_major_version_option="-DSSG_TARGET_OVAL_MAJOR_VERSION:STRING=$(cut -f 1 -d . <<< "$_arg_oval")"
+	oval_minor_version_option="-DSSG_TARGET_OVAL_MINOR_VERSION:STRING=$(cut -f 1 -d . --complement <<< "$_arg_oval")"
+fi
+
 test "$_arg_debug" = on && build_type_option="-DCMAKE_BUILD_TYPE=Debug"
 
 jobs="$_arg_jobs"
@@ -303,11 +318,8 @@ for chosen_product in "${_arg_product[@]}"; do
 	fi
 done
 
-CMAKE_OPTIONS=("${build_type_option}" "${oval_minor_version_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
-
-if test "$_arg_derivatives" = off && grep -q rhel <<< "${_arg_product[*]}"; then
-	CMAKE_OPTIONS+=("${NO_DERIVATIVES_OPTIONS[@]}")
-fi
+CMAKE_OPTIONS=("${build_type_option}" "${oval_major_version_option}" "${oval_minor_version_option}" '-DSSG_PRODUCT_DEFAULT=OFF' "${cmake_enable_args[@]}" -G "$cmake_generator")
+set_no_derivatives_options
 
 set -e
 rm -rf build/*
