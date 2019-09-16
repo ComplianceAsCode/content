@@ -127,6 +127,16 @@ def package_removed(data, lang):
     return data
 
 
+def service_disabled(data, lang):
+    if "packagename" not in data:
+        data["packagename"] = data["servicename"]
+    if "daemonname" not in data:
+        data["daemonname"] = data["servicename"]
+    if "mask_service" not in data:
+        data["mask_service"] = "true"
+    return data
+
+
 templates = {
     "accounts_password": accounts_password,
     "auditd_lineinfile": None,
@@ -157,7 +167,7 @@ templates = {
     "permissions": None,
     "sebool": None,
     "sebool_var": None,
-    "service_disabled": None,
+    "service_disabled": service_disabled,
     "service_enabled": None,
     "sshd_lineinfile": None,
     "sysctl": sysctl,
