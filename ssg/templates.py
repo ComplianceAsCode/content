@@ -56,7 +56,7 @@ def audit_rules_privileged_commands(data, lang):
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
     data["name"] = name
     if lang == "oval":
-        data["id"] = "audit_rules_execution_" + name
+        data["id"] = data["_rule_id"]
         data["title"] = "Record Any Attempts to Run " + name
         data["path"] = path.replace("/", "\\/")
     return data
@@ -260,6 +260,10 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} does not contain mandatory 'vars:' key under "
                 "'template:' key.".format(rule.id_))
+        # Add the rule ID which will be reused in OVAL templates as OVAL
+        # definition ID so that the build system matches the generated
+        # check with the rule.
+        template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
         jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)
