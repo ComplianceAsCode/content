@@ -238,7 +238,7 @@ class Builder(object):
         parameters = {k.upper(): v for k, v in parameters.items()}
         return parameters
 
-    def build_lang(self, rule, template_name, lang):
+    def build_lang(self, rule, template_name, lang, local_env_yaml):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
@@ -266,7 +266,7 @@ class Builder(object):
         template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
-        jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)
+        jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
         with open(output_filepath, "w") as f:
@@ -319,8 +319,13 @@ class Builder(object):
                     template_name, rule.id_))
             return
         langs_to_generate = self.get_langs_to_generate(rule)
+        # checks and remediations are processed with a custom YAML dict
+        local_env_yaml = self.env_yaml.copy()
+        local_env_yaml["rule_id"] = rule.id_
+        local_env_yaml["rule_title"] = rule.title
+        local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(rule, template_name, lang)
+            self.build_lang(rule, template_name, lang, local_env_yaml)
 
     def build(self):
         """
