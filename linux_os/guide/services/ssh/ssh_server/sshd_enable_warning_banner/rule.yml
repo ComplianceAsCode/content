@@ -46,7 +46,7 @@ references:
 {{{ complete_ocil_entry_sshd_option(default="no", option="Banner", value="/etc/issue") }}}
 
 template:
-    name: auditd_lineinfile
+    name: sshd_lineinfile
     vars:
         missing_parameter_pass: 'false'
         parameter: Banner
