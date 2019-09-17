@@ -25,6 +25,16 @@ def accounts_password(data, lang):
     return data
 
 
+def auditd_lineinfile(data, lang):
+    missing_parameter_pass = data["missing_parameter_pass"]
+    if missing_parameter_pass == "true":
+        missing_parameter_pass = True
+    elif missing_parameter_pass == "false":
+        missing_parameter_pass = False
+    data["missing_parameter_pass"] = missing_parameter_pass
+    return data
+
+
 def audit_rules_dac_modification(data, lang):
     return data
 
@@ -145,6 +155,16 @@ def service_enabled(data, lang):
     return data
 
 
+def sshd_lineinfile(data, lang):
+    missing_parameter_pass = data["missing_parameter_pass"]
+    if missing_parameter_pass == "true":
+        missing_parameter_pass = True
+    elif missing_parameter_pass == "false":
+        missing_parameter_pass = False
+    data["missing_parameter_pass"] = missing_parameter_pass
+    return data
+
+
 def timer_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["timername"]
@@ -153,7 +173,7 @@ def timer_enabled(data, lang):
 
 templates = {
     "accounts_password": accounts_password,
-    "auditd_lineinfile": None,
+    "auditd_lineinfile": auditd_lineinfile,
     "audit_rules_dac_modification": audit_rules_dac_modification,
     "audit_rules_file_deletion_events": audit_rules_file_deletion_events,
     "audit_rules_login_events": audit_rules_login_events,
@@ -187,7 +207,7 @@ templates = {
     "sebool_var": None,
     "service_disabled": service_disabled,
     "service_enabled": service_enabled,
-    "sshd_lineinfile": None,
+    "sshd_lineinfile": sshd_lineinfile,
     "sysctl": sysctl,
     "timer_enabled": timer_enabled,
 }
