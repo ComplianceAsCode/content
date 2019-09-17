@@ -5,15 +5,15 @@
 service_file="/usr/lib/systemd/system/rescue.service"
 
 {{% if product in ["fedora", "rhel8"] -%}}
-sulogin="/usr/lib/systemd/systemd-sulogin-shell"
+sulogin="/usr/lib/systemd/systemd-sulogin-shell rescue"
 {{%- else -%}}
-sulogin="/sbin/sulogin"
+sulogin='/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
 {{%- endif %}}
 
 if grep "^ExecStart=.*" "$service_file" ; then
-    sed -i "s%^ExecStart=.*%ExecStart=-$sulogin rescue%" "$service_file"
+    sed -i "s%^ExecStart=.*%ExecStart=-$sulogin%" "$service_file"
 else
-    echo "ExecStart=-$sulogin rescue" >> "$service_file"
+    echo "ExecStart=-$sulogin" >> "$service_file"
 fi
 
 {{%- else -%}}

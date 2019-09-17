@@ -13,7 +13,7 @@
       {{% if product in ["fedora", "rhel8"] -%}}
       line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell rescue"
       {{%- else -%}}
-      line: "ExecStart=-/sbin/sulogin rescue"
+      line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
       {{%- endif %}}
 {{%- else -%}}
 - name: require single user mode password
