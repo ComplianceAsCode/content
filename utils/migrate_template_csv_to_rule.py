@@ -514,7 +514,8 @@ def services_disabled_csv_to_dict(csv_line, csv_data):
     data_service_disabled["servicename"] = service_name
     data_service_disabled["packagename"] = package_name
     data_service_disabled["daemonname"] = daemon_name
-    data_service_disabled["mask_service"] = mask_service
+    if not mask_service:
+        data_service_disabled["mask_service"] = mask_service
     service_disabled["vars"] = data_service_disabled
 
     csv_data[rule_id] = service_disabled
