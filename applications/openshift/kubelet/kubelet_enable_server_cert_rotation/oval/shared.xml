@@ -28,3 +28,4 @@
     <ind:subexpression datatype="string" operation="pattern match">^.*RotateKubeletServerCertificate=true.*$</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
+{{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--feature-gates", value="RotateKubeletServerCertificate=true", option_id="RotateKubeletServerCertificate") }}}

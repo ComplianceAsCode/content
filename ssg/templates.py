@@ -186,7 +186,6 @@ templates = {
     "mount_option": mount_option,
     "mount_option_remote_filesystems": mount_option,
     "mount_option_removable_partitions": mount_option,
-    "ocp_service_runtime_config": None,
     "package_installed": package_installed,
     "package_removed": package_removed,
     "permissions": None,

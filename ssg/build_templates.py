@@ -30,7 +30,6 @@ from create_audit_rules_usergroup_modification import AuditRulesUserGroupModific
 from create_audit_rules_execution import AuditRulesExecutionGenerator
 from create_audit_rules_path_syscall import AuditRulesPathSyscallGenerator
 from create_grub2_bootloader_argument import GRUB2BootloaderArgumentGenerator
-from create_ocp_service_runtime_config import OCPServiceRuntimeConfigGenerator
 from create_lineinfile import AuditdLineinfileGenerator, SSHDLineinfileGenerator
 
 
@@ -79,7 +78,6 @@ class Builder(object):
             "audit_rules_execution.csv":        AuditRulesExecutionGenerator(),
             "audit_rules_path_syscall.csv":        AuditRulesPathSyscallGenerator(),
             "grub2_bootloader_argument.csv":        GRUB2BootloaderArgumentGenerator(),
-            "ocp_service_runtime_config.csv":        OCPServiceRuntimeConfigGenerator(),
             "sshd_lineinfile.csv":        SSHDLineinfileGenerator(),
             "auditd_lineinfile.csv":        AuditdLineinfileGenerator(),
         }

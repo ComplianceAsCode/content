@@ -28,3 +28,5 @@
     <ind:subexpression datatype="string" operation="pattern match">^client-ca.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
+
+{{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--client-ca-file", value="/etc/origin/node/client-ca.crt", option_id="client_ca_file") }}}
