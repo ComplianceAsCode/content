@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,ubuntu1404,ubuntu1604,ubuntu1804,ol7,ol8,rhv4
+prodtype: rhel6,rhel7,rhel8,ubuntu1404,ubuntu1604,ubuntu1804,ol7,ol8,rhv4,sle12
 
 title: 'Ensure Software Patches Installed'
 
@@ -17,6 +17,10 @@ description: |-
     <pre>$ sudo yum update</pre>
     If the system is not configured to use one of these sources, updates (in the form of RPM packages)
     can be manually downloaded from the ULN and installed using <tt>rpm</tt>.
+{{% elif product in ["sle12"] %}}
+    If the system is configured for online updates, invoking the following command will list available
+    security updates:
+    <pre>$ sudo zypper refresh &amp;&amp; sudo zypper list-patches -g security</pre>
 {{% endif %}}
     <br /><br />
     NOTE: U.S. Defense systems are required to be patched within 30 days or sooner as local policy
@@ -35,6 +39,7 @@ identifiers:
     cce@rhel6: 27635-2
     cce@rhel7: 26895-3
     cce@rhel8: 80865-9
+    cce@sle12: 83002-6
 
 references:
     stigid@rhel6: "000011"
@@ -50,6 +55,8 @@ references:
     srg: SRG-OS-000480-GPOS-00227
     vmmsrg: SRG-OS-000480-VMM-002000
     stigid@rhel7: "020260"
+    disa@sle12: "1227"
+    stigid@sle12: "010010"
     isa-62443-2009: 4.2.3,4.2.3.12,4.2.3.7,4.2.3.9
     cobit5: APO12.01,APO12.02,APO12.03,APO12.04,BAI03.10,DSS05.01,DSS05.02
     iso27001-2013: A.12.6.1,A.14.2.3,A.16.1.3,A.18.2.2,A.18.2.3
@@ -71,6 +78,8 @@ oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.u
 oval_external_content: "https://people.canonical.com/~ubuntu-security/oval/com.ubuntu.xenial.cve.oval.xml"
 {{% elif product in ["ol7", "ol8"] %}}
 oval_external_content: "https://linux.oracle.com/security/oval/com.oracle.elsa-all.xml.bz2"
+{{% elif product == "sle12" %}}
+oval_external_content: "https://support.novell.com/security/oval/suse.linux.enterprise.12.xml"
 {{% else %}}
 {{# The rule will be "notchecked" #}}
 {{% endif %}}
