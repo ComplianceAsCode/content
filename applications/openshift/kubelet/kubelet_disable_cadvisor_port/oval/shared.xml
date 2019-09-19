@@ -9,7 +9,7 @@
       any authentication to connect to the port.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_cadvisor_port" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_cadvisor_port" />
       <criterion comment="cadvisor port is disabled" test_ref="test_kubelet_disable_cadvisor_port" />
     </criteria>
   </definition>
@@ -28,5 +28,5 @@
   <ind:textfilecontent54_state id="state_kubelet_disable_cadvisor_port" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^'0'$</ind:subexpression>
   </ind:textfilecontent54_state>
-</def-group>
 {{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--cadvisor-port", value="0", option_id="cadvisor_port") }}}
+</def-group>

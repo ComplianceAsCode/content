@@ -9,7 +9,7 @@
     reconstucting the chain-of-events.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_event_qps" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_event_qps" />
       <criterion comment="event-qps is configured" test_ref="test_kubelet_configure_event_creation" />
     </criteria>
   </definition>
@@ -28,6 +28,5 @@
   <ind:textfilecontent54_state id="state_kubelet_configure_event_creation" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^'0'$</ind:subexpression>
   </ind:textfilecontent54_state>
-</def-group>
-
 {{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--event-qps", value="0", option_id="event_qps") }}}
+</def-group>

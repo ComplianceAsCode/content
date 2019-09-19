@@ -8,7 +8,7 @@
       <description>The hostname should not be overrided in the node configuration file.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_hostname_override" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_hostname_override" />
       <criterion comment="hostname-override does not exist" test_ref="test_kubelet_disable_hostname_override" />
     </criteria>
   </definition>
@@ -23,5 +23,5 @@
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-</def-group>
 {{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--hostname-override", value="", option_id="hostname_override") }}}
+</def-group>

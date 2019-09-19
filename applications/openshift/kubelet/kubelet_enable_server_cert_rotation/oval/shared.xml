@@ -8,7 +8,7 @@
       <description>Enable kubelet server certificate rotation.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_RotateKubeletServerCertificate" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_RotateKubeletServerCertificate" />
       <criterion comment="RotateKubeletServerCertificate is configured" test_ref="test_kubelet_enable_server_cert_rotation" />
     </criteria>
   </definition>
@@ -27,5 +27,5 @@
   <ind:textfilecontent54_state id="state_kubelet_enable_server_cert_rotation" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^.*RotateKubeletServerCertificate=true.*$</ind:subexpression>
   </ind:textfilecontent54_state>
-</def-group>
 {{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--feature-gates", value="RotateKubeletServerCertificate=true", option_id="RotateKubeletServerCertificate") }}}
+</def-group>
