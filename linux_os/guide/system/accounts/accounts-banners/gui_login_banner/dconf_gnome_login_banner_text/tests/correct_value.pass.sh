@@ -1,7 +1,7 @@
 #!/bin/bash
-# profiles = xccdf_org.ssgproject.content_profile_ospp
+# profiles = xccdf_org.ssgproject.content_profile_ncp
 
-. ../../../../group_software/group_gnome/dconf_test_functions.sh
+source $SHARED/dconf_test_functions.sh
 
 install_dconf_and_gdm_if_needed
 
