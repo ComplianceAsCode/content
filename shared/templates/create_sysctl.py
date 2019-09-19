@@ -43,53 +43,37 @@ class SysctlGenerator(FilesGenerator):
             raise CSVLineError()
 
         # convert variable name to a format suitable for 'id' tags
-        sysctl_var_id = re.sub('[-\.]', '_', sysctl_var)
+        sysctl_var_id = re.sub(r'[-\.]', '_', sysctl_var)
 
         if target == "bash":
             # if the sysctl value is not present, use the variable template
             if not sysctl_val.strip():
-                # open the template and perform the conversions
-                self.file_from_template(
-                    "template_BASH_sysctl_var",
-                    {
-                        "SYSCTLID":  sysctl_var_id,
-                        "SYSCTLVAR": sysctl_var
-                    },
-                    "./bash/sysctl_{0}.sh", sysctl_var_id
-                )
-            else:
-                self.file_from_template(
-                    "./template_BASH_sysctl",
-                    {
-                        "SYSCTLID":  sysctl_var_id,
-                        "SYSCTLVAR": sysctl_var,
-                        "SYSCTLVAL": sysctl_val
-                    },
-                    "./bash/sysctl_{0}.sh", sysctl_var_id
-                )
+                sysctl_val = ""
+
+            self.file_from_template(
+                "./template_BASH_sysctl",
+                {
+                    "SYSCTLID":  sysctl_var_id,
+                    "SYSCTLVAR": sysctl_var,
+                    "SYSCTLVAL": sysctl_val
+                },
+                "./bash/sysctl_{0}.sh", sysctl_var_id
+            )
 
         elif target == "ansible":
             # if the sysctl value is not present, use the variable template
             if not sysctl_val.strip():
-                # open the template and perform the conversions
-                self.file_from_template(
-                    "template_ANSIBLE_sysctl_var",
-                    {
-                        "SYSCTLID":  sysctl_var_id,
-                        "SYSCTLVAR": sysctl_var
-                    },
-                    "./ansible/sysctl_{0}.yml", sysctl_var_id
-                )
-            else:
-                self.file_from_template(
-                    "./template_ANSIBLE_sysctl",
-                    {
-                        "SYSCTLID":  sysctl_var_id,
-                        "SYSCTLVAR": sysctl_var,
-                        "SYSCTLVAL": sysctl_val
-                    },
-                    "./ansible/sysctl_{0}.yml", sysctl_var_id
-                )
+                sysctl_val = ""
+
+            self.file_from_template(
+                "./template_ANSIBLE_sysctl",
+                {
+                    "SYSCTLID":  sysctl_var_id,
+                    "SYSCTLVAR": sysctl_var,
+                    "SYSCTLVAL": sysctl_val
+                },
+                "./ansible/sysctl_{0}.yml", sysctl_var_id
+            )
 
         elif target == "oval":
             if not sysctl_val.strip():

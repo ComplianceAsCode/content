@@ -3,10 +3,19 @@
 # strategy = disable
 # complexity = low
 # disruption = medium
+{{%- if SYSCTLVAL == "" %}}
+- (xccdf-var sysctl_{{{ SYSCTLID }}}_value)
+
+- name: Ensure sysctl {{{ SYSCTLVAR }}} is set
+  sysctl:
+    name: "{{{ SYSCTLVAR }}}"
+    value: "{{ sysctl_{{{ SYSCTLID }}}_value }}"
+{{%- else %}}
 - name: Ensure sysctl {{{ SYSCTLVAR }}} is set to {{{ SYSCTLVAL }}}
   sysctl:
     name: "{{{ SYSCTLVAR }}}"
     value: "{{{ SYSCTLVAL }}}"
+{{%- endif %}}
     state: present
     reload: yes
 

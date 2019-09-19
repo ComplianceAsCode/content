@@ -19,6 +19,17 @@ lang_to_ext_map = {
 # Callback functions for processing template parameters and/or validating them
 
 
+def sysctl(data, lang):
+    data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
+    if not data.get("sysctlval"):
+        data["sysctlval"] = ""
+    ipv6_flag = "P"
+    if data["sysctlid"].find("ipv6") >= 0:
+        ipv6_flag = "I"
+    data["flags"] = "SR" + ipv6_flag
+    return data
+
+
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -63,13 +74,7 @@ templates = {
     "service_disabled": None,
     "service_enabled": None,
     "sshd_lineinfile": None,
-    "sysctl": None,
-    "sysctl_ipv6": None,
-    "sysctl_runtime": None,
-    "sysctl_runtime_var": None,
-    "sysctl_static": None,
-    "sysctl_static_var": None,
-    "sysctl_var": None,
+    "sysctl": sysctl,
     "timer_enabled": None,
 }
 
