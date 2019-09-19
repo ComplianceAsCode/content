@@ -17,6 +17,7 @@ selections:
     - grub2_audit_backlog_limit_argument
     - service_auditd_enabled
     - enable_fips_mode
+    - installed_os_is_fips_certified
     - rpm_verify_hashes
     - selinux_all_devicefiles_labeled
     - selinux_confinement_of_daemons

@@ -64,9 +64,7 @@ warnings:
         or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
         Technology (NIST) views unvalidated cryptography as providing no protection to the information or
         data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
-        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
-        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
-        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
+        information or data be cryptographically protected, FIPS 140 is applicable. This configuration DOES NOT GUARANTEE that the system is FIPS 140-2 certified! This configuration guarantees only that certain features required by FIPS 140-2 can be enabled on this system.
         <br /><br />
         See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
         for more information about the Cryptographic Validation Program.

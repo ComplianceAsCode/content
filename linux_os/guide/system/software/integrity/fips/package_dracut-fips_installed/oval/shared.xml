@@ -1,4 +1,4 @@
-<!-- DO NOT TEMPLATE this check. dracut-fips should only be installed on 
+<!-- DO NOT TEMPLATE this check. dracut-fips should only be installed on
  certified systems, and changes to this file should be scrutinized through the
  review process.
 -->
@@ -15,7 +15,6 @@
       <description>The RPM package dracut-fips should be installed.</description>
     </metadata>
     <criteria>
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <criterion comment="package dracut-fips is installed"
       test_ref="test_package_dracut-fips_installed" />
     </criteria>

@@ -37,6 +37,7 @@ selections:
     - package_screen_installed
     - sshd_use_approved_ciphers
     - grub2_enable_fips_mode
+    - installed_os_is_fips_certified
     - audit_rules_privileged_commands_su
     - audit_rules_privileged_commands_sudo
     - audit_rules_sysadmin_actions

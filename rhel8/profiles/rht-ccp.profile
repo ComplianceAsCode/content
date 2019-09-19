@@ -96,5 +96,6 @@ selections:
     - sshd_enable_warning_banner
     - sshd_do_not_permit_user_env
     - var_system_crypto_policy=fips
+    - installed_os_is_fips_certified
     - configure_crypto_policy
     - configure_ssh_crypto_policy

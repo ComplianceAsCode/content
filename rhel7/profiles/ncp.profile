@@ -214,6 +214,7 @@ selections:
     - sebool_domain_fd_use
     - sebool_domain_kernel_load_modules
     - sebool_fips_mode
+    - installed_os_is_fips_certified
     - sebool_gpg_web_anon_write
     - sebool_guest_exec_content
     - sebool_kerberos_enabled
