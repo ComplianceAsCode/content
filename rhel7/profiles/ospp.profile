@@ -101,7 +101,7 @@ selections:
     ### Kernel Config
     ## Boot prompt
     - package_dracut-fips_installed
-    - installed_os_is_fips_certified
+    - installed_OS_is_FIPS_certified
     - grub2_audit_argument
     - grub2_audit_backlog_limit_argument
     - grub2_slub_debug_argument

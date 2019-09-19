@@ -155,7 +155,7 @@ selections:
     - partition_for_var_log_audit
     - partition_for_tmp
     - grub2_enable_fips_mode
-    - installed_os_is_fips_certified
+    - installed_OS_is_FIPS_certified
     - aide_verify_acls
     - aide_verify_ext_attributes
     - aide_use_fips_hashes

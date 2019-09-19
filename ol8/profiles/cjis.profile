@@ -133,4 +133,4 @@ selections:
     - configure_crypto_policy
     - configure_ssh_crypto_policy
     - var_system_crypto_policy=fips
-    - installed_os_is_fips_certified
+    - installed_OS_is_FIPS_certified

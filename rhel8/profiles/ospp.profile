@@ -232,7 +232,7 @@ selections:
     - usbguard_allow_hid
 
     ### Enable / Configure FIPS
-    - installed_os_is_fips_certified
+    - installed_OS_is_FIPS_certified
     - enable_fips_mode
     - var_system_crypto_policy=fips
     - configure_crypto_policy
