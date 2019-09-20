@@ -212,3 +212,6 @@ selections:
     - file_groupowner_crontab
     - file_owner_crontab
     - file_permissions_crontab
+    - file_groupowner_cron_hourly
+    - file_owner_cron_hourly
+    - file_permissions_cron_hourly
