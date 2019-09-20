@@ -258,3 +258,6 @@ selections:
     - file_groupowner_cron_weekly
     - file_owner_cron_weekly
     - file_permissions_cron_weekly
+    - file_groupowner_cron_monthly
+    - file_owner_cron_monthly
+    - file_permissions_cron_monthly
