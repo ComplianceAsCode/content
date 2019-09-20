@@ -261,3 +261,6 @@ selections:
     - file_groupowner_cron_monthly
     - file_owner_cron_monthly
     - file_permissions_cron_monthly
+    - file_groupowner_cron_d
+    - file_owner_cron_d
+    - file_permissions_cron_d
