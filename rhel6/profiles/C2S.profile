@@ -215,3 +215,6 @@ selections:
     - file_groupowner_cron_hourly
     - file_owner_cron_hourly
     - file_permissions_cron_hourly
+    - file_groupowner_cron_daily
+    - file_owner_cron_daily
+    - file_permissions_cron_daily
