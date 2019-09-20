@@ -19,14 +19,85 @@ lang_to_ext_map = {
 # Callback functions for processing template parameters and/or validating them
 
 
-def sysctl(data, lang):
-    data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
-    if not data.get("sysctlval"):
-        data["sysctlval"] = ""
-    ipv6_flag = "P"
-    if data["sysctlid"].find("ipv6") >= 0:
-        ipv6_flag = "I"
-    data["flags"] = "SR" + ipv6_flag
+def accounts_password(data, lang):
+    if lang == "oval":
+        data["sign"] = "-?" if data["variable"].endswith("credit") else ""
+    return data
+
+
+def audit_rules_dac_modification(data, lang):
+    return data
+
+
+def audit_rules_file_deletion_events(data, lang):
+    return data
+
+
+def audit_rules_login_events(data, lang):
+    path = data["path"]
+    name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
+    data["name"] = name
+    if lang == "oval":
+        data["path"] = path.replace("/", "\\/")
+    return data
+
+
+def audit_rules_path_syscall(data, lang):
+    if lang == "oval":
+        pathid = re.sub(r'[-\./]', '_', data["path"])
+        # remove root slash made into '_'
+        pathid = pathid[1:]
+        data["pathid"] = pathid
+    return data
+
+
+def audit_rules_privileged_commands(data, lang):
+    path = data["path"]
+    name = re.sub(r"[-\./]", "_", os.path.basename(path))
+    data["name"] = name
+    if lang == "oval":
+        data["id"] = data["_rule_id"]
+        data["title"] = "Record Any Attempts to Run " + name
+        data["path"] = path.replace("/", "\\/")
+    return data
+
+
+def audit_rules_unsuccessful_file_modification(data, lang):
+    return data
+
+
+def audit_rules_unsuccessful_file_modification_o_creat(data, lang):
+    return data
+
+
+def audit_rules_unsuccessful_file_modification_o_trunc_write(data, lang):
+    return data
+
+
+def audit_rules_unsuccessful_file_modification_rule_order(data, lang):
+    return data
+
+
+def audit_rules_usergroup_modification(data, lang):
+    path = data["path"]
+    name = re.sub(r'[-\./]', '_', os.path.basename(path))
+    data["name"] = name
+    if lang == "oval":
+        data["path"] = path.replace("/", "\\/")
+    return data
+
+
+def grub2_bootloader_argument(data, lang):
+    data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
+    return data
+
+
+def kernel_module_disabled(data, lang):
+    return data
+
+
+def mount(data, lang):
+    data["pointid"] = re.sub(r'[-\./]', '_', data["mountpoint"])
     return data
 
 
@@ -41,41 +112,84 @@ def package_installed(data, lang):
     return data
 
 
+def sysctl(data, lang):
+    data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
+    if not data.get("sysctlval"):
+        data["sysctlval"] = ""
+    ipv6_flag = "P"
+    if data["sysctlid"].find("ipv6") >= 0:
+        ipv6_flag = "I"
+    data["flags"] = "SR" + ipv6_flag
+    return data
+
+
+def package_removed(data, lang):
+    return data
+
+
+def service_disabled(data, lang):
+    if "packagename" not in data:
+        data["packagename"] = data["servicename"]
+    if "daemonname" not in data:
+        data["daemonname"] = data["servicename"]
+    if "mask_service" not in data:
+        data["mask_service"] = "true"
+    return data
+
+
+def service_enabled(data, lang):
+    if "packagename" not in data:
+        data["packagename"] = data["servicename"]
+    if "daemonname" not in data:
+        data["daemonname"] = data["servicename"]
+    return data
+
+
+def timer_enabled(data, lang):
+    if "packagename" not in data:
+        data["packagename"] = data["timername"]
+    return data
+
+
 templates = {
-    "accounts_password": None,
+    "accounts_password": accounts_password,
     "auditd_lineinfile": None,
-    "audit_rules_dac_modification": None,
-    "audit_rules_file_deletion_events": None,
-    "audit_rules_login_events": None,
-    "audit_rules_path_syscall": None,
-    "audit_rules_privileged_commands": None,
-    "audit_rules_unsuccessful_file_modification": None,
-    "audit_rules_unsuccessful_file_modification_o_creat": None,
-    "audit_rules_unsuccessful_file_modification_o_trunc_write": None,
-    "audit_rules_unsuccessful_file_modification_rule_order": None,
-    "audit_rules_usergroup_modification": None,
+    "audit_rules_dac_modification": audit_rules_dac_modification,
+    "audit_rules_file_deletion_events": audit_rules_file_deletion_events,
+    "audit_rules_login_events": audit_rules_login_events,
+    "audit_rules_path_syscall": audit_rules_path_syscall,
+    "audit_rules_privileged_commands": audit_rules_privileged_commands,
+    "audit_rules_unsuccessful_file_modification":
+        audit_rules_unsuccessful_file_modification,
+    "audit_rules_unsuccessful_file_modification_o_creat":
+        audit_rules_unsuccessful_file_modification_o_creat,
+    "audit_rules_unsuccessful_file_modification_o_trunc_write":
+        audit_rules_unsuccessful_file_modification_o_trunc_write,
+    "audit_rules_unsuccessful_file_modification_rule_order":
+        audit_rules_unsuccessful_file_modification_rule_order,
+    "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
     "file_groupowner": None,
     "file_owner": None,
     "file_permissions": None,
     "file_regex_permissions": None,
-    "grub2_bootloader_argument": None,
-    "kernel_module_disabled": None,
-    "mount": None,
+    "grub2_bootloader_argument": grub2_bootloader_argument,
+    "kernel_module_disabled": kernel_module_disabled,
+    "mount": mount,
     "mount_option": None,
     "mount_option_remote_filesystems": None,
     "mount_option_removable_partitions": None,
     "mount_option_var": None,
     "ocp_service_runtime_config": None,
     "package_installed": package_installed,
-    "package_removed": None,
+    "package_removed": package_removed,
     "permissions": None,
     "sebool": None,
     "sebool_var": None,
-    "service_disabled": None,
-    "service_enabled": None,
+    "service_disabled": service_disabled,
+    "service_enabled": service_enabled,
     "sshd_lineinfile": None,
     "sysctl": sysctl,
-    "timer_enabled": None,
+    "timer_enabled": timer_enabled,
 }
 
 
@@ -146,6 +260,10 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} does not contain mandatory 'vars:' key under "
                 "'template:' key.".format(rule.id_))
+        # Add the rule ID which will be reused in OVAL templates as OVAL
+        # definition ID so that the build system matches the generated
+        # check with the rule.
+        template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
         jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)

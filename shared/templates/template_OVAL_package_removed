@@ -13,23 +13,5 @@
       test_ref="test_package_{{{ PKGNAME }}}_removed" />
     </criteria>
   </definition>
-{{% if pkg_system == "rpm" %}}
-  <linux:rpminfo_test check="all" check_existence="none_exist"
-  id="test_package_{{{ PKGNAME }}}_removed" version="1"
-  comment="package {{{ PKGNAME }}} is removed">
-    <linux:object object_ref="obj_package_{{{ PKGNAME }}}_removed" />
-  </linux:rpminfo_test>
-  <linux:rpminfo_object id="obj_package_{{{ PKGNAME }}}_removed" version="1">
-    <linux:name>{{{ PKGNAME }}}</linux:name>
-  </linux:rpminfo_object>
-{{% elif pkg_system == "dpkg" %}}
-  <linux:dpkginfo_test check="all" check_existence="none_exist"
-  id="test_package_{{{ PKGNAME }}}_removed" version="1"
-  comment="package {{{ PKGNAME }}} is removed">
-    <linux:object object_ref="obj_package_{{{ PKGNAME }}}_removed" />
-  </linux:dpkginfo_test>
-  <linux:dpkginfo_object id="obj_package_{{{ PKGNAME }}}_removed" version="1">
-    <linux:name>{{{ PKGNAME }}}</linux:name>
-  </linux:dpkginfo_object>
-{{% endif %}}
+{{{ oval_test_package_removed(package=PKGNAME, test_id="test_package_"+PKGNAME+"_removed") }}}
 </def-group>
