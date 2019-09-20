@@ -209,3 +209,6 @@ selections:
     - file_groupowner_sshd_config
     - file_owner_sshd_config
     - file_permissions_sshd_config
+    - file_groupowner_crontab
+    - file_owner_crontab
+    - file_permissions_crontab
