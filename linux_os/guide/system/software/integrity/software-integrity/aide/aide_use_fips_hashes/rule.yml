@@ -41,3 +41,22 @@ ocil: |-
     To determine that AIDE is configured for FIPS 140-2 file hashing, run the following command:
     <pre>$ grep sha512 /etc/aide.conf</pre>
     Verify that the <tt>sha512</tt> option is added to the correct ruleset.
+
+warnings:
+    - regulatory: |-
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.

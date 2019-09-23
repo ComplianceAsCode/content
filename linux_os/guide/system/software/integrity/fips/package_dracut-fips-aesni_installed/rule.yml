@@ -40,20 +40,21 @@ warnings:
     - general: |-
         The system needs to be rebooted for these changes to take effect.
     - regulatory: |-
-        The Federal Information Systems Modernization Act (FISMA), requires cryptography protecting sensitive
-        or valuable data to undergo FIPS 140 validation. The U.S. National Institute of Standards and
-        Technology (NIST) views unvalidated cryptography as providing no protection to the information or
-        data—in effect the data would be considered unprotected plaintext. If the agency specifies that the
-        information or data be cryptographically protected, FIPS 140 is applicable. This configuration
-        check will fail on platforms lacking FIPS 140 validation, such as the CentOS, Scientific Linux,
-        and Fedora projects, even if FIPS-approved ciphers can be installed and enabled.
-        <br /><br />
-        See <b>{{{ weblink(link="https://csrc.nist.gov/Projects/cryptographic-module-validation-program") }}}</b>
-        for more information about the Cryptographic Validation Program.
-        <br /><br />
-        A list of FIPS validated cryptographic modules can be found at
-        <b>{{{ weblink(link="http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/1401vend.htm") }}}</b>. The
-        validated cryptographic modules only apply to the products and companies listed in the active validation
-        list.
+        System Crypto Modules must be provided by a vendor that undergoes
+        FIPS-140 certifications.
+        FIPS-140 is applicable to all Federal agencies that use
+        cryptographic-based security systems to protect sensitive information
+        in computer and telecommunication systems (including voice systems) as
+        defined in Section 5131 of the Information Technology Management Reform
+        Act of 1996, Public Law 104-106. This standard shall be used in
+        designing and implementing cryptographic modules that Federal
+        departments and agencies operate or are operated for them under
+        contract. See <b>{{ weblink(link="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-2.pdf") }}}</b>
+        To meet this, the system has to have cryptographic software provided by
+        a vendor that has undergone this certification. This means providing
+        documentation, test results, design information, and independent third
+        party review by an accredited lab. While open source software is
+        capable of meeting this, it does not meet FIPS-140 unless the vendor
+        submits to this process.
 
 platform: machine
