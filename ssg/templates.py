@@ -25,6 +25,16 @@ def accounts_password(data, lang):
     return data
 
 
+def auditd_lineinfile(data, lang):
+    missing_parameter_pass = data["missing_parameter_pass"]
+    if missing_parameter_pass == "true":
+        missing_parameter_pass = True
+    elif missing_parameter_pass == "false":
+        missing_parameter_pass = False
+    data["missing_parameter_pass"] = missing_parameter_pass
+    return data
+
+
 def audit_rules_dac_modification(data, lang):
     return data
 
@@ -153,6 +163,16 @@ def service_enabled(data, lang):
     return data
 
 
+def sshd_lineinfile(data, lang):
+    missing_parameter_pass = data["missing_parameter_pass"]
+    if missing_parameter_pass == "true":
+        missing_parameter_pass = True
+    elif missing_parameter_pass == "false":
+        missing_parameter_pass = False
+    data["missing_parameter_pass"] = missing_parameter_pass
+    return data
+
+
 def timer_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["timername"]
@@ -161,7 +181,7 @@ def timer_enabled(data, lang):
 
 templates = {
     "accounts_password": accounts_password,
-    "auditd_lineinfile": None,
+    "auditd_lineinfile": auditd_lineinfile,
     "audit_rules_dac_modification": audit_rules_dac_modification,
     "audit_rules_file_deletion_events": audit_rules_file_deletion_events,
     "audit_rules_login_events": audit_rules_login_events,
@@ -194,7 +214,7 @@ templates = {
     "sebool_var": None,
     "service_disabled": service_disabled,
     "service_enabled": service_enabled,
-    "sshd_lineinfile": None,
+    "sshd_lineinfile": sshd_lineinfile,
     "sysctl": sysctl,
     "timer_enabled": timer_enabled,
 }
@@ -245,7 +265,7 @@ class Builder(object):
         parameters = {k.upper(): v for k, v in parameters.items()}
         return parameters
 
-    def build_lang(self, rule, template_name, lang):
+    def build_lang(self, rule, template_name, lang, local_env_yaml):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
@@ -273,7 +293,7 @@ class Builder(object):
         template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
-        jinja_dict = ssg.utils.merge_dicts(self.env_yaml, template_parameters)
+        jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
         filled_template = ssg.jinja.process_file_with_macros(
             template_file_path, jinja_dict)
         with open(output_filepath, "w") as f:
@@ -326,8 +346,13 @@ class Builder(object):
                     template_name, rule.id_))
             return
         langs_to_generate = self.get_langs_to_generate(rule)
+        # checks and remediations are processed with a custom YAML dict
+        local_env_yaml = self.env_yaml.copy()
+        local_env_yaml["rule_id"] = rule.id_
+        local_env_yaml["rule_title"] = rule.title
+        local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(rule, template_name, lang)
+            self.build_lang(rule, template_name, lang, local_env_yaml)
 
     def build(self):
         """

@@ -50,7 +50,7 @@ references:
 {{{ complete_ocil_entry_sshd_option(default="no", option="PermitRootLogin", value="no") }}}
 
 template:
-    name: auditd_lineinfile
+    name: sshd_lineinfile
     vars:
         missing_parameter_pass: 'false'
         parameter: PermitRootLogin

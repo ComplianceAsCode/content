@@ -45,7 +45,7 @@ references:
 {{{ complete_ocil_entry_sshd_option(default="yes", option="IgnoreRhosts", value="yes") }}}
 
 template:
-    name: auditd_lineinfile
+    name: sshd_lineinfile
     vars:
         missing_parameter_pass: 'true'
         parameter: IgnoreRhosts
