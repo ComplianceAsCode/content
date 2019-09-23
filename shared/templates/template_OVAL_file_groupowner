@@ -23,7 +23,12 @@
     {{{ UNIX_DIR }}}
     {{{ UNIX_FILENAME }}}
   {{%- else -%}}
-    <unix:filepath>{{{ FILEPATH }}}</unix:filepath>
+    {{%- if IS_DIRECTORY -%}}
+      <unix:path>{{{ FILEPATH }}}</unix:path>
+      <unix:filename xsi:nil="true" />
+    {{%- else -%}}
+      <unix:filepath>{{{ FILEPATH }}}</unix:filepath>
+    {{%- endif -%}}
   {{%- endif %}}
   </unix:file_object>
 </def-group>

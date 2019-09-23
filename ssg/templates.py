@@ -90,18 +90,21 @@ def audit_rules_usergroup_modification(data, lang):
 def file_groupowner(data, lang):
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
+        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
 def file_owner(data, lang):
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
+        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
 def file_permissions(data, lang):
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_permissions", "")
+        data["is_directory"] = data["filepath"].endswith("/")
 
         # build the state that describes our mode
         # mode_str maps to STATEMODE in the template
@@ -126,7 +129,6 @@ def file_permissions(data, lang):
 
 
 def file_regex_permissions(data, lang):
-    print(data)
     if lang == "ansible":
         data["filepath"] = data["path"]
     elif lang == "bash":
