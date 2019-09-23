@@ -204,6 +204,10 @@ def package_removed(data, lang):
     return data
 
 
+def sebool(data, lang):
+    return data
+
+
 def service_disabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
@@ -268,8 +272,7 @@ templates = {
     "ocp_service_runtime_config": None,
     "package_installed": package_installed,
     "package_removed": package_removed,
-    "sebool": None,
-    "sebool_var": None,
+    "sebool": sebool,
     "service_disabled": service_disabled,
     "service_enabled": service_enabled,
     "sshd_lineinfile": sshd_lineinfile,
