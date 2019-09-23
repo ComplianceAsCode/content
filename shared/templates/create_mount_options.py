@@ -91,7 +91,7 @@ class RemediationTarget(MountOptionTarget):
         super(RemediationTarget, self)._translate_input_values(mount_point, mount_option, point_id)
         if mount_point.startswith("var_"):
             self._point_id = re.sub(r"^var_(.*)", r"\1s", mount_point)
-            self.template_file = "{0}_var".format(self.TEMPLATE_FILE_BASE)
+            self.template_file = "{0}_removable_partitions".format(self.TEMPLATE_FILE_BASE)
             self._output_id_template = "{mount_option}_{point_id}"
         elif not mount_point.startswith("/"):  # relates to rules specified by descriptive name (e.g. remote_filesystems)
             self.template_file = "{0}_{1}".format(self.TEMPLATE_FILE_BASE, self._point_id)
