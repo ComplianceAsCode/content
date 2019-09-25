@@ -390,3 +390,27 @@
   {{% endif %}}
 {{% endif %}}
 {{%- endmacro -%}}
+
+{{#
+  Macro which generates OVAL test for OpenShift Container Platform
+  runtime process configuration.
+  Parameters:
+    - command - command that executes the OpenShift process
+    - option - command line option of the command
+    - value - value of the option
+    - option_id - used to build the OVAL test ID
+  The OVAL test ID is test_ocp_runtime_<option_id>.
+#}}
+{{%- macro oval_ocp_service_runtime_config(command='', option='', value='', option_id='') -%}}
+  <unix:process58_test check="all" comment="ocp process runtime parameter {{{ option }}} set to {{{ value }}}" id="test_ocp_runtime_{{{ option_id }}}" version="1">
+    <unix:object object_ref="object_ocp_runtime_{{{ option_id }}}" />
+    <unix:state state_ref="state_ocp_runtime_{{{ option_id }}}" />
+  </unix:process58_test>
+  <unix:process58_object id="object_ocp_runtime_{{{ option_id }}}" version="1">
+    <unix:command_line operation="pattern match">^{{{ command }}}.*$</unix:command_line>
+    <unix:pid datatype="int" operation="greater than">0</unix:pid>
+  </unix:process58_object>
+  <unix:process58_state id="state_ocp_runtime_{{{ option_id }}}" version="1">
+    <unix:command_line operation="pattern match">^.*[\s]+{{{ option }}}=.*({{{ value }}}).*([\s]+.*$|$)</unix:command_line>
+  </unix:process58_state>
+{{%- endmacro -%}}
