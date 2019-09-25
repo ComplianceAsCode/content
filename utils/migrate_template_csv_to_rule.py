@@ -459,8 +459,8 @@ def permissions_csv_to_dict(csv_line, csv_data):
     else:
         rule_id = f"file_permissions{path_id}"
         file_permissions["name"] = f"file_regex_permissions"
+        data_file_permissions["path"] = dir_path
         data_file_permissions["filename"] = file_name
-        data_file_permissions["filepath"] = dir_path
         data_file_permissions["filemode"] = mode
         file_permissions["vars"] = data_file_permissions
         csv_data[rule_id] = file_permissions
