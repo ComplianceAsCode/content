@@ -314,7 +314,7 @@ for chosen_product in "${_arg_product[@]}"; do
 	if is_product "$chosen_product"; then
 		cmake_enable_args+=("$(opt_product_in "$chosen_product")")
 	else
-		handle_wrong_argument "$chosen_product"
+		handle_wrong_products "$chosen_product"
 	fi
 done
 
