@@ -290,11 +290,11 @@ def mount_options_csv_to_dict(csv_line, csv_data):
 
     # Not all fields will be used by all templates, this is fine,
     # they will just be ignored
+    data_mount_options["mountpoint"] = mount_point
+    data_mount_options["mountoption"] = mount_option
     data_mount_options["mount_has_to_exist"] = mount_has_to_exist
     data_mount_options["filesystem"] = filesystem
     data_mount_options["type"] = mount_point_type
-    data_mount_options["mountpoint"] = mount_point
-    data_mount_options["mountoption"] = mount_option
     mount_options["vars"] = data_mount_options
 
     csv_data[rule_id] = mount_options
