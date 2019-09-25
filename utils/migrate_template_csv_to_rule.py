@@ -734,7 +734,7 @@ class ProductCSVData(object):
                 # Rule is new in the product
                 # Add the rule with its values already in dictionary
                 data_a[rule_id] = OrderedDict({"name": rule_b["name"]})
-                data_a[rule_id]["vars"] = {}
+                data_a[rule_id]["vars"] = OrderedDict()
                 for var in rule_b_vars:
                     value_counter = defaultdict(list)
                     new_value = rule_b_vars[var]
