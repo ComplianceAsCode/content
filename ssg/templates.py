@@ -97,6 +97,65 @@ def audit_rules_usergroup_modification(data, lang):
     return data
 
 
+def file_groupowner(data, lang):
+    if lang == "oval":
+        data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
+        data["is_directory"] = data["filepath"].endswith("/")
+    return data
+
+
+def file_owner(data, lang):
+    if lang == "oval":
+        data["fileid"] = data["_rule_id"].replace("file_owner", "")
+        data["is_directory"] = data["filepath"].endswith("/")
+    return data
+
+
+def file_permissions(data, lang):
+    if lang == "oval":
+        data["fileid"] = data["_rule_id"].replace("file_permissions", "")
+        data["is_directory"] = data["filepath"].endswith("/")
+
+        # build the state that describes our mode
+        # mode_str maps to STATEMODE in the template
+        mode = data["filemode"]
+        fields = [
+            'oexec', 'owrite', 'oread', 'gexec', 'gwrite', 'gread',
+            'uexec', 'uwrite', 'uread', 'sticky', 'sgid', 'suid']
+        mode_int = int(mode, 8)
+        mode_str = ""
+        for field in fields:
+            if mode_int & 0x01 == 1:
+                mode_str = (
+                    "	<unix:" + field + " datatype=\"boolean\">true</unix:"
+                    + field + ">\n" + mode_str)
+            else:
+                mode_str = (
+                    "	<unix:" + field + " datatype=\"boolean\">false</unix:"
+                    + field + ">\n" + mode_str)
+            mode_int = mode_int >> 1
+        data["statemode"] = mode_str
+    return data
+
+
+def file_regex_permissions(data, lang):
+    if lang == "ansible":
+        data["filepath"] = data["path"]
+    elif lang == "bash":
+        data["filepath"] = data["path"]
+        data["filename"] = re.sub(r"^\^", "", data["filename"])
+    elif lang == "oval":
+        # build a string that contains the full path to the file
+        path = data["path"]
+        filename = data["filename"]
+        if filename == '[NULL]' or filename == '':
+            filepath = path
+        else:
+            filepath = path + '/' + filename
+        data["filepath"] = filepath
+    return data
+
+
 def grub2_bootloader_argument(data, lang):
     data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
     return data
@@ -196,10 +255,10 @@ templates = {
     "audit_rules_unsuccessful_file_modification_rule_order":
         audit_rules_unsuccessful_file_modification_rule_order,
     "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
-    "file_groupowner": None,
-    "file_owner": None,
-    "file_permissions": None,
-    "file_regex_permissions": None,
+    "file_groupowner": file_groupowner,
+    "file_owner": file_owner,
+    "file_permissions": file_permissions,
+    "file_regex_permissions": file_regex_permissions,
     "grub2_bootloader_argument": grub2_bootloader_argument,
     "kernel_module_disabled": kernel_module_disabled,
     "mount": mount,
@@ -209,7 +268,6 @@ templates = {
     "ocp_service_runtime_config": None,
     "package_installed": package_installed,
     "package_removed": package_removed,
-    "permissions": None,
     "sebool": None,
     "sebool_var": None,
     "service_disabled": service_disabled,
@@ -257,9 +315,9 @@ class Builder(object):
         """
         template_func = templates[template]
         if template_func is not None:
-            parameters = template_func(raw_parameters, lang)
+            parameters = template_func(raw_parameters.copy(), lang)
         else:
-            parameters = raw_parameters
+            parameters = raw_parameters.copy()
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
         parameters = {k.upper(): v for k, v in parameters.items()}
