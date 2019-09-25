@@ -51,9 +51,9 @@ ocil: '{{{ ocil_service_enabled(service="auditd") }}}'
 template:
     name: service_enabled
     vars:
+        servicename: auditd
         packagename: audit
         packagename@debian8: auditd
         packagename@ubuntu1404: auditd
         packagename@ubuntu1604: auditd
         packagename@ubuntu1804: auditd
-        servicename: auditd

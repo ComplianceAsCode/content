@@ -29,6 +29,6 @@ platform: machine
 template:
     name: sysctl
     vars:
-        datatype: int
-        sysctlval: '1'
         sysctlvar: kernel.yama.ptrace_scope
+        sysctlval: '1'
+        datatype: int

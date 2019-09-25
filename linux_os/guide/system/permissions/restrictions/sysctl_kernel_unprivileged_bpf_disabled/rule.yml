@@ -26,6 +26,6 @@ platform: machine
 template:
     name: sysctl
     vars:
-        datatype: int
-        sysctlval: '1'
         sysctlvar: kernel.unprivileged_bpf_disabled
+        sysctlval: '1'
+        datatype: int
