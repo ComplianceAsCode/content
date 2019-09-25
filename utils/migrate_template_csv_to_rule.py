@@ -559,10 +559,7 @@ def sysctl_values_csv_to_dict(csv_line, csv_data):
     sysctl_var_id = escape_path(sysctl_var)
     rule_id = f"sysctl_{sysctl_var_id}"
 
-    if not sysctl_val.strip():
-        sysctl_value["name"] = "sysctl_var"
-    else:
-        sysctl_value["name"] = "sysctl"
+    sysctl_value["name"] = "sysctl"
 
     data_sysctl_value["sysctlvar"] = sysctl_var
     data_sysctl_value["sysctlval"] = sysctl_val
