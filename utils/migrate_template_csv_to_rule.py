@@ -421,7 +421,7 @@ def permissions_csv_to_dict(csv_line, csv_data):
     # build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
     if file_name == '[NULL]' or file_name == '':
-        full_path = dir_path
+        full_path = dir_path + '/'
     else:
         full_path = dir_path + '/' + file_name
 
