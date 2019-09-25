@@ -1,0 +1,16 @@
+# platform = multi_platform_all
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+
+- name: require emergency mode password
+  lineinfile:
+      create: yes
+      dest: /usr/lib/systemd/system/emergency.service
+      regexp: "^#?ExecStart="
+      {{% if product in ["fedora", "rhel8"] -%}}
+      line: "ExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency"
+      {{%- else -%}}
+      line: 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
+      {{%- endif %}}
