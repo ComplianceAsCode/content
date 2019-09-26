@@ -1,0 +1,17 @@
+documentation_complete: true
+
+title: 'Enable the chronyd Daemon'
+
+description: '{{{ describe_service_enable(service="chronyd") }}}'
+
+rationale: |-
+    chronyd is a daemon for synchronisation of the system clock.
+
+severity: medium
+
+ocil: '{{{ ocil_service_enabled(service="chronyd") }}}'
+
+template:
+    name: service_enabled
+    vars:
+        servicename: chronyd

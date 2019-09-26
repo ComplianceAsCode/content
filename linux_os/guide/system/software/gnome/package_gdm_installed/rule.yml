@@ -1,0 +1,27 @@
+documentation_complete: true
+
+title: Install gdm Package
+
+description: |-
+    {{{ describe_package_install(package="gdm") }}}
+
+rationale: |-
+    GDM, the GNOME Display Manager, handles authentication-related backend
+    functionality for logging in a user and unlocking the user's session after
+    it's been locked. GDM also provides functionality for initiating user-switching,
+    so more than one user can be logged in at the same time. It handles
+    graphical session registration with the system for both local and remote
+    sessions (in the latter case, via the XDMCP protocol).  In cases where the
+    session doesn't provide it's own display server, GDM can start the display
+    server on behalf of the session.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="gdm") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: gdm

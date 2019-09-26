@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: Install esc Package
+
+description: |-
+    {{{ describe_package_install(package="esc") }}}
+
+rationale: |-
+    Enterprise Security Client allows the user to enroll and manage their cryptographic smartcards.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="esc") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: esc

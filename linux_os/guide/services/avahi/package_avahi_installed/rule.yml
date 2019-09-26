@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: Install avahi Package
+
+description: |-
+    {{{ describe_package_install(package="avahi") }}}
+
+rationale: |-
+    Avahi is a system which facilitates service discovery on
+    a local network -- this means that you can plug your laptop or
+    computer into a network and instantly be able to view other people who
+    you can chat with, find printers to print to or find files being
+    shared.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="avahi") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: avahi

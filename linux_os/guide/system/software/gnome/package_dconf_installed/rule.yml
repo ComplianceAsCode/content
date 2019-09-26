@@ -1,0 +1,21 @@
+documentation_complete: true
+
+title: Install dconf Package
+
+description: |-
+    {{{ describe_package_install(package="dconf") }}}
+
+rationale: |-
+    dconf is a low-level configuration system. Its main purpose is to provide a
+    backend to the GSettings API in GLib.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="dconf") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: dconf

@@ -1,0 +1,20 @@
+documentation_complete: true
+
+title: Remove prelink Package
+
+description: |-
+    {{{ describe_package_remove(package="prelink") }}}
+
+rationale: |-
+    prelink is a program that modifies ELF shared libraries and ELF dynamically linked binaries in such a way that the time needed for the dynamic linker to perform relocations at startup significantly decreases.
+
+severity: medium
+
+ocil_clause: 'the package is installed'
+
+ocil: '{{{ ocil_package(package="prelink") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: prelink

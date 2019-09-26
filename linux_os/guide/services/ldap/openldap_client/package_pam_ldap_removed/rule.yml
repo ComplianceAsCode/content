@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel6
+
+title: Remove pam_ldap Package
+
+description: |-
+    {{{ describe_package_remove(package="pam_ldap") }}}
+
+rationale: |-
+    The pam_ldap module is a Pluggable Authentication Module (PAM) which provides authentication, authorization and password changing against LDAP servers.
+
+severity: medium
+
+ocil_clause: 'the package is installed'
+
+ocil: '{{{ ocil_package(package="pam_ldap") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: pam_ldap

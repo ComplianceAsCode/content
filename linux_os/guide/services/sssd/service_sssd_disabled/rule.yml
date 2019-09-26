@@ -1,0 +1,22 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,ol7,ol8
+
+title: 'Disable the SSSD Service'
+
+description: |-
+    The SSSD service should be disabled.
+    {{{ describe_service_disable(service="sssd") }}}
+
+rationale: ""
+
+severity: medium
+
+ocil_clause: 'the service is not disabled'
+
+ocil: '{{{ ocil_service_disabled(service="sssd") }}}'
+
+template:
+    name: service_disabled
+    vars:
+        servicename: sssd

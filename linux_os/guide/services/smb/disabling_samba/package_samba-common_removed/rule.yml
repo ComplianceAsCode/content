@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Remove samba-common Package
+
+description: |-
+    {{{ describe_package_remove(package="samba-common") }}}
+
+rationale: |-
+
+severity: medium
+
+ocil_clause: 'the package is installed'
+
+ocil: '{{{ ocil_package(package="samba-common") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: samba-common

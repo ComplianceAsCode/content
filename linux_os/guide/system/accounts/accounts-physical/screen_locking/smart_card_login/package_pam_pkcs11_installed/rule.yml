@@ -1,0 +1,19 @@
+documentation_complete: true
+
+title: Install pam_pkcs11 Package
+
+description: |-
+    {{{ describe_package_install(package="pam_pkcs11") }}}
+
+rationale: |-
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="pam_pkcs11") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: pam_pkcs11

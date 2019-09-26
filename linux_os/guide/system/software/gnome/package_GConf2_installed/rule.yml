@@ -1,0 +1,22 @@
+documentation_complete: true
+
+title: Install GConf2 Package
+
+description: |-
+    {{{ describe_package_install(package="GConf2") }}}
+
+rationale: |-
+    GConf is a process-transparent configuration database API used to
+    store user preferences. It has pluggable backends and features to
+    support workgroup administration.
+
+severity: medium
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="GConf2") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: GConf2
