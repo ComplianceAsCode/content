@@ -47,6 +47,10 @@ def _check_is_applicable_for_product(oval_check_def, product):
         product_name = afftype + utils.map_name(product)
         # Append the product version to the official name
         if product_version is not None:
+            # Ubuntu versions have a dot in between the numbers
+            # While the prodtype doesn't have the dot, the full product name does
+            if product == "ubuntu":
+                product_version = product_version[:2] + "." + product_version[2:]
             product_name += ' ' + product_version
 
         # Test if this OVAL check is for the concrete product version
