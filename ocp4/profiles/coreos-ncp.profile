@@ -56,11 +56,11 @@ selections:
     #- partition_for_home
     #- partition_for_var
     #- mount_option_var_nodev
-    #- partition_for_var_log
+    - partition_for_var_log
     #- mount_option_var_log_nodev
     #- mount_option_var_log_nosuid
     #- mount_option_var_log_noexec
-    #- partition_for_var_log_audit
+    - partition_for_var_log_audit
     #- mount_option_var_log_audit_nodev
     #- mount_option_var_log_audit_nosuid
     #- mount_option_var_log_audit_noexec
@@ -169,13 +169,9 @@ selections:
     - auditd_name_format
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
-    - service_auditd_enabled
     - auditd_audispd_configure_remote_server
     - auditd_audispd_encrypt_sent_records
     - auditd_audispd_disk_full_action
-    - auditd_data_retention_space_left
-    - auditd_data_retention_space_left_action
-    - auditd_data_retention_action_mail_acct
     - auditd_audispd_network_failure_action
 
 
@@ -337,6 +333,8 @@ selections:
     - accounts_passwords_pam_faillock_interval
     - var_accounts_passwords_pam_faillock_unlock_time=never
     - accounts_passwords_pam_faillock_unlock_time
+    - accounts_passwords_pam_faillock_deny_root
+    - accounts_logon_fail_delay
 
     ## Enable Host-Based Firewall
     ## SC-7(12) / FMT_MOF_EXT.1
@@ -353,6 +351,7 @@ selections:
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
+    - banner_etc_issue
 
     ## Audit All Logons (Success/Failure) and Logoffs (Success)
     ##  CNSSI 1253 Value or DoD-Specific Values:
@@ -408,66 +407,106 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_rules_system_shutdown
-    - audit_rules_privileged_commands
-    - audit_rules_dac_modification_chown
-    - audit_rules_dac_modification_fchown
-    - audit_rules_dac_modification_lchown
-    - audit_rules_dac_modification_fchownat
     - audit_rules_dac_modification_chmod
+    - audit_rules_dac_modification_chown
     - audit_rules_dac_modification_fchmod
     - audit_rules_dac_modification_fchmodat
-    - audit_rules_dac_modification_setxattr
+    - audit_rules_dac_modification_fchown
+    - audit_rules_dac_modification_fchownat
+    - audit_rules_dac_modification_fremovexattr
     - audit_rules_dac_modification_fsetxattr
+    - audit_rules_dac_modification_lchown
+    - audit_rules_dac_modification_lremovexattr
     - audit_rules_dac_modification_lsetxattr
     - audit_rules_dac_modification_removexattr
-    - audit_rules_dac_modification_fremovexattr
-    - audit_rules_dac_modification_lremovexattr
-    - audit_rules_unsuccessful_file_modification_creat
-    - audit_rules_unsuccessful_file_modification_open
-    - audit_rules_unsuccessful_file_modification_openat
-    - audit_rules_unsuccessful_file_modification_open_by_handle_at
-    - audit_rules_unsuccessful_file_modification_truncate
-    - audit_rules_unsuccessful_file_modification_ftruncate
-    - audit_rules_execution_semanage
-    - audit_rules_execution_setsebool
+    - audit_rules_dac_modification_setxattr
     - audit_rules_execution_chcon
+    - audit_rules_execution_restorecon
+    - audit_rules_execution_semanage
     - audit_rules_execution_setfiles
-    - audit_rules_login_events_tallylog
-    - audit_rules_login_events_faillock
-    - audit_rules_login_events_lastlog
-    - audit_rules_privileged_commands_passwd
-    - audit_rules_privileged_commands_unix_chkpwd
-    - audit_rules_privileged_commands_gpasswd
-    - audit_rules_privileged_commands_chage
-    - audit_rules_privileged_commands_userhelper
-    - audit_rules_privileged_commands_su
-    - audit_rules_privileged_commands_sudo
-    - audit_rules_sysadmin_actions
-    - audit_rules_privileged_commands_newgrp
-    - audit_rules_privileged_commands_chsh
-    - audit_rules_privileged_commands_sudoedit
-    - audit_rules_media_export
-    - audit_rules_privileged_commands_umount
-    - audit_rules_privileged_commands_postdrop
-    - audit_rules_privileged_commands_postqueue
-    - audit_rules_privileged_commands_ssh_keysign
-    - audit_rules_privileged_commands_crontab
-    - audit_rules_privileged_commands_pam_timestamp_check
-    - audit_rules_kernel_module_loading_init
-    - audit_rules_kernel_module_loading_finit
-    - audit_rules_kernel_module_loading_delete
-    - audit_rules_usergroup_modification_passwd
+    - audit_rules_execution_setsebool
+    - audit_rules_execution_seunshare
     - audit_rules_file_deletion_events_rename
     - audit_rules_file_deletion_events_renameat
     - audit_rules_file_deletion_events_rmdir
     - audit_rules_file_deletion_events_unlink
     - audit_rules_file_deletion_events_unlinkat
+    - audit_rules_kernel_module_loading_delete
+    - audit_rules_kernel_module_loading_finit
+    - audit_rules_kernel_module_loading_init
+    - audit_rules_login_events_faillock
+    - audit_rules_login_events_lastlog
+    - audit_rules_login_events_tallylog
+    - audit_rules_mac_modification
+    - audit_rules_media_export
+    - audit_rules_networkconfig_modification
+    - audit_rules_privileged_commands
+    - audit_rules_privileged_commands_at
+    - audit_rules_privileged_commands_chage
+    - audit_rules_privileged_commands_chsh
+    - audit_rules_privileged_commands_crontab
+    - audit_rules_privileged_commands_gpasswd
+    - audit_rules_privileged_commands_mount
+    - audit_rules_privileged_commands_newgidmap
+    - audit_rules_privileged_commands_newgrp
+    - audit_rules_privileged_commands_newuidmap
+    - audit_rules_privileged_commands_pam_timestamp_check
+    - audit_rules_privileged_commands_passwd
+    - audit_rules_privileged_commands_postdrop
+    - audit_rules_privileged_commands_postqueue
+    - audit_rules_privileged_commands_pt_chown
+    - audit_rules_privileged_commands_ssh_keysign
+    - audit_rules_privileged_commands_su
+    - audit_rules_privileged_commands_sudo
+    - audit_rules_privileged_commands_sudoedit
+    - audit_rules_privileged_commands_umount
+    - audit_rules_privileged_commands_unix_chkpwd
+    - audit_rules_privileged_commands_userhelper
+    - audit_rules_privileged_commands_usernetctl
+    - audit_rules_session_events
+    - audit_rules_sysadmin_actions
+    - audit_rules_time_adjtimex
+    - audit_rules_time_clock_settime
+    - audit_rules_time_settimeofday
+    - audit_rules_time_stime
+    - audit_rules_time_watch_localtime
+    - audit_rules_unsuccessful_file_modification_chmod
+    - audit_rules_unsuccessful_file_modification_chown
+    - audit_rules_unsuccessful_file_modification_creat
+    - audit_rules_unsuccessful_file_modification_fchmod
+    - audit_rules_unsuccessful_file_modification_fchmodat
+    - audit_rules_unsuccessful_file_modification_fchown
+    - audit_rules_unsuccessful_file_modification_fchownat
+    - audit_rules_unsuccessful_file_modification_fremovexattr
+    - audit_rules_unsuccessful_file_modification_fsetxattr
+    - audit_rules_unsuccessful_file_modification_ftruncate
+    - audit_rules_unsuccessful_file_modification_lchown
+    - audit_rules_unsuccessful_file_modification_lremovexattr
+    - audit_rules_unsuccessful_file_modification_lsetxattr
+    - audit_rules_unsuccessful_file_modification_open
+    - audit_rules_unsuccessful_file_modification_openat
+    - audit_rules_unsuccessful_file_modification_openat_o_creat
+    - audit_rules_unsuccessful_file_modification_openat_o_trunc_write
+    - audit_rules_unsuccessful_file_modification_openat_rule_order
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_creat
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_o_trunc_write
+    - audit_rules_unsuccessful_file_modification_open_by_handle_at_rule_order
+    - audit_rules_unsuccessful_file_modification_open_o_creat
+    - audit_rules_unsuccessful_file_modification_open_o_trunc_write
+    - audit_rules_unsuccessful_file_modification_open_rule_order
+    - audit_rules_unsuccessful_file_modification_removexattr
+    - audit_rules_unsuccessful_file_modification_rename
+    - audit_rules_unsuccessful_file_modification_renameat
+    - audit_rules_unsuccessful_file_modification_setxattr
+    - audit_rules_unsuccessful_file_modification_truncate
+    - audit_rules_unsuccessful_file_modification_unlink
+    - audit_rules_unsuccessful_file_modification_unlinkat
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
-    - audit_rules_usergroup_modification_shadow
     - audit_rules_usergroup_modification_opasswd
-
+    - audit_rules_usergroup_modification_passwd
+    - audit_rules_usergroup_modification_shadow
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
@@ -486,3 +525,57 @@ selections:
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
+
+    # AC-18
+    - kernel_module_bluetooth_disabled
+    - wireless_disable_in_bios
+    - wireless_disable_interfaces
+
+    # AC-19
+    - grub2_nousb_argument
+    - bios_disable_usb_boot
+    - service_autofs_disabled
+    - mount_option_nosuid_removable_partitions
+    - mount_option_nodev_removable_partitions
+    - mount_option_noexec_removable_partitions
+
+    # AC-3
+    - sshd_limit_user_access
+    - sshd_disable_rhosts
+    - xwindows_runlevel_target
+    - grub2_enable_selinux
+    - require_emergency_target_auth
+    - no_netrc_files
+
+    # AU-1
+    - audit_rules_immutable
+
+    # AU-4
+    - service_rsyslog_enabled
+    - rsyslog_remote_loghost
+    - auditd_data_retention_action_mail_acct
+    - auditd_data_disk_full_action
+    - auditd_data_retention_admin_space_left_action
+    - auditd_data_retention_space_left_action
+    - auditd_data_disk_error_action
+    - auditd_data_retention_max_log_file_action
+    - auditd_data_retention_space_left
+    
+    # AU-8
+    - service_chronyd_or_ntpd_enabled
+    - chronyd_or_ntpd_specify_remote_server
+    - chronyd_or_ntpd_set_maxpoll
+    - chronyd_or_ntpd_specify_multiple_servers
+
+    # AU-9
+    - rpm_verify_ownership
+    - rpm_verify_permissions
+    - selinux_confinement_of_daemons
+    - ensure_logrotate_activated
+    - file_permissions_var_log_audit
+    - file_ownership_var_log_audit
+    - directory_permissions_var_log_audit
+
+    # AU-11
+    - auditd_data_retention_num_logs
+    - auditd_data_retention_max_log_file
