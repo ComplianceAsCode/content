@@ -37,5 +37,5 @@ ocil: '{{{ ocil_file_permissions(file="/etc/cron.hourly", perms="-rwx------") }}
 template:
     name: file_permissions
     vars:
+        filepath: /etc/cron.hourly/
         filemode: '0700'
-        filepath: /etc/cron.hourly

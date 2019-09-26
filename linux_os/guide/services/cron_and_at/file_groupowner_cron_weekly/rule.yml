@@ -37,5 +37,5 @@ ocil: '{{{ ocil_file_group_owner(file="/etc/cron.weekly", group="root") }}}'
 template:
     name: file_groupowner
     vars:
+        filepath: /etc/cron.weekly/
         filegid: '0'
-        filepath: /etc/cron.weekly

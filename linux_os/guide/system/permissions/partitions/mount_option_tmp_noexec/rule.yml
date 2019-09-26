@@ -40,13 +40,13 @@ platform: machine
 template:
     name: mount_option
     vars:
-        filesystem@rhel7: tmpfs
-        filesystem@rhel8: tmpfs
+        mountpoint: /tmp
+        mountoption: noexec
         mount_has_to_exist: 'yes'
         mount_has_to_exist@rhel7: 'no'
         mount_has_to_exist@rhel8: 'no'
-        mountoption: noexec
-        mountpoint: /tmp
+        filesystem@rhel7: tmpfs
+        filesystem@rhel8: tmpfs
         type@rhel7: tmpfs
         type@rhel8: tmpfs
     backends:
