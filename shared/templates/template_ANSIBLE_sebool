@@ -3,9 +3,24 @@
 # strategy = enable
 # complexity = low
 # disruption = low
+
+{{% if SEBOOL_BOOL %}}
 - name: Set SELinux boolean {{{ SEBOOLID }}} to {{{ SEBOOL_BOOL }}}
   seboolean:
     name: "{{{ SEBOOLID }}}"
     state: "{{{ SEBOOL_BOOL }}}"
     persistent: yes
+{{% else %}}
+- (xccdf-var var_{{{ SEBOOLID }}})
 
+- name: Ensure libsemanage-python installed
+  package:
+    name: libsemanage-python
+    state: present
+
+- name: Set SELinux boolean {{{ SEBOOLID }}} accordingly
+  seboolean:
+    name: {{{ SEBOOLID }}}
+    state: "{{ var_{{{ SEBOOLID }}} }}"
+    persistent: yes
+{{% endif %}}

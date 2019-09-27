@@ -204,6 +204,16 @@ def package_removed(data, lang):
     return data
 
 
+def sebool(data, lang):
+    sebool_bool = data.get("sebool_bool", None)
+    if sebool_bool is not None and sebool_bool not in ["true", "false"]:
+        raise ValueError(
+            "ERROR: key sebool_bool in rule {0} contains forbidden "
+            "value '{1}'.".format(data["_rule_id"], sebool_bool)
+        )
+    return data
+
+
 def service_disabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
@@ -267,8 +277,7 @@ templates = {
     "mount_option_removable_partitions": mount_option,
     "package_installed": package_installed,
     "package_removed": package_removed,
-    "sebool": None,
-    "sebool_var": None,
+    "sebool": sebool,
     "service_disabled": service_disabled,
     "service_enabled": service_enabled,
     "sshd_lineinfile": sshd_lineinfile,
