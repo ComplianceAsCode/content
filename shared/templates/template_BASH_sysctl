@@ -10,7 +10,7 @@ populate sysctl_{{{ SYSCTLID }}}_value
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}=$sysctl_{{{ SYSCTLID }}}_value
+/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="$sysctl_{{{ SYSCTLID }}}_value"
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to appropriate value
@@ -22,7 +22,7 @@ replace_or_append '/etc/sysctl.conf' '^{{{ SYSCTLVAR }}}' "$sysctl_{{{ SYSCTLID 
 #
 # Set runtime for {{{ SYSCTLVAR }}}
 #
-/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}={{{ SYSCTLVAL }}}
+/sbin/sysctl -q -n -w {{{ SYSCTLVAR }}}="{{{ SYSCTLVAL }}}"
 
 #
 # If {{{ SYSCTLVAR }}} present in /etc/sysctl.conf, change value to "{{{ SYSCTLVAL }}}"
