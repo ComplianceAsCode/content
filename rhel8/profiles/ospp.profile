@@ -176,7 +176,6 @@ selections:
     - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
-    - package_libreswan_installed
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
 
