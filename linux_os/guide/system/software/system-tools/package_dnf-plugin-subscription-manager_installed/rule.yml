@@ -1,0 +1,31 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Install dnf-plugin-subscription-manager Package'
+
+description: |-
+    {{{ describe_package_install(package="dnf-plugin-subscription-manager") }}}
+
+rationale: |-
+    This package provides plugins to interact with repositories and subscriptions
+    from the Red Hat entitlement platform; contains subscription-manager and
+    product-id plugins.
+
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82315-3
+
+references:
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="dnf-plugin-subscription-manager") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: dnf-plugin-subscription-manager
