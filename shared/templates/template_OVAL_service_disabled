@@ -56,7 +56,7 @@
     <linux:state state_ref="state_service_not_running_{{{ SERVICENAME }}}"/>
   </linux:systemdunitproperty_test>
   <linux:systemdunitproperty_object id="obj_service_not_running_{{{ SERVICENAME }}}" comment="Retrieve the ActiveState property of {{{ SERVICENAME }}}" version="1">
-    <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(service|socket)</linux:unit>
+    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(service|socket)$</linux:unit>
     <linux:property>ActiveState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_state id="state_service_not_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is not running">
@@ -68,7 +68,7 @@
     <linux:state state_ref="state_service_loadstate_is_masked_{{{ SERVICENAME }}}"/>
   </linux:systemdunitproperty_test>
   <linux:systemdunitproperty_object id="obj_service_loadstate_is_masked_{{{ SERVICENAME }}}" comment="Retrieve the LoadState property of {{{ SERVICENAME }}}" version="1">
-    <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(service|socket)</linux:unit>
+    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(service|socket)$</linux:unit>
     <linux:property>LoadState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_state id="state_service_loadstate_is_masked_{{{ SERVICENAME }}}" version="1" comment="LoadState is set to masked">
@@ -80,7 +80,7 @@
     <linux:state state_ref="state_service_fragmentpath_is_dev_null_{{{ SERVICENAME }}}"/>
   </linux:systemdunitproperty_test>
   <linux:systemdunitproperty_object id="obj_service_fragmentpath_is_dev_null_{{{ SERVICENAME }}}" comment="Retrieve the FragmentPath property of {{{ SERVICENAME }}}" version="1">
-    <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(service|socket)</linux:unit>
+    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(service|socket)$</linux:unit>
     <linux:property>FragmentPath</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_state id="state_service_fragmentpath_is_dev_null_{{{ SERVICENAME }}}" version="1" comment="FragmentPath is set to /dev/null">
