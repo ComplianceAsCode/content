@@ -97,17 +97,26 @@ def audit_rules_usergroup_modification(data, lang):
     return data
 
 
+def _file_owner_groupowner_regex(data):
+    data["is_directory"] = data["filepath"].endswith("/")
+    if "file_regex" in data and not data["is_directory"]:
+        raise ValueError(
+            "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
+            "specify a directory. Append '/' to the filepath or remove the "
+            "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
+
+
 def file_groupowner(data, lang):
+    _file_owner_groupowner_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
-        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
 def file_owner(data, lang):
+    _file_owner_groupowner_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
-        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
