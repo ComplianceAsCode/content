@@ -389,7 +389,7 @@ selections:
     - dnf-automatic_apply_updates
 
     # Enable dnf-automatic Timer
-    - timer_dnf-automatic_enabled
+    - dnf-automatic_timer_enabled
 
     # Configure TLS for remote logging
     - rsyslog_remote_tls
