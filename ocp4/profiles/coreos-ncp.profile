@@ -189,16 +189,14 @@ selections:
     ### Install Required Packages
     - package_sssd-ipa_installed
     - package_aide_installed
-    #- package_dnf-automatic_installed
     - package_firewalld_installed
     - package_iptables_installed
     - package_libcap-ng-utils_installed
-    #- package_openscap-scanner_installed
+    - package_openscap-scanner_installed
     - package_policycoreutils_installed
-    #- package_python3-subscription-manager-rhsm_installed
     - package_rng-tools_installed
     - package_sudo_installed
-    #- package_usbguard_installed
+    - package_usbguard_installed
     - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
@@ -579,3 +577,6 @@ selections:
     # AU-11
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
+
+    # AC-2(5), AC-12
+    - accounts_tmout
