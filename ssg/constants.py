@@ -7,7 +7,7 @@ import os.path
 product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
                        'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'wrlinux1019', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
+                       'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3', 'ocp4',
                        'example']
 
 JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
@@ -99,6 +99,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "JBoss Fuse 6": "fuse6",
     "Java Runtime Environment": "jre",
     "Red Hat OpenShift Container Platform 3": "ocp3",
+    "Red Hat OpenShift Container Platform 4": "ocp4",
     "Oracle Linux 7": "ol7",
     "Oracle Linux 8": "ol8",
     "openSUSE": "opensuse",
@@ -184,6 +185,9 @@ PRODUCT_TO_CPE_MAPPING = {
         "cpe:/a:redhat:openshift_container_platform:3.10",
         "cpe:/a:redhat:openshift_container_platform:3.11",
     ],
+    "ocp4": [
+        "cpe:/a:redhat:openshift_container_platform:4.1",
+    ],
     "ol7": [
         "cpe:/o:oracle:linux:7",
     ],
@@ -263,8 +267,8 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
-    "multi_platform_ol": ["ol7","ol8"],
-    "multi_platform_ocp": ["ocp3"],
+    "multi_platform_ol": ["ol7", "ol8"],
+    "multi_platform_ocp": ["ocp3", "ocp4"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
     "multi_platform_rhosp": ["rhosp13"],
     "multi_platform_rhv": ["rhv4"],
