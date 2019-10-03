@@ -580,3 +580,6 @@ selections:
 
     # AC-2(5), AC-12
     - accounts_tmout
+
+    # AC-18(4)
+    - network_nmcli_permissions
