@@ -525,7 +525,6 @@ selections:
     - kerberos_disable_no_keytab
 
     # AC-18
-    - kernel_module_bluetooth_disabled
     - wireless_disable_in_bios
     - wireless_disable_interfaces
 
@@ -580,6 +579,13 @@ selections:
 
     # AC-2(5), AC-12
     - accounts_tmout
+
+    # AC-17
+    - sshd_disable_rhosts_rsa
+    - sshd_disable_user_known_hosts
+    - sshd_do_not_permit_user_env
+    - sshd_print_last_log
+    - sshd_use_priv_separation
 
     # AC-18(4)
     - network_nmcli_permissions
