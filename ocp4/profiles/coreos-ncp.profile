@@ -589,3 +589,23 @@ selections:
 
     # AC-18(4)
     - network_nmcli_permissions
+
+    # AC-6(5)
+    - no_shelllogin_for_systemaccounts
+    - no_direct_root_logins
+
+    # AC-6(9)
+    - accounts_no_uid_except_zero
+    - audit_rules_etc_group_open
+    - audit_rules_etc_group_openat
+    - audit_rules_etc_group_open_by_handle_at
+    - audit_rules_etc_gshadow_open
+    - audit_rules_etc_gshadow_openat
+    - audit_rules_etc_gshadow_open_by_handle_at
+    - audit_rules_etc_passwd_open
+    - audit_rules_etc_passwd_openat
+    - audit_rules_etc_passwd_open_by_handle_at
+    - audit_rules_etc_shadow_open
+    - audit_rules_etc_shadow_openat
+    - audit_rules_etc_shadow_open_by_handle_at
+    - directory_access_var_log_audit
