@@ -14,5 +14,5 @@ fi
 grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
 {{% else %}}
 #in later versions of rhel grub2-editenv is used
-grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) audit=1"
+grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"
 {{% endif %}}
