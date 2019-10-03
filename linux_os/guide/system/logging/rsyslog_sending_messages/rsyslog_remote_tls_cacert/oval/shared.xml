@@ -22,7 +22,7 @@
 
   <ind:textfilecontent54_object id="obj_rsyslog_remote_tls_cacert" version="1">
     <ind:filepath operation="pattern match">^/etc/rsyslog\.(conf|d/.+\.conf)$</ind:filepath>
-    <ind:pattern operation="pattern match">^\s*global\(DefaultNetstreamDriverCAFile="(.+?)"\) +\*\.\*\s*\n</ind:pattern>
+    <ind:pattern operation="pattern match">^\s*global\(DefaultNetstreamDriverCAFile="(.+?)"\)\s*\n</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">0</ind:instance>
   </ind:textfilecontent54_object>
 </def-group>
