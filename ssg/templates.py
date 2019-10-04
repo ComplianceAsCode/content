@@ -417,6 +417,14 @@ class Builder(object):
             self.build_lang(
                 rule_id, template_name, template_vars, lang, local_env_yaml)
 
+    def build_extra_ovals(self):
+        declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
+        declaration = ssg.yaml.open_raw(declaration_path)
+        for fake_rule_id, template in declaration.items():
+            langs_to_generate = ["oval"]
+            self.build_rule(
+                fake_rule_id, fake_rule_id, template, langs_to_generate)
+
     def build_all_rules(self):
         for rule_file in os.listdir(self.resolved_rules_dir):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
@@ -438,4 +446,5 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
+        self.build_extra_ovals()
         self.build_all_rules()
