@@ -424,6 +424,12 @@ class Builder(object):
             self.build_lang(
                 rule_id, template_name, template_vars, lang, local_env_yaml)
 
+    def build_all_rules(self):
+        for rule_file in os.listdir(self.resolved_rules_dir):
+            rule_path = os.path.join(self.resolved_rules_dir, rule_file)
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
+            self.build_rule(rule)
+
     def build(self):
         """
         Builds all templated content for all languages, writing
@@ -434,7 +440,4 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
-        for rule_file in os.listdir(self.resolved_rules_dir):
-            rule_path = os.path.join(self.resolved_rules_dir, rule_file)
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
-            self.build_rule(rule)
+        self.build_all_rules()
