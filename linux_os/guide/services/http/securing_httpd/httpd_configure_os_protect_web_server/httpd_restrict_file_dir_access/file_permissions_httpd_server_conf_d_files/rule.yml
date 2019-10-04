@@ -29,8 +29,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/http/conf.d/*", perms=
 ocil: '{{{ ocil_file_permissions(file="/etc/http/conf.d/*", perms="-rw-r-----") }}}'
 
 template:
-    name: file_regex_permissions
+    name: file_permissions
     vars:
-        path: /etc/httpd/conf.d
-        filename: ^.*$
+        filepath: /etc/httpd/conf.d/
+        file_regex: ^.*$
         filemode: '0640'
