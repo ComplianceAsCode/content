@@ -27,7 +27,11 @@
   {{%- else -%}}
     {{%- if IS_DIRECTORY -%}}
       <unix:path>{{{ FILEPATH }}}</unix:path>
-      <unix:filename xsi:nil="true" />
+      {{%- if FILE_REGEX -%}}
+        <unix:filename operation="pattern match">{{{ FILE_REGEX }}}</unix:filename>
+      {{%- else -%}}
+        <unix:filename xsi:nil="true" />
+      {{%- endif -%}}
     {{%- else -%}}
       <unix:filepath>{{{ FILEPATH }}}</unix:filepath>
     {{%- endif -%}}

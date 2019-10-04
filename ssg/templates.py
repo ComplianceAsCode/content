@@ -97,25 +97,33 @@ def audit_rules_usergroup_modification(data, lang):
     return data
 
 
+def _file_owner_groupowner_permissions_regex(data):
+    data["is_directory"] = data["filepath"].endswith("/")
+    if "file_regex" in data and not data["is_directory"]:
+        raise ValueError(
+            "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
+            "specify a directory. Append '/' to the filepath or remove the "
+            "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
+
+
 def file_groupowner(data, lang):
+    _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
-        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
 def file_owner(data, lang):
+    _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
-        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
 def file_permissions(data, lang):
+    _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_permissions", "")
-        data["is_directory"] = data["filepath"].endswith("/")
-
         # build the state that describes our mode
         # mode_str maps to STATEMODE in the template
         mode = data["filemode"]
@@ -135,24 +143,6 @@ def file_permissions(data, lang):
                     + field + ">\n" + mode_str)
             mode_int = mode_int >> 1
         data["statemode"] = mode_str
-    return data
-
-
-def file_regex_permissions(data, lang):
-    if lang == "ansible":
-        data["filepath"] = data["path"]
-    elif lang == "bash":
-        data["filepath"] = data["path"]
-        data["filename"] = re.sub(r"^\^", "", data["filename"])
-    elif lang == "oval":
-        # build a string that contains the full path to the file
-        path = data["path"]
-        filename = data["filename"]
-        if filename == '[NULL]' or filename == '':
-            filepath = path
-        else:
-            filepath = path + '/' + filename
-        data["filepath"] = filepath
     return data
 
 
@@ -268,7 +258,6 @@ templates = {
     "file_groupowner": file_groupowner,
     "file_owner": file_owner,
     "file_permissions": file_permissions,
-    "file_regex_permissions": file_regex_permissions,
     "grub2_bootloader_argument": grub2_bootloader_argument,
     "kernel_module_disabled": kernel_module_disabled,
     "mount": mount,

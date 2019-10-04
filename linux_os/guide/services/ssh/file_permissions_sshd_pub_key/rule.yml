@@ -32,8 +32,8 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/ssh/*.pub", perms="-rw
 ocil: '{{{ ocil_file_permissions(file="/etc/ssh/*.pub", perms="-rw-r--r--") }}}'
 
 template:
-    name: file_regex_permissions
+    name: file_permissions
     vars:
-        path: /etc/ssh
-        filename: ^.*.pub$
+        filepath: /etc/ssh/
+        file_regex: ^.*.pub$
         filemode: '0644'
