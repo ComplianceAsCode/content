@@ -332,7 +332,7 @@ class Builder(object):
         return parameters
 
     def build_lang(
-            self, rule, template_name, template_vars, lang, local_env_yaml):
+            self, rule_id, template_name, template_vars, lang, local_env_yaml):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
@@ -344,7 +344,7 @@ class Builder(object):
         if not os.path.exists(template_file_path):
             return
         ext = lang_to_ext_map[lang]
-        output_file_name = rule.id_ + ext
+        output_file_name = rule_id + ext
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
         template_parameters = self.preprocess_data(
@@ -419,7 +419,7 @@ class Builder(object):
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
             self.build_lang(
-                rule, template_name, template_vars, lang, local_env_yaml)
+                rule.id_, template_name, template_vars, lang, local_env_yaml)
 
     def build(self):
         """
