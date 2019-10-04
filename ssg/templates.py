@@ -420,10 +420,13 @@ class Builder(object):
     def build_extra_ovals(self):
         declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
         declaration = ssg.yaml.open_raw(declaration_path)
-        for fake_rule_id, template in declaration.items():
+        for oval_def_id, template in declaration.items():
             langs_to_generate = ["oval"]
+            # Since OVAL definition ID in shorthand format is always the same
+            # as rule ID, we can use it instead of the rule ID even if no rule
+            # with that ID exists
             self.build_rule(
-                fake_rule_id, fake_rule_id, template, langs_to_generate)
+                oval_def_id, oval_def_id, template, langs_to_generate)
 
     def build_all_rules(self):
         for rule_file in os.listdir(self.resolved_rules_dir):
