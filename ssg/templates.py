@@ -385,41 +385,44 @@ class Builder(object):
         if rule.template is None:
             # rule is not templated, skipping
             return
+        template = rule.template
+        rule_title = rule.title
+        rule_id = rule.id_
+        langs_to_generate = self.get_langs_to_generate(rule)
         try:
-            template_name = rule.template["name"]
+            template_name = template["name"]
         except KeyError:
             raise ValueError(
                 "Rule {0} is missing template name under template key".format(
-                    rule.id_))
+                    rule_id))
         if template_name not in templates:
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
-                    rule.id_, template_name))
+                    rule_id, template_name))
         if templates[template_name] is None:
             sys.stderr.write(
                 "The template {0} has not been completely implemented, no "
                 "content will be generated for rule {1}.\n".format(
-                    template_name, rule.id_))
+                    template_name, rule_id))
             return
         try:
-            template_vars = rule.template["vars"]
+            template_vars = template["vars"]
         except KeyError:
             raise ValueError(
                 "Rule {0} does not contain mandatory 'vars:' key under "
-                "'template:' key.".format(rule.id_))
+                "'template:' key.".format(rule_id))
         # Add the rule ID which will be reused in OVAL templates as OVAL
         # definition ID so that the build system matches the generated
         # check with the rule.
-        template_vars["_rule_id"] = rule.id_
-        langs_to_generate = self.get_langs_to_generate(rule)
+        template_vars["_rule_id"] = rule_id
         # checks and remediations are processed with a custom YAML dict
         local_env_yaml = self.env_yaml.copy()
-        local_env_yaml["rule_id"] = rule.id_
-        local_env_yaml["rule_title"] = rule.title
+        local_env_yaml["rule_id"] = rule_id
+        local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
             self.build_lang(
-                rule.id_, template_name, template_vars, lang, local_env_yaml)
+                rule_id, template_name, template_vars, lang, local_env_yaml)
 
     def build(self):
         """
