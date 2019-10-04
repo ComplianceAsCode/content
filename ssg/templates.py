@@ -377,18 +377,11 @@ class Builder(object):
         else:
             return languages
 
-    def build_rule(self, rule):
+    def build_rule(self, rule_id, rule_title, template, langs_to_generate):
         """
-        Builds templated content for a given rule for all languages, writing
-        the output to the correct build directories.
+        Builds templated content for a given rule for selected languages,
+        writing the output to the correct build directories.
         """
-        if rule.template is None:
-            # rule is not templated, skipping
-            return
-        template = rule.template
-        rule_title = rule.title
-        rule_id = rule.id_
-        langs_to_generate = self.get_langs_to_generate(rule)
         try:
             template_name = template["name"]
         except KeyError:
@@ -428,7 +421,14 @@ class Builder(object):
         for rule_file in os.listdir(self.resolved_rules_dir):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
             rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
-            self.build_rule(rule)
+            if rule.template is None:
+                # rule is not templated, skipping
+                continue
+            template = rule.template
+            rule_title = rule.title
+            rule_id = rule.id_
+            langs_to_generate = self.get_langs_to_generate(rule)
+            self.build_rule(rule_id, rule_title, template, langs_to_generate)
 
     def build(self):
         """
