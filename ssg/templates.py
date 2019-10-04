@@ -320,7 +320,8 @@ class Builder(object):
         parameters = {k.upper(): v for k, v in parameters.items()}
         return parameters
 
-    def build_lang(self, rule, template_name, lang, local_env_yaml):
+    def build_lang(
+            self, rule_id, template_name, template_vars, lang, local_env_yaml):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
@@ -332,20 +333,9 @@ class Builder(object):
         if not os.path.exists(template_file_path):
             return
         ext = lang_to_ext_map[lang]
-        output_file_name = rule.id_ + ext
+        output_file_name = rule_id + ext
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
-
-        try:
-            template_vars = rule.template["vars"]
-        except KeyError:
-            raise ValueError(
-                "Rule {0} does not contain mandatory 'vars:' key under "
-                "'template:' key.".format(rule.id_))
-        # Add the rule ID which will be reused in OVAL templates as OVAL
-        # definition ID so that the build system matches the generated
-        # check with the rule.
-        template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
@@ -376,38 +366,67 @@ class Builder(object):
         else:
             return languages
 
-    def build_rule(self, rule):
+    def build_rule(self, rule_id, rule_title, template, langs_to_generate):
         """
-        Builds templated content for a given rule for all languages, writing
-        the output to the correct build directories.
+        Builds templated content for a given rule for selected languages,
+        writing the output to the correct build directories.
         """
-        if rule.template is None:
-            # rule is not templated, skipping
-            return
         try:
-            template_name = rule.template["name"]
+            template_name = template["name"]
         except KeyError:
             raise ValueError(
                 "Rule {0} is missing template name under template key".format(
-                    rule.id_))
+                    rule_id))
         if template_name not in templates:
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
-                    rule.id_, template_name))
+                    rule_id, template_name))
         if templates[template_name] is None:
             sys.stderr.write(
                 "The template {0} has not been completely implemented, no "
                 "content will be generated for rule {1}.\n".format(
-                    template_name, rule.id_))
+                    template_name, rule_id))
             return
-        langs_to_generate = self.get_langs_to_generate(rule)
+        try:
+            template_vars = template["vars"]
+        except KeyError:
+            raise ValueError(
+                "Rule {0} does not contain mandatory 'vars:' key under "
+                "'template:' key.".format(rule_id))
+        # Add the rule ID which will be reused in OVAL templates as OVAL
+        # definition ID so that the build system matches the generated
+        # check with the rule.
+        template_vars["_rule_id"] = rule_id
         # checks and remediations are processed with a custom YAML dict
         local_env_yaml = self.env_yaml.copy()
-        local_env_yaml["rule_id"] = rule.id_
-        local_env_yaml["rule_title"] = rule.title
+        local_env_yaml["rule_id"] = rule_id
+        local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(rule, template_name, lang, local_env_yaml)
+            self.build_lang(
+                rule_id, template_name, template_vars, lang, local_env_yaml)
+
+    def build_extra_ovals(self):
+        declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
+        declaration = ssg.yaml.open_raw(declaration_path)
+        for oval_def_id, template in declaration.items():
+            langs_to_generate = ["oval"]
+            # Since OVAL definition ID in shorthand format is always the same
+            # as rule ID, we can use it instead of the rule ID even if no rule
+            # with that ID exists
+            self.build_rule(
+                oval_def_id, oval_def_id, template, langs_to_generate)
+
+    def build_all_rules(self):
+        for rule_file in os.listdir(self.resolved_rules_dir):
+            rule_path = os.path.join(self.resolved_rules_dir, rule_file)
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
+            if rule.template is None:
+                # rule is not templated, skipping
+                continue
+            langs_to_generate = self.get_langs_to_generate(rule)
+            self.build_rule(
+                rule.id_, rule.title, rule.template, langs_to_generate)
 
     def build(self):
         """
@@ -419,7 +438,5 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
-        for rule_file in os.listdir(self.resolved_rules_dir):
-            rule_path = os.path.join(self.resolved_rules_dir, rule_file)
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
-            self.build_rule(rule)
+        self.build_extra_ovals()
+        self.build_all_rules()
