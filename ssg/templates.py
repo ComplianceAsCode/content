@@ -331,7 +331,8 @@ class Builder(object):
         parameters = {k.upper(): v for k, v in parameters.items()}
         return parameters
 
-    def build_lang(self, rule, template_name, lang, local_env_yaml):
+    def build_lang(
+            self, rule, template_name, template_vars, lang, local_env_yaml):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
@@ -346,17 +347,6 @@ class Builder(object):
         output_file_name = rule.id_ + ext
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
-
-        try:
-            template_vars = rule.template["vars"]
-        except KeyError:
-            raise ValueError(
-                "Rule {0} does not contain mandatory 'vars:' key under "
-                "'template:' key.".format(rule.id_))
-        # Add the rule ID which will be reused in OVAL templates as OVAL
-        # definition ID so that the build system matches the generated
-        # check with the rule.
-        template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
@@ -411,6 +401,16 @@ class Builder(object):
                 "content will be generated for rule {1}.\n".format(
                     template_name, rule.id_))
             return
+        try:
+            template_vars = rule.template["vars"]
+        except KeyError:
+            raise ValueError(
+                "Rule {0} does not contain mandatory 'vars:' key under "
+                "'template:' key.".format(rule.id_))
+        # Add the rule ID which will be reused in OVAL templates as OVAL
+        # definition ID so that the build system matches the generated
+        # check with the rule.
+        template_vars["_rule_id"] = rule.id_
         langs_to_generate = self.get_langs_to_generate(rule)
         # checks and remediations are processed with a custom YAML dict
         local_env_yaml = self.env_yaml.copy()
@@ -418,7 +418,8 @@ class Builder(object):
         local_env_yaml["rule_title"] = rule.title
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(rule, template_name, lang, local_env_yaml)
+            self.build_lang(
+                rule, template_name, template_vars, lang, local_env_yaml)
 
     def build(self):
         """
