@@ -424,11 +424,9 @@ class Builder(object):
             if rule.template is None:
                 # rule is not templated, skipping
                 continue
-            template = rule.template
-            rule_title = rule.title
-            rule_id = rule.id_
             langs_to_generate = self.get_langs_to_generate(rule)
-            self.build_rule(rule_id, rule_title, template, langs_to_generate)
+            self.build_rule(
+                rule.id_, rule.title, rule.template, langs_to_generate)
 
     def build(self):
         """
