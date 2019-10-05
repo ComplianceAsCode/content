@@ -513,8 +513,20 @@ class Benchmark(object):
             root.append(value.to_xml_element())
         if self.bash_remediation_fns_group is not None:
             root.append(self.bash_remediation_fns_group)
-        for group in self.groups.values():
-            root.append(group.to_xml_element())
+
+        groups_in_bench = list(self.groups.keys())
+        # Make system group the first, followed by services group
+        group_priority_order = ["system", "services"]
+        for group_id in group_priority_order:
+            group = self.groups.get(group_id)
+            # Products using application benchmark don't have system or services group
+            if group is not None:
+                root.append(group.to_xml_element())
+                groups_in_bench.remove(group_id)
+        # Add any remaining top level groups
+        for group_id in groups_in_bench:
+            root.append(self.groups.get(group_id).to_xml_element())
+
         for rule in self.rules.values():
             root.append(rule.to_xml_element())
 
