@@ -5,6 +5,7 @@ import os
 import os.path
 from collections import defaultdict
 import datetime
+import re
 import sys
 
 import yaml
@@ -624,8 +625,20 @@ class Group(object):
             group.append(_value.to_xml_element())
         for _group in self.groups.values():
             group.append(_group.to_xml_element())
-        for _rule in self.rules.values():
-            group.append(_rule.to_xml_element())
+
+        rules_in_group = list(self.rules.keys())
+        regex = re.compile(r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$')
+        priority_rules = list(filter(regex.match, rules_in_group))
+        priority_order = ["installed", "removed", "enabled", "disabled"]
+        # Add priority rules first in order
+        for priority_type in priority_order:
+            for priority_rule_id in priority_rules:
+                if priority_type in priority_rule_id:
+                    group.append(self.rules.get(priority_rule_id).to_xml_element())
+                    rules_in_group.remove(priority_rule_id)
+        # Add remaining rules in the group
+        for rule_id in rules_in_group:
+            group.append(self.rules.get(rule_id).to_xml_element())
 
         return group
 
