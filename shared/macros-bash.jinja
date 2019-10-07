@@ -181,7 +181,7 @@ dconf update
 # The service may not be running because it has been started and failed,
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
-/usr/bin/systemctl reset-failed "$service"
+/usr/bin/systemctl reset-failed "{{{ service }}}"
 {{%- elif init_system == "upstart" -%}}
   {{%- if service_state == "disable" -%}}
 /sbin/service "{{{ service }}}" disable
