@@ -16,14 +16,21 @@ do
 	# From each of these files extract just particular log file path(s), thus:
 	# * Ignore lines starting with space (' '), comment ('#"), or variable syntax ('$') characters,
 	# * Ignore empty lines,
+	# * Strip quotes and closing brackets from paths.
+	# * Ignore paths that match /dev|/etc.*\.conf, as those are paths, but likely not log files
 	# * From the remaining valid rows select only fields constituting a log file path
 	# Text file column is understood to represent a log file path if and only if all of the following are met:
 	# * it contains at least one slash '/' character,
+	# * it is preceded by space
 	# * it doesn't contain space (' '), colon (':'), and semicolon (';') characters
 	# Search log file for path(s) only in case it exists!
 	if [[ -f "${LOG_FILE}" ]]
 	then
-		MATCHED_ITEMS=$(sed -e "/^[[:space:]|#|$]/d ; s/[^\/]*[[:space:]]*\([^:;[:space:]]*\)/\1/g ; /^$/d" "${LOG_FILE}")
+		NORMALIZED_CONFIG_FILE_LINES=$(sed -e "/^[[:space:]|#|$]/d" "${LOG_FILE}")
+		LINES_WITH_PATHS=$(grep '[^/]*\s\+\S*/\S\+' <<< "${NORMALIZED_CONFIG_FILE_LINES}")
+		FILTERED_PATHS=$(sed -e 's/[^\/]*[[:space:]]*\([^:;[:space:]]*\)/\1/g' <<< "${LINES_WITH_PATHS}")
+		CLEANED_PATHS=$(sed -e "s/[\"')]//g; /\\/etc.*\.conf/d; /\\/dev\\//d" <<< "${FILTERED_PATHS}")
+		MATCHED_ITEMS=$(sed -e "/^$/d" <<< "${CLEANED_PATHS}")
 		# Since above sed command might return more than one item (delimited by newline), split the particular
 		# matches entries into new array specific for this log file
 		readarray -t ARRAY_FOR_LOG_FILE <<< "$MATCHED_ITEMS"
@@ -63,7 +70,7 @@ do
 	{{% endif %}}
 
 	# Also for each log file check if its permissions differ from 600. If so, correct them
-	if [ "$(/usr/bin/stat -c %a "$LOG_FILE_PATH")" -ne 600 ]
+	if [ -f "$LOG_FILE_PATH" ] && [ "$(/usr/bin/stat -c %a "$LOG_FILE_PATH")" -ne 600 ]
 	then
 		/bin/chmod 600 "$LOG_FILE_PATH"
 	fi
