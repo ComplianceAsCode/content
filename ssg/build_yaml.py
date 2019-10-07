@@ -5,6 +5,7 @@ import os
 import os.path
 from collections import defaultdict
 import datetime
+import re
 import sys
 
 import yaml
@@ -512,8 +513,20 @@ class Benchmark(object):
             root.append(value.to_xml_element())
         if self.bash_remediation_fns_group is not None:
             root.append(self.bash_remediation_fns_group)
-        for group in self.groups.values():
-            root.append(group.to_xml_element())
+
+        groups_in_bench = list(self.groups.keys())
+        # Make system group the first, followed by services group
+        group_priority_order = ["system", "services"]
+        for group_id in group_priority_order:
+            group = self.groups.get(group_id)
+            # Products using application benchmark don't have system or services group
+            if group is not None:
+                root.append(group.to_xml_element())
+                groups_in_bench.remove(group_id)
+        # Add any remaining top level groups
+        for group_id in groups_in_bench:
+            root.append(self.groups.get(group_id).to_xml_element())
+
         for rule in self.rules.values():
             root.append(rule.to_xml_element())
 
@@ -624,8 +637,26 @@ class Group(object):
             group.append(_value.to_xml_element())
         for _group in self.groups.values():
             group.append(_group.to_xml_element())
-        for _rule in self.rules.values():
-            group.append(_rule.to_xml_element())
+
+        # Rules that install or remove packages affect remediation
+        # of other rules.
+        # When packages installed/removed rules come first:
+        # The Rules are ordered in more logical way, and
+        # remediation order is natural, first the package is installed, then configured.
+        rules_in_group = list(self.rules.keys())
+        regex = re.compile(r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$')
+        priority_rules = list(filter(regex.match, rules_in_group))
+        priority_order = ["installed", "removed", "enabled", "disabled"]
+        # Add priority rules in priority order, first all packages installed, then removed,
+        # followed by services enabled, then disabled
+        for priority_type in priority_order:
+            for priority_rule_id in priority_rules:
+                if priority_type in priority_rule_id:
+                    group.append(self.rules.get(priority_rule_id).to_xml_element())
+                    rules_in_group.remove(priority_rule_id)
+        # Add remaining rules in the group
+        for rule_id in rules_in_group:
+            group.append(self.rules.get(rule_id).to_xml_element())
 
         return group
 
