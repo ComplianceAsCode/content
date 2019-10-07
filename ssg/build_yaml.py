@@ -638,11 +638,17 @@ class Group(object):
         for _group in self.groups.values():
             group.append(_group.to_xml_element())
 
+        # Rules that install or remove packages affect remediation
+        # of other rules.
+        # When packages installed/removed rules come first:
+        # The Rules are ordered in more logical way, and
+        # remediation order is natural, first the package is installed, then configured.
         rules_in_group = list(self.rules.keys())
         regex = re.compile(r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$')
         priority_rules = list(filter(regex.match, rules_in_group))
         priority_order = ["installed", "removed", "enabled", "disabled"]
-        # Add priority rules first in order
+        # Add priority rules in priority order, first all packages installed, then removed,
+        # followed by services enabled, then disabled
         for priority_type in priority_order:
             for priority_rule_id in priority_rules:
                 if priority_type in priority_rule_id:
