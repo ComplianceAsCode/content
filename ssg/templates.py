@@ -317,8 +317,10 @@ class Builder(object):
             parameters = raw_parameters.copy()
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
-        parameters = {k.upper(): v for k, v in parameters.items()}
-        return parameters
+        uppercases = dict()
+        for k, v in parameters.items():
+            uppercases[k.upper()] = v
+        return uppercases
 
     def build_lang(
             self, rule_id, template_name, template_vars, lang, local_env_yaml):
