@@ -40,12 +40,4 @@ template:
         mountpoint: /tmp
         mountoption: nodev
         mount_has_to_exist: 'yes'
-        mount_has_to_exist@rhel7: 'no'
-        mount_has_to_exist@rhel8: 'no'
-        filesystem@rhel7: tmpfs
-        filesystem@rhel8: tmpfs
-        type@rhel7: tmpfs
-        type@rhel8: tmpfs
-    backends:
-        anaconda@rhel7: 'off'
-        anaconda@rhel8: 'off'
+# Note that /tmp on RHEL systems is not tmpfs
