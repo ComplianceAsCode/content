@@ -15,6 +15,8 @@ rationale: |-
     should not be able to execute SUID or SGID binaries from partitions
     designated for audit log files.
 
+{{{ complete_ocil_entry_mount_option("/var/log/audit", "nosuid") }}}
+
 severity: medium
 
 identifiers:
