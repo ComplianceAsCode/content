@@ -12,6 +12,8 @@ rationale: |-
     The presence of SUID and SGID executables should be tightly controlled. Users
     should not be able to execute SUID or SGID binaries from temporary storage partitions.
 
+{{{ complete_ocil_entry_mount_option("/dev/shm", "nosuid") }}}
+
 severity: medium
 
 identifiers:
