@@ -6,7 +6,7 @@ if [[ $1 =~ ansible-playbook ]]; then
 	$1 --syntax-check $3-playbook-*.yml
 	ret=$?
 elif [[ $1 =~ ansible-lint ]]; then
-	$1 -p $3-playbook-*.yml
+	$1 -x 303,204 -p $3-playbook-*.yml
 	ret=$?
 elif [[ $1 =~ yamllint ]]; then
 	$1 -c $4 $3-playbook-*.yml
