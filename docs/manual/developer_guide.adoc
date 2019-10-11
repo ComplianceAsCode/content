@@ -1452,7 +1452,7 @@ audit_rules_unsuccessful_file_modification_o_creat::
 * Languages: OVAL
 
 audit_rules_unsuccessful_file_modification_o_trunc_write::
-* Ensure there is an Audit rule to record unsuccessful access attempts to files when O_TRUNC_WRITE flag is specified.
+* Ensure there is an Audit rule to record unsuccessful attempts to access files when O_TRUNC_WRITE flag is specified.
 * Parameters:
 ** *syscall* - name of the unsuccessful system call, eg. `openat`
 ** *pos* - position of the O_TRUNC_WRITE argument in the syscall, as specified by `-F` audit rule argument, eg. `a2`
