@@ -38,8 +38,6 @@ mkdir $NEW_PRODUCT \
         $NEW_PRODUCT/cpe \
         $NEW_PRODUCT/overlays \
         $NEW_PRODUCT/profiles \
-        $NEW_PRODUCT/templates \
-        $NEW_PRODUCT/templates/csv \
         $NEW_PRODUCT/transforms
 </pre>
 2. Add the product to [CMakeLists.txt](../CMakeLists.txt) by adding the following lines:
