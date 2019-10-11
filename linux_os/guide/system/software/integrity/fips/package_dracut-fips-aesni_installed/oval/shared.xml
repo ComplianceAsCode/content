@@ -16,11 +16,8 @@
     </metadata>
     <criteria operator="OR">
       <criterion comment="System does not support AES instruction set" test_ref="test_processor_aes_instruction" />
-      <criteria operator="AND">
-        <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
-        <criterion comment="package dracut-fips-aesni is installed"
-        test_ref="test_package_dracut-fips-aesni_installed" />
-      </criteria>
+      <criterion comment="package dracut-fips-aesni is installed"
+      test_ref="test_package_dracut-fips-aesni_installed" />
     </criteria>
   </definition>
 

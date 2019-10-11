@@ -11,7 +11,6 @@
       <description>Look for argument fips=1 in the kernel line in /etc/default/grub.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <extend_definition comment="prelink disabled" definition_ref="disable_prelink" />
       <extend_definition comment="package dracut-fips installed" definition_ref="package_dracut-fips_installed" />
       <extend_definition comment="package dracut-fips-aesni installed" definition_ref="package_dracut-fips-aesni_installed" />

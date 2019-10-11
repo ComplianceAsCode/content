@@ -14,7 +14,6 @@
       <extend_definition comment="check sysctl crypto.fips_enabled = 1" definition_ref="sysctl_crypto_fips_enabled" />
       <extend_definition comment="Dracut FIPS module is enabled" definition_ref="enable_dracut_fips_module" />
       <extend_definition comment="system cryptography policy is configured" definition_ref="configure_crypto_policy" />
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <criterion comment="check if system crypto policy selection in var_system_crypto_policy in the profile is set to FIPS" test_ref="test_system_crypto_policy_value" />
     </criteria>
   </definition>

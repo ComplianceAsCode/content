@@ -9,7 +9,6 @@
       cryptographic hashes.</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Installed OS is FIPS certified" definition_ref="installed_OS_is_FIPS_certified" />
       <extend_definition comment="Aide is installed" definition_ref="package_aide_installed" />
       <criterion comment="non-FIPS hashes are not configured" test_ref="test_aide_non_fips_hashes" />
       <criterion comment="FIPS hashes are configured" test_ref="test_aide_use_fips_hashes" />
