@@ -40,6 +40,9 @@ def parse_args():
                       action="store_true", help="Enable CentOS")
     parser.add_option("--enable-sl", dest="sl", default=False,
                       action="store_true", help="Enable Scientific Linux")
+    parser.add_option("--enable-all-profiles", dest="all_profiles",
+                      default=False, action="store_true",
+                      help="Enable all profiles, not just standard profiles")
     parser.add_option("-i", "--input", dest="input_content", default=False,
                       action="store",
                       help="INPUT can be XCCDF or Source DataStream")
@@ -96,7 +99,8 @@ def main():
         raise RuntimeError("No Benchmark found!")
 
     for namespace, benchmark in benchmarks:
-        ssg.build_derivatives.profile_handling(benchmark, namespace)
+        if not options.all_profiles:
+            ssg.build_derivatives.profile_handling(benchmark, namespace)
         if not ssg.build_derivatives.add_cpes(benchmark, namespace, mapping):
             raise RuntimeError(
                 "Could not add derivative OS CPEs to Benchmark '%s'."

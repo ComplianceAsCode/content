@@ -87,7 +87,9 @@ option(SSG_PRODUCT_WRLINUX8 "If enabled, the WRLinux8 SCAP content will be built
 option(SSG_PRODUCT_WRLINUX1019 "If enabled, the WRLinux1019 SCAP content will be built" ${SSG_PRODUCT_DEFAULT})
 
 option(SSG_CENTOS_DERIVATIVES_ENABLED "If enabled, CentOS derivative content will be built from the RHEL content" TRUE)
+option(SSG_CENTOS_DERIVATIVES_NONSTANDARD_PROFILES_ENABLED "If enabled, all profiles, not just the standard profiles, will be enabled for CentOS derivative content" FALSE)
 option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_ENABLED "If enabled, Scientific Linux derivative content will be built from the RHEL content" TRUE)
+option(SSG_SCIENTIFIC_LINUX_DERIVATIVES_NONSTANDARD_PROFILES_ENABLED "If enabled, all profiles, not just the standard profiles, will be enabled for Scientific Linux derivative content" FALSE)
 
 set(SSG_SHARED "${CMAKE_SOURCE_DIR}/shared")
 set(SSG_SHARED_REFS "${SSG_SHARED}/references")

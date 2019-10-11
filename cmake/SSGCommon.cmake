@@ -869,12 +869,18 @@ macro(ssg_build_product PRODUCT)
         DESTINATION "${SSG_KICKSTART_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
+macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE NONSTANDARD)
     add_custom_target(${DERIVATIVE}-content)
+
+    if(${NONSTANDARD})
+        set(ALL_PROFILES_ARG "--enable-all-profiles")
+    else()
+        set(ALL_PROFILES_ARG)
+    endif()
 
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} ${ALL_PROFILES_ARG} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-xccdf.xml"
         DEPENDS generate-ssg-${ORIGINAL}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-xccdf.xml"
         DEPENDS "${SSG_BUILD_SCRIPTS}/enable_derivatives.py"
@@ -892,8 +898,8 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
     add_custom_command(
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         OUTPUT "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} ${ALL_PROFILES_ARG} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds-1.2.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/enable_derivatives.py" --enable-${SHORTNAME} ${ALL_PROFILES_ARG} -i "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml" -o "${CMAKE_BINARY_DIR}/ssg-${DERIVATIVE}-ds.xml"
         DEPENDS generate-ssg-${ORIGINAL}-ds.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds.xml"
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${ORIGINAL}-ds-1.2.xml"
@@ -996,6 +1002,8 @@ macro(ssg_build_derivative_product ORIGINAL SHORTNAME DERIVATIVE)
         endif()
         "
     )
+
+    unset(ALL_PROFILES_ARG)
 endmacro()
 
 macro(ssg_build_html_table_by_ref PRODUCT REF)
