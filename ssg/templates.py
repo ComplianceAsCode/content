@@ -325,10 +325,7 @@ class Builder(object):
         substituted into the Jinja template.
         """
         template_func = templates[template]
-        if template_func is not None:
-            parameters = template_func(raw_parameters.copy(), lang)
-        else:
-            parameters = raw_parameters.copy()
+        parameters = template_func(raw_parameters.copy(), lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
         uppercases = dict()
@@ -397,12 +394,6 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule_id, template_name))
-        if templates[template_name] is None:
-            sys.stderr.write(
-                "The template {0} has not been completely implemented, no "
-                "content will be generated for rule {1}.\n".format(
-                    template_name, rule_id))
-            return
         try:
             template_vars = template["vars"]
         except KeyError:
