@@ -1337,26 +1337,407 @@ Available low-level Jinja macros that can be used in Bash remediations:
 - `die` - Function to terminate the remediation
 - `set_config_file` - Add an entry to a text configuration file
 
-==== Templating
+=== Templating
+
+Writing OVAL checks, Bash, or any other content can be tedious work. For
+certain types of rules we provide templates. If there is a template that can be
+used for the new rule you only need to specify the template name and its parameters in
+`rule.yml` and the content will be generated during the build.
+
+The templating system currently supports generating OVAL checks and Ansible,
+Bash, Anaconda and Puppet remediations.  All templates can be found in
+`link:{rootdir}/shared/templates[shared/templates]` directory. The files are
+named `template_<TYPE>_<NAME>`, where `<TYPE>` should be OVAL, ANSIBLE, BASH,
+ANACONDA or PUPPET and `<NAME>` is the template name.
+
+==== Using Templates
+
+To use a template in `rule.yml` add `template:` key there and fill it
+accordingly. The general form is the following:
+
+----
+template:
+    name: template_name
+    vars:
+        param_name: value # these parameters are individual for each template
+        param_name@rhel7: value1
+        param_name@rhel8: value2
+    backends: # optional
+        ansible: "off"
+        bash: "on" # on is implicit value
+----
+
+The `vars:` key contains template parameters and their values which will be
+substituted into the template.  Each template has specific parameters.  To use
+different values of parameters based on product, append `@` followed by product
+ID to the parameter name.
+
+The `backends:` key is optional. By default, all languages supported by a given template will be generated.
+with given name exist will be generated. This key can be used to explicitly opt
+out from generating a certain type of content for the rule.
+
+For example, to generate templated content except Bash remediation for rule
+"Package GCC is Installed" using `package_installed` template, add the
+following to `rule.yml`:
+
+----
+template:
+    name: package_installed
+    vars:
+        pkgname: gcc
+    backends:
+        bash: "off"
+----
+
+==== List of available templates
+
+accounts_password::
+* Checks if PAM enforces password quality requirements. Checks the configuration in `/etc/pam.d/system-auth` (for RHEL 6 systems) or `/etc/security/pwquality.conf` (on other systems).
+* Parameters:
+** *variable* - PAM `pam_cracklib` (on RHEL 6) or `pam_pwquality` (on other systems) module name, eg. `ucredit`, `ocredit`
+** *operation* - OVAL operation, eg. `less than or equal`
+* Languages: OVAL
+
+auditd_lineinfile::
+* Checks configuration options of the Audit Daemon in `/etc/audit/auditd.conf`.
+* Parameters:
+** *parameter* - auditd configuration item
+** *value* - the value of configuration item specified by parameter
+** *missing_parameter_pass* - effective only in OVAL checks, if set to `"true"` and the parameter is not present in the configuration file the OVAL check will return true.
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_dac_modification::
+* Checks Audit Discretionary Access Control rules
+* Parameters:
+** *attr* - value of `-S` argument in Audit rule, eg. `chmod`
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_file_deletion_events::
+* Ensure auditd Collects file deletion events
+* Parameters:
+** *name* - value of `-S` argument in Audit rule, eg. `unlink`
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_login_events::
+* Checks if there are Audit rules that record attempts to alter logon and logout events.
+* Parameters:
+** *path* - value of `-w` in the Audit rule, eg. `/var/run/faillock`
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_path_syscall::
+* Check if there are Audit rules to record events that modify user/group information via a syscall on a specific file.
+* Parameters:
+** *path* - path of the protected file, eg `/etc/shadow`
+** *pos* - position of argument, eg. `a2`
+** *syscall* - name of the system call, eg. `openat`
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_privileged_commands::
+* Ensure Auditd collects information on the use of specified privileged command.
+* Parameters:
+** *path* - the path of the privileged command - eg. `/usr/bin/mount`
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_unsuccessful_file_modification::
+* Ensure there is an Audit rule to record unsuccessful attempts to access files
+* Parameters:
+** *name* - name of the unsuccessful system call, eg. `creat`
+* Languages: Ansible, Bash, OVAL
+
+audit_rules_unsuccessful_file_modification_o_creat::
+* Ensure there is an Audit rule to record unsuccessful attempts to access files when O_CREAT flag is specified.
+* Parameters:
+** *syscall* - name of the unsuccessful system call, eg. `openat`
+** *pos* - position of the O_CREAT argument in the syscall, as specified by `-F` audit rule argument, eg. `a2`
+* Languages: OVAL
+
+audit_rules_unsuccessful_file_modification_o_trunc_write::
+* Ensure there is an Audit rule to record unsuccessful attempts to access files when O_TRUNC_WRITE flag is specified.
+* Parameters:
+** *syscall* - name of the unsuccessful system call, eg. `openat`
+** *pos* - position of the O_TRUNC_WRITE argument in the syscall, as specified by `-F` audit rule argument, eg. `a2`
+* Languages: OVAL
+
+audit_rules_unsuccessful_file_modification_rule_order::
+* Ensure that Audit rules for unauthorized attempts to use a specific system call are ordered correctly.
+* Parameters:
+** *syscall* - name of the unsuccessful system call, eg. `openat`
+** *pos* - position of the flag parameter in the syscall, as specified by `-F` audit rule argument, eg. `a2`
+* Languages: OVAL
+
+audit_rules_usergroup_modification::
+* Check if Audit is configured to record events that modify account changes.
+* Parameters:
+** *path* - path that should be part of the audit rule as a value of `-w` argument, eg. `/etc/group`.
+* Languages: Ansible, Bash, OVAL
+
+file_groupowner::
+* Check group that owns the given file.
+* Parameters:
+** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory.
+** *filegid* - group ID (GID)
+* Languages: Ansible, Bash, OVAL
+
+file_owner::
+* Check user that owns the given file.
+* Parameters:
+** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory.
+** *fileuid* - user ID (UID)
+* Languages: Ansible, Bash, OVAL
+
+file_permissions::
+* Checks permissions (mode) on a given file.
+* Parameters:
+** *filepath* - File path to be checked. If the file path ends with `/` it describes a directory.
+** *file_regex* - Regular expression that matches file names in a directory specified by *filepath*. Can be set only if *filepath* parameter specifies a directory.
+** *filemode* - File permissions in a hexadecimal format, eg. `'0640'`.
+* Languages: Ansible, Bash, OVAL
+
+grub2_bootloader_argument::
+* Checks kernel command line arguments in GRUB 2 configuration.
+* Parameters:
+** *arg_name* - argument name, eg. `audit`
+** *arg_value* - argument value, eg. `'1'`
+* Languages: Ansible, Bash, OVAL
+
+kernel_module_disabled::
+* Checks if the given Linux kernel module is disabled.
+* Parameters:
+** *kernmodule* - name of the Linux kernel module, eg. `cramfs`
+* Languages: Ansible, Bash, OVAL
+
+mount::
+* Checks that a given mount point is located on a separate partition.
+* Parameters:
+** *mountpoint* - path to the mount point, eg. `/var/tmp`
+* Languages: Anaconda, OVAL
+
+mount_option::
+* Checks if a given partition is mounted with a specific option such as "nosuid".
+* Parameters:
+** *mountpoint* - mount point on the filesystem eg. `/dev/shm`
+** *mountoption* - mount option, eg. `nosuid`
+** *filesystem* - filesystem in `/etc/fstab`, eg. `tmpfs`. Used only in Bash remediation.
+** *type* - filesystem type. Used only in Bash remediation.
+** *mount_has_to_exist* - Used only in Bash remediation. Specifies if the *mountpoint* entry has to exist in `/etc/fstab` before the remediation is executed. If set to `yes` and the *mountpoint* entry is not present in `/etc/fstab` the Bash remediation terminates. If set to `no` the *mountpoint* entry will be created in `/etc/fstab`.
+* Languages: Anaconda, Ansible, Bash, OVAL
+
+mount_option_remote_filesystems::
+* Checks if all remote filesystems (NFS mounts in `/etc/fstab`) are mounted with a specific option.
+* Parameters:
+** *mountpoint* - always set to `remote_filesystems`
+** *mountoption* - mount option, eg. `nodev`
+** *filesystem* - filesystem of new mount point (used when adding new entry in `/etc/fstab`), eg. `tmpfs`. Used only in Bash remediation.
+** *mount_has_to_exist* - Used only in Bash remediation. Specifies if the *mountpoint* entry has to exist in `/etc/fstab` before the remediation is executed. If set to `yes` and the *mountpoint* entry is not present in `/etc/fstab` the Bash remediation terminates. If set to `no` the *mountpoint* entry will be created in `/etc/fstab`.
+* Languages: Ansible, Bash, OVAL
+
+mount_option_removable_partitions::
+* Checks if all removable media mounts are mounted with a specific option.
+* Parameters:
+** *mountpoint* - always set to `var_removable_partition`. This is an XCCDF Value, defined in `link:{rootdir}/linux_os/guide/system/permissions/partitions/var_removable_partition.var[var_removable_partition.var]`
+** *mountoption* - mount option, eg. `nodev`
+** *filesystem* - filesystem of new mount point (used when adding new entry in `/etc/fstab`), eg. `tmpfs`. Used only in Bash remediation.
+** *mount_has_to_exist* - Used only in Bash remediation. Specifies if the *mountpoint* entry has to exist in `/etc/fstab` before the remediation is executed. If set to `yes` and the *mountpoint* entry is not present in `/etc/fstab` the Bash remediation terminates. If set to `no` the *mountpoint* entry will be created in `/etc/fstab`.
+* Languages: Anaconda, Ansible, Bash, OVAL
+
+package_installed::
+* Checks if a given package is installed. Optionally, it can also check whether a specific version or newer is installed.
+* Parameters:
+** *pkgname* - name of the RPM or DEB package, eg. `tmux`
+** *evr* - Optional parameter. It can be used to check if the package is of a specific version or newer. Provide epoch, version, release in `epoch:version-release` format, eg. `0:2.17-55.0.4.el7_0.3`. Used only in OVAL checks. The OVAL state uses operation "greater than or equal" to compare the collected package version with the version in the OVAL state.
+* Languages: Anaconda, Ansible, Bash, OVAL, Puppet
+
+package_removed::
+* Checks if the given package is not installed.
+* Parameters:
+** *pkgname* - name of the RPM or DEB package, eg. `tmux`
+* Languages: Anaconda, Ansible, Bash, OVAL, Puppet
+
+sebool::
+* Checks values of SELinux booleans.
+* Parameters:
+** *seboolid* - name of SELinux boolean, eg. `cron_userdomain_transition`
+** *sebool_bool* - the value of the SELinux Boolean. Can be either `"true"` or `"false"`. If this parameter is not specified, the rule will use XCCDF Value `var_<seboolid>`. These XCCDF Values are usually defined in the same directory where the `rule.yml` that describes the rule is located. The *seboolid* will be replaced by a SELinux boolean, for example: `selinuxuser_execheap` and in the profile you can use `var_selinuxuser_execheap` to turn on or off the SELinux boolean.
+* Languages: Ansible, Bash, OVAL
+
+service_disabled::
+* Checks if a service is disabled. Uses either systemd or SysV init based on the product configuration in `product.yml`.
+* Parameters:
+** *servicename* - name of the service.
+** *packagename* - name of the package that provides this service. This argument is optional. If *packagename* is not specified it means the name of the package is the same as the name of service.
+** *daemonname* - name of the daemon. This argument is optional. If *daemonname* is not specified it means the name of the daemon is the same as the name of service.
+** *mask_service* - Check if the service should be masked to prevent it from running. This argument is optional. Implicit value is "true".
+* Languages: Ansible, Bash, OVAL, Puppet
+
+service_enabled::
+* Checks if a system service is enabled. Uses either systemd or SysV init based on the product configuration in `product.yml`.
+* Parameters:
+** *servicename* - name of the service.
+** *packagename* - name of the package that provides this service. This argument is optional. If *packagename* is not specified it means the name of the package is the same as the name of service.
+** *daemonname* - name of the daemon. This argument is optional. If *daemonname* is not specified it means the name of the daemon is the same as the name of service.
+* Languages: Ansible, Bash, OVAL, Puppet
+
+sshd_lineinfile::
+* Checks SSH server configuration items in `/etc/ssh/sshd_config`.
+* Parameters:
+** *parameter* - name of the SSH configuration option, eg. `KerberosAuthentication`
+** *value* - value of the SSH configuration option specified by *parameter*, eg. `"no"`.
+** *missing_parameter_pass* - If set to `"true"` the OVAL check will pass if the parameter is not present in `/etc/ssh/sshd_config`.
+* Languages: Ansible, Bash, OVAL
+
+sysctl::
+* Checks sysctl parameters. The OVAL definition checks both configuration and runtime settings and require both of them to be set to the desired value to return true.
+* Parameters:
+** *sysctlvar* - name of the sysctl value, eg. `net.ipv4.conf.all.secure_redirects`.
+** *datatype* - data type of the sysctl value, eg. `int`.
+** *sysctlval* - value of the sysctl value, eg. `'1'`. If this parameter is not specified, XCCDF Value is used instead.
+* Languages: Ansible, Bash, OVAL
+
+timer_enabled::
+* Checks if a SystemD timer unit is enabled.
+* Parameters:
+** *timername* - name of the SystemD timer unit, without the `timer` suffix, eg. `dnf-automatic`.
+** *packagename* - name of the RPM package which provides the SystemD timer unit. This parameter is optional, if it is not provided it is assumed that the name of the RPM package is the same as the name of the SystemD timer unit.
+* Languages: Ansible, Bash, OVAL
+
+
+==== Creating Templates
+
+The offer of currently available templates can be extended by developing a new
+template.
+
+1) Create the template files, one for each type of file. Each one should be
+named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH,
+ANACONDA or PUPPET and `<NAME>` is the what we will call the template name.
+Create these files in `link:{rootdir}/shared/templates[shared/templates]` directory.
+
+Use the Jinja syntax we use elsewhere in the project; refer to the earlier
+section on Jinja macros for more information.  The parameters should be named
+using uppercase letters, because the keys from `rule.yml` are converted to
+uppercase by the code that substitutes the parameters to the template.
+
+Notice that OVAL should be written in shorthand format.  This is an example of
+an OVAL template file called _template_OVAL_package_installed_:
+
+[source,xml]
+----
+<def-group>
+  <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
+  version="1">
+    <metadata>
+      <title>Package {{{ PKGNAME }}} Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package {{{ PKGNAME }}} is installed"
+      test_ref="test_package_{{{ PKGNAME }}}_installed" />
+    </criteria>
+  </definition>
+{{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
+</def-group>
+----
+
+Notice that you can use Jinja macros and Jinja filters in the template code.
+
+And here is the Ansible template file called _template_ANSIBLE_package_installed_:
+
+----
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Ensure {{{ PKGNAME }}} is installed
+  package:
+    name: "{{{ PKGNAME }}}"
+    state: present
+
+----
+
+
+2) Implement a callback function which will process the
+parameters before passing them to the Jinja engine.  For example, this callback can
+provide default values, escape characters, check if parameters are correct, or
+any other processing of the parameters specific for the template.
+
+The callback function should be put into `link:{rootdir}/ssg/templates.py[ssg/templates.py]` and must have 2 parameters:
+
+- `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
+- `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`
+
+The callback function is executed for every supported language, so it can process the data differently for each language.
+
+The function must always return the (modified) `data` dictionary.
+
+The function must be always defined even if no processing of data is needed.
+In that situation the function just returns `data` parameter.
+
+The following example shows the callback function for the template `mount_option`:
+
+[source,python]
+----
+def mount_option(data, lang):
+    if lang == "oval":
+        data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
+    else:
+        data["mountoption"] = re.sub(" ", ",", data["mountoption"])
+    return data
+----
+
+3) Add the template name to `templates` dictionary in `link:{rootdir}/ssg/templates.py[ssg/templates.py]`. This
+dictionary maps the template name to the callback function name.
+
+
+==== Old Templating
 
 Often, a set of very related checks and/or remediations needs to be created. Instead of creating them individually, you can use the templating mechanism provided by the ComplianceAsCode project.
 It supports OVAL checks and Ansible, Bash, Anaconda and Puppet remediations.
 In order to use this mechanism, you have to:
 
-1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>.jinja`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
+1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
 Use the jinja syntax we use elsewhere in the project; refer to the earlier section on jinja macros for more information.
 
 This is an example of an OVAL template file called _template_OVAL_package_installed_
 
 [source,xml]
 ----
-include::{templatesdir}/template_OVAL_package_installed
+<def-group>
+  <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
+  version="1">
+    <metadata>
+      <title>Package {{{ PKGNAME }}} Installed</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
+    </metadata>
+    <criteria>
+      <criterion comment="package {{{ PKGNAME }}} is installed"
+      test_ref="test_package_{{{ PKGNAME }}}_installed" />
+    </criteria>
+  </definition>
+{{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
+</def-group>
 ----
 
 And here is the Ansible template file called _template_ANSIBLE_package_installed_:
 
 ----
-include::{templatesdir}/template_ANSIBLE_package_installed
+# platform = multi_platform_all
+# reboot = false
+# strategy = enable
+# complexity = low
+# disruption = low
+- name: Ensure {{{ PKGNAME }}} is installed
+  package:
+    name: "{{{ PKGNAME }}}"
+    state: present
+
 ----
 
 2) Create a csv (comma-separated-values) file in the _PRODUCT/template/csv_ directory with the same name of the template followed by the extension _.csv_. It should contain all the instances you want to generate from the template, one per line. Use the line to supply values to the variables. You can use `#` to make a comment until the end of the line.
@@ -1364,7 +1745,14 @@ include::{templatesdir}/template_ANSIBLE_package_installed
 This is the file _rhel7/template/csv/packages_installed.csv_:
 
 ----
-include::{rhel7dir}/template/csv/packages_installed.csv
+aide
+audit
+chrony
+cronie
+dconf
+docker
+esc
+firewalld
 ----
 
 3) Create a python file containing the generator class. The name of the file should start with _create__ and then be followed by the template name and the extension _.py_. The generator class name should also be the template name, in Camel case, followed by _Generator_.
@@ -1377,7 +1765,75 @@ This is the file with the generator class for the installed package template, it
 
 [source,python]
 ----
-include::{templatesdir}/create_package_installed.py
+#
+# create_package_installed.py
+#   automatically generate checks for installed packages
+#
+
+import re
+from template_common import FilesGenerator, UnknownTargetError
+
+
+class PackageInstalledGenerator(FilesGenerator):
+    def generate(self, target, package_info):
+        pkgname = package_info[0]
+        if not pkgname:
+            raise RuntimeError(
+                "ERROR: input violation: the package name must be defined")
+
+        if target == "oval":
+            evr = ""
+            # If the input is "pkgname,evr", verify if the evr string is in correct format
+            if len(package_info) > 1:
+                evr = package_info[1]
+                if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
+                    raise RuntimeError(
+                        "ERROR: input violation: evr should be in epoch:version-release format",
+                        "current package is", pkgname, "current evr is", evr)
+
+            self.file_from_template(
+                "./template_OVAL_package_installed",
+                {
+                    "PKGNAME": pkgname,
+                    "EVR": evr
+                },
+                "./oval/package_{0}_installed.xml", pkgname
+            )
+
+        elif target == "bash":
+            self.file_from_template(
+                "./template_BASH_package_installed",
+                {"PKGNAME": pkgname},
+                "./bash/package_{0}_installed.sh", pkgname
+            )
+
+        elif target == "ansible":
+            self.file_from_template(
+                "./template_ANSIBLE_package_installed",
+                {"PKGNAME": pkgname},
+                "./ansible/package_{0}_installed.yml", pkgname
+            )
+
+        elif target == "anaconda":
+            self.file_from_template(
+                "./template_ANACONDA_package_installed",
+                {"PKGNAME": pkgname},
+                "./anaconda/package_{0}_installed.anaconda", pkgname
+            )
+
+        elif target == "puppet":
+            self.file_from_template(
+                "./template_PUPPET_package_installed",
+                {"PKGNAME": pkgname},
+                "./puppet/package_{0}_installed.pp", pkgname
+            )
+
+        else:
+            raise UnknownTargetError(target)
+
+    def csv_format(self):
+        return("CSV should contains lines of the format: " +
+               "PACKAGE_NAME[,EVR_STRING]")
 ----
 
 4) Finally, you have to ensure the build system knows your template. To do that, you have to edit the file _ssg/build_templates.py_ and include the generator class you've just created and declare which csv file to use along with it.
