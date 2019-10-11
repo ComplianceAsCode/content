@@ -339,12 +339,20 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
+        template_func = templates[template_name]
+        if lang not in template_func.langs:
+            return
         template_file_name = "template_{0}_{1}".format(
             lang.upper(), template_name)
         template_file_path = os.path.join(
             self.templates_dir, template_file_name)
         if not os.path.exists(template_file_path):
-            return
+            raise RuntimeError(
+                "Rule {0} wants to generate {1} content from template {2}, "
+                "but file {3} which provides this template does not "
+                "exist.".format(
+                    rule_id, lang, template_name, template_file_path)
+            )
         ext = lang_to_ext_map[lang]
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
