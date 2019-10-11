@@ -1536,7 +1536,7 @@ mount_option_remote_filesystems::
 mount_option_removable_partitions::
 * Checks if all removable media mounts are mounted with a specific option.
 * Parameters:
-** *mountpoint* - always set to `var_removable_partition`
+** *mountpoint* - always set to `var_removable_partition`. This is an XCCDF Value, defined in `link:{rootdir}/linux_os/guide/system/permissions/partitions/var_removable_partition.var[var_removable_partition.var]`
 ** *mountoption* - mount option, eg. `nodev`
 ** *filesystem* - filesystem of new mount point (used when adding new entry in `/etc/fstab`), eg. `tmpfs`. Used only in Bash remediation.
 ** *mount_has_to_exist* - Used only in Bash remediation. Specifies if the *mountpoint* entry has to exist in `/etc/fstab` before the remediation is executed. If set to `yes` and the *mountpoint* entry is not present in `/etc/fstab` the Bash remediation terminates. If set to `no` the *mountpoint* entry will be created in `/etc/fstab`.
@@ -1615,7 +1615,8 @@ Create these files in `link:{rootdir}/shared/templates[shared/templates]` direct
 
 Use the Jinja syntax we use elsewhere in the project; refer to the earlier
 section on Jinja macros for more information.  The parameters should be named
-using lowercase letters.
+using uppercase letters, because the keys from `rule.yml` are converted to
+uppercase by the code that substitutes the parameters to the template.
 
 Notice that OVAL should be written in shorthand format.  This is an example of
 an OVAL template file called _template_OVAL_package_installed_:
