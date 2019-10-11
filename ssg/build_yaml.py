@@ -101,7 +101,8 @@ class Profile(object):
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
         selection_entries = required_key(yaml_contents, "selections")
-        profile._parse_selections(selection_entries)
+        if selection_entries:
+            profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
         if yaml_contents:
