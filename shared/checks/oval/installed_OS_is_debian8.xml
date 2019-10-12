@@ -9,18 +9,10 @@
       <description>The operating system installed on the system is Debian 8</description>
     </metadata>
     <criteria comment="current Debian version is Debian jessie" operator="AND">
-      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
-      <criterion comment="Debian is installed" test_ref="test_debian" />
+      <extend_definition comment="Debian is installed" definition_ref="installed_OS_is_debian" />
       <criterion comment="Debian8 is installed" test_ref="test_debian_8" />
     </criteria>
   </definition>
-
-  <unix:file_test check="all" check_existence="all_exist" comment="/etc/debian_version exists" id="test_debian" version="1">
-    <unix:object object_ref="obj_debian" />
-  </unix:file_test>
-  <unix:file_object comment="check /etc/debian_version file" id="obj_debian" version="1">
-    <unix:filepath>/etc/debian_version</unix:filepath>
-  </unix:file_object>
 
   <ind:textfilecontent54_test check="all" check_existence="at_least_one_exists" comment="Check Debian version" id="test_debian_8" version="1">
     <ind:object object_ref="obj_debian_8" />
