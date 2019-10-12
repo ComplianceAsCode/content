@@ -4,7 +4,7 @@ from __future__ import print_function
 import datetime
 import os.path
 
-product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
+product_directories = ['debian8', 'debian9', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
                        'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'wrlinux1019', 'rhosp13',
                        'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
@@ -92,6 +92,7 @@ PKG_MANAGER_TO_CONFIG_FILE = {
 FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 8": "debian8",
+    "Debian 9": "debian9",
     "JBoss EAP 6": "eap6",
     "Example": "example",
     "Fedora": "fedora",
@@ -122,6 +123,9 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "debian8": [
         "cpe:/o:debianproject:debian:8",
+    ],
+    "debian9": [
+        "cpe:/o:debianproject:debian:9",
     ],
     "eap6": [
         "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0",
@@ -259,7 +263,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8"],
+    "multi_platform_debian": ["debian8", "debian9"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],

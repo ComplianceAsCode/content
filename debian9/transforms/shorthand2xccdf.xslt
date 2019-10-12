@@ -4,6 +4,5 @@
 
 <xsl:include href="constants.xslt"/>
 <xsl:param name="ssg_version">unknown</xsl:param>
-<xsl:variable name="ovalfile">unlinked-debian8-oval.xml</xsl:variable>
 
 </xsl:stylesheet>
