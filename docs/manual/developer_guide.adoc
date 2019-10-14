@@ -1,8 +1,6 @@
 # ComplianceAsCode Developer Guide
 :rootdir: ../..
 :imagesdir: ./images
-:templatesdir: ../../shared/templates
-:rhel7dir: ../../rhel7/templates/csv
 :toc:
 :toc-placement: preamble
 :numbered:
@@ -604,8 +602,6 @@ rhel7
 ├── kickstart
 ├── overlays
 ├── profiles
-├── templates
-│   └── csv
 └── transforms
 
 7 directories
@@ -630,9 +626,6 @@ organizations such as NIST, DISA STIG, PCI-DSS, etc.
 |`profiles`
 |`[red]#Required#` Contains profiles that are created and tailored to meet
 government or commercial compliance standards.
-
-|`templates`
-|`[red]#Required#` Can contain the following directories: `csv`.
 
 |`transforms`
 |`[red]#Required#` Contains XSLT files and scripts that are used to
@@ -1285,7 +1278,7 @@ This ensures consistent, high quality remediations that we can edit in one place
 
 ==== Bash
 
-Bash remediations are stored as shell script files in directory _/template/static/bash_ under the targeted platform. You can make use of any available command, but beware of too specific or complex solutions, as it may lead to a narrow range of supported platforms. There are a number of already written bash remediations functions available in _shared/bash_remediation_functions/_ directory, it is possible one of them is exactly what you are looking for.
+Bash remediations are stored as shell script files in _bash_ directory in rule directory. You can make use of any available command, but beware of too specific or complex solutions, as it may lead to a narrow range of supported platforms. There are a number of already written bash remediations functions available in _shared/bash_remediation_functions/_ directory, it is possible one of them is exactly what you are looking for.
 
 Following, you can see an example of a bash remediation that sets the maximum number of days a password may be used:
 
@@ -1691,171 +1684,6 @@ def mount_option(data, lang):
 
 3) Add the template name to `templates` dictionary in `link:{rootdir}/ssg/templates.py[ssg/templates.py]`. This
 dictionary maps the template name to the callback function name.
-
-
-==== Old Templating
-
-Often, a set of very related checks and/or remediations needs to be created. Instead of creating them individually, you can use the templating mechanism provided by the ComplianceAsCode project.
-It supports OVAL checks and Ansible, Bash, Anaconda and Puppet remediations.
-In order to use this mechanism, you have to:
-
-1) Create the template files, one for each type of file. Each one should be named `template_<TYPE>_<NAME>`. Where `<TYPE>` should be OVAL, ANSIBLE, BASH, ANACONDA or PUPPET and `<NAME>` is the what we will call hereafter the template name.
-Use the jinja syntax we use elsewhere in the project; refer to the earlier section on jinja macros for more information.
-
-This is an example of an OVAL template file called _template_OVAL_package_installed_
-
-[source,xml]
-----
-<def-group>
-  <definition class="compliance" id="package_{{{ PKGNAME }}}_installed"
-  version="1">
-    <metadata>
-      <title>Package {{{ PKGNAME }}} Installed</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
-      <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be installed.</description>
-    </metadata>
-    <criteria>
-      <criterion comment="package {{{ PKGNAME }}} is installed"
-      test_ref="test_package_{{{ PKGNAME }}}_installed" />
-    </criteria>
-  </definition>
-{{{ oval_test_package_installed(package=PKGNAME, evr=EVR, test_id="test_package_"+PKGNAME+"_installed") }}}
-</def-group>
-----
-
-And here is the Ansible template file called _template_ANSIBLE_package_installed_:
-
-----
-# platform = multi_platform_all
-# reboot = false
-# strategy = enable
-# complexity = low
-# disruption = low
-- name: Ensure {{{ PKGNAME }}} is installed
-  package:
-    name: "{{{ PKGNAME }}}"
-    state: present
-
-----
-
-2) Create a csv (comma-separated-values) file in the _PRODUCT/template/csv_ directory with the same name of the template followed by the extension _.csv_. It should contain all the instances you want to generate from the template, one per line. Use the line to supply values to the variables. You can use `#` to make a comment until the end of the line.
-
-This is the file _rhel7/template/csv/packages_installed.csv_:
-
-----
-aide
-audit
-chrony
-cronie
-dconf
-docker
-esc
-firewalld
-----
-
-3) Create a python file containing the generator class. The name of the file should start with _create__ and then be followed by the template name and the extension _.py_. The generator class name should also be the template name, in Camel case, followed by _Generator_.
-
-You have to define the function _generate(self, target, argv)_, where the second argument represents the type of template being used in that moment and the third argument is an array containing all the values in a single line of the csv file. Therefore, this function will be called once for each type of template and each line of the csv file.
-
-Inside the _generate_ function, you must call the other function _file_from_template_ passing as parameter one of the template files you've created, the variables you've defined and their values,  and the name of the output file, that should be named in the same manner as if it was created manually.
-
-This is the file with the generator class for the installed package template, it's called create_package_installed.py:
-
-[source,python]
-----
-#
-# create_package_installed.py
-#   automatically generate checks for installed packages
-#
-
-import re
-from template_common import FilesGenerator, UnknownTargetError
-
-
-class PackageInstalledGenerator(FilesGenerator):
-    def generate(self, target, package_info):
-        pkgname = package_info[0]
-        if not pkgname:
-            raise RuntimeError(
-                "ERROR: input violation: the package name must be defined")
-
-        if target == "oval":
-            evr = ""
-            # If the input is "pkgname,evr", verify if the evr string is in correct format
-            if len(package_info) > 1:
-                evr = package_info[1]
-                if evr and not re.match(r'\d:\d[\d\w+.]*-\d[\d\w+.]*', evr, 0):
-                    raise RuntimeError(
-                        "ERROR: input violation: evr should be in epoch:version-release format",
-                        "current package is", pkgname, "current evr is", evr)
-
-            self.file_from_template(
-                "./template_OVAL_package_installed",
-                {
-                    "PKGNAME": pkgname,
-                    "EVR": evr
-                },
-                "./oval/package_{0}_installed.xml", pkgname
-            )
-
-        elif target == "bash":
-            self.file_from_template(
-                "./template_BASH_package_installed",
-                {"PKGNAME": pkgname},
-                "./bash/package_{0}_installed.sh", pkgname
-            )
-
-        elif target == "ansible":
-            self.file_from_template(
-                "./template_ANSIBLE_package_installed",
-                {"PKGNAME": pkgname},
-                "./ansible/package_{0}_installed.yml", pkgname
-            )
-
-        elif target == "anaconda":
-            self.file_from_template(
-                "./template_ANACONDA_package_installed",
-                {"PKGNAME": pkgname},
-                "./anaconda/package_{0}_installed.anaconda", pkgname
-            )
-
-        elif target == "puppet":
-            self.file_from_template(
-                "./template_PUPPET_package_installed",
-                {"PKGNAME": pkgname},
-                "./puppet/package_{0}_installed.pp", pkgname
-            )
-
-        else:
-            raise UnknownTargetError(target)
-
-    def csv_format(self):
-        return("CSV should contains lines of the format: " +
-               "PACKAGE_NAME[,EVR_STRING]")
-----
-
-4) Finally, you have to ensure the build system knows your template. To do that, you have to edit the file _ssg/build_templates.py_ and include the generator class you've just created and declare which csv file to use along with it.
-
-This is an example of a patch to add a new template into the templating system:
-
-[source,patch]
-----
-@@ -21,6 +21,7 @@
- from create_sysctl            import SysctlGenerator
- from create_services_disabled import ServiceDisabledGenerator
- from create_services_enabled  import ServiceEnabledGenerator
-+from create_package_installed import PackageInstalledGenerator
-
-@@ -43,6 +44,7 @@ def __init__(self):
-             "sysctl_values.csv":       SysctlGenerator(),
-             "services_disabled.csv":   ServiceDisabledGenerator(),
-             "services_enabled.csv":    ServiceEnabledGenerator(),
-+            "packages_installed.csv":  PackageInstalledGenerator(),
-         }
-         self.supported_ovals = ["oval_5.10"]
-----
 
 
 === Tests (ctest)
