@@ -18,6 +18,7 @@ lang_to_ext_map = {
 
 templates = dict()
 
+
 def template(langs):
     def decorator_template(func):
         func.langs = langs
