@@ -1658,7 +1658,13 @@ parameters before passing them to the Jinja engine.  For example, this callback 
 provide default values, escape characters, check if parameters are correct, or
 any other processing of the parameters specific for the template.
 
-The callback function should be put into `link:{rootdir}/ssg/templates.py[ssg/templates.py]` and must have 2 parameters:
+The callback functions are located in `link:{rootdir}/ssg/templates.py[ssg/templates.py]`.
+
+The callback function must have the same name as the template name. This is the
+name that is used in `rule.yml` in `name:` key, for example
+`package_installed`.
+
+The callback must have 2 parameters:
 
 - `data` - dictionary which contains the contents of `vars:` dictionary from `rule.yml`
 - `lang` - string, describes language, can be one of: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`, `"puppet"`
@@ -1670,10 +1676,32 @@ The function must always return the (modified) `data` dictionary.
 The function must be always defined even if no processing of data is needed.
 In that situation the function just returns `data` parameter.
 
-The following example shows the callback function for the template `mount_option`:
+3) Decorate the callback function by the `@template` decorator. The decorator
+will register the template in the templating engine. The decorator has a single
+parameter which is a list of languages that the template provides. The list can
+contain the following values: `"anaconda"`, `"ansible"`, `"bash"`, `"oval"`,
+`"puppet"`. The decorator parameter is mandatory. Insert the `@template`
+decorator on the line before the callback function definition.
+
+For example, if the template name is `package_installed` and it provides
+Ansible template in `shared/templates/template_ANSIBLE_package_installed` and
+OVAL template in `shared/templates/template_OVAL_package_installed`, then there
+must be callback function `package_installed` in
+`link:{rootdir}/ssg/templates.py[ssg/templates.py]` and the callback must be
+decorated by `@template(["ansible", "oval")]`. In this example, decorating the
+callback function lets the templating engine know that Ansible and OVAL should
+be generated if any rule uses `package_installed` in `rule.yml`.
+
+The following example shows the callback function for the template
+`mount_option`, including the `@template` decorator. The example function
+declares that there is a template which name is `mount_option` and it provides
+Ansible, Bash and OVAL content. The code takes the `data` argument which is a
+dictionary with template parameters from `rule.yml` and based on `lang` it
+modifies the template parameters and returns the modified dictionary.
 
 [source,python]
 ----
+@template(["ansible", "bash", "oval"])
 def mount_option(data, lang):
     if lang == "oval":
         data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
@@ -1681,9 +1709,6 @@ def mount_option(data, lang):
         data["mountoption"] = re.sub(" ", ",", data["mountoption"])
     return data
 ----
-
-3) Add the template name to `templates` dictionary in `link:{rootdir}/ssg/templates.py[ssg/templates.py]`. This
-dictionary maps the template name to the callback function name.
 
 
 === Tests (ctest)
