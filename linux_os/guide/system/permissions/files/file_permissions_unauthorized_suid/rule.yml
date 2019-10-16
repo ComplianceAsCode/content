@@ -5,7 +5,7 @@ title: 'Ensure All SUID Executables Are Authorized'
 description: |-
     The SUID (set user id) bit should be set only on files that were
     installed via authorized means. A straightforward means of identifying
-    unauthorized SGID files is determine if any were not installed as part of an
+    unauthorized SUID files is determine if any were not installed as part of an
     RPM package, which is cryptographically verified. Investigate the origin
     of any unpackaged SUID files.
     This configuration check considers authorized SUID files which were installed via RPM.
