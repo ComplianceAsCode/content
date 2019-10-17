@@ -45,24 +45,19 @@ def walk_products(root, all_products):
         product_yaml.update(ssg.yaml._get_implied_properties(product_yaml))
         product_yamls[product] = product_yaml
 
-        guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
-        guide_dir = os.path.abspath(guide_dir)
+        relative_guide_dirs = product_yaml['benchmark_root']
+        guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
 
-        if guide_dir in visited_guide_dirs:
-            continue
+        for guide_dir in guide_dirs:
+            if guide_dir in visited_guide_dirs:
+                continue
+            new_rule_dirs = sorted(ssg.rules.find_rule_dirs(guide_dir))
+            for rule_dir in new_rule_dirs:
+                rule_id = ssg.rules.get_rule_dir_id(rule_dir)
+                all_rule_dirs.append((rule_id, rule_dir, guide_dir, product))
+                known_rules.add(rule_id)
 
-        new_rule_dirs = sorted(ssg.rules.find_rule_dirs(guide_dir))
-        for rule_dir in new_rule_dirs:
-            rule_id = ssg.rules.get_rule_dir_id(rule_dir)
-            all_rule_dirs.append((rule_id, rule_dir, guide_dir, product))
-
-            if rule_id in known_rules:
-                exp = "Multiple rules with same rule_id: %s and %s" % \
-                      (known_rules[rule_id]['rule_dir'], rule_dir)
-                raise ValueError(exp)
-            known_rules.add(rule_id)
-
-        visited_guide_dirs.add(guide_dir)
+            visited_guide_dirs.add(guide_dir)
 
     return all_rule_dirs, product_yamls
 

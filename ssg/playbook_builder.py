@@ -22,10 +22,8 @@ class PlaybookBuilder():
         self.rules_dir = rules_dir
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
         product_dir = os.path.dirname(product_yaml_path)
-        relative_guide_dir = ssg.utils.required_key(product_yaml,
-                                                    "benchmark_root")
-        self.guide_dir = os.path.abspath(os.path.join(product_dir,
-                                                      relative_guide_dir))
+        relative_guide_dirs = ssg.utils.required_key(product_yaml, "benchmark_root")
+        self.guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
         relative_profiles_dir = ssg.utils.required_key(product_yaml,
                                                        "profiles_root")
         self.profiles_dir = os.path.abspath(
@@ -118,17 +116,18 @@ class PlaybookBuilder():
         variable values.
         """
         variables = dict()
-        for dirpath, dirnames, filenames in os.walk(self.guide_dir):
-            for filename in filenames:
-                root, ext = os.path.splitext(filename)
-                if ext == ".var":
-                    full_path = os.path.join(dirpath, filename)
-                    xccdf_value = ssg.build_yaml.Value.from_yaml(full_path)
-                    # Make sure that selectors and values are strings
-                    options = dict()
-                    for k, v in xccdf_value.options.items():
-                        options[str(k)] = str(v)
-                    variables[xccdf_value.id_] = options
+        for guide_dir in self.guide_dirs:
+            for dirpath, dirnames, filenames in os.walk(guide_dir):
+                for filename in filenames:
+                    root, ext = os.path.splitext(filename)
+                    if ext == ".var":
+                        full_path = os.path.join(dirpath, filename)
+                        xccdf_value = ssg.build_yaml.Value.from_yaml(full_path)
+                        # Make sure that selectors and values are strings
+                        options = dict()
+                        for k, v in xccdf_value.options.items():
+                            options[str(k)] = str(v)
+                        variables[xccdf_value.id_] = options
         return variables
 
     def _find_rule_title(self, rule_id):

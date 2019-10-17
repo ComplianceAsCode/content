@@ -182,7 +182,7 @@ product: $NEW_PRODUCT
 full_name: $FULL_NAME
 type: platform
 
-benchmark_root: "../linux_os/guide"
+benchmark_root: ["../linux_os/guide"]
 
 profiles_root: "./profiles"
 

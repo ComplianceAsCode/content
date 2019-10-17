@@ -55,15 +55,15 @@ def main():
     product = ssg.utils.required_key(env_yaml, "product")
 
     product_dir = os.path.dirname(args.product_yaml)
-    relative_guide_dir = ssg.utils.required_key(env_yaml, "benchmark_root")
-    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
+    relative_guide_dirs = ssg.utils.required_key(env_yaml, "benchmark_root")
+    guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
 
     # As fixes is continually updated, the last seen fix that is applicable for a
     # given fix_name is chosen to replace newer fix_names
     remediation_cls = remediation.REMEDIATION_TO_CLASS[args.remediation_type]
 
     rule_id_to_remediation_map = collect_fixes(
-        product, guide_dir, args.fix_dirs, args.remediation_type)
+        product, guide_dirs, args.fix_dirs, args.remediation_type)
 
     fixes = dict()
     for rule_id, fix_path in rule_id_to_remediation_map.items():
@@ -83,7 +83,7 @@ def main():
     sys.exit(0)
 
 
-def collect_fixes(product, guide_dir, fix_dirs, remediation_type):
+def collect_fixes(product, guide_dirs, fix_dirs, remediation_type):
     # path -> remediation
     # rule ID -> assoc rule
     rule_id_to_remediation_map = dict()
@@ -95,7 +95,7 @@ def collect_fixes(product, guide_dir, fix_dirs, remediation_type):
                 rule_id_to_remediation_map[rule_id] = file_path
 
     # Walk the guide last, looking for rule folders as they have the highest priority
-    for _dir_path in ssg.rules.find_rule_dirs(guide_dir):
+    for _dir_path in ssg.rules.find_rule_dirs_list(guide_dirs):
         rule_id = ssg.rules.get_rule_dir_id(_dir_path)
 
         contents = remediation.get_rule_dir_remediations(_dir_path, remediation_type, product)

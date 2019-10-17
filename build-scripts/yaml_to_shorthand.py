@@ -52,13 +52,12 @@ def main():
     env_yaml = ssg.yaml.open_environment(
         args.build_config_yaml, args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
-    benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
+    benchmark_roots_relative = ssg.utils.required_key(env_yaml, "benchmark_root")
     profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
 
     # we have to "absolutize" the paths the right way, relative to the
     # product_yaml path
-    if not os.path.isabs(benchmark_root):
-        benchmark_root = os.path.join(base_dir, benchmark_root)
+    benchmark_roots = [br if os.path.isabs(br) else os.path.join(base_dir, br) for br in benchmark_roots_relative]
     if not os.path.isabs(profiles_root):
         profiles_root = os.path.join(base_dir, profiles_root)
 
@@ -66,7 +65,7 @@ def main():
         loader = ssg.build_yaml.BuildLoader(
             profiles_root, args.bash_remediation_fns, env_yaml,
             args.resolved_rules_dir)
-        loader.process_directory_tree(benchmark_root)
+        loader.process_directory_trees(benchmark_roots)
 
         profiles = loader.loaded_group.profiles
         for p in profiles:
@@ -78,7 +77,7 @@ def main():
     elif args.action == "list-inputs":
         loader = ssg.build_yaml.ListInputsLoader(
             profiles_root, args.bash_remediation_fns, env_yaml)
-        loader.process_directory_tree(benchmark_root)
+        loader.process_directory_trees(benchmark_roots)
     else:
         RuntimeError("Invalid action: {action}".format(action=args.action))
 

@@ -523,7 +523,7 @@ The *Linux OS* benchmark describes Linux Operating System in general.
 This benchmark is used by multiple ComplianceAsCode products, eg. `rhel7`, `fedora`, `ubuntu1404`, `sle11` etc.
 The benchmark is located in `/linux_os/guide`.
 
-The products specify which benchmark they use as a source of content in their `product.yml` file using `benchmark_root` key. For example, `rhel7` product specifies that it uses the Linux OS benchmark.
+The products specify which benchmark(s) they use as a source of content in their `product.yml` file using `benchmark_root` key. It is a list and it may contain multiple paths. For example, `rhel7` product specifies that it uses the Linux OS benchmark.
 
 ----
 $ cat rhel7/product.yml
@@ -531,7 +531,7 @@ product: rhel7
 full_name: Red Hat Enterprise Linux 7
 type: platform
 
-benchmark_root: "../linux_os/guide"
+benchmark_root: ["../linux_os/guide"]
 
 .....
 ----

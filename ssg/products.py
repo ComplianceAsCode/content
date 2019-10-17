@@ -23,13 +23,14 @@ def get_all(ssg_root):
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = open_raw(product_yaml_path)
 
-        guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
-        guide_dir = os.path.abspath(guide_dir)
+        relative_guide_dirs = product_yaml['benchmark_root']
+        guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
 
-        if 'linux_os' in guide_dir:
-            linux_products.add(product)
-        else:
-            other_products.add(product)
+        for guide_dir in guide_dirs:
+            if 'linux_os' in guide_dir:
+                linux_products.add(product)
+            else:
+                other_products.add(product)
 
     products = namedtuple('products', ['linux', 'other'])
     return products(linux_products, other_products)

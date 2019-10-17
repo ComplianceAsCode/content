@@ -14,7 +14,7 @@ from .constants import oval_header
 from .constants import MULTI_PLATFORM_LIST
 from .jinja import process_file_with_macros
 from .rule_yaml import parse_prodtype
-from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs
+from .rules import get_rule_dir_id, get_rule_dir_ovals, find_rule_dirs_list
 from . import utils
 from .xml import ElementTree
 
@@ -269,10 +269,10 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
     local_env_yaml.update(env_yaml)
 
     product_dir = os.path.dirname(yaml_path)
-    relative_guide_dir = utils.required_key(env_yaml, "benchmark_root")
-    guide_dir = os.path.abspath(os.path.join(product_dir, relative_guide_dir))
+    relative_guide_dirs = utils.required_key(env_yaml, "benchmark_root")
+    guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
 
-    for _dir_path in find_rule_dirs(guide_dir):
+    for _dir_path in find_rule_dirs_list(guide_dirs):
         rule_id = get_rule_dir_id(_dir_path)
 
         rule_path = os.path.join(_dir_path, "rule.yml")

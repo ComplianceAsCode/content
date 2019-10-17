@@ -1041,7 +1041,9 @@ class DirectoryLoader(object):
 
         self.parent_group = None
 
-    def _collect_items_to_load(self, guide_directory):
+    def _collect_items_to_load(self, guide_directories):
+        guide_directory = guide_directories[0]
+        self.subdirectories += guide_directories[1:]
         for dir_item in os.listdir(guide_directory):
             dir_item_path = os.path.join(guide_directory, dir_item)
             _, extension = os.path.splitext(dir_item)
@@ -1110,8 +1112,12 @@ class DirectoryLoader(object):
             self._process_rules()
 
     def process_directory_tree(self, start_dir):
-        self._collect_items_to_load(start_dir)
+        self._collect_items_to_load([start_dir])
         self._load_group_process_and_recurse(start_dir)
+
+    def process_directory_trees(self, start_dirs):
+         self._collect_items_to_load(start_dirs)
+         self._load_group_process_and_recurse(start_dirs[0])
 
     def _recurse_into_subdirs(self):
         for subdir in self.subdirectories:

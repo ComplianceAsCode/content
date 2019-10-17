@@ -30,7 +30,7 @@ def main():
     ssg_root = sys.argv[1]
     ssg_build_config_yaml = sys.argv[2]
 
-    guide_dirs = set()
+    guide_dirs_collected = set()
     for product in ssg.constants.product_directories:
         product_dir = os.path.join(ssg_root, product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
@@ -39,41 +39,42 @@ def main():
         env_yaml = ssg.yaml.open_environment(ssg_build_config_yaml, product_yaml_path)
         ssg.jinja.add_python_functions(env_yaml)
 
-        guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
-        if guide_dir in guide_dirs:
-            continue
+        relative_guide_dirs = product_yaml['benchmark_root']
+        guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
 
-        for rule_dir in ssg.rules.find_rule_dirs(guide_dir):
-            rule_path = os.path.join(rule_dir, "rule.yml")
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
-            prodtypes = ssg.rule_yaml.parse_prodtype(rule.prodtype)
+        for guide_dir in guide_dirs:
+            if guide_dir in guide_dirs_collected:
+                continue
+            for rule_dir in ssg.rules.find_rule_dirs(guide_dir):
+                rule_path = os.path.join(rule_dir, "rule.yml")
+                rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
+                prodtypes = ssg.rule_yaml.parse_prodtype(rule.prodtype)
 
-            env_yaml['rule_id'] = rule.id_
-            env_yaml['rule_title'] = rule.title
-            env_yaml['products'] = prodtypes # default is all
+                env_yaml['rule_id'] = rule.id_
+                env_yaml['rule_title'] = rule.title
+                env_yaml['products'] = prodtypes # default is all
 
-            for oval in ssg.rules.get_rule_dir_ovals(rule_dir):
-                xml_content = ssg.jinja.process_file_with_macros(oval, env_yaml)
-                # Some OVAL definitions may render to an empty definition
-                # when building OVAL 5.10 only content
-                if not xml_content:
-                    continue
+                for oval in ssg.rules.get_rule_dir_ovals(rule_dir):
+                    xml_content = ssg.jinja.process_file_with_macros(oval, env_yaml)
+                    # Some OVAL definitions may render to an empty definition
+                    # when building OVAL 5.10 only content
+                    if not xml_content:
+                        continue
 
-                oval_contents = ssg.utils.split_string_content(xml_content)
+                    oval_contents = ssg.utils.split_string_content(xml_content)
 
-                try:
-                    results = ssg.oval.parse_affected(oval_contents)
+                    try:
+                        results = ssg.oval.parse_affected(oval_contents)
 
-                    assert len(results) == 3
-                    assert isinstance(results[0], int)
-                    assert isinstance(results[1], int)
+                        assert len(results) == 3
+                        assert isinstance(results[0], int)
+                        assert isinstance(results[1], int)
 
-                except ValueError as e:
-                    print("No <affected> element found in file {}".format(oval))
-                    raise e
+                    except ValueError as e:
+                        print("No <affected> element found in file {}".format(oval))
+                        raise e
 
-
-        guide_dirs.add(guide_dir)
+        guide_dirs_collected.add(guide_dir)
 
 
 if __name__ == "__main__":

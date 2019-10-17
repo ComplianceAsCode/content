@@ -17,10 +17,12 @@ def main():
         product_dir = os.path.join(args.source_dir, product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
-        guide_dir = os.path.abspath(
-            os.path.join(product_dir, product_yaml['benchmark_root']))
-        if not check_product(args.build_dir, product, guide_dir):
-            sys.exit(1)
+        relative_guide_dirs = product_yaml['benchmark_root']
+        guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
+
+        for guide_dir in guide_dirs:
+            if not check_product(args.build_dir, product, guide_dir):
+                sys.exit(1)
 
 
 def check_product(build_dir, product, guide_dir):

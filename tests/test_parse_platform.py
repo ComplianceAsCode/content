@@ -29,26 +29,28 @@ def main():
 
     ssg_root = sys.argv[1]
 
-    guide_dirs = set()
+    guide_dirs_collected = set()
     for product in ssg.constants.product_directories:
         product_dir = os.path.join(ssg_root, product)
         product_yaml_path = os.path.join(product_dir, "product.yml")
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
 
-        guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
-        if guide_dir in guide_dirs:
-            continue
+        relative_guide_dirs = product_yaml['benchmark_root']
+        guide_dirs = [os.path.abspath(os.path.join(product_dir, d)) for d in relative_guide_dirs]
 
-        for rule_dir in ssg.rules.find_rule_dirs(guide_dir):
-            for lang in REMEDIATION_LANGS:
-                for fix in ssg.build_remediations.get_rule_dir_remediations(rule_dir, lang):
-                    fix_contents = ssg.utils.read_file_list(fix)
-                    results = ssg.fixes.parse_platform(fix_contents)
+        for guide_dir in guide_dirs:
+            if guide_dir in guide_dirs_collected:
+                continue
+            for rule_dir in ssg.rules.find_rule_dirs(guide_dir):
+                for lang in REMEDIATION_LANGS:
+                    for fix in ssg.build_remediations.get_rule_dir_remediations(rule_dir, lang):
+                        fix_contents = ssg.utils.read_file_list(fix)
+                        results = ssg.fixes.parse_platform(fix_contents)
 
-                    assert results is not None
-                    assert isinstance(results, int)
+                        assert results is not None
+                        assert isinstance(results, int)
 
-        guide_dirs.add(guide_dir)
+        guide_dirs_collected.add(guide_dir)
 
 
 if __name__ == "__main__":

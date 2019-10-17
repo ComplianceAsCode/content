@@ -92,3 +92,12 @@ def find_rule_dirs(base_dir):
             dir_path = os.path.join(root, dir_name)
             if is_rule_dir(dir_path):
                 yield dir_path
+
+def find_rule_dirs_list(base_dirs):
+    """
+    Generator which yields all rule_directories within a given base_dirs list elements
+    """
+    dirs = []
+    for base_dir in base_dirs:
+        dirs += find_rule_dirs(base_dir)
+    return dirs
