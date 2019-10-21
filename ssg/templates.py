@@ -16,15 +16,28 @@ lang_to_ext_map = {
     "puppet": ".pp"
 }
 
+templates = dict()
+
+
+def template(langs):
+    def decorator_template(func):
+        func.langs = langs
+        templates[func.__name__] = func
+        return func
+    return decorator_template
+
+
 # Callback functions for processing template parameters and/or validating them
 
 
+@template(["ansible", "bash", "oval"])
 def accounts_password(data, lang):
     if lang == "oval":
         data["sign"] = "-?" if data["variable"].endswith("credit") else ""
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def auditd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":
@@ -35,14 +48,17 @@ def auditd_lineinfile(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_dac_modification(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_file_deletion_events(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_login_events(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
@@ -52,6 +68,7 @@ def audit_rules_login_events(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_path_syscall(data, lang):
     if lang == "oval":
         pathid = re.sub(r'[-\./]', '_', data["path"])
@@ -61,6 +78,7 @@ def audit_rules_path_syscall(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
@@ -72,22 +90,27 @@ def audit_rules_privileged_commands(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_unsuccessful_file_modification(data, lang):
     return data
 
 
+@template(["oval"])
 def audit_rules_unsuccessful_file_modification_o_creat(data, lang):
     return data
 
 
+@template(["oval"])
 def audit_rules_unsuccessful_file_modification_o_trunc_write(data, lang):
     return data
 
 
+@template(["oval"])
 def audit_rules_unsuccessful_file_modification_rule_order(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_usergroup_modification(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(path))
@@ -106,6 +129,7 @@ def _file_owner_groupowner_permissions_regex(data):
             "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
 
 
+@template(["ansible", "bash", "oval"])
 def file_groupowner(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
@@ -113,6 +137,7 @@ def file_groupowner(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def file_owner(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
@@ -120,6 +145,7 @@ def file_owner(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def file_permissions(data, lang):
     _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
@@ -146,21 +172,24 @@ def file_permissions(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def grub2_bootloader_argument(data, lang):
     data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def kernel_module_disabled(data, lang):
     return data
 
 
+@template(["anaconda", "oval"])
 def mount(data, lang):
     data["pointid"] = re.sub(r'[-\./]', '_', data["mountpoint"])
     return data
 
 
-def mount_option(data, lang):
+def _mount_option(data, lang):
     if lang == "oval":
         data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
     else:
@@ -168,6 +197,22 @@ def mount_option(data, lang):
     return data
 
 
+@template(["anaconda", "ansible", "bash", "oval"])
+def mount_option(data, lang):
+    return _mount_option(data, lang)
+
+
+@template(["ansible", "bash", "oval"])
+def mount_option_remote_filesystems(data, lang):
+    return _mount_option(data, lang)
+
+
+@template(["anaconda", "ansible", "bash", "oval"])
+def mount_option_removable_partitions(data, lang):
+    return _mount_option(data, lang)
+
+
+@template(["anaconda", "ansible", "bash", "oval", "puppet"])
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -179,6 +224,7 @@ def package_installed(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def sysctl(data, lang):
     data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
     if not data.get("sysctlval"):
@@ -190,10 +236,12 @@ def sysctl(data, lang):
     return data
 
 
+@template(["anaconda", "ansible", "bash", "oval", "puppet"])
 def package_removed(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def sebool(data, lang):
     sebool_bool = data.get("sebool_bool", None)
     if sebool_bool is not None and sebool_bool not in ["true", "false"]:
@@ -204,6 +252,7 @@ def sebool(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval", "puppet"])
 def service_disabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
@@ -214,6 +263,7 @@ def service_disabled(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval", "puppet"])
 def service_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
@@ -222,6 +272,7 @@ def service_enabled(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def sshd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":
@@ -232,47 +283,11 @@ def sshd_lineinfile(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def timer_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["timername"]
     return data
-
-
-templates = {
-    "accounts_password": accounts_password,
-    "auditd_lineinfile": auditd_lineinfile,
-    "audit_rules_dac_modification": audit_rules_dac_modification,
-    "audit_rules_file_deletion_events": audit_rules_file_deletion_events,
-    "audit_rules_login_events": audit_rules_login_events,
-    "audit_rules_path_syscall": audit_rules_path_syscall,
-    "audit_rules_privileged_commands": audit_rules_privileged_commands,
-    "audit_rules_unsuccessful_file_modification":
-        audit_rules_unsuccessful_file_modification,
-    "audit_rules_unsuccessful_file_modification_o_creat":
-        audit_rules_unsuccessful_file_modification_o_creat,
-    "audit_rules_unsuccessful_file_modification_o_trunc_write":
-        audit_rules_unsuccessful_file_modification_o_trunc_write,
-    "audit_rules_unsuccessful_file_modification_rule_order":
-        audit_rules_unsuccessful_file_modification_rule_order,
-    "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
-    "file_groupowner": file_groupowner,
-    "file_owner": file_owner,
-    "file_permissions": file_permissions,
-    "grub2_bootloader_argument": grub2_bootloader_argument,
-    "kernel_module_disabled": kernel_module_disabled,
-    "mount": mount,
-    "mount_option": mount_option,
-    "mount_option_remote_filesystems": mount_option,
-    "mount_option_removable_partitions": mount_option,
-    "package_installed": package_installed,
-    "package_removed": package_removed,
-    "sebool": sebool,
-    "service_disabled": service_disabled,
-    "service_enabled": service_enabled,
-    "sshd_lineinfile": sshd_lineinfile,
-    "sysctl": sysctl,
-    "timer_enabled": timer_enabled,
-}
 
 
 class Builder(object):
@@ -311,10 +326,7 @@ class Builder(object):
         substituted into the Jinja template.
         """
         template_func = templates[template]
-        if template_func is not None:
-            parameters = template_func(raw_parameters.copy(), lang)
-        else:
-            parameters = raw_parameters.copy()
+        parameters = template_func(raw_parameters.copy(), lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
         uppercases = dict()
@@ -328,12 +340,20 @@ class Builder(object):
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
+        template_func = templates[template_name]
+        if lang not in template_func.langs:
+            return
         template_file_name = "template_{0}_{1}".format(
             lang.upper(), template_name)
         template_file_path = os.path.join(
             self.templates_dir, template_file_name)
         if not os.path.exists(template_file_path):
-            return
+            raise RuntimeError(
+                "Rule {0} wants to generate {1} content from template {2}, "
+                "but file {3} which provides this template does not "
+                "exist.".format(
+                    rule_id, lang, template_name, template_file_path)
+            )
         ext = lang_to_ext_map[lang]
         output_file_name = rule_id + ext
         output_filepath = os.path.join(
@@ -383,12 +403,6 @@ class Builder(object):
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
                     rule_id, template_name))
-        if templates[template_name] is None:
-            sys.stderr.write(
-                "The template {0} has not been completely implemented, no "
-                "content will be generated for rule {1}.\n".format(
-                    template_name, rule_id))
-            return
         try:
             template_vars = template["vars"]
         except KeyError:
