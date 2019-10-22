@@ -636,8 +636,6 @@ class Group(object):
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
-        for _group in self.groups.values():
-            group.append(_group.to_xml_element())
 
         # Rules that install or remove packages affect remediation
         # of other rules.
@@ -658,6 +656,13 @@ class Group(object):
         # Add remaining rules in the group
         for rule_id in rules_in_group:
             group.append(self.rules.get(rule_id).to_xml_element())
+
+        # Add the sub groups after any current level group rules.
+        # As package installed/removed and service enabled/disabled rules are usuallly in
+        # top level group, this ensures groups that further configure a package or service
+        # are after rules that install or remove it.
+        for _group in self.groups.values():
+            group.append(_group.to_xml_element())
 
         return group
 
