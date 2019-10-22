@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: 'NIST National Checklist for Red Hat Enterprise Linux CoreOS'
 
@@ -177,7 +177,7 @@ selections:
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
-    - kernel_module_bluetooth_disabled
+#    - kernel_module_bluetooth_disabled
     - kernel_module_sctp_disabled
     - kernel_module_firewire-core_disabled
     - kernel_module_atm_disabled
@@ -557,7 +557,7 @@ selections:
     - auditd_data_disk_error_action
     - auditd_data_retention_max_log_file_action
     - auditd_data_retention_space_left
-    
+
     # AU-8
     - service_chronyd_or_ntpd_enabled
     - chronyd_or_ntpd_specify_remote_server
