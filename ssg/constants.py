@@ -6,8 +6,8 @@ import os.path
 
 product_directories = ['debian8', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
                        'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
-                       'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'wrlinux1019', 'rhosp13',
-                       'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
+                       'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'wrlinux1019', 'rhosp10',
+                       'rhosp13', 'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
                        'example']
 
 JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
@@ -105,6 +105,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Red Hat Enterprise Linux 6": "rhel6",
     "Red Hat Enterprise Linux 7": "rhel7",
     "Red Hat Enterprise Linux 8": "rhel8",
+    "Red Hat OpenStack Platform 10": "rhosp10",
     "Red Hat OpenStack Platform 13": "rhosp13",
     "Red Hat Virtualization 4": "rhv4",
     "SUSE Linux Enterprise 11": "sle11",
@@ -209,6 +210,9 @@ PRODUCT_TO_CPE_MAPPING = {
     "rhel8": [
         "cpe:/o:redhat:enterprise_linux:8",
     ],
+    "rhosp10": [
+        "cpe:/a:redhat:openstack:10",
+    ],
     "rhosp13": [
         "cpe:/a:redhat:openstack:13",
     ],
@@ -266,7 +270,7 @@ MULTI_PLATFORM_MAPPING = {
     "multi_platform_ol": ["ol7","ol8"],
     "multi_platform_ocp": ["ocp3"],
     "multi_platform_rhel": ["rhel6", "rhel7", "rhel8"],
-    "multi_platform_rhosp": ["rhosp13"],
+    "multi_platform_rhosp": ["rhosp10", "rhosp13"],
     "multi_platform_rhv": ["rhv4"],
     "multi_platform_sle": ["sle11", "sle12"],
     "multi_platform_ubuntu": ["ubuntu1404", "ubuntu1604", "ubuntu1804"],
