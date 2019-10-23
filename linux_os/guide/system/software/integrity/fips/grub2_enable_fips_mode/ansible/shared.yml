@@ -14,11 +14,11 @@
       dest: /etc/sysconfig/prelink
       regexp: ^#?PRELINKING
       line: "PRELINKING=no"
-  when: prelink_exists.stat.exists == True
+  when: prelink_exists.stat.exists
 
 - name: revert prelinking binaries
   command: /usr/sbin/prelink -ua
-  when: prelink_exists.stat.exists == True
+  when: prelink_exists.stat.exists
 
 - name: Check if system supports AES-NI
   command: grep -q -m1 -o aes /proc/cpuinfo

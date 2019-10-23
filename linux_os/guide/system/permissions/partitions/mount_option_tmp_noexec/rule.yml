@@ -14,6 +14,8 @@ rationale: |-
     such as <tt>/tmp</tt> should never be necessary in normal operation and
     can expose the system to potential compromise.
 
+{{{ complete_ocil_entry_mount_option("/tmp", "noexec") }}}
+
 severity: unknown
 
 identifiers:
@@ -43,11 +45,4 @@ template:
         mountpoint: /tmp
         mountoption: noexec
         mount_has_to_exist: 'yes'
-        mount_has_to_exist@rhel7: 'no'
-        mount_has_to_exist@rhel8: 'no'
-        filesystem@rhel7: tmpfs
-        filesystem@rhel8: tmpfs
-        type@rhel7: tmpfs
-        type@rhel8: tmpfs
-    backends:
-        anaconda: 'off'
+# Note that /tmp on RHEL systems is not tmpfs

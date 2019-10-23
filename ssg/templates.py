@@ -16,15 +16,28 @@ lang_to_ext_map = {
     "puppet": ".pp"
 }
 
+templates = dict()
+
+
+def template(langs):
+    def decorator_template(func):
+        func.langs = langs
+        templates[func.__name__] = func
+        return func
+    return decorator_template
+
+
 # Callback functions for processing template parameters and/or validating them
 
 
+@template(["ansible", "bash", "oval"])
 def accounts_password(data, lang):
     if lang == "oval":
         data["sign"] = "-?" if data["variable"].endswith("credit") else ""
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def auditd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":
@@ -35,14 +48,17 @@ def auditd_lineinfile(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_dac_modification(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_file_deletion_events(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_login_events(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(os.path.normpath(path)))
@@ -52,6 +68,7 @@ def audit_rules_login_events(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_path_syscall(data, lang):
     if lang == "oval":
         pathid = re.sub(r'[-\./]', '_', data["path"])
@@ -61,6 +78,7 @@ def audit_rules_path_syscall(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_privileged_commands(data, lang):
     path = data["path"]
     name = re.sub(r"[-\./]", "_", os.path.basename(path))
@@ -72,22 +90,27 @@ def audit_rules_privileged_commands(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_unsuccessful_file_modification(data, lang):
     return data
 
 
+@template(["oval"])
 def audit_rules_unsuccessful_file_modification_o_creat(data, lang):
     return data
 
 
+@template(["oval"])
 def audit_rules_unsuccessful_file_modification_o_trunc_write(data, lang):
     return data
 
 
+@template(["oval"])
 def audit_rules_unsuccessful_file_modification_rule_order(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def audit_rules_usergroup_modification(data, lang):
     path = data["path"]
     name = re.sub(r'[-\./]', '_', os.path.basename(path))
@@ -97,25 +120,36 @@ def audit_rules_usergroup_modification(data, lang):
     return data
 
 
+def _file_owner_groupowner_permissions_regex(data):
+    data["is_directory"] = data["filepath"].endswith("/")
+    if "file_regex" in data and not data["is_directory"]:
+        raise ValueError(
+            "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
+            "specify a directory. Append '/' to the filepath or remove the "
+            "'file_regex' key.".format(data["_rule_id"], data["filepath"]))
+
+
+@template(["ansible", "bash", "oval"])
 def file_groupowner(data, lang):
+    _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_groupowner", "")
-        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def file_owner(data, lang):
+    _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_owner", "")
-        data["is_directory"] = data["filepath"].endswith("/")
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def file_permissions(data, lang):
+    _file_owner_groupowner_permissions_regex(data)
     if lang == "oval":
         data["fileid"] = data["_rule_id"].replace("file_permissions", "")
-        data["is_directory"] = data["filepath"].endswith("/")
-
         # build the state that describes our mode
         # mode_str maps to STATEMODE in the template
         mode = data["filemode"]
@@ -138,39 +172,24 @@ def file_permissions(data, lang):
     return data
 
 
-def file_regex_permissions(data, lang):
-    if lang == "ansible":
-        data["filepath"] = data["path"]
-    elif lang == "bash":
-        data["filepath"] = data["path"]
-        data["filename"] = re.sub(r"^\^", "", data["filename"])
-    elif lang == "oval":
-        # build a string that contains the full path to the file
-        path = data["path"]
-        filename = data["filename"]
-        if filename == '[NULL]' or filename == '':
-            filepath = path
-        else:
-            filepath = path + '/' + filename
-        data["filepath"] = filepath
-    return data
-
-
+@template(["ansible", "bash", "oval"])
 def grub2_bootloader_argument(data, lang):
     data["arg_name_value"] = data["arg_name"] + "=" + data["arg_value"]
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def kernel_module_disabled(data, lang):
     return data
 
 
+@template(["anaconda", "oval"])
 def mount(data, lang):
     data["pointid"] = re.sub(r'[-\./]', '_', data["mountpoint"])
     return data
 
 
-def mount_option(data, lang):
+def _mount_option(data, lang):
     if lang == "oval":
         data["pointid"] = re.sub(r"[-\./]", "_", data["mountpoint"]).lstrip("_")
     else:
@@ -178,6 +197,22 @@ def mount_option(data, lang):
     return data
 
 
+@template(["anaconda", "ansible", "bash", "oval"])
+def mount_option(data, lang):
+    return _mount_option(data, lang)
+
+
+@template(["ansible", "bash", "oval"])
+def mount_option_remote_filesystems(data, lang):
+    return _mount_option(data, lang)
+
+
+@template(["anaconda", "ansible", "bash", "oval"])
+def mount_option_removable_partitions(data, lang):
+    return _mount_option(data, lang)
+
+
+@template(["anaconda", "ansible", "bash", "oval", "puppet"])
 def package_installed(data, lang):
     if "evr" in data:
         evr = data["evr"]
@@ -189,6 +224,7 @@ def package_installed(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def sysctl(data, lang):
     data["sysctlid"] = re.sub(r'[-\.]', '_', data["sysctlvar"])
     if not data.get("sysctlval"):
@@ -200,10 +236,23 @@ def sysctl(data, lang):
     return data
 
 
+@template(["anaconda", "ansible", "bash", "oval", "puppet"])
 def package_removed(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
+def sebool(data, lang):
+    sebool_bool = data.get("sebool_bool", None)
+    if sebool_bool is not None and sebool_bool not in ["true", "false"]:
+        raise ValueError(
+            "ERROR: key sebool_bool in rule {0} contains forbidden "
+            "value '{1}'.".format(data["_rule_id"], sebool_bool)
+        )
+    return data
+
+
+@template(["ansible", "bash", "oval", "puppet"])
 def service_disabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
@@ -214,6 +263,7 @@ def service_disabled(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval", "puppet"])
 def service_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["servicename"]
@@ -222,6 +272,7 @@ def service_enabled(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def sshd_lineinfile(data, lang):
     missing_parameter_pass = data["missing_parameter_pass"]
     if missing_parameter_pass == "true":
@@ -232,49 +283,11 @@ def sshd_lineinfile(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
 def timer_enabled(data, lang):
     if "packagename" not in data:
         data["packagename"] = data["timername"]
     return data
-
-
-templates = {
-    "accounts_password": accounts_password,
-    "auditd_lineinfile": auditd_lineinfile,
-    "audit_rules_dac_modification": audit_rules_dac_modification,
-    "audit_rules_file_deletion_events": audit_rules_file_deletion_events,
-    "audit_rules_login_events": audit_rules_login_events,
-    "audit_rules_path_syscall": audit_rules_path_syscall,
-    "audit_rules_privileged_commands": audit_rules_privileged_commands,
-    "audit_rules_unsuccessful_file_modification":
-        audit_rules_unsuccessful_file_modification,
-    "audit_rules_unsuccessful_file_modification_o_creat":
-        audit_rules_unsuccessful_file_modification_o_creat,
-    "audit_rules_unsuccessful_file_modification_o_trunc_write":
-        audit_rules_unsuccessful_file_modification_o_trunc_write,
-    "audit_rules_unsuccessful_file_modification_rule_order":
-        audit_rules_unsuccessful_file_modification_rule_order,
-    "audit_rules_usergroup_modification": audit_rules_usergroup_modification,
-    "file_groupowner": file_groupowner,
-    "file_owner": file_owner,
-    "file_permissions": file_permissions,
-    "file_regex_permissions": file_regex_permissions,
-    "grub2_bootloader_argument": grub2_bootloader_argument,
-    "kernel_module_disabled": kernel_module_disabled,
-    "mount": mount,
-    "mount_option": mount_option,
-    "mount_option_remote_filesystems": mount_option,
-    "mount_option_removable_partitions": mount_option,
-    "package_installed": package_installed,
-    "package_removed": package_removed,
-    "sebool": None,
-    "sebool_var": None,
-    "service_disabled": service_disabled,
-    "service_enabled": service_enabled,
-    "sshd_lineinfile": sshd_lineinfile,
-    "sysctl": sysctl,
-    "timer_enabled": timer_enabled,
-}
 
 
 class Builder(object):
@@ -313,41 +326,38 @@ class Builder(object):
         substituted into the Jinja template.
         """
         template_func = templates[template]
-        if template_func is not None:
-            parameters = template_func(raw_parameters.copy(), lang)
-        else:
-            parameters = raw_parameters.copy()
+        parameters = template_func(raw_parameters.copy(), lang)
         # TODO: Remove this right after the variables in templates are renamed
         # to lowercase
-        parameters = {k.upper(): v for k, v in parameters.items()}
-        return parameters
+        uppercases = dict()
+        for k, v in parameters.items():
+            uppercases[k.upper()] = v
+        return uppercases
 
-    def build_lang(self, rule, template_name, lang, local_env_yaml):
+    def build_lang(
+            self, rule_id, template_name, template_vars, lang, local_env_yaml):
         """
         Builds templated content for a given rule for a given language.
         Writes the output to the correct build directories.
         """
+        template_func = templates[template_name]
+        if lang not in template_func.langs:
+            return
         template_file_name = "template_{0}_{1}".format(
             lang.upper(), template_name)
         template_file_path = os.path.join(
             self.templates_dir, template_file_name)
         if not os.path.exists(template_file_path):
-            return
+            raise RuntimeError(
+                "Rule {0} wants to generate {1} content from template {2}, "
+                "but file {3} which provides this template does not "
+                "exist.".format(
+                    rule_id, lang, template_name, template_file_path)
+            )
         ext = lang_to_ext_map[lang]
-        output_file_name = rule.id_ + ext
+        output_file_name = rule_id + ext
         output_filepath = os.path.join(
             self.output_dirs[lang], output_file_name)
-
-        try:
-            template_vars = rule.template["vars"]
-        except KeyError:
-            raise ValueError(
-                "Rule {0} does not contain mandatory 'vars:' key under "
-                "'template:' key.".format(rule.id_))
-        # Add the rule ID which will be reused in OVAL templates as OVAL
-        # definition ID so that the build system matches the generated
-        # check with the rule.
-        template_vars["_rule_id"] = rule.id_
         template_parameters = self.preprocess_data(
             template_name, lang, template_vars)
         jinja_dict = ssg.utils.merge_dicts(local_env_yaml, template_parameters)
@@ -378,38 +388,61 @@ class Builder(object):
         else:
             return languages
 
-    def build_rule(self, rule):
+    def build_rule(self, rule_id, rule_title, template, langs_to_generate):
         """
-        Builds templated content for a given rule for all languages, writing
-        the output to the correct build directories.
+        Builds templated content for a given rule for selected languages,
+        writing the output to the correct build directories.
         """
-        if rule.template is None:
-            # rule is not templated, skipping
-            return
         try:
-            template_name = rule.template["name"]
+            template_name = template["name"]
         except KeyError:
             raise ValueError(
                 "Rule {0} is missing template name under template key".format(
-                    rule.id_))
+                    rule_id))
         if template_name not in templates:
             raise ValueError(
                 "Rule {0} uses template {1} which does not exist.".format(
-                    rule.id_, template_name))
-        if templates[template_name] is None:
-            sys.stderr.write(
-                "The template {0} has not been completely implemented, no "
-                "content will be generated for rule {1}.\n".format(
-                    template_name, rule.id_))
-            return
-        langs_to_generate = self.get_langs_to_generate(rule)
+                    rule_id, template_name))
+        try:
+            template_vars = template["vars"]
+        except KeyError:
+            raise ValueError(
+                "Rule {0} does not contain mandatory 'vars:' key under "
+                "'template:' key.".format(rule_id))
+        # Add the rule ID which will be reused in OVAL templates as OVAL
+        # definition ID so that the build system matches the generated
+        # check with the rule.
+        template_vars["_rule_id"] = rule_id
         # checks and remediations are processed with a custom YAML dict
         local_env_yaml = self.env_yaml.copy()
-        local_env_yaml["rule_id"] = rule.id_
-        local_env_yaml["rule_title"] = rule.title
+        local_env_yaml["rule_id"] = rule_id
+        local_env_yaml["rule_title"] = rule_title
         local_env_yaml["products"] = self.env_yaml["product"]
         for lang in langs_to_generate:
-            self.build_lang(rule, template_name, lang, local_env_yaml)
+            self.build_lang(
+                rule_id, template_name, template_vars, lang, local_env_yaml)
+
+    def build_extra_ovals(self):
+        declaration_path = os.path.join(self.templates_dir, "extra_ovals.yml")
+        declaration = ssg.yaml.open_raw(declaration_path)
+        for oval_def_id, template in declaration.items():
+            langs_to_generate = ["oval"]
+            # Since OVAL definition ID in shorthand format is always the same
+            # as rule ID, we can use it instead of the rule ID even if no rule
+            # with that ID exists
+            self.build_rule(
+                oval_def_id, oval_def_id, template, langs_to_generate)
+
+    def build_all_rules(self):
+        for rule_file in os.listdir(self.resolved_rules_dir):
+            rule_path = os.path.join(self.resolved_rules_dir, rule_file)
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
+            if rule.template is None:
+                # rule is not templated, skipping
+                continue
+            langs_to_generate = self.get_langs_to_generate(rule)
+            self.build_rule(
+                rule.id_, rule.title, rule.template, langs_to_generate)
 
     def build(self):
         """
@@ -421,7 +454,5 @@ class Builder(object):
             if not os.path.exists(dir_):
                 os.makedirs(dir_)
 
-        for rule_file in os.listdir(self.resolved_rules_dir):
-            rule_path = os.path.join(self.resolved_rules_dir, rule_file)
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
-            self.build_rule(rule)
+        self.build_extra_ovals()
+        self.build_all_rules()

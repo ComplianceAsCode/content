@@ -1,4 +1,4 @@
-documentation_complete: true
+documentation_complete: false
 
 title: 'NIST National Checklist for Red Hat Enterprise Linux CoreOS'
 
@@ -177,7 +177,7 @@ selections:
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
-    - kernel_module_bluetooth_disabled
+#    - kernel_module_bluetooth_disabled
     - kernel_module_sctp_disabled
     - kernel_module_firewire-core_disabled
     - kernel_module_atm_disabled
@@ -189,16 +189,14 @@ selections:
     ### Install Required Packages
     - package_sssd-ipa_installed
     - package_aide_installed
-    #- package_dnf-automatic_installed
     - package_firewalld_installed
     - package_iptables_installed
     - package_libcap-ng-utils_installed
-    #- package_openscap-scanner_installed
+    - package_openscap-scanner_installed
     - package_policycoreutils_installed
-    #- package_python3-subscription-manager-rhsm_installed
     - package_rng-tools_installed
     - package_sudo_installed
-    #- package_usbguard_installed
+    - package_usbguard_installed
     - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
@@ -527,7 +525,6 @@ selections:
     - kerberos_disable_no_keytab
 
     # AC-18
-    - kernel_module_bluetooth_disabled
     - wireless_disable_in_bios
     - wireless_disable_interfaces
 
@@ -560,7 +557,7 @@ selections:
     - auditd_data_disk_error_action
     - auditd_data_retention_max_log_file_action
     - auditd_data_retention_space_left
-    
+
     # AU-8
     - service_chronyd_or_ntpd_enabled
     - chronyd_or_ntpd_specify_remote_server
@@ -579,3 +576,36 @@ selections:
     # AU-11
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
+
+    # AC-2(5), AC-12
+    - accounts_tmout
+
+    # AC-17
+    - sshd_disable_rhosts_rsa
+    - sshd_disable_user_known_hosts
+    - sshd_do_not_permit_user_env
+    - sshd_print_last_log
+    - sshd_use_priv_separation
+
+    # AC-18(4)
+    - network_nmcli_permissions
+
+    # AC-6(5)
+    - no_shelllogin_for_systemaccounts
+    - no_direct_root_logins
+
+    # AC-6(9)
+    - accounts_no_uid_except_zero
+    - audit_rules_etc_group_open
+    - audit_rules_etc_group_openat
+    - audit_rules_etc_group_open_by_handle_at
+    - audit_rules_etc_gshadow_open
+    - audit_rules_etc_gshadow_openat
+    - audit_rules_etc_gshadow_open_by_handle_at
+    - audit_rules_etc_passwd_open
+    - audit_rules_etc_passwd_openat
+    - audit_rules_etc_passwd_open_by_handle_at
+    - audit_rules_etc_shadow_open
+    - audit_rules_etc_shadow_openat
+    - audit_rules_etc_shadow_open_by_handle_at
+    - directory_access_var_log_audit

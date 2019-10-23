@@ -1,0 +1,22 @@
+<def-group>
+  <definition class="inventory" id="installed_OS_is_debian" version="1">
+    <metadata>
+      <title>Debian</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>The operating system installed is a Debian System</description>
+    </metadata>
+    <criteria comment="System is Debian" operator="AND">
+      <extend_definition comment="Installed OS is part of the Unix family" definition_ref="installed_OS_is_part_of_Unix_family" />
+      <criterion comment="Debian is installed" test_ref="test_debian" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="/etc/debian_version exists" id="test_debian" version="1">
+    <unix:object object_ref="obj_debian" />
+  </unix:file_test>
+  <unix:file_object comment="check /etc/debian_version file" id="obj_debian" version="1">
+    <unix:filepath>/etc/debian_version</unix:filepath>
+  </unix:file_object>
+</def-group>
