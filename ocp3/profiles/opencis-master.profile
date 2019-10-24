@@ -95,7 +95,6 @@ selections:
     - api_server_kubelet_client_cert
     - api_server_kubelet_client_key
     - api_server_kubelet_https
-    - api_server_profiling
     - api_server_request_timeout
     - api_server_secure_port
     - api_server_service_account_ca
