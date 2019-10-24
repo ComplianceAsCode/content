@@ -7,7 +7,7 @@ import sys
 from copy import deepcopy
 import collections
 
-from .build_yaml import Rule
+from .build_yaml import Rule, DocumentationNotComplete
 from .constants import oval_namespace as oval_ns
 from .constants import oval_footer
 from .constants import oval_header
@@ -278,7 +278,11 @@ def checks(env_yaml, yaml_path, oval_version, oval_dirs):
         rule_id = get_rule_dir_id(_dir_path)
 
         rule_path = os.path.join(_dir_path, "rule.yml")
-        rule = Rule.from_yaml(rule_path, env_yaml)
+        try:
+            rule = Rule.from_yaml(rule_path, env_yaml)
+        except DocumentationNotComplete:
+            # Happens on non-debug build when a rule is "documentation-incomplete"
+            continue
         prodtypes = parse_prodtype(rule.prodtype)
 
         local_env_yaml['rule_id'] = rule.id_
