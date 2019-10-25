@@ -212,6 +212,8 @@ def get_rules_to_compare(benchmark, rule_id):
             rule_id = ssg.constants.OSCAP_RULE + rule_id
         rules = benchmark.findall(
             ".//xccdf:Rule[@id='%s']" % (rule_id), ns)
+        if len(rules) == 0:
+            raise ValueError("Can't find rule %s" % (rule_id))
     else:
         rules = benchmark.findall(".//xccdf:Rule", ns)
     return rules
