@@ -232,7 +232,11 @@ class ContainerTestEnv(TestEnv):
                 self.ssh_port = ports[self.internal_ssh_port]
         else:
             self.ssh_port = self.internal_ssh_port
-        common.SSH_ADDITIONAL_OPTS = ('-o', 'Port={}'.format(self.ssh_port), ) + common.SSH_ADDITIONAL_OPTS
+        port_opt = ('-o', 'Port={}'.format(self.ssh_port),)
+        common.SSH_ADDITIONAL_OPTS = tuple(map(lambda x: port_opt[1] if x.startswith('Port=') else x,
+                                               common.SSH_ADDITIONAL_OPTS))
+        if port_opt[1] not in common.SSH_ADDITIONAL_OPTS:
+            common.SSH_ADDITIONAL_OPTS = port_opt + common.SSH_ADDITIONAL_OPTS
         return new_container
 
     def reset_state_to(self, state_name, new_running_state_name):
