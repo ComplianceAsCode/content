@@ -197,6 +197,7 @@ selections:
     - package_abrt-cli_removed
     - package_tuned_removed
     - package_abrt_removed
+    - package_pigz_removed
 
     ### Login
     - disable_users_coredumps

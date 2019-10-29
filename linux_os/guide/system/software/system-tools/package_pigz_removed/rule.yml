@@ -1,0 +1,25 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+
+title: 'Uninstall pigz Package'
+
+description: |-
+    {{{ describe_package_remove(package="pigz") }}}
+
+rationale: |-
+    pigz, which stands for parallel implementation of gzip,
+    is a fully functional replacement for gzip that exploits
+    multiple processors and multiple cores to the hilt when compressing data.
+
+severity: low
+
+identifiers:
+    cce@rhel8: 82397-1
+
+{{{ complete_ocil_entry_package(package="pigz") }}}
+
+template:
+    name: package_removed
+    vars:
+        pkgname: pigz
