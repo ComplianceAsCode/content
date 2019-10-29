@@ -179,6 +179,7 @@ selections:
     - package_audit_installed
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
+    - package_gnutls-utils_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
