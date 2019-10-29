@@ -180,6 +180,7 @@ selections:
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
     - package_gnutls-utils_installed
+    - package_nss-tools_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
