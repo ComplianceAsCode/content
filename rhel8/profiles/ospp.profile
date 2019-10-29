@@ -289,7 +289,8 @@ selections:
 
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
-    - sshd_idle_timeout_value=10_minutes
+    ## We deliberately set sshd timeout to 1 minute before tmux lock timeout
+    - sshd_idle_timeout_value=14_minutes
     - sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
