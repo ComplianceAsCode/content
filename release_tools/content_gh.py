@@ -135,16 +135,16 @@ def generate_release_notes(repo, args):
     print(f"Review release notes in '{rn_file}'")
 
 
-def check_release(repo, args):
+def check_release_exists(repo, args):
     version = args.version
     try:
         latest_release = repo.get_latest_release()
         if latest_release.tag_name == f"v{version}":
             print(f"Release v{version} already exists")
-            sys.exit(1)
+            return True
     except github.UnknownObjectException:
         print(f"Release v{version} doesn't exist, good to go")
-        sys.exit(0)
+    return False
 
 
 def move_milestone(repo, args):
@@ -196,7 +196,7 @@ def create_parser():
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
-    check_parser.set_defaults(func=check_release)
+    check_parser.set_defaults(func=check_release_exists)
 
     milestone_parser = subparsers.add_parser("move_milestone")
     milestone_parser.set_defaults(func=move_milestone)
