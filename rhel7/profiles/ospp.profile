@@ -285,13 +285,11 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_rules_for_ospp
-
     ## Audit All Audit and Log Data Accesses (Success/Failure)
     ##  CNSSI 1253 Value or DoD-specific Values:
     ##      - Audit and log data access (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - directory_access_var_log_audit
+    - audit_rules_for_ospp
 
 
     ###  SELinux Configuration
