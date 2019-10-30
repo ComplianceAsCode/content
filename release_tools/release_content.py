@@ -90,6 +90,15 @@ def build_release(env, args):
     else:
         print("Still building, wait for it to finish")
 
+
+def generate_release_notes(env, args):
+    '''
+    Generate Release Notes
+    '''
+
+    gh_repo = get_gh_repo(env, args)
+    content_gh.generate_release_notes(gh_repo, args)
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', default='.env.yml', dest='env_path',
@@ -98,7 +107,7 @@ def create_parser():
     parser.add_argument("--owner", default="ComplianceAsCode")
     parser.add_argument("--repo", default="content")
     subparsers = parser.add_subparsers(dest="subparser_name",
-                                       help="Subcommands: check, build")
+                                       help="Subcommands: check, build, release_notes")
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
@@ -106,6 +115,9 @@ def create_parser():
 
     build_parser = subparsers.add_parser("build")
     build_parser.set_defaults(func=build_release)
+
+    build_parser = subparsers.add_parser("release_notes")
+    build_parser.set_defaults(func=generate_release_notes)
 
     return parser.parse_args()
 
