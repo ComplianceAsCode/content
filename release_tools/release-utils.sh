@@ -17,24 +17,6 @@ die()
     exit 1
 }
 
-move_on_to_next_milestone()
-{
-    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version move_milestone $next_version || die
-}
-
-download_release_assets()
-{
-    python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN --version $version download || die
-}
-
-create_new_release()
-{
-    echo Creating release for version $version
-    commit=$(git show --format=%H HEAD)
-    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version release $commit || die
-    echo :: Review Release $version in GitHub and publish it
-}
-
 bump_release_in_cmake()
 {
     local _version_triplet=($(echo "$next_version" | tr "." "\n"))

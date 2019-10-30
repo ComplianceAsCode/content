@@ -38,6 +38,10 @@ def get_version_string(d):
     return f"{d['major']}.{d['minor']}.{d['patch']}"
 
 
+def get_next_version_string(d):
+    d['patch'] = int(d['patch']) + 1
+    return get_version_string(d)
+
 def get_gh_repo(env, args):
     gh = github.Github(env['github_token'])
     gh_repo = content_gh.get_repo(gh, args.owner, args.repo)
@@ -99,6 +103,25 @@ def generate_release_notes(env, args):
     gh_repo = get_gh_repo(env, args)
     content_gh.generate_release_notes(gh_repo, args)
 
+
+def create_release(env, args):
+    '''
+    Create Release
+    '''
+
+    gh_repo = get_gh_repo(env, args)
+    content_gh.move_milestone(gh_repo, args)
+
+    jenkins_ci = get_jenkins_ci(env)
+    jenkins_ci.download_release_artifacts(parser.version)
+
+    print(f"Creating release for version {args.version}")
+    local_repo = git.Repo('../')
+    args.commit = local_repo.head.commit.hexsha
+    content_gh.create_release(gh_repo, args)
+    print(f":: Review Release {args.version} in GitHub and publish it.")
+
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', default='.env.yml', dest='env_path',
@@ -107,7 +130,7 @@ def create_parser():
     parser.add_argument("--owner", default="ComplianceAsCode")
     parser.add_argument("--repo", default="content")
     subparsers = parser.add_subparsers(dest="subparser_name",
-                                       help="Subcommands: check, build, release_notes")
+                                       help="Subcommands: check, build, release_notes, release")
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
@@ -118,6 +141,9 @@ def create_parser():
 
     build_parser = subparsers.add_parser("release_notes")
     build_parser.set_defaults(func=generate_release_notes)
+
+    build_parser = subparsers.add_parser("release")
+    build_parser.set_defaults(func=create_release)
 
     return parser.parse_args()
 
@@ -135,5 +161,6 @@ if __name__ == "__main__":
 
     version_dict = parse_version('../CMakeLists.txt')
     parser.version = get_version_string(version_dict)
+    parser.next_version = get_next_version_string(version_dict)
 
     parser.func(env, parser)
