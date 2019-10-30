@@ -17,11 +17,6 @@ die()
     exit 1
 }
 
-generate_release_notes()
-{
-    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version rn
-}
-
 move_on_to_next_milestone()
 {
     python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version move_milestone $next_version || die
