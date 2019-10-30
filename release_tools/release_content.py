@@ -45,7 +45,11 @@ def get_gh_repo(env, args):
     return gh_repo
 
 
-def check_release(env, jenkins_ci, args):
+def get_jenkins_ci(env):
+    return JenkinsCI(username=env['jenkins_user'], password=env['jenkins_token'])
+
+
+def check_release(env, args):
     '''
     Check repo and project state for release
     '''
@@ -63,13 +67,14 @@ def check_release(env, jenkins_ci, args):
         return
 
     print("Checking Jenkins Jobs")
+    jenkins_ci = get_jenkins_ci(env)
     jenkins_ci.check_all_green()
 
     # Run shell script that builds RHEL and checks for mising STIG IDS
     subprocess.call("./check_rhel_stig_ids.sh")
 
 
-def build_release(env, jenkins_ci, args):
+def build_release(env, args):
     '''
     Build assets for release
     '''
@@ -77,6 +82,7 @@ def build_release(env, jenkins_ci, args):
         # call cmake and build the tarball in ./artifacts directory
         subprocess.call(f"./make_tarball.sh {args.version}")
 
+    jenkins_ci = get_jenkins_ci(env)
     all_built = jenkins_ci.build_jobs_for_release()
     if all_built:
         print(":: You can continue to next step and generate the release notes, run "
@@ -118,6 +124,4 @@ if __name__ == "__main__":
     version_dict = parse_version('../CMakeLists.txt')
     parser.version = get_version_string(version_dict)
 
-    jenkins_ci = JenkinsCI(username=env['jenkins_user'], password=env['jenkins_token'])
-
-    parser.func(env, jenkins_ci, parser)
+    parser.func(env, parser)
