@@ -37,6 +37,14 @@ def parse_version(cmakelists_path):
 def get_version_string(d):
     return f"{d['major']}.{d['minor']}.{d['patch']}"
 
+
+def get_gh_repo(env, args):
+    gh = github.Github(env['github_token'])
+    gh_repo = content_gh.get_repo(gh, args.owner, args.repo)
+
+    return gh_repo
+
+
 def check_release(env, jenkins_ci, args):
     '''
     Check repo and project state for release
@@ -47,9 +55,8 @@ def check_release(env, jenkins_ci, args):
         print("The repository is not clean, stash your changes before proceeding.")
         return
 
-    gh = github.Github(env['github_token'])
-    remote_repo = content_gh.get_repo(gh, args.owner, args.repo)
-    release_exists = content_gh.check_release_exists(remote_repo, args)
+    gh_repo = get_gh_repo(env, args)
+    release_exists = content_gh.check_release_exists(gh_repo, args)
     if release_exists:
         print(f"Version {args.version} was released already, "
                 "bump the version in the CMakeLists.txt file before releasing.")
