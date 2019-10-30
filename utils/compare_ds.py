@@ -212,6 +212,8 @@ def get_rules_to_compare(benchmark, rule_id):
             rule_id = ssg.constants.OSCAP_RULE + rule_id
         rules = benchmark.findall(
             ".//xccdf:Rule[@id='%s']" % (rule_id), ns)
+        if len(rules) == 0:
+            raise ValueError("Can't find rule %s" % (rule_id))
     else:
         rules = benchmark.findall(".//xccdf:Rule", ns)
     return rules
@@ -229,7 +231,11 @@ def process_benchmarks(
         old_benchmark, new_benchmark, old_oval_defs, new_oval_defs,
         rule_id, show_diffs):
     missing_rules = []
-    rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
+    try:
+        rules_in_old_benchmark = get_rules_to_compare(old_benchmark, rule_id)
+    except ValueError as e:
+        print(str(e))
+        return
     for old_rule in rules_in_old_benchmark:
         rule_id = old_rule.get("id")
         new_rule = new_benchmark.find(
