@@ -17,39 +17,6 @@ die()
     exit 1
 }
 
-check_for_clean_repo()
-{
-    echo Checking whether the repository is clean...
-    # check that there is nothing to report by 'status' except untracked files.
-    git status --porcelain=v2 | grep -q --invert-match '^?' && die "The repository is not clean, stash your changes to proceed."
-}
-
-check_release_is_ok()
-{
-    # check that release $version doesn't exist yet
-    python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version check || die
-}
-
-check_jenkins_jobs()
-{
-    echo Checking Jenkins Jobs
-    python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN check
-
-}
-
-check_rhel_stig_ids()
-{
-    echo Checking missing STIG IDS...
-    echo Building RHEL6 and RHEL7 content
-    ncpu=$(nproc) # This won't return number of physical core, but it shouldn't be problem
-    (cd "$BUILDDIR" && cmake .. && make -j $(ncpu) rhel7 rhel6) &> rhel_build.log || die "Error building RHEL7 content, check rhel_build.log file for errors"
-    (PYTHONPATH=.. python3 ../build-scripts/profile_tool.py stats -b ../build/ssg-rhel6-xccdf.xml --missing-stig-ids --profile stig) > rhel6-stig-ids.log
-    echo :: Check rhel6-stig-ids.log for rules missing STIG IDs
-    (PYTHONPATH=.. python3 ../build-scripts/profile_tool.py stats -b ../build/ssg-rhel7-xccdf.xml --missing-stig-ids --profile stig) > rhel7-stig-ids.log
-    echo :: Check rhel7-stig-ids.log for rules missing STIG IDs
-
-}
-
 make_dist()
 {
     if [ -e artifacts/scap-security-guide-$version.tar.bz2 ]; then

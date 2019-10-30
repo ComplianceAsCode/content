@@ -1,7 +1,13 @@
 import argparse
+import git
+import github
 import re
 import yaml
+import subprocess
 import sys
+
+import content_gh
+from jenkins_ci import JenkinsCI
 
 def load_env(env_path):
     with open(env_path, 'r') as env_stream:
@@ -30,6 +36,29 @@ def parse_version(cmakelists_path):
 def get_version_string(d):
     return f"{d['major']}.{d['minor']}.{d['patch']}"
 
+def check_release(env, jenkins_ci, args):
+    '''
+    Check repo and project state for release
+    '''
+
+    local_repo = git.Repo('../')
+    if local_repo.is_dirty():
+        print("The repository is not clean, stash your changes before proceeding.")
+        return
+
+    gh = github.Github(env['github_token'])
+    remote_repo = content_gh.get_repo(gh, args.owner, args.repo)
+    release_exists = content_gh.check_release_exists(remote_repo, args)
+    if release_exists:
+        print(f"Version {args.version} was released already, "
+                "bump the version in the CMakeLists.txt file before releasing.")
+        return
+
+    print("Checking Jenkins Jobs")
+    jenkins_ci.check_all_green()
+
+    # Run shell script that builds RHEL and checks for mising STIG IDS
+    subprocess.call("./check_rhel_stig_ids.sh")
 
 def create_parser():
     parser = argparse.ArgumentParser()
@@ -38,6 +67,12 @@ def create_parser():
                              "Check the README.md file to know what to put in the file")
     parser.add_argument("--owner", default="ComplianceAsCode")
     parser.add_argument("--repo", default="content")
+    subparsers = parser.add_subparsers(dest="subparser_name",
+                                       help="Subcommands: check")
+    subparsers.required = True
+
+    check_parser = subparsers.add_parser("check")
+    check_parser.set_defaults(func=check_release)
 
     return parser.parse_args()
 
@@ -55,3 +90,7 @@ if __name__ == "__main__":
 
     version_dict = parse_version('../CMakeLists.txt')
     parser.version = get_version_string(version_dict)
+
+    jenkins_ci = JenkinsCI(username=env['jenkins_user'], password=env['jenkins_token'])
+
+    parser.func(env, jenkins_ci, parser)
