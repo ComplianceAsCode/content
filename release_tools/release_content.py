@@ -1,5 +1,7 @@
 import argparse
+import re
 import yaml
+import sys
 
 def load_env(env_path):
     with open(env_path, 'r') as env_stream:
@@ -14,6 +16,19 @@ def validate_env(env, env_path):
             print(f"Add your {field} in {env_path} file. Check the README.md for how to obtain it.")
             env_ok = True
     return env_ok
+
+def parse_version(cmakelists_path):
+    regex = re.compile(r'set\(SSG_(.*)_VERSION (\d+)\)')
+
+    with open(cmakelists_path, 'r') as cmakelists_stream:
+        cmakelists_content = cmakelists_stream.read()
+
+        matches = re.findall(regex, cmakelists_content)
+    version = { v_name.lower():v_value for v_name,v_value in matches }
+    return version
+
+def get_version_string(d):
+    return f"{d['major']}.{d['minor']}.{d['patch']}"
 
 
 def create_parser():
@@ -36,3 +51,7 @@ if __name__ == "__main__":
             sys.exit(1)
     except FileNotFoundError as e:
         print("Create a .env.yaml file and populate it. Check the README.md file for details.")
+        sys.exit(1)
+
+    version_dict = parse_version('../CMakeLists.txt')
+    parser.version = get_version_string(version_dict)
