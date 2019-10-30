@@ -179,6 +179,8 @@ selections:
     - package_audit_installed
     - package_rsyslog_installed
     - package_rsyslog-gnutls_installed
+    - package_gnutls-utils_installed
+    - package_nss-tools_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -195,6 +197,7 @@ selections:
     - package_abrt-cli_removed
     - package_tuned_removed
     - package_abrt_removed
+    - package_pigz_removed
 
     ### Login
     - disable_users_coredumps
