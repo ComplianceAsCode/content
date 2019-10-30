@@ -8,9 +8,10 @@ description: |-
     {{{ describe_package_remove(package="pigz") }}}
 
 rationale: |-
-    pigz, which stands for parallel implementation of gzip,
-    is a fully functional replacement for gzip that exploits
-    multiple processors and multiple cores to the hilt when compressing data.
+    Binaries shipped in <tt>pigz</tt> package in Red Hat Enterprise Linux 8
+    have not been compiled using recommended compiler flags. The binaries
+    are compiled without sufficient stack protection and its address space
+    layout randomization (ASLR) is weak.
 
 severity: low
 
