@@ -17,34 +17,6 @@ die()
     exit 1
 }
 
-make_dist()
-{
-    if [ -e artifacts/scap-security-guide-$version.tar.bz2 ]; then
-        echo Tarball already exists
-    else
-        echo Generating source code tarball
-        ncpu=$(nproc) # This won't return number of physical core, but it shouldn't be problem
-        (cd "$BUILDDIR" && cmake .. && make -j $ncpu package_source) &> package_source.log || die "Error making package_source. Check package_source.log for errors"
-        mkdir artifacts/
-        mv $BUILDDIR/scap-security-guide-$version.tar.bz2 artifacts/
-    fi
-}
-
-build_jenkins_jobs()
-{
-    if python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN build; then
-        echo :: You can continue to next step of the release
-    else
-        echo Still building, wait for it to finish
-    fi
-}
-
-build_release()
-{
-    make_dist
-    build_jenkins_jobs
-}
-
 generate_release_notes()
 {
     python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version rn

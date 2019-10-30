@@ -1,6 +1,7 @@
 import argparse
 import git
 import github
+import os
 import re
 import yaml
 import subprocess
@@ -60,6 +61,22 @@ def check_release(env, jenkins_ci, args):
     # Run shell script that builds RHEL and checks for mising STIG IDS
     subprocess.call("./check_rhel_stig_ids.sh")
 
+
+def build_release(env, jenkins_ci, args):
+    '''
+    Build assets for release
+    '''
+    if not os.path.isfile(f"./artifacts/scap-security-guide-{args.version}.tar.bz2"):
+        # call cmake and build the tarball in ./artifacts directory
+        subprocess.call(f"./make_tarball.sh {args.version}")
+
+    all_built = jenkins_ci.build_jobs_for_release()
+    if all_built:
+        print(":: You can continue to next step and generate the release notes, run "
+              "'python3 release_content.py release_notes'")
+    else:
+        print("Still building, wait for it to finish")
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', default='.env.yml', dest='env_path',
@@ -68,11 +85,14 @@ def create_parser():
     parser.add_argument("--owner", default="ComplianceAsCode")
     parser.add_argument("--repo", default="content")
     subparsers = parser.add_subparsers(dest="subparser_name",
-                                       help="Subcommands: check")
+                                       help="Subcommands: check, build")
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
     check_parser.set_defaults(func=check_release)
+
+    build_parser = subparsers.add_parser("build")
+    build_parser.set_defaults(func=build_release)
 
     return parser.parse_args()
 
