@@ -2,12 +2,19 @@ documentation_complete: true
 
 title: 'Ensure All SUID Executables Are Authorized'
 
+prodtype: rhel6,rhel7,rhel8,ol7,ol8,fedora,wrlinux8,wrlinux1019
+
 description: |-
     The SUID (set user id) bit should be set only on files that were
     installed via authorized means. A straightforward means of identifying
-    unauthorized SGID files is determine if any were not installed as part of an
+    unauthorized SUID files is determine if any were not installed as part of an
     RPM package, which is cryptographically verified. Investigate the origin
     of any unpackaged SUID files.
+    This configuration check considers authorized SUID files which were installed via RPM.
+    It is assumed that when an individual has sudo access to install an RPM
+    and all packages are signed with an organizationally-recognized GPG key,
+    the software should be considered an approved package on the system.
+    Any SUID file not deployed through an RPM will be flagged for further review.
 
 rationale: |-
     Executable files with the SUID permission run with the privileges of
@@ -36,5 +43,5 @@ references:
 ocil_clause: 'only authorized files appear in the output of the find command'
 
 ocil: |-
-    To find world-writable files, run the following command:
-    <pre>$ sudo find / -xdev -type f -perm -002</pre>
+    To find SUID files, run the following command:
+    <pre>$ sudo find / -xdev -type f -perm -4000</pre>
