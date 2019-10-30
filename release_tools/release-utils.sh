@@ -1,5 +1,3 @@
-test -f .env && . .env
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONTENT_REPO_ROOT="$(cd "$SCRIPT_DIR" && cd .. && pwd)"
 BUILDDIR="$CONTENT_REPO_ROOT/build"
@@ -19,17 +17,6 @@ die()
     exit 1
 }
 
-check_jenkins_credentials()
-{
-    test -n "$JENKINS_USER" || die "We don't know your Jenkins user, so we can't proceed. It usually is the same as your GitHub user. Get to know your User ID in your profile page in Jenkins, and put it in the .env file, so it contains the line JENKINS_USER='<jenkins user id>'"
-    test -n "$JENKINS_TOKEN" || die "We don't know your Jenkins API token, so we can't proceed. Generate one on your Configure page in Jenkins and put it in the .env file, so it contains the line JENKINS_TOKEN='<jenkins token>'"
-}
-
-check_github_credentials()
-{
-    test -n "$GITHUB_TOKEN" || die "We don't know your GitHub token, so we can't proceed. Get one on https://github.com/settings/tokens and put it in the .env file, so it contains the line GITHUB_TOKEN='<github token>'"
-}
-
 check_for_clean_repo()
 {
     echo Checking whether the repository is clean...
@@ -39,14 +26,12 @@ check_for_clean_repo()
 
 check_release_is_ok()
 {
-    check_github_credentials
     # check that release $version doesn't exist yet
     python3 content_gh.py $OWNER $REPO $GITHUB_TOKEN $version check || die
 }
 
 check_jenkins_jobs()
 {
-    check_jenkins_credentials
     echo Checking Jenkins Jobs
     python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN check
 
@@ -90,7 +75,6 @@ build_jenkins_jobs()
 build_release()
 {
     make_dist
-    check_jenkins_credentials
     build_jenkins_jobs
 }
 
@@ -106,7 +90,6 @@ move_on_to_next_milestone()
 
 download_release_assets()
 {
-    check_jenkins_credentials
     python3 jenkins_ci.py --jenkins-user $JENKINS_USER --jenkins-token $JENKINS_TOKEN --version $version download || die
 }
 
