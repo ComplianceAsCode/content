@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'RHOSP STIG'
+title: 'RHOSP CUI'
 
 description: 'Sample profile description.'
 
