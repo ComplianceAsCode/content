@@ -536,6 +536,22 @@ benchmark_root: "../linux_os/guide"
 .....
 ----
 
+Rules from multiple locations can be used for a single Benchmark. There is an optional key `additional_content_directories` for a list of paths to some arbitrary Groups of Rules
+to be included in the benchmark. Of all the rules collected only following would become a part of the benchmark:
+
+- rules that have the `prodtype` specified in correspondence with the benchmark;
+- rules that have no `prodtype` metadata.
+
+----
+.....
+
+benchmark_root: "../applications"
+additional_content_directories:
+    - "../linux_os/guide"
+
+.....
+----
+
 The Benchmarks are organized into directory structure. The directories represent either groups or rules. The group directories contain `group.yml` and rule directories `rule.yml`.
 The name of the group directory is the group ID, without the prefix.
 Similarly, the name of the rule directory if the rule ID, without the prefix.

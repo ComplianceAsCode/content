@@ -54,6 +54,7 @@ def main():
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
     profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
+    additional_content_directories = env_yaml.get("additional_content_directories", [])
 
     # we have to "absolutize" the paths the right way, relative to the
     # product_yaml path
@@ -61,12 +62,13 @@ def main():
         benchmark_root = os.path.join(base_dir, benchmark_root)
     if not os.path.isabs(profiles_root):
         profiles_root = os.path.join(base_dir, profiles_root)
+    add_content_dirs = [os.path.join(base_dir, er_root) for er_root in additional_content_directories if not os.path.isabs(er_root)]
 
     if args.action == "build":
         loader = ssg.build_yaml.BuildLoader(
             profiles_root, args.bash_remediation_fns, env_yaml,
             args.resolved_rules_dir)
-        loader.process_directory_tree(benchmark_root)
+        loader.process_directory_tree(benchmark_root, add_content_dirs)
 
         profiles = loader.loaded_group.profiles
         for p in profiles:
@@ -78,7 +80,7 @@ def main():
     elif args.action == "list-inputs":
         loader = ssg.build_yaml.ListInputsLoader(
             profiles_root, args.bash_remediation_fns, env_yaml)
-        loader.process_directory_tree(benchmark_root)
+        loader.process_directory_tree(benchmark_root, add_content_dirs)
     else:
         RuntimeError("Invalid action: {action}".format(action=args.action))
 
