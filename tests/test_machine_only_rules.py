@@ -19,12 +19,14 @@ def main():
         product_yaml = ssg.yaml.open_raw(product_yaml_path)
         guide_dir = os.path.abspath(
             os.path.join(product_dir, product_yaml['benchmark_root']))
-        if not check_product(args.build_dir, product, guide_dir):
+        additional_content_directories = product_yaml.get("additional_content_directories", [])
+        add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
+        if not check_product(args.build_dir, product, [guide_dir] + add_content_dirs):
             sys.exit(1)
 
 
-def check_product(build_dir, product, guide_dir):
-    input_groups, input_rules = scan_rules_groups(guide_dir, False)
+def check_product(build_dir, product, rules_dirs):
+    input_groups, input_rules = scan_rules_groups(rules_dirs, False)
     ds_path = os.path.join(build_dir, "ssg-" + product + "-ds.xml")
     if not check_ds(ds_path, "groups", input_groups):
         return False
@@ -88,21 +90,27 @@ def check_if_machine_only(dirpath, name, is_machine_only_group):
     return False
 
 
-def scan_rules_groups(dirpath, parent_machine_only):
+def scan_rules_groups(dir_paths, parent_machine_only):
     groups = set()
     rules = set()
-    name = os.path.basename(dirpath)
+    for dir_path in dir_paths:
+        groups, rules = scan_rules_group(dir_path, parent_machine_only, groups, rules)
+    return groups, rules
+
+
+def scan_rules_group(dir_path, parent_machine_only, groups, rules):
+    name = os.path.basename(dir_path)
     is_machine_only = False
-    if check_if_machine_only(dirpath, "group.yml", parent_machine_only):
+    if check_if_machine_only(dir_path, "group.yml", parent_machine_only):
         groups.add(name)
         is_machine_only = True
-    if check_if_machine_only(dirpath, "rule.yml", parent_machine_only):
+    if check_if_machine_only(dir_path, "rule.yml", parent_machine_only):
         rules.add(name)
-    for dir_item in os.listdir(dirpath):
-        subdir_path = os.path.join(dirpath, dir_item)
+    for dir_item in os.listdir(dir_path):
+        subdir_path = os.path.join(dir_path, dir_item)
         if os.path.isdir(subdir_path):
-            subdir_groups, subdir_rules = scan_rules_groups(
-                subdir_path, is_machine_only)
+            subdir_groups, subdir_rules = scan_rules_group(
+                subdir_path, is_machine_only, groups, rules)
             groups |= subdir_groups
             rules |= subdir_rules
     return groups, rules

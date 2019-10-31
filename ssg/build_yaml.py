@@ -1114,8 +1114,10 @@ class DirectoryLoader(object):
             self._recurse_into_subdirs()
             self._process_rules()
 
-    def process_directory_tree(self, start_dir):
+    def process_directory_tree(self, start_dir, extra_group_dirs=None):
         self._collect_items_to_load(start_dir)
+        if extra_group_dirs is not None:
+            self.subdirectories += extra_group_dirs
         self._load_group_process_and_recurse(start_dir)
 
     def _recurse_into_subdirs(self):
