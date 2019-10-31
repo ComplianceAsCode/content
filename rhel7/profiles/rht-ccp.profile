@@ -86,7 +86,6 @@ selections:
     - service_abrtd_disabled
     - service_telnet_disabled
     - package_telnet-server_removed
-    - package_telnet_removed
     - sshd_allow_only_protocol2
     - sshd_set_idle_timeout
     - sshd_set_keepalive

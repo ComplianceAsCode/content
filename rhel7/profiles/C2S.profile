@@ -101,7 +101,6 @@ selections:
     - package_ypbind_removed
     - package_rsh_removed
     - package_talk_removed
-    - package_telnet_removed
     - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_conf_all_send_redirects
     - sysctl_net_ipv4_conf_default_send_redirects
