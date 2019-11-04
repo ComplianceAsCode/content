@@ -1,0 +1,24 @@
+documentation_complete: true
+
+title: 'Verify Permissions on SSH Server Public *.conf Key Files'
+
+description: '{{{ describe_file_permissions(file="/etc/cinder/*.conf", perms="0640") }}}'
+
+rationale: |-
+    Due to the nature of the cinder config files, normal users should no be
+    able to view contents
+severity: medium
+
+references:
+    cui: 3.1.5
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r--r--") }}}'
+
+ocil: '{{{ ocil_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r--r--") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/cinder/
+        file_regex: ^.*.conf$
+        filemode: '0640'
