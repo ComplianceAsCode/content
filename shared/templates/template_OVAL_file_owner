@@ -11,7 +11,14 @@
       <criterion comment="Check file ownership of {{{ FILEPATH }}}" test_ref="test_file_owner{{{ FILEID }}}" />
     </criteria>
   </definition>
-  <unix:file_test check="all" check_existence="all_exist" comment="Testing user ownership of {{{ FILEPATH }}}" id="test_file_owner{{{ FILEID }}}" version="1">
+  {{%- if MISSING_FILE_PASS -%}}
+    {{# Any number of files can exist, from zero to any #}}
+    {{% set FILE_EXISTENCE = "any_exist" %}}
+  {{%- else -%}}
+    {{# All defined files must exist. When using regex, at least one file must match #}}
+    {{% set FILE_EXISTENCE = "all_exist" %}}
+  {{%- endif -%}}
+  <unix:file_test check="all" check_existence="{{{ FILE_EXISTENCE }}}" comment="Testing user ownership of {{{ FILEPATH }}}" id="test_file_owner{{{ FILEID }}}" version="1">
     <unix:object object_ref="object_file_owner{{{ FILEID }}}" />
     <unix:state state_ref="state_file_owner{{{ FILEID }}}_uid_{{{ FILEUID }}}" />
   </unix:file_test>
