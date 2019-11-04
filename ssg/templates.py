@@ -122,6 +122,8 @@ def audit_rules_usergroup_modification(data, lang):
 
 def _file_owner_groupowner_permissions_regex(data):
     data["is_directory"] = data["filepath"].endswith("/")
+    if "missing_file_pass" not in data:
+        data["missing_file_pass"] = False
     if "file_regex" in data and not data["is_directory"]:
         raise ValueError(
             "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
