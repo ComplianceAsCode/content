@@ -86,8 +86,11 @@ def build_release(env, args):
         # call cmake and build the tarball in ./artifacts directory
         subprocess.call(f"./make_tarball.sh {args.version}")
 
+    # Jenkins builds should be done from the stabilization branch
+    build_parameters = [('GIT_BRANCH', f"stabilization-v{args.version}")]
+
     jenkins_ci = get_jenkins_ci(env)
-    all_built = jenkins_ci.build_jobs_for_release()
+    all_built = jenkins_ci.build_jobs_for_release(build_parameters)
     if all_built:
         print(":: You can continue to next step and generate the release notes, run "
               "'python3 release_content.py release_notes'")

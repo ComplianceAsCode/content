@@ -54,7 +54,7 @@ class JenkinsCI(object):
                 print("Job {} is passing".format(job_name))
         return all_green
 
-    def _trigger_build_job(self, job_name):
+    def _trigger_build_job(self, job_name, build_parameters):
         next_build_number = self.server.get_job_info(job_name)['nextBuildNumber']
         self.server.build_job(job_name)
         self.build_ids[job_name] = next_build_number
@@ -70,7 +70,7 @@ class JenkinsCI(object):
         except jenkins.NotFoundException:
             return 'not found'
 
-    def build_jobs_for_release(self):
+    def build_jobs_for_release(self, build_parameters=None):
         queue = self.server.get_queue_info()
         all_built = True
 
@@ -79,7 +79,7 @@ class JenkinsCI(object):
 
             if build_number is None:
                 # Trigger build
-                self._trigger_build_job(job_name)
+                self._trigger_build_job(job_name, build_parameters)
                 print("Building job {}".format(job_name))
                 all_built = False
             else:
