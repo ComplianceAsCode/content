@@ -52,7 +52,11 @@ def main():
 def parse_affected(cur_dir, env_yaml):
     for rule_dir in ssg.rules.find_rule_dirs(cur_dir):
         rule_path = os.path.join(rule_dir, "rule.yml")
-        rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
+        try:
+            rule = ssg.build_yaml.Rule.from_yaml(rule_path, env_yaml)
+        except ssg.build_yaml.DocumentationNotComplete:
+            # Happens on non-debug build when a rule is "documentation-incomplete"
+            continue
         prodtypes = ssg.rule_yaml.parse_prodtype(rule.prodtype)
 
         env_yaml['rule_id'] = rule.id_

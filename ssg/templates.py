@@ -122,6 +122,8 @@ def audit_rules_usergroup_modification(data, lang):
 
 def _file_owner_groupowner_permissions_regex(data):
     data["is_directory"] = data["filepath"].endswith("/")
+    if "missing_file_pass" not in data:
+        data["missing_file_pass"] = False
     if "file_regex" in data and not data["is_directory"]:
         raise ValueError(
             "Used 'file_regex' key in rule '{0}' but filepath '{1}' does not "
@@ -436,7 +438,11 @@ class Builder(object):
     def build_all_rules(self):
         for rule_file in os.listdir(self.resolved_rules_dir):
             rule_path = os.path.join(self.resolved_rules_dir, rule_file)
-            rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
+            try:
+                rule = ssg.build_yaml.Rule.from_yaml(rule_path, self.env_yaml)
+            except ssg.build_yaml.DocumentationNotComplete:
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                continue
             if rule.template is None:
                 # rule is not templated, skipping
                 continue

@@ -464,6 +464,10 @@ class Benchmark(object):
                 new_profile = Profile.from_yaml(dir_item_path, env_yaml)
             except DocumentationNotComplete:
                 continue
+            except Exception as exc:
+                msg = ("Error building profile from '{fname}': '{error}'"
+                       .format(fname=dir_item_path, error=str(exc)))
+                raise RuntimeError(msg)
             if new_profile is None:
                 continue
 
@@ -1157,7 +1161,11 @@ class BuildLoader(DirectoryLoader):
 
     def _process_rules(self):
         for rule_yaml in self.rule_files:
-            rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            try:
+                rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            except DocumentationNotComplete:
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                continue
             prodtypes = parse_prodtype(rule.prodtype)
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue
