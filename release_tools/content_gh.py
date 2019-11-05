@@ -54,8 +54,13 @@ def create_new_milestone(repo, name):
         print(f"Creating milestone {name}")
         return repo.create_milestone(name, "open")
     except github.GithubException as e:
-        print(f"Failed to create milesone {name}: {e.data['errors']}")
-        sys.exit(1)
+        for error in e.data['errors']:
+            if 'already_exists' in error['code']:
+                print(f"Reusing already existing milestone {name}")
+                return get_milestone(repo, name)
+            else:
+                print(f"Failed to create milesone {name}: {e.data['errors']}")
+                sys.exit(1)
 
 
 def transfer_open_issues_and_prs_to_new_milestone(repo, old_milestone, new_milestone):
