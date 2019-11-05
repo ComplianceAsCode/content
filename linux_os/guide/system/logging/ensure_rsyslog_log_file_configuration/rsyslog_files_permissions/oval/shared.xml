@@ -71,7 +71,7 @@
          * the chunk was retrieved from a row not starting with space, '#',
            or '$' characters
     -->
-    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[^\s#\$]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

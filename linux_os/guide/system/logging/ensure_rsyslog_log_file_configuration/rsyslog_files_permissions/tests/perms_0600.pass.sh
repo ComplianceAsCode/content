@@ -9,10 +9,13 @@ source $SHARED/rsyslog_log_utils.sh
 PERMS=0600
 
 # setup test data
-create_rsyslog_test_logs 1
+create_rsyslog_test_logs 4
 
-# setup test log file and permissions
-chmod $PERMS ${RSYSLOG_TEST_LOGS[0]}
+# setup all files with incorrect permission
+chmod 0601 "${RSYSLOG_TEST_LOGS[@]}"
+
+# setup the real logfile with correct permissions
+chmod $PERMS "${RSYSLOG_TEST_LOGS[0]}"
 
 # add rule with 0600 permissions log file
 cat << EOF > $RSYSLOG_CONF
@@ -21,5 +24,13 @@ cat << EOF > $RSYSLOG_CONF
 #### RULES ####
 
 *.*        ${RSYSLOG_TEST_LOGS[0]}
+
+ *.*        ${RSYSLOG_TEST_LOGS[1]}
+
+authpriv.*        /nonexistent_file
+
+# *.*        /irrelevant_file
+
+\$something /irrelevant_file
 
 EOF
