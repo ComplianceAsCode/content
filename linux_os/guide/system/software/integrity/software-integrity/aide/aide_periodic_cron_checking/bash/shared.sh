@@ -4,4 +4,7 @@
 
 if ! grep -q "/usr/sbin/aide --check" /etc/crontab ; then
     echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
+else
+    sed -i '/^.*\/usr\/sbin\/aide --check.*$/d' /etc/crontab
+    echo "05 4 * * * root /usr/sbin/aide --check" >> /etc/crontab
 fi
