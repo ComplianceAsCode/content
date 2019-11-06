@@ -5,7 +5,7 @@ title: 'Set Maximum Number of Failed Authentication Attempts'
 description: |-
      The account lockout feature limits the number of incorrect password
      attempts. If a user fails to authenticate after the maximum number
-     of attempts, the service disables the user. 
+     of attempts, the service disables the user.
      <br />
      The maximum number of failed authentication attempts is set by the
      <tt>lockout_failure_attempts</tt> option in under the
@@ -22,6 +22,7 @@ identifiers:
 
 references:
     nist: AC-7
+    cui: 3.1.8
 
 ocil_clause: 'lockout_failure_attempts is commented out or not configured properly'
 
@@ -33,4 +34,3 @@ ocil: |-
     <br />
     If properly configured, the output should be:
     <pre>lockout_failure_attempts=<sub idref="var_keystone_lockout_failure_attempts" /></pre>
-
