@@ -14,7 +14,11 @@ selections:
     - horizon_password_autocomplete
     - horizon_disable_password_reveal
     - cinder_file_ownership
+<<<<<<< HEAD
     - cinder_conf_file_perms
+=======
+    - cinder_file_perms
+>>>>>>> 9c329e7d95f2ebe891551fc5e51e82838caf741d
     - cinder_using_keystone
     - cinder_tls_enabled
     - cinder_nova_tls
