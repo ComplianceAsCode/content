@@ -5,7 +5,7 @@ prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
 title: 'Configure Periodic Execution of AIDE'
 
 description: |-
-    At a minimum, AIDE should be configured to run a weekly scan. At most, AIDE should be run daily.
+    At a minimum, AIDE should be configured to run a weekly scan.
     To implement a daily execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
     <pre>05 4 * * * root /usr/sbin/aide --check</pre>
     To implement a weekly execution of AIDE at 4:05am using cron, add the following line to <tt>/etc/crontab</tt>:
