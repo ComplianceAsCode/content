@@ -38,6 +38,13 @@ selections:
     ### Things needed to meet OSPP functional requirements.
     #######################################################
 
+    ### SELinux Configuration
+    - var_selinux_state=enforcing
+    - selinux_state
+
+    ### Audit
+    - service_auditd_enabled
+
     ### Partitioning
     #- mount_option_home_nodev
     #- mount_option_home_nosuid
@@ -159,7 +166,6 @@ selections:
     #- sysctl_fs_protected_symlinks
 
     ### Audit
-    #- service_auditd_enabled
     #- var_auditd_flush=incremental_async
     #- auditd_data_retention_flush
     #- auditd_local_events
@@ -233,8 +239,6 @@ selections:
     #- accounts_password_pam_unix_remember
 
     ### SELinux Configuration
-    #- var_selinux_state=enforcing
-    #- selinux_state
     #- var_selinux_policy_name=targeted
     #- selinux_policytype
 
