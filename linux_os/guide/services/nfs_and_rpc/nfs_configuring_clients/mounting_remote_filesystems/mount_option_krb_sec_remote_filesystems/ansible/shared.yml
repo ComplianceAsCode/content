@@ -18,3 +18,4 @@
     state: mounted
     opts: "{{ item.split()[3] }},sec=krb5:krb5i:krb5p"
   when: (points_register.stdout | length > 0)
+  with_items: "{{ points_register.stdout_lines }}"
