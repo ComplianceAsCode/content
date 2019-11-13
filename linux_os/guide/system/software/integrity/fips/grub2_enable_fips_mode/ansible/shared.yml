@@ -65,6 +65,7 @@
 - name: get boot device uuid
   command: findmnt --noheadings --output uuid --target /boot
   register: bootuuid
+  check_mode: no
 
 - name: check boot argument exists
   command: grep 'GRUB_CMDLINE_LINUX.*boot=' /etc/default/grub
