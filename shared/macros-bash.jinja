@@ -304,6 +304,21 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
   done
 {{%- endmacro -%}}
 
+{{#
+# Macro to ensure that the ntp/chrony config file contains valid server entries.
+# config_file: Path to the ntp/chrony config file
+# servers_list: Comma-separated list of servers
+#}}
+{{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
+if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
+  for server in $(echo "{{{ servers_list }}}" | tr ',' '\n') ; do
+    printf '\nserver %s iburst' "$server" >> "{{{ config_file }}}"
+  done
+else
+  sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
+fi
+{{%- endmacro -%}}
+
 {{# ##### Low level macros ##### #}}
 
 {{#
