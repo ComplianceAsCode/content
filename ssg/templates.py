@@ -16,6 +16,9 @@ lang_to_ext_map = {
     "puppet": ".pp"
 }
 
+def sanitize_input(string):
+    return re.sub(r'[\W_]', '_', string)
+
 templates = dict()
 
 
@@ -66,7 +69,6 @@ def audit_rules_login_events(data, lang):
     if lang == "oval":
         data["path"] = path.replace("/", "\\/")
     return data
-
 
 @template(["ansible", "bash", "oval"])
 def audit_rules_path_syscall(data, lang):
@@ -206,6 +208,8 @@ def mount_option(data, lang):
 
 @template(["ansible", "bash", "oval"])
 def mount_option_remote_filesystems(data, lang):
+    if lang == "oval":
+        data["mountoptionid"] = sanitize_input(data["mountoption"])
     return _mount_option(data, lang)
 
 
