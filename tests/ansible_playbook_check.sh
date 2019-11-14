@@ -3,7 +3,7 @@
 pushd "$2" > /dev/null
 
 DIRS="" # directories which might contain playbooks
-for dir in `find . -type d`
+for dir in {$(find . -type d)}
 do
 	# tries to find which directories contain valid playbooks
 	FILES=$(ls $dir/*.yml 2> /dev/null | wc -l)
@@ -12,7 +12,6 @@ do
 		DIRS="$DIRS $dir/*.yml"
 	fi
 done
-
 if [ -z "$CONTAINS_VALID_FILES" ]; then
 	echo "$2 does not contain any valid YAML files. Skipping the test."
 	popd > /dev/null
