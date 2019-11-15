@@ -70,6 +70,7 @@ def audit_rules_login_events(data, lang):
         data["path"] = path.replace("/", "\\/")
     return data
 
+
 @template(["ansible", "bash", "oval"])
 def audit_rules_path_syscall(data, lang):
     if lang == "oval":
