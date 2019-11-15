@@ -26,6 +26,7 @@
   register: socket_file_exists
   changed_when: False
   ignore_errors: True
+  check_mode: False
 
 - name: Disable socket {{{ SERVICENAME }}}
   systemd:

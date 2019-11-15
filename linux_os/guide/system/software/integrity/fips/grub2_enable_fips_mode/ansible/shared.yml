@@ -24,6 +24,7 @@
   command: grep -q -m1 -o aes /proc/cpuinfo
   failed_when: aesni_supported.rc > 1
   register: aesni_supported
+  check_mode: no
 
 - name: Ensure dracut-fips-aesni is installed
   package:
@@ -45,6 +46,7 @@
   command: grep 'GRUB_CMDLINE_LINUX.*fips=' /etc/default/grub
   failed_when: False
   register: fipsargcheck
+  check_mode: no
 
 - name: replace existing fips argument
   replace:
@@ -63,11 +65,13 @@
 - name: get boot device uuid
   command: findmnt --noheadings --output uuid --target /boot
   register: bootuuid
+  check_mode: no
 
 - name: check boot argument exists
   command: grep 'GRUB_CMDLINE_LINUX.*boot=' /etc/default/grub
   failed_when: False
   register: bootargcheck
+  check_mode: no
 
 - name: replace existing boot argument
   replace:
