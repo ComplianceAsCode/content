@@ -47,7 +47,7 @@ def get_fix_contents(rule_obj, lang, fix_id):
 def applicable_platforms(fix_path):
     _, config = parse_from_file_with_jinja(fix_path, {})
 
-    if not 'platform' in config:
+    if 'platform' not in config:
         raise ValueError("Malformed fix: missing platform" % fix_path)
 
     return parse_prodtype(config['platform'])
