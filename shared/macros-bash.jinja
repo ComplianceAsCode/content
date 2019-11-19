@@ -326,8 +326,7 @@ fi
 # value: value of option
 #}}
 {{%- macro bash_set_faillock_option(option, value) -%}}
-AUTH_FILES[0]="/etc/pam.d/system-auth"
-AUTH_FILES[1]="/etc/pam.d/password-auth"
+AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
 
 for pam_file in "${AUTH_FILES[@]}"
 do
