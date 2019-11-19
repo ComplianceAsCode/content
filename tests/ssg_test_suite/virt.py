@@ -107,6 +107,14 @@ def determine_ip(domain):
                        "          state='connected'/>"
                        "</channel>")
 
+    # wait for machine until it gets to RUNNING state,
+    # because it isn't possible to determine IP in e.g. PAUSED state
+    must_end = time.time() + 30  # wait max. 30 seconds
+    while time.time() < must_end:
+        if domain.state()[0] == libvirt.VIR_DOMAIN_RUNNING:
+            break
+        time.sleep(1)
+
     domain_xml = ET.fromstring(domain.XMLDesc())
     for mac_node in domain_xml.iter('mac'):
         domain_mac = mac_node.attrib['address']
