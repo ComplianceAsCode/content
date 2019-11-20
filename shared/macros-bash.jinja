@@ -200,6 +200,28 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 {{%- endif -%}}
 {{%- endmacro -%}}
 
+
+{{%- macro _put_into_firefox_cfg(config_item, key, value_varname, where, sed_separator) -%}}
+# If the key exists, change it. Otherwise, add it to the config_file.
+if LC_ALL=C grep -m 1 -q '^{{{ config_item }}}("{{{ key }}}", ' "{{{ where }}}"; then
+  sed -i 's{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}".*{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}})"';{{{ sed_separator }}}g' "{{{ where }}}"
+else
+  echo '{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}}"');' >> "{{{ where }}}"
+fi
+{{%- endmacro -%}}
+
+
+{{%- macro _make_bash_variable_assignment(varname, value="", quoted_value="") -%}}
+{{% if value -%}}
+	{{{ varname }}}="{{{ value }}}"
+{{%- elif quoted_value -%}}
+	{{{ varname }}}="\"{{{ quoted_value }}}\""
+{{%- else %}}
+	{{{ raise("Specify either 'value' or 'quoted_value' as macro arguments.") }}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
+
 {{#
 # bash_firefox_js_setting expects three arguments:
 #
@@ -213,15 +235,14 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 #     bash_firefox_js_setting("stig_settings.js", "general.config.obscure_value", "0")
 #
 #     With a fixed string value:
-#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", "\"stig.cfg\"")
+#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", quoted_value="stig.cfg")
 #
 #     With a string variable:
-#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", "\"$var_config_file_name\"")
+#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", quoted_value="$var_config_file_name")
 #}}
-{{%- macro bash_firefox_js_setting(config_file, key, value) -%}}
+{{%- macro bash_firefox_js_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
+  {{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
   firefox_js="{{{ config_file }}}"
-  key="{{{ key }}}"
-  value="{{{ value }}}"
   firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
   firefox_pref="/defaults/pref"
   firefox_preferences="/defaults/preferences"
@@ -246,12 +267,7 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
         chmod 644 "${firefox_pref_dir}/${firefox_js}"
       fi
 
-      # If the key exists, change it. Otherwise, add it to the config_file.
-      if LC_ALL=C grep -m 1 -q "^pref(\"${key}\", " "${firefox_pref_dir}/${firefox_js}"; then
-        sed -i "s/pref(\"${key}\".*/pref(\"${key}\", ${value});/g" "${firefox_pref_dir}/${firefox_js}"
-      else
-        echo "pref(\"${key}\", ${value});" >> "${firefox_pref_dir}/${firefox_js}"
-      fi
+      {{{ _put_into_firefox_cfg(config_item="pref", key=key, value_varname="value", where="${firefox_pref_dir}/${firefox_js}", sed_separator=sed_separator) | indent(2 * 3) }}}
     fi
   done
 {{%- endmacro -%}}
@@ -270,18 +286,17 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 # Example Call(s):
 #
 #     Without string or variable:
-#     firefox_cfg_setting "stig.cfg" "extensions.update.enabled" "false"
+#     bash_firefox_cfg_setting("stig.cfg" "extensions.update.enabled" value="false")
 #
 #     With string:
-#     firefox_cfg_setting "stig.cfg" "security.default_personal_cert" "\"Ask Every Time\""
+#     bash_firefox_cfg_setting("stig.cfg" "security.default_personal_cert" quoted_value="Ask Every Time")
 #
 #     With a string variable:
-#     firefox_cfg_setting "stig.cfg" "browser.startup.homepage\" "\"${var_default_home_page}\""
+#     bash_firefox_cfg_setting("stig.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
 #}}
-{{%- macro bash_firefox_cfg_setting(config_file, key, value) -%}}
+{{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
   firefox_cfg="{{{ config_file }}}"
-  key="{{{ key }}}"
-  value="{{{ value }}}"
+  {{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
   firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
 
   # Check the possible Firefox install directories
@@ -294,12 +309,7 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
         chmod 644 "${firefox_dir}/${firefox_cfg}"
       fi
 
-      # If the key exists, change it. Otherwise, add it to the config_file.
-      if LC_ALL=C grep -m 1 -q "^lockPref(\"${key}\", " "${firefox_dir}/${firefox_cfg}"; then
-        sed -i "s/lockPref(\"${key}\".*/lockPref(\"${key}\", ${value});/g" "${firefox_dir}/${firefox_cfg}"
-      else
-        echo "lockPref(\"${key}\", ${value});" >> "${firefox_dir}/${firefox_cfg}"
-      fi
+      {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(2 * 3) }}}
     fi
   done
 {{%- endmacro -%}}
