@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'RHOSP CUI'
 
-description: 'Sample profile description.'
+description: 'These are the controls for scanning against CUI for rhosp10'
 
 selections:
     - horizon_file_ownership
