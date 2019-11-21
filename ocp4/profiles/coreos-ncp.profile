@@ -103,7 +103,6 @@ selections:
     - sysctl_net_ipv4_conf_default_rp_filter
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     - sysctl_net_ipv4_icmp_echo_ignore_broadcasts
-    - sysctl_net_ipv4_ip_forward
     - sysctl_net_ipv4_tcp_syncookies
 
     ### systemd
@@ -169,10 +168,14 @@ selections:
     - auditd_name_format
     - var_auditd_action_mail_acct=root
     - var_auditd_space_left_action=email
-    - auditd_audispd_configure_remote_server
-    - auditd_audispd_encrypt_sent_records
-    - auditd_audispd_disk_full_action
-    - auditd_audispd_network_failure_action
+    
+    #####
+    # Need to replace with fluentd checks
+    #- auditd_audispd_configure_remote_server
+    #- auditd_audispd_encrypt_sent_records
+    #- auditd_audispd_disk_full_action
+    #- auditd_audispd_network_failure_action
+    #####
 
     ### Module Blacklist
     - kernel_module_cramfs_disabled
@@ -196,12 +199,13 @@ selections:
     #- package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
-    - package_audispd-plugins_installed
+    ####
+    # Need to replace with fluentd checks
+    #- package_audispd-plugins_installed
+    ####
     #- package_scap-security-guide_installed
     - package_audit_installed
     - package_libreswan_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
 
     ### Remove Prohibited Packages
     #- package_sendmail_removed
@@ -344,7 +348,10 @@ selections:
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    - auditd_audispd_syslog_plugin_activated
+    #####
+    # Need to replace with fluentd checks
+    #- auditd_audispd_syslog_plugin_activated
+    #####
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
@@ -516,10 +523,6 @@ selections:
     # Enable dnf-automatic Timer
     #- timer_dnf-automatic_enabled
 
-    # Configure TLS for remote logging
-    #- rsyslog_remote_tls
-    #- rsyslog_remote_tls_cacert
-
     # Prevent Kerberos use by system daemons
     #- kerberos_disable_no_keytab
 
@@ -547,8 +550,6 @@ selections:
     - audit_rules_immutable
 
     # AU-4
-    #- service_rsyslog_enabled
-    #- rsyslog_remote_loghost
     - auditd_data_retention_action_mail_acct
     - auditd_data_disk_full_action
     - auditd_data_retention_admin_space_left_action
