@@ -2,7 +2,7 @@ documentation_complete: true
 
 title: 'RHOSP STIG'
 
-description: 'Sample profile description.'
+description: 'Controls for scanning against classified STIG for rhosp10'
 
 selections:
     - horizon_file_ownership
