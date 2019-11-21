@@ -14,9 +14,9 @@ severity: medium
 references:
     cui: 3.1.5
 
-ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r--r--") }}}'
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}'
 
-ocil: '{{{ ocil_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r--r--") }}}'
+ocil: '{{{ ocil_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}'
 
 template:
     name: file_permissions
