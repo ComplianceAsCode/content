@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'RHOSP CUI'
+title: '[DRAFT] Controlled Unclassified Infomration (CUI) Profile for Red Hat OpenStack Plaform 10'
 
 description: 'These are the controls for scanning against CUI for rhosp10'
 
