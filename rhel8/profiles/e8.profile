@@ -123,13 +123,15 @@ selections:
   - sshd_print_last_log
   - sshd_use_priv_separation
   - sshd_do_not_permit_user_env
-  - sshd_disable_rhosts_rsa
   - sshd_disable_rhosts
-  - sshd_allow_only_protocol2
   - sshd_set_loglevel_info
   - sshd_disable_empty_passwords
   - sshd_disable_user_known_hosts
   - sshd_enable_strictmodes
+
+  - var_system_crypto_policy=default
+  - configure_crypto_policy
+  - configure_ssh_crypto_policy
 
   ### Application whitelisting
   - package_fapolicyd_installed
