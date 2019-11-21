@@ -1,6 +1,6 @@
 documentation_complete: true
 
-title: 'RHOSP STIG'
+title: '[DRAFT] STIG for Red Hat OpenStack Plaform 10'
 
 description: 'Controls for scanning against classified STIG for rhosp10'
 
