@@ -16,6 +16,7 @@ ssg_build_html_table_by_ref(${PRODUCT} "anssi")
 
 ssg_build_html_nistrefs_table(${PRODUCT} "standard")
 ssg_build_html_nistrefs_table(${PRODUCT} "ospp")
+ssg_build_html_nistrefs_table(${PRODUCT} "stig")
 
 # Uncomment when anssi profiles are marked documentation_complete: true
 #ssg_build_html_anssirefs_table(${PRODUCT} "nt28_minimal")
