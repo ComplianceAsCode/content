@@ -1,5 +1,5 @@
 <def-group>
-  <definition class="compliance" id="api_server_experimental_encryption_provider_config" version="1">
+  <definition class="compliance" id="api_server_encryption_provider_config" version="1">
     <metadata>
       <title>Configure the Encryption Provider</title>
       <affected family="unix">
@@ -8,22 +8,22 @@
       <description>An encryption provider configuration file should be configured.</description>
     </metadata>
     <criteria operator="AND">
-      <criterion comment="experimental-encryption-provider-config is configured" test_ref="test_api_server_experimental_encryption_provider_config" />
+      <criterion comment="experimental-encryption-provider-config is configured" test_ref="test_api_server_encryption_provider_config" />
     </criteria>
   </definition>
 
-  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="experimental-encryption-provider-config is configured" id="test_api_server_experimental_encryption_provider_config" version="1">
-    <ind:object object_ref="object_api_server_experimental_encryption_provider_config" />
-    <ind:state state_ref="state_api_server_experimental_encryption_provider_config" />
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="experimental-encryption-provider-config is configured" id="test_api_server_encryption_provider_config" version="1">
+    <ind:object object_ref="object_api_server_encryption_provider_config" />
+    <ind:state state_ref="state_api_server_encryption_provider_config" />
   </ind:textfilecontent54_test>
 
-  <ind:textfilecontent54_object id="object_api_server_experimental_encryption_provider_config" version="1">
+  <ind:textfilecontent54_object id="object_api_server_encryption_provider_config" version="1">
     <ind:filepath>/etc/origin/master/encryption-config.yaml</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*kubernetesMasterConfig\:(?:[^\n]*\n+)+?[\s]*apiServerArguments\:(?:[^\n]*\n+)+?[\s]*experimental-encryption-provider-config\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
 
-  <ind:textfilecontent54_state id="state_api_server_experimental_encryption_provider_config" version="1">
+  <ind:textfilecontent54_state id="state_api_server_encryption_provider_config" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^/etc/origin/master/encryption-config.yaml$</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
