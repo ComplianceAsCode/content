@@ -1,0 +1,38 @@
+<def-group>
+  <definition class="compliance" id="api_server_experimental_encryption_provider_cipher" version="1">
+    <metadata>
+      <title>Configure the Encryption Provider Cipher</title>
+      <affected family="unix">
+        <platform>multi_platform_ocp</platform>
+      </affected>
+      <description>The etcd datastore should be configured with the aescbc cipher.</description>
+    </metadata>
+    <criteria operator="AND">
+      <criterion comment="encryption policy files exists" test_ref="test_encryption_policy_file_exists" />
+      <criterion comment="aescbc cipher is configured" test_ref="test_api_server_experimental_encryption_provider_cipher" />
+    </criteria>
+  </definition>
+
+  <unix:file_test check="all" check_existence="all_exist" comment="encryption policy files exists" id="test_encryption_policy_file_exists" version="1">
+    <unix:object object_ref="object_encryption_policy_file_exists" />
+  </unix:file_test>
+  <unix:file_object comment="/etc/shadow" id="object_encryption_policy_file_exists" version="1">
+    <unix:path>/etc/origin/master</unix:path>
+    <unix:filename>encryption-config.yaml</unix:filename>
+  </unix:file_object>
+
+  <ind:textfilecontent54_test check="all" check_existence="all_exist" comment="aescbc cipher is configured" id="test_api_server_experimental_encryption_provider_cipher" version="1">
+    <ind:object object_ref="object_api_server_experimental_encryption_provider_cipher" />
+    <ind:state state_ref="state_api_server_experimental_encryption_provider_cipher" />
+  </ind:textfilecontent54_test>
+
+  <ind:textfilecontent54_object id="object_api_server_experimental_encryption_provider_cipher" version="1">
+    <ind:filepath>/etc/origin/master/encryption-config.yaml</ind:filepath>
+    <ind:pattern operation="pattern match">^[\s]*resources\:(?:[^\n]*\n+)+?[\s]*providers\:[\s]*[\n]+[\s]*-[\s]+(\S+)[\s]*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+
+  <ind:textfilecontent54_state id="state_api_server_experimental_encryption_provider_cipher" version="1">
+    <ind:subexpression datatype="string" operation="pattern match">^aescbc:$</ind:subexpression>
+  </ind:textfilecontent54_state>
+</def-group>
