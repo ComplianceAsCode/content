@@ -7,6 +7,8 @@
      "flat", then it will output a separate row for every Rule which satisfies an SRG requirement. -->
 
 <xsl:param name="flat" select="''"/>
+<xsl:param name="profileId" select="'stig'"/>
+<xsl:variable name="profile" select="document($map-to-items)/cdf:Benchmark/cdf:Profile[@id=$profileId]"/>
 
 	<xsl:template match="/">
 		<html>
@@ -76,18 +78,20 @@
 		<td>
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
-				<xsl:variable name="ssg_srg" select='self::node()[text()]' />
-				<xsl:variable name="disa_srg" select="$rule/cdf:version"  />
-				<xsl:if test="$ssg_srg=$disa_srg" >
-					<table>
-					<tr>
-					<td> <xsl:value-of select="$item/cdf:title"/> </td>
-					<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
-					</tr>
-					</table>
-				</xsl:if>
-			</xsl:for-each>
+			<xsl:if test="$profile/cdf:select[@selected='true' and @idref=$item/@id]">
+				<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
+					<xsl:variable name="ssg_srg" select='self::node()[text()]' />
+					<xsl:variable name="disa_srg" select="$rule/cdf:version"  />
+					<xsl:if test="$ssg_srg=$disa_srg" >
+						<table>
+						<tr>
+						<td> <xsl:value-of select="$item/cdf:title"/> </td>
+						<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
+						</tr>
+						</table>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:if>
 		</xsl:for-each>
 	  </td>
 	  </tr>
@@ -98,25 +102,27 @@
 		<!-- iterate over the items (everything with references) in the (externally-provided) XCCDF document -->
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
-			    <xsl:variable name="ssg_srg" select='self::node()[text()]' />
-			    <xsl:variable name="disa_srg" select="$rule/cdf:version"  />
-				<xsl:if test="$ssg_srg=$disa_srg" >
-					<tr>
-					<td> <xsl:value-of select="$rule/cdf:version"/> </td>
-					<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
-					<td> <xsl:value-of select="$rule/cdf:title"/> </td>
-					<td> <xsl:call-template name="extract-vulndiscussion">
-							<xsl:with-param name="desc" select="$rule/cdf:description"/>
-						 </xsl:call-template>
-					</td>
-					<td> <xsl:value-of select="$item/@id"/> </td>
-					<td> <xsl:value-of select="$item/cdf:title"/> </td>
-					<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
-					<td> <xsl:apply-templates select="$item/cdf:check/cdf:check-content"/> </td>
-					</tr>
-				</xsl:if>
-			</xsl:for-each>
+			<xsl:if test="$profile/cdf:select[@selected='true' and @idref=$item/@id]">
+				<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
+				  <xsl:variable name="ssg_srg" select='self::node()[text()]' />
+				  <xsl:variable name="disa_srg" select="$rule/cdf:version"  />
+					<xsl:if test="$ssg_srg=$disa_srg" >
+						<tr>
+						<td> <xsl:value-of select="$rule/cdf:version"/> </td>
+						<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
+						<td> <xsl:value-of select="$rule/cdf:title"/> </td>
+						<td> <xsl:call-template name="extract-vulndiscussion">
+								<xsl:with-param name="desc" select="$rule/cdf:description"/>
+							</xsl:call-template>
+						</td>
+						<td> <xsl:value-of select="$item/@id"/> </td>
+						<td> <xsl:value-of select="$item/cdf:title"/> </td>
+						<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
+						<td> <xsl:apply-templates select="$item/cdf:check/cdf:check-content"/> </td>
+						</tr>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 
