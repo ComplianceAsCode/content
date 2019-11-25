@@ -8,8 +8,9 @@ import re
 import subprocess
 import collections
 import json
+import fnmatch
 
-from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID
+from ssg.constants import OSCAP_PROFILE, OSCAP_PROFILE_ALL_ID, OSCAP_RULE
 from ssg_test_suite import oscap
 from ssg_test_suite import xml_operations
 from ssg_test_suite import test_env
@@ -190,7 +191,11 @@ class RuleChecker(oscap.Checker):
         else:
             for rule_to_be_tested in rules_to_be_tested:
                 # we check for a substring
-                if rule_to_be_tested in rule_id:
+                if rule_to_be_tested.startswith(OSCAP_RULE):
+                    pattern = rule_to_be_tested
+                else:
+                    pattern = OSCAP_RULE + rule_to_be_tested
+                if fnmatch.fnmatch(rule_id, pattern):
                     return True
             return False
 

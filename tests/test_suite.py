@@ -116,15 +116,17 @@ def parse_args():
                                               "by openscap!"),
                                         parents=[common_parser])
     parser_rule.set_defaults(func=ssg_test_suite.rule.perform_rule_check)
-    parser_rule.add_argument("target",
-                             nargs="+",
-                             metavar="RULE",
-                             help=("Rule to be tested, 'ALL' means every "
-                                   "rule-testing scenario will be evaluated. Each "
-                                   "target is handled as a substring - so you can "
-                                   "ask for subset of all rules this way. (If you "
-                                   "type ipv6 as a target, all rules containing "
-                                   "ipv6 within id will be performed."))
+    parser_rule.add_argument(
+        "target",
+        nargs="+",
+        metavar="RULE",
+        help=(
+            "Rule or rules to be tested. Special value 'ALL' means every "
+            "rule-testing scenario will be evaluated. The SSG rule ID prefix "
+            "is appended automatically if not provided. Wildcards to match "
+            "multiple rules are accepted."
+            )
+        )
     parser_rule.add_argument("--debug",
                              dest="manual_debug",
                              action="store_true",
