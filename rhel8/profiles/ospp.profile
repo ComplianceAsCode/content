@@ -161,7 +161,6 @@ selections:
     ### rpcbind
 
     ### Install Required Packages
-    - package_sssd-ipa_installed
     - package_aide_installed
     - package_dnf-automatic_installed
     - package_subscription-manager_installed
@@ -224,9 +223,6 @@ selections:
 
     ### Enable the Hardware RNG Entropy Gatherer Service
     - service_rngd_enabled
-
-    ### Configure SSSD
-    - sssd_run_as_sssd_user
 
     ### Configure USBGuard
     - service_usbguard_enabled
