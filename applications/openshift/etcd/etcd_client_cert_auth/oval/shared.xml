@@ -7,8 +7,9 @@
       </affected>
       <description>Ensure OpenShift has enabled Client Certificate Authentication</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="ETCD_CLIENT_CERT_AUTH is enabled" test_ref="test_etcd_client_cert_auth" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_client_cert_auth" />
     </criteria>
   </definition>
 
@@ -27,4 +28,5 @@
     <ind:subexpression datatype="string" operation="pattern match">^true$</ind:subexpression>
   </ind:textfilecontent54_state>
 
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--client-cert-auth", value="true", option_id="client_cert_auth") }}}
 </def-group>

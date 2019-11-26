@@ -7,8 +7,9 @@
       </affected>
       <description>Ensure OpenShift is not using Self-Signed Certificates</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion comment="self-signed certs are disabled" test_ref="test_etcd_auto_tls" negate="true" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_auto_tls" />
     </criteria>
   </definition>
 
@@ -27,4 +28,5 @@
     <ind:subexpression datatype="string" operation="pattern match">^true$</ind:subexpression>
   </ind:textfilecontent54_state>
 
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--auto-tls", value="false", option_id="auto_tls") }}}
 </def-group>

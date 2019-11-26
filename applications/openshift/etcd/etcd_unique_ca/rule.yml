@@ -10,7 +10,11 @@ description: |-
     , set <tt>ETCD_TRUSTED_CA_FILE</tt> to <tt>/etc/etcd/ca.crt</tt>
     in <tt>/etc/etcd/etcd.conf</tt> on the master node that does NOT match
     the OpenShift CA certificate:
+{{%- if product == "ocp4" %}}
+    <pre>ETCD_TRUSTED_CA_FILE=/etc/ssl/etcd/ca.crt</pre>
+{{% else %}}
     <pre>ETCD_TRUSTED_CA_FILE=/etc/etcd/ca.crt</pre>
+{{%- endif %}}
 
 rationale: |-
     A unique CA certificate that is utilized by etcd and is different from

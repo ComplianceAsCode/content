@@ -7,8 +7,9 @@
       </affected>
       <description>ETCD_PEER_CERT_FILE is correctly set</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion test_ref="test_etcd_peer_cert_file" comment="Check ETCD_PEER_CERT_FILE in /etc/etcd/etcd.conf" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_peer_cert_file" />
     </criteria>
   </definition>
 
@@ -27,7 +28,13 @@
 
   <ind:textfilecontent54_state id="state_etcd_peer_cert_file"
   version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/peer.crt$</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/peer.crt|/etc/ssl/etcd/system\:etcd-peer\:.*\.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
+
+{{%- if product == "ocp4" %}}
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--peer-cert-file", value="/etc/ssl/etcd/system\:etcd-peer\:.*\.crt", option_id="peer_cert_file") }}}
+{{% else %}}
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--peer-cert-file", value="/etc/etcd/peer.crt", option_id="peer_cert_file") }}}
+{{%- endif %}}
 
 </def-group>
