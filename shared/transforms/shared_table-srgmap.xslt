@@ -31,16 +31,24 @@
 
 		<table>
 			<thead>
-				<td>SRG ID</td>
-				<td>CCI ID</td>
-				<td>SRG Title</td>
-				<td>SRG Description</td>
+				<td>CCI</td>
+				<td>SRGID</td>
+				<td>STIGID</td>
+				<td>SRG Requirement</td>
 				<xsl:choose>
 					<xsl:when test="$flat">
-						<td>Rule ID</td>
-						<td>Rule Title</td>
-						<td>Rule Desc</td>
-						<td>Rule Check</td>
+						<td>Requirement</td> <!-- XCCDF RULE ID -->
+						<td>SRG VulDiscussion</td>
+						<td>VulDiscussion</td> <!-- XCCDF RATIONALE -->
+						<td>Status</td>
+						<td>SRG Check</td>
+						<td>Check</td> <!-- XCCDF DESCRIPTION -->
+						<td>SRG Fix</td>
+						<td>Fix</td> <!-- OCIL -->
+						<td>Severity</td>
+						<td>Mitigation</td>
+						<td>Artifact Description</td>
+						<td>Status Justification</td>
 					</xsl:when>
 					<xsl:otherwise>
 						<td>Rules Mapped</td>
@@ -108,17 +116,26 @@
 				  <xsl:variable name="disa_srg" select="$rule/cdf:version"  />
 					<xsl:if test="$ssg_srg=$disa_srg" >
 						<tr>
-						<td> <xsl:value-of select="$rule/cdf:version"/> </td>
-						<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
-						<td> <xsl:value-of select="$rule/cdf:title"/> </td>
-						<td> <xsl:call-template name="extract-vulndiscussion">
-								<xsl:with-param name="desc" select="$rule/cdf:description"/>
-							</xsl:call-template>
-						</td>
-						<td> <xsl:value-of select="$item/@id"/> </td>
-						<td> <xsl:value-of select="$item/cdf:title"/> </td>
-						<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
-						<td> <xsl:apply-templates select="$item/cdf:check/cdf:check-content"/> </td>
+							<td><xsl:value-of select="$rule/cdf:ident" /></td> 								<!-- CCI -->
+							<td><xsl:value-of select="$rule/cdf:version" /></td> 							<!-- SRGID -->
+							<td><i>TBD - Assigned by DISA after STIG release</i></td> 						<!-- STIGID -->
+							<td><xsl:value-of select="$rule/cdf:title"/> </td>								<!-- SRG Requirement -->
+							<td><xsl:value-of select="$item/cdf:ident"/>: <xsl:value-of select="$item/cdf:title"/> </td>		<!-- Requirement -->
+							<td><xsl:call-template name="extract-vulndiscussion">							<!-- SRG VulDiscussion -->
+									<xsl:with-param name="desc" select="$rule/cdf:description"/>
+								</xsl:call-template>
+							</td>
+							<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
+							<td>Applicable - Configurable</td>												<!-- Status -->
+							<td><xsl:apply-templates select="$rule/cdf:check/cdf:check-content"/></td>		<!-- SRG Check -->
+							<td>TBD - XCCDF OCIL</td>														<!-- Check -->
+							<td><xsl:apply-templates select="$rule/cdf:fixtext"/></td>						<!-- SRG Fix -->
+							<td><xsl:value-of select="$item/cdf:description"/></td>							<!-- Fix -->
+							<td><xsl:value-of select="$item/@severity"/></td>								<!-- Severity -->
+							<td></td>																		<!-- Mitigation -->
+							<td></td>																		<!-- Artifact Description -->
+							<td></td>																		<!-- Status Justification -->
+						
 						</tr>
 					</xsl:if>
 				</xsl:for-each>
