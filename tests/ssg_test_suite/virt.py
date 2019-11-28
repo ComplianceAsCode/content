@@ -109,7 +109,7 @@ def determine_ip(domain):
 
     # wait for machine until it gets to RUNNING state,
     # because it isn't possible to determine IP in e.g. PAUSED state
-    must_end = time.time() + 30  # wait max. 30 seconds
+    must_end = time.time() + 120  # wait max. 2 minutes
     while time.time() < must_end:
         if domain.state()[0] == libvirt.VIR_DOMAIN_RUNNING:
             break
