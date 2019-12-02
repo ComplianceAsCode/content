@@ -146,7 +146,11 @@
 	</xsl:template>
 
 	<xsl:template match="cdf:check[@system='http://scap.nist.gov/schema/ocil/2']">
-		TBD - XCCDF OCIL
+		<xsl:variable name="questionaireId" select="cdf:check-content-ref/@name"/>
+		<xsl:variable name="questionaire" select="$ocil/ocil2:questionnaires/ocil2:questionnaire[@id=$questionaireId]"/>
+		<xsl:variable name="testActionRef" select="$questionaire/ocil2:actions/ocil2:test_action_ref/text()"/>
+		<xsl:variable name="questionRef" select="$ocil/ocil2:test_actions/*[@id=$testActionRef]/@question_ref"/>
+		<xsl:value-of select="$ocil/ocil2:questions/ocil2:*[@id=$questionRef]/ocil2:question_text"/>
 	</xsl:template>
 
 	<!-- return only the text between the "VulnDiscussion" (non-XCCDF) tags -->
