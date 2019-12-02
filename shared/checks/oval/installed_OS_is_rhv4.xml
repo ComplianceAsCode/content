@@ -12,11 +12,7 @@
       Red Hat Virtualization Host 4 or Red Hat Enterprise Host.</description>
     </metadata>
     <criteria>
-      <extend_definition comment="RHEL7 OS installed" definition_ref="installed_OS_is_rhel7" />
-      <criteria operator="OR">
-        <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
-        <criterion comment="Red Hat Virtualization Host is based on RHEL (RHELH)" test_ref="test_rhelh4_version" />
-      </criteria>
+      <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
     </criteria>
   </definition>
 
@@ -30,19 +26,6 @@
     <linux:rpminfo_state id="state_rhvh4_version" version="1">
     <linux:version operation="pattern match">^4.*$</linux:version>
   </linux:rpminfo_state>
-
-  <ind:textfilecontent54_test check="all" comment="RHEVH base RHEL is version 7" id="test_rhelh4_version" version="1">
-    <ind:object object_ref="obj_rhelh4_version" />
-    <ind:state state_ref="state_rhelh4_version" />
-  </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="obj_rhelh4_version" version="1">
-    <ind:filepath>/etc/redhat-release</ind:filepath>
-    <ind:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind:pattern>
-    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
-  </ind:textfilecontent54_object>
-  <ind:textfilecontent54_state id="state_rhelh4_version" version="1">
-    <ind:subexpression operation="pattern match">7</ind:subexpression>
-  </ind:textfilecontent54_state>
 
 </def-group>
 
