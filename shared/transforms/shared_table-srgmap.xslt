@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ocil2="http://scap.nist.gov/schema/ocil/2.0">
 
 <!-- this style sheet is designed to take as input the OS SRG and a body of XCCDF content (e.g. draft STIG),
      and to map the requirements from the SRG to Rules in the XCCDF (which include CCIs as references).
@@ -8,7 +8,9 @@
 
 <xsl:param name="flat" select="''"/>
 <xsl:param name="profileId" select="'stig'"/>
+<xsl:param name="ocil-document" select="''"/>
 <xsl:variable name="profile" select="document($map-to-items)/cdf:Benchmark/cdf:Profile[@id=$profileId]"/>
+<xsl:variable name="ocil" select="document($ocil-document)/ocil2:ocil"/>
 
 	<xsl:template match="/">
 		<html>
@@ -128,7 +130,7 @@
 							<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
 							<td>Applicable - Configurable</td>												<!-- Status -->
 							<td><xsl:apply-templates select="$rule/cdf:check/cdf:check-content"/></td>		<!-- SRG Check -->
-							<td>TBD - XCCDF OCIL</td>														<!-- Check -->
+							<td><xsl:apply-templates select="$item/cdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/></td>	<!-- Check -->
 							<td><xsl:apply-templates select="$rule/cdf:fixtext"/></td>						<!-- SRG Fix -->
 							<td><xsl:value-of select="$item/cdf:description"/></td>							<!-- Fix -->
 							<td><xsl:value-of select="$item/@severity"/></td>								<!-- Severity -->
@@ -141,6 +143,14 @@
 				</xsl:for-each>
 			</xsl:if>
 		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="cdf:check[@system='http://scap.nist.gov/schema/ocil/2']">
+		<xsl:variable name="questionaireId" select="cdf:check-content-ref/@name"/>
+		<xsl:variable name="questionaire" select="$ocil/ocil2:questionnaires/ocil2:questionnaire[@id=$questionaireId]"/>
+		<xsl:variable name="testActionRef" select="$questionaire/ocil2:actions/ocil2:test_action_ref/text()"/>
+		<xsl:variable name="questionRef" select="$ocil/ocil2:test_actions/*[@id=$testActionRef]/@question_ref"/>
+		<xsl:value-of select="$ocil/ocil2:questions/ocil2:*[@id=$questionRef]/ocil2:question_text"/>
 	</xsl:template>
 
 	<!-- return only the text between the "VulnDiscussion" (non-XCCDF) tags -->
