@@ -35,9 +35,9 @@
 				<td>SRGID</td>
 				<td>STIGID</td>
 				<td>SRG Requirement</td>
+				<td>Requirement</td> <!-- XCCDF RULE Title -->
 				<xsl:choose>
 					<xsl:when test="$flat">
-						<td>Requirement</td> <!-- XCCDF RULE ID -->
 						<td>SRG VulDiscussion</td>
 						<td>VulDiscussion</td> <!-- XCCDF RATIONALE -->
 						<td>Status</td>
