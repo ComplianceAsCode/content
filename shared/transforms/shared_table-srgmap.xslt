@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cdf="http://checklists.nist.gov/xccdf/1.1" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:ocil2="http://scap.nist.gov/schema/ocil/2.0">
 
 <!-- this style sheet is designed to take as input the OS SRG and a body of XCCDF content (e.g. draft STIG),
      and to map the requirements from the SRG to Rules in the XCCDF (which include CCIs as references).
@@ -8,7 +8,9 @@
 
 <xsl:param name="flat" select="''"/>
 <xsl:param name="profileId" select="'stig'"/>
+<xsl:param name="ocil-document" select="''"/>
 <xsl:variable name="profile" select="document($map-to-items)/cdf:Benchmark/cdf:Profile[@id=$profileId]"/>
+<xsl:variable name="ocil" select="document($ocil-document)/ocil2:ocil"/>
 
 	<xsl:template match="/">
 		<html>
