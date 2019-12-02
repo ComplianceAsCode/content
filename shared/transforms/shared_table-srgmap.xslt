@@ -75,8 +75,8 @@
 	<xsl:template name="output-row-nested">
 		<xsl:param name="rule" />
 		<tr>
-		<td> <xsl:value-of select="$rule/cdf:version"/> </td>
 		<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
+		<td> <xsl:value-of select="$rule/cdf:version"/> </td>
 		<td> <xsl:value-of select="$rule/cdf:title"/> </td>
 		<td> <xsl:call-template name="extract-vulndiscussion">
 				<xsl:with-param name="desc" select="$rule/cdf:description"/>
