@@ -128,7 +128,7 @@
 							<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
 							<td>Applicable - Configurable</td>												<!-- Status -->
 							<td><xsl:apply-templates select="$rule/cdf:check/cdf:check-content"/></td>		<!-- SRG Check -->
-							<td>TBD - XCCDF OCIL</td>														<!-- Check -->
+							<td><xsl:apply-templates select="$item/cdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/></td>	<!-- Check -->
 							<td><xsl:apply-templates select="$rule/cdf:fixtext"/></td>						<!-- SRG Fix -->
 							<td><xsl:value-of select="$item/cdf:description"/></td>							<!-- Fix -->
 							<td><xsl:value-of select="$item/@severity"/></td>								<!-- Severity -->
@@ -141,6 +141,10 @@
 				</xsl:for-each>
 			</xsl:if>
 		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="cdf:check[@system='http://scap.nist.gov/schema/ocil/2']">
+		TBD - XCCDF OCIL
 	</xsl:template>
 
 	<!-- return only the text between the "VulnDiscussion" (non-XCCDF) tags -->
