@@ -78,6 +78,7 @@
 		<td> <xsl:value-of select="$rule/cdf:version"/> </td>
 		<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
 		<td> <xsl:value-of select="$rule/cdf:title"/> </td>
+		<xsl:if test="$flat"><td></td></xsl:if>
 		<td> <xsl:call-template name="extract-vulndiscussion">
 				<xsl:with-param name="desc" select="$rule/cdf:description"/>
 			 </xsl:call-template>
