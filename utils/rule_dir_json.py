@@ -53,7 +53,7 @@ def walk_products(root, all_products):
         for cur_dir in [guide_dir] + add_content_dirs:
             if cur_dir not in visited_dirs:
                 for rule_id, rule_dir in collect_rule_ids_and_dirs(cur_dir):
-                    all_rule_dirs.append((rule_id, rule_dir, guide_dir, product))
+                    all_rule_dirs.append((rule_id, rule_dir, cur_dir, product))
                 visited_dirs.add(cur_dir)
 
     return all_rule_dirs, product_yamls
