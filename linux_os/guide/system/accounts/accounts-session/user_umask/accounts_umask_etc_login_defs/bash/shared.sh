@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux,multi_platform_rhel
+# platform = multi_platform_rhel,multi_platform_sle,multi_platform_wrlinux
 . /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_user_umask
 

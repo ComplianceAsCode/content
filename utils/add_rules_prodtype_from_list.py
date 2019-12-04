@@ -15,7 +15,7 @@ SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 #script en sucio de prueba
 #Este script añade el producto deseado(ej. sle) al campo de productos afectados de cada regla de una lista de reglas dada
-#Ejemplo de uso: utils/add_rules_prodtype_from_list.py 'list/add' 'sle11'
+#Ejemplo de uso: utils/add_rules_prodtype_from_list.py '/rutaarchivoreglas' 'list/add' 'sle11'
  
 def main():
  
