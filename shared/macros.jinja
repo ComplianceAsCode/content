@@ -657,3 +657,7 @@ openssl()
 )
 
 {{%- endmacro %}}
+
+{{% macro banner_flexibler(banner_text) -%}}
+{{{ banner_text|replace("\n", "BFLMPSVZ")|replace(" ", "[\s\\n]+")|replace("BFLMPSVZ", "[\\n]+") }}}
+{{% endmacro %}}
