@@ -5,10 +5,10 @@ import datetime
 import os.path
 
 product_directories = ['debian8', 'debian9', 'fedora', 'ol7', 'ol8', 'opensuse', 'rhel6',
-                       'rhel7', 'rhel8', 'sle11', 'sle12', 'ubuntu1404',
+                       'rhel7', 'rhel8', 'rhv4', 'sle11', 'sle12', 'ubuntu1404',
                        'ubuntu1604', 'ubuntu1804', 'wrlinux8', 'wrlinux1019', 'rhosp10',
                        'rhosp13', 'chromium', 'eap6', 'firefox', 'fuse6', 'jre', 'ocp3',
-                       'example']
+                       'ocp4', 'example']
 
 JINJA_MACROS_BASE_DEFINITIONS = os.path.join(os.path.dirname(os.path.dirname(
     __file__)), "shared", "macros.jinja")
