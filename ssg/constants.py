@@ -6,7 +6,7 @@ import os.path
 
 product_directories = [
     'chromium',
-    'debian8', 'debian9',
+    'debian8', 'debian9', 'debian10',
     'eap6',
     'example',
     'fedora',
@@ -107,6 +107,7 @@ FULL_NAME_TO_PRODUCT_MAPPING = {
     "Chromium": "chromium",
     "Debian 8": "debian8",
     "Debian 9": "debian9",
+    "Debian 10": "debian10",
     "JBoss EAP 6": "eap6",
     "Example": "example",
     "Fedora": "fedora",
@@ -142,6 +143,9 @@ PRODUCT_TO_CPE_MAPPING = {
     ],
     "debian9": [
         "cpe:/o:debianproject:debian:9",
+    ],
+    "debian10": [
+        "cpe:/o:debian:debian_linux:10",
     ],
     "eap6": [
         "cpe:/a:redhat:jboss_enterprise_application_platform:6.0.0",
@@ -286,7 +290,7 @@ MULTI_PLATFORM_LIST = ["rhel", "fedora", "rhosp", "rhv", "debian", "ubuntu",
                        "wrlinux", "opensuse", "sle", "ol", "ocp", "example"]
 
 MULTI_PLATFORM_MAPPING = {
-    "multi_platform_debian": ["debian8", "debian9"],
+    "multi_platform_debian": ["debian8", "debian9", "debian10"],
     "multi_platform_example": ["example"],
     "multi_platform_fedora": ["fedora"],
     "multi_platform_opensuse": ["opensuse"],
