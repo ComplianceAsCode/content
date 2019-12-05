@@ -244,7 +244,6 @@ selections:
     ### Application Whitelisting (RHEL 8)
     - package_fapolicyd_installed
     - service_fapolicyd_enabled
-    - configure_fapolicyd_mounts
 
     ### Enable the Hardware RNG Entropy Gatherer Service
     - service_rngd_enabled
