@@ -139,5 +139,4 @@ selections:
   ### Application whitelisting
   - package_fapolicyd_installed
   - service_fapolicyd_enabled
-  - configure_fapolicyd_mounts
 
