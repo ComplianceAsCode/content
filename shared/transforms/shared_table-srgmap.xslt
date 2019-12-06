@@ -37,9 +37,9 @@
 				<td>SRGID</td>
 				<td>STIGID</td>
 				<td>SRG Requirement</td>
+				<td>Requirement</td> <!-- XCCDF RULE Title -->
 				<xsl:choose>
 					<xsl:when test="$flat">
-						<td>Requirement</td> <!-- XCCDF RULE ID -->
 						<td>SRG VulDiscussion</td>
 						<td>VulDiscussion</td> <!-- XCCDF RATIONALE -->
 						<td>Status</td>
@@ -77,8 +77,9 @@
 	<xsl:template name="output-row-nested">
 		<xsl:param name="rule" />
 		<tr>
-		<td> <xsl:value-of select="$rule/cdf:version"/> </td>
 		<td> <xsl:value-of select="$rule/cdf:ident"/> </td>
+		<td> <xsl:value-of select="$rule/cdf:version"/> </td>
+		<td><i>TBD - Assigned by DISA after STIG release</i></td>
 		<td> <xsl:value-of select="$rule/cdf:title"/> </td>
 		<xsl:if test="$flat"><td></td></xsl:if>
 		<td> <xsl:call-template name="extract-vulndiscussion">
