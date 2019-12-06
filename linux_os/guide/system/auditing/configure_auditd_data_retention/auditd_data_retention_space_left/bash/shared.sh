@@ -1,4 +1,4 @@
-# platform = multi_platform_wrlinux,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_rhel,multi_platform_wrlinux
 . /usr/share/scap-security-guide/remediation_functions
 populate var_auditd_space_left
 

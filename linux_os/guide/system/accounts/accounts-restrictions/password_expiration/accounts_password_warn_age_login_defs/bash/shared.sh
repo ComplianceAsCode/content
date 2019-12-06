@@ -1,4 +1,4 @@
-# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8
+# platform = Red Hat Enterprise Linux 7,Red Hat Enterprise Linux 8,Red Hat Virtualization 4
 . /usr/share/scap-security-guide/remediation_functions
 populate var_accounts_password_warn_age_login_defs
 
