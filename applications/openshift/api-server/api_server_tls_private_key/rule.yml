@@ -9,12 +9,23 @@ description: |-
     <tt>keyFile</tt> must be configured. To, verify
     that <tt>servingInfo</tt> has the <tt>keyFile</tt> configured in 
     the API Server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>
+    "servingInfo":{
+      ...
+      "keyFile":"/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key",
+      ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>servingInfo:
       clientCA: ca.crt
       certFile: master.server.crt
       keyFile: master.server.key</pre>
+{{%- endif %}}
 
 rationale: |-
     API Server communication contains sensitive parameters that should remain
@@ -30,9 +41,14 @@ ocil_clause: '<tt>keyFile</tt> is not set as appropriate for <tt>servingInfo</tt
 
 ocil: |-
     Run the following command on the master node(s):
-    <pre>$ sudo grep -A7 servingInfo /etc/origin/master/master-config.yaml</pre>
+{{%- if product == "ocp4" %}}
+{{% else %}}
+    <pre>$ sudo grep -A7 servingInfo /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    The output should contain something similar to:
+    <pre>"keyFile":"/etc/kubernetes/static-pod-certs/secrets/service-network-serving-certkey/tls.key",</pre>
     The output should contain something similar to:
     <pre>servingInfo:
       clientCA: ca.crt
       certFile: master.server.crt
       keyFile: master.server.key</pre>
+{{%- endif %}}

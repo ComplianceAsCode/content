@@ -8,7 +8,19 @@ description: |-
     To ensure etcd is configured to make use of TLS encryption for client
     communications, follow the OpenShift documentation and setup the TLS
     connection between the API Server and etcd. Then, verify
-    that <tt>etcdClientInfo</tt> has the <tt>keyFile</tt> configured in 
+{{%- if product == "ocp4" %}}
+    that <tt>storageConfig</tt> has the <tt>keyFile</tt> configured in 
+    the API Server pod specification file
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>
+    "storageConfig":{
+      ...
+      "keyFile":"/etc/kubernetes/static-pod-resources/secrets/etcd-client/tls.key",
+      ...
+    </pre>
+{{% else %}}
+    that <tt>etcdClientInfo</tt> has the <tt>ca</tt> configured in 
     the API Server pod specification file
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
@@ -16,6 +28,7 @@ description: |-
       ca: master.etcd-ca.crt
       certFile: master.etcd-client.crt
       keyFile: master.etcd-client.key</pre>
+{{%- endif %}}
 
 rationale: |-
     etcd is a highly-available key-value store used by OpenShift deployments
@@ -33,9 +46,15 @@ ocil_clause: '<tt>keyFile</tt> does not exist or is not configured to valid cert
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep keyFile /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    The output should contain something similar to:
+    <pre>"keyFile":"/etc/kubernetes/static-pod-resources/secrets/etcd-client/tls.key",</pre>
+{{% else %}}
     <pre>$ sudo grep -A3 etcdClientInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:
     <pre>etcdClientInfo:
       ca: master.etcd-ca.crt
       certFile: master.etcd-client.crt
       keyFile: master.etcd-client.key</pre>
+{{%- endif %}}

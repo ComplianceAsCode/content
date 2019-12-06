@@ -6,6 +6,19 @@ title: 'Disable Use of the Insecure Bind Address'
 
 description: |-
     OpenShift should not bind to non-loopback insecure addresses. Edit the API
+{{%- if product == "ocp4" %}}
+    Server pod specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>
+    on the master node(s) and remove the <tt>insecure-bind-address</tt>
+    parameter.
+    <pre>
+    "apiServerArguments":{
+      ...
+      "insecure-bind-address":[
+        "127.0.0.1"
+      ],
+      ...
+    </pre>
+{{% else %}}
     Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and remove the <tt>insecure-bind-address</tt>
     parameter.
@@ -13,6 +26,7 @@ description: |-
       apiServerArguments:
         insecure-bind-address:
         - 127.0.0.1</pre>
+{{%- endif %}}
 
 rationale: |-
     If the API Server is bound to an insecure address the installation would
@@ -25,9 +39,13 @@ severity: medium
 references:
     cis: 1.2.18
 
-ocil_clause: 'insecure-bind-address is specified and it must be set to <tt>127.0.01</tt>'
+ocil_clause: 'insecure-bind-address is exists and has not been removed</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A2 insecure-bind-address /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep -A2 insecure-bind-address /etc/origin/master/master-config.yaml</pre>
-    The output should return <pre>127.0.01</pre>.
+{{%- endif %}}
+    No output should be returned.

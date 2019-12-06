@@ -30,11 +30,19 @@
     <ind:object object_ref="object_api_server_authorization_mode_webhook" />
   </ind:textfilecontent54_test>
 
+{{%- if product == "ocp4" %}}
+  <ind:textfilecontent54_object id="object_api_server_authorization_mode_webhook" version="1">
+    <ind:filepath>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</ind:filepath>
+    <ind:pattern operation="pattern match">^.*"apiServerArguments":[\s]*{.*"authorization-mode":[\s]*\[.*"Webhook".*\][,]*.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% else %}}
   <ind:textfilecontent54_object id="object_api_server_authorization_mode_webhook" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*authorization-mode\:[\n]+[\s*]-[\s]+Webhook[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+{{%- endif %}}
   <!-- end test for default configuration value -->
 
 </def-group>

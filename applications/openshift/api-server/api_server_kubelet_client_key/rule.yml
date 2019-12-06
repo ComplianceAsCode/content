@@ -10,12 +10,23 @@ description: |-
     kubelets. Then, verify
     that <tt>kubeletClientInfo</tt> has the <tt>keyFile</tt> configured in 
     the API Server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master
+    node(s) to something similar to:
+    <pre>
+    "storageConfig":{
+      ...
+      "keyFile":"/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.key",
+      ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) to something similar to:
     <pre>kubeletClientInfo:
       ca: ca-bundle.crt
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
+{{%- endif %}}
 
 rationale: |-
     By default the API Server does not authenticate itself to the kubelet's
@@ -32,9 +43,15 @@ ocil_clause: '<tt>keyFile</tt> is not set as appropriate for <tt>kubeletClientIn
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep keyFile /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+    The output should contain something similar to:
+    <pre>"keyFile":"/etc/kubernetes/static-pod-resources/secrets/kubelet-client/tls.key",</pre>
+{{% else %}}
     <pre>$ sudo grep -A3 kubeletClientInfo /etc/origin/master/master-config.yaml</pre>
     The output should contain something similar to:
     <pre>kubeletClientInfo:
       ca: ca-bundle.crt
       certFile: master.kubelet-client.crt
       keyFile: master.kubelet-client.key</pre>
+{{%- endif %}}
