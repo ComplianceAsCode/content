@@ -1,15 +1,15 @@
 {{% macro audit_file_compare_criterion(file_id) %}}
-      <criterion comment="check {{{ file_id }}}.rules file" test_ref="test_compare_{{{ file_id }}}" />
+      <criterion comment="check {{{ file_id }}}.rules file" test_ref="test_compare_{{{ file_id }}}_old" />
 {{% endmacro %}}
 
 {{% macro audit_file_compare_test(file_id) %}}
   <ind:textfilecontent54_test check="all" check_existence="all_exist"
   comment="Compare {{{ file_id }}}.rules file in /etc/audit/rules.d against file in /usr/share/doc/audit/"
-  id="test_compare_{{{ file_id }}}" version="1">
-    <ind:object object_ref="object_etc_{{{ file_id }}}" />
+  id="test_compare_{{{ file_id }}}_old" version="1">
+    <ind:object object_ref="object_etc_{{{ file_id }}}_old" />
     <ind:state state_ref="state_doc_{{{ file_id }}}" />
   </ind:textfilecontent54_test>
-  <ind:textfilecontent54_object id="object_etc_{{{ file_id }}}" version="1">
+  <ind:textfilecontent54_object id="object_etc_{{{ file_id }}}_old" version="1">
     <ind:filepath>/etc/audit/rules.d/{{{ file_id }}}.rules</ind:filepath>
     <ind:pattern operation="pattern match">(?:.*\n)*</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
