@@ -57,10 +57,10 @@ def get_available_functions(build_dir):
     with codecs.open(xmlfilepath, "r", encoding="utf-8") as xmlfile:
         filestring = xmlfile.read()
         # This regex looks implementation dependent but we can rely on the element attributes
-        # being present on one line.
+        # being present. Beware, DOTALL means we go through the whole file at once.
         # We can't rely on ElementTree sorting XML attrs in any way since Python 3.7.
         remediation_functions = re.findall(
-            r'<Value.*id=\"function_(\S+)\"',
+            r'<Value[^>]+id=\"function_(\S+)\"',
             filestring, re.DOTALL
         )
 
