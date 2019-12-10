@@ -7,12 +7,16 @@ title: 'Authorize USB hubs in USBGuard daemon'
 description: |-
     To allow authorization of USB hub devices by USBGuard daemon,
     add line
-    <tt>allow with-interface equals { 09:00:* }</tt>
+    <tt>allow with-interface match-all { 09:00:* }</tt>
     to <tt>/etc/usbguard/rules.conf</tt>.
 
 rationale: |-
     Without allowing hubs, it might not be possible to use any
     USB devices on the system.
+
+warnings:
+    - general: |-
+        This rule should be understood primarily as a convenience administration feature. This rule ensures that if the USBGuard default rules.conf file is present, it will alter it so that USB hub devices are allowed. However, if the rules.conf file is altered by system administrator, the rule does not check if USB hub devices are allowed. This assumes that an administrator modified the file with some purpose in mind.
 
 severity: medium
 
@@ -30,4 +34,4 @@ ocil: |-
     run the following command:
     <pre>$ sudo grep allow /etc/usbguard/rules.conf</pre>
     One of the output lines should be
-    <pre>allow with-interface equals { 09:00:* }</pre>
+    <pre>allow with-interface match-all { 09:00:* }</pre>
