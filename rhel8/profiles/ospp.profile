@@ -377,7 +377,8 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_rules_for_ospp
+#    - audit_rules_for_ospp
+    - audit_rules_10-base-config_rule_file
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1
