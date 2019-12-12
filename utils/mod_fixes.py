@@ -63,6 +63,9 @@ def add_platforms(rule_obj, lang, platforms):
     fix_file, fix_contents = ssg.fixes.get_fix_contents(rule_obj, lang, 'shared')
     current_platforms = ssg.fixes.applicable_platforms(fix_file)
 
+    if "multi_platform_all" in current_platforms:
+        return
+
     new_platforms = set(current_platforms)
     new_platforms.update(platforms)
 
