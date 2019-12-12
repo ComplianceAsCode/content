@@ -17,13 +17,21 @@
     <ind:state state_ref="state_api_server_kubelet_certificate_authority" />
   </ind:textfilecontent54_test>
 
+{{%- if product == "ocp4" %}}
+  <ind:textfilecontent54_object id="object_api_server_kubelet_certificate_authority" version="1">
+    <ind:filepath>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</ind:filepath>
+    <ind:pattern operation="pattern match">^.*"kubeletClientInfo":[\s]*{.*"ca":[\s]*"([^\s"']+)",.*$</ind:pattern>
+    <ind:instance datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+{{% else %}}
   <ind:textfilecontent54_object id="object_api_server_kubelet_certificate_authority" version="1">
     <ind:filepath>/etc/origin/master/master-config.yaml</ind:filepath>
     <ind:pattern operation="pattern match">^[\s]*kubeletClientInfo\:(?:[^\n]*\n+)+?[\s]*ca\:[\s]+(\S+)[\s]*$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
+{{%- endif %}}
 
   <ind:textfilecontent54_state id="state_api_server_kubelet_certificate_authority" version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^ca-bundle.crt$</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">^ca-bundle.crt|/etc/kubernetes/static-pod-resources/configmaps/kubelet-serving-ca/ca-bundle.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>

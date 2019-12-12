@@ -9,11 +9,23 @@ description: |-
     and the API Server <tt>authorization-mode</tt> is set to <tt>Webhook</tt>.
     To ensure that the API server requires authorization for API requests,
     validate that <tt>authorization-mode</tt> is configured to <tt>Webhook</tt>
+{{%- if product == "ocp4" %}}
+    in <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "authorization-mode":[
+        "Webhook"
+      ],
+      ...
+    </pre>
+{{% else %}}
     in <tt>/etc/origin/master/master-config.yaml</tt>:
     <pre>kubernetesMasterConfig:
       apiServerArguments:
         authorization-mode:
         - Webhook</pre>
+{{%- endif %}}
 
 warnings:
   - functionality: |-
@@ -33,5 +45,9 @@ ocil_clause: '<tt>authorization-mode</tt> is not configured to <tt>Webhook</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A1 authorization-mode /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep -A1 authorization-mode /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
     Verify that there is no output, or the output is set to <tt>Webhook</tt>.

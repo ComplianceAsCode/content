@@ -8,11 +8,24 @@ description: |-
     By default, anonymous access to the OpenShift API is enabled. This
     configuration check ensures that anonymous requests to the OpenShift
     API server are disabled. Edit the API server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s)
+    and set the below parameter:
+    <pre>
+    "apiServerArguments":{
+      ...
+      "anonymous-auth":[
+        "false"
+      ],
+      ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s)
     and set the below parameter:
     <pre>apiServerArguments:
       anonymous-auth:
       - 'false'</pre>
+{{%- endif %}}
 
 rationale: |-
     When enabled, requests that are not rejected by other configured
@@ -30,5 +43,9 @@ ocil_clause: '<tt>anonymous-auth</tt> is not set to <tt>false</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A1 anonymous-auth /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep -A1 anonymous-auth /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
     The output should return <pre>false</pre>.

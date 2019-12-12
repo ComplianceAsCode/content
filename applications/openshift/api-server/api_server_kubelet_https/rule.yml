@@ -6,7 +6,19 @@ title: 'Enable kubelet HTTPS connections to the API Server'
 
 description: |-
     HTTPS should be used for connections between the API Server and Kubelets.
-
+{{%- if product == "ocp4" %}}
+    Edit the API Server pod specification file <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt>
+    on the master node(s) and remove the <tt>kubelet-https</tt> parameter. This will ensure communications
+    are encrypted using TLS (the default setting).
+    <pre>
+    "apiServerArguments":{
+      ...
+      "kubelet-https":[
+        "false"
+      ],
+      ...
+    </pre>
+{{% else %}}
     Edit the API Server pod specification file <tt>/etc/origin/master/master-config.yaml</tt>
     on the master node(s) and remove the <tt>kubelet-https</tt> parameter. This will ensure communications
     are encrypted using TLS (the default setting).
@@ -14,6 +26,7 @@ description: |-
       apiServerArguments:
         kubelet-https:
         - 'false'</pre>
+{{%- endif %}}
 
 rationale: |-
     Connections from the API Server to Kubelets could potentially carry
@@ -30,5 +43,9 @@ ocil_clause: 'kubelet-https is specified it must be set to <tt>true</tt>'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep kubelet-https /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep kubelet-https /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
     The output should return no output.
