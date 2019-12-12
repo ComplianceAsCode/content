@@ -114,7 +114,6 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
         title = ET.SubElement(vmsinfo, "title")
         title.text = rule_title
         new_stig_overlay.append(overlay)
-        overlay.append(vmsinfo)
         overlay.append(title)
 
     lines = new_stig_overlay.findall("overlay")
