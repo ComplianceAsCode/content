@@ -111,9 +111,7 @@ def new_stig_overlay(xccdftree, ssgtree, outfile):
                                 severity=severity)
         vmsinfo = ET.SubElement(overlay, "VMSinfo", VKey=vkey,
                                 SVKey=svkey, VRelease=release)
-        title = ET.SubElement(vmsinfo, "title")
-        title.text = rule_title
-        overlay.append(title)
+        title = ET.SubElement(overlay, "title", text=rule_title)
 
     lines = new_stig_overlay.findall("overlay")
     new_stig_overlay[:] = sorted(lines, key=getkey)
