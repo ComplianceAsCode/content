@@ -231,7 +231,7 @@ selections:
 
     ### Enable / Configure FIPS
     - enable_fips_mode
-    - var_system_crypto_policy=fips
+    - var_system_crypto_policy=fips_ospp
     - configure_crypto_policy
     - harden_sshd_crypto_policy
     - harden_ssh_client_crypto_policy
