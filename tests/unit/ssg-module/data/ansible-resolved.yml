@@ -2,7 +2,7 @@
   stat:
     path: /boot/grub2/grub.cfg
   register: file_exists
-  when: ansible_virtualization_role != "guest" or ansible_virtualization_type != "docker"
+  when: container_env != "podman" and ansible_virtualization_type != "docker"
   tags:
     - file_owner_grub2_cfg
     - medium_severity
@@ -22,7 +22,7 @@
     owner: 0
   when:
     - file_exists.stat.exists
-    - ansible_virtualization_role != "guest" or ansible_virtualization_type != "docker"
+    - container_env != "podman" and ansible_virtualization_type != "docker"
   tags:
     - file_owner_grub2_cfg
     - medium_severity

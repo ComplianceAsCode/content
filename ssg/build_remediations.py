@@ -332,7 +332,7 @@ class AnsibleRemediation(Remediation):
     def update_when_from_rule(self, to_update):
         additional_when = ""
         if self.associated_rule.platform == "machine":
-            additional_when = ('ansible_virtualization_role != "guest" '
+            additional_when = ('ansible_virtualization_type != "podman" '
                                'or ansible_virtualization_type != "docker"')
         to_update.setdefault("when", "")
         new_when = ssg.yaml.update_yaml_list_or_string(to_update["when"], additional_when)

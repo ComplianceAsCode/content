@@ -12,9 +12,9 @@ from .constants import min_ansible_version
 from .constants import REF_PREFIX_MAP
 
 
-def add_minimum_version(ansible_src):
+def add_pre_tasks(ansible_src):
     """
-    Adds minimum ansible version to an Ansible script
+    Adds pre_tasks to an Ansible script
     """
     pre_task = (""" - hosts: all
    pre_tasks:
@@ -23,6 +23,10 @@ def add_minimum_version(ansible_src):
          that: "ansible_version.full is version_compare('%s', '>=')"
          msg: >
            "You must update Ansible to at least version %s to use this role."
+
+     - name: Set Ansible podman fact
+       set_fact:
+         container_env: "{{ lookup('env', 'container') }}"
           """ % (ansible_version_requirement_pre_task_name,
                  min_ansible_version, min_ansible_version))
 
