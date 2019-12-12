@@ -78,8 +78,7 @@ def getkey(elem):
     return elem.get("ownerid")
 
 
-def new_stig_overlay(xccdftree, ssgtree, outfile,
-                     overlayfile=False):
+def new_stig_overlay(xccdftree, ssgtree, outfile):
     if not ssgtree:
         ssg_mapping = False
     else:
