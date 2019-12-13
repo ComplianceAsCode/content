@@ -129,10 +129,8 @@ selections:
   - sshd_disable_user_known_hosts
   - sshd_enable_strictmodes
 
-  # The E8 profile bans usage of SHA-1, and as of 11/2019 the FUTURE crypto policy is the only one that ensures this.
-  # TODO: Re-evaluate after another crypto policies become available.
   # See also: https://www.cyber.gov.au/ism/guidelines-using-cryptography
-  - var_system_crypto_policy=future
+  - var_system_crypto_policy=default_nosha1
   - configure_crypto_policy
   - configure_ssh_crypto_policy
 
