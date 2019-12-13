@@ -17,6 +17,10 @@
       <criteria operator="OR">
         <criterion comment="RHEL 8 is installed" test_ref="test_rhel8" />
         <criterion comment="RHEL 8 CoreOS is installed" test_ref="test_rhel8_coreos" />
+        <criteria operator="AND" comment="Red Hat Enterprise Virtualization Host is installed">
+          <criterion comment="Red Hat Virtualization Host (RHVH)" test_ref="test_rhvh4_version" />
+          <criterion comment="Red Hat Enterprise Virtualization Host is based on RHEL 8" test_ref="test_rhevh_rhel8_version" />
+        </criteria>
       </criteria>
     </criteria>
   </definition>
@@ -51,6 +55,19 @@
     <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_rhel8_coreos" version="1">
+    <ind:subexpression operation="pattern match">8</ind:subexpression>
+  </ind:textfilecontent54_state>
+
+  <ind:textfilecontent54_test check="all" comment="RHEVH base RHEL is version 8" id="test_rhevh_rhel8_version" version="1">
+    <ind:object object_ref="obj_rhevh_rhel8_version" />
+    <ind:state state_ref="state_rhevh_rhel8_version" />
+  </ind:textfilecontent54_test>
+  <ind:textfilecontent54_object id="obj_rhevh_rhel8_version" version="1">
+    <ind:filepath>/etc/redhat-release</ind:filepath>
+    <ind:pattern operation="pattern match">^Red Hat Enterprise Linux release (\d)\.\d+$</ind:pattern>
+    <ind:instance operation="greater than or equal" datatype="int">1</ind:instance>
+  </ind:textfilecontent54_object>
+  <ind:textfilecontent54_state id="state_rhevh_rhel8_version" version="1">
     <ind:subexpression operation="pattern match">8</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>
