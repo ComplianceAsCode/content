@@ -62,6 +62,10 @@ def list_platforms(rule_obj, lang):
 def add_platforms(rule_obj, lang, platforms):
     fix_file, fix_contents = ssg.fixes.get_fix_contents(rule_obj, lang, 'shared')
     current_platforms = ssg.fixes.applicable_platforms(fix_file)
+
+    if "multi_platform_all" in current_platforms:
+        return
+
     new_platforms = set(current_platforms)
     new_platforms.update(platforms)
 
@@ -94,7 +98,7 @@ def replace_platforms(rule_obj, lang, platforms):
     for platform in platforms:
         parsed_platform = platform.split('~')
         if not len(parsed_platform) == 2:
-            print("Invalid platform replacement description: %s" % product,
+            print("Invalid platform replacement description: %s" % platform,
                   file=sys.stderr)
             sys.exit(1)
 
