@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,sle12
 
 title: 'The Installed Operating System Is Vendor Supported'
 
@@ -9,6 +9,9 @@ description: |-
 {{% if product in ["ol7", "ol8"] %}}
     Oracle Linux is supported by Oracle Corporation. As the Oracle
     Linux vendor, Oracle Corporation is responsible for providing security patches.
+{{% elif product == "sle12" %}}
+    SUSE Linux Enterprise is supported by SUSE. As the SUSE Linux Enterprise
+    vendor, SUSE is responsible for providing security patches.
 {{% else %}}
     Red Hat Enterprise Linux is supported by Red Hat, Inc. As the Red Hat Enterprise
     Linux vendor, Red Hat, Inc. is responsible for providing security patches.
@@ -30,6 +33,7 @@ severity: high
 identifiers:
     cce@rhel7: 82371-6
     cce@rhel8: 80947-5
+    cce@sle12: 83001-8
 
 references:
     disa: "366"
@@ -37,6 +41,7 @@ references:
     nist-csf: ID.RA-1,PR.IP-12
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "020250"
+    stigid@sle12: "010000"
     isa-62443-2009: 4.2.3,4.2.3.12,4.2.3.7,4.2.3.9
     cobit5: APO12.01,APO12.02,APO12.03,APO12.04,BAI03.10,DSS05.01,DSS05.02
     iso27001-2013: A.12.6.1,A.14.2.3,A.16.1.3,A.18.2.2,A.18.2.3
@@ -51,6 +56,8 @@ ocil: |-
     <pre>$ grep -i "red hat" /etc/redhat-release</pre>
 {{% elif product in ["ol7", "ol8"] %}}
     <pre>$ grep -i "oracle" /etc/oracle-release</pre>
+{{% elif product in ["sle12"] %}}
+    <pre>$ grep -i "suse" /etc/os-release</pre>
 {{% endif %}}
     The output should contain something similar to:
     <pre>{{{ full_name }}}</pre>
