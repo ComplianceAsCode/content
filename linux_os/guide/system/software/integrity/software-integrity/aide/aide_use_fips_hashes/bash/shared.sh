@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel
 
 {{{ bash_package_install("aide") }}}
 
