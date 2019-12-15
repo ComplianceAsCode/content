@@ -14,6 +14,8 @@ rationale: |-
     such as <tt>/var/log</tt> should never be necessary in normal operation and
     can expose the system to potential compromise.
 
+{{{ complete_ocil_entry_mount_option("/var/log", "noexec") }}}
+
 severity: medium
 
 identifiers:
@@ -24,12 +26,13 @@ identifiers:
 references:
     nist: CM-7
     nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
+    srg: SRG-OS-000368-GPOS-00154
 
 platform: machine
 
 template:
     name: mount_option
     vars:
-        mount_has_to_exist: 'yes'
-        mountoption: noexec
         mountpoint: /var/log
+        mountoption: noexec
+        mount_has_to_exist: 'yes'

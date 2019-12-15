@@ -25,6 +25,7 @@ identifiers:
 
 references:
     anssi@debian8: NT007(R17)
+    anssi@debian9: NT007(R17)
     stigid@rhel6: "000239"
     srg@rhel6: SRG-OS-000106
     disa@rhel6: 765,766
@@ -33,7 +34,7 @@ references:
     cui: 3.1.1,3.1.5
     disa: "366"
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
-    nist: AC-3,AC-6,AC-17(b),CM-6(b)
+    nist: AC-3,AC-6,AC-17(a),AC-17(b),CM-6(b)
     nist-csf: PR.AC-4,PR.AC-6,PR.DS-5,PR.IP-1,PR.PT-3
     ospp: FIA_AFL.1
     srg: SRG-OS-000480-GPOS-00229
@@ -49,7 +50,7 @@ references:
 {{{ complete_ocil_entry_sshd_option(default="yes", option="PermitEmptyPasswords", value="no") }}}
 
 template:
-    name: auditd_lineinfile
+    name: sshd_lineinfile
     vars:
         missing_parameter_pass: 'true'
         parameter: PermitEmptyPasswords

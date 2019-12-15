@@ -20,11 +20,12 @@ severity: low
 
 identifiers:
     cce@rhel7: 80645-5
+    cce@rhel8: 82282-5
 
 references:
     cis@debian8: 9.3.2
     cis@rhel7: 5.2.3
-    nist: AC-17(b)
+    nist: AC-17(a),AC-17(b)
 
 ocil_clause: 'it is commented out or is not enabled'
 
@@ -35,7 +36,7 @@ ocil: |-
     If configured properly, output should be <pre>LogLevel INFO</pre>
 
 template:
-    name: auditd_lineinfile
+    name: sshd_lineinfile
     vars:
         missing_parameter_pass: 'true'
         parameter: LogLevel

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8,fedora,ol8
+prodtype: rhel7,rhel8,fedora,ol8,ocp4
 
 title: 'Disallow kernel profiling by unprivileged users'
 
@@ -18,6 +18,7 @@ identifiers:
 references:
     anssi: NT28(R23)
     ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000132-GPOS-00067
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.perf_event_paranoid", value="2") }}}
 
@@ -26,6 +27,6 @@ platform: machine
 template:
     name: sysctl
     vars:
-        datatype: int
-        sysctlval: '2'
         sysctlvar: kernel.perf_event_paranoid
+        sysctlval: '2'
+        datatype: int

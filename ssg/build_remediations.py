@@ -56,11 +56,11 @@ def get_available_functions(build_dir):
     remediation_functions = []
     with codecs.open(xmlfilepath, "r", encoding="utf-8") as xmlfile:
         filestring = xmlfile.read()
-        # This regex looks implementation dependent but we can rely on
-        # ElementTree sorting XML attrs alphabetically. Hidden is guaranteed
-        # to be the first attr and ID is guaranteed to be second.
+        # This regex looks implementation dependent but we can rely on the element attributes
+        # being present. Beware, DOTALL means we go through the whole file at once.
+        # We can't rely on ElementTree sorting XML attrs in any way since Python 3.7.
         remediation_functions = re.findall(
-            r'<Value hidden=\"true\" id=\"function_(\S+)\"',
+            r'<Value[^>]+id=\"function_(\S+)\"',
             filestring, re.DOTALL
         )
 
@@ -353,7 +353,11 @@ class AnsibleRemediation(Remediation):
     def from_snippet_and_rule(cls, snippet_fname, rule_fname):
         if os.path.isfile(snippet_fname) and os.path.isfile(rule_fname):
             result = cls(snippet_fname)
-            result.load_rule_from(rule_fname)
+            try:
+                result.load_rule_from(rule_fname)
+            except ssg.yaml.DocumentationNotComplete:
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                return None
             return result
 
 

@@ -9,7 +9,7 @@ description: |-
     to remote server using Transport Layer Security (TLS)
     using correct path for the <tt>DefaultNetstreamDriverCAFile</tt>
     global option in <tt>/etc/rsyslog.conf</tt>, for example with the following command:
-    <pre>echo 'global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem") *.*' >> /etc/rsyslog.conf</pre>
+    <pre>echo 'global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")' >> /etc/rsyslog.conf</pre>
     Replace the <tt>/etc/pki/tls/cert.pem</tt> in the above command with the path to the file with CA certificate generated for the purpose of remote logging.
 
 rationale: |-
@@ -24,6 +24,7 @@ identifiers:
 
 references:
     ospp: FMT_SMF_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: 'CA certificate for rsyslog remote logging via TLS is not set'
 
@@ -32,5 +33,5 @@ ocil: |-
     configured for its TLS connections to remote server, run the following command:
     <pre>$ grep DefaultNetstreamDriverCAFile /etc/rsyslog.conf /etc/rsyslog.d/*.conf</pre>
     The output should include record similar to
-    <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem") *.*</pre>
+    <pre>global(DefaultNetstreamDriverCAFile="/etc/pki/tls/cert.pem")</pre>
     where the path to the CA file (<tt>/etc/pki/tls/cert.pem</tt> in case above) must point to the correct CA certificate.

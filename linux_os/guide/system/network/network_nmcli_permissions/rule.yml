@@ -1,0 +1,63 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,fedora,rhv4,ocp4
+
+title: 'Prevent non-Privileged Users from Modifying Network Interfaces using nmcli'
+
+description: |-
+    By default, non-privileged users are given permissions to modify networking
+    interfaces and configurations using the <tt>nmcli</tt> command. Non-privileged
+    users should not be making configuration changes to network configurations. To
+    ensure that non-privileged users do not have permissions to make changes to the
+    network configuration using <tt>nmcli</tt>, create the following configuration in
+    <tt>/etc/polkit-1/localauthority/20-org.d/10-nm-harden-access.pkla</tt>:
+    <pre>
+    [Disable General User Access to NetworkManager]
+    Identity=default
+    Action=org.freedesktop.NetworkManager.*
+    ResultAny=no
+    ResultInactive=no
+    ResultActive=auth_admin
+    </pre>
+
+rationale: |-
+    Allowing non-privileged users to make changes to network settings can allow
+    untrusted access, prevent system availability, and/or can lead to a compromise or
+    attack.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 82178-5
+    cce@rhel8: 82179-3
+
+references:
+    cui: 3.1.16
+    nist: AC-18(a),AC-18(4)
+
+ocil_clause: 'non-privileged users can modify or change network settings'
+
+ocil: |-
+    Using a non-privileged account, verify that users cannot modify or change
+    network settings with the <tt>nmcli</tt> command with the following command:
+    <pre>$ nmcli general permissions</pre>
+    The output should contain the following:
+    <pre>PERMISSION                                                        VALUE
+    org.freedesktop.NetworkManager.enable-disable-network             auth
+    org.freedesktop.NetworkManager.enable-disable-wifi                auth
+    org.freedesktop.NetworkManager.enable-disable-wwan                auth
+    org.freedesktop.NetworkManager.enable-disable-wimax               auth
+    org.freedesktop.NetworkManager.sleep-wake                         auth
+    org.freedesktop.NetworkManager.network-control                    auth
+    org.freedesktop.NetworkManager.wifi.share.protected               auth
+    org.freedesktop.NetworkManager.wifi.share.open                    auth
+    org.freedesktop.NetworkManager.settings.modify.system             auth
+    org.freedesktop.NetworkManager.settings.modify.own                auth
+    org.freedesktop.NetworkManager.settings.modify.hostname           auth
+    org.freedesktop.NetworkManager.settings.modify.global-dns         auth
+    org.freedesktop.NetworkManager.reload                             auth
+    org.freedesktop.NetworkManager.checkpoint-rollback                auth
+    org.freedesktop.NetworkManager.enable-disable-statistics          auth
+    org.freedesktop.NetworkManager.enable-disable-connectivity-check  auth
+    org.freedesktop.NetworkManager.wifi.scan                          auth
+    </pre>

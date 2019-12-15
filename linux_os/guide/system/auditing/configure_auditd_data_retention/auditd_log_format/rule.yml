@@ -15,10 +15,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: 82357-5
     cce@rhel8: 82201-5
 
 references:
     ospp: FAU_GEN.1
+    srg: SRG-OS-000255-GPOS-00096
 
 ocil_clause: log_format isn't set to ENRICHED
 
@@ -31,7 +33,7 @@ ocil: |-
     <pre>log_format = ENRICHED</pre>
 
 template:
-    name: sshd_lineinfile
+    name: auditd_lineinfile
     vars:
         missing_parameter_pass: 'false'
         parameter: log_format

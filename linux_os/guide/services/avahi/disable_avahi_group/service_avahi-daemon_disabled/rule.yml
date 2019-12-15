@@ -17,6 +17,7 @@ severity: unknown
 identifiers:
     cce@rhel6: 27087-6
     cce@rhel7: 80338-7
+    cce@rhel8: 82188-4
 
 references:
     cis: 2.2.3
@@ -38,6 +39,5 @@ platform: machine
 template:
     name: service_disabled
     vars:
-        mask_service: 'true'
-        packagename: avahi
         servicename: avahi-daemon
+        packagename: avahi

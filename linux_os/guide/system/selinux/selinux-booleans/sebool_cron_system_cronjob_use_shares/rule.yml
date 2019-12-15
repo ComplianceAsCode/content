@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82285-8
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="cron_system_cronjob_use_shares") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: cron_system_cronjob_use_shares

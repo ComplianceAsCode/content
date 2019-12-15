@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82303-9
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="mock_enable_homedirs") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: mock_enable_homedirs

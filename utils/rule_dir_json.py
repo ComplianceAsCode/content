@@ -32,11 +32,10 @@ def parse_args():
 
 
 def walk_products(root, all_products):
-    visited_guide_dirs = set()
+    visited_dirs = set()
 
     all_rule_dirs = []
     product_yamls = {}
-    known_rules = set()
 
     for product in all_products:
         product_dir = os.path.join(root, product)
@@ -48,23 +47,21 @@ def walk_products(root, all_products):
         guide_dir = os.path.join(product_dir, product_yaml['benchmark_root'])
         guide_dir = os.path.abspath(guide_dir)
 
-        if guide_dir in visited_guide_dirs:
-            continue
+        additional_content_directories = product_yaml.get("additional_content_directories", [])
+        add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
 
-        new_rule_dirs = sorted(ssg.rules.find_rule_dirs(guide_dir))
-        for rule_dir in new_rule_dirs:
-            rule_id = ssg.rules.get_rule_dir_id(rule_dir)
-            all_rule_dirs.append((rule_id, rule_dir, guide_dir, product))
-
-            if rule_id in known_rules:
-                exp = "Multiple rules with same rule_id: %s and %s" % \
-                      (known_rules[rule_id]['rule_dir'], rule_dir)
-                raise ValueError(exp)
-            known_rules.add(rule_id)
-
-        visited_guide_dirs.add(guide_dir)
+        for cur_dir in [guide_dir] + add_content_dirs:
+            if cur_dir not in visited_dirs:
+                for rule_id, rule_dir in collect_rule_ids_and_dirs(cur_dir):
+                    all_rule_dirs.append((rule_id, rule_dir, cur_dir, product))
+                visited_dirs.add(cur_dir)
 
     return all_rule_dirs, product_yamls
+
+
+def collect_rule_ids_and_dirs(rules_dir):
+    for rule_dir in sorted(ssg.rules.find_rule_dirs(rules_dir)):
+        yield ssg.rules.get_rule_dir_id(rule_dir), rule_dir
 
 
 def handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir):
@@ -167,7 +164,12 @@ def main():
         if 'linux_os' not in guide_dir:
             product_list = [given_product]
 
-        rule_obj = handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir)
+        try:
+            rule_obj = handle_rule_yaml(product_list, product_yamls, rule_id, rule_dir, guide_dir)
+        except ssg.yaml.DocumentationNotComplete:
+            # Happens on non-debug build when a rule is "documentation-incomplete"
+            continue
+
         rule_obj['ovals'], oval_products = handle_ovals(product_list, product_yamls, rule_obj)
         rule_obj['remediations'], r_products = handle_remediations(product_list, product_yamls, rule_obj)
 

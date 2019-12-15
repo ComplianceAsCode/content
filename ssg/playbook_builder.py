@@ -30,6 +30,8 @@ class PlaybookBuilder():
                                                        "profiles_root")
         self.profiles_dir = os.path.abspath(
             os.path.join(product_dir, relative_profiles_dir))
+        additional_content_directories = product_yaml.get("additional_content_directories", [])
+        self.add_content_dirs = [os.path.abspath(os.path.join(product_dir, rd)) for rd in additional_content_directories]
 
     def get_profile_selections(self, profile):
         """
@@ -118,7 +120,12 @@ class PlaybookBuilder():
         variable values.
         """
         variables = dict()
-        for dirpath, dirnames, filenames in os.walk(self.guide_dir):
+        for cur_dir in [self.guide_dir] + self.add_content_dirs:
+            variables.update(self._get_rules_variables(cur_dir))
+        return variables
+
+    def _get_rules_variables(self, base_dir):
+        for dirpath, dirnames, filenames in os.walk(base_dir):
             for filename in filenames:
                 root, ext = os.path.splitext(filename)
                 if ext == ".var":
@@ -128,8 +135,7 @@ class PlaybookBuilder():
                     options = dict()
                     for k, v in xccdf_value.options.items():
                         options[str(k)] = str(v)
-                    variables[xccdf_value.id_] = options
-        return variables
+                    yield (xccdf_value.id_, options,)
 
     def _find_rule_title(self, rule_id):
         rule_path = os.path.join(self.rules_dir, rule_id + ".yml")

@@ -16,6 +16,8 @@ rationale: |-
     The only legitimate location for device files is the <tt>/dev</tt> directory
     located on the root partition. The only exception to this is chroot jails.
 
+{{{ complete_ocil_entry_mount_option("/var/log/audit", "nodev") }}}
+
 severity: medium
 
 identifiers:
@@ -26,12 +28,13 @@ identifiers:
 references:
     nist: CM-7,MP-2
     nist-csf: PR.IP-1,PR.PT-2,PR.PT-3
+    srg: SRG-OS-000368-GPOS-00154
 
 platform: machine
 
 template:
     name: mount_option
     vars:
-        mount_has_to_exist: 'yes'
-        mountoption: nodev
         mountpoint: /var/log/audit
+        mountoption: nodev
+        mount_has_to_exist: 'yes'

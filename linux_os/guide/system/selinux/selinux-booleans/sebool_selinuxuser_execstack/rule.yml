@@ -15,6 +15,7 @@ rationale: ""
 severity: medium
 
 identifiers:
+    cce@rhel7: 82314-6
     cce@rhel8: 80951-7
 
 references:
@@ -23,6 +24,6 @@ references:
 {{{ complete_ocil_entry_sebool_disabled(sebool="selinuxuser_execstack") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: selinuxuser_execstack

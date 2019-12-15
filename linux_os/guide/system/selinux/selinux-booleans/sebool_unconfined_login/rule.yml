@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82330-2
+
 {{{ complete_ocil_entry_sebool_enabled(sebool="unconfined_login") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: unconfined_login

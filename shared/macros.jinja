@@ -23,6 +23,26 @@ ocil: |
 {{%- endmacro %}}
 
 
+{{% macro ocil_mount_option(point, option) -%}}
+    To verify the <tt>{{{ option }}}</tt> option is configured for the <tt>{{{ point }}}</tt> mount point, run the following command:
+    <pre>$ mount | grep '\s{{{ point }}}\s'</pre>
+    The output should show the corresponding mount point along with the <tt>{{{ option }}}</tt> setting in parentheses.
+{{%- endmacro %}}
+
+
+{{% macro ocil_clause_entry_mount_option(point, option) -%}}
+ocil_clause: "the {{{ option }}} is not present in the output line, or there is no output line at all"
+{{%- endmacro %}}
+
+
+{{% macro complete_ocil_entry_mount_option(point, option) -%}}
+ocil: |
+    {{{ ocil_mount_option(point, option) | indent(4) }}}
+
+{{{ ocil_clause_entry_mount_option() }}}
+{{%- endmacro %}}
+
+
 {{% macro _iptables_desc(traffic_action, how_to_do, proto, port) -%}}
     To configure <tt>iptables</tt> {{{ traffic_action }}} port {{{ port }}} traffic, one must edit
     <tt>/etc/sysconfig/iptables</tt> and

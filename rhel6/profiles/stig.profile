@@ -104,3 +104,5 @@ selections:
     - no_password_auth_for_systemaccounts
     - wireless_disable_interfaces
     - configure_user_data_backups
+    - var_postfix_inet_interfaces=localhost
+    - postfix_network_listening_disabled

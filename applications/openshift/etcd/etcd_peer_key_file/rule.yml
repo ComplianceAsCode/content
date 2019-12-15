@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure That The etcd Peer Key File Is Correctly Set'
 
@@ -9,7 +9,11 @@ description: |-
     edit the <tt>etcd</tt> configuration file
     <tt>/etc/etcd/etcd.conf</tt> on the master on the master and
     adding a key file to <tt>ETCD_PEER_KEY_FILE</tt>:
+{{%- if product == "ocp4" %}}
+    <pre>ETCD_PEER_KEY_FILE=/etc/ssl/etcd/system:etcd-peer:<i>etcd_dns_name</i>.key</pre>
+{{% else %}}
     <pre>ETCD_PEER_KEY_FILE=/etc/etcd/peer.key</pre>
+{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -21,7 +25,7 @@ identifiers:
     cce@ocp3: 80581-2
 
 references:
-    cis: 1.5.4
+    cis: '2.4'
 
 ocil_clause: 'the etcd client key file is not configured'
 

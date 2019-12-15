@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel8,ol8
+prodtype: fedora,rhel8,ol8,ocp4
 
 title: 'Configure BIND to use System Crypto Policy'
 
@@ -23,6 +23,10 @@ severity: medium
 
 identifiers:
     cce@rhel8: 80934-3
+
+references:
+    nist: SC-12(3)
+    srg: SRG-OS-000423-GPOS-00187,SRG-OS-000426-GPOS-00190
 
 ocil_clause: |-
     BIND is installed and the BIND config file doesn't contain the

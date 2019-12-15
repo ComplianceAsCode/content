@@ -4,7 +4,7 @@ from __future__ import print_function
 import os
 import re
 
-from .build_remediations import parse_from_file_with_jinja
+from .build_remediations import parse_from_file_without_jinja
 from .constants import XCCDF11_NS
 from .rule_yaml import parse_prodtype
 from .utils import read_file_list
@@ -45,9 +45,9 @@ def get_fix_contents(rule_obj, lang, fix_id):
 
 
 def applicable_platforms(fix_path):
-    _, config = parse_from_file_with_jinja(fix_path, {})
+    _, config = parse_from_file_without_jinja(fix_path)
 
-    if not 'platform' in config:
+    if 'platform' not in config:
         raise ValueError("Malformed fix: missing platform" % fix_path)
 
     return parse_prodtype(config['platform'])

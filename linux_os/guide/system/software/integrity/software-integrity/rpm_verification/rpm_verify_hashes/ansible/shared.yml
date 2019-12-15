@@ -20,6 +20,7 @@
   register: files_with_incorrect_hash
   changed_when: False
   failed_when: files_with_incorrect_hash.rc > 1
+  check_mode: False
   when: (package_manager_reinstall_cmd is defined)
 
 - name: Create list of packages
@@ -29,6 +30,7 @@
   with_items: "{{ files_with_incorrect_hash.stdout_lines | map('regex_findall', '^[.]+[5]+.* (\\/.*)', '\\1') | map('join') | select('match', '(\\/.*)') | list | unique }}"
   register: list_of_packages
   changed_when: False
+  check_mode: False
   when:
     - files_with_incorrect_hash.stdout_lines is defined
     - (files_with_incorrect_hash.stdout_lines | length > 0)

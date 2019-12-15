@@ -15,10 +15,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: 82358-3
     cce@rhel8: 82258-5
 
 references:
     ospp: FAU_GEN.1
+    srg: SRG-OS-000051-GPOS-00024
 
 ocil_clause: freq isn't set to 50
 
@@ -30,7 +32,7 @@ ocil: |-
     <pre>freq = 50</pre>
 
 template:
-    name: sshd_lineinfile
+    name: auditd_lineinfile
     vars:
         missing_parameter_pass: 'false'
         parameter: freq

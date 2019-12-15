@@ -3,18 +3,19 @@
     <metadata>
       <title>Audit File Deletion Events</title>
       <affected family="unix">
-        <platform>multi_platform_rhel</platform>
+        <platform>Red Hat Virtualization 4</platform>
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_rhel</platform>
       </affected>
       <description>Audit files deletion events.</description>
     </metadata>
     <criteria operator="AND">
       <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_rmdir" />
-      <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_unlink" />
-      <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_unlinkat" />
-      <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_rename" />
-      <extend_definition comment="audit rmdir" definition_ref="audit_rules_file_deletion_events_renameat" />
+      <extend_definition comment="audit unlink" definition_ref="audit_rules_file_deletion_events_unlink" />
+      <extend_definition comment="audit unlinkat" definition_ref="audit_rules_file_deletion_events_unlinkat" />
+      <extend_definition comment="audit rename" definition_ref="audit_rules_file_deletion_events_rename" />
+      <extend_definition comment="audit renameat" definition_ref="audit_rules_file_deletion_events_renameat" />
     </criteria>
   </definition>
 

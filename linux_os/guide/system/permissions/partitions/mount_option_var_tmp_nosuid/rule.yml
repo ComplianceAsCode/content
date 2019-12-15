@@ -14,6 +14,8 @@ rationale: |-
     The presence of SUID and SGID executables should be tightly controlled. Users
     should not be able to execute SUID or SGID binaries from temporary storage partitions.
 
+{{{ complete_ocil_entry_mount_option("/var/tmp", "nosuid") }}}
+
 severity: unknown
 
 identifiers:
@@ -24,12 +26,13 @@ identifiers:
 references:
     cis: 1.1.9
     anssi: NT28(R12)
+    srg: SRG-OS-000368-GPOS-00154
 
 platform: machine
 
 template:
     name: mount_option
     vars:
-        mount_has_to_exist: 'yes'
-        mountoption: nosuid
         mountpoint: /var/tmp
+        mountoption: nosuid
+        mount_has_to_exist: 'yes'

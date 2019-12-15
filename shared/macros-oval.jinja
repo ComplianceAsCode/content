@@ -321,3 +321,96 @@
 {{%- macro oval_check_ini_file(path='', section='', parameter='', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=true) %}}
 {{{ oval_check_config_file(path=path, prefix_regex="^\s*", parameter=parameter, value=value, separator_regex="[ \\t]*=[ \\t]*", missing_parameter_pass=missing_parameter_pass, application=application, multi_value=multi_value, missing_config_file_fail=missing_config_file_fail, section=section) }}}
 {{%- endmacro %}}
+
+{{#
+  Creates OVAL tests with given test_id which checks if package
+  is not installed.
+#}}
+{{%- macro oval_test_package_removed(package='', test_id='') -%}}
+{{% if pkg_system == "rpm" %}}
+  <linux:rpminfo_test check="all" check_existence="none_exist"
+  id="{{{ test_id }}}" version="1"
+  comment="package {{{ package }}} is removed">
+    <linux:object object_ref="obj_{{{ test_id }}}" />
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_{{{ test_id }}}" version="1">
+    <linux:name>{{{ package }}}</linux:name>
+  </linux:rpminfo_object>
+{{% elif pkg_system == "dpkg" %}}
+  <linux:dpkginfo_test check="all" check_existence="none_exist"
+  id="{{{ test_id }}}" version="1"
+  comment="package {{{ package }}} is removed">
+    <linux:object object_ref="obj_{{{ test_id }}}" />
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_{{{ test_id }}}" version="1">
+    <linux:name>{{{ package }}}</linux:name>
+  </linux:dpkginfo_object>
+{{% endif %}}
+{{%- endmacro -%}}
+
+{{#
+  Creates OVAL tests with given test_id which checks if package
+  is installed. Optionally, it can check if a package of a given version (EVR)
+  or newer version is present.
+#}}
+{{%- macro oval_test_package_installed(package='', evr='', test_id='') -%}}
+{{% if pkg_system == "rpm" %}}
+  <linux:rpminfo_test check="all" check_existence="all_exist"
+  id="{{{ test_id }}}" version="1"
+  comment="package {{{ package }}} is installed">
+    <linux:object object_ref="obj_{{{ test_id }}}" />
+    {{% if evr %}}
+      <linux:state state_ref="ste_{{{ test_id }}}" />
+    {{% endif %}}
+  </linux:rpminfo_test>
+  <linux:rpminfo_object id="obj_{{{ test_id }}}" version="1">
+    <linux:name>{{{ package }}}</linux:name>
+  </linux:rpminfo_object>
+  {{% if evr %}}
+    <linux:rpminfo_state id="ste_{{{ test_id }}}" version="1">
+      <linux:evr datatype="evr_string" operation="greater than or equal">{{{ evr }}}</linux:evr>
+    </linux:rpminfo_state>
+  {{% endif %}}
+{{% elif pkg_system == "dpkg" %}}
+  <linux:dpkginfo_test check="all" check_existence="all_exist"
+  id="{{{ test_id }}}" version="1"
+  comment="package {{{ package }}} is installed">
+    <linux:object object_ref="obj_{{{ test_id }}}" />
+    {{% if evr %}}
+      <linux:state state_ref="ste_{{{ test_id }}}" />
+    {{% endif %}}
+  </linux:dpkginfo_test>
+  <linux:dpkginfo_object id="obj_{{{ test_id }}}" version="1">
+    <linux:name>{{{ package }}}</linux:name>
+  </linux:dpkginfo_object>
+  {{% if evr %}}
+    <linux:dpkginfo_state id="ste_{{{ test_id }}}" version="1">
+      <linux:evr datatype="evr_string" operation="greater than or equal">{{{ evr }}}</linux:evr>
+    </linux:dpkginfo_state>
+  {{% endif %}}
+{{% endif %}}
+{{%- endmacro -%}}
+
+{{#
+  Macro which generates OVAL test for OpenShift Container Platform
+  runtime process configuration.
+  Parameters:
+    - command - command that executes the OpenShift process
+    - option - command line option of the command
+    - value - value of the option
+    - option_id - used to build the OVAL test ID
+  The OVAL test ID is test_ocp_runtime_<option_id>.
+#}}
+{{%- macro oval_ocp_service_runtime_config(command='', option='', value='', option_id='') -%}}
+  <unix:process58_test check="all" comment="ocp process runtime parameter {{{ option }}} set to {{{ value }}}" id="test_ocp_runtime_{{{ option_id }}}" version="1">
+    <unix:object object_ref="object_ocp_runtime_{{{ option_id }}}" />
+    <unix:state state_ref="state_ocp_runtime_{{{ option_id }}}" />
+  </unix:process58_test>
+  <unix:process58_object id="object_ocp_runtime_{{{ option_id }}}" version="1">
+    <unix:command_line operation="pattern match">^{{{ command }}}.*$</unix:command_line>
+    <unix:pid datatype="int" operation="greater than">0</unix:pid>
+  </unix:process58_object>
+  <unix:process58_state id="state_ocp_runtime_{{{ option_id }}}" version="1">
+    <unix:command_line operation="pattern match">^.*[\s]+{{{ option }}}=.*({{{ value }}}).*([\s]+.*$|$)</unix:command_line>
+  </unix:process58_state>
+{{%- endmacro -%}}

@@ -16,10 +16,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: 82359-1
     cce@rhel8: 82897-0
 
 references:
     ospp: FAU_GEN.1
+    srg: SRG-OS-000039-GPOS-00017
 
 ocil_clause: name_format isn't set to hostname
 
@@ -31,7 +33,7 @@ ocil: |-
     <pre>name_format = hostname</pre>
 
 template:
-    name: sshd_lineinfile
+    name: auditd_lineinfile
     vars:
         missing_parameter_pass: 'false'
         parameter: name_format

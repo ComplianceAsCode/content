@@ -14,10 +14,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: 82356-7
     cce@rhel8: 82366-6
 
 references:
     ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: write_logs isn't set to yes
 
@@ -29,7 +31,7 @@ ocil: |-
     <pre>write_logs = yes</pre>
 
 template:
-    name: sshd_lineinfile
+    name: auditd_lineinfile
     vars:
         missing_parameter_pass: 'true'
         parameter: write_logs

@@ -4,5 +4,12 @@
 # complexity = low
 # disruption = low
 # Include source function library.
+. /usr/share/scap-security-guide/remediation_functions
 
+{{% if SEBOOL_BOOL %}}
 setsebool -P {{{ SEBOOLID }}} {{{ SEBOOL_BOOL }}}
+{{% else %}}
+populate var_{{{ SEBOOLID }}}
+
+setsebool -P {{{ SEBOOLID }}} $var_{{{ SEBOOLID }}}
+{{% endif %}}

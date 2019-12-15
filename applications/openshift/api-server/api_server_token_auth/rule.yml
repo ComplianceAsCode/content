@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Disable Token-based Authentication'
 
@@ -8,12 +8,25 @@ description: |-
     To ensure OpenShift does not accept token-based authentication,
     follow the OpenShift documentation and configure alternate mechanisms for
     authentication. Then, edit the API Server pod specification file
+{{%- if product == "ocp4" %}}
+    <tt>/etc/origin/master/master-config.yaml</tt> on the master
+    node(s) and remove the <tt>token-auth-file</tt> setting.
+    <pre>
+    "apiServerArguments":{
+      ...
+      "token-auth-file":[
+        "/path/to/file"
+      ],
+      ...
+    </pre>
+{{% else %}}
     <tt>/etc/origin/master/master-config.yaml</tt> on the master
     node(s) and remove the <tt>token-auth-file</tt> setting.
     <pre>kubernetesMasterConfig:
       apiServerArguments:
         token-auth-file:
         - /path/to/file</pre>
+{{%- endif %}}
 
 rationale: |-
     The token-based authentication utilizes static tokens to authenticate
@@ -24,11 +37,15 @@ rationale: |-
 severity: high
 
 references:
-    cis: 1.1.20
+    cis: 1.2.3
 
 ocil_clause: '<tt>token-auth-file</tt> argument is configured'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A2 token-auth-file /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep -A2 token-auth-file /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
     The output should return no output.

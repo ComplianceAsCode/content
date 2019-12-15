@@ -246,9 +246,9 @@ Example usage:
 
 ### Rule-based testing
 
-In this mode, you specify the `rule` command and you supply part of the rule
-title as a positional argument. Unlike the profile mode, here each rule from
-the matching rule set is addressed independently, one-by-one.
+In this mode, you specify the `rule` command and you supply one or more rule
+IDs or wildcards as positional arguments. Unlike the profile mode, here each
+rule from the matching rule set is addressed independently, one-by-one.
 
 Rule-based testing enables to perform two kinds of tests:
 
@@ -262,26 +262,27 @@ Rule-based testing enables to perform two kinds of tests:
 - Remediation tests: The system is set up into a non-compliant state, and
   remediation is performed.
 
-If you would like to evaluate the rule `rule_sysctl_net_ipv4_conf_default_secure_redirects`:
+If you would like to evaluate the rule `sshd_disable_kerb_auth`:
 
 Using Libvirt:
 ```
-./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml ipv4_conf_default_secure_redirects
+./test_suite.py rule --libvirt qemu:///system ssg-test-suite-rhel7 --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 Using Podman:
 ```
-./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml rule_sshd_disable_kerb_auth
+./test_suite.py rule --container ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
 Using Docker:
 ```
-./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml rule_sshd_disable_kerb_auth
+./test_suite.py rule --docker ssg_test_suite --datastream ../build/ssg-rhel7-ds.xml sshd_disable_kerb_auth
 ```
 
-Notice we didn't use full rule name on the command line.
-Test suite runs every rule, which contains given substring in the name.
-So all that is needed is to use unique substring.
+Notice we didn't use full rule name on the command line. The prefix `xccdf_org.ssgproject.content_rule_` is added if not provided.
+
+It is possible to use wildcards, eg `accounts_passwords*` will run test scenarios for all
+rules which ID starts with `accounts_passwords`.
 
 #### Debug mode
 

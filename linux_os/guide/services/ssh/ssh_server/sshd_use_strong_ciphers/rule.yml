@@ -9,8 +9,7 @@ description: |-
     Counter (CTR) mode is also preferred over cipher-block chaining (CBC) mode.
     The following line in <tt>/etc/ssh/sshd_config</tt>
     demonstrates use of those ciphers:
-    <pre>Ciphers aes128-ctr,aes192-ctr,aes256-ctr</pre>
-    <pre>chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes128-ctr</pre>
+    <pre>Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr</pre>
     The man page <tt>sshd_config(5)</tt> contains a list of supported ciphers.
 
 rationale: |-
@@ -22,6 +21,9 @@ rationale: |-
     types of attacks and these algorithms are now recommended for standard use.
 
 severity: medium
+
+identifiers:
+    cce@rhel7: 82363-3
 
 references:
     cis@debian: 9.3.11

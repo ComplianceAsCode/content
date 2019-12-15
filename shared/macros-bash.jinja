@@ -89,21 +89,19 @@ apt-get remove -y "{{{ package }}}"
 
 {{%- macro bash_disable_prelink() -%}}
 # prelink not installed
-if test ! -e /etc/sysconfig/prelink -a ! -e /usr/sbin/prelink; then
-    return 0
-fi
+if test -e /etc/sysconfig/prelink -o -e /usr/sbin/prelink; then
+    if grep -q ^PRELINKING /etc/sysconfig/prelink
+    then
+        sed -i 's/^PRELINKING[:blank:]*=[:blank:]*[:alpha:]*/PRELINKING=no/' /etc/sysconfig/prelink
+    else
+        printf '\n' >> /etc/sysconfig/prelink
+        printf '%s\n' '# Set PRELINKING=no per security requirements' 'PRELINKING=no' >> /etc/sysconfig/prelink
+    fi
 
-if grep -q ^PRELINKING /etc/sysconfig/prelink
-then
-    sed -i 's/^PRELINKING[:blank:]*=[:blank:]*[:alpha:]*/PRELINKING=no/' /etc/sysconfig/prelink
-else
-    printf '\n' >> /etc/sysconfig/prelink
-    printf '%s\n' '# Set PRELINKING=no per security requirements' 'PRELINKING=no' >> /etc/sysconfig/prelink
-fi
-
-# Undo previous prelink changes to binaries if prelink is available.
-if test -x /usr/sbin/prelink; then
-    /usr/sbin/prelink -ua
+    # Undo previous prelink changes to binaries if prelink is available.
+    if test -x /usr/sbin/prelink; then
+        /usr/sbin/prelink -ua
+    fi
 fi
 {{%- endmacro -%}}
 
@@ -177,12 +175,11 @@ dconf update
   {{%- else -%}}
 /usr/bin/systemctl enable "{{{ service }}}"
 /usr/bin/systemctl start "{{{ service }}}"
-  {{%- endif -%}}
-
+  {{%- endif %}}
 # The service may not be running because it has been started and failed,
 # so let's reset the state so OVAL checks pass.
 # Service should be 'inactive', not 'failed' after reboot though.
-/usr/bin/systemctl reset-failed "$service"
+/usr/bin/systemctl reset-failed "{{{ service }}}"
 {{%- elif init_system == "upstart" -%}}
   {{%- if service_state == "disable" -%}}
 /sbin/service "{{{ service }}}" disable
@@ -195,13 +192,35 @@ dconf update
 
 {{%- if xinetd != "" -%}}
 grep -qi disable "/etc/xinetd.d/$xinetd" && \
-  {{%- if service_state == "disable" -%}}
+    {{%- if service_state == "disable" -%}}
 sed -i "s/disable.*/disable         = no/gI" "/etc/xinetd.d/$xinetd"
-  {{%- else -%}}
+    {{%- else -%}}
 sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
-  {{%- endif -%}}
+    {{%- endif -%}}
 {{%- endif -%}}
 {{%- endmacro -%}}
+
+
+{{%- macro _put_into_firefox_cfg(config_item, key, value_varname, where, sed_separator) -%}}
+# If the key exists, change it. Otherwise, add it to the config_file.
+if LC_ALL=C grep -m 1 -q '^{{{ config_item }}}("{{{ key }}}", ' "{{{ where }}}"; then
+    sed -i 's{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}".*{{{ sed_separator }}}{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}})"';{{{ sed_separator }}}g' "{{{ where }}}"
+else
+    echo '{{{ config_item }}}("{{{ key }}}", '"${{{ value_varname }}}"');' >> "{{{ where }}}"
+fi
+{{%- endmacro -%}}
+
+
+{{%- macro _make_bash_variable_assignment(varname, value="", quoted_value="") -%}}
+{{% if value -%}}
+	{{{ varname }}}="{{{ value }}}"
+{{%- elif quoted_value -%}}
+	{{{ varname }}}="\"{{{ quoted_value }}}\""
+{{%- else %}}
+	{{{ raise("Specify either 'value' or 'quoted_value' as macro arguments.") }}}
+{{%- endif -%}}
+{{%- endmacro -%}}
+
 
 {{#
 # bash_firefox_js_setting expects three arguments:
@@ -216,47 +235,41 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 #     bash_firefox_js_setting("stig_settings.js", "general.config.obscure_value", "0")
 #
 #     With a fixed string value:
-#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", "\"stig.cfg\"")
+#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", quoted_value="stig.cfg")
 #
 #     With a string variable:
-#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", "\"$var_config_file_name\"")
+#     bash_firefox_js_setting("stig_settings.js", "general.config.filename", quoted_value="$var_config_file_name")
 #}}
-{{%- macro bash_firefox_js_setting(config_file, key, value) -%}}
-  firefox_js="{{{ config_file }}}"
-  key="{{{ key }}}"
-  value="{{{ value }}}"
-  firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
-  firefox_pref="/defaults/pref"
-  firefox_preferences="/defaults/preferences"
+{{%- macro bash_firefox_js_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
+{{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
+firefox_js="{{{ config_file }}}"
+firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
+firefox_pref="/defaults/pref"
+firefox_preferences="/defaults/preferences"
 
-  # Check the possible Firefox install directories
-  for firefox_dir in ${firefox_dirs}; do
+# Check the possible Firefox install directories
+for firefox_dir in ${firefox_dirs}; do
     # If the Firefox directory exists, then Firefox is installed
     if [ -d "${firefox_dir}" ]; then
-      # Different versions of Firefox have different preferences directories, check for them and set the right one
-      if [ -d "${firefox_dir}/${firefox_pref}" ] ; then
-        firefox_pref_dir="${firefox_dir}/${firefox_pref}"
-      elif [ -d "${firefox_dir}/${firefox_preferences}" ] ; then
-        firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
-      else
-        mkdir -m 755 -p "${firefox_dir}/${firefox_preferences}"
-        firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
-      fi
+        # Different versions of Firefox have different preferences directories, check for them and set the right one
+        if [ -d "${firefox_dir}/${firefox_pref}" ] ; then
+            firefox_pref_dir="${firefox_dir}/${firefox_pref}"
+        elif [ -d "${firefox_dir}/${firefox_preferences}" ] ; then
+            firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
+        else
+            mkdir -m 755 -p "${firefox_dir}/${firefox_preferences}"
+            firefox_pref_dir="${firefox_dir}/${firefox_preferences}"
+        fi
 
-      # Make sure the Firefox .js file exists and has the appropriate permissions
-      if ! [ -f "${firefox_pref_dir}/${firefox_js}" ] ; then
-        touch "${firefox_pref_dir}/${firefox_js}"
-        chmod 644 "${firefox_pref_dir}/${firefox_js}"
-      fi
+        # Make sure the Firefox .js file exists and has the appropriate permissions
+        if ! [ -f "${firefox_pref_dir}/${firefox_js}" ] ; then
+            touch "${firefox_pref_dir}/${firefox_js}"
+            chmod 644 "${firefox_pref_dir}/${firefox_js}"
+        fi
 
-      # If the key exists, change it. Otherwise, add it to the config_file.
-      if LC_ALL=C grep -m 1 -q "^pref(\"${key}\", " "${firefox_pref_dir}/${firefox_js}"; then
-        sed -i "s/pref(\"${key}\".*/pref(\"${key}\", ${value});/g" "${firefox_pref_dir}/${firefox_js}"
-      else
-        echo "pref(\"${key}\", ${value});" >> "${firefox_pref_dir}/${firefox_js}"
-      fi
+        {{{ _put_into_firefox_cfg(config_item="pref", key=key, value_varname="value", where="${firefox_pref_dir}/${firefox_js}", sed_separator=sed_separator) | indent(4 * 2) }}}
     fi
-  done
+done
 {{%- endmacro -%}}
 
 {{#
@@ -273,39 +286,66 @@ sed -i "s/disable.*/disable         = yes/gI" "/etc/xinetd.d/$xinetd"
 # Example Call(s):
 #
 #     Without string or variable:
-#     firefox_cfg_setting "stig.cfg" "extensions.update.enabled" "false"
+#     bash_firefox_cfg_setting("stig.cfg" "extensions.update.enabled" value="false")
 #
 #     With string:
-#     firefox_cfg_setting "stig.cfg" "security.default_personal_cert" "\"Ask Every Time\""
+#     bash_firefox_cfg_setting("stig.cfg" "security.default_personal_cert" quoted_value="Ask Every Time")
 #
 #     With a string variable:
-#     firefox_cfg_setting "stig.cfg" "browser.startup.homepage\" "\"${var_default_home_page}\""
+#     bash_firefox_cfg_setting("stig.cfg" "browser.startup.homepage" quoted_value="${var_default_home_page}")
 #}}
-{{%- macro bash_firefox_cfg_setting(config_file, key, value) -%}}
-  firefox_cfg="{{{ config_file }}}"
-  key="{{{ key }}}"
-  value="{{{ value }}}"
-  firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
+{{%- macro bash_firefox_cfg_setting(config_file, key, value="", quoted_value="", sed_separator="/") %}}
+firefox_cfg="{{{ config_file }}}"
+{{{ _make_bash_variable_assignment(varname="value", value=value, quoted_value=quoted_value) }}}
+firefox_dirs="/usr/lib/firefox /usr/lib64/firefox /usr/local/lib/firefox /usr/local/lib64/firefox"
 
-  # Check the possible Firefox install directories
-  for firefox_dir in ${firefox_dirs}; do
+# Check the possible Firefox install directories
+for firefox_dir in ${firefox_dirs}; do
     # If the Firefox directory exists, then Firefox is installed
     if [ -d "${firefox_dir}" ]; then
-      # Make sure the Firefox .cfg file exists and has the appropriate permissions
-      if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
-        touch "${firefox_dir}/${firefox_cfg}"
-        chmod 644 "${firefox_dir}/${firefox_cfg}"
-      fi
+        # Make sure the Firefox .cfg file exists and has the appropriate permissions
+        if ! [ -f "${firefox_dir}/${firefox_cfg}" ] ; then
+            touch "${firefox_dir}/${firefox_cfg}"
+            chmod 644 "${firefox_dir}/${firefox_cfg}"
+        fi
 
-      # If the key exists, change it. Otherwise, add it to the config_file.
-      if LC_ALL=C grep -m 1 -q "^lockPref(\"${key}\", " "${firefox_dir}/${firefox_cfg}"; then
-        sed -i "s/lockPref(\"${key}\".*/lockPref(\"${key}\", ${value});/g" "${firefox_dir}/${firefox_cfg}"
-      else
-        echo "lockPref(\"${key}\", ${value});" >> "${firefox_dir}/${firefox_cfg}"
-      fi
+        {{{ _put_into_firefox_cfg(config_item="lockPref", key=key, value_varname="value", where="${firefox_dir}/${firefox_cfg}", sed_separator=sed_separator) | indent(4 * 2) }}}
     fi
-  done
+done
 {{%- endmacro -%}}
+
+{{#
+# Macro to ensure that the ntp/chrony config file contains valid server entries.
+# config_file: Path to the ntp/chrony config file
+# servers_list: Comma-separated list of servers
+#}}
+{{%- macro bash_ensure_there_are_servers_in_ntp_compatible_config_file(config_file, servers_list) -%}}
+if ! grep -q '#[[:space:]]*server' "{{{ config_file }}}" ; then
+  for server in $(echo "{{{ servers_list }}}" | tr ',' '\n') ; do
+    printf '\nserver %s iburst' "$server" >> "{{{ config_file }}}"
+  done
+else
+  sed -i 's/#[ \t]*server/server/g' "{{{ config_file }}}"
+fi
+{{%- endmacro -%}}
+
+{{#
+# Sets PAM faillock module options and values.
+# Also it adds pam_faillock.so as required module for account.
+# option: faillock option eg. deny, unlock_time
+# value: value of option
+#}}
+{{%- macro bash_set_faillock_option(option, value) -%}}
+AUTH_FILES=("/etc/pam.d/system-auth" "/etc/pam.d/password-auth")
+
+for pam_file in "${AUTH_FILES[@]}"
+do
+    {{{ bash_set_faillock_option_preauth("$pam_file", option, value) | indent(4) }}}
+    {{{ bash_set_faillock_option_authfail("$pam_file", option, value) | indent(4) }}}
+    {{{ bash_set_faillock_option_account("$pam_file") | indent(4) }}}
+done
+{{%- endmacro -%}}
+
 
 {{# ##### Low level macros ##### #}}
 
@@ -400,4 +440,46 @@ fi
     {{%- endif %}}
 # Clean up after ourselves.
 rm "{{{ path }}}.bak"
+{{%- endmacro -%}}
+
+{{%- macro bash_set_faillock_option_preauth(pam_file, option, value) -%}}
+# is auth required pam_faillock.so preauth present?
+if grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*$' "{{{ pam_file }}}" ; then
+    # is the option set?
+    if grep -qE '^\s*auth\s+required\s+pam_faillock\.so\s+preauth.*'"{{{ option }}}"'=([0-9]*).*$' "{{{ pam_file }}}" ; then
+        # just change the value of option to a correct value
+        sed -i --follow-symlinks 's/\(^auth.*required.*pam_faillock.so.*preauth.*silent.*\)\('"{{{ option }}}"' *= *\).*/\1\2'"{{{ value }}}"'/' "{{{ pam_file }}}"
+    # the option is not set.
+    else
+        # append the option
+        sed -i --follow-symlinks '/^auth.*required.*pam_faillock.so.*preauth.*silent.*/ s/$/ '"{{{ option }}}"'='"{{{ value }}}"'/' "{{{ pam_file }}}"
+    fi
+# auth required pam_faillock.so preauth is not present, insert the whole line
+else
+    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/i auth        required      pam_faillock.so preauth silent '"{{{ option }}}"'='"{{{ value }}}" "{{{ pam_file }}}"
+fi
+{{%- endmacro -%}}
+
+{{%- macro bash_set_faillock_option_authfail(pam_file, option, value) -%}}
+# is auth default pam_faillock.so authfail present?
+if grep -qE '^\s*auth\s+(\[default=die\])\s+pam_faillock\.so\s+authfail.*$' "{{{ pam_file }}}" ; then
+    # is the option set?
+    if grep -qE '^\s*auth\s+(\[default=die\])\s+pam_faillock\.so\s+authfail.*'"{{{ option }}}"'=([0-9]*).*$' "{{{ pam_file }}}" ; then
+        # just change the value of option to a correct value
+        sed -i --follow-symlinks 's/\(^auth.*[default=die].*pam_faillock.so.*authfail.*\)\('"{{{ option }}}"' *= *\).*/\1\2'"{{{ value }}}"'/' "{{{ pam_file }}}"
+    # the option is not set.
+    else
+        # append the option
+        sed -i --follow-symlinks '/^auth.*[default=die].*pam_faillock.so.*authfail.*/ s/$/ '"{{{ option }}}"'='"{{{ value }}}"'/' "{{{ pam_file }}}"
+    fi
+# auth default pam_faillock.so authfail is not present, insert the whole line
+else
+    sed -i --follow-symlinks '/^auth.*sufficient.*pam_unix.so.*/a auth        [default=die] pam_faillock.so authfail '"{{{ option }}}"'='"{{{ value }}}" "{{{ pam_file }}}"
+fi
+{{%- endmacro -%}}
+
+{{%- macro bash_set_faillock_option_account(pam_file) -%}}
+if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "{{{ pam_file }}}" ; then
+    sed -E -i --follow-symlinks '/^\s*account\s*required\s*pam_unix.so/i account     required      pam_faillock.so' "{{{ pam_file }}}"
+fi
 {{%- endmacro -%}}

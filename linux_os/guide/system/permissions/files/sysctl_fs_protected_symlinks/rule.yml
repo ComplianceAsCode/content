@@ -23,12 +23,15 @@ references:
     anssi: NT28(R23)
     cis: 1.6.1
     nist: SI-11
+    srg: SRG-OS-000324-GPOS-00125
 
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="fs.protected_symlinks", value="1") }}}
 
 template:
     name: sysctl
     vars:
-        datatype: int
-        sysctlval: '1'
         sysctlvar: fs.protected_symlinks
+        sysctlval: '1'
+        datatype: int
+
+platform: machine

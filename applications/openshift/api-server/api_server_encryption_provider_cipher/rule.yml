@@ -1,0 +1,39 @@
+documentation_complete: true
+
+prodtype: ocp4
+
+title: 'Configure the Encryption Provider Cipher'
+
+description: |-
+    To configure OpenShift to use the <tt>aescbc</tt> encryption provider,
+    follow the OpenShift documentation to create or modify an
+    <tt>EncryptionConfig</tt> file at <tt>/etc/origin/master/encryption-config.yaml</tt>.
+    In this file, choose <tt>aescbc</tt> as the encryption provider:
+    <pre>kind: EncryptionConfig
+    apiVersion: v1
+    resources:
+      - resources:
+        - secrets
+        providers:
+        - aescbc:
+            keys:
+            - name: key1
+              secret: <i>32-byte base64-encoded secret</i></pre>
+
+rationale: |-
+    <tt>aescbc</tt> is currently the strongest encryption provider, it should
+    be preferred over other providers.
+
+severity: medium
+
+references:
+    cis: 1.2.34
+
+ocil_clause: '<tt>aescbc</tt> is not configured as the encryption provider'
+
+ocil: |-
+    Run the following command on the master node(s):
+    <pre>$ sudo grep -A4 aescbc /etc/origin/master/encryption-config.yaml</pre>
+    Verify that the <tt>aescbc</tt> encryption provider is used for all the desired
+    <tt>resources</tt>.
+

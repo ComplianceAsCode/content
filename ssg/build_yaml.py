@@ -5,6 +5,7 @@ import os
 import os.path
 from collections import defaultdict
 import datetime
+import re
 import sys
 
 import yaml
@@ -100,7 +101,8 @@ class Profile(object):
         del yaml_contents["description"]
         profile.extends = yaml_contents.pop("extends", None)
         selection_entries = required_key(yaml_contents, "selections")
-        profile._parse_selections(selection_entries)
+        if selection_entries:
+            profile._parse_selections(selection_entries)
         del yaml_contents["selections"]
 
         if yaml_contents:
@@ -462,6 +464,10 @@ class Benchmark(object):
                 new_profile = Profile.from_yaml(dir_item_path, env_yaml)
             except DocumentationNotComplete:
                 continue
+            except Exception as exc:
+                msg = ("Error building profile from '{fname}': '{error}'"
+                       .format(fname=dir_item_path, error=str(exc)))
+                raise RuntimeError(msg)
             if new_profile is None:
                 continue
 
@@ -512,8 +518,20 @@ class Benchmark(object):
             root.append(value.to_xml_element())
         if self.bash_remediation_fns_group is not None:
             root.append(self.bash_remediation_fns_group)
-        for group in self.groups.values():
-            root.append(group.to_xml_element())
+
+        groups_in_bench = list(self.groups.keys())
+        # Make system group the first, followed by services group
+        group_priority_order = ["system", "services"]
+        for group_id in group_priority_order:
+            group = self.groups.get(group_id)
+            # Products using application benchmark don't have system or services group
+            if group is not None:
+                root.append(group.to_xml_element())
+                groups_in_bench.remove(group_id)
+        # Add any remaining top level groups
+        for group_id in groups_in_bench:
+            root.append(self.groups.get(group_id).to_xml_element())
+
         for rule in self.rules.values():
             root.append(rule.to_xml_element())
 
@@ -622,10 +640,33 @@ class Group(object):
 
         for _value in self.values.values():
             group.append(_value.to_xml_element())
+
+        # Rules that install or remove packages affect remediation
+        # of other rules.
+        # When packages installed/removed rules come first:
+        # The Rules are ordered in more logical way, and
+        # remediation order is natural, first the package is installed, then configured.
+        rules_in_group = list(self.rules.keys())
+        regex = re.compile(r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$')
+        priority_rules = list(filter(regex.match, rules_in_group))
+        priority_order = ["installed", "removed", "enabled", "disabled"]
+        # Add priority rules in priority order, first all packages installed, then removed,
+        # followed by services enabled, then disabled
+        for priority_type in priority_order:
+            for priority_rule_id in priority_rules:
+                if priority_type in priority_rule_id:
+                    group.append(self.rules.get(priority_rule_id).to_xml_element())
+                    rules_in_group.remove(priority_rule_id)
+        # Add remaining rules in the group
+        for rule_id in rules_in_group:
+            group.append(self.rules.get(rule_id).to_xml_element())
+
+        # Add the sub groups after any current level group rules.
+        # As package installed/removed and service enabled/disabled rules are usuallly in
+        # top level group, this ensures groups that further configure a package or service
+        # are after rules that install or remove it.
         for _group in self.groups.values():
             group.append(_group.to_xml_element())
-        for _rule in self.rules.values():
-            group.append(_rule.to_xml_element())
 
         return group
 
@@ -1077,8 +1118,10 @@ class DirectoryLoader(object):
             self._recurse_into_subdirs()
             self._process_rules()
 
-    def process_directory_tree(self, start_dir):
+    def process_directory_tree(self, start_dir, extra_group_dirs=None):
         self._collect_items_to_load(start_dir)
+        if extra_group_dirs is not None:
+            self.subdirectories += extra_group_dirs
         self._load_group_process_and_recurse(start_dir)
 
     def _recurse_into_subdirs(self):
@@ -1118,7 +1161,11 @@ class BuildLoader(DirectoryLoader):
 
     def _process_rules(self):
         for rule_yaml in self.rule_files:
-            rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            try:
+                rule = Rule.from_yaml(rule_yaml, self.env_yaml)
+            except DocumentationNotComplete:
+                # Happens on non-debug build when a rule is "documentation-incomplete"
+                continue
             prodtypes = parse_prodtype(rule.prodtype)
             if "all" not in prodtypes and self.product not in prodtypes:
                 continue

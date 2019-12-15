@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Ensure That The etcd Client Certificate Is Correctly Set'
 
@@ -9,7 +9,11 @@ description: |-
     edit the <tt>etcd</tt> configuration file
     <tt>/etc/etcd/etcd.conf</tt> on the master and adding a certificate
     to <tt>ETCD_CERT_FILE</tt>:
+{{%- if product == "ocp4" %}}
+    <pre>ETCD_CERT_FILE=/etc/ssl/etcd/system:etcd-server:<i>etcd_dns_name</i>.crt</pre>
+{{% else %}}
     <pre>ETCD_CERT_FILE=/etc/etcd/server.crt</pre>
+{{%- endif %}}
 
 rationale: |-
     Without cryptographic integrity protections, information can be
@@ -21,11 +25,12 @@ identifiers:
     cce@ocp3: 80577-0
 
 references:
-    cis: 1.5.1
+    cis: '2.1'
 
 ocil_clause: 'the etcd client certificate is not configured'
 
 ocil: |-
     Run the following command on the master node(s):
+
     <pre>$ grep ETCD_CERT_FILE=/etc/etcd/etcd.conf</pre>
     Verify that there is a certificate configured.

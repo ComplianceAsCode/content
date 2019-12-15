@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,ocp4
 
 title: 'Install libreswan Package'
 
@@ -25,7 +25,7 @@ references:
     srg@rhel6: SRG-OS-000160
     stigid@rhel6: "000321"
     disa: 1130,1131
-    nist: 'AC-17,MA-4,SC-9'
+    nist: AC-17(a),MA-4,SC-9
     nist-csf: PR.AC-3,PR.MA-2,PR.PT-4
     pcidss: Req-4.1
     isa-62443-2013: 'SR 1.13,SR 2.6,SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
@@ -33,7 +33,8 @@ references:
     cobit5: APO13.01,DSS01.04,DSS05.02,DSS05.03,DSS05.04
     iso27001-2013: A.11.2.4,A.11.2.6,A.13.1.1,A.13.2.1,A.14.1.3,A.15.1.1,A.15.2.1,A.6.2.1,A.6.2.2
     cis-csc: 12,15,3,5,8
-
+    srg: SRG-OS-000480-GPOS-00227,SRG-OS-000120-GPOS-00061
+    
 ocil_clause: 'the package is not installed'
 
 ocil: '{{{ ocil_package(package="libreswan") }}}'

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8
+prodtype: debian9,rhel6,rhel7,rhel8
 
 title: 'Disable snmpd Service'
 
@@ -27,6 +27,7 @@ platform: machine
 template:
     name: service_disabled
     vars:
-        mask_service: 'true'
-        packagename: net-snmp
         servicename: snmpd
+        packagename@debian9: snmpd
+        packagename: net-snmp
+

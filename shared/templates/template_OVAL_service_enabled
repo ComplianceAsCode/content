@@ -1,5 +1,7 @@
 <def-group>
 
+{{%- set package_installed_test_id = "test_service_" + SERVICENAME + "_package_" + PACKAGENAME + "_installed" -%}}
+
 {{% if init_system == "systemd" and target_oval_version >= [5, 11] %}}
 
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_enabled" version="1">
@@ -11,7 +13,7 @@
       <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
     </metadata>
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
-    <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
+    <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
       <criteria comment="service {{{ SERVICENAME }}} is configured to start and is running" operator="AND">
         <criterion comment="{{{ SERVICENAME }}} is running" test_ref="test_service_running_{{{ SERVICENAME }}}" />
         <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">
@@ -49,7 +51,7 @@
     <linux:state state_ref="state_service_running_{{{ SERVICENAME }}}"/>
   </linux:systemdunitproperty_test>
   <linux:systemdunitproperty_object id="obj_service_running_{{{ SERVICENAME }}}" comment="Retrieve the ActiveState property of {{{ SERVICENAME }}}" version="1">
-    <linux:unit operation="pattern match">{{{ SERVICENAME }}}\.(socket|service)</linux:unit>
+    <linux:unit operation="pattern match">^{{{ SERVICENAME }}}\.(socket|service)$</linux:unit>
     <linux:property>ActiveState</linux:property>
   </linux:systemdunitproperty_object>
   <linux:systemdunitproperty_state id="state_service_running_{{{ SERVICENAME }}}" version="1" comment="{{{ SERVICENAME }}} is running">
@@ -68,7 +70,7 @@
       <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
     </metadata>
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">
-    <extend_definition comment="{{{ PACKAGENAME }}} installed" definition_ref="package_{{{ PACKAGENAME }}}_installed" />
+    <criterion comment="{{{ PACKAGENAME }}} installed" test_ref="{{{ package_installed_test_id }}}" />
     <criteria operator="OR" comment="service {{{ SERVICENAME }}} is configured to start">
       <criterion comment="{{{ SERVICENAME }}} runlevel 0" test_ref="test_runlevel0_{{{ SERVICENAME }}}_on" />
       <criterion comment="{{{ SERVICENAME }}} runlevel 1" test_ref="test_runlevel1_{{{ SERVICENAME }}}_on" />
@@ -156,5 +158,5 @@
   </unix:runlevel_state>
 
 {{% endif %}}
-
+{{{ oval_test_package_installed(package=PACKAGENAME, evr="", test_id=package_installed_test_id) }}}
 </def-group>

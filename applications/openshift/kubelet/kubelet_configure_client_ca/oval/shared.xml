@@ -8,7 +8,7 @@
       <description>Ensure the OpenShift node kubelet is using certificates</description>
     </metadata>
     <criteria operator="AND">
-      <extend_definition comment="Runtime configuration is correct" definition_ref="ocp_service_runtime_config_client_ca_file" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_client_ca_file" />
       <criterion comment="clientCA is configured" test_ref="test_kubelet_configure_client_ca" />
     </criteria>
   </definition>
@@ -27,4 +27,5 @@
   <ind:textfilecontent54_state id="state_kubelet_configure_client_ca" version="1">
     <ind:subexpression datatype="string" operation="pattern match">^client-ca.crt$</ind:subexpression>
   </ind:textfilecontent54_state>
+{{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--client-ca-file", value="/etc/origin/node/client-ca.crt", option_id="client_ca_file") }}}
 </def-group>

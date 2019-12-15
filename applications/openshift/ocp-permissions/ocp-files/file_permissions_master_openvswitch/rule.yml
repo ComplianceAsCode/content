@@ -25,3 +25,10 @@ ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/origin/openvswitch/*",
 
 ocil: |-
     {{{ ocil_file_permissions(file="/etc/origin/openvswitch/*", perms="-rw-r--r--") }}}
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/origin/openvswitch/
+        file_regex: ^.*$
+        filemode: '0644'

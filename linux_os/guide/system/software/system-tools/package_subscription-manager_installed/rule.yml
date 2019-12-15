@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel7,rhel8,rhv4
+
+title: 'Install subscription-manager Package'
+
+description: |-
+    {{{ describe_package_install(package="subscription-manager") }}}
+
+rationale: |-
+    Red Hat Subscription Manager is a local service which tracks installed products
+    and subscriptions on a local system to help manage subscription assignments.
+    It communicates with the backend subscription service (the Customer Portal
+    or an on-premise server such as Subscription Asset Manager) and works with
+    content management tools such as yum.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82316-1
+
+references:
+    ospp: FPT_TUD_EXT.1,FPT_TUD_EXT.2
+
+ocil_clause: 'the package is not installed'
+
+ocil: '{{{ ocil_package(package="subscription-manager") }}}'
+
+template:
+    name: package_installed
+    vars:
+        pkgname: subscription-manager

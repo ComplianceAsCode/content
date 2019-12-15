@@ -42,6 +42,6 @@ ocil: '{{{ ocil_service_enabled(service="sshd") }}}'
 template:
     name: service_enabled
     vars:
+        servicename: sshd
         packagename: openssh-server
         packagename@sle12: openssh
-        servicename: sshd

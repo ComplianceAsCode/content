@@ -23,3 +23,10 @@ references:
 ocil_clause: '{{{ ocil_clause_file_owner(file="/etc/cni/net.d/*", owner="root") }}}'
 
 ocil: '{{{ ocil_file_owner(file="/etc/cni/net.d/*", owner="root") }}}'
+
+template:
+    name: file_owner
+    vars:
+        filepath: /etc/cni/net.d/
+        file_regex: ^.*$
+        fileuid: '0'

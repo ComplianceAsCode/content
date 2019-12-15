@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82341-9
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="xserver_clients_write_xshm") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: xserver_clients_write_xshm

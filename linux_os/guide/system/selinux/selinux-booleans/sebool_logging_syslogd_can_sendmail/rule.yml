@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82299-9
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="logging_syslogd_can_sendmail") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: logging_syslogd_can_sendmail

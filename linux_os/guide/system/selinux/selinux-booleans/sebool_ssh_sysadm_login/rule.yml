@@ -16,9 +16,12 @@ references:
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82327-8
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="ssh_sysadm_login") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: ssh_sysadm_login

@@ -7,8 +7,9 @@
       </affected>
       <description>ETCD_KEY_FILE is correctly set</description>
     </metadata>
-    <criteria>
+    <criteria operator="AND">
       <criterion test_ref="test_etcd_key_file" comment="Check ETCD_KEY_FILE in /etc/etcd/etcd.conf" />
+      <criterion comment="Runtime configuration is correct" test_ref="test_ocp_runtime_key_file" />
     </criteria>
   </definition>
 
@@ -27,7 +28,13 @@
 
   <ind:textfilecontent54_state id="state_etcd_key_file"
   version="1">
-    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/server.key$</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">^/etc/etcd/server.key|/etc/ssl/etcd/system\:etcd-.*\:.*\.key$</ind:subexpression>
   </ind:textfilecontent54_state>
+
+{{%- if product == "ocp4" %}}
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--key-file", value="/etc/ssl/etcd/system\:etcd-server\:.*\.key", option_id="key_file") }}}
+{{% else %}}
+  {{{ oval_ocp_service_runtime_config(command="etcd", option="--key-file", value="/etc/etcd/server.key", option_id="key_file") }}}
+{{%- endif %}}
 
 </def-group>

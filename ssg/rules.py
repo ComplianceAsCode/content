@@ -85,10 +85,20 @@ def get_rule_dir_ovals(dir_path, product=None):
 
 def find_rule_dirs(base_dir):
     """
-    Generator which yields all rule_directories within a given base_dir
+    Generator which yields all rule directories within a given base_dir, recursively
     """
     for root, dirs, _ in os.walk(base_dir):
         for dir_name in dirs:
             dir_path = os.path.join(root, dir_name)
             if is_rule_dir(dir_path):
                 yield dir_path
+
+
+def find_rule_dirs_in_paths(base_dirs):
+    """
+    Generator which yields all rule directories within a given directories list, recursively
+    """
+    if base_dirs:
+        for cur_dir in base_dirs:
+            for d in find_rule_dirs(cur_dir):
+                yield d

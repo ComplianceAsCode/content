@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82288-2
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="daemons_use_tcp_wrapper") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: daemons_use_tcp_wrapper

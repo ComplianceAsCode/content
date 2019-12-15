@@ -14,9 +14,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82301-3
+
 {{{ complete_ocil_entry_sebool_enabled(sebool="login_console_enabled") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: login_console_enabled

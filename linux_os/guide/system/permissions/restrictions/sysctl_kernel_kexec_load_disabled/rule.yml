@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8
+prodtype: rhel6,rhel7,rhel8,fedora,ol7,ol8,ocp4
 
 title: 'Disable Kernel Image Loading'
 
@@ -17,6 +17,10 @@ identifiers:
     cce@rhel7: 81056-4
     cce@rhel8: 80952-5
 
+references:
+    srg: SRG-OS-000480-GPOS-00227
+
+
 {{{ complete_ocil_entry_sysctl_option_value(sysctl="kernel.kexec_load_disabled", value="1") }}}
 
 platform: machine
@@ -24,6 +28,6 @@ platform: machine
 template:
     name: sysctl
     vars:
-        datatype: int
-        sysctlval: '1'
         sysctlvar: kernel.kexec_load_disabled
+        sysctlval: '1'
+        datatype: int

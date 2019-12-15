@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel,multi_platform_fedora,multi_platform_ol
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_ol,multi_platform_rhel
 # reboot = false
 # strategy = configure
 # complexity = low
@@ -8,6 +8,7 @@
   register: test_grep_domain
   ignore_errors: yes
   changed_when: False
+  check_mode: no
 
 - name: "Add default domain group (if no domain there)"
   ini_file:

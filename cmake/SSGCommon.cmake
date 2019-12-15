@@ -204,7 +204,7 @@ macro(ssg_build_templated_content PRODUCT)
         COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_CURRENT_BINARY_DIR}/templated-content-${PRODUCT}"
         # Actually we mean that it depends on resolved rules.
         DEPENDS generate-internal-${PRODUCT}-shorthand.xml
-        DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
+        DEPENDS "${SSG_BUILD_SCRIPTS}/build_templated_content.py"
         COMMENT "[${PRODUCT}-content] generating templated content"
     )
     add_custom_target(
@@ -214,23 +214,6 @@ macro(ssg_build_templated_content PRODUCT)
 endmacro()
 
 macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
-    if(NOT SSG_NEW_TEMPLATING_ENABLED)
-        set(BUILD_REMEDIATIONS_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes_from_templates")
-        add_custom_command(
-            OUTPUT "${BUILD_REMEDIATIONS_DIR}"
-            # We have to remove the entire dir to avoid keeping remediations when user removes something from the CSV
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_REMEDIATIONS_DIR}"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages ${LANGUAGES} --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_REMEDIATIONS_DIR}" "${BUILD_REMEDIATIONS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
-            DEPENDS generate-internal-bash-remediation-functions.xml
-            DEPENDS "${CMAKE_BINARY_DIR}/bash-remediation-functions.xml"
-            DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
-            COMMENT "[${PRODUCT}-content] generating all fixes: ${LANGUAGES}"
-        )
-        add_custom_target(
-            generate-internal-language-remedations-${PRODUCT}
-            DEPENDS "${BUILD_REMEDIATIONS_DIR}"
-        )
-    endif()
     foreach(LANGUAGE ${LANGUAGES})
       set(ALL_FIXES_DIR "${CMAKE_CURRENT_BINARY_DIR}/fixes/${LANGUAGE}")
 
@@ -246,11 +229,7 @@ macro(_ssg_build_remediations_for_language PRODUCT LANGUAGES)
           generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes
           DEPENDS "${ALL_FIXES_DIR}"
       )
-      if(SSG_NEW_TEMPLATING_ENABLED)
-          add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-templated-content-${PRODUCT})
-      else()
-          add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-language-remedations-${PRODUCT})
-      endif()
+      add_dependencies(generate-internal-${PRODUCT}-${LANGUAGE}-all-fixes generate-internal-templated-content-${PRODUCT})
 
       add_custom_command(
           OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LANGUAGE}-fixes.xml"
@@ -309,13 +288,13 @@ macro(ssg_build_remediations PRODUCT)
         if (ANSIBLE_LINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
                 NAME "ansible-playbook-ansible-lint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${ANSIBLE_LINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/ansible-lint_config.yml"
             )
         endif()
         if (YAMLLINT_EXECUTABLE AND "${OSCAP_VERSION}" VERSION_GREATER "1.2.16")
             add_test(
                 NAME "ansible-playbook-yamllint-check-${PRODUCT}"
-                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/ansible" "${PRODUCT}" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
+                COMMAND "${CMAKE_SOURCE_DIR}/tests/ansible_playbook_check.sh" "${YAMLLINT_EXECUTABLE}" "${CMAKE_BINARY_DIR}/${PRODUCT}/playbooks" "${CMAKE_SOURCE_DIR}/tests/yamllint_config.yml"
             )
         endif()
     endif()
@@ -348,51 +327,16 @@ macro(ssg_build_xccdf_with_remediations PRODUCT)
 endmacro()
 
 macro(ssg_build_oval_unlinked PRODUCT)
-    file(GLOB EXTRA_OVAL_DEPS "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval/*.xml")
-    file(GLOB EXTRA_SHARED_OVAL_DEPS "${SSG_SHARED}/checks/oval/*.xml")
-
     set(BUILD_CHECKS_DIR "${CMAKE_CURRENT_BINARY_DIR}/checks")
-
-    message(STATUS "Scanning for dependencies of ${PRODUCT} checks (OVAL)...")
-    execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-inputs
-        OUTPUT_VARIABLE OVAL_CHECKS_DEPENDS_STR
-    )
-    string(REPLACE "\n" ";" OVAL_CHECKS_DEPENDS "${OVAL_CHECKS_DEPENDS_STR}")
-    execute_process(
-        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" list-outputs
-        OUTPUT_VARIABLE OVAL_CHECKS_OUTPUTS_STR
-    )
-    string(REPLACE "\n" ";" OVAL_CHECKS_OUTPUTS "${OVAL_CHECKS_OUTPUTS_STR}")
-
     set(OVAL_COMBINE_PATHS "${BUILD_CHECKS_DIR}/shared/oval" "${SSG_SHARED}/checks/oval" "${BUILD_CHECKS_DIR}/oval" "${CMAKE_CURRENT_SOURCE_DIR}/checks/oval")
-    if(SSG_NEW_TEMPLATING_ENABLED)
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
-            COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            DEPENDS generate-internal-templated-content-${PRODUCT}
-            DEPENDS "${SSG_BUILD_SCRIPTS}/combine_ovals.py"
-            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
-        )
-    else()
-        add_custom_command(
-            OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            OUTPUT ${OVAL_CHECKS_OUTPUTS}
-            # We have to remove all old checks in case the user removed something from the CSV files
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/oval"
-            COMMAND "${CMAKE_COMMAND}" -E remove_directory "${BUILD_CHECKS_DIR}/shared/oval"
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/generate_from_templates.py" --languages oval --input "${CMAKE_CURRENT_SOURCE_DIR}/templates" "${SSG_SHARED}/templates" --output "${BUILD_CHECKS_DIR}" "${BUILD_CHECKS_DIR}/shared" --shared "${SSG_SHARED}" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" build
-            COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
-            COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
-            DEPENDS ${OVAL_CHECKS_DEPENDS}
-            DEPENDS ${EXTRA_OVAL_DEPS}
-            DEPENDS ${EXTRA_SHARED_OVAL_DEPS}
-            DEPENDS "${SSG_BUILD_SCRIPTS}/generate_from_templates.py"
-            DEPENDS "${SSG_BUILD_SCRIPTS}/combine_ovals.py"
-            COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
-        )
-    endif()
+    add_custom_command(
+        OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        COMMAND env "PYTHONPATH=$ENV{PYTHONPATH}" "${PYTHON_EXECUTABLE}" "${SSG_BUILD_SCRIPTS}/combine_ovals.py" --build-config-yaml "${CMAKE_BINARY_DIR}/build_config.yml" --product-yaml "${CMAKE_CURRENT_SOURCE_DIR}/product.yml" --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" ${OVAL_COMBINE_PATHS}
+        COMMAND "${XMLLINT_EXECUTABLE}" --format --output "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml" "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
+        DEPENDS generate-internal-templated-content-${PRODUCT}
+        DEPENDS "${SSG_BUILD_SCRIPTS}/combine_ovals.py"
+        COMMENT "[${PRODUCT}-content] generating oval-unlinked.xml"
+    )
     add_custom_target(
         generate-internal-${PRODUCT}-oval-unlinked.xml
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/oval-unlinked.xml"
@@ -728,9 +672,7 @@ macro(ssg_build_product PRODUCT)
     add_custom_target(${PRODUCT}-content)
 
     ssg_build_shorthand_xml(${PRODUCT})
-    if(SSG_NEW_TEMPLATING_ENABLED)
-        ssg_build_templated_content(${PRODUCT})
-    endif()
+    ssg_build_templated_content(${PRODUCT})
     ssg_build_xccdf_unlinked(${PRODUCT})
     ssg_build_ocil_unlinked(${PRODUCT})
     ssg_build_remediations(${PRODUCT})
@@ -1098,7 +1040,7 @@ macro(ssg_build_html_cce_table PRODUCT)
         DESTINATION "${SSG_TABLE_INSTALL_DIR}")
 endmacro()
 
-macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE)
+macro(ssg_build_html_srgmap_tables PRODUCT PROFILE_ID DISA_SRG_TYPE)
     file(GLOB DISA_SRG_REF "${SSG_SHARED_REFS}/disa-${DISA_SRG_TYPE}-srg-v[0-9]*r[0-9]*.xml")
     # we have to encode spaces in paths before passing them as stringparams to xsltproc
     string(REPLACE " " "%20" CMAKE_CURRENT_BINARY_DIR_NO_SPACES "${CMAKE_CURRENT_BINARY_DIR}")
@@ -1106,7 +1048,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         # We need to use xccdf-linked.xml because ssg-${PRODUCT}-xccdf.xml has the srg_support Group removed
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam profileId "${PROFILE_ID}" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ocil-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${DISA_SRG_REF}"
@@ -1117,7 +1059,7 @@ macro(ssg_build_html_srgmap_tables PRODUCT DISA_SRG_TYPE)
         OUTPUT "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/tables"
         # We need to use xccdf-linked.xml because ssg-${PRODUCT}-xccdf.xml has the srg_support Group removed
-        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
+        COMMAND "${XSLTPROC_EXECUTABLE}" --stringparam profileId "${PROFILE_ID}" --stringparam flat "y" --stringparam map-to-items "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/xccdf-linked.xml" --stringparam ocil-document "${CMAKE_CURRENT_BINARY_DIR_NO_SPACES}/ocil-linked.xml" --output "${CMAKE_BINARY_DIR}/tables/table-${PRODUCT}-srgmap-flat.html" "${CMAKE_CURRENT_SOURCE_DIR}/transforms/table-srgmap.xslt" "${DISA_SRG_REF}"
         DEPENDS generate-ssg-${PRODUCT}-xccdf.xml
         DEPENDS "${CMAKE_BINARY_DIR}/ssg-${PRODUCT}-xccdf.xml"
         DEPENDS "${DISA_SRG_REF}"

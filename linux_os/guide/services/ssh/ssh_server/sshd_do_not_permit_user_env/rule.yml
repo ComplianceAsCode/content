@@ -28,7 +28,7 @@ references:
     cui: 3.1.12
     disa: "366"
     hipaa: 164.308(a)(4)(i),164.308(b)(1),164.308(b)(3),164.310(b),164.312(e)(1),164.312(e)(2)(ii)
-    nist: AC-17(b),CM-6(b)
+    nist: AC-17(a),AC-17(b),CM-6(b)
     nist-csf: PR.IP-1
     srg: SRG-OS-000480-GPOS-00229
     vmmsrg: SRG-OS-000480-VMM-002000
@@ -49,7 +49,7 @@ ocil: |-
     <pre>PermitUserEnvironment no</pre>
 
 template:
-    name: auditd_lineinfile
+    name: sshd_lineinfile
     vars:
         missing_parameter_pass: 'false'
         parameter: PermitUserEnvironment

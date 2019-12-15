@@ -3,13 +3,12 @@
     <metadata>
       <title>Confirm Existence and Permissions of System Log Files</title>
       <affected family="unix">
-        <platform>multi_platform_rhel</platform>
+        <platform>Red Hat Virtualization 4</platform>
+        <platform>multi_platform_debian</platform>
         <platform>multi_platform_fedora</platform>
-        <platform>Debian 8</platform>
-        <platform>Ubuntu 1404</platform>
-        <platform>Ubuntu 1604</platform>
-	<platform>Ubuntu 1804</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_rhel</platform>
+        <platform>multi_platform_ubuntu</platform>
       </affected>
       <description>File permissions for all syslog log files should be set correctly.</description>
     </metadata>
@@ -73,7 +72,7 @@
          * the chunk was retrieved from a row not starting with space, '#',
            or '$' characters
     -->
-    <ind:pattern operation="pattern match">^[^(\s|#|\$)]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
+    <ind:pattern operation="pattern match">^[^\s#\$]+[\s]+.*[\s]+-?(/+[^:;\s]+);*.*$</ind:pattern>
     <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 

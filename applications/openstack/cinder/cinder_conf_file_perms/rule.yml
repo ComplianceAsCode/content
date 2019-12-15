@@ -1,0 +1,26 @@
+documentation_complete: true
+
+prodtype: rhosp10,rhosp13
+
+title: 'Check-Block-02: Are strict permissions set for cinder config files?'
+
+description: '{{{ describe_file_permissions(file="/etc/cinder/*.conf", perms="0640") }}}'
+
+rationale: |-
+    Due to the nature of the cinder config files, normal users should not be
+    able to view contents
+severity: medium
+
+references:
+    cui: 3.1.5
+
+ocil_clause: '{{{ ocil_clause_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}'
+
+ocil: '{{{ ocil_file_permissions(file="/etc/cinder/*.conf", perms="-rw-r-----") }}}'
+
+template:
+    name: file_permissions
+    vars:
+        filepath: /etc/cinder/
+        file_regex: ^.*.conf$
+        filemode: '0640'

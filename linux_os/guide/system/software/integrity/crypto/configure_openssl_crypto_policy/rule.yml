@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: fedora,rhel8,ol8
+prodtype: fedora,rhel8,ol8,ocp4
 
 title: 'Configure OpenSSL library to use System Crypto Policy'
 
@@ -21,6 +21,10 @@ severity: medium
 
 identifiers:
     cce@rhel8: 80938-4
+
+references:
+    nist: SC-12(2),SC-12(3)
+    srg: SRG-OS-000250-GPOS-00093
 
 ocil_clause: |-
     the OpenSSL config file doesn't contain the whole section,

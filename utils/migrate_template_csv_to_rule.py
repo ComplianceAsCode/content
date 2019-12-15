@@ -290,11 +290,11 @@ def mount_options_csv_to_dict(csv_line, csv_data):
 
     # Not all fields will be used by all templates, this is fine,
     # they will just be ignored
+    data_mount_options["mountpoint"] = mount_point
+    data_mount_options["mountoption"] = mount_option
     data_mount_options["mount_has_to_exist"] = mount_has_to_exist
     data_mount_options["filesystem"] = filesystem
     data_mount_options["type"] = mount_point_type
-    data_mount_options["mountpoint"] = mount_point
-    data_mount_options["mountoption"] = mount_option
     mount_options["vars"] = data_mount_options
 
     csv_data[rule_id] = mount_options
@@ -421,7 +421,7 @@ def permissions_csv_to_dict(csv_line, csv_data):
     # build a string that contains the full path to the file
     # full_path maps to FILEPATH in the template
     if file_name == '[NULL]' or file_name == '':
-        full_path = dir_path
+        full_path = dir_path + '/'
     else:
         full_path = dir_path + '/' + file_name
 
@@ -459,8 +459,8 @@ def permissions_csv_to_dict(csv_line, csv_data):
     else:
         rule_id = f"file_permissions{path_id}"
         file_permissions["name"] = f"file_regex_permissions"
+        data_file_permissions["path"] = dir_path
         data_file_permissions["filename"] = file_name
-        data_file_permissions["filepath"] = dir_path
         data_file_permissions["filemode"] = mode
         file_permissions["vars"] = data_file_permissions
         csv_data[rule_id] = file_permissions
@@ -514,7 +514,8 @@ def services_disabled_csv_to_dict(csv_line, csv_data):
     data_service_disabled["servicename"] = service_name
     data_service_disabled["packagename"] = package_name
     data_service_disabled["daemonname"] = daemon_name
-    data_service_disabled["mask_service"] = mask_service
+    if not mask_service:
+        data_service_disabled["mask_service"] = mask_service
     service_disabled["vars"] = data_service_disabled
 
     csv_data[rule_id] = service_disabled
@@ -558,10 +559,7 @@ def sysctl_values_csv_to_dict(csv_line, csv_data):
     sysctl_var_id = escape_path(sysctl_var)
     rule_id = f"sysctl_{sysctl_var_id}"
 
-    if not sysctl_val.strip():
-        sysctl_value["name"] = "sysctl_var"
-    else:
-        sysctl_value["name"] = "sysctl"
+    sysctl_value["name"] = "sysctl"
 
     data_sysctl_value["sysctlvar"] = sysctl_var
     data_sysctl_value["sysctlval"] = sysctl_val
@@ -607,8 +605,8 @@ class ProductCSVData(object):
             "audit_rules_usergroup_modification.csv": arum_csv_to_dict,
             "grub2_bootloader_argument.csv": grub2_bootloader_argument_csv_to_dict,
             "kernel_modules_disabled.csv": kernel_modules_disabled_csv_to_dict,
-            "auditd_lineinfile.csv": sshd_lineinfile_csv_to_dict,
-            "sshd_lineinfile.csv": auditd_lineinfile_csv_to_dict,
+            "auditd_lineinfile.csv": auditd_lineinfile_csv_to_dict,
+            "sshd_lineinfile.csv": sshd_lineinfile_csv_to_dict,
             "mount_options.csv": mount_options_csv_to_dict,
             "mounts.csv": mounts_csv_to_dict,
             "ocp_service_runtime_config.csv": ocp_service_runtime_config_csv_to_dict,
@@ -733,7 +731,7 @@ class ProductCSVData(object):
                 # Rule is new in the product
                 # Add the rule with its values already in dictionary
                 data_a[rule_id] = OrderedDict({"name": rule_b["name"]})
-                data_a[rule_id]["vars"] = {}
+                data_a[rule_id]["vars"] = OrderedDict()
                 for var in rule_b_vars:
                     value_counter = defaultdict(list)
                     new_value = rule_b_vars[var]

@@ -12,6 +12,8 @@ rationale: |-
     The only legitimate location for device files is the <tt>/dev</tt> directory
     located on the root partition. The only exception to this is chroot jails.
 
+{{{ complete_ocil_entry_mount_option("/dev/shm", "nodev") }}}
+
 severity: medium
 
 identifiers:
@@ -28,28 +30,29 @@ references:
     cobit5: APO13.01,BAI10.01,BAI10.02,BAI10.03,BAI10.05,DSS05.02,DSS05.05,DSS05.06,DSS06.06
     iso27001-2013: A.11.2.9,A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.8.2.1,A.8.2.2,A.8.2.3,A.8.3.1,A.8.3.3,A.9.1.2
     cis-csc: 11,13,14,3,8,9
+    srg: SRG-OS-000368-GPOS-00154
 
 platform: machine
 
 template:
     name: mount_option
     vars:
-        filesystem: tmpfs
-        filesystem@rhel6: ''
-        filesystem@sle12: ''
-        filesystem@wrlinux1019: ''
-        filesystem@wrlinux8: ''
+        mountpoint: /dev/shm
+        mountoption: nodev
         mount_has_to_exist: 'no'
+        filesystem: tmpfs
+        type: tmpfs
         mount_has_to_exist@rhel6: 'yes'
         mount_has_to_exist@sle12: 'yes'
-        mount_has_to_exist@wrlinux1019: 'yes'
         mount_has_to_exist@wrlinux8: 'yes'
-        mountoption: nodev
-        mountpoint: /dev/shm
-        type: tmpfs
+        mount_has_to_exist@wrlinux1019: 'yes'
+        filesystem@rhel6: ''
+        filesystem@sle12: ''
+        filesystem@wrlinux8: ''
+        filesystem@wrlinux1019: ''
         type@rhel6: ''
         type@sle12: ''
-        type@wrlinux1019: ''
         type@wrlinux8: ''
+        type@wrlinux1019: ''
     backends:
         anaconda: 'off'

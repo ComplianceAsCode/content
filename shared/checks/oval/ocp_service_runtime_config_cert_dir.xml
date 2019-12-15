@@ -1,0 +1,15 @@
+<def-group>
+    <definition class="compliance" id="ocp_service_runtime_config_cert_dir" version="1">
+        <metadata>
+            <title>Check OpenShift Runtime Process Configuration of /usr/bin/hyperkube kubelet - cert_dir</title>
+            <affected family="unix">
+                <platform>multi_platform_ocp</platform>
+            </affected>
+            <description>Verify the OpenShift process runtime configuration of the cert_dir option.</description>
+        </metadata>
+        <criteria>
+            <criterion comment="ocp process runtime parameter --cert-dir set to /etc/origin/node/certificates" test_ref="test_ocp_runtime_cert_dir" />
+        </criteria>
+    </definition>
+{{{ oval_ocp_service_runtime_config(command="/usr/bin/hyperkube kubelet", option="--cert-dir", value="/etc/origin/node/certificates", option_id="cert_dir") }}}
+</def-group>

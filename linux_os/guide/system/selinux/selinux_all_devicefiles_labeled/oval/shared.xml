@@ -3,12 +3,13 @@
     <metadata>
       <title>Device Files Have Proper SELinux Context</title>
       <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
         <platform>Red Hat Enterprise Linux 6</platform>
         <platform>Red Hat Enterprise Linux 7</platform>
         <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>Red Hat Virtualization 4</platform>
         <platform>multi_platform_fedora</platform>
         <platform>multi_platform_ol</platform>
+        <platform>multi_platform_wrlinux</platform>
       </affected>
       <description>All device files in /dev should be assigned an SELinux security context other than 'device_t'.</description>
     </metadata>

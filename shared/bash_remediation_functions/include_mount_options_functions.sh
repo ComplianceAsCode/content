@@ -27,7 +27,7 @@ function ensure_mount_option_in_fstab {
 
 	if [ "$(grep -c "$_mount_point_match_regexp" /etc/fstab)" -eq 0 ]; then
 		# runtime opts without some automatic kernel/userspace-added defaults
-		_previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/mtab | awk '{print $4}' \
+		_previous_mount_opts=$(grep "$_mount_point_match_regexp" /etc/mtab | head -1 |  awk '{print $4}' \
 					| sed -E "s/(rw|defaults|seclabel|${_new_opt})(,|$)//g;s/,$//")
 		[ "$_previous_mount_opts" ] && _previous_mount_opts+=","
 		echo "${_device} ${_mount_point} ${_type} defaults,${_previous_mount_opts}${_new_opt} 0 0" >> /etc/fstab

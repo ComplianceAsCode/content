@@ -40,15 +40,22 @@ ocil: |-
     {{{ ocil_sysctl_option_value(sysctl="net.ipv4.ip_forward", value="0") }}}
     The ability to forward packets is only appropriate for routers.
 
+warnings:
+    - functionality: |-
+        Certain technologies such as virtual machines, containers, etc. rely on IPv4 forwarding to enable and use networking.
+        Disabling IPv4 forwarding would cause those technologies to stop working. Therefore, this rule should not be used in
+        profiles or benchmarks that target usage of IPv4 forwarding.
+
 platform: machine
 
 template:
-    name: sysctl_var
+    name: sysctl
     vars:
-        datatype: int
+        sysctlvar: net.ipv4.ip_forward
         sysctlval: '0'
+        datatype: int
         sysctlval@debian8: ''
+        sysctlval@debian9: ''
         sysctlval@ubuntu1404: ''
         sysctlval@ubuntu1604: ''
         sysctlval@ubuntu1804: ''
-        sysctlvar: net.ipv4.ip_forward

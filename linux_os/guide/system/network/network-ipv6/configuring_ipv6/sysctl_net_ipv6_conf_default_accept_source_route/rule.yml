@@ -1,0 +1,47 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,rhv4,ocp4
+
+title: 'Disable Kernel Parameter for Accepting Source-Routed Packets on IPv6 Interfaces by Default'
+
+description: '{{{ describe_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_source_route", value="0") }}}'
+
+rationale: |-
+    Source-routed packets allow the source of the packet to suggest routers
+    forward the packet along a different path than configured on the router, which can
+    be used to bypass network security measures. This requirement applies only to the
+    forwarding of source-routerd traffic, such as when IPv6 forwarding is enabled and
+    the system is functioning as a router.
+
+    Accepting source-routed packets in the IPv6 protocol has few legitimate
+    uses. It should be disabled unless it is absolutely required.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 81014-3
+    cce@rhel7: 80355-1
+    cce@rhel8: 81015-0
+
+references:
+    anssi: NT28(R22)
+    cui: 3.1.20
+    disa: "366"
+    nist: AC-4
+    nist-csf: DE.AE-1,ID.AM-3,PR.AC-5,PR.DS-5,PR.PT-4
+    isa-62443-2013: 'SR 3.1,SR 3.5,SR 3.8,SR 4.1,SR 4.3,SR 5.1,SR 5.2,SR 5.3,SR 7.1,SR 7.6'
+    isa-62443-2009: 4.2.3.4,4.3.3.4,4.4.3.3
+    cobit5: APO01.06,APO13.01,DSS01.05,DSS03.01,DSS05.02,DSS05.04,DSS05.07,DSS06.02
+    iso27001-2013: A.10.1.1,A.11.1.4,A.11.1.5,A.11.2.1,A.12.1.1,A.12.1.2,A.13.1.1,A.13.1.2,A.13.1.3,A.13.2.1,A.13.2.2,A.13.2.3,A.13.2.4,A.14.1.2,A.14.1.3,A.6.1.2,A.7.1.1,A.7.1.2,A.7.3.1,A.8.2.2,A.8.2.3,A.9.1.1,A.9.1.2,A.9.2.3,A.9.4.1,A.9.4.4,A.9.4.5
+    cis-csc: 1,12,13,14,15,16,18,4,6,8,9
+    srg: SRG-OS-000480-GPOS-00227
+
+{{{ complete_ocil_entry_sysctl_option_value(sysctl="net.ipv6.conf.default.accept_source_route", value="0") }}}
+
+platform: machine
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv6.conf.default.accept_source_route
+        datatype: int

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: wrlinux1019,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
 
 title: 'Configure audispd Plugin To Send Logs To Remote Server'
 
@@ -15,9 +15,8 @@ description: |-
 {{%- endif -%}}
     </pre>
     with an IP address or hostname of the system that the audispd plugin should
-    send audit records to. For example replacing <i>REMOTE_SYSTEM</i> with an IP
-    address or hostname:
-    <pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+    send audit records to. For example
+    <pre>remote_server = <i><sub idref="var_audispd_remote_server" /></i></pre>
 
 rationale: |-
     Information stored in one location is vulnerable to accidental or incidental
@@ -32,7 +31,7 @@ identifiers:
 
 references:
     disa: "1851"
-    srg: SRG-OS-000342-GPOS-00133
+    srg: SRG-OS-000342-GPOS-00133,SRG-OS-000479-GPOS-00224
     vmmsrg: SRG-OS-000051-VMM-000230,SRG-OS-000058-VMM-000270,SRG-OS-000059-VMM-000280,SRG-OS-000479-VMM-001990,SRG-OS-000479-VMM-001990
     stigid@rhel7: "030300"
     ospp: FAU_GEN.1.1.c
@@ -47,7 +46,6 @@ ocil: |-
 {{% else %}}
     <pre>$ sudo grep -i remote_server /etc/audisp/audisp-remote.conf</pre>
 {{% endif %}}
-    The output should return something similar to where <i>REMOTE_SYSTEM</i>
-    is an IP address or hostname:
-    <pre>remote_server = <i>REMOTE_SYSTEM</i></pre>
+    The output should return something similar to
+    <pre>remote_server = <i><sub idref="var_audispd_remote_server" /></i></pre>
 

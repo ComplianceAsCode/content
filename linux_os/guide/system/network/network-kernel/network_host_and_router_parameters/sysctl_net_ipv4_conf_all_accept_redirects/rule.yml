@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
 
 title: 'Disable Accepting ICMP Redirects for All IPv4 Interfaces'
 
@@ -45,7 +45,7 @@ references:
 platform: machine
 
 template:
-    name: sysctl_var
+    name: sysctl
     vars:
-        datatype: int
         sysctlvar: net.ipv4.conf.all.accept_redirects
+        datatype: int

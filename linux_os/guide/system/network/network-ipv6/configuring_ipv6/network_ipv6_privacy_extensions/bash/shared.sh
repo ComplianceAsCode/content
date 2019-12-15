@@ -1,4 +1,4 @@
-# platform = multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_rhel
 
 # enable randomness in ipv6 address generation
 for interface in /etc/sysconfig/network-scripts/ifcfg-*

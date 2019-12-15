@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82290-8
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="deny_execmem") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: deny_execmem

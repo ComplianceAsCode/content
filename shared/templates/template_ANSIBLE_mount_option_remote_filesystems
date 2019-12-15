@@ -5,10 +5,13 @@
 # disruption = medium
 
 - name: "Get nfs and nfs4 mount points, that don't have {{{ MOUNTOPTION }}}"
+  # 'no' before MOUNTOPTION isn't omission, it means a negation
   command: findmnt --fstab --types nfs,nfs4 -O no{{{ MOUNTOPTION }}} -n
   register: points_register
   check_mode: no
   changed_when: False
+  # if no nfs/nfs4 entries are in /etc/fstab, findmnt command returns 1
+  failed_when: False
 
 - name: "Add {{{ MOUNTOPTION }}} to nfs and nfs4 mount points"
   mount:
@@ -18,3 +21,4 @@
     state: mounted
     opts: "{{ item.split()[3] }},{{{ MOUNTOPTION }}}"
   when: (points_register.stdout | length > 0)
+  with_items: "{{ points_register.stdout_lines }}"

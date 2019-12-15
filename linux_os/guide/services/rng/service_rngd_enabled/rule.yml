@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel8,fedora,ol8
+prodtype: rhel8,fedora,ol8,ocp4
 
 title: 'Enable the Hardware RNG Entropy Gatherer Service'
 
@@ -19,6 +19,7 @@ identifiers:
 
 references:
     ospp: FCS_RBG_EXT.1
+    srg: SRG-OS-000480-GPOS-00227
 
 ocil_clause: 'the service is not enabled'
 
@@ -27,5 +28,5 @@ ocil: '{{{ ocil_service_enabled(service="rngd") }}}'
 template:
     name: service_enabled
     vars:
-        packagename: rng-tools
         servicename: rngd
+        packagename: rng-tools

@@ -1,0 +1,15 @@
+<def-group>
+  <definition class="inventory" id="installed_app_is_ocp4" version="1">
+    <metadata>
+      <title>Red Hat OpenShift Container Platform</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <reference ref_id="cpe:/a:redhat:openshift_container_platform:4.1" source="CPE" />
+      <description>The application installed installed on the system is OpenShift 4.</description>
+    </metadata>
+    <criteria>
+      <extend_definition comment="RHEL8 OS installed" definition_ref="installed_OS_is_rhel8" />
+    </criteria>
+  </definition>
+</def-group>

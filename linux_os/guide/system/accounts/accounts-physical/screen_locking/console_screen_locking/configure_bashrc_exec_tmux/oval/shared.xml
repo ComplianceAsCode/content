@@ -23,10 +23,10 @@
   <ind:textfilecontent54_object id="obj_configure_bashrc_exec_tmux" version="1">
     <ind:behaviors singleline="true" multiline="false" />
     <ind:filepath>/etc/bashrc</ind:filepath>
-    <ind:pattern operation="pattern match">([^\n]+)\s*$</ind:pattern>
+    <ind:pattern operation="pattern match">^(.*)$</ind:pattern>
     <ind:instance datatype="int">1</ind:instance>
   </ind:textfilecontent54_object>
   <ind:textfilecontent54_state id="state_configure_bashrc_exec_tmux" version="1">
-    <ind:subexpression datatype="string" operation="equals">[ -n "$PS1" -a -z "$TMUX" ] &amp;&amp; exec tmux</ind:subexpression>
+    <ind:subexpression datatype="string" operation="pattern match">if \[ "\$PS1" \]; then\n\s+parent=\$\(ps -o ppid= -p \$\$\)\n\s+name=\$\(ps -o comm= -p \$parent\)\n\s+case "\$name" in sshd\|login\) exec tmux ;; esac\nfi</ind:subexpression>
   </ind:textfilecontent54_state>
 </def-group>

@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4
+prodtype: wrlinux1019,rhel6,rhel7,rhel8,fedora,ol7,ol8,rhv4,ocp4
 
 title: 'Enable Kernel Parameter to Ignore ICMP Broadcast Echo Requests on IPv4 Interfaces'
 
@@ -43,7 +43,7 @@ references:
 platform: machine
 
 template:
-    name: sysctl_var
+    name: sysctl
     vars:
-        datatype: int
         sysctlvar: net.ipv4.icmp_echo_ignore_broadcasts
+        datatype: int

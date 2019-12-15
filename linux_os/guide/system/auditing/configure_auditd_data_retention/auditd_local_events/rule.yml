@@ -14,10 +14,12 @@ rationale: |-
 severity: medium
 
 identifiers:
+    cce@rhel7: 82355-9
     cce@rhel8: 82233-8
 
 references:
     ospp: FAU_GEN.1.1.c
+    srg: SRG-OS-000062-GPOS-00031
 
 ocil_clause: local_events isn't set to yes
 
@@ -29,7 +31,7 @@ ocil: |-
     <pre>local_events = yes</pre>
 
 template:
-    name: sshd_lineinfile
+    name: auditd_lineinfile
     vars:
         missing_parameter_pass: 'true'
         parameter: local_events

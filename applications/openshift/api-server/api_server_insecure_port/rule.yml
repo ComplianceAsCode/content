@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: ocp3
+prodtype: ocp3,ocp4
 
 title: 'Prevent Insecure Port Access'
 
@@ -9,7 +9,11 @@ description: |-
     HTTPS with authentication and authorization, and the secure API endpoint
     is bound to 0.0.0.0:8443. To ensure that the insecure port configuration
     has not been enabled, the <tt>insecure-port</tt> setting should not exist
+{{%- if product == "ocp4" %}}
+    in <tt>/etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</tt> on the master node(s).
+{{% else %}}
     in <tt>/etc/origin/master/master-config.yaml</tt> on the master node(s).
+{{%- endif %}}
 
 rationale: |-
     Configuring the API Server on an insecure port would allow unauthenticated
@@ -21,11 +25,15 @@ rationale: |-
 severity: medium
 
 references:
-    cis: 1.1.6
+    cis: 1.2.19
 
 ocil_clause: '<tt>insecure-port</tt> setting exists'
 
 ocil: |-
     Run the following command on the master node(s):
+{{%- if product == "ocp4" %}}
+    <pre>$ sudo grep -A2 insecure-port /etc/kubernetes/static-pod-resources/configmaps/config/config.yaml</pre>
+{{% else %}}
     <pre>$ sudo grep -A2 insecure-port /etc/origin/master/master-config.yaml</pre>
+{{%- endif %}}
     There should be no output returned.

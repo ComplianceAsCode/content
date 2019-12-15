@@ -13,9 +13,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82284-1
+
 {{{ complete_ocil_entry_sebool_disabled(sebool="cron_can_relabel") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: cron_can_relabel

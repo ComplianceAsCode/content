@@ -14,9 +14,12 @@ rationale: ""
 
 severity: medium
 
+identifiers:
+    cce@rhel7: 82286-6
+
 {{{ complete_ocil_entry_sebool_enabled(sebool="cron_userdomain_transition") }}}
 
 template:
-    name: sebool_var
+    name: sebool
     vars:
         seboolid: cron_userdomain_transition
