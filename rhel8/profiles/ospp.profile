@@ -377,7 +377,22 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_rules_for_ospp
+    - audit_rules_10-base-config_rule_file
+    - audit_rules_11-loginuid_rule_file
+    - audit_rules_30-ospp-v42-1-create-failed_rule_file
+    - audit_rules_30-ospp-v42-1-create-success_rule_file
+    - audit_rules_30-ospp-v42-2-modify-failed_rule_file
+    - audit_rules_30-ospp-v42-2-modify-success_rule_file
+    - audit_rules_30-ospp-v42-3-access-failed_rule_file
+    - audit_rules_30-ospp-v42-3-access-success_rule_file
+    - audit_rules_30-ospp-v42-4-delete-failed_rule_file
+    - audit_rules_30-ospp-v42-4-delete-success_rule_file
+    - audit_rules_30-ospp-v42-5-perm-change-failed_rule_file
+    - audit_rules_30-ospp-v42-5-perm-change-success_rule_file
+    - audit_rules_30-ospp-v42-6-owner-change-failed_rule_file
+    - audit_rules_30-ospp-v42-6-owner-change-success_rule_file
+    - audit_rules_30-ospp-v42_rule_file
+    - audit_rules_43-module-load_rule_file
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1

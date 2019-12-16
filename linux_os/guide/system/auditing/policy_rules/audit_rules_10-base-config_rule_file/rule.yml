@@ -1,0 +1,45 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure auditing with rules in 10-base-config'
+
+description: |-
+    Configure audit to use rules located in the 10-base-config.rules file.
+
+    Audit defines groups of rules in <tt>/usr/share/audit/sample-rules</tt> to satisfy specific policies.
+
+    To fulfill requirements for compliance with OSPP v4.2.1, the file 10-base-config.rules is necessary.
+
+    Copy the file located at <tt>/usr/share/audit/sample-rules/10-base-config.rules</tt> to <tt>/etc/audit/rules.d</tt>:
+    <pre>
+    cp /usr/share/audit/sample-rules/10-base-config.rules /etc/audit/rules.d/
+    </pre>
+
+
+
+rationale: |-
+    The audit rules defined in <tt>/usr/share/audit/sample-rules</tt> are the recommended way to meet compliance with OSPP v4.2.1.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82369-0
+
+references:
+    ospp: FAU_GEN.1.1.c
+    nist: AU-2(a)
+    srg: SRG-OS-000365-GPOS-00152,SRG-OS-000475-GPOS-00220
+
+ocil_clause: 'the file is not there or differs'
+
+ocil: |-
+    To verify that audit is correctly configured according to recommended rules, run the following commands:
+    <pre>diff /usr/share/audit/sample-rules/10-base-config.rules /etc/audit/rules.d/10-base-config.rules</pre>
+
+    If the system is configured properly, no lines should be returned.
+
+template:
+    name: audit_rules_rule_file
+    vars:
+        file_id: 10-base-config
