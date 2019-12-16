@@ -1447,6 +1447,12 @@ audit_rules_privileged_commands::
 ** *path* - the path of the privileged command - eg. `/usr/bin/mount`
 * Languages: Ansible, Bash, OVAL
 
+audit_rules_rule_file::
+* Ensure that certain file with Audit rules provided in /usr/share/audit/sample-rules is placed in /etc/audit/rules.d/
+* Parameters:
+** *file_id* - a part of the file name without the .rules extension, e.g. `10-base-config`
+* Languages: Ansible, Bash, OVAL
+
 audit_rules_unsuccessful_file_modification::
 * Ensure there is an Audit rule to record unsuccessful attempts to access files
 * Parameters:
