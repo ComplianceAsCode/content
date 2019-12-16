@@ -1,10 +1,8 @@
 <def-group>
-  <definition class="compliance" id="audit_rules_{{{ FILE_ID }}}_rule_file" version="1">
+  <definition class="compliance" id="{{{ _RULE_ID }}}" version="1">
     <metadata>
       <title>Check audit rules in {{{ FILE_ID }}}.rules file</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Compare configured audit rules in {{{ FILE_ID }}}.rules against the recommended files shipped with the package</description>
     </metadata>
 
