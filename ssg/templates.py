@@ -93,7 +93,7 @@ def audit_rules_privileged_commands(data, lang):
         data["path"] = path.replace("/", "\\/")
     return data
 
-@template(["bash", "oval"])
+@template(["ansible", "bash", "oval"])
 def audit_rules_rule_file(data, lang):
     return data
 
