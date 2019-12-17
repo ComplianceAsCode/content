@@ -113,3 +113,27 @@ def test_make_items_product_specific():
     }
     with pytest.raises(ValueError, match="Rules can not have multiple STIG IDs."):
         rule.make_refs_and_identifiers_product_specific("rhel7")
+
+
+def test_priority_ordering():
+    ORDER = ["ga", "be", "al"]
+    to_order = ["alpha", "beta", "gamma"]
+    ordered = ssg.build_yaml.reorder_according_to_ordering(to_order, ORDER)
+    assert ordered == ["gamma", "beta", "alpha"]
+
+    to_order = ["alpha", "beta", "gamma", "epsilon"]
+    ordered = ssg.build_yaml.reorder_according_to_ordering(to_order, ORDER)
+    assert ordered == ["gamma", "beta", "alpha", "epsilon"]
+
+    to_order = ["alpha"]
+    ordered = ssg.build_yaml.reorder_according_to_ordering(to_order, ORDER)
+    assert ordered == ["alpha"]
+
+    to_order = ["x"]
+    ordered = ssg.build_yaml.reorder_according_to_ordering(to_order, ORDER)
+    assert ordered == ["x"]
+
+    to_order = ["alpha", "beta", "alnum", "gaha"]
+    ordered = ssg.build_yaml.reorder_according_to_ordering(
+        to_order, ORDER + ["gaha"], regex=".*ha")
+    assert ordered[:2] == ["gaha", "alpha"]

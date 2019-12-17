@@ -55,6 +55,24 @@ def add_sub_element(parent, tag, data):
     return element
 
 
+def reorder_according_to_ordering(unordered, ordering, regex=None):
+    ordered = []
+    if regex is None:
+        regex = "|".join(["({0})".format(item) for item in ordering])
+    regex = re.compile(regex)
+
+    items_to_order = list(filter(regex.match, unordered))
+    unordered = set(unordered)
+
+    for priority_type in ordering:
+        for item in items_to_order:
+            if priority_type in item and item in unordered:
+                ordered.append(item)
+                unordered.remove(item)
+    ordered.extend(list(unordered))
+    return ordered
+
+
 def add_warning_elements(element, warnings):
     # The use of [{dict}, {dict}] in warnings is to handle the following
     # scenario where multiple warnings have the same category which is
@@ -520,17 +538,15 @@ class Benchmark(object):
             root.append(self.bash_remediation_fns_group)
 
         groups_in_bench = list(self.groups.keys())
+        priority_order = ["system", "services"]
+        groups_in_bench = reorder_according_to_ordering(groups_in_bench, priority_order)
+
         # Make system group the first, followed by services group
-        group_priority_order = ["system", "services"]
-        for group_id in group_priority_order:
+        for group_id in groups_in_bench:
             group = self.groups.get(group_id)
             # Products using application benchmark don't have system or services group
             if group is not None:
                 root.append(group.to_xml_element())
-                groups_in_bench.remove(group_id)
-        # Add any remaining top level groups
-        for group_id in groups_in_bench:
-            root.append(self.groups.get(group_id).to_xml_element())
 
         for rule in self.rules.values():
             root.append(rule.to_xml_element())
@@ -647,17 +663,12 @@ class Group(object):
         # The Rules are ordered in more logical way, and
         # remediation order is natural, first the package is installed, then configured.
         rules_in_group = list(self.rules.keys())
-        regex = re.compile(r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$')
-        priority_rules = list(filter(regex.match, rules_in_group))
+        regex = r'(package_.*_(installed|removed))|(service_.*_(enabled|disabled))$'
         priority_order = ["installed", "removed", "enabled", "disabled"]
-        # Add priority rules in priority order, first all packages installed, then removed,
+        rules_in_group = reorder_according_to_ordering(rules_in_group, priority_order, regex)
+
+        # Add rules in priority order, first all packages installed, then removed,
         # followed by services enabled, then disabled
-        for priority_type in priority_order:
-            for priority_rule_id in priority_rules:
-                if priority_type in priority_rule_id:
-                    group.append(self.rules.get(priority_rule_id).to_xml_element())
-                    rules_in_group.remove(priority_rule_id)
-        # Add remaining rules in the group
         for rule_id in rules_in_group:
             group.append(self.rules.get(rule_id).to_xml_element())
 
