@@ -676,7 +676,12 @@ class Group(object):
         # As package installed/removed and service enabled/disabled rules are usuallly in
         # top level group, this ensures groups that further configure a package or service
         # are after rules that install or remove it.
-        for _group in self.groups.values():
+        groups_in_group = list(self.groups.keys())
+        # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
+        priority_order = ["fips", "crypto"]
+        groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
+        for group_id in groups_in_group:
+            _group = self.groups[group_id]
             group.append(_group.to_xml_element())
 
         return group
