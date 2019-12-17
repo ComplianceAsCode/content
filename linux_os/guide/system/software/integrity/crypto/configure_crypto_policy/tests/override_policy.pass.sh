@@ -8,4 +8,4 @@ CRYPTO_POLICY_OVERRIDE_FILE="/etc/crypto-policies/local.d/opensshserver-test.con
 echo "" > "$CRYPTO_POLICY_OVERRIDE_FILE"
 echo "CRYPTO_POLICY=" >> "$CRYPTO_POLICY_OVERRIDE_FILE"
 
-update-crypto-policies --set FIPS
+update-crypto-policies --set FIPS:OSPP
