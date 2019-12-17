@@ -29,7 +29,6 @@ def main():
         file.close()
  
         if action=="list" or (action=="add" and len(sys.argv) > 2):
-            os.system('~/content/utils/rule_dir_json.py')
             for rule in ruleArray:
                 if action=="list":
                     os.system('~/content/utils/mod_checks.py {} {}'.format(rule, action))
