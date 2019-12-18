@@ -7,7 +7,8 @@ title: 'Uninstall tftp-server Package'
 description: '{{{ describe_package_remove(package="tftp-server") }}}'
 
 rationale: |-
-    Removing the <tt>tftp-server</tt> package decreases the risk of the accidental (or intentional) activation of tftp services.
+    Removing the <tt>tftp-server</tt> package decreases the risk of the accidental
+    (or intentional) activation of tftp services.
     <br /><br />
     If TFTP is required for operational support (such as transmission of router
     configurations), its use must be documented with the Information Systems
@@ -19,13 +20,14 @@ severity: high
 identifiers:
     cce@rhel6: 26946-4
     cce@rhel7: 80213-2
+    cce@rhel8: 82436-7
 
 references:
     stigid@rhel6: "000222"
     srg@rhel6: SRG-OS-000095
     disa@rhel6: '305'
     disa: 318,368,1812,1813,1814
-    nist: AC-17(8),CM-6(c),CM-7
+    nist: CM-7(a),CM-7(b),CM-6(a)
     nist-csf: PR.AC-3,PR.IP-1,PR.PT-3,PR.PT-4
     srg: SRG-OS-000480-GPOS-00227
     stigid@rhel7: "040700"

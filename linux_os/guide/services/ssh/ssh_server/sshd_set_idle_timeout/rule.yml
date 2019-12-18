@@ -3,21 +3,19 @@ documentation_complete: true
 title: 'Set SSH Idle Timeout Interval'
 
 description: |-
-    SSH allows administrators to set an idle timeout
-    interval.
-    After this interval has passed, the idle user will be
-    automatically logged out.
+    SSH allows administrators to set an idle timeout interval. After this interval 
+    has passed, the idle user will be automatically logged out.
     <br /><br />
     To set an idle timeout interval, edit the following line in <tt>/etc/ssh/sshd_config</tt> as
     follows:
     <pre>ClientAliveInterval <b><sub idref="sshd_idle_timeout_value" /></b></pre>
-    The timeout <b>interval</b> is given in seconds. To have a timeout
-    of e.g. 10 minutes, set <b>interval</b> to 600.
+    <br/><br/>
+    The timeout <b>interval</b> is given in seconds. For example, have a timeout
+    of 10 minutes, set <b>interval</b> to 600.
     <br /><br />
-    If a shorter timeout has already been set for the login
-    shell, that value will preempt any SSH
-    setting made here. Keep in mind that some processes may stop SSH
-    from correctly detecting that the user is idle.
+    If a shorter timeout has already been set for the login shell, that value will
+    preempt any SSH setting made in <tt>/etc/ssh/sshd_config</tt>. Keep in mind that
+    some processes may stop SSH  from correctly detecting that the user is idle.
 
 rationale: |-
     Terminating an idle ssh session within a short time period reduces the window of
@@ -32,20 +30,14 @@ identifiers:
     cce@rhel8: 80906-1
 
 references:
-    nist@debian8: SA-8
-    nist-csf@debian8: PR.IP-2
-    nist@debian9: SA-8
-    nist-csf@debian9: PR.IP-2
     stigid@rhel6: "000230"
     srg@rhel6: SRG-OS-000163
-    nist@rhel6: SA-8
-    nist-csf@rhel6: PR.IP-2
     disa@rhel6: '879'
     cis: 5.2.12
     cjis: 5.5.6
     cui: 3.1.11
     disa: 879,1133,2361
-    nist: AC-2(5),SA-8(i),AC-12,AC-17(a),AC-17(b),AC-17(b),SC-10
+    nist: CM-6(a),AC-17(a),AC-2(5),AC-12,AC-17(a),SC-10,CM-6(a)
     nist-csf: DE.CM-1,DE.CM-3,PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.IP-2
     pcidss: Req-8.1.8
     srg: SRG-OS-000163-GPOS-00072,SRG-OS-000279-GPOS-00109,SRG-OS-000126-GPOS-00066,SRG-OS-000395-GPOS-00175
