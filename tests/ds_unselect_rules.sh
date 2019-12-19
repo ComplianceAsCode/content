@@ -10,11 +10,11 @@ DS=$1
 UNSELECT_LIST=$2
 
 
-printf "Copying $DS file to /tmp\n"
+printf 'Copying %s file to /tmp\n' "$DS"
 cp $DS /tmp || exit 1
 DS="/tmp/$(basename $DS)"
 
-printf "Unselecting rules listed in the $UNSELECT_LIST from the $DS\n"
+printf 'Unselecting rules listed in the %s from the %s\n' "$UNSELECT_LIST" "$DS"
 for rule in $(cat $UNSELECT_LIST); do
 	sed -i "/<.*Rule id=\"$rule/s/selected=\"true\"/selected=\"false\"/g" $DS || exit 1
 	sed -i "/<.*select idref=\"$rule/s/selected=\"true\"/selected=\"false\"/g" $DS || exit 1
