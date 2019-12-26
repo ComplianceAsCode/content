@@ -6,4 +6,4 @@ description: |-
     Write the profile description here
 
 selections:
-    - no_forward_files
+    - no_rhosts_files

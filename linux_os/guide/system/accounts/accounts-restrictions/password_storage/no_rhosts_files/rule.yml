@@ -1,0 +1,42 @@
+documentation_complete: true
+
+prodtype: multi_platform_sle,sle11,sle12
+
+title: 'Verify No rhosts Files Exist'
+
+description: |-
+    The <tt>.rhosts</tt> files contain login information
+    used to auto-login into FTP servers and reside in the user's home
+    directory. These files may contain unencrypted passwords to
+    remote FTP servers making them susceptible to access by unauthorized
+    users and should not be used.  Any <tt>.rhosts</tt> files should be removed.
+
+rationale: |-
+    Unencrypted passwords for remote FTP servers may be stored in <tt>.rhosts</tt>
+    files. DoD policy requires passwords be encrypted in storage and not used
+    in access scripts.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 27225-2
+    cce@rhel7: 80211-6
+
+references:
+    stigid@rhel6: "000347"
+    srg@rhel6: SRG-OS-000073
+    disa: "196"
+    nist: IA-5(h),AC-3
+    nist-csf: PR.AC-1,PR.AC-4,PR.AC-6,PR.AC-7,PR.PT-3
+    isa-62443-2013: 'SR 1.1,SR 1.10,SR 1.11,SR 1.12,SR 1.13,SR 1.2,SR 1.3,SR 1.4,SR 1.5,SR 1.6,SR 1.7,SR 1.8,SR 1.9,SR 2.1,SR 2.2,SR 2.3,SR 2.4,SR 2.5,SR 2.6,SR 2.7'
+    isa-62443-2009: 4.3.3.2.2,4.3.3.5.1,4.3.3.5.2,4.3.3.5.3,4.3.3.5.4,4.3.3.5.5,4.3.3.5.6,4.3.3.5.7,4.3.3.5.8,4.3.3.6.1,4.3.3.6.2,4.3.3.6.3,4.3.3.6.4,4.3.3.6.5,4.3.3.6.6,4.3.3.6.7,4.3.3.6.8,4.3.3.6.9,4.3.3.7.1,4.3.3.7.2,4.3.3.7.3,4.3.3.7.4
+    cobit5: DSS05.02,DSS05.04,DSS05.05,DSS05.07,DSS05.10,DSS06.03,DSS06.06,DSS06.10
+    iso27001-2013: A.18.1.4,A.6.1.2,A.7.1.1,A.9.1.2,A.9.2.1,A.9.2.2,A.9.2.3,A.9.2.4,A.9.2.6,A.9.3.1,A.9.4.1,A.9.4.2,A.9.4.3,A.9.4.4,A.9.4.5
+    cis-csc: 1,11,12,14,15,16,18,3,5
+
+ocil_clause: 'any .rhosts files exist'
+
+ocil: |-
+    To check the system for the existence of any <tt>.rhosts</tt> files,
+    run the following command:
+    <pre>$ sudo find /home -xdev -name .rhosts</pre>
