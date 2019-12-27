@@ -30,3 +30,11 @@ ocil: |-
     <pre>$ sudo grep MaxAuthTries /etc/ssh/sshd_config</pre>
     If properly configured, output should be:
     <pre>MaxAuthTries <b>tries</b></pre>
+
+template:
+    name: sshd_lineinfile
+    vars:
+        missing_parameter_pass: 'true'
+        parameter: MaxAuthTries
+        rule_id: sshd_set_max_auth_tries
+        value: "4"

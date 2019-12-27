@@ -6,4 +6,4 @@ description: |-
     Write the profile description here
 
 selections:
-    - package_libwrap0_installed
+    - sshd_set_max_auth_tries
