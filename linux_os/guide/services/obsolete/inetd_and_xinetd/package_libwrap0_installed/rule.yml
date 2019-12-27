@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel7,rhel8
+prodtype: sle12
 
 title: 'Install tcp_wrappers Package'
 
@@ -38,4 +38,4 @@ ocil: '{{{ ocil_package(package="tcp_wrappers") }}}'
 template:
     name: package_installed
     vars:
-        pkgname: tcp_wrappers
+        pkgname: libwrap0

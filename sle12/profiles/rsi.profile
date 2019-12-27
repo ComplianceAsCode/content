@@ -86,7 +86,6 @@ selections:
     - sysctl_net_ipv4_icmp_ignore_bogus_error_responses
     - sysctl_net_ipv4_conf_all_rp_filter
     - sysctl_net_ipv4_tcp_syncookies
-    - package_tcp_wrappers_installed
     - kernel_module_dccp_disabled
     - kernel_module_sctp_disabled
     - kernel_module_rds_disabled
