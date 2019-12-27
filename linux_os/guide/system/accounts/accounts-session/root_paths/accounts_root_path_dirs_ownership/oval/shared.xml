@@ -1,0 +1,46 @@
+<def-group>
+  <definition class="compliance" id="accounts_root_path_dirs_ownership" version="2">
+    <metadata>
+      <title>Root should own $PATH directories</title>
+      <affected family="unix">
+        <platform>multi_platform_all</platform>
+      </affected>
+      <description>Root should own $PATH directories</description>
+    </metadata>
+    <criteria comment="Root should own $PATH directories">
+      <criterion comment="Root should own $PATH directories"
+      test_ref="test_accounts_root_path_dirs_ownership" />
+    </criteria>
+  </definition>
+
+  <ind:environmentvariable58_object id="object_accounts_root_path_dirs_ownership_pathenv" version="1">
+    <ind:pid xsi:nil="true" datatype="int" />
+    <ind:name>PATH</ind:name>
+  </ind:environmentvariable58_object>
+
+  <local_variable comment="Split the PATH on the : delimiter" datatype="string"
+  id="var_accounts_root_path_dirs_ownership" version="1">
+    <split delimiter=":">
+      <object_component item_field="value"
+      object_ref="object_accounts_root_path_dirs_ownership_pathenv" />
+    </split>
+  </local_variable>
+
+  <unix:file_test check="all" check_existence="all_exist"
+  comment="Check $PATH directories ownership"
+  id="test_accounts_root_path_dirs_ownership" version="1">
+    <unix:object object_ref="object_accounts_root_path_dirs_ownership" />
+    <unix:state state_ref="state_accounts_root_path_dirs_ownership" />
+  </unix:file_test>
+
+  <unix:file_object comment="root's path directories with wrong owner"
+  id="object_accounts_root_path_dirs_ownership" version="1">
+    <unix:path var_ref="var_accounts_root_path_dirs_ownership" var_check="at least one" />
+    <unix:filename xsi:nil="true" />
+  </unix:file_object>
+
+  <unix:file_state comment="Check root ownership" id="state_accounts_root_path_dirs_ownership" version="1">
+    <unix:user_id datatype="int">0</unix:user_id>
+  </unix:file_state>
+
+</def-group>

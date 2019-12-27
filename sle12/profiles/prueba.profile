@@ -6,4 +6,6 @@ description: |-
     Write the profile description here
 
 selections:
-    - no_netrc_files
+    - accounts_root_path_dirs_no_write
+    - root_path_no_dot
+    - accounts_root_path_dirs_ownership

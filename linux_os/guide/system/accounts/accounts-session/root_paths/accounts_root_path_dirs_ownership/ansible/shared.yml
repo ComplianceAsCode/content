@@ -18,10 +18,11 @@
   with_items: "{{ ansible_env.PATH.split(':') }}"
   when: ansible_user == "root"
 
-- name: "Disable writability to root directories"
+- name: "Change ownership"
   file:
     path: "{{ item.item }}"
-    mode: "g-w,o-w"
+    owner: root
+    group: root
   with_items: "{{ root_paths.results }}"
   when:
     - root_paths.results is defined
