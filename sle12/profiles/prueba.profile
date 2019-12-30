@@ -6,4 +6,5 @@ description: |-
     Write the profile description here
 
 selections:
-    - sshd_set_max_auth_tries
+    - chronyd_or_ntpd_specify_remote_server
+    - chronyd_or_ntpd_specify_multiple_servers
