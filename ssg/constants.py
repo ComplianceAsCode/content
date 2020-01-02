@@ -181,6 +181,8 @@ PRODUCT_TO_CPE_MAPPING = {
     "example": [
     ],
     "fedora": [
+        "cpe:/o:fedoraproject:fedora:32",
+        "cpe:/o:fedoraproject:fedora:31",
         "cpe:/o:fedoraproject:fedora:30",
         "cpe:/o:fedoraproject:fedora:29",
         "cpe:/o:fedoraproject:fedora:28",
