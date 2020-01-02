@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: debian9,wrlinux1019,rhel6,rhel7,rhel8,rhv4,fedora,ol7,ol8
+prodtype: debian9,debian10,wrlinux1019,rhel6,rhel7,rhel8,rhv4,fedora,ol7,ol8
 
 title: 'Uninstall net-snmp Package'
 
@@ -25,4 +25,5 @@ template:
     name: package_removed
     vars:
         pkgname@debian9: snmp
+        pkgname@debian10: snmp
         pkgname: net-snmp
