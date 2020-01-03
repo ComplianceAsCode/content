@@ -3,7 +3,7 @@ documentation_complete: true
 title: 'Verify Permissions on SSH Server Private *_key Key Files'
 
 description: |-
-    {{% if product in ['opensuse', 'sle11', 'sle12'] %}}
+    {{% if product in ['ubuntu1804','opensuse', 'sle11', 'sle12'] %}}
     {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0600") }}}
     {{% else %}}
     {{{ describe_file_permissions(file="/etc/ssh/*_key", perms="0640") }}}
@@ -46,3 +46,4 @@ template:
         file_regex: ^.*_key$
         filemode: '0640'
         filemode@sle12: '0600'
+        filemode@ubuntu1804: '0600'
