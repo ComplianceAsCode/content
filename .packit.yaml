@@ -1,16 +1,18 @@
+upstream_package_name: content
 downstream_package_name: scap-security-guide
-jobs:
-- job: copr_build
-  metadata:
-    targets:
-    - fedora-30-x86_64
-    - fedora-31-x86_64
-    - fedora-rawhide-x86_64
-  trigger: pull_request
 specfile_path: scap-security-guide.spec
 synced_files:
-- scap-security-guide.spec
-- .packit.yaml
-upstream_package_name: content
-actions:
-  post-upstream-clone: wget -N https://src.fedoraproject.org/rpms/scap-security-guide/raw/master/f/scap-security-guide.spec
+  - scap-security-guide.spec
+  - .packit.yaml
+jobs:
+- job: copr_build
+  trigger: pull_request
+  metadata:
+    targets:
+    - fedora-all-x86_64
+- job: propose_downstream
+  metadata:
+  dist-git-branch: fedora-all
+  trigger: release
+- job: sync_from_downstream
+  trigger: commit
