@@ -15,5 +15,5 @@
   with_items: "{{ yum_find.files }}"
   replace:
     dest: "{{ item.path }}"
-    regexp: '^(gpgcheck.+)'
-    replace: '# \1'
+    regexp: '^gpgcheck.+'
+    replace: 'gpgcheck = 1'
