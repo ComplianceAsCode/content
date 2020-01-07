@@ -10,6 +10,10 @@
 
   <xsl:template match="xccdf:Benchmark">
     <xsl:copy>
+      <xsl:attribute name="id">
+        <xsl:value-of select="@id"/>
+      </xsl:attribute>
+
     <title>DISA STIG for <xsl:value-of select="$product_long_name" /></title>
 
   	<xsl:variable name="rules" select="//xccdf:Rule"/>
