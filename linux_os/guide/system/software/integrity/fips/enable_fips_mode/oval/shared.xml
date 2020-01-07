@@ -25,8 +25,8 @@
   <ind:variable_object id="obj_system_crypto_policy_value" version="1">
     <ind:var_ref>var_system_crypto_policy</ind:var_ref>
   </ind:variable_object>
-  <ind:variable_state comment="variable value is set to 'FIPS'" id="ste_system_crypto_policy_value" version="1">
-    <ind:value operation="equals" datatype="string">FIPS</ind:value>
+  <ind:variable_state comment="variable value is set to 'FIPS' or 'FIPS:modifier', where the modifier corresponds to a crypto policy module that further restricts the modified crypto policy." id="ste_system_crypto_policy_value" version="2">
+    <ind:value operation="pattern match" datatype="string">^FIPS(:(OSPP|NO-SHA1|NO-CAMELLIA))?$</ind:value>
   </ind:variable_state>
   <external_variable comment="defined crypto policy" datatype="string" id="var_system_crypto_policy" version="1" />
 </def-group>
