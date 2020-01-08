@@ -6,5 +6,5 @@ description: |-
     Write the profile description here
 
 selections:
-    - chronyd_or_ntpd_specify_remote_server
-    - chronyd_or_ntpd_specify_multiple_servers
+    - audit_rules_privileged_commands
+    - audit_rules_privileged_commands_mount

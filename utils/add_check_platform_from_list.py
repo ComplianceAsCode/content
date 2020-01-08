@@ -15,7 +15,7 @@ SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 #script en sucio de prueba
 #Este script añade el producto deseado(ej. sle) a la lista de las plataformas afectadas de los oval checks de cada regla de una lista de reglas dada
-#Ejemplo de uso: utils/add_rules_prodtype_from_list.py 'list/add' 'multi_platform_sle'
+#Ejemplo de uso(quitar comillas): utils/add_rules_prodtype_from_list.py 'ruta_lista_de_reglas' 'add' 'multi_platform_sle'
  
 def main():
  

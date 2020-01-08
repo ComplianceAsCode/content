@@ -15,7 +15,7 @@ SSG_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 #script en sucio de prueba
 #Este script crea un perfil para el producto deseado con el nombre especificado a partir de una lista de reglas
-#Ejemplo de uso: utils/add_profile_from_list.py 'archivo_con_lista_de_reglas' 'sle11' 'nombre_perfil'
+#Ejemplo de uso(quitar comillas): utils/add_profile_from_list.py 'ruta_archivo_con_lista_de_reglas' 'sle11' 'nombre_perfil'
  
 def main():
  
