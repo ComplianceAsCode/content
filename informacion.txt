@@ -1,27 +1,27 @@
 Cosas importantes
 
--El conjunto de todas las reglas hechas/por hacer estan en el fichero reglasrisi.txt en la raiz del proyecto
+-El conjunto de todas las reglas hechas/por hacer están en el fichero reglasrisi.txt en la raíz del proyecto
 
--Reglas: el nombre de la regla es el nombre de la carpeta que contiene los elementos de la regla, se encuentran en la ruta "content/linuxos/guide/", cada regla puede pertenecer a uno o mas grupos y consta de los siguientes elementos:
+-Reglas: el nombre de la regla es el nombre de la carpeta que contiene los elementos de la regla, se encuentran en la ruta "content/linuxos/guide/", cada regla puede pertenecer a uno o más grupos y consta de los siguientes elementos:
 
-	1)Rule: informacion general sobre la regla y los productos a los que se aplica esa regla. Algunas reglas generan fix y check a traves 		de templates
+	1)Rule: información general sobre la regla y los productos a los que se aplica esa regla. Algunas reglas generan fix y check a través 		de templates
 	2)Checks: comprobaciones en formato OVAL del elemento a analizar(object) y el estado que tiene que cumplir(state)
 	3)Fix: remediaciones a la regla en ansible y/o bash
 
--Grupos: conjunto de reglas, para crear un nuevo grupo crea una nueva carpeta con un fichero group.yml con la descripcion del grupo(solo texto, ver uno ya creado como ejemplo), el nombre del grupo es el nombre de la carpeta que contiene el group.yml 
+-Grupos: conjunto de reglas, para crear un nuevo grupo crea una nueva carpeta con un fichero group.yml con la descripción del grupo(solo texto, ver uno ya creado como ejemplo), el nombre del grupo es el nombre de la carpeta que contiene el group.yml 
 
--utilidades: diversas utilidades en python, se encuentran en la ruta "content/utils/" para poder usarlas ejecuta "source ./.pyenv.sh" en la raiz de proyecto
+-utilidades: diversas utilidades en python, se encuentran en la ruta "content/utils/" para poder usarlas ejecuta "source ./.pyenv.sh" en la raíz de proyecto
 
 	1)rule_dir_json.py : crea un json con todas las reglas, ejecutar antes de usar cualquier utilidad que realice acciones sobre las reglas
 	2)testoval.py : comprueba que la syntaxis de un documento oval sea correcta
-	3)add_profile_from_list.py : a partir de un conjunto de reglas crea un perfil para lla plataforma deseada con el nombre que se 		especifique
+	3)add_profile_from_list.py : a partir de un conjunto de reglas crea un perfil para la plataforma deseada con el nombre que se 		especifique
 	4)add_rules_prodtype_from_list.py : añade el producto deseado a cada una de las reglas de una lista dada
 	5)add_check_platform_from_list.py : añade la plataforma deseada a cada uno de los check OVAL de una lista de reglas dada
 	6)add_fix_platform_from_list.py : añade la plataforma deseada a cada uno de los fix(tanto ansible como bash si existen) de una lista 		de reglas dada
 
 -Plantillas: se encuentran en "/conetnt/shared/templates/", crean ansibles/ovals a partir de unas variables que reciben, se generan desde el rule.yml de una regla
 
--Para buildear el producto especifico ejecutar "build_product 'producto'" en la raiz del proyecto
+-Para buildear el producto especifico ejecutar "build_product 'producto'" en la raíz del proyecto
 
 -Perfil: conjunto de reglas a aplicar en un scanner, se encuentran en la ruta "content/'producto'/profiles/"
 
