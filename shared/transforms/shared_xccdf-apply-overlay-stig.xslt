@@ -19,7 +19,7 @@
       <xsl:variable name="overlay_rule" select="@ruleid"/>
       <xsl:variable name="overlay_severity" select="@severity"/>
       <xsl:variable name="overlay_ref" select="@disa"/>
-      <xsl:variable name="overlay_title" select="xccdf:title/text()"/>
+      <xsl:variable name="overlay_title" select="xccdf:title/@text"/>
 
       <xsl:for-each select="$rules">
         <xsl:if test="@id=$overlay_rule">
