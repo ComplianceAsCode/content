@@ -7,9 +7,7 @@
      "flat", then it will output a separate row for every Rule which satisfies an SRG requirement. -->
 
 <xsl:param name="flat" select="''"/>
-<xsl:param name="profileId" select="'stig'"/>
 <xsl:param name="ocil-document" select="''"/>
-<xsl:variable name="profile" select="document($map-to-items)/cdf:Benchmark/cdf:Profile[@id=$profileId]"/>
 <xsl:variable name="ocil" select="document($ocil-document)/ocil2:ocil"/>
 
 	<xsl:template match="/">
@@ -90,20 +88,18 @@
 		<td>
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:if test="$profile/cdf:select[@selected='true' and @idref=$item/@id]">
-				<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
-					<xsl:variable name="ssg_srg" select='self::node()[text()]' />
-					<xsl:variable name="disa_srg" select="$rule/cdf:version"  />
-					<xsl:if test="$ssg_srg=$disa_srg" >
-						<table>
-						<tr>
-						<td> <xsl:value-of select="$item/cdf:title"/> </td>
-						<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
-						</tr>
-						</table>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:if>
+			<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
+				<xsl:variable name="ssg_srg" select='self::node()[text()]' />
+				<xsl:variable name="disa_srg" select="$rule/cdf:version"  />
+				<xsl:if test="$ssg_srg=$disa_srg" >
+					<table>
+					<tr>
+					<td> <xsl:value-of select="$item/cdf:title"/> </td>
+					<td> <xsl:apply-templates select="$item/cdf:description"/> </td>
+					</tr>
+					</table>
+				</xsl:if>
+			</xsl:for-each>
 		</xsl:for-each>
 	  </td>
 	  </tr>
@@ -114,36 +110,34 @@
 		<!-- iterate over the items (everything with references) in the (externally-provided) XCCDF document -->
 		<xsl:for-each select="$items">
 			<xsl:variable name="item" select="."/>
-			<xsl:if test="$profile/cdf:select[@selected='true' and @idref=$item/@id]">
-				<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
-				  <xsl:variable name="ssg_srg" select='self::node()[text()]' />
-				  <xsl:variable name="disa_srg" select="$rule/cdf:version"  />
-					<xsl:if test="$ssg_srg=$disa_srg" >
-						<tr>
-							<td><xsl:value-of select="$rule/cdf:ident" /></td> 								<!-- CCI -->
-							<td><xsl:value-of select="$rule/cdf:version" /></td> 							<!-- SRGID -->
-							<td><i>TBD - Assigned by DISA after STIG release</i></td> 						<!-- STIGID -->
-							<td><xsl:value-of select="$rule/cdf:title"/> </td>								<!-- SRG Requirement -->
-							<td><xsl:value-of select="$item/cdf:ident"/>: <xsl:value-of select="$item/cdf:title"/> </td>		<!-- Requirement -->
-							<td><xsl:call-template name="extract-vulndiscussion">							<!-- SRG VulDiscussion -->
-									<xsl:with-param name="desc" select="$rule/cdf:description"/>
-								</xsl:call-template>
-							</td>
-							<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
-							<td>Applicable - Configurable</td>												<!-- Status -->
-							<td><xsl:apply-templates select="$rule/cdf:check/cdf:check-content"/></td>		<!-- SRG Check -->
-							<td><xsl:apply-templates select="$item/cdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/></td>	<!-- Check -->
-							<td><xsl:apply-templates select="$rule/cdf:fixtext"/></td>						<!-- SRG Fix -->
-							<td><xsl:value-of select="$item/cdf:description"/></td>							<!-- Fix -->
-							<td><xsl:value-of select="$item/@severity"/></td>								<!-- Severity -->
-							<td></td>																		<!-- Mitigation -->
-							<td></td>																		<!-- Artifact Description -->
-							<td></td>																		<!-- Status Justification -->
-						
-						</tr>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:if>
+			<xsl:for-each select="cdf:reference[@href=$disa-srguri]">
+			  <xsl:variable name="ssg_srg" select='self::node()[text()]' />
+			  <xsl:variable name="disa_srg" select="$rule/cdf:version"  />
+				<xsl:if test="$ssg_srg=$disa_srg" >
+					<tr>
+						<td><xsl:value-of select="$rule/cdf:ident" /></td> 								<!-- CCI -->
+						<td><xsl:value-of select="$rule/cdf:version" /></td> 							<!-- SRGID -->
+						<td><i>TBD - Assigned by DISA after STIG release</i></td> 						<!-- STIGID -->
+						<td><xsl:value-of select="$rule/cdf:title"/> </td>								<!-- SRG Requirement -->
+						<td><xsl:value-of select="$item/cdf:ident"/>: <xsl:value-of select="$item/cdf:title"/> </td>		<!-- Requirement -->
+						<td><xsl:call-template name="extract-vulndiscussion">							<!-- SRG VulDiscussion -->
+								<xsl:with-param name="desc" select="$rule/cdf:description"/>
+							</xsl:call-template>
+						</td>
+						<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
+						<td>Applicable - Configurable</td>												<!-- Status -->
+						<td><xsl:apply-templates select="$rule/cdf:check/cdf:check-content"/></td>		<!-- SRG Check -->
+						<td><xsl:apply-templates select="$item/cdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/></td>	<!-- Check -->
+						<td><xsl:apply-templates select="$rule/cdf:fixtext"/></td>						<!-- SRG Fix -->
+						<td><xsl:value-of select="$item/cdf:description"/></td>							<!-- Fix -->
+						<td><xsl:value-of select="$item/@severity"/></td>								<!-- Severity -->
+						<td></td>																		<!-- Mitigation -->
+						<td></td>																		<!-- Artifact Description -->
+						<td></td>																		<!-- Status Justification -->
+
+					</tr>
+				</xsl:if>
+			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
 
