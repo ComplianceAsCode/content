@@ -119,7 +119,10 @@
 						<td><xsl:value-of select="$rule/cdf:version" /></td> 							<!-- SRGID -->
 						<td><i>TBD - Assigned by DISA after STIG release</i></td> 						<!-- STIGID -->
 						<td><xsl:value-of select="$rule/cdf:title"/> </td>								<!-- SRG Requirement -->
-						<td><xsl:value-of select="$item/cdf:ident"/>: <xsl:value-of select="$item/cdf:title"/> </td>		<!-- Requirement -->
+						<td>													<!-- Requirement -->
+							<xsl:if test="$item/cdf:ident"><xsl:value-of select="$item/cdf:ident"/>:</xsl:if>
+							<xsl:value-of select="$item/cdf:title"/>
+						</td>
 						<td><xsl:call-template name="extract-vulndiscussion">							<!-- SRG VulDiscussion -->
 								<xsl:with-param name="desc" select="$rule/cdf:description"/>
 							</xsl:call-template>
