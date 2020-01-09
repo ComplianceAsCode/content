@@ -125,7 +125,12 @@
 							</xsl:call-template>
 						</td>
 						<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
-						<td>Applicable - Configurable</td>												<!-- Status -->
+						<td>												<!-- Status -->
+							<xsl:choose>
+								<xsl:when test="contains($item/@id, '-overlay-')">N/A</xsl:when>
+								<xsl:otherwise>Applicable - Configurable</xsl:otherwise>
+							</xsl:choose>
+						</td>
 						<td><xsl:apply-templates select="$rule/cdf:check/cdf:check-content"/></td>		<!-- SRG Check -->
 						<td><xsl:apply-templates select="$item/cdf:check[@system='http://scap.nist.gov/schema/ocil/2']"/></td>	<!-- Check -->
 						<td><xsl:apply-templates select="$rule/cdf:fixtext"/></td>						<!-- SRG Fix -->
