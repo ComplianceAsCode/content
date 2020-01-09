@@ -130,6 +130,7 @@
 						<td> <xsl:apply-templates select="$item/cdf:description"/></td>					<!-- VulDiscussion -->
 						<td>												<!-- Status -->
 							<xsl:choose>
+								<xsl:when test="contains($item/@id, 'met_inherently_')">Applicable - Inherently Meets</xsl:when>
 								<xsl:when test="contains($item/@id, '-overlay-')">N/A</xsl:when>
 								<xsl:otherwise>Applicable - Configurable</xsl:otherwise>
 							</xsl:choose>
