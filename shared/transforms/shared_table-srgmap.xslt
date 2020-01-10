@@ -101,6 +101,10 @@
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:for-each>
+		<xsl:if test="$flat">
+			<!-- there is no Rule matching the SRG. Let's output empty fields. -->
+			<td/><td/><td/><td/><td/><td/><td/><td/><td/>
+		</xsl:if>
 	  </td>
 	  </tr>
 	</xsl:template>
