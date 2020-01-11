@@ -442,7 +442,7 @@ XCCDF_PLATFORM_TO_CPE = {
     "libuser": "cpe:/a:libuser",
     "nss-pam-ldapd": "cpe:/a:nss-pam-ldapd",
     "pam": "cpe:/a:pam",
-    "shadow-utils": "cpe:/a:shadow-utils",
+    "login_defs": "cpe:/a:login_defs",
     "sssd": "cpe:/a:sssd",
     "systemd": "cpe:/a:systemd",
     "yum": "cpe:/a:yum",
