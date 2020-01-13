@@ -1,0 +1,42 @@
+# platform = multi_platform_fedora,multi_platform_rhel,multi_platform_rhv,multi_platform_sle
+# reboot = false
+# strategy = restrict
+# complexity = low
+# disruption = low
+- name: Ensure daily rotate
+  lineinfile:
+    path: /etc/logrotate.conf
+    regexp: '^daily '
+    insertafter: 'EOF'
+    line: daily
+
+- name: Remove weekly, monthly or yearly rotates
+  lineinfile:
+    dest: /etc/logrotate.conf
+    regexp: "{{ item.regexp }}"
+    state: absent
+  with_items:
+    - { regexp: '^weekly' }
+    - { regexp: '^monthly' }
+    - { regexp: '^yearly' }
+
+- name: Touch daily cron
+  file:
+    path: /etc/cron.daily/logrotate
+    state: touch
+
+- name: Set interpreter on daily cron
+  lineinfile:
+    dest: /etc/cron.daily/logrotate
+    regexp: "{{ item.regexp }}"
+    line: #!/bin/sh
+  with_items:
+    - { regexp: '^\#!\/bin\/bash' }
+    - { regexp: '^\#!\/bin\/sh' }
+
+- name: Configure daily cron
+  lineinfile:
+    path: /etc/cron.daily/logrotate
+    regexp: '^\s*\/usr\/sbin\/logrotate\s.+\/etc\/logrotate\.conf'
+    insertafter: 'EOF'
+    line: /usr/sbin/logrotate /etc/logrotate.conf
