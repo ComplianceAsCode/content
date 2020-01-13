@@ -36,6 +36,7 @@ selections:
   - ensure_gpgcheck_local_packages
   - ensure_gpgcheck_globally_activated
   - security_patches_up_to_date
+  - dnf-automatic_security_updates_only
 
   ### System security settings
   - sysctl_kernel_randomize_va_space
