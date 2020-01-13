@@ -22,8 +22,9 @@
 
 - name: Touch daily cron
   file:
-    path: /etc/cron.daily/logrotate
     state: touch
+    path: /etc/cron.daily/logrotate
+
 
 - name: Set interpreter on daily cron
   lineinfile:
