@@ -12,7 +12,11 @@ class JenkinsCI(object):
     build_ids_file = ".jenkins_builds"
     artifacts_dir = "artifacts/"
 
+    # Latest builds were probably run on master, and not on stabilization branch.
+    # But checking them provides us a certain level of assurance
     green_job_names = ['scap-security-guide',
+                       'scap-security-guide-linkcheck',
+                       'scap-security-guide-lint-check',
                        'scap-security-guide-scapval-scap-1.2',
                        'scap-security-guide-scapval-scap-1.3',
                        'scap-security-guide-nightly-zip',
