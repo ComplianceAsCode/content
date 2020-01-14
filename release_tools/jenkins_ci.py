@@ -6,6 +6,7 @@ import shutil
 import sys
 import urllib.request
 
+from time import sleep
 
 class JenkinsCI(object):
     JENKINS_URL = "https://jenkins.complianceascode.io/"
@@ -64,6 +65,8 @@ class JenkinsCI(object):
         self.build_ids[job_name] = next_build_number
         self._save_build_ids()
 
+        return next_build_number
+
     def _get_build_status(self, job_name, build_number):
         try:
             build_info = self.server.get_build_info(job_name, build_number)
@@ -74,36 +77,61 @@ class JenkinsCI(object):
         except jenkins.NotFoundException:
             return 'not found'
 
-    def build_jobs_for_release(self, build_parameters=None):
+    def get_queue_item(self, job_name):
         queue = self.server.get_queue_info()
+
+        found = False
+        for queue_item in queue:
+            if queue_item['task']['name'] == job_name:
+                return queue_item
+        return None
+
+    def query_status_of_queue_item(self, job_name):
+        queue_item = self.get_queue_item(job_name)
+        if queue_item:
+            # build has not started yet, and is waiting in the queue
+            print("Build for {} is in the queue".format(job_name))
+            print("\t" + queue_item['why'])
+        else:
+            print("Build for {} is in unknown state".format(job_name))
+
+    # May throw jenkins.NotFoundException
+    def query_status_of_build_job(self, job_name, build_number):
+        build_info = self.server.get_build_info(job_name, build_number)
+        if build_info['building']:
+            print(f"Build for {job_name} is still running: {build_info['url']}")
+            return 'building'
+        else:
+            print(f"Build for {job_name} is finished: {build_info['url']}")
+            return 'built'
+
+    def build_jobs_for_release(self, build_parameters=None):
         all_built = True
 
         for job_name in self.build_job_names:
             build_number = self.build_ids.get(job_name)
 
             if build_number is None:
-                # Trigger build
-                self._trigger_build_job(job_name, build_parameters)
-                print("Building job {}".format(job_name))
                 all_built = False
+
+                # Trigger build
+                build_number = self._trigger_build_job(job_name, build_parameters)
+                # It may take a while for Jenkins to create and start the build
+                sleep(10)
+                try:
+                    build_info = self.server.get_build_info(job_name, build_number)
+                    print(f"Building job {job_name}: {build_info['url']}")
+                except jenkins.NotFoundException:
+                    self.query_status_of_queue_item(job_name)
             else:
-                build_status = self._get_build_status(job_name, build_number)
-                if build_status == 'building':
-                    print("Build for {} is still running".format(job_name))
+                try:
+                    build_status = self.query_status_of_build_job(job_name, build_number)
+                    if build_status == 'building':
+                        all_built = False
+                except jenkins.NotFoundException:
+                    # If build is not running, it may be waiting
+                    self.query_status_of_queue_item(job_name)
                     all_built = False
-                elif build_status == 'built':
-                    print("Build for {} is finished".format(job_name))
-                elif build_status == 'not found':
-                    all_built = False
-                    found = False
-                    for queue_item in queue:
-                        if queue_item['task']['name'] == job_name:
-                            print("Build for {} is in the queue".format(job_name))
-                            print("\t" + queue_item['why'])
-                            found = True
-                            break
-                    if not found:
-                        print("Build for {} is in unknown state".format(job_name))
         return all_built
 
     def _download_artifact(self, build_info, version):

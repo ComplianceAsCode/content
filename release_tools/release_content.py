@@ -86,7 +86,7 @@ def build_release(env, args):
         print(":: You can continue to next step and generate the release notes, run "
               "'python3 release_content.py release_notes'")
     else:
-        print("Still building, wait for it to finish")
+        print("Builds are still running, wait for them to finish")
 
 
 def generate_release_notes(env, args):
