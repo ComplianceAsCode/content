@@ -90,19 +90,19 @@ class JenkinsCI(object):
         queue_item = self.get_queue_item(job_name)
         if queue_item:
             # build has not started yet, and is waiting in the queue
-            print("Build for {} is in the queue".format(job_name))
+            print("Build for {} is in the \033[33mqueue\033[m".format(job_name))
             print("\t" + queue_item['why'])
         else:
-            print("Build for {} is in unknown state".format(job_name))
+            print("Build for {} is in \033[31munknown state\033[m".format(job_name))
 
     # May throw jenkins.NotFoundException
     def query_status_of_build_job(self, job_name, build_number):
         build_info = self.server.get_build_info(job_name, build_number)
         if build_info['building']:
-            print(f"Build for {job_name} is still running: {build_info['url']}")
+            print(f"Build for {job_name} is still \033[33mrunning\033[m: {build_info['url']}")
             return 'building'
         else:
-            print(f"Build for {job_name} is finished: {build_info['url']}")
+            print(f"Build for {job_name} is \033[32mfinished\033[m: {build_info['url']}")
             return 'built'
 
     def build_jobs_for_release(self, build_parameters=None):
