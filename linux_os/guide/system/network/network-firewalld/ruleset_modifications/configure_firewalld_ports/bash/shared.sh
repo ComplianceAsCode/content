@@ -38,7 +38,7 @@ if [ $nic_bound = false ];then
         # If firewalld service is running, we need to do this step with firewall-cmd
         # Otherwise firewalld will comunicate with NetworkManage and will revert assigned zone
         # of NetworkManager managed interfaces upon reload
-        firewall-cmd --zone=$firewalld_sshd_zone --add-interface=${eth_interface_list[0]}
+        firewall-cmd --permanent --zone=$firewalld_sshd_zone --add-interface=${eth_interface_list[0]}
         firewall-cmd --reload
     fi
 fi
