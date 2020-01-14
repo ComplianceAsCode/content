@@ -22,7 +22,7 @@ class JenkinsCI(object):
                        'scap-security-guide-nightly-zip',
                        'scap-security-guide-nightly-oval510-zip']
 
-    build_job_names = ['scap-security-guide-docs',
+    build_job_names = ['scap-security-guide-docs-and-tarball',
                        'scap-security-guide-nightly-zip',
                        'scap-security-guide-nightly-oval510-zip']
 
@@ -60,7 +60,7 @@ class JenkinsCI(object):
 
     def _trigger_build_job(self, job_name, build_parameters):
         next_build_number = self.server.get_job_info(job_name)['nextBuildNumber']
-        self.server.build_job(job_name)
+        self.server.build_job(job_name, build_parameters)
         self.build_ids[job_name] = next_build_number
         self._save_build_ids()
 

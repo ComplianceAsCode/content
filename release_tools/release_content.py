@@ -58,11 +58,6 @@ def check_release(env, args):
     Check repo and project state for release
     '''
 
-    local_repo = git.Repo('../')
-    if local_repo.is_dirty():
-        print("The repository is not clean, stash your changes before proceeding.")
-        return
-
     gh_repo = get_gh_repo(env, args)
     release_exists = content_gh.check_release_exists(gh_repo, args)
     if release_exists:
@@ -82,11 +77,7 @@ def build_release(env, args):
     '''
     Build assets for release
     '''
-    if not os.path.isfile(f"./artifacts/scap-security-guide-{args.version}.tar.bz2"):
-        # call cmake and build the tarball in ./artifacts directory
-        subprocess.call(f"./make_tarball.sh {args.version}")
-
-    # Jenkins builds should be done from the stabilization branch
+    # Jenkins build should be done from the stabilization branch
     build_parameters = [('GIT_BRANCH', f"stabilization-v{args.version}")]
 
     jenkins_ci = get_jenkins_ci(env)
