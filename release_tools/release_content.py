@@ -125,6 +125,23 @@ def create_release(env, args):
     print(f":: Review Release {args.version} in GitHub and publish it.")
 
 
+def prep_next_release(env, args):
+
+    jenkins_ci = get_jenkins_ci(env)
+    jenkins_ci.forget_release_builds()
+
+    # Call script that bumps version in CMakeLists.txt
+    subprocess.call(["./bump_release_in_cmake.sh", f"{args.next_version}"])
+
+    print(f"Creating commit for version bump")
+    local_repo = git.Repo('../')
+    index = local_repo.index
+    cmakelists_path = os.path.join(local_repo.working_tree_dir, 'CMakeLists.txt')
+    index.add([cmakelists_path])
+
+    index.commit(f"Bump version to {args.version}")
+    print(":: Push to your fork and make a PR to bump the version")
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', default='.env.yml', dest='env_path',
@@ -133,7 +150,8 @@ def create_parser():
     parser.add_argument("--owner", default="ComplianceAsCode")
     parser.add_argument("--repo", default="content")
     subparsers = parser.add_subparsers(dest="subparser_name",
-                                       help="Subcommands: check, build, release_notes, release")
+                                       help="Subcommands: check, build, release_notes, "
+                                            "release, prep_next_release")
     subparsers.required = True
 
     check_parser = subparsers.add_parser("check")
@@ -147,6 +165,9 @@ def create_parser():
 
     build_parser = subparsers.add_parser("release")
     build_parser.set_defaults(func=create_release)
+
+    build_parser = subparsers.add_parser("prep_next_release")
+    build_parser.set_defaults(func=prep_next_release)
 
     return parser.parse_args()
 
