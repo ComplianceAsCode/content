@@ -9,10 +9,6 @@
 
 === Prep ===
 
-* Clone a clean `content` repository:
-
-   git clone https://github.com/ComplianceAsCode/content.git
-
 * Create `.env` file
 +
 Create an `.env` file in the `release_tools` directory (i.e. where the release scripts are). +
@@ -35,13 +31,15 @@ You can also use your own fork of the project to test and debug the release tool
 === Check Phase ===
 
 * Make sure version in `CMakeLists.txt` is correct
-* Run `$ PYTHONPATH=. utils/generate_contributors.py` to update the contributors list.
+* Run `PYTHONPATH=. utils/generate_contributors.py` to update the contributors list.
 +
 Make a commit and PR it.
-* Run `$ check.sh`.
+* Run `python3 release_content.py check`.
 +
 It will check state of your repo for the release; +
 Verify the status of link:https://jenkins.complianceascode.io/job/scap-security-guide/[Build],
+link:https://jenkins.complianceascode.io/job/scap-security-guide-linkchecker/[linkcheck],
+link:https://jenkins.complianceascode.io/job/scap-security-guide-lint-checker/[lint-check],
 link:https://jenkins.complianceascode.io/job/scap-security-guide-scapval-scap-1.2/[SCAPVal 1.2],
 link:https://jenkins.complianceascode.io/job/scap-security-guide-scapval-scap-1.3/[SCAPVal 1.3],
 link:https://jenkins.complianceascode.io/job/scap-security-guide-nightly-zip/[Nightly zip],
@@ -53,22 +51,21 @@ If everything seems fine, continue to build phase.
 
 === Build Phase ===
 
-
-* Run `build.sh`.
+* Run `python3 release_content.py build`.
 +
-It will generate the source tarball and trigger build of the zipfile and docs in Jenkins. +
-You can run `build.sh` again to check status of the builds. +
-Continue to next section when told so. +
+It will trigger build of the zipfile, docs and tarball in Jenkins. +
+You can run `python3 release_content.py build` again to check status of the builds. +
+Continue to next section when told to do so. +
 NOTE: As of July-20th 2019, the builds takes about 44 minutes to finish.
 
-* Run `release-notes.sh`
+* Run `python3 release_content.py release-notes`
 +
 It will go though the milestone and output release notes into `release-notes.txt`. +
 **Review it** and make changes if necessary.
 
 === Release ===
 
-* Run `release.sh`
+* Run `python3 release_content.py release`
 +
 It will create the next milestone, move in open issues and PRs from current milestone and close it. +
 The assets and the release notes will be used to create the git release. +
@@ -76,7 +73,7 @@ The assets and the release notes will be used to create the git release. +
 
 === Clean up and bump version ===
 
-* Run `cleanup.sh`
+* Run `python3 release_content.py prep_next_release`
 +
 It will cleanup the release process, remove the artifacts and bump version for next release. +
 **Commit** the bump and make a PR out of it.
