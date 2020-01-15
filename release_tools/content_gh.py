@@ -169,8 +169,11 @@ def move_milestone(repo, args):
 def upload_files(release, file_paths):
 
     for file_path in file_paths:
-        asset = release.upload_asset(file_path)
-        print(f"Uploaded {asset.name} to Release {release.tag_name}")
+        try:
+            asset = release.upload_asset(file_path)
+            print(f"Uploaded {asset.name} to Release {release.tag_name}")
+        except FileNotFoundError as e:
+            print(f"Unable to find asset {file_path}")
 
 
 def upload_assets(release, args):
