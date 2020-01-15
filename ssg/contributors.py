@@ -14,8 +14,13 @@ Last Modified: %s
 """ % (os.path.basename(__file__), datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
 
 email_mappings = {
+    # People here are sorted by last name
     # Firas AlShafei
     "firas.alshafei@gmail.com": "firas.alshafei@us.abb.com",
+    # Dominique Blaze
+    "dominique.blaze@edu.devinci.fr": "dominique.blaze@devinci.fr",
+    # Ted Brunell
+    "tbrunell@tbrunell.corp.redhat.com": "tbrunell@redhat.com",
     # Jeff Blank
     "jeff@t440.local": "blank@eclipse.ncsc.mil",
     # Frank Caviggia
@@ -40,6 +45,9 @@ email_mappings = {
     # Nathan Peters
     "nathan@nathanpeters.com": "Nathaniel.Peters@ca.com",
     "petna01@ca.com": "Nathaniel.Peters@ca.com",
+    # Vojtech Polasek
+    "Vojtech.Polasek@gmail.com": "vpolasek@redhat.com",
+    "krecoun@gmail.com": "vpolasek@redhat.com",
     # Martin Preisler
     "martin@preisler.me": "mpreisle@redhat.com",
     # Robin Price II
@@ -56,8 +64,6 @@ email_mappings = {
     "shawn@localhost.localdomain": "shawn@redhat.com",
     "shawnw@localhost.localdomain": "shawn@redhat.com",
     "shawndwells@gmail.com": "shawn@redhat.com",
-    # Vojtech Polasek
-    "Vojtech.Polasek@gmail.com": "vpolasek@redhat.com",
 
     # No idea / ignore
     "lyd@chippy.(none)": "",
