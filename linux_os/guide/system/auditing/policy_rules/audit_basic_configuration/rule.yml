@@ -1,0 +1,59 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure basic parameters of Audit system'
+
+description: |-
+    Perform basic configuration of Audit system.
+    Make sure that any previously defined rules are cleared, the auditing system is configured to handle sudden bursts of events, and in cases of failure, messages are configured to be directed to Syslog.
+
+    The following rules configure audit as described above:
+    <pre>
+## First rule - delete all
+-D
+
+## Increase the buffers to survive stress events.
+## Make this bigger for busy systems
+-b 8192
+
+## This determine how long to wait in burst of events
+--backlog_wait_time 60000
+
+## Set failure mode to syslog
+-f 1</pre>
+
+    Audit provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. You may copy the file located at <tt>/usr/share/audit/sample-rules/10-base-config.rules</tt> to <tt>/etc/audit/rules.d</tt>:
+    <pre>
+    cp /usr/share/audit/sample-rules/10-base-config.rules /etc/audit/rules.d/
+    </pre>
+
+rationale: |-
+    Without basic configurations, audit may not perform as expected. It may not be able to correctly handle events under stressful conditions, or log events in case of failure.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82369-0
+
+references:
+    ospp: FAU_GEN.1.1.c
+    nist: AU-2(a)
+    srg: SRG-OS-000365-GPOS-00152,SRG-OS-000475-GPOS-00220
+
+ocil_clause: 'the output of file differs or file doesn't exist'
+
+ocil: |-
+    To verify that audit is correctly configured according to recommended rules, run the following command:
+    <pre>grep -v '^\s*$\|^\s*\#.*$' /etc/audit/rules.d/10-base-config.rules</pre>
+    The output has to contain following lines in the exact order:
+    <pre>
+-D
+-b 8192
+--backlog_wait_time 60000
+-f 1</pre>
+
+template:
+    name: audit_rules_rule_file
+    vars:
+        file_id: 10-base-config
