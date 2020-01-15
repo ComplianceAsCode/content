@@ -190,6 +190,7 @@ def create_release(repo, args):
     with open(rn_file, "r") as rn:
         message = rn.read()
 
+    # Create release in Draft state
     release = repo.create_git_release(f"v{version}", f"Content {version}", message,
                                       True, False, git_commit)
     assets = [f"artifacts/scap-security-guide-{version}.zip",
