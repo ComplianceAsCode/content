@@ -121,16 +121,22 @@ def prep_next_release(env, args):
     jenkins_ci = get_jenkins_ci(env)
     jenkins_ci.forget_release_builds()
 
+    print(f"Creating commit for version bump")
+    local_repo = git.Repo('../')
+
+    bump_branch = local_repo.create_head('bump_version_0.1.48', local_repo.heads.master)
+    local_repo.head.reference = bump_branch
+    # reset the index and working tree to match the pointed-to commit
+    local_repo.head.reset(index=True, working_tree=True)
+
     # Call script that bumps version in CMakeLists.txt
     subprocess.call(["./bump_release_in_cmake.sh", f"{args.next_version}"])
 
-    print(f"Creating commit for version bump")
-    local_repo = git.Repo('../')
     index = local_repo.index
     cmakelists_path = os.path.join(local_repo.working_tree_dir, 'CMakeLists.txt')
     index.add([cmakelists_path])
+    index.commit(f"Bump version to {args.next_version}")
 
-    index.commit(f"Bump version to {args.version}")
     print(":: Push to your fork and make a PR to bump the version")
 
 def create_parser():
