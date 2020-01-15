@@ -135,11 +135,21 @@ class JenkinsCI(object):
         return all_built
 
     def _download_artifact(self, build_info, version):
-        filename = build_info['artifacts'][0]['fileName']
-        save_filename = filename.replace('nightly', version)
-        url = build_info['url'] + 'artifact/' + filename
-        print(f"Downloading {filename} to {self.artifacts_dir}{save_filename}")
-        urllib.request.urlretrieve(url, self.artifacts_dir + save_filename)
+        artifacts = build_info['artifacts']
+        for i in range(len(artifacts)):
+            filename = build_info['artifacts'][i]['fileName']
+            # zip files are created with nightly version
+            # while the tarball already contains the version number
+            filename_save = filename
+            if 'nightly' in filename:
+                filename_save = filename.replace('nightly', version)
+
+            url = build_info['url'] + 'artifact/' + filename
+            print(f"Downloading {filename} to {self.artifacts_dir}{filename_save}")
+            try:
+                urllib.request.urlretrieve(url, self.artifacts_dir + filename_save)
+            except urllib.error.HTTPError:
+                print(f"Artifact at {url} was not found")
 
     def _download_job_artifact(self, job_name, build_number, version):
         build_info = self.server.get_build_info(job_name, build_number)
