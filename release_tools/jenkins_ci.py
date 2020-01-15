@@ -54,7 +54,7 @@ class JenkinsCI(object):
             job_result = self._get_last_build_status(job_name)
             if job_result != 'SUCCESS':
                 all_green = False
-                print("Job {} is failing, it needs to be passing for the release".format(job_name))
+                print("Job {} is failing, verify if it release can proceed.".format(job_name))
             else:
                 print("Job {} is passing".format(job_name))
         return all_green
