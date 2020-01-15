@@ -111,7 +111,7 @@ def create_release(env, args):
 
     print(f"Creating release for version {args.version}")
     local_repo = git.Repo('../')
-    args.commit = local_repo.head.commit.hexsha
+    args.commit = local_repo.heads[f"stabilization-v{args.version}"].commit.hexsha
     content_gh.create_release(gh_repo, args)
     print(f":: Review Release {args.version} in GitHub and publish it.")
 
