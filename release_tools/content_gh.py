@@ -127,7 +127,7 @@ def generate_release_notes(repo, args):
     with open(rn_file, "w") as rn:
         rn.write("### Highlights:\n")
         hl_label = repo.get_label("Highlight")
-        hl_prs = repo.get_issues(milestone=milestone,state="closed",labels=[hl_label])
+        hl_prs = repo.get_issues(milestone=milestone, state="closed", labels=[hl_label])
         for pr in hl_prs:
             pr_title = pr.title
             pr_number = str(pr.number)

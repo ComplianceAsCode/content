@@ -10,19 +10,23 @@ import sys
 import content_gh
 from jenkins_ci import JenkinsCI
 
+
 def load_env(env_path):
     with open(env_path, 'r') as env_stream:
         env = yaml.safe_load(env_stream)
     return env
+
 
 def validate_env(env, env_path):
     env_ok = True
     mandatory_fields = ['github_token', 'jenkins_user', 'jenkins_token']
     for field in mandatory_fields:
         if field not in env:
-            print(f"Add your {field} in {env_path} file. Check the README.md for how to obtain it.")
+            print(f"Add your {field} in {env_path} file. "
+                  "Check the README.md for how to obtain it.")
             env_ok = True
     return env_ok
+
 
 def parse_version(cmakelists_path):
     regex = re.compile(r'set\(SSG_(.*)_VERSION (\d+)\)')
@@ -31,8 +35,9 @@ def parse_version(cmakelists_path):
         cmakelists_content = cmakelists_stream.read()
 
         matches = re.findall(regex, cmakelists_content)
-    version = { v_name.lower():v_value for v_name,v_value in matches }
+    version = {v_name.lower(): v_value for v_name, v_value in matches}
     return version
+
 
 def get_version_string(d):
     return f"{d['major']}.{d['minor']}.{d['patch']}"
@@ -41,6 +46,7 @@ def get_version_string(d):
 def get_next_version_string(d):
     d['patch'] = int(d['patch']) + 1
     return get_version_string(d)
+
 
 def get_gh_repo(env, args):
     gh = github.Github(env['github_token'])
@@ -62,7 +68,7 @@ def check_release(env, args):
     release_exists = content_gh.check_release_exists(gh_repo, args)
     if release_exists:
         print(f"Version {args.version} was released already, "
-                "bump the version in the CMakeLists.txt file before releasing.")
+              "bump the version in the CMakeLists.txt file before releasing.")
         return
 
     print("Checking Jenkins Jobs")
@@ -139,10 +145,11 @@ def prep_next_release(env, args):
 
     print(":: Push to your fork and make a PR to bump the version")
 
+
 def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', default='.env.yml', dest='env_path',
-                        help="Environment file with GitHub token and Jenkins username and token. "
+                        help="File with GitHub token and Jenkins username and token. "
                              "Check the README.md file to know what to put in the file")
     parser.add_argument("--owner", default="ComplianceAsCode")
     parser.add_argument("--repo", default="content")

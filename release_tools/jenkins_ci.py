@@ -8,6 +8,7 @@ import urllib.request
 
 from time import sleep
 
+
 class JenkinsCI(object):
     JENKINS_URL = "https://jenkins.complianceascode.io/"
     build_ids_file = ".jenkins_builds"
