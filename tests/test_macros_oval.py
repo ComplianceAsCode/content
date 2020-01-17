@@ -896,6 +896,148 @@ def main():
         "[vehicle]\nspeed =\n100",
         "false"
     )
+    tester.test(
+        "SHELL commented out",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        "# SHELL=/bin/bash\n",
+        "false"
+    )
+    tester.test(
+        "SHELL correct",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        " SHELL=/bin/bash\n",
+        "true"
+    )
+    tester.test(
+        "SHELL single-quoted",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin"/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        " SHELL='/bin\"/bash'\n",
+        "true"
+    )
+    tester.test(
+        "SHELL double-quoted",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='  /bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        """ SHELL="  /bin/bash"\n""",
+        "true"
+    )
+    tester.test(
+        "SHELL unwanted double-quoted",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='  /bin/bash',
+            no_quotes=true,
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        """ SHELL="  /bin/bash"\n""",
+        "false"
+    )
+    tester.test(
+        "SHELL unwanted single-quoted",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin"/bash',
+            no_quotes=true,
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        " SHELL='/bin\"/bash'\n",
+        "false"
+    )
+    tester.test(
+        "SHELL double-quoted spaced",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        """ SHELL= "/bin/bash"\n""",
+        "false"
+    )
+    tester.test(
+        "SHELL bad_var_case",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        """ Shell="/bin/bash"\n""",
+        "false"
+    )
+    tester.test(
+        "SHELL bad_value_case",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        """ SHELL="/bin/Bash"\n""",
+        "false"
+    )
+    tester.test(
+        "SHELL badly quoted",
+        r"""{{{ oval_check_shell_file(
+            path='CONFIG_FILE',
+            parameter='SHELL',
+            value='/bin/bash',
+            missing_parameter_pass=false,
+            application='',
+            multi_value=false,
+            missing_config_file_fail=false,
+        ) }}}""",
+        """ SHELL="/bin/bash'\n""",
+        "false"
+    )
 
     tester.finish()
 
