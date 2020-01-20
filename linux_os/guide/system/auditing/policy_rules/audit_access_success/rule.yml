@@ -1,0 +1,69 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure auditing of successful file accesses'
+
+description: |-
+    Ensure that successful attempts to access a file are audited.
+
+    The following rules configure audit as described above:
+    <pre>
+    ## Successful file access (any other opens) This has to go last.
+    ## These next two are likely to result in a whole lot of events
+    -a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    -a always,exit -F arch=b64 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    
+    </pre>
+
+    The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/30-ospp-v42-3-access-success.rules</tt>.
+    To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
+    <pre>
+    cp /usr/share/audit/sample-rules/30-ospp-v42-3-access-success.rules /etc/audit/rules.d/
+    </pre>
+    
+    The file has the following SHA-256 checksum:
+    <pre>d8267adb81be2e6fffb0b86341297ef0806261113fc59e29a7bf87a4e5dea0d8</pre>
+    
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+    
+    Note: This rule utilizes a file provided by <tt>Audit</tt> package to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
+    
+
+rationale: |-
+    Auditing of successful attempts to access a file helps in investigation of activities performed on the system. 
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82468-0
+
+references:
+    ospp: FAU_GEN.1.1.c
+    nist: AU-2(a)
+    srg: SRG-OS-000458-GPOS-00203,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000461-GPOS-00205
+
+ocil_clause: 'the content or the hash of file differs or file does not exist'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/30-ospp-v42-3-access-success.rules</pre>
+    The output has to be exactly as follows:
+    <pre>
+    ## Successful file access (any other opens) This has to go last.
+    ## These next two are likely to result in a whole lot of events
+    -a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    -a always,exit -F arch=b64 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
+    
+    </pre>
+    You can check the SHA-256 hash of the file with the following command:
+    <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-3-access-success.rules</pre>
+    The output of the command has to be exactly the following hash:
+    <pre>d8267adb81be2e6fffb0b86341297ef0806261113fc59e29a7bf87a4e5dea0d8</pre>
+
+
+template:
+    name: audit_rules_rule_file
+    vars:
+        file_id: 30-ospp-v42-3-access-success

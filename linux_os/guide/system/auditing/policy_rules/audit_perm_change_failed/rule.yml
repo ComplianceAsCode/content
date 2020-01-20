@@ -1,0 +1,70 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure auditing of unsuccessful permission changes'
+
+description: |-
+    Ensure that unsuccessful attempts to change file or directory permissions are audited.
+
+    The following rules configure audit as described above:
+    <pre>
+    ## Unsuccessful permission change
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    
+    </pre>
+
+    The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/30-ospp-v42-5-perm-change-failed.rules</tt>.
+    To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
+    <pre>
+    cp /usr/share/audit/sample-rules/30-ospp-v42-5-perm-change-failed.rules /etc/audit/rules.d/
+    </pre>
+    
+    The file has the following SHA-256 checksum:
+    <pre>ddd91b8bb35bb9559163c6402ebcd3b06e7ecf84a1bb6d5aed89a3f94f4109cd</pre>
+    
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+    
+    Note: This rule utilizes a file provided by <tt>Audit</tt> package to comply with OSPP 4.2.1. You may reuse this rule in different profiles. If you decide to do so, it is recommended that you inspect contents of the file closely and make sure that they are alligned with your needs.
+
+rationale: |-
+    Unsuccessful attempts to change permissions of files or directories might be signs of malicious activity. Having such events audited helps in monitoring and investigation of such activities. 
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82471-4
+
+references:
+    ospp: FAU_GEN.1.1.c
+    nist: AU-2(a)
+    srg: SRG-OS-000462-GPOS-00206,SRG-OS-000463-GPOS-00207,SRG-OS-000465-GPOS-00209,SRG-OS-000474-GPOS-00219,SRG-OS-000475-GPOS-00220
+
+ocil_clause: 'the content or the hash of file differs or file does not exist'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/30-ospp-v42-5-perm-change-failed.rules</pre>
+    The output has to be exactly as follows:
+    <pre>
+    ## Unsuccessful permission change
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-perm-change
+    
+    </pre>
+    You can check the SHA-256 hash of the file with the following command:
+    <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-5-perm-change-failed.rules</pre>
+    The output of the command has to be exactly the following hash:
+    <pre>ddd91b8bb35bb9559163c6402ebcd3b06e7ecf84a1bb6d5aed89a3f94f4109cd</pre>
+
+
+template:
+    name: audit_rules_rule_file
+    vars:
+        file_id: 30-ospp-v42-5-perm-change-failed
