@@ -128,6 +128,16 @@ def audit_rules_usergroup_modification(data, lang):
     return data
 
 
+@template(["ansible", "bash", "oval"])
+def file_contents(data, lang):
+    if lang == "oval":
+        pathid = re.sub(r'[-\./]', '_', data["filepath"])
+        # remove root slash made into '_'
+        pathid = pathid[1:]
+        data["filepath_id"] = pathid
+    return data
+
+
 def _file_owner_groupowner_permissions_regex(data):
     data["is_directory"] = data["filepath"].endswith("/")
     if "missing_file_pass" not in data:
