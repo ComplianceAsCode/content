@@ -70,6 +70,8 @@ ocil: |-
     <pre>54c2cebdaadfb928f7327cc066218e38743f0ff94d02fe162a7a415e148d23a8</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 10-base-config
+        filepath: /etc/audit/rules.d/10-base-config.rules
+        contents: |+
+            {{{ file_contents_audit_base_config|indent(12, blank=True) }}}
