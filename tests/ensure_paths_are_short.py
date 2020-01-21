@@ -13,6 +13,10 @@ def main():
     ssg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     max_path = ""
     for dir_, _, files in os.walk(ssg_root):
+        # Don't check for path len of log files
+        # They are not shipped nor used during build
+        if "tests/logs/" in dir_:
+            continue
         for file_ in files:
             path = os.path.relpath(os.path.join(dir_, file_), ssg_root)
             if len(path) > len(max_path):
