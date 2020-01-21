@@ -293,7 +293,7 @@ def sshd_lineinfile(data, lang):
 @template(["ansible", "bash", "oval"])
 def shell_lineinfile(data, lang):
     value = data["value"]
-    if value[0] in ("'", '"') and value[0] == value[1]:
+    if value[0] in ("'", '"') and value[0] == value[-1]:
         msg = (
             "Value >>{value}<< of shell variable '{varname}' "
             "has been supplied with quotes, please fix the content - "
