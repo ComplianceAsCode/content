@@ -233,7 +233,7 @@
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
-    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration file doesn't exist in the system.
 
   We specify a case insensitive comparison in the prefix because
   sshd_config has case-insensitive parameters (but case-sensitive values).
@@ -250,7 +250,7 @@
     - value (String): The variable value WITHOUT QUOTES.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
-    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration file doesn't exist in the system.
 #}}
 {{%- macro oval_check_shell_file(path, parameter='', value='', application='', no_quotes=false, missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
 {{% if no_quotes -%}}
@@ -268,8 +268,7 @@
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
-    - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
-
+    - missing_config_file_fail (boolean): If set, the check will fail if the configuration file doesn't exist in the system.
 #}}
 {{%- macro oval_auditd_config(parameter='', value='', missing_parameter_pass=false, multi_value=false, missing_config_file_fail=false) %}}
 {{{ oval_check_config_file("/etc/audit/auditd.conf", prefix_regex="^[ \\t]*(?i)", parameter=parameter, separator_regex='(?-i)[ \\t]*=[ \\t]*', value="(?i)"+value+"(?-i)", missing_parameter_pass=missing_parameter_pass, application="auditd", multi_value=multi_value, missing_config_file_fail=missing_config_file_fail) }}}
