@@ -74,4 +74,4 @@ template:
     vars:
         filepath: /etc/audit/rules.d/10-base-config.rules
         contents: |+
-            {{{ file_contents_audit_base_config|indent(12, blank=True) }}}
+            {{{ file_contents_audit_base_config|indent(12) }}}
