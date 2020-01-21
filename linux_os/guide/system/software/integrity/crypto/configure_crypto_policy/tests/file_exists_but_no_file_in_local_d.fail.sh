@@ -5,7 +5,7 @@
 #using example of openssh server
 CRYPTO_POLICY_FILE="/etc/crypto-policies/back-ends/opensshserver.config"
 
-update-crypto-policies --set "FIPS"
+update-crypto-policies --set "FIPS:OSPP"
 
 rm -f /etc/crypto-policies/local.d/opensshserver-*.config
 rm -f "$CRYPTO_POLICY_FILE"
