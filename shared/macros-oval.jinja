@@ -13,13 +13,16 @@
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - separator_regex (String): Regular expression to be used as the separator of parameter and value in a configuration file. If spaces are allowed, this should be included in the regular expression.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
-    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
     - section (String): If set, the parameter will be checked only within the given section defined by [section].
     - quotes (String): If non-empty, one level of matching quotes is considered when checking the value. See comment of oval_line_in_file_state for more info.
 #}}
 {{%- macro oval_check_config_file(path='', prefix_regex='^[ \\t]*', parameter='', separator_regex='[ \\t]+', value='', missing_parameter_pass=false, application='', multi_value=false, missing_config_file_fail=false, section='', quotes='') -%}}
+{{%- if application == '' -%}}
+	{{%- set application = "The respective application or service" -%}}
+{{%- endif -%}}
 <def-group>
   <definition class="compliance" id="{{{ rule_id }}}" version="1">
     <metadata>
@@ -248,6 +251,9 @@
     - path (String): Path to the file.
     - parameter (String): The shell variable name.
     - value (String): The variable value WITHOUT QUOTES.
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
+    - no_quotes (boolean): If set, the check will require that the RHS of the assignment is the literal value, without quotes.
+        If no_quotes is false, then one level of single or double quotes won't be regarded as part of the value by the check.
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration file doesn't exist in the system.
@@ -342,7 +348,7 @@
     - parameter (String): The parameter to be checked in the configuration file.
     - value (String): The value to be checked. This can also be a regular expression (e.g: value1|value2 can match both values).
     - missing_parameter_pass (boolean): If set, the check will also pass if the parameter is not present in the configuration file (default is applied).
-    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the OVAL check.
+    - application (String): The application which the configuration file is being checked. Can be any value and does not affect the actual OVAL check.
     - multi_value (boolean): If set, it means that the parameter can accept multiple values and the expected value must be present in the current list of values.
     - missing_config_file_fail (boolean): If set, the check will fail if the configuration is not existent in the system.
 #}}
