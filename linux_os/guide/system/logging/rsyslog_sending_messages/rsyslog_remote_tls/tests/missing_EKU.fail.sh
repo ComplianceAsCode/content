@@ -6,8 +6,7 @@ action(type="omfwd"
        protocol="tcp"
        Target="remote.system.com"
        port="6514"
-       StreamDriver="ptcp"
+       StreamDriver="gtls"
        StreamDriverMode="1"
-       StreamDriverAuthMode="x509/name"
-       streamdriver.CheckExtendedKeyPurpose="on")
+       StreamDriverAuthMode="x509/name")
 EOF
