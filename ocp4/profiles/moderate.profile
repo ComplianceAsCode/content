@@ -607,3 +607,6 @@ selections:
     - audit_rules_etc_shadow_openat
     - audit_rules_etc_shadow_open_by_handle_at
     - directory_access_var_log_audit
+
+    # CM-7
+    - kernel_module_usb-storage_disabled
