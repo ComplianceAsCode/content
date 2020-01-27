@@ -610,3 +610,4 @@ selections:
 
     # CM-7
     - kernel_module_usb-storage_disabled
+    - kernel_module_squashfs_disabled
