@@ -4,17 +4,18 @@ prodtype: rhel8
 
 title: 'Configure auditing of successful file accesses'
 
+{{% set file_contents_audit_access_success =
+"## Successful file access (any other opens) This has to go last.
+## These next two are likely to result in a whole lot of events
+-a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-access
+-a always,exit -F arch=b64 -S open,openat,open_by_handle_at -F success=1 -F auid&gt;=1000 -F auid!=unset -F key=successful-access
+" %}}
+
 description: |-
     Ensure that successful attempts to access a file are audited.
 
     The following rules configure audit as described above:
-    <pre>
-    ## Successful file access (any other opens) This has to go last.
-    ## These next two are likely to result in a whole lot of events
-    -a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    -a always,exit -F arch=b64 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    
-    </pre>
+    <pre>{{{ file_contents_audit_access_success|indent }}}    </pre>
 
     The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/30-ospp-v42-3-access-success.rules</tt>.
     To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
@@ -50,13 +51,7 @@ ocil: |-
     To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
     <pre>cat /etc/audit/rules.d/30-ospp-v42-3-access-success.rules</pre>
     The output has to be exactly as follows:
-    <pre>
-    ## Successful file access (any other opens) This has to go last.
-    ## These next two are likely to result in a whole lot of events
-    -a always,exit -F arch=b32 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    -a always,exit -F arch=b64 -S open,openat,open_by_handle_at -F success=1 -F auid>=1000 -F auid!=unset -F key=successful-access
-    
-    </pre>
+    <pre>{{{ file_contents_audit_access_success|indent }}}    </pre>
     You can check the SHA-256 hash of the file with the following command:
     <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-3-access-success.rules</pre>
     The output of the command has to be exactly the following hash:

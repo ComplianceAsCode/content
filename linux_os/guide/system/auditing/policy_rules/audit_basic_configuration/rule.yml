@@ -5,7 +5,7 @@ prodtype: rhel8
 title: 'Configure basic parameters of Audit system'
 
 {{% set file_contents_audit_base_config =
-'## First rule - delete all
+"## First rule - delete all
 -D
 
 ## Increase the buffers to survive stress events.
@@ -18,16 +18,14 @@ title: 'Configure basic parameters of Audit system'
 ## Set failure mode to syslog
 -f 1
 
-' %}}
+" %}}
 
 description: |-
     Perform basic configuration of Audit system.
     Make sure that any previously defined rules are cleared, the auditing system is configured to handle sudden bursts of events, and in cases of failure, messages are configured to be directed to system log.
 
     The following rules configure audit as described above:
-    <pre>
-    {{{ file_contents_audit_base_config|indent }}}
-    </pre>
+    <pre>{{{ file_contents_audit_base_config|indent }}}    </pre>
 
     The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/10-base-config.rules</tt>.
     To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
@@ -61,9 +59,7 @@ ocil: |-
     To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
     <pre>cat /etc/audit/rules.d/10-base-config.rules</pre>
     The output has to be exactly as follows:
-    <pre>
-    {{{ file_contents_audit_base_config|indent }}}
-    </pre>
+    <pre>{{{ file_contents_audit_base_config|indent }}}    </pre>
     You can check the SHA-256 hash of the file with the following command:
     <pre>sha256sum /etc/audit/rules.d/10-base-config.rules</pre>
     The output of the command has to be exactly the following hash:

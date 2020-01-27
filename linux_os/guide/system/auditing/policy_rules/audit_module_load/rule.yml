@@ -4,19 +4,20 @@ prodtype: rhel8
 
 title: 'Configure auditing of loading and unloading of kernel modules'
 
+{{% set file_contents_audit_module_load =
+"## These rules watch for kernel module insertion. By monitoring
+## the syscall, we do not need any watches on programs.
+-a always,exit -F arch=b32 -S init_module,finit_module -F key=module-load
+-a always,exit -F arch=b64 -S init_module,finit_module -F key=module-load
+-a always,exit -F arch=b32 -S delete_module -F key=module-unload
+-a always,exit -F arch=b64 -S delete_module -F key=module-unload
+" %}}
+
 description: |-
     Ensure that loading and unloading of kernel modules is audited.
 
     The following rules configure audit as described above:
-    <pre>
-    ## These rules watch for kernel module insertion. By monitoring
-    ## the syscall, we do not need any watches on programs.
-    -a always,exit -F arch=b32 -S init_module,finit_module -F key=module-load
-    -a always,exit -F arch=b64 -S init_module,finit_module -F key=module-load
-    -a always,exit -F arch=b32 -S delete_module -F key=module-unload
-    -a always,exit -F arch=b64 -S delete_module -F key=module-unload
-    
-    </pre>
+    <pre>{{{ file_contents_audit_module_load|indent }}}    </pre>
 
     The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/43-module-load.rules</tt>.
     To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
@@ -50,15 +51,7 @@ ocil: |-
     To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
     <pre>cat /etc/audit/rules.d/43-module-load.rules</pre>
     The output has to be exactly as follows:
-    <pre>
-    ## These rules watch for kernel module insertion. By monitoring
-    ## the syscall, we do not need any watches on programs.
-    -a always,exit -F arch=b32 -S init_module,finit_module -F key=module-load
-    -a always,exit -F arch=b64 -S init_module,finit_module -F key=module-load
-    -a always,exit -F arch=b32 -S delete_module -F key=module-unload
-    -a always,exit -F arch=b64 -S delete_module -F key=module-unload
-    
-    </pre>
+    <pre>{{{ file_contents_audit_module_load|indent }}}    </pre>
     You can check the SHA-256 hash of the file with the following command:
     <pre>sha256sum /etc/audit/rules.d/43-module-load.rules</pre>
     The output of the command has to be exactly the following hash:

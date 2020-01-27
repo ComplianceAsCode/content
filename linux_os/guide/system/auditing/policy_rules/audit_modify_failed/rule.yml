@@ -4,26 +4,27 @@ prodtype: rhel8
 
 title: 'Configure auditing of unsuccessful file modifications'
 
+{{% set file_contents_audit_modify_failed =
+"## Unsuccessful file modifications (open for write or truncate)
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+-a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=unset -F key=unsuccessful-modification
+" %}}
+
 description: |-
     Ensure that unsuccessful attempts to modify a file are audited.
 
     The following rules configure audit as described above:
-    <pre>
-    ## Unsuccessful file modifications (open for write or truncate)
-    -a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    
-    </pre>
+    <pre>{{{ file_contents_audit_modify_failed|indent }}}    </pre>
 
     The <tt>Audit</tt> package provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/30-ospp-v42-2-modify-failed.rules</tt>.
     To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
@@ -58,22 +59,7 @@ ocil: |-
     To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
     <pre>cat /etc/audit/rules.d/30-ospp-v42-2-modify-failed.rules</pre>
     The output has to be exactly as follows:
-    <pre>
-    ## Unsuccessful file modifications (open for write or truncate)
-    -a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S openat,open_by_handle_at -F a2&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S open -F a1&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S open -F a1&amp;01003 -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b32 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    -a always,exit -F arch=b64 -S truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -F key=unsuccessful-modification
-    
-    </pre>
+    <pre>{{{ file_contents_audit_modify_failed|indent }}}    </pre>
     You can check the SHA-256 hash of the file with the following command:
     <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-2-modify-failed.rules</pre>
     The output of the command has to be exactly the following hash:
