@@ -59,6 +59,7 @@ selections:
     - sshd_enable_warning_banner
     - sshd_rekey_limit
     - sshd_use_strong_rng
+    - openssl_use_strong_entropy
 
     # Time Server
     - chronyd_client_only

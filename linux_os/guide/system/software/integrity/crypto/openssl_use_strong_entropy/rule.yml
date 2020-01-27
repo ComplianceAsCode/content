@@ -1,0 +1,65 @@
+documentation_complete: true
+
+# TODO: The plan is not to need this for RHEL>=8.4
+prodtype: rhel8
+
+title: 'OpenSSL uses strong entropy source'
+
+description: |-
+    To set up an <tt>openssl</tt> wrapper that adds a <tt>-rand /dev/random</tt> option to the <tt>openssl</tt> invocation,
+    save the following shell snippet to the <tt>/etc/profile.d/cc-config.sh</tt>:
+    <pre>
+    # provide a default -rand /dev/random option to openssl commands that
+    # support it
+
+    # written inefficiently for maximum shell compatibility
+    openssl()
+    (
+      openssl_bin=/usr/bin/openssl
+
+      case "$*" in
+        # if user specified -rand, honor it
+        *\ -rand\ *|*\ -help*) exec $openssl_bin "$@" ;;
+      esac
+
+      cmds=`$openssl_bin list -digest-commands -cipher-commands | tr '\n' ' '`
+      for i in `$openssl_bin list -commands`; do
+        if $openssl_bin list -options "$i" | grep -q '^rand '; then
+          cmds=" $i $cmds"
+        fi
+      done
+
+      case "$cmds" in
+        *\ "$1"\ *)
+          cmd="$1"; shift
+          exec $openssl_bin "$cmd" -rand /dev/random "$@" ;;
+      esac
+
+      exec $openssl_bin "$@"
+    )
+    </pre>
+
+rationale: |-
+    The <tt>openssl</tt> default configuration uses less robust entropy sources for seeding.
+    The referenced script is sourced to every login shell, and it transparently adds an option
+    that enforces strong entropy to every <tt>openssl</tt> invocation,
+    which makes <tt>openssl</tt> more secure by default.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82721-2
+
+references:
+    ospp: FIA_AFL.1
+
+ocil: |-
+    To determine whether the <tt>openssl</tt> wrapper is configured correcrlty,
+    make sure that the <tt>/etc/profile.d/cc-config.sh</tt> file contains contents
+    that are included in the rule's description.
+
+ocil_clause: |-
+    there is no <tt>/etc/profile.d/cc-config.sh</tt> file, or its contents don't match those in the description
+
+warnings:
+    - general: "This setting can cause problems on computers without the hardware random generator, because insufficient entropy blocks the program until enough entropy is available."
