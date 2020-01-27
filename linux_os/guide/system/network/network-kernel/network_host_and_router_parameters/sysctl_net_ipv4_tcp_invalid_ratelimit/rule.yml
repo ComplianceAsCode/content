@@ -29,7 +29,7 @@ rationale: |-
 severity: medium
 
 identifiers:
-    cce@rhel7: 82365-8
+    cce@rhel7: 82893-9
 
 references:
     disa: "2385"
@@ -47,7 +47,8 @@ ocil: |-
     <pre># grep 'net.ipv4.tcp_invalid_ratelimit' /etc/sysctl.conf /etc/sysctl.d/*</pre>
     The command should output the following line:
     <pre>/etc/sysctl.conf:net.ipv4.tcp_invalid_ratelimit = 500</pre>
-    The file where the line has been found can differ, but it must be either <tt>/etc/sysctl.conf</tt> or a file located under the <tt>/etc/sysctl.d/</tt> directory.
+    The file where the line has been found can differ, but it must be either <tt>/etc/sysctl.conf</tt>
+    or a file located under the <tt>/etc/sysctl.d/</tt> directory.
 
 template:
     name: sysctl
