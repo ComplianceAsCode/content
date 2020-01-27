@@ -9,34 +9,7 @@ description: |-
     To set up an <tt>openssl</tt> wrapper that adds a <tt>-rand /dev/random</tt> option to the <tt>openssl</tt> invocation,
     save the following shell snippet to the <tt>/etc/profile.d/cc-config.sh</tt>:
     <pre>
-    # provide a default -rand /dev/random option to openssl commands that
-    # support it
-
-    # written inefficiently for maximum shell compatibility
-    openssl()
-    (
-      openssl_bin=/usr/bin/openssl
-
-      case "$*" in
-        # if user specified -rand, honor it
-        *\ -rand\ *|*\ -help*) exec $openssl_bin "$@" ;;
-      esac
-
-      cmds=`$openssl_bin list -digest-commands -cipher-commands | tr '\n' ' '`
-      for i in `$openssl_bin list -commands`; do
-        if $openssl_bin list -options "$i" | grep -q '^rand '; then
-          cmds=" $i $cmds"
-        fi
-      done
-
-      case "$cmds" in
-        *\ "$1"\ *)
-          cmd="$1"; shift
-          exec $openssl_bin "$cmd" -rand /dev/random "$@" ;;
-      esac
-
-      exec $openssl_bin "$@"
-    )
+    {{{ openssl_strong_entropy_config_file() | indent(4) }}}
     </pre>
 
 rationale: |-

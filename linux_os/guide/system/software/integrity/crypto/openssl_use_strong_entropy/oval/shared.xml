@@ -1,0 +1,34 @@
+<def-group>
+  <definition class="compliance" id="openssl_use_strong_entropy" version="1">
+    <metadata>
+      <title>Configure Openssl to use strong entropy</title>
+      <affected family="unix">
+        <platform>Red Hat Enterprise Linux 8</platform>
+        <platform>multi_platform_fedora</platform>
+      </affected>
+      <description>OpenSSL should be configured to generate random data with strong entropy.</description>
+    </metadata>
+    <criteria>
+      <criterion test_ref="test_openssl_strong_entropy"
+      comment="Check that the OpenSSL is configured to generate random data with strong entropy." />
+    </criteria>
+  </definition>
+
+  <ind:filehash58_test id="test_openssl_strong_entropy"
+  comment="Test if openssl is configured to generate random data with strong entropy" version="1"
+  check="all" check_existence="all_exist">
+    <ind:object object_ref="object_openssl_strong_entropy"/>
+    <ind:state state_ref="state_openssl_strong_entropy"/>
+  </ind:filehash58_test>
+
+  <ind:filehash58_object id="object_openssl_strong_entropy" version="1">
+    <ind:filepath>/etc/profile.d/cc-config.sh</ind:filepath>
+    <ind:hash_type>SHA-256</ind:hash_type>
+  </ind:filehash58_object>
+
+  <ind:filehash58_state id="state_openssl_strong_entropy" version="1">
+    <ind:filepath>/etc/profile.d/cc-config.sh</ind:filepath>
+    <ind:hash_type>SHA-256</ind:hash_type>
+    <ind:hash>6488c757642cd493da09dd78ee27f039711a1ad79039900970553772fd2106af</ind:hash>
+  </ind:filehash58_state>
+</def-group>
