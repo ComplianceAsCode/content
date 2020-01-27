@@ -74,7 +74,8 @@ selections:
     #- sshd_disable_kerb_auth
     #- sshd_disable_gssapi_auth
     #- var_sshd_set_keepalive=0
-    #- sshd_set_keepalive
+    # AC-2(5)
+    - sshd_set_keepalive
     #- sshd_enable_warning_banner
     #- sshd_rekey_limit
 
@@ -158,6 +159,7 @@ selections:
     - sysctl_fs_protected_symlinks
 
     ### Audit
+    # AC-2(4) and others
     - service_auditd_enabled
     - var_auditd_flush=incremental_async
     - auditd_data_retention_flush
@@ -315,7 +317,8 @@ selections:
     ## Set Screen Lock Timeout Period to 30 Minutes or Less
     ## AC-11(a) / FMT_MOF_EXT.1
     #- sshd_idle_timeout_value=10_minutes
-    #- sshd_set_idle_timeout
+    # AC-2(5)
+    - sshd_set_idle_timeout
 
     ## Disable Unauthenticated Login (such as Guest Accounts)
     ## FIA_AFL.1
@@ -504,6 +507,7 @@ selections:
     - audit_rules_unsuccessful_file_modification_truncate
     - audit_rules_unsuccessful_file_modification_unlink
     - audit_rules_unsuccessful_file_modification_unlinkat
+    # AC-2(4)
     - audit_rules_usergroup_modification_group
     - audit_rules_usergroup_modification_gshadow
     - audit_rules_usergroup_modification_opasswd
@@ -574,6 +578,9 @@ selections:
     # AU-11
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
+
+    # AC-2(3)
+    - account_disable_post_pw_expiration
 
     # AC-2(5), AC-12
     #- accounts_tmout
