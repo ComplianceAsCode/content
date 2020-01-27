@@ -25,7 +25,7 @@
     {{%- elif insert_before %}}
     insertbefore: '{{{ insert_before }}}'
     {{%- endif %}}
-    {{% else %}}
+    {{%- else %}}
     state: '{{{ state }}}'
     {{%- endif %}}
     {{%- if validate %}}
@@ -139,6 +139,24 @@
 #}}
 {{%- macro ansible_sshd_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/ssh/sshd_config", parameter, value=value, create="yes", prefix_regex='(?i)^\s*', validate="/usr/sbin/sshd -t -f %s", insert_before="^[#\s]*Match") }}}
+{{%- endmacro %}}
+
+{{#
+  High level macro to set a value in a shell-related file that contains var assignments. This
+  takes these values:
+  - msg (the name for the Ansible task),
+  - path to the file,
+  - parameter to set in the configuration file, and
+  - value to set it to.
+  We also specify the validation program here; see 'bash -c "help set" | grep -e -n'
+#}}
+{{%- macro ansible_shell_set(msg, path, parameter, value='', no_quotes=false) %}}
+{{% if no_quotes -%}}
+{{%- else -%}}
+{{# Use the double quotes in all cases, as the underlying macro single-quotes the assignment line. #}}
+{{% set value = '"%s"' % value %}}
+{{%- endif -%}}
+{{{ ansible_set_config_file(msg, path, parameter, separator="=", separator_regex="=", value=value, create="yes", prefix_regex='^\s*', validate="/usr/bin/bash -n %s", insert_before="^# " ~ parameter) }}}
 {{%- endmacro %}}
 
 {{#

@@ -1,5 +1,31 @@
 {{# ##### High level macros ##### #}}
 
+{{%- macro bash_shell_file_set(path, parameter, value, no_quotes=false) -%}}
+{{% if no_quotes -%}}
+  {{% if "$" in value %}}
+  {{% set value = '%s' % value.replace("$", "\\$") %}}
+  {{% endif %}}
+{{%- else -%}}
+  {{% if "$" in value %}}
+  {{% set value = '\\"%s\\"' % value.replace("$", "\\$") %}}
+  {{% else %}}
+  {{% set value = "'%s'" % value %}}
+  {{% endif %}}
+{{%- endif -%}}
+{{{ set_config_file(
+        path=path,
+        parameter=parameter,
+        value=value,
+        create=true,
+        insert_after="",
+        insert_before="^#\s*" ~ parameter,
+        insensitive=false,
+        separator="=",
+        separator_regex="=",
+        prefix_regex="^\s*")
+    }}}
+{{%- endmacro -%}}
+
 {{%- macro bash_sshd_config_set(parameter, value) -%}}
 {{{ set_config_file(
         path="/etc/ssh/sshd_config",

@@ -1591,6 +1591,27 @@ service_enabled::
 ** *daemonname* - name of the daemon. This argument is optional. If *daemonname* is not specified it means the name of the daemon is the same as the name of service.
 * Languages: Ansible, Bash, OVAL, Puppet
 
+shell_lineinfile::
+* Checks shell variable assignments in files.
+Remediations will paste assignments with single shell quotes unless there is the dollar sign in the value string, in which case double quotes are administered.
+The OVAL checks for a match with either of no quotes, single quoted string, or double quoted string.
+* Parameters:
+** *path* - What file to check.
+** *parameter* - name of the shell variable, eg. `SHELL`.
+** *value* - value of the SSH configuration option specified by *parameter*, eg. `"/bin/bash"`. Don't pass extra shell quoting - that will be handled on the lower level.
+** *no_quotes* - If set to `"true"`, the assigned value has to be without quotes during the check and remediation doesn't quote assignments either.
+** *missing_parameter_pass* - If set to `"true"` the OVAL check will pass if the parameter is not present in the target file.
+* Languages: Ansible, Bash, OVAL
+* Example:
+A template invocation specifying that parameter `HISTSIZE` should be set to value `500` in `/etc/profile` will produce a check that passes if any of the following lines are present in `/etc/profile`:
+** `HISTSIZE=500`
+** `HISTSIZE="500"`
+** `HISTSIZE='500'`
++
+The remediation would insert one of the quoted forms if the line was not present.
++
+If the `no_quotes` would be set in the template, only the first form would be checked for, and the unquoted assignment would be inserted to the file by the remediation if not present.
+
 sshd_lineinfile::
 * Checks SSH server configuration items in `/etc/ssh/sshd_config`.
 * Parameters:
