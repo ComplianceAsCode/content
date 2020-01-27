@@ -531,7 +531,7 @@ selections:
     # AC-19
     - grub2_nousb_argument
     - bios_disable_usb_boot
-    #- service_autofs_disabled
+    - service_autofs_disabled
     #- mount_option_nosuid_removable_partitions
     #- mount_option_nodev_removable_partitions
     #- mount_option_noexec_removable_partitions
