@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_tls_cert" version="1">
     <metadata>
       <title>Configure the Certificate for the API Server</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The certificate file should be configured in servingInfo.</description>
     </metadata>
     <criteria operator="AND">

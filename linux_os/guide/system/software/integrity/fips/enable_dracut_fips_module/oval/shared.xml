@@ -2,11 +2,7 @@
   <definition class="compliance" id="enable_dracut_fips_module" version="1">
     <metadata>
       <title>Enable Dracut FIPS Module</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>fips module should be enabled in Dracut configuration</description>
     </metadata>
     <criteria operator="AND">

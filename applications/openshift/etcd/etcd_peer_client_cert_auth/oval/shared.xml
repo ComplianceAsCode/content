@@ -2,9 +2,7 @@
   <definition class="compliance" id="etcd_peer_client_cert_auth" version="1">
     <metadata>
       <title>Enable Peer Client Certificate Authentication</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Ensure OpenShift has enabled Peer Client Certificate Authentication</description>
     </metadata>
     <criteria operator="AND">

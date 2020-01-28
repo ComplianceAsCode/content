@@ -2,9 +2,7 @@
   <definition class="compliance" id="etcd_peer_key_file" version="1">
     <metadata>
       <title>Ensure etcd Peer Client Key is Correctly Set</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>ETCD_PEER_KEY_FILE is correctly set</description>
     </metadata>
     <criteria operator="AND">

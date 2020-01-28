@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_audit_log_maxage" version="1">
     <metadata>
       <title>Configure the Audit Log Maxage</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure audit log retention.</description>
     </metadata>
     <criteria operator="AND">

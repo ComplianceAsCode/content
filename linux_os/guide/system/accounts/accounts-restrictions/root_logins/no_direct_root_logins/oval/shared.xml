@@ -2,9 +2,7 @@
   <definition class="compliance" id="no_direct_root_logins" version="1">
     <metadata>
       <title>Direct root Logins Not Allowed</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Preventing direct root logins help ensure accountability for actions
       taken on the system using the root account.</description>
     </metadata>

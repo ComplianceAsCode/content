@@ -2,9 +2,7 @@
   <definition class="compliance" id="no_empty_passwords" version="1">
     <metadata>
       <title>No nullok Option in /etc/pam.d/system-auth</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The file /etc/pam.d/system-auth should not contain the nullok option</description>
     </metadata>
     <criteria>

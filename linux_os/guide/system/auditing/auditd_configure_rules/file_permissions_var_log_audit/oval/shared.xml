@@ -2,12 +2,7 @@
   <definition class="compliance" id="file_permissions_var_log_audit" version="2">
     <metadata>
       <title>Verify /var/log/audit Permissions</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Checks for correct permissions for all log files in /var/log/audit.</description>
     </metadata>
     <criteria operator="OR">

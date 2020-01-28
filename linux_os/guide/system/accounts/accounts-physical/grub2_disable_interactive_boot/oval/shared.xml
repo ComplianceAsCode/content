@@ -2,13 +2,7 @@
   <definition class="compliance" id="grub2_disable_interactive_boot" version="4">
     <metadata>
       <title>Verify that Interactive Boot is Disabled</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The ability for users to perform interactive startups should
       be disabled.</description>
     </metadata>

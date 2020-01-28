@@ -2,9 +2,7 @@
   <definition class="compliance" id="file_ownership_var_log_audit" version="3">
     <metadata>
       <title>Verify /var/log/audit Ownership</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Checks that all /var/log/audit files and directories are owned by the root user and group.</description>
     </metadata>
     <criteria operator="OR">

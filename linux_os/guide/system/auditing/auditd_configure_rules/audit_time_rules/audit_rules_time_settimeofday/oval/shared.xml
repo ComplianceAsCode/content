@@ -2,12 +2,7 @@
   <definition class="compliance" id="audit_rules_time_settimeofday" version="1">
     <metadata>
       <title>Record Attempts to Alter Time Through Settimeofday</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Record attempts to alter time through settimeofday.</description>
     </metadata>
 

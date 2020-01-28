@@ -2,11 +2,7 @@
   <definition class="compliance" id="configure_libreswan_crypto_policy" version="1">
     <metadata>
       <title>Configure Libreswan to use System Crypto Policy.</title>
-      <affected family="unix">
-        <platform>multi_platform_fedora</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Oracle Linux 8</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Libreswan should be configured to use the system-wide crypto policy setting.</description>
     </metadata>
     <criteria operator="OR">

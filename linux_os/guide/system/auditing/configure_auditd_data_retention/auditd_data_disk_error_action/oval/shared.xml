@@ -2,9 +2,7 @@
   <definition class="compliance" id="auditd_data_disk_error_action" version="1">
     <metadata>
       <title>Auditd Action to Take When Disk Errors</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>disk_error_action setting in /etc/audit/auditd.conf is set to a certain action</description>
     </metadata>
 

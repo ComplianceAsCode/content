@@ -2,12 +2,7 @@
   <definition class="compliance" id="chronyd_or_ntpd_set_maxpoll" version="1">
     <metadata>
       <title>Configure Time Service Maxpoll Interval</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_wrlinux</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure the maxpoll setting in /etc/ntp.conf or chrony.conf
       to continuously poll the time source servers.</description>
     </metadata>

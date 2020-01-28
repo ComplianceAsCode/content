@@ -2,12 +2,7 @@
   <definition class="compliance" id="audit_rules_immutable" version="1">
     <metadata>
       <title>Make Audit Configuration Immutable</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Force a reboot to change audit rules is enabled</description>
     </metadata>
 

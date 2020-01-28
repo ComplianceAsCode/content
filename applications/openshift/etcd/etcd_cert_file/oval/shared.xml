@@ -2,9 +2,7 @@
   <definition class="compliance" id="etcd_cert_file" version="1">
     <metadata>
       <title>Ensure That etcd Client Certificate Correctly Set</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>ETCD_CERT_FILE is correctly set</description>
     </metadata>
     <criteria operator="AND">

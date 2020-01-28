@@ -2,10 +2,7 @@
   <definition class="compliance" id="disable_users_coredumps" version="1">
     <metadata>
       <title>Disable Core Dumps</title>
-      <affected family="unix">
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Core dumps for all users should be disabled</description>
     </metadata>
     <criteria operator="OR">

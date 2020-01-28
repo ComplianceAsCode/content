@@ -2,12 +2,7 @@
   <definition class="compliance" id="disable_ctrlaltdel_burstaction" version="1">
     <metadata>
       <title>Disable Ctrl-Alt-Del Burst Action</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure the CtrlAltDelBurstAction setting in /etc/systemd/system.conf
       to none to prevent a reboot if Ctrl-Alt-Delete is pressed more than 7 times in 2 seconds.</description>
     </metadata>

@@ -2,10 +2,7 @@
   <definition class="compliance" id="wireless_disable_interfaces" version="1">
     <metadata>
       <title>Deactivate Wireless Interfaces</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>All wireless interfaces should be disabled.</description>
     </metadata>
     <criteria>

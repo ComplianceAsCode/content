@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_audit_log_maxbackup" version="1">
     <metadata>
       <title>Configure the Maximum Retained Audit Logs</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Configure how many rotations of audit logs are retained.</description>
     </metadata>
     <criteria operator="AND">
