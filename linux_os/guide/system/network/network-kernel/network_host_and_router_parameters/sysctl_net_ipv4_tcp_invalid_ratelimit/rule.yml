@@ -2,29 +2,30 @@ documentation_complete: true
 
 prodtype: wrlinux1019,rhel7,rhel8
 
-title: 'Configure kernel To Rate limit sending of duplicate TCP acknowledgments'
+title: 'Configure Kernel to Rate Limit Sending of Duplicate TCP Acknowledgments'
 
 description: |-
-    Make sure that the system is configured to rate limit sending of duplicate TCP acknowledgments.
+    Make sure that the system is configured to limit the maximal rate for sending duplicate acknowledgments in response to incoming TCP packets that are for an existing connection but that are invalid due to any of these reasons:
+
+    (a) out-of-window sequence number, (b) out-of-window acknowledgment number, or (c) PAWS (Protection Against Wrapped Sequence numbers) check failure
     This measure protects against or limits effects of DoS attacks against the system.
-    Set the system to implement rate-limiting measures by adding the following line to <tt>/etc/sysctl.conf</tt> or a configuration file in the <tt>/etc/sysctl.d/</tt> directory (or modify the line to have the required value):
+    Set the system to implement rate-limiting measures by adding the following line to
+    <tt>/etc/sysctl.conf</tt> or a configuration file in the <tt>/etc/sysctl.d/</tt> directory
+    (or modify the line to have the required value):
     <pre>net.ipv4.tcp_invalid_ratelimit = 500</pre>
     Issue the following command to make the changes take effect:
     <pre># sysctl --system</pre>
 
 rationale: |-
-    DoS is a condition when a resource is not available for legitimate users. When
+    Denial of Service (DoS) is a condition when a resource is not available for legitimate users. When
     this occurs, the organization either cannot accomplish its mission or must
     operate at degraded capacity.
     <br /><br />
-    This requirement addresses the configuration of
-    the operating system to mitigate the impact of DoS attacks that have occurred or
-    are ongoing on system availability. For each system, known and potential DoS
-    attacks must be identified and solutions for each type implemented. A variety of
-    technologies exist to limit or, in some cases, eliminate the effects of DoS
-    attacks (e.g., limiting processes or establishing memory partitions). Employing
-    increased capacity and bandwidth, combined with service redundancy, may reduce
-    the susceptibility to some DoS attacks.
+    This can help mitigate simple “ack loop” DoS attacks, wherein a buggy or
+    malicious middlebox or man-in-the-middle can rewrite TCP header fields in
+    manner that causes each endpoint to think that the other is sending invalid
+    TCP segments, thus causing each side to send an unterminating stream of
+    duplicate acknowledgments for invalid segments.
 
 severity: medium
 
