@@ -3,6 +3,7 @@ from __future__ import print_function
 import os
 import sys
 import re
+from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
@@ -135,6 +136,10 @@ def file_contents(data, lang):
         # remove root slash made into '_'
         pathid = pathid[1:]
         data["filepath_id"] = pathid
+
+    # The build system converts "<",">" and "&" for us
+    if lang == "bash" or lang == "ansible":
+        data["contents"] = unescape(data["contents"])
     return data
 
 
