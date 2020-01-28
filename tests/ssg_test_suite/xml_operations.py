@@ -12,12 +12,14 @@ from ssg.constants import bash_system as bash_rem_system
 from ssg.constants import ansible_system as ansible_rem_system
 from ssg.constants import puppet_system as puppet_rem_system
 from ssg.constants import anaconda_system as anaconda_rem_system
+from ssg.constants import ignition_system as ignition_rem_system
 
 SYSTEM_ATTRIBUTE = {
     'bash': bash_rem_system,
     'ansible': ansible_rem_system,
     'puppet': puppet_rem_system,
     'anaconda': anaconda_rem_system,
+    'ignition': ignition_rem_system,
 }
 
 NAMESPACES = {
