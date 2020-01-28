@@ -2,11 +2,7 @@
   <definition class="compliance" id="dconf_gnome_disable_ctrlaltdel_reboot" version="1">
     <metadata>
       <title>Disable Ctrl-Alt-Del Reboot Key Sequence in GNOME3</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Disable the GNOME3 ctrl-alt-del reboot key sequence in GNOME3.</description>
     </metadata>
     <criteria operator="OR">

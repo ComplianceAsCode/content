@@ -2,9 +2,7 @@
   <definition class="compliance" id="etcd_unique_ca" version="1">
     <metadata>
       <title>Configure unique etcd Certificate</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Ensure OpenShift is using a unique certificate for etcd.</description>
     </metadata>
     <criteria>

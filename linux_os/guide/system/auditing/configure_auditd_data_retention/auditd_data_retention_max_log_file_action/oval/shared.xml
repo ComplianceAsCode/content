@@ -2,9 +2,7 @@
   <definition class="compliance" id="auditd_data_retention_max_log_file_action" version="2">
     <metadata>
       <title>Auditd Action to Take When Maximum Log Size Reached</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>max_log_file_action setting in /etc/audit/auditd.conf is set to a certain action</description>
     </metadata>
 

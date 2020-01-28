@@ -2,12 +2,7 @@
   <definition class="compliance" id="audit_rules_networkconfig_modification" version="1">
     <metadata>
       <title>Record Events that Modify the System's Network Environment</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The network environment should not be modified by anything other than
       administrator action. Any change to network parameters should be audited.</description>
     </metadata>

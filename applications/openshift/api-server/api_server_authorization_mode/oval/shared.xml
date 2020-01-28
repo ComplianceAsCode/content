@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_authorization_mode" version="1">
     <metadata>
       <title>Ensure authorization-mode is set to Webhook</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>If authorization-mode is configured, it should be set to Webhook.</description>
     </metadata>
     <criteria operator="OR">

@@ -2,13 +2,7 @@
   <definition class="compliance" id="audit_rules_privileged_commands" version="1">
     <metadata>
       <title>Ensure auditd Collects Information on the Use of Privileged Commands</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Audit rules about the information on the use of privileged commands are enabled.</description>
     </metadata>
 

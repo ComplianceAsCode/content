@@ -2,9 +2,7 @@
   <definition class="compliance" id="auditd_data_retention_admin_space_left_action" version="2">
     <metadata>
       <title>Auditd Action to Take When Disk is Low on Space</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>admin_space_left_action setting in /etc/audit/auditd.conf is set to a certain action</description>
     </metadata>
 

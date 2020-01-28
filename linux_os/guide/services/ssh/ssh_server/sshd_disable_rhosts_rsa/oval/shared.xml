@@ -2,9 +2,7 @@
   <definition class="compliance" id="sshd_disable_rhosts_rsa" version="1">
     <metadata>
       <title>Disable SSH Support for Rhosts RSA Authentication</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>SSH can allow authentication through the obsolete rsh command
       through the use of the authenticating user's SSH keys. This should be disabled.</description>
     </metadata>

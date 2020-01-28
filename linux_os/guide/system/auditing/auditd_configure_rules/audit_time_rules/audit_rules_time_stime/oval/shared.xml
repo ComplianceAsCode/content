@@ -2,12 +2,7 @@
   <definition class="compliance" id="audit_rules_time_stime" version="1">
     <metadata>
       <title>Record Attempts to Alter Time Through Stime</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Record attempts to alter time through stime. Note that on
       64-bit architectures the stime system call is not defined in the audit
       system calls lookup table.</description>

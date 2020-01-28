@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_audit_log_path" version="1">
     <metadata>
       <title>Configure the Audit Log Path</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>To enable auditing on the OpenShift API Server, the audit log path
       must be set.</description>
     </metadata>

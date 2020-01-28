@@ -2,9 +2,7 @@
   <definition class="compliance" id="api_server_token_auth" version="1">
     <metadata>
       <title>Disable Token-based Authentication</title>
-      <affected family="unix">
-        <platform>multi_platform_ocp</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>token-auth-file should not be configured on the master node.</description>
     </metadata>
     <criteria operator="AND">

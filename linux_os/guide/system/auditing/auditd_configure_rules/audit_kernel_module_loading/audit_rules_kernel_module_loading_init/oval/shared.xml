@@ -2,13 +2,7 @@
   <definition class="compliance" id="audit_rules_kernel_module_loading_init" version="1">
     <metadata>
       <title>Audit Kernel Module Loading and Unloading - init_module</title>
-      <affected family="unix">
-        <platform>multi_platform_wrlinux</platform>
-        <platform>multi_platform_rhel</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The audit rules should be configured to log information about kernel module loading and unloading.</description>
     </metadata>
 
