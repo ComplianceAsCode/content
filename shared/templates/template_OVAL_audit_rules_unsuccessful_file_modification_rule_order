@@ -2,13 +2,7 @@
   <definition class="compliance" id="audit_rules_unsuccessful_file_modification_{{{ SYSCALL }}}_rule_order" version="1">
     <metadata>
       <title>Ensure auditd Rules For Unauthorized Attempts To {{{ SYSCALL }}} Are Ordered Correctly</title>
-      <affected family="unix">
-        <platform>Red Hat Enterprise Linux 7</platform>
-        <platform>Red Hat Enterprise Linux 8</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_rhv</platform>
-        <platform>multi_platform_ol</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>Audit rules about the information on the unsuccessful use of {{{ SYSCALL }}} is configured in the proper rule order.</description>
 
     </metadata>

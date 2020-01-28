@@ -2,9 +2,7 @@
   <definition class="compliance" id="file_owner{{{ FILEID }}}" version="1">
     <metadata>
       <title>Verify {{{ FILEPATH }}} Owner</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>This test makes sure that {{{ FILEPATH }}} is owned by {{{ FILEUID }}}.</description>
     </metadata>
     <criteria>

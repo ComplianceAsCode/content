@@ -7,9 +7,7 @@
   <definition class="compliance" id="service_{{{ SERVICENAME }}}_enabled" version="1">
     <metadata>
       <title>Service {{{ SERVICENAME }}} Enabled</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The {{{ SERVICENAME }}} service should be enabled if possible.</description>
     </metadata>
     <criteria comment="package {{{ PACKAGENAME }}} installed and service {{{ SERVICENAME }}} is configured to start" operator="AND">

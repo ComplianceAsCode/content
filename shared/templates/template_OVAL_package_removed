@@ -3,9 +3,7 @@
   version="1">
     <metadata>
       <title>Package {{{ PKGNAME }}} Removed</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The {{{ pkg_system|upper }}} package {{{ PKGNAME }}} should be removed.</description>
     </metadata>
     <criteria>

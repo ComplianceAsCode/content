@@ -3,9 +3,7 @@
   id="kernel_module_{{{ KERNMODULE }}}_disabled" version="1">
     <metadata>
       <title>Disable {{{ KERNMODULE }}} Kernel Module</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The kernel module {{{ KERNMODULE }}} should be disabled.</description>
     </metadata>
     <criteria operator="OR">
