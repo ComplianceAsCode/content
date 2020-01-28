@@ -616,5 +616,11 @@ selections:
     - directory_access_var_log_audit
 
     # CM-7
-    - kernel_module_usb-storage_disabled
+    - kernel_module_freevxfs_disabled
+    - kernel_module_hfs_disabled
+    - kernel_module_hfsplus_disabled
+    - kernel_module_jffs2_disabled
     - kernel_module_squashfs_disabled
+    - kernel_module_udf_disabled
+    - kernel_module_usb-storage_disabled
+    - kernel_module_vfat_disabled
