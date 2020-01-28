@@ -1,10 +1,6 @@
 # platform = multi_platform_wrlinux,multi_platform_rhel,multi_platform_fedora,multi_platform_ol,multi_platform_rhv,multi_platform_ocp
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
-metadata:
-  labels:
-    machineconfiguration.openshift.io/role: worker
-  name: 50-auth-worker-no-nullok
 spec:
   config:
     ignition:
