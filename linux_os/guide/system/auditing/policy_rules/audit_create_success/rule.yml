@@ -59,6 +59,8 @@ ocil: |-
     <pre>c97448ae2dcdbedb4c50464bfcec2a56886314d1ba8ee002f6bf63ec093b1b6b</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42-1-create-success
+        filepath: /etc/audit/rules.d/30-ospp-v42-1-create-success.rules
+        contents: |+
+            {{{ file_contents_audit_create_success|indent(12) }}}

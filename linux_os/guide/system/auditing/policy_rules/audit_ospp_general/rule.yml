@@ -138,6 +138,8 @@ ocil: |-
     <pre>82e991b4d73129ee0c77b2abed6f5c0a2a5389c17327af31baeefd8cafd1bb8d</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42
+        filepath: /etc/audit/rules.d/30-ospp-v42.rules
+        contents: |+
+            {{{ file_contents_audit_ospp_general|indent(12) }}}

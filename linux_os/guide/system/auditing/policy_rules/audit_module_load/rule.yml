@@ -58,6 +58,8 @@ ocil: |-
     <pre>88fe75a3bcb807fad74cd020e6e04347f7dbd3ef16de314c0c6a976cdde0dda0</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 43-module-load
+        filepath: /etc/audit/rules.d/43-module-load.rules
+        contents: |+
+            {{{ file_contents_audit_module_load|indent(12) }}}

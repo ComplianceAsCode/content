@@ -62,6 +62,8 @@ ocil: |-
 
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42-2-modify-success
+        filepath: /etc/audit/rules.d/30-ospp-v42-2-modify-success.rules
+        contents: |+
+            {{{ file_contents_audit_modify_success|indent(12) }}}

@@ -59,6 +59,8 @@ ocil: |-
     <pre>1d6a69c3d93637b3bc427c10717d2fc9a6a786b97f33b718c4ce34c2ebe61cb5</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42-6-owner-change-failed
+        filepath: /etc/audit/rules.d/30-ospp-v42-6-owner-change-failed.rules
+        contents: |+
+            {{{ file_contents_audit_owner_change_failed|indent(12) }}}

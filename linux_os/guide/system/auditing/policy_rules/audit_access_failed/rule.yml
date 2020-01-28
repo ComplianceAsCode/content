@@ -53,6 +53,8 @@ ocil: |-
     <pre>7883a1f395d181e5da850ff77b3a6c69eec5ab68d24e71da1b8f5b5212954599</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42-3-access-failed
+        filepath: /etc/audit/rules.d/30-ospp-v42-3-access-failed.rules
+        contents: |+
+            {{{ file_contents_audit_access_failed|indent(12) }}}

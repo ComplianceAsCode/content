@@ -57,6 +57,8 @@ ocil: |-
     <pre>2c4e9dbd58405bc275e7e187d6ec2eb9436aa54073f557b83ef6e4a06a55fc53</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42-4-delete-success
+        filepath: /etc/audit/rules.d/30-ospp-v42-4-delete-success.rules
+        contents: |+
+            {{{ file_contents_audit_delete_success|indent(12) }}}

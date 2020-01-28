@@ -55,6 +55,8 @@ ocil: |-
 
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 11-loginuid
+        filepath: /etc/audit/rules.d/11-loginuid
+        contents: |+
+            {{{ file_contents_audit_immutable_login|indent(12) }}}

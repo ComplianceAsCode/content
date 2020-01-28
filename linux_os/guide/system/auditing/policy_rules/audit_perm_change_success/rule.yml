@@ -57,6 +57,8 @@ ocil: |-
     <pre>3cf174b6005bfe0fa6cc3aa256bc96a7d335bb9cd554dbc8dda3c916a8f497de</pre>
 
 template:
-    name: audit_rules_rule_file
+    name: file_contents
     vars:
-        file_id: 30-ospp-v42-5-perm-change-success
+        filepath: /etc/audit/rules.d/30-ospp-v42-5-perm-change-success.rules
+        contents: |+
+            {{{ file_contents_audit_perm_change_success|indent(12) }}}
