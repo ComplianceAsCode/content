@@ -6,7 +6,7 @@ import re
 
 import ssg.build_yaml
 
-languages = ["anaconda", "ansible", "bash", "oval", "puppet"]
+languages = ["anaconda", "ansible", "bash", "oval", "puppet", "ignition"]
 
 lang_to_ext_map = {
     "anaconda": ".anaconda",
@@ -14,6 +14,7 @@ lang_to_ext_map = {
     "bash": ".sh",
     "oval": ".xml",
     "puppet": ".pp"
+    "ignition": ".yml"
 }
 
 def sanitize_input(string):
