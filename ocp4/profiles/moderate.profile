@@ -578,6 +578,7 @@ selections:
     # AU-11
     - auditd_data_retention_num_logs
     - auditd_data_retention_max_log_file
+    - auditd_data_retention_flush
 
     # AC-2(3)
     - account_disable_post_pw_expiration
