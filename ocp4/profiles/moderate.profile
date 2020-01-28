@@ -132,11 +132,6 @@ selections:
 
     ### Kernel Config
     ## Boot prompt
-    - grub2_audit_argument
-    - grub2_audit_backlog_limit_argument
-    - grub2_slub_debug_argument
-    - grub2_page_poison_argument
-    - grub2_vsyscall_argument
     - grub2_vsyscall_argument.role=unscored
     - grub2_vsyscall_argument.severity=info
     - grub2_pti_argument
@@ -204,7 +199,6 @@ selections:
     #- package_audispd-plugins_installed
     ####
     #- package_scap-security-guide_installed
-    - package_audit_installed
     - package_libreswan_installed
 
     ### Remove Prohibited Packages
@@ -546,6 +540,14 @@ selections:
 
     # AU-1
     - audit_rules_immutable
+
+    # AU-3
+    - package_audit_installed
+    - grub2_audit_argument
+    - grub2_audit_backlog_limit_argument
+    - grub2_slub_debug_argument
+    - grub2_page_poison_argument
+    - grub2_vsyscall_argument
 
     # AU-4
     - auditd_data_retention_action_mail_acct
