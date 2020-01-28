@@ -567,10 +567,12 @@ selections:
     - chronyd_or_ntpd_specify_multiple_servers
 
     # AU-9
-    #- rpm_verify_ownership
-    #- rpm_verify_permissions
+    - rpm_verify_ownership
+    - rpm_verify_permissions
     - selinux_confinement_of_daemons
-    #- ensure_logrotate_activated
+    # TODO - we should update this rule to parameterize the rotation cadence.
+    # The check curently expects it to be daily, but OCP4 nodes rotate weekly.
+    - ensure_logrotate_activated
     - file_permissions_var_log_audit
     - file_ownership_var_log_audit
     - directory_permissions_var_log_audit
