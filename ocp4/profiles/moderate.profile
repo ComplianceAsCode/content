@@ -187,7 +187,9 @@ selections:
 
     ### Install Required Packages
     #- package_sssd-ipa_installed
-    - package_aide_installed
+    # We won't check AIDE directly, we'll need to check cluster-wide for the
+    # file-integrity-operator
+    # package_aide_installed
     - package_firewalld_installed
     - package_iptables_installed
     #- package_libcap-ng-utils_installed
