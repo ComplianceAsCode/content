@@ -1,10 +1,6 @@
 # platform = multi_platform_all
 apiVersion: machineconfiguration.openshift.io/v1
-kind: Ignition
-metadata:
-  labels:
-    machineconfiguration.openshift.io/role: worker
-  name: 50-worker-empty-securetty
+kind: MachineConfig
 spec:
   config:
     ignition:
