@@ -13,7 +13,7 @@ lang_to_ext_map = {
     "ansible": ".yml",
     "bash": ".sh",
     "oval": ".xml",
-    "puppet": ".pp"
+    "puppet": ".pp",
     "ignition": ".yml"
 }
 
