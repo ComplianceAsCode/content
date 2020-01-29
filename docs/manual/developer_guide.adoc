@@ -401,12 +401,13 @@ make redhat-zipfile
 
 ### Build the docker container image
 
-Use a suitable Dockerfile present in the
+Find a suitable Dockerfile present in the
 link:https://github.com/ComplianceAsCode/content/tree/master/Dockerfiles[Dockerfiles]
-directory and build the image.
+directory, copy the file to the top directory and build the image.
 This will take care of the build environment and all necessary setup.
 
 ```bash
+cp Dockerimages/ubuntu ./Dockerfile
 docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
 ```
 
@@ -415,13 +416,13 @@ docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --t
 To build all the content, run a container without any flags.
 
 ```bash
-docker run --cap-drop=all --name scap-security-guide oscap:latest
+docker run --cap-drop=all --name oscap-content oscap:latest
 ```
 
 Using `docker cp` to copy all the generated content to the your host:
 
 ```bash
-docker cp scap-security-guide:/home/oscap/content/build $(pwd)/container_build
+docker cp oscap-content:/home/oscap/content/build $(pwd)/container_build
 ```
 
 == Creating Content
