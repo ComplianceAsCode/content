@@ -7,7 +7,7 @@ title: 'Configure firewalld To Rate Limit Connections'
 description: |-
     Create a direct firewall rule to protect against DoS attacks with the following
     command:
-    <pre>$ sudo firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -p tcp -m limit --limit 25/minute --limit-burst 100  -j ACCEPT</pre>
+    <pre>$ sudo firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT_direct 0 -p tcp -m limit --limit 25/minute --limit-burst 100  -j INPUT_ZONES</pre>
 
 rationale: |-
     DoS is a condition when a resource is not available for legitimate users. When
@@ -43,4 +43,4 @@ ocil: |-
     on impacted network interfaces, run the following command:
     <pre>$ sudo firewall-cmd --permanent --direct --get-rules ipv4 filter INPUT_direct</pre>
     The output should return:
-    <pre>0 -p tcp -m limit --limit 25/minute --limit-burst 100 -j ACCEPT</pre>
+    <pre>0 -p tcp -m limit --limit 25/minute --limit-burst 100 -j INPUT_ZONES</pre>
