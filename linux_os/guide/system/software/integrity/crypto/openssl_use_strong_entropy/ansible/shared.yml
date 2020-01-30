@@ -6,7 +6,7 @@
 
 - name: "copy a file with shell snippet to configure openssl strong entropy"
   copy:
-    dest: /etc/profile.d/cc-config.sh
+    dest: /etc/profile.d/openssl-rand.sh
     content: |+
         {{{ openssl_strong_entropy_config_file()|indent(8) }}}
         

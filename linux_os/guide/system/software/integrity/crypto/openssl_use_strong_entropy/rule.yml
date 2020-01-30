@@ -7,19 +7,15 @@ title: 'OpenSSL uses strong entropy source'
 
 description: |-
     To set up an <tt>openssl</tt> wrapper that adds a <tt>-rand /dev/random</tt> option to the <tt>openssl</tt> invocation,
-    save the following shell snippet to the <tt>/etc/profile.d/cc-config.sh</tt>:
+    save the following shell snippet to the <tt>/etc/profile.d/openssl-rand.sh</tt>:
     <pre>
     {{{ openssl_strong_entropy_config_file() | indent(4) }}}
     </pre>
 
 rationale: |-
-    The <tt>openssl</tt> default configuration uses less robust entropy sources for seeding.
-    The referenced script is sourced to every login shell, and it transparently adds an option
-    that enforces strong entropy to every <tt>openssl</tt> invocation,
-    which makes <tt>openssl</tt> more secure by default.
+    This rule ensures that <tt>openssl</tt> always uses SP800-90A compliant random number generator.
 
 severity: medium
-
 identifiers:
     cce@rhel8: 82721-2
 
@@ -27,12 +23,12 @@ references:
     ospp: FIA_AFL.1
 
 ocil: |-
-    To determine whether the <tt>openssl</tt> wrapper is configured correcrlty,
-    make sure that the <tt>/etc/profile.d/cc-config.sh</tt> file contains contents
+    To determine whether the <tt>openssl</tt> wrapper is configured correctly,
+    make sure that the <tt>/etc/profile.d/openssl-rand.sh</tt> file contains contents
     that are included in the rule's description.
 
 ocil_clause: |-
-    there is no <tt>/etc/profile.d/cc-config.sh</tt> file, or its contents don't match those in the description
+    there is no <tt>/etc/profile.d/openssl-rand.sh</tt> file, or its contents don't match those in the description
 
 warnings:
     - general: "This setting can cause problems on computers without the hardware random generator, because insufficient entropy blocks the program until enough entropy is available."

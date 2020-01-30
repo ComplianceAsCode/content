@@ -2,7 +2,7 @@
 # platform = Red Hat Enterprise Linux 8
 # profiles = xccdf_org.ssgproject.content_profile_ospp
 
-cat > /etc/profile.d/cc-config.sh <<- 'EOM'
+cat > /etc/profile.d/openssl-rand.sh <<- 'EOM'
 # provide a default -rand /dev/random option to openssl commands that
 # support it
 
