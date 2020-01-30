@@ -403,12 +403,11 @@ make redhat-zipfile
 
 Find a suitable Dockerfile present in the
 link:https://github.com/ComplianceAsCode/content/tree/master/Dockerfiles[Dockerfiles]
-directory, copy the file to the top directory and build the image.
+directory and build the image.
 This will take care of the build environment and all necessary setup.
 
 ```bash
-cp Dockerimages/ubuntu ./Dockerfile
-docker build --no-cache --file Dockerfile --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
+docker build --no-cache --file Dockerfiles/ubuntu --tag oscap:$(date -u +%Y%m%d%H%M) --tag oscap:latest .
 ```
 
 ### Build the content using the container image
