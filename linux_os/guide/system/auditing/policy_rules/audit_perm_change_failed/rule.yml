@@ -24,9 +24,6 @@ description: |-
     cp /usr/share/audit/sample-rules/30-ospp-v42-5-perm-change-failed.rules /etc/audit/rules.d/
     </pre>
     
-    The file has the following SHA-256 checksum:
-    <pre>ddd91b8bb35bb9559163c6402ebcd3b06e7ecf84a1bb6d5aed89a3f94f4109cd</pre>
-    
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
     
@@ -52,11 +49,6 @@ ocil: |-
     <pre>cat /etc/audit/rules.d/30-ospp-v42-5-perm-change-failed.rules</pre>
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_perm_change_failed|indent }}}    </pre>
-    You can check the SHA-256 hash of the file with the following command:
-    <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-5-perm-change-failed.rules</pre>
-    The output of the command has to be exactly the following hash:
-    <pre>ddd91b8bb35bb9559163c6402ebcd3b06e7ecf84a1bb6d5aed89a3f94f4109cd</pre>
-
 
 template:
     name: file_contents

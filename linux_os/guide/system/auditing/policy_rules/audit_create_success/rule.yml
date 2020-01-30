@@ -26,9 +26,6 @@ description: |-
     cp /usr/share/audit/sample-rules/30-ospp-v42-1-create-success.rules /etc/audit/rules.d/
     </pre>
     
-    The file has the following SHA-256 checksum:
-    <pre>c97448ae2dcdbedb4c50464bfcec2a56886314d1ba8ee002f6bf63ec093b1b6b</pre>
-    
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
     
@@ -53,10 +50,6 @@ ocil: |-
     <pre>cat /etc/audit/rules.d/30-ospp-v42-1-create-success.rules</pre>
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_create_success|indent }}}    </pre>
-    You can check the SHA-256 hash of the file with the following command:
-    <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-1-create-success.rules</pre>
-    The output of the command has to be exactly the following hash:
-    <pre>c97448ae2dcdbedb4c50464bfcec2a56886314d1ba8ee002f6bf63ec093b1b6b</pre>
 
 template:
     name: file_contents

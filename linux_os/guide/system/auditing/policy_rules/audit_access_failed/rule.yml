@@ -16,10 +16,7 @@ description: |-
     Ensure that unsuccessful attempts to access a file are audited.
 
     The following rules configure audit as described above:
-    <pre>{{{ file_contents_audit_access_failed|indent }}}    </pre>
-    
-    The file has the following SHA-256 checksum:
-    <pre>7883a1f395d181e5da850ff77b3a6c69eec5ab68d24e71da1b8f5b5212954599</pre>
+    <pre>{{{ file_contents_audit_access_failed|indent }}}    </pre>    
     
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
@@ -47,10 +44,6 @@ ocil: |-
     <pre>cat /etc/audit/rules.d/30-ospp-v42-3-access-failed.rules</pre>
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_access_failed|indent }}}    </pre>
-    You can check the SHA-256 hash of the file with the following command:
-    <pre>sha256sum /etc/audit/rules.d/30-ospp-v42-3-access-failed.rules</pre>
-    The output of the command has to be exactly the following hash:
-    <pre>7883a1f395d181e5da850ff77b3a6c69eec5ab68d24e71da1b8f5b5212954599</pre>
 
 template:
     name: file_contents

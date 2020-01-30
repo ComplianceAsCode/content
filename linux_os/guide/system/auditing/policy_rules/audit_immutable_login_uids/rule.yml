@@ -22,9 +22,6 @@ description: |-
     cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
     </pre>
     
-    The file has the following SHA-256 checksum:
-    <pre>5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f</pre>
-    
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
 
@@ -48,11 +45,6 @@ ocil: |-
     <pre>cat /etc/audit/rules.d/11-loginuid.rules</pre>
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
-    You can check the SHA-256 hash of the file with the following command:
-    <pre>sha256sum /etc/audit/rules.d/11-loginuid.rules</pre>
-    The output of the command has to be exactly the following hash:
-    <pre>5aba151df1a4026ac2bdb4da8652d47c083b63fc5db96ecbbeaf98223ea7db2f</pre>
-
 
 template:
     name: file_contents

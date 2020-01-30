@@ -33,9 +33,6 @@ description: |-
     cp /usr/share/audit/sample-rules/10-base-config.rules /etc/audit/rules.d/
     </pre>
     
-    The file has the following SHA-256 checksum:
-    <pre>54c2cebdaadfb928f7327cc066218e38743f0ff94d02fe162a7a415e148d23a8</pre>
-    
     Load new Audit rules into kernel by running:
     <pre>augenrules --load</pre>
     
@@ -60,10 +57,6 @@ ocil: |-
     <pre>cat /etc/audit/rules.d/10-base-config.rules</pre>
     The output has to be exactly as follows:
     <pre>{{{ file_contents_audit_base_config|indent }}}    </pre>
-    You can check the SHA-256 hash of the file with the following command:
-    <pre>sha256sum /etc/audit/rules.d/10-base-config.rules</pre>
-    The output of the command has to be exactly the following hash:
-    <pre>54c2cebdaadfb928f7327cc066218e38743f0ff94d02fe162a7a415e148d23a8</pre>
 
 template:
     name: file_contents
