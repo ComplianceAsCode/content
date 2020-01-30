@@ -2,9 +2,7 @@
   <definition class="compliance" id="file_groupowner{{{ FILEID }}}" version="1">
     <metadata>
       <title>Verify {{{ FILEPATH }}} Group Owner</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>This test makes sure that {{{ FILEPATH }}} is group owned by {{{ FILEGID }}}.</description>
     </metadata>
     <criteria>

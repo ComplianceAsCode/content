@@ -1,13 +1,9 @@
+
 <def-group>
   <definition class="compliance" id="disable_prelink" version="3">
     <metadata>
       <title>Disable Prelinking</title>
-      <affected family="unix">
-        <platform>Red Hat Virtualization 4</platform>
-        <platform>multi_platform_fedora</platform>
-        <platform>multi_platform_ol</platform>
-        <platform>multi_platform_rhel</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>The prelinking feature can interfere with the operation of
       checksum integrity tools (e.g. AIDE), mitigates the protection provided
       by ASLR, and requires additional CPU cycles by software upgrades.

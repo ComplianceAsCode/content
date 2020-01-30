@@ -2,9 +2,7 @@
   <definition class="compliance" id="mount_option_{{{ POINTID }}}_{{{ MOUNTOPTION }}}" version="1">
     <metadata>
       <title>Add {{{ MOUNTOPTION }}} Option to {{{ MOUNTPOINT }}}</title>
-      <affected family="unix">
-        <platform>multi_platform_all</platform>
-      </affected>
+      {{{- oval_affected(products) }}}
       <description>{{{ MOUNTPOINT }}} should be mounted with mount option {{{ MOUNTOPTION }}}.</description>
     </metadata>
     <criteria>
