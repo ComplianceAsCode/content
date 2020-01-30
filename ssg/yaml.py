@@ -106,10 +106,10 @@ def open_and_expand(yaml_file, substitutions_dict=None):
     try:
         yaml_contents = _open_yaml(expanded_template, yaml_file, substitutions_dict)
     except yaml.scanner.ScannerError as e:
-        print("A Jinja template expansion may mess up the indentation.")
+        print("A Jinja template expansion can mess up the indentation.")
         print("Please, check if the contents below are correctly expanded:")
-        print(f"Source yaml: {yaml_file}")
-        print(f"Expanded yaml: {expanded_template}")
+        print("Source yaml: {}".format(yaml_file))
+        print("Expanded yaml:\n{}".format(expanded_template))
         sys.exit(1)
 
     return yaml_contents
