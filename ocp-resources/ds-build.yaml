@@ -1,0 +1,28 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: "openscap-$PRODUCT-ds" 
+  namespace: openshift-compliance
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: "openscap-$PRODUCT-ds" 
+  namespace: openshift-compliance
+spec:
+  runPolicy: "Serial" 
+  triggers: 
+    -
+      type: "ImageChange"
+  source: 
+    dockerfile: |
+      FROM registry.access.redhat.com/ubi8/ubi-minimal
+      WORKDIR /
+      COPY ssg-$PRODUCT-ds.xml .
+  strategy: 
+    dockerStrategy:
+      noCache: true
+  output: 
+    to:
+      kind: "ImageStreamTag"
+      name: "openscap-$PRODUCT-ds:latest"
