@@ -3,6 +3,9 @@
 # strategy = restrict
 # complexity = low
 # disruption = low
-
-cat << 'EOF' > {{{ FILEPATH }}}
-{{{ CONTENTS }}}EOF
+{{{
+    ansible_file_contents(
+        filepath=FILEPATH,
+        contents=CONTENTS,
+    )
+}}}
