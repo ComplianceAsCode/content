@@ -448,3 +448,44 @@
     <unix:command_line operation="pattern match">^.*[\s]+{{{ option }}}=.*({{{ value }}}).*([\s]+.*$|$)</unix:command_line>
   </unix:process58_state>
 {{%- endmacro -%}}
+
+{{#
+  Macro which generates OVAL definition, test and object that check for contents
+  of the file.
+  Parameters:
+    - filepath - filepath of the file to check
+    - contents - contents that should be in the file
+#}}
+{{%- macro oval_file_contents(filepath='', filepath_id='', contents='') -%}}
+  <def-group>
+    <definition class="compliance" id="{{{ rule_id }}}" version="1">
+      <metadata>
+        <title>Check that contents of {{{ filepath }}} are as expected</title>
+        {{{- oval_affected(products) }}}
+        <description>Inspects the contents of {{{ filepath }}}</description>
+      </metadata>
+      <criteria operator="AND">
+          <criterion comment="Check contents of file" test_ref="test_whole_file_contents_{{{ filepath_id }}}" />
+      </criteria>
+    </definition>
+
+    <ind:textfilecontent54_test check="all" check_existence="all_exist"
+    comment="Tests if contents of {{{ filepath }}} is exactly what is defined in rule description"
+    id="test_whole_file_contents_{{{ filepath_id }}}" version="1">
+      <ind:object object_ref="object_whole_file_contents_{{{ filepath_id }}}" />
+      <ind:state state_ref="state_whole_file_contents_{{{ filepath_id }}}" />
+    </ind:textfilecontent54_test>
+
+    <ind:textfilecontent54_object id="object_whole_file_contents_{{{ filepath_id }}}" version="1">
+      <ind:behaviors singleline="true" multiline="false" />
+      <ind:filepath>{{{ filepath }}}</ind:filepath>
+      <ind:pattern operation="pattern match">^.*$</ind:pattern>
+      <ind:instance datatype="int">1</ind:instance>
+    </ind:textfilecontent54_object>
+
+    <ind:textfilecontent54_state id="state_whole_file_contents_{{{ filepath_id }}}" version="1">
+      <ind:text operation="equals">{{{ contents }}}</ind:text>
+    </ind:textfilecontent54_state>
+
+  </def-group>
+{{%- endmacro %}}

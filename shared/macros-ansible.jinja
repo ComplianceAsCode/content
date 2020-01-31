@@ -202,3 +202,18 @@
 {{%- macro ansible_coredump_config_set(msg='', parameter='', value='') %}}
 {{{ ansible_set_config_file(msg, "/etc/systemd/coredump.conf", parameter=parameter, value=value, create="no", separator="=", separator_regex="\s*=\s*") }}}
 {{%- endmacro %}}
+
+{{#
+  Generates an Ansible task that puts 'contents' into a file at 'filepath'
+  Parameters:
+    - filepath - filepath of the file to check
+    - contents - contents that should be in the file
+#}}
+{{%- macro ansible_file_contents(filepath='', contents='') %}}
+- name: "Put contents into {{{ filepath }}} according to policy"
+  copy:
+    dest: "{{{ filepath }}}"
+    content: |+
+        {{{ contents|indent(8) }}}
+    force: yes
+{{%- endmacro %}}
