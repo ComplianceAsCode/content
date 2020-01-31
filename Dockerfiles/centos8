@@ -1,0 +1,31 @@
+FROM centos:8
+
+ENV OSCAP_USERNAME oscap
+ENV OSCAP_DIR content
+ENV BUILD_JOBS 4
+
+RUN true \
+  && dnf -y upgrade \
+  && dnf -y install cmake openscap-utils python3-jinja2 \
+    python3-libs python3-pip python3-pyyaml \
+  && dnf -y --enablerepo=PowerTools install ninja-build \
+  && mkdir -p /home/$OSCAP_USERNAME \
+  && dnf clean all \
+  && rm -rf /usr/share/doc /usr/share/doc-base \
+    /usr/share/man /usr/share/locale /usr/share/zoneinfo \
+  && true
+
+WORKDIR /home/$OSCAP_USERNAME
+
+COPY . $OSCAP_DIR/
+
+# clean the build dir in case the user is also building SSG locally
+RUN rm -rf $OSCAP_DIR/build/*
+
+WORKDIR /home/$OSCAP_USERNAME/$OSCAP_DIR/build
+
+CMD true \
+  && cmake -DPYTHON_EXECUTABLE=/usr/bin/python3 -G Ninja .. \
+  && ninja -j $BUILD_JOBS \
+  && ctest --output-on-failure -j $BUILD_JOBS \
+  && true
