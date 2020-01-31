@@ -1,0 +1,39 @@
+documentation_complete: true
+
+# TODO: The plan is not to need this for RHEL>=8.4
+prodtype: rhel8
+
+title: 'OpenSSL uses strong entropy source'
+
+description: |-
+    By default, OpenSSL doesn't always use a SP800-90A compliant random number generator.
+    A way to configure OpenSSL to always use a strong source is to setup a wrapper that
+    defines a shell function that shadows the actual <tt>openssl</tt> binary,
+    and that ensures that the <tt>-rand /dev/random</tt> option is added to every <tt>openssl</tt> invocation.
+
+    To do so, place the following shell snippet exactly as-is to <tt>/etc/profile.d/openssl-rand.sh</tt>:
+    <pre>
+    {{{ openssl_strong_entropy_config_file() | indent(4) }}}
+    </pre>
+
+rationale: |-
+    This rule ensures that <tt>openssl</tt> invocations always uses SP800-90A compliant random number generator as a default behavior.
+
+severity: medium
+identifiers:
+    cce@rhel8: 82721-2
+
+references:
+    ospp: FIA_AFL.1
+
+ocil: |-
+    To determine whether OpenSSL is wrapped by a shell function that ensures that every invocation
+    uses a SP800-90A compliant entropy source,
+    make sure that the <tt>/etc/profile.d/openssl-rand.sh</tt> file contents exactly match those
+    that are included in the rule's description.
+
+ocil_clause: |-
+    there is no <tt>/etc/profile.d/openssl-rand.sh</tt> file, or its contents don't match those in the description
+
+warnings:
+    - general: "This setting can cause problems on computers without the hardware random generator, because insufficient entropy blocks the program until enough entropy is available."
