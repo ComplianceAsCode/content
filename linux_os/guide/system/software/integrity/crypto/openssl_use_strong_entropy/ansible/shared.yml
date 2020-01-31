@@ -4,9 +4,8 @@
 # complexity = low
 # disruption = low
 
-- name: "copy a file with shell snippet to configure openssl strong entropy"
+- name: "Put a file with shell wrapper to configure OpenSSL to always use strong entropy"
   copy:
     dest: /etc/profile.d/openssl-rand.sh
     content: |+
         {{{ openssl_strong_entropy_config_file()|indent(8) }}}
-        
