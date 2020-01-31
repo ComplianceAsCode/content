@@ -131,7 +131,7 @@ def audit_rules_usergroup_modification(data, lang):
 
 
 @template(["ansible", "bash", "oval"])
-def file_contents(data, lang):
+def audit_file_contents(data, lang):
     if lang == "oval":
         pathid = re.sub(r'[-\./]', '_', data["filepath"])
         # remove root slash made into '_'
