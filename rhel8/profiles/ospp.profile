@@ -178,8 +178,6 @@ selections:
     - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
-    - package_rsyslog_installed
-    - package_rsyslog-gnutls_installed
     - package_gnutls-utils_installed
     - package_nss-tools_installed
 
@@ -391,8 +389,7 @@ selections:
     - timer_dnf-automatic_enabled
 
     # Configure TLS for remote logging
-    - rsyslog_remote_tls
-    - rsyslog_remote_tls_cacert
+    # temporarily dropped
 
     # Prevent Kerberos use by system daemons
     - kerberos_disable_no_keytab
