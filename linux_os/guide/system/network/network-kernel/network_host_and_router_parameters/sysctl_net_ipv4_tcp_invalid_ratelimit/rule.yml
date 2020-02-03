@@ -5,9 +5,12 @@ prodtype: wrlinux1019,rhel7,rhel8
 title: 'Configure Kernel to Rate Limit Sending of Duplicate TCP Acknowledgments'
 
 description: |-
-    Make sure that the system is configured to limit the maximal rate for sending duplicate acknowledgments in response to incoming TCP packets that are for an existing connection but that are invalid due to any of these reasons:
+    Make sure that the system is configured to limit the maximal rate for sending
+    duplicate acknowledgments in response to incoming TCP packets that are for
+    an existing connection but that are invalid due to any of these reasons:
 
-    (a) out-of-window sequence number, (b) out-of-window acknowledgment number, or (c) PAWS (Protection Against Wrapped Sequence numbers) check failure
+    (a) out-of-window sequence number, (b) out-of-window acknowledgment number,
+    or (c) PAWS (Protection Against Wrapped Sequence numbers) check failure
     This measure protects against or limits effects of DoS attacks against the system.
     Set the system to implement rate-limiting measures by adding the following line to
     <tt>/etc/sysctl.conf</tt> or a configuration file in the <tt>/etc/sysctl.d/</tt> directory
