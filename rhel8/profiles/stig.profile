@@ -33,3 +33,9 @@ selections:
     - encrypt_partitions
     - sysctl_net_ipv4_tcp_syncookies
     - clean_components_post_updating
+
+    # Configure TLS for remote logging
+    - package_rsyslog_installed
+    - package_rsyslog-gnutls_installed
+    - rsyslog_remote_tls
+    - rsyslog_remote_tls_cacert
