@@ -1,0 +1,61 @@
+documentation_complete: true
+
+prodtype: wrlinux1019,rhel7,rhel8,ocp4
+
+title: 'Configure Kernel to Rate Limit Sending of Duplicate TCP Acknowledgments'
+
+description: |-
+    Make sure that the system is configured to limit the maximal rate for sending
+    duplicate acknowledgments in response to incoming TCP packets that are for
+    an existing connection but that are invalid due to any of these reasons:
+
+    (a) out-of-window sequence number, (b) out-of-window acknowledgment number,
+    or (c) PAWS (Protection Against Wrapped Sequence numbers) check failure
+    This measure protects against or limits effects of DoS attacks against the system.
+    Set the system to implement rate-limiting measures by adding the following line to
+    <tt>/etc/sysctl.conf</tt> or a configuration file in the <tt>/etc/sysctl.d/</tt> directory
+    (or modify the line to have the required value):
+    <pre>net.ipv4.tcp_invalid_ratelimit = <sub idref="sysctl_net_ipv4_tcp_invalid_ratelimit_value" /></pre>
+    Issue the following command to make the changes take effect:
+    <pre># sysctl --system</pre>
+
+rationale: |-
+    Denial of Service (DoS) is a condition when a resource is not available for legitimate users. When
+    this occurs, the organization either cannot accomplish its mission or must
+    operate at degraded capacity.
+    <br /><br />
+    This can help mitigate simple “ack loop” DoS attacks, wherein a buggy or
+    malicious middlebox or man-in-the-middle can rewrite TCP header fields in
+    manner that causes each endpoint to think that the other is sending invalid
+    TCP segments, thus causing each side to send an unterminating stream of
+    duplicate acknowledgments for invalid segments.
+
+severity: medium
+
+identifiers:
+    cce@rhel7: 82893-9
+
+references:
+    disa: "2385"
+    nist: SC-5
+    srg: SRG-OS-000420-GPOS-00186
+    vmmsrg: SRG-OS-000420-VMM-001690
+    stigid@rhel7: "040510"
+
+ocil_clause: 'rate limiting of duplicate TCP acknowledgments is not configured'
+
+ocil: |-
+    To verify that the operating system protects against or limits the effects of DoS
+    attacks by ensuring implementation of rate-limiting measures
+    on impacted network interfaces, run the following command:
+    <pre># grep 'net.ipv4.tcp_invalid_ratelimit' /etc/sysctl.conf /etc/sysctl.d/*</pre>
+    The command should output the following line:
+    <pre>/etc/sysctl.conf:net.ipv4.tcp_invalid_ratelimit = <sub idref="sysctl_net_ipv4_tcp_invalid_ratelimit_value" /></pre>
+    The file where the line has been found can differ, but it must be either <tt>/etc/sysctl.conf</tt>
+    or a file located under the <tt>/etc/sysctl.d/</tt> directory.
+
+template:
+    name: sysctl
+    vars:
+        sysctlvar: net.ipv4.tcp_invalid_ratelimit
+        datatype: int
