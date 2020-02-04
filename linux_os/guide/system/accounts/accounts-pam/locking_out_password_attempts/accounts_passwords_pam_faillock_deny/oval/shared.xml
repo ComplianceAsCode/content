@@ -101,7 +101,7 @@
   <!-- step 5 -->
   <local_variable id="var_accounts_passwords_pam_faillock_preauth_default_lines_regex_password-auth" datatype="string" version="1" comment="Regex containing skipped lines">
     <concat>
-      <literal_component datatype="string">pam_unix(?:.*[\n](?:.*[\n]){</literal_component>
+      <literal_component datatype="string">^[^#]*pam_unix(?:.*[\n](?:.*[\n]){</literal_component>
       <object_component item_field="subexpression" object_ref="object_accounts_passwords_pam_faillock_lines_value_password-auth" />
       <literal_component datatype="string">})(?:.*[\n])*auth.*pam_faillock.so[\s]+[^\n]*deny=([0-9]+)</literal_component>
     </concat>
