@@ -1,8 +1,8 @@
 # This pam config allows pam_unix to skip past pam_faillock
-# But by mentioning pam_unix in the comment here, it triggers
+# But by mentioning auth something pam_unix in the comment here, it triggered
 # https://bugzilla.redhat.com/show_bug.cgi?id=1549671
 
-auth        required      pam_env.so
+auth        required      pam_env.so # and the comment can be also inline and mention auth pam_unix and it passes
 auth        required      pam_faildelay.so delay=2000000
 auth        required      pam_faillock.so preauth silent deny=3 unlock_time=1200
 auth        [success=done ignore=ignore default=3]    pam_unix.so nullok try_first_pass
