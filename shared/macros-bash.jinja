@@ -516,7 +516,7 @@ fi
     - filepath - filepath of the file to check
     - contents - contents that should be in the file
 #}}
-{{%- macro bash_file_contents(filepath = '', contents = '') %}}
-cat << 'EOF' > {{{ filepath}}}
-{{{ contents}}}EOF
+{{%- macro bash_file_contents(filepath='', contents='') %}}
+cat << 'EOF' > {{{ filepath }}}
+{{{ contents }}}EOF
 {{%- endmacro %}}
