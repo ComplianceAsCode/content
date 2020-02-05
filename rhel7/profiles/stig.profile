@@ -252,7 +252,7 @@ selections:
     - sshd_use_priv_separation
     - sshd_disable_compression
     - chronyd_or_ntpd_set_maxpoll
-    - sysctl_net_ipv4_tcp_invalid_ratelimit
+    - configure_firewalld_rate_limiting
     - service_firewalld_enabled
     - display_login_attempts
     - no_user_host_based_files
