@@ -375,7 +375,22 @@ selections:
     ## AU-2(a) / FAU_GEN.1.1.c
     ## Audit Kernel Module Loading and Unloading Events (Success/Failure)
     ## AU-2(a) / FAU_GEN.1.1.c
-    - audit_rules_for_ospp
+    - audit_basic_configuration
+    - audit_immutable_login_uids
+    - audit_create_failed
+    - audit_create_success
+    - audit_modify_failed
+    - audit_modify_success
+    - audit_access_failed
+    - audit_access_success
+    - audit_delete_failed
+    - audit_delete_success
+    - audit_perm_change_failed
+    - audit_perm_change_success
+    - audit_owner_change_failed
+    - audit_owner_change_success
+    - audit_ospp_general
+    - audit_module_load
 
     ## Enable Automatic Software Updates
     ## SI-2 / FMT_MOF_EXT.1

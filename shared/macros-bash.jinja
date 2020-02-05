@@ -509,3 +509,14 @@ if ! grep -qE '^\s*account\s+required\s+pam_faillock\.so.*$' "{{{ pam_file }}}" 
     sed -E -i --follow-symlinks '/^\s*account\s*required\s*pam_unix.so/i account     required      pam_faillock.so' "{{{ pam_file }}}"
 fi
 {{%- endmacro -%}}
+
+{{#
+  Generates bash script code that puts 'contents' into a file at 'filepath'
+  Parameters:
+    - filepath - filepath of the file to check
+    - contents - contents that should be in the file
+#}}
+{{%- macro bash_file_contents(filepath='', contents='') %}}
+cat << 'EOF' > {{{ filepath }}}
+{{{ contents }}}EOF
+{{%- endmacro %}}

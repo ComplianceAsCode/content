@@ -1,0 +1,54 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Configure immutable Audit login UIDs'
+
+{{% set file_contents_audit_immutable_login =
+"## Make the loginuid immutable. This prevents tampering with the auid.
+--loginuid-immutable
+
+" %}}
+
+description: |-
+    Configure kernel to prevent modification of login UIDs once they are set. Changing login UUIDs while this configuration is enforced requires special capabilities which are not available to unprivileged users.   
+
+    The following rules configure audit as described above:
+    <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
+
+    The <tt>Audit</tt> provides pre-configured  rules in <tt>/usr/share/audit/sample-rules</tt>. The above content can be found in <tt>/usr/share/audit/sample-rules/11-loginuid.rules</tt>.
+    To deploy this configuration, it is recommended to copy it over to the <tt>/etc/audit/rules.d/</tt> directory:
+    <pre>
+    cp /usr/share/audit/sample-rules/11-loginuid.rules /etc/audit/rules.d/
+    </pre>
+    
+    Load new Audit rules into kernel by running:
+    <pre>augenrules --load</pre>
+
+rationale: |-
+    If modification of login UIDs is not prevented, they can be changed by unprivileged users and make auditing complicated or impossible. 
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82828-5
+
+references:
+    ospp: FAU_GEN.1.1.c
+    nist: AU-2(a)
+    srg: SRG-OS-000462-GPOS-00206,SRG-OS-000475-GPOS-00220
+
+ocil_clause: 'the file does not exist or the content differs'
+
+ocil: |-
+    To verify that the <tt>Audit</tt> is correctly configured according to recommended rules, check the content of the file with the following command:
+    <pre>cat /etc/audit/rules.d/11-loginuid.rules</pre>
+    The output has to be exactly as follows:
+    <pre>{{{ file_contents_audit_immutable_login|indent }}}    </pre>
+
+template:
+    name: audit_file_contents
+    vars:
+        filepath: /etc/audit/rules.d/11-loginuid.rules
+        contents: |+
+            {{{ file_contents_audit_immutable_login|indent(12) }}}

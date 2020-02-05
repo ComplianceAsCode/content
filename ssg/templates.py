@@ -1,8 +1,10 @@
+from __future__ import absolute_import
 from __future__ import print_function
 
 import os
 import sys
 import re
+from xml.sax.saxutils import unescape
 
 import ssg.build_yaml
 
@@ -93,6 +95,10 @@ def audit_rules_privileged_commands(data, lang):
         data["path"] = path.replace("/", "\\/")
     return data
 
+@template(["ansible", "bash", "oval"])
+def audit_rules_rule_file(data, lang):
+    return data
+
 
 @template(["ansible", "bash", "oval"])
 def audit_rules_unsuccessful_file_modification(data, lang):
@@ -121,6 +127,20 @@ def audit_rules_usergroup_modification(data, lang):
     data["name"] = name
     if lang == "oval":
         data["path"] = path.replace("/", "\\/")
+    return data
+
+
+@template(["ansible", "bash", "oval"])
+def audit_file_contents(data, lang):
+    if lang == "oval":
+        pathid = re.sub(r'[-\./]', '_', data["filepath"])
+        # remove root slash made into '_'
+        pathid = pathid[1:]
+        data["filepath_id"] = pathid
+
+    # The build system converts "<",">" and "&" for us
+    if lang == "bash" or lang == "ansible":
+        data["contents"] = unescape(data["contents"])
     return data
 
 
