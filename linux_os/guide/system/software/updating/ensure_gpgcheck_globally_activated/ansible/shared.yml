@@ -18,6 +18,7 @@
     section: main
     option: gpgcheck
     value: 1
+    no_extra_spaces: yes
     create: False
   when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Scientific" or yum_config_file.stat.exists)
 
@@ -27,5 +28,6 @@
     section: main
     option: gpgcheck
     value: 1
+    no_extra_spaces: yes
     create: False
   when: ansible_distribution == "Fedora"
