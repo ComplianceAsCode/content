@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Install crypto-policies package'
+
+description: |-
+    {{{ describe_package_install(package="crypto-policies") }}}
+
+rationale: |-
+    The <tt>crypto-policies</tt> package provides configuration and tools to
+    apply centralizet cryptographic policies for backends such as SSL/TLS libraries.
+    
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82723-8
+
+references:
+    ospp: FCS_COP*
+    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174
+
+{{{ complete_ocil_entry_package(package='crypto-policies') }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: crypto-policies

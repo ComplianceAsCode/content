@@ -1,0 +1,32 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Install policycoreutils-python-utils package'
+
+description: |-
+    {{{ describe_package_install(package="policycoreutils-python-utils") }}}
+
+rationale: |-
+    Security-enhanced Linux is a feature of the Linux kernel and a number of utilities
+    with enhanced security functionality designed to add mandatory access controls to Linux.
+    The Security-enhanced Linux kernel contains new architectural components originally
+    developed to improve security of the Flask operating system. These architectural components
+    provide general support for the enforcement of many kinds of mandatory access control
+    policies, including those based on the concepts of Type Enforcement, Role-based Access
+    Control, and Multi-level Security. 
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82724-6
+
+references:
+    srg: SRG-OS-000480-GPOS-00227 
+
+{{{ complete_ocil_entry_package(package='policycoreutils-python-utils') }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: policycoreutils-python-utils
