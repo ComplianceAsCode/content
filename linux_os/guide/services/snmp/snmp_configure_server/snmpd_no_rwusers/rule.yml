@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel6,rhel7,rhel8,fedora
+
+title: 'Ensure SNMP Read Write is disabled'
+
+description: |-
+    Edit <tt>/etc/snmp/snmpd.conf</tt>, remove any <tt>rwuser</tt> entries.
+    Once the read write users have been removed, restart the SNMP service:
+    <pre>$ sudo service snmpd restart</pre>
+
+rationale: |-
+    Certain SNMP settings can permit users to execute system behaviors from user
+    writes to the community strings.
+    This may permit a compromised account to execute commands on a remote system.
+
+severity: medium
+
+identifiers:
+    cce@rhel6: 82731-1
+    cce@rhel7: 82732-9
+    cce@rhel8: 82733-7
+
+ocil_clause: 'there are users who can write to SNMP values'
+
+ocil: |-
+    To ensure there are no read-write users, run the following command:
+    <pre>$ sudo grep -v "^#" /etc/snmp/snmpd.conf| grep 'rwuser'</pre>
+    There should be no output.
