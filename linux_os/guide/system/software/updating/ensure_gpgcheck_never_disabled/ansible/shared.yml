@@ -1,20 +1,20 @@
 # platform = multi_platform_rhel,multi_platform_ol,multi_platform_fedora,multi_platform_rhv
 # reboot = false
-# strategy = unknown
+# strategy = enable
 # complexity = low
 # disruption = medium
-#
-- name: Find All {{{ pkg_manager }}} Repositories
-  find:
-    paths: "/etc/yum.repos.d/"
-    patterns: "*.repo"
-    contains: ^\[.+]$
-  register: yum_find
+- name: Grep for {{{ pkg_manager }}} repo section names
+  shell: grep -HEr '^\[.+\]' -r /etc/yum.repos.d/
+  register: repo_grep_results
+  ignore_errors: True
+  changed_when: False
 
-- name: Ensure gpgcheck Enabled For All {{{ pkg_manager }}} Package Repositories
-  with_items: "{{ yum_find.files }}"
-  lineinfile:
-    create: yes
-    dest: "{{ item.path }}"
-    regexp: '^gpgcheck'
-    line: 'gpgcheck=1'
+- name: Set gpgcheck=1 for each {{{ pkg_manager }}} repo
+  ini_file:
+    path: "{{item[0]}}"
+    section: "{{item[1]}}"
+    option: gpgcheck
+    value: '1'
+    no_extra_spaces: True
+  # regex filters grep output for files ending in .repo and matching section names.
+  loop: "{{ repo_grep_results.stdout | regex_findall( '(.+\\.repo):\\[(.+)\\]\\n?' ) }}"
