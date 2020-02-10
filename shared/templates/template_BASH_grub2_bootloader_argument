@@ -13,6 +13,6 @@ fi
 # Correct the form of kernel command line for each installed kernel in the bootloader
 grubby --update-kernel=ALL --args="{{{ ARG_NAME_VALUE }}}"
 {{% else %}}
-#in later versions of rhel grub2-editenv is used
+# Correct grub2 kernelopts value using grub2-editenv
 grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) {{{ ARG_NAME_VALUE }}}"
 {{% endif %}}
