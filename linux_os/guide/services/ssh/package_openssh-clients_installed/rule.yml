@@ -1,0 +1,28 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Install OpenSSH client software'
+
+description: |-
+    {{{ describe_package_install(package="openssh-clients") }}}
+
+rationale: |-
+    This package includes utilities to make encrypted connections and transfer
+    files securely to SSH servers. 
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82722-0
+
+references:
+    srg: SRG-OS-000480-GPOS-00227
+    ospp: FIA_UAU.5,FTP_ITC_EXT.1
+
+{{{ complete_ocil_entry_package(package='openssh-clients') }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: openssh-clients

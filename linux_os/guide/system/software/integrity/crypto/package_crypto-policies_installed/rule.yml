@@ -1,0 +1,29 @@
+documentation_complete: true
+
+prodtype: rhel8
+
+title: 'Install crypto-policies package'
+
+description: |-
+    {{{ describe_package_install(package="crypto-policies") }}}
+
+rationale: |-
+    Centralized cryptographic policies simplify applying secure ciphers across an operating system and
+    the applications that run on that operating system. Use of weak or untested encryption algorithms
+    undermines the purposes of utilizing encryption to protect data.
+
+severity: medium
+
+identifiers:
+    cce@rhel8: 82723-8
+
+references:
+    ospp: FCS_COP.1(1),FCS_COP.1(2),FCS_COP.1(3),FCS_COP.1(4)
+    srg: SRG-OS-000396-GPOS-00176,SRG-OS-000393-GPOS-00173,SRG-OS-000394-GPOS-00174
+
+{{{ complete_ocil_entry_package(package='crypto-policies') }}}
+
+template:
+    name: package_installed
+    vars:
+        pkgname: crypto-policies

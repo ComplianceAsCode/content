@@ -169,17 +169,17 @@ selections:
     - package_dnf-plugin-subscription-manager_installed
     - package_firewalld_installed
     - package_iptables_installed
-    - package_libcap-ng-utils_installed
     - package_openscap-scanner_installed
     - package_policycoreutils_installed
     - package_rng-tools_installed
     - package_sudo_installed
     - package_usbguard_installed
-    - package_audispd-plugins_installed
     - package_scap-security-guide_installed
     - package_audit_installed
-    - package_gnutls-utils_installed
-    - package_nss-tools_installed
+    - package_crypto-policies_installed
+    - package_openssh-server_installed
+    - package_openssh-clients_installed
+    - package_policycoreutils-python-utils_installed
 
     ### Remove Prohibited Packages
     - package_sendmail_removed
@@ -316,7 +316,7 @@ selections:
     ## Configure the System to Offload Audit Records to a Log
     ##  Server
     ## AU-4(1) / FAU_GEN.1.1.c
-    - auditd_audispd_syslog_plugin_activated
+    # temporarily dropped
 
     ## Set Logon Warning Banner
     ## AC-8(a) / FMT_MOF_EXT.1
