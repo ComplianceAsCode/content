@@ -1,8 +1,8 @@
 documentation_complete: true
 
-title: 'PCI-DSS v3 Control Baseline Draft for Oracle Linux 8'
+title: 'PCI-DSS v3.2.1 Control Baseline Draft for Oracle Linux 8'
 
-description: 'Ensures PCI-DSS v3 related security configuration settings are applied.'
+description: 'Ensures PCI-DSS v3.2.1 related security configuration settings are applied.'
 
 selections:
     - var_account_disable_post_pw_expiration=90
@@ -53,6 +53,7 @@ selections:
     - auditd_data_retention_space_left_action
     - auditd_data_retention_admin_space_left_action
     - auditd_data_retention_action_mail_acct
+    - package_audispd-plugins_installed
     - auditd_audispd_syslog_plugin_activated
     - audit_rules_time_adjtimex
     - audit_rules_time_settimeofday
