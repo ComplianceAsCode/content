@@ -1,0 +1,36 @@
+documentation_complete: true
+
+prodtype: ol7,ol8,rhel6,rhel7,rhel8
+
+title: 'Remove the FreeRadius Server Package'
+
+description: |-
+    The <tt>freeradius</tt> package should be removed if not in use.
+    Is this system a RADIUS server? If not, remove the package.
+    {{{ describe_package_remove(package="freeradius") }}}
+    The freeradius RPM is not installed by default on a {{{ full_name }}}
+    system. It is needed only by the RADIUS servers, not by the
+    clients which use RADIUS for authentication. If the system is not
+    intended for use as a RADIUS Server it should be removed.
+
+rationale: |-
+    Unnecessary packages should not be installed to decrease the attack
+    surface of the system.  While this software is clearly essential on a
+    RADIUS server, it is not necessary on typical desktop or workstation systems.
+
+severity: low
+
+identifiers:
+    cce@rhel6: 82750-1
+    cce@rhel7: 82751-9
+    cce@rhel8: 82752-7
+
+ocil_clause: 'the package is installed'
+
+ocil: '{{{ ocil_package(package="freeradius") }}}'
+
+template:
+    name: package_removed
+    vars:
+        pkgname: freeradius
+
