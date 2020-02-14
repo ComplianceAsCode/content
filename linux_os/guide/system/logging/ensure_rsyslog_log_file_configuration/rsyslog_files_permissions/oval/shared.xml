@@ -22,45 +22,58 @@
 
   </definition>
 
-  <!-- First obtain rsyslog's $IncludeConfig directive value -->
-  <ind:textfilecontent54_object id="object_rfp_rsyslog_include_config_value" comment="rsyslog's $IncludeConfig directive value" version="1">
+  <!-- First obtain rsyslog's $IncludeConfig directive and include() object (introduced in rsyslog v8.33.0) values.
+       To workaround empty include objects case, when FunctionGroup operations return "does not exist" result, added empty string match -->
+  <ind:textfilecontent54_object id="object_rfp_rsyslog_include_config_value" comment="rsyslog's $IncludeConfig directive and include() object values" version="1">
     <ind:filepath>/etc/rsyslog.conf</ind:filepath>
-    <ind:pattern operation="pattern match">^\$IncludeConfig[\s]+([^\s;]+)</ind:pattern>
-    <ind:instance datatype="int">1</ind:instance>
+    <ind:pattern operation="pattern match">^(?:include\([\n\s]*file="([^\s;]+)".*|\$IncludeConfig[\s]+([^\s;]+))$</ind:pattern>
+    <ind:instance datatype="int" operation="greater than or equal">1</ind:instance>
   </ind:textfilecontent54_object>
 
   <!-- Turn that glob value into Perl's regex so it can be used as filepath pattern below -->
   <local_variable id="var_rfp_include_config_regex" datatype="string" version="1" comment="$IncludeConfig value converted to regex">
-    <glob_to_regex>
-      <object_component item_field="subexpression" object_ref="object_rfp_rsyslog_include_config_value" />
-    </glob_to_regex>
+    <unique>
+      <glob_to_regex>
+        <object_component item_field="subexpression" object_ref="object_rfp_rsyslog_include_config_value" />
+      </glob_to_regex>
+    </unique>
   </local_variable>
 
-  <!-- Concatenate that $IncludeConfig regex value together with '/etc/rsyslog.conf'
-       path literal to obtain final list of all rsyslog's configuration files in form
-       of a string. Use '%' character as delemiter to separate items
-  -->
-  <local_variable id="var_rfp_all_log_files_as_string_regex" datatype="string" version="1" comment="Locations of all rsyslog configuration files concatenated into string">
-    <concat>
-      <variable_component var_ref="var_rfp_include_config_regex" />
-      <literal_component datatype="string">%^/etc/rsyslog.conf$</literal_component>
-    </concat>
+  <!-- Create a variable_object from the regex variable
+       If the variable has no values, there won't be any objects -->
+  <ind:variable_object id="object_var_rfp_include_config_regex" comment="Make variable object from regex variable" version="1">
+    <ind:var_ref>var_rfp_include_config_regex</ind:var_ref>
+  </ind:variable_object>
+
+  <local_variable id="var_rfp_syslog_config" datatype="string" version="1" comment="Locations of all rsyslog configuration files as collection">
+    <literal_component datatype="string">^/etc/rsyslog.conf$</literal_component>
   </local_variable>
 
-  <!-- Split the final string by '%' delimiter to obtain OVAL variable in the
-       form of collection of items
-  -->
-  <local_variable id="var_rfp_all_log_files_as_collection" datatype="string" version="1" comment="Locations of all rsyslog configuration files as collection">
-    <split delimiter='%'>
-      <variable_component var_ref="var_rfp_all_log_files_as_string_regex" />
-    </split>
+  <ind:variable_object id="object_var_rfp_syslog_config" comment="Make variable object for use" version="1">
+    <ind:var_ref>var_rfp_syslog_config</ind:var_ref>
+  </ind:variable_object>
+
+  <!-- Combine the two variable_objects into one variable_object
+       We do it this way to avoid referencing an empty variable in a state comparison, which
+       will cause a test to evaluate to fail. Combining an empty set of objects is fine though -->
+  <ind:variable_object id="object_var_rfp_all_log_files" comment="Filter out empty string" version="1">
+    <set>
+      <object_reference>object_var_rfp_include_config_regex</object_reference>
+      <object_reference>object_var_rfp_syslog_config</object_reference>
+    </set>
+  </ind:variable_object>
+
+  <!-- In element filepath of object_rfg_log_files_paths we need to pass a list of values,
+       a list of objects won't do. So we make a local_variable from the variable_objects. -->
+  <local_variable id="var_rfp_all_log_files" datatype="string" version="1" comment="Locations of all rsyslog configuration files as collection">
+    <object_component object_ref="object_var_rfp_all_log_files" item_field="value"/>
   </local_variable>
 
   <!-- For each item from that collection (particular rsyslog's configuration file path) search
        that rsyslog's configuration file to select file paths for log files directives
   -->
   <ind:textfilecontent54_object id="object_rfp_log_files_paths" comment="All rsyslog configuration files" version="1">
-    <ind:filepath operation="pattern match" var_ref="var_rfp_all_log_files_as_collection" var_check="at least one" />
+    <ind:filepath operation="pattern match" var_ref="var_rfp_all_log_files" var_check="at least one" />
     <!-- Chunk of text retrieved from rsyslog's configuration file is considered
          to constitute a log file path if all of the following conditions are met:
          * the string represents a regular file on particular file system
