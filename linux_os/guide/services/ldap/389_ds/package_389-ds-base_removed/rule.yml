@@ -1,12 +1,12 @@
 documentation_complete: true
+  
+prodtype: rhel6,rhel7,rhel8,ocp4
 
-prodtype: rhel6,rhel7,rhel8
-
-title: 'Uninstall openldap-servers Package'
+title: 'Uninstall 389-ds-base Package'
 
 description: |-
-    The openldap-servers RPM is not installed by default on a {{{ full_name }}}
-    system. It is needed only by the OpenLDAP server, not by the
+    The 389-ds-base RPM is not installed by default on a {{{ full_name }}}
+    system. It is needed only by the 389-ds server, not by the
     clients which use LDAP for authentication. If the system is not
     intended for use as an LDAP Server it should be removed.
 
@@ -18,9 +18,10 @@ rationale: |-
 severity: low
 
 identifiers:
-    cce@rhel6: 26858-1
-    cce@rhel7: 80293-4
-    cce@rhel8: 82415-1
+    cce@rhel6: 82726-1
+    cce@rhel7: 82727-9
+    cce@rhel8: 82728-7
+    cce@ocp4: 82725-3
 
 references:
     stigid@rhel6: "000256"
@@ -34,16 +35,16 @@ references:
     iso27001-2013: A.12.1.2,A.12.5.1,A.12.6.2,A.14.2.2,A.14.2.3,A.14.2.4,A.9.1.2
     cis-csc: 11,14,3,9
 
-ocil_clause: 'it does not'
+ocil_clause: 'the package is installed'
 
 ocil: |-
-    To verify the <tt>openldap-servers</tt> package is not installed, run the
+    To verify the <tt>389-ds-base</tt> package is not installed, run the
     following command:
-    <pre>$ rpm -q openldap-servers</pre>
+    <pre>$ rpm -q 389-ds-base</pre>
     The output should show the following:
-    <pre>package openldap-servers is not installed</pre>
+    <pre>package 389-ds-base is not installed</pre>
 
 template:
     name: package_removed
     vars:
-        pkgname: openldap-servers
+        pkgname: 389-ds-base
