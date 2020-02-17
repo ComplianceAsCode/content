@@ -6,6 +6,10 @@ description: |-
     The dynamic firewall daemon <tt>firewalld</tt> provides a
     dynamically managed firewall with support for network &#8220;zones&#8221; to assign
     a level of trust to a network and its associated connections and interfaces.
+    zones are distinguished based on the level of trust the user has decided to place on the devices and
+    traffic within that network. <tt>NetworkManager</tt> informs firewalld to which
+    zone an interface belongs. An interface's assigned zone can be changed by
+    <tt>NetworkManager</tt> or via the <tt>firewall-config</tt> tool.
     It has support for IPv4 and IPv6 firewall settings. It supports Ethernet
     bridges and has a separation of runtime and permanent configuration options.
     It also has an interface for services or applications to add firewall rules
@@ -20,5 +24,12 @@ description: |-
     immediately implemented. There is no need to save or apply the changes. No
     unintended disruption of existing network connections occurs as no part of
     the firewall has to be reloaded.
+
+warnings:
+    - general: |-
+        The program <tt>firewall-config</tt>
+        allows additional services to penetrate the default firewall rules
+        and automatically adjusts the <tt>firewalld</tt> ruleset(s).
+
 
 platform: machine
