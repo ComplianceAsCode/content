@@ -678,7 +678,9 @@ class Group(object):
         # are after rules that install or remove it.
         groups_in_group = list(self.groups.keys())
         # The FIPS group should come before Crypto - if we want to set a different (stricter) Crypto Policy than FIPS.
-        priority_order = ["fips", "crypto"]
+        # the firewalld_activation must come before ruleset_modifications, othervise
+        # remediations for ruleset_modifications won't work
+        priority_order = ["fips", "crypto", "firewalld_activation", "ruleset_modifications"]
         groups_in_group = reorder_according_to_ordering(groups_in_group, priority_order)
         for group_id in groups_in_group:
             _group = self.groups[group_id]
