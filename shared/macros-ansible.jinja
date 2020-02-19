@@ -214,6 +214,6 @@
   copy:
     dest: "{{{ filepath }}}"
     content: |+
-        {{{ contents|indent(8) }}}
+        {{{ contents|trim()|indent(8) }}}
     force: yes
 {{%- endmacro %}}
