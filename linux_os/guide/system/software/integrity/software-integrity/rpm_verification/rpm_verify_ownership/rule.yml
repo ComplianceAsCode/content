@@ -1,6 +1,6 @@
 documentation_complete: true
 
-prodtype: rhel6,rhel7,rhel8,rhv4,ocp4
+prodtype: rhel6,rhel7,rhel8,rhv4,ocp4,ol7,ol8
 
 title: 'Verify and Correct Ownership with RPM'
 
@@ -56,9 +56,11 @@ ocil: |-
     is expected by the RPM database:
     <pre>$ rpm -Va | rpm -Va --nofiledigest | awk '{ if (substr($0,6,1)=="U" || substr($0,7,1)=="G") print $NF }'</pre>
 
+{{% if product == "rhel6" %}}
 warnings:
     - general: |-
         <b>Note: Due to a bug in the <tt>gdm</tt> package,
         the RPM verify command may continue to fail even after file permissions have
         been correctly set on <tt>/var/log/gdm</tt>. This is being tracked in Red Hat
         Bugzilla #1277603.</b>
+{{% endif %}}
