@@ -1,4 +1,4 @@
-# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel
+# platform = Red Hat Virtualization 4,multi_platform_fedora,multi_platform_rhel,multi_platform_ol
 for LIBDIR in /usr/lib /usr/lib64 /lib /lib64
 do
   if [ -d $LIBDIR ]
