@@ -104,15 +104,15 @@ class Profile(object):
         self.variables = dict()
         self.refine_rules = defaultdict(list)
 
-    @staticmethod
-    def from_yaml(yaml_file, env_yaml=None):
+    @classmethod
+    def from_yaml(cls, yaml_file, env_yaml=None):
         yaml_contents = open_and_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
         basename, _ = os.path.splitext(os.path.basename(yaml_file))
 
-        profile = Profile(basename)
+        profile = cls(basename)
         profile.title = required_key(yaml_contents, "title")
         del yaml_contents["title"]
         profile.description = required_key(yaml_contents, "description")
@@ -423,13 +423,13 @@ class Benchmark(object):
 
         self.add_value(conditional_clause)
 
-    @staticmethod
-    def from_yaml(yaml_file, id_, product_yaml=None):
+    @classmethod
+    def from_yaml(cls, yaml_file, id_, product_yaml=None):
         yaml_contents = open_and_macro_expand(yaml_file, product_yaml)
         if yaml_contents is None:
             return None
 
-        benchmark = Benchmark(id_)
+        benchmark = cls(id_)
         benchmark.title = required_key(yaml_contents, "title")
         del yaml_contents["title"]
         benchmark.status = required_key(yaml_contents, "status")
@@ -601,14 +601,14 @@ class Group(object):
         self.rules = {}
         self.platform = None
 
-    @staticmethod
-    def from_yaml(yaml_file, env_yaml=None):
+    @classmethod
+    def from_yaml(cls, yaml_file, env_yaml=None):
         yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
         if yaml_contents is None:
             return None
 
         group_id = os.path.basename(os.path.dirname(yaml_file))
-        group = Group(group_id)
+        group = cls(group_id)
         group.prodtype = yaml_contents.pop("prodtype", "all")
         group.title = required_key(yaml_contents, "title")
         del yaml_contents["title"]
@@ -758,8 +758,8 @@ class Rule(object):
         self.platform = None
         self.template = None
 
-    @staticmethod
-    def from_yaml(yaml_file, env_yaml=None):
+    @classmethod
+    def from_yaml(cls, yaml_file, env_yaml=None):
         yaml_file = os.path.normpath(yaml_file)
 
         yaml_contents = open_and_macro_expand(yaml_file, env_yaml)
@@ -770,7 +770,7 @@ class Rule(object):
         if rule_id == "rule" and ext == ".yml":
             rule_id = get_rule_dir_id(yaml_file)
 
-        rule = Rule(rule_id)
+        rule = cls(rule_id)
 
         try:
             rule._set_attributes_from_dict(yaml_contents)
