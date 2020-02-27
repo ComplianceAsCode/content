@@ -39,6 +39,8 @@ def parse_args():
                         help="Which action to perform.")
     parser.add_argument("--resolved-rules-dir", "-l",
                         help="To which directory to put processed rule YAMLs.")
+    parser.add_argument("--profiles-root",
+                        help="Override where to look for profile files.")
     return parser.parse_args()
 
 
@@ -53,7 +55,11 @@ def main():
         args.build_config_yaml, args.product_yaml)
     base_dir = os.path.dirname(args.product_yaml)
     benchmark_root = ssg.utils.required_key(env_yaml, "benchmark_root")
-    profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
+    profiles_root = ""
+    if args.profiles_root:
+        profiles_root = args.profiles_root
+    else:
+        profiles_root = ssg.utils.required_key(env_yaml, "profiles_root")
     additional_content_directories = env_yaml.get("additional_content_directories", [])
 
     # we have to "absolutize" the paths the right way, relative to the
