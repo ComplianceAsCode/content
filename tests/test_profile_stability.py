@@ -69,7 +69,13 @@ def get_references(ref_root):
     return found
 
 
-def get_matching_sample(build_dir, reference_fname):
+def corresponding_product_built(build_dir, reference_fname):
+    ref_path_components = reference_fname.split(os.path.sep)
+    product_id = ref_path_components[-2]
+    return os.path.isdir(os.path.join(build_dir, product_id))
+
+
+def get_matching_compiled_profile_filename(build_dir, reference_fname):
     ref_path_components = reference_fname.split(os.path.sep)
     product_id = ref_path_components[-2]
     profile_fname = ref_path_components[-1]
@@ -78,7 +84,7 @@ def get_matching_sample(build_dir, reference_fname):
         return matching_filename
 
 
-def get_selections(yaml_fname):
+def get_selections_key_from_yaml(yaml_fname):
     return ssg.yaml.open_raw(yaml_fname)["selections"]
 
 
@@ -91,15 +97,11 @@ def get_profile_name_from_reference_filename(fname):
     return name
 
 
-def compare_reference_and_sample_selections(reference_fname, sample_fname):
-    ref_selections = get_selections(reference_fname)
-    sample_selections = get_selections(sample_fname)
-    difference = compare_sets(ref_selections, sample_selections)
-    selections_are_equal = difference.empty
-    if not selections_are_equal:
-        comprehensive_profile_name = get_profile_name_from_reference_filename(reference_fname)
-        report_comparison(comprehensive_profile_name, difference)
-    return selections_are_equal
+def get_reference_vs_built_difference(reference_fname, built_fname):
+    ref_selections = get_selections_key_from_yaml(reference_fname)
+    built_selections = get_selections_key_from_yaml(built_fname)
+    difference = compare_sets(ref_selections, built_selections)
+    return difference
 
 
 def main():
@@ -114,15 +116,21 @@ def main():
                            .format(test_root=args.test_data_root))
     no_changes = True
     for ref in reference_files:
-        sample = get_matching_sample(args.build_root, ref)
-        if not sample:
+        if not corresponding_product_built(args.build_root, ref):
+            continue
+
+        compiled_profile = get_matching_compiled_profile_filename(args.build_root, ref)
+        if not compiled_profile:
             msg = ("Unexpectedly unable to find compiled profile corresponding"
-                   "to the test file {ref}. "
-                   "This indicates that a profile we have tests for hasn't been built."
+                   "to the test file {ref}, although the corresponding product has been built. "
+                   "This indicates that a profile we have tests for is missing."
                    .format(ref=ref))
             raise RuntimeError(msg)
-        changed = compare_reference_and_sample_selections(ref, sample)
-        no_changes = no_changes and changed
+        difference = get_reference_vs_built_difference(ref, compiled_profile)
+        if not difference.empty:
+            no_changes = False
+            comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
+            report_comparison(comprehensive_profile_name, difference)
 
     if not no_changes:
         msg = (
