@@ -35,6 +35,10 @@ class ResolvableProfile(ssg.build_yaml.Profile):
             updated_variables.update(self.variables)
             self.variables = updated_variables
 
+            updated_refinements = dict(extended_profile.refine_rules)
+            updated_refinements.update(self.refine_rules)
+            self.refine_rules = updated_refinements
+
         self.raw_selections.update(set(self.selected))
         for uns in self.unselected:
             self.raw_selections.discard(uns)

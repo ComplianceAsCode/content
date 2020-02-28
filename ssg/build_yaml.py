@@ -144,6 +144,10 @@ class Profile(object):
             selections.append("!"+item)
         for varname in self.variables.keys():
             selections.append(varname+"="+self.variables.get(varname))
+        for rule, refinements in self.refine_rules.items():
+            for prop, val in refinements:
+                selections.append("{rule}.{property}={value}"
+                                  .format(rule=rule, property=prop, value=val))
         to_dump["selections"] = selections
         with open(file_name, "w+") as f:
             yaml.dump(to_dump, f, indent=4)
