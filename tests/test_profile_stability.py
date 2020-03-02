@@ -114,7 +114,7 @@ def main():
     if not reference_files:
         raise RuntimeError("Unable to find any reference profiles in {test_root}"
                            .format(test_root=args.test_data_root))
-    no_changes = True
+    fix_commands = []
     for ref in reference_files:
         if not corresponding_product_built(args.build_root, ref):
             continue
@@ -128,17 +128,20 @@ def main():
             raise RuntimeError(msg)
         difference = get_reference_vs_built_difference(ref, compiled_profile)
         if not difference.empty:
-            no_changes = False
             comprehensive_profile_name = get_profile_name_from_reference_filename(ref)
             report_comparison(comprehensive_profile_name, difference)
+            fix_commands.append(
+                "cp '{compiled}' '{reference}'"
+                .format(compiled=compiled_profile, reference=ref)
+            )
 
-    if not no_changes:
+    if fix_commands:
         msg = (
             "If changes to mentioned profiles are intentional, "
-            "edit the appropriate files in '{test_root}' directory."
-            .format(test_root=args.test_data_root))
+            "copy those compiled files, so they become the new reference:\n{fixes}"
+            .format(test_root=args.test_data_root, fixes="\n".join(fix_commands)))
         print(msg, file=sys.stderr)
-    sys.exit(not no_changes)
+    sys.exit(bool(fix_commands))
 
 
 if __name__ == "__main__":

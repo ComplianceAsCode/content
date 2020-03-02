@@ -234,4 +234,8 @@ selections:
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
+- grub2_vsyscall_argument.role=unscored
+- grub2_vsyscall_argument.severity=info
+- sysctl_user_max_user_namespaces.role=unscored
+- sysctl_user_max_user_namespaces.severity=info
 title: Protection Profile for General Purpose Operating Systems

@@ -240,7 +240,6 @@ selections:
 - sysctl_user_max_user_namespaces
 - timer_dnf-automatic_enabled
 - usbguard_allow_hid_and_hub
-- login_banner_text=dod_banners
 - var_sshd_set_keepalive=0
 - var_accounts_user_umask=027
 - var_password_pam_difok=4
@@ -262,4 +261,9 @@ selections:
 - var_accounts_passwords_pam_faillock_deny=3
 - var_accounts_passwords_pam_faillock_fail_interval=900
 - var_accounts_passwords_pam_faillock_unlock_time=never
+- login_banner_text=dod_banners
+- grub2_vsyscall_argument.role=unscored
+- grub2_vsyscall_argument.severity=info
+- sysctl_user_max_user_namespaces.role=unscored
+- sysctl_user_max_user_namespaces.severity=info
 title: '[DRAFT] DISA STIG for Red Hat Enterprise Linux 8'
